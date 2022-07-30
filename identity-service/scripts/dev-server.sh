@@ -1,0 +1,16 @@
+#!/bin/sh
+set -o xtrace
+set -e
+
+link_libs=true
+
+if [ "$link_libs" = true ]
+then
+    cd ../coliving-libs
+    npm link
+    cd ../app
+    npm link @coliving/sdk
+    exec ./node_modules/.bin/nodemon --inspect=0.0.0.0:9229 --ignore "./emailCache" --watch src --watch ../coliving-libs/ src/index.js
+else
+    exec ./node_modules/.bin/nodemon --inspect=0.0.0.0:9229 --ignore "./emailCache" src/index.js
+fi

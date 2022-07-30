@@ -1,0 +1,3 @@
+[submodule "coliving-backup-container"]
+	path = coliving-backup-container
+	url = git@github.com:AudiusProject/coliving-backup-container.git

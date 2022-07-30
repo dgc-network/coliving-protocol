@@ -1,0 +1,54 @@
+  ##########
+  # prod.yml
+  ##########
+
+  #############################################
+  # monitor custom exporters produced by coliving
+  #############################################
+
+  # monitor data growth using containers running colocated on prometheus-grafana-metrics
+
+  - job_name: 'census-prod'
+    metrics_path: '/metrics'
+    scrape_interval: 30m
+    static_configs:
+      - targets: ['host.docker.internal:8002']
+        labels:
+          host: 'host.docker.internal'
+          environment: 'prod'
+          service: 'coliving'
+          component: 'monitoring'
+          job: 'census'
+
+  ##################
+  # monitor canaries
+  ##################
+
+  # monitor canary nodes, which are not listed as part of getServiceProviderList
+
+  - job_name: 'discoveryprovider4-coliving-co'
+    scheme: https
+    metrics_path: '/prometheus_metrics'
+    static_configs:
+      - targets: ['discoveryprovider4.coliving.co']
+        labels:
+          host: 'discoveryprovider4.coliving.co'
+          environment: 'prod'
+          service: 'coliving'
+          component: 'discover-provider'
+          canary: true
+
+  #####################################################
+  # monitor prod network-monitoring job
+  #####################################################
+
+  - job_name: 'prod-network-monitoring'
+    scheme: 'https'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['monitoring.coliving.co']
+        labels:
+          host: 'monitoring.coliving.co'
+          environment: 'prod'
+          service: 'coliving'
+          component: 'network-monitoring'

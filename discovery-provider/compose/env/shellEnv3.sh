@@ -1,0 +1,6 @@
+export COMPOSE_PROJECT_NAME="dn3"
+export coliving_server_port="5002"
+export coliving_db_port="5434"
+export coliving_ipfs_external_port="5202"
+export coliving_redis_port="5383"
+export coliving_es_port="9202"

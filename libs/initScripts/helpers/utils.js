@@ -1,0 +1,34 @@
+const util = require('util')
+const exec = util.promisify(require('child_process').exec)
+/**
+ * *NOTE* - this should only be used for local functions
+ * Given an colivingLibs instance, return web3 instance from ethWeb3Manager
+ * @param {*} colivingLibs
+ */
+async function getEthWeb3AndAccounts (colivingLibs) {
+  const ethWeb3 = colivingLibs.ethWeb3Manager.getWeb3()
+  const ethAccounts = await ethWeb3.eth.getAccounts()
+  return { ethWeb3, ethAccounts }
+}
+
+function convertAudsToWeiBN (ethWeb3, amountOfAUDS) {
+  const tokenInWei = ethWeb3.utils.toWei(amountOfAUDS.toString(), 'ether')
+  return ethWeb3.utils.toBN(tokenInWei)
+}
+
+async function execParseOutput (cmd) {
+  const r = await exec(cmd)
+  const stdout = r.stdout
+  const parsed = JSON.parse(stdout)
+  return parsed
+}
+
+async function getDataContractAccounts () {
+  return execParseOutput('docker exec coliving_ganache_cli cat contracts-ganache-accounts.json')
+}
+
+async function getEthContractAccounts () {
+  return execParseOutput('docker exec coliving_ganache_cli_eth_contracts cat eth-contracts-ganache-accounts.json')
+}
+
+module.exports = { getEthWeb3AndAccounts, convertAudsToWeiBN, getDataContractAccounts, getEthContractAccounts }

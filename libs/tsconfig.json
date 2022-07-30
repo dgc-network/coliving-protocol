@@ -1,0 +1,11 @@
+{
+  "extends": "@tsconfig/node16-strictest/tsconfig.json",
+  "compilerOptions": {
+    "lib": ["es2021", "dom"],
+    "checkJs": false,
+    "resolveJsonModule": true,
+    "typeRoots": ["./types", "./node_modules/@types"],
+    "exactOptionalPropertyTypes": false
+  },
+  "exclude": ["**/*+(test).ts"]
+}
