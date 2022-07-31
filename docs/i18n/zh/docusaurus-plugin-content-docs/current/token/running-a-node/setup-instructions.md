@@ -74,7 +74,7 @@ rm -rf /var/k8s/*
 
 ## 4. Service Setup
 
-See below for a guide to deploying [Creator Node](https://github.com/AudiusProject/-k8s-manifests#creator-node-1) and [Discovery Provider](https://github.com/AudiusProject/-k8s-manifests#discovery-provider-1) via `-cli`. After you finish setting up the service, please continue with the Logger section.
+See below for a guide to deploying [Creator Node](https://github.com/AudiusProject/-k8s-manifests#network-node-1) and [Discovery Provider](https://github.com/AudiusProject/-k8s-manifests#discovery-node-1) via `-cli`. After you finish setting up the service, please continue with the Logger section.
 
 **Note:** "Creator Node" and "Discovery Provider" have recently been renamed to "Content Node" and "Discovery Node" respectively. However for consistency within the code and this README, we will continue to use the terms "Creator Node" and "Discovery Node".
 
@@ -93,19 +93,19 @@ Use `-cli` to update required variables. The full list of variables and explanat
 Some variables must be set, you can do this with the following commands:
 
 ```text
--cli set-config creator-node backend
+-cli set-config network-node backend
 key   : spOwnerWallet
 value : <address of wallet that contains  tokens>
 
--cli set-config creator-node backend
+-cli set-config network-node backend
 key   : delegateOwnerWallet
 value : <address of wallet that contains no tokens but that is registered on chain>
 
--cli set-config creator-node backend
+-cli set-config network-node backend
 key   : delegatePrivateKey
 value : <private key>
 
--cli set-config creator-node backend
+-cli set-config network-node backend
 key   : creatorNodeEndpoint
 value : <your service url>
 ```
@@ -115,13 +115,13 @@ value : <your service url>
 Then run the launch command via `-cli`
 
 ```text
--cli launch creator-node --configure-ipfs
+-cli launch network-node --configure-ipfs
 ```
 
 Verify that the service is healthy by running,
 
 ```text
--cli health-check creator-node
+-cli health-check network-node
 ```
 
 #### Upgrade
@@ -137,7 +137,7 @@ To upgrade your service using `-cli`, you will need to pull the latest manifest 
 Verify that the service is healthy by running,
 
 ```text
--cli health-check creator-node
+-cli health-check network-node
 ```
 
 **Old Upgrade flow with kubectl:** To upgrade your service using `kubectl`, you will need to pull the latest `k8s-manifests` code. To do this, run the following,
@@ -148,12 +148,12 @@ git pull
 git stash apply
 ```
 
-Ensure that your configs are present in `/creator-node/creator-node-cm.yaml`, then do the following,
+Ensure that your configs are present in `/network-node/network-node-cm.yaml`, then do the following,
 
 ```text
-k apply -f /creator-node/creator-node-cm.yaml
-k apply -f /creator-node/creator-node-deploy-ipfs.yaml
-k apply -f /creator-node/creator-node-deploy-backend.yaml
+k apply -f /network-node/network-node-cm.yaml
+k apply -f /network-node/network-node-deploy-ipfs.yaml
+k apply -f /network-node/network-node-deploy-backend.yaml
 ```
 
 You can verify your upgrade with the `\health_check` endpoint.
@@ -169,11 +169,11 @@ The indexed content includes user, track, and album/playlist information along w
 Some variables must be set, you can do this with the following commands:
 
 ```text
--cli set-config discovery-provider backend
+-cli set-config discovery-node backend
 key   : audius_delegate_owner_wallet
 value : <delegate_owner_wallet>
 
--cli set-config discovery-provider backend
+-cli set-config discovery-node backend
 key   : audius_delegate_private_key
 value : <delegate_private_key>
 ```
@@ -181,11 +181,11 @@ value : <delegate_private_key>
 If you are using an external managed Postgres database \(version 11.1+\), replace the db url with,
 
 ```text
-audius-cli set-config discovery-provider backend
+audius-cli set-config discovery-node backend
 key   : audius_db_url
 value : <audius_db_url>
 
-audius-cli set-config discovery-provider backend
+audius-cli set-config discovery-node backend
 key   : audius_db_url_read_replica
 value : <audius_db_url_read_replica>
 ```
@@ -194,7 +194,7 @@ value : <audius_db_url_read_replica>
 
 The below is only if using a managed posgres database:
 
-You will have to replace the db seed job in `audius/discovery-provider/discovery-provider-db-seed-job.yaml` as well. Examples are provided. In the managed postgres database and set the `temp_file_limit` flag to `2147483647` and run the following SQL command on the destination db.
+You will have to replace the db seed job in `audius/discovery-node/discovery-node-db-seed-job.yaml` as well. Examples are provided. In the managed postgres database and set the `temp_file_limit` flag to `2147483647` and run the following SQL command on the destination db.
 
 ```text
 CREATE EXTENSION pg_trgm;
@@ -205,13 +205,13 @@ Make sure that your service exposes all the required environment variables. See 
 #### Launch
 
 ```text
-audius-cli launch discovery-provider --seed-job --configure-ipfs
+audius-cli launch discovery-node --seed-job --configure-ipfs
 ```
 
 Verify that the service is healthy by running,
 
 ```text
-audius-cli health-check discovery-provider
+audius-cli health-check discovery-node
 ```
 
 #### Upgrade
@@ -227,7 +227,7 @@ audius-cli upgrade
 Verify that the service is healthy by running,
 
 ```text
-audius-cli health-check discovery-provider
+audius-cli health-check discovery-node
 ```
 
 **Old Upgrade flow with kubectl:** To upgrade your service using kubectl, you will need to pull the latest `k8s-manifests` code. To do this, run the following,
@@ -238,11 +238,11 @@ git pull
 git stash apply
 ```
 
-Ensure that your configs are present in `audius/discovery-provider/discovery-provider-cm.yaml`, then do the following,
+Ensure that your configs are present in `audius/discovery-node/discovery-node-cm.yaml`, then do the following,
 
 ```text
-k apply -f audius/discovery-provider/discovery-provider-cm.yaml
-k apply -f audius/discovery-provider/discovery-provider-deploy.yaml
+k apply -f audius/discovery-node/discovery-node-cm.yaml
+k apply -f audius/discovery-node/discovery-node-deploy.yaml
 ```
 
 You can verify your upgrade with the `\health_check` endpoint.
@@ -309,10 +309,10 @@ kubectl -n kube-system delete pod $(kubectl -n kube-system get pods | grep "flue
 kubectl get svc
 
 NAME                             TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                                        AGE
-discovery-provider-backend-svc   NodePort    10.98.78.108    <none>        5000:31744/TCP                                 18h
-discovery-provider-cache-svc     ClusterIP   10.101.94.71    <none>        6379/TCP                                       18h
-discovery-provider-db-svc        ClusterIP   10.110.50.147   <none>        5432/TCP                                       18h
-discovery-provider-ipfs-svc      NodePort    10.106.89.157   <none>        4001:30480/TCP,5001:30499/TCP,8080:30508/TCP   18h
+discovery-node-backend-svc   NodePort    10.98.78.108    <none>        5000:31744/TCP                                 18h
+discovery-node-cache-svc     ClusterIP   10.101.94.71    <none>        6379/TCP                                       18h
+discovery-node-db-svc        ClusterIP   10.110.50.147   <none>        5432/TCP                                       18h
+discovery-node-ipfs-svc      NodePort    10.106.89.157   <none>        4001:30480/TCP,5001:30499/TCP,8080:30508/TCP   18h
 kubernetes                       ClusterIP   10.96.0.1       <none>        443/TCP                                        7d5h
 
 In this case, the web server port is 31744 and the IPFS port is 30480.
@@ -346,7 +346,7 @@ For more information about `sp-actions/` see the README in the [sp-actions/ fold
 
 ```text
 ➜ pwd
-/Coliving/audius-k8s-manifests/sp-utilities/creator-node
+/Coliving/audius-k8s-manifests/sp-utilities/network-node
 
 # entering creatorNodeEndpoint and delegatePrivateKey sends those values as env vars to the script without having to export to your terminal
 ➜ creatorNodeEndpoint=https://creatornode.domain.co delegatePrivateKey=5e468bc1b395e2eb8f3c90ef897406087b0599d139f6ca0060ba85dcc0dce8dc node healthChecks.js

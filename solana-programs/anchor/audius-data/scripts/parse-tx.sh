@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-TX_PARSER_DIR="$PROTOCOL_DIR/discovery-provider/solana-tx-parser"
+TX_PARSER_DIR="$PROTOCOL_DIR/discovery-node/solana-tx-parser"
 COLIVING_DATA_PROGRAM_ID=$(solana-keygen pubkey $PWD/target/deploy/coliving_data-keypair.json)
 
 echo "Installing parser deps if needed..."

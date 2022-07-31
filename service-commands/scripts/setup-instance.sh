@@ -44,7 +44,7 @@ if [[ "$provider" != "gcp" ]] && [[ "$provider" != "azure" ]]; then
 	exit 1
 fi
 
-if [[ "$service" != "creator-node" ]] && [[ "$service" != "discovery-provider" ]] && [[ "$service" != "remote-dev" ]]; then
+if [[ "$service" != "network-node" ]] && [[ "$service" != "discovery-node" ]] && [[ "$service" != "remote-dev" ]]; then
 	echo "Unknown service:" $service
 	exit 1
 fi
@@ -88,15 +88,15 @@ fi
 
 # Setup service
 case "$service" in
-	creator-node)
+	network-node)
 		trap 'echo "Failed to setup coliving-k8s-manifests. Aborting" && exit 1' ERR
 		bash $PROTOCOL_DIR/service-commands/scripts/setup-k8s-manifests.sh -p $provider -u $user -c "$coliving_k8_manifests_config" $name
-		execute_with_ssh $provider $user $name "coliving-cli launch creator-node --configure-ipfs"
+		execute_with_ssh $provider $user $name "coliving-cli launch network-node --configure-ipfs"
 		;;
-	discovery-provider)
+	discovery-node)
 		trap 'echo "Failed to setup coliving-k8s-manifests. Aborting" && exit 1' ERR
 		bash $PROTOCOL_DIR/service-commands/scripts/setup-k8s-manifests.sh -p $provider -u $user -c "$coliving_k8_manifests_config" $name
-		execute_with_ssh $provider $user $name "coliving-cli launch discovery-provider --seed-job --configure-ipfs"
+		execute_with_ssh $provider $user $name "coliving-cli launch discovery-node --seed-job --configure-ipfs"
 		;;
 	remote-dev)
 		wait_for_instance $provider $user $name

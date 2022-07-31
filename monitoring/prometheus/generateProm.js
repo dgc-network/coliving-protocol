@@ -11,7 +11,7 @@ const readFromFileAndWriteToStream = (stream, filename) => {
   stream.write("\n")
 }
 
-const generateJobYaml = ({ url, env, scheme = 'https', component = 'discovery-provider' }) => {
+const generateJobYaml = ({ url, env, scheme = 'https', component = 'discovery-node' }) => {
   url = url.replace("https://", "").replace("http://", "")
   sanitizedUrl = url.split(".").join("-")
 

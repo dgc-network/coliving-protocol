@@ -74,7 +74,7 @@ rm -rf /var/k8s/*
 
 ## 4. Configuración de servicio
 
-Mira abajo una guía para desplegar [Nodo de creador](https://github.com/AudiusProject/-k8s-manifests#creator-node-1) y [Proveedor de descubrimiento](https://github.com/AudiusProject/-k8s-manifests#discovery-provider-1) a través de `-cli`. Después de terminar de configurar el servicio, por favor continúe con la sección de Logger.
+Mira abajo una guía para desplegar [Nodo de creador](https://github.com/AudiusProject/-k8s-manifests#network-node-1) y [Proveedor de descubrimiento](https://github.com/AudiusProject/-k8s-manifests#discovery-node-1) a través de `-cli`. Después de terminar de configurar el servicio, por favor continúe con la sección de Logger.
 
 **Nota:** "Nodo de creador" y "Proveedor de descubrimiento" recientemente han sido renombrados a "Nodo de contenido" y "Nodo de descubrimiento" respectivamente. Sin embargo, para la consistencia dentro del código y este README, continuaremos usando los términos "Nodo de creador" y "Nodo de descubrimiento".
 
@@ -93,19 +93,19 @@ Use `-cli` para actualizar las variables requeridas. La lista completa de variab
 Se deben establecer algunas variables, puedes hacer esto con los siguientes comandos:
 
 ```text
--cli set-config creator-node backend
+-cli set-config network-node backend
 key   : spOwnerWallet
 value : <address of wallet that contains  tokens>
 
--cli set-config creator-node backend
+-cli set-config network-node backend
 key   : delegateOwnerWallet
 value : <address of wallet that contains no tokens but that is registered on chain>
 
--cli set-config creator-node backend
+-cli set-config network-node backend
 key   : delegatePrivateKey
 value : <private key>
 
--cli set-config creator-node backend
+-cli set-config network-node backend
 key   : creatorNodeEndpoint
 value : <your service url>
 ```
@@ -115,13 +115,13 @@ value : <your service url>
 A continuación, ejecuta el comando de inicio a través de `-cli`
 
 ```text
--cli launch creator-node --configure-ipfs
+-cli launch network-node --configure-ipfs
 ```
 
 Verifique que el servicio está en buen estado ejecutando,
 
 ```text
--cli health-check creator-node
+-cli health-check network-node
 ```
 
 #### Actualizar
@@ -137,7 +137,7 @@ actualización -cli
 Verifique que el servicio está en buen estado ejecutando,
 
 ```text
--cli health-check creator-node
+-cli health-check network-node
 ```
 
 **Flujo de Actualización anterior con kubectl:** Para actualizar su servicio usando `kubectl`, necesitarás extraer el último código `k8s-manifests`. Para hacer esto, ejecute lo siguiente,
@@ -148,12 +148,12 @@ git pull
 git stash apply
 ```
 
-Asegúrate de que tus configuraciones estén presentes en `/creator-node/creator-node-cm.yaml`, luego haz lo siguiente,
+Asegúrate de que tus configuraciones estén presentes en `/network-node/network-node-cm.yaml`, luego haz lo siguiente,
 
 ```text
-k aplicar -f /creator-node/creator-node-cm.yaml
-k aplicar -f /creator-node/creator-node-deploy-ipfs.yaml
-k aplicar -f /creator-node/creator-node-deploy-backend.yaml
+k aplicar -f /network-node/network-node-cm.yaml
+k aplicar -f /network-node/network-node-deploy-ipfs.yaml
+k aplicar -f /network-node/network-node-deploy-backend.yaml
 ```
 
 Puede verificar su actualización con el punto final `\health_check`.
@@ -169,11 +169,11 @@ El contenido indexado incluye información sobre el usuario, la canci´pn y el �
 Se deben establecer algunas variables, puedes hacer esto con los siguientes comandos:
 
 ```text
--cli set-config discovery-provider backend
+-cli set-config discovery-node backend
 key   : audius_delegate_owner_wallet
 value : <delegate_owner_wallet>
 
--cli set-config discovery-provider backend
+-cli set-config discovery-node backend
 key   : audius_delegate_private_key
 value : <delegate_private_key>
 ```
@@ -181,11 +181,11 @@ value : <delegate_private_key>
 Si está utilizando una base de datos de Postgres administrada externamente \(versión 11.1+\), reemplace la url db con,
 
 ```text
--cli set-config discovery-provider backend
+-cli set-config discovery-node backend
 key   : audius_db_url
 value : <audius_db_url>
 
--cli set-config discovery-provider backend
+-cli set-config discovery-node backend
 key   : audius_db_url_read_replica
 value : <audius_db_url_read_replica>
 ```
@@ -194,7 +194,7 @@ value : <audius_db_url_read_replica>
 
 Lo siguiente es sólo si se usa una base de datos de posgres administrada:
 
-Tendrá que reemplazar el trabajo de la semilla en `/discovery-provider/discovery-provider-db-seed-job.yaml`. Se ofrecen ejemplos. En la base de datos postgres administrada y establezca la bandera `temp_file_limit` a `2147483647` y ejecute el siguiente comando SQL en el db de destino.
+Tendrá que reemplazar el trabajo de la semilla en `/discovery-node/discovery-node-db-seed-job.yaml`. Se ofrecen ejemplos. En la base de datos postgres administrada y establezca la bandera `temp_file_limit` a `2147483647` y ejecute el siguiente comando SQL en el db de destino.
 
 ```text
 CREAR EXTENIÓN pg_trgm;
@@ -205,13 +205,13 @@ Asegúrese de que su servicio expone todas las variables de entorno requeridas. 
 #### Iniciar
 
 ```text
--cli launch discovery-provider --seed-job --configure-ipfs
+-cli launch discovery-node --seed-job --configure-ipfs
 ```
 
 Verifique que el servicio está en buen estado ejecutando,
 
 ```text
--cli health-check discovery-provider
+-cli health-check discovery-node
 ```
 
 #### Actualizar
@@ -227,7 +227,7 @@ actualización -cli
 Verifique que el servicio está en buen estado ejecutando,
 
 ```text
--cli health-check discovery-provider
+-cli health-check discovery-node
 ```
 
 **Flujo de Actualización anterior con kubectl:** Para actualizar su servicio usando kubectl, necesitarás extraer el último código `k8s-manifests`. Para hacer esto, ejecute lo siguiente,
@@ -238,11 +238,11 @@ git pull
 git stash apply
 ```
 
-Asegúrate de que tus configuraciones estén presentes en `/creator-node/discovery-provider-cm.yaml`, luego haz lo siguiente,
+Asegúrate de que tus configuraciones estén presentes en `/network-node/discovery-node-cm.yaml`, luego haz lo siguiente,
 
 ```text
-k aplicar -f /discovery-provider/discovery-provider-cm.yaml
-k apply -f /discovery-provider/discovery-provider-deploy.yaml
+k aplicar -f /discovery-node/discovery-node-cm.yaml
+k apply -f /discovery-node/discovery-node-deploy.yaml
 ```
 
 Puede verificar su actualización con el punto final `\health_check`.
@@ -309,10 +309,10 @@ kubectl -n kube-system delete pod $(kubectl -n kube-system get pods | grep "flue
 kubectl get svc
 
 NAME                             TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                                        AGE
-discovery-provider-backend-svc   NodePort    10.98.78.108    <none>        5000:31744/TCP                                 18h
-discovery-provider-cache-svc     ClusterIP   10.101.94.71    <none>        6379/TCP                                       18h
-discovery-provider-db-svc        ClusterIP   10.110.50.147   <none>        5432/TCP                                       18h
-discovery-provider-ipfs-svc      NodePort    10.106.89.157   <none>        4001:30480/TCP,5001:30499/TCP,8080:30508/TCP   18h
+discovery-node-backend-svc   NodePort    10.98.78.108    <none>        5000:31744/TCP                                 18h
+discovery-node-cache-svc     ClusterIP   10.101.94.71    <none>        6379/TCP                                       18h
+discovery-node-db-svc        ClusterIP   10.110.50.147   <none>        5432/TCP                                       18h
+discovery-node-ipfs-svc      NodePort    10.106.89.157   <none>        4001:30480/TCP,5001:30499/TCP,8080:30508/TCP   18h
 kubernetes                       ClusterIP   10.96.0.1       <none>        443/TCP                                        7d5h
 
 En este caso, el puerto del servidor web es 31744 y el puerto IPFS es 30480.
@@ -346,7 +346,7 @@ Para más información sobre `sp-actions/` vea el README en la carpeta [sp-actio
 
 ```text
 ➜ pwd
-/Coliving/-k8s-manifests/sp-utilities/creator-node
+/Coliving/-k8s-manifests/sp-utilities/network-node
 
 # entering creatorNodeEndpoint and delegatePrivateKey sends those values as env vars to the script without having to export to your terminal
 ➜ creatorNodeEndpoint=https://creatornode.domain.co delegatePrivateKey=5e468bc1b395e2eb8f3c90ef897406087b0599d139f6ca0060ba85dcc0dce8dc node healthChecks.js

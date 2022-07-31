@@ -13,13 +13,13 @@ contract ServiceTypeManager is InitializableV2 {
 
     /**
      * @dev - mapping of serviceType - serviceTypeVersion
-     * Example - "discovery-provider" - ["0.0.1", "0.0.2", ..., "currentVersion"]
+     * Example - "discovery-node" - ["0.0.1", "0.0.2", ..., "currentVersion"]
      */
     mapping(bytes32 => bytes32[]) private serviceTypeVersions;
 
     /**
      * @dev - mapping of serviceType - < serviceTypeVersion, isValid >
-     * Example - "discovery-provider" - <"0.0.1", true>
+     * Example - "discovery-node" - <"0.0.1", true>
      */
     mapping(bytes32 => mapping(bytes32 => bool)) private serviceTypeVersionInfo;
 

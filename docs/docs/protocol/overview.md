@@ -34,8 +34,8 @@ For more details on the Coliving architecture, see the [Coliving protocol whitep
 
 | Service          | Description                                                                                                        | GitHub                                                                                  |
 | :--------------- | :----------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------- |
-| Content Node     | Maintains the availability of users' content on IPFS including user metadata, images, and audio content            | [Link](https://github.com/AudiusProject/audius-protocol/tree/master/creator-node)       |
-| Discovery Node   | Indexes and stores the contents of the Coliving contracts on the Ethereum blockchain for clients to query via an API | [Link](https://github.com/AudiusProject/audius-protocol/tree/master/discovery-provider) |
+| Content Node     | Maintains the availability of users' content on IPFS including user metadata, images, and audio content            | [Link](https://github.com/AudiusProject/audius-protocol/tree/master/network-node)       |
+| Discovery Node   | Indexes and stores the contents of the Coliving contracts on the Ethereum blockchain for clients to query via an API | [Link](https://github.com/AudiusProject/audius-protocol/tree/master/discovery-node) |
 | Identity Service | Stores encrypted auth ciphertexts, does Twitter OAuth and relays transactions (pays gas) on behalf of users        | [Link](https://github.com/AudiusProject/audius-protocol/tree/master/identity-service)   |
 
 ## Coliving Smart Contracts & Libs

@@ -30,8 +30,8 @@ These off-chain services are run by community members via the Coliving staking s
 
 | Service                                                        | Description                                                                                       
 | -- | --
-| [`creator-node`](creator-node)                  | Maintains the availability of users' content via the Coliving Storage Protocol, including user metadata, images, and audio content. Also known as Content Node.
-| [`discovery-provider`](discovery-provider)      | Indexes and stores the contents of the coliving contracts on the Ethereum & Solana blockchains for clients to query via an API. Also known as Discovery Node.
+| [`network-node`](network-node)                  | Maintains the availability of users' content via the Coliving Storage Protocol, including user metadata, images, and audio content. Also known as Content Node.
+| [`discovery-node`](discovery-node)      | Indexes and stores the contents of the coliving contracts on the Ethereum & Solana blockchains for clients to query via an API. Also known as Discovery Node.
 | [`identity-service`](identity-service)          | Stores encrypted auth ciphertexts and handles oauth artifacts
 
 ### Smart Contracts & Programs
@@ -90,8 +90,8 @@ A init
 A up
 
 # Run an individual service
-A run discovery-provider up
-A run discovery-provider down
+A run discovery-node up
+A run discovery-node down
 ```
 
 For more details on the `A` command and options, run `A --help` and checkout the service commands [README](https://github.com/AudiusProject/coliving-protocol/tree/master/service-commands).

@@ -96,12 +96,12 @@ node setup.js run ipfs-2 up
 node setup.js run contracts up
 ```
 
-`creator-node` is the only service that must be run with a corresponding `-i, --instance-num` flag - when the entire system is initialized with `--num-cnodes` set to 4, the commands that are executed to bring them up are as follows:
+`network-node` is the only service that must be run with a corresponding `-i, --instance-num` flag - when the entire system is initialized with `--num-cnodes` set to 4, the commands that are executed to bring them up are as follows:
 
 ```
-node setup.js run creator-node up -i 1
-node setup.js run creator-node up -i 2
-node setup.js run creator-node up -i 3
+node setup.js run network-node up -i 1
+node setup.js run network-node up -i 2
+node setup.js run network-node up -i 3
 ```
 
 ### Tearing down services locally
@@ -111,14 +111,14 @@ Follows similar syntax as the `up` command:
 ```
 node setup.js run network down
 node setup.js run ipfs down
-node setup.js run discovery-provider down
+node setup.js run discovery-node down
 node setup.js run contracts down
 ```
 
 To bring down `creator nodes`, pass `-i` to the `down` function:
 
 ```
-node setup.js run creator-node down -i 1
+node setup.js run network-node down -i 1
 ```
 
 ## API

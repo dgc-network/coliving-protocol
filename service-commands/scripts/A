@@ -117,7 +117,7 @@ def setup_command_parser(subparser):
 
     parser_setup.add_argument(
         "--config",
-        help="coliving-cli config to use (only used for creator-node and discovery-provider)",
+        help="coliving-cli config to use (only used for network-node and discovery-node)",
     )
 
     parser_setup.add_argument(
@@ -144,7 +144,7 @@ def setup_command_parser(subparser):
 
     parser_setup.add_argument(
         "service",
-        choices=["creator-node", "discovery-provider", "remote-dev"],
+        choices=["network-node", "discovery-node", "remote-dev"],
         help="service to setup on the remote machine",
     )
 

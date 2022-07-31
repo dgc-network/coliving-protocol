@@ -11,19 +11,19 @@ sidebar_position: 4
 
 ```sh
 # to set individual environment variables
-# valid service-names are "creator-node" or "discovery-provider"
--cli set-config creator-node
--cli set-config discovery-provider
+# valid service-names are "network-node" or "discovery-node"
+-cli set-config network-node
+-cli set-config discovery-node
 
 # to set all the required environment variables for a service, use the --required flag
--cli set-config --required creator-node
--cli set-config --required discovery-provider
+-cli set-config --required network-node
+-cli set-config --required discovery-node
 ```
 
 #### Creator Node
-There are four required creator node environment variables, available in the creator node section [here](setup.md#creator-node).
+There are four required creator node environment variables, available in the creator node section [here](setup.md#network-node).
 
-The full list of variables and explanations can be found [here](https://github.com/AudiusProject/-protocol/blob/master/creator-node/src/config.js). Generally node operators will not need to modify any other environment variables.
+The full list of variables and explanations can be found [here](https://github.com/AudiusProject/-protocol/blob/master/network-node/src/config.js). Generally node operators will not need to modify any other environment variables.
 
 ##### External Creator Node Postgres
 If you set an external Postgres url during setup you can skip this section.
@@ -31,15 +31,15 @@ If you set an external Postgres url during setup you can skip this section.
 If you did not set an external Postgres url during setup and you want to add one now, replace the db url by running:
 
 ```sh
--cli set-config creator-node
+-cli set-config network-node
 key   : dbUrl
 value : <db url>
 ```
 
 #### Discovery Provider
-There are two required discovery provider environment variables, available in the discovery provider section [here](setup.md#discovery-provider).
+There are two required discovery provider environment variables, available in the discovery provider section [here](setup.md#discovery-node).
 
-The full list of variables and explanations can be found [here](https://github.com/AudiusProject/-protocol/blob/master/discovery-provider/default_config.ini). Generally node operators will not need to modify any other environment variables.
+The full list of variables and explanations can be found [here](https://github.com/AudiusProject/-protocol/blob/master/discovery-node/default_config.ini). Generally node operators will not need to modify any other environment variables.
 
 
 ##### External Discovery Provider Postgres Instance
@@ -48,12 +48,12 @@ If you set an external Postgres url during setup you can skip this section.
 The below is only if using a externally managed Postgres (version 11.1+) database:
 
 ```sh
--cli set-config discovery-provider
+-cli set-config discovery-node
 key   : audius_db_url
 value : <audius_db_url>
 
 # If there's no read replica, enter the primary db url for both env vars.
--cli set-config discovery-provider
+-cli set-config discovery-node
 key   : audius_db_url_read_replica
 value : <audius_db_url_read_replica>
 ```
@@ -66,11 +66,11 @@ CREATE EXTENSION pg_trgm;
 
 ### Launch
 ```sh
--cli launch creator-node
+-cli launch network-node
 
 # or
 
--cli launch discovery-provider (--seed)
+-cli launch discovery-node (--seed)
 
 # Options:
 # --seed

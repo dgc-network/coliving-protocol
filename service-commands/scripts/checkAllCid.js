@@ -45,7 +45,7 @@ async function getUsersBatch (discoveryProvider, offset, limit) {
         : []
     }))
   } catch (err) {
-    console.log(`Got ${err} when fetching users from discovery-provider`)
+    console.log(`Got ${err} when fetching users from discovery-node`)
     return []
   }
 }

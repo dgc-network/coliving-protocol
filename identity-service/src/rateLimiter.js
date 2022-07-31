@@ -69,7 +69,7 @@ const getIP = (req) => {
     req.logger.debug(`_getIP: recording listen from creatornode: ${senderIP}, forwarded IP: ${forwardedIP}, Forwarded-For: ${forwardedFor}`)
     return { ip: forwardedIP, senderIP }
   }
-  req.logger.debug(`_getIP: recording listen from > 2 headers, but not creator-node, IP: ${senderIP}, Forwarded-For: ${forwardedFor}`)
+  req.logger.debug(`_getIP: recording listen from > 2 headers, but not network-node, IP: ${senderIP}, Forwarded-For: ${forwardedFor}`)
   return { ip: senderIP, senderIP }
 }
 

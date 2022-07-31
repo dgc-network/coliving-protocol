@@ -34,8 +34,8 @@ Pour plus de détails sur l'architecture Coliving, voir le [ White Paper sur le 
 
 | Service                                                                                               | Description                                                                                                                                 |
 |:----------------------------------------------------------------------------------------------------- |:------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`Nœud de contenu`](https://github.com/AudiusProject/-protocol/tree/master/creator-node)        | Maintenir la disponibilité du contenu des utilisateurs sur IPFS, y compris les métadonnées des utilisateurs, les images et le contenu audio |
-| [`Noeud-Découverte`](https://github.com/AudiusProject/-protocol/tree/master/discovery-provider) | Indexe et stocke le contenu des contrats Coliving sur la blockchain Ethereum pour que les clients puissent les interroger via une API         |
+| [`Nœud de contenu`](https://github.com/AudiusProject/-protocol/tree/master/network-node)        | Maintenir la disponibilité du contenu des utilisateurs sur IPFS, y compris les métadonnées des utilisateurs, les images et le contenu audio |
+| [`Noeud-Découverte`](https://github.com/AudiusProject/-protocol/tree/master/discovery-node) | Indexe et stocke le contenu des contrats Coliving sur la blockchain Ethereum pour que les clients puissent les interroger via une API         |
 | [`Identité-Service`](https://github.com/AudiusProject/-protocol/tree/master/identity-service)   | Stocke les cryptogrammes d'authentification, effectue Twitter OAuth et relaie les transactions (paie le gas) au nom des utilisateurs        |
 
 ## Contrats Intelligents Coliving & Libs

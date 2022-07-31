@@ -74,7 +74,7 @@ function setup_python() {
         yq
 
     (
-        cd $PROTOCOL_DIR/discovery-provider
+        cd $PROTOCOL_DIR/discovery-node
         python$PYTHON_VERSION -m pip install -r requirements.txt
     )
 }

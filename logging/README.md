@@ -22,7 +22,7 @@ Each bump of the logging container will cause a new
 `filebeat-${VERSION}-(app|beats|db|misc)` data view based on the newly versioned indices.
 Each data view has been logically separated:
 
-* `app`: discovery-provider, content-nodes, and identity service logs
+* `app`: discovery-node, content-nodes, and identity service logs
 * `beats`: filebeats and metricbeat containers' logs
 * `db`: all postgres and redis db logs
 * `misc`: all other containers that have not yet been "promoted" to the other data views

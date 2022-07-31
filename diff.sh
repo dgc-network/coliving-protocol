@@ -17,8 +17,8 @@ REPOS="
     libs
     contracts
     eth-contracts
-    creator-node
-    discovery-provider
+    network-node
+    discovery-node
     e2e-tests
     identity-service
     solana-programs

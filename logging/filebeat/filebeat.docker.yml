@@ -76,7 +76,7 @@ filebeat.autodiscover:
                     fail_on_error: true
           condition.or:
             - contains:
-                docker.container.image: "creator-node"
+                docker.container.image: "network-node"
         - config:
             - type: container
               paths:
@@ -183,7 +183,7 @@ filebeat.autodiscover:
             - not.contains:
                 docker.container.image: "dn1_web-server"
             - not.contains:
-                docker.container.image: "creator-node"
+                docker.container.image: "network-node"
             - not.equals:
                 docker.container.image: "coliving-identity-service_identity-service"
             - not.contains:
@@ -207,7 +207,7 @@ output.elasticsearch:
         - regexp:
             container.name: dn._web-server_.
         - regexp:
-            container.name: cn._creator-node_.
+            container.name: cn._network-node_.
         - regexp:
             container.name: coliving-identity-service_identity-service_.
     - index: "filebeat-${CURRENT_INDEX_VERSION}-db-%{[agent.version]}-%{+yyyy.MM.dd}"
@@ -215,7 +215,7 @@ output.elasticsearch:
         - regexp:
             container.name: .*redis.*
         - regexp:
-            container.name: .*discovery-provider-db.*
+            container.name: .*discovery-node-db.*
     - index: "filebeat-${CURRENT_INDEX_VERSION}-beats-%{[agent.version]}-%{+yyyy.MM.dd}"
       when.or:
         - equals:

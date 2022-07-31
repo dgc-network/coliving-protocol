@@ -255,10 +255,10 @@ services:
     deploy:
       mode: global
 
-  # discovery-provider
+  # discovery-node
 
-  discovery-provider:
-    build: discovery-provider
+  discovery-node:
+    build: discovery-node
     command: sh -c ". /tmp/dev-tools/startup/startup.sh && scripts/start.sh"
     env_file: .env # used by the startup script
     environment:
@@ -283,10 +283,10 @@ services:
 
       coliving_discprov_dev_mode: "true"
     volumes:
-      - ./discovery-provider:/coliving-discovery-provider
-      - poa-contracts-abis:/coliving-discovery-provider/build/contracts
-      - eth-contracts-abis:/coliving-discovery-provider/build/eth-contracts
-      - solana-programs-idl:/coliving-discovery-provider/idl
+      - ./discovery-node:/coliving-discovery-node
+      - poa-contracts-abis:/coliving-discovery-node/build/contracts
+      - eth-contracts-abis:/coliving-discovery-node/build/eth-contracts
+      - solana-programs-idl:/coliving-discovery-node/idl
       - ./dev-tools:/tmp/dev-tools
     depends_on:
       poa-ganache:
@@ -299,10 +299,10 @@ services:
     deploy:
       mode: replicated
 
-  # creator-node
+  # network-node
 
-  creator-node:
-    build: creator-node
+  network-node:
+    build: network-node
     command: sh -c ". /tmp/dev-tools/startup/startup.sh && scripts/start.sh"
     env_file: .env # used by the startup script
     environment:
@@ -328,7 +328,7 @@ services:
       dataProviderUrl: "http://poa-ganache:8545"
       dataRegistryAddress: "${POA_REGISTRY_ADDRESS}"
     volumes:
-      - ./creator-node/src:/usr/src/app/src
+      - ./network-node/src:/usr/src/app/src
       - coliving-libs:/usr/src/coliving-libs
       - ./dev-tools:/tmp/dev-tools
     depends_on:

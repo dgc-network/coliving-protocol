@@ -109,7 +109,7 @@ rm -rf /var/k8s/*
 
 ## 4. Configuration du service
 
-Voir ci-dessous un guide de déploiement du [Creator Node](https://github.com/AudiusProject/-k8s-manifests#creator-node-1) et [Discovery Provider](https://github.com/AudiusProject/-k8s-manifests#discovery-provider-1) via `-cli`. Après avoir terminé la configuration du service, veuillez continuer avec la section Logger.
+Voir ci-dessous un guide de déploiement du [Creator Node](https://github.com/AudiusProject/-k8s-manifests#network-node-1) et [Discovery Provider](https://github.com/AudiusProject/-k8s-manifests#discovery-node-1) via `-cli`. Après avoir terminé la configuration du service, veuillez continuer avec la section Logger.
 
 **Remarque** "Creator Node" et "Discovery Provider" ont récemment été renommés respectivement par "Content Node" et "Discovery Node". Cependant, pour des raisons de cohérence dans le code et dans ce README, nous continuerons à utiliser les termes "Creator Node" et "Discovery Node".
 
@@ -134,19 +134,19 @@ Certaines variables doivent être définies, vous pouvez le faire avec les comma
 
 
 ```text
--cli set-config creator-node backend
+-cli set-config network-node backend
 key   : spOwnerWallet
 value : <address of wallet that contains  tokens>
 
--cli set-config creator-node backend
+-cli set-config network-node backend
 key   : delegateOwnerWallet
 value : <address of wallet that contains no tokens but that is registered on chain>
 
--cli set-config creator-node backend
+-cli set-config network-node backend
 key   : delegatePrivateKey
 value : <private key>
 
--cli set-config creator-node backend
+-cli set-config network-node backend
 key   : creatorNodeEndpoint
 value : <your service url>
 ```
@@ -159,7 +159,7 @@ Ensuite, exécutez la commande de lancement via `-cli`
 
 
 ```text
--cli launch creator-node --configure-ipfs
+-cli launch network-node --configure-ipfs
 ```
 
 
@@ -168,7 +168,7 @@ Vérifiez que le service est correct en l'exécutant,
 
 
 ```text
--cli health-check creator-node
+-cli health-check network-node
 ```
 
 
@@ -192,7 +192,7 @@ Vérifiez que le service est correct en l'exécutant,
 
 
 ```text
--cli health-check creator-node
+-cli health-check network-node
 ```
 
 
@@ -207,14 +207,14 @@ git stash apply
 ```
 
 
-Assurez-vous que vos configurations sont présentes dans `/creator-node/creator-node-cm.yaml`, puis faites ce qui suit,
+Assurez-vous que vos configurations sont présentes dans `/network-node/network-node-cm.yaml`, puis faites ce qui suit,
 
 
 
 ```text
-k apply -f /creator-node/creator-node-cm.yaml
-k apply -f /creator-node/creator-node-deploy-ipfs.yaml
-k apply -f /creator-node/creator-node-deploy-backend.yaml
+k apply -f /network-node/network-node-cm.yaml
+k apply -f /network-node/network-node-deploy-ipfs.yaml
+k apply -f /network-node/network-node-deploy-backend.yaml
 ```
 
 
@@ -237,11 +237,11 @@ Certaines variables doivent être définies, vous pouvez le faire avec les comma
 
 
 ```text
--cli set-config discovery-provider backend
+-cli set-config discovery-node backend
 key   : audius_delegate_owner_wallet
 value : <delegate_owner_wallet>
 
--cli set-config discovery-provider backend
+-cli set-config discovery-node backend
 key   : audius_delegate_private_key
 value : <delegate_private_key>
 ```
@@ -252,11 +252,11 @@ Si vous utilisez une base de données Postgres gérée en externe \(version 11.1
 
 
 ```text
--cli set-config discovery-provider backend
+-cli set-config discovery-node backend
 key   : audius_db_url
 value : <audius_db_url>
 
--cli set-config discovery-provider backend
+-cli set-config discovery-node backend
 key   : audius_db_url_read_replica
 value : <audius_db_url_read_replica>
 ```
@@ -266,7 +266,7 @@ value : <audius_db_url_read_replica>
 
 Les indications ci-dessous ne sont valables que si vous utilisez une base de données posgres gérée :
 
-Vous devrez également remplacer la tâche db seed dans `/discovery-provider/discovery-provider-provider-db-seed-job.yaml`. Des exemples sont fournis. Dans la base de données postgres gérée, définissez l'indicateur temp_file_limit à 2147483647 et exécutez la commande SQL suivante sur la base de données de destination.
+Vous devrez également remplacer la tâche db seed dans `/discovery-node/discovery-node-provider-db-seed-job.yaml`. Des exemples sont fournis. Dans la base de données postgres gérée, définissez l'indicateur temp_file_limit à 2147483647 et exécutez la commande SQL suivante sur la base de données de destination.
 
 
 
@@ -284,7 +284,7 @@ Assurez-vous que votre service expose toutes les variables d'environnement requi
 
 
 ```text
--cli launch discovery-provider --seed-job --configure-ipfs
+-cli launch discovery-node --seed-job --configure-ipfs
 ```
 
 
@@ -293,7 +293,7 @@ Vérifiez que le service est correct en l'exécutant,
 
 
 ```text
--cli health-check discovery-provider
+-cli health-check discovery-node
 ```
 
 
@@ -317,7 +317,7 @@ Vérifiez que le service est correct en l'exécutant,
 
 
 ```text
--cli health-check discovery-provider
+-cli health-check discovery-node
 ```
 
 
@@ -332,13 +332,13 @@ git stash apply
 ```
 
 
-Assurez-vous que vos configurations sont présentes dans `/creator-node/discovery-provider-cm.yaml`, puis faites ce qui suit,
+Assurez-vous que vos configurations sont présentes dans `/network-node/discovery-node-cm.yaml`, puis faites ce qui suit,
 
 
 
 ```text
-k apply -f /discovery-provider/discovery-provider-cm.yaml
-k apply -f /discovery-provider/discovery-provider-deploy.yaml
+k apply -f /discovery-node/discovery-node-cm.yaml
+k apply -f /discovery-node/discovery-node-deploy.yaml
 ```
 
 
@@ -429,10 +429,10 @@ kubectl -n kube-system delete pod $(kubectl -n kube-system get pods | grep "flue
 kubectl get svc
 
 NAME                             TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                                        AGE
-discovery-provider-backend-svc   NodePort    10.98.78.108    <none>        5000:31744/TCP                                 18h
-discovery-provider-cache-svc     ClusterIP   10.101.94.71    <none>        6379/TCP                                       18h
-discovery-provider-db-svc        ClusterIP   10.110.50.147   <none>        5432/TCP                                       18h
-discovery-provider-ipfs-svc      NodePort    10.106.89.157   <none>        4001:30480/TCP,5001:30499/TCP,8080:30508/TCP   18h
+discovery-node-backend-svc   NodePort    10.98.78.108    <none>        5000:31744/TCP                                 18h
+discovery-node-cache-svc     ClusterIP   10.101.94.71    <none>        6379/TCP                                       18h
+discovery-node-db-svc        ClusterIP   10.110.50.147   <none>        5432/TCP                                       18h
+discovery-node-ipfs-svc      NodePort    10.106.89.157   <none>        4001:30480/TCP,5001:30499/TCP,8080:30508/TCP   18h
 kubernetes                       ClusterIP   10.96.0.1       <none>        443/TCP                                        7d5h
 
 In this case, the web server port is 31744 and the IPFS port is 30480.
@@ -474,7 +474,7 @@ Pour plus d'informations sur `sp-actions/` voir README dans le dossier [sp-actio
 
 ```text
 ➜ pwd
-/Coliving/-k8s-manifests/sp-utilities/creator-node
+/Coliving/-k8s-manifests/sp-utilities/network-node
 
 # entering creatorNodeEndpoint and delegatePrivateKey sends those values as env vars to the script without having to export to your terminal
 ➜ creatorNodeEndpoint=https://creatornode.domain.co delegatePrivateKey=5e468bc1b395e2eb8f3c90ef897406087b0599d139f6ca0060ba85dcc0dce8dc node healthChecks.js

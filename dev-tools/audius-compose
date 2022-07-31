@@ -18,11 +18,11 @@ def generate_env(protocol_dir, creator_node_replicas):
     env = {}
 
     env["CONTENT_NODE_VERSION"] = json.loads(
-        (protocol_dir / "creator-node/.version.json").read_text(),
+        (protocol_dir / "network-node/.version.json").read_text(),
     )["version"]
 
     env["DISCOVERY_NODE_VERSION"] = json.loads(
-        (protocol_dir / "discovery-provider/.version.json").read_text(),
+        (protocol_dir / "discovery-node/.version.json").read_text(),
     )["version"]
 
     for name, secret_key in config.get("solana-accounts", {}).items():
@@ -81,7 +81,7 @@ def cli(ctx, protocol_dir):
 
 
 @cli.command()
-@click.option("-c", "--creator-node-replicas", default=3, type=int)
+@click.option("-c", "--network-node-replicas", default=3, type=int)
 @click.pass_obj
 def build(protocol_dir, creator_node_replicas):
     generate_env(protocol_dir, creator_node_replicas)
@@ -98,8 +98,8 @@ def build(protocol_dir, creator_node_replicas):
 
 
 @cli.command()
-@click.option("-c", "--creator-node-replicas", default=3, type=int)
-@click.option("-d", "--discovery-provider-replicas", default=3, type=int)
+@click.option("-c", "--network-node-replicas", default=3, type=int)
+@click.option("-d", "--discovery-node-replicas", default=3, type=int)
 @click.pass_obj
 def up(protocol_dir, creator_node_replicas, discovery_provider_replicas):
     generate_env(protocol_dir, creator_node_replicas)
@@ -113,9 +113,9 @@ def up(protocol_dir, creator_node_replicas, discovery_provider_replicas):
             "up",
             "--build",
             "--scale",
-            f"creator-node={creator_node_replicas}",
+            f"network-node={creator_node_replicas}",
             "--scale",
-            f"discovery-provider={discovery_provider_replicas}",
+            f"discovery-node={discovery_provider_replicas}",
             "-d",
         ],
     )
@@ -205,10 +205,10 @@ def ps(protocol_dir):
                 if publisher["PublishedPort"]:
                     ports[publisher["PublishedPort"]] = publisher["TargetPort"]
 
-        if service["Service"] == "creator-node":
+        if service["Service"] == "network-node":
             name = f"{service['Service']}-{replica}"
             ports[4000 + replica - 1] = 4000
-        if service["Service"] == "discovery-provider":
+        if service["Service"] == "discovery-node":
             name = f"{service['Service']}-{replica}"
             ports[5000 + replica - 1] = 5000
 

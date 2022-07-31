@@ -90,7 +90,7 @@ async function submitTrackListen (executeOne, trackId, userId, solanaListen) {
     }
   }
 
-  console.log(`Found track listen (trackId=${trackId}, userId=${userId}, solanaListen=${solanaListen}) in discovery-provider`)
+  console.log(`Found track listen (trackId=${trackId}, userId=${userId}, solanaListen=${solanaListen}) in discovery-node`)
 
   return true
 }

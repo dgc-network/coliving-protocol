@@ -56,7 +56,7 @@ const main = async () => {
     { stdio: 'inherit' }
   )
   execSync(
-    `cp -r ${process.env.PROTOCOL_DIR}/discovery-provider/build/eth-contracts/ ${tmpEthContracts}/eth-contracts`,
+    `cp -r ${process.env.PROTOCOL_DIR}/discovery-node/build/eth-contracts/ ${tmpEthContracts}/eth-contracts`,
     { stdio: 'inherit' }
   )
   execSync(
@@ -76,7 +76,7 @@ const main = async () => {
     { stdio: 'inherit' }
   )
   execSync(
-    `cp -r ${process.env.PROTOCOL_DIR}/discovery-provider/eth_contract_config.ini ${tmpEthContracts}`,
+    `cp -r ${process.env.PROTOCOL_DIR}/discovery-node/eth_contract_config.ini ${tmpEthContracts}`,
     { stdio: 'inherit' }
   )
   execSync(
@@ -118,11 +118,11 @@ const main = async () => {
     { stdio: 'inherit' }
   )
   execSync(
-    `cp -r ${process.env.PROTOCOL_DIR}/discovery-provider/contract_config.ini ${tmpDataContracts}`,
+    `cp -r ${process.env.PROTOCOL_DIR}/discovery-node/contract_config.ini ${tmpDataContracts}`,
     { stdio: 'inherit' }
   )
   execSync(
-    `cp -r ${process.env.PROTOCOL_DIR}/discovery-provider/build/contracts/ ${tmpDataContracts}/contracts`,
+    `cp -r ${process.env.PROTOCOL_DIR}/discovery-node/build/contracts/ ${tmpDataContracts}/contracts`,
     { stdio: 'inherit' }
   )
   execSync(

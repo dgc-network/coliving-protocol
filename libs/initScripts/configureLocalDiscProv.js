@@ -33,7 +33,7 @@ const configureLocalDiscProv = async () => {
   const anchorProgramId = solanaConfig.anchorProgramId
   const anchorAdminStoragePublicKey = solanaConfig.anchorAdminStoragePublicKey
   console.log(`waudioAddress: ${waudioMint}, claimableTokenAddress: ${claimableTokenAddress}, waudioMint=${waudioMint}`)
-  const envPath = path.join(process.cwd(), '../../', 'discovery-provider/compose/.env')
+  const envPath = path.join(process.cwd(), '../../', 'discovery-node/compose/.env')
 
   await _updateDiscoveryProviderEnvFile(
     envPath,

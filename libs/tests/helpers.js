@@ -80,7 +80,7 @@ const deregisterSPEndpoint = async (libs, account, type) => {
     version : '0.0.1'
   }
 
-  if (type === 'discovery-provider') {
+  if (type === 'discovery-node') {
     path = '/health_check'
     response = {data: {...response}}
   }
