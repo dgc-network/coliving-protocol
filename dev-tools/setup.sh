@@ -46,7 +46,7 @@ debian | ubuntu)
 esac
 
 if [[ "${BASH_SOURCE[0]}" == "" ]]; then
-    git clone https://github.com/AudiusProject/coliving-protocol.git ~/coliving-protocol
+    git clone https://github.com/dgc.network/coliving-protocol.git ~/coliving-protocol
     export PROTOCOL_DIR="$HOME/coliving-protocol"
 else
     export PROTOCOL_DIR="$(dirname "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")")"

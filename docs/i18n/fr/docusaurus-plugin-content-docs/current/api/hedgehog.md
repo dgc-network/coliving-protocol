@@ -7,7 +7,7 @@ sidebar_position: 2
 
 Construire des DApps comme des applications
 
-[Github](https://github.com/AudiusProject/hedgehog) 👈
+[Github](https://github.com/dgc.network/hedgehog) 👈
 
 Hedgehog est un portefeuille Ethereum open-source côté client, qui utilise un nom d'utilisateur et un mot de passe. Il vise à réduire la barrière d'entrée aux projets de crypto-monnaies pour les utilisateurs qui ne sont pas familiers avec la technologie. Il vise à réduire la barrière d'entrée aux projets de crypto-monnaies pour les utilisateurs qui ne sont pas familiers avec la technologie.
 
@@ -35,7 +35,7 @@ npm i --save @/hedgehog
 
 Consultez la [documentation](http://audiusproject.github.io/hedgehog-docs) technique complète et le mode d'emploi de [api how-to](http://audiusproject.github.io/hedgehog-docs#how-to).
 
-Pour une démonstration rapide côté navigateur, [ne cherchez pas plus loin](https://codesandbox.io/embed/pp9zzv2n00). Pour une démonstration complète de l'authentification de bout en bout, consultez notre [dépôt ](https://github.com/AudiusProject/-hedgehog-demo).
+Pour une démonstration rapide côté navigateur, [ne cherchez pas plus loin](https://codesandbox.io/embed/pp9zzv2n00). Pour une démonstration complète de l'authentification de bout en bout, consultez notre [dépôt ](https://github.com/dgc.network/-hedgehog-demo).
 
 ### Pourquoi l'utiliser ?
 

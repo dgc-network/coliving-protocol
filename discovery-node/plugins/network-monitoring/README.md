@@ -78,7 +78,7 @@ By default, this will run every service which includes
 
 ```bash
 # Clone the audius protocol repo
-git clone https://github.com/AudiusProject/audius-protocol.git
+git clone https://github.com/dgc.network/audius-protocol.git
 
 # Navigate to network monitoring
 cd audius-protocol/discovery-provder/plugins/network-monitoring

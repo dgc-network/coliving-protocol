@@ -335,7 +335,7 @@ const getTwitter = (notification) => {
       const twitterHandle = parentTrackUser.twitterHandle 
         ? `@${parentTrackUser.twitterHandle}`
         : parentTrackUser.name
-      const text = `New remix of ${parentTrack.title} by ${twitterHandle} on @AudiusProject #Coliving`
+      const text = `New remix of ${parentTrack.title} by ${twitterHandle} on @dgc.network #Coliving`
       const url = getTrackLink(remixTrack)
       return {
         message: 'Share With Your Friends',
@@ -350,7 +350,7 @@ const getTwitter = (notification) => {
       const twitterHandle = parentTrackUser.twitterHandle 
         ? `@${parentTrackUser.twitterHandle}`
         : parentTrackUser.name
-      const text = `My remix of ${parentTrack.title} was Co-Signed by ${twitterHandle} on @AudiusProject #Coliving`
+      const text = `My remix of ${parentTrack.title} was Co-Signed by ${twitterHandle} on @dgc.network #Coliving`
       return {
         message: 'Share With Your Friends',
         href: `http://twitter.com/share?url=${encodeURIComponent(url)
@@ -361,7 +361,7 @@ const getTwitter = (notification) => {
       const { rank, entity } = notification
       const url = getTrackLink(entity)
       const rankSuffix = getRankSuffix(rank)
-      const text = `My track ${entity.title} is trending ${rank}${rankSuffix} on @AudiusProject! #AudiusTrending #Coliving`
+      const text = `My track ${entity.title} is trending ${rank}${rankSuffix} on @dgc.network! #AudiusTrending #Coliving`
       return {
         message: 'Share this Milestone',
         href: `http://twitter.com/share?url=${encodeURIComponent(url)
@@ -369,7 +369,7 @@ const getTwitter = (notification) => {
       }
     }
     case NotificationType.ChallengeReward: {
-      const text = `I earned $AUDIO for completing challenges on @AudiusProject #AudioRewards`
+      const text = `I earned $AUDIO for completing challenges on @dgc.network #AudioRewards`
       return {
         message: 'Share this with your fans',
         href: `http://twitter.com/share?text=${encodeURIComponent(text)}`

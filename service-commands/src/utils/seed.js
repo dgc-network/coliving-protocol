@@ -109,7 +109,7 @@ const getUserProvidedOrRandomImageFile = async userInputPath => {
   } else {
     path = await getRandomImageFilePath(TEMP_IMAGE_STORAGE_PATH)
   }
-  return null // fs.createReadStream(path) TODO figure this out - has to do with issue referenced here https://github.com/AudiusProject/coliving-protocol/blob/926129262e/service-commands/src/commands/users.js#L15-L19
+  return null // fs.createReadStream(path) TODO figure this out - has to do with issue referenced here https://github.com/dgc.network/coliving-protocol/blob/926129262e/service-commands/src/commands/users.js#L15-L19
 }
 
 const getProgressCallback = () => {

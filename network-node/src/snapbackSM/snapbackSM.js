@@ -1005,7 +1005,7 @@ class SnapbackSM {
 
     let nodeUsers = []
     // New DN versions support pagination, so we fall back to modulo slicing for old versions
-    // TODO: Remove modulo supports once all DNs update to include https://github.com/AudiusProject/audius-protocol/pull/3071
+    // TODO: Remove modulo supports once all DNs update to include https://github.com/dgc.network/audius-protocol/pull/3071
     let useModulo = false
     try {
       try {

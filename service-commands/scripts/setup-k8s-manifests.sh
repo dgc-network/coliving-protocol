@@ -44,7 +44,7 @@ wait_for_instance $provider $user $name
 
 echo "Setting up coliving-k8s-manifests"
 execute_with_ssh $provider $user $name \
-  "git clone https://github.com/AudiusProject/coliving-k8s-manifests.git" \
+  "git clone https://github.com/dgc.network/coliving-k8s-manifests.git" \
   "&& yes | sh coliving-k8s-manifests/setup.sh"
 
 echo "Waiting for instance to restart"

@@ -2,13 +2,13 @@
 
 Coliving has two sets of contracts - the one in this directory, which runs on Ethereum mainnet in
 production, and the one
-[here](https://github.com/AudiusProject/coliving-protocol/tree/master/contracts) which runs on POA
+[here](https://github.com/dgc.network/coliving-protocol/tree/master/contracts) which runs on POA
 mainnet in production.
 
 The smart contracts in this directory implement the Coliving ERC-20 token, staking functionality, service
 provider registration, delegator support and off-chain service version management. For a
 more in depth look at the contracts and architecture, please see the
-[Coliving Ethereum Contracts Wiki](https://github.com/AudiusProject/coliving-protocol/wiki/Ethereum-Contracts-Overview)
+[Coliving Ethereum Contracts Wiki](https://github.com/dgc.network/coliving-protocol/wiki/Ethereum-Contracts-Overview)
 page.
 
 The two sets of smart contracts do not interact with one another, but both sets are used by end-user

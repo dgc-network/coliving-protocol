@@ -6,7 +6,7 @@ sidebar_position: 3
 # Setup Instructions
 
 This guide describes how to run Coliving services on a single machine via Docker Compose.
-The repository of Docker Compose files can be found on [GitHub](https://github.com/AudiusProject/audius-docker-compose).
+The repository of Docker Compose files can be found on [GitHub](https://github.com/dgc.network/audius-docker-compose).
 
 Please join the node operator discord channel on the [Coliving discord server](https://discord.com/invite/audius) for announcements & troubleshooting assistance.
 
@@ -16,7 +16,7 @@ Please join the node operator discord channel on the [Coliving discord server](h
 On a VM that meets the minimum requirements from above run:
 
 ```bash
-bash <(curl https://raw.githubusercontent.com/AudiusProject/audius-docker-compose/main/install.sh)
+bash <(curl https://raw.githubusercontent.com/dgc.network/audius-docker-compose/main/install.sh)
 ```
 
 During installation there will be prompts for required environment variables. The variables are:

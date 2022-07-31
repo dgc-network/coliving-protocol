@@ -405,7 +405,7 @@ var getTwitter = function getTwitter(notification) {
             remixUser = notification.remixUser,
             remixTrack = notification.remixTrack;
         var twitterHandle = parentTrackUser.twitterHandle ? "@".concat(parentTrackUser.twitterHandle) : parentTrackUser.name;
-        var text = "New remix of ".concat(parentTrack.title, " by ").concat(twitterHandle, " on @AudiusProject #Coliving");
+        var text = "New remix of ".concat(parentTrack.title, " by ").concat(twitterHandle, " on @dgc.network #Coliving");
         var url = getTrackLink(remixTrack);
         return {
           message: 'Share With Your Friends',
@@ -427,7 +427,7 @@ var getTwitter = function getTwitter(notification) {
 
         var _twitterHandle = _parentTrackUser.twitterHandle ? "@".concat(_parentTrackUser.twitterHandle) : _parentTrackUser.name;
 
-        var _text = "My remix of ".concat(_parentTrack.title, " was Co-Signed by ").concat(_twitterHandle, " on @AudiusProject #Coliving");
+        var _text = "My remix of ".concat(_parentTrack.title, " was Co-Signed by ").concat(_twitterHandle, " on @dgc.network #Coliving");
 
         return {
           message: 'Share With Your Friends',
@@ -444,7 +444,7 @@ var getTwitter = function getTwitter(notification) {
 
         var rankSuffix = (0, _formatNotificationMetadata.getRankSuffix)(rank);
 
-        var _text2 = "My track ".concat(entity.title, " is trending ").concat(rank).concat(rankSuffix, " on @AudiusProject! #AudiusTrending #Coliving");
+        var _text2 = "My track ".concat(entity.title, " is trending ").concat(rank).concat(rankSuffix, " on @dgc.network! #AudiusTrending #Coliving");
 
         return {
           message: 'Share this Milestone',
@@ -454,7 +454,7 @@ var getTwitter = function getTwitter(notification) {
 
     case _constants.notificationTypes.ChallengeReward:
       {
-        var _text3 = "I earned $AUDIO for completing challenges on @AudiusProject #AudioRewards";
+        var _text3 = "I earned $AUDIO for completing challenges on @dgc.network #AudioRewards";
         return {
           message: 'Share this with your fans',
           href: "http://twitter.com/share?text=".concat(encodeURIComponent(_text3))

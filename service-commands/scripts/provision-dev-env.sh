@@ -158,7 +158,7 @@ function setup_coliving_repos() {
 
     # set up client
     cd $HOME
-    git clone https://github.com/AudiusProject/coliving-client.git
+    git clone https://github.com/dgc.network/coliving-client.git
     cd coliving-client
     npm link @coliving/sdk
 

@@ -23,7 +23,7 @@ audius-cli set-config --required discovery-node
 #### Creator Node
 There are four required creator node environment variables, available in the creator node section [here](setup.md#network-node).
 
-The full list of variables and explanations can be found [here](https://github.com/AudiusProject/audius-protocol/blob/master/network-node/src/config.js). Generally node operators will not need to modify any other environment variables.
+The full list of variables and explanations can be found [here](https://github.com/dgc.network/audius-protocol/blob/master/network-node/src/config.js). Generally node operators will not need to modify any other environment variables.
 
 ##### External Creator Node Postgres
 If you set an external Postgres url during setup you can skip this section.
@@ -39,7 +39,7 @@ value : <db url>
 #### Discovery Provider
 There are two required discovery provider environment variables, available in the discovery provider section [here](setup.md#discovery-node).
 
-The full list of variables and explanations can be found [here](https://github.com/AudiusProject/audius-protocol/blob/master/discovery-node/default_config.ini). Generally node operators will not need to modify any other environment variables.
+The full list of variables and explanations can be found [here](https://github.com/dgc.network/audius-protocol/blob/master/discovery-node/default_config.ini). Generally node operators will not need to modify any other environment variables.
 
 
 ##### External Discovery Provider Postgres Instance
@@ -81,7 +81,7 @@ audius-cli launch discovery-node (--seed)
 
 ```sh
 # Clone and install related dependencies
-git clone https://github.com/AudiusProject/audius-docker-compose.git ~/audius-docker-compose
+git clone https://github.com/dgc.network/audius-docker-compose.git ~/audius-docker-compose
 bash ~/audius-docker-compose/setup.sh
 
 # Get configs from k8s-manifests and set them again via set-config

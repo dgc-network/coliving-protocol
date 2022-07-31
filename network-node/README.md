@@ -9,4 +9,4 @@ $ export discoveryProviderEndpoint='http://discovery_node_endpoint'
 ```
 2. Run the script `scripts/updateContentBlacklist.sh`. Refer to the script for usage!
 
-For detailed instructions on how to develop on the service, please see [The Wiki](https://github.com/AudiusProject/audius-protocol/wiki/Creator-Node-%E2%80%90-How-to-run).
+For detailed instructions on how to develop on the service, please see [The Wiki](https://github.com/dgc.network/audius-protocol/wiki/Creator-Node-%E2%80%90-How-to-run).

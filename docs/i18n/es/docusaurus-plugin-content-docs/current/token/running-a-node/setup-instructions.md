@@ -10,10 +10,10 @@ Esta guía describe cómo ejecutar los servicios de Coliving en un clúster Kube
 Únete al canal de discord de operadores de nodo en el [servidor de discord de audio](https://discord.com/invite/)
 
 ## 0. Clonar el repositorio audio-k8 manifests
-[**https://github.com/AudiusProject/-k8s-manifests**](https://github.com/AudiusProject/-k8s-manifests)\*\*\*\*
+[**https://github.com/dgc.network/-k8s-manifests**](https://github.com/dgc.network/-k8s-manifests)\*\*\*\*
 
 ```text
-git clone git@github.com:AudiusProject/-k8s-manifests.git
+git clone git@github.com:dgc.network/-k8s-manifests.git
 ```
 
 ## 1. Configurar Clúster
@@ -26,7 +26,7 @@ También se incluye un script de conveniencia para hacer una configuración de n
 yes | sh setup.sh
 ```
 
-Sin embargo, si la configuración del nodo no es exitosa y kubectl no está disponible, se aconseja seguir los pasos de instalación manual [aquí](https://github.com/AudiusProject/-k8s-manifests/blob/master/cluster-setup.md).
+Sin embargo, si la configuración del nodo no es exitosa y kubectl no está disponible, se aconseja seguir los pasos de instalación manual [aquí](https://github.com/dgc.network/-k8s-manifests/blob/master/cluster-setup.md).
 
 ## 2. Coliving CLI Setup
 
@@ -35,7 +35,7 @@ Puede omitir esta sección si instala por primera vez.
 Puedes instalar `-cli` con
 
 ```text
-sh install_audius_cli.sh
+sh install_coliving_cli.sh
 ```
 
 A continuación, puede ver todos los comandos disponibles a través de `-cli` simplemente ejecutando:
@@ -74,7 +74,7 @@ rm -rf /var/k8s/*
 
 ## 4. Configuración de servicio
 
-Mira abajo una guía para desplegar [Nodo de creador](https://github.com/AudiusProject/-k8s-manifests#network-node-1) y [Proveedor de descubrimiento](https://github.com/AudiusProject/-k8s-manifests#discovery-node-1) a través de `-cli`. Después de terminar de configurar el servicio, por favor continúe con la sección de Logger.
+Mira abajo una guía para desplegar [Nodo de creador](https://github.com/dgc.network/-k8s-manifests#network-node-1) y [Proveedor de descubrimiento](https://github.com/dgc.network/-k8s-manifests#discovery-node-1) a través de `-cli`. Después de terminar de configurar el servicio, por favor continúe con la sección de Logger.
 
 **Nota:** "Nodo de creador" y "Proveedor de descubrimiento" recientemente han sido renombrados a "Nodo de contenido" y "Nodo de descubrimiento" respectivamente. Sin embargo, para la consistencia dentro del código y este README, continuaremos usando los términos "Nodo de creador" y "Nodo de descubrimiento".
 
@@ -88,7 +88,7 @@ La información almacenada incluye metadatos de usuario de Coliving, imágenes y
 
 #### Ejecutar
 
-Use `-cli` para actualizar las variables requeridas. La lista completa de variables y explicaciones puede encontrarse en la wiki [aquí](https://github.com/AudiusProject/-protocol/wiki/Content-Node:-Configuration-Details#required-environment-variables).
+Use `-cli` para actualizar las variables requeridas. La lista completa de variables y explicaciones puede encontrarse en la wiki [aquí](https://github.com/dgc.network/-protocol/wiki/Content-Node:-Configuration-Details#required-environment-variables).
 
 Se deben establecer algunas variables, puedes hacer esto con los siguientes comandos:
 
@@ -126,7 +126,7 @@ Verifique que el servicio está en buen estado ejecutando,
 
 #### Actualizar
 
-Si no tienes `-cli`, las instrucciones de instalación están disponibles en [la sección anterior](https://github.com/AudiusProject/-k8s-manifests#2--cli-setup).
+Si no tienes `-cli`, las instrucciones de instalación están disponibles en [la sección anterior](https://github.com/dgc.network/-k8s-manifests#2--cli-setup).
 
 Para actualizar tu servicio usando `-cli`, necesitarás sacar el último código del manifiesto. Puedes hacerlo con `-cli`
 
@@ -200,7 +200,7 @@ Tendrá que reemplazar el trabajo de la semilla en `/discovery-node/discovery-no
 CREAR EXTENIÓN pg_trgm;
 ```
 
-Asegúrese de que su servicio expone todas las variables de entorno requeridas. Ver wiki [aquí](https://github.com/AudiusProject/-protocol/wiki/Discovery-Node:-Configuration-Details#required-environment-variables) para ver la lista completa de variables y descripciones.
+Asegúrese de que su servicio expone todas las variables de entorno requeridas. Ver wiki [aquí](https://github.com/dgc.network/-protocol/wiki/Discovery-Node:-Configuration-Details#required-environment-variables) para ver la lista completa de variables y descripciones.
 
 #### Iniciar
 
@@ -216,7 +216,7 @@ Verifique que el servicio está en buen estado ejecutando,
 
 #### Actualizar
 
-Si no tienes `-cli`, las instrucciones de instalación están disponibles en [la sección anterior](https://github.com/AudiusProject/-k8s-manifests#2--cli-setup).
+Si no tienes `-cli`, las instrucciones de instalación están disponibles en [la sección anterior](https://github.com/dgc.network/-k8s-manifests#2--cli-setup).
 
 Para actualizar tu servicio usando `-cli`, necesitarás sacar el último código del manifiesto. Puedes hacerlo con `-cli`
 
@@ -249,7 +249,7 @@ Puede verificar su actualización con el punto final `\health_check`.
 
 #### Siguiente
 
-Una vez que haya terminado de configurar el Discovery Provider, continúe a la sección de [Logger](https://github.com/AudiusProject/-k8s-manifests#logger).
+Una vez que haya terminado de configurar el Discovery Provider, continúe a la sección de [Logger](https://github.com/dgc.network/-k8s-manifests#logger).
 
 
 ## 5. Logger
@@ -264,7 +264,7 @@ Primero, obtenga los secretos del proveedor de servicios de su contacto en Coliv
 kubectl aplicar -f <secret_from_audius>.yaml
 ```
 
-A continuación, actualice las etiquetas logger en el daemonset fluentd con su nombre, para que podamos identificarle a usted y a su servicio de forma única aquí: [https://github. om/AudiusProject/audio k8s-manifests/blob/master//logger/logger.yaml\#L207](https://github.com/AudiusProject/-k8s-manifests/blob/master//logger/logger.yaml#L207). Esto permite que nuestro servicio de registro filtre los registros por el proveedor de servicios y por el proveedor de servicios y el servicio. `SP_NAME` se refiere al nombre de su organización y `SP_NAME_TYPE_ID` se refiere al nombre de su organización más el tipo de servicio que está ejecutando, más un id para distinguir varios servicios del mismo tipo.
+A continuación, actualice las etiquetas logger en el daemonset fluentd con su nombre, para que podamos identificarle a usted y a su servicio de forma única aquí: [https://github. om/dgc.network/audio k8s-manifests/blob/master//logger/logger.yaml\#L207](https://github.com/dgc.network/-k8s-manifests/blob/master//logger/logger.yaml#L207). Esto permite que nuestro servicio de registro filtre los registros por el proveedor de servicios y por el proveedor de servicios y el servicio. `SP_NAME` se refiere al nombre de su organización y `SP_NAME_TYPE_ID` se refiere al nombre de su organización más el tipo de servicio que está ejecutando, más un id para distinguir varios servicios del mismo tipo.
 
 Por ejemplo, si tu nombre es `Awesome Operator` y estás ejecutando un nodo de contenido, establece las etiquetas como:
 
@@ -340,7 +340,7 @@ Antes de registrar un servicio en el tablero, necesitamos asegurarnos de que el 
 
 La carpeta `sp-actions/` contiene scripts que prueban el estado de los servicios. Ejecute las comprobaciones correspondientes para su tipo de servicio a continuación para verificar que su servicio está correctamente instalado. Asegúrate de ejecutar `npm install` en `sp-actions/` para instalar todas las depdencies.
 
-Para más información sobre `sp-actions/` vea el README en la carpeta [sp-actions/](https://github.com/AudiusProject/-k8s-manifests/tree/master/sp-utilities)
+Para más información sobre `sp-actions/` vea el README en la carpeta [sp-actions/](https://github.com/dgc.network/-k8s-manifests/tree/master/sp-utilities)
 
 **Nodo Creador**
 

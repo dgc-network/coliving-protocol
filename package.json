@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AudiusProject/coliving-protocol.git"
+    "url": "git+https://github.com/dgc.network/coliving-protocol.git"
   },
   "author": "",
   "license": "Apache-2.0",

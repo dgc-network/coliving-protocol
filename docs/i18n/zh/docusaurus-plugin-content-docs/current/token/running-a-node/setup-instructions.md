@@ -10,10 +10,10 @@ This guide describes how to run Coliving services on a single node Kubernetes cl
 Join the node operator discord channel on the [Coliving discord server](https://discord.com/invite/)
 
 ## 0. Clone the -k8s-manifests repository
-[**https://github.com/AudiusProject/-k8s-manifests**](https://github.com/AudiusProject/-k8s-manifests)\*\*\*\*
+[**https://github.com/dgc.network/-k8s-manifests**](https://github.com/dgc.network/-k8s-manifests)\*\*\*\*
 
 ```text
-git clone git@github.com:AudiusProject/-k8s-manifests.git
+git clone git@github.com:dgc.network/-k8s-manifests.git
 ```
 
 ## 1. Cluster Setup
@@ -26,7 +26,7 @@ A convenience script is also included to do a "one click" kubeadm node setup. Yo
 yes | sh setup.sh
 ```
 
-However, if the node setup is not successful and kubectl is not available, it's advised to follow the installation steps by hand [here](https://github.com/AudiusProject/-k8s-manifests/blob/master/cluster-setup.md).
+However, if the node setup is not successful and kubectl is not available, it's advised to follow the installation steps by hand [here](https://github.com/dgc.network/-k8s-manifests/blob/master/cluster-setup.md).
 
 ## 2. Coliving CLI Setup
 
@@ -35,7 +35,7 @@ You can skip this section if installing for the first time.
 You can install `-cli` with
 
 ```text
-sh install_audius_cli.sh
+sh install_coliving_cli.sh
 ```
 
 You can then view all commands available via `-cli` by simply running:
@@ -74,7 +74,7 @@ rm -rf /var/k8s/*
 
 ## 4. Service Setup
 
-See below for a guide to deploying [Creator Node](https://github.com/AudiusProject/-k8s-manifests#network-node-1) and [Discovery Provider](https://github.com/AudiusProject/-k8s-manifests#discovery-node-1) via `-cli`. After you finish setting up the service, please continue with the Logger section.
+See below for a guide to deploying [Creator Node](https://github.com/dgc.network/-k8s-manifests#network-node-1) and [Discovery Provider](https://github.com/dgc.network/-k8s-manifests#discovery-node-1) via `-cli`. After you finish setting up the service, please continue with the Logger section.
 
 **Note:** "Creator Node" and "Discovery Provider" have recently been renamed to "Content Node" and "Discovery Node" respectively. However for consistency within the code and this README, we will continue to use the terms "Creator Node" and "Discovery Node".
 
@@ -88,7 +88,7 @@ The information stored includes Coliving user metadata, images, and audio conten
 
 #### Run
 
-Use `-cli` to update required variables. The full list of variables and explanations can be found on the wiki [here](https://github.com/AudiusProject/-protocol/wiki/Content-Node:-Configuration-Details#required-environment-variables).
+Use `-cli` to update required variables. The full list of variables and explanations can be found on the wiki [here](https://github.com/dgc.network/-protocol/wiki/Content-Node:-Configuration-Details#required-environment-variables).
 
 Some variables must be set, you can do this with the following commands:
 
@@ -126,7 +126,7 @@ Verify that the service is healthy by running,
 
 #### Upgrade
 
-If you do not have `-cli`, instructions on how to install are available in [the section above](https://github.com/AudiusProject/-k8s-manifests#2--cli-setup).
+If you do not have `-cli`, instructions on how to install are available in [the section above](https://github.com/dgc.network/-k8s-manifests#2--cli-setup).
 
 To upgrade your service using `-cli`, you will need to pull the latest manifest code. You can do this with `-cli`
 
@@ -200,7 +200,7 @@ You will have to replace the db seed job in `audius/discovery-node/discovery-nod
 CREATE EXTENSION pg_trgm;
 ```
 
-Make sure that your service exposes all the required environment variables. See wiki [here](https://github.com/AudiusProject/audius-protocol/wiki/Discovery-Node:-Configuration-Details#required-environment-variables) for full list of env vars and descriptions.
+Make sure that your service exposes all the required environment variables. See wiki [here](https://github.com/dgc.network/audius-protocol/wiki/Discovery-Node:-Configuration-Details#required-environment-variables) for full list of env vars and descriptions.
 
 #### Launch
 
@@ -216,7 +216,7 @@ audius-cli health-check discovery-node
 
 #### Upgrade
 
-If you do not have `audius-cli`, instructions on how to install are available in [the section above](https://github.com/AudiusProject/audius-k8s-manifests#2-audius-cli-setup).
+If you do not have `audius-cli`, instructions on how to install are available in [the section above](https://github.com/dgc.network/audius-k8s-manifests#2-audius-cli-setup).
 
 To upgrade your service using `audius-cli`, you will need to pull the latest manifest code. You can do this with `audius-cli`
 
@@ -249,7 +249,7 @@ You can verify your upgrade with the `\health_check` endpoint.
 
 #### Next
 
-Once you've finished setting up the Discovery Provider, continue to the [Logger](https://github.com/AudiusProject/audius-k8s-manifests#logger) section.
+Once you've finished setting up the Discovery Provider, continue to the [Logger](https://github.com/dgc.network/audius-k8s-manifests#logger) section.
 
 
 ## 5. Logger
@@ -264,7 +264,7 @@ First, obtain the service provider secrets from your contact at Coliving. This c
 kubectl apply -f <secret_from_audius>.yaml
 ```
 
-Next, update the logger tags in the fluentd daemonset with your name, so we can identify you and your service uniquely here: [https://github.com/AudiusProject/audius-k8s-manifests/blob/master/audius/logger/logger.yaml\#L207](https://github.com/AudiusProject/audius-k8s-manifests/blob/master/audius/logger/logger.yaml#L207). This allows our logging service to filter logs by service provider and by service provider and service. `SP_NAME` refers to your organization's name and `SP_NAME_TYPE_ID` refers to your organization's name plus the type of service you're running, plus an id to distinguish multiple services of the same type.
+Next, update the logger tags in the fluentd daemonset with your name, so we can identify you and your service uniquely here: [https://github.com/dgc.network/audius-k8s-manifests/blob/master/audius/logger/logger.yaml\#L207](https://github.com/dgc.network/audius-k8s-manifests/blob/master/audius/logger/logger.yaml#L207). This allows our logging service to filter logs by service provider and by service provider and service. `SP_NAME` refers to your organization's name and `SP_NAME_TYPE_ID` refers to your organization's name plus the type of service you're running, plus an id to distinguish multiple services of the same type.
 
 For example, if your name is `Awesome Operator` and you're running a content node, set the tags as:
 
@@ -340,7 +340,7 @@ Before registering a service to the dashboard we need to make sure the service i
 
 The `sp-actions/` folder contains scripts that test the health of services. Run the corresponding checks for your service type below to verify your service is correctly sete up. Be sure to run `npm install` in `sp-actions/` to install all depdencies.
 
-For more information about `sp-actions/` see the README in the [sp-actions/ folder](https://github.com/AudiusProject/audius-k8s-manifests/tree/master/sp-utilities)
+For more information about `sp-actions/` see the README in the [sp-actions/ folder](https://github.com/dgc.network/audius-k8s-manifests/tree/master/sp-utilities)
 
 **Creator Node**
 

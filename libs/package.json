@@ -127,7 +127,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AudiusProject/coliving-protocol/tree/master/libs"
+    "url": "git+https://github.com/dgc.network/coliving-protocol/tree/master/libs"
   },
   "engines": {
     "node": ">=14.0.0"
@@ -135,7 +135,7 @@
   "author": "Coliving",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/AudiusProject/coliving-protocol/issues"
+    "url": "https://github.com/dgc.network/coliving-protocol/issues"
   },
-  "homepage": "https://github.com/AudiusProject/coliving-protocol/tree/master/libs"
+  "homepage": "https://github.com/dgc.network/coliving-protocol/tree/master/libs"
 }

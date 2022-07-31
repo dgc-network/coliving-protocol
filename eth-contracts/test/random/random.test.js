@@ -110,7 +110,7 @@ contract('Random testing', async (accounts) => {
         const curBlockDiff = await claimsManager.getFundingRoundBlockDiff.call()
         sysLog(`Current block diff: ${curBlockDiff}`)
         // Local dev sanity config updates
-        // https://github.com/AudiusProject/coliving-protocol/commit/12116eede803b395a9518c707360e7b633cf6ad2
+        // https://github.com/dgc.network/coliving-protocol/commit/12116eede803b395a9518c707360e7b633cf6ad2
         // Update funding found block diff
         await governance.guardianExecuteTransaction(
             claimsManagerProxyKey,

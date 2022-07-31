@@ -9,7 +9,7 @@ Coliving is a decentralized, community-owned and artist-controlled music-sharing
 
 The mission of the project is to give everyone the freedom to share, monetize, and listen to any audio.
 
-The Coliving Protocol [repository](https://github.com/AudiusProject/audius-protocol) is a mono-repository that has all the pieces that make and support the protocol including smart contracts, services, and other supporting libraries.
+The Coliving Protocol [repository](https://github.com/dgc.network/audius-protocol) is a mono-repository that has all the pieces that make and support the protocol including smart contracts, services, and other supporting libraries.
 
 If you are interested in operating a service, see the [`running a node`](../token/running-a-node/introduction.md) section. If you're interested in contributing to the Coliving protocol, explore the code below!
 
@@ -34,17 +34,17 @@ For more details on the Coliving architecture, see the [Coliving protocol whitep
 
 | Service          | Description                                                                                                        | GitHub                                                                                  |
 | :--------------- | :----------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------- |
-| Content Node     | Maintains the availability of users' content on IPFS including user metadata, images, and audio content            | [Link](https://github.com/AudiusProject/audius-protocol/tree/master/network-node)       |
-| Discovery Node   | Indexes and stores the contents of the Coliving contracts on the Ethereum blockchain for clients to query via an API | [Link](https://github.com/AudiusProject/audius-protocol/tree/master/discovery-node) |
-| Identity Service | Stores encrypted auth ciphertexts, does Twitter OAuth and relays transactions (pays gas) on behalf of users        | [Link](https://github.com/AudiusProject/audius-protocol/tree/master/identity-service)   |
+| Content Node     | Maintains the availability of users' content on IPFS including user metadata, images, and audio content            | [Link](https://github.com/dgc.network/audius-protocol/tree/master/network-node)       |
+| Discovery Node   | Indexes and stores the contents of the Coliving contracts on the Ethereum blockchain for clients to query via an API | [Link](https://github.com/dgc.network/audius-protocol/tree/master/discovery-node) |
+| Identity Service | Stores encrypted auth ciphertexts, does Twitter OAuth and relays transactions (pays gas) on behalf of users        | [Link](https://github.com/dgc.network/audius-protocol/tree/master/identity-service)   |
 
 ## Coliving Smart Contracts & Libs
 
 | Lib                                                                                           | Description                                                                                                                                          |
 | :-------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`libs`](https://github.com/AudiusProject/audius-protocol/tree/master/libs)                   | An easy interface to the distributed web and Coliving services: Identity Service, Discovery Node \(discovery provider\), Content Node \(creator node\) |
-| [`contracts`](https://github.com/AudiusProject/audius-protocol/tree/master/contracts)         | The smart contracts being developed for the Coliving streaming protocol                                                                                |
-| [`eth-contracts`](https://github.com/AudiusProject/audius-protocol/tree/master/eth-contracts) | The Ethereum smart contracts being developed for the Coliving streaming protocol                                                                       |
+| [`libs`](https://github.com/dgc.network/audius-protocol/tree/master/libs)                   | An easy interface to the distributed web and Coliving services: Identity Service, Discovery Node \(discovery provider\), Content Node \(creator node\) |
+| [`contracts`](https://github.com/dgc.network/audius-protocol/tree/master/contracts)         | The smart contracts being developed for the Coliving streaming protocol                                                                                |
+| [`eth-contracts`](https://github.com/dgc.network/audius-protocol/tree/master/eth-contracts) | The Ethereum smart contracts being developed for the Coliving streaming protocol                                                                       |
 
 ## Service Provider Quickstart
 

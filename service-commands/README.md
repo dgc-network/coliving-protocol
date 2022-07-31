@@ -7,7 +7,7 @@ This API allows you to bring services up and down and control your local colivin
 
 - Install tools: `docker`, `docker-compose`, `node`.
 - If you are on Linux, it is possible that your kernal might have updated without a reboot. Reboot to ensure that docker does not have kernel related issues.
-- Clone the [coliving-protocol](https://github.com/AudiusProject/coliving-protocol) repo.
+- Clone the [coliving-protocol](https://github.com/dgc.network/coliving-protocol) repo.
 - `export` the environment variable `PROTOCOL_DIR` to point to the cloned `protocol` repo.
 
   set this in your shell config (`.bashrc`), e.g. `export PROTOCOL_DIR=/Users/hareeshnagaraj/Development/coliving-protocol`
