@@ -3,7 +3,7 @@ const { time, expectEvent } = require('@openzeppelin/test-helpers')
 const { deployProxy, upgradeProxy } = require('@openzeppelin/truffle-upgrades')
 
 
-const AudiusAdminUpgradeabilityProxy = artifacts.require('AudiusAdminUpgradeabilityProxy')
+const ColivingAdminUpgradeabilityProxy = artifacts.require('ColivingAdminUpgradeabilityProxy')
 const ServiceTypeManager = artifacts.require('ServiceTypeManager')
 const ServiceProviderFactory = artifacts.require('ServiceProviderFactory')
 const Staking = artifacts.require('Staking')
@@ -97,7 +97,7 @@ contract('DelegateManager', async (accounts) => {
       ['address', 'address'],
       [token.address, governance.address]
     )
-    const stakingProxy = await AudiusAdminUpgradeabilityProxy.new(
+    const stakingProxy = await ColivingAdminUpgradeabilityProxy.new(
       staking0.address,
       governance.address,
       stakingInitializeData,
@@ -112,7 +112,7 @@ contract('DelegateManager', async (accounts) => {
       'initialize', ['address'], [governance.address]
     )
     let serviceTypeManager0 = await ServiceTypeManager.new({ from: proxyDeployerAddress })
-    let serviceTypeManagerProxy = await AudiusAdminUpgradeabilityProxy.new(
+    let serviceTypeManagerProxy = await ColivingAdminUpgradeabilityProxy.new(
       serviceTypeManager0.address,
       governance.address,
       serviceTypeInitializeData,
@@ -147,7 +147,7 @@ contract('DelegateManager', async (accounts) => {
         DEPLOYER_CUT_LOCKUP_DURATION
       ]
     )
-    let serviceProviderFactoryProxy = await AudiusAdminUpgradeabilityProxy.new(
+    let serviceProviderFactoryProxy = await ColivingAdminUpgradeabilityProxy.new(
       serviceProviderFactory0.address,
       governance.address,
       serviceProviderFactoryCalldata,
@@ -171,7 +171,7 @@ contract('DelegateManager', async (accounts) => {
       [token.address, governance.address, UNDELEGATE_LOCKUP_DURATION]
     )
     delegateManager0 = await DelegateManager.new({ from: proxyDeployerAddress })
-    delegateManagerProxy = await AudiusAdminUpgradeabilityProxy.new(
+    delegateManagerProxy = await ColivingAdminUpgradeabilityProxy.new(
       delegateManager0.address,
       governance.address,
       delegateManagerInitializeData,

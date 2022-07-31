@@ -76,7 +76,7 @@ const generateId = (): string => {
   }).join('')
 }
 
-const generateAudiusLogoSvg = (size: 'small' | 'medium' | 'large') => {
+const generateColivingLogoSvg = (size: 'small' | 'medium' | 'large') => {
   let height: number
   let paddingRight: number
   if (size === 'small') {
@@ -203,7 +203,7 @@ export class Oauth {
     if (options?.disableHoverGrow) {
       button.classList.add('disableHoverGrow')
     }
-    button.innerHTML = `${generateAudiusLogoSvg(options?.size ?? 'medium')} ${
+    button.innerHTML = `${generateColivingLogoSvg(options?.size ?? 'medium')} ${
       options?.customText ?? 'Continue With Coliving'
     }`
     button.onclick = () => {

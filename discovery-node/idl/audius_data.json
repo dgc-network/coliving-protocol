@@ -36,7 +36,7 @@
       "name": "updateIsVerified",
       "accounts": [
         {
-          "name": "audiusAdmin",
+          "name": "colivingAdmin",
           "isMut": false,
           "isSigner": false
         },
@@ -523,7 +523,7 @@
           "isSigner": true
         },
         {
-          "name": "audiusAdmin",
+          "name": "colivingAdmin",
           "isMut": true,
           "isSigner": false
         },
@@ -653,7 +653,7 @@
       "name": "manageEntity",
       "accounts": [
         {
-          "name": "audiusAdmin",
+          "name": "colivingAdmin",
           "isMut": false,
           "isSigner": false
         },
@@ -715,7 +715,7 @@
       "name": "writeEntitySocialAction",
       "accounts": [
         {
-          "name": "audiusAdmin",
+          "name": "colivingAdmin",
           "isMut": false,
           "isSigner": false
         },
@@ -773,7 +773,7 @@
       "name": "followUser",
       "accounts": [
         {
-          "name": "audiusAdmin",
+          "name": "colivingAdmin",
           "isMut": true,
           "isSigner": false
         },
@@ -1033,7 +1033,7 @@
   ],
   "accounts": [
     {
-      "name": "AudiusAdmin",
+      "name": "ColivingAdmin",
       "type": {
         "kind": "struct",
         "fields": [

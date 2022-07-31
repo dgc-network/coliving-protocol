@@ -63,7 +63,7 @@ def save_duration_metric(metric_group):
     return decorator
 
 
-METRIC_PREFIX = "audius_dn"
+METRIC_PREFIX = "coliving_dn"
 
 
 class PrometheusMetricNames:
@@ -91,7 +91,7 @@ class PrometheusMetricNames:
     * `_total`, when accumulating a count, in addition to above suffixes if applicable
 
     See the following resources for related information:
-    * [Creator Node's docs](https://github.com/dgc.network/audius-protocol/blob/master/network-node/src/services/prometheusMonitoring/README.md)
+    * [Creator Node's docs](https://github.com/dgc.network/coliving-protocol/blob/master/network-node/src/services/prometheusMonitoring/README.md)
     * [Official docs](https://prometheus.io/docs/practices/naming)
     """
 
@@ -123,7 +123,7 @@ Metric Types:
   code runs, since a single metric endpoint will be exploded to create 11 additional
   metrics (sum, count, and 9 statistical buckets).
     * When looking at the raw /prometheus_metrics endpoint for
-      `audius_dn_update_aggregate_table_latency_seconds_bucket`, you can see how a
+      `coliving_dn_update_aggregate_table_latency_seconds_bucket`, you can see how a
       single metric explodes into multiple statistical helpers.
 
 Labels:

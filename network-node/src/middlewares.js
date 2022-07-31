@@ -61,7 +61,7 @@ async function authMiddleware(req, res, next) {
   // Not every libs call passes this header until all clients upgrade to version 1.2.18
   // We fetch from DB as a fallback in the meantime
   if (!userId) {
-    const resp = await models.AudiusUser.findOne({
+    const resp = await models.ColivingUser.findOne({
       attributes: ['blockchainId'],
       where: { cnodeUserUUID }
     })
@@ -90,7 +90,7 @@ async function authMiddleware(req, res, next) {
 }
 
 /**
- * Blocks writes if node is not the primary for audiusUser associated with wallet
+ * Blocks writes if node is not the primary for colivingUser associated with wallet
  */
 async function ensurePrimaryMiddleware(req, res, next) {
   const start = Date.now()
@@ -888,7 +888,7 @@ async function ensureValidSPMiddleware(req, res, next) {
     }
 
     await verifyRequesterIsValidSP({
-      audiusLibs: req.app.get('audiusLibs'),
+      colivingLibs: req.app.get('colivingLibs'),
       spID,
       reqTimestamp: timestamp,
       reqSignature: signature

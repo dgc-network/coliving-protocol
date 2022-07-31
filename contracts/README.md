@@ -33,7 +33,7 @@ In a dedicated console window, execute the following command to bring up the con
 $ npm run ganache
 
 > -contracts@1.0.0 ganache /Development/-contracts
-> docker run --name audius_ganache_cli -d -p 8545:8545 trufflesuite/ganache-cli:latest -h 0.0.0.0 -l 8000000
+> docker run --name coliving_ganache_cli -d -p 8545:8545 trufflesuite/ganache-cli:latest -h 0.0.0.0 -l 8000000
 
 b35518d9f0982faafb228ed4e13f5d811de35111dbf90834a86a6f19d7190b1b
 ```
@@ -43,14 +43,14 @@ Execute the following command to kill the container:
 $ npm run ganache-q
 
 > -contracts@1.0.0 ganache-q /Development/-contracts
-> docker rm -f audius_ganache_cli > /dev/null
+> docker rm -f coliving_ganache_cli > /dev/null
 ```
 
 Logs can be inspected with the following command - this is useful for debugging during contract
 development
 
 ```
-$ docker logs audius_ganache_cli
+$ docker logs coliving_ganache_cli
 ```
 
 ## Development Console

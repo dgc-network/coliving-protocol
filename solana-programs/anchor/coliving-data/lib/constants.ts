@@ -1,6 +1,6 @@
 // Generated with --deterministic flag from ganache cli container.
 // To see full list of accounts and keys see:
-// docker exec audius_ganache_cli_eth_contracts cat eth-contracts-ganache-accounts.json
+// docker exec coliving_ganache_cli_eth_contracts cat eth-contracts-ganache-accounts.json
 
 export const LOCAL_DEV_SP_WALLETS = {
   1: "0xffcf8fdee72ac11b5c542428b35eef5769c409f0",

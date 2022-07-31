@@ -1,6 +1,6 @@
 #![allow(missing_docs)]
 use crate::{
-    error::AudiusProgramError,
+    error::ColivingProgramError,
     state::{VerifiedMessage, TOTAL_VERIFIED_MESSAGES},
     vote_message,
 };
@@ -22,7 +22,7 @@ pub use signs::*;
 /// Assert `account` is owned by `owner`
 pub fn assert_owned_by(account: &AccountInfo, owner: &Pubkey) -> ProgramResult {
     if account.owner != owner {
-        Err(AudiusProgramError::IncorrectOwner.into())
+        Err(ColivingProgramError::IncorrectOwner.into())
     } else {
         Ok(())
     }
@@ -52,12 +52,12 @@ pub fn assert_unique_senders(messages: &[VerifiedMessage]) -> ProgramResult {
     let mut uniq_operators = BTreeSet::new();
 
     if messages.len() > TOTAL_VERIFIED_MESSAGES {
-        return Err(AudiusProgramError::MessagesOverflow.into());
+        return Err(ColivingProgramError::MessagesOverflow.into());
     }
 
     // Check sender address collision
     if !messages.iter().all(move |x| uniq_senders.insert(x.address)) {
-        return Err(AudiusProgramError::RepeatedSenders.into());
+        return Err(ColivingProgramError::RepeatedSenders.into());
     }
 
     // Check sender operator collision
@@ -65,7 +65,7 @@ pub fn assert_unique_senders(messages: &[VerifiedMessage]) -> ProgramResult {
         .iter()
         .all(move |x| uniq_operators.insert(x.operator))
     {
-        return Err(AudiusProgramError::OperatorCollision.into());
+        return Err(ColivingProgramError::OperatorCollision.into());
     }
 
     Ok(())
@@ -88,17 +88,17 @@ pub fn assert_valid_attestations(
     {
         if address == bot_oracle_address {
             if vote_message!(valid_bot_oracle_attestation) != *message {
-                return Err(AudiusProgramError::IncorrectMessages.into());
+                return Err(ColivingProgramError::IncorrectMessages.into());
             }
 
             oracle_signed = true;
         } else if vote_message!(valid_attestation) != *message {
-            return Err(AudiusProgramError::IncorrectMessages.into());
+            return Err(ColivingProgramError::IncorrectMessages.into());
         }
     }
 
     if !oracle_signed {
-        return Err(AudiusProgramError::NotEnoughSigners.into());
+        return Err(ColivingProgramError::NotEnoughSigners.into());
     }
 
     Ok(())
@@ -228,7 +228,7 @@ pub fn validate_token_account_derivation(
     let seed = bs58::encode(eth_address).into_string();
     let res = Pubkey::create_with_seed(&base_pubkey, seed.as_str(), &spl_token::id())?;
     if res != *recipient_info.key {
-        return Err(AudiusProgramError::InvalidRecipient.into());
+        return Err(ColivingProgramError::InvalidRecipient.into());
     }
 
     Ok(())

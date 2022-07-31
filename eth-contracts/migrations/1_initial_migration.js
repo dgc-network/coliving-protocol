@@ -5,7 +5,7 @@ const logBytecodes = (contract) => {
 }
 
 /** log out all contract bytecode lengths */
-const AudiusToken = artifacts.require('AudiusToken')
+const ColivingToken = artifacts.require('ColivingToken')
 const Registry = artifacts.require('Registry')
 const InitializableV2 = artifacts.require('InitializableV2')
 const Governance = artifacts.require('Governance')
@@ -14,7 +14,7 @@ const DelegateManager = artifacts.require('DelegateManager')
 const ServiceProviderFactory = artifacts.require('ServiceProviderFactory')
 const ServiceTypeManager = artifacts.require('ServiceTypeManager')
 const Staking = artifacts.require('Staking')
-logBytecodes(AudiusToken)
+logBytecodes(ColivingToken)
 logBytecodes(Registry)
 logBytecodes(InitializableV2)
 logBytecodes(Governance)

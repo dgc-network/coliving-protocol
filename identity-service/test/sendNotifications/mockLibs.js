@@ -111,7 +111,7 @@ const userTemplate = (id) => ({
   'wallet': '0x7d273271690538cf855e5b3002a0dd8c154bb060'
 })
 
-const mockAudiusLibs = {
+const mockColivingLibs = {
   Track: {
     getTracks: (limit, offset, ids) => ids.map(id => trackTemplate(id))
   },
@@ -123,4 +123,4 @@ const mockAudiusLibs = {
   }
 }
 
-module.exports = mockAudiusLibs
+module.exports = mockColivingLibs

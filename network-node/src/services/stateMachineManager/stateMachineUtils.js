@@ -1,6 +1,6 @@
 const BullQueue = require('bull')
 
-const { libs } = require('@audius/sdk')
+const { libs } = require('@coliving/sdk')
 const CreatorNode = libs.CreatorNode
 const axios = require('axios')
 const retry = require('async-retry')
@@ -97,7 +97,7 @@ const retrieveUserInfoFromReplicaSet = async (replicaToWalletMap) => {
         // Add response data to output aggregate map
         batchClockStatusResp.forEach((clockStatusResp) => {
           /**
-           * @notice `filesHash` will be null if node has no files for user. This can happen even if clock > 0 if user has AudiusUser or Track table records without any File table records
+           * @notice `filesHash` will be null if node has no files for user. This can happen even if clock > 0 if user has ColivingUser or Track table records without any File table records
            */
           const { walletPublicKey, clock, filesHash } = clockStatusResp
           replicaToAllUserInfoMaps[replica][walletPublicKey] = {

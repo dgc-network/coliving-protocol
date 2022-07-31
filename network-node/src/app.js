@@ -13,7 +13,7 @@ const {
 const {
   userReqLimiter,
   trackReqLimiter,
-  audiusUserReqLimiter,
+  colivingUserReqLimiter,
   metadataReqLimiter,
   imageReqLimiter,
   URSMRequestForSignatureReqLimiter,
@@ -117,7 +117,7 @@ const initializeApp = (port, serviceRegistry) => {
   // Rate limit routes
   app.use('/users/', userReqLimiter)
   app.use('/track*', trackReqLimiter)
-  app.use('/audius_user/', audiusUserReqLimiter)
+  app.use('/coliving_user/', colivingUserReqLimiter)
   app.use('/metadata', metadataReqLimiter)
   app.use('/image_upload', imageReqLimiter)
   app.use('/ursm_request_for_signature', URSMRequestForSignatureReqLimiter)
@@ -189,7 +189,7 @@ const initializeApp = (port, serviceRegistry) => {
   // TODO: Can remove these when all routes consume serviceRegistry
   app.set('storagePath', storagePath)
   app.set('redisClient', serviceRegistry.redis)
-  app.set('audiusLibs', serviceRegistry.libs)
+  app.set('colivingLibs', serviceRegistry.libs)
   app.set('blacklistManager', serviceRegistry.blacklistManager)
   app.set('trustedNotifierManager', serviceRegistry.trustedNotifierManager)
 

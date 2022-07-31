@@ -312,7 +312,7 @@ class NotificationProcessor {
    * 3. Combine owner object from discprov with track listen counts
    * 4. Process notifications
    * 5. Process milestones
-   * @param {AudiusLibs} colivingLibs
+   * @param {ColivingLibs} colivingLibs
    * @param {OptimizelyClient} optimizelyClient
    * @param {number} minBlock min start block to start querying discprov for new notifications
    * @param {number} oldMaxBlockNumber last max black number seen
@@ -324,7 +324,7 @@ class NotificationProcessor {
 
     logger.info(`notifications main indexAll job - minBlock: ${minBlock}, oldMaxBlockNumber: ${oldMaxBlockNumber}, startDate: ${startDate}, startTime: ${new Date()}`)
 
-    const { discoveryProvider } = colivingLibsWrapper.getAudiusLibs()
+    const { discoveryProvider } = colivingLibsWrapper.getColivingLibs()
 
     const trackIdOwnersToRequestList = []
 
@@ -384,7 +384,7 @@ class NotificationProcessor {
 
   /**
    * Doing the solana notification things
-   * @param {AudiusLibs} colivingLibs
+   * @param {ColivingLibs} colivingLibs
    * @param {OptimizelyClient} optimizelyClient
    * @param {number} minSlot min slot number to start querying discprov for new notifications
    * @param {number} oldMaxSlot last max slot number seen
@@ -397,7 +397,7 @@ class NotificationProcessor {
 
     logger.info(`${logLabel} - minSlot: ${minSlot}, oldMaxSlot: ${oldMaxSlot}, startDate: ${startDate}, startTime: ${startTime}`)
 
-    const { discoveryProvider } = colivingLibsWrapper.getAudiusLibs()
+    const { discoveryProvider } = colivingLibsWrapper.getColivingLibs()
 
     // Timeout of 2 minutes
     const timeout = 2 /* min */ * 60 /* sec */ * 1000 /* ms */

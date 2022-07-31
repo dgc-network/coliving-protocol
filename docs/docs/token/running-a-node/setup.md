@@ -6,9 +6,9 @@ sidebar_position: 3
 # Setup Instructions
 
 This guide describes how to run Coliving services on a single machine via Docker Compose.
-The repository of Docker Compose files can be found on [GitHub](https://github.com/dgc.network/audius-docker-compose).
+The repository of Docker Compose files can be found on [GitHub](https://github.com/dgc.network/coliving-docker-compose).
 
-Please join the node operator discord channel on the [Coliving discord server](https://discord.com/invite/audius) for announcements & troubleshooting assistance.
+Please join the node operator discord channel on the [Coliving discord server](https://discord.com/invite/coliving) for announcements & troubleshooting assistance.
 
 
 ## Installation
@@ -16,7 +16,7 @@ Please join the node operator discord channel on the [Coliving discord server](h
 On a VM that meets the minimum requirements from above run:
 
 ```bash
-bash <(curl https://raw.githubusercontent.com/dgc.network/audius-docker-compose/main/install.sh)
+bash <(curl https://raw.githubusercontent.com/dgc.network/coliving-docker-compose/main/install.sh)
 ```
 
 During installation there will be prompts for required environment variables. The variables are:
@@ -30,8 +30,8 @@ During installation there will be prompts for required environment variables. Th
 If you're using an externally managed Postgres DB please see [this section](advanced_setup.md#external-network-node-postgres)
 
 ### Discovery Provider
-- `audius_delegate_owner_wallet` - Address of wallet that contains no tokens but that is registered on chain, used to sign JSON responses from server
-- `audius_delegate_private_key` - Private key associated with `audius_delegate_owner_wallet`
+- `coliving_delegate_owner_wallet` - Address of wallet that contains no tokens but that is registered on chain, used to sign JSON responses from server
+- `coliving_delegate_private_key` - Private key associated with `coliving_delegate_owner_wallet`
 
 If you're using an externally managed Postgres DB please see [this section](advanced_setup.md#external-discovery-node-postgres-instance)
 

@@ -49,11 +49,11 @@ Talk about a platform adapting to the needs of its users!
 
 ### **Staking on Coliving**
 
-To stake on Coliving, node operators can set up content and/or discovery nodes using [these resources](https://github.com/dgc.network/audius-protocol/wiki/Staking-Resources).
+To stake on Coliving, node operators can set up content and/or discovery nodes using [these resources](https://github.com/dgc.network/coliving-protocol/wiki/Staking-Resources).
 
 https://twitter.com/Figment_io/status/1324763638729740288?s=20
 
-A list of all active node operators can be found under the [Services tab](https://dashboard.audius.org/services) in the Coliving protocol dashboard.
+A list of all active node operators can be found under the [Services tab](https://dashboard.coliving.org/services) in the Coliving protocol dashboard.
 
 $AUDIO holders can delegate a minimum of 100 tokens to any of these node operators by connecting to either MetaMask or using a Gnosis Safe. More details on delegation will be released soon!
 

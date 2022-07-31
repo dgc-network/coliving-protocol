@@ -1,8 +1,8 @@
 #![cfg(feature = "test-bpf")]
 mod utils;
 
-use audius_reward_manager::{
-    error::AudiusProgramError,
+use coliving_reward_manager::{
+    error::ColivingProgramError,
     instruction,
     processor::{TRANSFER_ACC_SPACE, TRANSFER_SEED_PREFIX},
     state::VERIFIED_MESSAGES_LEN,
@@ -68,7 +68,7 @@ async fn success_transfer() {
         instructions.push(inst);
         instructions.push(
             instruction::submit_attestations(
-                &audius_reward_manager::id(),
+                &coliving_reward_manager::id(),
                 &reward_manager.pubkey(),
                 &signers[item.0],
                 &context.payer.pubkey(),
@@ -86,7 +86,7 @@ async fn success_transfer() {
     instructions.push(oracle_sign);
     instructions.push(
         instruction::submit_attestations(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &oracle_derived_address,
             &context.payer.pubkey(),
@@ -116,7 +116,7 @@ async fn success_transfer() {
 
     let tx = Transaction::new_signed_with_payer(
         &[instruction::evaluate_attestations(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &verified_messages_account,
             &reward_manager.pubkey(),
             &token_account.pubkey(),
@@ -205,7 +205,7 @@ async fn invalid_messages_are_wiped() {
         instructions.push(inst);
         instructions.push(
             instruction::submit_attestations(
-                &audius_reward_manager::id(),
+                &coliving_reward_manager::id(),
                 &reward_manager.pubkey(),
                 &signers[item.0],
                 &context.payer.pubkey(),
@@ -238,7 +238,7 @@ async fn invalid_messages_are_wiped() {
     // attempt to evaluate the bad attestations
     let tx = Transaction::new_signed_with_payer(
         &[instruction::evaluate_attestations(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &verified_messages_account,
             &reward_manager.pubkey(),
             &token_account.pubkey(),
@@ -257,7 +257,7 @@ async fn invalid_messages_are_wiped() {
 
     let res = context.banks_client.process_transaction(tx).await;
     // Ensure we got the expected NotEnoughSigners error
-    assert_custom_error(res, 0, AudiusProgramError::NotEnoughSigners);
+    assert_custom_error(res, 0, ColivingProgramError::NotEnoughSigners);
 
     // Ensure that the transfer account wasn't created
     let transfer_account_data = get_account(&mut context, &transfer_account).await;
@@ -274,7 +274,7 @@ async fn invalid_messages_are_wiped() {
         instructions.push(inst);
         instructions.push(
             instruction::submit_attestations(
-                &audius_reward_manager::id(),
+                &coliving_reward_manager::id(),
                 &reward_manager.pubkey(),
                 &signers[item.0],
                 &context.payer.pubkey(),
@@ -292,7 +292,7 @@ async fn invalid_messages_are_wiped() {
     instructions.push(oracle_sign);
     instructions.push(
         instruction::submit_attestations(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &oracle_derived_address,
             &context.payer.pubkey(),
@@ -316,7 +316,7 @@ async fn invalid_messages_are_wiped() {
     let recent_blockhash = context.banks_client.get_recent_blockhash().await.unwrap();
     let tx = Transaction::new_signed_with_payer(
         &[instruction::evaluate_attestations(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &verified_messages_account,
             &reward_manager.pubkey(),
             &token_account.pubkey(),
@@ -411,7 +411,7 @@ async fn failure_transfer_invalid_message_format() {
         instructions.push(inst);
         instructions.push(
             instruction::submit_attestations(
-                &audius_reward_manager::id(),
+                &coliving_reward_manager::id(),
                 &reward_manager.pubkey(),
                 &signers[item.0],
                 &context.payer.pubkey(),
@@ -429,7 +429,7 @@ async fn failure_transfer_invalid_message_format() {
     instructions.push(oracle_sign);
     instructions.push(
         instruction::submit_attestations(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &oracle_derived_address,
             &context.payer.pubkey(),
@@ -467,7 +467,7 @@ async fn failure_transfer_invalid_message_format() {
 
     let tx = Transaction::new_signed_with_payer(
         &[instruction::evaluate_attestations(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &verified_messages_derived_address,
             &reward_manager.pubkey(),
             &token_account.pubkey(),
@@ -485,7 +485,7 @@ async fn failure_transfer_invalid_message_format() {
     );
 
     let tx_result = context.banks_client.process_transaction(tx).await;
-    assert_custom_error(tx_result, 0, AudiusProgramError::IncorrectMessages)
+    assert_custom_error(tx_result, 0, ColivingProgramError::IncorrectMessages)
 }
 
 #[tokio::test]
@@ -548,7 +548,7 @@ async fn failure_transfer_invalid_oracle_message_format() {
         instructions.push(inst);
         instructions.push(
             instruction::submit_attestations(
-                &audius_reward_manager::id(),
+                &coliving_reward_manager::id(),
                 &reward_manager.pubkey(),
                 &signers[item.0],
                 &context.payer.pubkey(),
@@ -566,7 +566,7 @@ async fn failure_transfer_invalid_oracle_message_format() {
     instructions.push(oracle_sign);
     instructions.push(
         instruction::submit_attestations(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &oracle_derived_address,
             &context.payer.pubkey(),
@@ -588,7 +588,7 @@ async fn failure_transfer_invalid_oracle_message_format() {
 
     let tx = Transaction::new_signed_with_payer(
         &[instruction::evaluate_attestations(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &verified_messages_derived_address,
             &reward_manager.pubkey(),
             &token_account.pubkey(),
@@ -606,7 +606,7 @@ async fn failure_transfer_invalid_oracle_message_format() {
     );
 
     let tx_result = context.banks_client.process_transaction(tx).await;
-    assert_custom_error(tx_result, 0, AudiusProgramError::IncorrectMessages)
+    assert_custom_error(tx_result, 0, ColivingProgramError::IncorrectMessages)
 }
 
 #[tokio::test]
@@ -657,7 +657,7 @@ async fn failure_transfer_incorrect_number_of_verified_messages() {
         instructions.push(inst);
         instructions.push(
             instruction::submit_attestations(
-                &audius_reward_manager::id(),
+                &coliving_reward_manager::id(),
                 &reward_manager.pubkey(),
                 &signers[item.0],
                 &context.payer.pubkey(),
@@ -669,7 +669,7 @@ async fn failure_transfer_incorrect_number_of_verified_messages() {
 
     instructions.push(
         instruction::submit_attestations(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &oracle_derived_address,
             &context.payer.pubkey(),
@@ -687,7 +687,7 @@ async fn failure_transfer_incorrect_number_of_verified_messages() {
 
     // intentionally not push oracle instruction above and process transaction
     let tx_result = context.banks_client.process_transaction(tx).await;
-    assert_custom_error(tx_result, 7, AudiusProgramError::Secp256InstructionMissing);
+    assert_custom_error(tx_result, 7, ColivingProgramError::Secp256InstructionMissing);
 }
 
 // Confirm that an external caller cannot initialize a transfer account and 'occupy' it
@@ -773,7 +773,7 @@ async fn failure_multiple_disbursements() {
             instructions.push(inst);
             instructions.push(
                 instruction::submit_attestations(
-                    &audius_reward_manager::id(),
+                    &coliving_reward_manager::id(),
                     &reward_manager.pubkey(),
                     &signers[item.0],
                     &context.payer.pubkey(),
@@ -791,7 +791,7 @@ async fn failure_multiple_disbursements() {
         instructions.push(oracle_sign);
         instructions.push(
             instruction::submit_attestations(
-                &audius_reward_manager::id(),
+                &coliving_reward_manager::id(),
                 &reward_manager.pubkey(),
                 &oracle_derived_address,
                 &context.payer.pubkey(),
@@ -815,7 +815,7 @@ async fn failure_multiple_disbursements() {
 
         let tx = Transaction::new_signed_with_payer(
             &[instruction::evaluate_attestations(
-                &audius_reward_manager::id(),
+                &coliving_reward_manager::id(),
                 &verified_messages_account,
                 &reward_manager.pubkey(),
                 &token_account.pubkey(),
@@ -864,7 +864,7 @@ async fn failure_multiple_disbursements() {
     let res = submit_and_evaluate(keys, &mut c, signers).await;
     assert!(res.is_err());
 
-    assert_custom_error(res, 0, AudiusProgramError::AlreadySent);
+    assert_custom_error(res, 0, ColivingProgramError::AlreadySent);
 }
 
 #[tokio::test]
@@ -919,7 +919,7 @@ async fn failure_only_aao_attestations() {
         instructions.push(inst);
         instructions.push(
             instruction::submit_attestations(
-                &audius_reward_manager::id(),
+                &coliving_reward_manager::id(),
                 &reward_manager.pubkey(),
                 oracle_derived_address,
                 &context.payer.pubkey(),
@@ -942,7 +942,7 @@ async fn failure_only_aao_attestations() {
 
     let tx = Transaction::new_signed_with_payer(
         &[instruction::evaluate_attestations(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &verified_messages_account,
             &reward_manager.pubkey(),
             &token_account.pubkey(),
@@ -960,7 +960,7 @@ async fn failure_only_aao_attestations() {
     );
 
     let res = context.banks_client.process_transaction(tx).await;
-    assert_custom_error(res, 0, AudiusProgramError::IncorrectMessages);
+    assert_custom_error(res, 0, ColivingProgramError::IncorrectMessages);
 }
 
 // Ensure that an attacker can't pass in an arbitrary rewards recipient - tests
@@ -1011,7 +1011,7 @@ async fn disallows_transfers_to_invalid_account() {
         instructions.push(inst);
         instructions.push(
             instruction::submit_attestations(
-                &audius_reward_manager::id(),
+                &coliving_reward_manager::id(),
                 &reward_manager.pubkey(),
                 &signers[item.0],
                 &context.payer.pubkey(),
@@ -1029,7 +1029,7 @@ async fn disallows_transfers_to_invalid_account() {
     instructions.push(oracle_sign);
     instructions.push(
         instruction::submit_attestations(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &oracle_derived_address,
             &context.payer.pubkey(),
@@ -1078,7 +1078,7 @@ async fn disallows_transfers_to_invalid_account() {
 
     let tx = Transaction::new_signed_with_payer(
         &[instruction::evaluate_attestations(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &verified_messages_account,
             &reward_manager.pubkey(),
             &token_account.pubkey(),
@@ -1096,7 +1096,7 @@ async fn disallows_transfers_to_invalid_account() {
     );
 
     let res = context.banks_client.process_transaction(tx).await;
-    assert_custom_error(res, 0, AudiusProgramError::InvalidRecipient);
+    assert_custom_error(res, 0, ColivingProgramError::InvalidRecipient);
 
     // Assert that we didn't transfer anything to the malicious recipient.
     let recipient_account_data = get_account(&mut context, &malicious_recipient.pubkey())
@@ -1111,7 +1111,7 @@ async fn disallows_transfers_to_invalid_account() {
 
 fn get_transfer_account(reward_manager: &Keypair, transfer_id: &str) -> Pubkey {
     let (_, transfer_derived_address, _) = find_derived_pair(
-        &audius_reward_manager::id(),
+        &coliving_reward_manager::id(),
         &reward_manager.pubkey(),
         [
             TRANSFER_SEED_PREFIX.as_bytes().as_ref(),

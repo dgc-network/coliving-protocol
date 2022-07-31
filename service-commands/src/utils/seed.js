@@ -1,6 +1,6 @@
 const fs = require('fs')
 const _ = require('lodash')
-const { libs: AudiusLibs } = require('@coliving/sdk')
+const { libs: ColivingLibs } = require('@coliving/sdk')
 const {
   TEMP_IMAGE_STORAGE_PATH,
   TEMP_TRACK_STORAGE_PATH,
@@ -34,27 +34,27 @@ const getLibsConfig = overrideConfig => {
   const useHedgehogLocalStorage = false
   const lazyConnect = true
   const colivingLibsConfig = {
-    ethWeb3Config: AudiusLibs.configEthWeb3(
+    ethWeb3Config: ColivingLibs.configEthWeb3(
       ETH_TOKEN_ADDRESS,
       ETH_REGISTRY_ADDRESS,
       ETH_PROVIDER_ENDPOINT,
       ETH_OWNER_WALLET
     ),
-    web3Config: AudiusLibs.configInternalWeb3(
+    web3Config: ColivingLibs.configInternalWeb3(
       DATA_CONTRACTS_REGISTRY_ADDRESS,
       DATA_CONTRACTS_PROVIDER_ENDPOINTS
     ),
-    creatorNodeConfig: AudiusLibs.configCreatorNode(
+    creatorNodeConfig: ColivingLibs.configCreatorNode(
       USER_METADATA_ENDPOINT,
       lazyConnect,
       CONTENT_NODE_ALLOWLIST
     ),
     discoveryProviderConfig: {},
-    identityServiceConfig: AudiusLibs.configIdentityService(
+    identityServiceConfig: ColivingLibs.configIdentityService(
       IDENTITY_SERVICE_ENDPOINT,
       useHedgehogLocalStorage
     ),
-    solanaWeb3Config: AudiusLibs.configSolanaWeb3({
+    solanaWeb3Config: ColivingLibs.configSolanaWeb3({
       solanaClusterEndpoint: SOLANA_ENDPOINT,
       mintAddress: SOLANA_MINT_ADDRESS,
       solanaTokenAddress: SOLANA_TOKEN_ADDRESS,

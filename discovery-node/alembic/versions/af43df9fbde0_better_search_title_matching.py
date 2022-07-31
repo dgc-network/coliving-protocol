@@ -34,11 +34,11 @@ def upgrade():
             unnest(
                 tsvector_to_array(
                     to_tsvector(
-                        'audius_ts_config',
+                        'coliving_ts_config',
                         replace(COALESCE(u.name, ''), '&', 'and')
                     ) ||
                     to_tsvector(
-                        'audius_ts_config',
+                        'coliving_ts_config',
                         COALESCE(u.handle, '')
                     ) 
                 ) || lower(COALESCE(u.name, ''))
@@ -79,7 +79,7 @@ def upgrade():
             unnest(
                 tsvector_to_array(
                     to_tsvector(
-                        'audius_ts_config',
+                        'coliving_ts_config',
                         replace(COALESCE(t."title", ''), '&', 'and')
                     )
                 ) || lower(COALESCE(t."title", ''))
@@ -124,7 +124,7 @@ def upgrade():
             unnest(
                 tsvector_to_array(
                     to_tsvector(
-                        'audius_ts_config',
+                        'coliving_ts_config',
                         replace(COALESCE(p.playlist_name, ''), '&', 'and')
                     )
                 ) || lower(COALESCE(p.playlist_name, ''))
@@ -161,7 +161,7 @@ def upgrade():
             unnest(
                 tsvector_to_array(
                     to_tsvector(
-                        'audius_ts_config',
+                        'coliving_ts_config',
                         replace(COALESCE(p.playlist_name, ''), '&', 'and')
                     )
                 ) || lower(COALESCE(p.playlist_name, ''))

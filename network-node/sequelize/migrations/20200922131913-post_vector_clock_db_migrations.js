@@ -6,8 +6,8 @@
  * SCOPE
  * - delete all data where clock is still null + update remaining to 0
  * - enforce clock non-null constraints
- * - add back in foreign key constraints from AudiusUsers and Tracks to Files
- * - Add composite primary keys on (cnodeUserUUID,clock) to Tracks and AudiusUsers tables
+ * - add back in foreign key constraints from ColivingUsers and Tracks to Files
+ * - Add composite primary keys on (cnodeUserUUID,clock) to Tracks and ColivingUsers tables
  */
 
 module.exports = {
@@ -17,7 +17,7 @@ module.exports = {
 
     // delete all data from DataTables where clock is still null + update remaining cnodeUsers clocks to 0
     await queryInterface.sequelize.query(`
-      DELETE FROM "AudiusUsers" WHERE "clock" IS NULL;
+      DELETE FROM "ColivingUsers" WHERE "clock" IS NULL;
       DELETE FROM "Tracks" WHERE "clock" IS NULL;
       DELETE FROM "Files" WHERE "clock" IS NULL;
       UPDATE "CNodeUsers" SET "clock" = 0 WHERE "clock" IS NULL;
@@ -25,27 +25,27 @@ module.exports = {
 
     await enforceClockNonNullConstraints(queryInterface, Sequelize, transaction)
 
-    // add back in foreign key constraints from AudiusUsers and Tracks to Files
+    // add back in foreign key constraints from ColivingUsers and Tracks to Files
     // there are some records that are orphaned as a result of the 25000 limit, so we need to delete those records from the Tracks table
     await queryInterface.sequelize.query(`
-      ALTER TABLE "AudiusUsers" ADD CONSTRAINT "AudiusUsers_coverArtFileUUID_fkey" FOREIGN KEY ("coverArtFileUUID") REFERENCES "Files" ("fileUUID") ON DELETE RESTRICT;
-      ALTER TABLE "AudiusUsers" ADD CONSTRAINT "AudiusUsers_metadataFileUUID_fkey" FOREIGN KEY ("metadataFileUUID") REFERENCES "Files" ("fileUUID") ON DELETE RESTRICT;
-      ALTER TABLE "AudiusUsers" ADD CONSTRAINT "AudiusUsers_profilePicFileUUID_fkey" FOREIGN KEY ("profilePicFileUUID") REFERENCES "Files" ("fileUUID") ON DELETE RESTRICT;
+      ALTER TABLE "ColivingUsers" ADD CONSTRAINT "ColivingUsers_coverArtFileUUID_fkey" FOREIGN KEY ("coverArtFileUUID") REFERENCES "Files" ("fileUUID") ON DELETE RESTRICT;
+      ALTER TABLE "ColivingUsers" ADD CONSTRAINT "ColivingUsers_metadataFileUUID_fkey" FOREIGN KEY ("metadataFileUUID") REFERENCES "Files" ("fileUUID") ON DELETE RESTRICT;
+      ALTER TABLE "ColivingUsers" ADD CONSTRAINT "ColivingUsers_profilePicFileUUID_fkey" FOREIGN KEY ("profilePicFileUUID") REFERENCES "Files" ("fileUUID") ON DELETE RESTRICT;
       DELETE FROM "Tracks" WHERE "metadataFileUUID" IN (SELECT "metadataFileUUID" FROM "Tracks" t LEFT OUTER JOIN "Files" f ON t."metadataFileUUID" = f."fileUUID" WHERE f."fileUUID" IS NULL AND t."metadataFileUUID" IS NOT NULL);
       DELETE FROM "Tracks" WHERE "coverArtFileUUID" IN (SELECT "coverArtFileUUID" FROM "Tracks" t LEFT OUTER JOIN "Files" f ON t."coverArtFileUUID" = f."fileUUID" WHERE f."fileUUID" IS NULL AND t."coverArtFileUUID" IS NOT NULL);
       ALTER TABLE "Tracks" ADD CONSTRAINT "Tracks_coverArtFileUUID_fkey " FOREIGN KEY ("coverArtFileUUID") REFERENCES "Files" ("fileUUID") ON DELETE RESTRICT;
       ALTER TABLE "Tracks" ADD CONSTRAINT "Tracks_metadataFileUUID_fkey" FOREIGN KEY ("metadataFileUUID") REFERENCES "Files" ("fileUUID") ON DELETE RESTRICT;
     `, { transaction })
 
-    // Add composite primary keys on (cnodeUserUUID,clock) to Tracks and AudiusUsers tables
+    // Add composite primary keys on (cnodeUserUUID,clock) to Tracks and ColivingUsers tables
     // - (Files already has PK on fileUUID and cnodeUsers already has PK on cnodeUserUUID)
-    await addCompositePrimaryKeysToAudiusUsersAndTracks(queryInterface, Sequelize, transaction)
+    await addCompositePrimaryKeysToColivingUsersAndTracks(queryInterface, Sequelize, transaction)
 
-    // Add foreign key constraints from Tracks, AudiusUsers and Files to ClockRecords.
+    // Add foreign key constraints from Tracks, ColivingUsers and Files to ClockRecords.
     // This ensures a data record can never be created without a corresponding ClockRecord.
     await queryInterface.sequelize.query(`
       ALTER TABLE "Files" ADD CONSTRAINT "Files_cnodeUserUUID_clock_fkey" FOREIGN KEY ("cnodeUserUUID", "clock") REFERENCES "ClockRecords" ("cnodeUserUUID", "clock") ON DELETE RESTRICT;
-      ALTER TABLE "AudiusUsers" ADD CONSTRAINT "AudiusUsers_cnodeUserUUID_clock_fkey" FOREIGN KEY ("cnodeUserUUID", "clock") REFERENCES "ClockRecords" ("cnodeUserUUID", "clock") ON DELETE RESTRICT;
+      ALTER TABLE "ColivingUsers" ADD CONSTRAINT "ColivingUsers_cnodeUserUUID_clock_fkey" FOREIGN KEY ("cnodeUserUUID", "clock") REFERENCES "ClockRecords" ("cnodeUserUUID", "clock") ON DELETE RESTRICT;
       ALTER TABLE "Tracks" ADD CONSTRAINT "Tracks_cnodeUserUUID_clock_fkey" FOREIGN KEY ("cnodeUserUUID", "clock") REFERENCES "ClockRecords" ("cnodeUserUUID", "clock") ON DELETE RESTRICT;
     `, { transaction })
 
@@ -64,7 +64,7 @@ async function enforceClockNonNullConstraints (queryInterface, Sequelize, transa
     type: Sequelize.INTEGER,
     allowNull: false
   }, { transaction })
-  await queryInterface.changeColumn('AudiusUsers', 'clock', {
+  await queryInterface.changeColumn('ColivingUsers', 'clock', {
     type: Sequelize.INTEGER,
     allowNull: false
   }, { transaction })
@@ -78,13 +78,13 @@ async function enforceClockNonNullConstraints (queryInterface, Sequelize, transa
   }, { transaction })
 }
 
-async function addCompositePrimaryKeysToAudiusUsersAndTracks (queryInterface, Sequelize, transaction) {
+async function addCompositePrimaryKeysToColivingUsersAndTracks (queryInterface, Sequelize, transaction) {
   await queryInterface.addConstraint(
-    'AudiusUsers',
+    'ColivingUsers',
     {
       type: 'PRIMARY KEY',
       fields: ['cnodeUserUUID', 'clock'],
-      name: 'AudiusUsers_primary_key_(cnodeUserUUID,clock)',
+      name: 'ColivingUsers_primary_key_(cnodeUserUUID,clock)',
       transaction
     }
   )

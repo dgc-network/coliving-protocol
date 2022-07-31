@@ -4,7 +4,7 @@ import type {
   FetchCNodeEndpointToSpIdMapJobReturnValue
 } from './types'
 
-const initAudiusLibs = require('../../initAudiusLibs')
+const initColivingLibs = require('../../initColivingLibs')
 const NodeToSpIdManager = require('../CNodeToSpIdMapManager')
 
 /**
@@ -21,9 +21,9 @@ module.exports = async function ({
 > {
   let errorMsg = ''
   try {
-    const audiusLibs = await initAudiusLibs(true)
+    const colivingLibs = await initColivingLibs(true)
     await NodeToSpIdManager.updateCnodeEndpointToSpIdMap(
-      audiusLibs.ethContracts
+      colivingLibs.ethContracts
     )
   } catch (e: any) {
     errorMsg = e.message || e.toString()

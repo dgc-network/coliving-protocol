@@ -170,11 +170,11 @@ Se deben establecer algunas variables, puedes hacer esto con los siguientes coma
 
 ```text
 -cli set-config discovery-node backend
-key   : audius_delegate_owner_wallet
+key   : coliving_delegate_owner_wallet
 value : <delegate_owner_wallet>
 
 -cli set-config discovery-node backend
-key   : audius_delegate_private_key
+key   : coliving_delegate_private_key
 value : <delegate_private_key>
 ```
 
@@ -182,12 +182,12 @@ Si está utilizando una base de datos de Postgres administrada externamente \(ve
 
 ```text
 -cli set-config discovery-node backend
-key   : audius_db_url
-value : <audius_db_url>
+key   : coliving_db_url
+value : <coliving_db_url>
 
 -cli set-config discovery-node backend
-key   : audius_db_url_read_replica
-value : <audius_db_url_read_replica>
+key   : coliving_db_url_read_replica
+value : <coliving_db_url_read_replica>
 ```
 
 **Nota:** Si no hay replicas de lectura, introduzca la url principal de db para ambas vars.
@@ -261,7 +261,7 @@ Con el fin de asistir en cualquier depuración. Proporcionamos un servicio de re
 Primero, obtenga los secretos del proveedor de servicios de su contacto en Coliving. Contiene el token requerido\(s\) para que el registro funcione. Y aplicar el secreto con
 
 ```text
-kubectl aplicar -f <secret_from_audius>.yaml
+kubectl aplicar -f <secret_from_coliving>.yaml
 ```
 
 A continuación, actualice las etiquetas logger en el daemonset fluentd con su nombre, para que podamos identificarle a usted y a su servicio de forma única aquí: [https://github. om/dgc.network/audio k8s-manifests/blob/master//logger/logger.yaml\#L207](https://github.com/dgc.network/-k8s-manifests/blob/master//logger/logger.yaml#L207). Esto permite que nuestro servicio de registro filtre los registros por el proveedor de servicios y por el proveedor de servicios y el servicio. `SP_NAME` se refiere al nombre de su organización y `SP_NAME_TYPE_ID` se refiere al nombre de su organización más el tipo de servicio que está ejecutando, más un id para distinguir varios servicios del mismo tipo.

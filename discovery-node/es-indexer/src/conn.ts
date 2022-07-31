@@ -9,7 +9,7 @@ import { MsearchResponseItem } from '@elastic/elasticsearch/lib/api/types'
 let pool: PG | undefined = undefined
 export function dialPg(): PG {
   if (!pool) {
-    let connectionString = process.env.audius_db_url
+    let connectionString = process.env.coliving_db_url
     pool = new PG({ connectionString, application_name: 'es-indexer' })
   }
 
@@ -25,7 +25,7 @@ export async function queryCursor(sql: string) {
 let esc: ES | undefined = undefined
 export function dialEs() {
   if (!esc) {
-    let url = process.env.audius_elasticsearch_url
+    let url = process.env.coliving_elasticsearch_url
     esc = new ES({ node: url })
   }
   return esc

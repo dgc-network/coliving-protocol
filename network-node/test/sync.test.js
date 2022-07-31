@@ -109,7 +109,7 @@ describe('test nodesync', async function () {
         }
       }
       const userMetadataResp = await request(app)
-        .post('/audius_users/metadata')
+        .post('/coliving_users/metadata')
         .set('X-Session-ID', sessionToken)
         .set('User-Id', userId)
         .set('Enforce-Write-Quorum', false)
@@ -125,7 +125,7 @@ describe('test nodesync', async function () {
         blockNumber: 10
       }
       await request(app)
-        .post('/audius_users')
+        .post('/coliving_users')
         .set('X-Session-ID', sessionToken)
         .set('User-Id', userId)
         .send(associateRequest)
@@ -250,9 +250,9 @@ describe('test nodesync', async function () {
           })
         )
 
-        // get audiusUser
-        const audiusUser = stringifiedDateFields(
-          await models.AudiusUser.findOne({
+        // get colivingUser
+        const colivingUser = stringifiedDateFields(
+          await models.ColivingUser.findOne({
             where: {
               metadataFileUUID,
               clock: 2
@@ -300,7 +300,7 @@ describe('test nodesync', async function () {
         const expectedData = {
           [cnodeUserUUID]: {
             ...cnodeUser,
-            audiusUsers: [audiusUser],
+            colivingUsers: [colivingUser],
             tracks: [trackFile],
             files: [
               userMetadataFile,
@@ -388,9 +388,9 @@ describe('test nodesync', async function () {
           })
         ).map(stringifiedDateFields)
 
-        // Get audiusUsers
-        const audiusUsers = (
-          await models.AudiusUser.findAll({
+        // Get colivingUsers
+        const colivingUsers = (
+          await models.ColivingUser.findAll({
             where: {
               cnodeUserUUID,
               clock: {
@@ -440,7 +440,7 @@ describe('test nodesync', async function () {
         const expectedData = {
           [cnodeUserUUID]: {
             ...cnodeUser,
-            audiusUsers,
+            colivingUsers,
             tracks,
             files,
             clockRecords,
@@ -509,9 +509,9 @@ describe('test nodesync', async function () {
           })
         ).map(stringifiedDateFields)
 
-        // Get audiusUsers
-        const audiusUsers = (
-          await models.AudiusUser.findAll({
+        // Get colivingUsers
+        const colivingUsers = (
+          await models.ColivingUser.findAll({
             where: {
               cnodeUserUUID,
               clock: {
@@ -564,7 +564,7 @@ describe('test nodesync', async function () {
         const expectedData = {
           [cnodeUserUUID]: {
             ...cnodeUser,
-            audiusUsers,
+            colivingUsers,
             tracks,
             files,
             clockRecords,
@@ -630,9 +630,9 @@ describe('test nodesync', async function () {
           })
         ).map(stringifiedDateFields)
 
-        // Get audiusUsers
-        const audiusUsers = (
-          await models.AudiusUser.findAll({
+        // Get colivingUsers
+        const colivingUsers = (
+          await models.ColivingUser.findAll({
             where: {
               cnodeUserUUID,
               clock: {
@@ -685,7 +685,7 @@ describe('test nodesync', async function () {
         const expectedData = {
           [cnodeUserUUID]: {
             ...cnodeUser,
-            audiusUsers,
+            colivingUsers,
             tracks,
             files,
             clockRecords,
@@ -779,7 +779,7 @@ describe('test nodesync', async function () {
         }
       }
       const userMetadataResp = await request(app)
-        .post('/audius_users/metadata')
+        .post('/coliving_users/metadata')
         .set('X-Session-ID', session.sessionToken)
         .set('User-Id', session.userId)
         .set('Enforce-Write-Quorum', false)
@@ -795,7 +795,7 @@ describe('test nodesync', async function () {
         blockNumber: 10
       }
       await request(app)
-        .post('/audius_users')
+        .post('/coliving_users')
         .set('X-Session-ID', session.sessionToken)
         .set('User-Id', session.userId)
         .send(associateRequest)
@@ -807,12 +807,12 @@ describe('test nodesync', async function () {
     const unpackSampleExportData = (sampleExportFilePath) => {
       const sampleExport = JSON.parse(fs.readFileSync(sampleExportFilePath))
       const cnodeUser = Object.values(sampleExport.data.cnodeUsers)[0]
-      const { audiusUsers, tracks, files, clockRecords } = cnodeUser
+      const { colivingUsers, tracks, files, clockRecords } = cnodeUser
 
       return {
         sampleExport,
         cnodeUser,
-        audiusUsers,
+        colivingUsers,
         tracks,
         files,
         clockRecords
@@ -826,28 +826,28 @@ describe('test nodesync', async function () {
         .get((uri) => uri.includes('/export'))
         .reply(200, sampleExport)
 
-      // This text 'audius is cool' is mapped to the hash in the dummy json data
+      // This text 'coliving is cool' is mapped to the hash in the dummy json data
       // If changes are made to the response body, make the corresponding changes to the hash too
-      nock('http://mock-cn1.audius.co')
+      nock('http://mock-cn1.coliving.co')
         .persist()
         .get((uri) =>
           uri.includes('/ipfs/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE')
         )
-        .reply(200, 'audius is cool')
+        .reply(200, 'coliving is cool')
 
-      nock('http://mock-cn2.audius.co')
+      nock('http://mock-cn2.coliving.co')
         .persist()
         .get((uri) =>
           uri.includes('/ipfs/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE')
         )
-        .reply(200, 'audius is cool')
+        .reply(200, 'coliving is cool')
 
-      nock('http://mock-cn3.audius.co')
+      nock('http://mock-cn3.coliving.co')
         .persist()
         .get((uri) =>
           uri.includes('/ipfs/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE')
         )
-        .reply(200, 'audius is cool')
+        .reply(200, 'coliving is cool')
     }
 
     const verifyLocalCNodeUserStateForUser = async (exportedCnodeUser) => {
@@ -879,31 +879,31 @@ describe('test nodesync', async function () {
     }
 
     /**
-     * Verifies local state for user with CNodeUserUUID for AudiusUsers, Tracks, Files, and ClockRecords tables
+     * Verifies local state for user with CNodeUserUUID for ColivingUsers, Tracks, Files, and ClockRecords tables
      */
     const verifyLocalStateForUser = async ({
       cnodeUserUUID,
-      exportedAudiusUsers,
+      exportedColivingUsers,
       exportedClockRecords,
       exportedFiles,
       exportedTracks
     }) => {
       /**
-       * Verify local AudiusUsers table state matches export
+       * Verify local ColivingUsers table state matches export
        */
-      for (const exportedAudiusUser of exportedAudiusUsers) {
-        const localAudiusUser = stringifiedDateFields(
-          await models.AudiusUser.findOne({
+      for (const exportedColivingUser of exportedColivingUsers) {
+        const localColivingUser = stringifiedDateFields(
+          await models.ColivingUser.findOne({
             where: {
               cnodeUserUUID,
-              clock: exportedAudiusUser.clock
+              clock: exportedColivingUser.clock
             },
             raw: true
           })
         )
         assert.deepStrictEqual(
-          _.omit(localAudiusUser, ['cnodeUserUUID']),
-          _.omit(exportedAudiusUser, ['cnodeUserUUID'])
+          _.omit(localColivingUser, ['cnodeUserUUID']),
+          _.omit(exportedColivingUser, ['cnodeUserUUID'])
         )
       }
 
@@ -999,7 +999,7 @@ describe('test nodesync', async function () {
       const {
         sampleExport,
         cnodeUser: exportedCnodeUser,
-        audiusUsers: exportedAudiusUsers,
+        colivingUsers: exportedColivingUsers,
         tracks: exportedTracks,
         files: exportedFiles,
         clockRecords: exportedClockRecords
@@ -1028,7 +1028,7 @@ describe('test nodesync', async function () {
 
       await verifyLocalStateForUser({
         cnodeUserUUID: newCNodeUserUUID,
-        exportedAudiusUsers,
+        exportedColivingUsers,
         exportedClockRecords,
         exportedFiles,
         exportedTracks
@@ -1039,7 +1039,7 @@ describe('test nodesync', async function () {
       const {
         sampleExport,
         cnodeUser: exportedCnodeUser,
-        audiusUsers: exportedAudiusUsers,
+        colivingUsers: exportedColivingUsers,
         tracks: exportedTracks,
         files: exportedFiles,
         clockRecords: exportedClockRecords
@@ -1075,7 +1075,7 @@ describe('test nodesync', async function () {
 
       await verifyLocalStateForUser({
         cnodeUserUUID,
-        exportedAudiusUsers,
+        exportedColivingUsers,
         exportedClockRecords,
         exportedFiles,
         exportedTracks
@@ -1086,7 +1086,7 @@ describe('test nodesync', async function () {
       const {
         sampleExport,
         cnodeUser: exportedCnodeUser,
-        audiusUsers: exportedAudiusUsers,
+        colivingUsers: exportedColivingUsers,
         tracks: exportedTracks,
         files: exportedFiles,
         clockRecords: exportedClockRecords
@@ -1126,7 +1126,7 @@ describe('test nodesync', async function () {
 
       await verifyLocalStateForUser({
         cnodeUserUUID: newCNodeUserUUID,
-        exportedAudiusUsers,
+        exportedColivingUsers,
         exportedClockRecords,
         exportedFiles,
         exportedTracks
@@ -1139,9 +1139,9 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
   let server, app, serviceRegistryMock, primarySyncFromSecondaryStub
 
   const NODES = {
-    CN1: 'http://mock-cn1.audius.co',
-    CN2: 'http://mock-cn2.audius.co',
-    CN3: 'http://mock-cn3.audius.co'
+    CN1: 'http://mock-cn1.coliving.co',
+    CN2: 'http://mock-cn2.coliving.co',
+    CN3: 'http://mock-cn3.coliving.co'
   }
   const NODES_LIST = Object.values(NODES)
   const SELF = NODES.CN1
@@ -1158,19 +1158,19 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
     const exportObj = JSON.parse(fs.readFileSync(exportDataFilePath))
     const cnodeUserInfo = Object.values(exportObj.data.cnodeUsers)[0]
     const cnodeUser = _.omit(cnodeUserInfo, [
-      'audiusUsers',
+      'colivingUsers',
       'tracks',
       'files',
       'clockRecords',
       'clockInfo'
     ])
-    const { audiusUsers, tracks, files, clockRecords, clockInfo } =
+    const { colivingUsers, tracks, files, clockRecords, clockInfo } =
       cnodeUserInfo
 
     return {
       exportObj,
       cnodeUser,
-      audiusUsers,
+      colivingUsers,
       tracks,
       files,
       clockRecords,
@@ -1215,7 +1215,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
   const fetchDBStateForWallet = async (walletPublicKey) => {
     const response = {
       cnodeUser: null,
-      audiusUsers: null,
+      colivingUsers: null,
       tracks: null,
       files: null,
       clockRecords: null
@@ -1238,13 +1238,13 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
 
     const cnodeUserUUID = cnodeUser.cnodeUserUUID
 
-    const audiusUsers = (
-      await models.AudiusUser.findAll({
+    const colivingUsers = (
+      await models.ColivingUser.findAll({
         where: { cnodeUserUUID },
         raw: true
       })
     ).map(stringifiedDateFields)
-    response.audiusUsers = audiusUsers
+    response.colivingUsers = colivingUsers
 
     const tracks = (
       await models.Track.findAll({
@@ -1293,7 +1293,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
   const assertFullUserStateEquality = async (wallet, exportedUserData) => {
     const {
       cnodeUser: localCNodeUser,
-      audiusUsers: localAudiusUsers,
+      colivingUsers: localColivingUsers,
       tracks: localTracks,
       files: localFiles,
       clockRecords: localClockRecords
@@ -1301,7 +1301,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
 
     const {
       exportedCnodeUser,
-      exportedAudiusUsers,
+      exportedColivingUsers,
       exportedTracks,
       exportedFiles,
       exportedClockRecords
@@ -1313,8 +1313,8 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
     )
 
     assertTableEquality(
-      localAudiusUsers,
-      exportedAudiusUsers,
+      localColivingUsers,
+      exportedColivingUsers,
       comparisonOmittedFields
     )
 
@@ -1330,7 +1330,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
   }
 
   /**
-   * Create local user with CNodeUser, AudiusUser, File, and ClockRecord state
+   * Create local user with CNodeUser, ColivingUser, File, and ClockRecord state
    * @returns cnodeUserUUID
    */
   const createUser = async (userId, userWallet, blockNumber) => {
@@ -1344,7 +1344,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
       }
     }
     const userMetadataResp = await request(app)
-      .post('/audius_users/metadata')
+      .post('/coliving_users/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .set('Enforce-Write-Quorum', false)
@@ -1360,7 +1360,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
       blockNumber
     }
     await request(app)
-      .post('/audius_users')
+      .post('/coliving_users')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .set('Enforce-Write-Quorum', false)
@@ -1381,7 +1381,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
       }
     }
     await request(app)
-      .post('/audius_users/metadata')
+      .post('/coliving_users/metadata')
       .set('X-Session-ID', sessionToken)
       .set('User-Id', userId)
       .set('Enforce-Write-Quorum', false)
@@ -1418,7 +1418,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
       '../src/services/sync/primarySyncFromSecondary',
       {
         '../../serviceRegistry': { serviceRegistry: serviceRegistryMock },
-        '../initAudiusLibs': async () => libsMock
+        '../initColivingLibs': async () => libsMock
       }
     )
   })
@@ -1432,7 +1432,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
     const {
       exportObj,
       cnodeUser: exportedCnodeUser,
-      audiusUsers: exportedAudiusUsers,
+      colivingUsers: exportedColivingUsers,
       tracks: exportedTracks,
       files: exportedFiles,
       clockRecords: exportedClockRecords
@@ -1458,7 +1458,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
      */
     const exportedUserData = {
       exportedCnodeUser,
-      exportedAudiusUsers,
+      exportedColivingUsers,
       exportedTracks,
       exportedFiles,
       exportedClockRecords
@@ -1470,7 +1470,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
     const {
       exportObj,
       cnodeUser: exportedCnodeUser,
-      audiusUsers: exportedAudiusUsers,
+      colivingUsers: exportedColivingUsers,
       tracks: exportedTracks,
       files: exportedFiles,
       clockRecords: exportedClockRecords
@@ -1494,7 +1494,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
 
     const {
       cnodeUser: localInitialCNodeUser,
-      audiusUsers: localInitialAudiusUsers,
+      colivingUsers: localInitialColivingUsers,
       tracks: localInitialTracks,
       files: localInitialFiles,
       clockRecords: localInitialClockRecords
@@ -1510,7 +1510,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
       }
     )
 
-    assertTableEquality(localInitialAudiusUsers, exportedAudiusUsers, [
+    assertTableEquality(localInitialColivingUsers, exportedColivingUsers, [
       ...comparisonOmittedFields,
       'metadataFileUUID'
     ])
@@ -1542,7 +1542,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
 
     const {
       cnodeUser: localFinalCNodeUser,
-      audiusUsers: localFinalAudiusUsers,
+      colivingUsers: localFinalColivingUsers,
       tracks: localFinalTracks,
       files: localFinalFiles,
       clockRecords: localFinalClockRecords
@@ -1557,12 +1557,12 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
     )
 
     assertTableEquality(
-      localFinalAudiusUsers,
+      localFinalColivingUsers,
       _.concat(
-        localInitialAudiusUsers,
-        exportedAudiusUsers.map((audiusUser) => ({
-          ...audiusUser,
-          clock: audiusUser.clock + 2
+        localInitialColivingUsers,
+        exportedColivingUsers.map((colivingUser) => ({
+          ...colivingUser,
+          clock: colivingUser.clock + 2
         }))
       ),
       comparisonOmittedFields
@@ -1599,7 +1599,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
     const {
       exportObj,
       cnodeUser: exportedCnodeUser,
-      audiusUsers: exportedAudiusUsers,
+      colivingUsers: exportedColivingUsers,
       tracks: exportedTracks,
       files: exportedFiles,
       clockRecords: exportedClockRecords
@@ -1619,8 +1619,8 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
     /**
      * Write first few records to local DB before syncing
      */
-    const audiusUsersSubset = _.orderBy(
-      exportedAudiusUsers,
+    const colivingUsersSubset = _.orderBy(
+      exportedColivingUsers,
       ['clock'],
       ['asc']
     ).slice(0, 1)
@@ -1638,7 +1638,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
     )
     await models.ClockRecord.bulkCreate(clockRecordsSubSet, { transaction })
     await models.File.bulkCreate(filesSubset, { transaction })
-    await models.AudiusUser.bulkCreate(audiusUsersSubset, { transaction })
+    await models.ColivingUser.bulkCreate(colivingUsersSubset, { transaction })
     await transaction.commit()
 
     /**
@@ -1664,7 +1664,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
      */
     const exportedUserData = {
       exportedCnodeUser,
-      exportedAudiusUsers,
+      exportedColivingUsers,
       exportedTracks,
       exportedFiles,
       exportedClockRecords
@@ -1676,7 +1676,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
     const {
       exportObj,
       cnodeUser: exportedCnodeUser,
-      audiusUsers: exportedAudiusUsers,
+      colivingUsers: exportedColivingUsers,
       tracks: exportedTracks,
       files: exportedFiles,
       clockRecords: exportedClockRecords
@@ -1706,7 +1706,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
     await models.CNodeUser.create({ ...exportedCnodeUser }, { transaction })
     await models.ClockRecord.bulkCreate(exportedClockRecords, { transaction })
     await models.File.bulkCreate(exportedNonTrackFiles, { transaction })
-    await models.AudiusUser.bulkCreate(exportedAudiusUsers, { transaction })
+    await models.ColivingUser.bulkCreate(exportedColivingUsers, { transaction })
     await models.File.bulkCreate(exportedTrackFiles, { transaction })
     await models.Track.bulkCreate(exportedTracks, { transaction })
     await transaction.commit()
@@ -1736,7 +1736,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
      */
     const exportedUserData = {
       exportedCnodeUser,
-      exportedAudiusUsers,
+      exportedColivingUsers,
       exportedTracks,
       exportedFiles,
       exportedClockRecords
@@ -1748,7 +1748,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
     const {
       exportObj,
       cnodeUser: exportedCnodeUser,
-      audiusUsers: exportedAudiusUsers,
+      colivingUsers: exportedColivingUsers,
       tracks: exportedTracks,
       files: exportedFiles,
       clockRecords: exportedClockRecords
@@ -1781,7 +1781,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
     })
     await models.ClockRecord.bulkCreate(exportedClockRecords, { transaction })
     await models.File.bulkCreate(exportedNonTrackFiles, { transaction })
-    await models.AudiusUser.bulkCreate(exportedAudiusUsers, { transaction })
+    await models.ColivingUser.bulkCreate(exportedColivingUsers, { transaction })
     await models.File.bulkCreate(exportedTrackFiles, { transaction })
     await models.Track.bulkCreate(exportedTracks, { transaction })
     await transaction.commit()
@@ -1813,7 +1813,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
 
     const {
       cnodeUser: localInitialCNodeUser,
-      audiusUsers: localInitialAudiusUsers,
+      colivingUsers: localInitialColivingUsers,
       tracks: localInitialTracks,
       files: localInitialFiles,
       clockRecords: localInitialClockRecords
@@ -1834,7 +1834,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
 
     const {
       cnodeUser: localFinalCNodeUser,
-      audiusUsers: localFinalAudiusUsers,
+      colivingUsers: localFinalColivingUsers,
       tracks: localFinalTracks,
       files: localFinalFiles,
       clockRecords: localFinalClockRecords
@@ -1842,7 +1842,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
 
     assert.deepStrictEqual(localFinalCNodeUser, localInitialCNodeUser)
 
-    assertTableEquality(localFinalAudiusUsers, localInitialAudiusUsers, [])
+    assertTableEquality(localFinalColivingUsers, localInitialColivingUsers, [])
 
     assertTableEquality(localFinalTracks, localInitialTracks, [])
 

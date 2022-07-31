@@ -15,7 +15,7 @@ from sqlalchemy import create_engine, text
 class Seeder:
     def __init__(self):
         self.con = create_engine(
-            "postgresql+psycopg2://postgres:postgres@127.0.0.1:5432/audius_discovery",
+            "postgresql+psycopg2://postgres:postgres@127.0.0.1:5432/coliving_discovery",
             echo=False,
         )
         self.user_ids = []

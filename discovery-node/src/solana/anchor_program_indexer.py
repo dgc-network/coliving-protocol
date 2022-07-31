@@ -8,7 +8,7 @@ from redis import Redis
 from solana.transaction import Transaction
 from sqlalchemy import desc
 from sqlalchemy.orm.session import Session
-from src.models.indexing.coliving_data_tx import AudiusDataTx
+from src.models.indexing.coliving_data_tx import ColivingDataTx
 from src.models.indexing.ursm_content_node import UrsmContentNode
 from src.models.tracks.track import Track
 from src.models.users.user import User
@@ -28,7 +28,7 @@ COLIVING_DATA_IDL_PATH = "./idl/coliving_data.json"
 
 class AnchorProgramIndexer(SolanaProgramIndexer):
     """
-    Indexer for the audius user data layer
+    Indexer for the coliving user data layer
     """
 
     def __init__(
@@ -55,7 +55,7 @@ class AnchorProgramIndexer(SolanaProgramIndexer):
     def is_tx_in_db(self, session: Session, tx_sig: str):
         exists = False
         tx_sig_db_count = (
-            session.query(AudiusDataTx).filter(AudiusDataTx.signature == tx_sig)
+            session.query(ColivingDataTx).filter(ColivingDataTx.signature == tx_sig)
         ).count()
         exists = tx_sig_db_count > 0
         return exists
@@ -64,10 +64,10 @@ class AnchorProgramIndexer(SolanaProgramIndexer):
         latest_slot = None
         with self._db.scoped_session() as session:
             highest_slot_query = (
-                session.query(AudiusDataTx)
-                .filter(AudiusDataTx.slot != None)
-                .filter(AudiusDataTx.signature != None)
-                .order_by(desc(AudiusDataTx.slot))
+                session.query(ColivingDataTx)
+                .filter(ColivingDataTx.slot != None)
+                .filter(ColivingDataTx.signature != None)
+                .order_by(desc(ColivingDataTx.slot))
             ).first()
             # Can be None prior to first write operations
             if highest_slot_query is not None:
@@ -89,7 +89,7 @@ class AnchorProgramIndexer(SolanaProgramIndexer):
         with self._db.scoped_session() as session:
             session.bulk_save_objects(
                 [
-                    AudiusDataTx(
+                    ColivingDataTx(
                         signature=transaction["tx_sig"],
                         slot=transaction["result"]["slot"],
                     )

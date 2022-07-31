@@ -11,7 +11,7 @@ DEFAULT_UPDATE_TIMEOUT = 60 * 60 * 6  # 6 hours
 
 
 def update_views(self, db):
-    if os.getenv("audius_elasticsearch_search_enabled"):
+    if os.getenv("coliving_elasticsearch_search_enabled"):
         return
 
     with db.scoped_session() as session:

@@ -9,7 +9,7 @@
         "clock": 37,
         "createdAt": "2020-11-30T17:12:54.067Z",
         "updatedAt": "2020-11-30T17:13:07.828Z",
-        "audiusUsers": [],
+        "colivingUsers": [],
         "tracks": [
           {
             "cnodeUserUUID": "41819286-483d-43e5-bd10-193df3c50e8f",
@@ -931,7 +931,7 @@
       "clock": 37,
       "createdAt": "2020-11-30T17:12:54.067Z",
       "updatedAt": "2020-11-30T17:13:07.828Z",
-      "audiusUsers": [],
+      "colivingUsers": [],
       "tracks": [
         {
           "cnodeUserUUID": "41819286-483d-43e5-bd10-193df3c50e8f",

@@ -1,7 +1,7 @@
 //! Program state processor
 
-use crate::error::AudiusError;
-use crate::instruction::{AudiusInstruction, SignatureData};
+use crate::error::ColivingError;
+use crate::instruction::{ColivingInstruction, SignatureData};
 use crate::state::{SecpSignatureOffsets, SignerGroup, ValidSigner};
 use borsh::{BorshDeserialize, BorshSerialize};
 use num_traits::FromPrimitive;
@@ -41,16 +41,16 @@ impl Processor {
         message: &[u8],
         secp_instruction_data: Vec<u8>,
         instruction_index: u8,
-    ) -> Result<(), AudiusError> {
+    ) -> Result<(), ColivingError> {
         // Only single recovery expected per instruction
         if secp_instruction_data[0] != 1 {
-            return Err(AudiusError::SignatureVerificationFailed.into());
+            return Err(ColivingError::SignatureVerificationFailed.into());
         }
         let start = 1;
         let end = start + (SecpSignatureOffsets::SIGNATURE_OFFSETS_SERIALIZED_SIZE as usize);
         let sig_offsets_struct =
             SecpSignatureOffsets::try_from_slice(&secp_instruction_data[start..end])
-                .map_err(|_| AudiusError::SignatureVerificationFailed)?;
+                .map_err(|_| ColivingError::SignatureVerificationFailed)?;
 
         let eth_address_offset = 12;
         // signature_offset = eth address offset (12) + eth_pubkey.len (20) = 32
@@ -63,7 +63,7 @@ impl Processor {
             || sig_offsets_struct.signature_instruction_index != instruction_index
             || sig_offsets_struct.eth_address_instruction_index != instruction_index
         {
-            return Err(AudiusError::SignatureVerificationFailed.into());
+            return Err(ColivingError::SignatureVerificationFailed.into());
         }
 
         // Validate each offset is as expected
@@ -71,20 +71,20 @@ impl Processor {
             || sig_offsets_struct.signature_offset != (signature_offset as u16)
             || sig_offsets_struct.message_data_offset != (message_data_offset as u16)
         {
-            return Err(AudiusError::SignatureVerificationFailed.into());
+            return Err(ColivingError::SignatureVerificationFailed.into());
         }
 
         let instruction_signer = secp_instruction_data
             [eth_address_offset..eth_address_offset + SecpSignatureOffsets::ETH_ADDRESS_SIZE]
             .to_vec();
         if instruction_signer != expected_signer {
-            return Err(AudiusError::SignatureVerificationFailed.into());
+            return Err(ColivingError::SignatureVerificationFailed.into());
         }
 
         let message_data_offset = 97; // meta (12) + address (20) + signature (65) = 97
         let instruction_message = secp_instruction_data[message_data_offset..].to_vec();
         if instruction_message != message {
-            return Err(AudiusError::SignatureVerificationFailed.into());
+            return Err(ColivingError::SignatureVerificationFailed.into());
         }
         Ok(())
     }
@@ -102,7 +102,7 @@ impl Processor {
         message_1: &Vec<u8>,
         message_2: &Vec<u8>,
         message_3: &Vec<u8>,
-    ) -> Result<(), AudiusError> {
+    ) -> Result<(), ColivingError> {
         let timestamp_1: i64 = Self::int_from_vec(message_1);
         let timestamp_2: i64 = Self::int_from_vec(message_2);
         let timestamp_3: i64 = Self::int_from_vec(message_3);
@@ -111,7 +111,7 @@ impl Processor {
             || (clock.unix_timestamp - timestamp_2).abs() > MAX_TIME_DIFF_SECONDS
             || (clock.unix_timestamp - timestamp_3).abs() > MAX_TIME_DIFF_SECONDS
         {
-            return Err(AudiusError::InvalidInstruction.into());
+            return Err(ColivingError::InvalidInstruction.into());
         }
 
         return std::result::Result::Ok(());
@@ -120,17 +120,17 @@ impl Processor {
     /// Process [Recover SECP Instructions]().
     pub fn recover_secp_instructions(
         instruction_info: &AccountInfo,
-    ) -> Result<Vec<(Instruction, u16)>, AudiusError> {
+    ) -> Result<Vec<(Instruction, u16)>, ColivingError> {
         let mut v: Vec<(Instruction, u16)> = Vec::new();
         // Index of current instruction in tx
-        let index = sysvar::instructions::load_current_index_checked(&instruction_info).map_err(|_| AudiusError::Secp256InstructionLosing.into())?;
+        let index = sysvar::instructions::load_current_index_checked(&instruction_info).map_err(|_| ColivingError::Secp256InstructionLosing.into())?;
         // Indicates no instructions present
         if index == 0 {
-            return Err(AudiusError::Secp256InstructionLosing.into());
+            return Err(ColivingError::Secp256InstructionLosing.into());
         }
 
         if !sysvar::instructions::check_id(instruction_info.key) {
-            return Err(AudiusError::Secp256InstructionLosing.into());
+            return Err(ColivingError::Secp256InstructionLosing.into());
         }
 
         // Iterate over all instructions and recover SECP instruction
@@ -140,10 +140,10 @@ impl Processor {
                 iterator as usize,
                 &instruction_info,
             )
-            .map_err(|_| AudiusError::SignatureMissing)?;
+            .map_err(|_| ColivingError::SignatureMissing)?;
 
             if secp_instruction.program_id != secp256k1_program::id() {
-                return Err(AudiusError::SignatureVerificationFailed.into());
+                return Err(ColivingError::SignatureVerificationFailed.into());
             }
 
             v.push((secp_instruction, iterator));
@@ -160,17 +160,17 @@ impl Processor {
         signer_group_info: &AccountInfo,
         valid_signer_accounts: &[&AccountInfo],
         signature_data_array: &[&SignatureData],
-    ) -> Result<(), AudiusError> {
+    ) -> Result<(), ColivingError> {
         let instruction_recovery = Self::recover_secp_instructions(&instruction_info);
         if instruction_recovery.is_err() {
-            return Err(AudiusError::Secp256InstructionLosing.into());
+            return Err(ColivingError::Secp256InstructionLosing.into());
         }
 
         let recovered_instructions = instruction_recovery?;
         if recovered_instructions.len() != valid_signer_accounts.len()
             || recovered_instructions.len() != signature_data_array.len()
         {
-            return Err(AudiusError::Secp256InstructionLosing.into());
+            return Err(ColivingError::Secp256InstructionLosing.into());
         }
 
         for i in 0..recovered_instructions.len() {
@@ -180,15 +180,15 @@ impl Processor {
 
             let valid_signer = Box::new(
                 ValidSigner::try_from_slice(&valid_signer_info.data.borrow())
-                    .map_err(|_| AudiusError::InvalidInstruction)?,
+                    .map_err(|_| ColivingError::InvalidInstruction)?,
             );
 
             if !valid_signer.is_initialized() {
-                return Err(AudiusError::ValidSignerNotInitialized.into());
+                return Err(ColivingError::ValidSignerNotInitialized.into());
             }
 
             if valid_signer.signer_group != *signer_group_info.key {
-                return Err(AudiusError::WrongSignerGroup.into());
+                return Err(ColivingError::WrongSignerGroup.into());
             }
 
             Self::validate_eth_signature(
@@ -215,7 +215,7 @@ impl Processor {
 
         // Confirm program ownership of SignerGroup Account
         if signer_group_info.owner != _program_id {
-            return Err(AudiusError::InvalidInstruction.into());
+            return Err(ColivingError::InvalidInstruction.into());
         }
 
         let mut signer_group = Box::new(SignerGroup::try_from_slice(
@@ -223,7 +223,7 @@ impl Processor {
         )?);
 
         if signer_group.is_initialized() {
-            return Err(AudiusError::SignerGroupAlreadyInitialized.into());
+            return Err(ColivingError::SignerGroupAlreadyInitialized.into());
         }
 
         signer_group.version = Self::SIGNER_GROUP_VERSION;
@@ -250,12 +250,12 @@ impl Processor {
 
         // Confirm program ownership of SignerGroup and ValidSigner
         if signer_group_info.owner != _program_id {
-            return Err(AudiusError::InvalidInstruction.into());
+            return Err(ColivingError::InvalidInstruction.into());
         }
 
         // Verify owner submission
         if !group_owner_info.is_signer {
-            return Err(AudiusError::SignatureMissing.into());
+            return Err(ColivingError::SignatureMissing.into());
         }
 
         let mut signer_group = Box::new(SignerGroup::try_from_slice(
@@ -264,11 +264,11 @@ impl Processor {
 
         // Confirm correct owner
         if signer_group.owner != *group_owner_info.key {
-            return Err(AudiusError::WrongOwner.into());
+            return Err(ColivingError::WrongOwner.into());
         }
 
         if !signer_group.is_initialized() {
-            return Err(AudiusError::SignerGroupOwnerDisabled.into());
+            return Err(ColivingError::SignerGroupOwnerDisabled.into());
         }
         signer_group.version = Self::SIGNER_GROUP_VERSION;
 
@@ -294,12 +294,12 @@ impl Processor {
 
         // Confirm program ownership of SignerGroup and ValidSigner
         if valid_signer_info.owner != _program_id || signer_group_info.owner != _program_id {
-            return Err(AudiusError::InvalidInstruction.into());
+            return Err(ColivingError::InvalidInstruction.into());
         }
 
         // Verify SignerGroupOwner submission of this transaction
         if !signer_groups_owner_info.is_signer {
-            return Err(AudiusError::SignatureMissing.into());
+            return Err(ColivingError::SignatureMissing.into());
         }
 
         let signer_group = Box::new(SignerGroup::try_from_slice(
@@ -307,12 +307,12 @@ impl Processor {
         )?);
 
         if !signer_group.is_initialized() {
-            return Err(AudiusError::UninitializedSignerGroup.into());
+            return Err(ColivingError::UninitializedSignerGroup.into());
         }
 
         // Reject if owner has been disabled
         if !signer_group.owner_enabled {
-            return Err(AudiusError::SignerGroupOwnerDisabled.into());
+            return Err(ColivingError::SignerGroupOwnerDisabled.into());
         }
 
         let mut valid_signer = Box::new(ValidSigner::try_from_slice(
@@ -320,7 +320,7 @@ impl Processor {
         )?);
 
         if valid_signer.is_initialized() {
-            return Err(AudiusError::SignerAlreadyInitialized.into());
+            return Err(ColivingError::SignerAlreadyInitialized.into());
         }
 
         signer_group.check_owner(&signer_groups_owner_info)?;
@@ -351,12 +351,12 @@ impl Processor {
 
         // Confirm program ownership of SignerGroup and ValidSigner
         if valid_signer_info.owner != _program_id || signer_group_info.owner != _program_id {
-            return Err(AudiusError::InvalidInstruction.into());
+            return Err(ColivingError::InvalidInstruction.into());
         }
 
         // Verify owner submission
         if !signer_groups_owner_info.is_signer {
-            return Err(AudiusError::SignatureMissing.into());
+            return Err(ColivingError::SignatureMissing.into());
         }
 
         let signer_group = Box::new(SignerGroup::try_from_slice(
@@ -364,12 +364,12 @@ impl Processor {
         )?);
 
         if !signer_group.is_initialized() {
-            return Err(AudiusError::UninitializedSignerGroup.into());
+            return Err(ColivingError::UninitializedSignerGroup.into());
         }
 
         // Reject if owner has been disabled
         if !signer_group.owner_enabled {
-            return Err(AudiusError::SignerGroupOwnerDisabled.into());
+            return Err(ColivingError::SignerGroupOwnerDisabled.into());
         }
 
         let mut valid_signer = Box::new(ValidSigner::try_from_slice(
@@ -377,11 +377,11 @@ impl Processor {
         )?);
 
         if !valid_signer.is_initialized() {
-            return Err(AudiusError::ValidSignerNotInitialized.into());
+            return Err(ColivingError::ValidSignerNotInitialized.into());
         }
 
         if valid_signer.signer_group != *signer_group_info.key {
-            return Err(AudiusError::WrongSignerGroup.into());
+            return Err(ColivingError::WrongSignerGroup.into());
         }
 
         signer_group.check_owner(&signer_groups_owner_info)?;
@@ -422,7 +422,7 @@ impl Processor {
             || old_valid_signer_info.owner != _program_id
             || signer_group_info.owner != _program_id
         {
-            return Err(AudiusError::InvalidInstruction.into());
+            return Err(ColivingError::InvalidInstruction.into());
         }
 
         // clock sysvar account
@@ -434,7 +434,7 @@ impl Processor {
         )?);
 
         if !signer_group.is_initialized() {
-            return Err(AudiusError::UninitializedSignerGroup.into());
+            return Err(ColivingError::UninitializedSignerGroup.into());
         }
 
         let valid_signer_acct_array = [
@@ -460,7 +460,7 @@ impl Processor {
         );
 
         if timestamp_result.is_err() {
-            return Err(AudiusError::SignatureVerificationFailed.into());
+            return Err(ColivingError::SignatureVerificationFailed.into());
         }
 
         let mut old_valid_signer = Box::new(ValidSigner::try_from_slice(
@@ -468,11 +468,11 @@ impl Processor {
         )?);
 
         if !old_valid_signer.is_initialized() {
-            return Err(AudiusError::ValidSignerNotInitialized.into());
+            return Err(ColivingError::ValidSignerNotInitialized.into());
         }
 
         if old_valid_signer.signer_group != *signer_group_info.key {
-            return Err(AudiusError::WrongSignerGroup.into());
+            return Err(ColivingError::WrongSignerGroup.into());
         }
 
         old_valid_signer.version = Self::VALID_SIGNER_UNINITIALIZED_VERSION;
@@ -511,7 +511,7 @@ impl Processor {
             || new_valid_signer_info.owner != _program_id
             || signer_group_info.owner != _program_id
         {
-            return Err(AudiusError::InvalidInstruction.into());
+            return Err(ColivingError::InvalidInstruction.into());
         }
 
         // clock sysvar account
@@ -523,7 +523,7 @@ impl Processor {
         )?);
 
         if !signer_group.is_initialized() {
-            return Err(AudiusError::UninitializedSignerGroup.into());
+            return Err(ColivingError::UninitializedSignerGroup.into());
         }
 
         // Create and write new valid signer
@@ -532,7 +532,7 @@ impl Processor {
         )?);
 
         if new_valid_signer.is_initialized() {
-            return Err(AudiusError::SignerAlreadyInitialized.into());
+            return Err(ColivingError::SignerAlreadyInitialized.into());
         }
 
         let valid_signer_acct_array = [
@@ -558,7 +558,7 @@ impl Processor {
         );
 
         if timestamp_result.is_err() {
-            return Err(AudiusError::SignatureVerificationFailed.into());
+            return Err(ColivingError::SignatureVerificationFailed.into());
         }
 
         new_valid_signer.version = Self::VALID_SIGNER_VERSION;
@@ -585,7 +585,7 @@ impl Processor {
 
         // Confirm program ownership of SignerGroup and ValidSigner
         if valid_signer_info.owner != _program_id || signer_group_info.owner != _program_id {
-            return Err(AudiusError::InvalidInstruction.into());
+            return Err(ColivingError::InvalidInstruction.into());
         }
 
         let signer_group = Box::new(SignerGroup::try_from_slice(
@@ -593,7 +593,7 @@ impl Processor {
         )?);
 
         if !signer_group.is_initialized() {
-            return Err(AudiusError::UninitializedSignerGroup.into());
+            return Err(ColivingError::UninitializedSignerGroup.into());
         }
 
         let valid_signer_acct_array = [valid_signer_info];
@@ -610,22 +610,22 @@ impl Processor {
 
     /// Process an [Instruction]().
     pub fn process(_program_id: &Pubkey, accounts: &[AccountInfo], input: &[u8]) -> ProgramResult {
-        let instruction = AudiusInstruction::try_from_slice(input)?;
+        let instruction = ColivingInstruction::try_from_slice(input)?;
 
         match instruction {
-            AudiusInstruction::InitSignerGroup => {
+            ColivingInstruction::InitSignerGroup => {
                 msg!("Instruction: InitSignerGroup");
                 Self::process_init_signer_group(_program_id, accounts)
             }
-            AudiusInstruction::InitValidSigner(eth_pubkey) => {
+            ColivingInstruction::InitValidSigner(eth_pubkey) => {
                 msg!("Instruction: InitValidSigner");
                 Self::process_init_valid_signer(_program_id, accounts, eth_pubkey)
             }
-            AudiusInstruction::ClearValidSigner => {
+            ColivingInstruction::ClearValidSigner => {
                 msg!("Instruction: ClearValidSigner");
                 Self::process_clear_valid_signer(_program_id, accounts)
             }
-            AudiusInstruction::ValidateMultipleSignaturesClearValidSigner(
+            ColivingInstruction::ValidateMultipleSignaturesClearValidSigner(
                 signature_1,
                 signature_2,
                 signature_3,
@@ -639,15 +639,15 @@ impl Processor {
                     signature_3,
                 )
             }
-            AudiusInstruction::ValidateSignature(signature) => {
+            ColivingInstruction::ValidateSignature(signature) => {
                 msg!("Instruction: ValidateSignature");
                 Self::process_validate_signature(_program_id, accounts, signature)
             }
-            AudiusInstruction::DisableSignerGroupOwner => {
+            ColivingInstruction::DisableSignerGroupOwner => {
                 msg!("Instruction: DisableSignerGroupOwner");
                 Self::process_disable_signer_group_owner(_program_id, accounts)
             }
-            AudiusInstruction::ValidateMultipleSignaturesAddSigner(
+            ColivingInstruction::ValidateMultipleSignaturesAddSigner(
                 signature_1,
                 signature_2,
                 signature_3,
@@ -667,23 +667,23 @@ impl Processor {
     }
 }
 
-impl PrintProgramError for AudiusError {
+impl PrintProgramError for ColivingError {
     fn print<E>(&self)
     where
         E: 'static + std::error::Error + DecodeError<E> + PrintProgramError + FromPrimitive,
     {
         match self {
-            AudiusError::InvalidInstruction => msg!("Invalid instruction"),
-            AudiusError::SignerGroupAlreadyInitialized => msg!("Signer group already initialized"),
-            AudiusError::UninitializedSignerGroup => msg!("Uninitialized signer group"),
-            AudiusError::SignerAlreadyInitialized => msg!("Signer is already initialized"),
-            AudiusError::ValidSignerNotInitialized => msg!("Valid signer isn't initialized"),
-            AudiusError::WrongSignerGroup => msg!("Signer doesnt belong to this group"),
-            AudiusError::WrongOwner => msg!("Wrong owner"),
-            AudiusError::SignatureMissing => msg!("Signature missing"),
-            AudiusError::SignatureVerificationFailed => msg!("Signature verification failed"),
-            AudiusError::Secp256InstructionLosing => msg!("Secp256 instruction losing"),
-            AudiusError::SignerGroupOwnerDisabled => msg!("Signer group owner disabled"),
+            ColivingError::InvalidInstruction => msg!("Invalid instruction"),
+            ColivingError::SignerGroupAlreadyInitialized => msg!("Signer group already initialized"),
+            ColivingError::UninitializedSignerGroup => msg!("Uninitialized signer group"),
+            ColivingError::SignerAlreadyInitialized => msg!("Signer is already initialized"),
+            ColivingError::ValidSignerNotInitialized => msg!("Valid signer isn't initialized"),
+            ColivingError::WrongSignerGroup => msg!("Signer doesnt belong to this group"),
+            ColivingError::WrongOwner => msg!("Wrong owner"),
+            ColivingError::SignatureMissing => msg!("Signature missing"),
+            ColivingError::SignatureVerificationFailed => msg!("Signature verification failed"),
+            ColivingError::Secp256InstructionLosing => msg!("Secp256 instruction losing"),
+            ColivingError::SignerGroupOwnerDisabled => msg!("Signer group owner disabled"),
         }
     }
 }

@@ -2,20 +2,20 @@ const assert = require('assert')
 let helpers = require('./helpers')
 let { Utils } = require('../src/utils')
 
-let audiusInstance = helpers.audiusInstance
+let colivingInstance = helpers.colivingInstance
 let handle = 'handle' + Math.floor(Math.random() * 1000000)
 
 before(async function () {
-  await audiusInstance.init()
+  await colivingInstance.init()
 })
 
 it('should call getUser on invalid value and verify blockchain is empty', async function () {
-  let creator = await audiusInstance.contracts.UserFactoryClient.getUser(0)
+  let creator = await colivingInstance.contracts.UserFactoryClient.getUser(0)
   assert.strictEqual(creator.wallet, '0x0000000000000000000000000000000000000000')
 })
 
 it('should verify handle is valid', async function () {
-  let handleIsValid = await audiusInstance.contracts.UserFactoryClient.handleIsValid(handle)
+  let handleIsValid = await colivingInstance.contracts.UserFactoryClient.handleIsValid(handle)
   assert.strictEqual(handleIsValid, true, 'Handle is valid')
 })
 
@@ -32,16 +32,16 @@ it('should call addUser and verify new creator', async function () {
     'is_verified': false
   }
 
-  const addUserResp = await audiusInstance.contracts.UserFactoryClient.addUser(metadata.handle)
+  const addUserResp = await colivingInstance.contracts.UserFactoryClient.addUser(metadata.handle)
   const userId = addUserResp.userId
-  const creator = await audiusInstance.contracts.UserFactoryClient.getUser(userId)
+  const creator = await colivingInstance.contracts.UserFactoryClient.getUser(userId)
   const creatorMetadataMultihashDecoded = Utils.decodeMultihash(helpers.constants.creatorMetadataCID)
   const profilePictureMultihashDecoded = Utils.decodeMultihash(metadata.profile_picture)
   const coverPhotoMultihashDecoded = Utils.decodeMultihash(metadata.cover_photo)
 
   assert.strictEqual(metadata.handle, Utils.hexToUtf8(creator.handle))
 
-  const updateMultihashResp = await audiusInstance.contracts.UserFactoryClient.updateMultihash(
+  const updateMultihashResp = await colivingInstance.contracts.UserFactoryClient.updateMultihash(
     userId, creatorMetadataMultihashDecoded.digest
   )
   assert.strictEqual(
@@ -50,7 +50,7 @@ it('should call addUser and verify new creator', async function () {
     `Transaction failed - ${creatorMetadataMultihashDecoded.digest}`
   )
 
-  const updateNameResp = await audiusInstance.contracts.UserFactoryClient.updateName(
+  const updateNameResp = await colivingInstance.contracts.UserFactoryClient.updateName(
     userId, metadata.name
   )
   assert.deepStrictEqual(
@@ -59,7 +59,7 @@ it('should call addUser and verify new creator', async function () {
     `Transaction failed - ${metadata.name}`
   )
 
-  const updateLocationResp = await audiusInstance.contracts.UserFactoryClient.updateLocation(
+  const updateLocationResp = await colivingInstance.contracts.UserFactoryClient.updateLocation(
     userId, metadata.location
   )
   assert.deepStrictEqual(
@@ -68,7 +68,7 @@ it('should call addUser and verify new creator', async function () {
     `Transaction failed - ${metadata.location}`
   )
 
-  const updateBioResp = await audiusInstance.contracts.UserFactoryClient.updateBio(
+  const updateBioResp = await colivingInstance.contracts.UserFactoryClient.updateBio(
     userId, metadata.bio
   )
   assert.deepStrictEqual(
@@ -77,7 +77,7 @@ it('should call addUser and verify new creator', async function () {
     `Transaction failed - ${metadata.bio}`
   )
 
-  const updateProfilePhotoResp = await audiusInstance.contracts.UserFactoryClient.updateProfilePhoto(
+  const updateProfilePhotoResp = await colivingInstance.contracts.UserFactoryClient.updateProfilePhoto(
     userId, profilePictureMultihashDecoded.digest
   )
   assert.deepStrictEqual(
@@ -86,7 +86,7 @@ it('should call addUser and verify new creator', async function () {
     `Transaction failed - ${profilePictureMultihashDecoded.digest}`
   )
 
-  const updateCoverPhotoResp = await audiusInstance.contracts.UserFactoryClient.updateCoverPhoto(
+  const updateCoverPhotoResp = await colivingInstance.contracts.UserFactoryClient.updateCoverPhoto(
     userId, coverPhotoMultihashDecoded.digest
   )
   assert.deepStrictEqual(
@@ -95,7 +95,7 @@ it('should call addUser and verify new creator', async function () {
     `Transaction failed - ${coverPhotoMultihashDecoded.digest}`
   )
 
-  const updateCreatorNodeEndpointResp = await audiusInstance.contracts.UserFactoryClient.updateCreatorNodeEndpoint(
+  const updateCreatorNodeEndpointResp = await colivingInstance.contracts.UserFactoryClient.updateCreatorNodeEndpoint(
     userId, metadata.creator_node_endpoint
   )
   assert.deepStrictEqual(
@@ -106,6 +106,6 @@ it('should call addUser and verify new creator', async function () {
 })
 
 it('should verify handle is not valid', async function () {
-  let handleIsValid = await audiusInstance.contracts.UserFactoryClient.handleIsValid(handle)
+  let handleIsValid = await colivingInstance.contracts.UserFactoryClient.handleIsValid(handle)
   assert.strictEqual(handleIsValid, false, 'Handle is not valid')
 })

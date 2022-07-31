@@ -15,4 +15,4 @@ Veuillez l'essayer!
 curl https://discoveryprovider..co/v1/tracks/trending?app_name=ExampleApp
 ```
 
-## [Référence API Complète](https://audiusproject.github.io/api-docs/#-api-docs)  👈  
+## [Référence API Complète](https://colivingproject.github.io/api-docs/#-api-docs)  👈  

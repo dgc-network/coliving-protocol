@@ -439,7 +439,7 @@ def test_get_health_verbose(web3_mock, redis_mock, db_mock, get_monitors_mock):
         "transferred_bytes_per_sec": 7340.780857447676,
         "database_connection_info": [
             {
-                "datname": "audius_discovery",
+                "datname": "coliving_discovery",
                 "state": "idle",
                 "query": "COMMIT",
                 "wait_event_type": "Client",
@@ -484,7 +484,7 @@ def test_get_health_verbose(web3_mock, redis_mock, db_mock, get_monitors_mock):
     assert health_results["db_connections"]["database_connections"] == 2
     assert health_results["db_connections"]["database_connection_info"] == [
         {
-            "datname": "audius_discovery",
+            "datname": "coliving_discovery",
             "state": "idle",
             "query": "COMMIT",
             "wait_event_type": "Client",

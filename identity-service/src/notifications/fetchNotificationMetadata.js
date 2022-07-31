@@ -3,7 +3,7 @@ const axios = require('axios')
 const models = require('../models')
 const { notificationTypes: NotificationType } = require('../notifications/constants')
 const Entity = require('../routes/notifications').Entity
-const mergeAudiusAnnoucements = require('../routes/notifications').mergeAudiusAnnoucements
+const mergeColivingAnnoucements = require('../routes/notifications').mergeColivingAnnoucements
 const { formatEmailNotificationProps } = require('./formatNotificationMetadata')
 
 const config = require('../config.js')
@@ -19,7 +19,7 @@ const USER_FETCH_LIMIT = 10
 
 /* Merges the notifications with the user announcements in time sorted order (Most recent first).
  *
- * @param {AudiusLibs} coliving                   Coliving Libs instance
+ * @param {ColivingLibs} coliving                   Coliving Libs instance
  * @param {number} userId                       The blockchain user id of the recipient of the user
  * @param {Array<Announcement>} announcements   Announcements set on the app
  * @param {moment Time} fromTime                The moment time object from which to get notifications
@@ -136,7 +136,7 @@ async function getEmailNotifications (coliving, userId, announcements = [], from
         moment(a.datePublished).isAfter(tenDaysAgo)
       ))
 
-    const userNotifications = mergeAudiusAnnoucements(validUserAnnouncements, filteredNotifications)
+    const userNotifications = mergeColivingAnnoucements(validUserAnnouncements, filteredNotifications)
     let unreadAnnouncementCount = 0
     userNotifications.forEach((notif) => {
       if (notif.type === NotificationType.Announcement) {

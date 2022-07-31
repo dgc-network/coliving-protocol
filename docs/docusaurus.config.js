@@ -7,13 +7,13 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
   module.exports = {
     title: "Coliving Docs",
     tagline: "",
-    url: "https://docs.audius.org",
+    url: "https://docs.coliving.org",
     baseUrl: "/",
     onBrokenLinks: "throw",
     onBrokenMarkdownLinks: "warn",
     favicon: "img/favicon.ico",
     organizationName: "dgc.network", // Usually your GitHub org/user name.
-    projectName: "docs.audius.org", // Usually your repo name.
+    projectName: "docs.coliving.org", // Usually your repo name.
 
     presets: [
       [
@@ -24,7 +24,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
             path: "docs",
             routeBasePath: "/",
             sidebarPath: require.resolve("./sidebars.js"),
-            editUrl: 'https://github.com/dgc.network/docs.audius.org/',
+            editUrl: 'https://github.com/dgc.network/docs.coliving.org/',
           },
           theme: {
             customCss: require.resolve("./src/css/custom.css"),
@@ -38,10 +38,10 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
         // Plugin / TypeDoc options
         {
-          plugin: ["typedoc-plugin-audius-theme"],
+          plugin: ["typedoc-plugin-coliving-theme"],
           out: "./developers/sdk",
-          entryPoints: ["./node_modules/@audius/sdk/src/sdk/index.ts"],
-          tsconfig: "./node_modules/@audius/sdk/tsconfig.json",
+          entryPoints: ["./node_modules/@coliving/sdk/src/sdk/index.ts"],
+          tsconfig: "./node_modules/@coliving/sdk/tsconfig.json",
           excludeInternal: true,
           cleanOutputDir: true,
           disableSources: true,
@@ -109,7 +109,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
               position: "right",
             },
             {
-              href: "https://discord.com/invite/audius",
+              href: "https://discord.com/invite/coliving",
               label: "Chat",
               position: "right",
             },
@@ -124,7 +124,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
           appId: '5HE2PIGNOV',
           // This API key is "search-only" and safe to be published
           apiKey: "347af1fe50a2533f274a4a64a695c64c",
-          indexName: "audius",
+          indexName: "coliving",
           contextualSearch: true,
         },
         footer: {
@@ -152,7 +152,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
               items: [
                 {
                   label: "Discord",
-                  href: "https://discord.com/invite/audius",
+                  href: "https://discord.com/invite/coliving",
                 },
                 {
                   label: "Twitter",

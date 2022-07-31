@@ -147,8 +147,8 @@ cid_metadata_client = CIDMetadataClient(
             "cover_photo_sizes": "QmQnJ8uXf886crAticzPGgrfqxq68kAxBXXcK73geFakUo",
             "bio": "ðŸŒ\n;",
             "location": "chik fil yay!",
-            "creator_node_endpoint": "https://creatornode2.audius.co,https://creatornode.audius.co,"
-            + "https://content-node.audius.co",
+            "creator_node_endpoint": "https://creatornode2.coliving.co,https://creatornode.coliving.co,"
+            + "https://content-node.coliving.co",
             "associated_wallets": {
                 "0xEfFe2E2Dfc7945ED6Fd4C07c0B668589C52819BF": {
                     "signature": "0xdde72a90dad4a0027ca87630a2b5615240d9ad545f2fc50e24952a2b4f2c5a"

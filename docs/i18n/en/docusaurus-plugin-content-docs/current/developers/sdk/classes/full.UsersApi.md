@@ -18,7 +18,7 @@ Example:
 
 ```typescript
 
-const favorites = await audiusSdk.users.getFavorites({
+const favorites = await colivingSdk.users.getFavorites({
     id: "eAZl3"
 })
 
@@ -100,7 +100,7 @@ Example:
 
 ```typescript
 
-const reposts = await audiusSdk.users.getReposts({
+const reposts = await colivingSdk.users.getReposts({
     id: "eAZl3"
 })
 
@@ -164,7 +164,7 @@ Example:
 
 ```typescript
 
-const supporters = await audiusSdk.users.getSupporters({
+const supporters = await colivingSdk.users.getSupporters({
     id: "eAZl3"
 })
 
@@ -210,7 +210,7 @@ Example:
 
 ```typescript
 
-const supportings = await audiusSdk.users.getSupportings({
+const supportings = await colivingSdk.users.getSupportings({
     id: "eAZl3"
 })
 
@@ -274,7 +274,7 @@ Example:
 
 ```typescript
 
-const tracks = await audiusSdk.users.getTracksByUser({
+const tracks = await colivingSdk.users.getTracksByUser({
     id: "eAZl3"
 })
 
@@ -320,7 +320,7 @@ Example:
 
 ```typescript
 
-const user = await audiusSdk.users.getUser({
+const user = await colivingSdk.users.getUser({
     id: "eAZl3"
 })
 

@@ -2,7 +2,7 @@ import * as _lib from '../utils/lib.js'
 const { time, expectEvent } = require('@openzeppelin/test-helpers')
 
 const Staking = artifacts.require('Staking')
-const AudiusAdminUpgradeabilityProxy = artifacts.require('AudiusAdminUpgradeabilityProxy')
+const ColivingAdminUpgradeabilityProxy = artifacts.require('ColivingAdminUpgradeabilityProxy')
 const ServiceTypeManager = artifacts.require('ServiceTypeManager')
 const ServiceProviderFactory = artifacts.require('ServiceProviderFactory')
 const ClaimsManager = artifacts.require('ClaimsManager')
@@ -191,7 +191,7 @@ contract('ServiceProvider test', async (accounts) => {
         governance.address
       ]
     )
-    proxy = await AudiusAdminUpgradeabilityProxy.new(
+    proxy = await ColivingAdminUpgradeabilityProxy.new(
       staking0.address,
       governance.address,
       stakingInitializeData,
@@ -205,7 +205,7 @@ contract('ServiceProvider test', async (accounts) => {
       'initialize', ['address'], [governance.address]
     )
     let serviceTypeManager0 = await ServiceTypeManager.new({ from: proxyDeployerAddress })
-    let serviceTypeManagerProxy = await AudiusAdminUpgradeabilityProxy.new(
+    let serviceTypeManagerProxy = await ColivingAdminUpgradeabilityProxy.new(
       serviceTypeManager0.address,
       governance.address,
       serviceTypeInitializeData,
@@ -270,7 +270,7 @@ contract('ServiceProvider test', async (accounts) => {
         DEPLOYER_CUT_LOCKUP_DURATION
       ]
     )
-    let serviceProviderFactoryProxy = await AudiusAdminUpgradeabilityProxy.new(
+    let serviceProviderFactoryProxy = await ColivingAdminUpgradeabilityProxy.new(
       serviceProviderFactory0.address,
       governance.address,
       serviceProviderFactoryCalldata,

@@ -1,13 +1,13 @@
 import type { Comstock } from '../services/comstock'
 import type { CreatorNode } from '../services/creatorNode'
-import type { AudiusContracts } from '../services/dataContracts'
+import type { ColivingContracts } from '../services/dataContracts'
 import type { DiscoveryProvider } from '../services/discoveryProvider'
 import type { EthContracts } from '../services/ethContracts'
 import type { EthWeb3Manager } from '../services/ethWeb3Manager'
 import type { Hedgehog } from '../services/hedgehog'
 import type { Hedgehog as HedgehogBase } from '@coliving/hedgehog'
 import type { IdentityService } from '../services/identity'
-import type { SolanaAudiusData } from '../services/solanaAudiusData'
+import type { SolanaColivingData } from '../services/solanaColivingData'
 import type { SolanaWeb3Manager } from '../services/solana'
 import type { Web3Manager } from '../services/web3Manager'
 import type { UserStateManager } from '../userStateManager'
@@ -29,11 +29,11 @@ export type BaseConstructorArgs = [
   Hedgehog,
   DiscoveryProvider,
   Web3Manager,
-  AudiusContracts,
+  ColivingContracts,
   EthWeb3Manager,
   EthContracts,
   SolanaWeb3Manager,
-  SolanaAudiusData,
+  SolanaColivingData,
   Wormhole,
   CreatorNode,
   Comstock,
@@ -48,11 +48,11 @@ export class Base {
   hedgehog: HedgehogBase
   discoveryProvider: DiscoveryProvider
   web3Manager: Web3Manager
-  contracts: AudiusContracts
+  contracts: ColivingContracts
   ethWeb3Manager: EthWeb3Manager
   ethContracts: EthContracts
   solanaWeb3Manager: SolanaWeb3Manager
-  anchorAudiusData: SolanaAudiusData
+  anchorColivingData: SolanaColivingData
   wormholeClient: Wormhole
   creatorNode: CreatorNode
   comstock: Comstock
@@ -68,11 +68,11 @@ export class Base {
     hedgehog: Hedgehog,
     discoveryProvider: DiscoveryProvider,
     web3Manager: Web3Manager,
-    contracts: AudiusContracts,
+    contracts: ColivingContracts,
     ethWeb3Manager: EthWeb3Manager,
     ethContracts: EthContracts,
     solanaWeb3Manager: SolanaWeb3Manager,
-    anchorAudiusData: SolanaAudiusData,
+    anchorColivingData: SolanaColivingData,
     wormholeClient: Wormhole,
     creatorNode: CreatorNode,
     comstock: Comstock,
@@ -89,7 +89,7 @@ export class Base {
     this.ethWeb3Manager = ethWeb3Manager
     this.ethContracts = ethContracts
     this.solanaWeb3Manager = solanaWeb3Manager
-    this.anchorAudiusData = anchorAudiusData
+    this.anchorColivingData = anchorColivingData
     this.wormholeClient = wormholeClient
     this.creatorNode = creatorNode
     this.comstock = comstock

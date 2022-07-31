@@ -1,7 +1,7 @@
 const assert = require('assert')
 const helpers = require('./helpers')
 
-const libs = helpers.audiusInstance
+const libs = helpers.colivingInstance
 
 let token
 let ownerWallet
@@ -10,7 +10,7 @@ let initialSupply
 
 before(async function () {
   await libs.init()
-  token = libs.ethContracts.AudiusTokenClient
+  token = libs.ethContracts.ColivingTokenClient
   ownerWallet = libs.ethWeb3Manager.getWalletAddress()
   accounts = await libs.ethWeb3Manager.getWeb3().eth.getAccounts()
   toBN = libs.ethWeb3Manager.getWeb3().utils.toBN

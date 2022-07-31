@@ -15,20 +15,20 @@ Log In with Coliving lets you retrieve and verify a user's Coliving profile info
 ## Quickstart
 
 ```html title="index.html"
-<div id="audiusLogInButton"></div>
+<div id="colivingLogInButton"></div>
 ```
 
 ```js title="script.js"
 import Web3 from "web3";
 import { sdk } from "@/sdk";
 
-const audiusSdk = sdk({ appName: "Name of your app goes here" });
+const colivingSdk = sdk({ appName: "Name of your app goes here" });
 
-audiusSdk.oauth.init((res) => {
+colivingSdk.oauth.init((res) => {
   console.log("Log in success!", res);
 });
 
-audiusSdk.oauth.renderButton(document.getElementById("audiusLogInButton"));
+colivingSdk.oauth.renderButton(document.getElementById("colivingLogInButton"));
 ```
 
 ## Examples
@@ -64,7 +64,7 @@ import Web3 from "web3";
 import { sdk } from "@/sdk";
 
 window.Web3 = Web3;
-const audiusSdk = sdk({ appName: "Name of your app goes here" });
+const colivingSdk = sdk({ appName: "Name of your app goes here" });
 ```
 
 :::tip
@@ -74,7 +74,7 @@ See complete instructions [here](sdk/index#installation) to install and initiali
 ### 1. Initialize the SDK `oauth` feature
 
 ```js
-audiusSdk.oauth.init(
+colivingSdk.oauth.init(
   (res) => {
     // This will run if the user logged in successfully.
     console.log("Log in success!", res);
@@ -103,7 +103,7 @@ audiusSdk.oauth.init(
 ### 2. Render the Log In button
 
 ```js title="In your JS"
-audiusSdk.oauth.renderButton(document.getElementById("audiusLogInButton"), {
+colivingSdk.oauth.renderButton(document.getElementById("colivingLogInButton"), {
   size: "large",
   corners: "pill",
   customText: "Continue with Coliving",
@@ -111,7 +111,7 @@ audiusSdk.oauth.renderButton(document.getElementById("audiusLogInButton"), {
 ```
 
 ```html title="In your HTML"
-<div id="audiusLogInButton"></div>
+<div id="colivingLogInButton"></div>
 ```
 
 [`renderButton`](sdk-oauth-methods#oauthrenderbuttonelement-customizations) replaces the element passed in the first parameter with the Log In with Coliving button.
@@ -122,7 +122,7 @@ The second parameter passed to `renderButton` is an optional object with customi
 You can use [this playground](https://9ncjui.csb.app/) to see how these customizations affect the button appearance and determine what config works best for your app!
 :::
 
-If you don't want to use `renderButton`, you can implement a login button yourself and invoke the login popup with [`audiusSdk.oauth.login()`](sdk-oauth-methods#oauthlogin).
+If you don't want to use `renderButton`, you can implement a login button yourself and invoke the login popup with [`colivingSdk.oauth.login()`](sdk-oauth-methods#oauthlogin).
 
 ### 3. Optional: Show loader until the button is ready
 
@@ -131,7 +131,7 @@ The button may take up to a couple of seconds to load. You may want to show a lo
 ```html title="In your HTML"
 <!-- Surround your element that will be replaced with the Log In with Coliving button with a parent, e.g.: -->
 <div id="parent">
-  <div id="audiusLogInButton"></div>
+  <div id="colivingLogInButton"></div>
   <div id="loading">Loading...</div>
 </div>
 ```

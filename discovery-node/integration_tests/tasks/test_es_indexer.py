@@ -8,7 +8,7 @@ from src.utils.db_session import get_db
 
 logger = logging.getLogger(__name__)
 
-esclient = Elasticsearch(os.environ["audius_elasticsearch_url"])
+esclient = Elasticsearch(os.environ["coliving_elasticsearch_url"])
 
 basic_entities = {
     "users": [

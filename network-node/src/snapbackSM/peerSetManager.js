@@ -334,7 +334,7 @@ class PeerSetManager {
   /**
    * Updates `this.endpointToSPIdMap` to the mapping of <endpoint : spId>. If the fetch fails, rely on the previous
    * `this.endpointToSPIdMap` value. If the existing map is empty, throw error as we need this map to issue reconfigs.
-   * @param {Object} ethContracts audiusLibs.ethContracts instance; has helper fn to get service provider info
+   * @param {Object} ethContracts colivingLibs.ethContracts instance; has helper fn to get service provider info
    */
   async updateEndpointToSpIdMap(ethContracts) {
     const endpointToSPIdMap = {}

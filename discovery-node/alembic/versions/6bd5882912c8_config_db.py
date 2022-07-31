@@ -28,16 +28,16 @@ def upgrade():
     connection.execute(
         """
       -- create custom text search dictionary to include stop words and not normalize words
-      CREATE TEXT SEARCH DICTIONARY audius_ts_dict (
+      CREATE TEXT SEARCH DICTIONARY coliving_ts_dict (
           TEMPLATE = pg_catalog.simple
       );
 
       -- create custom search configuration using new dictionary
-      CREATE TEXT SEARCH CONFIGURATION public.audius_ts_config (
+      CREATE TEXT SEARCH CONFIGURATION public.coliving_ts_config (
         COPY = pg_catalog.english
       );
-      ALTER TEXT SEARCH CONFIGURATION public.audius_ts_config
-        ALTER MAPPING FOR asciiword, asciihword, hword_asciipart, hword, hword_part, word WITH audius_ts_dict;
+      ALTER TEXT SEARCH CONFIGURATION public.coliving_ts_config
+        ALTER MAPPING FOR asciiword, asciihword, hword_asciipart, hword, hword_part, word WITH coliving_ts_dict;
 
       -- loads extension into db; pg_trgm = compares string similarity by trigram matching
       CREATE EXTENSION pg_trgm;
@@ -59,8 +59,8 @@ def upgrade():
       SELECT * FROM (
         SELECT
           t.track_id,
-          unnest(tsvector_to_array(to_tsvector('audius_ts_config', replace(COALESCE(t."title", ''), '&', 'and')) ||
-          to_tsvector('audius_ts_config', COALESCE(t."tags", '')))) as word
+          unnest(tsvector_to_array(to_tsvector('coliving_ts_config', replace(COALESCE(t."title", ''), '&', 'and')) ||
+          to_tsvector('coliving_ts_config', COALESCE(t."tags", '')))) as word
         FROM
             "tracks" t
         INNER JOIN "users" u ON t."owner_id" = u."user_id"
@@ -88,8 +88,8 @@ def upgrade():
       SELECT * FROM (
         SELECT
           u.user_id,
-          unnest(tsvector_to_array(to_tsvector('audius_ts_config', replace(COALESCE(u."name", ''), '&', 'and')) ||
-          to_tsvector('audius_ts_config', COALESCE(u."handle", '')))) as word
+          unnest(tsvector_to_array(to_tsvector('coliving_ts_config', replace(COALESCE(u."name", ''), '&', 'and')) ||
+          to_tsvector('coliving_ts_config', COALESCE(u."handle", '')))) as word
         FROM
             "users" u
         WHERE u."is_current" = true and u."is_ready" = true

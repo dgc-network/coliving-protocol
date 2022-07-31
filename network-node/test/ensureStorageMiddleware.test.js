@@ -32,13 +32,13 @@ describe('test ensureStorageMiddleware', () => {
     await server.close()
   })
 
-  it('fails with bad request when storage capacity is reached (/audius_users/metadata)', async () => {
+  it('fails with bad request when storage capacity is reached (/coliving_users/metadata)', async () => {
     await monitoringQueueMock.setRedisValue(storagePathUsedRedisKey, 100)
     const storagePathUsed = await monitoringQueueMock.getRedisValue(storagePathUsedRedisKey)
     assert(storagePathUsed === '100')
 
     const resp = await request(app)
-      .post('/audius_users/metadata')
+      .post('/coliving_users/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .send({ test: 'IMA STARBOY' })

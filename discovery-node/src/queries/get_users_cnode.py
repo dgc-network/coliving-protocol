@@ -13,7 +13,7 @@ class ReplicaType(Enum):
     ALL = 3
 
 
-# TODO: Enforce default max_users after all CNs are updated to a version with this PR: https://github.com/dgc.network/audius-protocol/pull/3064
+# TODO: Enforce default max_users after all CNs are updated to a version with this PR: https://github.com/dgc.network/coliving-protocol/pull/3064
 def get_users_cnode(
     cnode_endpoint_string,
     replica_type,

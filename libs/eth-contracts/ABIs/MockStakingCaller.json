@@ -219,7 +219,7 @@
           "type": "address"
         }
       ],
-      "name": "setStakingAudiusProxyAdminAddress",
+      "name": "setStakingColivingProxyAdminAddress",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -243,7 +243,7 @@
     {
       "constant": true,
       "inputs": [],
-      "name": "getAudiusProxyAdminAddress",
+      "name": "getColivingProxyAdminAddress",
       "outputs": [
         {
           "internalType": "address",

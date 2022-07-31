@@ -1,10 +1,10 @@
 # requires authentication to Dockerhub
-FROM audius/contracts:1.0.0 AS contracts
+FROM coliving/contracts:1.0.0 AS contracts
 
 FROM alpine:3.14
-LABEL maintainer="Hareesh Nagaraj <hareesh@audius.co>"
+LABEL maintainer="Hareesh Nagaraj <hareesh@coliving.co>"
 
-ENV INSTALL_PATH /audius-discovery-node
+ENV INSTALL_PATH /coliving-discovery-node
 WORKDIR $INSTALL_PATH
 
 ENV PROMETHEUS_MULTIPROC_DIR /prometheus_data
@@ -73,14 +73,14 @@ RUN cd es-indexer && npm install && npm run build
 COPY --from=contracts /usr/src/app/build/contracts/ build/contracts/
 
 ARG git_sha
-ARG audius_loggly_disable
-ARG audius_loggly_token
-ARG audius_loggly_tags
+ARG coliving_loggly_disable
+ARG coliving_loggly_token
+ARG coliving_loggly_tags
 
 ENV GIT_SHA=$git_sha
-ENV audius_loggly_disable=$audius_loggly_disable
-ENV audius_loggly_token=$audius_loggly_token
-ENV audius_loggly_tags=$audius_loggly_tags
+ENV coliving_loggly_disable=$coliving_loggly_disable
+ENV coliving_loggly_token=$coliving_loggly_token
+ENV coliving_loggly_tags=$coliving_loggly_tags
 
 EXPOSE 5000
 

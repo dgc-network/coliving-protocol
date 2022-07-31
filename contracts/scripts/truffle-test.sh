@@ -12,10 +12,10 @@ COMMENT
 
 # start ganache container,
 # kill old container instance if tear down did not complete
-if docker ps | grep 'audius_ganache_cli_test' >/dev/null; then
+if docker ps | grep 'coliving_ganache_cli_test' >/dev/null; then
 	# killing the container seems to be faster than restarting
 	printf 'Remove old containers and build artifacts\n'
-	docker rm -f audius_ganache_cli_test
+	docker rm -f coliving_ganache_cli_test
 	rm -rf ./build/
 	printf '\n'
 fi
@@ -24,7 +24,7 @@ fi
 # useful to know what the test script is actually doing
 set -x
 
-docker run --name audius_ganache_cli_test -d -p 8555:8545 trufflesuite/ganache-cli:latest -h 0.0.0.0 -l 8000000 -a 50
+docker run --name coliving_ganache_cli_test -d -p 8555:8545 trufflesuite/ganache-cli:latest -h 0.0.0.0 -l 8000000 -a 50
 
 # compile and lint
 ./node_modules/.bin/truffle compile
@@ -42,5 +42,5 @@ else
 fi
 
 # tear down
-# docker rm -f audius_ganache_cli_test
+# docker rm -f coliving_ganache_cli_test
 # rm -rf ./build/

@@ -31,7 +31,7 @@ Example:
 
 ```typescript
 
-const tracks = await audiusSdk.tracks.getBulkTracks();
+const tracks = await colivingSdk.tracks.getBulkTracks();
 
 ```
 
@@ -129,7 +129,7 @@ Example:
 
 ```typescript
 
-const track = await audiusSdk.tracks.getTrack({
+const track = await colivingSdk.tracks.getTrack({
     trackId: "D7KyD",
 });
 
@@ -229,7 +229,7 @@ Example:
 
 ```typescript
 
-const tracks = await audiusSdk.tracks.getTrendingTracks();
+const tracks = await colivingSdk.tracks.getTrendingTracks();
 
 ```
 

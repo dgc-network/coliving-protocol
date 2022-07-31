@@ -1,10 +1,10 @@
 const assert = require('assert')
 const contractConfig = require('../contract-config.js')
 const _lib = require('../utils/lib')
-const AudiusToken = artifacts.require('AudiusToken')
+const ColivingToken = artifacts.require('ColivingToken')
 const Registry = artifacts.require('Registry')
 const DelegateManager = artifacts.require('DelegateManager')
-const AudiusAdminUpgradeabilityProxy = artifacts.require('AudiusAdminUpgradeabilityProxy')
+const ColivingAdminUpgradeabilityProxy = artifacts.require('ColivingAdminUpgradeabilityProxy')
 const Staking = artifacts.require('Staking')
 const Governance = artifacts.require('Governance')
 const ServiceProviderFactory = artifacts.require('ServiceProviderFactory')
@@ -34,7 +34,7 @@ module.exports = (deployer, network, accounts) => {
     const claimsManagerAddress = process.env.claimsManagerAddress
     const serviceProviderFactoryAddress = process.env.serviceProviderFactoryAddress
 
-    const token = await AudiusToken.at(tokenAddress)
+    const token = await ColivingToken.at(tokenAddress)
     const registry = await Registry.at(registryAddress)
     const governance = await Governance.at(governanceAddress)
 
@@ -46,7 +46,7 @@ module.exports = (deployer, network, accounts) => {
       [token.address, governanceAddress, undelegateLockupDuration]
     )
     const delegateManagerProxy = await deployer.deploy(
-      AudiusAdminUpgradeabilityProxy,
+      ColivingAdminUpgradeabilityProxy,
       delegateManager0.address,
       governanceAddress,
       initializeCallData,

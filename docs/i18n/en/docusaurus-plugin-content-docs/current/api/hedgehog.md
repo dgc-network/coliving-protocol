@@ -33,7 +33,7 @@ npm i --save @/hedgehog
 
 ### Docs & Examples
 
-Check out our full technical [docs](http://audiusproject.github.io/hedgehog-docs) and [api how-to](http://audiusproject.github.io/hedgehog-docs#how-to).
+Check out our full technical [docs](http://colivingproject.github.io/hedgehog-docs) and [api how-to](http://colivingproject.github.io/hedgehog-docs#how-to).
 
 For a quick browser-side demo, [look no further](https://codesandbox.io/embed/pp9zzv2n00). For a full end-to-end auth demonstration, see our [demo repo](https://github.com/dgc.network/-hedgehog-demo).
 
@@ -85,4 +85,4 @@ if (hedgehog.isLoggedIn()) {
 After creating or retrieving a user's wallet, you can either **fund their wallet directly** to pay transaction fees or **relay their transactions through a EIP-712 relayer**.  
 
 
-### 👉 [Take a deeper dive into the docs](https://audiusproject.github.io/hedgehog-docs/#installation) 👈
+### 👉 [Take a deeper dive into the docs](https://colivingproject.github.io/hedgehog-docs/#installation) 👈

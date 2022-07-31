@@ -1,5 +1,5 @@
 [package]
-name = "audius-eth-registry-cli"
+name = "coliving-eth-registry-cli"
 version = "0.1.0"
 authors = [""]
 edition = "2018"

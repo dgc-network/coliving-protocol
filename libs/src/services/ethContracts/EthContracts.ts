@@ -1,5 +1,5 @@
 import semver from 'semver'
-import { AudiusTokenClient } from './AudiusTokenClient'
+import { ColivingTokenClient } from './ColivingTokenClient'
 import { RegistryClient } from './RegistryClient'
 import { GovernanceClient } from './GovernanceClient'
 import { ServiceTypeManagerClient } from './ServiceTypeManagerClient'
@@ -15,7 +15,7 @@ import { Logger, Utils } from '../../utils'
 import type { EthWeb3Manager } from '../ethWeb3Manager'
 import type { ContractClient } from '../contracts/ContractClient'
 
-const AudiusTokenABI = Utils.importEthContractABI('AudiusToken.json').abi
+const ColivingTokenABI = Utils.importEthContractABI('ColivingToken.json').abi
 const RegistryABI = Utils.importEthContractABI('Registry.json').abi
 const GovernanceABI = Utils.importEthContractABI('Governance.json').abi
 const ServiceTypeManagerABI = Utils.importEthContractABI(
@@ -30,7 +30,7 @@ const DelegateManagerABI = Utils.importEthContractABI(
 ).abi
 const ClaimsManagerABI = Utils.importEthContractABI('ClaimsManager.json').abi
 const ClaimDistributionABI = Utils.importEthContractABI(
-  'AudiusClaimDistributor.json'
+  'ColivingClaimDistributor.json'
 ).abi
 const WormholeClientABI = Utils.importEthContractABI('WormholeClient.json').abi
 const EthRewardsManagerABI = Utils.importEthContractABI(
@@ -79,7 +79,7 @@ export class EthContracts {
   logger: Logger
   isDebug: boolean
   expectedServiceVersions: null | string[]
-  AudiusTokenClient: AudiusTokenClient
+  ColivingTokenClient: ColivingTokenClient
   RegistryClient: RegistryClient
   StakingProxyClient: StakingProxyClient
   GovernanceClient: GovernanceClient
@@ -116,9 +116,9 @@ export class EthContracts {
     this.isDebug = isDebug
     this.expectedServiceVersions = null
 
-    this.AudiusTokenClient = new AudiusTokenClient(
+    this.ColivingTokenClient = new ColivingTokenClient(
       this.ethWeb3Manager,
-      AudiusTokenABI,
+      ColivingTokenABI,
       this.tokenContractAddress
     )
     this.RegistryClient = new RegistryClient(
@@ -134,7 +134,7 @@ export class EthContracts {
       StakingABI,
       StakingProxyKey,
       this.getRegistryAddressForContract,
-      this.AudiusTokenClient,
+      this.ColivingTokenClient,
       this.logger
     )
 
@@ -143,7 +143,7 @@ export class EthContracts {
       GovernanceABI,
       GovernanceRegistryKey,
       this.getRegistryAddressForContract,
-      this.AudiusTokenClient,
+      this.ColivingTokenClient,
       this.StakingProxyClient,
       this.logger
     )
@@ -178,7 +178,7 @@ export class EthContracts {
       ServiceProviderFactoryABI,
       ServiceProviderFactoryRegistryKey,
       this.getRegistryAddressForContract,
-      this.AudiusTokenClient,
+      this.ColivingTokenClient,
       this.StakingProxyClient,
       this.GovernanceClient,
       this.logger,
@@ -190,7 +190,7 @@ export class EthContracts {
       DelegateManagerABI,
       DelegateManagerRegistryKey,
       this.getRegistryAddressForContract,
-      this.AudiusTokenClient,
+      this.ColivingTokenClient,
       this.StakingProxyClient,
       this.GovernanceClient,
       this.logger
@@ -211,7 +211,7 @@ export class EthContracts {
       this.ethWeb3Manager,
       WormholeClientABI,
       this.wormholeContractAddress,
-      this.AudiusTokenClient
+      this.ColivingTokenClient
     )
 
     this.TrustedNotifierManagerClient = new TrustedNotifierManagerClient(

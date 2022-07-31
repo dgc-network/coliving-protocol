@@ -1,4 +1,4 @@
-const { libs: AudiusLibs } = require('@coliving/sdk')
+const { libs: ColivingLibs } = require('@coliving/sdk')
 const UserCache = require('./UserCache')
 const LocalStorageWrapper = require('./LocalStorageWrapper')
 const fetch = require('node-fetch')
@@ -27,7 +27,7 @@ class SeedSession {
 
   init = async (libsConfigOverride = {}) => {
     const libsConfig = getLibsConfig(libsConfigOverride)
-    this.libs = new AudiusLibs(libsConfig)
+    this.libs = new ColivingLibs(libsConfig)
     await this.libs.init()
   }
 

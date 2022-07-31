@@ -1,7 +1,7 @@
 #![allow(missing_docs)]
 use super::*;
 use crate::{
-    error::{to_audius_program_error, AudiusProgramError},
+    error::{to_coliving_program_error, ColivingProgramError},
     processor::SENDER_SEED_PREFIX,
     state::{SenderAccount, VoteMessage},
 };
@@ -25,7 +25,7 @@ pub fn get_secp_instructions(
     index_current_instruction: u16,
     necessary_instructions_count: usize,
     instruction_info: &AccountInfo,
-) -> Result<Vec<(Instruction, u16)>, AudiusProgramError> {
+) -> Result<Vec<(Instruction, u16)>, ColivingProgramError> {
     let mut secp_instructions: Vec<(Instruction, u16)> = Vec::new();
 
     for ind in 0..index_current_instruction {
@@ -33,7 +33,7 @@ pub fn get_secp_instructions(
             ind as usize,
             &instruction_info,
         )
-        .map_err(to_audius_program_error)?;
+        .map_err(to_coliving_program_error)?;
 
         if instruction.program_id == secp256k1_program::id() {
             secp_instructions.push((instruction, ind));
@@ -41,7 +41,7 @@ pub fn get_secp_instructions(
     }
 
     if secp_instructions.len() != necessary_instructions_count {
-        return Err(AudiusProgramError::Secp256InstructionMissing);
+        return Err(ColivingProgramError::Secp256InstructionMissing);
     }
 
     Ok(secp_instructions)
@@ -85,10 +85,10 @@ pub fn get_and_verify_signer_metadata<'a>(
             return Err(ProgramError::InvalidSeeds);
         }
         if senders_eth_addresses.contains(&signer_data.eth_address) {
-            return Err(AudiusProgramError::RepeatedSenders.into());
+            return Err(ColivingProgramError::RepeatedSenders.into());
         }
         if !operators.insert(signer_data.operator) {
-            return Err(AudiusProgramError::OperatorCollision.into());
+            return Err(ColivingProgramError::OperatorCollision.into());
         }
         senders_eth_addresses.push(signer_data.eth_address);
     }
@@ -137,7 +137,7 @@ pub fn validate_secp_offsets(
 ) -> ProgramResult {
     // First, ensure there is just a single offsets struct included
     if secp_instruction_data[0] != 1 {
-        return Err(AudiusProgramError::SignatureVerificationFailed.into());
+        return Err(ColivingProgramError::SignatureVerificationFailed.into());
     }
 
     let start = 1;
@@ -149,23 +149,23 @@ pub fn validate_secp_offsets(
         && offsets.message_instruction_index == instruction_index;
 
     if !indices_match {
-        return Err(AudiusProgramError::SignatureVerificationFailed.into());
+        return Err(ColivingProgramError::SignatureVerificationFailed.into());
     }
 
     // Ensure offsets match expected values
     // eth_address_offset = DATA_START (12)
     if offsets.eth_address_offset != DATA_START as u16 {
-        return Err(AudiusProgramError::SignatureVerificationFailed.into());
+        return Err(ColivingProgramError::SignatureVerificationFailed.into());
     }
 
     // signature_offset = DATA_START + eth_pubkey.len (20) = 32
     if offsets.signature_offset != 32 {
-        return Err(AudiusProgramError::SignatureVerificationFailed.into());
+        return Err(ColivingProgramError::SignatureVerificationFailed.into());
     }
 
     // message_data_offset = signature_offset + signature_arr.len (65) = 97
     if offsets.message_data_offset != 97 {
-        return Err(AudiusProgramError::SignatureVerificationFailed.into());
+        return Err(ColivingProgramError::SignatureVerificationFailed.into());
     }
 
     Ok(())
@@ -182,7 +182,7 @@ pub fn check_message_from_secp_instruction(
 ) -> Result<(), ProgramError> {
     let message = secp_instruction_data[MESSAGE_DATA_OFFSET..].to_vec();
     if message != *expected_message {
-        Err(AudiusProgramError::SignatureVerificationFailed.into())
+        Err(ColivingProgramError::SignatureVerificationFailed.into())
     } else {
         Ok(())
     }
@@ -200,7 +200,7 @@ pub fn get_vote_message_from_secp_instruction(
     message
         .as_slice()
         .try_into()
-        .map_err(|_| AudiusProgramError::SignatureVerificationFailed.into())
+        .map_err(|_| ColivingProgramError::SignatureVerificationFailed.into())
 }
 
 fn vec_into_checkmap(vec: &[EthereumAddress]) -> BTreeMap<EthereumAddress, bool> {
@@ -221,10 +221,10 @@ fn check_signer(
         if !*val {
             *val = true;
         } else {
-            return Err(AudiusProgramError::SignCollision.into());
+            return Err(ColivingProgramError::SignCollision.into());
         }
     } else {
-        return Err(AudiusProgramError::WrongSigner.into());
+        return Err(ColivingProgramError::WrongSigner.into());
     }
     Ok(())
 }
@@ -239,11 +239,11 @@ pub fn validate_secp_add_delete_sender(
     new_sender: EthereumAddress,
     message_prefix: &str,
 ) -> ProgramResult {
-    let index = sysvar::instructions::load_current_index_checked(&instruction_info).map_err(to_audius_program_error)?;
+    let index = sysvar::instructions::load_current_index_checked(&instruction_info).map_err(to_coliving_program_error)?;
     // Instruction can't be first in transaction
     // because must follow after `new_secp256k1_instruction`
     if index == 0 {
-        return Err(AudiusProgramError::Secp256InstructionMissing.into());
+        return Err(ColivingProgramError::Secp256InstructionMissing.into());
     }
 
     // Load previous instructions
@@ -286,12 +286,12 @@ pub fn validate_secp_submit_attestation(
     instruction_info: &AccountInfo,
     expected_signer: &EthereumAddress,
 ) -> Result<VoteMessage, ProgramError> {
-    let index = sysvar::instructions::load_current_index_checked(&instruction_info).map_err(to_audius_program_error)?;
+    let index = sysvar::instructions::load_current_index_checked(&instruction_info).map_err(to_coliving_program_error)?;
 
     // Instruction can't be first in transaction
     // because must follow after `new_secp256k1_instruction`
     if index == 0 {
-        return Err(AudiusProgramError::Secp256InstructionMissing.into());
+        return Err(ColivingProgramError::Secp256InstructionMissing.into());
     }
 
     let secp_index = index - 1;
@@ -300,11 +300,11 @@ pub fn validate_secp_submit_attestation(
         secp_index as usize,
         &instruction_info,
     )
-    .map_err(to_audius_program_error)?;
+    .map_err(to_coliving_program_error)?;
 
     // Check that instruction is `new_secp256k1_instruction`
     if secp_instruction.program_id != secp256k1_program::id() {
-        return Err(AudiusProgramError::Secp256InstructionMissing.into());
+        return Err(ColivingProgramError::Secp256InstructionMissing.into());
     }
 
     validate_secp_offsets(
@@ -314,7 +314,7 @@ pub fn validate_secp_submit_attestation(
 
     let eth_signer = get_signer_from_secp_instruction(secp_instruction.data.clone());
     if eth_signer != *expected_signer {
-        return Err(AudiusProgramError::WrongSigner.into());
+        return Err(ColivingProgramError::WrongSigner.into());
     }
 
     get_vote_message_from_secp_instruction(secp_instruction.data)

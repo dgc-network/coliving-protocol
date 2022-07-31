@@ -8,8 +8,8 @@ sidebar_position: 1
 An Coliving Content Node is a service that stores and maintains the availability of all content across the Coliving network.
 Content types include user, track, and playlist metadata, images and artwork, and audio content.
 
-[github repository](https://github.com/dgc.network/audius-protocol/tree/master/network-node)
-[registered discovery nodes](https://dashboard.audius.org/#/services/content-node)
+[github repository](https://github.com/dgc.network/coliving-protocol/tree/master/network-node)
+[registered discovery nodes](https://dashboard.coliving.org/#/services/content-node)
 
 Design Goals
 

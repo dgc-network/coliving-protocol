@@ -141,20 +141,20 @@ echo
 
 echo "------------- Deploying programs ----------------"
 
-echo "Deploying audius-eth-registry..."
+echo "Deploying coliving-eth-registry..."
 solana program deploy target/deploy/coliving_eth_registry.so
 echo
 
-echo "Deploying audius-track-listen-count..."
+echo "Deploying coliving-track-listen-count..."
 solana program deploy target/deploy/track_listen_count.so
 echo
 
-echo "Deploying audius-claimable-tokens..."
+echo "Deploying coliving-claimable-tokens..."
 solana program deploy target/deploy/claimable_tokens.so
 echo
 
-echo "Deploying audius-reward-manager..."
-solana program deploy target/deploy/audius_reward_manager.so
+echo "Deploying coliving-reward-manager..."
+solana program deploy target/deploy/coliving_reward_manager.so
 echo
 
 echo "Deplyoing coliving-data..."
@@ -170,13 +170,13 @@ echo
 echo "------------- Initialize programs ---------------"
 
 echo "Creating a signer group..."
-./target/debug/audius-eth-registry-cli create-signer-group "$signer_group_keypair"
+./target/debug/coliving-eth-registry-cli create-signer-group "$signer_group_keypair"
 echo
 
 if [[ "$valid_signer_eth_address" != "" ]]; then
     echo "Creating a valid signer..."
     echo "$valid_signer_eth_address"
-    ./target/debug/audius-eth-registry-cli create-valid-signer \
+    ./target/debug/coliving-eth-registry-cli create-valid-signer \
         "$(solana address -k "$signer_group_keypair")" \
         "$(echo $valid_signer_eth_address | tail -c+3)" \
         "$valid_signer_keypair"
@@ -198,7 +198,7 @@ echo "Initalizing claimable tokens..."
 echo
 
 echo "Initalizing reward manager..."
-./target/debug/audius-reward-manager-cli init \
+./target/debug/coliving-reward-manager-cli init \
     --keypair "$reward_manager_pda_keypair" \
     --token-keypair "$reward_manager_token_pda_keypair" \
     --min-votes 2 \
@@ -212,7 +212,7 @@ spl-token transfer \
     "$(solana address -k "$reward_manager_token_pda_keypair")"
 echo
 
-echo "Initializing audius admin account..."
+echo "Initializing coliving admin account..."
 cd anchor/coliving-data/
 yarn run ts-node cli/main.ts --function initAdmin \
     --admin-authority-keypair "$admin_authority_keypair" \
@@ -258,7 +258,7 @@ cat >solana-program-config.json <<EOF
     "anchorAdminStoragePublicKey": "$(solana address -k "$admin_account_keypair")",
     "anchorAdminStoragePrivateKey": "$(cat "$admin_account_keypair")",
     "trackListenCountAddress": "$(solana address -k target/deploy/track_listen_count-keypair.json)",
-    "audiusEthRegistryAddress": "$(solana address -k target/deploy/coliving_eth_registry-keypair.json)",
+    "colivingEthRegistryAddress": "$(solana address -k target/deploy/coliving_eth_registry-keypair.json)",
     "validSigner": "$(solana address -k "$valid_signer_keypair")"
     "signerGroup": "$(solana address -k "$signer_group_keypair")",
     "feePayerWallets": [{ "privateKey": $(cat "$feepayer_keypair") }],
@@ -269,7 +269,7 @@ cat >solana-program-config.json <<EOF
     "signerPrivateKey": "$valid_signer_eth_private_key",
     "splToken": "$(solana address -k "$token_keypair")",
     "claimableTokenAddress": "$(solana address -k target/deploy/claimable_tokens-keypair.json)",
-    "rewardsManagerAddress": "$(solana address -k target/deploy/audius_reward_manager-keypair.json)",
+    "rewardsManagerAddress": "$(solana address -k target/deploy/coliving_reward_manager-keypair.json)",
     "rewardsManagerAccount": "$(solana address -k "$reward_manager_pda_keypair")",
     "rewardsManagerTokenAccount": "$(solana address -k "$reward_manager_token_pda_keypair")"
 }

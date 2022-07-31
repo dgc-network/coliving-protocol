@@ -121,7 +121,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "audius-eth-registry-cli"
+name = "coliving-eth-registry-cli"
 version = "0.1.0"
 dependencies = [
  "coliving_eth_registry",
@@ -141,7 +141,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "audius-reward-manager"
+name = "coliving-reward-manager"
 version = "0.1.0"
 dependencies = [
  "arrayref",
@@ -168,10 +168,10 @@ dependencies = [
 ]
 
 [[package]]
-name = "audius-reward-manager-cli"
+name = "coliving-reward-manager-cli"
 version = "0.1.0"
 dependencies = [
- "audius-reward-manager",
+ "coliving-reward-manager",
  "bincode",
  "borsh 0.8.2",
  "claimable-tokens",

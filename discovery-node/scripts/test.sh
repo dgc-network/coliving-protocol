@@ -9,7 +9,7 @@ source ./scripts/utilities.sh
 source .test.env
 
 if [ ! -f .gitignore ]; then
-  echo "Run test script from audius discovery provider root"
+  echo "Run test script from coliving discovery provider root"
   exit
 fi
 
@@ -47,7 +47,7 @@ node_modules/.bin/truffle exec scripts/migrate-contracts.js
 cd_discprov_repo
 
 # Stop dependencies, if present
-docker network rm audius_dev
+docker network rm coliving_dev
 docker-compose \
   -f compose/docker-compose.db.yml \
   -f compose/docker-compose.redis.yml \
@@ -65,7 +65,7 @@ docker-compose \
   rm -rf
 
 # Bring up local dependencies - postgres, redis, ipfs
-docker network create audius_dev
+docker network create coliving_dev
 docker-compose \
   -f compose/docker-compose.db.yml \
   -f compose/docker-compose.redis.yml \

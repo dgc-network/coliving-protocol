@@ -17,15 +17,15 @@ services:
         soft: -1
         hard: -1
     ports:
-      - "${audius_es_port}:9200"
+      - "${coliving_es_port}:9200"
     volumes:
       - esdata:/usr/share/elasticsearch/data
     networks:
-      - audius_dev
+      - coliving_dev
 
 volumes:
   esdata:
 
 networks:
-  audius_dev:
+  coliving_dev:
     external: true

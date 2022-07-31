@@ -17,7 +17,7 @@ Una vez que hayas seleccionado un host, todas las solicitudes de API pueden ser 
 
 Para la siguiente mención, hemos seleccionado una para ti:
 
-`https://discoveryprovider.audius1.prod-us-west-2.staked.cloud`
+`https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud`
 
 > Muestra de código
 
@@ -55,7 +55,7 @@ _Seach por un usuario_
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                                                       |
 |:------ |:------------------------------------------------------------------------------- |:-------------------- |:--------------------------------------------------------------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [usuario\_búsqueda](https://audiusproject.github.io/api-docs/?javascript#schemauser_search) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [usuario\_búsqueda](https://colivingproject.github.io/api-docs/?javascript#schemauser_search) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                                                                       |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                                                                       |
 
@@ -67,7 +67,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.audius1.prod-us-west-2.staked.cloud/v1/users/search?query=Brownies&app_name=EXAMPLEAPP',
+fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/users/search?query=Brownies&app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -130,7 +130,7 @@ _Obtener un único usuario_
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                                                          |
 |:------ |:------------------------------------------------------------------------------- |:-------------------- |:------------------------------------------------------------------------------------------------ |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [usuario\_respuesta](https://audiusproject.github.io/api-docs/?javascript#schemauser_response) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [usuario\_respuesta](https://colivingproject.github.io/api-docs/?javascript#schemauser_response) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                                                                          |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                                                                          |
 
@@ -142,7 +142,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.audius1.prod-us-west-2.staked.cloud/v1/users/nlGNe?app_name=EXAMPLEAPP',
+fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/users/nlGNe?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -203,7 +203,7 @@ _Obtener las pistas favoritas para un usuario_
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                                                                 |
 |:------ |:------------------------------------------------------------------------------- |:-------------------- |:------------------------------------------------------------------------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [favoritos\_respuesta](https://audiusproject.github.io/api-docs/?javascript#schemafavorites_response) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [favoritos\_respuesta](https://colivingproject.github.io/api-docs/?javascript#schemafavorites_response) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                                                                                 |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                                                                                 |
 
@@ -215,7 +215,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.audius1.prod-us-west-2.staked.cloud/v1/users/nlGNe/favorites?app_name=EXAMPLEAPP',
+fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/users/nlGNe/favorites?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -270,7 +270,7 @@ fetch('https://discoveryprovider.audius1.prod-us-west-2.staked.cloud/v1/users/nl
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                                       |
 |:------ |:------------------------------------------------------------------------------- |:-------------------- |:----------------------------------------------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | Exitoso              | [reposts](https://audiusproject.github.io/api-docs/?javascript#schemareposts) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | Exitoso              | [reposts](https://colivingproject.github.io/api-docs/?javascript#schemareposts) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                                                       |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                                                       |
 
@@ -283,7 +283,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.audius1.prod-us-west-2.staked.cloud/v1/users/string/reposts?app_name=EXAMPLEAPP',
+fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/users/string/reposts?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -332,7 +332,7 @@ _Obtener etiquetas más usadas en las pistas del usuario_
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                                                            |
 |:------ |:------------------------------------------------------------------------------- |:-------------------- |:-------------------------------------------------------------------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | Exitoso              | [etiquetas\_respuesta](https://audiusproject.github.io/api-docs/?javascript#schematags_response) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | Exitoso              | [etiquetas\_respuesta](https://colivingproject.github.io/api-docs/?javascript#schematags_response) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                                                                            |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                                                                            |
 
@@ -344,7 +344,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.audius1.prod-ichard west-2.staked. loud/v1/users/string/tags?user_id=string&app_name=EXAMPLEAPP',
+fetch('https://discoveryprovider.coliving1.prod-ichard west-2.staked. loud/v1/users/string/tags?user_id=string&app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -390,7 +390,7 @@ _Obtener una lista de pistas para un usuario_
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                                                           |
 |:------ |:------------------------------------------------------------------------------- |:-------------------- |:------------------------------------------------------------------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [pistas\_respuesta](https://audiusproject.github.io/api-docs/?javascript#schematracks_response) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [pistas\_respuesta](https://colivingproject.github.io/api-docs/?javascript#schematracks_response) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                                                                           |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                                                                           |
 
@@ -402,7 +402,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.audius1.prod-us-west-2.staked.cloud/v1/users/nlGNe/tracks?app_name=EXAMPLEAPP',
+fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/users/nlGNe/tracks?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -485,7 +485,7 @@ _Buscar una lista de reproducción_
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                                                                           |
 |:------ |:------------------------------------------------------------------------------- |:-------------------- |:----------------------------------------------------------------------------------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [playlist\_search\_result](https://audiusproject.github.io/api-docs/?javascript#schemaplaylist_search_result) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [playlist\_search\_result](https://colivingproject.github.io/api-docs/?javascript#schemaplaylist_search_result) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                                                                                           |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                                                                                           |
 
@@ -497,7 +497,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.audius1.prod-us-west-2.staked.cloud/v1/playlists/search?query=Hot & New&app_name=EXAMPLEAPP',
+fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/playlists/search?query=Hot & New&app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -573,7 +573,7 @@ _Buscar una lista_
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                                                               |
 |:------ |:------------------------------------------------------------------------------- |:-------------------- |:----------------------------------------------------------------------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [playlist\_respuesta](https://audiusproject.github.io/api-docs/?javascript#schemaplaylist_response) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [playlist\_respuesta](https://colivingproject.github.io/api-docs/?javascript#schemaplaylist_response) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                                                                               |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                                                                               |
 
@@ -586,7 +586,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.audius1.prod-us-west-2.staked.cloud/v1/playlists/DOPRl?app_name=EXAMPLEAPP',
+fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/playlists/DOPRl?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -660,7 +660,7 @@ _Obtener pistas dentro de una lista de reproducción_
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                                                                                |
 |:------ |:------------------------------------------------------------------------------- |:-------------------- |:---------------------------------------------------------------------------------------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [playlist\_pistas\_respuesta](https://audiusproject.github.io/api-docs/?javascript#schemaplaylist_tracks_response) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [playlist\_pistas\_respuesta](https://colivingproject.github.io/api-docs/?javascript#schemaplaylist_tracks_response) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                                                                                                |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                                                                                                |
 
@@ -673,7 +673,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.audius1.prod-us-west-2.staked.cloud/v1/playlists/DOPRl?app_name=EXAMPLEAPP',
+fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/playlists/DOPRl?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -756,7 +756,7 @@ _Buscar un track_
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                                                       |
 |:------ |:------------------------------------------------------------------------------- |:-------------------- |:--------------------------------------------------------------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [seguir\_búsqueda](https://audiusproject.github.io/api-docs/?javascript#schematrack_search) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [seguir\_búsqueda](https://colivingproject.github.io/api-docs/?javascript#schematrack_search) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                                                                       |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                                                                       |
 
@@ -770,7 +770,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.audius1.prod-us-west-2.staked.cloud/v1/tracks/search?query=baauer b2b&app_name=EXAMPLEAPP',
+fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/tracks/search?query=baauer b2b&app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -837,7 +837,7 @@ fetch('https://discoveryprovider.audius1.prod-us-west-2.staked.cloud/v1/tracks/s
 
 `GET /tracks/tendencia`
 
-_Obtiene las 100 pistas más populares \(más popular\) en Audius_
+_Obtiene las 100 pistas más populares \(más popular\) en Coliving_
 
 #### Parámetros de consulta <a id="trending-tracks-parameters"></a>
 
@@ -851,7 +851,7 @@ _Obtiene las 100 pistas más populares \(más popular\) en Audius_
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                                                           |
 |:------ |:------------------------------------------------------------------------------- |:-------------------- |:------------------------------------------------------------------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [pistas\_respuesta](https://audiusproject.github.io/api-docs/?javascript#schematracks_response) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [pistas\_respuesta](https://colivingproject.github.io/api-docs/?javascript#schematracks_response) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                                                                           |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                                                                           |
 
@@ -863,7 +863,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.audius1.prod-us-west-2.staked.cloud/v1/tracks/trending?app_name=EXAMPLEAPP',
+fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/tracks/trending?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -943,7 +943,7 @@ _Obtener una pista_
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                                                          |
 |:------ |:------------------------------------------------------------------------------- |:-------------------- |:------------------------------------------------------------------------------------------------ |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [pistas\_respuesta](https://audiusproject.github.io/api-docs/?javascript#schematrack_response) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [pistas\_respuesta](https://colivingproject.github.io/api-docs/?javascript#schematrack_response) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                                                                          |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                                                                          |
 
@@ -955,7 +955,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.audius1.prod-us-west-2.staked.cloud/v1/tracks/D7KyD?app_name=EXAMPLEAPP',
+fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/tracks/D7KyD?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -1045,7 +1045,7 @@ Este extremo acepta la cabecera de Rango para streaming. https://developer.mozil
 
 ```javascript
 
-fetch('https://discoveryprovider.audius1.prod-us-west-2.staked.cloud/v1/tracks/D7KyD/stream?app_name=EXAMPLEAPP',
+fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/tracks/D7KyD/stream?app_name=EXAMPLEAPP',
 {
   method: 'GET'
 
@@ -1077,7 +1077,7 @@ _Obtiene métricas del nombre de la aplicación final desde matview_
 
 | Estado | Significado                                             | Descripción | Esquema                                                                                                                      |
 |:------ |:------------------------------------------------------- |:----------- |:---------------------------------------------------------------------------------------------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1) | Exitoso     | [app\_name\_trailing\_response](https://audiusproject.github.io/api-docs/?javascript#schemaapp_name_trailing_response) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1) | Exitoso     | [app\_name\_trailing\_response](https://colivingproject.github.io/api-docs/?javascript#schemaapp_name_trailing_response) |
 
 > Muestra de código
 
@@ -1087,7 +1087,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.audius1.prod-us-west-2.staked.cloud/v1/metrics/app_name/trailing/string?app_name=EXAMPLEAPP',
+fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/metrics/app_name/trailing/string?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -1157,7 +1157,7 @@ const headers = {
   'Accept':'text/plain'
 };
 
-fetch('https://discoveryprovider.audius1.prod-us-west-2.staked.cloud/v1/resolve?url=https://.co/camouflybeats/hypermantra-86216&app_name=EXAMPLEAPP',
+fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/resolve?url=https://.co/camouflybeats/hypermantra-86216&app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -1211,7 +1211,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre | Tipo                                                                        | Requerido | Restricciones | Descripción |
 |:------ |:--------------------------------------------------------------------------- |:--------- |:------------- |:----------- |
-| datos  | [usuarios](https://audiusproject.github.io/api-docs/?javascript#schemauser) | falso     | ninguna       | ninguna     |
+| datos  | [usuarios](https://colivingproject.github.io/api-docs/?javascript#schemauser) | falso     | ninguna       | ninguna     |
 
 ### usuarios <a id="tocS_user"></a>
 
@@ -1248,7 +1248,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 |:------------------ |:---------------------------------------------------------------------------------------------- |:--------- |:------------- |:----------- |
 | álbum\_conteo    | entero                                                                                         | verdad    | ninguna       | ninguna     |
 | biografía          | cadena                                                                                         | falso     | ninguna       | ninguna     |
-| foto\_cubierta   | [foto\_cubierta](https://audiusproject.github.io/api-docs/?javascript#schemacover_photo)     | falso     | ninguna       | ninguna     |
+| foto\_cubierta   | [foto\_cubierta](https://colivingproject.github.io/api-docs/?javascript#schemacover_photo)     | falso     | ninguna       | ninguna     |
 | followes\_count  | entero                                                                                         | verdad    | ninguna       | ninguna     |
 | contador\_número | entero                                                                                         | verdad    | ninguna       | ninguna     |
 | manejo             | cadena                                                                                         | verdad    | ninguna       | ninguna     |
@@ -1257,7 +1257,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 | ubicación          | cadena                                                                                         | falso     | ninguna       | ninguna     |
 | nombre             | cadena                                                                                         | verdad    | ninguna       | ninguna     |
 | playlist\_count  | entero                                                                                         | verdad    | ninguna       | ninguna     |
-| perfil\_imagen   | [perfil\_imagen](https://audiusproject.github.io/api-docs/?javascript#schemaprofile_picture) | falso     | ninguna       | ninguna     |
+| perfil\_imagen   | [perfil\_imagen](https://colivingproject.github.io/api-docs/?javascript#schemaprofile_picture) | falso     | ninguna       | ninguna     |
 | repost\_count    | entero                                                                                         | verdad    | ninguna       | ninguna     |
 | pistas\_cuenta   | entero                                                                                         | verdad    | ninguna       | ninguna     |
 
@@ -1360,7 +1360,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre | Tipo                                                                            | Requerido | Restricciones | Descripción |
 |:------ |:------------------------------------------------------------------------------- |:--------- |:------------- |:----------- |
-| datos  | \[[Pista](https://audiusproject.github.io/api-docs/?javascript#schematrack)\] | falso     | ninguna       | ninguna     |
+| datos  | \[[Pista](https://colivingproject.github.io/api-docs/?javascript#schematrack)\] | falso     | ninguna       | ninguna     |
 
 ### Pista <a id="tocS_Track"></a>
 
@@ -1421,18 +1421,18 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre                | Tipo                                                                                          | Requerido | Restricciones | Descripción |
 |:--------------------- |:--------------------------------------------------------------------------------------------- |:--------- |:------------- |:----------- |
-| obra de arte          | [seguir\_artwork](https://audiusproject.github.io/api-docs/?javascript#schematrack_artwork) | falso     | ninguna       | ninguna     |
+| obra de arte          | [seguir\_artwork](https://colivingproject.github.io/api-docs/?javascript#schematrack_artwork) | falso     | ninguna       | ninguna     |
 | descripción           | cadena                                                                                        | falso     | ninguna       | ninguna     |
 | género                | cadena                                                                                        | falso     | ninguna       | ninguna     |
 | id                    | cadena                                                                                        | verdad    | ninguna       | ninguna     |
 | humor                 | cadena                                                                                        | falso     | ninguna       | ninguna     |
 | lanzar\_fecha       | cadena                                                                                        | falso     | ninguna       | ninguna     |
-| remix\_de           | [remix\_parent](https://audiusproject.github.io/api-docs/?javascript#schemaremix_parent)    | falso     | ninguna       | ninguna     |
+| remix\_de           | [remix\_parent](https://colivingproject.github.io/api-docs/?javascript#schemaremix_parent)    | falso     | ninguna       | ninguna     |
 | repost\_count       | entero                                                                                        | verdad    | ninguna       | ninguna     |
 | contador de favoritos | entero                                                                                        | verdad    | ninguna       | ninguna     |
 | etiquetas             | cadena                                                                                        | falso     | ninguna       | ninguna     |
 | título                | cadena                                                                                        | verdad    | ninguna       | ninguna     |
-| usuarios              | [usuarios](https://audiusproject.github.io/api-docs/?javascript#schemauser)                   | verdad    | ninguna       | ninguna     |
+| usuarios              | [usuarios](https://colivingproject.github.io/api-docs/?javascript#schemauser)                   | verdad    | ninguna       | ninguna     |
 | duración              | entero                                                                                        | verdad    | ninguna       | ninguna     |
 | descargable           | boolean                                                                                       | falso     | ninguna       | ninguna     |
 | play\_count         | entero                                                                                        | verdad    | ninguna       | ninguna     |
@@ -1473,7 +1473,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre | Tipo                                                                                    | Requerido | Restricciones | Descripción |
 |:------ |:--------------------------------------------------------------------------------------- |:--------- |:------------- |:----------- |
-| pistas | \[[pista](https://audiusproject.github.io/api-docs/?javascript#schematrack_element)\] | falso     | ninguna       | ninguna     |
+| pistas | \[[pista](https://colivingproject.github.io/api-docs/?javascript#schematrack_element)\] | falso     | ninguna       | ninguna     |
 
 ### seguir\_elemento <a id="tocS_track_element"></a>
 
@@ -1509,7 +1509,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre | Tipo                                                                               | Requerido | Restricciones | Descripción |
 |:------ |:---------------------------------------------------------------------------------- |:--------- |:------------- |:----------- |
-| datos  | \[[pista](https://audiusproject.github.io/api-docs/?javascript#schemaactivity)\] | falso     | ninguna       | ninguna     |
+| datos  | \[[pista](https://colivingproject.github.io/api-docs/?javascript#schemaactivity)\] | falso     | ninguna       | ninguna     |
 
 ### actividad <a id="tocS_activity"></a>
 
@@ -1549,7 +1549,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre | Tipo                                                                                  | Requerido | Restricciones | Descripción |
 |:------ |:------------------------------------------------------------------------------------- |:--------- |:------------- |:----------- |
-| datos  | \[[favorito](https://audiusproject.github.io/api-docs/?javascript#schemafavorite)\] | falso     | ninguna       | ninguna     |
+| datos  | \[[favorito](https://colivingproject.github.io/api-docs/?javascript#schemafavorite)\] | falso     | ninguna       | ninguna     |
 
 ### favorito <a id="tocS_favorite"></a>
 
@@ -1626,7 +1626,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre | Tipo                                                                             | Requerido | Restricciones | Descripción |
 |:------ |:-------------------------------------------------------------------------------- |:--------- |:------------- |:----------- |
-| datos  | \[[usuario](https://audiusproject.github.io/api-docs/?javascript#schemauser)\] | falso     | ninguna       | ninguna     |
+| datos  | \[[usuario](https://colivingproject.github.io/api-docs/?javascript#schemauser)\] | falso     | ninguna       | ninguna     |
 
 ### playlist\_respuesta <a id="tocS_playlist_response"></a>
 
@@ -1679,7 +1679,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre | Tipo                                                                                               | Requerido | Restricciones | Descripción |
 |:------ |:-------------------------------------------------------------------------------------------------- |:--------- |:------------- |:----------- |
-| datos  | \[[lista de reproducción](https://audiusproject.github.io/api-docs/?javascript#schemaplaylist)\] | falso     | ninguna       | ninguna     |
+| datos  | \[[lista de reproducción](https://colivingproject.github.io/api-docs/?javascript#schemaplaylist)\] | falso     | ninguna       | ninguna     |
 
 ### lista de reproducción <a id="tocS_playlist"></a>
 
@@ -1728,7 +1728,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre                  | Tipo                                                                                               | Requerido | Restricciones | Descripción |
 |:----------------------- |:-------------------------------------------------------------------------------------------------- |:--------- |:------------- |:----------- |
-| obra de arte            | [playlist\_artwork](https://audiusproject.github.io/api-docs/?javascript#schemaplaylist_artwork) | falso     | ninguna       | ninguna     |
+| obra de arte            | [playlist\_artwork](https://colivingproject.github.io/api-docs/?javascript#schemaplaylist_artwork) | falso     | ninguna       | ninguna     |
 | descripción             | cadena                                                                                             | falso     | ninguna       | ninguna     |
 | id                      | cadena                                                                                             | verdad    | ninguna       | ninguna     |
 | es\_álbum             | boolean                                                                                            | verdad    | ninguna       | ninguna     |
@@ -1736,7 +1736,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 | repost\_count         | entero                                                                                             | verdad    | ninguna       | ninguna     |
 | contador de favoritos   | entero                                                                                             | verdad    | ninguna       | ninguna     |
 | total\_play\_contar | entero                                                                                             | verdad    | ninguna       | ninguna     |
-| usuario                 | [usuario](https://audiusproject.github.io/api-docs/?javascript#schemauser)                         | verdad    | ninguna       | ninguna     |
+| usuario                 | [usuario](https://colivingproject.github.io/api-docs/?javascript#schemauser)                         | verdad    | ninguna       | ninguna     |
 
 ### playlist\_artwork <a id="tocS_playlist_artwork"></a>
 
@@ -1820,7 +1820,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre | Tipo                                                                            | Requerido | Restricciones | Descripción |
 |:------ |:------------------------------------------------------------------------------- |:--------- |:------------- |:----------- |
-| datos  | \[[Pista](https://audiusproject.github.io/api-docs/?javascript#schematrack)\] | falso     | ninguna       | ninguna     |
+| datos  | \[[Pista](https://colivingproject.github.io/api-docs/?javascript#schematrack)\] | falso     | ninguna       | ninguna     |
 
 ### playlist\_search\_result <a id="tocS_playlist_search_result"></a>
 
@@ -1873,7 +1873,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre | Tipo                                                                                               | Requerido | Restricciones | Descripción |
 |:------ |:-------------------------------------------------------------------------------------------------- |:--------- |:------------- |:----------- |
-| datos  | \[[lista de reproducción](https://audiusproject.github.io/api-docs/?javascript#schemaplaylist)\] | falso     | ninguna       | ninguna     |
+| datos  | \[[lista de reproducción](https://colivingproject.github.io/api-docs/?javascript#schemaplaylist)\] | falso     | ninguna       | ninguna     |
 
 ### pistas\_respuesta <a id="tocS_track_response"></a>
 
@@ -1936,7 +1936,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre | Tipo                                                                      | Requerido | Restricciones | Descripción |
 |:------ |:------------------------------------------------------------------------- |:--------- |:------------- |:----------- |
-| datos  | [Pista](https://audiusproject.github.io/api-docs/?javascript#schematrack) | falso     | ninguna       | ninguna     |
+| datos  | [Pista](https://colivingproject.github.io/api-docs/?javascript#schematrack) | falso     | ninguna       | ninguna     |
 
 ### track\_buscar <a id="tocS_track_search"></a>
 
@@ -2001,7 +2001,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre | Estilo                                                                          | Requerido | Restricciones | Descripción |
 |:------ |:------------------------------------------------------------------------------- |:--------- |:------------- |:----------- |
-| datos  | \[[Pista](https://audiusproject.github.io/api-docs/?javascript#schematrack)\] | falso     | ninguna       | ninguna     |
+| datos  | \[[Pista](https://colivingproject.github.io/api-docs/?javascript#schematrack)\] | falso     | ninguna       | ninguna     |
 
 ### app\_name\_trailing\_response <a id="tocS_app_name_trailing_response"></a>
 
@@ -2021,7 +2021,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre | Tipo                                                                                                                           | Requerido | Restricciones | Descripción |
 |:------ |:------------------------------------------------------------------------------------------------------------------------------ |:--------- |:------------- |:----------- |
-| datos  | \[[app\_name\_trailing\_metric](https://audiusproject.github.io/api-docs/?javascript#schemaapp_name_trailing_metric)\] | falso     | ninguna       | ninguna     |
+| datos  | \[[app\_name\_trailing\_metric](https://colivingproject.github.io/api-docs/?javascript#schemaapp_name_trailing_metric)\] | falso     | ninguna       | ninguna     |
 
 ### app\_name\_trailing\_metric <a id="tocS_app_name_trailing_metric"></a>
 

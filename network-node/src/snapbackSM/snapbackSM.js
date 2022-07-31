@@ -11,7 +11,7 @@ const redis = require('../redis.js')
 
 const SyncDeDuplicator = require('./snapbackDeDuplicator')
 const PeerSetManager = require('./peerSetManager')
-const { libs } = require('@audius/sdk')
+const { libs } = require('@coliving/sdk')
 const CreatorNode = libs.CreatorNode
 const SecondarySyncHealthTracker = require('./secondarySyncHealthTracker')
 const { generateTimestampAndSignature } = require('../apiSigning')
@@ -92,9 +92,9 @@ const STATE_MACHINE_QUEUE_INIT_DELAY_MS = 30000 // 30s
  * Ensures file availability through recurring sync operations
  */
 class SnapbackSM {
-  constructor(nodeConfig, audiusLibs) {
+  constructor(nodeConfig, colivingLibs) {
     this.nodeConfig = nodeConfig
-    this.audiusLibs = audiusLibs
+    this.colivingLibs = colivingLibs
 
     // Toggle to switch logs
     this.debug = true
@@ -132,7 +132,7 @@ class SnapbackSM {
 
     // Throw an error if no libs are provided
     if (
-      !this.audiusLibs ||
+      !this.colivingLibs ||
       !this.spID ||
       !this.endpoint ||
       !this.delegatePrivateKey
@@ -234,7 +234,7 @@ class SnapbackSM {
     // PeerSetManager instance to determine the peer set and its health state
     this.peerSetManager = new PeerSetManager({
       discoveryProviderEndpoint:
-        this.audiusLibs.discoveryProvider.discoveryProviderEndpoint,
+        this.colivingLibs.discoveryProvider.discoveryProviderEndpoint,
       creatorNodeEndpoint: this.endpoint
     })
 
@@ -543,7 +543,7 @@ class SnapbackSM {
       // Submit chain tx to update replica set
       const startTimeMs = Date.now()
       try {
-        await this.audiusLibs.contracts.UserReplicaSetManagerClient.updateReplicaSet(
+        await this.colivingLibs.contracts.UserReplicaSetManagerClient.updateReplicaSet(
           userId,
           newReplicaSetSPIds[0], // primary
           newReplicaSetSPIds.slice(1) // [secondary1, secondary2]
@@ -1005,7 +1005,7 @@ class SnapbackSM {
 
     let nodeUsers = []
     // New DN versions support pagination, so we fall back to modulo slicing for old versions
-    // TODO: Remove modulo supports once all DNs update to include https://github.com/dgc.network/audius-protocol/pull/3071
+    // TODO: Remove modulo supports once all DNs update to include https://github.com/dgc.network/coliving-protocol/pull/3071
     let useModulo = false
     try {
       try {
@@ -1079,7 +1079,7 @@ class SnapbackSM {
       // Setup the mapping of Content Node endpoint to service provider id
       try {
         await this.peerSetManager.updateEndpointToSpIdMap(
-          this.audiusLibs.ethContracts
+          this.colivingLibs.ethContracts
         )
 
         // Update enabledReconfigModesSet after successful `updateEndpointToSpIDMap()` call
@@ -1243,7 +1243,7 @@ class SnapbackSM {
          * There will be an explicit clock value check on the newly selected replica set nodes instead.
          */
         const { services: healthyServicesMap } =
-          await this.audiusLibs.ServiceProvider.autoSelectCreatorNodes({
+          await this.colivingLibs.ServiceProvider.autoSelectCreatorNodes({
             performSyncCheck: false,
             whitelist: this.reconfigNodeWhitelist,
             log: true
@@ -1994,7 +1994,7 @@ class SnapbackSM {
    */
   async getLatestUserId() {
     const discoveryNodeEndpoint =
-      this.audiusLibs.discoveryProvider.discoveryProviderEndpoint
+      this.colivingLibs.discoveryProvider.discoveryProviderEndpoint
     if (!discoveryNodeEndpoint) {
       throw new Error('No discovery provider currently selected, exiting')
     }

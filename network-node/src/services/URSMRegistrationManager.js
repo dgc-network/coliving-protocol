@@ -1,6 +1,6 @@
 const axios = require('axios')
 const _ = require('lodash')
-const { libs } = require('@audius/sdk')
+const { libs } = require('@coliving/sdk')
 const LibsUtils = libs.Utils
 
 const { logger } = require('../logging')
@@ -21,16 +21,16 @@ const RequestForSignatureTimeoutMs = 30000 /** 30sec */
  * @notice Service is backwards compatible, and will work before and after URSM contract deployment
  */
 class URSMRegistrationManager {
-  constructor(nodeConfig, audiusLibs) {
+  constructor(nodeConfig, colivingLibs) {
     this.nodeConfig = nodeConfig
-    this.audiusLibs = audiusLibs
+    this.colivingLibs = colivingLibs
 
     this.delegateOwnerWallet = nodeConfig.get('delegateOwnerWallet')
     this.delegatePrivateKey = nodeConfig.get('delegatePrivateKey')
     this.spOwnerWallet = nodeConfig.get('spOwnerWallet')
 
     if (
-      !this.audiusLibs ||
+      !this.colivingLibs ||
       !this.delegateOwnerWallet ||
       !this.delegatePrivateKey ||
       !this.spOwnerWallet
@@ -69,7 +69,7 @@ class URSMRegistrationManager {
     /**
      * (Backwards-compatibility) Short circuit if L2 URSM contract not yet deployed
      */
-    if (!this.audiusLibs.contracts.UserReplicaSetManagerClient) {
+    if (!this.colivingLibs.contracts.UserReplicaSetManagerClient) {
       throw new Error(
         'URSMRegistration cannot run until UserReplicaSetManager contract is deployed'
       )
@@ -84,7 +84,7 @@ class URSMRegistrationManager {
      * 1. Fetch node record from L1 ServiceProviderFactory for spID
      */
     const spRecordFromSPFactory =
-      await this.audiusLibs.ethContracts.ServiceProviderFactoryClient.getServiceEndpointInfo(
+      await this.colivingLibs.ethContracts.ServiceProviderFactoryClient.getServiceEndpointInfo(
         'content-node',
         spID
       )
@@ -111,7 +111,7 @@ class URSMRegistrationManager {
      * 2. Fetch node record from L2 UserReplicaSetManager for spID
      */
     const delegateOwnerWalletFromURSM = (
-      await this.audiusLibs.contracts.UserReplicaSetManagerClient.getContentNodeWallets(
+      await this.colivingLibs.contracts.UserReplicaSetManagerClient.getContentNodeWallets(
         spID
       )
     ).delegateOwnerWallet.toLowerCase()
@@ -135,7 +135,7 @@ class URSMRegistrationManager {
      *  b. Remove duplicates by owner_wallet key due to on-chain uniqueness constraint
      */
     let URSMContentNodes =
-      await this.audiusLibs.discoveryProvider.getURSMContentNodes()
+      await this.colivingLibs.discoveryProvider.getURSMContentNodes()
 
     URSMContentNodes = URSMContentNodes.filter((node) => node.endpoint)
     URSMContentNodes = _.shuffle(URSMContentNodes)
@@ -195,7 +195,7 @@ class URSMRegistrationManager {
     )
     try {
       // internally this call will retry
-      await this.audiusLibs.contracts.UserReplicaSetManagerClient.addOrUpdateContentNode(
+      await this.colivingLibs.contracts.UserReplicaSetManagerClient.addOrUpdateContentNode(
         spID,
         [this.delegateOwnerWallet, this.spOwnerWallet],
         proposerSpIDs,

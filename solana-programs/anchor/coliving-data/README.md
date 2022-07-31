@@ -1,12 +1,12 @@
-# AudiusData <-> Anchor
+# ColivingData <-> Anchor
 
 ### Overview:
 
-Implementation of audius data layer in Anchor (Solana framework)
+Implementation of coliving data layer in Anchor (Solana framework)
 
 ```
 ./cli/
-    - CLI to interact with deployed instance of AudiusData, has helpers as well for reuse in shared libs layer
+    - CLI to interact with deployed instance of ColivingData, has helpers as well for reuse in shared libs layer
 
 ./lib/
     - Typescript bindings for program interaction, shared with programs/tests and cli/
@@ -97,11 +97,11 @@ solana airdrop <num SOL> <pubkey-or-path-to-storage-keypair.json>
 Can also specify a particular cluster at deploy time, per the following:
 
 ```
-anchor deploy --provider.cluster https://audius.rpcpool.com/
-Deploying workspace: https://audius.rpcpool.com/
+anchor deploy --provider.cluster https://coliving.rpcpool.com/
+Deploying workspace: https://coliving.rpcpool.com/
 Upgrade authority: /Users/hareeshnagaraj/.config/solana/id.json
 Deploying program "coliving-data"...
-Program path: /Users/hareeshnagaraj/Development/audius-protocol/solana-programs/anchor/coliving-data/target/deploy/coliving_data.so...
+Program path: /Users/hareeshnagaraj/Development/coliving-protocol/solana-programs/anchor/coliving-data/target/deploy/coliving_data.so...
 Program Id: EoDXzUBiESoz9FEYdTScXgmfmzBKDRLVxgnNkFjpKtJc
 ```
 

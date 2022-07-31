@@ -1,11 +1,11 @@
 import type { ContractABI, Logger } from '../../utils'
 import { ContractClient, GetRegistryAddress } from '../contracts/ContractClient'
 import type { EthWeb3Manager } from '../ethWeb3Manager'
-import type { AudiusTokenClient } from './AudiusTokenClient'
+import type { ColivingTokenClient } from './ColivingTokenClient'
 import type BN from 'bn.js'
 
 export class StakingProxyClient extends ContractClient {
-  colivingTokenClient: AudiusTokenClient
+  colivingTokenClient: ColivingTokenClient
   toBN: (value: string | number) => BN
 
   constructor(
@@ -13,7 +13,7 @@ export class StakingProxyClient extends ContractClient {
     contractABI: ContractABI['abi'],
     contractRegistryKey: string,
     getRegistryAddress: GetRegistryAddress,
-    colivingTokenClient: AudiusTokenClient,
+    colivingTokenClient: ColivingTokenClient,
     logger: Logger = console
   ) {
     super(

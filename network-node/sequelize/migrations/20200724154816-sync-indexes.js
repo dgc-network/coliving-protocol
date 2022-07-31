@@ -25,20 +25,20 @@ module.exports = {
       concurrently: true
     })
 
-    await queryInterface.addIndex('AudiusUsers', ['metadataFileUUID'], {
-      name: 'audiusUsers_metadataFileUUID_idx',
+    await queryInterface.addIndex('ColivingUsers', ['metadataFileUUID'], {
+      name: 'colivingUsers_metadataFileUUID_idx',
       using: 'btree',
       concurrently: true
     })
 
-    await queryInterface.addIndex('AudiusUsers', ['coverArtFileUUID'], {
-      name: 'audiusUsers_coverArtFileUUID_idx',
+    await queryInterface.addIndex('ColivingUsers', ['coverArtFileUUID'], {
+      name: 'colivingUsers_coverArtFileUUID_idx',
       using: 'btree',
       concurrently: true
     })
 
-    await queryInterface.addIndex('AudiusUsers', ['profilePicFileUUID'], {
-      name: 'audiusUsers_profilePicFileUUID_idx',
+    await queryInterface.addIndex('ColivingUsers', ['profilePicFileUUID'], {
+      name: 'colivingUsers_profilePicFileUUID_idx',
       using: 'btree',
       concurrently: true
     })
@@ -48,8 +48,8 @@ module.exports = {
     await queryInterface.removeIndex('Tracks', 'track_trackUUID_idx')
     await queryInterface.removeIndex('Tracks', 'track_metadataFileUUID_idx')
     await queryInterface.removeIndex('Tracks', 'track_coverArtFileUUID_idx')
-    await queryInterface.removeIndex('AudiusUsers', 'audiusUsers_metadataFileUUID_idx')
-    await queryInterface.removeIndex('AudiusUsers', 'audiusUsers_coverArtFileUUID_idx')
-    await queryInterface.removeIndex('AudiusUsers', 'audiusUsers_profilePicFileUUID_idx')
+    await queryInterface.removeIndex('ColivingUsers', 'colivingUsers_metadataFileUUID_idx')
+    await queryInterface.removeIndex('ColivingUsers', 'colivingUsers_coverArtFileUUID_idx')
+    await queryInterface.removeIndex('ColivingUsers', 'colivingUsers_profilePicFileUUID_idx')
   }
 }

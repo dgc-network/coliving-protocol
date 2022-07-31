@@ -23,10 +23,10 @@ export class Hedgehog {
   // TODO - update this comment
 
   // This is some black magic going on here. The colivingServiceEndpoint is passed in along with the
-  // requestToAudiusService function reference. When setFn and getFn call self.requestToAudiusService,
-  // the context of `this` that's used is the HedgehogWrapper class, not the AudiusWeb3 class.
+  // requestToColivingService function reference. When setFn and getFn call self.requestToColivingService,
+  // the context of `this` that's used is the HedgehogWrapper class, not the ColivingWeb3 class.
   // Therefore, we need to define this.colivingServiceEndpoint, to satisfy all the deps of the
-  // requestToAudiusService and make it execute correctly
+  // requestToColivingService and make it execute correctly
 
   constructor({
     identityService,

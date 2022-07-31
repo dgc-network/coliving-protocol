@@ -7,8 +7,8 @@ module.exports = {
       concurrently: true
     })
 
-    await queryInterface.addIndex('AudiusUsers', ['cnodeUserUUID'], {
-      name: 'ss_AudiusUsers_cnodeUserUUID_idx',
+    await queryInterface.addIndex('ColivingUsers', ['cnodeUserUUID'], {
+      name: 'ss_ColivingUsers_cnodeUserUUID_idx',
       using: 'btree',
       concurrently: true
     })
@@ -27,7 +27,7 @@ module.exports = {
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.removeIndex('Files', 'ss_Files_multihash_idx')
-    await queryInterface.removeIndex('AudiusUsers', 'ss_AudiusUsers_cnodeUserUUID_idx')
+    await queryInterface.removeIndex('ColivingUsers', 'ss_ColivingUsers_cnodeUserUUID_idx')
     await queryInterface.removeIndex('Tracks', 'ss_Tracks_cnodeUserUUID_idx')
     await queryInterface.removeIndex('Files', 'ss_Files_cnodeUserUUID_idx')
   }

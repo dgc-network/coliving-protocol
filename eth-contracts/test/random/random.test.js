@@ -8,7 +8,7 @@ const ServiceTypeManager = artifacts.require('ServiceTypeManager')
 const ServiceProviderFactory = artifacts.require('ServiceProviderFactory')
 const DelegateManager = artifacts.require('DelegateManager')
 const ClaimsManager = artifacts.require('ClaimsManager')
-const AudiusToken = artifacts.require('AudiusToken')
+const ColivingToken = artifacts.require('ColivingToken')
 
 const serviceTypeCN = web3.utils.utf8ToHex('network-node')
 const serviceTypeDP = web3.utils.utf8ToHex('discovery-node')
@@ -74,7 +74,7 @@ contract('Random testing', async (accounts) => {
         // Initialize in memory log
         logs[SystemUser] = []
         users.map((user)=>{ logs[user] = []})
-        token = await AudiusToken.at(process.env.tokenAddress)
+        token = await ColivingToken.at(process.env.tokenAddress)
         governance = await Governance.at(process.env.governanceAddress)
         staking = await Staking.at(process.env.stakingAddress)
         claimsManager = await ClaimsManager.at(process.env.claimsManagerAddress)
@@ -91,7 +91,7 @@ contract('Random testing', async (accounts) => {
         cnTypeInfo = await serviceTypeManager.getServiceTypeInfo(serviceTypeCN)
         dpTypeInfo = await serviceTypeManager.getServiceTypeInfo(serviceTypeDP)
         sysLog(`proxyDeployer: ${proxyDeployerAddress}`)
-        sysLog(`AudiusToken: ${token.address}, expected ${process.env.tokenAddress}`)
+        sysLog(`ColivingToken: ${token.address}, expected ${process.env.tokenAddress}`)
         sysLog(`Governance: ${governance.address}, expected ${process.env.governanceAddress}`)
         sysLog(`Deployer balance: ${(await token.balanceOf(proxyDeployerAddress)).toString()}`)
         sysLog(`Staking: ${staking.address}, expected ${process.env.stakingAddress}`)

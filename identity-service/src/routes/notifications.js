@@ -277,7 +277,7 @@ const notificationResponseMap = {
  *
  * @return {Array<Notification|Announcement>} The merged & nsorted notificaitons/annoucnements
  */
-function mergeAudiusAnnoucements (announcements, notifications) {
+function mergeColivingAnnoucements (announcements, notifications) {
   const allNotifications = announcements.concat(notifications)
   allNotifications.sort((a, b) => {
     let aDate = moment(a.datePublished || a.timestamp || a.createdAt)
@@ -312,7 +312,7 @@ const formatNotifications = (notifications, announcements) => {
     .filter(a => !notifIds[a.entityId])
     .map(formatUnreadAnnouncement)
 
-  return mergeAudiusAnnoucements(unreadAnnouncements, userNotifications)
+  return mergeColivingAnnoucements(unreadAnnouncements, userNotifications)
 }
 
 /**
@@ -790,6 +790,6 @@ module.exports = function (app) {
   }))
 }
 
-module.exports.mergeAudiusAnnoucements = mergeAudiusAnnoucements
+module.exports.mergeColivingAnnoucements = mergeColivingAnnoucements
 module.exports.mapMilestone = mapMilestone
 module.exports.Entity = Entity

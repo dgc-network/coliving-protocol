@@ -30,8 +30,8 @@ During installation there will be prompts for required environment variables. Th
 If you're using an externally managed Postgres DB please see [this section](advanced_setup.md#external-network-node-postgres)
 
 ### Discovery Provider
-- `audius_delegate_owner_wallet` - Address of wallet that contains no tokens but that is registered on chain, used to sign JSON responses from server
-- `audius_delegate_private_key` - Private key associated with `audius_delegate_owner_wallet`
+- `coliving_delegate_owner_wallet` - Address of wallet that contains no tokens but that is registered on chain, used to sign JSON responses from server
+- `coliving_delegate_private_key` - Private key associated with `coliving_delegate_owner_wallet`
 
 If you're using an externally managed Postgres DB please see [this section](advanced_setup.md#external-discovery-node-postgres-instance)
 

@@ -1,6 +1,6 @@
 const contractConfig = require('../contract-config.js')
 const _lib = require('../utils/lib')
-const AudiusAdminUpgradeabilityProxy = artifacts.require('AudiusAdminUpgradeabilityProxy')
+const ColivingAdminUpgradeabilityProxy = artifacts.require('ColivingAdminUpgradeabilityProxy')
 const WormholeClient = artifacts.require('WormholeClient')
 const Governance = artifacts.require('Governance')
 const MockWormhole = artifacts.require('MockWormhole')
@@ -33,7 +33,7 @@ module.exports = (deployer, network, accounts) => {
     )
 
     const wormholeClientProxy = await deployer.deploy(
-      AudiusAdminUpgradeabilityProxy,
+      ColivingAdminUpgradeabilityProxy,
       wormholeClient0.address,
       governanceAddress,
       initializeCallData,

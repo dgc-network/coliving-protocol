@@ -66,7 +66,7 @@ const AnnouncementHeader = () => (
   </>
 )
 
-const OpenAudiusLink = () => (
+const OpenColivingLink = () => (
   <a
     className={'avenir'}
     style={{
@@ -303,7 +303,7 @@ const Body = (props) => {
               )}
               <tr>
                 <td valign='center' colspan={'12'} style={{ padding: '0px 16px 14px' }}>
-                  <OpenAudiusLink />
+                  <OpenColivingLink />
                 </td>
               </tr>
             </table>

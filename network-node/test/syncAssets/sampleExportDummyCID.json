@@ -9,7 +9,7 @@
         "clock": 37,
         "createdAt": "2020-11-23T22:44:17.791Z",
         "updatedAt": "2020-11-23T22:44:31.757Z",
-        "audiusUsers": [
+        "colivingUsers": [
           {
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
             "clock": 2,
@@ -707,7 +707,7 @@
           {
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
             "clock": 2,
-            "sourceTable": "AudiusUser",
+            "sourceTable": "ColivingUser",
             "createdAt": "2020-11-23T22:44:18.912Z",
             "updatedAt": "2020-11-23T22:44:18.912Z"
           },
@@ -974,7 +974,7 @@
       "clock": 37,
       "createdAt": "2020-11-23T22:44:17.791Z",
       "updatedAt": "2020-11-23T22:44:31.757Z",
-      "audiusUsers": [
+      "colivingUsers": [
         {
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
           "clock": 2,
@@ -1672,7 +1672,7 @@
         {
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
           "clock": 2,
-          "sourceTable": "AudiusUser",
+          "sourceTable": "ColivingUser",
           "createdAt": "2020-11-23T22:44:18.912Z",
           "updatedAt": "2020-11-23T22:44:18.912Z"
         },

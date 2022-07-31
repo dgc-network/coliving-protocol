@@ -21,7 +21,7 @@ describe('test peerSetManager -- determinePeerHealth', () => {
     service: 'content-node',
     healthy: true,
     git: '',
-    selectedDiscoveryProvider: 'http://audius-disc-prov_web-server_1:5000',
+    selectedDiscoveryProvider: 'http://coliving-disc-prov_web-server_1:5000',
     creatorNodeEndpoint: 'http://cn1_network-node_1:4000',
     spID: 1,
     spOwnerWallet: '0xf7316fe994bb92556dcfd998038618ce1227aeea',
@@ -55,8 +55,8 @@ describe('test peerSetManager -- determinePeerHealth', () => {
   beforeEach(() => {
     nock.disableNetConnect()
     peerSetManager = new PeerSetManager({
-      discoveryProviderEndpoint: 'https://discovery_endpoint.audius.co',
-      creatorNodeEndpoint: 'https://content_node_endpoint.audius.co'
+      discoveryProviderEndpoint: 'https://discovery_endpoint.coliving.co',
+      creatorNodeEndpoint: 'https://content_node_endpoint.coliving.co'
     })
   })
 
@@ -218,12 +218,12 @@ describe('test peerSetManager -- determinePeerHealth', () => {
 describe('test peerSetManager -- isPrimaryHealthy', () => {
   let peerSetManager
 
-  const primaryEndpoint = 'http://primary.audius.co'
+  const primaryEndpoint = 'http://primary.coliving.co'
 
   beforeEach(() => {
     peerSetManager = new PeerSetManager({
-      discoveryProviderEndpoint: 'https://discovery_endpoint.audius.co',
-      creatorNodeEndpoint: 'https://content_node_endpoint.audius.co'
+      discoveryProviderEndpoint: 'https://discovery_endpoint.coliving.co',
+      creatorNodeEndpoint: 'https://content_node_endpoint.coliving.co'
     })
   })
 
@@ -249,8 +249,8 @@ describe('test peerSetManager -- isPrimaryHealthy', () => {
   it('should mark primary as unhealthy if responds with 500 from health check and the primary has surpassed the allowed threshold time to be unhealthy', async () => {
     // Set `maxNumberSecondsPrimaryRemainsUnhealthy` to 0 to mock threshold going over
     peerSetManager = new PeerSetManager({
-      discoveryProviderEndpoint: 'https://discovery_endpoint.audius.co',
-      creatorNodeEndpoint: 'https://content_node_endpoint.audius.co',
+      discoveryProviderEndpoint: 'https://discovery_endpoint.coliving.co',
+      creatorNodeEndpoint: 'https://content_node_endpoint.coliving.co',
       maxNumberSecondsPrimaryRemainsUnhealthy: 0
     })
     peerSetManager.isNodeHealthy = async () => { return false }
@@ -285,8 +285,8 @@ describe('test peerSetManager -- isPrimaryHealthy', () => {
 })
 
 describe('test peerSetManager -- getNodeUsers', () => {
-  const DISCOVERY_NODE_ENDPOINT = 'https://discovery_endpoint.audius.co'
-  const CREATOR_NODE_ENDPOINT = 'https://content_node_endpoint.audius.co'
+  const DISCOVERY_NODE_ENDPOINT = 'https://discovery_endpoint.coliving.co'
+  const CREATOR_NODE_ENDPOINT = 'https://content_node_endpoint.coliving.co'
   const users = []
   _.range(1, 20).forEach((userId) => {
     users.push({

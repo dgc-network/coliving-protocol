@@ -1,5 +1,5 @@
-import * as AudiusData from '@coliving/anchor-coliving-data'
-import type { AudiusDataProgram } from '@coliving/anchor-coliving-data'
+import * as ColivingData from '@coliving/anchor-coliving-data'
+import type { ColivingDataProgram } from '@coliving/anchor-coliving-data'
 import anchor, { BN, Idl } from '@project-serum/anchor'
 import type { SolanaWeb3Manager } from '../solana'
 import type { Web3Manager } from '../web3Manager'
@@ -7,7 +7,7 @@ import { PublicKey, Keypair, SystemProgram, Transaction } from '@solana/web3.js'
 import { SolanaUtils } from '../solana'
 import { colivingDataErrorMapping } from './errors'
 
-type AnchorAudiusDataConfig = {
+type AnchorColivingDataConfig = {
   programId: string
   adminAccount: string
 }
@@ -23,40 +23,40 @@ type OmitAndRequire<T, K extends keyof T, L extends keyof T> = Partial<
   Required<Pick<T, L>>
 
 /**
- * SolanaAudiusData acts as the interface to solana coliving data programs from a client.
+ * SolanaColivingData acts as the interface to solana coliving data programs from a client.
  * It wraps methods to create transactions.
  */
-export class SolanaAudiusData {
-  anchorAudiusDataConfig: AnchorAudiusDataConfig
+export class SolanaColivingData {
+  anchorColivingDataConfig: AnchorColivingDataConfig
   solanaWeb3Manager: SolanaWeb3Manager
-  program!: AudiusDataProgram
+  program!: ColivingDataProgram
   programId!: PublicKey
   adminAccount!: PublicKey
   provider!: anchor.Provider
   web3Manager: Web3Manager
   // Exposes all other methods from @coliving/anchor-coliving-data for ad hoc use
-  AudiusData: any
+  ColivingData: any
 
   /**
-   * @param {Object} anchorAudiusDataConfig The config object
-   * @param {string} anchorAudiusDataConfig.programId Program ID of the coliving data program
-   * @param {string} anchorAudiusDataConfig.adminAccount Public Key of admin storage account
+   * @param {Object} anchorColivingDataConfig The config object
+   * @param {string} anchorColivingDataConfig.programId Program ID of the coliving data program
+   * @param {string} anchorColivingDataConfig.adminAccount Public Key of admin storage account
    * @param {SolanaWeb3Manager} solanaWeb3Manager Solana web3 Manager
    * @param {Web3Manager} web3Manager
    */
   constructor(
-    anchorAudiusDataConfig: AnchorAudiusDataConfig,
+    anchorColivingDataConfig: AnchorColivingDataConfig,
     solanaWeb3Manager: SolanaWeb3Manager,
     web3Manager: Web3Manager
   ) {
-    this.anchorAudiusDataConfig = anchorAudiusDataConfig
+    this.anchorColivingDataConfig = anchorColivingDataConfig
     this.solanaWeb3Manager = solanaWeb3Manager
     this.web3Manager = web3Manager
-    this.AudiusData = AudiusData
+    this.ColivingData = ColivingData
   }
 
   async init() {
-    const { programId, adminAccount } = this.anchorAudiusDataConfig
+    const { programId, adminAccount } = this.anchorColivingDataConfig
     this.programId = SolanaUtils.newPublicKeyNullable(programId)
     this.adminAccount = SolanaUtils.newPublicKeyNullable(adminAccount)
     this.provider = new anchor.AnchorProvider(
@@ -66,7 +66,7 @@ export class SolanaAudiusData {
       anchor.AnchorProvider.defaultOptions()
     )
     this.program = new anchor.Program(
-      AudiusData.idl as Idl,
+      ColivingData.idl as Idl,
       this.programId,
       this.provider
     ) as any
@@ -197,10 +197,10 @@ export class SolanaAudiusData {
    * @memberof SolanaWeb3Manager
    */
   async initAdmin(
-    params: Omit<AudiusData.InitAdminParams, 'payer' | 'program'>
+    params: Omit<ColivingData.InitAdminParams, 'payer' | 'program'>
   ) {
     if (!this.program || !this.solanaWeb3Manager.feePayerKey) return
-    const tx = AudiusData.initAdmin({
+    const tx = ColivingData.initAdmin({
       payer: this.solanaWeb3Manager.feePayerKey,
       program: this.program,
       ...params
@@ -215,7 +215,7 @@ export class SolanaAudiusData {
    */
   async initUser(
     params: OmitAndRequire<
-      AudiusData.InitUserParams,
+      ColivingData.InitUserParams,
       'program' | 'payer',
       | 'userId'
       | 'metadata'
@@ -232,7 +232,7 @@ export class SolanaAudiusData {
     >
   ) {
     if (!this.didInit()) return
-    const tx = AudiusData.initUser({
+    const tx = ColivingData.initUser({
       payer: this.solanaWeb3Manager.feePayerKey,
       program: this.program,
       adminAccount: this.adminAccount,
@@ -247,7 +247,7 @@ export class SolanaAudiusData {
    */
   async initUserSolPubkey(
     params: Omit<
-      AudiusData.InitUserSolPubkeyParams,
+      ColivingData.InitUserSolPubkeyParams,
       'program' | 'ethPrivateKey' | 'message'
     > & {
       userId: BN
@@ -257,7 +257,7 @@ export class SolanaAudiusData {
 
     const userSolKeypair = this.getUserKeyPair()
     const { userAccount } = await this.getUserIdSeed(params.userId)
-    const tx = AudiusData.initUserSolPubkey({
+    const tx = ColivingData.initUserSolPubkey({
       program: this.program,
       ethPrivateKey: this.web3Manager.ownerWallet.getPrivateKeyString(),
       message: userSolKeypair.publicKey.toBytes(),
@@ -274,7 +274,7 @@ export class SolanaAudiusData {
    */
   async createContentNode(
     params: OmitAndRequire<
-      AudiusData.CreateContentNodeParams,
+      ColivingData.CreateContentNodeParams,
       'program',
       | 'spID'
       | 'payer'
@@ -288,7 +288,7 @@ export class SolanaAudiusData {
     >
   ) {
     if (!this.program) return
-    const tx = AudiusData.createContentNode({
+    const tx = ColivingData.createContentNode({
       program: this.program,
       ...params
     })
@@ -301,10 +301,10 @@ export class SolanaAudiusData {
    * @memberof SolanaWeb3Manager
    */
   async updateUserReplicaSet(
-    params: Omit<AudiusData.UpdateUserReplicaSetParams, 'program' | 'payer'>
+    params: Omit<ColivingData.UpdateUserReplicaSetParams, 'program' | 'payer'>
   ) {
     if (!this.program || !this.solanaWeb3Manager.feePayerKey) return
-    const tx = AudiusData.updateUserReplicaSet({
+    const tx = ColivingData.updateUserReplicaSet({
       payer: this.solanaWeb3Manager.feePayerKey,
       program: this.program,
       ...params
@@ -318,11 +318,11 @@ export class SolanaAudiusData {
    */
   async publicCreateOrUpdateContentNode(
     params: Omit<
-      AudiusData.PublicCreateOrUpdateContentNodeParams,
+      ColivingData.PublicCreateOrUpdateContentNodeParams,
       'program' | 'payer'
     >
   ) {
-    const tx = AudiusData.publicCreateOrUpdateContentNode({
+    const tx = ColivingData.publicCreateOrUpdateContentNode({
       program: this.program,
       payer: this.solanaWeb3Manager.feePayerKey,
       ...params
@@ -335,9 +335,9 @@ export class SolanaAudiusData {
    * @memberof SolanaWeb3Manager
    */
   async publicDeleteContentNode(
-    params: Omit<AudiusData.PublicDeleteContentNodeParams, 'program' | 'payer'>
+    params: Omit<ColivingData.PublicDeleteContentNodeParams, 'program' | 'payer'>
   ) {
-    const tx = AudiusData.publicDeleteContentNode({
+    const tx = ColivingData.publicDeleteContentNode({
       program: this.program,
       payer: this.solanaWeb3Manager.feePayerKey,
       ...params
@@ -352,7 +352,7 @@ export class SolanaAudiusData {
    */
   async createUser(
     params: OmitAndRequire<
-      AudiusData.CreateUserParams,
+      ColivingData.CreateUserParams,
       'program' | 'payer',
       'userId' | 'metadata'
     > & {
@@ -378,7 +378,7 @@ export class SolanaAudiusData {
       )
     )
 
-    const tx = AudiusData.createUser({
+    const tx = ColivingData.createUser({
       program: this.program,
       payer: this.solanaWeb3Manager.feePayerKey,
       adminAccount: this.adminAccount,
@@ -405,7 +405,7 @@ export class SolanaAudiusData {
    */
   async updateUser(
     params: OmitAndRequire<
-      AudiusData.UpdateUserParams,
+      ColivingData.UpdateUserParams,
       'program',
       'metadata'
     > & { userId: anchor.BN }
@@ -414,7 +414,7 @@ export class SolanaAudiusData {
 
     const { userAccount } = await this.getUserIdSeed(params.userId)
     const userSolKeypair = this.getUserKeyPair()
-    const tx = AudiusData.updateUser({
+    const tx = ColivingData.updateUser({
       program: this.program,
       userAccount,
       userAuthorityPublicKey: userSolKeypair.publicKey,
@@ -430,7 +430,7 @@ export class SolanaAudiusData {
    * Updates the admin account, used for write enabled
    * @memberof SolanaWeb3Manager
    */
-  async updateAdmin(params: Omit<AudiusData.UpdateAdminParams, 'program'>) {
+  async updateAdmin(params: Omit<ColivingData.UpdateAdminParams, 'program'>) {
     if (
       !this.program ||
       !this.solanaWeb3Manager.feePayerKey ||
@@ -438,7 +438,7 @@ export class SolanaAudiusData {
     )
       return
 
-    const tx = AudiusData.updateAdmin({
+    const tx = ColivingData.updateAdmin({
       program: this.program,
       ...params
     })
@@ -447,11 +447,11 @@ export class SolanaAudiusData {
 
   async initAuthorityDelegationStatus(
     params: Omit<
-      AudiusData.InitAuthorityDelegationStatusParams,
+      ColivingData.InitAuthorityDelegationStatusParams,
       'program' | 'payer'
     >
   ) {
-    const tx = AudiusData.initAuthorityDelegationStatus({
+    const tx = ColivingData.initAuthorityDelegationStatus({
       program: this.program,
       payer: this.solanaWeb3Manager.feePayerKey,
       ...params
@@ -461,11 +461,11 @@ export class SolanaAudiusData {
 
   async revokeAuthorityDelegation(
     params: Omit<
-      AudiusData.RevokeAuthorityDelegationParams,
+      ColivingData.RevokeAuthorityDelegationParams,
       'program' | 'payer'
     >
   ) {
-    const tx = AudiusData.revokeAuthorityDelegation({
+    const tx = ColivingData.revokeAuthorityDelegation({
       program: this.program,
       payer: this.solanaWeb3Manager.feePayerKey,
       ...params
@@ -474,9 +474,9 @@ export class SolanaAudiusData {
   }
 
   async addUserAuthorityDelegate(
-    params: Omit<AudiusData.AddUserAuthorityDelegateParams, 'program' | 'payer'>
+    params: Omit<ColivingData.AddUserAuthorityDelegateParams, 'program' | 'payer'>
   ) {
-    const tx = AudiusData.addUserAuthorityDelegate({
+    const tx = ColivingData.addUserAuthorityDelegate({
       program: this.program,
       payer: this.solanaWeb3Manager.feePayerKey,
       ...params
@@ -486,11 +486,11 @@ export class SolanaAudiusData {
 
   async removeUserAuthorityDelegate(
     params: Omit<
-      AudiusData.RemoveUserAuthorityDelegateParams,
+      ColivingData.RemoveUserAuthorityDelegateParams,
       'program' | 'payer'
     >
   ) {
-    const tx = AudiusData.removeUserAuthorityDelegate({
+    const tx = ColivingData.removeUserAuthorityDelegate({
       program: this.program,
       payer: this.solanaWeb3Manager.feePayerKey,
       ...params
@@ -505,7 +505,7 @@ export class SolanaAudiusData {
    */
   async updateIsVerified(
     params: OmitAndRequire<
-      AudiusData.UpdateIsVerifiedParams,
+      ColivingData.UpdateIsVerifiedParams,
       'program' | 'verifierPublicKey',
       'userId'
     > & {
@@ -516,7 +516,7 @@ export class SolanaAudiusData {
     const { bumpSeed, baseAuthorityAccount, userAccount } =
       await this.getUserIdSeed(params.userId)
 
-    const tx = AudiusData.updateIsVerified({
+    const tx = ColivingData.updateIsVerified({
       program: this.program,
       adminAccount: this.adminAccount,
       bumpSeed,
@@ -539,7 +539,7 @@ export class SolanaAudiusData {
    */
   async createTrack(
     params: OmitAndRequire<
-      AudiusData.CreateEntityParams,
+      ColivingData.CreateEntityParams,
       'program',
       'id' | 'userId' | 'metadata'
     >
@@ -550,7 +550,7 @@ export class SolanaAudiusData {
       await this.getUserIdSeed(params.userId)
 
     const userSolKeypair = this.getUserKeyPair()
-    const tx = AudiusData.createTrack({
+    const tx = ColivingData.createTrack({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,
@@ -575,7 +575,7 @@ export class SolanaAudiusData {
    */
   async updateTrack(
     params: OmitAndRequire<
-      AudiusData.UpdateEntityParams,
+      ColivingData.UpdateEntityParams,
       'program',
       'id' | 'userId' | 'metadata'
     >
@@ -587,7 +587,7 @@ export class SolanaAudiusData {
 
     const userSolKeypair = this.getUserKeyPair()
 
-    const tx = AudiusData.updateTrack({
+    const tx = ColivingData.updateTrack({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,
@@ -612,7 +612,7 @@ export class SolanaAudiusData {
    */
   async deleteTrack(
     params: OmitAndRequire<
-      AudiusData.DeleteEntityParams,
+      ColivingData.DeleteEntityParams,
       'program',
       'id' | 'userId'
     >
@@ -623,7 +623,7 @@ export class SolanaAudiusData {
       await this.getUserIdSeed(params.userId)
 
     const userSolKeypair = this.getUserKeyPair()
-    const tx = AudiusData.deleteTrack({
+    const tx = ColivingData.deleteTrack({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,
@@ -647,7 +647,7 @@ export class SolanaAudiusData {
    */
   async createPlaylist(
     params: OmitAndRequire<
-      AudiusData.CreateEntityParams,
+      ColivingData.CreateEntityParams,
       'program',
       'id' | 'userId' | 'metadata'
     >
@@ -658,7 +658,7 @@ export class SolanaAudiusData {
       await this.getUserIdSeed(params.userId)
 
     const userSolKeypair = this.getUserKeyPair()
-    const tx = AudiusData.createPlaylist({
+    const tx = ColivingData.createPlaylist({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,
@@ -683,7 +683,7 @@ export class SolanaAudiusData {
    */
   async updatePlaylist(
     params: OmitAndRequire<
-      AudiusData.UpdateEntityParams,
+      ColivingData.UpdateEntityParams,
       'program',
       'id' | 'userId' | 'metadata'
     >
@@ -694,7 +694,7 @@ export class SolanaAudiusData {
       await this.getUserIdSeed(params.userId)
 
     const userSolKeypair = this.getUserKeyPair()
-    const tx = AudiusData.updatePlaylist({
+    const tx = ColivingData.updatePlaylist({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,
@@ -719,7 +719,7 @@ export class SolanaAudiusData {
    */
   async deletePlaylist(
     params: OmitAndRequire<
-      AudiusData.DeleteEntityParams,
+      ColivingData.DeleteEntityParams,
       'program',
       'id' | 'userId'
     >
@@ -730,7 +730,7 @@ export class SolanaAudiusData {
       await this.getUserIdSeed(params.userId)
 
     const userSolKeypair = this.getUserKeyPair()
-    const tx = AudiusData.deletePlaylist({
+    const tx = ColivingData.deletePlaylist({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,
@@ -755,7 +755,7 @@ export class SolanaAudiusData {
    */
   async addTrackSave(
     params: OmitAndRequire<
-      AudiusData.EntitySocialActionParams,
+      ColivingData.EntitySocialActionParams,
       'program',
       'id' | 'userId'
     >
@@ -766,7 +766,7 @@ export class SolanaAudiusData {
       await this.getUserIdSeed(params.userId)
 
     const userSolKeypair = this.getUserKeyPair()
-    const tx = AudiusData.addTrackSave({
+    const tx = ColivingData.addTrackSave({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,
@@ -789,7 +789,7 @@ export class SolanaAudiusData {
    */
   async deleteTrackSave(
     params: OmitAndRequire<
-      AudiusData.EntitySocialActionParams,
+      ColivingData.EntitySocialActionParams,
       'program',
       'id' | 'userId'
     >
@@ -800,7 +800,7 @@ export class SolanaAudiusData {
       await this.getUserIdSeed(params.userId)
 
     const userSolKeypair = this.getUserKeyPair()
-    const tx = AudiusData.deleteTrackSave({
+    const tx = ColivingData.deleteTrackSave({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,
@@ -823,7 +823,7 @@ export class SolanaAudiusData {
    */
   async addTrackRepost(
     params: OmitAndRequire<
-      AudiusData.EntitySocialActionParams,
+      ColivingData.EntitySocialActionParams,
       'program',
       'id' | 'userId'
     >
@@ -834,7 +834,7 @@ export class SolanaAudiusData {
       await this.getUserIdSeed(params.userId)
 
     const userSolKeypair = this.getUserKeyPair()
-    const tx = AudiusData.addTrackRepost({
+    const tx = ColivingData.addTrackRepost({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,
@@ -857,7 +857,7 @@ export class SolanaAudiusData {
    */
   async deleteTrackRepost(
     params: OmitAndRequire<
-      AudiusData.EntitySocialActionParams,
+      ColivingData.EntitySocialActionParams,
       'program',
       'id' | 'userId'
     >
@@ -868,7 +868,7 @@ export class SolanaAudiusData {
       await this.getUserIdSeed(params.userId)
 
     const userSolKeypair = this.getUserKeyPair()
-    const tx = AudiusData.deleteTrackRepost({
+    const tx = ColivingData.deleteTrackRepost({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,
@@ -891,7 +891,7 @@ export class SolanaAudiusData {
    */
   async addPlaylistSave(
     params: OmitAndRequire<
-      AudiusData.EntitySocialActionParams,
+      ColivingData.EntitySocialActionParams,
       'program',
       'id' | 'userId'
     >
@@ -902,7 +902,7 @@ export class SolanaAudiusData {
       await this.getUserIdSeed(params.userId)
 
     const userSolKeypair = this.getUserKeyPair()
-    const tx = AudiusData.addPlaylistSave({
+    const tx = ColivingData.addPlaylistSave({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,
@@ -925,7 +925,7 @@ export class SolanaAudiusData {
    */
   async deletePlaylistSave(
     params: OmitAndRequire<
-      AudiusData.EntitySocialActionParams,
+      ColivingData.EntitySocialActionParams,
       'program',
       'id' | 'userId'
     >
@@ -936,7 +936,7 @@ export class SolanaAudiusData {
       await this.getUserIdSeed(params.userId)
 
     const userSolKeypair = this.getUserKeyPair()
-    const tx = AudiusData.deletePlaylistSave({
+    const tx = ColivingData.deletePlaylistSave({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,
@@ -959,7 +959,7 @@ export class SolanaAudiusData {
    */
   async addPlaylistRepost(
     params: OmitAndRequire<
-      AudiusData.EntitySocialActionParams,
+      ColivingData.EntitySocialActionParams,
       'program',
       'id' | 'userId'
     >
@@ -970,7 +970,7 @@ export class SolanaAudiusData {
       await this.getUserIdSeed(params.userId)
 
     const userSolKeypair = this.getUserKeyPair()
-    const tx = AudiusData.addPlaylistRepost({
+    const tx = ColivingData.addPlaylistRepost({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,
@@ -993,7 +993,7 @@ export class SolanaAudiusData {
    */
   async deletePlaylistRepost(
     params: OmitAndRequire<
-      AudiusData.EntitySocialActionParams,
+      ColivingData.EntitySocialActionParams,
       'program',
       'id' | 'userId'
     >
@@ -1004,7 +1004,7 @@ export class SolanaAudiusData {
       await this.getUserIdSeed(params.userId)
 
     const userSolKeypair = this.getUserKeyPair()
-    const tx = AudiusData.deletePlaylistRepost({
+    const tx = ColivingData.deletePlaylistRepost({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,
@@ -1029,7 +1029,7 @@ export class SolanaAudiusData {
    */
   async followUser(
     params: OmitAndRequire<
-      AudiusData.UserSocialActionParams,
+      ColivingData.UserSocialActionParams,
       'program',
       'sourceUserId' | 'targetUserId'
     >
@@ -1046,7 +1046,7 @@ export class SolanaAudiusData {
 
     const userSolKeypair = this.getUserKeyPair()
 
-    const tx = AudiusData.followUser({
+    const tx = ColivingData.followUser({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,
@@ -1071,7 +1071,7 @@ export class SolanaAudiusData {
    */
   async unfollowUser(
     params: OmitAndRequire<
-      AudiusData.UserSocialActionParams,
+      ColivingData.UserSocialActionParams,
       'program',
       'sourceUserId' | 'targetUserId'
     >
@@ -1087,7 +1087,7 @@ export class SolanaAudiusData {
       await this.getUserIdSeed(params.targetUserId)
 
     const userSolKeypair = this.getUserKeyPair()
-    const tx = AudiusData.unfollowUser({
+    const tx = ColivingData.unfollowUser({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,
@@ -1112,7 +1112,7 @@ export class SolanaAudiusData {
    */
   async subscribeUser(
     params: OmitAndRequire<
-      AudiusData.UserSocialActionParams,
+      ColivingData.UserSocialActionParams,
       'program',
       'sourceUserId' | 'targetUserId'
     >
@@ -1128,7 +1128,7 @@ export class SolanaAudiusData {
       await this.getUserIdSeed(params.targetUserId)
 
     const userSolKeypair = this.getUserKeyPair()
-    const tx = AudiusData.subscribeUser({
+    const tx = ColivingData.subscribeUser({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,
@@ -1153,7 +1153,7 @@ export class SolanaAudiusData {
    */
   async unsubscribeUser(
     params: OmitAndRequire<
-      AudiusData.UserSocialActionParams,
+      ColivingData.UserSocialActionParams,
       'program',
       'sourceUserId' | 'targetUserId'
     >
@@ -1170,7 +1170,7 @@ export class SolanaAudiusData {
 
     const userSolKeypair = this.getUserKeyPair()
 
-    const tx = AudiusData.unsubscribeUser({
+    const tx = ColivingData.unsubscribeUser({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,

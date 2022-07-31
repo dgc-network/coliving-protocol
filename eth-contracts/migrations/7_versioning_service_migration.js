@@ -7,7 +7,7 @@ const Registry = artifacts.require('Registry')
 const Staking = artifacts.require('Staking')
 const ServiceTypeManager = artifacts.require('ServiceTypeManager')
 const ServiceProviderFactory = artifacts.require('ServiceProviderFactory')
-const AudiusAdminUpgradeabilityProxy = artifacts.require('AudiusAdminUpgradeabilityProxy')
+const ColivingAdminUpgradeabilityProxy = artifacts.require('ColivingAdminUpgradeabilityProxy')
 const Governance = artifacts.require('Governance')
 const ClaimsManager = artifacts.require('ClaimsManager')
 
@@ -62,7 +62,7 @@ module.exports = (deployer, network, accounts) => {
       [process.env.governanceAddress]
     )
     const serviceTypeManagerProxy = await deployer.deploy(
-      AudiusAdminUpgradeabilityProxy,
+      ColivingAdminUpgradeabilityProxy,
       serviceTypeManager0.address,
       process.env.governanceAddress,
       serviceTypeCalldata,
@@ -119,7 +119,7 @@ module.exports = (deployer, network, accounts) => {
       ]
     )
     const serviceProviderFactoryProxy = await deployer.deploy(
-      AudiusAdminUpgradeabilityProxy,
+      ColivingAdminUpgradeabilityProxy,
       serviceProviderFactory0.address,
       process.env.governanceAddress,
       serviceProviderFactoryCalldata,

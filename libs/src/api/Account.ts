@@ -554,7 +554,7 @@ export class Account extends Base {
       amount
     )
     const permit = await this.ethWeb3Manager.getRelayMethodParams(
-      this.ethContracts.AudiusTokenClient.contractAddress,
+      this.ethContracts.ColivingTokenClient.contractAddress,
       permitMethod,
       selectedEthWallet
     )
@@ -606,11 +606,11 @@ export class Account extends Base {
         await web3.eth.getChainId((_, chainId) => resolve(chainId))
     )
     /* eslint-enable */
-    const name = await this.ethContracts.AudiusTokenClient.name()
-    const tokenAddress = this.ethContracts.AudiusTokenClient.contractAddress
+    const name = await this.ethContracts.ColivingTokenClient.name()
+    const tokenAddress = this.ethContracts.ColivingTokenClient.contractAddress
 
     // Submit permit request to give address approval, via relayer
-    const nonce = await this.ethContracts.AudiusTokenClient.nonces(owner)
+    const nonce = await this.ethContracts.ColivingTokenClient.nonces(owner)
     const currentBlockNumber = await web3.eth.getBlockNumber()
     const currentBlock = await web3.eth.getBlock(currentBlockNumber)
     // 1 hour, sufficiently far in future
@@ -645,7 +645,7 @@ export class Account extends Base {
       relayerAddress,
       amount
     )
-    const tx = await this.ethContracts.AudiusTokenClient.permit(
+    const tx = await this.ethContracts.ColivingTokenClient.permit(
       owner,
       relayerAddress,
       amount,
@@ -671,7 +671,7 @@ export class Account extends Base {
       amount
     )
     const contractMethod =
-      this.ethContracts.AudiusTokenClient.AudiusTokenContract.methods.permit(
+      this.ethContracts.ColivingTokenClient.ColivingTokenContract.methods.permit(
         owner,
         relayerAddress,
         amount,
@@ -693,7 +693,7 @@ export class Account extends Base {
     amount: BN
   ) {
     this.REQUIRES(Services.IDENTITY_SERVICE)
-    return await this.ethContracts.AudiusTokenClient.transferFrom(
+    return await this.ethContracts.ColivingTokenClient.transferFrom(
       owner,
       address,
       relayer,

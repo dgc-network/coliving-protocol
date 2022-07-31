@@ -238,11 +238,11 @@ Certaines variables doivent être définies, vous pouvez le faire avec les comma
 
 ```text
 -cli set-config discovery-node backend
-key   : audius_delegate_owner_wallet
+key   : coliving_delegate_owner_wallet
 value : <delegate_owner_wallet>
 
 -cli set-config discovery-node backend
-key   : audius_delegate_private_key
+key   : coliving_delegate_private_key
 value : <delegate_private_key>
 ```
 
@@ -253,12 +253,12 @@ Si vous utilisez une base de données Postgres gérée en externe \(version 11.1
 
 ```text
 -cli set-config discovery-node backend
-key   : audius_db_url
-value : <audius_db_url>
+key   : coliving_db_url
+value : <coliving_db_url>
 
 -cli set-config discovery-node backend
-key   : audius_db_url_read_replica
-value : <audius_db_url_read_replica>
+key   : coliving_db_url_read_replica
+value : <coliving_db_url_read_replica>
 ```
 
 
@@ -364,7 +364,7 @@ Tout d'abord, obtenez les secrets des fournisseurs de services auprès de votre 
 
 
 ```text
-kubectl apply -f <secret_from_audius>.yaml
+kubectl apply -f <secret_from_coliving>.yaml
 ```
 
 

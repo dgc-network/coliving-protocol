@@ -12,7 +12,7 @@ const DBManager = require('../src/dbManager')
 const BlacklistManager = require('../src/blacklistManager')
 const FileManager = require('../src/fileManager')
 const DiskManager = require('../src/diskManager')
-const { libs } = require('@audius/sdk')
+const { libs } = require('@coliving/sdk')
 const Utils = libs.Utils
 const utils = require('../src/utils')
 const {
@@ -407,7 +407,7 @@ describe('Test ClockRecord model', async function () {
   it('Confirm only valid sourceTable value can be written to ClockRecords table', async function () {
     const cnodeUserUUID = (await createStarterCNodeUser()).cnodeUserUUID
 
-    const validSourceTable = 'AudiusUser'
+    const validSourceTable = 'ColivingUser'
     const invalidSourceTable = 'invalidSourceTable'
 
     // Confirm ClockRecords insert with validSourceTable value will succeed
@@ -456,7 +456,7 @@ describe('Test ClockRecord model', async function () {
   })
 
   it('Confirm only clockRecords with correct clock values can be inserted', async function () {
-    const validSourceTable = 'AudiusUser'
+    const validSourceTable = 'ColivingUser'
 
     // Create initial cnodeUser
     const cnodeUserUUID = (await createStarterCNodeUser()).cnodeUserUUID
@@ -563,7 +563,7 @@ describe('Test ClockRecord model', async function () {
 
   it('Confirm only valid cnodeUserUUID value can be written to ClockRecords table', async function () {
     const invalidUUID = getUuid()
-    const validSourceTable = 'AudiusUser'
+    const validSourceTable = 'ColivingUser'
 
     // Attempt to insert a clockRecord into DB with a non-existent cnodeUserUUID
     // Use raw query to test DB-level constraints, instead of sequelize-level
@@ -678,23 +678,23 @@ describe('Test deleteAllCNodeUserDataFromDB()', async function () {
   })
 
   it('Successfully deletes all state for CNodeUser with data in all tables', async function () {
-    const uploadAudiusUserState = async function () {
-      const audiusUserMetadata = { test: 'field1' }
-      const audiusUserMetadataResp = await request(app)
-        .post('/audius_users/metadata')
+    const uploadColivingUserState = async function () {
+      const colivingUserMetadata = { test: 'field1' }
+      const colivingUserMetadataResp = await request(app)
+        .post('/coliving_users/metadata')
         .set('X-Session-ID', session.sessionToken)
         .set('User-Id', session.userId)
         .set('Enforce-Write-Quorum', false)
-        .send({ metadata: audiusUserMetadata })
+        .send({ metadata: colivingUserMetadata })
         .expect(200)
       await request(app)
-        .post('/audius_users')
+        .post('/coliving_users')
         .set('X-Session-ID', session.sessionToken)
         .set('User-Id', session.userId)
         .send({
           blockchainUserId: 1,
           blockNumber: 10,
-          metadataFileUUID: audiusUserMetadataResp.body.data.metadataFileUUID
+          metadataFileUUID: colivingUserMetadataResp.body.data.metadataFileUUID
         })
         .expect(200)
     }
@@ -705,7 +705,7 @@ describe('Test deleteAllCNodeUserDataFromDB()', async function () {
       const { handleTrackContentRoute } = proxyquire(
         '../src/components/tracks/tracksComponentService.js',
         {
-          '@audius/sdk': {
+          '@coliving/sdk': {
             libs: {
               Utils: {
                 fileHasher: {
@@ -783,7 +783,7 @@ describe('Test deleteAllCNodeUserDataFromDB()', async function () {
       const cnodeUserEntries = await models.CNodeUser.findAll({
         where: { cnodeUserUUID }
       })
-      const audiusUserEntries = await models.AudiusUser.findAll({
+      const colivingUserEntries = await models.ColivingUser.findAll({
         where: { cnodeUserUUID }
       })
       const trackEntries = await models.Track.findAll({
@@ -798,26 +798,26 @@ describe('Test deleteAllCNodeUserDataFromDB()', async function () {
 
       return {
         cnodeUserEntries,
-        audiusUserEntries,
+        colivingUserEntries,
         trackEntries,
         fileEntries,
         clockRecordEntries
       }
     }
 
-    await uploadAudiusUserState()
+    await uploadColivingUserState()
     await uploadTrackState()
 
     /** assert all tables non empty */
     let {
       cnodeUserEntries,
-      audiusUserEntries,
+      colivingUserEntries,
       trackEntries,
       fileEntries,
       clockRecordEntries
     } = await getAllDBRecordsForUser(cnodeUserUUID)
     assert.ok(cnodeUserEntries.length > 0)
-    assert.ok(audiusUserEntries.length > 0)
+    assert.ok(colivingUserEntries.length > 0)
     assert.ok(trackEntries.length > 0)
     assert.ok(fileEntries.length > 0)
     assert.ok(clockRecordEntries.length > 0)
@@ -830,13 +830,13 @@ describe('Test deleteAllCNodeUserDataFromDB()', async function () {
     /** assert all tables empty */
     ;({
       cnodeUserEntries,
-      audiusUserEntries,
+      colivingUserEntries,
       trackEntries,
       fileEntries,
       clockRecordEntries
     } = await getAllDBRecordsForUser(cnodeUserUUID))
     assert.strictEqual(cnodeUserEntries.length, 0)
-    assert.strictEqual(audiusUserEntries.length, 0)
+    assert.strictEqual(colivingUserEntries.length, 0)
     assert.strictEqual(trackEntries.length, 0)
     assert.strictEqual(fileEntries.length, 0)
     assert.strictEqual(clockRecordEntries.length, 0)

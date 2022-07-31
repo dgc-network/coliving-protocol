@@ -39,14 +39,14 @@ def test_config_values(app, client, celery_app, contracts):
                         app.config[section][key] == TEST_CONFIG_OVERRIDE[section][key]
                     )
                     continue
-                envvar = f"audius_{section}_{key}"
+                envvar = f"coliving_{section}_{key}"
                 if os.environ.get(envvar):
                     assert app.config[section][key] == os.environ.get(envvar)
                     continue
 
             assert app.config[section][key] == val
 
-    if os.environ.get("audius_redis_url"):
-        assert celery_app.celery.conf["broker_url"] == os.environ["audius_redis_url"]
+    if os.environ.get("coliving_redis_url"):
+        assert celery_app.celery.conf["broker_url"] == os.environ["coliving_redis_url"]
     else:
         assert celery_app.celery.conf["broker_url"] == TEST_BROKER_URL

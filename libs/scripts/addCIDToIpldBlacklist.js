@@ -1,6 +1,6 @@
 const { getDataContractAccounts } = require('../initScripts/helpers/utils')
 const contractConfig = require('../../contracts/contract-config.js')
-const AudiusLibs = require('../src')
+const ColivingLibs = require('../src')
 const { initializeLibConfig } = require('../tests/helpers')
 const Utils = require('../src/utils')
 
@@ -98,7 +98,7 @@ async function createAndInitLibs (blacklisterPublicKey) {
   let colivingLibs
   try {
     const libsConfig = await initializeLibConfig(blacklisterPublicKey)
-    colivingLibs = new AudiusLibs(libsConfig)
+    colivingLibs = new ColivingLibs(libsConfig)
     await colivingLibs.init()
   } catch (e) {
     throw new Error(`Error with initializing libs: ${e}`)

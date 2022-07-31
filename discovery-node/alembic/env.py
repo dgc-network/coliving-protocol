@@ -42,9 +42,9 @@ def run_migrations_offline():
     """
     url = config.get_main_option("sqlalchemy.url")
 
-    audius_db_url = os.getenv("audius_db_url")
-    if audius_db_url:
-        url = audius_db_url
+    coliving_db_url = os.getenv("coliving_db_url")
+    if coliving_db_url:
+        url = coliving_db_url
 
     context.configure(url=url, target_metadata=target_metadata, literal_binds=True)
 
@@ -59,10 +59,10 @@ def run_migrations_online():
     and associate a connection with the context.
 
     """
-    audius_db_url = os.getenv("audius_db_url")
+    coliving_db_url = os.getenv("coliving_db_url")
 
-    if audius_db_url:
-        config.set_main_option("sqlalchemy.url", audius_db_url)
+    if coliving_db_url:
+        config.set_main_option("sqlalchemy.url", coliving_db_url)
 
     connectable = engine_from_config(
         config.get_section(config.config_ini_section),
@@ -82,7 +82,7 @@ def run_migrations_online():
 @compiles(AddColumn)
 def _add_if_not_exists(element, compiler, **kw):
     """Adds support for IF NOT EXISTS to CREATE TABLE and CREATE INDEX commands"""
-    # Inspired by https://github.com/dgc.network/audius-protocol/pull/2997
+    # Inspired by https://github.com/dgc.network/coliving-protocol/pull/2997
     if isinstance(element, CreateIndex):
         output = compiler.visit_create_index(element, **kw)
     elif isinstance(element, CreateTable):
@@ -102,7 +102,7 @@ def _add_if_not_exists(element, compiler, **kw):
 @compiles(DropColumn)
 def _add_if_exists(element, compiler, **kw):
     """Adds support for IF EXISTS to DROP TABLE and DROP INDEX commands"""
-    # Inspired by https://github.com/dgc.network/audius-protocol/pull/2997
+    # Inspired by https://github.com/dgc.network/coliving-protocol/pull/2997
     if isinstance(element, DropIndex):
         output = compiler.visit_drop_index(element, **kw)
     elif isinstance(element, DropTable):

@@ -1,6 +1,6 @@
 import * as _lib from '../utils/lib.js'
 
-const AudiusAdminUpgradeabilityProxy = artifacts.require('AudiusAdminUpgradeabilityProxy')
+const ColivingAdminUpgradeabilityProxy = artifacts.require('ColivingAdminUpgradeabilityProxy')
 const TrustedNotifierManager = artifacts.require('TrustedNotifierManager')
 
 const governanceKey = web3.utils.utf8ToHex('Governance')
@@ -99,7 +99,7 @@ contract('TrustedNotifierManager', async function (accounts) {
     const trustedNotifierManagerCalldata = _lib.encodeCall(
       'initialize', ['address', 'address', 'string', 'string'], [governance.address, notifier1Wallet, notifier1Endpoint, notifier1Email]
     )
-    const trustedNotifierManagerProxy = await AudiusAdminUpgradeabilityProxy.new(
+    const trustedNotifierManagerProxy = await ColivingAdminUpgradeabilityProxy.new(
       trustedNotifierManager0.address,
       governance.address,
       trustedNotifierManagerCalldata,

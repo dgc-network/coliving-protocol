@@ -1,7 +1,7 @@
 import * as _lib from '../utils/lib.js'
 const { time, expectEvent } = require('@openzeppelin/test-helpers')
 
-const AudiusAdminUpgradeabilityProxy = artifacts.require('AudiusAdminUpgradeabilityProxy')
+const ColivingAdminUpgradeabilityProxy = artifacts.require('ColivingAdminUpgradeabilityProxy')
 const Staking = artifacts.require('Staking')
 const StakingUpgraded = artifacts.require('StakingUpgraded')
 const Governance = artifacts.require('Governance')
@@ -12,7 +12,7 @@ const ServiceProviderFactory = artifacts.require('ServiceProviderFactory')
 const DelegateManager = artifacts.require('DelegateManager')
 const TestContract = artifacts.require('TestContract')
 const Registry = artifacts.require('Registry')
-const AudiusToken = artifacts.require('AudiusToken')
+const ColivingToken = artifacts.require('ColivingToken')
 const MockAccount = artifacts.require('MockAccount')
 
 const stakingProxyKey = web3.utils.utf8ToHex('StakingProxy')
@@ -81,7 +81,7 @@ contract('Governance.sol', async (accounts) => {
     // Deploy registry
     registry0 = await Registry.new({ from: proxyDeployerAddress })
     const registryInitData = _lib.encodeCall('initialize', [], [])
-    registryProxy = await AudiusAdminUpgradeabilityProxy.new(
+    registryProxy = await ColivingAdminUpgradeabilityProxy.new(
       registry0.address,
       proxyAdminAddress,
       registryInitData,
@@ -104,19 +104,19 @@ contract('Governance.sol', async (accounts) => {
     await registry.addContract(governanceKey, governance.address, { from: proxyDeployerAddress })
 
     // Deploy + register token
-    token0 = await AudiusToken.new({ from: proxyDeployerAddress })
+    token0 = await ColivingToken.new({ from: proxyDeployerAddress })
     const tokenInitData = _lib.encodeCall(
       'initialize',
       ['address', 'address'],
       [tokenOwnerAddress, governance.address]
     )
-    tokenProxy = await AudiusAdminUpgradeabilityProxy.new(
+    tokenProxy = await ColivingAdminUpgradeabilityProxy.new(
       token0.address,
       governance.address,
       tokenInitData,
       { from: proxyDeployerAddress }
     )
-    token = await AudiusToken.at(tokenProxy.address)
+    token = await ColivingToken.at(tokenProxy.address)
     await registry.addContract(tokenRegKey, token.address, { from: proxyDeployerAddress })
 
     // Deploy + register Staking
@@ -129,7 +129,7 @@ contract('Governance.sol', async (accounts) => {
         governance.address
       ]
     )
-    stakingProxy = await AudiusAdminUpgradeabilityProxy.new(
+    stakingProxy = await ColivingAdminUpgradeabilityProxy.new(
       staking0.address,
       governance.address,
       stakingInitializeData,
@@ -145,7 +145,7 @@ contract('Governance.sol', async (accounts) => {
       ['address'],
       [governance.address]
     )
-    const serviceTypeManagerProxy = await AudiusAdminUpgradeabilityProxy.new(
+    const serviceTypeManagerProxy = await ColivingAdminUpgradeabilityProxy.new(
       serviceTypeManager0.address,
       governance.address,
       serviceTypeInitializeData,
@@ -180,7 +180,7 @@ contract('Governance.sol', async (accounts) => {
         deployerCutLockupDuration
       ]
     )
-    const serviceProviderFactoryProxy = await AudiusAdminUpgradeabilityProxy.new(
+    const serviceProviderFactoryProxy = await ColivingAdminUpgradeabilityProxy.new(
       serviceProviderFactory0.address,
       governance.address,
       serviceProviderFactoryCalldata,
@@ -205,7 +205,7 @@ contract('Governance.sol', async (accounts) => {
       [token.address, governance.address, undelegateLockupDuration]
     )
     let delegateManager0 = await DelegateManager.new({ from: proxyDeployerAddress })
-    let delegateManagerProxy = await AudiusAdminUpgradeabilityProxy.new(
+    let delegateManagerProxy = await ColivingAdminUpgradeabilityProxy.new(
       delegateManager0.address,
       governance.address,
       delegateManagerInitializeData,
@@ -326,7 +326,7 @@ contract('Governance.sol', async (accounts) => {
     )
 
     await _lib.assertRevert(
-      AudiusAdminUpgradeabilityProxy.new(
+      ColivingAdminUpgradeabilityProxy.new(
         governance0.address,
         proxyAdminAddress,
         governanceCallData,
@@ -341,7 +341,7 @@ contract('Governance.sol', async (accounts) => {
       [registry.address, 0, executionDelay, votingQuorumPercent, newMaxInProgressProposals, proxyDeployerAddress]
     )
     await _lib.assertRevert(
-      AudiusAdminUpgradeabilityProxy.new(
+      ColivingAdminUpgradeabilityProxy.new(
         governance0.address,
         governance.address,
         governanceCallData,
@@ -356,7 +356,7 @@ contract('Governance.sol', async (accounts) => {
       [registry.address, votingPeriod, executionDelay, 0, newMaxInProgressProposals, proxyDeployerAddress]
     )
     await _lib.assertRevert(
-      AudiusAdminUpgradeabilityProxy.new(
+      ColivingAdminUpgradeabilityProxy.new(
         governance0.address,
         governance.address,
         governanceCallData,
@@ -371,7 +371,7 @@ contract('Governance.sol', async (accounts) => {
       [registry.address, votingPeriod, executionDelay, votingQuorumPercent, newMaxInProgressProposals, _lib.addressZero]
     )
     await _lib.assertRevert(
-      AudiusAdminUpgradeabilityProxy.new(
+      ColivingAdminUpgradeabilityProxy.new(
         governance0.address,
         governance.address,
         governanceCallData,
@@ -386,7 +386,7 @@ contract('Governance.sol', async (accounts) => {
       [registry.address, votingPeriod, executionDelay, votingQuorumPercent, 0, proxyDeployerAddress]
     )
     await _lib.assertRevert(
-      AudiusAdminUpgradeabilityProxy.new(
+      ColivingAdminUpgradeabilityProxy.new(
         governance0.address,
         governance.address,
         governanceCallData,
@@ -412,7 +412,7 @@ contract('Governance.sol', async (accounts) => {
     )
     await registry2.addContract(governanceKey, governance2.address, { from: proxyDeployerAddress })
 
-    // Deploy + register AudiusToken
+    // Deploy + register ColivingToken
     const token2 = await _lib.deployToken(
       artifacts,
       proxyAdminAddress,
@@ -432,7 +432,7 @@ contract('Governance.sol', async (accounts) => {
         governance2.address
       ]
     )
-    const stakingProxy2 = await AudiusAdminUpgradeabilityProxy.new(
+    const stakingProxy2 = await ColivingAdminUpgradeabilityProxy.new(
       staking2_0.address,
       governance2.address,
       stakingInitializeData2,
@@ -488,7 +488,7 @@ contract('Governance.sol', async (accounts) => {
         deployerCutLockupDuration
       ]
     )
-    const serviceProviderFactoryProxy2 = await AudiusAdminUpgradeabilityProxy.new(
+    const serviceProviderFactoryProxy2 = await ColivingAdminUpgradeabilityProxy.new(
       serviceProviderFactory2_0.address,
       governance.address,
       serviceProviderFactoryCalldata2,
@@ -537,7 +537,7 @@ contract('Governance.sol', async (accounts) => {
       [token.address, governance.address, undelegateLockupDuration]
     )
     let delegateManager1 = await DelegateManager.new({ from: proxyDeployerAddress })
-    let delegateManagerProxy = await AudiusAdminUpgradeabilityProxy.new(
+    let delegateManagerProxy = await ColivingAdminUpgradeabilityProxy.new(
       delegateManager1.address,
       governance.address,
       delegateManagerInitializeData,
@@ -2712,8 +2712,8 @@ contract('Governance.sol', async (accounts) => {
     })
 
     it('Update proxy admin address', async function () {
-      let stakingProxy = await AudiusAdminUpgradeabilityProxy.at(staking.address)
-      let currentAdmin = await stakingProxy.getAudiusProxyAdminAddress()
+      let stakingProxy = await ColivingAdminUpgradeabilityProxy.at(staking.address)
+      let currentAdmin = await stakingProxy.getColivingProxyAdminAddress()
       assert.equal(currentAdmin, governance.address, 'Expect governance to be admin')
       let newAdmin = accounts[9]
 
@@ -2723,11 +2723,11 @@ contract('Governance.sol', async (accounts) => {
       await governance.guardianExecuteTransaction(
         stakingProxyKey,
         callValue0,
-        'setAudiusProxyAdminAddress(address)',
+        'setColivingProxyAdminAddress(address)',
         _lib.abiEncode(['address'], [newAdmin]),
         { from: guardianAddress }
       )
-      currentAdmin = await stakingProxy.getAudiusProxyAdminAddress()
+      currentAdmin = await stakingProxy.getColivingProxyAdminAddress()
       assert.equal(currentAdmin, newAdmin, 'Expect updated admin')
     })
 
@@ -2756,7 +2756,7 @@ contract('Governance.sol', async (accounts) => {
       assert.equal(newFnResp, 5)
 
       // Confirm that proxy contract's implementation address has upgraded
-      const govProxy = await AudiusAdminUpgradeabilityProxy.at(governance.address)
+      const govProxy = await ColivingAdminUpgradeabilityProxy.at(governance.address)
       assert.equal(
         await govProxy.implementation.call({ from: proxyAdminAddress }),
         governanceUpgraded0.address,
@@ -3096,7 +3096,7 @@ contract('Governance.sol', async (accounts) => {
       )
 
       // Deploy new token contract to later upgrade to
-      const tokenUpgraded0 = await AudiusToken.new({ from: proxyDeployerAddress })
+      const tokenUpgraded0 = await ColivingToken.new({ from: proxyDeployerAddress })
 
       // Ensure proxyAdminAddress no longer has any ability to upgrade
       await _lib.assertRevert(
@@ -3136,7 +3136,7 @@ contract('Governance.sol', async (accounts) => {
       // Deploy test contract to register
       const contract0 = await TestContract.new({ from: proxyDeployerAddress })
       const initData = _lib.encodeCall('initialize', [], [])
-      const contractProxy = await AudiusAdminUpgradeabilityProxy.new(
+      const contractProxy = await ColivingAdminUpgradeabilityProxy.new(
         contract0.address,
         governance.address,
         initData,
@@ -3182,7 +3182,7 @@ contract('Governance.sol', async (accounts) => {
       // Deploy test contract to register
       const test0 = await TestContract.new({ from: proxyDeployerAddress })
       const testInitData = _lib.encodeCall('initialize', [], [])
-      await AudiusAdminUpgradeabilityProxy.new(
+      await ColivingAdminUpgradeabilityProxy.new(
         test0.address,
         governance.address,
         testInitData,
@@ -3243,7 +3243,7 @@ contract('Governance.sol', async (accounts) => {
       )
 
       // Update registry's governance address
-      await registryProxy.setAudiusProxyAdminAddress(governance.address, { from: proxyAdminAddress })
+      await registryProxy.setColivingProxyAdminAddress(governance.address, { from: proxyAdminAddress })
 
       // Upgrade registry proxy to new logic address
       await governance.guardianExecuteTransaction(
@@ -3266,7 +3266,7 @@ contract('Governance.sol', async (accounts) => {
   })
 
   it('Upgrade governance contract via proposal + ensure upgrade safety', async function () {
-    const govProxy = await AudiusAdminUpgradeabilityProxy.at(governance.address)
+    const govProxy = await ColivingAdminUpgradeabilityProxy.at(governance.address)
     const govLogicAddress = await govProxy.implementation.call({ from: proxyAdminAddress })
 
     // Submit and execute arbitrary proposals

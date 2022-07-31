@@ -67,7 +67,7 @@ class App {
 
   async init () {
     let server
-    await this.getAudiusAnnouncements()
+    await this.getColivingAnnouncements()
 
     /**
      * From the cluster docs - https://nodejs.org/docs/latest-v14.x/api/cluster.html#cluster_cluster
@@ -94,7 +94,7 @@ class App {
       // 1. start notifications processing
       // 2. fork web server worker processes
       if (!config.get('isTestRun')) {
-        const colivingInstance = await this.configureAudiusInstance()
+        const colivingInstance = await this.configureColivingInstance()
         cluster.fork({ 'WORKER_TYPE': 'notifications' })
 
         await this.configureRewardsAttester(colivingInstance)
@@ -142,7 +142,7 @@ class App {
       return { app: this.express, server }
     } else {
       // if it's not the master worker in the cluster
-      const colivingInstance = await this.configureAudiusInstance()
+      const colivingInstance = await this.configureColivingInstance()
       await this.configureReporter()
 
       if (process.env['WORKER_TYPE'] === 'notifications') {
@@ -219,9 +219,9 @@ class App {
     await startRegistrationQueue(libs, childLogger)
   }
 
-  async configureAudiusInstance () {
+  async configureColivingInstance () {
     await colivingLibsWrapper.init()
-    const colivingInstance = colivingLibsWrapper.getAudiusLibs()
+    const colivingInstance = colivingLibsWrapper.getColivingLibs()
     this.express.set('colivingLibs', colivingInstance)
     return colivingInstance
   }
@@ -386,7 +386,7 @@ class App {
     this.express.use(errorHandler)
   }
 
-  async getAudiusAnnouncements () {
+  async getColivingAnnouncements () {
     try {
       let { announcements, announcementMap } = await fetchAnnouncements()
       this.express.set('announcements', announcements)

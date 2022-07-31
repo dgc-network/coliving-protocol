@@ -11,7 +11,7 @@ const colivingLibsWrapper = require('./colivingLibsInstance')
  * @returns {object} User Metadata object
  */
 const queryDiscprovForWalletAddressAndUserId = async (handle) => {
-  const { discoveryProvider } = colivingLibsWrapper.getAudiusLibs()
+  const { discoveryProvider } = colivingLibsWrapper.getColivingLibs()
 
   const response = await axios({
     method: 'get',

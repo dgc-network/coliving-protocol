@@ -21,7 +21,7 @@ const {
 const { retrieveClockValueForUserFromReplica } = require('../stateMachineUtils')
 const CNodeToSpIdMapManager = require('../CNodeToSpIdMapManager')
 const { getNewOrExistingSyncReq } = require('./stateReconciliationUtils')
-const initAudiusLibs = require('../../initAudiusLibs')
+const initColivingLibs = require('../../initColivingLibs')
 
 const reconfigNodeWhitelist = config.get('reconfigNodeWhitelist')
   ? new Set(config.get('reconfigNodeWhitelist').split(','))
@@ -60,9 +60,9 @@ module.exports = async function ({
    * on a new replica set. Also, the sync check logic is coupled with a user state on the userStateManager.
    * There will be an explicit clock value check on the newly selected replica set nodes instead.
    */
-  const audiusLibs = await initAudiusLibs(true)
+  const colivingLibs = await initColivingLibs(true)
   const { services: healthyServicesMap } =
-    await audiusLibs.ServiceProvider.autoSelectCreatorNodes({
+    await colivingLibs.ServiceProvider.autoSelectCreatorNodes({
       performSyncCheck: false,
       whitelist: reconfigNodeWhitelist,
       log: true
@@ -104,7 +104,7 @@ module.exports = async function ({
         secondary1,
         secondary2,
         newReplicaSet,
-        audiusLibs,
+        colivingLibs,
         logger
       ))
   } catch (e: any) {
@@ -428,7 +428,7 @@ const _issueUpdateReplicaSetOp = async (
   secondary1: string,
   secondary2: string,
   newReplicaSet: NewReplicaSet,
-  audiusLibs: any,
+  colivingLibs: any,
   logger: Logger
 ): Promise<IssueUpdateReplicaSetResult> => {
   const response: IssueUpdateReplicaSetResult = {
@@ -479,7 +479,7 @@ const _issueUpdateReplicaSetOp = async (
     // Submit chain tx to update replica set
     const startTimeMs = Date.now()
     try {
-      await audiusLibs.contracts.UserReplicaSetManagerClient.updateReplicaSet(
+      await colivingLibs.contracts.UserReplicaSetManagerClient.updateReplicaSet(
         userId,
         newReplicaSetSPIds[0], // primary
         newReplicaSetSPIds.slice(1) // [secondary1, secondary2]

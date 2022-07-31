@@ -1,6 +1,6 @@
 #![cfg(feature = "test-bpf")]
 mod utils;
-use audius_reward_manager::{
+use coliving_reward_manager::{
     instruction,
     processor::SENDER_SEED_PREFIX,
     state::{RewardManager, SenderAccount},
@@ -31,7 +31,7 @@ async fn success_create_sender() {
         Account {
             lamports: 9000,
             data: reward_manager_data.try_to_vec().unwrap(),
-            owner: audius_reward_manager::id(),
+            owner: coliving_reward_manager::id(),
             executable: false,
             rent_epoch: 0,
         },
@@ -40,7 +40,7 @@ async fn success_create_sender() {
     let mut context = program_test.start_with_context().await;
     let tx = Transaction::new_signed_with_payer(
         &[instruction::create_sender(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager,
             &manager_account.pubkey(),
             &context.payer.pubkey(),
@@ -56,7 +56,7 @@ async fn success_create_sender() {
     context.banks_client.process_transaction(tx).await.unwrap();
 
     let (_, derived_address, _) = find_derived_pair(
-        &audius_reward_manager::id(),
+        &coliving_reward_manager::id(),
         &reward_manager,
         [SENDER_SEED_PREFIX.as_ref(), eth_address.as_ref()]
             .concat()

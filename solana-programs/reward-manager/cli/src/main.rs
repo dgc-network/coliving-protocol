@@ -5,7 +5,7 @@ use clap::{
     SubCommand,
 };
 
-use audius_reward_manager::{
+use coliving_reward_manager::{
     instruction::{
         create_sender_public,
         create_sender,
@@ -90,7 +90,7 @@ fn command_init(
         &reward_manager_keypair.pubkey(),
         reward_manager_balance,
         RewardManager::LEN as u64,
-        &audius_reward_manager::id(),
+        &coliving_reward_manager::id(),
     ));
 
     let reward_manager_token_acc = reward_manager_token_keypair.unwrap_or_else(Keypair::new);
@@ -112,7 +112,7 @@ fn command_init(
     ));
 
     instructions.push(init(
-        &audius_reward_manager::id(),
+        &coliving_reward_manager::id(),
         &reward_manager_keypair.pubkey(),
         &reward_manager_token_acc.pubkey(),
         &token_mint,
@@ -146,7 +146,7 @@ fn command_create_sender(
         <[u8; 20]>::from_hex(operator_eth_address).expect(HEX_ETH_ADDRESS_DECODING_ERROR);
 
     let (_, derived_address, _) = find_derived_pair(
-        &audius_reward_manager::id(),
+        &coliving_reward_manager::id(),
         &reward_manager,
         [
             SENDER_SEED_PREFIX.as_ref(),
@@ -158,7 +158,7 @@ fn command_create_sender(
 
     println!("New sender account created: {:?}", derived_address);
     println!("Owner {:}", config.owner.pubkey());
-    println!("Using program ID {:}", &audius_reward_manager::id());
+    println!("Using program ID {:}", &coliving_reward_manager::id());
     println!("Using RewardManager Account {:?}", &reward_manager);
     println!("config.owner.pubkey() {:?}", &config.owner.pubkey());
     println!("config.fee_payer.pubkey() {:?}", &config.fee_payer.pubkey());
@@ -167,7 +167,7 @@ fn command_create_sender(
 
     let transaction = CustomTransaction {
         instructions: vec![create_sender(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager,
             &config.owner.pubkey(),
             &config.fee_payer.pubkey(),
@@ -190,7 +190,7 @@ fn command_delete_sender(
 
     let transaction = CustomTransaction {
         instructions: vec![delete_sender(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager,
             &config.owner.pubkey(),
             &config.fee_payer.pubkey(),
@@ -244,7 +244,7 @@ fn command_delete_sender_public(
 
     // Append public function
     instructions.push(delete_sender_public(
-        &audius_reward_manager::id(),
+        &coliving_reward_manager::id(),
         &reward_manager,
         &config.fee_payer.pubkey(),
         del_address,
@@ -280,7 +280,7 @@ fn command_change_reward_manager_authority(
     let mut instructions = Vec::new();
 
     instructions.push(change_manager_authority(
-        &audius_reward_manager::id(),
+        &coliving_reward_manager::id(),
         &reward_manager,
         &current_authority,
         &new_authority
@@ -332,7 +332,7 @@ fn command_add_sender(
     instructions.append(&mut sign_message(message_to_sign.as_ref(), secrets));
 
     instructions.push(create_sender_public(
-        &audius_reward_manager::id(),
+        &coliving_reward_manager::id(),
         &reward_manager,
         &config.fee_payer.pubkey(),
         new_sender,
@@ -341,7 +341,7 @@ fn command_add_sender(
     )?);
 
     let (_, derived_address, _) = find_derived_pair(
-        &audius_reward_manager::id(),
+        &coliving_reward_manager::id(),
         &reward_manager,
         [SENDER_SEED_PREFIX.as_ref(), new_sender.as_ref()]
             .concat()
@@ -415,7 +415,7 @@ fn command_submit_attestations(
 
     instructions.push(
         submit_attestations(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager_pubkey,
             &signer_pubkey,
             &config.fee_payer.pubkey(),
@@ -433,7 +433,7 @@ fn command_submit_attestations(
                 2
             );
             let bot_verify = submit_attestations(
-                &audius_reward_manager::id(),
+                &coliving_reward_manager::id(),
                 &reward_manager_pubkey,
                 &bot_oracle_pubkey.unwrap(),
                 &config.fee_payer.pubkey(),
@@ -514,7 +514,7 @@ fn command_transfer(
     }
 
     instructions.push(evaluate_attestations(
-        &audius_reward_manager::id(),
+        &coliving_reward_manager::id(),
         &verified_messages_pubkey,
         &reward_manager_pubkey,
         &reward_manager.token_account,

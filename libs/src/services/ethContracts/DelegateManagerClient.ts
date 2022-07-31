@@ -3,7 +3,7 @@ import { ContractABI, Logger, Utils } from '../../utils'
 import type { GetRegistryAddress } from '../contracts/ContractClient'
 import { GovernedContractClient } from '../contracts/GovernedContractClient'
 import type { EthWeb3Manager } from '../ethWeb3Manager'
-import type { AudiusTokenClient } from './AudiusTokenClient'
+import type { ColivingTokenClient } from './ColivingTokenClient'
 import type { GovernanceClient } from './GovernanceClient'
 import type { StakingProxyClient } from './StakingProxyClient'
 
@@ -14,7 +14,7 @@ type GetEvent = {
 }
 
 export class DelegateManagerClient extends GovernedContractClient {
-  colivingTokenClient: AudiusTokenClient
+  colivingTokenClient: ColivingTokenClient
   stakingProxyClient: StakingProxyClient
 
   constructor(
@@ -22,7 +22,7 @@ export class DelegateManagerClient extends GovernedContractClient {
     contractABI: ContractABI['abi'],
     contractRegistryKey: string,
     getRegistryAddress: GetRegistryAddress,
-    colivingTokenClient: AudiusTokenClient,
+    colivingTokenClient: ColivingTokenClient,
     stakingProxyClient: StakingProxyClient,
     governanceClient: GovernanceClient,
     logger: Logger = console

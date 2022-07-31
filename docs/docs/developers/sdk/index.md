@@ -1,6 +1,6 @@
 ---
 id: "index"
-title: "@audius/sdk"
+title: "@coliving/sdk"
 sidebar_label: "Readme"
 sidebar_position: 0
 custom_edit_url: null
@@ -29,21 +29,21 @@ The Coliving JavaScript (TypeScript) SDK allows you to easily build on and inter
 In your terminal, run:
 
 ```bash"
-npm install web3 @audius/sdk
+npm install web3 @coliving/sdk
 ```
 
 #### 2. Initialize the SDK
 
 ```js
-import { sdk } from '@audius/sdk'
+import { sdk } from '@coliving/sdk'
 
-const audiusSdk = sdk({ appName: 'Name of your app goes here' })
+const colivingSdk = sdk({ appName: 'Name of your app goes here' })
 ```
 
 #### 3. Make your first API call using the SDK!
 
 ```js
-const track = await audiusSdk.tracks.getTrack({ trackId: 'D7KyD' })
+const track = await colivingSdk.tracks.getTrack({ trackId: 'D7KyD' })
 console.log(track, 'Track fetched!')
 ```
 
@@ -51,14 +51,14 @@ console.log(track, 'Track fetched!')
 
 ```js title="app.js" showLineNumbers
 import Web3 from 'web3'
-import { sdk } from '@audius/sdk'
+import { sdk } from '@coliving/sdk'
 
 // If running in a browser, set window.Web3
 window.Web3 = Web3
 
-const audiusSdk = sdk({ appName: 'Name of your app goes here' })
+const colivingSdk = sdk({ appName: 'Name of your app goes here' })
 
-const track = await audiusSdk.tracks.getTrack({ trackId: 'D7KyD' })
+const track = await colivingSdk.tracks.getTrack({ trackId: 'D7KyD' })
 console.log(track, 'Track fetched!')
 ```
 
@@ -70,21 +70,21 @@ console.log(track, 'Track fetched!')
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@audius/sdk@latest/dist/sdk.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@coliving/sdk@latest/dist/sdk.min.js"></script>
 ```
 
-The Coliving SDK will then be assigned to `window.audiusSdk`.
+The Coliving SDK will then be assigned to `window.colivingSdk`.
 
 #### 2. Initialize the SDK
 
 ```js
-const audiusSdk = window.audiusSdk({ appName: 'Name of your app goes here' })
+const colivingSdk = window.colivingSdk({ appName: 'Name of your app goes here' })
 ```
 
 #### 3. Make your first API call using the SDK!
 
 ```js
-const track = await audiusSdk.tracks.getTrack({ trackId: 'D7KyD' })
+const track = await colivingSdk.tracks.getTrack({ trackId: 'D7KyD' })
 ```
 
 #### Full example
@@ -94,13 +94,13 @@ const track = await audiusSdk.tracks.getTrack({ trackId: 'D7KyD' })
 <html>
   <head>
     <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@audius/sdk@latest/dist/sdk.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@coliving/sdk@latest/dist/sdk.min.js"></script>
     <script>
     	const fn = async () => {
-        const audiusSdk = window.audiusSdk({
+        const colivingSdk = window.colivingSdk({
           appName: "My Example App",
         });
-        const track = await audiusSdk.tracks.getTrack({ trackId: 'D7KyD' });
+        const track = await colivingSdk.tracks.getTrack({ trackId: 'D7KyD' });
         console.log(track, "Track fetched!");
       }
       fn()

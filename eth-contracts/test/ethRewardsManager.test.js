@@ -6,7 +6,7 @@ const MockStakingCaller = artifacts.require('MockStakingCaller')
 const MockWormhole = artifacts.require('MockWormhole')
 const EthRewardsManager = artifacts.require('EthRewardsManager')
 const Staking = artifacts.require('Staking')
-const AudiusAdminUpgradeabilityProxy = artifacts.require('AudiusAdminUpgradeabilityProxy')
+const ColivingAdminUpgradeabilityProxy = artifacts.require('ColivingAdminUpgradeabilityProxy')
 const ClaimsManager = artifacts.require('ClaimsManager')
 
 const stakingProxyKey = web3.utils.utf8ToHex('StakingProxy')
@@ -79,7 +79,7 @@ contract('EthRewardsManager', async (accounts) => {
       ['address', 'address'],
       [token.address, governance.address]
     )
-    const stakingProxy = await AudiusAdminUpgradeabilityProxy.new(
+    const stakingProxy = await ColivingAdminUpgradeabilityProxy.new(
       staking0.address,
       governance.address,
       stakingInitializeData,
@@ -103,7 +103,7 @@ contract('EthRewardsManager', async (accounts) => {
       ['address', 'address'],
       [token.address, governance.address]
     )
-    const claimsManagerProxy = await AudiusAdminUpgradeabilityProxy.new(
+    const claimsManagerProxy = await ColivingAdminUpgradeabilityProxy.new(
       claimsManager0.address,
       governance.address,
       claimsInitializeCallData,
@@ -126,7 +126,7 @@ contract('EthRewardsManager', async (accounts) => {
       ['address', 'address', 'address', 'bytes32', 'address[]'],
       [token.address, governance.address, mockWormhole.address, recipient, antiAbuseOracleAddresses]
     )
-    const ethRewardsManagerProxy = await AudiusAdminUpgradeabilityProxy.new(
+    const ethRewardsManagerProxy = await ColivingAdminUpgradeabilityProxy.new(
       ethRewardsManager0.address,
       governance.address,
       ethRewardsManagerInitializeCallData,
@@ -203,7 +203,7 @@ contract('EthRewardsManager', async (accounts) => {
     )
     const ethRewardsManager1 = await EthRewardsManager.new({ from: proxyAdminAddress })
     await _lib.assertRevert(
-      AudiusAdminUpgradeabilityProxy.new(
+      ColivingAdminUpgradeabilityProxy.new(
         ethRewardsManager1.address,
         governance.address,
         invalidEthRewardsManagerInitializeCallData,
@@ -220,7 +220,7 @@ contract('EthRewardsManager', async (accounts) => {
     )
     const ethRewardsManager1 = await EthRewardsManager.new({ from: proxyAdminAddress })
     await _lib.assertRevert(
-      AudiusAdminUpgradeabilityProxy.new(
+      ColivingAdminUpgradeabilityProxy.new(
         ethRewardsManager1.address,
         governance.address,
         invalidEthRewardsManagerInitializeCallData,

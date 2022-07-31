@@ -25,7 +25,7 @@ const getDatabaseConnections = async () => {
 
 const getDatabaseConnectionInfo = async () => {
   const connectionInfo = await sequelize.query(
-    "select wait_event_type, wait_event, state, query from pg_stat_activity where datname = 'audius_creator_node'"
+    "select wait_event_type, wait_event, state, query from pg_stat_activity where datname = 'coliving_creator_node'"
   )
   return JSON.stringify(connectionInfo[0])
 }

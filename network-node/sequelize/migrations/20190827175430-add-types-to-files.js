@@ -4,13 +4,13 @@ module.exports = {
     const t = await queryInterface.sequelize.transaction()
     try {
       const userMetadataFileUUIDSet = new Set(
-        ((await queryInterface.sequelize.query(`SELECT "metadataFileUUID" FROM "AudiusUsers" WHERE "metadataFileUUID" IS NOT NULL;`, { transaction: t }))[0]).map(obj => obj.metadataFileUUID)
+        ((await queryInterface.sequelize.query(`SELECT "metadataFileUUID" FROM "ColivingUsers" WHERE "metadataFileUUID" IS NOT NULL;`, { transaction: t }))[0]).map(obj => obj.metadataFileUUID)
       )
       const userCoverArtFileUUIDSet = new Set(
-        ((await queryInterface.sequelize.query(`SELECT "coverArtFileUUID" FROM "AudiusUsers" WHERE "coverArtFileUUID" IS NOT NULL;`, { transaction: t }))[0]).map(obj => obj.coverArtFileUUID)
+        ((await queryInterface.sequelize.query(`SELECT "coverArtFileUUID" FROM "ColivingUsers" WHERE "coverArtFileUUID" IS NOT NULL;`, { transaction: t }))[0]).map(obj => obj.coverArtFileUUID)
       )
       const userProfilePicFileUUIDSet = new Set(
-        ((await queryInterface.sequelize.query(`SELECT "profilePicFileUUID" FROM "AudiusUsers" WHERE "profilePicFileUUID" IS NOT NULL;`, { transaction: t }))[0]).map(obj => obj.profilePicFileUUID)
+        ((await queryInterface.sequelize.query(`SELECT "profilePicFileUUID" FROM "ColivingUsers" WHERE "profilePicFileUUID" IS NOT NULL;`, { transaction: t }))[0]).map(obj => obj.profilePicFileUUID)
       )
       const trackMetadataFileUUIDSet = new Set(
         ((await queryInterface.sequelize.query(`SELECT "metadataFileUUID" FROM "Tracks" WHERE "metadataFileUUID" IS NOT NULL;`, { transaction: t }))[0]).map(obj => obj.metadataFileUUID)

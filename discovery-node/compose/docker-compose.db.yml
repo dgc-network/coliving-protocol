@@ -5,13 +5,13 @@ services:
     image: postgres:11.1
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_DB: audius_discovery
+      POSTGRES_DB: coliving_discovery
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     ports:
-      - '${audius_db_port}:5432'
+      - '${coliving_db_port}:5432'
     networks:
-      - audius_dev
+      - coliving_dev
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
@@ -22,5 +22,5 @@ volumes:
   postgres_data:
 
 networks:
-  audius_dev:
+  coliving_dev:
     external: true

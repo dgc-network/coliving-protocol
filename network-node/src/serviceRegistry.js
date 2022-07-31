@@ -6,7 +6,7 @@ const { ExpressAdapter } = require('@bull-board/express')
 const redisClient = require('./redis')
 const BlacklistManager = require('./blacklistManager')
 const { SnapbackSM } = require('./snapbackSM/snapbackSM')
-const initAudiusLibs = require('./services/initAudiusLibs')
+const initColivingLibs = require('./services/initColivingLibs')
 const URSMRegistrationManager = require('./services/URSMRegistrationManager')
 const {
   logger: genericLogger,
@@ -76,7 +76,7 @@ class ServiceRegistry {
   async initServices() {
     const start = getStartTime()
 
-    this.libs = await initAudiusLibs()
+    this.libs = await initColivingLibs()
 
     // Transcode handoff requires libs. Set libs in AsyncProcessingQueue after libs init is complete
     this.asyncProcessingQueue = new AsyncProcessingQueue(

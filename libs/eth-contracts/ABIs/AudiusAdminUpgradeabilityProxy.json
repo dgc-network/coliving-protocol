@@ -1,5 +1,5 @@
 {
-  "contractName": "AudiusAdminUpgradeabilityProxy",
+  "contractName": "ColivingAdminUpgradeabilityProxy",
   "abi": [
     {
       "inputs": [
@@ -59,7 +59,7 @@
     {
       "constant": true,
       "inputs": [],
-      "name": "getAudiusProxyAdminAddress",
+      "name": "getColivingProxyAdminAddress",
       "outputs": [
         {
           "internalType": "address",
@@ -95,7 +95,7 @@
           "type": "address"
         }
       ],
-      "name": "setAudiusProxyAdminAddress",
+      "name": "setColivingProxyAdminAddress",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",

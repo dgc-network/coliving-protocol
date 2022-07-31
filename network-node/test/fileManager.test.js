@@ -5,7 +5,7 @@ const fs = require('fs-extra')
 const path = require('path')
 const proxyquire = require('proxyquire')
 
-const { libs } = require('@audius/sdk')
+const { libs } = require('@coliving/sdk')
 const Utils = libs.Utils
 const { logger: genericLogger } = require('../src/logging')
 const {

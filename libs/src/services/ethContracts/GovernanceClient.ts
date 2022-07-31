@@ -1,7 +1,7 @@
 import { ContractClient, GetRegistryAddress } from '../contracts/ContractClient'
 import { ContractABI, ContractMethod, Logger, Utils } from '../../utils'
 import type { EthWeb3Manager } from '../ethWeb3Manager'
-import type { AudiusTokenClient } from './AudiusTokenClient'
+import type { ColivingTokenClient } from './ColivingTokenClient'
 import type { StakingProxyClient } from './StakingProxyClient'
 import type { EventLog } from 'web3-core'
 
@@ -39,7 +39,7 @@ export const Vote = Object.freeze({
 })
 
 export class GovernanceClient extends ContractClient {
-  colivingTokenClient: AudiusTokenClient
+  colivingTokenClient: ColivingTokenClient
   stakingProxyClient: StakingProxyClient
   isDebug: boolean
 
@@ -48,7 +48,7 @@ export class GovernanceClient extends ContractClient {
     contractABI: ContractABI['abi'],
     contractRegistryKey: string,
     getRegistryAddress: GetRegistryAddress,
-    colivingTokenClient: AudiusTokenClient,
+    colivingTokenClient: ColivingTokenClient,
     stakingProxyClient: StakingProxyClient,
     logger: Logger = console,
     isDebug = false

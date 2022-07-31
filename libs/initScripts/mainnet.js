@@ -5,7 +5,7 @@ const { setServiceVersion, addServiceType } = require('./helpers/version')
 const { getStakingParameters } = require('./helpers/spRegistration')
 const { getClaimInfo, fundNewClaim } = require('./helpers/claim')
 
-const AudiusLibs = require('../src/index')
+const ColivingLibs = require('../src/index')
 
 const isServer = true
 
@@ -27,7 +27,7 @@ const run = async () => {
 
     const privateKey = _getEnv('COLIVING_PRIVATE_KEY')
     const ownerWallet = _getEnv('COLIVING_OWNER_WALLET')
-    const colivingLibs = await getAudiusLibs(config, privateKey, ownerWallet)
+    const colivingLibs = await getColivingLibs(config, privateKey, ownerWallet)
     switch (commandToRun) {
       case 'setversion':
         const serviceType = args[4]
@@ -121,7 +121,7 @@ function getLibsConfig(config, privateKey, ownerWallet) {
   )
   colivingLibsConfig = {
     web3Config: web3DataContractConfig,
-    ethWeb3Config: AudiusLibs.configEthWeb3(
+    ethWeb3Config: ColivingLibs.configEthWeb3(
       config.ethTokenAddress, // Token Address
       config.ethRegistryAddress,
       ethWeb3,
@@ -133,9 +133,9 @@ function getLibsConfig(config, privateKey, ownerWallet) {
   return colivingLibsConfig
 }
 
-async function getAudiusLibs(config, privateKey, ownerWallet) {
+async function getColivingLibs(config, privateKey, ownerWallet) {
   const colivingLibsConfig = getLibsConfig(config, privateKey, ownerWallet)
-  const colivingLibs = new AudiusLibs(colivingLibsConfig)
+  const colivingLibs = new ColivingLibs(colivingLibsConfig)
   await colivingLibs.init()
   return colivingLibs
 }

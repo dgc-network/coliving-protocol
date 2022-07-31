@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, create_autospec
 import pytest
 from construct import Container, ListContainer
 from integration_tests.utils import populate_mock_db
-from src.models.indexing.coliving_data_tx import AudiusDataTx
+from src.models.indexing.coliving_data_tx import ColivingDataTx
 from src.solana.anchor_program_indexer import AnchorProgramIndexer
 from src.solana.solana_client_manager import SolanaClientManager
 from src.utils.cid_metadata_client import CIDMetadataClient
@@ -143,7 +143,7 @@ def test_exists_in_db_and_get_latest_slot(app):  # pylint: disable=W0621
 
     with db.scoped_session() as session:
         assert anchor_program_indexer.is_tx_in_db(session, TEST_TX_HASH) == False
-        session.add(AudiusDataTx(signature=TEST_TX_HASH, slot=TEST_TX_SLOT))
+        session.add(ColivingDataTx(signature=TEST_TX_HASH, slot=TEST_TX_SLOT))
         assert anchor_program_indexer.is_tx_in_db(session, TEST_TX_HASH) == True
 
     latest_slot = anchor_program_indexer.get_latest_slot()
@@ -312,7 +312,7 @@ basic_entities = {
         {
             "user_id": 1,
             "is_current": True,
-            "creator_node_endpoint": "https://creatornode2.audius.co,https://creatornode3.audius.co,https://content-node.audius.co",
+            "creator_node_endpoint": "https://creatornode2.coliving.co,https://creatornode3.coliving.co,https://content-node.coliving.co",
         }
     ],
 }
@@ -387,7 +387,7 @@ mock_cid_metadata = {
         "cover_photo_sizes": None,
         "bio": None,
         "location": None,
-        "creator_node_endpoint": "https://creatornode3.audius.co,https://creatornode2.audius.co,https://content-node.audius.co",
+        "creator_node_endpoint": "https://creatornode3.coliving.co,https://creatornode2.coliving.co,https://content-node.coliving.co",
         "associated_wallets": None,
         "associated_sol_wallets": None,
         "collectibles": None,

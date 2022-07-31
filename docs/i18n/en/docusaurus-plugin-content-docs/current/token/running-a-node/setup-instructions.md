@@ -170,11 +170,11 @@ Some variables must be set, you can do this with the following commands:
 
 ```text
 -cli set-config discovery-node backend
-key   : audius_delegate_owner_wallet
+key   : coliving_delegate_owner_wallet
 value : <delegate_owner_wallet>
 
 -cli set-config discovery-node backend
-key   : audius_delegate_private_key
+key   : coliving_delegate_private_key
 value : <delegate_private_key>
 ```
 
@@ -182,12 +182,12 @@ If you are using an external managed Postgres database \(version 11.1+\), replac
 
 ```text
 -cli set-config discovery-node backend
-key   : audius_db_url
-value : <audius_db_url>
+key   : coliving_db_url
+value : <coliving_db_url>
 
 -cli set-config discovery-node backend
-key   : audius_db_url_read_replica
-value : <audius_db_url_read_replica>
+key   : coliving_db_url_read_replica
+value : <coliving_db_url_read_replica>
 ```
 
 **Note:** If there's no read replica, enter the primary db url for both env vars.
@@ -261,7 +261,7 @@ In order to assist with any debugging. We provide a logging service that you may
 First, obtain the service provider secrets from your contact at Coliving. This contains the required token\(s\) for logging to function. And apply the secret with
 
 ```text
-kubectl apply -f <secret_from_audius>.yaml
+kubectl apply -f <secret_from_coliving>.yaml
 ```
 
 Next, update the logger tags in the fluentd daemonset with your name, so we can identify you and your service uniquely here: [https://github.com/dgc.network/-k8s-manifests/blob/master//logger/logger.yaml\#L207](https://github.com/dgc.network/-k8s-manifests/blob/master//logger/logger.yaml#L207). This allows our logging service to filter logs by service provider and by service provider and service. `SP_NAME` refers to your organization's name and `SP_NAME_TYPE_ID` refers to your organization's name plus the type of service you're running, plus an id to distinguish multiple services of the same type.

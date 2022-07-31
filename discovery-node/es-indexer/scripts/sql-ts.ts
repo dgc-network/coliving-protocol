@@ -4,7 +4,7 @@ import { writeFileSync } from 'fs'
 
 const kpg = Knex({
   client: 'pg',
-  connection: process.env.audius_db_url,
+  connection: process.env.coliving_db_url,
 })
 
 async function updateDbTypes() {

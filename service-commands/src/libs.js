@@ -2,8 +2,8 @@ const fs = require('fs')
 const untildify = require('untildify')
 const Web3 = require('web3')
 const axios = require('axios')
-const { libs: AudiusLibs } = require('@coliving/sdk')
-const { CreatorNode, Utils } = AudiusLibs
+const { libs: ColivingLibs } = require('@coliving/sdk')
+const { CreatorNode, Utils } = ColivingLibs
 const config = require('../config/config')
 
 const DISCOVERY_NODE_ENDPOINT = 'http://dn1_web-server_1:5000'
@@ -95,14 +95,14 @@ function LibsWrapper(walletIndex = 0) {
     this.walletIndex = walletIndex
     this.userId = null // to be updated on init
 
-    const web3Config = await AudiusLibs.configExternalWeb3(
+    const web3Config = await ColivingLibs.configExternalWeb3(
       REGISTRY_ADDRESS,
       dataWeb3,
       null /* networkId */,
       walletAddress /* wallet override */
     )
 
-    const ethWeb3Config = AudiusLibs.configEthWeb3(
+    const ethWeb3Config = ColivingLibs.configEthWeb3(
       ETH_TOKEN_ADDRESS,
       ETH_REGISTRY_ADDRESS,
       ETH_PROVIDER_URL,
@@ -110,12 +110,12 @@ function LibsWrapper(walletIndex = 0) {
     )
     const discoveryProviderConfig = {}
 
-    const creatorNodeConfig = AudiusLibs.configCreatorNode(USER_NODE, true)
-    const identityServiceConfig = AudiusLibs.configIdentityService(
+    const creatorNodeConfig = ColivingLibs.configCreatorNode(USER_NODE, true)
+    const identityServiceConfig = ColivingLibs.configIdentityService(
       IDENTITY_SERVICE
     )
 
-    const libs = new AudiusLibs({
+    const libs = new ColivingLibs({
       web3Config,
       ethWeb3Config,
       discoveryProviderConfig,

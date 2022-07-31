@@ -7,7 +7,7 @@ const { logger } = require('../logging')
 const { Lock } = require('../redis')
 
 const { libs } = require('@coliving/sdk')
-const AudiusABIDecoder = libs.AudiusABIDecoder
+const ColivingABIDecoder = libs.ColivingABIDecoder
 
 const { primaryWeb3, secondaryWeb3 } = require('../web3')
 
@@ -84,7 +84,7 @@ const sendTransactionInternal = async (req, web3, txProps, reqBodySHA) => {
   }
 
   const contractName = contractRegistryKey.charAt(0).toUpperCase() + contractRegistryKey.slice(1) // uppercase the first letter
-  const decodedABI = AudiusABIDecoder.decodeMethod(contractName, encodedABI)
+  const decodedABI = ColivingABIDecoder.decodeMethod(contractName, encodedABI)
 
   // will be set later. necessary for code outside scope of try block
   let txReceipt

@@ -17,7 +17,7 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS public.playlist_lexeme_dict AS
             lower((u.handle)::text) AS handle,
             lower(u.name) AS user_name,
             a.repost_count,
-            unnest((tsvector_to_array(to_tsvector('public.audius_ts_config'::regconfig, replace((COALESCE(p.playlist_name, ''::character varying))::text, '&'::text, 'and'::text))) || lower((COALESCE(p.playlist_name, ''::character varying))::text))) AS word
+            unnest((tsvector_to_array(to_tsvector('public.coliving_ts_config'::regconfig, replace((COALESCE(p.playlist_name, ''::character varying))::text, '&'::text, 'and'::text))) || lower((COALESCE(p.playlist_name, ''::character varying))::text))) AS word
            FROM ((public.playlists p
              JOIN public.users u ON ((p.playlist_owner_id = u.user_id)))
              JOIN public.aggregate_playlist a ON ((a.playlist_id = p.playlist_id)))
@@ -55,7 +55,7 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS public.album_lexeme_dict AS
             lower((u.handle)::text) AS handle,
             lower(u.name) AS user_name,
             a.repost_count,
-            unnest((tsvector_to_array(to_tsvector('public.audius_ts_config'::regconfig, replace((COALESCE(p.playlist_name, ''::character varying))::text, '&'::text, 'and'::text))) || lower((COALESCE(p.playlist_name, ''::character varying))::text))) AS word
+            unnest((tsvector_to_array(to_tsvector('public.coliving_ts_config'::regconfig, replace((COALESCE(p.playlist_name, ''::character varying))::text, '&'::text, 'and'::text))) || lower((COALESCE(p.playlist_name, ''::character varying))::text))) AS word
            FROM ((public.playlists p
              JOIN public.users u ON ((p.playlist_owner_id = u.user_id)))
              JOIN public.aggregate_playlist a ON ((a.playlist_id = p.playlist_id)))

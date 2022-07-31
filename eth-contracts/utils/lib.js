@@ -204,33 +204,33 @@ export const deployToken = async (
   tokenOwnerAddress,
   governanceAddress
 ) => {
-  const AudiusToken = artifacts.require('AudiusToken')
-  const AudiusAdminUpgradeabilityProxy = artifacts.require('AudiusAdminUpgradeabilityProxy')
+  const ColivingToken = artifacts.require('ColivingToken')
+  const ColivingAdminUpgradeabilityProxy = artifacts.require('ColivingAdminUpgradeabilityProxy')
 
-  const token0 = await AudiusToken.new({ from: proxyDeployerAddress })
+  const token0 = await ColivingToken.new({ from: proxyDeployerAddress })
   const tokenInitData = encodeCall(
     'initialize',
     ['address', 'address'],
     [tokenOwnerAddress, governanceAddress]
   )
-  const tokenProxy = await AudiusAdminUpgradeabilityProxy.new(
+  const tokenProxy = await ColivingAdminUpgradeabilityProxy.new(
     token0.address,
     governanceAddress,
     tokenInitData,
     { from: proxyDeployerAddress }
   )
-  const token = await AudiusToken.at(tokenProxy.address)
+  const token = await ColivingToken.at(tokenProxy.address)
 
   return token
 }
 
 export const deployRegistry = async (artifacts, proxyAdminAddress, proxyDeployerAddress) => {
   const Registry = artifacts.require('Registry')
-  const AudiusAdminUpgradeabilityProxy = artifacts.require('AudiusAdminUpgradeabilityProxy')
+  const ColivingAdminUpgradeabilityProxy = artifacts.require('ColivingAdminUpgradeabilityProxy')
 
   const registry0 = await Registry.new({ from: proxyDeployerAddress })
   const registryInitData = encodeCall('initialize', [], [])
-  const registryProxy = await AudiusAdminUpgradeabilityProxy.new(
+  const registryProxy = await ColivingAdminUpgradeabilityProxy.new(
     registry0.address,
     proxyAdminAddress,
     registryInitData,
@@ -253,7 +253,7 @@ export const deployGovernance = async (
   maxInProgressProposals = 20
 ) => {
   const Governance = artifacts.require('Governance')
-  const AudiusAdminUpgradeabilityProxy = artifacts.require('AudiusAdminUpgradeabilityProxy')
+  const ColivingAdminUpgradeabilityProxy = artifacts.require('ColivingAdminUpgradeabilityProxy')
 
   const governance0 = await Governance.new({ from: proxyDeployerAddress })
   const governanceInitializeData = encodeCall(
@@ -262,13 +262,13 @@ export const deployGovernance = async (
     [registry.address, votingPeriod, executionDelay, votingQuorum, maxInProgressProposals, guardianAddress]
   )
   // Initialize proxy with zero address
-  const governanceProxy = await AudiusAdminUpgradeabilityProxy.new(
+  const governanceProxy = await ColivingAdminUpgradeabilityProxy.new(
     governance0.address,
     proxyAdminAddress,
     governanceInitializeData,
     { from: proxyDeployerAddress }
   )
-  await governanceProxy.setAudiusProxyAdminAddress(governanceProxy.address, { from: proxyAdminAddress })
+  await governanceProxy.setColivingProxyAdminAddress(governanceProxy.address, { from: proxyAdminAddress })
 
   const governance = await Governance.at(governanceProxy.address)
   return governance
@@ -286,14 +286,14 @@ export const deployClaimsManager = async (
 ) => {
   const governanceAddress = governance.address
   const ClaimsManager = artifacts.require('ClaimsManager')
-  const AudiusAdminUpgradeabilityProxy = artifacts.require('AudiusAdminUpgradeabilityProxy')
+  const ColivingAdminUpgradeabilityProxy = artifacts.require('ColivingAdminUpgradeabilityProxy')
   const claimsManager0 = await ClaimsManager.new({ from: proxyDeployerAddress })
   const claimsInitializeCallData = encodeCall(
     'initialize',
     ['address', 'address'],
     [tokenAddress, governanceAddress]
   )
-  let claimsManagerProxy = await AudiusAdminUpgradeabilityProxy.new(
+  let claimsManagerProxy = await ColivingAdminUpgradeabilityProxy.new(
     claimsManager0.address,
     governanceAddress,
     claimsInitializeCallData,

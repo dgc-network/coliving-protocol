@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 #   concept is very much distinct.
 
 
-# Query the L1 set of audius protocol contracts and retrieve a list of peer endpoints
+# Query the L1 set of coliving protocol contracts and retrieve a list of peer endpoints
 def retrieve_peers_from_eth_contracts(self):
     shared_config = update_network_peers.shared_config
     eth_web3 = update_network_peers.eth_web3

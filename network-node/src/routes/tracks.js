@@ -631,7 +631,7 @@ router.get(
 router.get(
   '/tracks/stream/:encodedId',
   async (req, res, next) => {
-    const libs = req.app.get('audiusLibs')
+    const libs = req.app.get('colivingLibs')
     const redisClient = req.app.get('redisClient')
     const delegateOwnerWallet = config.get('delegateOwnerWallet')
 

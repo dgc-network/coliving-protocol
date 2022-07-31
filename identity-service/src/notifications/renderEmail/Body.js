@@ -33,7 +33,7 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-var AudiusImage = function AudiusImage() {
+var ColivingImage = function ColivingImage() {
   return /*#__PURE__*/_react["default"].createElement("img", {
     src: "https://gallery.mailchimp.com/f351897a27ff0a641b8acd9ab/images/b1070e55-9487-4acb-abce-e755484cce46.png",
     style: {
@@ -205,7 +205,7 @@ var Body = function Body(props) {
     align: "center",
     valign: "top",
     id: "bodyCell"
-  }, /*#__PURE__*/_react["default"].createElement(AudiusImage, null))), /*#__PURE__*/_react["default"].createElement("tr", null, /*#__PURE__*/_react["default"].createElement("td", {
+  }, /*#__PURE__*/_react["default"].createElement(ColivingImage, null))), /*#__PURE__*/_react["default"].createElement("tr", null, /*#__PURE__*/_react["default"].createElement("td", {
     align: "center",
     valign: "top",
     id: "bodyCell"

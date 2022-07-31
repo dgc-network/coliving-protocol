@@ -6,7 +6,7 @@ services:
     shm_size: 4gb
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_DB: audius_network_monitoring
+      POSTGRES_DB: coliving_network_monitoring
     volumes:
       - postgres_data_network_monitoring_1:/var/lib/postgresql/data/
     ports:

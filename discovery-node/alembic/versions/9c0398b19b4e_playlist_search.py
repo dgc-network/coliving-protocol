@@ -34,7 +34,7 @@ def upgrade():
       SELECT * FROM (
         SELECT
           p.playlist_id,
-          unnest(tsvector_to_array(to_tsvector('audius_ts_config', replace(COALESCE(p."playlist_name", ''), '&', 'and')))) as word
+          unnest(tsvector_to_array(to_tsvector('coliving_ts_config', replace(COALESCE(p."playlist_name", ''), '&', 'and')))) as word
         FROM
             "playlists" p
         WHERE p."is_current" = true and p."is_album" = false and p."is_private" = false
@@ -60,7 +60,7 @@ def upgrade():
       SELECT * FROM (
         SELECT
           p.playlist_id,
-          unnest(tsvector_to_array(to_tsvector('audius_ts_config', replace(COALESCE(p."playlist_name", ''), '&', 'and')))) as word
+          unnest(tsvector_to_array(to_tsvector('coliving_ts_config', replace(COALESCE(p."playlist_name", ''), '&', 'and')))) as word
         FROM
             "playlists" p
         WHERE p."is_current" = true and p."is_album" = true and p."is_private" = false

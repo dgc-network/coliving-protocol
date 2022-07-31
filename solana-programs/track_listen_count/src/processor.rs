@@ -31,8 +31,8 @@ impl Processor {
         let valid_signer_info = next_account_info(account_info_iter)?;
         // signer group account
         let signer_group_info = next_account_info(account_info_iter)?;
-        // audius account
-        let audius_account_info = next_account_info(account_info_iter)?;
+        // coliving account
+        let coliving_account_info = next_account_info(account_info_iter)?;
         // sysvar instruction
         let sysvar_instruction = next_account_info(account_info_iter)?;
         // clock sysvar account
@@ -61,7 +61,7 @@ impl Processor {
             )
             .unwrap(),
             &[
-                audius_account_info.clone(),
+                coliving_account_info.clone(),
                 valid_signer_info.clone(),
                 signer_group_info.clone(),
                 sysvar_instruction.clone(),

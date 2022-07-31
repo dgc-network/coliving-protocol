@@ -499,7 +499,7 @@ def extract_app_name_key():
         ie: "API_METRICS:applications:192.168.0.1:2020/08/04:14"
     The hash should be of format:
         <app_name>
-        ie: "audius_dapp"
+        ie: "coliving_dapp"
     """
     application_name = request.args.get(app_name_param, type=str, default=None)
     ip = get_request_ip(request)

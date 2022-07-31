@@ -42,7 +42,7 @@ module.exports = {
       port: 8555,
       network_id: '*' // Match any network id
     },
-    audius_private: {
+    coliving_private: {
       host: '127.0.0.1',
       port: 8000,
       network_id: 1353,

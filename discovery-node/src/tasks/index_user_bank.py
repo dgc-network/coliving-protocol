@@ -119,7 +119,7 @@ def refresh_user_balances(session: Session, redis: Redis, accts=List[str]):
         .filter(User.is_current == True)
         .all()
     )
-    # Only refresh if this is a known account within audius
+    # Only refresh if this is a known account within coliving
     if results:
         user_ids = [user_id[0] for user_id in results]
         logger.info(f"index_user_bank.py | Refresh user_ids = {user_ids}")

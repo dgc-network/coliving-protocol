@@ -43,7 +43,7 @@ pub mod coliving_data {
         base: Pubkey,
         _user_id_seed_bump: UserIdSeedBump,
     ) -> Result<()> {
-        // Validate that the audius admin verifier matches the verifier passed in
+        // Validate that the coliving admin verifier matches the verifier passed in
         if ctx.accounts.admin.verifier != ctx.accounts.verifier.key() {
             return Err(ErrorCode::Unauthorized.into());
         }
@@ -52,7 +52,7 @@ pub mod coliving_data {
         let (base_pda, _bump) =
             Pubkey::find_program_address(&[&admin_key.to_bytes()[..32]], ctx.program_id);
 
-        // Confirm the base PDA matches the expected value provided the target audius admin
+        // Confirm the base PDA matches the expected value provided the target coliving admin
         if base_pda != base {
             return Err(ErrorCode::Unauthorized.into());
         }
@@ -99,9 +99,9 @@ pub mod coliving_data {
             return Err(ErrorCode::Unauthorized.into());
         }
 
-        let audius_user_acct = &mut ctx.accounts.user;
-        audius_user_acct.eth_address = eth_address;
-        audius_user_acct.replica_set = replica_set;
+        let coliving_user_acct = &mut ctx.accounts.user;
+        coliving_user_acct.eth_address = eth_address;
+        coliving_user_acct.replica_set = replica_set;
 
         Ok(())
     }
@@ -303,7 +303,7 @@ pub mod coliving_data {
         ctx: Context<InitializeUserSolIdentity>,
         user_authority: Pubkey,
     ) -> Result<()> {
-        let audius_user_acct = &mut ctx.accounts.user;
+        let coliving_user_acct = &mut ctx.accounts.user;
         let index_current_instruction =
             sysvar::instructions::load_current_index_checked(&ctx.accounts.sysvar_program)?;
 
@@ -322,11 +322,11 @@ pub mod coliving_data {
         let instruction_signer =
             secp_data.data[ETH_ADDRESS_OFFSET..ETH_ADDRESS_OFFSET + 20].to_vec();
 
-        if instruction_signer != audius_user_acct.eth_address {
+        if instruction_signer != coliving_user_acct.eth_address {
             return Err(ErrorCode::Unauthorized.into());
         }
 
-        audius_user_acct.authority = user_authority;
+        coliving_user_acct.authority = user_authority;
 
         let message = secp_data.data[MESSAGE_OFFSET..].to_vec();
 
@@ -377,10 +377,10 @@ pub mod coliving_data {
             return Err(ErrorCode::Unauthorized.into());
         }
 
-        let audius_user_acct = &mut ctx.accounts.user;
-        audius_user_acct.eth_address = eth_address;
-        audius_user_acct.authority = user_authority;
-        audius_user_acct.replica_set = replica_set;
+        let coliving_user_acct = &mut ctx.accounts.user;
+        coliving_user_acct.eth_address = eth_address;
+        coliving_user_acct.authority = user_authority;
+        coliving_user_acct.replica_set = replica_set;
 
         let message = secp_data.data[MESSAGE_OFFSET..].to_vec();
 
@@ -424,7 +424,7 @@ pub mod coliving_data {
         _id: u64,
         _metadata: String,
     ) -> Result<()> {
-        // Confirm the base PDA matches the expected value provided the target audius admin
+        // Confirm the base PDA matches the expected value provided the target coliving admin
         let admin_key: &Pubkey = &ctx.accounts.admin.key();
         let (base_pda, _bump) =
             Pubkey::find_program_address(&[&admin_key.to_bytes()[..32]], ctx.program_id);
@@ -456,7 +456,7 @@ pub mod coliving_data {
         let (base_pda, _bump) =
             Pubkey::find_program_address(&[&admin_key.to_bytes()[..32]], ctx.program_id);
 
-        // Confirm the base PDA matches the expected value provided the target audius admin
+        // Confirm the base PDA matches the expected value provided the target coliving admin
         if base_pda != base {
             return Err(ErrorCode::Unauthorized.into());
         }
@@ -494,7 +494,7 @@ pub mod coliving_data {
         let (base_pda, _bump) =
             Pubkey::find_program_address(&[&admin_key.to_bytes()[..32]], ctx.program_id);
 
-        // Confirm the base PDA matches the expected value provided the target audius admin
+        // Confirm the base PDA matches the expected value provided the target coliving admin
         if base_pda != base {
             return Err(ErrorCode::Unauthorized.into());
         }
@@ -591,7 +591,7 @@ pub mod coliving_data {
 /// Instruction container to initialize an instance of Coliving, with the incoming admin keypair
 pub struct Initialize<'info> {
     #[account(init, payer = payer, space = ADMIN_ACCOUNT_SIZE)]
-    pub admin: Account<'info, AudiusAdmin>,
+    pub admin: Account<'info, ColivingAdmin>,
     #[account(mut)]
     pub payer: Signer<'info>,
     pub system_program: Program<'info, System>,
@@ -600,14 +600,14 @@ pub struct Initialize<'info> {
 /// Instruction container to initialize a user account, must be invoked from an existing Coliving
 /// `admin` account.
 /// `user` is a PDA derived from the Coliving account and user ID.
-/// `authority` is a signer key matching the admin value stored in AudiusAdmin root. Only the
+/// `authority` is a signer key matching the admin value stored in ColivingAdmin root. Only the
 ///  admin of this Coliving root program may initialize users through this function
 /// `payer` is the account responsible for the lamports required to allocate this account.le
 /// `system_program` is required for PDA derivation.
 #[derive(Accounts)]
 #[instruction(base: Pubkey, eth_address: [u8;20], replica_set: [u16; 3], replica_set_bumps:[u8; 3], user_id: u32)]
 pub struct InitializeUser<'info> {
-    pub admin: Account<'info, AudiusAdmin>,
+    pub admin: Account<'info, ColivingAdmin>,
     #[account(
         init,
         payer = payer,
@@ -634,7 +634,7 @@ pub struct InitializeUser<'info> {
 #[derive(Accounts)]
 #[instruction(base: Pubkey, sp_id: u16)]
 pub struct CreateContentNode<'info> {
-    pub admin: Account<'info, AudiusAdmin>,
+    pub admin: Account<'info, ColivingAdmin>,
     #[account(
         init,
         payer = payer,
@@ -654,7 +654,7 @@ pub struct CreateContentNode<'info> {
 #[derive(Accounts)]
 #[instruction(base: Pubkey, p1: ProposerSeedBump, p2: ProposerSeedBump, p3: ProposerSeedBump, sp_id: u16)]
 pub struct PublicCreateOrUpdateContentNode<'info> {
-    pub admin: Account<'info, AudiusAdmin>,
+    pub admin: Account<'info, ColivingAdmin>,
     #[account(
         init_if_needed,
         payer = payer,
@@ -681,7 +681,7 @@ pub struct PublicCreateOrUpdateContentNode<'info> {
 #[derive(Accounts)]
 #[instruction(base: Pubkey, p_delete: ProposerSeedBump, p1: ProposerSeedBump, p2: ProposerSeedBump, p3: ProposerSeedBump)]
 pub struct PublicDeleteContentNode<'info> {
-    pub admin: Account<'info, AudiusAdmin>,
+    pub admin: Account<'info, ColivingAdmin>,
     /// CHECK: Delegate authority account, can be defaulted to SystemProgram for no-op
     #[account(mut)]
     pub admin_authority: AccountInfo<'info>,    
@@ -712,7 +712,7 @@ pub struct PublicDeleteContentNode<'info> {
 #[derive(Accounts)]
 #[instruction(base: Pubkey, user_id_seed_bump: UserIdSeedBump, replica_set: [u16; 3], replica_set_bumps: [u8; 3])]
 pub struct UpdateUserReplicaSet<'info> {
-    pub admin: Account<'info, AudiusAdmin>,
+    pub admin: Account<'info, ColivingAdmin>,
     #[account(mut, seeds = [&base.to_bytes()[..32], &user_id_seed_bump.user_id.to_le_bytes()], bump=user_id_seed_bump.bump)]
     pub user: Account<'info, User>,
     #[account(seeds = [&base.to_bytes()[..32], CONTENT_NODE_SEED_PREFIX, &replica_set[0].to_le_bytes()], bump = replica_set_bumps[0])]
@@ -770,7 +770,7 @@ pub struct CreateUser<'info> {
     #[account(mut)]
     pub payer: Signer<'info>,
     #[account()]
-    pub admin: Account<'info, AudiusAdmin>,
+    pub admin: Account<'info, ColivingAdmin>,
     pub system_program: Program<'info, System>,
     /// CHECK: This is required since we load an instruction at index - 1 to verify eth signature
     pub sysvar_program: AccountInfo<'info>,
@@ -796,7 +796,7 @@ pub struct UpdateUser<'info> {
 #[derive(Accounts)]
 pub struct UpdateAdmin<'info> {
     #[account(mut)]
-    pub admin: Account<'info, AudiusAdmin>,
+    pub admin: Account<'info, ColivingAdmin>,
     #[account(mut)]
     pub admin_authority: Signer<'info>,
 }
@@ -850,7 +850,7 @@ pub struct RevokeAuthorityDelegationStatus<'info> {
 #[instruction(base: Pubkey, user_id_seed_bump: UserIdSeedBump, delegate_pubkey: Pubkey)]
 pub struct AddUserAuthorityDelegate<'info> {
     #[account()]
-    pub admin: Account<'info, AudiusAdmin>,
+    pub admin: Account<'info, ColivingAdmin>,
     #[account(
         seeds = [&base.to_bytes()[..32], &user_id_seed_bump.user_id.to_le_bytes()],
         bump = user_id_seed_bump.bump
@@ -883,7 +883,7 @@ pub struct AddUserAuthorityDelegate<'info> {
 #[instruction(base: Pubkey, user_id_seed_bump: UserIdSeedBump, delegate_pubkey: Pubkey, delegate_bump:u8)]
 pub struct RemoveUserAuthorityDelegate<'info> {
     #[account()]
-    pub admin: Account<'info, AudiusAdmin>,
+    pub admin: Account<'info, ColivingAdmin>,
     #[account(
         seeds = [&base.to_bytes()[..32], &user_id_seed_bump.user_id.to_le_bytes()],
         bump = user_id_seed_bump.bump
@@ -923,8 +923,8 @@ pub struct RemoveUserAuthorityDelegate<'info> {
 // Instruction base pda, user id
 pub struct ManageEntity<'info> {
     #[account()]
-    pub admin: Account<'info, AudiusAdmin>,
-    // Audiusadmin
+    pub admin: Account<'info, ColivingAdmin>,
+    // Colivingadmin
     #[account(
         seeds = [&base.to_bytes()[..32], &user_id_seed_bump.user_id.to_le_bytes()],
         bump = user_id_seed_bump.bump
@@ -947,7 +947,7 @@ pub struct ManageEntity<'info> {
 pub struct WriteEntitySocialAction<'info> {
     // TODO - Verify removal here
     #[account()]
-    pub admin: Account<'info, AudiusAdmin>,
+    pub admin: Account<'info, ColivingAdmin>,
     #[account(seeds = [&base.to_bytes()[..32], &user_id_seed_bump.user_id.to_le_bytes()], bump = user_id_seed_bump.bump)]
     pub user: Account<'info, User>,
     #[account()]
@@ -965,7 +965,7 @@ pub struct WriteEntitySocialAction<'info> {
 #[instruction(base: Pubkey, user_instr:UserAction, source_user_id_seed_bump: UserIdSeedBump, target_user_id_seed_bump: UserIdSeedBump)]
 pub struct WriteUserSocialAction<'info> {
     #[account(mut)]
-    pub admin: Account<'info, AudiusAdmin>,
+    pub admin: Account<'info, ColivingAdmin>,
     // Confirm the source user PDA matches the expected value provided the target user id and base
     #[account(mut, seeds = [&base.to_bytes()[..32], &source_user_id_seed_bump.user_id.to_le_bytes()], bump = source_user_id_seed_bump.bump)]
     pub source_user_storage: Account<'info, User>,
@@ -987,7 +987,7 @@ pub struct WriteUserSocialAction<'info> {
 #[derive(Accounts)]
 #[instruction(base: Pubkey, user_id_seed_bump: UserIdSeedBump)]
 pub struct UpdateIsVerified<'info> {
-    pub admin: Account<'info, AudiusAdmin>,
+    pub admin: Account<'info, ColivingAdmin>,
     #[account(seeds = [&base.to_bytes()[..32], &user_id_seed_bump.user_id.to_le_bytes()], bump = user_id_seed_bump.bump)]
     pub user: Account<'info, User>,
     pub verifier: Signer<'info>,
@@ -997,7 +997,7 @@ pub struct UpdateIsVerified<'info> {
 
 /// Coliving root account
 #[account]
-pub struct AudiusAdmin {
+pub struct ColivingAdmin {
     pub authority: Pubkey,
     pub verifier: Pubkey,
     pub is_write_enabled: bool,

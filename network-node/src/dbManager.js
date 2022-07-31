@@ -12,7 +12,7 @@ class DBManager {
    * Steps:
    *  1. increments cnodeUser clock value by 1
    *  2. insert new ClockRecord entry with new clock value
-   *  3. insert new Data Table (File, Track, AudiusUser) entry with queryObj and new clock value
+   *  3. insert new Data Table (File, Track, ColivingUser) entry with queryObj and new clock value
    * In steps 2 and 3, clock values are read as subquery to guarantee atomicity
    *
    * B. Given a list of IDs, batch deletes user session tokens to expire sessions on the server-side.
@@ -91,12 +91,12 @@ class DBManager {
       const cnodeUserUUIDLog = `cnodeUserUUID: ${cnodeUserUUID}`
       log(`${cnodeUserUUIDLog} || beginning delete ops`)
 
-      const numAudiusUsersDeleted = await models.AudiusUser.destroy({
+      const numColivingUsersDeleted = await models.ColivingUser.destroy({
         where: { cnodeUserUUID },
         transaction
       })
       log(
-        `${cnodeUserUUIDLog} || numAudiusUsersDeleted ${numAudiusUsersDeleted}`
+        `${cnodeUserUUIDLog} || numColivingUsersDeleted ${numColivingUsersDeleted}`
       )
 
       // TrackFiles must be deleted before associated Tracks can be deleted

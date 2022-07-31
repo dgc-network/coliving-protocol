@@ -1,6 +1,6 @@
 #![cfg(feature = "test-bpf")]
 mod utils;
-use audius_reward_manager::{
+use coliving_reward_manager::{
     instruction,
     processor::SENDER_SEED_PREFIX,
     state::{SenderAccount, ADD_SENDER_MESSAGE_PREFIX},
@@ -54,7 +54,7 @@ async fn success_create_sender_public() {
     }
 
     let (_, derived_address, _) = find_derived_pair(
-        &audius_reward_manager::id(),
+        &coliving_reward_manager::id(),
         &reward_manager.pubkey(),
         [SENDER_SEED_PREFIX.as_ref(), eth_address.as_ref()]
             .concat()
@@ -78,7 +78,7 @@ async fn success_create_sender_public() {
 
     instructions.push(
         instruction::create_sender_public(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &context.payer.pubkey(),
             eth_address,
@@ -139,7 +139,7 @@ async fn failure_create_duplicate_sender() {
     }
 
     let (_, derived_address, _) = find_derived_pair(
-        &audius_reward_manager::id(),
+        &coliving_reward_manager::id(),
         &reward_manager.pubkey(),
         [SENDER_SEED_PREFIX.as_ref(), eth_address.as_ref()]
             .concat()
@@ -164,7 +164,7 @@ async fn failure_create_duplicate_sender() {
 
     instructions.push(
         instruction::create_sender_public(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &context.payer.pubkey(),
             eth_address,
@@ -201,7 +201,7 @@ async fn failure_create_duplicate_sender() {
 
     instructions_2.push(
         instruction::create_sender_public(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &context.payer.pubkey(),
             eth_address,
@@ -275,7 +275,7 @@ async fn failure_create_sender_public_mismatched_signature_to_pubkey() {
 
     instructions.push(
         instruction::create_sender_public(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &context.payer.pubkey(),
             eth_address,
@@ -356,7 +356,7 @@ async fn failure_create_sender_public_mismatched_pubkey_to_signature() {
 
     instructions.push(
         instruction::create_sender_public(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &context.payer.pubkey(),
             eth_address,
@@ -431,7 +431,7 @@ async fn failure_create_sender_missing_attestations() {
 
     instructions.push(
         instruction::create_sender_public(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &context.payer.pubkey(),
             eth_address,
@@ -451,7 +451,7 @@ async fn failure_create_sender_missing_attestations() {
     assert_custom_error(
         res,
         2,
-        audius_reward_manager::error::AudiusProgramError::NotEnoughSigners,
+        coliving_reward_manager::error::ColivingProgramError::NotEnoughSigners,
     );
 }
 
@@ -509,7 +509,7 @@ async fn failure_create_sender_duplicate_attestation_senders() {
 
     instructions.push(
         instruction::create_sender_public(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &context.payer.pubkey(),
             eth_address,
@@ -529,7 +529,7 @@ async fn failure_create_sender_duplicate_attestation_senders() {
     assert_custom_error(
         res,
         3,
-        audius_reward_manager::error::AudiusProgramError::RepeatedSenders,
+        coliving_reward_manager::error::ColivingProgramError::RepeatedSenders,
     )
 }
 
@@ -580,7 +580,7 @@ async fn failure_duplicate_operators() {
 
     instructions.push(
         instruction::create_sender_public(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &context.payer.pubkey(),
             eth_address,
@@ -600,6 +600,6 @@ async fn failure_duplicate_operators() {
     assert_custom_error(
         res,
         3,
-        audius_reward_manager::error::AudiusProgramError::OperatorCollision,
+        coliving_reward_manager::error::ColivingProgramError::OperatorCollision,
     );
 }

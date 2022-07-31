@@ -11,7 +11,7 @@ let KNOWN_CONTENT_NODE_WALLETS = new Set([])
  * Poll for content nodes and memoizes their delegate owner wallets
  */
 const findContentNodes = async () => {
-  const libs = await colivingLibsWrapper.getAudiusLibsAsync()
+  const libs = await colivingLibsWrapper.getColivingLibsAsync()
   const { ethContracts, ethWeb3Manager } = libs
   const nodes = await ethContracts.getServiceProviderList('content-node')
   const toChecksumAddress = ethWeb3Manager.getWeb3().utils.toChecksumAddress

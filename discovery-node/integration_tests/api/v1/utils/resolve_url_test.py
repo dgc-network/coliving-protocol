@@ -11,7 +11,7 @@ def test_resolve_track_url(app):
     with app.test_request_context():
         db = get_db()
         with db.scoped_session() as session:
-            url = 'https://audius.co/urbanbankai/mb-shola-vivienne-"westwood"-87325'
+            url = 'https://coliving.co/urbanbankai/mb-shola-vivienne-"westwood"-87325'
             resolved_url = resolve_url(session, url)
 
             assert (
@@ -25,7 +25,7 @@ def test_resolve_playlist_url(app):
     with app.test_request_context():
         db = get_db()
         with db.scoped_session() as session:
-            url = "https://audius.co/urbanbankai/playlist/up-next-atl-august-2020-9801"
+            url = "https://coliving.co/urbanbankai/playlist/up-next-atl-august-2020-9801"
             resolved_url = resolve_url(session, url)
 
             assert resolved_url == "/v1/playlists/ePkW0"
@@ -73,7 +73,7 @@ def test_resolve_user_url(app):
                     secondary_ids=[2, 3],
                 )
             )
-            url = "https://audius.co/urbanbankai"
+            url = "https://coliving.co/urbanbankai"
             resolved_url = resolve_url(session, url)
 
             assert resolved_url == "/v1/users/DE677"

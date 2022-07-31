@@ -1,7 +1,7 @@
 import type Web3 from 'web3'
 import type { ContractABI } from '../../utils'
 import type { EthWeb3Manager } from '../ethWeb3Manager'
-import type { AudiusTokenClient } from './AudiusTokenClient'
+import type { ColivingTokenClient } from './ColivingTokenClient'
 import type { Contract } from 'web3-eth-contract'
 import type BN from 'bn.js'
 import type { ECDSASignature } from 'ethereumjs-util'
@@ -11,14 +11,14 @@ export class WormholeClient {
   contractABI: ContractABI['abi']
   contractAddress: string
   web3: Web3
-  colivingTokenClient: AudiusTokenClient
+  colivingTokenClient: ColivingTokenClient
   WormholeContract: Contract
 
   constructor(
     ethWeb3Manager: EthWeb3Manager,
     contractABI: ContractABI['abi'],
     contractAddress: string,
-    colivingTokenClient: AudiusTokenClient
+    colivingTokenClient: ColivingTokenClient
   ) {
     this.ethWeb3Manager = ethWeb3Manager
     this.contractABI = contractABI

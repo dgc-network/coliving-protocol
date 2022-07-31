@@ -17,7 +17,7 @@ Example:
 
 ```typescript
 
-const track = await audiusSdk.resolve<Track>({
+const track = await colivingSdk.resolve<Track>({
   url: "https://.co/camouflybeats/hypermantra-86216",
 });
 

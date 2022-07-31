@@ -1,7 +1,7 @@
 #![cfg(feature = "test-bpf")]
 mod utils;
 
-use audius_reward_manager::{
+use coliving_reward_manager::{
     instruction, processor::VERIFY_TRANSFER_SEED_PREFIX, state::VerifiedMessages,
     utils::find_derived_pair, utils::EthereumAddress,
 };
@@ -60,7 +60,7 @@ async fn success_submit_attestations_multiple_transactions() {
 
     instructions.push(
         instruction::submit_attestations(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &signers[0],
             &context.payer.pubkey(),
@@ -85,7 +85,7 @@ async fn success_submit_attestations_multiple_transactions() {
 
     instructions_2.push(
         instruction::submit_attestations(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &signers[1],
             &context.payer.pubkey(),
@@ -145,7 +145,7 @@ async fn success_multiple_recovery_1_tx() {
 
     instructions.push(
         instruction::submit_attestations(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &signers[0],
             &context.payer.pubkey(),
@@ -161,7 +161,7 @@ async fn success_multiple_recovery_1_tx() {
 
     instructions.push(
         instruction::submit_attestations(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &signers[1],
             &context.payer.pubkey(),
@@ -176,7 +176,7 @@ async fn success_multiple_recovery_1_tx() {
     instructions.push(oracle_sign);
     instructions.push(
         instruction::submit_attestations(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &oracle_derived_address,
             &context.payer.pubkey(),
@@ -248,8 +248,8 @@ async fn failure_occupy_verified_messages_account() {
         &[system_instruction::create_account(
             &context.payer.pubkey(),
             &verified_msgs_derived_acct,
-            rent.minimum_balance(audius_reward_manager::state::VerifiedMessages::LEN),
-            audius_reward_manager::state::VerifiedMessages::LEN as _,
+            rent.minimum_balance(coliving_reward_manager::state::VerifiedMessages::LEN),
+            coliving_reward_manager::state::VerifiedMessages::LEN as _,
             &context.payer.pubkey(),
         )],
         Some(&context.payer.pubkey()),
@@ -295,7 +295,7 @@ async fn failure_duplicate_attestations() {
 
     instructions.push(
         instruction::submit_attestations(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &signers[0],
             &context.payer.pubkey(),
@@ -323,7 +323,7 @@ async fn failure_duplicate_attestations() {
 
     new_instructions.push(
         instruction::submit_attestations(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &signers[1],
             &context.payer.pubkey(),
@@ -364,7 +364,7 @@ async fn failure_duplicate_attestations() {
     assert_custom_error(
         res,
         1,
-        audius_reward_manager::error::AudiusProgramError::RepeatedSenders,
+        coliving_reward_manager::error::ColivingProgramError::RepeatedSenders,
     )
 }
 
@@ -405,7 +405,7 @@ async fn failure_duplicate_operator() {
 
     instructions.push(
         instruction::submit_attestations(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &signers[0],
             &context.payer.pubkey(),
@@ -433,7 +433,7 @@ async fn failure_duplicate_operator() {
 
     new_instructions.push(
         instruction::submit_attestations(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &signers[1],
             &context.payer.pubkey(),
@@ -455,7 +455,7 @@ async fn failure_duplicate_operator() {
     assert_custom_error(
         res,
         1,
-        audius_reward_manager::error::AudiusProgramError::OperatorCollision,
+        coliving_reward_manager::error::ColivingProgramError::OperatorCollision,
     )
 }
 
@@ -542,7 +542,7 @@ async fn validation_fails_invalid_secp_index() {
 
     instructions.push(
         instruction::submit_attestations(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &derived_address,
             &context.payer.pubkey(),
@@ -656,7 +656,7 @@ async fn validation_fails_incorrect_secp_offset() {
 
     instructions.push(
         instruction::submit_attestations(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &derived_address,
             &context.payer.pubkey(),
@@ -723,7 +723,7 @@ async fn ensure_valid_instructions_info() {
     .unwrap();
 
     let (reward_manager_authority, verified_messages, _) = find_derived_pair(
-        &audius_reward_manager::id(),
+        &coliving_reward_manager::id(),
         &reward_manager.pubkey(),
         [
             VERIFY_TRANSFER_SEED_PREFIX.as_bytes().as_ref(),
@@ -747,7 +747,7 @@ async fn ensure_valid_instructions_info() {
     ];
 
     let fake_instruction = Instruction {
-        program_id: audius_reward_manager::id(),
+        program_id: coliving_reward_manager::id(),
         accounts,
         data,
     };
@@ -764,6 +764,6 @@ async fn ensure_valid_instructions_info() {
     assert_custom_error(
         res,
         1,
-        audius_reward_manager::error::AudiusProgramError::InstructionLoadError,
+        coliving_reward_manager::error::ColivingProgramError::InstructionLoadError,
     )
 }

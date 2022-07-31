@@ -10,10 +10,10 @@ import "@openzeppelin/upgrades/contracts/upgradeability/UpgradeabilityProxy.sol"
  * @dev Any logic contract that has a signature clash with this proxy contract will be unable to call those functions
  *      Please ensure logic contract functions do not share a signature with any functions defined in this file
  */
-contract AudiusAdminUpgradeabilityProxy is UpgradeabilityProxy {
+contract ColivingAdminUpgradeabilityProxy is UpgradeabilityProxy {
     address private proxyAdmin;
     string private constant ERROR_ONLY_ADMIN = (
-        "AudiusAdminUpgradeabilityProxy: Caller must be current proxy admin"
+        "ColivingAdminUpgradeabilityProxy: Caller must be current proxy admin"
     );
 
     /**
@@ -50,7 +50,7 @@ contract AudiusAdminUpgradeabilityProxy is UpgradeabilityProxy {
     /**
      * @return Current proxy admin address
      */
-    function getAudiusProxyAdminAddress() external view returns (address) {
+    function getColivingProxyAdminAddress() external view returns (address) {
         return proxyAdmin;
     }
 
@@ -66,7 +66,7 @@ contract AudiusAdminUpgradeabilityProxy is UpgradeabilityProxy {
      * @dev Only callable by current proxy admin address
      * @param _adminAddress - new admin address
      */
-    function setAudiusProxyAdminAddress(address _adminAddress) external {
+    function setColivingProxyAdminAddress(address _adminAddress) external {
         require(msg.sender == proxyAdmin, ERROR_ONLY_ADMIN);
         proxyAdmin = _adminAddress;
     }

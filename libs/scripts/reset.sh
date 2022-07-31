@@ -51,7 +51,7 @@ cd ../libs/
 # Migrate data & eth contracts
 # - Copy contracts build dir + create config files
 # - Data contracts config: registry contract & owner wallet addresses
-# - Eth contracts config: AudiusToken contract, registry contract and owner wallet addresses
+# - Eth contracts config: ColivingToken contract, registry contract and owner wallet addresses
 sh ./scripts/migrate_contracts.sh
 
 #### RUN TESTS #####

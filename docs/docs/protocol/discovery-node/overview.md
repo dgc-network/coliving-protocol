@@ -7,8 +7,8 @@ sidebar_position: 1
 
 An Coliving Discovery Node is a service that indexes the metadata and availability of data across the protocol for Coliving users to query. The indexed content includes user, track, and album/playlist information along with social features. The data is stored for quick access, updated on a regular interval, and made available for clients via a RESTful API.
 
-[github repository](https://github.com/dgc.network/audius-protocol/tree/master/discovery-node)
-[registered discovery nodes](https://dashboard.audius.org/#/services/discovery-node)
+[github repository](https://github.com/dgc.network/coliving-protocol/tree/master/discovery-node)
+[registered discovery nodes](https://dashboard.coliving.org/#/services/discovery-node)
 
 Design Goals
 

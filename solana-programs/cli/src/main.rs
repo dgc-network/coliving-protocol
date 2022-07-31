@@ -474,7 +474,7 @@ fn main() {
         )
         .subcommand(
             SubCommand::with_name("query-eth-registry")
-                .about("Describes all accounts associated with the audius eth registry")
+                .about("Describes all accounts associated with the coliving eth registry")
         )
         .subcommand(
             SubCommand::with_name("clear-valid-signer")

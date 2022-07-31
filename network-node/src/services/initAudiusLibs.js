@@ -1,10 +1,10 @@
-const { libs: AudiusLibs } = require('@audius/sdk')
+const { libs: ColivingLibs } = require('@coliving/sdk')
 
 const config = require('../config')
 const { logger: genericLogger } = require('../logging')
 
 /**
- * Creates, initializes, and returns an audiusLibs instance
+ * Creates, initializes, and returns an colivingLibs instance
  *
  * Configures dataWeb3 to be internal to libs, logged in with delegatePrivateKey in order to write chain TX
  */
@@ -36,28 +36,28 @@ module.exports = async (excludeDiscovery = false, logger = genericLogger) => {
   /**
    * Configure ethWeb3
    */
-  const ethWeb3 = await AudiusLibs.Utils.configureWeb3(
+  const ethWeb3 = await ColivingLibs.Utils.configureWeb3(
     ethProviderUrl,
     ethNetworkId,
     /* requiresAccount */ false
   )
   if (!ethWeb3) {
     throw new Error(
-      'Failed to init audiusLibs due to ethWeb3 configuration error'
+      'Failed to init colivingLibs due to ethWeb3 configuration error'
     )
   }
 
   /**
-   * Create AudiusLibs instance
+   * Create ColivingLibs instance
    */
-  const audiusLibs = new AudiusLibs({
-    ethWeb3Config: AudiusLibs.configEthWeb3(
+  const colivingLibs = new ColivingLibs({
+    ethWeb3Config: ColivingLibs.configEthWeb3(
       ethTokenAddress,
       ethRegistryAddress,
       ethWeb3,
       ethOwnerWallet
     ),
-    web3Config: AudiusLibs.configInternalWeb3(
+    web3Config: ColivingLibs.configInternalWeb3(
       dataRegistryAddress,
       // pass as array
       [dataProviderUrl],
@@ -72,7 +72,7 @@ module.exports = async (excludeDiscovery = false, logger = genericLogger) => {
         },
     // If an identity service config is present, set up libs with the connection, otherwise do nothing
     identityServiceConfig: identityService
-      ? AudiusLibs.configIdentityService(identityService)
+      ? ColivingLibs.configIdentityService(identityService)
       : undefined,
     isDebug: creatorNodeIsDebug,
     isServer: true,
@@ -81,6 +81,6 @@ module.exports = async (excludeDiscovery = false, logger = genericLogger) => {
     logger
   })
 
-  await audiusLibs.init()
-  return audiusLibs
+  await colivingLibs.init()
+  return colivingLibs
 }

@@ -42,7 +42,7 @@ const UserLibraryFactoryRegistryKey = 'UserLibraryFactory'
 const IPLDBlacklistFactoryRegistryKey = 'IPLDBlacklistFactory'
 const UserReplicaSetManagerRegistryKey = 'UserReplicaSetManager'
 
-export class AudiusContracts {
+export class ColivingContracts {
   web3Manager: Web3Manager
   registryAddress: string
   isServer: boolean

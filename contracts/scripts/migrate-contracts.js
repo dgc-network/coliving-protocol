@@ -15,11 +15,11 @@ const os = require('os');
 
 const truffle_dev_config = artifacts.options['_values']['networks']['development']
 
-const AudiusLibs = 'libs'
-const AudiusDiscoveryNode = 'discovery-node'
-const AudiusIdentityService = 'identity-service'
-const AudiusCreatorNode = 'network-node'
-const AudiusDataContracts = 'contracts'
+const ColivingLibs = 'libs'
+const ColivingDiscoveryNode = 'discovery-node'
+const ColivingIdentityService = 'identity-service'
+const ColivingCreatorNode = 'network-node'
+const ColivingDataContracts = 'contracts'
 
 const getDefaultAccount = async () => {
   let accounts = await web3.eth.getAccounts()
@@ -74,11 +74,11 @@ const copySignatureSchemas = (outputPath) => {
 
 const outputJsonConfigFile = async (outputPath) => {
   try{
-    let migrationOutputPath = path.join(getDirectoryRoot(AudiusDataContracts), 'migrations', 'migration-output.json')
+    let migrationOutputPath = path.join(getDirectoryRoot(ColivingDataContracts), 'migrations', 'migration-output.json')
     let addressInfo = require(migrationOutputPath)
     let outputDictionary = {}
     outputDictionary['registryAddress'] = addressInfo.registryAddress
-    outputDictionary['audiusDataAddress'] = addressInfo.audiusDataProxyAddress
+    outputDictionary['colivingDataAddress'] = addressInfo.colivingDataProxyAddress
     outputDictionary['ursmAddress'] = addressInfo.ursmAddress
     outputDictionary['ownerWallet'] = await getDefaultAccount()
     outputDictionary['allWallets'] = await web3.eth.getAccounts()
@@ -102,7 +102,7 @@ const outputFlaskConfigFile = async (outputPath) => {
   try {
     // registry = await Registry.deployed()
 
-    let migrationOutputPath = path.join(getDirectoryRoot(AudiusDataContracts), 'migrations', 'migration-output.json')
+    let migrationOutputPath = path.join(getDirectoryRoot(ColivingDataContracts), 'migrations', 'migration-output.json')
     let addressInfo = require(migrationOutputPath)
     let configFileContents = '[contracts]\n'
     configFileContents += 'registry = ' + addressInfo.registryAddress + '\n'
@@ -128,7 +128,7 @@ const outputFlaskConfigFile = async (outputPath) => {
 
 module.exports = async callback => {
   try {
-    const libsDirRoot = path.join(getDirectoryRoot(AudiusLibs), 'data-contracts')
+    const libsDirRoot = path.join(getDirectoryRoot(ColivingLibs), 'data-contracts')
     fs.removeSync(libsDirRoot)
 
     await copyBuildDirectory(path.join(libsDirRoot, '/ABIs'))
@@ -140,7 +140,7 @@ module.exports = async callback => {
 
   // output to Identity Service
   try {
-    outputJsonConfigFile(getDirectoryRoot(AudiusIdentityService) + '/contract-config.json')
+    outputJsonConfigFile(getDirectoryRoot(ColivingIdentityService) + '/contract-config.json')
   }
   catch(e){
     console.log("Identity service doesn't exist", e)
@@ -148,20 +148,20 @@ module.exports = async callback => {
 
   // output to Creator Node
   try {
-    outputJsonConfigFile(getDirectoryRoot(AudiusCreatorNode) + '/contract-config.json')
+    outputJsonConfigFile(getDirectoryRoot(ColivingCreatorNode) + '/contract-config.json')
   } catch (e) {
     console.log("Creator node dir doesn't exist", e)
   }
 
   // output to Discovery Node
   try {
-    let discProvOutputPath = path.join(getDirectoryRoot(AudiusDiscoveryNode), 'build', 'contracts')
+    let discProvOutputPath = path.join(getDirectoryRoot(ColivingDiscoveryNode), 'build', 'contracts')
 
     // Copy build directory
     await copyBuildDirectory(discProvOutputPath)
 
     let flaskConfigPath = path.join(
-      getDirectoryRoot(AudiusDiscoveryNode),
+      getDirectoryRoot(ColivingDiscoveryNode),
       'contract_config.ini'
     )
     // Write updated flask config file

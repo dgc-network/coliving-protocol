@@ -5,8 +5,8 @@ Indexes data from postgres to elasticsearch.
 To run in the discovery container, set env variables:
 
 ```
-audius_elasticsearch_url=http://elasticsearch:9200
-audius_elasticsearch_run_indexer=true
+coliving_elasticsearch_url=http://elasticsearch:9200
+coliving_elasticsearch_run_indexer=true
 ```
 
 ## Mapping Changes

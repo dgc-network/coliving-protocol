@@ -335,7 +335,7 @@ module.exports = function (app) {
     const notificationEmailsJobLastSuccess = await redis.get(NOTIFICATION_EMAILS_JOB_LAST_SUCCESS_KEY)
     const notificationAnnouncementsJobLastSuccess = await redis.get(NOTIFICATION_ANNOUNCEMENTS_JOB_LAST_SUCCESS_KEY)
 
-    const { discoveryProvider } = colivingLibsWrapper.getAudiusLibs()
+    const { discoveryProvider } = colivingLibsWrapper.getColivingLibs()
 
     let body = (await axios({
       method: 'get',

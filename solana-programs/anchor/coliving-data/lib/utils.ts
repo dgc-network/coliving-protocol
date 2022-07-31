@@ -4,7 +4,7 @@ import BN from "bn.js";
 import { randomBytes } from "crypto";
 import * as secp256k1 from "secp256k1";
 import keccak256 from "keccak256";
-import { AudiusData } from "../target/types/coliving_data";
+import { ColivingData } from "../target/types/coliving_data";
 import web3 from "web3";
 import { LOCAL_DEV_SP_WALLETS, LOCAL_DEV_SP_PRIVATE_KEYS } from "./constants";
 const { PublicKey } = anchor.web3;
@@ -155,7 +155,7 @@ export const findDerivedAddress = async (
   };
 };
 
-// Finds the target PDA with the base audius admin as the initial seed
+// Finds the target PDA with the base coliving admin as the initial seed
 // In conjunction with the secondary seed as the users handle in bytes
 export const findDerivedPair = async (programId, adminAccount, seed) => {
   const [baseAuthorityAccount] = await findProgramAddress(
@@ -175,7 +175,7 @@ export const findDerivedPair = async (programId, adminAccount, seed) => {
 };
 
 export const getContentNode = async (
-  program: anchor.Program<AudiusData>,
+  program: anchor.Program<ColivingData>,
   adminStoragePublicKey: anchor.web3.PublicKey,
   spId: string
 ) => {

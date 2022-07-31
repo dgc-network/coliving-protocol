@@ -25,7 +25,7 @@ export redisPort='6379'
 export dbUrl="postgres://postgres:postgres@localhost:$PG_PORT/coliving_identity_service_test"
 export logLevel='debug' #should be error
 export solanaTrackListenCountAddress=''
-export solanaAudiusEthRegistryAddress=''
+export solanaColivingEthRegistryAddress=''
 export solanaValidSigner=''
 
 # Locally, the docker-compose files set up a database named coliving_identity_service. For

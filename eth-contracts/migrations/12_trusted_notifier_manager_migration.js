@@ -1,7 +1,7 @@
 const contractConfig = require('../contract-config.js')
 const _lib = require('../utils/lib')
 
-const AudiusAdminUpgradeabilityProxy = artifacts.require('AudiusAdminUpgradeabilityProxy')
+const ColivingAdminUpgradeabilityProxy = artifacts.require('ColivingAdminUpgradeabilityProxy')
 const TrustedNotifierManager = artifacts.require('TrustedNotifierManager')
 const Governance = artifacts.require('Governance')
 
@@ -31,7 +31,7 @@ module.exports = (deployer, network, accounts) => {
       [governanceAddress, initialNotifierWallet, initialNotifierEndpoint, initialNotifierEmail]
     )
     const trustedNotifierManagerProxy = await deployer.deploy(
-      AudiusAdminUpgradeabilityProxy,
+      ColivingAdminUpgradeabilityProxy,
       trustedNotifierManager0.address,
       governanceAddress,
       initializeCallData,

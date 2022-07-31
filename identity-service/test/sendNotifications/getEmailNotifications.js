@@ -10,7 +10,7 @@ const { clearDatabase, runMigrations } = require('../lib/app')
 // Mock Notifications
 const trendingTrack = require('./mockNotifications/trendingTrack.json')
 
-const mockAudiusLibs = require('./mockLibs')
+const mockColivingLibs = require('./mockLibs')
 
 describe('Test Get Email Notifications', function () {
   beforeEach(async () => {
@@ -26,7 +26,7 @@ describe('Test Get Email Notifications', function () {
     const userId = 1
 
     // Check that the email props can be generated correctly
-    const [notificationProps] = await getEmailNotifications(mockAudiusLibs, userId)
+    const [notificationProps] = await getEmailNotifications(mockColivingLibs, userId)
     assert.ok(notificationProps)
 
     const renderProps = {

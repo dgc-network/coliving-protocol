@@ -1,7 +1,7 @@
 const packageJSON = require('../package.json')
 
 const { EthWeb3Manager } = require('./services/ethWeb3Manager')
-const { SolanaAudiusData } = require('./services/solanaAudiusData/index')
+const { SolanaColivingData } = require('./services/solanaColivingData/index')
 const { Web3Manager } = require('./services/web3Manager')
 const { EthContracts } = require('./services/ethContracts')
 const {
@@ -9,14 +9,14 @@ const {
   SolanaUtils,
   RewardsAttester
 } = require('./services/solana')
-const { AudiusContracts } = require('./services/dataContracts')
+const { ColivingContracts } = require('./services/dataContracts')
 const { IdentityService } = require('./services/identity')
 const { Comstock } = require('./services/comstock')
 const { Hedgehog } = require('./services/hedgehog')
 const { CreatorNode } = require('./services/creatorNode')
 const { DiscoveryProvider } = require('./services/discoveryProvider')
 const { Wormhole } = require('./services/wormhole')
-const { AudiusABIDecoder } = require('./services/ABIDecoder')
+const { ColivingABIDecoder } = require('./services/ABIDecoder')
 const { SchemaValidator } = require('./services/schemaValidator')
 const { UserStateManager } = require('./userStateManager')
 const SanityChecks = require('./sanityChecks')
@@ -36,7 +36,7 @@ const { Keypair } = require('@solana/web3.js')
 const { PublicKey } = require('@solana/web3.js')
 const { getPlatformLocalStorage } = require('./utils/localStorage')
 
-class AudiusLibs {
+class ColivingLibs {
   /**
    * Configures an identity service wrapper
    * @param {string} url
@@ -287,7 +287,7 @@ class AudiusLibs {
    * @param {string} config.programId Program ID of the coliving data program
    * @param {string} config.adminAccount Public Key of admin account
    */
-  static configSolanaAudiusData ({ programId, adminAccount }) {
+  static configSolanaColivingData ({ programId, adminAccount }) {
     return {
       programId,
       adminAccount
@@ -298,7 +298,7 @@ class AudiusLibs {
    * Constructs an Coliving Libs instance with configs.
    * Unless default-valued, all configs are optional.
    * @example
-   *  const coliving = AudiusLibs({
+   *  const coliving = ColivingLibs({
    *    discoveryProviderConfig: {},
    *    creatorNodeConfig: configCreatorNode('https://my-creator.node')
    *  })
@@ -308,7 +308,7 @@ class AudiusLibs {
     web3Config,
     ethWeb3Config,
     solanaWeb3Config,
-    solanaAudiusDataConfig,
+    solanaColivingDataConfig,
     identityServiceConfig,
     discoveryProviderConfig,
     creatorNodeConfig,
@@ -330,7 +330,7 @@ class AudiusLibs {
     this.ethWeb3Config = ethWeb3Config
     this.web3Config = web3Config
     this.solanaWeb3Config = solanaWeb3Config
-    this.solanaAudiusDataConfig = solanaAudiusDataConfig
+    this.solanaColivingDataConfig = solanaColivingDataConfig
     this.identityServiceConfig = identityServiceConfig
     this.creatorNodeConfig = creatorNodeConfig
     this.discoveryProviderConfig = discoveryProviderConfig
@@ -342,7 +342,7 @@ class AudiusLibs {
     this.isDebug = isDebug
     this.logger = logger
 
-    this.AudiusABIDecoder = AudiusABIDecoder
+    this.ColivingABIDecoder = ColivingABIDecoder
     this.Utils = Utils
 
     // Services to initialize. Initialized in .init().
@@ -354,7 +354,7 @@ class AudiusLibs {
     this.ethContracts = null
     this.web3Manager = null
     this.solanaWeb3Manager = null
-    this.anchorAudiusData = null
+    this.anchorColivingData = null
     this.contracts = null
     this.creatorNode = null
 
@@ -436,13 +436,13 @@ class AudiusLibs {
       )
       await this.solanaWeb3Manager.init()
     }
-    if (this.solanaWeb3Manager && this.solanaAudiusDataConfig) {
-      this.solanaAudiusData = new SolanaAudiusData(
-        this.solanaAudiusDataConfig,
+    if (this.solanaWeb3Manager && this.solanaColivingDataConfig) {
+      this.solanaColivingData = new SolanaColivingData(
+        this.solanaColivingDataConfig,
         this.solanaWeb3Manager,
         this.web3Manager
       )
-      await this.solanaAudiusData.init()
+      await this.solanaColivingData.init()
     }
 
     /** Contracts - Eth and Data Contracts */
@@ -470,7 +470,7 @@ class AudiusLibs {
       contractsToInit.push(this.ethContracts.init())
     }
     if (this.web3Manager) {
-      this.contracts = new AudiusContracts(
+      this.contracts = new ColivingContracts(
         this.web3Manager,
         this.web3Config ? this.web3Config.registryAddress : null,
         this.isServer,
@@ -551,7 +551,7 @@ class AudiusLibs {
       this.ethWeb3Manager,
       this.ethContracts,
       this.solanaWeb3Manager,
-      this.anchorAudiusData,
+      this.anchorColivingData,
       this.wormholeClient,
       this.creatorNode,
       this.comstock,
@@ -579,9 +579,9 @@ class AudiusLibs {
 // https://github.com/rollup/plugins/tree/master/packages/commonjs#defaultismoduleexports
 // exports.__esModule = true
 
-module.exports = AudiusLibs
+module.exports = ColivingLibs
 
-module.exports.AudiusABIDecoder = AudiusABIDecoder
+module.exports.ColivingABIDecoder = ColivingABIDecoder
 module.exports.Utils = Utils
 module.exports.SolanaUtils = SolanaUtils
 module.exports.SanityChecks = SanityChecks

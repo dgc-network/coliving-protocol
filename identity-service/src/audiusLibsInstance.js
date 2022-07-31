@@ -1,4 +1,4 @@
-const { libs: AudiusLibs } = require('@coliving/sdk')
+const { libs: ColivingLibs } = require('@coliving/sdk')
 const { setDefaultWasm } = require('@certusone/wormhole-sdk/lib/cjs/solana/wasm')
 
 const config = require('./config')
@@ -8,14 +8,14 @@ const web3ProviderUrl = config.get('web3Provider')
 // Fixed address of the SPL token program
 const SOLANA_TOKEN_ADDRESS = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'
 
-class AudiusLibsWrapper {
+class ColivingLibsWrapper {
   constructor () {
     this.colivingLibsInstance = null
     setDefaultWasm('node')
   }
 
   async init () {
-    const dataWeb3 = await AudiusLibs.Utils.configureWeb3(web3ProviderUrl, null, false)
+    const dataWeb3 = await ColivingLibs.Utils.configureWeb3(web3ProviderUrl, null, false)
     if (!dataWeb3) throw new Error('Web3 incorrectly configured')
 
     const discoveryProviderWhitelist = config.get('discoveryProviderWhitelist')
@@ -28,7 +28,7 @@ class AudiusLibsWrapper {
         .map(key => Uint8Array.from(key))
       : null
 
-    const solanaWeb3Config = AudiusLibs.configSolanaWeb3({
+    const solanaWeb3Config = ColivingLibs.configSolanaWeb3({
       solanaClusterEndpoint: config.get('solanaEndpoint'),
       mintAddress: config.get('solanaMintAddress'),
       solanaTokenAddress: SOLANA_TOKEN_ADDRESS,
@@ -42,7 +42,7 @@ class AudiusLibsWrapper {
       confirmationTimeout: config.get('solanaConfirmationTimeout')
     })
 
-    const wormholeConfig = AudiusLibs.configWormhole({
+    const wormholeConfig = ColivingLibs.configWormhole({
       rpcHosts: config.get('wormholeRPCHosts'),
       solBridgeAddress: config.get('solBridgeAddress'),
       solTokenBridgeAddress: config.get('solTokenBridgeAddress'),
@@ -50,11 +50,11 @@ class AudiusLibsWrapper {
       ethTokenBridgeAddress: config.get('ethTokenBridgeAddress')
     })
 
-    let colivingInstance = new AudiusLibs({
+    let colivingInstance = new ColivingLibs({
       discoveryProviderConfig: {
         whitelist: discoveryProviderWhitelist
       },
-      ethWeb3Config: AudiusLibs.configEthWeb3(
+      ethWeb3Config: ColivingLibs.configEthWeb3(
         config.get('ethTokenAddress'),
         config.get('ethRegistryAddress'),
         config.get('ethProviderUrl'),
@@ -80,14 +80,14 @@ class AudiusLibsWrapper {
     this.colivingLibsInstance = colivingInstance
   }
 
-  getAudiusLibs () {
+  getColivingLibs () {
     return this.colivingLibsInstance
   }
 
   /**
    * Async getter for libs. Resolves when libs is initialized.
    */
-  async getAudiusLibsAsync () {
+  async getColivingLibsAsync () {
     if (this.colivingLibsInstance) {
       return this.colivingLibsInstance
     }
@@ -102,6 +102,6 @@ class AudiusLibsWrapper {
   }
 }
 
-const colivingLibsWrapper = new AudiusLibsWrapper()
+const colivingLibsWrapper = new ColivingLibsWrapper()
 
 module.exports = colivingLibsWrapper

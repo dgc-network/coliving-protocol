@@ -27,7 +27,7 @@ web3 = Web3(provider)
 
 # Prepare stub ERC-20 contract object
 eth_abi_values = load_eth_abi_values()
-AUDIO_TOKEN_CONTRACT = web3.eth.contract(abi=eth_abi_values["AudiusToken"]["abi"])
+AUDIO_TOKEN_CONTRACT = web3.eth.contract(abi=eth_abi_values["ColivingToken"]["abi"])
 
 AUDIO_CHECKSUM_ADDRESS = get_token_address(web3, shared_config)
 

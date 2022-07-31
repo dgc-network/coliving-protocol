@@ -12,7 +12,7 @@ We use [JS client library `prom-client`](https://github.com/siimon/prom-client) 
 **Metric** = instance of Metric Type, e.g. `http_request_duration_seconds`  
 **Time Series** = stream of timestamped values belonging to single Metric and set of Labeled dimensions. It is comprised of Samples.  
 **Sample** = a single value at a point-in-time in a Time Series; consists of 1) float-64 value and 2) millisecond-precision timestamp  
-**Metric Value** = current value of Metric, e.g. `audius_cn_sync_queue_jobs_total{status="manual_waiting"} 0`  
+**Metric Value** = current value of Metric, e.g. `coliving_cn_sync_queue_jobs_total{status="manual_waiting"} 0`  
 **Exporter** = Route at which this target exports internal metrics, from which Prometheus server pulls metrics. Currently set to `/prometheus_metrics`
 
 Details in docs: [Data Model](https://prometheus.io/docs/concepts/data_model/) / [Glossary](https://prometheus.io/docs/introduction/glossary/)
@@ -64,7 +64,7 @@ In Prometheus, labels are very important. Important excerpts from docs (see link
 Cardinality = different values for a given metric. For example:
 
 ```
-Metric = 'audius_route_post_tracks_duration_seconds'
+Metric = 'coliving_route_post_tracks_duration_seconds'
 Metric type = Histogram
 Label = 'code'
 Label values = '2xx', '3xx', '4xx', '5xx'

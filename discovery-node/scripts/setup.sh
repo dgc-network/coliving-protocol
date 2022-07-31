@@ -21,7 +21,7 @@ function main {
 
   set -e
 
-  printf '\nAudius Discovery Provider - Local Setup'
+  printf '\nColiving Discovery Provider - Local Setup'
   printf '\n%20s\n' | tr ' ' -
 
   cd_contracts_repo

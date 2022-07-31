@@ -177,13 +177,13 @@ def parse_sol_play_transaction(solana_client_manager: SolanaClientManager, tx_si
             )
             return None
         if is_valid_tx(tx_info["result"]["transaction"]["message"]["accountKeys"]):
-            audius_program_index = tx_info["result"]["transaction"]["message"][
+            coliving_program_index = tx_info["result"]["transaction"]["message"][
                 "accountKeys"
             ].index(TRACK_LISTEN_PROGRAM)
             for instruction in tx_info["result"]["transaction"]["message"][
                 "instructions"
             ]:
-                if instruction["programIdIndex"] == audius_program_index:
+                if instruction["programIdIndex"] == coliving_program_index:
                     slot = tx_info["result"]["slot"]
                     (
                         user_id,
@@ -264,9 +264,9 @@ Processing of plays through the Solana TrackListenCount program is handled diffe
 than the original indexing layer
 
 Below we monitor the on chain 'programId' which is passed as a config - this will
-be deployed exactly once to Solana in conjunction with the AudiusEthRegistry
+be deployed exactly once to Solana in conjunction with the ColivingEthRegistry
 
-Each transaction here is signed by a trusted ethereum address authorized within the audius
+Each transaction here is signed by a trusted ethereum address authorized within the coliving
 protocol.
 
 Monitoring the address is performed by leveraging the `get_signatures_for_address`

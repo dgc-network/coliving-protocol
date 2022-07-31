@@ -3,7 +3,7 @@
 
 const fs = require('fs');
 const dotenv = require('dotenv');
-const AudiusLibs = require("@coliving/libs");
+const ColivingLibs = require("@coliving/libs");
 
 
 const readFromFileAndWriteToStream = (stream, filename) => {
@@ -37,14 +37,14 @@ const generateEnv = async (stream, env) => {
   const ETH_OWNER_WALLET = process.env.REACT_APP_ETH_OWNER_WALLET
   const ETH_PROVIDER_URL = process.env.REACT_APP_ETH_PROVIDER_URL
 
-  const ethWeb3Config = AudiusLibs.configEthWeb3(
+  const ethWeb3Config = ColivingLibs.configEthWeb3(
     ETH_TOKEN_ADDRESS,
     ETH_REGISTRY_ADDRESS,
     ETH_PROVIDER_URL,
     ETH_OWNER_WALLET
   )
 
-  const colivingLibs = new AudiusLibs({
+  const colivingLibs = new ColivingLibs({
     ethWeb3Config,
     isServer: true,
     enableUserReplicaSetManagerContract: true,

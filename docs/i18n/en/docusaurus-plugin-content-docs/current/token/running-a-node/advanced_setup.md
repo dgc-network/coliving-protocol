@@ -49,13 +49,13 @@ The below is only if using a externally managed Postgres (version 11.1+) databas
 
 ```sh
 -cli set-config discovery-node
-key   : audius_db_url
-value : <audius_db_url>
+key   : coliving_db_url
+value : <coliving_db_url>
 
 # If there's no read replica, enter the primary db url for both env vars.
 -cli set-config discovery-node
-key   : audius_db_url_read_replica
-value : <audius_db_url_read_replica>
+key   : coliving_db_url_read_replica
+value : <coliving_db_url_read_replica>
 ```
 
 

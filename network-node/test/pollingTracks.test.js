@@ -9,7 +9,7 @@ const _ = require('lodash')
 
 const config = require('../src/config')
 const defaultConfig = require('../default-config.json')
-const { libs } = require('@audius/sdk')
+const { libs } = require('@coliving/sdk')
 const Utils = libs
 const BlacklistManager = require('../src/blacklistManager')
 const TranscodingQueue = require('../src/TranscodingQueue')
@@ -33,7 +33,7 @@ const testAudioFileWrongFormatPath = path.resolve(
   'testTrackWrongFormat.jpg'
 )
 
-const TestAudiusTrackFileNumSegments = 32
+const TestColivingTrackFileNumSegments = 32
 const TRACK_CONTENT_POLLING_ROUTE = '/track_content_async'
 
 const logContext = {
@@ -97,7 +97,7 @@ describe('test Polling Tracks with mocked IPFS', function () {
     ;({ handleTrackContentRoute } = proxyquire(
       '../src/components/tracks/tracksComponentService.js',
       {
-        '@audius/sdk': {
+        '@coliving/sdk': {
           libs: {
             Utils: {
               fileHasher: {
@@ -225,7 +225,7 @@ describe('test Polling Tracks with mocked IPFS', function () {
 
   // depends on "uploads /track_content_async"
   it('Confirm /users/clock_status works with user and track state', async function () {
-    const numExpectedFilesForUser = TestAudiusTrackFileNumSegments + 1 // numSegments + 320kbps copy
+    const numExpectedFilesForUser = TestColivingTrackFileNumSegments + 1 // numSegments + 320kbps copy
 
     /** Upload track */
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
@@ -265,7 +265,7 @@ describe('test Polling Tracks with mocked IPFS', function () {
         }
       )
     )[0]
-    assert.strictEqual(numAffectedRows, TestAudiusTrackFileNumSegments)
+    assert.strictEqual(numAffectedRows, TestColivingTrackFileNumSegments)
 
     // Confirm /users/clock_status returns expected info with returnSkipInfo flag when some entries are skipped
     resp = await request(app)
@@ -276,7 +276,7 @@ describe('test Polling Tracks with mocked IPFS', function () {
       syncInProgress: false,
       CIDSkipInfo: {
         numCIDs: numExpectedFilesForUser,
-        numSkippedCIDs: TestAudiusTrackFileNumSegments
+        numSkippedCIDs: TestColivingTrackFileNumSegments
       }
     })
 
@@ -409,7 +409,7 @@ describe('test Polling Tracks with mocked IPFS', function () {
   })
 
   it('Confirms /users/batch_clock_status works with user and track state for 2 users', async () => {
-    const numExpectedFilesForUser = TestAudiusTrackFileNumSegments + 1 // numSegments + 320kbps copy
+    const numExpectedFilesForUser = TestColivingTrackFileNumSegments + 1 // numSegments + 320kbps copy
 
     /** Upload track for user 1 */
     const { fileUUID: fileUUID1, fileDir: fileDir1 } =
@@ -906,7 +906,7 @@ describe('test Polling Tracks with real files', function () {
     //    and each segment disk file is exactly as expected
     // Note - The exact output of track segmentation is deterministic only for a given environment/ffmpeg version
     //    This test may break in the future but at that point we should re-generate the reference segment files.
-    assert.deepStrictEqual(trackSegments.length, TestAudiusTrackFileNumSegments)
+    assert.deepStrictEqual(trackSegments.length, TestColivingTrackFileNumSegments)
     trackSegments.map(function (cid, index) {
       const cidPath = DiskManager.computeFilePath(cid.multihash)
 

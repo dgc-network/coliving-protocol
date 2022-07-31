@@ -90,7 +90,7 @@ const handlers = {
 }
 
 export async function startListener() {
-  const connectionString = process.env.audius_db_url
+  const connectionString = process.env.coliving_db_url
   const client = new Client({ connectionString, application_name: 'es-listen' })
   await client.connect()
   const tables = LISTEN_TABLES

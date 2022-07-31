@@ -51,7 +51,7 @@ setInterval(async () => {
 }, 5 * 60 * 60 /* re-run on the 5-minute */)
 
 const getDiscoveryNodes = async () => {
-  const libs = await colivingLibsWrapper.getAudiusLibsAsync()
+  const libs = await colivingLibsWrapper.getColivingLibsAsync()
   const discoveryNodes = await libs.discoveryProvider.serviceSelector.findAll()
   logger.debug(`Updating discovery nodes for trendingTrackProcessing to ${discoveryNodes}`)
   return sampleSize(discoveryNodes, NUM_DISCOVERY_NODES_FOR_CONSENSUS)
@@ -120,7 +120,7 @@ async function getTrendingTracks (trendingExperiment, discoveryNodes) {
  *   - The trending track should be new or move up in rank ie. from rank 4 => rank 1
  * Insert the notification and notificationAction into the DB
  * Check the user's notification settings, and if enabled, send a push notification
- * @param {AudiusLibs} colivingLibs Coliving Libs instance
+ * @param {ColivingLibs} colivingLibs Coliving Libs instance
  * @param {number} blocknumber Blocknumber of the discovery provider
  * @param {Array<{ trackId: number, rank: number, userId: number }>} trendingTracks Array of the trending tracks
  * @param {*} tx DB transaction

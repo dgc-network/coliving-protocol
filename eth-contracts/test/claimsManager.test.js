@@ -4,7 +4,7 @@ const { time, expectEvent } = require('@openzeppelin/test-helpers')
 const MockDelegateManager = artifacts.require('MockDelegateManager')
 const MockStakingCaller = artifacts.require('MockStakingCaller')
 const Staking = artifacts.require('Staking')
-const AudiusAdminUpgradeabilityProxy = artifacts.require('AudiusAdminUpgradeabilityProxy')
+const ColivingAdminUpgradeabilityProxy = artifacts.require('ColivingAdminUpgradeabilityProxy')
 const ClaimsManager = artifacts.require('ClaimsManager')
 
 const stakingProxyKey = web3.utils.utf8ToHex('StakingProxy')
@@ -76,7 +76,7 @@ contract('ClaimsManager', async (accounts) => {
       ['address', 'address'],
       [token.address, governance.address]
     )
-    stakingProxy = await AudiusAdminUpgradeabilityProxy.new(
+    stakingProxy = await ColivingAdminUpgradeabilityProxy.new(
       staking0.address,
       governance.address,
       stakingInitializeData,
@@ -97,7 +97,7 @@ contract('ClaimsManager', async (accounts) => {
       ['address', 'address'],
       [token.address, governance.address]
     )
-    claimsManagerProxy = await AudiusAdminUpgradeabilityProxy.new(
+    claimsManagerProxy = await ColivingAdminUpgradeabilityProxy.new(
       claimsManager0.address,
       governance.address,
       claimsInitializeCallData,

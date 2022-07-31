@@ -38,7 +38,7 @@ const {
 const ImageProcessingQueue = require('../ImageProcessingQueue')
 const DBManager = require('../dbManager')
 const DiskManager = require('../diskManager')
-const { libs } = require('@audius/sdk')
+const { libs } = require('@coliving/sdk')
 const Utils = libs.Utils
 
 const { promisify } = require('util')
@@ -465,7 +465,7 @@ const getCID = async (req, res) => {
   const blockStartMs = Date.now()
   try {
     startMs = Date.now()
-    const libs = req.app.get('audiusLibs')
+    const libs = req.app.get('colivingLibs')
     const found = await findCIDInNetwork(
       storagePath,
       CID,
@@ -553,7 +553,7 @@ const getDirCID = async (req, res) => {
   try {
     // CID is the file CID, parse it from the storagePath
     const CID = storagePath.split('/').slice(-1).join('')
-    const libs = req.app.get('audiusLibs')
+    const libs = req.app.get('colivingLibs')
     await findCIDInNetwork(storagePath, CID, req.logger, libs)
     return await streamFromFileSystem(req, res, storagePath)
   } catch (e) {
@@ -918,7 +918,7 @@ router.get('/file_lookup', async (req, res) => {
     { filePath, delegateWallet, timestamp },
     signature
   ).toLowerCase()
-  const libs = req.app.get('audiusLibs')
+  const libs = req.app.get('colivingLibs')
   const creatorNodes = await getAllRegisteredCNodes(libs)
   const foundDelegateWallet = creatorNodes.some(
     (node) => node.delegateOwnerWallet.toLowerCase() === recoveredWallet

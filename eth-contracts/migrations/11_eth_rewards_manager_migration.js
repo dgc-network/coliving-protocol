@@ -3,7 +3,7 @@ const fs = require('fs')
 const path = require('path')
 const os = require('os')
 const _lib = require('../utils/lib')
-const AudiusAdminUpgradeabilityProxy = artifacts.require('AudiusAdminUpgradeabilityProxy')
+const ColivingAdminUpgradeabilityProxy = artifacts.require('ColivingAdminUpgradeabilityProxy')
 const EthRewardsManager = artifacts.require('EthRewardsManager')
 const Governance = artifacts.require('Governance')
 const MockWormhole = artifacts.require('MockWormhole')
@@ -62,7 +62,7 @@ module.exports = (deployer, network, accounts) => {
     )
 
     const ethRewardsManagerProxy = await deployer.deploy(
-      AudiusAdminUpgradeabilityProxy,
+      ColivingAdminUpgradeabilityProxy,
       ethRewardsManager0.address,
       governanceAddress,
       initializeCallData,

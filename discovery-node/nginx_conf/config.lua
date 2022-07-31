@@ -2,15 +2,15 @@ local resty_rsa = require "resty.rsa"
 
 local utils = require "utils"
 
-local limit_to_rps = os.getenv("audius_openresty_rps") or "1000"
-local public_url = os.getenv("audius_discprov_url") or ""
--- local accept_redirect_from = os.getenv("audius_openresty_accept_redirect_from") or ""
-local rsa_public_key = os.getenv("audius_openresty_rsa_public_key") or ""
-local rsa_private_key = os.getenv("audius_openresty_rsa_private_key") or ""
-local update_redirect_weights_every = os.getenv("audius_openresty_update_redirect_weights_every") or "300"
+local limit_to_rps = os.getenv("coliving_openresty_rps") or "1000"
+local public_url = os.getenv("coliving_discprov_url") or ""
+-- local accept_redirect_from = os.getenv("coliving_openresty_accept_redirect_from") or ""
+local rsa_public_key = os.getenv("coliving_openresty_rsa_public_key") or ""
+local rsa_private_key = os.getenv("coliving_openresty_rsa_private_key") or ""
+local update_redirect_weights_every = os.getenv("coliving_openresty_update_redirect_weights_every") or "300"
 
 if rsa_public_key == "" or rsa_private_key == "" then
-    ngx.log(ngx.WARN, "audius_openresty_rsa_private_key or audius_openresty_rsa_public_key was not set; generating new key")
+    ngx.log(ngx.WARN, "coliving_openresty_rsa_private_key or coliving_openresty_rsa_public_key was not set; generating new key")
     rsa_public_key, rsa_private_key, err = resty_rsa:generate_rsa_keys(2048)
     if not rsa_private_key then
         ngx.log(ngx.ERR, "Failed to generate rsa private key: ", err)

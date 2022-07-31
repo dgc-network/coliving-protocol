@@ -9,7 +9,7 @@
         "clock": 37,
         "createdAt": "2022-01-13T01:43:17.423Z",
         "updatedAt": "2022-01-13T01:43:22.785Z",
-        "audiusUsers": [
+        "colivingUsers": [
           {
             "cnodeUserUUID": "adfafaa0-044f-4389-b7df-358eec428a6e",
             "clock": 2,
@@ -707,7 +707,7 @@
           {
             "cnodeUserUUID": "adfafaa0-044f-4389-b7df-358eec428a6e",
             "clock": 2,
-            "sourceTable": "AudiusUser",
+            "sourceTable": "ColivingUser",
             "createdAt": "2022-01-13T01:43:17.574Z",
             "updatedAt": "2022-01-13T01:43:17.574Z"
           },

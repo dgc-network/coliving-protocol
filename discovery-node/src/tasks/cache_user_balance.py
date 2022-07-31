@@ -29,9 +29,9 @@ from src.utils.session_manager import SessionManager
 from src.utils.spl_audio import to_wei
 
 logger = logging.getLogger(__name__)
-audius_token_registry_key = bytes("Token", "utf-8")
-audius_staking_registry_key = bytes("StakingProxy", "utf-8")
-audius_delegate_manager_registry_key = bytes("DelegateManager", "utf-8")
+coliving_token_registry_key = bytes("Token", "utf-8")
+coliving_staking_registry_key = bytes("StakingProxy", "utf-8")
+coliving_delegate_manager_registry_key = bytes("DelegateManager", "utf-8")
 
 REDIS_ETH_BALANCE_COUNTER_KEY = "USER_BALANCE_REFRESH_COUNT"
 
@@ -390,7 +390,7 @@ def get_token_address(eth_web3, config):
     )
 
     token_address = eth_registry_instance.functions.getContract(
-        audius_token_registry_key
+        coliving_token_registry_key
     ).call()
 
     return token_address
@@ -399,11 +399,11 @@ def get_token_address(eth_web3, config):
 def get_token_contract(eth_web3, config):
     token_address = get_token_address(eth_web3, config)
 
-    audius_token_instance = eth_web3.eth.contract(
-        address=token_address, abi=get_eth_abi_values()["AudiusToken"]["abi"]
+    coliving_token_instance = eth_web3.eth.contract(
+        address=token_address, abi=get_eth_abi_values()["ColivingToken"]["abi"]
     )
 
-    return audius_token_instance
+    return coliving_token_instance
 
 
 def get_delegate_manager_contract(eth_web3):
@@ -416,7 +416,7 @@ def get_delegate_manager_contract(eth_web3):
     )
 
     delegate_manager_address = eth_registry_instance.functions.getContract(
-        audius_delegate_manager_registry_key
+        coliving_delegate_manager_registry_key
     ).call()
 
     delegate_manager_instance = eth_web3.eth.contract(
@@ -437,7 +437,7 @@ def get_staking_contract(eth_web3):
     )
 
     staking_address = eth_registry_instance.functions.getContract(
-        audius_staking_registry_key
+        coliving_staking_registry_key
     ).call()
 
     staking_instance = eth_web3.eth.contract(

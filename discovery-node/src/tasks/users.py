@@ -60,7 +60,7 @@ def user_state_update(
     user_transactions_lookup: Dict[int, List[Tuple]] = {}
 
     # For each user factory transaction, loop through every tx
-    # loop through all audius event types within that tx and get all event logs
+    # loop through all coliving event types within that tx and get all event logs
     # for each event, apply changes to the user in user_events_lookup
     for tx_receipt in user_factory_txs:
         txhash = update_task.web3.toHex(tx_receipt.transactionHash)
@@ -543,7 +543,7 @@ def validate_signature(
         return signed_wallet == associated_wallet
     if chain == "sol":
         try:
-            message = f"AudiusUserID:{user_id}"
+            message = f"ColivingUserID:{user_id}"
             verify_key = VerifyKey(base58.b58decode(bytes(associated_wallet, "utf-8")))
             # Verify raises an error if the message is tampered w/ else returns the original msg
             verify_key.verify(str.encode(message), HexEncoder.decode(signature))
@@ -645,7 +645,7 @@ def update_user_events(
 
 
 def recover_user_id_hash(web3, user_id, signature):
-    message_hash = defunct_hash_message(text=f"AudiusUserID:{user_id}")
+    message_hash = defunct_hash_message(text=f"ColivingUserID:{user_id}")
     wallet_address: str = web3.eth.account.recoverHash(
         message_hash, signature=signature
     )

@@ -2,7 +2,7 @@ const _lib = require('../utils/lib');
 
 const migrationOutput = require('../migrations/migration-output.json');
 
-const AudiusToken = artifacts.require('AudiusToken');
+const ColivingToken = artifacts.require('ColivingToken');
 const Registry = artifacts.require('Registry');
 const Governance = artifacts.require('Governance');
 
@@ -12,7 +12,7 @@ const ContentNodeServiceType = web3.utils.utf8ToHex('content-node');
 const DiscoveryNodeServiceType = web3.utils.utf8ToHex('discovery-node');
 
 async function main() {
-  const colivingToken = await AudiusToken.at(migrationOutput.tokenAddress);
+  const colivingToken = await ColivingToken.at(migrationOutput.tokenAddress);
   const registry = await Registry.at(migrationOutput.registryAddress);
   const governance = await Governance.at(await registry.getContract(GovernanceKey));
 

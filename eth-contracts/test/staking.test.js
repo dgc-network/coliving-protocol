@@ -1,6 +1,6 @@
 import * as _lib from '../utils/lib.js'
 
-const AudiusAdminUpgradeabilityProxy = artifacts.require('AudiusAdminUpgradeabilityProxy')
+const ColivingAdminUpgradeabilityProxy = artifacts.require('ColivingAdminUpgradeabilityProxy')
 const Staking = artifacts.require('Staking')
 const MockStakingCaller = artifacts.require('MockStakingCaller')
 
@@ -90,7 +90,7 @@ contract('Staking test', async (accounts) => {
       ]
     )
 
-    proxy = await AudiusAdminUpgradeabilityProxy.new(
+    proxy = await ColivingAdminUpgradeabilityProxy.new(
       staking0.address,
       mockGovAddress,
       stakingInitializeData,
@@ -412,7 +412,7 @@ contract('Staking test', async (accounts) => {
       let staking1 = await Staking.new({ from: proxyAdminAddress })
       // Confirm invalid token address fails on init
       await _lib.assertRevert(
-        AudiusAdminUpgradeabilityProxy.new(
+        ColivingAdminUpgradeabilityProxy.new(
           staking1.address,
           mockStakingCaller.address,
           invalidStakingInitializeData,
@@ -466,7 +466,7 @@ contract('Staking test', async (accounts) => {
         ]
       )
       await _lib.assertRevert(
-        AudiusAdminUpgradeabilityProxy.new(
+        ColivingAdminUpgradeabilityProxy.new(
           testStaking.address,
           mockStakingCaller.address,
           invalidStakingInitializeData,

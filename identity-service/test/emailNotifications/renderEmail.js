@@ -80,7 +80,7 @@ const notifications = [
   }
 ]
 
-const mockAudiusLibs = {
+const mockColivingLibs = {
   Track: {
     getTracks: (limit, offset, ids) => {
       return ids.map((id) => ({
@@ -189,7 +189,7 @@ describe('Test Render Email Notification', function () {
     const timeBeforeEmailNotifications = moment('2020-10-01T00:00:00 Z')
     const userId = 1
     const [notificationProps, notificationCount] = await getEmailNotifications(
-      mockAudiusLibs,
+      mockColivingLibs,
       userId,
       [],
       timeBeforeEmailNotifications,
@@ -227,7 +227,7 @@ describe('Test Render Email Notification', function () {
     // ======================================= Run checks against the Notifications =======================================
     const userId = 1
     const [notificationProps, notificationCount] = await getEmailNotifications(
-      mockAudiusLibs,
+      mockColivingLibs,
       userId,
       [],
       timeBeforeEmailNotifications,
@@ -265,7 +265,7 @@ describe('Test Render Email Notification', function () {
     // ======================================= Run checks against the Notifications =======================================
     const userId = 1
     const [notificationProps, notificationCount] = await getEmailNotifications(
-      mockAudiusLibs,
+      mockColivingLibs,
       userId,
       [],
       timeBeforeEmailNotifications,

@@ -161,10 +161,10 @@ const config = convict({
     env: 'endpointRateLimits',
     default: '{}'
   },
-  rateLimitingAudiusUserReqLimit: {
-    doc: 'Total requests per hour rate limit for /audius_user routes',
+  rateLimitingColivingUserReqLimit: {
+    doc: 'Total requests per hour rate limit for /coliving_user routes',
     format: 'nat',
-    env: 'rateLimitingAudiusUserReqLimit',
+    env: 'rateLimitingColivingUserReqLimit',
     default: null
   },
   rateLimitingUserReqLimit: {
@@ -678,10 +678,10 @@ const config = convict({
     env: 'maxBatchClockStatusBatchSize',
     default: 5000
   },
-  audiusContentInfraSetup: {
+  colivingContentInfraSetup: {
     doc: 'How the content node infrastructure stack is running, injected by the infra directly, not to be defined manually',
     format: String,
-    env: 'audiusContentInfraSetup',
+    env: 'colivingContentInfraSetup',
     default: ''
   },
   monitorStateJobLastSuccessfulRunDelayMs: {
@@ -752,7 +752,7 @@ if (defaultConfigExists) config.loadFile('default-config.json')
 if (fs.existsSync(pathTo('eth-contract-config.json'))) {
   const ethContractConfig = require(pathTo('eth-contract-config.json'))
   config.load({
-    ethTokenAddress: ethContractConfig.audiusTokenAddress,
+    ethTokenAddress: ethContractConfig.colivingTokenAddress,
     ethRegistryAddress: ethContractConfig.registryAddress,
     ethOwnerWallet: ethContractConfig.ownerWallet,
     ethWallets: ethContractConfig.allWallets

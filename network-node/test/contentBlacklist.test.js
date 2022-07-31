@@ -1043,7 +1043,7 @@ describe('test ContentBlacklist', function () {
         data: { metadataFileUUID }
       }
     } = await request(app)
-      .post('/audius_users/metadata')
+      .post('/coliving_users/metadata')
       .set('X-Session-ID', sessionToken)
       .set('User-Id', inputUserId)
       .set('Enforce-Write-Quorum', false)
@@ -1057,7 +1057,7 @@ describe('test ContentBlacklist', function () {
 
     // Associate user with metadata
     await request(app)
-      .post('/audius_users/')
+      .post('/coliving_users/')
       .set('X-Session-ID', sessionToken)
       .set('User-Id', inputUserId)
       .send(associateRequest)

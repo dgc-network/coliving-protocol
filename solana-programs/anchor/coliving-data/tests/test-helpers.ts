@@ -30,7 +30,7 @@ import {
   initAuthorityDelegationStatus,
   addUserAuthorityDelegate,
 } from "../lib/lib";
-import { AudiusData } from "../target/types/coliving_data";
+import { ColivingData } from "../target/types/coliving_data";
 
 const { PublicKey, SystemProgram } = anchor.web3;
 
@@ -647,7 +647,7 @@ export const confirmLogInTransaction = async (
 };
 
 export const createSolanaUser = async (
-  program: Program<AudiusData>,
+  program: Program<ColivingData>,
   provider: anchor.Provider,
   adminAccountKeypair: anchor.web3.Keypair
 ) => {
@@ -708,7 +708,7 @@ export const createSolanaUser = async (
 };
 
 export const createSolanaContentNode = async (props: {
-  program: Program<AudiusData>;
+  program: Program<ColivingData>;
   provider: anchor.Provider;
   adminAccountKeypair: anchor.web3.Keypair;
   adminKeypair: anchor.web3.Keypair;

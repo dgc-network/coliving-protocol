@@ -14,7 +14,7 @@ import {
   getTransactionWithData,
   convertBNToUserIdSeed,
 } from "../lib/utils";
-import { AudiusData } from "../target/types/coliving_data";
+import { ColivingData } from "../target/types/coliving_data";
 import {
   createSolanaContentNode,
   initTestConstants,
@@ -40,7 +40,7 @@ describe("user social actions", function () {
   // Configure the client to use the local cluster.
   anchor.setProvider(anchor.AnchorProvider.env());
 
-  const program = anchor.workspace.AudiusData as Program<AudiusData>;
+  const program = anchor.workspace.ColivingData as Program<ColivingData>;
 
   const adminKeypair = anchor.web3.Keypair.generate();
   const adminAccountKeypair = anchor.web3.Keypair.generate();
@@ -75,7 +75,7 @@ describe("user social actions", function () {
 
     await provider.sendAndConfirm(tx, [adminAccountKeypair]);
 
-    const adminAccount = await program.account.audiusAdmin.fetch(
+    const adminAccount = await program.account.colivingAdmin.fetch(
       adminAccountKeypair.publicKey
     );
     if (!adminAccount.authority.equals(adminKeypair.publicKey)) {

@@ -1,6 +1,6 @@
 #![cfg(feature = "test-bpf")]
 mod utils;
-use audius_reward_manager::{
+use coliving_reward_manager::{
     instruction,
     processor::SENDER_SEED_PREFIX,
     state::DELETE_SENDER_MESSAGE_PREFIX,
@@ -72,7 +72,7 @@ async fn success_delete_sender_public() {
 
     instructions.push(
         instruction::delete_sender_public(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &refunder_account,
             eth_address,
@@ -90,7 +90,7 @@ async fn success_delete_sender_public() {
     context.banks_client.process_transaction(tx).await.unwrap();
 
     let (_, sender_solana_key, _) = find_derived_pair(
-        &audius_reward_manager::id(),
+        &coliving_reward_manager::id(),
         &reward_manager.pubkey(),
         [SENDER_SEED_PREFIX.as_ref(), eth_address.as_ref()]
             .concat()
@@ -156,7 +156,7 @@ async fn failure_delete_sender_insufficient_attestations() {
     // Push one less than min_votes to the signers array
     instructions.push(
         instruction::delete_sender_public(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &refunder_account,
             eth_address,
@@ -175,7 +175,7 @@ async fn failure_delete_sender_insufficient_attestations() {
     assert_custom_error(
         res,
         2,
-        audius_reward_manager::error::AudiusProgramError::NotEnoughSigners,
+        coliving_reward_manager::error::ColivingProgramError::NotEnoughSigners,
     );
 }
 
@@ -234,7 +234,7 @@ async fn failure_delete_sender_public_mismatched_signature_to_pubkey() {
     new_signers[random_index] = Keypair::new().pubkey();
     instructions.push(
         instruction::delete_sender_public(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &refunder_account,
             eth_address,
@@ -313,7 +313,7 @@ async fn failure_duplicate_operators_delete_sender() {
     // Push one less than min_votes to the signers array
     instructions.push(
         instruction::delete_sender_public(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &refunder_account,
             eth_address,
@@ -334,7 +334,7 @@ async fn failure_duplicate_operators_delete_sender() {
     assert_custom_error(
         res,
         3,
-        audius_reward_manager::error::AudiusProgramError::OperatorCollision,
+        coliving_reward_manager::error::ColivingProgramError::OperatorCollision,
     );
 }
 
@@ -396,7 +396,7 @@ async fn failure_delete_sender_duplicate_attestation_senders() {
     let signers_input = [signers[0], signers[0], signers[1]];
     instructions.push(
         instruction::delete_sender_public(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &refunder_account,
             eth_address,
@@ -416,6 +416,6 @@ async fn failure_delete_sender_duplicate_attestation_senders() {
     assert_custom_error(
         res,
         3,
-        audius_reward_manager::error::AudiusProgramError::RepeatedSenders,
+        coliving_reward_manager::error::ColivingProgramError::RepeatedSenders,
     );
 }

@@ -27,7 +27,7 @@ def upgrade():
         SELECT * FROM (
         SELECT
           t.track_id,
-          unnest(tsvector_to_array(to_tsvector('audius_ts_config', replace(COALESCE(t."title", ''), '&', 'and'))))
+          unnest(tsvector_to_array(to_tsvector('coliving_ts_config', replace(COALESCE(t."title", ''), '&', 'and'))))
             as word
         FROM
             "tracks" t

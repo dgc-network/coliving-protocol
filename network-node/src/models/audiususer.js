@@ -1,7 +1,7 @@
 'use strict'
 module.exports = (sequelize, DataTypes) => {
-  const AudiusUser = sequelize.define(
-    'AudiusUser',
+  const ColivingUser = sequelize.define(
+    'ColivingUser',
     {
       cnodeUserUUID: {
         type: DataTypes.UUID,
@@ -43,29 +43,29 @@ module.exports = (sequelize, DataTypes) => {
       ]
     }
   )
-  AudiusUser.associate = function (models) {
-    AudiusUser.belongsTo(models.CNodeUser, {
+  ColivingUser.associate = function (models) {
+    ColivingUser.belongsTo(models.CNodeUser, {
       foreignKey: 'cnodeUserUUID',
       sourceKey: 'cnodeUserUUID',
       onDelete: 'RESTRICT'
     })
-    AudiusUser.belongsTo(models.File, {
+    ColivingUser.belongsTo(models.File, {
       foreignKey: 'metadataFileUUID',
       sourceKey: 'fileUUID',
       onDelete: 'RESTRICT'
     })
-    AudiusUser.belongsTo(models.File, {
+    ColivingUser.belongsTo(models.File, {
       foreignKey: 'coverArtFileUUID',
       sourceKey: 'fileUUID',
       onDelete: 'RESTRICT'
     })
-    AudiusUser.belongsTo(models.File, {
+    ColivingUser.belongsTo(models.File, {
       foreignKey: 'profilePicFileUUID',
       sourceKey: 'fileUUID',
       onDelete: 'RESTRICT'
     })
-    // AudiusUser also has a composite foreign key on ClockRecords (cnodeUserUUID, clock)
+    // ColivingUser also has a composite foreign key on ClockRecords (cnodeUserUUID, clock)
     // sequelize does not support composite foreign keys
   }
-  return AudiusUser
+  return ColivingUser
 }

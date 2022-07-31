@@ -134,7 +134,7 @@ describe('test retrieveClockValueForUserFromReplica()', function () {
     const { retrieveClockValueForUserFromReplica } = proxyquire(
       '../src/services/stateMachineManager/stateMachineUtils.js',
       {
-        '@audius/sdk': {
+        '@coliving/sdk': {
           libs: {
             CreatorNode: {
               getClockValue: getClockValueStub
@@ -160,7 +160,7 @@ describe('test retrieveClockValueForUserFromReplica()', function () {
     const { retrieveClockValueForUserFromReplica } = proxyquire(
       '../src/services/stateMachineManager/stateMachineUtils.js',
       {
-        '@audius/sdk': {
+        '@coliving/sdk': {
           libs: {
             CreatorNode: {
               getClockValue: getClockValueStub

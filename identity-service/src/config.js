@@ -600,11 +600,11 @@ const config = convict({
     default: '',
     env: 'solanaTrackListenCountAddress'
   },
-  solanaAudiusEthRegistryAddress: {
-    doc: 'solanaAudiusEthRegistryAddress',
+  solanaColivingEthRegistryAddress: {
+    doc: 'solanaColivingEthRegistryAddress',
     format: String,
     default: '',
-    env: 'solanaAudiusEthRegistryAddress'
+    env: 'solanaColivingEthRegistryAddress'
   },
   solanaValidSigner: {
     doc: 'solanaValidSigner',
@@ -666,11 +666,11 @@ const config = convict({
     default: '60000',
     env: 'solanaConfirmationTimeout'
   },
-  solanaAudiusAnchorDataProgramId: {
+  solanaColivingAnchorDataProgramId: {
     doc: 'The address of the anchor coliving data program',
     format: String,
     default: '',
-    env: 'solanaAudiusAnchorDataProgramId'
+    env: 'solanaColivingAnchorDataProgramId'
   },
   rewardsQuorumSize: {
     doc: 'How many Discovery Nodes constitute a quorum for disbursing a reward',
@@ -828,7 +828,7 @@ if (fs.existsSync('solana-program-config.json')) {
   let solanaContractConfig = require('../solana-program-config.json')
   config.load({
     solanaTrackListenCountAddress: solanaContractConfig.trackListenCountAddress,
-    solanaAudiusEthRegistryAddress: solanaContractConfig.colivingEthRegistryAddress,
+    solanaColivingEthRegistryAddress: solanaContractConfig.colivingEthRegistryAddress,
     solanaValidSigner: solanaContractConfig.validSigner,
     solanaFeePayerWallets: solanaContractConfig.feePayerWallets,
     solanaEndpoint: solanaContractConfig.endpoint,
@@ -840,7 +840,7 @@ if (fs.existsSync('solana-program-config.json')) {
     solanaRewardsManagerProgramPDA: solanaContractConfig.rewardsManagerAccount,
     solanaRewardsManagerTokenPDA: solanaContractConfig.rewardsManagerTokenAccount,
 
-    solanaAudiusAnchorDataProgramId: solanaContractConfig.anchorProgramId
+    solanaColivingAnchorDataProgramId: solanaContractConfig.anchorProgramId
   })
 }
 

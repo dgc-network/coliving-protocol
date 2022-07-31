@@ -38,8 +38,8 @@ replace_address track_listen_count/src/lib.rs ${CARGO_TARGET_DIR:-target}/deploy
 generate_key ${CARGO_TARGET_DIR:-target}/deploy/claimable_tokens-keypair.json "$CLAIMABLE_TOKENS_PRIVATE_KEY"
 replace_address claimable-tokens/program/src/lib.rs ${CARGO_TARGET_DIR:-target}/deploy/claimable_tokens-keypair.json
 
-generate_key ${CARGO_TARGET_DIR:-target}/deploy/audius_reward_manager-keypair.json "$REWARD_MANAGER_PRIVATE_KEY"
-replace_address reward-manager/program/src/lib.rs ${CARGO_TARGET_DIR:-target}/deploy/audius_reward_manager-keypair.json
+generate_key ${CARGO_TARGET_DIR:-target}/deploy/coliving_reward_manager-keypair.json "$REWARD_MANAGER_PRIVATE_KEY"
+replace_address reward-manager/program/src/lib.rs ${CARGO_TARGET_DIR:-target}/deploy/coliving_reward_manager-keypair.json
 
 generate_key ${CARGO_TARGET_DIR:-anchor/coliving-data/target}/deploy/coliving_data-keypair.json "$COLIVING_DATA_PRIVATE_KEY"
 replace_address \
@@ -48,9 +48,9 @@ replace_address \
     ${CARGO_TARGET_DIR:-anchor/coliving-data/target}/deploy/coliving_data-keypair.json
 
 cargo build-bpf
-cargo build -p audius-eth-registry-cli
+cargo build -p coliving-eth-registry-cli
 cargo build -p claimable-tokens-cli
-cargo build -p audius-reward-manager-cli
+cargo build -p coliving-reward-manager-cli
 
 cd anchor/coliving-data
 anchor build

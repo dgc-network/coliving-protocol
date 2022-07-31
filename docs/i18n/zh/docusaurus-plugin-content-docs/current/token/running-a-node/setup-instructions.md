@@ -170,64 +170,64 @@ Some variables must be set, you can do this with the following commands:
 
 ```text
 -cli set-config discovery-node backend
-key   : audius_delegate_owner_wallet
+key   : coliving_delegate_owner_wallet
 value : <delegate_owner_wallet>
 
 -cli set-config discovery-node backend
-key   : audius_delegate_private_key
+key   : coliving_delegate_private_key
 value : <delegate_private_key>
 ```
 
 If you are using an external managed Postgres database \(version 11.1+\), replace the db url with,
 
 ```text
-audius-cli set-config discovery-node backend
-key   : audius_db_url
-value : <audius_db_url>
+coliving-cli set-config discovery-node backend
+key   : coliving_db_url
+value : <coliving_db_url>
 
-audius-cli set-config discovery-node backend
-key   : audius_db_url_read_replica
-value : <audius_db_url_read_replica>
+coliving-cli set-config discovery-node backend
+key   : coliving_db_url_read_replica
+value : <coliving_db_url_read_replica>
 ```
 
 **Note:** If there's no read replica, enter the primary db url for both env vars.
 
 The below is only if using a managed posgres database:
 
-You will have to replace the db seed job in `audius/discovery-node/discovery-node-db-seed-job.yaml` as well. Examples are provided. In the managed postgres database and set the `temp_file_limit` flag to `2147483647` and run the following SQL command on the destination db.
+You will have to replace the db seed job in `coliving/discovery-node/discovery-node-db-seed-job.yaml` as well. Examples are provided. In the managed postgres database and set the `temp_file_limit` flag to `2147483647` and run the following SQL command on the destination db.
 
 ```text
 CREATE EXTENSION pg_trgm;
 ```
 
-Make sure that your service exposes all the required environment variables. See wiki [here](https://github.com/dgc.network/audius-protocol/wiki/Discovery-Node:-Configuration-Details#required-environment-variables) for full list of env vars and descriptions.
+Make sure that your service exposes all the required environment variables. See wiki [here](https://github.com/dgc.network/coliving-protocol/wiki/Discovery-Node:-Configuration-Details#required-environment-variables) for full list of env vars and descriptions.
 
 #### Launch
 
 ```text
-audius-cli launch discovery-node --seed-job --configure-ipfs
+coliving-cli launch discovery-node --seed-job --configure-ipfs
 ```
 
 Verify that the service is healthy by running,
 
 ```text
-audius-cli health-check discovery-node
+coliving-cli health-check discovery-node
 ```
 
 #### Upgrade
 
-If you do not have `audius-cli`, instructions on how to install are available in [the section above](https://github.com/dgc.network/audius-k8s-manifests#2-audius-cli-setup).
+If you do not have `coliving-cli`, instructions on how to install are available in [the section above](https://github.com/dgc.network/coliving-k8s-manifests#2-coliving-cli-setup).
 
-To upgrade your service using `audius-cli`, you will need to pull the latest manifest code. You can do this with `audius-cli`
+To upgrade your service using `coliving-cli`, you will need to pull the latest manifest code. You can do this with `coliving-cli`
 
 ```text
-audius-cli upgrade
+coliving-cli upgrade
 ```
 
 Verify that the service is healthy by running,
 
 ```text
-audius-cli health-check discovery-node
+coliving-cli health-check discovery-node
 ```
 
 **Old Upgrade flow with kubectl:** To upgrade your service using kubectl, you will need to pull the latest `k8s-manifests` code. To do this, run the following,
@@ -238,18 +238,18 @@ git pull
 git stash apply
 ```
 
-Ensure that your configs are present in `audius/discovery-node/discovery-node-cm.yaml`, then do the following,
+Ensure that your configs are present in `coliving/discovery-node/discovery-node-cm.yaml`, then do the following,
 
 ```text
-k apply -f audius/discovery-node/discovery-node-cm.yaml
-k apply -f audius/discovery-node/discovery-node-deploy.yaml
+k apply -f coliving/discovery-node/discovery-node-cm.yaml
+k apply -f coliving/discovery-node/discovery-node-deploy.yaml
 ```
 
 You can verify your upgrade with the `\health_check` endpoint.
 
 #### Next
 
-Once you've finished setting up the Discovery Provider, continue to the [Logger](https://github.com/dgc.network/audius-k8s-manifests#logger) section.
+Once you've finished setting up the Discovery Provider, continue to the [Logger](https://github.com/dgc.network/coliving-k8s-manifests#logger) section.
 
 
 ## 5. Logger
@@ -261,10 +261,10 @@ In order to assist with any debugging. We provide a logging service that you may
 First, obtain the service provider secrets from your contact at Coliving. This contains the required token\(s\) for logging to function. And apply the secret with
 
 ```text
-kubectl apply -f <secret_from_audius>.yaml
+kubectl apply -f <secret_from_coliving>.yaml
 ```
 
-Next, update the logger tags in the fluentd daemonset with your name, so we can identify you and your service uniquely here: [https://github.com/dgc.network/audius-k8s-manifests/blob/master/audius/logger/logger.yaml\#L207](https://github.com/dgc.network/audius-k8s-manifests/blob/master/audius/logger/logger.yaml#L207). This allows our logging service to filter logs by service provider and by service provider and service. `SP_NAME` refers to your organization's name and `SP_NAME_TYPE_ID` refers to your organization's name plus the type of service you're running, plus an id to distinguish multiple services of the same type.
+Next, update the logger tags in the fluentd daemonset with your name, so we can identify you and your service uniquely here: [https://github.com/dgc.network/coliving-k8s-manifests/blob/master/coliving/logger/logger.yaml\#L207](https://github.com/dgc.network/coliving-k8s-manifests/blob/master/coliving/logger/logger.yaml#L207). This allows our logging service to filter logs by service provider and by service provider and service. `SP_NAME` refers to your organization's name and `SP_NAME_TYPE_ID` refers to your organization's name plus the type of service you're running, plus an id to distinguish multiple services of the same type.
 
 For example, if your name is `Awesome Operator` and you're running a content node, set the tags as:
 
@@ -287,7 +287,7 @@ env:
 Once you've updated the tags, apply the fluentd logger stack with the command:
 
 ```text
-kubectl apply -f audius/logger/logger.yaml
+kubectl apply -f coliving/logger/logger.yaml
 ```
 
 **Upgrade**
@@ -295,7 +295,7 @@ kubectl apply -f audius/logger/logger.yaml
 There are two commands to upgrade the logging stack.
 
 ```text
-kubectl apply -f audius/logger/logger.yaml
+kubectl apply -f coliving/logger/logger.yaml
 
 kubectl -n kube-system delete pod $(kubectl -n kube-system get pods | grep "fluentd" | awk '{print $1}')
 ```
@@ -322,13 +322,13 @@ In this case, the web server port is 31744 and the IPFS port is 30480.
 
 3.\) Now we will configure IPFS.
 
-IPFS has some trouble identifying the public host and port inside kubernetes, this can be fixed with `audius-cli`
+IPFS has some trouble identifying the public host and port inside kubernetes, this can be fixed with `coliving-cli`
 
 ```text
-audius-cli configure-ipfs <hostname>
+coliving-cli configure-ipfs <hostname>
 ```
 
-Example: `audius-cli configure-ipfs 108.174.10.10`
+Example: `coliving-cli configure-ipfs 108.174.10.10`
 
 4.\) Set load balancer timeouts. Minimum timeouts are 1 hour \(3600 seconds\) for Creator Node requests and 1 minutes \(60 seconds\) for Discovery Provider requests. Track uploads especially for larger files can take several minutes to complete.
 
@@ -340,13 +340,13 @@ Before registering a service to the dashboard we need to make sure the service i
 
 The `sp-actions/` folder contains scripts that test the health of services. Run the corresponding checks for your service type below to verify your service is correctly sete up. Be sure to run `npm install` in `sp-actions/` to install all depdencies.
 
-For more information about `sp-actions/` see the README in the [sp-actions/ folder](https://github.com/dgc.network/audius-k8s-manifests/tree/master/sp-utilities)
+For more information about `sp-actions/` see the README in the [sp-actions/ folder](https://github.com/dgc.network/coliving-k8s-manifests/tree/master/sp-utilities)
 
 **Creator Node**
 
 ```text
 ➜ pwd
-/Coliving/audius-k8s-manifests/sp-utilities/network-node
+/Coliving/coliving-k8s-manifests/sp-utilities/network-node
 
 # entering creatorNodeEndpoint and delegatePrivateKey sends those values as env vars to the script without having to export to your terminal
 ➜ creatorNodeEndpoint=https://creatornode.domain.co delegatePrivateKey=5e468bc1b395e2eb8f3c90ef897406087b0599d139f6ca0060ba85dcc0dce8dc node healthChecks.js
@@ -374,7 +374,7 @@ If you see the message "Error running script" this script did not finish success
 
 Since you've completed all the steps thus far, you're about ready to register!
 
-You can register via the dashboard on [https://dashboard.audius.org](https://dashboard.audius.org/)
+You can register via the dashboard on [https://dashboard.coliving.org](https://dashboard.coliving.org/)
 
 ## 9. Script to Initiate Rounds and Process Claims \(Optional\)
 

@@ -167,7 +167,7 @@ const BodyStyles = () => {
       margin-bottom: 32px;
     }
       
-    .seeMoreOnAudius {
+    .seeMoreOnColiving {
       padding: 8px 24px;
       border-radius: 17px;
       background-color: #7E1BCC;

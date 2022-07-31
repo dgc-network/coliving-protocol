@@ -1,7 +1,7 @@
 const nock = require('nock')
 
 const Web3 = require('../src/web3')
-const AudiusLibs = require('../src/libs')
+const ColivingLibs = require('../src/libs')
 const dataContractsConfig = require('../data-contracts/config.json')
 const ethContractsConfig = require('../eth-contracts/config.json')
 
@@ -33,11 +33,11 @@ const dataWeb3 = new Web3(new Web3.providers.HttpProvider(dataWeb3ProviderEndpoi
 const ethWeb3 = new Web3(new Web3.providers.HttpProvider(ethWeb3ProviderEndpoint))
 
 const colivingLibsConfig = {
-  web3Config: AudiusLibs.configExternalWeb3(
+  web3Config: ColivingLibs.configExternalWeb3(
     dataContractsConfig.registryAddress,
     dataWeb3
   ),
-  ethWeb3Config: AudiusLibs.configEthWeb3(
+  ethWeb3Config: ColivingLibs.configEthWeb3(
     ethContractsConfig.colivingTokenAddress,
     ethContractsConfig.registryAddress,
     ethWeb3,
@@ -48,11 +48,11 @@ const colivingLibsConfig = {
 
 async function initializeLibConfig (ownerWallet) {
   return {
-    web3Config: AudiusLibs.configExternalWeb3(
+    web3Config: ColivingLibs.configExternalWeb3(
       dataContractsConfig.registryAddress,
       dataWeb3
     ),
-    ethWeb3Config: AudiusLibs.configEthWeb3(
+    ethWeb3Config: ColivingLibs.configEthWeb3(
       ethContractsConfig.colivingTokenAddress,
       ethContractsConfig.registryAddress,
       ethWeb3,
@@ -96,7 +96,7 @@ const deregisterSPEndpoint = async (libs, account, type) => {
 module.exports = {
   constants,
   // Export configured libs instance
-  colivingInstance: new AudiusLibs(colivingLibsConfig),
+  colivingInstance: new ColivingLibs(colivingLibsConfig),
   // Export libs config for re-use
   colivingLibsConfig,
   initializeLibConfig,

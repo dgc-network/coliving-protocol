@@ -4,7 +4,7 @@ import pytest
 from src.solana.solana_client_manager import SolanaClientManager
 
 solana_client_manager = SolanaClientManager(
-    "https://audius.rpcpool.com,https://api.mainnet-beta.solana.com,https://solana-api.projectserum.com"
+    "https://coliving.rpcpool.com,https://api.mainnet-beta.solana.com,https://solana-api.projectserum.com"
 )
 
 

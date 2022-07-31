@@ -11,7 +11,7 @@ import {
   updateAdmin,
 } from "../lib/lib";
 import { findDerivedPair, convertBNToSpIdSeed } from "../lib/utils";
-import { AudiusData } from "../target/types/coliving_data";
+import { ColivingData } from "../target/types/coliving_data";
 import {
   createSolanaContentNode,
   createSolanaUser,
@@ -28,7 +28,7 @@ describe("replicaSet", function () {
   // Configure the client to use the local cluster.
   anchor.setProvider(anchor.AnchorProvider.env());
 
-  const program = anchor.workspace.AudiusData as Program<AudiusData>;
+  const program = anchor.workspace.ColivingData as Program<ColivingData>;
 
   const adminKeypair = anchor.web3.Keypair.generate();
   const adminAccountKeypair = anchor.web3.Keypair.generate();
@@ -356,7 +356,7 @@ describe("replicaSet", function () {
         seed
       );
 
-    const initAudiusAdminBalance = await provider.connection.getBalance(
+    const initColivingAdminBalance = await provider.connection.getBalance(
       adminKeypair.publicKey
     );
 
@@ -398,20 +398,20 @@ describe("replicaSet", function () {
 
     // Confirm that the account is zero'd out
     // Note that there appears to be a delay in the propagation, hence the retries
-    let updatedAudiusAdminBalance = initAudiusAdminBalance;
+    let updatedColivingAdminBalance = initColivingAdminBalance;
     let retries = 20;
     while (
-      updatedAudiusAdminBalance === initAudiusAdminBalance &&
+      updatedColivingAdminBalance === initColivingAdminBalance &&
       retries > 0
     ) {
-      updatedAudiusAdminBalance = await provider.connection.getBalance(
+      updatedColivingAdminBalance = await provider.connection.getBalance(
         adminKeypair.publicKey
       );
       await new Promise((resolve) => setTimeout(resolve, 100));
       retries--;
     }
 
-    if (initAudiusAdminBalance === updatedAudiusAdminBalance) {
+    if (initColivingAdminBalance === updatedColivingAdminBalance) {
       throw new Error("Failed to deallocate track");
     }
 

@@ -224,7 +224,7 @@ class BlacklistManager {
       tracks = (
         await models.sequelize.query(
           'select "blockchainId" from "Tracks" where "cnodeUserUUID" in (' +
-            'select "cnodeUserUUID" from "AudiusUsers" where "blockchainId" in (:userIdsBlacklist)' +
+            'select "cnodeUserUUID" from "ColivingUsers" where "blockchainId" in (:userIdsBlacklist)' +
             ');',
           { replacements: { userIdsBlacklist } }
         )

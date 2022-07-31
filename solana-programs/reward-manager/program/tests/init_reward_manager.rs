@@ -1,7 +1,7 @@
 #![cfg(feature = "test-bpf")]
 
 mod utils;
-use audius_reward_manager::instruction;
+use coliving_reward_manager::instruction;
 use borsh::BorshSerialize;
 use solana_program::program_option::COption;
 use solana_program::program_pack::IsInitialized;
@@ -43,7 +43,7 @@ async fn success_init_reward_manager() {
         Account {
             lamports: 9000,
             data,
-            owner: audius_reward_manager::id(),
+            owner: coliving_reward_manager::id(),
             executable: false,
             rent_epoch: 0,
         },
@@ -56,9 +56,9 @@ async fn success_init_reward_manager() {
             create_account(
                 &context.payer.pubkey(),
                 &reward_manager.pubkey(),
-                rent.minimum_balance(audius_reward_manager::state::RewardManager::LEN),
-                audius_reward_manager::state::RewardManager::LEN as _,
-                &audius_reward_manager::id(),
+                rent.minimum_balance(coliving_reward_manager::state::RewardManager::LEN),
+                coliving_reward_manager::state::RewardManager::LEN as _,
+                &coliving_reward_manager::id(),
             ),
             create_account(
                 &context.payer.pubkey(),
@@ -68,7 +68,7 @@ async fn success_init_reward_manager() {
                 &spl_token::id(),
             ),
             instruction::init(
-                &audius_reward_manager::id(),
+                &coliving_reward_manager::id(),
                 &reward_manager.pubkey(),
                 &token_account.pubkey(),
                 &mint,
@@ -85,7 +85,7 @@ async fn success_init_reward_manager() {
     context.banks_client.process_transaction(tx).await.unwrap();
 
     assert_eq!(
-        audius_reward_manager::state::RewardManager::new(
+        coliving_reward_manager::state::RewardManager::new(
             token_account.pubkey(),
             manager,
             min_votes
@@ -116,8 +116,8 @@ async fn fail_already_initialized() {
     let mint = Pubkey::new_unique();
     let manager = Pubkey::new_unique();
 
-    let mut data = Vec::<u8>::with_capacity(audius_reward_manager::state::RewardManager::LEN);
-    audius_reward_manager::state::RewardManager::new(token_account, manager, 3)
+    let mut data = Vec::<u8>::with_capacity(coliving_reward_manager::state::RewardManager::LEN);
+    coliving_reward_manager::state::RewardManager::new(token_account, manager, 3)
         .serialize(&mut data)
         .unwrap();
     program_test.add_account(
@@ -125,7 +125,7 @@ async fn fail_already_initialized() {
         Account {
             lamports: 9000,
             data,
-            owner: audius_reward_manager::id(),
+            owner: coliving_reward_manager::id(),
             executable: false,
             rent_epoch: 0,
         },
@@ -134,7 +134,7 @@ async fn fail_already_initialized() {
     let mut context = program_test.start_with_context().await;
     let tx = Transaction::new_signed_with_payer(
         &[instruction::init(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager,
             &token_account,
             &mint,

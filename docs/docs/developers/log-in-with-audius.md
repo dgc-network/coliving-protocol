@@ -12,28 +12,28 @@ Log In with Coliving lets you retrieve and verify a user's Coliving profile info
 ## Quickstart
 
 ```html title="index.html"
-<div id="audiusLogInButton"></div>
+<div id="colivingLogInButton"></div>
 ```
 
 ```js title="script.js" showLineNumbers
 import Web3 from "web3";
-import { sdk } from "@audius/sdk";
+import { sdk } from "@coliving/sdk";
 
 window.Web3 = Web3
 
-const audiusSdk = sdk({ appName: "Name of your app goes here" });
+const colivingSdk = sdk({ appName: "Name of your app goes here" });
 
-audiusSdk.oauth.init((res) => {
+colivingSdk.oauth.init((res) => {
   console.log("Log in success!", res);
 });
 
-audiusSdk.oauth.renderButton(document.getElementById("audiusLogInButton"));
+colivingSdk.oauth.renderButton(document.getElementById("colivingLogInButton"));
 ```
 
 ## Examples
 
-- Demo with React - [Demo app](https://j2jx6f.csb.app/) | [Code](https://codesandbox.io/s/log-in-with-audius-demo-j2jx6f?file=/src/App.js)
-- Demo with vanilla JS - [Demo app](https://xkogl3.csb.app/) | [Code](https://codesandbox.io/s/log-in-with-audius-demo-vanilla-js-xkogl3?file=/index.html)
+- Demo with React - [Demo app](https://j2jx6f.csb.app/) | [Code](https://codesandbox.io/s/log-in-with-coliving-demo-j2jx6f?file=/src/App.js)
+- Demo with vanilla JS - [Demo app](https://xkogl3.csb.app/) | [Code](https://codesandbox.io/s/log-in-with-coliving-demo-vanilla-js-xkogl3?file=/index.html)
 - [Log In Button Generator](https://9ncjui.csb.app/)
 
 ## Full Reference
@@ -49,17 +49,17 @@ If you are not able to use the JavaScript SDK (for example, if you are developin
 In your terminal, run the following:
 
 ```bash
-npm install web3 @audius/sdk
+npm install web3 @coliving/sdk
 ```
 
 Then, initialize the SDK:
 
 ```js
 import Web3 from "web3";
-import { sdk } from "@audius/sdk";
+import { sdk } from "@coliving/sdk";
 
 window.Web3 = Web3;
-const audiusSdk = sdk({ appName: "Name of your app goes here" });
+const colivingSdk = sdk({ appName: "Name of your app goes here" });
 ```
 
 :::tip
@@ -69,7 +69,7 @@ See complete instructions [here](developers/sdk/index#installation) to install a
 ### 2. Initialize the SDK `oauth` feature
 
 ```js showLineNumbers
-audiusSdk.oauth.init(
+colivingSdk.oauth.init(
   (res) => {
     // This will run if the user logged in successfully.
     console.log("Log in success!", res);
@@ -98,7 +98,7 @@ audiusSdk.oauth.init(
 ### 3. Render the Log In button
 
 ```js title="In your JS" showLineNumbers
-audiusSdk.oauth.renderButton(document.getElementById("audiusLogInButton"), {
+colivingSdk.oauth.renderButton(document.getElementById("colivingLogInButton"), {
   size: "large",
   corners: "pill",
   customText: "Continue with Coliving",
@@ -106,7 +106,7 @@ audiusSdk.oauth.renderButton(document.getElementById("audiusLogInButton"), {
 ```
 
 ```html title="In your HTML"
-<div id="audiusLogInButton"></div>
+<div id="colivingLogInButton"></div>
 ```
 
 [`renderButton`](sdk-oauth-methods#oauthrenderbuttonelement-customizations) replaces the element passed in the first parameter with the Log In with Coliving button.
@@ -117,7 +117,7 @@ The second parameter passed to `renderButton` is an optional object with customi
 You can use [this playground](https://9ncjui.csb.app/) to see how these customizations affect the button appearance and determine what config works best for your app!
 :::
 
-If you don't want to use `renderButton`, you can implement a login button yourself and invoke the login popup with [`audiusSdk.oauth.login()`](sdk-oauth-methods#oauthlogin).
+If you don't want to use `renderButton`, you can implement a login button yourself and invoke the login popup with [`colivingSdk.oauth.login()`](sdk-oauth-methods#oauthlogin).
 
 ### 4. Optional: Show loader until the button is ready
 
@@ -126,7 +126,7 @@ The button may take up to a couple of seconds to load. You may want to show a lo
 ```html title="In your HTML" showLineNumbers
 <!-- Surround your element that will be replaced with the Log In with Coliving button with a parent, e.g.: -->
 <div id="parent">
-  <div id="audiusLogInButton"></div>
+  <div id="colivingLogInButton"></div>
   <div id="loading">Loading...</div>
 </div>
 ```
@@ -135,7 +135,7 @@ The button may take up to a couple of seconds to load. You may want to show a lo
 const observer = new MutationObserver(function (mutations_list) {
   mutations_list.forEach(function (mutation) {
     mutation.addedNodes.forEach(function (added_node) {
-      if (added_node.id == "audius-login-button") {
+      if (added_node.id == "coliving-login-button") {
         // Login button has rendered
         document.querySelector("#loading").remove();
         observer.disconnect();
@@ -150,7 +150,7 @@ observer.observe(document.querySelector("#parent"), {
 });
 ```
 
-The log in button will be rendered with an id of `audius-login-button`. As shown above, you can detect when the element has been added using a MutationObserver.
+The log in button will be rendered with an id of `coliving-login-button`. As shown above, you can detect when the element has been added using a MutationObserver.
 
 ### 5. Done!
 
@@ -218,7 +218,7 @@ On a native app, the log in button should open a secure web browser within the a
 
 The Log In with Coliving prompt page is located at the following URL:
 
-`https://audius.co/oauth/auth?scope=read&app_name={YourAppName}&redirect_uri={YourRedirectURI}&origin={YourAppOrigin}&state={YourStateValue}&response_mode={query|fragment}`
+`https://coliving.co/oauth/auth?scope=read&app_name={YourAppName}&redirect_uri={YourRedirectURI}&origin={YourAppOrigin}&state={YourStateValue}&response_mode={query|fragment}`
 
 You must open this page with the required URL parameters, described below.
 
@@ -242,7 +242,7 @@ You must open this page with the required URL parameters, described below.
 
 ```html noInline
 <a
-  href="https://audius.co/oauth/auth?scope=read&app_name=My%20Demo%20App&redirect_uri=https://mydemoapp.com/oauth/receive-token&state=a4e0761e-8c21-4e20-819d-5a4daeab4ea9"
+  href="https://coliving.co/oauth/auth?scope=read&app_name=My%20Demo%20App&redirect_uri=https://mydemoapp.com/oauth/receive-token&state=a4e0761e-8c21-4e20-819d-5a4daeab4ea9"
   >Click me to log in with Coliving!</a
 >
 ```
@@ -261,7 +261,7 @@ If the user exits the authentication flow before completing it--e.g. by closing 
 When the user has successfully authenticated, the Log In with Coliving page will redirect to the redirect URI that you specified, **with 1) the JWT containing the user profile, and 2) the original state value you provided (if any) included in the URI fragment** (or query string, if `response_mode` was set to `query`). To illustrate, going off the example above where we opened the login page with the following URL:
 
 ```noInline
-https://audius.co/oauth/auth?scope=read&app_name=My%20Demo%20App&redirect_uri=https://mydemoapp.com/oauth/receive-token&state=a4e0761e-8c21-4e20-819d-5a4daeab4ea9
+https://coliving.co/oauth/auth?scope=read&app_name=My%20Demo%20App&redirect_uri=https://mydemoapp.com/oauth/receive-token&state=a4e0761e-8c21-4e20-819d-5a4daeab4ea9
 ```
 
 when the user successsfully authenticates, the login page would redirect to:
@@ -285,7 +285,7 @@ When the user has successfully authenticated, the Log In with Coliving page will
 For instance, if your app opened the login page using the following URL:
 
 ```noInline
-https://audius.co/oauth/auth?scope=read&app_name=My%20Demo%20App&redirect_uri=https://mydemoapp.com/oauth/receive-token&state=a4e0761e-8c21-4e20-819d-5a4daeab4ea9
+https://coliving.co/oauth/auth?scope=read&app_name=My%20Demo%20App&redirect_uri=https://mydemoapp.com/oauth/receive-token&state=a4e0761e-8c21-4e20-819d-5a4daeab4ea9
 ```
 
 the message would look like this:
@@ -300,7 +300,7 @@ the message would look like this:
 where `<JWT>` is a [JSON web token](https://jwt.io/introduction) containing the user's encoded profile information and a signature.
 
 :::caution
-Make sure that your `postMessage` event listener validates that the origin of the incoming event is `https://audius.co`!
+Make sure that your `postMessage` event listener validates that the origin of the incoming event is `https://coliving.co`!
 :::
 
 ### 3. Verify the response
@@ -324,10 +324,10 @@ Upon verifying the validity of the JWT, the endpoint will return the authenticat
 
 To use the API, you first select an API endpoint from the list of endpoints returned by:
 
-`GET https://api.audius.co`
+`GET https://api.coliving.co`
 
 Once you've selected a host, all API requests can be sent directly to it. For instance, if you picked the host at
-`https://audius-dp.singapore.creatorseed.com`, you would send the GET request to `https://audius-dp.singapore.creatorseed.com/v1/users/verify_token?token=<JWT>`, where `<JWT>` is replaced with the JWT you retrieved in the auth flow.
+`https://coliving-dp.singapore.creatorseed.com`, you would send the GET request to `https://coliving-dp.singapore.creatorseed.com/v1/users/verify_token?token=<JWT>`, where `<JWT>` is replaced with the JWT you retrieved in the auth flow.
 
 We recommend selecting a host each time your application starts up as availability may change over time.
 

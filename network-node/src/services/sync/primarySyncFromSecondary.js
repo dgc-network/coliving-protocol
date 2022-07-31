@@ -10,7 +10,7 @@ const DBManager = require('../../dbManager')
 const { getCreatorNodeEndpoints } = require('../../middlewares')
 const { saveFileForMultihashToFS } = require('../../fileManager')
 const SyncHistoryAggregator = require('../../snapbackSM/syncHistoryAggregator')
-const initAudiusLibs = require('../initAudiusLibs')
+const initColivingLibs = require('../initColivingLibs')
 const asyncRetry = require('../../utils/asyncRetry')
 
 const EXPORT_REQ_TIMEOUT_MS = 10000 // 10000ms = 10s
@@ -42,9 +42,9 @@ module.exports = async function primarySyncFromSecondary({
   try {
     let libs
     try {
-      libs = await initAudiusLibs()
+      libs = await initColivingLibs()
     } catch (e) {
-      throw new Error(`InitAudiusLibs Error - ${e.message}`)
+      throw new Error(`InitColivingLibs Error - ${e.message}`)
     }
 
     await WalletWriteLock.acquire(
@@ -283,7 +283,7 @@ async function saveEntriesToDB({ fetchedCNodeUser, logger, logPrefix }) {
   try {
     let {
       walletPublicKey,
-      audiusUsers: fetchedAudiusUsers,
+      colivingUsers: fetchedColivingUsers,
       tracks: fetchedTracks,
       files: fetchedFiles
     } = fetchedCNodeUser
@@ -306,19 +306,19 @@ async function saveEntriesToDB({ fetchedCNodeUser, logger, logPrefix }) {
 
       cnodeUserUUID = localCNodeUser.cnodeUserUUID
 
-      const audiusUserComparisonFields = [
+      const colivingUserComparisonFields = [
         'blockchainId',
         'metadataFileUUID',
         'metadataJSON',
         'coverArtFileUUID',
         'profilePicFileUUID'
       ]
-      fetchedAudiusUsers = await filterOutAlreadyPresentDBEntries({
+      fetchedColivingUsers = await filterOutAlreadyPresentDBEntries({
         cnodeUserUUID,
-        tableInstance: models.AudiusUser,
-        fetchedEntries: fetchedAudiusUsers,
+        tableInstance: models.ColivingUser,
+        fetchedEntries: fetchedColivingUsers,
         transaction,
-        comparisonFields: audiusUserComparisonFields
+        comparisonFields: colivingUserComparisonFields
       })
 
       const trackComparisonFields = [
@@ -359,9 +359,9 @@ async function saveEntriesToDB({ fetchedCNodeUser, logger, logPrefix }) {
     // Aggregate all entries into single array
     let allEntries = _.concat(
       [],
-      fetchedAudiusUsers.map((audiusUser) => ({
-        tableInstance: models.AudiusUser,
-        entry: audiusUser
+      fetchedColivingUsers.map((colivingUser) => ({
+        tableInstance: models.ColivingUser,
+        entry: colivingUser
       })),
       fetchedTracks.map((track) => ({
         tableInstance: models.Track,

@@ -317,7 +317,7 @@ export class Wormhole {
         zeroPad(toBuffer(ethTargetAddress), 32), // Uint8Array of length 32 targetAddress
         this.wormholeSDK.CHAIN_ID_ETH, // ChainId targetChain
         zeroPad(
-          toBuffer(this.ethContracts.AudiusTokenClient.contractAddress),
+          toBuffer(this.ethContracts.ColivingTokenClient.contractAddress),
           32
         ), // Uint8Array of length 32 originAddress
         this.wormholeSDK.CHAIN_ID_ETH, //  ChainId originChain
@@ -410,7 +410,7 @@ export class Wormhole {
 
     const digest = getTransferTokensDigest(
       web3,
-      'AudiusWormholeClient',
+      'ColivingWormholeClient',
       wormholeClientAddress,
       chainId,
       {

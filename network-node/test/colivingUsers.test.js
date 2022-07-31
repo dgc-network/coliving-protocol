@@ -12,7 +12,7 @@ const { createStarterCNodeUser } = require('./lib/dataSeeds')
 const { getLibsMock } = require('./lib/libsMock')
 const { sortKeys } = require('../src/apiSigning')
 
-describe('Test AudiusUsers', function () {
+describe('Test ColivingUsers', function () {
   let app, server, session, libsMock
 
   beforeEach(async () => {
@@ -37,7 +37,7 @@ describe('Test AudiusUsers', function () {
 
   it('should fail if metadata is not found in request body', async function () {
     const resp = await request(app)
-      .post('/audius_users/metadata')
+      .post('/coliving_users/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .send({ dummy: 'data' })
@@ -50,7 +50,7 @@ describe('Test AudiusUsers', function () {
   it('should throw 400 bad request response if metadata validation fails', async function () {
     const metadata = { metadata: 'spaghetti' }
     const resp = await request(app)
-      .post('/audius_users/metadata')
+      .post('/coliving_users/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .send(metadata)
@@ -59,10 +59,10 @@ describe('Test AudiusUsers', function () {
     assert.deepStrictEqual(resp.body.error, 'Invalid User Metadata')
   })
 
-  it('successfully creates Coliving user (POST /audius_users/metadata)', async function () {
+  it('successfully creates Coliving user (POST /coliving_users/metadata)', async function () {
     const metadata = { test: 'field1' }
     const resp = await request(app)
-      .post('/audius_users/metadata')
+      .post('/coliving_users/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .set('Enforce-Write-Quorum', false)
@@ -91,10 +91,10 @@ describe('Test AudiusUsers', function () {
     assert.ok(file)
   })
 
-  it('successfully completes Coliving user creation (POST /audius_users/metadata -> POST /audius_users)', async function () {
+  it('successfully completes Coliving user creation (POST /coliving_users/metadata -> POST /coliving_users)', async function () {
     const metadata = { test: 'field1' }
     const resp = await request(app)
-      .post('/audius_users/metadata')
+      .post('/coliving_users/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .set('Enforce-Write-Quorum', false)
@@ -119,7 +119,7 @@ describe('Test AudiusUsers', function () {
     assert.ok(file)
 
     await request(app)
-      .post('/audius_users')
+      .post('/coliving_users')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .send({ blockchainUserId: 1, blockNumber: 10, metadataFileUUID: resp.body.data.metadataFileUUID })
@@ -132,7 +132,7 @@ describe('Test AudiusUsers', function () {
     libsMock.User.getUsers.exactly(2)
 
     const resp = await request(app)
-      .post('/audius_users/metadata')
+      .post('/coliving_users/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .set('Enforce-Write-Quorum', false)
@@ -144,14 +144,14 @@ describe('Test AudiusUsers', function () {
     }
 
     await request(app)
-      .post('/audius_users')
+      .post('/coliving_users')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .send({ blockchainUserId: 1, blockNumber: 10, metadataFileUUID: resp.body.data.metadataFileUUID })
       .expect(200)
 
     await request(app)
-      .post('/audius_users')
+      .post('/coliving_users')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .send({ blockchainUserId: 1, blockNumber: 10, metadataFileUUID: resp.body.data.metadataFileUUID })
@@ -164,7 +164,7 @@ describe('Test AudiusUsers', function () {
     libsMock.User.getUsers.exactly(2)
 
     const resp1 = await request(app)
-      .post('/audius_users/metadata')
+      .post('/coliving_users/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .set('Enforce-Write-Quorum', false)
@@ -180,7 +180,7 @@ describe('Test AudiusUsers', function () {
     libsMock.User.getUsers.exactly(2)
 
     const resp2 = await request(app)
-      .post('/audius_users/metadata')
+      .post('/coliving_users/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .set('Enforce-Write-Quorum', false)
@@ -192,7 +192,7 @@ describe('Test AudiusUsers', function () {
     }
 
     await request(app)
-      .post('/audius_users')
+      .post('/coliving_users')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .send({ blockchainUserId: 1, blockNumber: 10, metadataFileUUID: resp2.body.data.metadataFileUUID })
@@ -205,7 +205,7 @@ describe('Test AudiusUsers', function () {
     libsMock.User.getUsers.exactly(2)
 
     const resp = await request(app)
-      .post('/audius_users/metadata')
+      .post('/coliving_users/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .set('Enforce-Write-Quorum', false)
@@ -221,7 +221,7 @@ describe('Test AudiusUsers', function () {
     await cnodeUser.update({ latestBlockNumber: 100 })
 
     await request(app)
-      .post('/audius_users')
+      .post('/coliving_users')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .send({ blockchainUserId: 1, blockNumber: 10, metadataFileUUID: resp.body.data.metadataFileUUID })

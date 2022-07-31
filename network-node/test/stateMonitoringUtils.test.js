@@ -28,7 +28,7 @@ const {
 const SecondarySyncHealthTracker = require('../src/services/stateMachineManager/stateReconciliation/SecondarySyncHealthTracker')
 
 describe('test getLatestUserIdFromDiscovery()', function () {
-  const DISCOVERY_NODE_ENDPOINT = 'https://discovery_endpoint.audius.co'
+  const DISCOVERY_NODE_ENDPOINT = 'https://discovery_endpoint.coliving.co'
 
   beforeEach(() => {
     nock.disableNetConnect()
@@ -64,8 +64,8 @@ describe('test getLatestUserIdFromDiscovery()', function () {
 })
 
 describe('test getNodeUsers()', function () {
-  const DISCOVERY_NODE_ENDPOINT = 'https://discovery_endpoint.audius.co'
-  const CONTENT_NODE_ENDPOINT = 'https://content_node_endpoint.audius.co'
+  const DISCOVERY_NODE_ENDPOINT = 'https://discovery_endpoint.coliving.co'
+  const CONTENT_NODE_ENDPOINT = 'https://content_node_endpoint.coliving.co'
   const DEFAULT_GET_NODE_USERS_TIMEOUT_MS = 100
   const DEFAULT_GET_NODE_USERS_CANCEL_TOKEN_MS = 5_000
   const DEFAULT_GET_NODE_USERS_DEFAULT_PAGE_SIZE = 10
@@ -306,38 +306,38 @@ describe('test buildReplicaSetNodesToUserWalletsMap()', function () {
       {
         user_id: '1',
         wallet: 'wallet1',
-        primary: 'http://cn1.audius.co',
-        secondary1: 'http://cn2.audius.co',
-        secondary2: 'http://cn3.audius.co'
+        primary: 'http://cn1.coliving.co',
+        secondary1: 'http://cn2.coliving.co',
+        secondary2: 'http://cn3.coliving.co'
       },
       {
         user_id: '2',
         wallet: 'wallet2',
-        primary: 'http://cn2.audius.co',
-        secondary1: 'http://cn3.audius.co',
-        secondary2: 'http://cn4.audius.co'
+        primary: 'http://cn2.coliving.co',
+        secondary1: 'http://cn3.coliving.co',
+        secondary2: 'http://cn4.coliving.co'
       },
       {
         user_id: '3',
         wallet: 'wallet3',
-        primary: 'http://cn3.audius.co',
-        secondary1: 'http://cn4.audius.co',
-        secondary2: 'http://cn5.audius.co'
+        primary: 'http://cn3.coliving.co',
+        secondary1: 'http://cn4.coliving.co',
+        secondary2: 'http://cn5.coliving.co'
       },
       {
         user_id: '4',
         wallet: 'wallet4',
-        primary: 'http://cn3.audius.co',
-        secondary1: 'http://cn2.audius.co',
-        secondary2: 'http://cn1.audius.co'
+        primary: 'http://cn3.coliving.co',
+        secondary1: 'http://cn2.coliving.co',
+        secondary2: 'http://cn1.coliving.co'
       }
     ]
     const expectedReplicaSetNodesToUserWalletsMapOutput = {
-      'http://cn1.audius.co': ['wallet1', 'wallet4'],
-      'http://cn2.audius.co': ['wallet1', 'wallet2', 'wallet4'],
-      'http://cn3.audius.co': ['wallet1', 'wallet2', 'wallet3', 'wallet4'],
-      'http://cn4.audius.co': ['wallet2', 'wallet3'],
-      'http://cn5.audius.co': ['wallet3']
+      'http://cn1.coliving.co': ['wallet1', 'wallet4'],
+      'http://cn2.coliving.co': ['wallet1', 'wallet2', 'wallet4'],
+      'http://cn3.coliving.co': ['wallet1', 'wallet2', 'wallet3', 'wallet4'],
+      'http://cn4.coliving.co': ['wallet2', 'wallet3'],
+      'http://cn5.coliving.co': ['wallet3']
     }
     expect(buildReplicaSetNodesToUserWalletsMap(nodeUsersInput)).to.deep.equal(
       expectedReplicaSetNodesToUserWalletsMapOutput

@@ -6,7 +6,7 @@ use thiserror::Error;
 
 /// Errors that may be returned by the Coliving program.
 #[derive(Clone, Debug, Eq, Error, FromPrimitive, PartialEq)]
-pub enum AudiusError {
+pub enum ColivingError {
     /// Invalid instruction
     #[error("Invalid instruction")]
     InvalidInstruction,
@@ -41,12 +41,12 @@ pub enum AudiusError {
     #[error("Signer group owner disabled")]
     SignerGroupOwnerDisabled,
 }
-impl From<AudiusError> for ProgramError {
-    fn from(e: AudiusError) -> Self {
+impl From<ColivingError> for ProgramError {
+    fn from(e: ColivingError) -> Self {
         ProgramError::Custom(e as u32)
     }
 }
-impl<T> DecodeError<T> for AudiusError {
+impl<T> DecodeError<T> for ColivingError {
     fn type_of() -> &'static str {
         "Coliving Error"
     }

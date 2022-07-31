@@ -7,7 +7,7 @@ import { Program } from "@project-serum/anchor";
 import { Keypair } from "@solana/web3.js";
 import { Account } from "web3-core";
 import * as secp256k1 from "secp256k1";
-import { AudiusData } from "../target/types/coliving_data";
+import { ColivingData } from "../target/types/coliving_data";
 import idll from "../target/idl/coliving_data.json";
 import { signBytes, SystemSysVarProgramKey } from "./utils";
 const { SystemProgram, Transaction, Secp256k1Program } = anchor.web3;
@@ -18,14 +18,14 @@ const { SystemProgram, Transaction, Secp256k1Program } = anchor.web3;
 
 export type InitAdminParams = {
   payer: anchor.web3.PublicKey;
-  program: Program<AudiusData>;
+  program: Program<ColivingData>;
   adminKeypair: Keypair;
   adminAccountKeypair: Keypair;
   verifierKeypair: Keypair;
 };
 
-export type AudiusDataIdl = AudiusData;
-export type AudiusDataProgram = Program<AudiusData>;
+export type ColivingDataIdl = ColivingData;
+export type ColivingDataProgram = Program<ColivingData>;
 
 /// Initialize an Coliving Admin instance
 export const initAdmin = ({
@@ -63,7 +63,7 @@ export type Proposer = {
 // No ID param because every user being 'initialized' from Admin already has an ID.
 export type InitUserParams = {
   payer: anchor.web3.PublicKey;
-  program: Program<AudiusData>;
+  program: Program<ColivingData>;
   ethAddress: string;
   userId: anchor.BN;
   bumpSeed: number;
@@ -126,7 +126,7 @@ export const initUser = ({
 };
 
 export type InitUserSolPubkeyParams = {
-  program: Program<AudiusData>;
+  program: Program<ColivingData>;
   ethPrivateKey: string;
   message: Uint8Array;
   userAuthorityPublicKey: anchor.web3.PublicKey;
@@ -170,10 +170,10 @@ export const initUserSolPubkey = ({
   return tx;
 };
 
-/// Create a content node with the audius admin authority
+/// Create a content node with the coliving admin authority
 export type CreateContentNodeParams = {
   payer: anchor.web3.PublicKey;
-  program: Program<AudiusData>;
+  program: Program<ColivingData>;
   adminAuthorityPublicKey: anchor.web3.PublicKey;
   adminAccount: anchor.web3.PublicKey;
   baseAuthorityAccount: anchor.web3.PublicKey;
@@ -219,7 +219,7 @@ export const createContentNode = ({
 /// Verify user with authenticatorKeypair
 export type UpdateUserReplicaSetParams = {
   payer: anchor.web3.PublicKey;
-  program: Program<AudiusData>;
+  program: Program<ColivingData>;
   adminAccount: anchor.web3.PublicKey;
   baseAuthorityAccount: anchor.web3.PublicKey;
   replicaSet: number[];
@@ -273,7 +273,7 @@ export const updateUserReplicaSet = ({
 /// Create or update a content node with proposers
 export type PublicCreateOrUpdateContentNodeParams = {
   payer: anchor.web3.PublicKey;
-  program: Program<AudiusData>;
+  program: Program<ColivingData>;
   adminAccount: anchor.web3.PublicKey;
   baseAuthorityAccount: anchor.web3.PublicKey;
   contentNodeAccount: anchor.web3.PublicKey;
@@ -330,7 +330,7 @@ export const publicCreateOrUpdateContentNode = ({
 /// Create a content node with proposers
 export type PublicDeleteContentNodeParams = {
   payer: anchor.web3.PublicKey;
-  program: Program<AudiusData>;
+  program: Program<ColivingData>;
   adminAccount: anchor.web3.PublicKey;
   adminAuthorityPublicKey: anchor.web3.PublicKey;
   baseAuthorityAccount: anchor.web3.PublicKey;
@@ -381,7 +381,7 @@ export const publicDeleteContentNode = ({
 
 export type CreateUserParams = {
   payer: anchor.web3.PublicKey;
-  program: Program<AudiusData>;
+  program: Program<ColivingData>;
   ethAccount: Account;
   message: Uint8Array;
   userId: anchor.BN;
@@ -466,7 +466,7 @@ export const createUser = ({
 
 // Update a user's metadata.
 export type UpdateUserParams = {
-  program: Program<AudiusData>;
+  program: Program<ColivingData>;
   metadata: string;
   userAccount: anchor.web3.PublicKey;
   userAuthorityDelegate: anchor.web3.PublicKey;
@@ -497,7 +497,7 @@ export const updateUser = ({
 };
 
 export type UpdateAdminParams = {
-  program: Program<AudiusData>;
+  program: Program<ColivingData>;
   isWriteEnabled: boolean;
   adminAccount: anchor.web3.PublicKey;
   adminAuthorityKeypair: anchor.web3.Keypair;
@@ -527,7 +527,7 @@ export const updateAdmin = ({
  */
 
 export type InitAuthorityDelegationStatusParams = {
-  program: Program<AudiusData>;
+  program: Program<ColivingData>;
   authorityName: string;
   userAuthorityDelegatePublicKey: anchor.web3.PublicKey;
   authorityDelegationStatusAccount: anchor.web3.PublicKey;
@@ -556,7 +556,7 @@ export const initAuthorityDelegationStatus = ({
 };
 
 export type RevokeAuthorityDelegationParams = {
-  program: Program<AudiusData>;
+  program: Program<ColivingData>;
   authorityDelegationBump: number;
   userAuthorityDelegatePublicKey: anchor.web3.PublicKey;
   authorityDelegationStatusAccount: anchor.web3.PublicKey;
@@ -585,7 +585,7 @@ export const revokeAuthorityDelegation = ({
 };
 
 export type AddUserAuthorityDelegateParams = {
-  program: Program<AudiusData>;
+  program: Program<ColivingData>;
   baseAuthorityAccount: anchor.web3.PublicKey;
   delegatePublicKey: anchor.web3.PublicKey;
   user: anchor.web3.PublicKey;
@@ -637,7 +637,7 @@ export const addUserAuthorityDelegate = ({
 };
 
 export type RemoveUserAuthorityDelegateParams = {
-  program: Program<AudiusData>;
+  program: Program<ColivingData>;
   baseAuthorityAccount: anchor.web3.PublicKey;
   delegatePublicKey: anchor.web3.PublicKey;
   delegateBump: number;
@@ -693,7 +693,7 @@ export const removeUserAuthorityDelegate = ({
 
 // Verify user with authenticatorKeypair.
 export type UpdateIsVerifiedParams = {
-  program: Program<AudiusData>;
+  program: Program<ColivingData>;
   userAccount: anchor.web3.PublicKey;
   verifierPublicKey: anchor.web3.PublicKey;
   baseAuthorityAccount: anchor.web3.PublicKey;
@@ -730,7 +730,7 @@ export const updateIsVerified = ({
 };
 
 export type CreateEntityParams = {
-  program: Program<AudiusData>;
+  program: Program<ColivingData>;
   baseAuthorityAccount: anchor.web3.PublicKey;
   adminAccount: anchor.web3.PublicKey;
   userId: anchor.BN;
@@ -744,7 +744,7 @@ export type CreateEntityParams = {
 };
 
 export type DeleteEntityParams = {
-  program: Program<AudiusData>;
+  program: Program<ColivingData>;
   id: anchor.BN;
   userAuthorityPublicKey: anchor.web3.PublicKey;
   userAuthorityDelegateAccount: anchor.web3.PublicKey;
@@ -811,7 +811,7 @@ export const ManagementActions = {
 };
 
 export type UpdateEntityParams = {
-  program: Program<AudiusData>;
+  program: Program<ColivingData>;
   baseAuthorityAccount: anchor.web3.PublicKey;
   adminAccount: anchor.web3.PublicKey;
   userId: anchor.BN;
@@ -1030,7 +1030,7 @@ export const EntitySocialActions = {
 };
 
 export type EntitySocialActionParams = {
-  program: Program<AudiusData>;
+  program: Program<ColivingData>;
   baseAuthorityAccount: anchor.web3.PublicKey;
   userAccount: anchor.web3.PublicKey;
   userAuthorityDelegateAccount: anchor.web3.PublicKey;
@@ -1326,7 +1326,7 @@ export const UserSocialActions = {
 };
 
 export type UserSocialActionParams = {
-  program: Program<AudiusData>;
+  program: Program<ColivingData>;
   baseAuthorityAccount: anchor.web3.PublicKey;
   sourceUserAccount: anchor.web3.PublicKey;
   targetUserAccount: anchor.web3.PublicKey;

@@ -70,14 +70,14 @@ COPY . .
 RUN node_modules/.bin/tsc --project ./
 
 ARG git_sha
-ARG audius_loggly_disable
-ARG audius_loggly_token
-ARG audius_loggly_tags
+ARG coliving_loggly_disable
+ARG coliving_loggly_token
+ARG coliving_loggly_tags
 
 ENV GIT_SHA=$git_sha
-ENV logglyDisable=$audius_loggly_disable
-ENV logglyToken=$audius_loggly_token
-ENV logglyTags=$audius_loggly_tags
+ENV logglyDisable=$coliving_loggly_disable
+ENV logglyToken=$coliving_loggly_token
+ENV logglyTags=$coliving_loggly_tags
 ENV port=4000
 ENV contentCacheLayerEnabled=true
 

@@ -32,7 +32,7 @@ CASCADING_SCHEMA = """
                 unnest(
                     tsvector_to_array(
                         to_tsvector(
-                            'audius_ts_config',
+                            'coliving_ts_config',
                             replace(COALESCE(t."title", ''), '&', 'and')
                         )
                     ) || lower(COALESCE(t."title", ''))

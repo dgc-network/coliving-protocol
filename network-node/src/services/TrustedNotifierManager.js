@@ -3,9 +3,9 @@ const { timeout } = require('../utils')
 
 const TEN_MINS_IN_MS = 1000 * 60 * 10
 class TrustedNotifierManager {
-  constructor(nodeConfig, audiusLibs) {
+  constructor(nodeConfig, colivingLibs) {
     this.nodeConfig = nodeConfig
-    this.audiusLibs = audiusLibs
+    this.colivingLibs = colivingLibs
 
     this.trustedNotifierID = this.nodeConfig.get('trustedNotifierID')
     this.trustedNotifierEnabled = true
@@ -20,9 +20,9 @@ class TrustedNotifierManager {
     }
     this.trustedNotifierChainData = null
 
-    if (!this.audiusLibs) {
+    if (!this.colivingLibs) {
       throw new Error(
-        'TrustedNotifierManager missing required config audiusLibs'
+        'TrustedNotifierManager missing required config colivingLibs'
       )
     }
   }
@@ -46,7 +46,7 @@ class TrustedNotifierManager {
 
     try {
       this.trustedNotifierChainData =
-        await this.audiusLibs.ethContracts.TrustedNotifierManagerClient.getNotifierForID(
+        await this.colivingLibs.ethContracts.TrustedNotifierManagerClient.getNotifierForID(
           this.trustedNotifierID
         )
 

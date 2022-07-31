@@ -21,7 +21,7 @@ loadABI('UserLibraryFactory.json')
 loadABI('UserReplicaSetManager.json')
 
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class -- should just use esm
-export class AudiusABIDecoder {
+export class ColivingABIDecoder {
   static decodeMethod(contractName: string, encodedABI: string) {
     const decoded = abiDecoder.decodeMethod(encodedABI)
     if (!decoded) {

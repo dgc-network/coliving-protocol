@@ -14,7 +14,7 @@ const trimRightZeros = (number) => {
   return number.replace(/(\d)0+$/gm, '$1')
 }
 
-// Copied from AudiusClient
+// Copied from ColivingClient
 const formatWei = (
   amount,
   shouldTruncate = false,

@@ -118,7 +118,7 @@ export class Utils {
   }
 
   /**
-   * Given a digest value (written on chain, obtained through AudiusABIDecoder.decodeMethod),
+   * Given a digest value (written on chain, obtained through ColivingABIDecoder.decodeMethod),
    * convert back to a IFPS CIDv0
    * @param multihashDigest digest value from decodeMultihash
    * @returns String CID value

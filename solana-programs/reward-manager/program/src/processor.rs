@@ -1,7 +1,7 @@
 //! Program state processor
 
 use crate::{
-    error::AudiusProgramError,
+    error::ColivingProgramError,
     instruction::{
         CreateSenderArgs, CreateSenderPublicArgs, EvaluateAttestationsArgs, InitRewardManagerArgs,
         Instructions, SubmitAttestationsArgs,
@@ -220,7 +220,7 @@ impl Processor {
 
         // Verify we have a sufficient amount of signers
         if signers_info.len() < reward_manager.min_votes.into() {
-            return Err(AudiusProgramError::NotEnoughSigners.into());
+            return Err(ColivingProgramError::NotEnoughSigners.into());
         }
 
         // Verify signers are as expected
@@ -260,7 +260,7 @@ impl Processor {
 
         // Verify we have a sufficient amount of signers
         if signers_info.len() < reward_manager.min_votes.into() {
-            return Err(AudiusProgramError::NotEnoughSigners.into());
+            return Err(ColivingProgramError::NotEnoughSigners.into());
         }
 
         // Verify signers are as expected
@@ -432,13 +432,13 @@ impl Processor {
 
         // Ensure the transfer account doesn't yet exist
         if transfer_account_info.lamports() != 0 {
-            return Err(AudiusProgramError::AlreadySent.into());
+            return Err(ColivingProgramError::AlreadySent.into());
         }
 
         // Check signs for minimum required votes, accounting for extra bot oracle
         // attestation
         if verified_messages.messages.len() != (reward_manager.min_votes + 1) as usize {
-            return Err(AudiusProgramError::NotEnoughSigners.into());
+            return Err(ColivingProgramError::NotEnoughSigners.into());
         }
 
         let bot_oracle = SenderAccount::unpack(&bot_oracle_info.data.borrow())?;
@@ -518,7 +518,7 @@ impl Processor {
         **verified_messages_info.lamports.borrow_mut() = 0u64;
         **payer_info.lamports.borrow_mut() = payer_lamports
             .checked_add(verified_messages_lamports)
-            .ok_or(AudiusProgramError::MathOverflow)?;
+            .ok_or(ColivingProgramError::MathOverflow)?;
 
         Ok(())
     }

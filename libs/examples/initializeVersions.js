@@ -1,5 +1,5 @@
 const Web3 = require('../src/web3')
-const AudiusLibs = require('../src/index')
+const ColivingLibs = require('../src/index')
 const serviceTypeList = ['discovery-node', 'content-node']
 const dataWeb3ProviderEndpoint = 'https://sokol.poa.network:443'
 const ethWeb3ProviderEndpoint =
@@ -54,7 +54,7 @@ async function initializeVersionServiceProviderContracts() {
   )
   colivingLibsConfig = {
     web3Config: web3DataContractConfig,
-    ethWeb3Config: AudiusLibs.configEthWeb3(
+    ethWeb3Config: ColivingLibs.configEthWeb3(
       ethTokenAddress, // Token Address
       ethRegistryAddress,
       ethWeb3,
@@ -63,7 +63,7 @@ async function initializeVersionServiceProviderContracts() {
     discoveryProviderConfig: {},
     isServer: isServer
   }
-  let colivingLibs = new AudiusLibs(colivingLibsConfig)
+  let colivingLibs = new ColivingLibs(colivingLibsConfig)
   console.log('Initializing...')
   await colivingLibs.init()
 

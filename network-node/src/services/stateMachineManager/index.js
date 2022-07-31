@@ -13,12 +13,12 @@ const CNodeToSpIdMapManager = require('./CNodeToSpIdMapManager')
  * the queue for reconciling anomalies in the state (syncs and replica set updates).
  */
 class StateMachineManager {
-  async init(audiusLibs, prometheusRegistry) {
+  async init(colivingLibs, prometheusRegistry) {
     this.updateEnabledReconfigModesSet()
 
     // Initialize class immediately since bull jobs are run on cadence even on deploy
     await CNodeToSpIdMapManager.updateCnodeEndpointToSpIdMap(
-      audiusLibs.ethContracts
+      colivingLibs.ethContracts
     )
 
     // Initialize queues
@@ -30,7 +30,7 @@ class StateMachineManager {
       findReplicaSetUpdatesQueue,
       cNodeEndpointToSpIdMapQueue
     } = await stateMonitoringManager.init(
-      audiusLibs.discoveryProvider.discoveryProviderEndpoint,
+      colivingLibs.discoveryProvider.discoveryProviderEndpoint,
       prometheusRegistry
     )
     const { manualSyncQueue, recurringSyncQueue, updateReplicaSetQueue } =

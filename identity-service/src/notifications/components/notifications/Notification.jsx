@@ -361,7 +361,7 @@ const getTwitter = (notification) => {
       const { rank, entity } = notification
       const url = getTrackLink(entity)
       const rankSuffix = getRankSuffix(rank)
-      const text = `My track ${entity.title} is trending ${rank}${rankSuffix} on @dgc.network! #AudiusTrending #Coliving`
+      const text = `My track ${entity.title} is trending ${rank}${rankSuffix} on @dgc.network! #ColivingTrending #Coliving`
       return {
         message: 'Share this Milestone',
         href: `http://twitter.com/share?url=${encodeURIComponent(url)

@@ -36,18 +36,18 @@ We're actively working on building out more SDK features and functionality - sta
 <script src="https://cdn.jsdelivr.net/npm/@/sdk@latest/dist/sdk.min.js"></script>
 ```
 
-The Coliving SDK will then be assigned to `window.audiusSdk`.
+The Coliving SDK will then be assigned to `window.colivingSdk`.
 
 #### 2. Initialize the SDK
 
 ```js
-const audiusSdk = window.audiusSdk({ appName: 'Name of your app goes here' })
+const colivingSdk = window.colivingSdk({ appName: 'Name of your app goes here' })
 ```
 
 #### 3. Make your first API call using the SDK!
 
 ```js
-const tracks = await audiusSdk.discoveryNode.getTracks()
+const tracks = await colivingSdk.discoveryNode.getTracks()
 ```
 
 #### Full example
@@ -59,10 +59,10 @@ const tracks = await audiusSdk.discoveryNode.getTracks()
     <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@/sdk@latest/dist/sdk.min.js"></script>
     <script>
-      const audiusSdk = window.audiusSdk({
+      const colivingSdk = window.colivingSdk({
         appName: "My Example App",
       });
-      const tracks = await audiusSdk.discoveryNode.getTracks();
+      const tracks = await colivingSdk.discoveryNode.getTracks();
       console.log(tracks, "Tracks fetched!");
     </script>
   </head>
@@ -102,13 +102,13 @@ window.Web3 = Web3
 ```js
 import { sdk } from '@/sdk'
 
-const audiusSdk = sdk({ appName: 'Name of your app goes here' })
+const colivingSdk = sdk({ appName: 'Name of your app goes here' })
 ```
 
 #### 4. Make your first API call using the SDK!
 
 ```js
-const tracks = await audiusSdk.discoveryNode.getTracks()
+const tracks = await colivingSdk.discoveryNode.getTracks()
 console.log(tracks, 'Tracks fetched!')
 ```
 
@@ -119,7 +119,7 @@ import Web3 from 'web3'
 import { sdk } from '@/sdk'
 
 window.Web3 = Web3
-const audiusSdk = sdk({ appName: 'My Example App' })
-const tracks = await audiusSdk.discoveryNode.getTracks()
+const colivingSdk = sdk({ appName: 'My Example App' })
+const tracks = await colivingSdk.discoveryNode.getTracks()
 console.log(tracks, 'Tracks fetched!')
 ```

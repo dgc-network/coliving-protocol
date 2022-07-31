@@ -1,10 +1,10 @@
 #![cfg(feature = "test-bpf")]
 #![allow(dead_code)]
 
-use audius_reward_manager::error::AudiusProgramError;
-use audius_reward_manager::utils::{find_derived_pair, EthereumAddress};
-use audius_reward_manager::{id, processor::Processor};
-use audius_reward_manager::{
+use coliving_reward_manager::error::ColivingProgramError;
+use coliving_reward_manager::utils::{find_derived_pair, EthereumAddress};
+use coliving_reward_manager::{id, processor::Processor};
+use coliving_reward_manager::{
     instruction,
     processor::{SENDER_SEED_PREFIX, VERIFY_TRANSFER_SEED_PREFIX},
     vote_message,
@@ -30,7 +30,7 @@ use solana_sdk::{
 
 pub fn program_test() -> ProgramTest {
     ProgramTest::new(
-        "audius_reward_manager",
+        "coliving_reward_manager",
         id(),
         processor!(Processor::process_instruction),
     )
@@ -119,7 +119,7 @@ pub async fn create_sender(
 ) {
     let tx = Transaction::new_signed_with_payer(
         &[instruction::create_sender(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             reward_manager,
             &manager_acc.pubkey(),
             &context.payer.pubkey(),
@@ -137,7 +137,7 @@ pub async fn create_sender(
 
 pub fn get_oracle_address(reward_manager: &Keypair, eth_oracle_address: [u8; 20]) -> Pubkey {
     let (_, oracle_derived_address, _) = find_derived_pair(
-        &audius_reward_manager::id(),
+        &coliving_reward_manager::id(),
         &reward_manager.pubkey(),
         [SENDER_SEED_PREFIX.as_ref(), eth_oracle_address.as_ref()]
             .concat()
@@ -160,9 +160,9 @@ pub async fn init_reward_manager(
             system_instruction::create_account(
                 &context.payer.pubkey(),
                 &reward_manager.pubkey(),
-                rent.minimum_balance(audius_reward_manager::state::RewardManager::LEN),
-                audius_reward_manager::state::RewardManager::LEN as _,
-                &audius_reward_manager::id(),
+                rent.minimum_balance(coliving_reward_manager::state::RewardManager::LEN),
+                coliving_reward_manager::state::RewardManager::LEN as _,
+                &coliving_reward_manager::id(),
             ),
             system_instruction::create_account(
                 &context.payer.pubkey(),
@@ -172,7 +172,7 @@ pub async fn init_reward_manager(
                 &spl_token::id(),
             ),
             instruction::init(
-                &audius_reward_manager::id(),
+                &coliving_reward_manager::id(),
                 &reward_manager.pubkey(),
                 &token_account.pubkey(),
                 mint,
@@ -326,7 +326,7 @@ pub async fn create_recipient_with_claimable_program(
 pub fn assert_custom_error(
     res: Result<(), TransportError>,
     instruction_index: u8,
-    audius_error: AudiusProgramError,
+    coliving_error: ColivingProgramError,
 ) {
     match res {
         Err(TransportError::TransactionError(TransactionError::InstructionError(
@@ -334,7 +334,7 @@ pub fn assert_custom_error(
             InstructionError::Custom(v),
         ))) => {
             assert_eq!(idx, instruction_index);
-            assert_eq!(v, audius_error as u32);
+            assert_eq!(v, coliving_error as u32);
         }
         _ => panic!("Expected error"),
     }
@@ -505,7 +505,7 @@ pub async fn create_sender_from(
     let eth_address = construct_eth_pubkey(&secp_pubkey);
 
     let (_, derived_address, _) = find_derived_pair(
-        &audius_reward_manager::id(),
+        &coliving_reward_manager::id(),
         &reward_manager.pubkey(),
         [SENDER_SEED_PREFIX.as_ref(), eth_address.as_ref()]
             .concat()
@@ -526,7 +526,7 @@ pub async fn create_sender_from(
 
 pub fn get_messages_account(reward_manager: &Keypair, transfer_id: &str) -> Pubkey {
     let (_, verified_messages_derived_address, _) = find_derived_pair(
-        &audius_reward_manager::id(),
+        &coliving_reward_manager::id(),
         &reward_manager.pubkey(),
         [
             VERIFY_TRANSFER_SEED_PREFIX.as_bytes().as_ref(),

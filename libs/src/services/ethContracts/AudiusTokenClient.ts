@@ -4,12 +4,12 @@ import type { Contract } from 'web3-eth-contract'
 import type { AbiItem } from 'web3-utils'
 import type BN from 'bn.js'
 
-export class AudiusTokenClient {
+export class ColivingTokenClient {
   ethWeb3Manager: EthWeb3Manager
   contractABI: AbiItem[]
   contractAddress: string
   web3: Web3
-  AudiusTokenContract: Contract
+  ColivingTokenContract: Contract
   bustCacheNonce: number
 
   constructor(
@@ -22,7 +22,7 @@ export class AudiusTokenClient {
     this.contractAddress = contractAddress
 
     this.web3 = this.ethWeb3Manager.getWeb3()
-    this.AudiusTokenContract = new this.web3.eth.Contract(
+    this.ColivingTokenContract = new this.web3.eth.Contract(
       this.contractABI,
       this.contractAddress
     )
@@ -41,7 +41,7 @@ export class AudiusTokenClient {
     if (this.bustCacheNonce > 0) {
       args = { _colivingBustCache: this.bustCacheNonce }
     }
-    const balance = await this.AudiusTokenContract.methods
+    const balance = await this.ColivingTokenContract.methods
       .balanceOf(account)
       .call(args)
     return this.web3.utils.toBN(balance)
@@ -49,14 +49,14 @@ export class AudiusTokenClient {
 
   // Get the name of the contract
   async name() {
-    const name = await this.AudiusTokenContract.methods.name().call()
+    const name = await this.ColivingTokenContract.methods.name().call()
     return name
   }
 
   // Get the name of the contract
   async nonces(wallet: string) {
     // Pass along a unique param so the nonce value is always not cached
-    const nonce = await this.AudiusTokenContract.methods.nonces(wallet).call({
+    const nonce = await this.ColivingTokenContract.methods.nonces(wallet).call({
       _colivingBustCache: Date.now()
     })
     const number = this.web3.utils.toBN(nonce).toNumber()
@@ -66,7 +66,7 @@ export class AudiusTokenClient {
   /* ------- SETTERS ------- */
 
   async transfer(recipient: string, amount: BN) {
-    const contractMethod = this.AudiusTokenContract.methods.transfer(
+    const contractMethod = this.ColivingTokenContract.methods.transfer(
       recipient,
       amount
     )
@@ -80,7 +80,7 @@ export class AudiusTokenClient {
     relayer: string,
     amount: BN
   ) {
-    const method = this.AudiusTokenContract.methods.transferFrom(
+    const method = this.ColivingTokenContract.methods.transferFrom(
       owner,
       recipient,
       amount
@@ -105,7 +105,7 @@ export class AudiusTokenClient {
     r: Uint8Array | Buffer, // bytes32
     s: Uint8Array | Buffer // bytes32
   ) {
-    const contractMethod = this.AudiusTokenContract.methods.permit(
+    const contractMethod = this.ColivingTokenContract.methods.permit(
       owner,
       spender,
       value,
@@ -127,7 +127,7 @@ export class AudiusTokenClient {
   // Allow spender to withdraw from calling account up to value amount
   // https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md
   async approve(spender: string, value: BN, privateKey = null) {
-    const contractMethod = this.AudiusTokenContract.methods.approve(
+    const contractMethod = this.ColivingTokenContract.methods.approve(
       spender,
       value
     )
@@ -150,7 +150,7 @@ export class AudiusTokenClient {
     value: BN,
     relayer: string
   ) {
-    const method = this.AudiusTokenContract.methods.approve(spender, value)
+    const method = this.ColivingTokenContract.methods.approve(spender, value)
     const tx = await this.ethWeb3Manager.relayTransaction(
       method,
       this.contractAddress,

@@ -444,7 +444,7 @@ var getTwitter = function getTwitter(notification) {
 
         var rankSuffix = (0, _formatNotificationMetadata.getRankSuffix)(rank);
 
-        var _text2 = "My track ".concat(entity.title, " is trending ").concat(rank).concat(rankSuffix, " on @dgc.network! #AudiusTrending #Coliving");
+        var _text2 = "My track ".concat(entity.title, " is trending ").concat(rank).concat(rankSuffix, " on @dgc.network! #ColivingTrending #Coliving");
 
         return {
           message: 'Share this Milestone',

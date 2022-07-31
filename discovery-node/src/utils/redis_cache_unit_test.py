@@ -96,18 +96,18 @@ def test_cache_decorator(redis_mock):
 
             @cache(ttl_sec=1, transform=transform)
             def mock_func_transform():
-                return "audius"
+                return "coliving"
 
             res = mock_func_transform()
-            assert res == {"music": "audius"}
+            assert res == {"music": "coliving"}
 
             cached_resp = redis_mock.get(mock_key_1)
             deserialized = json.loads(cached_resp)
-            assert deserialized == "audius"
+            assert deserialized == "coliving"
 
             # This should call the function and return the cached response
             res = mock_func_transform()
-            assert res == {"music": "audius"}
+            assert res == {"music": "coliving"}
 
             # Sleep to wait for the cache to expire
             sleep(1)

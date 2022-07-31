@@ -3,7 +3,7 @@ import "../InitializableV2.sol";
 import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/SafeERC20.sol";
 import "../Staking.sol";
-import "../AudiusAdminUpgradeabilityProxy.sol";
+import "../ColivingAdminUpgradeabilityProxy.sol";
 
 
 // TEST ONLY MOCK CONTRACT
@@ -116,15 +116,15 @@ contract MockStakingCaller is InitializableV2 {
     function upgradeStakingTo(address _newImplementation) external {
         _requireIsInitialized();
 
-        return AudiusAdminUpgradeabilityProxy(stakingAddress).upgradeTo(_newImplementation);
+        return ColivingAdminUpgradeabilityProxy(stakingAddress).upgradeTo(_newImplementation);
     }
 
-    function setStakingAudiusProxyAdminAddress(address _governanceAddress) external {
+    function setStakingColivingProxyAdminAddress(address _governanceAddress) external {
         _requireIsInitialized();
 
-        return AudiusAdminUpgradeabilityProxy(
+        return ColivingAdminUpgradeabilityProxy(
             stakingAddress
-        ).setAudiusProxyAdminAddress(_governanceAddress);
+        ).setColivingProxyAdminAddress(_governanceAddress);
     }
 
     /// @notice Used to check if is governance contract before setting governance address in other contracts
@@ -132,9 +132,9 @@ contract MockStakingCaller is InitializableV2 {
         return true;
     }
 
-    /// @notice Used to intentionally generate a function signature clash with AudiusAdminUpgradeabilityProxy
+    /// @notice Used to intentionally generate a function signature clash with ColivingAdminUpgradeabilityProxy
     ///         Returns current address instead of proxy admin address
-    function getAudiusProxyAdminAddress() external view returns (address) {
+    function getColivingProxyAdminAddress() external view returns (address) {
         return address(this);
     }
 }

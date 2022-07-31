@@ -33,7 +33,7 @@ npm i --save @/hedgehog
 
 ### Documentos & Ejemplos
 
-Echa un vistazo a nuestros documentos técnicos [](http://audiusproject.github.io/hedgehog-docs) y [api how to](http://audiusproject.github.io/hedgehog-docs#how-to).
+Echa un vistazo a nuestros documentos técnicos [](http://colivingproject.github.io/hedgehog-docs) y [api how to](http://colivingproject.github.io/hedgehog-docs#how-to).
 
 Para una demostración rápida del lado del navegador, [no busque más](https://codesandbox.io/embed/pp9zzv2n00). Para una demostración completa de autenticación de extremo a extremo, vea nuestra [demo repo](https://github.com/dgc.network/-hedgehog-demo).
 
@@ -85,4 +85,4 @@ if (hedgehog.isLoggedIn()) {
 Después de crear o recuperar la cartera de un usuario, usted puede **depositar directamente a su cartera** para pagar comisiones de transacción o **transmitir sus transacciones a través de un relayer EIP-712**.
 
 
-### 👉 [Profundizar en la documentación](https://audiusproject.github.io/hedgehog-docs/#installation)👈
+### 👉 [Profundizar en la documentación](https://colivingproject.github.io/hedgehog-docs/#installation)👈

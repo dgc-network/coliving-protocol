@@ -100,7 +100,7 @@ def search_tags():
 
     (limit, offset) = get_pagination_vars()
 
-    if os.getenv("audius_elasticsearch_search_enabled"):
+    if os.getenv("coliving_elasticsearch_search_enabled"):
         hits = search_tags_es(search_str, kind, current_user_id, limit, offset)
         return api_helpers.success_response(hits)
 
@@ -273,7 +273,7 @@ def search(args):
     `query`, `kind`, `current_user_id`, and `only_downloadable`
     """
 
-    if os.getenv("audius_elasticsearch_search_enabled"):
+    if os.getenv("coliving_elasticsearch_search_enabled"):
         try:
             resp = search_es_full(args)
             return resp

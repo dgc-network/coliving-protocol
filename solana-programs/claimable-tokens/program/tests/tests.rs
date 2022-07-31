@@ -73,7 +73,7 @@ pub fn init_test_variables() -> (
 fn assert_custom_error(
     res: Result<(), TransportError>,
     instruction_index: u8,
-    audius_error: ClaimableProgramError,
+    coliving_error: ClaimableProgramError,
 ) {
     match res {
         Err(TransportError::TransactionError(TransactionError::InstructionError(
@@ -81,7 +81,7 @@ fn assert_custom_error(
             InstructionError::Custom(v),
         ))) => {
             assert_eq!(idx, instruction_index);
-            assert_eq!(v, audius_error as u32);
+            assert_eq!(v, coliving_error as u32);
         }
         _ => panic!("Expected error not found"),
     }

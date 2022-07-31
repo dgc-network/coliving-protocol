@@ -7,7 +7,7 @@ if [[ "$WAIT_HOSTS" != "" ]]; then
     /usr/bin/wait
 fi
 
-# enable rsyslog if not explicitly disabled by audius-docker-compose
+# enable rsyslog if not explicitly disabled by coliving-docker-compose
 : "${enableRsyslog:=true}"
 
 # $enableRsyslog should be true
@@ -49,14 +49,14 @@ if [ -z "$dbUrl" ]; then
         echo "host all all 0.0.0.0/0 md5" >>/db/pg_hba.conf
         echo "listen_addresses = '*'" >>/db/postgresql.conf
         sudo -u postgres pg_ctl start -D /db
-        sudo -u postgres createdb audius_creator_node
+        sudo -u postgres createdb coliving_creator_node
     else
         sudo -u postgres pg_ctl start -D /db
     fi
 
     sudo -u postgres psql -c "ALTER USER postgres PASSWORD '${postgres_password:-postgres}';"
 
-    export dbUrl="postgres://postgres:${postgres_password:-postgres}@localhost:5432/audius_creator_node"
+    export dbUrl="postgres://postgres:${postgres_password:-postgres}@localhost:5432/coliving_creator_node"
     export WAIT_HOSTS="localhost:5432"
     /usr/bin/wait
 fi
@@ -67,11 +67,11 @@ fi
 
 if [[ "$devMode" == "true" ]]; then
     if [ "$link_libs" = true ]; then
-        cd ../audius-libs
+        cd ../coliving-libs
         npm link
         cd ../app
-        npm link @audius/sdk
-        npx nodemon --exec 'node --inspect=0.0.0.0:${debuggerPort} --require ts-node/register src/index.ts' --watch src/ --watch ../audius-libs/ | tee >(logger)
+        npm link @coliving/sdk
+        npx nodemon --exec 'node --inspect=0.0.0.0:${debuggerPort} --require ts-node/register src/index.ts' --watch src/ --watch ../coliving-libs/ | tee >(logger)
     else
         npx nodemon --exec 'node --inspect=0.0.0.0:${debuggerPort} --require ts-node/register src/index.ts' --watch src/ | tee >(logger)
     fi

@@ -4,7 +4,7 @@ import Footer from './Footer'
 import Notification from './notifications/Notification'
 import { notificationTypes as NotificationType } from '../constants'
 
-const AudiusImage = () => {
+const ColivingImage = () => {
   return (
     <img
       src='https://gallery.mailchimp.com/f351897a27ff0a641b8acd9ab/images/b1070e55-9487-4acb-abce-e755484cce46.png'
@@ -173,7 +173,7 @@ const Body = (props) => {
         <table align='center' border='0' cellpadding='0' cellspacing='0' width='100%' id='bodyTable' bgcolor='#FFFFFF' style={{ backgroundColor: '#FFFFFF' }}>
           <tr>
             <td align='center' valign='top' id='bodyCell'>
-              <AudiusImage />
+              <ColivingImage />
             </td>
           </tr>
           <tr>

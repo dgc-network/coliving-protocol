@@ -15,7 +15,7 @@ import * as config from '../../config'
  */
 
 // We add a namespace prefix to differentiate internal metrics from those exported by different exporters from the same host
-export const NAMESPACE_PREFIX = 'audius_cn'
+export const NAMESPACE_PREFIX = 'coliving_cn'
 
 // The interval at which to poll the bull queue
 export const QUEUE_INTERVAL = 1_000
@@ -150,11 +150,11 @@ export const METRIC_LABELS = Object.freeze({
     route: [
       // Routes that use write quorum but don't enforce it (ignoreWriteQuorum should be true):
       '/image_upload',
-      '/audius_users',
+      '/coliving_users',
       '/playlists',
       '/tracks',
       // Routes that strictly enforce write quorum (ignoreWriteQuorum should be false)
-      '/audius_users/metadata',
+      '/coliving_users/metadata',
       '/playlists/metadata',
       '/tracks/metadata'
     ],

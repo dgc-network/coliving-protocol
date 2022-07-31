@@ -79,7 +79,7 @@ describe('test updateReplicaSet job processor', function () {
     const autoSelectCreatorNodesStub = sandbox
       .stub()
       .resolves({ services: healthyNodes })
-    const audiusLibsStub = {
+    const colivingLibsStub = {
       ServiceProvider: {
         autoSelectCreatorNodes: autoSelectCreatorNodesStub
       },
@@ -93,7 +93,7 @@ describe('test updateReplicaSet job processor', function () {
       '../src/services/stateMachineManager/stateReconciliation/updateReplicaSet.jobProcessor.ts',
       {
         '../../../config': config,
-        '../../initAudiusLibs': sandbox.stub().resolves(audiusLibsStub),
+        '../../initColivingLibs': sandbox.stub().resolves(colivingLibsStub),
         './stateReconciliationUtils': {
           getNewOrExistingSyncReq: getNewOrExistingSyncReqStub
         },
@@ -120,7 +120,7 @@ describe('test updateReplicaSet job processor', function () {
       return { syncReqToEnqueue: args }
     })
 
-    // Stub audiusLibs to return all nodes as healthy except secondary1
+    // Stub colivingLibs to return all nodes as healthy except secondary1
     const healthyNodes = {
       [primary]: '',
       [secondary2]: '',
@@ -194,7 +194,7 @@ describe('test updateReplicaSet job processor', function () {
       throw new Error('This was not supposed to be called')
     })
 
-    // Stub audiusLibs to return all nodes as healthy except secondary1
+    // Stub colivingLibs to return all nodes as healthy except secondary1
     const healthyNodes = {
       [primary]: '',
       [secondary2]: '',
@@ -251,7 +251,7 @@ describe('test updateReplicaSet job processor', function () {
       throw new Error('This was not supposed to be called')
     })
 
-    // Stub audiusLibs to return all nodes as healthy except secondary1
+    // Stub colivingLibs to return all nodes as healthy except secondary1
     const healthyNodes = {
       [primary]: '',
       [secondary2]: '',

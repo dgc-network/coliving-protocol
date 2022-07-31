@@ -3,7 +3,7 @@ import * as _signatures from '../utils/signatures.js'
 
 const tokenRegKey = web3.utils.utf8ToHex('Token')
 
-contract('AudiusToken', async (accounts) => {
+contract('ColivingToken', async (accounts) => {
   let registry, token, governance
 
   // expected initial token values
@@ -317,7 +317,7 @@ contract('AudiusToken', async (accounts) => {
       // Confirm double-spend of same permit will fail
       await _lib.assertRevert(
         token.permit(approverAcct, spenderAcct, amount, deadline, result.v, result.r, result.s, {from: relayerAcct}),
-        'AudiusToken: Invalid signature'
+        'ColivingToken: Invalid signature'
       )
 
       // Submit updated permit request, with different amount - confirm success

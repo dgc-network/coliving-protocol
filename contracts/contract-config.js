@@ -26,7 +26,7 @@ module.exports = {
     bootstrapSPOwnerWallets: [],
     userReplicaSetBootstrapAddress: null
   },
-  audius_private: {
+  coliving_private: {
     verifierAddress: '0xbbbb93A6B3A1D6fDd27909729b95CCB0cc9002C0',
     blacklisterAddress: '0xbbbb93A6B3A1D6fDd27909729b95CCB0cc9002C0',
     bootstrapSPIds: [],

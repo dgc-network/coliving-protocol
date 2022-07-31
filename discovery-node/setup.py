@@ -1,4 +1,4 @@
-# Setup.py allows audius-discovery-node as a redistributable package
+# Setup.py allows coliving-discovery-node as a redistributable package
 # Currently, the repository is not configured as such but may be moving forward
 # https://caremad.io/posts/2013/07/setup-vs-requirement/
 import uuid
@@ -18,7 +18,7 @@ config = {
     "install_requires": requirements,
     "packages": find_packages(),
     "scripts": [],
-    "name": "audius_discovery_provider",
+    "name": "coliving_discovery_provider",
 }
 
 setup(**config)

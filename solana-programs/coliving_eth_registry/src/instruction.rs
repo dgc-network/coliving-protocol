@@ -22,7 +22,7 @@ pub struct SignatureData {
 /// Instructions supported by the Coliving program
 #[repr(C)]
 #[derive(Clone, BorshDeserialize, BorshSerialize)]
-pub enum AudiusInstruction {
+pub enum ColivingInstruction {
     ///   Create new signer group account
     ///
     ///   0. `[w]` New SignerGroup to create
@@ -85,7 +85,7 @@ pub fn init_signer_group(
     Ok(Instruction {
         program_id: *program_id,
         accounts,
-        data: AudiusInstruction::InitSignerGroup.try_to_vec()?,
+        data: ColivingInstruction::InitSignerGroup.try_to_vec()?,
     })
 }
 
@@ -97,7 +97,7 @@ pub fn init_valid_signer(
     groups_owner: &Pubkey,
     eth_pubkey: [u8; SecpSignatureOffsets::ETH_ADDRESS_SIZE],
 ) -> Result<Instruction, ProgramError> {
-    let args = AudiusInstruction::InitValidSigner(eth_pubkey);
+    let args = ColivingInstruction::InitValidSigner(eth_pubkey);
     let data = args.try_to_vec()?;
 
     let accounts = vec![
@@ -127,7 +127,7 @@ pub fn clear_valid_signer(
     Ok(Instruction {
         program_id: *program_id,
         accounts,
-        data: AudiusInstruction::ClearValidSigner.try_to_vec()?,
+        data: ColivingInstruction::ClearValidSigner.try_to_vec()?,
     })
 }
 
@@ -143,7 +143,7 @@ pub fn validate_multiple_signatures_clear_valid_signer(
     signature_data_2: SignatureData,
     signature_data_3: SignatureData,
 ) -> Result<Instruction, ProgramError> {
-    let args = AudiusInstruction::ValidateMultipleSignaturesClearValidSigner(
+    let args = ColivingInstruction::ValidateMultipleSignaturesClearValidSigner(
         signature_data_1,
         signature_data_2,
         signature_data_3,
@@ -172,7 +172,7 @@ pub fn validate_signature(
     signer_group: &Pubkey,
     signature_data: SignatureData,
 ) -> Result<Instruction, ProgramError> {
-    let args = AudiusInstruction::ValidateSignature(signature_data);
+    let args = ColivingInstruction::ValidateSignature(signature_data);
     let data = args.try_to_vec()?;
 
     let accounts = vec![
@@ -200,7 +200,7 @@ pub fn validate_multiple_signatures_add_signer(
     signature_data_3: SignatureData,
     eth_pubkey: [u8; SecpSignatureOffsets::ETH_ADDRESS_SIZE],
 ) -> Result<Instruction, ProgramError> {
-    let args = AudiusInstruction::ValidateMultipleSignaturesAddSigner(
+    let args = ColivingInstruction::ValidateMultipleSignaturesAddSigner(
         signature_data_1,
         signature_data_2,
         signature_data_3,
@@ -231,7 +231,7 @@ pub fn validate_signature_with_sysvar(
     sysvar_instruction: &Pubkey,
     signature_data: SignatureData,
 ) -> Result<Instruction, ProgramError> {
-    let args = AudiusInstruction::ValidateSignature(signature_data);
+    let args = ColivingInstruction::ValidateSignature(signature_data);
     let data = args.try_to_vec()?;
 
     let accounts = vec![
@@ -259,6 +259,6 @@ pub fn disable_signer_group_owner(
     Ok(Instruction {
         program_id: *program_id,
         accounts,
-        data: AudiusInstruction::DisableSignerGroupOwner.try_to_vec()?,
+        data: ColivingInstruction::DisableSignerGroupOwner.try_to_vec()?,
     })
 }

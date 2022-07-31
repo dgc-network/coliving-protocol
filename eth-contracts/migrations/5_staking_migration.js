@@ -3,10 +3,10 @@ const assert = require('assert')
 const contractConfig = require('../contract-config.js')
 const _lib = require('../utils/lib')
 
-const AudiusToken = artifacts.require('AudiusToken')
+const ColivingToken = artifacts.require('ColivingToken')
 const Staking = artifacts.require('Staking')
 const Governance = artifacts.require('Governance')
-const AudiusAdminUpgradeabilityProxy = artifacts.require('AudiusAdminUpgradeabilityProxy')
+const ColivingAdminUpgradeabilityProxy = artifacts.require('ColivingAdminUpgradeabilityProxy')
 
 const stakingProxyKey = web3.utils.utf8ToHex('StakingProxy')
 const governanceKey = web3.utils.utf8ToHex('Governance')
@@ -21,7 +21,7 @@ module.exports = (deployer, network, accounts) => {
     const tokenAddress = process.env.tokenAddress
     const governanceAddress = process.env.governanceAddress
 
-    const token = await AudiusToken.at(tokenAddress)
+    const token = await ColivingToken.at(tokenAddress)
     const governance = await Governance.at(governanceAddress)
 
     // Deploy Staking logic and proxy contracts + register proxy
@@ -32,7 +32,7 @@ module.exports = (deployer, network, accounts) => {
       [token.address, process.env.governanceAddress]
     )
     const stakingProxy = await deployer.deploy(
-      AudiusAdminUpgradeabilityProxy,
+      ColivingAdminUpgradeabilityProxy,
       staking0.address,
       process.env.governanceAddress,
       initializeCallData,

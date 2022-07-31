@@ -242,7 +242,7 @@ function formatSupportingRankUpEmail (notification, extras) {
   }
 }
 
-// Copied directly from AudiusClient
+// Copied directly from ColivingClient
 
 const notificationResponseMap = {
   [NotificationType.Follow]: formatFollow,

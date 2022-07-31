@@ -9,7 +9,7 @@ import "../InitializableV2.sol";
 
 
 /** Upgradeable ERC20 token that is Detailed, Mintable, Pausable, Burnable. */
-contract AudiusToken is InitializableV2,
+contract ColivingToken is InitializableV2,
     ERC20,
     ERC20Detailed,
     ERC20Mintable,
@@ -89,7 +89,7 @@ contract AudiusToken is InitializableV2,
         bytes32 s
     ) external {
         // solium-disable security/no-block-members
-        require(deadline >= block.timestamp, "AudiusToken: Deadline has expired");
+        require(deadline >= block.timestamp, "ColivingToken: Deadline has expired");
         bytes32 digest = keccak256(
             abi.encodePacked(
                 "\x19\x01",
@@ -100,7 +100,7 @@ contract AudiusToken is InitializableV2,
         address recoveredAddress = ecrecover(digest, v, r, s);
         require(
             recoveredAddress != address(0) && recoveredAddress == owner,
-            "AudiusToken: Invalid signature"
+            "ColivingToken: Invalid signature"
         );
         _approve(owner, spender, value);
     }

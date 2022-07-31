@@ -74,7 +74,7 @@ const contentBlacklistAddController = async (req) => {
     logger.debug(
       `ContentBlackListController - [add] checking ids existance in disc prov`
     )
-    const libs = req.app.get('audiusLibs')
+    const libs = req.app.get('colivingLibs')
     try {
       values = await filterNonexistantIds(libs, type, values)
     } catch (e) {
@@ -129,7 +129,7 @@ const contentBlacklistRemoveController = async (req) => {
     logger.debug(
       `ContentBlackListController - [remove] filtering out non-existant ids`
     )
-    const libs = req.app.get('audiusLibs')
+    const libs = req.app.get('colivingLibs')
     try {
       values = await filterNonexistantIds(libs, type, values)
     } catch (e) {

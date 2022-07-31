@@ -5,8 +5,8 @@ const secp256k1 = require('secp256k1')
 const borsh = require('borsh')
 
 const VALID_SIGNER = config.get('solanaValidSigner')
-const COLIVING_ETH_REGISTRY_PROGRAM = config.get('solanaAudiusEthRegistryAddress') ? new solanaWeb3.PublicKey(
-  config.get('solanaAudiusEthRegistryAddress')
+const COLIVING_ETH_REGISTRY_PROGRAM = config.get('solanaColivingEthRegistryAddress') ? new solanaWeb3.PublicKey(
+  config.get('solanaColivingEthRegistryAddress')
 ) : null
 const TRACK_LISTEN_PROGRAM = config.get('solanaTrackListenCountAddress') ? new solanaWeb3.PublicKey(
   config.get('solanaTrackListenCountAddress')

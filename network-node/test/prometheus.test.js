@@ -54,53 +54,53 @@ describe('test Prometheus metrics', async function () {
 
     assert.ok(
       resp.text.includes(
-        `audius_cn_http_request_duration_seconds_bucket{le="0.2",status_code="400",method="GET",path="/ipfs/:CID"} 2`
+        `coliving_cn_http_request_duration_seconds_bucket{le="0.2",status_code="400",method="GET",path="/ipfs/:CID"} 2`
       )
     )
 
     assert.ok(
       resp.text.includes(
-        `audius_cn_http_request_duration_seconds_bucket{le="0.5",status_code="400",method="GET",path="/ipfs/:CID"} 2`
+        `coliving_cn_http_request_duration_seconds_bucket{le="0.5",status_code="400",method="GET",path="/ipfs/:CID"} 2`
       )
     )
 
     assert.ok(
       resp.text.includes(
-        `audius_cn_http_request_duration_seconds_bucket{le="1",status_code="400",method="GET",path="/ipfs/:CID"} 2`
+        `coliving_cn_http_request_duration_seconds_bucket{le="1",status_code="400",method="GET",path="/ipfs/:CID"} 2`
       )
     )
 
     assert.ok(
       resp.text.includes(
-        `audius_cn_http_request_duration_seconds_bucket{le="4",status_code="400",method="GET",path="/ipfs/:CID"} 2`
+        `coliving_cn_http_request_duration_seconds_bucket{le="4",status_code="400",method="GET",path="/ipfs/:CID"} 2`
       )
     )
 
     assert.ok(
       resp.text.includes(
-        `audius_cn_http_request_duration_seconds_bucket{le="15",status_code="400",method="GET",path="/ipfs/:CID"} 2`
+        `coliving_cn_http_request_duration_seconds_bucket{le="15",status_code="400",method="GET",path="/ipfs/:CID"} 2`
       )
     )
     assert.ok(
       resp.text.includes(
-        `audius_cn_http_request_duration_seconds_bucket{le="60",status_code="400",method="GET",path="/ipfs/:CID"} 2`
+        `coliving_cn_http_request_duration_seconds_bucket{le="60",status_code="400",method="GET",path="/ipfs/:CID"} 2`
       )
     )
     assert.ok(
       resp.text.includes(
-        `audius_cn_http_request_duration_seconds_bucket{le="+Inf",status_code="400",method="GET",path="/ipfs/:CID"} 2`
-      )
-    )
-
-    assert.ok(
-      resp.text.includes(
-        `audius_cn_http_request_duration_seconds_sum{status_code="400",method="GET",path="/ipfs/:CID"}`
+        `coliving_cn_http_request_duration_seconds_bucket{le="+Inf",status_code="400",method="GET",path="/ipfs/:CID"} 2`
       )
     )
 
     assert.ok(
       resp.text.includes(
-        `audius_cn_http_request_duration_seconds_count{status_code="400",method="GET",path="/ipfs/:CID"} 2`
+        `coliving_cn_http_request_duration_seconds_sum{status_code="400",method="GET",path="/ipfs/:CID"}`
+      )
+    )
+
+    assert.ok(
+      resp.text.includes(
+        `coliving_cn_http_request_duration_seconds_count{status_code="400",method="GET",path="/ipfs/:CID"} 2`
       )
     )
 

@@ -271,7 +271,7 @@ export class DiscoveryProvider {
     // Note: retries are disabled here because the v1 API response returns a 404 instead
     // of an empty array, which can cause a retry storm.
     // TODO: Rewrite this API with something more effective, change makeRequest to
-    // support 404s and not retry & use AudiusAPIClient.
+    // support 404s and not retry & use ColivingAPIClient.
     return await this._makeRequest(
       Requests.getTracksByHandleAndSlug(handle, slug),
       /* retry */ false

@@ -225,7 +225,7 @@ services:
 
       solanaEndpoint: "http://solana-test-validator:8899"
       solanaTrackListenCountAddress: "${SOLANA_TRACK_LISTEN_COUNT_PUBLIC_KEY}"
-      solanaAudiusEthRegistryAddress: "${SOLANA_COLIVING_ETH_REGISTRY_PUBLIC_KEY}"
+      solanaColivingEthRegistryAddress: "${SOLANA_COLIVING_ETH_REGISTRY_PUBLIC_KEY}"
       solanaValidSigner: "${SOLANA_VALID_SIGNER_PUBLIC_KEY}"
       solanaFeePayerWallets: "[{\"privateKey\":${SOLANA_FEEPAYER_SECRET_KEY}}]"
       solanaSignerPrivateKey: "${ETH_VALID_SIGNER_PRIVATE_KEY}"
@@ -234,7 +234,7 @@ services:
       solanaRewardsManagerAddress: "${SOLANA_REWARD_MANAGER_PUBLIC_KEY}"
       solanaRewardsManagerProgramPDA: "${SOLANA_REWARD_MANAGER_PDA_PUBLIC_KEY}"
       solanaRewardsManagerTokenPDA: "${SOLANA_REWARD_MANAGER_TOKEN_PDA_PUBLIC_KEY}"
-      solanaAudiusAnchorDataProgramId: "${SOLANA_COLIVING_DATA_PUBLIC_KEY}"
+      solanaColivingAnchorDataProgramId: "${SOLANA_COLIVING_DATA_PUBLIC_KEY}"
     volumes:
       - ./identity-service/src:/usr/src/app/src
       - coliving-libs:/usr/src/coliving-libs
@@ -311,7 +311,7 @@ services:
       creatorNodeIsDebug: "true"
       debuggerPort: 10000
 
-      rateLimitingAudiusUserReqLimit: 3000
+      rateLimitingColivingUserReqLimit: 3000
       rateLimitingUserReqLimit: 3000
       rateLimitingMetadataReqLimit: 3000
       rateLimitingImageReqLimit: 6000

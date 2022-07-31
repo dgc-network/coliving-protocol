@@ -2,7 +2,7 @@ const { syncHealthCheck } = require('./syncHealthCheckComponentService')
 const assert = require('assert')
 
 const WALLET = 'wallet_addr'
-const SECONDARY = 'http:test-cn.audius.co'
+const SECONDARY = 'http:test-cn.coliving.co'
 
 describe('Test sync health check', function () {
   it('Should return active and waiting jobs', async function () {

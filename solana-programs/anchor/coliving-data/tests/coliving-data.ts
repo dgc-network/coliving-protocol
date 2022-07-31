@@ -20,7 +20,7 @@ import {
   randomId,
   convertBNToUserIdSeed,
 } from "../lib/utils";
-import { AudiusData } from "../target/types/coliving_data";
+import { ColivingData } from "../target/types/coliving_data";
 import {
   testCreateTrack,
   confirmLogInTransaction,
@@ -46,7 +46,7 @@ describe("coliving-data", function () {
   // Configure the client to use the local cluster.
   anchor.setProvider(anchor.AnchorProvider.env());
 
-  const program = anchor.workspace.AudiusData as Program<AudiusData>;
+  const program = anchor.workspace.ColivingData as Program<ColivingData>;
 
   const adminKeypair = anchor.web3.Keypair.generate();
   const adminAccountKeypair = anchor.web3.Keypair.generate();
@@ -98,7 +98,7 @@ describe("coliving-data", function () {
     );
     expect(accountPubKeys[2]).to.equal(SystemProgram.programId.toString());
 
-    const adminAccount = await program.account.audiusAdmin.fetch(
+    const adminAccount = await program.account.colivingAdmin.fetch(
       adminAccountKeypair.publicKey
     );
 

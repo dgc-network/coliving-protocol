@@ -9,7 +9,7 @@ const assert = require('assert')
 const contractConfig = require('../contract-config.js')
 const _lib = require('../utils/lib')
 
-const AudiusAdminUpgradeabilityProxy = artifacts.require('AudiusAdminUpgradeabilityProxy')
+const ColivingAdminUpgradeabilityProxy = artifacts.require('ColivingAdminUpgradeabilityProxy')
 const DelegateManagerV2 = artifacts.require('DelegateManagerV2')
 const Governance = artifacts.require('Governance')
 
@@ -43,7 +43,7 @@ module.exports = (deployer, network, accounts) => {
      * Confirm proxy is re-pointed to new logic contract
      */
     const delegateManagerAddress = process.env.delegateManagerAddress
-    const delegateManagerProxy = await AudiusAdminUpgradeabilityProxy.at(delegateManagerAddress)
+    const delegateManagerProxy = await ColivingAdminUpgradeabilityProxy.at(delegateManagerAddress)
     assert.strictEqual(
       await delegateManagerProxy.implementation.call({ from: proxyAdminAddress }),
       delegateManagerV2Logic.address

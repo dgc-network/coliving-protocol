@@ -336,7 +336,7 @@ export class Track extends Base {
    * false.
    * Uploads file, retrieves multihash, adds multihash to input metadata object,
    * uploads metadata, and finally returns metadata multihash
-   * Wraps the stateless function in AudiusLib.
+   * Wraps the stateless function in ColivingLib.
    *
    * @param trackFile ReadableStream from server, or File handle on client
    * @param coverArtFile ReadableStream from server, or File handle on client

@@ -4,7 +4,7 @@ const fs = require('fs-extra')
 const path = require('path')
 
 const { logger: genericLogger } = require('./logging')
-const { libs } = require('@audius/sdk')
+const { libs } = require('@coliving/sdk')
 const Utils = libs.Utils
 const DiskManager = require('./diskManager')
 

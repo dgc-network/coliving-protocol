@@ -4,13 +4,13 @@ services:
     image: postgres:11.1
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_DB: audius_creator_node
+      POSTGRES_DB: coliving_creator_node
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     ports:
       - '${CREATOR_NODE_DB_HOST_PORT}:5432'
     networks:
-      - audius_dev
+      - coliving_dev
   network-node:
     build: ../.
     depends_on:
@@ -18,7 +18,7 @@ services:
       - network-node-redis
     environment:
       - redisHost=${COMPOSE_PROJECT_NAME}_network-node-redis_1
-      - dbUrl=postgres://postgres:postgres@${COMPOSE_PROJECT_NAME}_network-node-db_1:5432/audius_creator_node
+      - dbUrl=postgres://postgres:postgres@${COMPOSE_PROJECT_NAME}_network-node-db_1:5432/coliving_creator_node
       - WAIT_HOSTS=${COMPOSE_PROJECT_NAME}_network-node-db_1:5432, ${COMPOSE_PROJECT_NAME}_network-node-redis_1:6379
       - port=${CREATOR_NODE_HOST_PORT}
       - debuggerPort=${CREATOR_NODE_DEBUGGER_PORT}
@@ -41,23 +41,23 @@ services:
       # Prevent hiding node_modules on container with host volume
       # From https://github.com/barrysteyn/node-scrypt/issues/148
       - /usr/src/app/node_modules
-      # Mount audius libs as a directory
-      - ../../libs:/usr/src/audius-libs
+      # Mount coliving libs as a directory
+      - ../../libs:/usr/src/coliving-libs
       # Mount solana-programs
       - ../../solana-programs:/usr/src/solana-programs
     networks:
-      - audius_dev
+      - coliving_dev
   network-node-redis:
     image: redis:5.0.4
     ports:
       - '${CREATOR_NODE_REDIS_HOST_PORT}:6379'
     networks:
-      - audius_dev
+      - coliving_dev
 
 volumes:
   postgres_data:
   file_storage:
 
 networks:
-  audius_dev:
+  coliving_dev:
     external: true

@@ -3,7 +3,7 @@ const contractConfig = require('../contract-config.js')
 const _lib = require('../utils/lib')
 const Registry = artifacts.require('Registry')
 const ClaimsManager = artifacts.require('ClaimsManager')
-const AudiusAdminUpgradeabilityProxy = artifacts.require('AudiusAdminUpgradeabilityProxy')
+const ColivingAdminUpgradeabilityProxy = artifacts.require('ColivingAdminUpgradeabilityProxy')
 const Governance = artifacts.require('Governance')
 const Staking = artifacts.require('Staking')
 
@@ -39,7 +39,7 @@ module.exports = (deployer, network, accounts) => {
       [tokenAddress, process.env.governanceAddress]
     )
     const claimsManagerProxy = await deployer.deploy(
-      AudiusAdminUpgradeabilityProxy,
+      ColivingAdminUpgradeabilityProxy,
       claimsManager0.address,
       governanceAddress,
       initializeCallData,

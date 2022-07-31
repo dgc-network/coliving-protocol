@@ -14,7 +14,7 @@ type UserStateManagerConfig = {
 
 /**
  * Singleton class to store the current user if initialized.
- * Some instances of AudiusLibs and services require a current user to
+ * Some instances of ColivingLibs and services require a current user to
  * return valid queries, e.g. requesting the a discprov to return a reposted track.
  */
 export class UserStateManager {

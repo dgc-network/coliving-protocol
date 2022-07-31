@@ -68,7 +68,7 @@ var AnnouncementHeader = function AnnouncementHeader() {
   }, 'Announcement')));
 };
 
-var OpenAudiusLink = function OpenAudiusLink() {
+var OpenColivingLink = function OpenColivingLink() {
   return /*#__PURE__*/_react["default"].createElement("a", {
     className: 'avenir',
     style: {
@@ -251,7 +251,7 @@ var Body = function Body(props) {
     style: {
       padding: '0px 16px 14px'
     }
-  }, /*#__PURE__*/_react["default"].createElement(OpenAudiusLink, null))))))));
+  }, /*#__PURE__*/_react["default"].createElement(OpenColivingLink, null))))))));
 };
 
 var _default = Body;

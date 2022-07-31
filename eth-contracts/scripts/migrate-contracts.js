@@ -2,12 +2,12 @@ const fs = require('fs-extra')
 const path = require('path')
 const os = require('os')
 
-const AudiusToken = artifacts.require('AudiusToken')
+const ColivingToken = artifacts.require('ColivingToken')
 
-const AudiusIdentityService = 'identity-service'
-const AudiusCreatorNode = 'network-node'
-const AudiusEthContracts = 'eth-contracts'
-const AudiusDiscoveryNode = 'discovery-node'
+const ColivingIdentityService = 'identity-service'
+const ColivingCreatorNode = 'network-node'
+const ColivingEthContracts = 'eth-contracts'
+const ColivingDiscoveryNode = 'discovery-node'
 
 const Libs = 'libs'
 
@@ -57,11 +57,11 @@ async function createDir (dir) {
 
 /**
  * Create config file in outputFilePath
- * config file contains deployed AudiusToken and Registry contract addresses, and ownerWallet
+ * config file contains deployed ColivingToken and Registry contract addresses, and ownerWallet
  */
 const outputJsonConfigFile = async (outputFilePath) => {
   try {
-    let migrationOutputPath = path.join(getDirectoryRoot(AudiusEthContracts), 'migrations', 'migration-output.json')
+    let migrationOutputPath = path.join(getDirectoryRoot(ColivingEthContracts), 'migrations', 'migration-output.json')
     if (!fs.existsSync(migrationOutputPath)) {
       console.log('Failed to find migration output')
       throw new Error('Failed to find migration output')
@@ -89,7 +89,7 @@ const outputJsonConfigFile = async (outputFilePath) => {
   try {
     // Pull registry address from config because artifacts will require the updated
     // version after a migration resuses the registry
-    let migrationOutputPath = path.join(getDirectoryRoot(AudiusEthContracts), 'migrations', 'migration-output.json')
+    let migrationOutputPath = path.join(getDirectoryRoot(ColivingEthContracts), 'migrations', 'migration-output.json')
     if (!fs.existsSync(migrationOutputPath)) {
       console.log('Failed to find migration output')
       throw new Error('Failed to find migration output')
@@ -132,27 +132,27 @@ module.exports = async callback => {
 
   // output to Identity Service
   try {
-    await outputJsonConfigFile(path.join(getDirectoryRoot(AudiusIdentityService), '/eth-contract-config.json'))
+    await outputJsonConfigFile(path.join(getDirectoryRoot(ColivingIdentityService), '/eth-contract-config.json'))
   } catch (e) {
     console.log("Identity service doesn't exist", e)
   }
 
   // output to Content Node
   try {
-    await outputJsonConfigFile(path.join(getDirectoryRoot(AudiusCreatorNode), '/eth-contract-config.json'))
+    await outputJsonConfigFile(path.join(getDirectoryRoot(ColivingCreatorNode), '/eth-contract-config.json'))
   } catch (e) {
     console.log("Creator node doesn't exist", e)
   }
 
   // output to Discovery Node
   try {
-    const discProvOutputPath = path.join(getDirectoryRoot(AudiusDiscoveryNode), 'build', 'eth-contracts')
+    const discProvOutputPath = path.join(getDirectoryRoot(ColivingDiscoveryNode), 'build', 'eth-contracts')
 
     // Copy build directory
     await copyBuildDirectory(discProvOutputPath)
 
     const flaskConfigPath = path.join(
-      getDirectoryRoot(AudiusDiscoveryNode),
+      getDirectoryRoot(ColivingDiscoveryNode),
       'eth_contract_config.ini'
     )
     // Write updated flask config file

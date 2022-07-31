@@ -27,18 +27,18 @@ Network Monitoring is intended to be run alongside a discovery node. Although it
 Network Monitoring is configured with a set of environment variables. Before running the service, these need to be configured appropriately.
 
 ```sh
-# audius-protocol/discovery-node/plugins/network-monitoring/env.prod
+# coliving-protocol/discovery-node/plugins/network-monitoring/env.prod
 
 # Credentials for the network monitoring DB
 DB_HOST=network-monitoring-db
-DB_NAME=audius_network_monitoring
+DB_NAME=coliving_network_monitoring
 DB_USERNAME=""
 DB_PASSWORD=""
 DB_PORT=5444
 
 # Credentials for the discovery-node DB
 FDB_HOST=""
-FDB_NAME=audius_discovery
+FDB_NAME=coliving_discovery
 FDB_USERNAME=""
 FDB_PASSWORD=""
 FDB_PORT=5432
@@ -77,11 +77,11 @@ By default, this will run every service which includes
 - prometheus push-gateway
 
 ```bash
-# Clone the audius protocol repo
-git clone https://github.com/dgc.network/audius-protocol.git
+# Clone the coliving protocol repo
+git clone https://github.com/dgc.network/coliving-protocol.git
 
 # Navigate to network monitoring
-cd audius-protocol/discovery-provder/plugins/network-monitoring
+cd coliving-protocol/discovery-provder/plugins/network-monitoring
 
 # Run services
 docker-compose up --build -d

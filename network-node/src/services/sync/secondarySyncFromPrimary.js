@@ -533,14 +533,14 @@ const handleSyncFromPrimary = async (
         )
         logger.info(logPrefix, 'Saved all track File entries to DB')
 
-        await models.AudiusUser.bulkCreate(
-          fetchedCNodeUser.audiusUsers.map((audiusUser) => ({
-            ...audiusUser,
+        await models.ColivingUser.bulkCreate(
+          fetchedCNodeUser.colivingUsers.map((colivingUser) => ({
+            ...colivingUser,
             cnodeUserUUID
           })),
           { transaction }
         )
-        logger.info(logPrefix, 'Saved all AudiusUser entries to DB')
+        logger.info(logPrefix, 'Saved all ColivingUser entries to DB')
 
         await transaction.commit()
 

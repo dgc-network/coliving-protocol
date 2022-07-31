@@ -136,7 +136,7 @@ export interface AssociatedWalletRow {
   'user_id': number;
   'wallet': string;
 }
-export interface AudiusDataTxRow {
+export interface ColivingDataTxRow {
   'signature': string;
   'slot': number;
 }

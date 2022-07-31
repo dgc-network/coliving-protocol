@@ -79,11 +79,11 @@ None
 Example:
 
 ```js title="script.js"
-function logInWithAudius() {
-  audiusSdk.oauth.login();
+function logInWithColiving() {
+  colivingSdk.oauth.login();
 }
 ```
 
 ```html title="index.html"
-<button onclick="logInWithAudius()">Log In with Coliving!</button>
+<button onclick="logInWithColiving()">Log In with Coliving!</button>
 ```

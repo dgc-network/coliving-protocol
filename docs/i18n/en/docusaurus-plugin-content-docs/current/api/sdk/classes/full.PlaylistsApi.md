@@ -19,7 +19,7 @@ Example:
 
 ```typescript
 
-const playlist = await audiusSdk.playlists.getPlaylist({
+const playlist = await colivingSdk.playlists.getPlaylist({
     playlistId: "AxRP0",
 });
 
@@ -47,7 +47,7 @@ Example:
 
 ```typescript
 
-const playlists = await audiusSdk.playlists.getTrendingPlaylists();
+const playlists = await colivingSdk.playlists.getTrendingPlaylists();
 
 ```
 

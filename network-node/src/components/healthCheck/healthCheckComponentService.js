@@ -48,8 +48,8 @@ const healthCheck = async (
   const snapbackModuloBase = config.get('snapbackModuloBase')
   const manualSyncsDisabled = config.get('manualSyncsDisabled')
 
-  // expose audiusInfraStack to see how node is being run
-  const audiusContentInfraSetup = config.get('audiusContentInfraSetup')
+  // expose colivingInfraStack to see how node is being run
+  const colivingContentInfraSetup = config.get('colivingContentInfraSetup')
 
   // System information
   const [
@@ -140,7 +140,7 @@ const healthCheck = async (
     spOwnerWallet: config.get('spOwnerWallet'),
     isRegisteredOnURSM: config.get('isRegisteredOnURSM'),
     dataProviderUrl: config.get('dataProviderUrl'),
-    audiusContentInfraSetup,
+    colivingContentInfraSetup,
     numberOfCPUs,
     totalMemory,
     storagePathSize,

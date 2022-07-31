@@ -1,7 +1,7 @@
 #![cfg(feature = "test-bpf")]
 
 mod utils;
-use audius_reward_manager::instruction;
+use coliving_reward_manager::instruction;
 use solana_sdk::{signature::Keypair, transaction::TransactionError, transport::TransportError};
 
 use solana_program_test::*;
@@ -24,7 +24,7 @@ async fn success_change_manager() {
 
     let tx = Transaction::new_signed_with_payer(
         &[instruction::change_manager_authority(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &manager_account.pubkey(),
             &new_manager.pubkey(),
@@ -38,7 +38,7 @@ async fn success_change_manager() {
     context.banks_client.process_transaction(tx).await.unwrap();
 
     assert_eq!(
-        audius_reward_manager::state::RewardManager::new(
+        coliving_reward_manager::state::RewardManager::new(
             token_account.pubkey(),
             new_manager.pubkey(),
             min_votes
@@ -66,7 +66,7 @@ async fn failure_change_manager_bad_manager() {
 
     let tx = Transaction::new_signed_with_payer(
         &[instruction::change_manager_authority(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &bad_reward_manager.pubkey(),
             &manager_account.pubkey(),
             &new_manager.pubkey(),
@@ -105,7 +105,7 @@ async fn failure_change_manager_authority_bad_authority() {
 
     let tx = Transaction::new_signed_with_payer(
         &[instruction::change_manager_authority(
-            &audius_reward_manager::id(),
+            &coliving_reward_manager::id(),
             &reward_manager.pubkey(),
             &bad_authority.pubkey(),
             &new_manager.pubkey(),

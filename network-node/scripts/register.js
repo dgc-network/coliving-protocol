@@ -1,21 +1,21 @@
-const AudiusLibs = require("@audius/libs");
+const ColivingLibs = require("@coliving/libs");
 const config = require("../src/config");
 const axios = require("axios");
 const BN = require("bn.js");
 
 async function main() {
-  const ethWeb3 = await AudiusLibs.Utils.configureWeb3(
+  const ethWeb3 = await ColivingLibs.Utils.configureWeb3(
     config.get("ethProviderUrl"),
     config.get("ethNetworkId"),
     /* requiresAccount */ false,
   );
   
   if (!ethWeb3) {
-    throw new Error("Failed to init audiusLibs due to ethWeb3 configuration error");
+    throw new Error("Failed to init colivingLibs due to ethWeb3 configuration error");
   }
   
-  const audiusLibs = new AudiusLibs({
-    ethWeb3Config: AudiusLibs.configEthWeb3(
+  const colivingLibs = new ColivingLibs({
+    ethWeb3Config: ColivingLibs.configEthWeb3(
       config.get("ethTokenAddress"),
       config.get("ethRegistryAddress"),
       ethWeb3,
@@ -24,7 +24,7 @@ async function main() {
     isDebug: true,
   });
 
-  await audiusLibs.init();
+  await colivingLibs.init();
 
   // Wait for node to be healthy
   let healthy = false;
@@ -47,7 +47,7 @@ async function main() {
     }
   }
 
-  const tx = await audiusLibs.ethContracts.ServiceProviderFactoryClient.register(
+  const tx = await colivingLibs.ethContracts.ServiceProviderFactoryClient.register(
     "content-node",
     config.get("creatorNodeEndpoint"),
     new BN("200000000000000000000000"),

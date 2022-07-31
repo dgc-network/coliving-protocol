@@ -26,7 +26,7 @@ def resolve_url(session, url):
     Accepts fully formed urls as well as just url paths.
     """
     parsed = urlparse(url)
-    # Will strip out any preceding protocol & domain (e.g. https://audius.co)
+    # Will strip out any preceding protocol & domain (e.g. https://coliving.co)
     path = parsed.path
 
     match = track_url_regex.match(path)

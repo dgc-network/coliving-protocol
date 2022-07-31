@@ -20,7 +20,7 @@ const create = require('./mockNotifications/create.json')
 const trendingTrack = require('./mockNotifications/trendingTrack.json')
 const challengeReward = require('./mockNotifications/challengeReward.json')
 
-const mockAudiusLibs = require('./mockLibs')
+const mockColivingLibs = require('./mockLibs')
 const { deviceType } = require('../../src/notifications/constants')
 
 describe('Test Send Notifications', function () {
@@ -44,7 +44,7 @@ describe('Test Send Notifications', function () {
 
     const tx1 = await models.sequelize.transaction()
     await processNotifications(remixCreate, tx1)
-    await sendNotifications(mockAudiusLibs, remixCreate, tx1)
+    await sendNotifications(mockColivingLibs, remixCreate, tx1)
     await tx1.commit()
     let pushNotifications = pushNotificationQueue.PUSH_NOTIFICATIONS_BUFFER
 
@@ -71,7 +71,7 @@ describe('Test Send Notifications', function () {
     // 'should have the correct remix cosign notifications'
     const tx1 = await models.sequelize.transaction()
     await processNotifications(remixCosign, tx1)
-    await sendNotifications(mockAudiusLibs, remixCosign, tx1)
+    await sendNotifications(mockColivingLibs, remixCosign, tx1)
     await tx1.commit()
 
     const pushNotifications = pushNotificationQueue.PUSH_NOTIFICATIONS_BUFFER
@@ -95,7 +95,7 @@ describe('Test Send Notifications', function () {
 
     const tx1 = await models.sequelize.transaction()
     await processNotifications(follow, tx1)
-    await sendNotifications(mockAudiusLibs, follow, tx1)
+    await sendNotifications(mockColivingLibs, follow, tx1)
     await tx1.commit()
 
     const pushNotifications = pushNotificationQueue.PUSH_NOTIFICATIONS_BUFFER
@@ -125,7 +125,7 @@ describe('Test Send Notifications', function () {
 
     const tx1 = await models.sequelize.transaction()
     await processNotifications(repost, tx1)
-    await sendNotifications(mockAudiusLibs, repost, tx1)
+    await sendNotifications(mockColivingLibs, repost, tx1)
     await tx1.commit()
 
     const pushNotifications = pushNotificationQueue.PUSH_NOTIFICATIONS_BUFFER
@@ -155,7 +155,7 @@ describe('Test Send Notifications', function () {
 
     const tx1 = await models.sequelize.transaction()
     await processNotifications(favorite, tx1)
-    await sendNotifications(mockAudiusLibs, favorite, tx1)
+    await sendNotifications(mockColivingLibs, favorite, tx1)
     await tx1.commit()
 
     const pushNotifications = pushNotificationQueue.PUSH_NOTIFICATIONS_BUFFER
@@ -188,7 +188,7 @@ describe('Test Send Notifications', function () {
     )
 
     const tx1 = await models.sequelize.transaction()
-    await processTrendingTracks(mockAudiusLibs, 1, trendingTrack, tx1)
+    await processTrendingTracks(mockColivingLibs, 1, trendingTrack, tx1)
     await tx1.commit()
 
     const pushNotifications = pushNotificationQueue.PUSH_NOTIFICATIONS_BUFFER
@@ -225,7 +225,7 @@ describe('Test Send Notifications', function () {
 
     const tx1 = await models.sequelize.transaction()
     await processNotifications(create, tx1)
-    await sendNotifications(mockAudiusLibs, create, tx1)
+    await sendNotifications(mockColivingLibs, create, tx1)
     await tx1.commit()
 
     let pushNotifications = pushNotificationQueue.PUSH_NOTIFICATIONS_BUFFER
@@ -235,7 +235,7 @@ describe('Test Send Notifications', function () {
     // Wait 60 seconds to debounce tracks / album notifications
     await new Promise(resolve => setTimeout(resolve, 5 * 1000))
     const tx2 = await models.sequelize.transaction()
-    await sendNotifications(mockAudiusLibs, [], tx2)
+    await sendNotifications(mockColivingLibs, [], tx2)
     await tx2.commit()
 
     pushNotifications = pushNotificationQueue.PUSH_NOTIFICATIONS_BUFFER
@@ -270,7 +270,7 @@ describe('Test Send Notifications', function () {
   it('should have the correct reward notifications', async function () {
     const tx1 = await models.sequelize.transaction()
     await processNotifications(challengeReward, tx1)
-    await sendNotifications(mockAudiusLibs, challengeReward, tx1)
+    await sendNotifications(mockColivingLibs, challengeReward, tx1)
     await tx1.commit()
 
     let pushNotifications = pushNotificationQueue.PUSH_SOLANA_NOTIFICATIONS_BUFFER
@@ -327,7 +327,7 @@ describe('Test Send Notifications', function () {
       mockNotifications.push(mockNotification)
     }
     await processNotifications(mockNotifications, tx1)
-    await sendNotifications(mockAudiusLibs, mockNotifications, tx1)
+    await sendNotifications(mockColivingLibs, mockNotifications, tx1)
     await tx1.commit()
 
     let pushNotifications = pushNotificationQueue.PUSH_NOTIFICATIONS_BUFFER
@@ -337,7 +337,7 @@ describe('Test Send Notifications', function () {
     // Wait 60 seconds to debounce tracks / album notifications
     await new Promise(resolve => setTimeout(resolve, 5 * 1000))
     const tx2 = await models.sequelize.transaction()
-    await sendNotifications(mockAudiusLibs, [], tx2)
+    await sendNotifications(mockColivingLibs, [], tx2)
     await tx2.commit()
 
     pushNotifications = pushNotificationQueue.PUSH_NOTIFICATIONS_BUFFER

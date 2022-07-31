@@ -1,4 +1,4 @@
-const { libs } = require('@audius/sdk')
+const { libs } = require('@coliving/sdk')
 const Utils = libs.Utils
 const resizeImageJob = require('../src/resizeImage')
 const config = require('../src/config')
@@ -9,15 +9,15 @@ const path = require('path')
 const sinon = require('sinon')
 const assert = require('assert')
 
-// Image buffer for audiusDj.png test image
+// Image buffer for colivingDj.png test image
 const imageTestDir = 'resizeImageAssets'
 const imageBuffer = fs.readFileSync(
-  path.join(__dirname, imageTestDir, 'audiusDj.png')
+  path.join(__dirname, imageTestDir, 'colivingDj.png')
 )
 
 const storagePath = config.get('storagePath')
 
-// CIDs for audiusDj.png
+// CIDs for colivingDj.png
 const DIR_CID_SQUARE = 'QmNfiyESzN4rNQikeHUiF4HBfAEKF38DTo1JtiDMukqwE9'
 const CID_1000 = 'QmZg29dJohTJdNodaiLrKcdTBhRhnbHcCijt3i88juyKzh'
 const CID_480 = 'QmcThUoKmADpRZmQCNa8W88tcBCHjhSpU8qCWRETks7bAR'
@@ -41,7 +41,7 @@ describe('test resizeImage', () => {
     const job = {
       data: {
         file: imageBuffer,
-        fileName: 'audiusDj',
+        fileName: 'colivingDj',
         storagePath,
         sizes: {
           '150x150.jpg': 150,
@@ -78,7 +78,7 @@ describe('test resizeImage', () => {
     const job = {
       data: {
         file: imageBuffer,
-        fileName: 'audiusDj',
+        fileName: 'colivingDj',
         storagePath,
         sizes: {
           '150x150.jpg': 150,
@@ -106,7 +106,7 @@ describe('test resizeImage', () => {
     const job = {
       data: {
         file: imageBuffer,
-        fileName: 'audiusDj',
+        fileName: 'colivingDj',
         storagePath: 'some/storage/path',
         sizes: {
           '150x150.jpg': 150,
@@ -141,7 +141,7 @@ describe('test resizeImage', () => {
     const job = {
       data: {
         file: imageBuffer,
-        fileName: 'audiusDj',
+        fileName: 'colivingDj',
         storagePath,
         sizes: {
           '150x150.jpg': 150,
@@ -204,7 +204,7 @@ describe('test resizeImage', () => {
     const job = {
       data: {
         file: imageBuffer,
-        fileName: 'audiusDj',
+        fileName: 'colivingDj',
         storagePath,
         sizes: {
           '640x.jpg': 640,

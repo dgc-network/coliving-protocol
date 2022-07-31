@@ -37,13 +37,13 @@ npm install web3 @/sdk
 ```js
 import { sdk } from '@/sdk'
 
-const audiusSdk = sdk({ appName: 'Name of your app goes here' })
+const colivingSdk = sdk({ appName: 'Name of your app goes here' })
 ```
 
 #### 3. Make your first API call using the SDK!
 
 ```js
-const track = await audiusSdk.tracks.getTrack({ trackId: 'D7KyD' })
+const track = await colivingSdk.tracks.getTrack({ trackId: 'D7KyD' })
 console.log(track, 'Track fetched!')
 ```
 
@@ -56,9 +56,9 @@ import { sdk } from '@/sdk'
 // If running in a browser, set window.Web3
 window.Web3 = Web3
 
-const audiusSdk = sdk({ appName: 'Name of your app goes here' })
+const colivingSdk = sdk({ appName: 'Name of your app goes here' })
 
-const track = await audiusSdk.tracks.getTrack({ trackId: 'D7KyD' })
+const track = await colivingSdk.tracks.getTrack({ trackId: 'D7KyD' })
 console.log(track, 'Track fetched!')
 ```
 
@@ -73,18 +73,18 @@ console.log(track, 'Track fetched!')
 <script src="https://cdn.jsdelivr.net/npm/@/sdk@latest/dist/sdk.min.js"></script>
 ```
 
-The Coliving SDK will then be assigned to `window.audiusSdk`.
+The Coliving SDK will then be assigned to `window.colivingSdk`.
 
 #### 2. Initialize the SDK
 
 ```js
-const audiusSdk = window.audiusSdk({ appName: 'Name of your app goes here' })
+const colivingSdk = window.colivingSdk({ appName: 'Name of your app goes here' })
 ```
 
 #### 3. Make your first API call using the SDK!
 
 ```js
-const track = await audiusSdk.tracks.getTrack({ trackId: 'D7KyD' })
+const track = await colivingSdk.tracks.getTrack({ trackId: 'D7KyD' })
 ```
 
 #### Full example
@@ -97,10 +97,10 @@ const track = await audiusSdk.tracks.getTrack({ trackId: 'D7KyD' })
     <script src="https://cdn.jsdelivr.net/npm/@/sdk@latest/dist/sdk.min.js"></script>
     <script>
     	const fn = async () => {
-        const audiusSdk = window.audiusSdk({
+        const colivingSdk = window.colivingSdk({
           appName: "My Example App",
         });
-        const track = await audiusSdk.tracks.getTrack({ trackId: 'D7KyD' });
+        const track = await colivingSdk.tracks.getTrack({ trackId: 'D7KyD' });
         console.log(track, "Track fetched!");
       }
       fn()

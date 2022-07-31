@@ -2,7 +2,7 @@ import Web3 from "web3";
 import { AnchorProvider, Program, web3 } from "@project-serum/anchor";
 import NodeWallet from "@project-serum/anchor/dist/cjs/nodewallet";
 import { Connection, PublicKey, Keypair, SystemProgram } from "@solana/web3.js";
-import { AudiusData } from "../target/types/coliving_data";
+import { ColivingData } from "../target/types/coliving_data";
 import * as anchor from "@project-serum/anchor";
 import {
   initAdmin,
@@ -36,7 +36,7 @@ import toml from "toml";
 
 const EthWeb3 = new Web3();
 
-const COLIVING_PROD_RPC_POOL = "https://audius.rpcpool.com/";
+const COLIVING_PROD_RPC_POOL = "https://coliving.rpcpool.com/";
 const LOCALHOST_RPC_POOL = "http://localhost:8899";
 const SYSTEM_PROGRAM_ID = SystemProgram.programId;
 
@@ -69,7 +69,7 @@ function initializeCLI(network: string, ownerKeypairPath: string) {
     idl.metadata = { address: anchorToml.programs.localnet.coliving_data };
   }
   const programID = new PublicKey(idl.metadata.address);
-  const program = new Program<AudiusData>(idl, programID, provider);
+  const program = new Program<ColivingData>(idl, programID, provider);
   console.log(`Using programID=${programID}`);
   return {
     network,
@@ -409,7 +409,7 @@ const userSolKeypair = options.userSolanaKeypair
   ? keypairFromFilePath(options.userSolanaKeypair)
   : anchor.web3.Keypair.generate();
 
-// Verifier keypair for audius admin
+// Verifier keypair for coliving admin
 const verifierKeypair = options.verifierKeypair
   ? keypairFromFilePath(options.verifierKeypair)
   : anchor.web3.Keypair.generate();

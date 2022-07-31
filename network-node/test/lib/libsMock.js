@@ -81,7 +81,7 @@ function getLibsMock() {
       switch (spID) {
         case 2:
           return {
-            endpoint: 'http://mock-cn2.audius.co',
+            endpoint: 'http://mock-cn2.coliving.co',
             owner: '0xBdb47ebFF0eAe1A7647D029450C05666e22864Fb',
             spID: '2',
             type: 'content-node',
@@ -91,7 +91,7 @@ function getLibsMock() {
 
         case 3:
           return {
-            endpoint: 'http://mock-cn3.audius.co',
+            endpoint: 'http://mock-cn3.coliving.co',
             owner: '0x1Fffaa556B42f4506cdb01D7BbE6a9bDbb0E5f36',
             spID: '3',
             type: 'content-node',
@@ -101,7 +101,7 @@ function getLibsMock() {
 
         case 1:
           return {
-            endpoint: 'http://mock-cn1.audius.co',
+            endpoint: 'http://mock-cn1.coliving.co',
             owner: '0x1eC723075E67a1a2B6969dC5CfF0C6793cb36D25',
             spID: '1',
             type: 'content-node',
@@ -124,7 +124,7 @@ function getLibsMock() {
   libsMock.User.getUsers.returns([
     {
       creator_node_endpoint:
-        'http://mock-cn1.audius.co,http://mock-cn2.audius.co,http://mock-cn3.audius.co',
+        'http://mock-cn1.coliving.co,http://mock-cn2.coliving.co,http://mock-cn3.coliving.co',
       blocknumber: 10,
       track_blocknumber: 10
     }

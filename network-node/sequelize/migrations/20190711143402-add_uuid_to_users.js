@@ -13,7 +13,7 @@ module.exports = {
 
     await queryInterface.sequelize.query('ALTER TABLE "CNodeUsers" ADD PRIMARY KEY ("cnodeUserUUID")')
     await queryInterface.sequelize.query('ALTER TABLE "Files" ADD PRIMARY KEY ("fileUUID")')
-    await queryInterface.sequelize.query('ALTER TABLE "AudiusUsers" ADD PRIMARY KEY ("audiusUserUUID")')
+    await queryInterface.sequelize.query('ALTER TABLE "ColivingUsers" ADD PRIMARY KEY ("colivingUserUUID")')
   },
 
   down: (queryInterface, Sequelize, t) => {
@@ -44,7 +44,7 @@ async function createColumns (queryInterface, Sequelize, t) {
   /**
    * Coliving Users
    */
-  await queryInterface.addColumn('AudiusUsers', 'cnodeUserUUID', {
+  await queryInterface.addColumn('ColivingUsers', 'cnodeUserUUID', {
     type: Sequelize.UUID,
     onDelete: 'RESTRICT',
     references: {
@@ -54,7 +54,7 @@ async function createColumns (queryInterface, Sequelize, t) {
     }
   }, { transaction: t })
 
-  await queryInterface.addColumn('AudiusUsers', 'coverArtFileUUID', {
+  await queryInterface.addColumn('ColivingUsers', 'coverArtFileUUID', {
     type: Sequelize.UUID,
     onDelete: 'RESTRICT',
     references: {
@@ -64,7 +64,7 @@ async function createColumns (queryInterface, Sequelize, t) {
     }
   }, { transaction: t })
 
-  await queryInterface.addColumn('AudiusUsers', 'profilePicFileUUID', {
+  await queryInterface.addColumn('ColivingUsers', 'profilePicFileUUID', {
     type: Sequelize.UUID,
     onDelete: 'RESTRICT',
     references: {
@@ -74,7 +74,7 @@ async function createColumns (queryInterface, Sequelize, t) {
     }
   }, { transaction: t })
 
-  await queryInterface.addColumn('AudiusUsers', 'metadataFileUUID', {
+  await queryInterface.addColumn('ColivingUsers', 'metadataFileUUID', {
     type: Sequelize.UUID,
     onDelete: 'RESTRICT',
     references: {
@@ -84,7 +84,7 @@ async function createColumns (queryInterface, Sequelize, t) {
     }
   }, { transaction: t })
 
-  await queryInterface.addColumn('AudiusUsers', 'audiusUserUUID', {
+  await queryInterface.addColumn('ColivingUsers', 'colivingUserUUID', {
     type: Sequelize.UUID,
     unique: true
   }, { transaction: t })
@@ -166,13 +166,13 @@ async function createColumns (queryInterface, Sequelize, t) {
 
 async function revertCreateColumns (queryInterface, Sequelize) {
   let removeUUIDFromUsers = queryInterface.removeColumn('Users', 'cnodeUserUUID')
-  let removeUUIDFromAudiusUsers = queryInterface.removeColumn('AudiusUsers', 'cnodeUserUUID')
+  let removeUUIDFromColivingUsers = queryInterface.removeColumn('ColivingUsers', 'cnodeUserUUID')
   let removeUUIDFromFiles = queryInterface.removeColumn('Files', 'cnodeUserUUID')
   let removeUUIDFromTracks = queryInterface.removeColumn('Tracks', 'cnodeUserUUID')
   let removeUUIDFromSessionTokens = queryInterface.removeColumn('SessionTokens', 'cnodeUserUUID')
   return Promise.all([
     removeUUIDFromUsers,
-    removeUUIDFromAudiusUsers,
+    removeUUIDFromColivingUsers,
     removeUUIDFromFiles,
     removeUUIDFromTracks,
     removeUUIDFromSessionTokens
@@ -196,17 +196,17 @@ async function insertUUIDs (queryInterface, t) {
     await queryInterface.sequelize.query(`UPDATE "Files" SET "fileUUID" = '${uuid()}' WHERE "id" = '${file.id}'`, { transaction: t })
   }
 
-  const audiusUsers = (await queryInterface.sequelize.query(`SELECT * FROM "AudiusUsers";`, { transaction: t }))[0]
-  for (let audiusUser of audiusUsers) {
-    await queryInterface.sequelize.query(`UPDATE "AudiusUsers" SET "audiusUserUUID" = '${uuid()}' WHERE "id" = '${audiusUser.id}'`, { transaction: t })
+  const colivingUsers = (await queryInterface.sequelize.query(`SELECT * FROM "ColivingUsers";`, { transaction: t }))[0]
+  for (let colivingUser of colivingUsers) {
+    await queryInterface.sequelize.query(`UPDATE "ColivingUsers" SET "colivingUserUUID" = '${uuid()}' WHERE "id" = '${colivingUser.id}'`, { transaction: t })
   }
 
-  // associate AudiusUsers table with cnodeUserUUID
+  // associate ColivingUsers table with cnodeUserUUID
   await queryInterface.sequelize.query(`
-    UPDATE "AudiusUsers"
+    UPDATE "ColivingUsers"
     SET "cnodeUserUUID" = "Users"."cnodeUserUUID"
     FROM "Users"
-    WHERE "Users"."id" = "AudiusUsers"."ownerId"
+    WHERE "Users"."id" = "ColivingUsers"."ownerId"
   `, { transaction: t })
 
   // associate Files table with cnodeUserUUID
@@ -218,24 +218,24 @@ async function insertUUIDs (queryInterface, t) {
   `, { transaction: t })
 
   await queryInterface.sequelize.query(`
-    UPDATE "AudiusUsers"
+    UPDATE "ColivingUsers"
     SET "metadataFileUUID" = "Files"."fileUUID"
     FROM "Files"
-    WHERE "AudiusUsers"."metadataFileId" = "Files"."id"
+    WHERE "ColivingUsers"."metadataFileId" = "Files"."id"
   `, { transaction: t })
 
   await queryInterface.sequelize.query(`
-    UPDATE "AudiusUsers"
+    UPDATE "ColivingUsers"
     SET "profilePicFileUUID" = "Files"."fileUUID"
     FROM "Files"
-    WHERE "AudiusUsers"."profilePicFileId" = "Files"."id"
+    WHERE "ColivingUsers"."profilePicFileId" = "Files"."id"
   `, { transaction: t })
 
   await queryInterface.sequelize.query(`
-    UPDATE "AudiusUsers"
+    UPDATE "ColivingUsers"
     SET "coverArtFileUUID" = "Files"."fileUUID"
     FROM "Files"
-    WHERE "AudiusUsers"."coverArtFileId" = "Files"."id"
+    WHERE "ColivingUsers"."coverArtFileId" = "Files"."id"
   `, { transaction: t })
 
   // associate Tracks table with cnodeUserUUID
@@ -297,7 +297,7 @@ async function addNotNullConstraints (queryInterface, Sequelize, t) {
   }, { transaction: t })
 
   // Run these after, order doesn't matter
-  await queryInterface.changeColumn('AudiusUsers', 'cnodeUserUUID', {
+  await queryInterface.changeColumn('ColivingUsers', 'cnodeUserUUID', {
     type: Sequelize.UUID,
     allowNull: false
   }, { transaction: t })
@@ -330,10 +330,10 @@ async function addNotNullConstraints (queryInterface, Sequelize, t) {
 }
 
 async function deleteOldColumns (queryInterface, t) {
-  await queryInterface.removeColumn('AudiusUsers', 'ownerId', { transaction: t })
-  await queryInterface.removeColumn('AudiusUsers', 'coverArtFileId', { transaction: t })
-  await queryInterface.removeColumn('AudiusUsers', 'profilePicFileId', { transaction: t })
-  await queryInterface.removeColumn('AudiusUsers', 'metadataFileId', { transaction: t })
+  await queryInterface.removeColumn('ColivingUsers', 'ownerId', { transaction: t })
+  await queryInterface.removeColumn('ColivingUsers', 'coverArtFileId', { transaction: t })
+  await queryInterface.removeColumn('ColivingUsers', 'profilePicFileId', { transaction: t })
+  await queryInterface.removeColumn('ColivingUsers', 'metadataFileId', { transaction: t })
 
   await queryInterface.removeColumn('Files', 'ownerId', { transaction: t })
 
@@ -344,7 +344,7 @@ async function deleteOldColumns (queryInterface, t) {
   await queryInterface.removeColumn('SessionTokens', 'userId', { transaction: t })
 
   await queryInterface.removeColumn('Users', 'id', { transaction: t })
-  await queryInterface.removeColumn('AudiusUsers', 'id', { transaction: t })
+  await queryInterface.removeColumn('ColivingUsers', 'id', { transaction: t })
   await queryInterface.dropTable('TrackFile', { transaction: t })
   await queryInterface.removeColumn('Tracks', 'id', { transaction: t })
   await queryInterface.removeColumn('Files', 'id', { transaction: t })

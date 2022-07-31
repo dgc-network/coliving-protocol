@@ -1,7 +1,7 @@
 import * as _lib from '../utils/lib.js'
 
 const Registry = artifacts.require('./contract/Registry')
-const AudiusAdminUpgradeabilityProxy = artifacts.require('AudiusAdminUpgradeabilityProxy')
+const ColivingAdminUpgradeabilityProxy = artifacts.require('ColivingAdminUpgradeabilityProxy')
 const TestContract = artifacts.require('./contract/TestContract')
 
 contract('Registry', async (accounts) => {
@@ -14,7 +14,7 @@ contract('Registry', async (accounts) => {
   beforeEach(async () => {
     const registry0 = await Registry.new({ from: proxyDeployerAddress })
     initializeCallData = _lib.encodeCall('initialize', [], [])
-    const registryProxy = await AudiusAdminUpgradeabilityProxy.new(
+    const registryProxy = await ColivingAdminUpgradeabilityProxy.new(
       registry0.address,
       proxyAdminAddress,
       initializeCallData,
@@ -24,7 +24,7 @@ contract('Registry', async (accounts) => {
     registry = await Registry.at(registryProxy.address)
 
     assert.equal(await registry.owner.call(), proxyDeployerAddress)
-    assert.equal(await registryProxy.getAudiusProxyAdminAddress.call(), proxyAdminAddress)
+    assert.equal(await registryProxy.getColivingProxyAdminAddress.call(), proxyAdminAddress)
   })
 
   it('Confirm unregistered contract request returns 0 address', async () => {
@@ -233,7 +233,7 @@ contract('Registry', async (accounts) => {
 
     // deploy new registry
     const registry2_0 = await Registry.new({ from: proxyDeployerAddress })
-    const registry2Proxy = await AudiusAdminUpgradeabilityProxy.new(
+    const registry2Proxy = await ColivingAdminUpgradeabilityProxy.new(
       registry2_0.address,
       proxyAdminAddress,
       initializeCallData,

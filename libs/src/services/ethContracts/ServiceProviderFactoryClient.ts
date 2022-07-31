@@ -6,7 +6,7 @@ import axios, { AxiosRequestConfig } from 'axios'
 import { range } from 'lodash'
 import type { EthWeb3Manager } from '../ethWeb3Manager'
 import type { GetRegistryAddress } from '../contracts/ContractClient'
-import type { AudiusTokenClient } from './AudiusTokenClient'
+import type { ColivingTokenClient } from './ColivingTokenClient'
 import type { StakingProxyClient } from './StakingProxyClient'
 import type { GovernanceClient } from './GovernanceClient'
 import urlJoin from 'proper-url-join'
@@ -21,7 +21,7 @@ type GetEvent = {
 type Filter = { _owner?: string; _serviceType?: string }
 
 export class ServiceProviderFactoryClient extends GovernedContractClient {
-  colivingTokenClient: AudiusTokenClient
+  colivingTokenClient: ColivingTokenClient
   stakingProxyClient: StakingProxyClient
   isDebug: boolean
 
@@ -30,7 +30,7 @@ export class ServiceProviderFactoryClient extends GovernedContractClient {
     contractABI: ContractABI['abi'],
     contractRegistryKey: string,
     getRegistryAddress: GetRegistryAddress,
-    colivingTokenClient: AudiusTokenClient,
+    colivingTokenClient: ColivingTokenClient,
     stakingProxyClient: StakingProxyClient,
     governanceClient: GovernanceClient,
     logger: Logger = console,

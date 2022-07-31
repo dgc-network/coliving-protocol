@@ -62,7 +62,7 @@ describe('test findSyncRequests job processor', function () {
     }
   ]
   let syncType = SyncType.Recurring
-  let metricName = 'audius_cn_find_sync_request_counts'
+  let metricName = 'coliving_cn_find_sync_request_counts'
   let metricType = 'GAUGE_INC'
 
   function getJobProcessorStub(

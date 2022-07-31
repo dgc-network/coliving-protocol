@@ -33,7 +33,7 @@ npm i --save @/hedgehog
 
 ### Documentations et exemples
 
-Consultez la [documentation](http://audiusproject.github.io/hedgehog-docs) technique complète et le mode d'emploi de [api how-to](http://audiusproject.github.io/hedgehog-docs#how-to).
+Consultez la [documentation](http://colivingproject.github.io/hedgehog-docs) technique complète et le mode d'emploi de [api how-to](http://colivingproject.github.io/hedgehog-docs#how-to).
 
 Pour une démonstration rapide côté navigateur, [ne cherchez pas plus loin](https://codesandbox.io/embed/pp9zzv2n00). Pour une démonstration complète de l'authentification de bout en bout, consultez notre [dépôt ](https://github.com/dgc.network/-hedgehog-demo).
 
@@ -85,4 +85,4 @@ if (hedgehog.isLoggedIn()) {
 Après avoir créé ou récupéré le portefeuille d'un utilisateur, vous pouvez soit **approvisionner directement leur portefeuille** pour payer des frais de transaction ou **relayer leurs transactions via un relais EIP-712**.
 
 
-### 👉 [ Plonger plus en profondeur dans la documentation ](https://audiusproject.github.io/hedgehog-docs/#installation) 👈
+### 👉 [ Plonger plus en profondeur dans la documentation ](https://colivingproject.github.io/hedgehog-docs/#installation) 👈

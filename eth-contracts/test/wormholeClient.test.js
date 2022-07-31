@@ -4,7 +4,7 @@ const { time, expectEvent } = require('@openzeppelin/test-helpers')
 
 const MockWormhole = artifacts.require('MockWormhole')
 const WormholeClient = artifacts.require('WormholeClient')
-const AudiusAdminUpgradeabilityProxy = artifacts.require('AudiusAdminUpgradeabilityProxy')
+const ColivingAdminUpgradeabilityProxy = artifacts.require('ColivingAdminUpgradeabilityProxy')
 
 const governanceKey = web3.utils.utf8ToHex('Governance')
 const tokenRegKey = web3.utils.utf8ToHex('TokenKey')
@@ -56,7 +56,7 @@ contract('WormholeClient', async (accounts) => {
       ['address', 'address'],
       [token.address, mockWormhole.address]
     )
-    wormholeClientProxy = await AudiusAdminUpgradeabilityProxy.new(
+    wormholeClientProxy = await ColivingAdminUpgradeabilityProxy.new(
       wormholeClient0.address,
       governance.address,
       wormholeClientInitializeCallData,
@@ -76,7 +76,7 @@ contract('WormholeClient', async (accounts) => {
       [accounts[5], mockWormhole.address]
     )
     await _lib.assertRevert(
-      AudiusAdminUpgradeabilityProxy.new(
+      ColivingAdminUpgradeabilityProxy.new(
         wormholeClient1.address,
         governance.address,
         invalidWormholeClientInitializeCallData,
@@ -93,7 +93,7 @@ contract('WormholeClient', async (accounts) => {
       [token.address, accounts[5]]
     )
     await _lib.assertRevert(
-      AudiusAdminUpgradeabilityProxy.new(
+      ColivingAdminUpgradeabilityProxy.new(
         wormholeClient1.address,
         governance.address,
         invalidWormholeClientInitializeCallData,
@@ -123,7 +123,7 @@ contract('WormholeClient', async (accounts) => {
     const nonce = (await wormholeClient.nonces(fromAcct)).toNumber()
     const deadline = (await web3.eth.getBlock(await web3.eth.getBlockNumber())).timestamp + 25 // sufficiently far in future
     const digest = _signatures.getTransferTokensDigest(
-      'AudiusWormholeClient',
+      'ColivingWormholeClient',
       wormholeClient.address,
       chainId,
       {

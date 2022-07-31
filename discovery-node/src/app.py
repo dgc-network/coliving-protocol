@@ -238,7 +238,7 @@ def create(test_config=None, mode="app"):
 def register_exception_handlers(flask_app):
     # catch exceptions thrown by us and propagate error message through
     @flask_app.errorhandler(exceptions.Base)
-    def handle_audius_error(error):  # pylint: disable=W0612
+    def handle_coliving_error(error):  # pylint: disable=W0612
         logger.exception("Coliving-derived exception")
         return api_helpers.error_response(str(error), 400)
 

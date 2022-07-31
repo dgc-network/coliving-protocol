@@ -1,4 +1,4 @@
-const { libs } = require('@audius/sdk')
+const { libs } = require('@coliving/sdk')
 const LibsUtils = libs.Utils
 const Web3 = require('web3')
 const web3 = new Web3()
@@ -104,13 +104,13 @@ const generateTimestampAndSignatureForSPVerification = (spID, privateKey) => {
  * Wrapper fn to perform basic validation that the requester is a valid SP and that the request came
  * from the SP node itself. Uses the {spID, timestamp} as the input data to recover.
  * @param {Object} data
- * @param {Object} data.audiusLibs
+ * @param {Object} data.colivingLibs
  * @param {number} data.spID the spID of the node to verify
  * @param {string} data.reqTimestamp the timestamp from the request body
  * @param {string} data.reqSignature the signature from the request body
  */
 const verifyRequesterIsValidSP = async ({
-  audiusLibs,
+  colivingLibs,
   spID,
   reqTimestamp,
   reqSignature
@@ -124,7 +124,7 @@ const verifyRequesterIsValidSP = async ({
   spID = validateSPId(spID)
 
   const spRecordFromSPFactory =
-    await audiusLibs.ethContracts.ServiceProviderFactoryClient.getServiceEndpointInfo(
+    await colivingLibs.ethContracts.ServiceProviderFactoryClient.getServiceEndpointInfo(
       'content-node',
       spID
     )

@@ -12,7 +12,7 @@ const {
   errorResponseServerError
 } = require('../apiHelpers')
 const { validateStateForImageDirCIDAndReturnFileUUID } = require('../utils')
-const validateMetadata = require('../utils/validateAudiusUserMetadata')
+const validateMetadata = require('../utils/validateColivingUserMetadata')
 const {
   authMiddleware,
   ensurePrimaryMiddleware,
@@ -26,10 +26,10 @@ const readFile = promisify(fs.readFile)
 const router = express.Router()
 
 /**
- * Create AudiusUser from provided metadata, and make metadata available to network
+ * Create ColivingUser from provided metadata, and make metadata available to network
  */
 router.post(
-  '/audius_users/metadata',
+  '/coliving_users/metadata',
   authMiddleware,
   ensurePrimaryMiddleware,
   ensureStorageMiddleware,
@@ -88,11 +88,11 @@ router.post(
 )
 
 /**
- * Given audiusUser blockchainUserId, blockNumber, and metadataFileUUID, creates/updates AudiusUser DB entry
- * and associates image file entries with audiusUser. Ends audiusUser creation/update process.
+ * Given colivingUser blockchainUserId, blockNumber, and metadataFileUUID, creates/updates ColivingUser DB entry
+ * and associates image file entries with colivingUser. Ends colivingUser creation/update process.
  */
 router.post(
-  '/audius_users',
+  '/coliving_users',
   authMiddleware,
   ensurePrimaryMiddleware,
   ensureStorageMiddleware,
@@ -150,10 +150,10 @@ router.post(
       return errorResponseBadRequest(e.message)
     }
 
-    // Record AudiusUser entry + update CNodeUser entry in DB
+    // Record ColivingUser entry + update CNodeUser entry in DB
     const transaction = await models.sequelize.transaction()
     try {
-      const createAudiusUserQueryObj = {
+      const createColivingUserQueryObj = {
         metadataFileUUID,
         metadataJSON,
         blockchainId: blockchainUserId,
@@ -161,9 +161,9 @@ router.post(
         profilePicFileUUID
       }
       await DBManager.createNewDataRecord(
-        createAudiusUserQueryObj,
+        createColivingUserQueryObj,
         cnodeUserUUID,
-        models.AudiusUser,
+        models.ColivingUser,
         transaction
       )
 

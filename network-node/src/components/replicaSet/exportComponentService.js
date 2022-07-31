@@ -34,10 +34,10 @@ const exportComponentService = async ({
       (cnodeUser) => cnodeUser.cnodeUserUUID
     )
 
-    // Fetch all data for cnodeUserUUIDs: audiusUsers, tracks, files, clockRecords.
+    // Fetch all data for cnodeUserUUIDs: colivingUsers, tracks, files, clockRecords.
 
-    const [audiusUsers, tracks, files, clockRecords] = await Promise.all([
-      models.AudiusUser.findAll({
+    const [colivingUsers, tracks, files, clockRecords] = await Promise.all([
+      models.ColivingUser.findAll({
         where: {
           cnodeUserUUID: cnodeUserUUIDs,
           clock: {
@@ -90,7 +90,7 @@ const exportComponentService = async ({
     /** Bundle all data into cnodeUser objects to maximize import speed. */
     for (const cnodeUser of cnodeUsers) {
       // Add cnodeUserUUID data fields
-      cnodeUser.audiusUsers = []
+      cnodeUser.colivingUsers = []
       cnodeUser.tracks = []
       cnodeUser.files = []
       cnodeUser.clockRecords = []
@@ -128,8 +128,8 @@ const exportComponentService = async ({
       }
     }
 
-    audiusUsers.forEach((audiusUser) => {
-      cnodeUsersDict[audiusUser.cnodeUserUUID].audiusUsers.push(audiusUser)
+    colivingUsers.forEach((colivingUser) => {
+      cnodeUsersDict[colivingUser.cnodeUserUUID].colivingUsers.push(colivingUser)
     })
     tracks.forEach((track) => {
       cnodeUsersDict[track.cnodeUserUUID].tracks.push(track)

@@ -1,6 +1,6 @@
 //! State transition types
 
-use crate::error::AudiusError;
+use crate::error::ColivingError;
 use borsh::{BorshDeserialize, BorshSerialize};
 use solana_program::{account_info::AccountInfo, program_error::ProgramError, pubkey::Pubkey};
 use std::mem::size_of;
@@ -60,10 +60,10 @@ impl SignerGroup {
     /// Check owner validity and signature
     pub fn check_owner(&self, owner_info: &AccountInfo) -> Result<(), ProgramError> {
         if *owner_info.key != self.owner {
-            return Err(AudiusError::WrongOwner.into());
+            return Err(ColivingError::WrongOwner.into());
         }
         if !owner_info.is_signer {
-            return Err(AudiusError::SignatureMissing.into());
+            return Err(ColivingError::SignatureMissing.into());
         }
         Ok(())
     }

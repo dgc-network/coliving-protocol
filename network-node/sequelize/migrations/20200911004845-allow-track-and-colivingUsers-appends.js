@@ -7,11 +7,11 @@ module.exports = {
     // Remove trackUUID field from Tracks table
     // Remove UNIQUE constraint for blockchainId, trackUUID in Tracks table
     // Add NOT NULL constraint for blockchainId in Tracks table
-    // Remove audiusUserUUID field from AudiusUsers table
-    // Remove UNIQUE constraint for audiusUserUUID in AudiusUsers table (no unique constraint on blockchainId)
-    // Add NOT NULL constraint for blockchainId in AudiusUsers table
+    // Remove colivingUserUUID field from ColivingUsers table
+    // Remove UNIQUE constraint for colivingUserUUID in ColivingUsers table (no unique constraint on blockchainId)
+    // Add NOT NULL constraint for blockchainId in ColivingUsers table
 
-    console.log('STARTING MIGRATION 20200911004845-allow-track-and-audiusUsers-appends')
+    console.log('STARTING MIGRATION 20200911004845-allow-track-and-colivingUsers-appends')
     await queryInterface.sequelize.query(`
       BEGIN;
       -- replace Files table in place with extra trackBlockchainId column and drops the trackUUID column
@@ -48,22 +48,22 @@ module.exports = {
       -- remove the trackUUID column from Tracks
       ALTER TABLE "Tracks" DROP COLUMN "trackUUID";
 
-      -- remove the unique constraint from AudiusUsers
-      ALTER TABLE "AudiusUsers" DROP CONSTRAINT "AudiusUsers_audiusUserUUID_key";
+      -- remove the unique constraint from ColivingUsers
+      ALTER TABLE "ColivingUsers" DROP CONSTRAINT "ColivingUsers_colivingUserUUID_key";
 
-      -- add a not null constraint to AudiusUsers blockchainId, just run a delete query to remove any outstanding AudiusUsers without a blockchainId in case there are any
-      DELETE FROM "AudiusUsers" WHERE "blockchainId" IS NULL;
-      ALTER TABLE "AudiusUsers" ALTER COLUMN "blockchainId" SET NOT NULL;
+      -- add a not null constraint to ColivingUsers blockchainId, just run a delete query to remove any outstanding ColivingUsers without a blockchainId in case there are any
+      DELETE FROM "ColivingUsers" WHERE "blockchainId" IS NULL;
+      ALTER TABLE "ColivingUsers" ALTER COLUMN "blockchainId" SET NOT NULL;
 
-      -- remove the audiusUserUUID field as the AudiusUsers pkey
-      ALTER TABLE "AudiusUsers" DROP CONSTRAINT "AudiusUsers_pkey";
+      -- remove the colivingUserUUID field as the ColivingUsers pkey
+      ALTER TABLE "ColivingUsers" DROP CONSTRAINT "ColivingUsers_pkey";
 
-      -- remove the audiusUserUUID column from AudiusUsers
-      ALTER TABLE "AudiusUsers" DROP COLUMN "audiusUserUUID";
+      -- remove the colivingUserUUID column from ColivingUsers
+      ALTER TABLE "ColivingUsers" DROP COLUMN "colivingUserUUID";
 
       COMMIT;
     `)
-    console.log('FINISHED MIGRATION 20200911004845-allow-track-and-audiusUsers-appends')
+    console.log('FINISHED MIGRATION 20200911004845-allow-track-and-colivingUsers-appends')
   },
 
   down: (queryInterface, Sequelize) => {

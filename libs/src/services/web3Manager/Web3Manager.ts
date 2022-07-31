@@ -2,7 +2,7 @@ import Web3 from '../../web3'
 import sigUtil from 'eth-sig-util'
 import retry from 'async-retry'
 import { ContractMethod, estimateGas } from '../../utils'
-import { AudiusABIDecoder } from '../ABIDecoder'
+import { ColivingABIDecoder } from '../ABIDecoder'
 import EthereumWallet from 'ethereumjs-wallet'
 import { XMLHttpRequest } from './XMLHttpRequest'
 import type { Web3Config } from './Web3Config'
@@ -22,13 +22,13 @@ export type Web3ManagerConfig = {
   isServer?: boolean
 }
 
-/** singleton class to be instantiated and persisted with every AudiusLibs */
+/** singleton class to be instantiated and persisted with every ColivingLibs */
 export class Web3Manager {
   web3Config: Web3Config
   isServer: boolean
   identityService: IdentityService
   hedgehog: Hedgehog
-  AudiusABIDecoder: typeof AudiusABIDecoder
+  ColivingABIDecoder: typeof ColivingABIDecoder
   web3: Web3Type | undefined
   useExternalWeb3: boolean | undefined
   // @ts-expect-error an error is thrown if it's not provided
@@ -46,7 +46,7 @@ export class Web3Manager {
     // Unset if externalWeb3 = true
     this.identityService = identityService
     this.hedgehog = hedgehog
-    this.AudiusABIDecoder = AudiusABIDecoder
+    this.ColivingABIDecoder = ColivingABIDecoder
   }
 
   async init() {
@@ -256,7 +256,7 @@ export class Web3Manager {
       if (receipt.logs) {
         const events: TransactionReceipt['events'] = {}
         // TODO: decodeLogs appears to return DecodedLog, not DecodedLog[] so maybe a type/version issue
-        const decoded = this.AudiusABIDecoder.decodeLogs(
+        const decoded = this.ColivingABIDecoder.decodeLogs(
           contractRegistryKey as string,
           receipt.logs
         ) as unknown as DecodedLog[]

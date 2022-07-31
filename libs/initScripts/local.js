@@ -1,7 +1,7 @@
 const fs = require('fs')
 const readline = require('readline')
 
-const initAudiusLibs = require('../examples/initAudiusLibs')
+const initColivingLibs = require('../examples/initColivingLibs')
 const dataContractsConfig = require('../data-contracts/config.json')
 const { distributeTokens } = require('./helpers/distributeTokens')
 const { setServiceVersion, addServiceType } = require('./helpers/version')
@@ -102,10 +102,10 @@ const getEnvConfigPathsForService = ({ workspace, serviceCount }) => {
 
 const run = async () => {
   try {
-    const audiusLibs = await initAudiusLibs(true)
+    const colivingLibs = await initColivingLibs(true)
     // A separate libs instance
     let userReplicaBootstrapAddressLibs
-    const ethWeb3 = audiusLibs.ethWeb3Manager.getWeb3()
+    const ethWeb3 = colivingLibs.ethWeb3Manager.getWeb3()
     const ethAccounts = await ethWeb3.eth.getAccounts()
 
     switch (args[2]) {
@@ -113,23 +113,23 @@ const run = async () => {
         console.log('initialized libs')
         break
       case 'distribute':
-        await distributeTokens(audiusLibs, amountOfAuds)
+        await distributeTokens(colivingLibs, amountOfAuds)
         break
 
       case 'fundclaim':
-        await fundNewClaim(audiusLibs, amountOfAuds)
+        await fundNewClaim(colivingLibs, amountOfAuds)
         break
 
       case 'getclaim':
-        await getClaimInfo(audiusLibs)
+        await getClaimInfo(colivingLibs)
         break
 
       case 'stakeinfo':
-        await getStakingParameters(audiusLibs)
+        await getStakingParameters(colivingLibs)
         break
 
       case 'setversion':
-        await _initAllVersions(audiusLibs)
+        await _initAllVersions(colivingLibs)
         break
 
       case 'configure-discprov-wallet': {
@@ -174,15 +174,15 @@ const run = async () => {
       }
 
       case 'deregister-sps':
-        await _deregisterAllSPs(audiusLibs, ethAccounts)
+        await _deregisterAllSPs(colivingLibs, ethAccounts)
         break
 
       case 'query-sps':
-        await queryLocalServices(audiusLibs, serviceTypesList)
+        await queryLocalServices(colivingLibs, serviceTypesList)
         break
 
       case 'query-sps-ursm':
-        await queryLocalServices(audiusLibs, serviceTypesList, true)
+        await queryLocalServices(colivingLibs, serviceTypesList, true)
         break
 
       case 'update-cnode-config': {
@@ -201,7 +201,7 @@ const run = async () => {
       }
 
       case 'init-all':
-        await _initializeLocalEnvironment(audiusLibs, ethAccounts)
+        await _initializeLocalEnvironment(colivingLibs, ethAccounts)
         break
 
       case 'update-userreplicasetmanager-init-config':
@@ -220,12 +220,12 @@ const run = async () => {
         console.log(`Received userId: ${userId}`)
         console.log(`Received primaryReplicaId: ${primaryReplicaId}`)
         console.log(`Received secondaryReplicaIds: ${secondaryReplicaIds}`)
-        await updateUserReplicaSet(audiusLibs, userId, primaryReplicaId, secondaryReplicaIds)
+        await updateUserReplicaSet(colivingLibs, userId, primaryReplicaId, secondaryReplicaIds)
         break
 
       case 'query-user-replica-set':
         console.log('Usage: node local.js query-user-replica-set userId=1')
-        userReplicaBootstrapAddressLibs = await getUrsmLibs(audiusLibs, 9)
+        userReplicaBootstrapAddressLibs = await getUrsmLibs(colivingLibs, 9)
         const userReplicaSet = await userReplicaBootstrapAddressLibs.contracts.UserReplicaSetManagerClient.getUserReplicaSet(
           parseInt(
             args[3].split('=')[1]
@@ -236,7 +236,7 @@ const run = async () => {
 
       case 'query-ursm-content-node-wallet':
         console.log('Usage: node local.js query-ursm-content-node-wallet spId=1')
-        userReplicaBootstrapAddressLibs = await getUrsmLibs(audiusLibs, 9)
+        userReplicaBootstrapAddressLibs = await getUrsmLibs(colivingLibs, 9)
         const contentNodeWallet = await userReplicaBootstrapAddressLibs.contracts.UserReplicaSetManagerClient.getContentNodeWallets(
           parseInt(
             args[3].split('=')[1]
@@ -254,7 +254,7 @@ const run = async () => {
         const ownerWallet = delegateWallet
         console.log(`Configuring L2 ${spID} with wallet: ${delegateWallet}`)
         // Initialize from a different acct than proxy admin
-        const queryLibs = await getUrsmLibs(audiusLibs, 9)
+        const queryLibs = await getUrsmLibs(colivingLibs, 9)
         await addL2ContentNode(
           queryLibs,
           ethAccounts,
@@ -268,7 +268,7 @@ const run = async () => {
         const wallet = '0xe82a5a2948d2b5e71232f640777346869817fbae'
         const endpoint = 'http://trusted_notifier_service:8000'
         const email = 'email@trusted_notifier_service:8000'
-        await audiusLibs.ethContracts.TrustedNotifierManagerClient.registerNotifier(
+        await colivingLibs.ethContracts.TrustedNotifierManagerClient.registerNotifier(
           wallet,
           endpoint,
           email
@@ -278,7 +278,7 @@ const run = async () => {
       case 'query-trusted-notifier':
         const id = args[3]
         if (!id) throw new Error('Please pass in a valid ID')
-        const resp = await audiusLibs.ethContracts.TrustedNotifierManagerClient.getNotifierForID(id)
+        const resp = await colivingLibs.ethContracts.TrustedNotifierManagerClient.getNotifierForID(id)
         console.log(resp)
         break
 
@@ -299,14 +299,14 @@ run()
   Assumes 3 content nodes are already up prior to execution
 */
 const addL2ContentNode = async (
-  audiusLibs,
+  colivingLibs,
   ethAccounts,
   newCnodeId,
   newCnodeDelegateWallet,
   newCnodeOwnerWallet
 ) => {
   const incomingWallets = [newCnodeDelegateWallet, newCnodeOwnerWallet]
-  const existingWalletInfo = await audiusLibs.contracts.UserReplicaSetManagerClient.getContentNodeWallets(newCnodeId)
+  const existingWalletInfo = await colivingLibs.contracts.UserReplicaSetManagerClient.getContentNodeWallets(newCnodeId)
   const existingWalletToCnodeIdL2 = existingWalletInfo.delegateOwnerWallet
   const spIdToWalletPresent = (existingWalletToCnodeIdL2 === newCnodeDelegateWallet)
   if (spIdToWalletPresent) {
@@ -344,7 +344,7 @@ const addL2ContentNode = async (
   // console.dir(ganacheEthAccounts)
 
   // Initialize libs with each incoming proposer
-  const proposer1Libs = await initAudiusLibs(
+  const proposer1Libs = await initColivingLibs(
     false,
     proposer1Wallet,
     proposer1Wallet,
@@ -359,7 +359,7 @@ const addL2ContentNode = async (
     proposer1SpId
   )
   console.dir(proposer1SignatureInfo, { depth: 5 })
-  const proposer2Libs = await initAudiusLibs(
+  const proposer2Libs = await initColivingLibs(
     false,
     proposer2Wallet,
     proposer2Wallet,
@@ -374,7 +374,7 @@ const addL2ContentNode = async (
     proposer2SpId
   )
   console.dir(proposer2SignatureInfo, { depth: 5 })
-  const proposer3Libs = await initAudiusLibs(
+  const proposer3Libs = await initColivingLibs(
     false,
     proposer3Wallet,
     proposer3Wallet,
@@ -396,7 +396,7 @@ const addL2ContentNode = async (
     proposer2SignatureInfo.nonce,
     proposer3SignatureInfo.nonce
   ]
-  await audiusLibs.contracts.UserReplicaSetManagerClient.addOrUpdateContentNode(
+  await colivingLibs.contracts.UserReplicaSetManagerClient.addOrUpdateContentNode(
     newCnodeId,
     incomingWallets,
     proposerSpIds,
@@ -411,24 +411,24 @@ const addL2ContentNode = async (
 // the 0th account on local data-contracts
 // This function explicitly queries the 20th account from data-contracts ganache
 // Returns libs instance logged in as said account
-const getUrsmLibs = async (defaultAudiusLibs, acctIndex = 20) => {
-  const dataWeb3 = defaultAudiusLibs.web3Manager.getWeb3()
+const getUrsmLibs = async (defaultColivingLibs, acctIndex = 20) => {
+  const dataWeb3 = defaultColivingLibs.web3Manager.getWeb3()
   const dataWeb3Accounts = await dataWeb3.eth.getAccounts()
   const localQueryAccount = dataWeb3Accounts[acctIndex]
-  const ursmLibs = await initAudiusLibs(true, localQueryAccount)
+  const ursmLibs = await initColivingLibs(true, localQueryAccount)
   return ursmLibs
 }
 
 // Update a user's replica set on chain
 // Using the bootstrap address configured for local development (accounts[9])
 const updateUserReplicaSet = async (
-  defaultAudiusLibs,
+  defaultColivingLibs,
   userId,
   primaryId,
   secondaryIds
 ) => {
   // UserReplicaBootstrapLibs, logged in as the known bootstrap address
-  const userReplicaBootstrapAddressLibs = await getUrsmLibs(defaultAudiusLibs, 9)
+  const userReplicaBootstrapAddressLibs = await getUrsmLibs(defaultColivingLibs, 9)
   const sp1Id = primaryId
   const sp1ContentNodeWallets = await userReplicaBootstrapAddressLibs.contracts.UserReplicaSetManagerClient.getContentNodeWallets(sp1Id)
   const sp1DelWal = sp1ContentNodeWallets.delegateOwnerWallet
@@ -457,34 +457,34 @@ const updateUserReplicaSet = async (
   console.log(`User ${userId} replica set after to update: ${JSON.stringify(user1ReplicaSetAfterUpdate)}`)
 }
 
-const _initializeLocalEnvironment = async (audiusLibs, ethAccounts) => {
-  await distributeTokens(audiusLibs, amountOfAuds)
-  await _initEthContractTypes(audiusLibs)
-  await _initAllVersions(audiusLibs)
-  await queryLocalServices(audiusLibs, serviceTypesList)
+const _initializeLocalEnvironment = async (colivingLibs, ethAccounts) => {
+  await distributeTokens(colivingLibs, amountOfAuds)
+  await _initEthContractTypes(colivingLibs)
+  await _initAllVersions(colivingLibs)
+  await queryLocalServices(colivingLibs, serviceTypesList)
 }
 
 const makeDiscoveryProviderEndpoint = (serviceNumber) => `http://dn${serviceNumber}_web-server_1:${5000 + parseInt(serviceNumber) - 1}`
 
 const _registerDiscProv = async (ethAccounts, serviceNumber) => {
-  const audiusLibs = await initAudiusLibs(true, null, ethAccounts[DISCOVERY_WALLET_OFFSET + serviceNumber])
+  const colivingLibs = await initColivingLibs(true, null, ethAccounts[DISCOVERY_WALLET_OFFSET + serviceNumber])
   const endpoint = makeDiscoveryProviderEndpoint(serviceNumber)
-  await registerLocalService(audiusLibs, discoveryNodeType, endpoint, amountOfAuds)
+  await registerLocalService(colivingLibs, discoveryNodeType, endpoint, amountOfAuds)
 }
 
 const makeCreatorNodeEndpoint = (serviceNumber) => `http://cn${serviceNumber}_network-node_1:${4000 + parseInt(serviceNumber) - 1}`
 
 // Templated cnode to allow for dynamic number of services
 const _registerCnode = async (ethAccounts, serviceNumber) => {
-  const audiusLibs = await initAudiusLibs(true, null, ethAccounts[serviceNumber])
+  const colivingLibs = await initColivingLibs(true, null, ethAccounts[serviceNumber])
   const endpoint = makeCreatorNodeEndpoint(serviceNumber)
-  await registerLocalService(audiusLibs, contentNodeType, endpoint, amountOfAuds)
+  await registerLocalService(colivingLibs, contentNodeType, endpoint, amountOfAuds)
 }
 
 const _deregisterCnode = async (ethAccounts, serviceNumber) => {
-  const audiusLibs = await initAudiusLibs(true, null, ethAccounts[serviceNumber])
+  const colivingLibs = await initColivingLibs(true, null, ethAccounts[serviceNumber])
   const endpoint = makeCreatorNodeEndpoint(serviceNumber)
-  await deregisterLocalService(audiusLibs, contentNodeType, endpoint)
+  await deregisterLocalService(colivingLibs, contentNodeType, endpoint)
 }
 
 const _printEthContractAccounts = async (ethAccounts, numAccounts = 20) => {
@@ -503,9 +503,9 @@ const _printEthContractAccounts = async (ethAccounts, numAccounts = 20) => {
 
 // NOTE - newly selected wallet is the ethAccount with index 10 + current service number
 const _updateCNodeDelegateOwnerWallet = async (ethAccounts, serviceNumber) => {
-  const audiusLibs = await initAudiusLibs(true, null, ethAccounts[serviceNumber])
+  const colivingLibs = await initColivingLibs(true, null, ethAccounts[serviceNumber])
   const endpoint = makeCreatorNodeEndpoint(serviceNumber)
-  await updateServiceDelegateOwnerWallet(audiusLibs, contentNodeType, endpoint, ethAccounts[serviceNumber + 10])
+  await updateServiceDelegateOwnerWallet(colivingLibs, contentNodeType, endpoint, ethAccounts[serviceNumber + 10])
 }
 
 const _updateCreatorNodeConfig = async ({ ownerWallet, templatePath, writePath, endpoint = null, isShell = false, delegateWallet, envPath = null }) => {
@@ -521,25 +521,25 @@ const _updateCreatorNodeConfig = async ({ ownerWallet, templatePath, writePath, 
   await _updateCreatorNodeConfigFile({ templatePath, writePath, ownerWallet, ownerWalletPrivKey, delegateWallet, delegateWalletPrivKey, endpoint, isShell, envPath })
 }
 
-const _deregisterAllSPs = async (audiusLibs, ethAccounts) => {
-  const audiusLibs1 = audiusLibs
-  await deregisterLocalService(audiusLibs1, discoveryNodeType, discProvEndpoint1)
-  const audiusLibs2 = await initAudiusLibs(true, null, ethAccounts[3])
-  await deregisterLocalService(audiusLibs2, discoveryNodeType, discProvEndpoint2)
+const _deregisterAllSPs = async (colivingLibs, ethAccounts) => {
+  const colivingLibs1 = colivingLibs
+  await deregisterLocalService(colivingLibs1, discoveryNodeType, discProvEndpoint1)
+  const colivingLibs2 = await initColivingLibs(true, null, ethAccounts[3])
+  await deregisterLocalService(colivingLibs2, discoveryNodeType, discProvEndpoint2)
 
-  const audiusLibs3 = await initAudiusLibs(true, null, ethAccounts[1])
-  await deregisterLocalService(audiusLibs3, contentNodeType, creatorNodeEndpoint1)
-  const audiusLibs4 = await initAudiusLibs(true, null, ethAccounts[2])
-  await deregisterLocalService(audiusLibs4, contentNodeType, creatorNodeEndpoint2)
-  const audiusLibs5 = await initAudiusLibs(true, null, ethAccounts[4])
-  await deregisterLocalService(audiusLibs5, contentNodeType, creatorNodeEndpoint3)
-  const audiusLibs6 = await initAudiusLibs(true, null, ethAccounts[5])
-  await deregisterLocalService(audiusLibs6, contentNodeType, creatorNodeEndpoint4)
+  const colivingLibs3 = await initColivingLibs(true, null, ethAccounts[1])
+  await deregisterLocalService(colivingLibs3, contentNodeType, creatorNodeEndpoint1)
+  const colivingLibs4 = await initColivingLibs(true, null, ethAccounts[2])
+  await deregisterLocalService(colivingLibs4, contentNodeType, creatorNodeEndpoint2)
+  const colivingLibs5 = await initColivingLibs(true, null, ethAccounts[4])
+  await deregisterLocalService(colivingLibs5, contentNodeType, creatorNodeEndpoint3)
+  const colivingLibs6 = await initColivingLibs(true, null, ethAccounts[5])
+  await deregisterLocalService(colivingLibs6, contentNodeType, creatorNodeEndpoint4)
 }
 
-const _initAllVersions = async (audiusLibs) => {
+const _initAllVersions = async (colivingLibs) => {
   for (const serviceType of serviceTypesList) {
-    await setServiceVersion(audiusLibs, serviceType, serviceVersions[serviceType])
+    await setServiceVersion(colivingLibs, serviceType, serviceVersions[serviceType])
   }
 }
 

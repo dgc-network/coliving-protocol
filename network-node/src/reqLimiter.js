@@ -64,7 +64,7 @@ const userReqLimiter = rateLimit({
     ) {
       try {
         await verifyRequesterIsValidSP({
-          audiusLibs: libs,
+          colivingLibs: libs,
           spID,
           reqTimestamp: timestamp,
           reqSignature: signature
@@ -94,13 +94,13 @@ const trackReqLimiter = rateLimit({
   keyGenerator: ipKeyGenerator
 })
 
-const audiusUserReqLimiter = rateLimit({
+const colivingUserReqLimiter = rateLimit({
   store: new RedisStore({
     client: client,
-    prefix: 'audiusUserReqLimiter',
+    prefix: 'colivingUserReqLimiter',
     expiry: 60 * 60 // one hour in seconds
   }),
-  max: config.get('rateLimitingAudiusUserReqLimit'), // max requests per hour
+  max: config.get('rateLimitingColivingUserReqLimit'), // max requests per hour
   keyGenerator: ipKeyGenerator
 })
 
@@ -159,7 +159,7 @@ const batchCidsExistReqLimiter = rateLimit({
     ) {
       try {
         await verifyRequesterIsValidSP({
-          audiusLibs: libs,
+          colivingLibs: libs,
           spID,
           reqTimestamp: timestamp,
           reqSignature: signature
@@ -247,7 +247,7 @@ const getRateLimiterMiddleware = () => {
 module.exports = {
   userReqLimiter,
   trackReqLimiter,
-  audiusUserReqLimiter,
+  colivingUserReqLimiter,
   metadataReqLimiter,
   imageReqLimiter,
   URSMRequestForSignatureReqLimiter,

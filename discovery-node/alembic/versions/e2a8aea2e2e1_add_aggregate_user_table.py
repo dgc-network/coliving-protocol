@@ -242,11 +242,11 @@ def upgrade():
                             unnest(
                                 tsvector_to_array(
                                     to_tsvector(
-                                        'audius_ts_config',
+                                        'coliving_ts_config',
                                         replace(COALESCE(u.name, ''), '&', 'and')
                                     ) ||
                                     to_tsvector(
-                                        'audius_ts_config',
+                                        'coliving_ts_config',
                                         COALESCE(u.handle, '')
                                     )
                                 ) || lower(COALESCE(u.name, ''))
@@ -598,11 +598,11 @@ def downgrade():
                 unnest(
                     tsvector_to_array(
                         to_tsvector(
-                            'audius_ts_config',
+                            'coliving_ts_config',
                             replace(COALESCE(u.name, ''), '&', 'and')
                         ) ||
                         to_tsvector(
-                            'audius_ts_config',
+                            'coliving_ts_config',
                             COALESCE(u.handle, '')
                         )
                     ) || lower(COALESCE(u.name, ''))

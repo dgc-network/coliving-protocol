@@ -13,7 +13,7 @@ describe('test apiSigning', function () {
   it('given incomplete timestamp, signature, throw error', async function () {
     try {
       await apiSigning.verifyRequesterIsValidSP({
-        audiusLibs: libsMock,
+        colivingLibs: libsMock,
         spID: 1,
         reqTimestamp: undefined,
         reqSignature: undefined
@@ -31,7 +31,7 @@ describe('test apiSigning', function () {
   it('given bad spID, throw error', async function () {
     try {
       await apiSigning.verifyRequesterIsValidSP({
-        audiusLibs: libsMock,
+        colivingLibs: libsMock,
         spID: undefined,
         reqTimestamp: '022-03-25T15:02:35.573Z',
         reqSignature:
@@ -48,7 +48,7 @@ describe('test apiSigning', function () {
 
     try {
       await apiSigning.verifyRequesterIsValidSP({
-        audiusLibs: libsMock,
+        colivingLibs: libsMock,
         spID: -1,
         reqTimestamp: '022-03-25T15:02:35.573Z',
         reqSignature:
@@ -63,7 +63,7 @@ describe('test apiSigning', function () {
   it('if the wallets are zero addressed, throw error', async function () {
     try {
       await apiSigning.verifyRequesterIsValidSP({
-        audiusLibs: libsMock,
+        colivingLibs: libsMock,
         spID: 100,
         reqTimestamp: '022-03-25T15:02:35.573Z',
         reqSignature:
@@ -80,7 +80,7 @@ describe('test apiSigning', function () {
   it('if the api signing is mismatched, throw error', async function () {
     try {
       await apiSigning.verifyRequesterIsValidSP({
-        audiusLibs: libsMock,
+        colivingLibs: libsMock,
         spID: 1,
         reqTimestamp: '022-03-25T15:02:35.573Z',
         reqSignature:
@@ -101,7 +101,7 @@ describe('test apiSigning', function () {
   it('if inputs are valid, return proper return values', async function () {
     try {
       const resp = await apiSigning.verifyRequesterIsValidSP({
-        audiusLibs: libsMock,
+        colivingLibs: libsMock,
         spID: 1,
         reqTimestamp: '2022-03-25T15:22:54.866Z',
         reqSignature:
@@ -117,7 +117,7 @@ describe('test apiSigning', function () {
         resp.delegateOwnerWalletFromSPFactory ===
           '0x1ec723075e67a1a2b6969dc5cff0c6793cb36d25'
       )
-      assert.ok(resp.nodeEndpointFromSPFactory === 'http://mock-cn1.audius.co')
+      assert.ok(resp.nodeEndpointFromSPFactory === 'http://mock-cn1.coliving.co')
     } catch (e) {
       console.log(e)
       assert.fail('verifyRequesterIsValidSP should not have failed')
