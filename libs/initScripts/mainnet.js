@@ -16,8 +16,8 @@ if (args.length < 3) {
 
 /*
  *
- * export AUDIUS_PRIVATE_KEY=
-   export AUDIUS_OWNER_WALLET=
+ * export COLIVING_PRIVATE_KEY=
+   export COLIVING_OWNER_WALLET=
  * */
 const run = async () => {
   try {
@@ -25,8 +25,8 @@ const run = async () => {
     const commandToRun = args[3]
     const config = require(path.join(__dirname, configFile))
 
-    const privateKey = _getEnv('AUDIUS_PRIVATE_KEY')
-    const ownerWallet = _getEnv('AUDIUS_OWNER_WALLET')
+    const privateKey = _getEnv('COLIVING_PRIVATE_KEY')
+    const ownerWallet = _getEnv('COLIVING_OWNER_WALLET')
     const colivingLibs = await getAudiusLibs(config, privateKey, ownerWallet)
     switch (commandToRun) {
       case 'setversion':

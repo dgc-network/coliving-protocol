@@ -120,11 +120,11 @@ services:
       context: solana-programs
       dockerfile: Dockerfile.dev
       args:
-        AUDIUS_ETH_REGISTRY_PRIVATE_KEY: "${SOLANA_AUDIUS_ETH_REGISTRY_SECRET_KEY}"
+        COLIVING_ETH_REGISTRY_PRIVATE_KEY: "${SOLANA_COLIVING_ETH_REGISTRY_SECRET_KEY}"
         TRACK_LISTEN_COUNT_PRIVATE_KEY: "${SOLANA_TRACK_LISTEN_COUNT_SECRET_KEY}"
         CLAIMABLE_TOKENS_PRIVATE_KEY: "${SOLANA_CLAIMABLE_TOKENS_SECRET_KEY}"
         REWARD_MANAGER_PRIVATE_KEY: "${SOLANA_REWARD_MANAGER_SECRET_KEY}"
-        AUDIUS_DATA_PRIVATE_KEY: "${SOLANA_AUDIUS_DATA_SECRET_KEY}"
+        COLIVING_DATA_PRIVATE_KEY: "${SOLANA_COLIVING_DATA_SECRET_KEY}"
         owner_private_key: "${SOLANA_OWNER_SECRET_KEY}"
         feepayer_private_key: "${SOLANA_FEEPAYER_SECRET_KEY}"
         token_private_key: "${SOLANA_TOKEN_MINT_SECRET_KEY}"
@@ -225,7 +225,7 @@ services:
 
       solanaEndpoint: "http://solana-test-validator:8899"
       solanaTrackListenCountAddress: "${SOLANA_TRACK_LISTEN_COUNT_PUBLIC_KEY}"
-      solanaAudiusEthRegistryAddress: "${SOLANA_AUDIUS_ETH_REGISTRY_PUBLIC_KEY}"
+      solanaAudiusEthRegistryAddress: "${SOLANA_COLIVING_ETH_REGISTRY_PUBLIC_KEY}"
       solanaValidSigner: "${SOLANA_VALID_SIGNER_PUBLIC_KEY}"
       solanaFeePayerWallets: "[{\"privateKey\":${SOLANA_FEEPAYER_SECRET_KEY}}]"
       solanaSignerPrivateKey: "${ETH_VALID_SIGNER_PRIVATE_KEY}"
@@ -234,7 +234,7 @@ services:
       solanaRewardsManagerAddress: "${SOLANA_REWARD_MANAGER_PUBLIC_KEY}"
       solanaRewardsManagerProgramPDA: "${SOLANA_REWARD_MANAGER_PDA_PUBLIC_KEY}"
       solanaRewardsManagerTokenPDA: "${SOLANA_REWARD_MANAGER_TOKEN_PDA_PUBLIC_KEY}"
-      solanaAudiusAnchorDataProgramId: "${SOLANA_AUDIUS_DATA_PUBLIC_KEY}"
+      solanaAudiusAnchorDataProgramId: "${SOLANA_COLIVING_DATA_PUBLIC_KEY}"
     volumes:
       - ./identity-service/src:/usr/src/app/src
       - coliving-libs:/usr/src/coliving-libs
@@ -278,7 +278,7 @@ services:
       coliving_solana_waudio_mint: "${SOLANA_TOKEN_MINT_PUBLIC_KEY}"
       coliving_solana_rewards_manager_program_address: "${SOLANA_REWARD_MANAGER_PUBLIC_KEY}"
       coliving_solana_rewards_manager_account: "${SOLANA_REWARD_MANAGER_PDA_PUBLIC_KEY}"
-      coliving_solana_anchor_data_program_id: "${SOLANA_AUDIUS_DATA_PUBLIC_KEY}"
+      coliving_solana_anchor_data_program_id: "${SOLANA_COLIVING_DATA_PUBLIC_KEY}"
       coliving_solana_anchor_admin_storage_public_key: "${SOLANA_ADMIN_ACCOUNT_PUBLIC_KEY}"
 
       coliving_discprov_dev_mode: "true"

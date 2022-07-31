@@ -571,8 +571,8 @@ const _configureDiscProv = async (ethAccounts, serviceNumber, templatePath, writ
   const discProvAccountPubkey = ethAccounts[DISCOVERY_WALLET_OFFSET + serviceNumber].toLowerCase()
   const delegateWalletPrivKey = ganacheEthAccounts.private_keys[`${discProvAccountPubkey}`]
   const replaceMap = {
-    AUDIUS_DELEGATE_OWNER_WALLET: discProvAccountPubkey,
-    AUDIUS_DELEGATE_PRIVATE_KEY: delegateWalletPrivKey
+    COLIVING_DELEGATE_OWNER_WALLET: discProvAccountPubkey,
+    COLIVING_DELEGATE_PRIVATE_KEY: delegateWalletPrivKey
   }
   writeEnvConfigFromTemplate({ templatePath, writePath, replaceMap })
 }

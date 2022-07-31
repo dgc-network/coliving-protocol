@@ -746,7 +746,7 @@ const verifyThresholds = (emitterTest) => {
 }
 
 const printTestSummary = () => {
-  logger.info('\n------------------------ AUDIUS CORE INTEGRATION TEST Summary ------------------------')
+  logger.info('\n------------------------ COLIVING CORE INTEGRATION TEST Summary ------------------------')
   logger.info(`uploadedTracks: ${uploadedTracks.length}                | Total uploaded tracks`)
   logger.info(`repostedTracks: ${repostedTracks.length}                | Total reposted tracks`)
   logger.info(`createdPlaylists: ${Object.values(createdPlaylists).flat().length}                | Total created playlists`)

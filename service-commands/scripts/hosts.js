@@ -12,8 +12,8 @@ const config = require('../config/config')
 
 const ERR_MSG =
   'Usage: Pass in either \'add\' or \'remove\' to add or remove mappings from host file.'
-const START_SENTINEL = '# START-AUDIUS-LOCAL-DEV'
-const END_SENTINEL = '# END-AUDIUS-LOCAL-DEV'
+const START_SENTINEL = '# START-COLIVING-LOCAL-DEV'
+const END_SENTINEL = '# END-COLIVING-LOCAL-DEV'
 
 const REMOTE_DEV_HOST = config.get('remote_dev_host') // ip address
 
@@ -101,7 +101,7 @@ if (cmd === 'add') {
   }
 
   if (!REMOTE_DEV_HOST || REMOTE_DEV_HOST === '127.0.0.1') {
-    throw new Error('Misconfigured local env.\nEnsure AUDIUS_REMOTE_DEV_HOST has been exported and /etc/hosts file has necessary permissions.')
+    throw new Error('Misconfigured local env.\nEnsure COLIVING_REMOTE_DEV_HOST has been exported and /etc/hosts file has necessary permissions.')
   }
   const hostMappings = SERVICES.map(s => `${REMOTE_DEV_HOST} ${s}`)
   lines = [...lines, START_SENTINEL, ...hostMappings, END_SENTINEL, '\n']

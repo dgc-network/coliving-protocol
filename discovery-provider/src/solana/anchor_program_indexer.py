@@ -23,7 +23,7 @@ from src.utils.session_manager import SessionManager
 logger = logging.getLogger(__name__)
 
 TX_SIGNATURES_PROCESSING_SIZE = 100
-AUDIUS_DATA_IDL_PATH = "./idl/audius_data.json"
+COLIVING_DATA_IDL_PATH = "./idl/audius_data.json"
 
 
 class AnchorProgramIndexer(SolanaProgramIndexer):
@@ -42,7 +42,7 @@ class AnchorProgramIndexer(SolanaProgramIndexer):
         cid_metadata_client: CIDMetadataClient,
     ):
         super().__init__(program_id, label, redis, db, solana_client_manager)
-        self.anchor_parser = AnchorParser(AUDIUS_DATA_IDL_PATH, program_id)
+        self.anchor_parser = AnchorParser(COLIVING_DATA_IDL_PATH, program_id)
         self.admin_storage_public_key = admin_storage_public_key
         self.cid_metadata_client = cid_metadata_client
 

@@ -5,11 +5,11 @@
   },
   "remote_dev_host": {
     "default": "127.0.0.1",
-    "env": "AUDIUS_REMOTE_DEV_HOST"
+    "env": "COLIVING_REMOTE_DEV_HOST"
   },
   "coliving_config_dir": {
     "default": "~/.coliving",
-    "env": "AUDIUS_CONFIG_DIR"
+    "env": "COLIVING_CONFIG_DIR"
   },
   "health_check_wait_ms": {
     "default": 15000,

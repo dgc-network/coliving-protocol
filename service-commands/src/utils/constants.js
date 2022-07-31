@@ -7,14 +7,14 @@ require('dotenv').config({
 })
 
 
-const DOT_AUDIUS_PATH = `${os.homedir()}/.coliving`
+const DOT_COLIVING_PATH = `${os.homedir()}/.coliving`
 
 let ethContractsConfig
 let dataContractsConfig
-if (fs.existsSync(`${DOT_AUDIUS_PATH}`)) {
-    ethContractsConfig = require(`${DOT_AUDIUS_PATH}/eth-config.json`)
-    dataContractsConfig = require(`${DOT_AUDIUS_PATH}/config.json`)
-    solanaConfig = require(`${DOT_AUDIUS_PATH}/solana-program-config.json`)
+if (fs.existsSync(`${DOT_COLIVING_PATH}`)) {
+    ethContractsConfig = require(`${DOT_COLIVING_PATH}/eth-config.json`)
+    dataContractsConfig = require(`${DOT_COLIVING_PATH}/config.json`)
+    solanaConfig = require(`${DOT_COLIVING_PATH}/solana-program-config.json`)
 } else {
     ethContractsConfig = {}
     dataContractsConfig = {}
@@ -22,7 +22,7 @@ if (fs.existsSync(`${DOT_AUDIUS_PATH}`)) {
 }
 
 const config = {
-    DOT_AUDIUS_PATH,
+    DOT_COLIVING_PATH,
     SERVICE_COMMANDS_PATH,
     ETH_PROVIDER_ENDPOINT: process.env.ETH_PROVIDER_ENDPOINT,
     ETH_REGISTRY_ADDRESS: process.env.ETH_REGISTRY_ADDRESS || ethContractsConfig.registryAddress,
@@ -30,7 +30,7 @@ const config = {
     ETH_OWNER_WALLET: process.env.ETH_OWNER_WALLET || ethContractsConfig.ownerWallet,
     DATA_CONTRACTS_REGISTRY_ADDRESS: process.env.DATA_CONTRACTS_REGISTRY_ADDRESS || dataContractsConfig.registryAddress,
     HEDGEHOG_ENTROPY_KEY: 'hedgehog-entropy-key',
-    SEED_CACHE_PATH: `${DOT_AUDIUS_PATH}/seed-cache.json`,
+    SEED_CACHE_PATH: `${DOT_COLIVING_PATH}/seed-cache.json`,
     TEMP_TRACK_STORAGE_PATH: `${SERVICE_COMMANDS_PATH}/local-storage/tmp-tracks`,
     TEMP_IMAGE_STORAGE_PATH: `${SERVICE_COMMANDS_PATH}/local-storage/tmp-imgs`,
     CONTENT_NODE_ALLOWLIST:  process.env.CONTENT_NODE_ALLOWLIST

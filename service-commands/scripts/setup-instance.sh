@@ -35,8 +35,8 @@ name=${@:$OPTIND+1:1}
 # Set defaults and validate arguments
 provider=${provider:-$DEFAULT_PROVIDER}
 user=${user:-$DEFAULT_USER}
-coliving_protocol_git_ref=${coliving_protocol_git_ref:-$DEFAULT_AUDIUS_PROTOCOL_GIT_REF}
-coliving_client_git_ref=${coliving_client_git_ref:-$DEFAULT_AUDIUS_CLIENT_GIT_REF}
+coliving_protocol_git_ref=${coliving_protocol_git_ref:-$DEFAULT_COLIVING_PROTOCOL_GIT_REF}
+coliving_client_git_ref=${coliving_client_git_ref:-$DEFAULT_COLIVING_CLIENT_GIT_REF}
 spot_instance=${spot_instance:-false}
 
 if [[ "$provider" != "gcp" ]] && [[ "$provider" != "azure" ]]; then
@@ -115,10 +115,10 @@ case "$service" in
 
 		IP=$(get_ip_addr $provider $name)
 		echo 'Setup /etc/hosts using these commands:'
-		echo '    echo "export AUDIUS_REMOTE_DEV_HOST='"${IP}"'" >> ~/.zshenv'
-		echo '    echo "export AUDIUS_REMOTE_DEV_HOST='"${IP}"'" >> ~/.bashrc'
+		echo '    echo "export COLIVING_REMOTE_DEV_HOST='"${IP}"'" >> ~/.zshenv'
+		echo '    echo "export COLIVING_REMOTE_DEV_HOST='"${IP}"'" >> ~/.bashrc'
 		echo '    sudo node $PROTOCOL_DIR/service-commands/scripts/hosts.js remove'
-		echo '    sudo -E AUDIUS_REMOTE_DEV_HOST='"${IP}"' node $PROTOCOL_DIR/service-commands/scripts/hosts.js add-remote-host'
+		echo '    sudo -E COLIVING_REMOTE_DEV_HOST='"${IP}"' node $PROTOCOL_DIR/service-commands/scripts/hosts.js add-remote-host'
 		
 		echo -e "\nLog into ${IP} using:\n"
 		echo -e "    ssh -i ~/.ssh/google_compute_engine ${user}@${IP}\n"

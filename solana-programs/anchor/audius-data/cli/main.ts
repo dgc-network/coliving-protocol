@@ -36,7 +36,7 @@ import toml from "toml";
 
 const EthWeb3 = new Web3();
 
-const AUDIUS_PROD_RPC_POOL = "https://audius.rpcpool.com/";
+const COLIVING_PROD_RPC_POOL = "https://audius.rpcpool.com/";
 const LOCALHOST_RPC_POOL = "http://localhost:8899";
 const SYSTEM_PROGRAM_ID = SystemProgram.programId;
 
@@ -417,7 +417,7 @@ const verifierKeypair = options.verifierKeypair
 const network = options.network
   ? options.network
   : process.env.NODE_ENV === "production"
-  ? AUDIUS_PROD_RPC_POOL
+  ? COLIVING_PROD_RPC_POOL
   : LOCALHOST_RPC_POOL;
 
 const main = async () => {

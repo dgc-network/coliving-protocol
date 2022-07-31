@@ -9,13 +9,13 @@
 > Exemple de code
 
 ```shell
-curl AUDIUS_API_HOST/v1/users/associated_wallets?id=string 
+curl COLIVING_API_HOST/v1/users/associated_wallets?id=string 
 
 
 ```
 
 ```http
-GET AUDIUS_API_HOST/v1/users/associated_wallets?id=string HTTP/1.1
+GET COLIVING_API_HOST/v1/users/associated_wallets?id=string HTTP/1.1
 
 ```
 
@@ -25,7 +25,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('AUDIUS_API_HOST/v1/users/associated_wallets?id=string',
+fetch('COLIVING_API_HOST/v1/users/associated_wallets?id=string',
 {
   method: 'GET',
 
@@ -47,7 +47,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'AUDIUS_API_HOST/v1/users/associated_wallets',
+result = RestClient.get 'COLIVING_API_HOST/v1/users/associated_wallets',
   params: {
   'id' => 'string'
 }, headers: headers
@@ -62,7 +62,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('AUDIUS_API_HOST/v1/users/associated_wallets', params={
+r = requests.get('COLIVING_API_HOST/v1/users/associated_wallets', params={
   'id': 'string'
 }, headers = headers)
 
@@ -85,7 +85,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','AUDIUS_API_HOST/v1/users/associated_wallets', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/users/associated_wallets', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -102,7 +102,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("AUDIUS_API_HOST/v1/users/associated_wallets?id=string");
+URL obj = new URL("COLIVING_API_HOST/v1/users/associated_wallets?id=string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -133,7 +133,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "AUDIUS_API_HOST/v1/users/associated_wallets", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/users/associated_wallets", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -183,13 +183,13 @@ func main() {
 > Exemple de code
 
 ```shell
-curl AUDIUS_API_HOST/v1/users/id?associated_wallet=string 
+curl COLIVING_API_HOST/v1/users/id?associated_wallet=string 
 
 
 ```
 
 ```http
-GET AUDIUS_API_HOST/v1/users/id?associated_wallet=string HTTP/1.1
+GET COLIVING_API_HOST/v1/users/id?associated_wallet=string HTTP/1.1
 
 ```
 
@@ -199,7 +199,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('AUDIUS_API_HOST/v1/users/id?associated_wallet=string',
+fetch('COLIVING_API_HOST/v1/users/id?associated_wallet=string',
 {
   method: 'GET',
 
@@ -221,7 +221,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'AUDIUS_API_HOST/v1/users/id',
+result = RestClient.get 'COLIVING_API_HOST/v1/users/id',
   params: {
   'associated_wallet' => 'string'
 }, headers: headers
@@ -236,7 +236,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('AUDIUS_API_HOST/v1/users/id', params={
+r = requests.get('COLIVING_API_HOST/v1/users/id', params={
   'associated_wallet': 'string'
 }, headers = headers)
 
@@ -259,7 +259,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','AUDIUS_API_HOST/v1/users/id', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/users/id', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -276,7 +276,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("AUDIUS_API_HOST/v1/users/id?associated_wallet=string");
+URL obj = new URL("COLIVING_API_HOST/v1/users/id?associated_wallet=string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -307,7 +307,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "AUDIUS_API_HOST/v1/users/id", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/users/id", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -352,13 +352,13 @@ func main() {
 > Exemple de code
 
 ```shell
-curl AUDIUS_API_HOST/v1/users/search?query=Brownies 
+curl COLIVING_API_HOST/v1/users/search?query=Brownies 
 
 
 ```
 
 ```http
-GET AUDIUS_API_HOST/v1/users/search?query=Brownies HTTP/1.1
+GET COLIVING_API_HOST/v1/users/search?query=Brownies HTTP/1.1
 
 ```
 
@@ -368,7 +368,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('AUDIUS_API_HOST/v1/users/search?query=Brownies',
+fetch('COLIVING_API_HOST/v1/users/search?query=Brownies',
 {
   method: 'GET',
 
@@ -390,7 +390,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'AUDIUS_API_HOST/v1/users/search',
+result = RestClient.get 'COLIVING_API_HOST/v1/users/search',
   params: {
   'query' => 'string'
 }, headers: headers
@@ -405,7 +405,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('AUDIUS_API_HOST/v1/users/search', params={
+r = requests.get('COLIVING_API_HOST/v1/users/search', params={
   'query': 'Brownies'
 }, headers = headers)
 
@@ -428,7 +428,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','AUDIUS_API_HOST/v1/users/search', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/users/search', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -445,7 +445,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("AUDIUS_API_HOST/v1/users/search?query=Brownies");
+URL obj = new URL("COLIVING_API_HOST/v1/users/search?query=Brownies");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -476,7 +476,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "AUDIUS_API_HOST/v1/users/search", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/users/search", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -544,13 +544,13 @@ func main() {
 > Exemple de code
 
 ```shell
-curl AUDIUS_API_HOST/v1/users/nlGNe 
+curl COLIVING_API_HOST/v1/users/nlGNe 
 
 
 ```
 
 ```http
-GET AUDIUS_API_HOST/v1/users/nlGNe HTTP/1.1
+GET COLIVING_API_HOST/v1/users/nlGNe HTTP/1.1
 
 ```
 
@@ -560,7 +560,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('AUDIUS_API_HOST/v1/users/nlGNe',
+fetch('COLIVING_API_HOST/v1/users/nlGNe',
 {
   method: 'GET',
 
@@ -582,7 +582,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'AUDIUS_API_HOST/v1/users/nlGNe',
+result = RestClient.get 'COLIVING_API_HOST/v1/users/nlGNe',
   params: {
   }, headers: headers
 
@@ -596,7 +596,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('AUDIUS_API_HOST/v1/users/nlGNe', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/users/nlGNe', headers = headers)
 
 print(r.json())
 
@@ -617,7 +617,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','AUDIUS_API_HOST/v1/users/nlGNe', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/users/nlGNe', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -634,7 +634,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("AUDIUS_API_HOST/v1/users/nlGNe");
+URL obj = new URL("COLIVING_API_HOST/v1/users/nlGNe");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -665,7 +665,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "AUDIUS_API_HOST/v1/users/nlGNe", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/users/nlGNe", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -730,13 +730,13 @@ func main() {
 > Exemple de code
 
 ```shell
-curl AUDIUS_API_HOST/v1/users/string/challenges 
+curl COLIVING_API_HOST/v1/users/string/challenges 
 
 
 ```
 
 ```http
-GET AUDIUS_API_HOST/v1/users/string/challenges HTTP/1.1
+GET COLIVING_API_HOST/v1/users/string/challenges HTTP/1.1
 
 ```
 
@@ -746,7 +746,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('AUDIUS_API_HOST/v1/users/string/challenges',
+fetch('COLIVING_API_HOST/v1/users/string/challenges',
 {
   method: 'GET',
 
@@ -768,7 +768,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'AUDIUS_API_HOST/v1/users/string/challenges',
+result = RestClient.get 'COLIVING_API_HOST/v1/users/string/challenges',
   params: {
   }, headers: headers
 
@@ -782,7 +782,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('AUDIUS_API_HOST/v1/users/string/challenges', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/users/string/challenges', headers = headers)
 
 print(r.json())
 
@@ -803,7 +803,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','AUDIUS_API_HOST/v1/users/string/challenges', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/users/string/challenges', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -820,7 +820,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("AUDIUS_API_HOST/v1/users/string/challenges");
+URL obj = new URL("COLIVING_API_HOST/v1/users/string/challenges");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -851,7 +851,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "AUDIUS_API_HOST/v1/users/string/challenges", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/users/string/challenges", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -908,13 +908,13 @@ func main() {
 > Exemple de code
 
 ```shell
-curl AUDIUS_API_HOST/v1/users/nlGNe/favorites 
+curl COLIVING_API_HOST/v1/users/nlGNe/favorites 
 
 
 ```
 
 ```http
-GET AUDIUS_API_HOST/v1/users/nlGNe/favorites HTTP/1.1
+GET COLIVING_API_HOST/v1/users/nlGNe/favorites HTTP/1.1
 
 ```
 
@@ -924,7 +924,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('AUDIUS_API_HOST/v1/users/nlGNe/favorites',
+fetch('COLIVING_API_HOST/v1/users/nlGNe/favorites',
 {
   method: 'GET',
 
@@ -946,7 +946,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'AUDIUS_API_HOST/v1/users/nlGNe/favorites',
+result = RestClient.get 'COLIVING_API_HOST/v1/users/nlGNe/favorites',
   params: {
   }, headers: headers
 
@@ -960,7 +960,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('AUDIUS_API_HOST/v1/users/nlGNe/favorites', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/users/nlGNe/favorites', headers = headers)
 
 print(r.json())
 
@@ -981,7 +981,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','AUDIUS_API_HOST/v1/users/nlGNe/favorites', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/users/nlGNe/favorites', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -998,7 +998,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("AUDIUS_API_HOST/v1/users/nlGNe/favorites");
+URL obj = new URL("COLIVING_API_HOST/v1/users/nlGNe/favorites");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -1029,7 +1029,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "AUDIUS_API_HOST/v1/users/nlGNe/favorites", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/users/nlGNe/favorites", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -1088,13 +1088,13 @@ func main() {
 > Exemple de code
 
 ```shell
-curl AUDIUS_API_HOST/v1/users/string/reposts 
+curl COLIVING_API_HOST/v1/users/string/reposts 
 
 
 ```
 
 ```http
-GET AUDIUS_API_HOST/v1/users/string/reposts HTTP/1.1
+GET COLIVING_API_HOST/v1/users/string/reposts HTTP/1.1
 
 ```
 
@@ -1104,7 +1104,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('AUDIUS_API_HOST/v1/users/string/reposts',
+fetch('COLIVING_API_HOST/v1/users/string/reposts',
 {
   method: 'GET',
 
@@ -1126,7 +1126,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'AUDIUS_API_HOST/v1/users/string/reposts',
+result = RestClient.get 'COLIVING_API_HOST/v1/users/string/reposts',
   params: {
   }, headers: headers
 
@@ -1140,7 +1140,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('AUDIUS_API_HOST/v1/users/string/reposts', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/users/string/reposts', headers = headers)
 
 print(r.json())
 
@@ -1161,7 +1161,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','AUDIUS_API_HOST/v1/users/string/reposts', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/users/string/reposts', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -1178,7 +1178,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("AUDIUS_API_HOST/v1/users/string/reposts");
+URL obj = new URL("COLIVING_API_HOST/v1/users/string/reposts");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -1209,7 +1209,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "AUDIUS_API_HOST/v1/users/string/reposts", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/users/string/reposts", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -1260,13 +1260,13 @@ func main() {
 > Exemple de code
 
 ```shell
-curl AUDIUS_API_HOST/v1/users/string/tags?user_id=string 
+curl COLIVING_API_HOST/v1/users/string/tags?user_id=string 
 
 
 ```
 
 ```http
-GET AUDIUS_API_HOST/v1/users/string/tags?user_id=string HTTP/1.1
+GET COLIVING_API_HOST/v1/users/string/tags?user_id=string HTTP/1.1
 
 ```
 
@@ -1276,7 +1276,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('AUDIUS_API_HOST/v1/users/string/tags?user_id=string',
+fetch('COLIVING_API_HOST/v1/users/string/tags?user_id=string',
 {
   method: 'GET',
 
@@ -1298,7 +1298,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'AUDIUS_API_HOST/v1/users/string/tags',
+result = RestClient.get 'COLIVING_API_HOST/v1/users/string/tags',
   params: {
   'user_id' => 'string'
 }, headers: headers
@@ -1313,7 +1313,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('AUDIUS_API_HOST/v1/users/string/tags', params={
+r = requests.get('COLIVING_API_HOST/v1/users/string/tags', params={
   'user_id': 'string'
 }, headers = headers)
 
@@ -1336,7 +1336,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','AUDIUS_API_HOST/v1/users/string/tags', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/users/string/tags', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -1353,7 +1353,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("AUDIUS_API_HOST/v1/users/string/tags?user_id=string");
+URL obj = new URL("COLIVING_API_HOST/v1/users/string/tags?user_id=string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -1384,7 +1384,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "AUDIUS_API_HOST/v1/users/string/tags", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/users/string/tags", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -1433,13 +1433,13 @@ func main() {
 > Exemple de code
 
 ```shell
-curl AUDIUS_API_HOST/v1/users/nlGNe/tracks 
+curl COLIVING_API_HOST/v1/users/nlGNe/tracks 
 
 
 ```
 
 ```http
-GET AUDIUS_API_HOST/v1/users/nlGNe/tracks HTTP/1.1
+GET COLIVING_API_HOST/v1/users/nlGNe/tracks HTTP/1.1
 
 ```
 
@@ -1449,7 +1449,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('AUDIUS_API_HOST/v1/users/nlGNe/tracks',
+fetch('COLIVING_API_HOST/v1/users/nlGNe/tracks',
 {
   method: 'GET',
 
@@ -1471,7 +1471,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'AUDIUS_API_HOST/v1/users/nlGNe/tracks',
+result = RestClient.get 'COLIVING_API_HOST/v1/users/nlGNe/tracks',
   params: {
   }, headers: headers
 
@@ -1485,7 +1485,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('AUDIUS_API_HOST/v1/users/nlGNe/tracks', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/users/nlGNe/tracks', headers = headers)
 
 print(r.json())
 
@@ -1506,7 +1506,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','AUDIUS_API_HOST/v1/users/nlGNe/tracks', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/users/nlGNe/tracks', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -1523,7 +1523,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("AUDIUS_API_HOST/v1/users/nlGNe/tracks");
+URL obj = new URL("COLIVING_API_HOST/v1/users/nlGNe/tracks");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -1554,7 +1554,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "AUDIUS_API_HOST/v1/users/nlGNe/tracks", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/users/nlGNe/tracks", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -1643,13 +1643,13 @@ func main() {
 > Exemple de code
 
 ```shell
-curl AUDIUS_API_HOST/v1/playlists/search?query=Hot & New 
+curl COLIVING_API_HOST/v1/playlists/search?query=Hot & New 
 
 
 ```
 
 ```http
-GET AUDIUS_API_HOST/v1/playlists/search?query=Hot & New HTTP/1.1
+GET COLIVING_API_HOST/v1/playlists/search?query=Hot & New HTTP/1.1
 
 ```
 
@@ -1659,7 +1659,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('AUDIUS_API_HOST/v1/playlists/search?query=Hot & New',
+fetch('COLIVING_API_HOST/v1/playlists/search?query=Hot & New',
 {
   method: 'GET',
 
@@ -1681,7 +1681,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'AUDIUS_API_HOST/v1/playlists/search',
+result = RestClient.get 'COLIVING_API_HOST/v1/playlists/search',
   params: {
   'query' => 'string'
 }, headers: headers
@@ -1696,7 +1696,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('AUDIUS_API_HOST/v1/playlists/search', params={
+r = requests.get('COLIVING_API_HOST/v1/playlists/search', params={
   'query': 'Hot & New'
 }, headers = headers)
 
@@ -1719,7 +1719,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','AUDIUS_API_HOST/v1/playlists/search', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/playlists/search', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -1736,7 +1736,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("AUDIUS_API_HOST/v1/playlists/search?query=Hot & New");
+URL obj = new URL("COLIVING_API_HOST/v1/playlists/search?query=Hot & New");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -1767,7 +1767,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "AUDIUS_API_HOST/v1/playlists/search", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/playlists/search", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -1848,13 +1848,13 @@ func main() {
 > Exemple de code
 
 ```shell
-curl AUDIUS_API_HOST/v1/playlists/trending/string 
+curl COLIVING_API_HOST/v1/playlists/trending/string 
 
 
 ```
 
 ```http
-GET AUDIUS_API_HOST/v1/playlists/trending/string HTTP/1.1
+GET COLIVING_API_HOST/v1/playlists/trending/string HTTP/1.1
 
 ```
 
@@ -1864,7 +1864,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('AUDIUS_API_HOST/v1/playlists/trending/string',
+fetch('COLIVING_API_HOST/v1/playlists/trending/string',
 {
   method: 'GET',
 
@@ -1886,7 +1886,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'AUDIUS_API_HOST/v1/playlists/trending/string',
+result = RestClient.get 'COLIVING_API_HOST/v1/playlists/trending/string',
   params: {
   }, headers: headers
 
@@ -1900,7 +1900,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('AUDIUS_API_HOST/v1/playlists/trending/string', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/playlists/trending/string', headers = headers)
 
 print(r.json())
 
@@ -1921,7 +1921,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','AUDIUS_API_HOST/v1/playlists/trending/string', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/playlists/trending/string', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -1938,7 +1938,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("AUDIUS_API_HOST/v1/playlists/trending/string");
+URL obj = new URL("COLIVING_API_HOST/v1/playlists/trending/string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -1969,7 +1969,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "AUDIUS_API_HOST/v1/playlists/trending/string", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/playlists/trending/string", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -2053,13 +2053,13 @@ func main() {
 > Exemple de code
 
 ```shell
-curl AUDIUS_API_HOST/v1/playlists/DOPRl 
+curl COLIVING_API_HOST/v1/playlists/DOPRl 
 
 
 ```
 
 ```http
-GET AUDIUS_API_HOST/v1/playlists/DOPRl HTTP/1.1
+GET COLIVING_API_HOST/v1/playlists/DOPRl HTTP/1.1
 
 ```
 
@@ -2069,7 +2069,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('AUDIUS_API_HOST/v1/playlists/DOPRl',
+fetch('COLIVING_API_HOST/v1/playlists/DOPRl',
 {
   method: 'GET',
 
@@ -2091,7 +2091,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'AUDIUS_API_HOST/v1/playlists/DOPRl',
+result = RestClient.get 'COLIVING_API_HOST/v1/playlists/DOPRl',
   params: {
   }, headers: headers
 
@@ -2105,7 +2105,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('AUDIUS_API_HOST/v1/playlists/DOPRl', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/playlists/DOPRl', headers = headers)
 
 print(r.json())
 
@@ -2126,7 +2126,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','AUDIUS_API_HOST/v1/playlists/DOPRl', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/playlists/DOPRl', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -2143,7 +2143,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("AUDIUS_API_HOST/v1/playlists/DOPRl");
+URL obj = new URL("COLIVING_API_HOST/v1/playlists/DOPRl");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -2174,7 +2174,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "AUDIUS_API_HOST/v1/playlists/DOPRl", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/playlists/DOPRl", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -2252,13 +2252,13 @@ func main() {
 > Exemple de code
 
 ```shell
-curl AUDIUS_API_HOST/v1/playlists/DOPRl/tracks 
+curl COLIVING_API_HOST/v1/playlists/DOPRl/tracks 
 
 
 ```
 
 ```http
-GET AUDIUS_API_HOST/v1/playlists/DOPRl/tracks HTTP/1.1
+GET COLIVING_API_HOST/v1/playlists/DOPRl/tracks HTTP/1.1
 
 ```
 
@@ -2268,7 +2268,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('AUDIUS_API_HOST/v1/playlists/DOPRl/tracks',
+fetch('COLIVING_API_HOST/v1/playlists/DOPRl/tracks',
 {
   method: 'GET',
 
@@ -2290,7 +2290,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'AUDIUS_API_HOST/v1/playlists/DOPRl/tracks',
+result = RestClient.get 'COLIVING_API_HOST/v1/playlists/DOPRl/tracks',
   params: {
   }, headers: headers
 
@@ -2304,7 +2304,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('AUDIUS_API_HOST/v1/playlists/DOPRl/tracks', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/playlists/DOPRl/tracks', headers = headers)
 
 print(r.json())
 
@@ -2325,7 +2325,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','AUDIUS_API_HOST/v1/playlists/DOPRl/tracks', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/playlists/DOPRl/tracks', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -2342,7 +2342,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("AUDIUS_API_HOST/v1/playlists/DOPRl/tracks");
+URL obj = new URL("COLIVING_API_HOST/v1/playlists/DOPRl/tracks");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -2373,7 +2373,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "AUDIUS_API_HOST/v1/playlists/DOPRl/tracks", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/playlists/DOPRl/tracks", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -2459,13 +2459,13 @@ func main() {
 > Exemple de code
 
 ```shell
-curl AUDIUS_API_HOST/v1/tracks 
+curl COLIVING_API_HOST/v1/tracks 
 
 
 ```
 
 ```http
-GET AUDIUS_API_HOST/v1/tracks HTTP/1.1
+GET COLIVING_API_HOST/v1/tracks HTTP/1.1
 
 ```
 
@@ -2475,7 +2475,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('AUDIUS_API_HOST/v1/tracks',
+fetch('COLIVING_API_HOST/v1/tracks',
 {
   method: 'GET',
 
@@ -2497,7 +2497,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'AUDIUS_API_HOST/v1/tracks',
+result = RestClient.get 'COLIVING_API_HOST/v1/tracks',
   params: {
   }, headers: headers
 
@@ -2511,7 +2511,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('AUDIUS_API_HOST/v1/tracks', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/tracks', headers = headers)
 
 print(r.json())
 
@@ -2532,7 +2532,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','AUDIUS_API_HOST/v1/tracks', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/tracks', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -2549,7 +2549,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("AUDIUS_API_HOST/v1/tracks");
+URL obj = new URL("COLIVING_API_HOST/v1/tracks");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -2580,7 +2580,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "AUDIUS_API_HOST/v1/tracks", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/tracks", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -2673,13 +2673,13 @@ func main() {
 > Exemple de code
 
 ```shell
-curl AUDIUS_API_HOST/v1/tracks/recommended/string 
+curl COLIVING_API_HOST/v1/tracks/recommended/string 
 
 
 ```
 
 ```http
-GET AUDIUS_API_HOST/v1/tracks/recommended/string HTTP/1.1
+GET COLIVING_API_HOST/v1/tracks/recommended/string HTTP/1.1
 
 ```
 
@@ -2689,7 +2689,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('AUDIUS_API_HOST/v1/tracks/recommended/string',
+fetch('COLIVING_API_HOST/v1/tracks/recommended/string',
 {
   method: 'GET',
 
@@ -2711,7 +2711,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'AUDIUS_API_HOST/v1/tracks/recommended/string',
+result = RestClient.get 'COLIVING_API_HOST/v1/tracks/recommended/string',
   params: {
   }, headers: headers
 
@@ -2725,7 +2725,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('AUDIUS_API_HOST/v1/tracks/recommended/string', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/tracks/recommended/string', headers = headers)
 
 print(r.json())
 
@@ -2746,7 +2746,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','AUDIUS_API_HOST/v1/tracks/recommended/string', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/tracks/recommended/string', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -2763,7 +2763,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("AUDIUS_API_HOST/v1/tracks/recommended/string");
+URL obj = new URL("COLIVING_API_HOST/v1/tracks/recommended/string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -2794,7 +2794,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "AUDIUS_API_HOST/v1/tracks/recommended/string", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/tracks/recommended/string", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -2892,13 +2892,13 @@ func main() {
 > Exemple de code
 
 ```shell
-curl AUDIUS_API_HOST/v1/tracks/search?query=baauer b2b 
+curl COLIVING_API_HOST/v1/tracks/search?query=baauer b2b 
 
 
 ```
 
 ```http
-GET AUDIUS_API_HOST/v1/tracks/search?query=baauer b2b HTTP/1.1
+GET COLIVING_API_HOST/v1/tracks/search?query=baauer b2b HTTP/1.1
 
 ```
 
@@ -2908,7 +2908,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('AUDIUS_API_HOST/v1/tracks/search?query=baauer b2b',
+fetch('COLIVING_API_HOST/v1/tracks/search?query=baauer b2b',
 {
   method: 'GET',
 
@@ -2930,7 +2930,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'AUDIUS_API_HOST/v1/tracks/search',
+result = RestClient.get 'COLIVING_API_HOST/v1/tracks/search',
   params: {
   'query' => 'string'
 }, headers: headers
@@ -2945,7 +2945,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('AUDIUS_API_HOST/v1/tracks/search', params={
+r = requests.get('COLIVING_API_HOST/v1/tracks/search', params={
   'query': 'baauer b2b'
 }, headers = headers)
 
@@ -2968,7 +2968,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','AUDIUS_API_HOST/v1/tracks/search', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/tracks/search', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -2985,7 +2985,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("AUDIUS_API_HOST/v1/tracks/search?query=baauer b2b");
+URL obj = new URL("COLIVING_API_HOST/v1/tracks/search?query=baauer b2b");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -3016,7 +3016,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "AUDIUS_API_HOST/v1/tracks/search", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/tracks/search", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -3101,13 +3101,13 @@ func main() {
 > Exemple de code
 
 ```shell
-curl AUDIUS_API_HOST/v1/tracks/trending/string 
+curl COLIVING_API_HOST/v1/tracks/trending/string 
 
 
 ```
 
 ```http
-GET AUDIUS_API_HOST/v1/tracks/trending/string HTTP/1.1
+GET COLIVING_API_HOST/v1/tracks/trending/string HTTP/1.1
 
 ```
 
@@ -3117,7 +3117,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('AUDIUS_API_HOST/v1/tracks/trending/string',
+fetch('COLIVING_API_HOST/v1/tracks/trending/string',
 {
   method: 'GET',
 
@@ -3139,7 +3139,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'AUDIUS_API_HOST/v1/tracks/trending/string',
+result = RestClient.get 'COLIVING_API_HOST/v1/tracks/trending/string',
   params: {
   }, headers: headers
 
@@ -3153,7 +3153,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('AUDIUS_API_HOST/v1/tracks/trending/string', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/tracks/trending/string', headers = headers)
 
 print(r.json())
 
@@ -3174,7 +3174,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','AUDIUS_API_HOST/v1/tracks/trending/string', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/tracks/trending/string', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -3191,7 +3191,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("AUDIUS_API_HOST/v1/tracks/trending/string");
+URL obj = new URL("COLIVING_API_HOST/v1/tracks/trending/string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -3222,7 +3222,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "AUDIUS_API_HOST/v1/tracks/trending/string", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/tracks/trending/string", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -3320,13 +3320,13 @@ func main() {
 > Exemple de code
 
 ```shell
-curl AUDIUS_API_HOST/v1/tracks/D7KyD 
+curl COLIVING_API_HOST/v1/tracks/D7KyD 
 
 
 ```
 
 ```http
-GET AUDIUS_API_HOST/v1/tracks/D7KyD HTTP/1.1
+GET COLIVING_API_HOST/v1/tracks/D7KyD HTTP/1.1
 
 ```
 
@@ -3336,7 +3336,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('AUDIUS_API_HOST/v1/tracks/D7KyD',
+fetch('COLIVING_API_HOST/v1/tracks/D7KyD',
 {
   method: 'GET',
 
@@ -3358,7 +3358,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'AUDIUS_API_HOST/v1/tracks/D7KyD',
+result = RestClient.get 'COLIVING_API_HOST/v1/tracks/D7KyD',
   params: {
   }, headers: headers
 
@@ -3372,7 +3372,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('AUDIUS_API_HOST/v1/tracks/D7KyD', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/tracks/D7KyD', headers = headers)
 
 print(r.json())
 
@@ -3393,7 +3393,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','AUDIUS_API_HOST/v1/tracks/D7KyD', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/tracks/D7KyD', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -3410,7 +3410,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("AUDIUS_API_HOST/v1/tracks/D7KyD");
+URL obj = new URL("COLIVING_API_HOST/v1/tracks/D7KyD");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -3441,7 +3441,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "AUDIUS_API_HOST/v1/tracks/D7KyD", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/tracks/D7KyD", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -3523,18 +3523,18 @@ func main() {
 > Exemple de code
 
 ```shell
-curl AUDIUS_API_HOST/v1/tracks/D7KyD/stream
+curl COLIVING_API_HOST/v1/tracks/D7KyD/stream
 
 ```
 
 ```http
-GET AUDIUS_API_HOST/v1/tracks/D7KyD/stream HTTP/1.1
+GET COLIVING_API_HOST/v1/tracks/D7KyD/stream HTTP/1.1
 
 ```
 
 ```javascript
 
-fetch('AUDIUS_API_HOST/v1/tracks/D7KyD/stream',
+fetch('COLIVING_API_HOST/v1/tracks/D7KyD/stream',
 {
   method: 'GET'
 
@@ -3551,7 +3551,7 @@ fetch('AUDIUS_API_HOST/v1/tracks/D7KyD/stream',
 require 'rest-client'
 require 'json'
 
-result = RestClient.get 'AUDIUS_API_HOST/v1/tracks/D7KyD/stream',
+result = RestClient.get 'COLIVING_API_HOST/v1/tracks/D7KyD/stream',
   params: {
   }
 
@@ -3562,7 +3562,7 @@ p JSON.parse(result)
 ```python
 import requests
 
-r = requests.get('AUDIUS_API_HOST/v1/tracks/D7KyD/stream')
+r = requests.get('COLIVING_API_HOST/v1/tracks/D7KyD/stream')
 
 print(r.json())
 
@@ -3579,7 +3579,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','AUDIUS_API_HOST/v1/tracks/D7KyD/stream', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/tracks/D7KyD/stream', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -3596,7 +3596,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("AUDIUS_API_HOST/v1/tracks/D7KyD/stream");
+URL obj = new URL("COLIVING_API_HOST/v1/tracks/D7KyD/stream");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -3623,7 +3623,7 @@ import (
 func main() {
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "AUDIUS_API_HOST/v1/tracks/D7KyD/stream", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/tracks/D7KyD/stream", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -3664,13 +3664,13 @@ Ce endpoint accepte l'en-tête Range pour le streaming. https://developer.mozill
 > Exemple de code
 
 ```shell
-curl AUDIUS_API_HOST/v1/challenges/undisbursed 
+curl COLIVING_API_HOST/v1/challenges/undisbursed 
 
 
 ```
 
 ```http
-GET AUDIUS_API_HOST/v1/challenges/undisbursed HTTP/1.1
+GET COLIVING_API_HOST/v1/challenges/undisbursed HTTP/1.1
 
 ```
 
@@ -3680,7 +3680,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('AUDIUS_API_HOST/v1/challenges/undisbursed',
+fetch('COLIVING_API_HOST/v1/challenges/undisbursed',
 {
   method: 'GET',
 
@@ -3702,7 +3702,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'AUDIUS_API_HOST/v1/challenges/undisbursed',
+result = RestClient.get 'COLIVING_API_HOST/v1/challenges/undisbursed',
   params: {
   }, headers: headers
 
@@ -3716,7 +3716,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('AUDIUS_API_HOST/v1/challenges/undisbursed', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/challenges/undisbursed', headers = headers)
 
 print(r.json())
 
@@ -3737,7 +3737,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','AUDIUS_API_HOST/v1/challenges/undisbursed', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/challenges/undisbursed', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -3754,7 +3754,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("AUDIUS_API_HOST/v1/challenges/undisbursed");
+URL obj = new URL("COLIVING_API_HOST/v1/challenges/undisbursed");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -3785,7 +3785,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "AUDIUS_API_HOST/v1/challenges/undisbursed", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/challenges/undisbursed", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -3838,13 +3838,13 @@ func main() {
 > Exemple de code
 
 ```shell
-curl AUDIUS_API_HOST/v1/challenges/string/attest?user_id=string&oracle=string&specifier=string 
+curl COLIVING_API_HOST/v1/challenges/string/attest?user_id=string&oracle=string&specifier=string 
 
 
 ```
 
 ```http
-GET AUDIUS_API_HOST/v1/challenges/string/attest?user_id=string&oracle=string&specifier=string HTTP/1.1
+GET COLIVING_API_HOST/v1/challenges/string/attest?user_id=string&oracle=string&specifier=string HTTP/1.1
 
 ```
 
@@ -3854,7 +3854,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('AUDIUS_API_HOST/v1/challenges/string/attest?user_id=string&oracle=string&specifier=string',
+fetch('COLIVING_API_HOST/v1/challenges/string/attest?user_id=string&oracle=string&specifier=string',
 {
   method: 'GET',
 
@@ -3876,7 +3876,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'AUDIUS_API_HOST/v1/challenges/string/attest',
+result = RestClient.get 'COLIVING_API_HOST/v1/challenges/string/attest',
   params: {
   'user_id' => 'string',
 'oracle' => 'string',
@@ -3893,7 +3893,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('AUDIUS_API_HOST/v1/challenges/string/attest', params={
+r = requests.get('COLIVING_API_HOST/v1/challenges/string/attest', params={
   'user_id': 'string',  'oracle': 'string',  'specifier': 'string'
 }, headers = headers)
 
@@ -3916,7 +3916,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','AUDIUS_API_HOST/v1/challenges/string/attest', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/challenges/string/attest', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -3933,7 +3933,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("AUDIUS_API_HOST/v1/challenges/string/attest?user_id=string&oracle=string&specifier=string");
+URL obj = new URL("COLIVING_API_HOST/v1/challenges/string/attest?user_id=string&oracle=string&specifier=string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -3964,7 +3964,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "AUDIUS_API_HOST/v1/challenges/string/attest", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/challenges/string/attest", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -4013,13 +4013,13 @@ func main() {
 > Exemple de code
 
 ```shell
-curl AUDIUS_API_HOST/v1/metrics/app_name/trailing/string 
+curl COLIVING_API_HOST/v1/metrics/app_name/trailing/string 
 
 
 ```
 
 ```http
-GET AUDIUS_API_HOST/v1/metrics/app_name/trailing/string HTTP/1.1
+GET COLIVING_API_HOST/v1/metrics/app_name/trailing/string HTTP/1.1
 
 ```
 
@@ -4029,7 +4029,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('AUDIUS_API_HOST/v1/metrics/app_name/trailing/string',
+fetch('COLIVING_API_HOST/v1/metrics/app_name/trailing/string',
 {
   method: 'GET',
 
@@ -4051,7 +4051,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'AUDIUS_API_HOST/v1/metrics/app_name/trailing/string',
+result = RestClient.get 'COLIVING_API_HOST/v1/metrics/app_name/trailing/string',
   params: {
   }, headers: headers
 
@@ -4065,7 +4065,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('AUDIUS_API_HOST/v1/metrics/app_name/trailing/string', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/metrics/app_name/trailing/string', headers = headers)
 
 print(r.json())
 
@@ -4086,7 +4086,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','AUDIUS_API_HOST/v1/metrics/app_name/trailing/string', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/metrics/app_name/trailing/string', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -4103,7 +4103,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("AUDIUS_API_HOST/v1/metrics/app_name/trailing/string");
+URL obj = new URL("COLIVING_API_HOST/v1/metrics/app_name/trailing/string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -4134,7 +4134,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "AUDIUS_API_HOST/v1/metrics/app_name/trailing/string", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/metrics/app_name/trailing/string", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -4184,13 +4184,13 @@ func main() {
 > Exemple de code
 
 ```shell
-curl AUDIUS_API_HOST/v1/resolve?url=https://.co/camouflybeats/hypermantra-86216 
+curl COLIVING_API_HOST/v1/resolve?url=https://.co/camouflybeats/hypermantra-86216 
 
 
 ```
 
 ```http
-GET AUDIUS_API_HOST/v1/resolve?url=https://.co/camouflybeats/hypermantra-86216 HTTP/1.1
+GET COLIVING_API_HOST/v1/resolve?url=https://.co/camouflybeats/hypermantra-86216 HTTP/1.1
 
 ```
 
@@ -4200,7 +4200,7 @@ const headers = {
   'Accept':'text/plain'
 };
 
-fetch('AUDIUS_API_HOST/v1/resolve?url=https://.co/camouflybeats/hypermantra-86216',
+fetch('COLIVING_API_HOST/v1/resolve?url=https://.co/camouflybeats/hypermantra-86216',
 {
   method: 'GET',
 
@@ -4222,7 +4222,7 @@ headers = {
   'Accept' => 'text/plain'
 }
 
-result = RestClient.get 'AUDIUS_API_HOST/v1/resolve',
+result = RestClient.get 'COLIVING_API_HOST/v1/resolve',
   params: {
   'url' => 'string'
 }, headers: headers
@@ -4237,7 +4237,7 @@ headers = {
   'Accept': 'text/plain'
 }
 
-r = requests.get('AUDIUS_API_HOST/v1/resolve', params={
+r = requests.get('COLIVING_API_HOST/v1/resolve', params={
   'url': 'https://.co/camouflybeats/hypermantra-86216'
 }, headers = headers)
 
@@ -4260,7 +4260,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','AUDIUS_API_HOST/v1/resolve', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/resolve', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -4277,7 +4277,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("AUDIUS_API_HOST/v1/resolve?url=https://.co/camouflybeats/hypermantra-86216");
+URL obj = new URL("COLIVING_API_HOST/v1/resolve?url=https://.co/camouflybeats/hypermantra-86216");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -4308,7 +4308,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "AUDIUS_API_HOST/v1/resolve", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/resolve", data)
     req.Header = headers
 
     client := &http.Client{}

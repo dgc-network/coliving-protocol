@@ -5,7 +5,7 @@ const secp256k1 = require('secp256k1')
 const borsh = require('borsh')
 
 const VALID_SIGNER = config.get('solanaValidSigner')
-const AUDIUS_ETH_REGISTRY_PROGRAM = config.get('solanaAudiusEthRegistryAddress') ? new solanaWeb3.PublicKey(
+const COLIVING_ETH_REGISTRY_PROGRAM = config.get('solanaAudiusEthRegistryAddress') ? new solanaWeb3.PublicKey(
   config.get('solanaAudiusEthRegistryAddress')
 ) : null
 const TRACK_LISTEN_PROGRAM = config.get('solanaTrackListenCountAddress') ? new solanaWeb3.PublicKey(
@@ -215,7 +215,7 @@ async function createTrackListenTransaction ({
     keys: [
       { pubkey: validSignerPubK, isSigner: false, isWritable: false },
       { pubkey: signerGroup, isSigner: false, isWritable: false },
-      { pubkey: AUDIUS_ETH_REGISTRY_PROGRAM, isSigner: false, isWritable: false },
+      { pubkey: COLIVING_ETH_REGISTRY_PROGRAM, isSigner: false, isWritable: false },
       { pubkey: INSTRUCTIONS_PROGRAM, isSigner: false, isWritable: false },
       { pubkey: CLOCK_PROGRAM, isSigner: false, isWritable: false }
     ],

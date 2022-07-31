@@ -1,5 +1,5 @@
-export coliving_delegate_owner_wallet=AUDIUS_DELEGATE_OWNER_WALLET
-export coliving_delegate_private_key=AUDIUS_DELEGATE_PRIVATE_KEY
+export coliving_delegate_owner_wallet=COLIVING_DELEGATE_OWNER_WALLET
+export coliving_delegate_private_key=COLIVING_DELEGATE_PRIVATE_KEY
 echo $coliving_delegate_owner_wallet
 echo $coliving_delegate_private_key
 export COMPOSE_HTTP_TIMEOUT=200

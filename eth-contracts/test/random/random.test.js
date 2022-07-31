@@ -32,7 +32,7 @@ contract('Random testing', async (accounts) => {
     let numSlashOperations = _lib.toBN(0)
 
     const printTestSummary = () => {
-        console.log(`\n------------------------ AUDIUS RANDOM TESTING Summary ------------------------`)
+        console.log(`\n------------------------ COLIVING RANDOM TESTING Summary ------------------------`)
         console.log(`totalClaimedRewards: ${totalClaimedRewards}                | Total claimed through protocol rewards`)
         console.log(`totalDeployerStaked: ${totalDeployerStaked}                | Total staked directly deployers`)
         console.log(`totalDelegatedAmount: ${totalDelegatedAmount}              | Total delegated `)
@@ -659,7 +659,7 @@ outside=${info.outsideStake.toString()}=(deployerStake=${info.spDetails.deployer
         await logCurrentBlock()
         while (duration < TestDuration) {
             let roundStart = Date.now()
-            sysLog(`------------------------ AUDIUS RANDOM TESTING - Round ${currentRound}, ${duration}/${TestDuration}ms ------------------------`)
+            sysLog(`------------------------ COLIVING RANDOM TESTING - Round ${currentRound}, ${duration}/${TestDuration}ms ------------------------`)
             // Ensure base user state (service requirements satisfied)
             await processUserState(users)
             await randomlyAdvanceBlocks()
@@ -677,7 +677,7 @@ outside=${info.outsideStake.toString()}=(deployerStake=${info.spDetails.deployer
 
             await randomlyAdvanceBlocks()
             let roundDuration = Date.now() - roundStart
-            sysLog(`------------------------ AUDIUS RANDOM TESTING - Finished Round ${currentRound} in ${roundDuration}ms ------------------------\n`)
+            sysLog(`------------------------ COLIVING RANDOM TESTING - Finished Round ${currentRound} in ${roundDuration}ms ------------------------\n`)
             // Progress round
             currentRound++
             // Update duration
@@ -685,7 +685,7 @@ outside=${info.outsideStake.toString()}=(deployerStake=${info.spDetails.deployer
             await logCurrentBlock()
         }
         await logCurrentBlock()
-        sysLog(`------------------------ AUDIUS RANDOM TESTING SUMMARY - Finished ${currentRound} rounds in ${duration}ms ------------------------`)
+        sysLog(`------------------------ COLIVING RANDOM TESTING SUMMARY - Finished ${currentRound} rounds in ${duration}ms ------------------------`)
         printUserTestSummary()
         printTestSummary()
     })

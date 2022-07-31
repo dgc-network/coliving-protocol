@@ -29,7 +29,7 @@ cd $(dirname "$(readlink -f "$0")")/..
 
 mkdir -p ${CARGO_TARGET_DIR:-target}/deploy anchor/audius-data/target/deploy
 
-generate_key ${CARGO_TARGET_DIR:-target}/deploy/audius_eth_registry-keypair.json "$AUDIUS_ETH_REGISTRY_PRIVATE_KEY"
+generate_key ${CARGO_TARGET_DIR:-target}/deploy/audius_eth_registry-keypair.json "$COLIVING_ETH_REGISTRY_PRIVATE_KEY"
 replace_address audius_eth_registry/src/lib.rs ${CARGO_TARGET_DIR:-target}/deploy/audius_eth_registry-keypair.json
 
 generate_key ${CARGO_TARGET_DIR:-target}/deploy/track_listen_count-keypair.json "$TRACK_LISTEN_COUNT_PRIVATE_KEY"
@@ -41,7 +41,7 @@ replace_address claimable-tokens/program/src/lib.rs ${CARGO_TARGET_DIR:-target}/
 generate_key ${CARGO_TARGET_DIR:-target}/deploy/audius_reward_manager-keypair.json "$REWARD_MANAGER_PRIVATE_KEY"
 replace_address reward-manager/program/src/lib.rs ${CARGO_TARGET_DIR:-target}/deploy/audius_reward_manager-keypair.json
 
-generate_key ${CARGO_TARGET_DIR:-anchor/audius-data/target}/deploy/audius_data-keypair.json "$AUDIUS_DATA_PRIVATE_KEY"
+generate_key ${CARGO_TARGET_DIR:-anchor/audius-data/target}/deploy/audius_data-keypair.json "$COLIVING_DATA_PRIVATE_KEY"
 replace_address \
     anchor/audius-data/programs/audius-data/src/lib.rs \
     anchor/audius-data/Anchor.toml \

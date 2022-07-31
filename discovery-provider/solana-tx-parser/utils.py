@@ -3,14 +3,14 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 from anchorpy import Idl
-from constants import AUDIUS_DATA_IDL_PATH, RPC_ADDRESS
+from constants import COLIVING_DATA_IDL_PATH, RPC_ADDRESS
 from solana.rpc import types
 from solana.rpc.async_api import AsyncClient
 from solana.system_program import SYS_PROGRAM_ID
 
 
 def get_idl() -> Idl:
-    path = Path(AUDIUS_DATA_IDL_PATH)
+    path = Path(COLIVING_DATA_IDL_PATH)
     with path.open() as f:
         data = json.load(f)
     idl = Idl.from_json(data)

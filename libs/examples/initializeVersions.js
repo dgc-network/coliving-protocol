@@ -22,14 +22,14 @@ const getEnv = (env) => {
 
 /*
  *
- * export AUDIUS_PRIVATE_KEY=
-   export AUDIUS_OWNER_WALLET=
+ * export COLIVING_PRIVATE_KEY=
+   export COLIVING_OWNER_WALLET=
  * */
 
 async function initializeVersionServiceProviderContracts() {
   let colivingLibsConfig
-  let privateKey = getEnv('AUDIUS_PRIVATE_KEY')
-  let ownerWallet = getEnv('AUDIUS_OWNER_WALLET')
+  let privateKey = getEnv('COLIVING_PRIVATE_KEY')
+  let ownerWallet = getEnv('COLIVING_OWNER_WALLET')
   if (!privateKey || !ownerWallet) {
     throw new Error('Missing private key or owner wallet')
   }

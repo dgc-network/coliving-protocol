@@ -9,7 +9,7 @@ OWNER_KEYPAIR_PATH="$HOME/.config/solana/id.json"
 ADMIN_AUTHORITY_KEYPAIR_PATH="$PWD/adminAuthorityKeypair.json"
 ADMIN_ACCOUNT_KEYPAIR_PATH="$PWD/adminAccountKeypair.json"
 USER_KEYPAIR_PATH="$PWD/userKeypair.json"
-AUDIUS_DATA_PROGRAM_ID=$(solana-keygen pubkey $PWD/target/deploy/audius_data-keypair.json)
+COLIVING_DATA_PROGRAM_ID=$(solana-keygen pubkey $PWD/target/deploy/audius_data-keypair.json)
 
 cd "$ANCHOR_PROGRAM_DIR"
 
@@ -106,4 +106,4 @@ yarn run ts-node cli/main.ts -f deletePlaylist \
 
 echo "Successfully seeded tx:"
 
-solana transaction-history "$AUDIUS_DATA_PROGRAM_ID"
+solana transaction-history "$COLIVING_DATA_PROGRAM_ID"
