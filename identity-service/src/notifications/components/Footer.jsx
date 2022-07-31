@@ -9,7 +9,7 @@ const iconStyle = {
 const InstagramLink = () => (
   <a href='https://www.instagram.com/colivingmusic/'>
     <img
-      src='https://download.coliving.co/static-resources/email/iconInsta.png'
+      src='https://download.coliving.lol/static-resources/email/iconInsta.png'
       alt='instagram'
       style={iconStyle}
     />
@@ -19,7 +19,7 @@ const InstagramLink = () => (
 const TwitterLink = () => (
   <a href='https://twitter.com/AudiusProject'>
     <img
-      src='https://download.coliving.co/static-resources/email/iconTwitter.png'
+      src='https://download.coliving.lol/static-resources/email/iconTwitter.png'
       alt='twitter'
       style={iconStyle}
     />
@@ -29,7 +29,7 @@ const TwitterLink = () => (
 const DiscordLink = () => (
   <a href='https://discordapp.com/invite/yNUg2e2'>
     <img
-      src='https://download.coliving.co/static-resources/email/iconDiscord.png'
+      src='https://download.coliving.lol/static-resources/email/iconDiscord.png'
       alt='discord'
       style={iconStyle}
     />
@@ -72,7 +72,7 @@ const Unsubscribe = () => (
     }}
   >
     {'Tired of seeing these emails? '}
-    <a href='https://coliving.co/settings' class='utilityLink' style={{ textDecorationColor: '#858199' }}>
+    <a href='https://coliving.lol/settings' class='utilityLink' style={{ textDecorationColor: '#858199' }}>
       <span style={{ color: '#858199' }}>
         {'Update your notification preferences'}
       </span>

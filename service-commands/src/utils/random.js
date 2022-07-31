@@ -32,7 +32,7 @@ const genRandomUsers = count => _.range(count).map(x => getRandomUser())
 const getRandomUser = () => {
   return {
     name: `name_${r6()}`,
-    email: `email_${r6()}@coliving.co`,
+    email: `email_${r6()}@coliving.lol`,
     password: `pass_${r6()}`,
     handle: `handle_${r6()}`,
     bio: `bio_${r6()}`,
@@ -162,7 +162,7 @@ const getRandomEmail = (root = '') => {
     const [user, domain] = root.split('@')
     email = [user, '+', sauronSuffix, '@', domain].join('')
   } else {
-    email = ['service-commands-seed', '+', sauronSuffix, '@', 'coliving.co'].join('')
+    email = ['service-commands-seed', '+', sauronSuffix, '@', 'coliving.lol'].join('')
   }
   return email
 }

@@ -34,7 +34,7 @@ const AnnouncementHeader = () => (
       }}
     >
       <img
-        src={'https://download.coliving.co/static-resources/email/announcement.png'}
+        src={'https://download.coliving.lol/static-resources/email/announcement.png'}
         style={{
           height: '32px',
           width: '32px',
@@ -79,7 +79,7 @@ const OpenAudiusLink = () => (
   >
     {'Open Coliving'}
     <img
-      src='https://download.coliving.co/static-resources/email/iconArrow.png'
+      src='https://download.coliving.lol/static-resources/email/iconArrow.png'
       style={{
         height: '8px',
         width: '8px',
@@ -96,7 +96,7 @@ const OpenAudiusLink = () => (
 const WrapLink = (props) => {
   return (
     <a
-      href='https://coliving.co/feed?openNotifications=true' 
+      href='https://coliving.lol/feed?openNotifications=true' 
       style={{ textDecoration: 'none' }}>
       {props.children}
     </a>
@@ -252,7 +252,7 @@ const Body = (props) => {
                                   }}
                                 >
                                   <img
-                                    src='https://download.coliving.co/static-resources/email/iconTwitterWhite.png'
+                                    src='https://download.coliving.lol/static-resources/email/iconTwitterWhite.png'
                                     alt='twitter'
                                     style={{
                                       height: '18px',

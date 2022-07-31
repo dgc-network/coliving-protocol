@@ -112,7 +112,7 @@ describe('test authentication routes', function () {
     await request(app)
       .post('/user')
       .send({
-        'username': 'dheeraj@coliving.co',
+        'username': 'dheeraj@coliving.lol',
         'walletAddress': '0xaaaaaaaaaaaaaaaaaaaaaaaaa'
       })
 

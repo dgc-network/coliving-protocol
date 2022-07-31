@@ -1,6 +1,6 @@
 # solana-tx-parser
 
-A set of utilities for interacting with audius-data program deployed to Solana.
+A set of utilities for interacting with coliving-data program deployed to Solana.
 
 ## Install
 Requires Python ^3.9
@@ -13,19 +13,19 @@ python3.9 -m pip install -r requirements.txt
 ### Setup
 In one terminal, start localnet:
 ```
-cd $PROTOCOL_DIR/solana-programs/anchor/audius-data && npm run localnet-up
+cd $PROTOCOL_DIR/solana-programs/anchor/coliving-data && npm run localnet-up
 ```
 
 In another terminal, build + deploy program, and seed tx:
 ```
-cd $PROTOCOL_DIR/solana-programs/anchor/audius-data && npm run dev-setup
+cd $PROTOCOL_DIR/solana-programs/anchor/coliving-data && npm run dev-setup
 ```
 
 ### Parse
 #### All program txs
 Parse all txs found for program:
 ```
-cd $PROTOCOL_DIR/solana-programs/anchor/audius-data && npm run parse-tx
+cd $PROTOCOL_DIR/solana-programs/anchor/coliving-data && npm run parse-tx
 ```
 
 #### Parse single tx
@@ -35,5 +35,5 @@ cd $PROTOCOL_DIR/discovery-node/solana-tx-parser && TX_HASH=<txhash> python3.9 t
 ```
 Alternatively:
 ```
-cd $PROTOCOL_DIR/solana-programs/anchor/audius-data && npm run parse-tx -- <txhash>
+cd $PROTOCOL_DIR/solana-programs/anchor/coliving-data && npm run parse-tx -- <txhash>
 ```

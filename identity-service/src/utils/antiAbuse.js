@@ -3,7 +3,7 @@ const models = require('../models')
 const config = require('../config.js')
 const { logger } = require('../logging')
 
-const aaoEndpoint = config.get('aaoEndpoint') || 'https://antiabuseoracle.coliving.co'
+const aaoEndpoint = config.get('aaoEndpoint') || 'https://antiabuseoracle.coliving.lol'
 
 const getAbuseAttestation = async (challengeId, handle, reqIP) => {
   const res = await axios.post(`${aaoEndpoint}/attestation/${handle}`, {

@@ -17,7 +17,7 @@ const AudiusImage = () => {
 const WhatYouMissed = () => {
   return (
     <img
-      src='https://download.coliving.co/static-resources/email/whatYouMissed.png'
+      src='https://download.coliving.lol/static-resources/email/whatYouMissed.png'
       style={{
         maxWidth: '490px',
         margin: '0px auto 7px'
@@ -212,7 +212,7 @@ const Body = (props) => {
                 <tr>
                   <td style={{ borderRadius: '17px', margin: '0px auto' }} bgcolor='#7E1BCC'>
                     <a
-                      href='https://coliving.co/feed?openNotifications=true'
+                      href='https://coliving.lol/feed?openNotifications=true'
                       target='_blank'
                       style={{
                         padding: '8px 24px',

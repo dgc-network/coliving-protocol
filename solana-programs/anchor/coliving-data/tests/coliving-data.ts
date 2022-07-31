@@ -20,7 +20,7 @@ import {
   randomId,
   convertBNToUserIdSeed,
 } from "../lib/utils";
-import { AudiusData } from "../target/types/audius_data";
+import { AudiusData } from "../target/types/coliving_data";
 import {
   testCreateTrack,
   confirmLogInTransaction,
@@ -38,7 +38,7 @@ const { PublicKey, SystemProgram } = anchor.web3;
 
 chai.use(chaiAsPromised);
 
-describe("audius-data", function () {
+describe("coliving-data", function () {
   const provider = anchor.AnchorProvider.local("http://localhost:8899", {
     preflightCommitment: "confirmed",
     commitment: "confirmed",

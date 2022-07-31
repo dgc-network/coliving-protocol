@@ -14,7 +14,7 @@ import {
   getTransactionWithData,
   convertBNToUserIdSeed,
 } from "../lib/utils";
-import { AudiusData } from "../target/types/audius_data";
+import { AudiusData } from "../target/types/coliving_data";
 import {
   createSolanaContentNode,
   initTestConstants,

@@ -18,7 +18,7 @@ import * as runtime from '../runtime';
 
 export interface ResolveRequest {
     /**
-     * URL to resolve. Either fully formed URL (https://coliving.co) or just the absolute path
+     * URL to resolve. Either fully formed URL (https://coliving.lol) or just the absolute path
      */
     url: string;
 }

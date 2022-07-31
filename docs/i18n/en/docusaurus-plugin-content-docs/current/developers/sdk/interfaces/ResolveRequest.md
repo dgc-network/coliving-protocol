@@ -12,4 +12,4 @@ custom_edit_url: null
 
  **url**: `string`
 
-URL to resolve. Either fully formed URL (https://coliving.co) or just the absolute path
+URL to resolve. Either fully formed URL (https://coliving.lol) or just the absolute path

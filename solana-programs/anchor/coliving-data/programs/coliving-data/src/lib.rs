@@ -11,7 +11,7 @@ use std::collections::BTreeMap;
 declare_id!("8AXXpL8BBTuXDaG8y9xhoJ66Ei5eFAjUEHxJHRPDHiQr"); // default program ID to be replaced in start.sh
 
 #[program]
-pub mod audius_data {
+pub mod coliving_data {
     use anchor_lang::solana_program::{
         secp256k1_program,
         sysvar

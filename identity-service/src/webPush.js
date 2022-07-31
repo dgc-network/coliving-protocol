@@ -17,7 +17,7 @@ let webPushIsConfigured = false
 if (vapidKeys.publicKey && vapidKeys.privateKey && browserPushGCMAPIKey) {
   webpush.setGCMAPIKey(browserPushGCMAPIKey)
   webpush.setVapidDetails(
-    'mailto:contact@coliving.co',
+    'mailto:contact@coliving.lol',
     vapidKeys.publicKey,
     vapidKeys.privateKey
   )

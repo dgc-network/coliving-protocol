@@ -3,7 +3,7 @@
 use core::time;
 use std::thread;
 
-use audius_eth_registry::*;
+use coliving_eth_registry::*;
 use borsh::BorshDeserialize;
 use libsecp256k1::{PublicKey, SecretKey};
 use rand::rngs::ThreadRng;
@@ -29,9 +29,9 @@ use {std::sync::Arc};
 use chrono::Utc;
 
 pub fn program_test() -> ProgramTest {
-    println!("audius_eth_registry id = {:?}", id());
+    println!("coliving_eth_registry id = {:?}", id());
     ProgramTest::new(
-        "audius_eth_registry",
+        "coliving_eth_registry",
         id(),
         processor!(processor::Processor::process),
     )

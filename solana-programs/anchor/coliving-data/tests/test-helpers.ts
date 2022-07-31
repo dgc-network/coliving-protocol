@@ -30,7 +30,7 @@ import {
   initAuthorityDelegationStatus,
   addUserAuthorityDelegate,
 } from "../lib/lib";
-import { AudiusData } from "../target/types/audius_data";
+import { AudiusData } from "../target/types/coliving_data";
 
 const { PublicKey, SystemProgram } = anchor.web3;
 

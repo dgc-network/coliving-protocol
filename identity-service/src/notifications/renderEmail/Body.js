@@ -46,7 +46,7 @@ var AudiusImage = function AudiusImage() {
 
 var WhatYouMissed = function WhatYouMissed() {
   return /*#__PURE__*/_react["default"].createElement("img", {
-    src: "https://download.coliving.co/static-resources/email/whatYouMissed.png",
+    src: "https://download.coliving.lol/static-resources/email/whatYouMissed.png",
     style: {
       maxWidth: '490px',
       margin: '0px auto 7px'
@@ -249,7 +249,7 @@ var Body = function Body(props) {
     },
     bgcolor: "#7E1BCC"
   }, /*#__PURE__*/_react["default"].createElement("a", {
-    href: "https://coliving.co/feed?openNotifications=true",
+    href: "https://coliving.lol/feed?openNotifications=true",
     target: "_blank",
     style: {
       padding: '8px 24px',

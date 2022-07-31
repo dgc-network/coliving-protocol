@@ -13,7 +13,7 @@ The Coliving REST API lets you query, stream, and search for tracks, users & pla
 Try it out!
 
 ```bash
-curl https://discoveryprovider.coliving.co/v1/tracks/trending?app_name=ExampleApp
+curl https://discoveryprovider.coliving.lol/v1/tracks/trending?app_name=ExampleApp
 ```
 
 ## [Full API Reference](https://colivingproject.github.io/api-docs/#coliving-api-docs)  👈  

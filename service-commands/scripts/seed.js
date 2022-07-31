@@ -46,7 +46,7 @@ program
   .option('-n, --count <count>', 'number of random users to create', parseSeedActionRepeatCount, 1)
   .option(
     '-m, --metadata <metadata-object>',
-    'metadata to associate with user. Write this as a series of comma-separated key-values e.g. -m email=test@coliving.co,password=2343,handle=christinus,is_verified=true',
+    'metadata to associate with user. Write this as a series of comma-separated key-values e.g. -m email=test@coliving.lol,password=2343,handle=christinus,is_verified=true',
     parseMetadataIntoObject
   )
   .action(async opts => {

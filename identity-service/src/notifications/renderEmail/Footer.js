@@ -19,7 +19,7 @@ var InstagramLink = function InstagramLink() {
   return /*#__PURE__*/_react["default"].createElement("a", {
     href: "https://www.instagram.com/colivingmusic/"
   }, /*#__PURE__*/_react["default"].createElement("img", {
-    src: "https://download.coliving.co/static-resources/email/iconInsta.png",
+    src: "https://download.coliving.lol/static-resources/email/iconInsta.png",
     alt: "instagram",
     style: iconStyle
   }));
@@ -29,7 +29,7 @@ var TwitterLink = function TwitterLink() {
   return /*#__PURE__*/_react["default"].createElement("a", {
     href: "https://twitter.com/AudiusProject"
   }, /*#__PURE__*/_react["default"].createElement("img", {
-    src: "https://download.coliving.co/static-resources/email/iconTwitter.png",
+    src: "https://download.coliving.lol/static-resources/email/iconTwitter.png",
     alt: "twitter",
     style: iconStyle
   }));
@@ -39,7 +39,7 @@ var DiscordLink = function DiscordLink() {
   return /*#__PURE__*/_react["default"].createElement("a", {
     href: "https://discordapp.com/invite/yNUg2e2"
   }, /*#__PURE__*/_react["default"].createElement("img", {
-    src: "https://download.coliving.co/static-resources/email/iconDiscord.png",
+    src: "https://download.coliving.lol/static-resources/email/iconDiscord.png",
     alt: "discord",
     style: iconStyle
   }));
@@ -81,7 +81,7 @@ var Unsubscribe = function Unsubscribe() {
       fontSize: '14px'
     }
   }, 'Tired of seeing these emails? ', /*#__PURE__*/_react["default"].createElement("a", {
-    href: "https://coliving.co/settings",
+    href: "https://coliving.lol/settings",
     "class": "utilityLink",
     style: {
       textDecorationColor: '#858199'

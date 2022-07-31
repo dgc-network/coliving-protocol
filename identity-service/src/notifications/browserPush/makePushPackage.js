@@ -24,9 +24,9 @@ const intermediate = fs.readFileSync(path.join(__dirname, './coliving.pushpackag
 // const stagingConfig = {
 //   websiteName: 'Coliving',
 //   websitePushID: 'web.co.coliving.staging',
-//   appUrl: 'https://staging.coliving.co',
-//   identityUrl: 'https://identityservice.staging.coliving.co',
-//   appUrls: ['https://joey.coliving.co', 'https://ray.coliving.co', 'https://michael.coliving.co', 'https://forrest.coliving.co'],
+//   appUrl: 'https://staging.coliving.lol',
+//   identityUrl: 'https://identityservice.staging.coliving.lol',
+//   appUrls: ['https://joey.coliving.lol', 'https://ray.coliving.lol', 'https://michael.coliving.lol', 'https://forrest.coliving.lol'],
 //   cert: fs.readFileSync(path.join(__dirname, '/coliving.pushpackage/stagingCert.pem')),
 //   key: fs.readFileSync(path.join(__dirname, '/coliving.pushpackage/stagingKey.pem')),
 //   output: 'stagingPushPackage.zip'
@@ -35,8 +35,8 @@ const intermediate = fs.readFileSync(path.join(__dirname, './coliving.pushpackag
 const prodConfig = {
   websiteName: 'Coliving',
   websitePushID: 'web.co.coliving',
-  appUrl: 'https://coliving.co',
-  identityUrl: 'https://identityservice.coliving.co',
+  appUrl: 'https://coliving.lol',
+  identityUrl: 'https://identityservice.coliving.lol',
   appUrls: [],
   cert: fs.readFileSync(path.join(__dirname, './coliving.pushpackage/prodCert.pem')),
   key: fs.readFileSync(path.join(__dirname, './coliving.pushpackage/prodKey.pem')),

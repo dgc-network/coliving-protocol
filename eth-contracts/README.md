@@ -45,7 +45,7 @@ npm run test-coverage
 
 ## Security
 
-Please report security issues to `security@coliving.co` with a description of the
+Please report security issues to `security@coliving.lol` with a description of the
 vulenerability and any steps to reproduce. We have bounties available for issues reported
 via responsible disclosure!
 

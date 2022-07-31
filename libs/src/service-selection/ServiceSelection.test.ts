@@ -6,10 +6,10 @@ import type { AxiosResponse } from 'axios'
 
 describe('ServiceSelection', () => {
   it('prefers a healthy service', async () => {
-    const good = 'https://good.coliving.co'
+    const good = 'https://good.coliving.lol'
     nock(good).get('/health_check').reply(200)
 
-    const bad = 'https://bad.coliving.co'
+    const bad = 'https://bad.coliving.lol'
     nock(bad).get('/health_check').reply(400)
 
     const getServices = async () => [good, bad] as string[]
@@ -22,10 +22,10 @@ describe('ServiceSelection', () => {
   })
 
   it('prefers a faster service', async () => {
-    const fast = 'https://fast.coliving.co'
+    const fast = 'https://fast.coliving.lol'
     nock(fast).get('/health_check').reply(200)
 
-    const slow = 'https://slow.coliving.co'
+    const slow = 'https://slow.coliving.lol'
     nock(slow).get('/health_check').delay(200).reply(400)
 
     const s = new ServiceSelection({
@@ -36,10 +36,10 @@ describe('ServiceSelection', () => {
   })
 
   it('prefers a slower healthy service', async () => {
-    const fast = 'https://fast.coliving.co'
+    const fast = 'https://fast.coliving.lol'
     nock(fast).get('/health_check').reply(400)
 
-    const slow = 'https://slow.coliving.co'
+    const slow = 'https://slow.coliving.lol'
     nock(slow).get('/health_check').delay(200).reply(200)
 
     const s = new ServiceSelection({
@@ -52,12 +52,12 @@ describe('ServiceSelection', () => {
 
   it('should find the needle in the haystack', async () => {
     // Single good service
-    const needle = 'https://needle.coliving.co'
+    const needle = 'https://needle.coliving.lol'
     nock(needle).get('/health_check').reply(200)
     // Many bad services
     const haystack = Array.from(
       { length: 20 },
-      (_, i) => `https://${i}.coliving.co`
+      (_, i) => `https://${i}.coliving.lol`
     )
     haystack.forEach((hay) => {
       nock(hay).get('/health_check').reply(400)
@@ -73,10 +73,10 @@ describe('ServiceSelection', () => {
   })
 
   it('should pick null if there is no healthy service', async () => {
-    const bad1 = 'https://bad1.coliving.co'
+    const bad1 = 'https://bad1.coliving.lol'
     nock(bad1).get('/health_check').reply(400)
 
-    const bad2 = 'https://bad2.coliving.co'
+    const bad2 = 'https://bad2.coliving.lol'
     nock(bad2).get('/health_check').reply(400)
 
     const s = new ServiceSelection({
@@ -90,10 +90,10 @@ describe('ServiceSelection', () => {
   })
 
   it('respects a whitelist', async () => {
-    const fast = 'https://fast.coliving.co'
+    const fast = 'https://fast.coliving.lol'
     nock(fast).get('/health_check').reply(200)
 
-    const slow = 'https://slow.coliving.co'
+    const slow = 'https://slow.coliving.lol'
     nock(slow).get('/health_check').delay(200).reply(200)
 
     const s = new ServiceSelection({
@@ -105,10 +105,10 @@ describe('ServiceSelection', () => {
   })
 
   it('respects a blacklist', async () => {
-    const fast = 'https://fast.coliving.co'
+    const fast = 'https://fast.coliving.lol'
     nock(fast).get('/health_check').reply(200)
 
-    const slow = 'https://slow.coliving.co'
+    const slow = 'https://slow.coliving.lol'
     nock(slow).get('/health_check').delay(200).reply(200)
 
     const s = new ServiceSelection({
@@ -120,11 +120,11 @@ describe('ServiceSelection', () => {
   })
 
   it('will recheck unhealthy ones', async () => {
-    const atFirstHealthy = 'https://atFirstHealthy.coliving.co'
+    const atFirstHealthy = 'https://atFirstHealthy.coliving.lol'
     nock(atFirstHealthy).get('/health_check').reply(200)
     nock(atFirstHealthy).get('/health_check').reply(400)
 
-    const atFirstUnhealthy = 'https://atFirstUnhealthy.coliving.co'
+    const atFirstUnhealthy = 'https://atFirstUnhealthy.coliving.lol'
     nock(atFirstUnhealthy).get('/health_check').reply(400)
     nock(atFirstUnhealthy).get('/health_check').reply(200)
 
@@ -166,17 +166,17 @@ describe('ServiceSelection withBackupCriteria', () => {
 
   // Crude example of how backups can be used
   it('adds backups', async () => {
-    const behind1 = 'https://behind1.coliving.co'
+    const behind1 = 'https://behind1.coliving.lol'
     nock(behind1).get('/health_check').reply(200, {
       behind: true
     })
 
-    const behind2 = 'https://behind2.coliving.co'
+    const behind2 = 'https://behind2.coliving.lol'
     nock(behind2).get('/health_check').reply(200, {
       behind: true
     })
 
-    const ok = 'https://ok.coliving.co'
+    const ok = 'https://ok.coliving.lol'
     nock(ok).get('/health_check').delay(100).reply(200, {
       behind: false
     })
@@ -194,14 +194,14 @@ describe('ServiceSelection withBackupCriteria', () => {
 
   it('should use a backup if there is no better option', async () => {
     // Single service that's behind
-    const needle = 'https://needle.coliving.co'
+    const needle = 'https://needle.coliving.lol'
     nock(needle).get('/health_check').reply(200, {
       behind: true
     })
     // Many bad services
     const haystack = Array.from(
       { length: 20 },
-      (_, i) => `https://${i}.coliving.co`
+      (_, i) => `https://${i}.coliving.lol`
     )
     haystack.forEach((hay) => {
       nock(hay).get('/health_check').reply(400)
@@ -220,17 +220,17 @@ describe('ServiceSelection withBackupCriteria', () => {
 
   it('should skip over a backup if a better service can be found', async () => {
     // Single good service
-    const needle = 'https://needle.coliving.co'
+    const needle = 'https://needle.coliving.lol'
     nock(needle).get('/health_check').reply(200)
     // Single service that's behind
-    const behind = 'https://behind.coliving.co'
+    const behind = 'https://behind.coliving.lol'
     nock(behind).get('/health_check').reply(200, {
       behind: true
     })
     // Many bad services
     const haystack = Array.from(
       { length: 20 },
-      (_, i) => `https://${i}.coliving.co`
+      (_, i) => `https://${i}.coliving.lol`
     )
     haystack.forEach((hay) => {
       nock(hay).get('/health_check').reply(400)
@@ -247,7 +247,7 @@ describe('ServiceSelection withBackupCriteria', () => {
 })
 
 describe('ServiceSelection withShortCircuit', () => {
-  const shortcircuit = 'https://shortcircuit.coliving.co'
+  const shortcircuit = 'https://shortcircuit.coliving.lol'
   class ServiceSelectionWithShortCircuit extends ServiceSelection {
     override async shortcircuit() {
       return shortcircuit
@@ -255,7 +255,7 @@ describe('ServiceSelection withShortCircuit', () => {
   }
 
   it('uses a short circuit', async () => {
-    const other = 'https://other.coliving.co'
+    const other = 'https://other.coliving.lol'
     nock(other).get('/health_check').reply(200, {
       behind: true
     })
@@ -268,7 +268,7 @@ describe('ServiceSelection withShortCircuit', () => {
   })
 
   it('does not use a short circuit when a blacklist is present', async () => {
-    const other = 'https://other.coliving.co'
+    const other = 'https://other.coliving.lol'
     nock(other).get('/health_check').reply(200, {
       behind: true
     })
@@ -284,13 +284,13 @@ describe('ServiceSelection withShortCircuit', () => {
 
 describe('ServiceSelection findAll', () => {
   it('can find all the healthy services', async () => {
-    const a = 'https://a.coliving.co'
+    const a = 'https://a.coliving.lol'
     nock(a).get('/health_check').reply(200)
 
-    const b = 'https://b.coliving.co'
+    const b = 'https://b.coliving.lol'
     nock(b).get('/health_check').reply(200)
 
-    const c = 'https://c.coliving.co'
+    const c = 'https://c.coliving.lol'
     nock(c).get('/health_check').reply(400)
 
     const s = new ServiceSelection({
@@ -301,13 +301,13 @@ describe('ServiceSelection findAll', () => {
   })
 
   it('will drop slow services', async () => {
-    const a = 'https://a.coliving.co'
+    const a = 'https://a.coliving.lol'
     nock(a).get('/health_check').delay(200).reply(200)
 
-    const b = 'https://b.coliving.co'
+    const b = 'https://b.coliving.lol'
     nock(b).get('/health_check').reply(200)
 
-    const c = 'https://c.coliving.co'
+    const c = 'https://c.coliving.lol'
     nock(c).get('/health_check').reply(200)
 
     const s = new ServiceSelection({

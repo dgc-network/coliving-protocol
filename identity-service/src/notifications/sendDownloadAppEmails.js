@@ -79,9 +79,9 @@ async function renderAndSendDownloadAppEmail (
     })
 
     const emailParams = {
-      from: 'The Coliving Team <team@coliving.co>',
+      from: 'The Coliving Team <team@coliving.lol>',
       to: userEmail,
-      bcc: 'forrest@coliving.co',
+      bcc: 'forrest@coliving.lol',
       html: downloadAppHtml,
       subject: 'Coliving Is Better On The Go 📱'
     }

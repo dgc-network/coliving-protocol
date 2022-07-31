@@ -4,12 +4,12 @@ set -x
 
 # TODO - MOVE OUT OF SHELL SCRIPT ASAP
 
-ANCHOR_PROGRAM_DIR="$PROTOCOL_DIR/solana-programs/anchor/audius-data"
+ANCHOR_PROGRAM_DIR="$PROTOCOL_DIR/solana-programs/anchor/coliving-data"
 OWNER_KEYPAIR_PATH="$HOME/.config/solana/id.json"
 ADMIN_AUTHORITY_KEYPAIR_PATH="$PWD/adminAuthorityKeypair.json"
 ADMIN_ACCOUNT_KEYPAIR_PATH="$PWD/adminAccountKeypair.json"
 USER_KEYPAIR_PATH="$PWD/userKeypair.json"
-COLIVING_DATA_PROGRAM_ID=$(solana-keygen pubkey $PWD/target/deploy/audius_data-keypair.json)
+COLIVING_DATA_PROGRAM_ID=$(solana-keygen pubkey $PWD/target/deploy/coliving_data-keypair.json)
 
 cd "$ANCHOR_PROGRAM_DIR"
 

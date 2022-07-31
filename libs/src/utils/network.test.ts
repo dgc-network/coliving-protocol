@@ -21,11 +21,11 @@ const setupRequest = (
 describe('timeRequests()', () => {
   it('sortByVersion = true', async () => {
     const requests = [
-      setupRequest('https://fastest.coliving.co', 50, '1.2.3'),
-      setupRequest('https://fastAndAhead.coliving.co', 100, '1.2.4'),
-      setupRequest('https://behind.coliving.co', 100, '1.2.2'),
-      setupRequest('https://slow.coliving.co', 500, '1.2.3'),
-      setupRequest('https://error.coliving.co', 500, '1.2.3', 404)
+      setupRequest('https://fastest.coliving.lol', 50, '1.2.3'),
+      setupRequest('https://fastAndAhead.coliving.lol', 100, '1.2.4'),
+      setupRequest('https://behind.coliving.lol', 100, '1.2.2'),
+      setupRequest('https://slow.coliving.lol', 500, '1.2.3'),
+      setupRequest('https://error.coliving.lol', 500, '1.2.3', 404)
     ]
 
     const res = await timeRequests({
@@ -33,20 +33,20 @@ describe('timeRequests()', () => {
       sortByVersion: true
     })
 
-    assert.strictEqual(res[0]?.request.url, 'https://fastAndAhead.coliving.co')
-    assert.strictEqual(res[1]?.request.url, 'https://fastest.coliving.co')
-    assert.strictEqual(res[2]?.request.url, 'https://slow.coliving.co')
-    assert.strictEqual(res[3]?.request.url, 'https://behind.coliving.co')
-    assert.strictEqual(res[4]?.request.url, 'https://error.coliving.co')
+    assert.strictEqual(res[0]?.request.url, 'https://fastAndAhead.coliving.lol')
+    assert.strictEqual(res[1]?.request.url, 'https://fastest.coliving.lol')
+    assert.strictEqual(res[2]?.request.url, 'https://slow.coliving.lol')
+    assert.strictEqual(res[3]?.request.url, 'https://behind.coliving.lol')
+    assert.strictEqual(res[4]?.request.url, 'https://error.coliving.lol')
   })
 
   it('sortByVersion = false', async () => {
     const requests = [
-      setupRequest('https://fastest.coliving.co', 50, '1.2.3'),
-      setupRequest('https://fastAndAhead.coliving.co', 100, '1.2.4'),
-      setupRequest('https://fastAndBehind.coliving.co', 100, '1.2.2'),
-      setupRequest('https://slow.coliving.co', 500, '1.2.3'),
-      setupRequest('https://slowAndError.coliving.co', 500, '1.2.3', 404)
+      setupRequest('https://fastest.coliving.lol', 50, '1.2.3'),
+      setupRequest('https://fastAndAhead.coliving.lol', 100, '1.2.4'),
+      setupRequest('https://fastAndBehind.coliving.lol', 100, '1.2.2'),
+      setupRequest('https://slow.coliving.lol', 500, '1.2.3'),
+      setupRequest('https://slowAndError.coliving.lol', 500, '1.2.3', 404)
     ]
 
     const res = await timeRequests({
@@ -56,28 +56,28 @@ describe('timeRequests()', () => {
     })
 
     // All healthy nodes with valid version should be sorted by request duration, remaining by version then duration
-    assert.strictEqual(res[0]?.request.url, 'https://fastest.coliving.co')
-    assert.strictEqual(res[1]?.request.url, 'https://fastAndAhead.coliving.co')
-    assert.strictEqual(res[2]?.request.url, 'https://slow.coliving.co')
-    assert.strictEqual(res[3]?.request.url, 'https://fastAndBehind.coliving.co')
-    assert.strictEqual(res[4]?.request.url, 'https://slowAndError.coliving.co')
+    assert.strictEqual(res[0]?.request.url, 'https://fastest.coliving.lol')
+    assert.strictEqual(res[1]?.request.url, 'https://fastAndAhead.coliving.lol')
+    assert.strictEqual(res[2]?.request.url, 'https://slow.coliving.lol')
+    assert.strictEqual(res[3]?.request.url, 'https://fastAndBehind.coliving.lol')
+    assert.strictEqual(res[4]?.request.url, 'https://slowAndError.coliving.lol')
   })
 
   it('respects an equivalency delta', async () => {
     const allResults: string[] = []
     for (let i = 0; i < 20; ++i) {
       const requests = [
-        setupRequest('https://cohort1a.coliving.co', 1, '1.2.3'),
-        setupRequest('https://cohort1b.coliving.co', 1, '1.2.3'),
-        setupRequest('https://cohort1c.coliving.co', 1, '1.2.3'),
+        setupRequest('https://cohort1a.coliving.lol', 1, '1.2.3'),
+        setupRequest('https://cohort1b.coliving.lol', 1, '1.2.3'),
+        setupRequest('https://cohort1c.coliving.lol', 1, '1.2.3'),
 
-        setupRequest('https://cohort2a.coliving.co', 100, '1.2.3'),
-        setupRequest('https://cohort2b.coliving.co', 101, '1.2.3'),
-        setupRequest('https://cohort2c.coliving.co', 102, '1.2.3'),
+        setupRequest('https://cohort2a.coliving.lol', 100, '1.2.3'),
+        setupRequest('https://cohort2b.coliving.lol', 101, '1.2.3'),
+        setupRequest('https://cohort2c.coliving.lol', 102, '1.2.3'),
 
-        setupRequest('https://cohort3a.coliving.co', 200, '1.2.3'),
-        setupRequest('https://cohort3b.coliving.co', 220, '1.2.3'),
-        setupRequest('https://cohort3c.coliving.co', 205, '1.2.3')
+        setupRequest('https://cohort3a.coliving.lol', 200, '1.2.3'),
+        setupRequest('https://cohort3b.coliving.lol', 220, '1.2.3'),
+        setupRequest('https://cohort3c.coliving.lol', 205, '1.2.3')
       ]
       const res = await timeRequests({
         requests,
@@ -106,11 +106,11 @@ describe('timeRequests()', () => {
 
   it('filterNonResponsive = true', async () => {
     const requests = [
-      setupRequest('https://fastest.coliving.co', 50, '1.2.3'),
-      setupRequest('https://fast.coliving.co', 100, '1.2.3'),
-      setupRequest('https://fastAndBehind.coliving.co', 100, '1.2.2'),
-      setupRequest('https://slow.coliving.co', 500, '1.2.3'),
-      setupRequest('https://slowAndError.coliving.co', 500, '1.2.3', 404)
+      setupRequest('https://fastest.coliving.lol', 50, '1.2.3'),
+      setupRequest('https://fast.coliving.lol', 100, '1.2.3'),
+      setupRequest('https://fastAndBehind.coliving.lol', 100, '1.2.2'),
+      setupRequest('https://slow.coliving.lol', 500, '1.2.3'),
+      setupRequest('https://slowAndError.coliving.lol', 500, '1.2.3', 404)
     ]
 
     const res = await timeRequests({
@@ -120,8 +120,8 @@ describe('timeRequests()', () => {
       timeout: 150
     })
 
-    assert.strictEqual(res[0]?.request.url, 'https://fastest.coliving.co')
-    assert.strictEqual(res[1]?.request.url, 'https://fast.coliving.co')
-    assert.strictEqual(res[2]?.request.url, 'https://fastAndBehind.coliving.co')
+    assert.strictEqual(res[0]?.request.url, 'https://fastest.coliving.lol')
+    assert.strictEqual(res[1]?.request.url, 'https://fast.coliving.lol')
+    assert.strictEqual(res[2]?.request.url, 'https://fastAndBehind.coliving.lol')
   })
 })

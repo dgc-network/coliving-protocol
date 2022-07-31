@@ -27,10 +27,10 @@ function generate_key {
 # cd into solana-programs
 cd $(dirname "$(readlink -f "$0")")/..
 
-mkdir -p ${CARGO_TARGET_DIR:-target}/deploy anchor/audius-data/target/deploy
+mkdir -p ${CARGO_TARGET_DIR:-target}/deploy anchor/coliving-data/target/deploy
 
-generate_key ${CARGO_TARGET_DIR:-target}/deploy/audius_eth_registry-keypair.json "$COLIVING_ETH_REGISTRY_PRIVATE_KEY"
-replace_address audius_eth_registry/src/lib.rs ${CARGO_TARGET_DIR:-target}/deploy/audius_eth_registry-keypair.json
+generate_key ${CARGO_TARGET_DIR:-target}/deploy/coliving_eth_registry-keypair.json "$COLIVING_ETH_REGISTRY_PRIVATE_KEY"
+replace_address coliving_eth_registry/src/lib.rs ${CARGO_TARGET_DIR:-target}/deploy/coliving_eth_registry-keypair.json
 
 generate_key ${CARGO_TARGET_DIR:-target}/deploy/track_listen_count-keypair.json "$TRACK_LISTEN_COUNT_PRIVATE_KEY"
 replace_address track_listen_count/src/lib.rs ${CARGO_TARGET_DIR:-target}/deploy/track_listen_count-keypair.json
@@ -41,16 +41,16 @@ replace_address claimable-tokens/program/src/lib.rs ${CARGO_TARGET_DIR:-target}/
 generate_key ${CARGO_TARGET_DIR:-target}/deploy/audius_reward_manager-keypair.json "$REWARD_MANAGER_PRIVATE_KEY"
 replace_address reward-manager/program/src/lib.rs ${CARGO_TARGET_DIR:-target}/deploy/audius_reward_manager-keypair.json
 
-generate_key ${CARGO_TARGET_DIR:-anchor/audius-data/target}/deploy/audius_data-keypair.json "$COLIVING_DATA_PRIVATE_KEY"
+generate_key ${CARGO_TARGET_DIR:-anchor/coliving-data/target}/deploy/coliving_data-keypair.json "$COLIVING_DATA_PRIVATE_KEY"
 replace_address \
-    anchor/audius-data/programs/audius-data/src/lib.rs \
-    anchor/audius-data/Anchor.toml \
-    ${CARGO_TARGET_DIR:-anchor/audius-data/target}/deploy/audius_data-keypair.json
+    anchor/coliving-data/programs/coliving-data/src/lib.rs \
+    anchor/coliving-data/Anchor.toml \
+    ${CARGO_TARGET_DIR:-anchor/coliving-data/target}/deploy/coliving_data-keypair.json
 
 cargo build-bpf
 cargo build -p audius-eth-registry-cli
 cargo build -p claimable-tokens-cli
 cargo build -p audius-reward-manager-cli
 
-cd anchor/audius-data
+cd anchor/coliving-data
 anchor build

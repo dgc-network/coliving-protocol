@@ -391,7 +391,7 @@ var getTrackMessage = function getTrackMessage(notification) {
 };
 
 var getTrackLink = function getTrackLink(track) {
-  return "https://coliving.co/".concat(track.route_id, "-").concat(track.track_id);
+  return "https://coliving.lol/".concat(track.route_id, "-").concat(track.track_id);
 };
 
 exports.getTrackLink = getTrackLink;

@@ -124,7 +124,7 @@ dependencies = [
 name = "audius-eth-registry-cli"
 version = "0.1.0"
 dependencies = [
- "audius_eth_registry",
+ "coliving_eth_registry",
  "borsh 0.9.3",
  "clap",
  "hex",
@@ -194,7 +194,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "audius_eth_registry"
+name = "coliving_eth_registry"
 version = "0.1.0"
 dependencies = [
  "arrayref",
@@ -4076,7 +4076,7 @@ name = "track_listen_count"
 version = "0.1.0"
 dependencies = [
  "arrayref",
- "audius_eth_registry",
+ "coliving_eth_registry",
  "borsh 0.9.3",
  "chrono",
  "libsecp256k1 0.3.5",

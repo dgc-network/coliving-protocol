@@ -9,25 +9,25 @@ const iconStyles = {
 export const WhiteHeavyCheckMarkIcon = () =>  <img
         style={iconStyles}
         alt='Heavy Check Mark Icon' 
-        src='https://download.coliving.co/static-resources/email/white-heavy-check-mark.png'
+        src='https://download.coliving.lol/static-resources/email/white-heavy-check-mark.png'
     />
 export const IncomingEnvelopeIcon = () => <img
         style={iconStyles}
         alt='Incoming Envelope' 
-        src='https://download.coliving.co/static-resources/email/incoming-envelope.png'
+        src='https://download.coliving.lol/static-resources/email/incoming-envelope.png'
     />
 export const HeadphoneIcon = () => <img
         style={iconStyles}
         alt='Headphone Icon' 
-        src='https://download.coliving.co/static-resources/email/headphone.png'
+        src='https://download.coliving.lol/static-resources/email/headphone.png'
     />
 export const MobilePhoneWithArrowIcon = () => <img
         style={iconStyles}
         alt='Mobile Phone With Arrow Icon' 
-        src='https://download.coliving.co/static-resources/email/mobile-phone-with-arrow.png'
+        src='https://download.coliving.lol/static-resources/email/mobile-phone-with-arrow.png'
     />
 export const MultipleMusicalNotesIcon = () => <img
         style={iconStyles}
         alt='Multiple Musical Notes Icon' 
-        src='https://download.coliving.co/static-resources/email/multiple-musical-notes.png'
+        src='https://download.coliving.lol/static-resources/email/multiple-musical-notes.png'
     />

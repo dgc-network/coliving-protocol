@@ -88,7 +88,7 @@ const userTemplate = (id) => ({
   'cover_photo': null,
   'cover_photo_sizes': 'QmQnJ8uXf886crAticzPGgrfqxq68kAxBXXcK73geFakUo',
   'created_at': '2019-04-29T23:52:55 Z',
-  'creator_node_endpoint': 'https://creatornode3.coliving.co,,',
+  'creator_node_endpoint': 'https://creatornode3.coliving.lol,,',
   'current_user_followee_follow_count': 0,
   'does_current_user_follow': false,
   'followee_count': 559,

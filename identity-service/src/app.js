@@ -32,7 +32,7 @@ const { getFeatureFlag, FEATURE_FLAGS } = require('./featureFlag')
 const { setupRewardsAttester } = require('./utils/configureAttester')
 const { startRegistrationQueue } = require('./solanaNodeRegistration')
 
-const DOMAIN = 'mail.coliving.co'
+const DOMAIN = 'mail.coliving.lol'
 
 class App {
   constructor (port) {

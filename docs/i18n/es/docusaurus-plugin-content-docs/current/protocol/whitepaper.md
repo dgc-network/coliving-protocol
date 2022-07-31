@@ -7,8 +7,8 @@ sidebar_position: 2
 
 El Libro Blanco de Coliving sienta las bases teóricas & técnicas de cómo se construye la plataforma y continua creciendo.
 
-## [Descarga PDF](https://whitepaper.coliving.co)
-## [Blog](https://blog.coliving.co/posts/the-coliving-white-paper-a-decentralized-community-owned-music-sharing-protocol)
+## [Descarga PDF](https://whitepaper.coliving.lol)
+## [Blog](https://blog.coliving.lol/posts/the-coliving-white-paper-a-decentralized-community-owned-music-sharing-protocol)
 
 ¿Preguntas? Preguntar & comprometerse con la comunidad en
 

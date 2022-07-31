@@ -41,7 +41,7 @@ filebeat.autodiscover:
                 - copy_fields:
                     fields:
                       - from: "container.name"
-                        to: "coliving.container"
+                        to: "coliving.lolntainer"
                     ignore_missing: true
                     fail_on_error: true
           condition.or:
@@ -71,7 +71,7 @@ filebeat.autodiscover:
                 - copy_fields:
                     fields:
                       - from: "container.name"
-                        to: "coliving.container"
+                        to: "coliving.lolntainer"
                     ignore_missing: true
                     fail_on_error: true
           condition.or:
@@ -100,7 +100,7 @@ filebeat.autodiscover:
                 - copy_fields:
                     fields:
                       - from: "container.name"
-                        to: "coliving.container"
+                        to: "coliving.lolntainer"
                     ignore_missing: true
                     fail_on_error: true
           condition.or:
@@ -130,7 +130,7 @@ filebeat.autodiscover:
                 - copy_fields:
                     fields:
                       - from: "container.name"
-                        to: "coliving.container"
+                        to: "coliving.lolntainer"
                     ignore_missing: true
                     fail_on_error: true
           condition.or:
@@ -156,7 +156,7 @@ filebeat.autodiscover:
                 - copy_fields:
                     fields:
                       - from: "container.name"
-                        to: "coliving.container"
+                        to: "coliving.lolntainer"
                     ignore_missing: true
                     fail_on_error: true
           condition.or:

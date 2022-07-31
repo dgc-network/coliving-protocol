@@ -8,8 +8,8 @@ RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash - && \
     npm install -g yarn @project-serum/anchor-cli@0.24.1 && \
     curl -SfL https://github.com/solana-labs/solana/releases/download/v1.10.11/solana-release-x86_64-unknown-linux-gnu.tar.bz2 | tar jxf - -C $HOME
 
-COPY anchor/audius-data/package.json anchor/audius-data/yarn.lock anchor/audius-data/
-RUN cd anchor/audius-data && yarn install
+COPY anchor/coliving-data/package.json anchor/coliving-data/yarn.lock anchor/coliving-data/
+RUN cd anchor/coliving-data && yarn install
 
 ENV CARGO_INCREMENTAL=1
 
@@ -31,11 +31,11 @@ ARG valid_signer_eth_address
 
 COPY . .
 RUN --mount=type=cache,target=/usr/src/app/target \
-    --mount=type=cache,target=/usr/src/app/anchor/audius-data/target \
+    --mount=type=cache,target=/usr/src/app/anchor/coliving-data/target \
     --mount=type=cache,target=/root/.cache/solana \
     --mount=type=cache,target=/usr/local/cargo/registry \
     ./scripts/setup-predeployed.sh /usr/db && \
-    cp -r anchor/audius-data/target/idl anchor/audius-data/
+    cp -r anchor/coliving-data/target/idl anchor/coliving-data/
 
 HEALTHCHECK --interval=5s --timeout=5s --retries=10 \
     CMD solana balance CMRCuQcnbzHzQfDRZfkfAXM9TKce1X6LjHhSLqQc68WU || exit 1

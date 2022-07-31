@@ -8,8 +8,8 @@ RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash - && \
     npm install -g yarn @project-serum/anchor-cli@0.24.1 && \
     curl -SfL https://github.com/solana-labs/solana/releases/download/v1.10.11/solana-release-x86_64-unknown-linux-gnu.tar.bz2 | tar jxf - -C $HOME
 
-COPY anchor/audius-data/package.json anchor/audius-data/yarn.lock anchor/audius-data/
-RUN cd anchor/audius-data && yarn install
+COPY anchor/coliving-data/package.json anchor/coliving-data/yarn.lock anchor/coliving-data/
+RUN cd anchor/coliving-data && yarn install
 
 ENV CARGO_INCREMENTAL=1
 
@@ -24,10 +24,10 @@ RUN --mount=type=cache,target=/usr/src/app/target-cache \
     --mount=type=cache,target=/root/.cache/solana \
     --mount=type=cache,target=/usr/local/cargo/registry \
     CARGO_TARGET_DIR=/usr/src/app/target-cache ./scripts/build.sh && \
-    mkdir -p target target/debug anchor/audius-data/target && \
+    mkdir -p target target/debug anchor/coliving-data/target && \
     cp -r target-cache/deploy target/ && \
     cp target-cache/debug/*-cli target/debug && \
-    cp -r target-cache/deploy anchor/audius-data/target/
+    cp -r target-cache/deploy anchor/coliving-data/target/
 
 ARG BUILD_ID
 LABEL prune=true

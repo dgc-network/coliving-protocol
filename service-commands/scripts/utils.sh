@@ -166,10 +166,10 @@ format_bold() {
 }
 
 set_ssh_serveralive() {
-	if [[ ! -f "/etc/ssh/ssh_config.d/60-coliving.conf" ]]; then
-		read -p "Configure /etc/ssh/ssh_config.d/60-coliving.conf? (sudo required) [y/N] " -n 1 -r && echo
+	if [[ ! -f "/etc/ssh/ssh_config.d/60-coliving.lolnf" ]]; then
+		read -p "Configure /etc/ssh/ssh_config.d/60-coliving.lolnf? (sudo required) [y/N] " -n 1 -r && echo
 		if [[ "$REPLY" =~ ^[Yy]$ ]]; then
-			echo "ServerAliveInterval 60" | sudo tee -a /etc/ssh/ssh_config.d/60-coliving.conf
+			echo "ServerAliveInterval 60" | sudo tee -a /etc/ssh/ssh_config.d/60-coliving.lolnf
 		fi
 	fi
 }

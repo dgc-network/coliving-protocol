@@ -72,7 +72,7 @@
               "options": {
                 "mode": "exclude",
                 "names": [
-                  "discoveryprovider4.coliving.co",
+                  "discoveryprovider4.coliving.lol",
                   "coliving-disco.ams-x01.nl.supercache.org",
                   "coliving-disco.dfw-x02.us.supercache.org",
                   "coliving-discovery-1.altego.net",
@@ -108,7 +108,7 @@
                   "disc-lon01.coliving.hashbeam.com",
                   "discovery-au-02.coliving.openplayer.org",
                   "discovery.grassfed.network",
-                  "discoveryprovider.coliving.co",
+                  "discoveryprovider.coliving.lol",
                   "discoveryprovider.coliving.prod-us-west-2.staked.cloud",
                   "discoveryprovider.coliving1.prod-us-west-2.staked.cloud",
                   "discoveryprovider.coliving2.prod-us-west-2.staked.cloud",
@@ -117,17 +117,17 @@
                   "discoveryprovider.coliving5.prod-us-west-2.staked.cloud",
                   "discoveryprovider.coliving6.prod-us-west-2.staked.cloud",
                   "discoveryprovider.coliving7.prod-us-west-2.staked.cloud",
-                  "discoveryprovider2.coliving.co",
-                  "discoveryprovider3.coliving.co",
+                  "discoveryprovider2.coliving.lol",
+                  "discoveryprovider3.coliving.lol",
                   "dn-jpn.coliving.metadata.fyi",
                   "dn1.matterlightblooming.xyz",
                   "dn1.monophonic.digital",
                   "dn1.nodeoperator.io",
                   "dn2.monophonic.digital",
-                  "discoveryprovider.staging.coliving.co",
-                  "discoveryprovider2.staging.coliving.co",
-                  "discoveryprovider3.staging.coliving.co",
-                  "discoveryprovider5.staging.coliving.co"
+                  "discoveryprovider.staging.coliving.lol",
+                  "discoveryprovider2.staging.coliving.lol",
+                  "discoveryprovider3.staging.coliving.lol",
+                  "discoveryprovider5.staging.coliving.lol"
                 ],
                 "prefix": "All except:",
                 "readOnly": true

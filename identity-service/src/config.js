@@ -784,7 +784,7 @@ const config = convict({
     doc: 'Coliving website host',
     format: String,
     env: 'websiteHost',
-    default: 'https://coliving.co'
+    default: 'https://coliving.lol'
   },
   amplitudeAPIKey: {
     doc: 'Amplitude API key',

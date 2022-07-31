@@ -6,8 +6,8 @@ sidebar_label: Whitepaper sidebar_position: 2
 
 The Coliving Whitepaper lays the theoretical & technical groundwork for how the platform is built and continues to grow.
 
-## [PDF Download](https://whitepaper.coliving.co)
-## [Blog post](https://blog.coliving.co/posts/the-coliving-white-paper-a-decentralized-community-owned-music-sharing-protocol)
+## [PDF Download](https://whitepaper.coliving.lol)
+## [Blog post](https://blog.coliving.lol/posts/the-coliving-white-paper-a-decentralized-community-owned-music-sharing-protocol)
 
 Questions? Ask & engage with the community on
 

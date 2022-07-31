@@ -4,7 +4,7 @@ import BN from "bn.js";
 import { randomBytes } from "crypto";
 import * as secp256k1 from "secp256k1";
 import keccak256 from "keccak256";
-import { AudiusData } from "../target/types/audius_data";
+import { AudiusData } from "../target/types/coliving_data";
 import web3 from "web3";
 import { LOCAL_DEV_SP_WALLETS, LOCAL_DEV_SP_PRIVATE_KEYS } from "./constants";
 const { PublicKey } = anchor.web3;

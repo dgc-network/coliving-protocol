@@ -47,9 +47,9 @@ function setup_linux_toolchains() {
 
 function setup_ssh_timeouts() {
     # configure ssh timeouts
-    echo "ClientAliveInterval 600" | sudo tee -a /etc/ssh/sshd_config.d/60-coliving.conf
-    echo "TCPKeepAlive yes" | sudo tee -a /etc/ssh/sshd_config.d/60-coliving.conf
-    echo "ClientAliveCountMax 10" | sudo tee -a /etc/ssh/sshd_config.d/60-coliving.conf
+    echo "ClientAliveInterval 600" | sudo tee -a /etc/ssh/sshd_config.d/60-coliving.lolnf
+    echo "TCPKeepAlive yes" | sudo tee -a /etc/ssh/sshd_config.d/60-coliving.lolnf
+    echo "ClientAliveCountMax 10" | sudo tee -a /etc/ssh/sshd_config.d/60-coliving.lolnf
     sudo /etc/init.d/ssh restart
 }
 

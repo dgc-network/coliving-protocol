@@ -222,8 +222,8 @@ async function getImageCidsExist (creatorNode, cids, batchSize = 500) {
 }
 
 async function run () {
-  const discoveryProvider = 'https://discoveryprovider.coliving.co/'
-  // const discoveryProvider = "https://discoveryprovider.staging.coliving.co/"
+  const discoveryProvider = 'https://discoveryprovider.coliving.lol/'
+  // const discoveryProvider = "https://discoveryprovider.staging.coliving.lol/"
   // const discoveryProvider = 'http://localhost:5000'
   const trackBatchSize = 500
   const userBatchSize = 500

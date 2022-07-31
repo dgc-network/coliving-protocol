@@ -72,7 +72,7 @@ module.exports = function (app) {
     const recoveryHtml = recoveryTemplate(context)
 
     const emailParams = {
-      from: 'Coliving Recovery <recovery@coliving.co>',
+      from: 'Coliving Recovery <recovery@coliving.lol>',
       to: `${email}`,
       subject: 'Save This Email: Coliving Password Recovery',
       html: recoveryHtml

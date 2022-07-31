@@ -42,7 +42,7 @@ describe('DiscoveryProviderSelection', () => {
   })
 
   it('selects a healthy service', async () => {
-    const healthy = 'https://healthy.coliving.co'
+    const healthy = 'https://healthy.coliving.lol'
     nock(healthy)
       .get('/health_check')
       .reply(200, {
@@ -62,7 +62,7 @@ describe('DiscoveryProviderSelection', () => {
   })
 
   it('selects a healthy service with an unhealthy one present', async () => {
-    const healthy = 'https://healthy.coliving.co'
+    const healthy = 'https://healthy.coliving.lol'
     nock(healthy)
       .get('/health_check')
       .reply(200, {
@@ -72,7 +72,7 @@ describe('DiscoveryProviderSelection', () => {
           block_difference: 0
         }
       })
-    const unhealthy = 'https://unhealthy.coliving.co'
+    const unhealthy = 'https://unhealthy.coliving.lol'
     nock(unhealthy)
       .get('/health_check')
       .reply(400, {
@@ -92,7 +92,7 @@ describe('DiscoveryProviderSelection', () => {
   })
 
   it('prefers the correct vesion', async () => {
-    const healthy = 'https://healthy.coliving.co'
+    const healthy = 'https://healthy.coliving.lol'
     nock(healthy)
       .get('/health_check')
       .reply(200, {
@@ -102,7 +102,7 @@ describe('DiscoveryProviderSelection', () => {
           block_difference: 0
         }
       })
-    const outdated = 'https://outdated.coliving.co'
+    const outdated = 'https://outdated.coliving.lol'
     nock(outdated)
       .get('/health_check')
       .reply(200, {
@@ -122,7 +122,7 @@ describe('DiscoveryProviderSelection', () => {
   })
 
   it('prefers a healthy block diff', async () => {
-    const healthy = 'https://healthy.coliving.co'
+    const healthy = 'https://healthy.coliving.lol'
     nock(healthy)
       .get('/health_check')
       .reply(200, {
@@ -132,7 +132,7 @@ describe('DiscoveryProviderSelection', () => {
           block_difference: 0
         }
       })
-    const behind = 'https://behind.coliving.co'
+    const behind = 'https://behind.coliving.lol'
     nock(behind)
       .get('/health_check')
       .reply(200, {
@@ -152,7 +152,7 @@ describe('DiscoveryProviderSelection', () => {
   })
 
   it('prefers a healthy block diff with custom block diff', async () => {
-    const healthyBehindVersion = 'https://healthy.coliving.co'
+    const healthyBehindVersion = 'https://healthy.coliving.lol'
     nock(healthyBehindVersion)
       .get('/health_check')
       .reply(200, {
@@ -162,7 +162,7 @@ describe('DiscoveryProviderSelection', () => {
           block_difference: 0
         }
       })
-    const behindBlockCurrentVersion = 'https://behind.coliving.co'
+    const behindBlockCurrentVersion = 'https://behind.coliving.lol'
     nock(behindBlockCurrentVersion)
       .get('/health_check')
       .reply(200, {
@@ -187,7 +187,7 @@ describe('DiscoveryProviderSelection', () => {
   })
 
   it('prefers a healthy plays slot diff', async () => {
-    const healthy = 'https://healthy.coliving.co'
+    const healthy = 'https://healthy.coliving.lol'
     nock(healthy)
       .get('/health_check')
       .reply(200, {
@@ -202,7 +202,7 @@ describe('DiscoveryProviderSelection', () => {
           }
         }
       })
-    const behind = 'https://behind.coliving.co'
+    const behind = 'https://behind.coliving.lol'
     nock(behind)
       .get('/health_check')
       .reply(200, {
@@ -229,7 +229,7 @@ describe('DiscoveryProviderSelection', () => {
   })
 
   it('can select an old version', async () => {
-    const healthyButBehind = 'https://healthyButBehind.coliving.co'
+    const healthyButBehind = 'https://healthyButBehind.coliving.lol'
     nock(healthyButBehind)
       .get('/health_check')
       .reply(200, {
@@ -239,7 +239,7 @@ describe('DiscoveryProviderSelection', () => {
           block_difference: 20
         }
       })
-    const pastVersionNotBehind = 'https://pastVersionNotBehind.coliving.co'
+    const pastVersionNotBehind = 'https://pastVersionNotBehind.coliving.lol'
     nock(pastVersionNotBehind)
       .get('/health_check')
       .reply(200, {
@@ -272,7 +272,7 @@ describe('DiscoveryProviderSelection', () => {
   })
 
   it('can select the discprov that is the least number of blocks behind for the current version', async () => {
-    const behind20 = 'https://behind20.coliving.co'
+    const behind20 = 'https://behind20.coliving.lol'
     nock(behind20)
       .get('/health_check')
       .reply(200, {
@@ -282,7 +282,7 @@ describe('DiscoveryProviderSelection', () => {
           block_difference: 20
         }
       })
-    const behind40 = 'https://behind40.coliving.co'
+    const behind40 = 'https://behind40.coliving.lol'
     nock(behind40)
       .get('/health_check')
       .reply(200, {
@@ -316,7 +316,7 @@ describe('DiscoveryProviderSelection', () => {
   })
 
   it('can select the discprov that is the least number of blocks behind for past versions', async () => {
-    const behind100 = 'https://behind100.coliving.co'
+    const behind100 = 'https://behind100.coliving.lol'
     nock(behind100)
       .get('/health_check')
       .reply(200, {
@@ -326,7 +326,7 @@ describe('DiscoveryProviderSelection', () => {
           block_difference: 100
         }
       })
-    const behind200 = 'https://behind200.coliving.co'
+    const behind200 = 'https://behind200.coliving.lol'
     nock(behind200)
       .get('/health_check')
       .reply(200, {
@@ -360,7 +360,7 @@ describe('DiscoveryProviderSelection', () => {
   })
 
   it('will not pick a minor version behind provider', async () => {
-    const minorBehind = 'https://minorBehind.coliving.co'
+    const minorBehind = 'https://minorBehind.coliving.lol'
     nock(minorBehind)
       .get('/health_check')
       .reply(200, {
@@ -379,7 +379,7 @@ describe('DiscoveryProviderSelection', () => {
   })
 
   it('respects a whitelist', async () => {
-    const healthy1 = 'https://healthy1.coliving.co'
+    const healthy1 = 'https://healthy1.coliving.lol'
     nock(healthy1)
       .get('/health_check')
       .reply(200, {
@@ -390,7 +390,7 @@ describe('DiscoveryProviderSelection', () => {
         }
       })
 
-    const healthy2 = 'https://healthy2.coliving.co'
+    const healthy2 = 'https://healthy2.coliving.lol'
     nock(healthy2)
       .get('/health_check')
       .reply(200, {
@@ -414,7 +414,7 @@ describe('DiscoveryProviderSelection', () => {
   it('will cache its choice', async () => {
     const localStorage = new LocalStorage('./local-storage')
 
-    const healthy1 = 'https://healthy1.coliving.co'
+    const healthy1 = 'https://healthy1.coliving.lol'
     nock(healthy1)
       .get('/health_check')
       .reply(200, {
@@ -440,7 +440,7 @@ describe('DiscoveryProviderSelection', () => {
   it('will cache its choice and reuse it', async () => {
     const localStorage = new LocalStorage('./local-storage')
 
-    const healthy1 = 'https://healthy1.coliving.co'
+    const healthy1 = 'https://healthy1.coliving.lol'
     nock(healthy1)
       .get('/health_check')
       .delay(100)
@@ -452,7 +452,7 @@ describe('DiscoveryProviderSelection', () => {
         }
       })
 
-    const healthy2 = 'https://healthy2.coliving.co'
+    const healthy2 = 'https://healthy2.coliving.lol'
     nock(healthy2)
       .get('/health_check')
       .delay(100)
@@ -464,7 +464,7 @@ describe('DiscoveryProviderSelection', () => {
         }
       })
 
-    const initiallyUnhealthy = 'https://initiallyUnhealthy.coliving.co'
+    const initiallyUnhealthy = 'https://initiallyUnhealthy.coliving.lol'
     nock(initiallyUnhealthy)
       .get('/health_check')
       .reply(400, {

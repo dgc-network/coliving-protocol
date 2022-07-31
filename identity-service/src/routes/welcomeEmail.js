@@ -49,9 +49,9 @@ module.exports = function (app) {
     })
 
     const emailParams = {
-      from: 'The Coliving Team <team@coliving.co>',
+      from: 'The Coliving Team <team@coliving.lol>',
       to: existingUser.email,
-      bcc: 'forrest@coliving.co',
+      bcc: 'forrest@coliving.lol',
       subject: 'The Automated Welcome Email',
       html: welcomeHtml
     }

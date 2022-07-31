@@ -43,7 +43,7 @@ var AnnouncementHeader = function AnnouncementHeader() {
       padding: '16px 16px 0px 16px'
     }
   }, /*#__PURE__*/_react["default"].createElement("img", {
-    src: 'https://download.coliving.co/static-resources/email/announcement.png',
+    src: 'https://download.coliving.lol/static-resources/email/announcement.png',
     style: {
       height: '32px',
       width: '32px',
@@ -79,7 +79,7 @@ var OpenAudiusLink = function OpenAudiusLink() {
       lineHeight: '10px'
     }
   }, 'Open Coliving', /*#__PURE__*/_react["default"].createElement("img", {
-    src: "https://download.coliving.co/static-resources/email/iconArrow.png",
+    src: "https://download.coliving.lol/static-resources/email/iconArrow.png",
     style: {
       height: '8px',
       width: '8px',
@@ -94,7 +94,7 @@ var OpenAudiusLink = function OpenAudiusLink() {
 
 var WrapLink = function WrapLink(props) {
   return /*#__PURE__*/_react["default"].createElement("a", {
-    href: "https://coliving.co/feed?openNotifications=true",
+    href: "https://coliving.lol/feed?openNotifications=true",
     style: {
       textDecoration: 'none'
     }
@@ -217,7 +217,7 @@ var Body = function Body(props) {
       margin: '0px'
     }
   }, /*#__PURE__*/_react["default"].createElement("img", {
-    src: "https://download.coliving.co/static-resources/email/iconTwitterWhite.png",
+    src: "https://download.coliving.lol/static-resources/email/iconTwitterWhite.png",
     alt: "twitter",
     style: {
       height: '18px',

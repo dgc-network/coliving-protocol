@@ -2,7 +2,7 @@ import Web3 from "web3";
 import { AnchorProvider, Program, web3 } from "@project-serum/anchor";
 import NodeWallet from "@project-serum/anchor/dist/cjs/nodewallet";
 import { Connection, PublicKey, Keypair, SystemProgram } from "@solana/web3.js";
-import { AudiusData } from "../target/types/audius_data";
+import { AudiusData } from "../target/types/coliving_data";
 import * as anchor from "@project-serum/anchor";
 import {
   initAdmin,
@@ -43,7 +43,7 @@ const SYSTEM_PROGRAM_ID = SystemProgram.programId;
 const program = new Command();
 
 const idl = JSON.parse(
-  fs.readFileSync("./target/idl/audius_data.json", "utf8")
+  fs.readFileSync("./target/idl/coliving_data.json", "utf8")
 );
 
 const opts: web3.ConfirmOptions = {
@@ -66,7 +66,7 @@ function initializeCLI(network: string, ownerKeypairPath: string) {
     const anchorToml = toml.parse(
       fs.readFileSync(path.join(__dirname, "../Anchor.toml"), 'utf8')
     );
-    idl.metadata = { address: anchorToml.programs.localnet.audius_data };
+    idl.metadata = { address: anchorToml.programs.localnet.coliving_data };
   }
   const programID = new PublicKey(idl.metadata.address);
   const program = new Program<AudiusData>(idl, programID, provider);

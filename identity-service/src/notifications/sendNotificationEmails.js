@@ -389,9 +389,9 @@ async function renderAndSendNotificationEmail (
     const notifHtml = renderEmail(renderProps)
 
     const emailParams = {
-      from: 'Coliving <notify@coliving.co>',
+      from: 'Coliving <notify@coliving.lol>',
       to: `${userEmail}`,
-      bcc: 'coliving-email-test@coliving.co',
+      bcc: 'coliving-email-test@coliving.lol',
       html: notifHtml,
       subject: emailSubject
     }

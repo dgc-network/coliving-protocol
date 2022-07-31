@@ -40,7 +40,7 @@ ${CHANGE_LOG}"
 # commits with the relevant changelog, and pushes
 function bump-npm () {
     # Configure git client
-    git config --global user.email "coliving-infra@coliving.co"
+    git config --global user.email "coliving-infra@coliving.lol"
     git config --global user.name "coliving-infra"
 
     # Make sure master is up to date

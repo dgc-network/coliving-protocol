@@ -7,8 +7,8 @@ import { Program } from "@project-serum/anchor";
 import { Keypair } from "@solana/web3.js";
 import { Account } from "web3-core";
 import * as secp256k1 from "secp256k1";
-import { AudiusData } from "../target/types/audius_data";
-import idll from "../target/idl/audius_data.json";
+import { AudiusData } from "../target/types/coliving_data";
+import idll from "../target/idl/coliving_data.json";
 import { signBytes, SystemSysVarProgramKey } from "./utils";
 const { SystemProgram, Transaction, Secp256k1Program } = anchor.web3;
 

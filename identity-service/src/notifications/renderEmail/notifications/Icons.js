@@ -19,7 +19,7 @@ var WhiteHeavyCheckMarkIcon = function WhiteHeavyCheckMarkIcon() {
   return /*#__PURE__*/_react["default"].createElement("img", {
     style: iconStyles,
     alt: "Heavy Check Mark Icon",
-    src: "https://download.coliving.co/static-resources/email/white-heavy-check-mark.png"
+    src: "https://download.coliving.lol/static-resources/email/white-heavy-check-mark.png"
   });
 };
 
@@ -29,7 +29,7 @@ var IncomingEnvelopeIcon = function IncomingEnvelopeIcon() {
   return /*#__PURE__*/_react["default"].createElement("img", {
     style: iconStyles,
     alt: "Incoming Envelope",
-    src: "https://download.coliving.co/static-resources/email/incoming-envelope.png"
+    src: "https://download.coliving.lol/static-resources/email/incoming-envelope.png"
   });
 };
 
@@ -39,7 +39,7 @@ var HeadphoneIcon = function HeadphoneIcon() {
   return /*#__PURE__*/_react["default"].createElement("img", {
     style: iconStyles,
     alt: "Headphone Icon",
-    src: "https://download.coliving.co/static-resources/email/headphone.png"
+    src: "https://download.coliving.lol/static-resources/email/headphone.png"
   });
 };
 
@@ -49,7 +49,7 @@ var MobilePhoneWithArrowIcon = function MobilePhoneWithArrowIcon() {
   return /*#__PURE__*/_react["default"].createElement("img", {
     style: iconStyles,
     alt: "Mobile Phone With Arrow Icon",
-    src: "https://download.coliving.co/static-resources/email/mobile-phone-with-arrow.png"
+    src: "https://download.coliving.lol/static-resources/email/mobile-phone-with-arrow.png"
   });
 };
 
@@ -59,7 +59,7 @@ var MultipleMusicalNotesIcon = function MultipleMusicalNotesIcon() {
   return /*#__PURE__*/_react["default"].createElement("img", {
     style: iconStyles,
     alt: "Multiple Musical Notes Icon",
-    src: "https://download.coliving.co/static-resources/email/multiple-musical-notes.png"
+    src: "https://download.coliving.lol/static-resources/email/multiple-musical-notes.png"
   });
 };
 

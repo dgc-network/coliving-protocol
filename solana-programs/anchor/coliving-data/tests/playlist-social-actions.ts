@@ -4,27 +4,23 @@ import chai, { assert, expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import {
   initAdmin,
-  addTrackRepost,
-  addTrackSave,
+  addPlaylistRepost,
+  addPlaylistSave,
   updateAdmin,
-  deleteTrackSave,
+  deletePlaylistSave,
   EntitySocialActionEnumValues,
   EntityTypesEnumValues,
-  deleteTrackRepost,
+  deletePlaylistRepost,
 } from "../lib/lib";
 import { getTransaction, randomString } from "../lib/utils";
-import { AudiusData } from "../target/types/audius_data";
-import {
-  createSolanaContentNode,
-  createSolanaUser,
-  testCreateUserDelegate,
-} from "./test-helpers";
+import { AudiusData } from "../target/types/coliving_data";
+import { createSolanaUser, createSolanaContentNode } from "./test-helpers";
+
 const { SystemProgram } = anchor.web3;
 
 chai.use(chaiAsPromised);
 
-const contentNodes = {};
-describe("track-actions", function () {
+describe("playlist-actions", function () {
   const provider = anchor.AnchorProvider.local("http://localhost:8899", {
     preflightCommitment: "confirmed",
     commitment: "confirmed",
@@ -38,8 +34,9 @@ describe("track-actions", function () {
   const adminKeypair = anchor.web3.Keypair.generate();
   const adminAccountKeypair = anchor.web3.Keypair.generate();
   const verifierKeypair = anchor.web3.Keypair.generate();
+  const contentNodes = {};
 
-  it("track actions - Initializing admin account!", async function () {
+  it("playlist actions - Initializing admin account!", async function () {
     const tx = initAdmin({
       payer: provider.wallet.publicKey,
       program,
@@ -74,33 +71,36 @@ describe("track-actions", function () {
   });
 
   it("Initializing Content Node accounts!", async function () {
-    contentNodes["1"] = await createSolanaContentNode({
+    const cn1 = await createSolanaContentNode({
       program,
       provider,
       adminKeypair,
       adminAccountKeypair,
       spId: new anchor.BN(1),
     });
-    contentNodes["2"] = await createSolanaContentNode({
+    const cn2 = await createSolanaContentNode({
       program,
       provider,
       adminKeypair,
       adminAccountKeypair,
       spId: new anchor.BN(2),
     });
-    contentNodes["3"] = await createSolanaContentNode({
+    const cn3 = await createSolanaContentNode({
       program,
       provider,
       adminKeypair,
       adminAccountKeypair,
       spId: new anchor.BN(3),
     });
+    contentNodes["1"] = cn1;
+    contentNodes["2"] = cn2;
+    contentNodes["3"] = cn3;
   });
 
-  it("Delete save for a track", async function () {
+  it("Delete save for a playlist", async function () {
     const user = await createSolanaUser(program, provider, adminAccountKeypair);
 
-    const tx = deleteTrackSave({
+    const tx = deletePlaylistSave({
       program,
       baseAuthorityAccount: user.authority,
       adminAccount: adminAccountKeypair.publicKey,
@@ -112,8 +112,10 @@ describe("track-actions", function () {
       bumpSeed: user.bumpSeed,
       id: randomString(10),
     });
-    const txHash = await provider.sendAndConfirm(tx, [user.keypair]);
-    const info = await getTransaction(provider, txHash);
+
+    const txSignature = await provider.sendAndConfirm(tx, [user.keypair]);
+
+    const info = await getTransaction(provider, txSignature);
     const instructionCoder = program.coder.instruction as BorshInstructionCoder;
     const decodedInstruction = instructionCoder.decode(
       info.transaction.message.instructions[0].data,
@@ -126,14 +128,14 @@ describe("track-actions", function () {
       EntitySocialActionEnumValues.deleteSave
     );
     expect(decodedInstruction.data.entityType).to.deep.equal(
-      EntityTypesEnumValues.track
+      EntityTypesEnumValues.playlist
     );
   });
 
-  it("Save a newly created track", async function () {
+  it("Save a newly created playlist", async function () {
     const user = await createSolanaUser(program, provider, adminAccountKeypair);
 
-    const tx = addTrackSave({
+    const tx = addPlaylistSave({
       program,
       baseAuthorityAccount: user.authority,
       adminAccount: adminAccountKeypair.publicKey,
@@ -145,9 +147,9 @@ describe("track-actions", function () {
       bumpSeed: user.bumpSeed,
       id: randomString(10),
     });
-    const txHash = await provider.sendAndConfirm(tx, [user.keypair]);
+    const txSignature = await provider.sendAndConfirm(tx, [user.keypair]);
 
-    const info = await getTransaction(provider, txHash);
+    const info = await getTransaction(provider, txSignature);
     const instructionCoder = program.coder.instruction as BorshInstructionCoder;
     const decodedInstruction = instructionCoder.decode(
       info.transaction.message.instructions[0].data,
@@ -160,14 +162,14 @@ describe("track-actions", function () {
       EntitySocialActionEnumValues.addSave
     );
     expect(decodedInstruction.data.entityType).to.deep.equal(
-      EntityTypesEnumValues.track
+      EntityTypesEnumValues.playlist
     );
   });
 
-  it("Repost a track", async function () {
+  it("Repost a playlist", async function () {
     const user = await createSolanaUser(program, provider, adminAccountKeypair);
 
-    const tx = addTrackRepost({
+    const tx = addPlaylistRepost({
       program,
       baseAuthorityAccount: user.authority,
       adminAccount: adminAccountKeypair.publicKey,
@@ -179,9 +181,9 @@ describe("track-actions", function () {
       bumpSeed: user.bumpSeed,
       id: randomString(10),
     });
-    const txHash = await provider.sendAndConfirm(tx, [user.keypair]);
+    const txSignature = await provider.sendAndConfirm(tx, [user.keypair]);
 
-    const info = await getTransaction(provider, txHash);
+    const info = await getTransaction(provider, txSignature);
     const instructionCoder = program.coder.instruction as BorshInstructionCoder;
     const decodedInstruction = instructionCoder.decode(
       info.transaction.message.instructions[0].data,
@@ -194,57 +196,14 @@ describe("track-actions", function () {
       EntitySocialActionEnumValues.addRepost
     );
     expect(decodedInstruction.data.entityType).to.deep.equal(
-      EntityTypesEnumValues.track
+      EntityTypesEnumValues.playlist
     );
   });
 
-  it("Delegate reposts a track", async function () {
-    const userDelegate = await testCreateUserDelegate({
-      adminKeypair,
-      adminAccountKeypair: adminAccountKeypair,
-      program,
-      provider,
-    });
-
-    const tx = addTrackRepost({
-      program,
-      baseAuthorityAccount: userDelegate.baseAuthorityAccount,
-      adminAccount: adminAccountKeypair.publicKey,
-      userAccount: userDelegate.userAccountAddress,
-      userAuthorityDelegateAccount:
-        userDelegate.userAuthorityDelegateAccountAddress,
-      authorityDelegationStatusAccount:
-        userDelegate.authorityDelegationStatusAccount,
-      userAuthorityPublicKey:
-        userDelegate.userAuthorityDelegateKeypair.publicKey,
-      userId: userDelegate.userId,
-      bumpSeed: userDelegate.userBumpSeed,
-      id: randomString(10),
-    });
-    const txHash = await provider.sendAndConfirm(tx, [
-      userDelegate.userAuthorityDelegateKeypair,
-    ]);
-    const info = await getTransaction(provider, txHash);
-    const instructionCoder = program.coder.instruction as BorshInstructionCoder;
-    const decodedInstruction = instructionCoder.decode(
-      info.transaction.message.instructions[0].data,
-      "base58"
-    );
-    const userIdSeed = userDelegate.userId;
-    const instructionUserId = decodedInstruction.data.userIdSeedBump.userId;
-    assert.equal(instructionUserId, userIdSeed);
-    expect(decodedInstruction.data.entitySocialAction).to.deep.equal(
-      EntitySocialActionEnumValues.addRepost
-    );
-    expect(decodedInstruction.data.entityType).to.deep.equal(
-      EntityTypesEnumValues.track
-    );
-  });
-
-  it("Delete repost for a track", async function () {
+  it("Delete repost for a playlist", async function () {
     const user = await createSolanaUser(program, provider, adminAccountKeypair);
 
-    const tx = deleteTrackRepost({
+    const tx = deletePlaylistRepost({
       program,
       baseAuthorityAccount: user.authority,
       adminAccount: adminAccountKeypair.publicKey,
@@ -256,9 +215,8 @@ describe("track-actions", function () {
       bumpSeed: user.bumpSeed,
       id: randomString(10),
     });
-    const txHash = await provider.sendAndConfirm(tx, [user.keypair]);
-
-    const info = await getTransaction(provider, txHash);
+    const txSignature = await provider.sendAndConfirm(tx, [user.keypair]);
+    const info = await getTransaction(provider, txSignature);
     const instructionCoder = program.coder.instruction as BorshInstructionCoder;
     const decodedInstruction = instructionCoder.decode(
       info.transaction.message.instructions[0].data,
@@ -271,7 +229,7 @@ describe("track-actions", function () {
       EntitySocialActionEnumValues.deleteRepost
     );
     expect(decodedInstruction.data.entityType).to.deep.equal(
-      EntityTypesEnumValues.track
+      EntityTypesEnumValues.playlist
     );
   });
 });

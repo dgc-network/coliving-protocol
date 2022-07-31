@@ -24,8 +24,8 @@ npm run gen:{env}:{flavor?}
 
 - `env` choices=("dev", "stage", "prod"): Which environment to choose the Discovery Provider to generate from
   - `dev`: http://dn1_web-server_1:5000/
-  - `stage`: https://discoveryprovider.staging.coliving.co/
-  - `prod`: https://discoveryprovider.coliving.co
+  - `stage`: https://discoveryprovider.staging.coliving.lol/
+  - `prod`: https://discoveryprovider.coliving.lol
 - `flavor` [optional] choices=("default", "full"): Which flavor of the API to generate types for
   - undefined for both
   - `default` for /v1

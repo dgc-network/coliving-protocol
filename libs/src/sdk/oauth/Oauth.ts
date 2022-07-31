@@ -101,7 +101,7 @@ const generateAudiusLogoSvg = (size: 'small' | 'medium' | 'large') => {
 </svg>`
 }
 
-const OAUTH_URL = 'https://coliving.co/oauth/auth'
+const OAUTH_URL = 'https://coliving.lol/oauth/auth'
 const CSRF_TOKEN_KEY = 'colivingOauthState'
 
 type OauthConfig = {

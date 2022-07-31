@@ -142,7 +142,7 @@ echo
 echo "------------- Deploying programs ----------------"
 
 echo "Deploying audius-eth-registry..."
-solana program deploy target/deploy/audius_eth_registry.so
+solana program deploy target/deploy/coliving_eth_registry.so
 echo
 
 echo "Deploying audius-track-listen-count..."
@@ -157,8 +157,8 @@ echo "Deploying audius-reward-manager..."
 solana program deploy target/deploy/audius_reward_manager.so
 echo
 
-echo "Deplyoing audius-data..."
-cd anchor/audius-data/
+echo "Deplyoing coliving-data..."
+cd anchor/coliving-data/
 anchor deploy --provider.cluster "$SOLANA_HOST"
 cd ../..
 echo
@@ -213,7 +213,7 @@ spl-token transfer \
 echo
 
 echo "Initializing audius admin account..."
-cd anchor/audius-data/
+cd anchor/coliving-data/
 yarn run ts-node cli/main.ts --function initAdmin \
     --admin-authority-keypair "$admin_authority_keypair" \
     --admin-account-keypair "$admin_account_keypair" \
@@ -223,7 +223,7 @@ cd ../..
 echo
 
 echo "Initializing Content/URSM nodes..."
-cd anchor/audius-data/
+cd anchor/coliving-data/
 # initialize Content/URSM nodes - initContentNode uses deterministic
 # addresses and pkeys from eth-contracts ganache chain.
 yarn run ts-node cli/main.ts -function initContentNode \
@@ -252,13 +252,13 @@ echo
 # TODO: Remove this when we deprecate service-commands
 cat >solana-program-config.json <<EOF
 {
-    "anchorProgramId": "$(solana address -k anchor/audius-data/target/deploy/audius_data-keypair.json)",
+    "anchorProgramId": "$(solana address -k anchor/coliving-data/target/deploy/coliving_data-keypair.json)",
     "anchorAdminPublicKey": "$(solana address -k "$admin_authority_keypair")",
     "anchorAdminPrivateKey": "$(cat "$admin_authority_keypair")",
     "anchorAdminStoragePublicKey": "$(solana address -k "$admin_account_keypair")",
     "anchorAdminStoragePrivateKey": "$(cat "$admin_account_keypair")",
     "trackListenCountAddress": "$(solana address -k target/deploy/track_listen_count-keypair.json)",
-    "audiusEthRegistryAddress": "$(solana address -k target/deploy/audius_eth_registry-keypair.json)",
+    "audiusEthRegistryAddress": "$(solana address -k target/deploy/coliving_eth_registry-keypair.json)",
     "validSigner": "$(solana address -k "$valid_signer_keypair")"
     "signerGroup": "$(solana address -k "$signer_group_keypair")",
     "feePayerWallets": [{ "privateKey": $(cat "$feepayer_keypair") }],

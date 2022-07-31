@@ -1,12 +1,12 @@
 [package]
-name = "audius-data"
+name = "coliving-data"
 version = "0.1.0"
 description = "Created with Anchor"
 edition = "2018"
 
 [lib]
 crate-type = ["cdylib", "lib"]
-name = "audius_data"
+name = "coliving_data"
 
 [features]
 no-entrypoint = []

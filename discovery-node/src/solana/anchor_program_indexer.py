@@ -8,12 +8,12 @@ from redis import Redis
 from solana.transaction import Transaction
 from sqlalchemy import desc
 from sqlalchemy.orm.session import Session
-from src.models.indexing.audius_data_tx import AudiusDataTx
+from src.models.indexing.coliving_data_tx import AudiusDataTx
 from src.models.indexing.ursm_content_node import UrsmContentNode
 from src.models.tracks.track import Track
 from src.models.users.user import User
 from src.solana.anchor_parser import AnchorParser
-from src.solana.audius_data_transaction_handlers import ParsedTx, transaction_handlers
+from src.solana.coliving_data_transaction_handlers import ParsedTx, transaction_handlers
 from src.solana.solana_client_manager import SolanaClientManager
 from src.solana.solana_program_indexer import SolanaProgramIndexer
 from src.utils.cid_metadata_client import CIDMetadataClient
@@ -23,7 +23,7 @@ from src.utils.session_manager import SessionManager
 logger = logging.getLogger(__name__)
 
 TX_SIGNATURES_PROCESSING_SIZE = 100
-COLIVING_DATA_IDL_PATH = "./idl/audius_data.json"
+COLIVING_DATA_IDL_PATH = "./idl/coliving_data.json"
 
 
 class AnchorProgramIndexer(SolanaProgramIndexer):

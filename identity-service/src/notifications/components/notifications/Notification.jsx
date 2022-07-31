@@ -325,7 +325,7 @@ const getTrackMessage = (notification) => {
 }
 
 export const getTrackLink = (track) => {
-  return `https://coliving.co/${track.route_id}-${track.track_id}`
+  return `https://coliving.lol/${track.route_id}-${track.track_id}`
 }
 
 const getTwitter = (notification) => {

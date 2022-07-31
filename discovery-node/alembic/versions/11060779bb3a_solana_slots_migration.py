@@ -22,7 +22,7 @@ def upgrade():
 
         begin;
 
-            CREATE TABLE IF NOT EXISTS audius_data_txs (
+            CREATE TABLE IF NOT EXISTS coliving_data_txs (
                 signature VARCHAR PRIMARY KEY,
                 slot INTEGER NOT NULL
             );
@@ -53,7 +53,7 @@ def downgrade():
         """
         begin;
 
-            DROP TABLE IF EXISTS audius_data_txs;
+            DROP TABLE IF EXISTS coliving_data_txs;
 
             ALTER TABLE users DROP CONSTRAINT IF EXISTS users_pkey;
             ALTER TABLE users ADD PRIMARY KEY (is_current, user_id, blockhash, txhash);

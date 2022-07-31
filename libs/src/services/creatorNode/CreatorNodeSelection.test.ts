@@ -68,18 +68,18 @@ type HealthCheckData = { [K in keyof typeof defaultHealthCheckData]?: unknown }
 
 describe('test CreatorNodeSelection', () => {
   it('selects the fastest healthy service as primary and rest as secondaries', async () => {
-    const healthy = 'https://healthy.coliving.co'
+    const healthy = 'https://healthy.coliving.lol'
     nock(healthy)
       .get('/health_check/verbose')
       .reply(200, { data: defaultHealthCheckData })
 
-    const healthyButSlow = 'https://healthybutslow.coliving.co'
+    const healthyButSlow = 'https://healthybutslow.coliving.lol'
     nock(healthyButSlow)
       .get('/health_check/verbose')
       .delay(100)
       .reply(200, { data: defaultHealthCheckData })
 
-    const healthyButSlowest = 'https://healthybutslowest.coliving.co'
+    const healthyButSlowest = 'https://healthybutslowest.coliving.lol'
     nock(healthyButSlowest)
       .get('/health_check/verbose')
       .delay(200)
@@ -112,18 +112,18 @@ describe('test CreatorNodeSelection', () => {
   })
 
   it('Return nothing if whitelist is empty set', async function () {
-    const healthy = 'https://healthy.coliving.co'
+    const healthy = 'https://healthy.coliving.lol'
     nock(healthy)
       .get('/health_check/verbose')
       .reply(200, { data: defaultHealthCheckData })
 
-    const healthyButSlow = 'https://healthybutslow.coliving.co'
+    const healthyButSlow = 'https://healthybutslow.coliving.lol'
     nock(healthyButSlow)
       .get('/health_check/verbose')
       .delay(100)
       .reply(200, { data: defaultHealthCheckData })
 
-    const healthyButSlowest = 'https://healthybutslowest.coliving.co'
+    const healthyButSlowest = 'https://healthybutslowest.coliving.lol'
     nock(healthyButSlowest)
       .get('/health_check/verbose')
       .delay(200)
@@ -149,22 +149,22 @@ describe('test CreatorNodeSelection', () => {
   })
 
   it('select healthy nodes as the primary and secondary, and do not select unhealthy nodes', async () => {
-    const upToDate = 'https://upToDate.coliving.co'
+    const upToDate = 'https://upToDate.coliving.lol'
     nock(upToDate)
       .get('/health_check/verbose')
       .reply(200, { data: defaultHealthCheckData })
 
-    const behindMajor = 'https://behindMajor.coliving.co'
+    const behindMajor = 'https://behindMajor.coliving.lol'
     nock(behindMajor)
       .get('/health_check/verbose')
       .reply(200, { data: { ...defaultHealthCheckData, version: '0.2.3' } })
 
-    const behindMinor = 'https://behindMinor.coliving.co'
+    const behindMinor = 'https://behindMinor.coliving.lol'
     nock(behindMinor)
       .get('/health_check/verbose')
       .reply(200, { data: { ...defaultHealthCheckData, version: '1.0.3' } })
 
-    const behindPatch = 'https://behindPatch.coliving.co'
+    const behindPatch = 'https://behindPatch.coliving.lol'
     nock(behindPatch)
       .get('/health_check/verbose')
       .reply(200, { data: { ...defaultHealthCheckData, version: '1.2.0' } })
@@ -195,19 +195,19 @@ describe('test CreatorNodeSelection', () => {
   })
 
   it('return nothing if no services are healthy', async () => {
-    const unhealthy1 = 'https://unhealthy1.coliving.co'
+    const unhealthy1 = 'https://unhealthy1.coliving.lol'
     nock(unhealthy1).get('/health_check/verbose').reply(500, {})
 
-    const unhealthy2 = 'https://unhealthy2.coliving.co'
+    const unhealthy2 = 'https://unhealthy2.coliving.lol'
     nock(unhealthy2).get('/health_check/verbose').delay(100).reply(500, {})
 
-    const unhealthy3 = 'https://unhealthy3.coliving.co'
+    const unhealthy3 = 'https://unhealthy3.coliving.lol'
     nock(unhealthy3).get('/health_check/verbose').delay(200).reply(500, {})
 
-    const unhealthy4 = 'https://unhealthy4.coliving.co'
+    const unhealthy4 = 'https://unhealthy4.coliving.lol'
     nock(unhealthy4).get('/health_check/verbose').delay(300).reply(500, {})
 
-    const unhealthy5 = 'https://unhealthy5.coliving.co'
+    const unhealthy5 = 'https://unhealthy5.coliving.lol'
     nock(unhealthy5).get('/health_check/verbose').delay(400).reply(500, {})
 
     const cns = new CreatorNodeSelection({
@@ -233,31 +233,31 @@ describe('test CreatorNodeSelection', () => {
 
   it('selects the only healthy service among the services of different statuses', async () => {
     // the cream of the crop -- up to date version, slow. you want this
-    const shouldBePrimary = 'https://shouldBePrimary.coliving.co'
+    const shouldBePrimary = 'https://shouldBePrimary.coliving.lol'
     nock(shouldBePrimary)
       .get('/health_check/verbose')
       .delay(200)
       .reply(200, { data: defaultHealthCheckData })
 
     // cold, overnight pizza -- behind by minor version, fast. nope
-    const unhealthy2 = 'https://unhealthy2.coliving.co'
+    const unhealthy2 = 'https://unhealthy2.coliving.lol'
     nock(unhealthy2)
       .get('/health_check/verbose')
       .reply(200, { data: { ...defaultHealthCheckData, version: '1.0.3' } })
 
     // stale chips from 2 weeks ago -- behind by major version, kinda slow. still nope
-    const unhealthy3 = 'https://unhealthy3.coliving.co'
+    const unhealthy3 = 'https://unhealthy3.coliving.lol'
     nock(unhealthy3)
       .get('/health_check/verbose')
       .delay(100)
       .reply(200, { data: { ...defaultHealthCheckData, version: '0.2.3' } })
 
     // moldy canned beans -- not available/up at all. for sure nope
-    const unhealthy1 = 'https://unhealthy1.coliving.co'
+    const unhealthy1 = 'https://unhealthy1.coliving.lol'
     nock(unhealthy1).get('/health_check/verbose').reply(500, {})
 
     // your house mate's leftovers from her team outing -- behind by patch, kinda slow. solid
-    const shouldBeSecondary = 'https://secondary.coliving.co'
+    const shouldBeSecondary = 'https://secondary.coliving.lol'
     nock(shouldBeSecondary)
       .get('/health_check/verbose')
       .delay(100)
@@ -305,7 +305,7 @@ describe('test CreatorNodeSelection', () => {
     const contentNodes = []
     const numNodes = 5
     for (let i = 0; i < numNodes; i++) {
-      const healthyUrl = `https://healthy${i}.coliving.co`
+      const healthyUrl = `https://healthy${i}.coliving.lol`
       nock(healthyUrl)
         .persist()
         .get('/health_check/verbose')
@@ -332,19 +332,19 @@ describe('test CreatorNodeSelection', () => {
   })
 
   it('selects 1 secondary if only 1 secondary is available', async () => {
-    const shouldBePrimary = 'https://shouldBePrimary.coliving.co'
+    const shouldBePrimary = 'https://shouldBePrimary.coliving.lol'
     nock(shouldBePrimary)
       .get('/health_check/verbose')
       .delay(200)
       .reply(200, { data: defaultHealthCheckData })
 
-    const shouldBeSecondary = 'https://secondary.coliving.co'
+    const shouldBeSecondary = 'https://secondary.coliving.lol'
     nock(shouldBeSecondary)
       .get('/health_check/verbose')
       .delay(100)
       .reply(200, { data: { ...defaultHealthCheckData, version: '1.2.0' } })
 
-    const unhealthy = 'https://unhealthy.coliving.co'
+    const unhealthy = 'https://unhealthy.coliving.lol'
     nock(unhealthy).get('/health_check/verbose').reply(500, {})
 
     const cns = new CreatorNodeSelection({
@@ -373,7 +373,7 @@ describe('test CreatorNodeSelection', () => {
   })
 
   it('filters out nodes if over 95% of storage is used', async () => {
-    const shouldBePrimary = 'https://primary.coliving.co'
+    const shouldBePrimary = 'https://primary.coliving.lol'
     nock(shouldBePrimary)
       .get('/health_check/verbose')
       .reply(200, {
@@ -384,7 +384,7 @@ describe('test CreatorNodeSelection', () => {
         }
       })
 
-    const shouldBeSecondary1 = 'https://secondary1.coliving.co'
+    const shouldBeSecondary1 = 'https://secondary1.coliving.lol'
     nock(shouldBeSecondary1)
       .get('/health_check/verbose')
       .reply(200, {
@@ -396,7 +396,7 @@ describe('test CreatorNodeSelection', () => {
         }
       })
 
-    const shouldBeSecondary2 = 'https://secondary2.coliving.co'
+    const shouldBeSecondary2 = 'https://secondary2.coliving.lol'
     nock(shouldBeSecondary2)
       .get('/health_check/verbose')
       .reply(200, {
@@ -408,7 +408,7 @@ describe('test CreatorNodeSelection', () => {
         }
       })
 
-    const used95PercentStorage = 'https://used95PercentStorage.coliving.co'
+    const used95PercentStorage = 'https://used95PercentStorage.coliving.lol'
     nock(used95PercentStorage)
       .get('/health_check/verbose')
       .reply(200, {
@@ -419,7 +419,7 @@ describe('test CreatorNodeSelection', () => {
         }
       })
 
-    const used99PercentStorage = 'https://used99PercentStorage.coliving.co'
+    const used99PercentStorage = 'https://used99PercentStorage.coliving.lol'
     nock(used99PercentStorage)
       .get('/health_check/verbose')
       .reply(200, {
@@ -469,7 +469,7 @@ describe('test CreatorNodeSelection', () => {
   })
 
   it('overrides with health check resp `maxStorageUsedPercent` even if it is passed into constructor', async () => {
-    const shouldBePrimary = 'https://primary.coliving.co'
+    const shouldBePrimary = 'https://primary.coliving.lol'
     nock(shouldBePrimary)
       .get('/health_check/verbose')
       .reply(200, {
@@ -480,7 +480,7 @@ describe('test CreatorNodeSelection', () => {
         }
       })
 
-    const shouldBeSecondary1 = 'https://secondary1.coliving.co'
+    const shouldBeSecondary1 = 'https://secondary1.coliving.lol'
     nock(shouldBeSecondary1)
       .get('/health_check/verbose')
       .reply(200, {
@@ -492,7 +492,7 @@ describe('test CreatorNodeSelection', () => {
         }
       })
 
-    const shouldBeSecondary2 = 'https://secondary2.coliving.co'
+    const shouldBeSecondary2 = 'https://secondary2.coliving.lol'
     nock(shouldBeSecondary2)
       .get('/health_check/verbose')
       .reply(200, {
@@ -504,7 +504,7 @@ describe('test CreatorNodeSelection', () => {
         }
       })
 
-    const used50PercentStorage = 'https://used95PercentStorage.coliving.co'
+    const used50PercentStorage = 'https://used95PercentStorage.coliving.lol'
     nock(used50PercentStorage)
       .get('/health_check/verbose')
       .reply(200, {
@@ -516,7 +516,7 @@ describe('test CreatorNodeSelection', () => {
         }
       })
 
-    const used70PercentStorage = 'https://used70PercentStorage.coliving.co'
+    const used70PercentStorage = 'https://used70PercentStorage.coliving.lol'
     nock(used70PercentStorage)
       .get('/health_check/verbose')
       .reply(200, {
@@ -576,7 +576,7 @@ describe('test CreatorNodeSelection', () => {
     }
     delete healthCheckResponseWithNoMaxStorageUsedPercent.maxStorageUsedPercent
 
-    const shouldBePrimary = 'https://primary.coliving.co'
+    const shouldBePrimary = 'https://primary.coliving.lol'
     nock(shouldBePrimary)
       .get('/health_check/verbose')
       .reply(200, {
@@ -587,7 +587,7 @@ describe('test CreatorNodeSelection', () => {
         }
       })
 
-    const shouldBeSecondary1 = 'https://secondary1.coliving.co'
+    const shouldBeSecondary1 = 'https://secondary1.coliving.lol'
     nock(shouldBeSecondary1)
       .get('/health_check/verbose')
       .reply(200, {
@@ -599,7 +599,7 @@ describe('test CreatorNodeSelection', () => {
         }
       })
 
-    const shouldBeSecondary2 = 'https://secondary2.coliving.co'
+    const shouldBeSecondary2 = 'https://secondary2.coliving.lol'
     nock(shouldBeSecondary2)
       .get('/health_check/verbose')
       .reply(200, {
@@ -611,7 +611,7 @@ describe('test CreatorNodeSelection', () => {
         }
       })
 
-    const used50PercentStorage = 'https://used95PercentStorage.coliving.co'
+    const used50PercentStorage = 'https://used95PercentStorage.coliving.lol'
     nock(used50PercentStorage)
       .get('/health_check/verbose')
       .reply(200, {
@@ -622,7 +622,7 @@ describe('test CreatorNodeSelection', () => {
         }
       })
 
-    const used70PercentStorage = 'https://used70PercentStorage.coliving.co'
+    const used70PercentStorage = 'https://used70PercentStorage.coliving.lol'
     nock(used70PercentStorage)
       .get('/health_check/verbose')
       .reply(200, {
@@ -681,12 +681,12 @@ describe('test CreatorNodeSelection', () => {
     healthCheckDataWithNoStorageInfo.storagePathUsed = null
 
     const shouldBePrimary =
-      'https://missingStoragePathUsedAndStoragePathSize.coliving.co'
+      'https://missingStoragePathUsedAndStoragePathSize.coliving.lol'
     nock(shouldBePrimary)
       .get('/health_check/verbose')
       .reply(200, { data: healthCheckDataWithNoStorageInfo })
 
-    const shouldBeSecondary1 = 'https://missingStoragePathUsed.coliving.co'
+    const shouldBeSecondary1 = 'https://missingStoragePathUsed.coliving.lol'
     nock(shouldBeSecondary1)
       .get('/health_check/verbose')
       .reply(200, {
@@ -697,7 +697,7 @@ describe('test CreatorNodeSelection', () => {
         }
       })
 
-    const shouldBeSecondary2 = 'https://missingStoragePathSize.coliving.co'
+    const shouldBeSecondary2 = 'https://missingStoragePathSize.coliving.lol'
     nock(shouldBeSecondary2)
       .get('/health_check/verbose')
       .reply(200, {
@@ -744,13 +744,13 @@ describe('test CreatorNodeSelection', () => {
     // different
     const primaries: string[] = []
     for (let i = 0; i < 20; ++i) {
-      const one = 'https://one.coliving.co'
+      const one = 'https://one.coliving.lol'
       nock(one)
         .get('/health_check/verbose')
         .delay(100)
         .reply(200, { data: defaultHealthCheckData })
 
-      const two = 'https://two.coliving.co'
+      const two = 'https://two.coliving.lol'
       nock(two)
         .get('/health_check/verbose')
         .delay(200)
@@ -776,18 +776,18 @@ describe('test CreatorNodeSelection', () => {
 
   describe('Test preferHigherPatchForPrimary and preferHigherPatchForSecondaries', () => {
     it('Selects highest version nodes when preferHigherPatchForPrimary and preferHigherPatchForSecondaries are enabled', async () => {
-      const aheadPatch = 'https://aheadPatch.coliving.co'
+      const aheadPatch = 'https://aheadPatch.coliving.lol'
       nock(aheadPatch)
         .get('/health_check/verbose')
         .reply(200, { data: { ...defaultHealthCheckData, version: '1.2.6' } })
 
-      const aheadPatchButSlow = 'https://aheadPatchButSlow.coliving.co'
+      const aheadPatchButSlow = 'https://aheadPatchButSlow.coliving.lol'
       nock(aheadPatchButSlow)
         .get('/health_check/verbose')
         .delay(100)
         .reply(200, { data: { ...defaultHealthCheckData, version: '1.2.6' } })
 
-      const healthy = 'https://healthy.coliving.co'
+      const healthy = 'https://healthy.coliving.lol'
       nock(healthy)
         .get('/health_check/verbose')
         .reply(200, { data: defaultHealthCheckData })
@@ -820,23 +820,23 @@ describe('test CreatorNodeSelection', () => {
     })
 
     it('Selects highest version node for primary with preferHigherPatchForPrimary enabled and fastest node for secondaries with preferHigherPatchForSecondaries disabled', async () => {
-      const aheadPatch = 'https://aheadPatch.coliving.co'
+      const aheadPatch = 'https://aheadPatch.coliving.lol'
       nock(aheadPatch)
         .get('/health_check/verbose')
         .reply(200, { data: { ...defaultHealthCheckData, version: '1.2.6' } })
 
-      const aheadPatchButSlow = 'https://aheadPatchButSlow.coliving.co'
+      const aheadPatchButSlow = 'https://aheadPatchButSlow.coliving.lol'
       nock(aheadPatchButSlow)
         .get('/health_check/verbose')
         .delay(100)
         .reply(200, { data: { ...defaultHealthCheckData, version: '1.2.6' } })
 
-      const healthyButBehindPatch = 'https://healthyButBehindPatch.coliving.co'
+      const healthyButBehindPatch = 'https://healthyButBehindPatch.coliving.lol'
       nock(healthyButBehindPatch)
         .get('/health_check/verbose')
         .reply(200, { data: { ...defaultHealthCheckData, version: '1.2.0' } })
 
-      const healthy = 'https://healthy.coliving.co'
+      const healthy = 'https://healthy.coliving.lol'
       nock(healthy)
         .get('/health_check/verbose')
         .reply(200, { data: { ...defaultHealthCheckData, version: '1.2.3' } })
@@ -875,24 +875,24 @@ describe('test CreatorNodeSelection', () => {
     })
 
     it('Selects fastest node for primary with preferHigherPatchForPrimary disabled and highest version nodes for secondaries with preferHigherPatchForSecondaries enabled', async () => {
-      const higherPatchAndSlow = 'https://higherPatchAndSlow.coliving.co'
+      const higherPatchAndSlow = 'https://higherPatchAndSlow.coliving.lol'
       nock(higherPatchAndSlow)
         .get('/health_check/verbose')
         .delay(50)
         .reply(200, { data: { ...defaultHealthCheckData, version: '1.2.4' } })
 
-      const highestPatchAndSlowest = 'https://highestPatchAndSlowest.coliving.co'
+      const highestPatchAndSlowest = 'https://highestPatchAndSlowest.coliving.lol'
       nock(highestPatchAndSlowest)
         .get('/health_check/verbose')
         .delay(100)
         .reply(200, { data: { ...defaultHealthCheckData, version: '1.2.5' } })
 
-      const healthyAndBehindPatch = 'https://healthyAndBehindPatch.coliving.co'
+      const healthyAndBehindPatch = 'https://healthyAndBehindPatch.coliving.lol'
       nock(healthyAndBehindPatch)
         .get('/health_check/verbose')
         .reply(200, { data: { ...defaultHealthCheckData, version: '1.2.2' } })
 
-      const healthy = 'https://healthy.coliving.co'
+      const healthy = 'https://healthy.coliving.lol'
       nock(healthy)
         .get('/health_check/verbose')
         .reply(200, { data: { ...defaultHealthCheckData, version: '1.2.3' } })
@@ -936,24 +936,24 @@ describe('test CreatorNodeSelection', () => {
     })
 
     it('Selects fastest nodes when preferHigherPatchForPrimary and preferHigherPatchForSecondaries are disabled', async () => {
-      const higherPatchAndSlow = 'https://higherPatchAndSlow.coliving.co'
+      const higherPatchAndSlow = 'https://higherPatchAndSlow.coliving.lol'
       nock(higherPatchAndSlow)
         .get('/health_check/verbose')
         .delay(50)
         .reply(200, { data: { ...defaultHealthCheckData, version: '1.2.4' } })
 
-      const highestPatchAndSlowest = 'https://highestPatchAndSlowest.coliving.co'
+      const highestPatchAndSlowest = 'https://highestPatchAndSlowest.coliving.lol'
       nock(highestPatchAndSlowest)
         .get('/health_check/verbose')
         .delay(100)
         .reply(200, { data: { ...defaultHealthCheckData, version: '1.2.5' } })
 
-      const healthyAndBehindPatch = 'https://healthyAndBehindPatch.coliving.co'
+      const healthyAndBehindPatch = 'https://healthyAndBehindPatch.coliving.lol'
       nock(healthyAndBehindPatch)
         .get('/health_check/verbose')
         .reply(200, { data: { ...defaultHealthCheckData, version: '1.2.2' } })
 
-      const healthy = 'https://healthy.coliving.co'
+      const healthy = 'https://healthy.coliving.lol'
       nock(healthy)
         .get('/health_check/verbose')
         .reply(200, { data: { ...defaultHealthCheckData, version: '1.2.3' } })

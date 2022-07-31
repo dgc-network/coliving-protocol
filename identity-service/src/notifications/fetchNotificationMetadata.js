@@ -9,10 +9,10 @@ const { formatEmailNotificationProps } = require('./formatNotificationMetadata')
 const config = require('../config.js')
 const { logger } = require('../logging')
 
-const USER_NODE_IPFS_GATEWAY = config.get('environment').includes('staging') ? 'https://usermetadata.staging.coliving.co/ipfs/' : 'https://usermetadata.coliving.co/ipfs/'
+const USER_NODE_IPFS_GATEWAY = config.get('environment').includes('staging') ? 'https://usermetadata.staging.coliving.lol/ipfs/' : 'https://usermetadata.coliving.lol/ipfs/'
 
-const DEFAULT_IMAGE_URL = 'https://download.coliving.co/static-resources/email/imageProfilePicEmpty.png'
-const DEFAULT_TRACK_IMAGE_URL = 'https://download.coliving.co/static-resources/email/imageTrackEmpty.jpg'
+const DEFAULT_IMAGE_URL = 'https://download.coliving.lol/static-resources/email/imageProfilePicEmpty.png'
+const DEFAULT_TRACK_IMAGE_URL = 'https://download.coliving.lol/static-resources/email/imageTrackEmpty.jpg'
 
 // The number of users to fetch / display per notification (The displayed number of users)
 const USER_FETCH_LIMIT = 10

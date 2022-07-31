@@ -165,7 +165,7 @@ export class File extends Base {
    * Checks if a CID exists on a Content Node.
    * @param cid IPFS content identifier
    * @param creatorNodeGateways Content Node gateways to fetch content from
-   * Eg. creatorNodeGateways = ["https://creatornode.coliving.co/ipfs/", "https://creatornode2.coliving.co/ipfs/"]
+   * Eg. creatorNodeGateways = ["https://creatornode.coliving.lol/ipfs/", "https://creatornode2.coliving.lol/ipfs/"]
    */
   async checkIfCidAvailable(cid: string, creatorNodeGateways: string[]) {
     const exists: Record<string, unknown> = {}

@@ -11,7 +11,7 @@ import {
   updateAdmin,
 } from "../lib/lib";
 import { findDerivedPair, convertBNToSpIdSeed } from "../lib/utils";
-import { AudiusData } from "../target/types/audius_data";
+import { AudiusData } from "../target/types/coliving_data";
 import {
   createSolanaContentNode,
   createSolanaUser,

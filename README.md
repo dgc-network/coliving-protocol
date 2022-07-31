@@ -1,6 +1,6 @@
 <p align="center">
   <br/>
-  <a target="_blank" href="https://coliving.co">
+  <a target="_blank" href="https://coliving.lol">
     <img src="https://avatars1.githubusercontent.com/u/38231615?s=400&u=c00678880596dabd2746dae13a47edbe7ea7210e&v=4" width="150px" >
   </a>
   <br/>
@@ -104,7 +104,7 @@ our team [on Discord](https://discord.com/invite/yNUg2e2) or via other channels 
 
 ## Security
 
-Please report security issues to `security@coliving.co` with a description of the
+Please report security issues to `security@coliving.lol` with a description of the
 vulnerability and any steps to reproduce. Details on our bug bounty program are available at [coliving.org/security](https://coliving.org/security)
 
 ## License

@@ -1,4 +1,4 @@
-use audius_eth_registry::{
+use coliving_eth_registry::{
     instruction::{
         clear_valid_signer,
         init_signer_group,
@@ -84,10 +84,10 @@ fn command_create_signer_group(config: &Config, signer_group: Box<dyn Signer>) -
                 &signer_group.pubkey(),
                 signer_group_account_balance,
                 SignerGroup::LEN as u64,
-                &audius_eth_registry::id(),
+                &coliving_eth_registry::id(),
             ),
             init_signer_group(
-                &audius_eth_registry::id(),
+                &coliving_eth_registry::id(),
                 &signer_group.pubkey(),
                 &config.owner.pubkey(),
             )
@@ -114,11 +114,11 @@ fn command_query_eth_registry(
 ) -> CommandResult {
     println!(
         "Querying program details at {}",
-        &audius_eth_registry::id()
+        &coliving_eth_registry::id()
     );
 
     // Query all accounts owned by this program
-    let owned_accounts = config.rpc_client.get_program_accounts(&audius_eth_registry::id())?;
+    let owned_accounts = config.rpc_client.get_program_accounts(&coliving_eth_registry::id())?;
     for (address, account) in owned_accounts{
 
         // Attempt tor ecover data
@@ -179,7 +179,7 @@ fn command_disable_signer_group_owner(
 ) -> CommandResult {
     let mut transaction = Transaction::new_with_payer(
         &[disable_signer_group_owner(
-            &audius_eth_registry::id(),
+            &coliving_eth_registry::id(),
             signer_group,
             &config.owner.pubkey(),
         )
@@ -224,10 +224,10 @@ fn command_create_valid_signer(
                 &valid_signer.pubkey(),
                 valid_signer_account_balance,
                 ValidSigner::LEN as u64,
-                &audius_eth_registry::id(),
+                &coliving_eth_registry::id(),
             ),
             init_valid_signer(
-                &audius_eth_registry::id(),
+                &coliving_eth_registry::id(),
                 &valid_signer.pubkey(),
                 signer_group,
                 &config.owner.pubkey(),
@@ -262,7 +262,7 @@ fn command_clear_valid_signer(config: &Config, valid_signer: &Pubkey) -> Command
 
     let mut transaction = Transaction::new_with_payer(
         &[clear_valid_signer(
-            &audius_eth_registry::id(),
+            &coliving_eth_registry::id(),
             valid_signer,
             &valid_signer_data.signer_group,
             &config.owner.pubkey(),
@@ -320,7 +320,7 @@ fn command_send_message(
         &[
             secp256_program_instruction,
             validate_signature(
-                &audius_eth_registry::id(),
+                &coliving_eth_registry::id(),
                 valid_signer,
                 &valid_signer_data.signer_group,
                 signature_data,
