@@ -15,7 +15,7 @@ const {
  * @returns number The content node id
  */
 const getIDfromEndpoint = (endpoint) => {
-  const val = endpoint.match(/http:\/\/cn(\d+)_network-node_1:\d+$/i)
+  const val = endpoint.match(/http:\/\/cn(\d+)_content-node_1:\d+$/i)
   return val[1]
 }
 

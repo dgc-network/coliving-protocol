@@ -16,13 +16,13 @@ const { getClaimInfo, fundNewClaim } = require('./helpers/claim')
 const { getEthContractAccounts } = require('./helpers/utils')
 
 // Directories within the -protocol repository used for development
-const serviceDirectoryList = ['discovery-node', 'network-node']
+const serviceDirectoryList = ['discovery-node', 'content-node']
 const discProvEndpoint1 = 'http://dn1_web-server_1:5000'
 const discProvEndpoint2 = 'http://dn2_web-server_1:5001'
-const creatorNodeEndpoint1 = 'http://cn1_network-node_1:4000'
-const creatorNodeEndpoint2 = 'http://cn2_network-node_1:4001'
-const creatorNodeEndpoint3 = 'http://cn3_network-node_1:4002'
-const creatorNodeEndpoint4 = 'http://cn4_network-node_1:4003'
+const creatorNodeEndpoint1 = 'http://cn1_content-node_1:4000'
+const creatorNodeEndpoint2 = 'http://cn2_content-node_1:4001'
+const creatorNodeEndpoint3 = 'http://cn3_content-node_1:4002'
+const creatorNodeEndpoint4 = 'http://cn4_content-node_1:4003'
 const amountOfAuds = 2000000
 
 const contentNodeType = 'content-node'
@@ -189,7 +189,7 @@ const run = async () => {
         // Update arbitrary cnode
         const serviceCount = args[3]
         if (serviceCount === undefined) throw new Error('update-delegate-wallet requires a service # as the second arg')
-        const workspace = '../network-node/compose/env'
+        const workspace = '../content-node/compose/env'
         const { envPath, templatePath, writePath } = await getEnvConfigPathsForContentNode({ workspace, serviceCount })
         // Local dev, delegate and owner wallet are equal
         const ownerWallet = ethAccounts[parseInt(serviceCount)]
@@ -472,7 +472,7 @@ const _registerDiscProv = async (ethAccounts, serviceNumber) => {
   await registerLocalService(colivingLibs, discoveryNodeType, endpoint, amountOfAuds)
 }
 
-const makeCreatorNodeEndpoint = (serviceNumber) => `http://cn${serviceNumber}_network-node_1:${4000 + parseInt(serviceNumber) - 1}`
+const makeCreatorNodeEndpoint = (serviceNumber) => `http://cn${serviceNumber}_content-node_1:${4000 + parseInt(serviceNumber) - 1}`
 
 // Templated cnode to allow for dynamic number of services
 const _registerCnode = async (ethAccounts, serviceNumber) => {

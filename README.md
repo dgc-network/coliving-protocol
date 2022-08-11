@@ -20,7 +20,7 @@ Coliving is a decentralized, community-owned music-sharing protocol
 This repository encompasses all of the services, contracts, and client-side libraries that
 comprise the Coliving protocol.
 
-For further details on operating an Coliving service, getting started with the Token and the API, see [docs.coliving.org](https://docs.coliving.org/).
+For further details on operating an Coliving service, getting started with the Token and the API, see [docs.coliving.lol](https://docs.coliving.lol/).
 
 ## Overview
 
@@ -30,7 +30,7 @@ These off-chain services are run by community members via the Coliving staking s
 
 | Service                                                        | Description                                                                                       
 | -- | --
-| [`network-node`](network-node)                  | Maintains the availability of users' content via the Coliving Storage Protocol, including user metadata, images, and audio content. Also known as Content Node.
+| [`content-node`](content-node)                  | Maintains the availability of users' content via the Coliving Storage Protocol, including user metadata, images, and audio content. Also known as Content Node.
 | [`discovery-node`](discovery-node)      | Indexes and stores the contents of the coliving contracts on the Ethereum & Solana blockchains for clients to query via an API. Also known as Discovery Node.
 | [`identity-service`](identity-service)          | Stores encrypted auth ciphertexts and handles oauth artifacts
 
@@ -105,7 +105,7 @@ our team [on Discord](https://discord.com/invite/yNUg2e2) or via other channels 
 ## Security
 
 Please report security issues to `security@coliving.lol` with a description of the
-vulnerability and any steps to reproduce. Details on our bug bounty program are available at [coliving.org/security](https://coliving.org/security)
+vulnerability and any steps to reproduce. Details on our bug bounty program are available at [coliving.lol/security](https://coliving.lol/security)
 
 ## License
 

@@ -4,7 +4,7 @@ set -xe
 
 ITERATION=${1}
 
-cd ${PROTOCOL_DIR}/network-node
+cd ${PROTOCOL_DIR}/content-node
 
 if [[ "$RESTART" == true ]]; then
     . compose/env/unsetShellEnv.sh

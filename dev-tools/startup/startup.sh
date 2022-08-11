@@ -2,7 +2,7 @@
 
 # NOTE: This scirpt is ment to be used from within docker containers
 
-name=$(nslookup $(hostname -i) | grep -o "\(network-node\|discovery-node\|identity-service\)-[0-9]\+")
+name=$(nslookup $(hostname -i) | grep -o "\(content-node\|discovery-node\|identity-service\)-[0-9]\+")
 replica=$(echo $name | grep -o "[0-9]\+")
 
 if [[ -f "/tmp/dev-tools/startup/${name%-*}.sh" ]]; then

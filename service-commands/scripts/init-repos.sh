@@ -33,7 +33,7 @@ npm install
 # 'pip install' is performed through Docker for development
 # TODO: Revisit whether this is optimal after hot reloading for disc prov
 
-cd $PROTOCOL_DIR/network-node
+cd $PROTOCOL_DIR/content-node
 npm install
 
 cd $PROTOCOL_DIR/solana-programs/anchor/coliving-data
@@ -73,7 +73,7 @@ npm link @coliving/service-commands
 cd $PROTOCOL_DIR/service-commands
 npm link @coliving/sdk
 
-cd $PROTOCOL_DIR/network-node
+cd $PROTOCOL_DIR/content-node
 npm link @coliving/sdk
 
 cd $PROTOCOL_DIR/identity-service

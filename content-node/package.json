@@ -1,5 +1,5 @@
 {
-  "name": "network-node",
+  "name": "content-node",
   "description": "",
   "main": "src/index.js",
   "scripts": {

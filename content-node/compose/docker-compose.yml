@@ -1,6 +1,6 @@
 version: '3'
 services:
-  network-node-db:
+  content-node-db:
     image: postgres:11.1
     environment:
       POSTGRES_USER: postgres
@@ -11,15 +11,15 @@ services:
       - '${CREATOR_NODE_DB_HOST_PORT}:5432'
     networks:
       - coliving_dev
-  network-node:
+  content-node:
     build: ../.
     depends_on:
-      - network-node-db
-      - network-node-redis
+      - content-node-db
+      - content-node-redis
     environment:
-      - redisHost=${COMPOSE_PROJECT_NAME}_network-node-redis_1
-      - dbUrl=postgres://postgres:postgres@${COMPOSE_PROJECT_NAME}_network-node-db_1:5432/coliving_creator_node
-      - WAIT_HOSTS=${COMPOSE_PROJECT_NAME}_network-node-db_1:5432, ${COMPOSE_PROJECT_NAME}_network-node-redis_1:6379
+      - redisHost=${COMPOSE_PROJECT_NAME}_content-node-redis_1
+      - dbUrl=postgres://postgres:postgres@${COMPOSE_PROJECT_NAME}_content-node-db_1:5432/coliving_creator_node
+      - WAIT_HOSTS=${COMPOSE_PROJECT_NAME}_content-node-db_1:5432, ${COMPOSE_PROJECT_NAME}_content-node-redis_1:6379
       - port=${CREATOR_NODE_HOST_PORT}
       - debuggerPort=${CREATOR_NODE_DEBUGGER_PORT}
       - spOwnerWalletIndex=${SP_OWNER_WALLET_INDEX}
@@ -47,7 +47,7 @@ services:
       - ../../solana-programs:/usr/src/solana-programs
     networks:
       - coliving_dev
-  network-node-redis:
+  content-node-redis:
     image: redis:5.0.4
     ports:
       - '${CREATOR_NODE_REDIS_HOST_PORT}:6379'

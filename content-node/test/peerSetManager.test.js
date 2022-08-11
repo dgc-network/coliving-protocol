@@ -22,7 +22,7 @@ describe('test peerSetManager -- determinePeerHealth', () => {
     healthy: true,
     git: '',
     selectedDiscoveryProvider: 'http://coliving-disc-prov_web-server_1:5000',
-    creatorNodeEndpoint: 'http://cn1_network-node_1:4000',
+    creatorNodeEndpoint: 'http://cn1_content-node_1:4000',
     spID: 1,
     spOwnerWallet: '0xf7316fe994bb92556dcfd998038618ce1227aeea',
     sRegisteredOnURSM: true,

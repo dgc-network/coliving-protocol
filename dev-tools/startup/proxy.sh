@@ -18,9 +18,9 @@ while sleep 1; do
     fi
   done
 
-  for ip in $(dig +short network-node); do
+  for ip in $(dig +short content-node); do
     if [ ! -e "$ip" ]; then
-      name=$(nslookup $ip | grep -o "network-node-[0-9]\+")
+      name=$(nslookup $ip | grep -o "content-node-[0-9]\+")
       replica=$(echo $name | grep -o "[0-9]\+")
       nc -v -lk -p $((4000 + $replica - 1)) -e nc $ip 4000 &
       touch $ip

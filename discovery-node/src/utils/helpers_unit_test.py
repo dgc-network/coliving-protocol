@@ -60,5 +60,5 @@ def test_create_track_slug_trailing_spaces():
 def test_is_fqdn_url():
     assert is_fqdn("https://validurl1.domain.com") == True
     assert is_fqdn("http://validurl2.subdomain.domain.com") == True
-    assert is_fqdn("http://cn2_network-node_1:4001") == True
+    assert is_fqdn("http://cn2_content-node_1:4001") == True
     assert is_fqdn("http://www.example.$com\and%26here.html") == False

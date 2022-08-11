@@ -109,7 +109,7 @@ rm -rf /var/k8s/*
 
 ## 4. Configuration du service
 
-Voir ci-dessous un guide de déploiement du [Creator Node](https://github.com/dgc.network/-k8s-manifests#network-node-1) et [Discovery Provider](https://github.com/dgc.network/-k8s-manifests#discovery-node-1) via `-cli`. Après avoir terminé la configuration du service, veuillez continuer avec la section Logger.
+Voir ci-dessous un guide de déploiement du [Creator Node](https://github.com/dgc.network/-k8s-manifests#content-node-1) et [Discovery Provider](https://github.com/dgc.network/-k8s-manifests#discovery-node-1) via `-cli`. Après avoir terminé la configuration du service, veuillez continuer avec la section Logger.
 
 **Remarque** "Creator Node" et "Discovery Provider" ont récemment été renommés respectivement par "Content Node" et "Discovery Node". Cependant, pour des raisons de cohérence dans le code et dans ce README, nous continuerons à utiliser les termes "Creator Node" et "Discovery Node".
 
@@ -134,19 +134,19 @@ Certaines variables doivent être définies, vous pouvez le faire avec les comma
 
 
 ```text
--cli set-config network-node backend
+-cli set-config content-node backend
 key   : spOwnerWallet
 value : <address of wallet that contains  tokens>
 
--cli set-config network-node backend
+-cli set-config content-node backend
 key   : delegateOwnerWallet
 value : <address of wallet that contains no tokens but that is registered on chain>
 
--cli set-config network-node backend
+-cli set-config content-node backend
 key   : delegatePrivateKey
 value : <private key>
 
--cli set-config network-node backend
+-cli set-config content-node backend
 key   : creatorNodeEndpoint
 value : <your service url>
 ```
@@ -159,7 +159,7 @@ Ensuite, exécutez la commande de lancement via `-cli`
 
 
 ```text
--cli launch network-node --configure-ipfs
+-cli launch content-node --configure-ipfs
 ```
 
 
@@ -168,7 +168,7 @@ Vérifiez que le service est correct en l'exécutant,
 
 
 ```text
--cli health-check network-node
+-cli health-check content-node
 ```
 
 
@@ -192,7 +192,7 @@ Vérifiez que le service est correct en l'exécutant,
 
 
 ```text
--cli health-check network-node
+-cli health-check content-node
 ```
 
 
@@ -207,14 +207,14 @@ git stash apply
 ```
 
 
-Assurez-vous que vos configurations sont présentes dans `/network-node/network-node-cm.yaml`, puis faites ce qui suit,
+Assurez-vous que vos configurations sont présentes dans `/content-node/content-node-cm.yaml`, puis faites ce qui suit,
 
 
 
 ```text
-k apply -f /network-node/network-node-cm.yaml
-k apply -f /network-node/network-node-deploy-ipfs.yaml
-k apply -f /network-node/network-node-deploy-backend.yaml
+k apply -f /content-node/content-node-cm.yaml
+k apply -f /content-node/content-node-deploy-ipfs.yaml
+k apply -f /content-node/content-node-deploy-backend.yaml
 ```
 
 
@@ -332,7 +332,7 @@ git stash apply
 ```
 
 
-Assurez-vous que vos configurations sont présentes dans `/network-node/discovery-node-cm.yaml`, puis faites ce qui suit,
+Assurez-vous que vos configurations sont présentes dans `/content-node/discovery-node-cm.yaml`, puis faites ce qui suit,
 
 
 
@@ -474,7 +474,7 @@ Pour plus d'informations sur `sp-actions/` voir README dans le dossier [sp-actio
 
 ```text
 ➜ pwd
-/Coliving/-k8s-manifests/sp-utilities/network-node
+/Coliving/-k8s-manifests/sp-utilities/content-node
 
 # entering creatorNodeEndpoint and delegatePrivateKey sends those values as env vars to the script without having to export to your terminal
 ➜ creatorNodeEndpoint=https://creatornode.domain.co delegatePrivateKey=5e468bc1b395e2eb8f3c90ef897406087b0599d139f6ca0060ba85dcc0dce8dc node healthChecks.js

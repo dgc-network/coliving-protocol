@@ -74,7 +74,7 @@ rm -rf /var/k8s/*
 
 ## 4. Service Setup
 
-See below for a guide to deploying [Creator Node](https://github.com/dgc.network/-k8s-manifests#network-node-1) and [Discovery Provider](https://github.com/dgc.network/-k8s-manifests#discovery-node-1) via `-cli`. After you finish setting up the service, please continue with the Logger section.
+See below for a guide to deploying [Creator Node](https://github.com/dgc.network/-k8s-manifests#content-node-1) and [Discovery Provider](https://github.com/dgc.network/-k8s-manifests#discovery-node-1) via `-cli`. After you finish setting up the service, please continue with the Logger section.
 
 **Note:** "Creator Node" and "Discovery Provider" have recently been renamed to "Content Node" and "Discovery Node" respectively. However for consistency within the code and this README, we will continue to use the terms "Creator Node" and "Discovery Node".
 
@@ -93,19 +93,19 @@ Use `-cli` to update required variables. The full list of variables and explanat
 Some variables must be set, you can do this with the following commands:
 
 ```text
--cli set-config network-node backend
+-cli set-config content-node backend
 key   : spOwnerWallet
 value : <address of wallet that contains  tokens>
 
--cli set-config network-node backend
+-cli set-config content-node backend
 key   : delegateOwnerWallet
 value : <address of wallet that contains no tokens but that is registered on chain>
 
--cli set-config network-node backend
+-cli set-config content-node backend
 key   : delegatePrivateKey
 value : <private key>
 
--cli set-config network-node backend
+-cli set-config content-node backend
 key   : creatorNodeEndpoint
 value : <your service url>
 ```
@@ -115,13 +115,13 @@ value : <your service url>
 Then run the launch command via `-cli`
 
 ```text
--cli launch network-node --configure-ipfs
+-cli launch content-node --configure-ipfs
 ```
 
 Verify that the service is healthy by running,
 
 ```text
--cli health-check network-node
+-cli health-check content-node
 ```
 
 #### Upgrade
@@ -137,7 +137,7 @@ To upgrade your service using `-cli`, you will need to pull the latest manifest 
 Verify that the service is healthy by running,
 
 ```text
--cli health-check network-node
+-cli health-check content-node
 ```
 
 **Old Upgrade flow with kubectl:** To upgrade your service using `kubectl`, you will need to pull the latest `k8s-manifests` code. To do this, run the following,
@@ -148,12 +148,12 @@ git pull
 git stash apply
 ```
 
-Ensure that your configs are present in `/network-node/network-node-cm.yaml`, then do the following,
+Ensure that your configs are present in `/content-node/content-node-cm.yaml`, then do the following,
 
 ```text
-k apply -f /network-node/network-node-cm.yaml
-k apply -f /network-node/network-node-deploy-ipfs.yaml
-k apply -f /network-node/network-node-deploy-backend.yaml
+k apply -f /content-node/content-node-cm.yaml
+k apply -f /content-node/content-node-deploy-ipfs.yaml
+k apply -f /content-node/content-node-deploy-backend.yaml
 ```
 
 You can verify your upgrade with the `\health_check` endpoint.
@@ -346,7 +346,7 @@ For more information about `sp-actions/` see the README in the [sp-actions/ fold
 
 ```text
 ➜ pwd
-/Coliving/-k8s-manifests/sp-utilities/network-node
+/Coliving/-k8s-manifests/sp-utilities/content-node
 
 # entering creatorNodeEndpoint and delegatePrivateKey sends those values as env vars to the script without having to export to your terminal
 ➜ creatorNodeEndpoint=https://creatornode.domain.co delegatePrivateKey=5e468bc1b395e2eb8f3c90ef897406087b0599d139f6ca0060ba85dcc0dce8dc node healthChecks.js

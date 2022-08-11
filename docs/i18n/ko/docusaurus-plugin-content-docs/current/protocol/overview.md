@@ -33,7 +33,7 @@ For more details on the Coliving architecture, see the [Coliving protocol whitep
 
 | Service                                                                                             | Description                                                                                                        |
 | :-------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------- |
-| [`Content-Node`](https://github.com/dgc.network/-protocol/tree/master/network-node)         | Maintains the availability of users' content on IPFS including user metadata, images, and audio content            |
+| [`Content-Node`](https://github.com/dgc.network/-protocol/tree/master/content-node)         | Maintains the availability of users' content on IPFS including user metadata, images, and audio content            |
 | [`Discovery-Node`](https://github.com/dgc.network/-protocol/tree/master/discovery-node) | Indexes and stores the contents of the Coliving contracts on the Ethereum blockchain for clients to query via an API |
 | [`Identity-Service`](https://github.com/dgc.network/-protocol/tree/master/identity-service) | Stores encrypted auth ciphertexts, does Twitter OAuth and relays transactions (pays gas) on behalf of users        |
 

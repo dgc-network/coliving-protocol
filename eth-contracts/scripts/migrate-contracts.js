@@ -5,7 +5,7 @@ const os = require('os')
 const ColivingToken = artifacts.require('ColivingToken')
 
 const ColivingIdentityService = 'identity-service'
-const ColivingCreatorNode = 'network-node'
+const ColivingCreatorNode = 'content-node'
 const ColivingEthContracts = 'eth-contracts'
 const ColivingDiscoveryNode = 'discovery-node'
 

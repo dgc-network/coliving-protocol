@@ -6,7 +6,7 @@
       "docker container prune -f",
       "docker volume prune -f",
       "docker network prune -f",
-      "sudo rm -rf network-node/compose/env/tmp",
+      "sudo rm -rf content-node/compose/env/tmp",
       "sudo rm -rf discovery-node/compose/env/tmp",
       "sudo rm -rf solana-programs/claimable-tokens/cli/target",
       "sudo rm -rf solana-programs/cli/target",
@@ -45,7 +45,7 @@
     "up": [
       "docker run --name coliving_ganache_cli -d -p 8545:8545 --network=coliving_dev coliving/ganache:data-contracts-predeployed-a25931b955adce92676cec029661533f80013908",
       "docker cp coliving_ganache_cli:/app/contract-config.json $PROTOCOL_DIR/identity-service/contract-config.json",
-      "docker cp coliving_ganache_cli:/app/contract-config.json $PROTOCOL_DIR/network-node/contract-config.json",
+      "docker cp coliving_ganache_cli:/app/contract-config.json $PROTOCOL_DIR/content-node/contract-config.json",
       "docker cp coliving_ganache_cli:/app/contract-config.json ~/.coliving/contract-config.json",
       "docker cp coliving_ganache_cli:/app/contract-config.json ~/.coliving/config.json",
       "docker cp coliving_ganache_cli:/app/contract-config.json $PROTOCOL_DIR/libs/data-contracts/config.json",
@@ -84,7 +84,7 @@
       "docker run --name coliving_ganache_cli_eth_contracts -d -p 8546:8545 --network=coliving_dev coliving/ganache:eth-contracts-predeployed-4d4a2073fb18b071f7dcf01fdcc4b26001162f48",
       "docker cp coliving_ganache_cli_eth_contracts:/app/migration-output.json $PROTOCOL_DIR/eth-contracts/migrations/migration-output.json",
       "docker cp coliving_ganache_cli_eth_contracts:/app/eth-contract-config.json $PROTOCOL_DIR/identity-service/eth-contract-config.json",
-      "docker cp coliving_ganache_cli_eth_contracts:/app/eth-contract-config.json $PROTOCOL_DIR/network-node/eth-contract-config.json",
+      "docker cp coliving_ganache_cli_eth_contracts:/app/eth-contract-config.json $PROTOCOL_DIR/content-node/eth-contract-config.json",
       "docker cp coliving_ganache_cli_eth_contracts:/app/eth-contract-config.json $PROTOCOL_DIR/libs/eth-contracts/config.json",
       "docker cp coliving_ganache_cli_eth_contracts:/app/eth-contract-config.json ~/.coliving/eth-config.json",
       "docker cp coliving_ganache_cli_eth_contracts:/app/aao-config.json ~/.coliving/aao-config.json",
@@ -215,19 +215,19 @@
       "RESTART=true ${PROTOCOL_DIR}/discovery-node/scripts/up.sh #"
     ]
   },
-  "network-node": {
+  "content-node": {
     "protocol": "http",
     "host": "localhost",
     "port": 4000,
     "health_check_endpoint": "health_check",
     "up": [
-      "${PROTOCOL_DIR}/network-node/scripts/up.sh #"
+      "${PROTOCOL_DIR}/content-node/scripts/up.sh #"
     ],
     "down": [
-      "cd network-node; . compose/env/tmp/shellEnv#.sh; rm -rf compose/env/tmp/file-storage-#; docker-compose -f compose/docker-compose.yml down --remove-orphans"
+      "cd content-node; . compose/env/tmp/shellEnv#.sh; rm -rf compose/env/tmp/file-storage-#; docker-compose -f compose/docker-compose.yml down --remove-orphans"
     ],
     "restart": [
-      "RESTART=true ${PROTOCOL_DIR}/network-node/scripts/up.sh #"
+      "RESTART=true ${PROTOCOL_DIR}/content-node/scripts/up.sh #"
     ],
     "register": [
       "cd libs/; npm run init-local register-cnode #"
@@ -239,7 +239,7 @@
       "cd libs/; npm run init-local update-cnode-config #"
     ],
     "unset-shell-env": [
-      "cd network-node; . compose/env/unsetShellEnv.sh"
+      "cd content-node; . compose/env/unsetShellEnv.sh"
     ]
   },
   "identity-service": {

@@ -120,8 +120,8 @@ def get_update_creator_node_endpoint_event():
     update_creator_node_endpoint_event = AttrDict(
         {
             "_userId": 1,
-            "_creatorNodeEndpoint": "http://cn2_network-node_1:4001,http://cn1_network-node_1:4000,"
-            + "http://cn3_network-node_1:4002",
+            "_creatorNodeEndpoint": "http://cn2_content-node_1:4001,http://cn1_content-node_1:4000,"
+            + "http://cn3_content-node_1:4002",
         }
     )
     return event_type, AttrDict(

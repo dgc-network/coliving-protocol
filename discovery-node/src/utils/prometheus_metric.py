@@ -91,7 +91,7 @@ class PrometheusMetricNames:
     * `_total`, when accumulating a count, in addition to above suffixes if applicable
 
     See the following resources for related information:
-    * [Creator Node's docs](https://github.com/dgc.network/coliving-protocol/blob/master/network-node/src/services/prometheusMonitoring/README.md)
+    * [Creator Node's docs](https://github.com/dgc.network/coliving-protocol/blob/master/content-node/src/services/prometheusMonitoring/README.md)
     * [Official docs](https://prometheus.io/docs/practices/naming)
     """
 

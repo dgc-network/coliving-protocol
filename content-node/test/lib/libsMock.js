@@ -11,7 +11,7 @@ function getLibsMock() {
                 blockNumber: 163,
                 delegateOwnerWallet:
                   '0x1F9a71dEC0eCf3FC8E916a17458f173AC453ca33',
-                endpoint: 'http://cn1_network-node_1:4000',
+                endpoint: 'http://cn1_content-node_1:4000',
                 owner: '0x1F9a71dEC0eCf3FC8E916a17458f173AC453ca33',
                 spID: 1,
                 type: 'content-node'
@@ -20,7 +20,7 @@ function getLibsMock() {
                 blockNumber: 165,
                 delegateOwnerWallet:
                   '0xc0B03742234deFbAFaD16E1fAf5F8b069b1AeB7d',
-                endpoint: 'http://cn2_network-node_1:4001',
+                endpoint: 'http://cn2_content-node_1:4001',
                 owner: '0xc0B03742234deFbAFaD16E1fAf5F8b069b1AeB7d',
                 spID: 2,
                 type: 'content-node'
@@ -29,7 +29,7 @@ function getLibsMock() {
                 blockNumber: 167,
                 delegateOwnerWallet:
                   '0x242E1Cd7bB405941063814c241a1f046CCC9810b',
-                endpoint: 'http://cn3_network-node_1:4002',
+                endpoint: 'http://cn3_content-node_1:4002',
                 owner: '0x242E1Cd7bB405941063814c241a1f046CCC9810b',
                 spID: 3,
                 type: 'content-node'

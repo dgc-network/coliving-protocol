@@ -299,10 +299,10 @@ services:
     deploy:
       mode: replicated
 
-  # network-node
+  # content-node
 
-  network-node:
-    build: network-node
+  content-node:
+    build: content-node
     command: sh -c ". /tmp/dev-tools/startup/startup.sh && scripts/start.sh"
     env_file: .env # used by the startup script
     environment:
@@ -328,7 +328,7 @@ services:
       dataProviderUrl: "http://poa-ganache:8545"
       dataRegistryAddress: "${POA_REGISTRY_ADDRESS}"
     volumes:
-      - ./network-node/src:/usr/src/app/src
+      - ./content-node/src:/usr/src/app/src
       - coliving-libs:/usr/src/coliving-libs
       - ./dev-tools:/tmp/dev-tools
     depends_on:

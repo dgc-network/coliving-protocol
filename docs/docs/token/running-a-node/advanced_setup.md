@@ -11,19 +11,19 @@ sidebar_position: 4
 
 ```sh
 # to set individual environment variables
-# valid service-names are "network-node" or "discovery-node"
-coliving-cli set-config network-node
+# valid service-names are "content-node" or "discovery-node"
+coliving-cli set-config content-node
 coliving-cli set-config discovery-node
 
 # to set all the required environment variables for a service, use the --required flag
-coliving-cli set-config --required network-node
+coliving-cli set-config --required content-node
 coliving-cli set-config --required discovery-node
 ```
 
 #### Creator Node
-There are four required creator node environment variables, available in the creator node section [here](setup.md#network-node).
+There are four required creator node environment variables, available in the creator node section [here](setup.md#content-node).
 
-The full list of variables and explanations can be found [here](https://github.com/dgc.network/coliving-protocol/blob/master/network-node/src/config.js). Generally node operators will not need to modify any other environment variables.
+The full list of variables and explanations can be found [here](https://github.com/dgc.network/coliving-protocol/blob/master/content-node/src/config.js). Generally node operators will not need to modify any other environment variables.
 
 ##### External Creator Node Postgres
 If you set an external Postgres url during setup you can skip this section.
@@ -31,7 +31,7 @@ If you set an external Postgres url during setup you can skip this section.
 If you did not set an external Postgres url during setup and you want to add one now, replace the db url by running:
 
 ```sh
-coliving-cli set-config network-node
+coliving-cli set-config content-node
 key   : dbUrl
 value : <db url>
 ```
@@ -66,7 +66,7 @@ CREATE EXTENSION pg_trgm;
 
 ### Launch
 ```sh
-coliving-cli launch network-node
+coliving-cli launch content-node
 
 # or
 

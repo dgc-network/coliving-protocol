@@ -17,7 +17,7 @@ REPOS="
     libs
     contracts
     eth-contracts
-    network-node
+    content-node
     discovery-node
     e2e-tests
     identity-service

@@ -4,7 +4,7 @@ export CREATOR_NODE_DB_HOST_PORT=4499
 export CREATOR_NODE_REDIS_HOST_PORT=4399
 export CREATOR_NODE_IS_USER_METADATA=true
 
-export creatorNodeEndpoint=http://cn-um_network-node_1:4099
+export creatorNodeEndpoint=http://cn-um_content-node_1:4099
 
 # Dummy values to enable service startup
 export delegateOwnerWallet=0xbc5cec55f1aac494a59d2c4dbbd1503111e74dd2

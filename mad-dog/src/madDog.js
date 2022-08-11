@@ -12,7 +12,7 @@ const PACKET_LOSS_PERCENT = 20
 
 let didPause = false
 
-const makeCreatorNodeName = num => `cn${num}_network-node_1`
+const makeCreatorNodeName = num => `cn${num}_content-node_1`
 
 // For now, this only takes down a single node
 // per test.

@@ -135,8 +135,8 @@ const SetupCommand = Object.freeze({
  * Services enum.
  *
  * For now, these services just map to the existing
- * services in the service-commands.json (network-node-1, network-node-2, etc).
- * In the near future these will just be a base service (network-node),
+ * services in the service-commands.json (content-node-1, content-node-2, etc).
+ * In the near future these will just be a base service (content-node),
  * and some config (ports, etc)
  */
 const Service = Object.freeze({
@@ -156,7 +156,7 @@ const Service = Object.freeze({
   INIT_CONTRACTS_INFO: 'init-contracts-info',
   INIT_TOKEN_VERSIONS: 'init-token-versions',
   DISCOVERY_PROVIDER: 'discovery-node',
-  CREATOR_NODE: 'network-node',
+  CREATOR_NODE: 'content-node',
   IDENTITY_SERVICE: 'identity-service',
   DISTRIBUTE: 'distribute',
   ACCOUNT: 'account',
@@ -273,7 +273,7 @@ const runSetupCommand = async (
 }
 
 const getContentNodeContainerName = serviceNumber => {
-  return `cn${serviceNumber}_network-node_1`
+  return `cn${serviceNumber}_content-node_1`
 }
 
 const getServiceURL = (service, serviceNumber) => {

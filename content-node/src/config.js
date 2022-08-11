@@ -404,7 +404,7 @@ const config = convict({
     default: 500
   },
   identityService: {
-    doc: 'Identity service endpoint to record network-node driven plays against',
+    doc: 'Identity service endpoint to record content-node driven plays against',
     format: String,
     env: 'identityService',
     default: ''

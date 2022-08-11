@@ -74,7 +74,7 @@ rm -rf /var/k8s/*
 
 ## 4. Configuración de servicio
 
-Mira abajo una guía para desplegar [Nodo de creador](https://github.com/dgc.network/-k8s-manifests#network-node-1) y [Proveedor de descubrimiento](https://github.com/dgc.network/-k8s-manifests#discovery-node-1) a través de `-cli`. Después de terminar de configurar el servicio, por favor continúe con la sección de Logger.
+Mira abajo una guía para desplegar [Nodo de creador](https://github.com/dgc.network/-k8s-manifests#content-node-1) y [Proveedor de descubrimiento](https://github.com/dgc.network/-k8s-manifests#discovery-node-1) a través de `-cli`. Después de terminar de configurar el servicio, por favor continúe con la sección de Logger.
 
 **Nota:** "Nodo de creador" y "Proveedor de descubrimiento" recientemente han sido renombrados a "Nodo de contenido" y "Nodo de descubrimiento" respectivamente. Sin embargo, para la consistencia dentro del código y este README, continuaremos usando los términos "Nodo de creador" y "Nodo de descubrimiento".
 
@@ -93,19 +93,19 @@ Use `-cli` para actualizar las variables requeridas. La lista completa de variab
 Se deben establecer algunas variables, puedes hacer esto con los siguientes comandos:
 
 ```text
--cli set-config network-node backend
+-cli set-config content-node backend
 key   : spOwnerWallet
 value : <address of wallet that contains  tokens>
 
--cli set-config network-node backend
+-cli set-config content-node backend
 key   : delegateOwnerWallet
 value : <address of wallet that contains no tokens but that is registered on chain>
 
--cli set-config network-node backend
+-cli set-config content-node backend
 key   : delegatePrivateKey
 value : <private key>
 
--cli set-config network-node backend
+-cli set-config content-node backend
 key   : creatorNodeEndpoint
 value : <your service url>
 ```
@@ -115,13 +115,13 @@ value : <your service url>
 A continuación, ejecuta el comando de inicio a través de `-cli`
 
 ```text
--cli launch network-node --configure-ipfs
+-cli launch content-node --configure-ipfs
 ```
 
 Verifique que el servicio está en buen estado ejecutando,
 
 ```text
--cli health-check network-node
+-cli health-check content-node
 ```
 
 #### Actualizar
@@ -137,7 +137,7 @@ actualización -cli
 Verifique que el servicio está en buen estado ejecutando,
 
 ```text
--cli health-check network-node
+-cli health-check content-node
 ```
 
 **Flujo de Actualización anterior con kubectl:** Para actualizar su servicio usando `kubectl`, necesitarás extraer el último código `k8s-manifests`. Para hacer esto, ejecute lo siguiente,
@@ -148,12 +148,12 @@ git pull
 git stash apply
 ```
 
-Asegúrate de que tus configuraciones estén presentes en `/network-node/network-node-cm.yaml`, luego haz lo siguiente,
+Asegúrate de que tus configuraciones estén presentes en `/content-node/content-node-cm.yaml`, luego haz lo siguiente,
 
 ```text
-k aplicar -f /network-node/network-node-cm.yaml
-k aplicar -f /network-node/network-node-deploy-ipfs.yaml
-k aplicar -f /network-node/network-node-deploy-backend.yaml
+k aplicar -f /content-node/content-node-cm.yaml
+k aplicar -f /content-node/content-node-deploy-ipfs.yaml
+k aplicar -f /content-node/content-node-deploy-backend.yaml
 ```
 
 Puede verificar su actualización con el punto final `\health_check`.
@@ -238,7 +238,7 @@ git pull
 git stash apply
 ```
 
-Asegúrate de que tus configuraciones estén presentes en `/network-node/discovery-node-cm.yaml`, luego haz lo siguiente,
+Asegúrate de que tus configuraciones estén presentes en `/content-node/discovery-node-cm.yaml`, luego haz lo siguiente,
 
 ```text
 k aplicar -f /discovery-node/discovery-node-cm.yaml
@@ -346,7 +346,7 @@ Para más información sobre `sp-actions/` vea el README en la carpeta [sp-actio
 
 ```text
 ➜ pwd
-/Coliving/-k8s-manifests/sp-utilities/network-node
+/Coliving/-k8s-manifests/sp-utilities/content-node
 
 # entering creatorNodeEndpoint and delegatePrivateKey sends those values as env vars to the script without having to export to your terminal
 ➜ creatorNodeEndpoint=https://creatornode.domain.co delegatePrivateKey=5e468bc1b395e2eb8f3c90ef897406087b0599d139f6ca0060ba85dcc0dce8dc node healthChecks.js

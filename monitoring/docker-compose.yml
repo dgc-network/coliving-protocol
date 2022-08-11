@@ -60,7 +60,7 @@ services:
     ports:
       - "4010:9187"
     environment:
-      - DATA_SOURCE_NAME=postgresql://postgres:postgres@cn1_network-node-db_1:5432/postgres?sslmode=disable
+      - DATA_SOURCE_NAME=postgresql://postgres:postgres@cn1_content-node-db_1:5432/postgres?sslmode=disable
     restart: always
     networks:
       - coliving_dev
@@ -70,7 +70,7 @@ services:
     ports:
       - "4011:9187"
     environment:
-      - DATA_SOURCE_NAME=postgresql://postgres:postgres@cn2_network-node-db_1:5432/postgres?sslmode=disable
+      - DATA_SOURCE_NAME=postgresql://postgres:postgres@cn2_content-node-db_1:5432/postgres?sslmode=disable
     restart: always
     networks:
       - coliving_dev
@@ -80,7 +80,7 @@ services:
     ports:
       - "4012:9187"
     environment:
-      - DATA_SOURCE_NAME=postgresql://postgres:postgres@cn3_network-node-db_1:5432/postgres?sslmode=disable
+      - DATA_SOURCE_NAME=postgresql://postgres:postgres@cn3_content-node-db_1:5432/postgres?sslmode=disable
     restart: always
     networks:
       - coliving_dev
@@ -90,7 +90,7 @@ services:
     ports:
       - "4013:9187"
     environment:
-      - DATA_SOURCE_NAME=postgresql://postgres:postgres@cn4_network-node-db_1:5432/postgres?sslmode=disable
+      - DATA_SOURCE_NAME=postgresql://postgres:postgres@cn4_content-node-db_1:5432/postgres?sslmode=disable
     restart: always
     networks:
       - coliving_dev

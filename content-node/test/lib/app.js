@@ -71,8 +71,8 @@ function clearRequireCache() {
     // exclude src/models/index from the key deletion because it initalizes a new connection pool
     // every time and we hit a db error if we clear the cache and keep creating new pg pools
     if (
-      key.includes('network-node/src/') &&
-      !key.includes('network-node/src/models/index.js')
+      key.includes('content-node/src/') &&
+      !key.includes('content-node/src/models/index.js')
     ) {
       delete require.cache[key]
     }

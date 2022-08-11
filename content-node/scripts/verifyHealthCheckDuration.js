@@ -1,11 +1,10 @@
 /**
- * Verifies a file upload limited to configured delegateOwnerWallet.
+ * Verify sufficient connection duration limited to configured delegateOwnerWallet
  * Used to validate availability prior to joining the network
  *
- * Script usage: node verifyHealthCheckFileUpload.js
+ * Script usage: node verifyHealthCheckDuration.js
 */
 const axios = require('axios')
-const FormData = require('form-data')
 const { generateTimestampAndSignature } = require('../src/apiSigning')
 const { promisify } = require('util')
 
@@ -16,14 +15,14 @@ const CREATOR_NODE_ENDPOINT = process.env.creatorNodeEndpoint
 const randomBytes = promisify(crypto.randomBytes)
 
 /**
- * Process command line args and issue file upload health check
+ * Process command line args and issue duration health check
  */
 async function run () {
   try {
     parseEnvVarsAndArgs()
   } catch (e) {
     console.error(`\nIncorrect script usage: ${e.message}`)
-    console.error(`Script usage: node verifyHealthCheckFileUpload.js`)
+    console.error(`Script usage: node verifyHealthCheckDuration.js`)
     return
   }
 
@@ -34,25 +33,11 @@ async function run () {
     // Add randomBytes to outgoing request parameters
     const reqParam = signedLocalData
     reqParam.randomBytes = randomBytesToSign
-
-    let sampleTrack = new FormData()
-    sampleTrack.append('file', (await axios({
-      method: 'get',
-      url: 'https://s3-us-west-1.amazonaws.com/download.coliving.co/sp-health-check-files/97mb_music.mp3', // 97 MB
-      responseType: 'stream'
-    })).data)
-
     let requestConfig = {
-      headers: {
-        ...sampleTrack.getHeaders()
-      },
-      url: `${CREATOR_NODE_ENDPOINT}/health_check/fileupload`,
-      method: 'post',
+      url: `${CREATOR_NODE_ENDPOINT}/health_check/duration`,
+      method: 'get',
       params: reqParam,
-      responseType: 'json',
-      data: sampleTrack,
-      maxContentLength: Infinity,
-      maxBodyLength: Infinity
+      responseType: 'json'
     }
     let resp = await axios(requestConfig)
     let data = resp.data
@@ -64,7 +49,7 @@ async function run () {
 
 /**
  * Parses the environment variables and command line args
- * export creatorNodeEndpoint=http://cn1_network-node_1:4000
+ * export creatorNodeEndpoint=http://cn1_content-node_1:4000
  * export delegatePrivateKey=f0b743ce8adb7938f1212f188347a63...
  * NOTE: DO NOT PREFIX PRIVATE KEY WITH 0x
  */

@@ -18,7 +18,7 @@ const governanceKey = web3.utils.utf8ToHex('Governance')
 const tokenRegKey = web3.utils.utf8ToHex('TokenKey')
 
 const testDiscProvType = web3.utils.utf8ToHex('discovery-node')
-const testCreatorNodeType = web3.utils.utf8ToHex('network-node')
+const testCreatorNodeType = web3.utils.utf8ToHex('content-node')
 const testInvalidType = web3.utils.utf8ToHex('invalid-type')
 const testEndpoint = 'https://localhost:5000'
 const testEndpoint1 = 'https://localhost:5001'
@@ -958,7 +958,7 @@ contract('ServiceProvider test', async (accounts) => {
         'Minimum stake requirement not met')
 
       // 3rd endpoint for stakerAccount = https://localhost:4001
-      // network-node
+      // content-node
       await _lib.registerServiceProvider(
         token,
         staking,
@@ -1007,7 +1007,7 @@ contract('ServiceProvider test', async (accounts) => {
       let numCnodeEndpoints = await getServiceProviderIdsFromAddress(stakerAccount, testCreatorNodeType)
 
       // 4th endpoint for service provider
-      // network-node
+      // content-node
       await _lib.registerServiceProvider(
         token,
         staking,

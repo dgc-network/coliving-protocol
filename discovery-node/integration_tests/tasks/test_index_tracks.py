@@ -242,8 +242,8 @@ def test_index_tracks(mock_index_task, app):
             blockhash=updated_block_hash,
             blocknumber=block_number,
             creator_node_endpoint=(
-                "http://cn2_network-node_1:4001,http://cn1_network-node_1:4000,"
-                "http://cn3_network-node_1:4002"
+                "http://cn2_content-node_1:4001,http://cn1_content-node_1:4000,"
+                "http://cn3_content-node_1:4002"
             ),
             created_at=datetime.utcfromtimestamp(block_timestamp),
             updated_at=datetime.utcfromtimestamp(block_timestamp),

@@ -10,7 +10,7 @@ const DelegateManager = artifacts.require('DelegateManager')
 const ClaimsManager = artifacts.require('ClaimsManager')
 const ColivingToken = artifacts.require('ColivingToken')
 
-const serviceTypeCN = web3.utils.utf8ToHex('network-node')
+const serviceTypeCN = web3.utils.utf8ToHex('content-node')
 const serviceTypeDP = web3.utils.utf8ToHex('discovery-node')
 
 contract('Random testing', async (accounts) => {

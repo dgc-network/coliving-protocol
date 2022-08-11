@@ -19,7 +19,7 @@ const governanceKey = web3.utils.utf8ToHex('Governance')
 const claimsManagerProxyKey = web3.utils.utf8ToHex('ClaimsManagerProxy')
 
 // Known service types
-const serviceTypeCN = web3.utils.utf8ToHex('network-node')
+const serviceTypeCN = web3.utils.utf8ToHex('content-node')
 // Creator node 
 // Minimum: 200,000
 // Maximum: 3,000,000

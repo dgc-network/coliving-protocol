@@ -18,7 +18,7 @@ const truffle_dev_config = artifacts.options['_values']['networks']['development
 const ColivingLibs = 'libs'
 const ColivingDiscoveryNode = 'discovery-node'
 const ColivingIdentityService = 'identity-service'
-const ColivingCreatorNode = 'network-node'
+const ColivingCreatorNode = 'content-node'
 const ColivingDataContracts = 'contracts'
 
 const getDefaultAccount = async () => {

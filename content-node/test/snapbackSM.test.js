@@ -45,7 +45,7 @@ describe.skip('test SnapbackSM -- determineNewReplicaSet, sync queue, and reconf
     'healthy': true,
     'git': '',
     'selectedDiscoveryProvider': 'http://dn1_web-server_1:5000',
-    'creatorNodeEndpoint': 'http://cn1_network-node_1:4000',
+    'creatorNodeEndpoint': 'http://cn1_content-node_1:4000',
     'spID': 1,
     'spOwnerWallet': '0x18a1a15f7b63f48532233ee3dd6de4f48f0c35f3',
     'isRegisteredOnURSM': true,
