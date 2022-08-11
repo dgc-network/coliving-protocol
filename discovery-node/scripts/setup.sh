@@ -21,7 +21,7 @@ function main {
 
   set -e
 
-  printf '\nColiving Discovery Provider - Local Setup'
+  printf '\nColiving Discovery Node - Local Setup'
   printf '\n%20s\n' | tr ' ' -
 
   cd_contracts_repo

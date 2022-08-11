@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-# Coliving Discovery Provider / Flask
+# Coliving Discovery Node / Flask
 # Exports environment variables necessary for Flask app
 
 # app entry point module

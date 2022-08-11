@@ -5,7 +5,7 @@ import "./registry/RegistryContract.sol";
 import "./interface/DiscoveryProviderStorageInterface.sol";
 
 
-/** @title Contract responsible for managing discovery provider on-chain business logic */
+/** @title Contract responsible for managing discovery node on-chain business logic */
 contract DiscoveryProviderFactory is RegistryContract {
 
     RegistryInterface registry = RegistryInterface(0);
@@ -13,7 +13,7 @@ contract DiscoveryProviderFactory is RegistryContract {
 
     event NewDiscoveryProvider(uint _id, address _wallet, string _endpoint);
 
-    /** @notice - Sets registry address and discovery provider storage contract registry key */
+    /** @notice - Sets registry address and discovery node storage contract registry key */
     constructor(address _registryAddress, bytes32 _discoveryProviderStorageRegistryKey) public
     {
         require(
@@ -25,7 +25,7 @@ contract DiscoveryProviderFactory is RegistryContract {
         discoveryProviderStorageRegistryKey = _discoveryProviderStorageRegistryKey;
     }
 
-    /** @notice - returns registered discovery provider given its id */
+    /** @notice - returns registered discovery node given its id */
     function getDiscoveryProvider(uint _id)
     external view returns (address wallet, string memory endpoint)
     {
@@ -43,7 +43,7 @@ contract DiscoveryProviderFactory is RegistryContract {
         ).getTotalNumberOfProviders();
     }
 
-    /** @notice - adds new discovery provider to DiscoveryProviderStorage */
+    /** @notice - adds new discovery node to DiscoveryProviderStorage */
     function register(string calldata _endpoint)
     external returns (uint discProvId)
     {

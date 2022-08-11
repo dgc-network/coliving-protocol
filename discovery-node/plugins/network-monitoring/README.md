@@ -57,10 +57,10 @@ FOUNDATION_NODES_SPIDS=1,2,3,4
 # Unless using a custom gateway, don't change this
 PUSH_GATEWAY_URL="http://network-monitoring-push-gateway:9091"
 
-# The spid for the discovery provider
+# The spid for the discovery node
 SIGNATURE_SPID=
 
-# The delegate private key for the discovery provider
+# The delegate private key for the discovery node
 SIGNATURE_SP_DELEGATE_PRIV_KEY="0x123456789"
 
 # (Optional) Slack webhook to post updates to a slack channel

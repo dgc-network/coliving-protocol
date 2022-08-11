@@ -382,7 +382,7 @@ const runInParallel = async (commands, options) => {
 }
 
 /**
- * Brings up all services relevant to the discovery provider
+ * Brings up all services relevant to the discovery node
  * @returns {Promise<void>}
  */
 const discoveryNodeUp = async (options = { verbose: false }) => {

@@ -6,7 +6,7 @@ const models = require('./models')
 const colivingLibsWrapper = require('./colivingLibsInstance')
 
 /**
- * queryDiscprovForWalletAddressAndUserId - Queries the discovery provider for the user w/ the handle
+ * queryDiscprovForWalletAddressAndUserId - Queries the discovery node for the user w/ the handle
  * @param {string} handle
  * @returns {object} User Metadata object
  */
@@ -21,7 +21,7 @@ const queryDiscprovForWalletAddressAndUserId = async (handle) => {
 
   const usersList = response.data.data
   if (!Array.isArray(usersList) || !(usersList.length >= 1)) {
-    throw new Error('Unable to retrieve user from discovery provider')
+    throw new Error('Unable to retrieve user from discovery node')
   }
 
   return usersList[0]

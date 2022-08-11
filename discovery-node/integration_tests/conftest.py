@@ -131,7 +131,7 @@ def celery_app():
     # Call to create_celery returns an object containing the following:
     # 'Celery' - base Celery application
     # 'celery' - src.tasks.celery_app
-    # Hence, references to the discovery provider celery application
+    # Hence, references to the discovery node celery application
     # Are formatted as:
     #   'celery_app.celery._some_res_or_func'
     celery_app = create_celery(TEST_CONFIG_OVERRIDE)

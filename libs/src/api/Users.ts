@@ -753,7 +753,7 @@ export class Users extends Base {
     }
   }
 
-  /** Waits for a discovery provider to confirm that a creator node endpoint is updated. */
+  /** Waits for a discovery node to confirm that a creator node endpoint is updated. */
   async _waitForCreatorNodeEndpointIndexing(
     userId: number,
     contentNodeEndpoint: string

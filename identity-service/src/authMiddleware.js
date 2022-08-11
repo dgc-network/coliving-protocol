@@ -7,7 +7,7 @@ const models = require('./models')
 const colivingLibsWrapper = require('./colivingLibsInstance')
 
 /**
- * queryDiscprovForUserId - Queries the discovery provider for the user w/ the walletaddress
+ * queryDiscprovForUserId - Queries the discovery node for the user w/ the walletaddress
  * @param {string} walletAddress
  * @returns {object} User Metadata object
  */
@@ -42,7 +42,7 @@ const queryDiscprovForUserId = async (walletAddress, handle) => {
  * Authentication Middleware
  * 1) Using the `Encoded-Data-Message` & `Encoded-Data-Signature` header recover the wallet address
  * 2) If a user in the `Users` table with the `walletAddress` value, attach that user to the request
- * 3) Else query the discovery provider for the user's blockchain userId w/ the wallet address & attach to query
+ * 3) Else query the discovery node for the user's blockchain userId w/ the wallet address & attach to query
  */
 async function authMiddleware (req, res, next) {
   try {

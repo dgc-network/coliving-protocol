@@ -46,7 +46,7 @@ function _M.start_update_redirect_weights_timer ()
     if locked == nil then
         ngx.shared.locks:set("redirect_weights_timer", true)
         ngx.log(ngx.NOTICE, "starting redirect weights timer")
-        -- deplay first run by 10 seconds to ensure that discovery provider is running
+        -- deplay first run by 10 seconds to ensure that discovery node is running
         ngx.timer.at(10, update_redirect_weights)
         ngx.timer.every(config.update_redirect_weights_every, update_redirect_weights)
     end
@@ -121,8 +121,8 @@ function verify_signature (discovery_provider, nonce, signature)
         return false
     end
 
-    -- Allow all discovery providers for now instead of just whitelisted ones
-    -- reject if discovery provider is not in the accept_redirect_from set
+    -- Allow all discovery nodes for now instead of just whitelisted ones
+    -- reject if discovery node is not in the accept_redirect_from set
     -- if not config.accept_redirect_from[discovery_provider] then
     --     return false
     -- end
@@ -152,7 +152,7 @@ function verify_signature (discovery_provider, nonce, signature)
     }):verify(nonce, decoded_signature)
 
     if ok then
-        -- set nonce as used for discovery provider for next 60 seconds
+        -- set nonce as used for discovery node for next 60 seconds
         ngx.shared.nonce_store:set(discovery_provider .. ";" .. nonce, true, 60)
     else
         ngx.log(

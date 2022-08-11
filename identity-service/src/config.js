@@ -709,7 +709,7 @@ const config = convict({
     default: 'MX4fYBgANQetvmBXGpuxzF'
   },
   discoveryProviderWhitelist: {
-    doc: 'Whitelisted discovery providers to select from (comma-separated)',
+    doc: 'Whitelisted discovery nodes to select from (comma-separated)',
     format: String,
     env: 'discoveryProviderWhitelist',
     default: ''

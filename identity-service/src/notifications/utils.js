@@ -70,14 +70,14 @@ async function updateBlockchainIds () {
 }
 
 /**
- * Queries the discovery provider and returns n most listened to tracks, with the
+ * Queries the discovery node and returns n most listened to tracks, with the
  * total listen count for each of those tracks
  * This includes track listens writen to Solana
  *
  * @returns Array [{trackId, listenCount}, trackId, listenCount]
  */
 async function calculateTrackListenMilestonesFromDiscovery (discoveryProvider) {
-  // Pull listen count notification data from discovery provider
+  // Pull listen count notification data from discovery node
   const timeout = 2 /* min */ * 60 /* sec */ * 1000 /* ms */
   const trackListenMilestones = await discoveryProvider.getTrackListenMilestones(timeout)
   const listenCountBody = trackListenMilestones.data
@@ -192,7 +192,7 @@ async function shouldNotifyUser (notificationTarget, prop, tx = null) {
  * to obfuscate our monotonically increasing int IDs as
  * strings in our consumable API.
  *
- * Discovery provider uses a python implementation of the same protocol
+ * Discovery node uses a python implementation of the same protocol
  * to encode and decode IDs.
  */
 const HASH_SALT = 'azowernasdfoia'

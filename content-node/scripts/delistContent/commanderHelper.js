@@ -47,7 +47,7 @@ class Commander {
     // Parse env vars
     if (!CREATOR_NODE_ENDPOINT || !PRIVATE_KEY || !DISCOVERY_PROVIDER_ENDPOINT) {
       let errorMsg = `Creator node endpoint [${CREATOR_NODE_ENDPOINT}], private key [${PRIVATE_KEY}]`
-      errorMsg += ` or discovery provider endpoint [${DISCOVERY_PROVIDER_ENDPOINT}] have not been exported.`
+      errorMsg += ` or discovery node endpoint [${DISCOVERY_PROVIDER_ENDPOINT}] have not been exported.`
       throw new Error(errorMsg)
     }
 

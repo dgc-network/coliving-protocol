@@ -255,7 +255,7 @@ const verifyUrsmContentNodes = async (executeOne) => {
           `Mismatch between UserReplicaSetManager chain ownerWallet: ${ownerWalletFromChain} and queried ownerWallet: ${queriedOwnerWallet}`
         )
       }
-      logger.info(`Found UserReplicaSetManager and Discovery Provider match for spID=${spID}, delegateWallet=${queriedDelegateOwnerWallet}`)
+      logger.info(`Found UserReplicaSetManager and Discovery Node match for spID=${spID}, delegateWallet=${queriedDelegateOwnerWallet}`)
 
       /**
        * Query eth-contracts and confirm IDs

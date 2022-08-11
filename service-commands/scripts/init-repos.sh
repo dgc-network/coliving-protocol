@@ -29,7 +29,7 @@ npm install
 cd $PROTOCOL_DIR/eth-contracts
 npm install
 
-# no discovery provider setup needed
+# no discovery node setup needed
 # 'pip install' is performed through Docker for development
 # TODO: Revisit whether this is optimal after hot reloading for disc prov
 

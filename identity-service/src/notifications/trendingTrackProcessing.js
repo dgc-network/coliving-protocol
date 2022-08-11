@@ -121,7 +121,7 @@ async function getTrendingTracks (trendingExperiment, discoveryNodes) {
  * Insert the notification and notificationAction into the DB
  * Check the user's notification settings, and if enabled, send a push notification
  * @param {ColivingLibs} colivingLibs Coliving Libs instance
- * @param {number} blocknumber Blocknumber of the discovery provider
+ * @param {number} blocknumber Blocknumber of the discovery node
  * @param {Array<{ trackId: number, rank: number, userId: number }>} trendingTracks Array of the trending tracks
  * @param {*} tx DB transaction
  */

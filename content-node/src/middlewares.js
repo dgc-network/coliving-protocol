@@ -685,7 +685,7 @@ async function getCreatorNodeEndpoints({
     !user[0].hasOwnProperty('creator_node_endpoint')
   ) {
     throw new Error(
-      `Invalid return data from discovery provider for user with wallet ${wallet}.`
+      `Invalid return data from discovery node for user with wallet ${wallet}.`
     )
   }
 

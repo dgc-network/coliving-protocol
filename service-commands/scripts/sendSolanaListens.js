@@ -54,14 +54,14 @@ async function run (
 
         if (solPlay && solPlay.signature === signature) {
           console.log(
-            `Found ${signature} in discovery provider after polling for ${
+            `Found ${signature} in discovery node after polling for ${
               Date.now() - pollStart
             }ms`
           )
           return true
         } else {
           console.log(
-            `Failed to find ${signature} in discovery provider after polling for ${
+            `Failed to find ${signature} in discovery node after polling for ${
               Date.now() - pollStart
             }ms`
           )
@@ -90,7 +90,7 @@ async function main () {
     .arguments('[requests]')
     .option(
       '-p, --poll-duration <pollDuration>',
-      'duration to poll for confirming write to discovery provider',
+      'duration to poll for confirming write to discovery node',
       30000
     )
     .option(
@@ -100,7 +100,7 @@ async function main () {
     )
     .option(
       '-d, --discovery-endpoint <discoveryEndpoint>',
-      'discovery provider endpoint',
+      'discovery node endpoint',
       'http://localhost:5000'
     )
     .action(run)

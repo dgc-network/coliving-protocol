@@ -83,15 +83,15 @@ export class DiscoveryProviderSelection extends ServiceSelection {
     this.localStorage = config.localStorage
 
     // Whether or not we are running in `regressed` mode, meaning we were
-    // unable to select a discovery provider that was up-to-date. Clients may
+    // unable to select a discovery node that was up-to-date. Clients may
     // want to consider blocking writes.
     this._regressedMode = false
 
-    // List of valid past discovery provider versions registered on chain
+    // List of valid past discovery node versions registered on chain
     this.validVersions = null
   }
 
-  /** Retrieves a cached discovery provider from localstorage */
+  /** Retrieves a cached discovery node from localstorage */
   async getCached() {
     if (this.localStorage) {
       try {
@@ -125,14 +125,14 @@ export class DiscoveryProviderSelection extends ServiceSelection {
     return null
   }
 
-  /** Clears any cached discovery provider from localstorage */
+  /** Clears any cached discovery node from localstorage */
   async clearCached() {
     if (this.localStorage) {
       await this.localStorage.removeItem(DISCOVERY_PROVIDER_TIMESTAMP)
     }
   }
 
-  /** Sets a cached discovery provider in localstorage */
+  /** Sets a cached discovery node in localstorage */
   async setCached(endpoint: string) {
     if (this.localStorage) {
       await this.localStorage.setItem(
@@ -250,7 +250,7 @@ export class DiscoveryProviderSelection extends ServiceSelection {
   }
 
   /**
-   * Estabilishes that connection to discovery providers has regressed
+   * Estabilishes that connection to discovery nodes has regressed
    */
   enterRegressedMode() {
     console.info('Entering regressed mode')

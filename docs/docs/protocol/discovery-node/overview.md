@@ -18,6 +18,6 @@ Design Goals
 
 :::note
 
-The Discovery Node may be referred to as the Discovery Provider. These services are the same.
+The Discovery Node may be referred to as the Discovery Node. These services are the same.
 
 :::

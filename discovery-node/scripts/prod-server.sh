@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-# Coliving Discovery Provider / Gunicorn
+# Coliving Discovery Node / Gunicorn
 
 # run with gunicorn web server in prod for greater performance and robustness
 #   "-b :5000" accept requests on port 5000

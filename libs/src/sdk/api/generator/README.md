@@ -22,7 +22,7 @@ npm run gen:{env}:{flavor?}
 
 ### Options
 
-- `env` choices=("dev", "stage", "prod"): Which environment to choose the Discovery Provider to generate from
+- `env` choices=("dev", "stage", "prod"): Which environment to choose the Discovery Node to generate from
   - `dev`: http://dn1_web-server_1:5000/
   - `stage`: https://discoveryprovider.staging.coliving.lol/
   - `prod`: https://discoveryprovider.coliving.lol

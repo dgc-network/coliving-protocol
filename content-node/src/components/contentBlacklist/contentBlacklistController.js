@@ -245,7 +245,7 @@ function verifyRequest(data, signature, trustedNotifierManager) {
 }
 
 /**
- * Checks if ids exist in discovery provider
+ * Checks if ids exist in discovery node
  * @param {Object} libs
  * @param {string} action
  * @param {string} type

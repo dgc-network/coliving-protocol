@@ -500,7 +500,7 @@ class ColivingLibs {
       )
     }
 
-    /** Discovery Provider */
+    /** Discovery Node */
     if (this.discoveryProviderConfig) {
       this.discoveryProvider = new DiscoveryProvider({
         userStateManager: this.userStateManager,

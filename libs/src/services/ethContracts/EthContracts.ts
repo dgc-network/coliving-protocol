@@ -230,7 +230,7 @@ export class EthContracts {
     ]
 
     // Whether or not we are running in `regressed` mode, meaning we were
-    // unable to select a discovery provider that was up-to-date. Clients may
+    // unable to select a discovery node that was up-to-date. Clients may
     // want to consider blocking writes.
     this._regressedMode = false
   }
@@ -251,7 +251,7 @@ export class EthContracts {
   }
 
   /**
-   * Estabilishes that connection to discovery providers has regressed
+   * Estabilishes that connection to discovery nodes has regressed
    */
   enterRegressedMode() {
     console.info('Entering regressed mode')
@@ -294,7 +294,7 @@ export class EthContracts {
   }
 
   /*
-   * Determine the latest version for deployed services such as discovery provider and cache
+   * Determine the latest version for deployed services such as discovery node and cache
    */
   async getExpectedServiceVersions() {
     const versions = await Promise.all(

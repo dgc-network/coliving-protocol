@@ -4,7 +4,7 @@ import "../registry/RegistryContract.sol";
 import "../interface/RegistryInterface.sol";
 
 
-/** @title - The persistent storage for Coliving Discovery Providers
+/** @title - The persistent storage for Coliving Discovery Nodes
 *  @dev - TODO - needs to be converted to proper eternal dumb storage
 */
 contract DiscoveryProviderStorage is RegistryContract {
@@ -43,7 +43,7 @@ contract DiscoveryProviderStorage is RegistryContract {
         return (discProvId - 1);
     }
 
-    /** @dev - adds new discovery provider fields to storage, returns id of registered discprov */
+    /** @dev - adds new discovery node fields to storage, returns id of registered discprov */
     function register(address _wallet, string calldata _endpoint)
     external onlyRegistrant(CALLER_REGISTRY_KEY) returns (uint id)
     {

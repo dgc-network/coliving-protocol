@@ -249,7 +249,7 @@ Puede verificar su actualización con el punto final `\health_check`.
 
 #### Siguiente
 
-Una vez que haya terminado de configurar el Discovery Provider, continúe a la sección de [Logger](https://github.com/dgc.network/-k8s-manifests#logger).
+Una vez que haya terminado de configurar el Discovery Node, continúe a la sección de [Logger](https://github.com/dgc.network/-k8s-manifests#logger).
 
 
 ## 5. Logger

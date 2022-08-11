@@ -152,7 +152,7 @@ def get_playlists_route():
     return api_helpers.success_response(playlists)
 
 
-# Discovery Provider Social Feed Overview
+# Discovery Node Social Feed Overview
 # For a given user, current_user, we provide a feed of relevant content from around the coliving network.
 # This is generated in the following manner:
 #   - Generate list of users followed by current_user, known as 'followees'

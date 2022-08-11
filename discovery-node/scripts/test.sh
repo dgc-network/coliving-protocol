@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Coliving Discovery Provider / Test
+# Coliving Discovery Node / Test
 # Runs configured unit test scripts
 # NOTE - the ipfs compose files have been moved from discprov to libs.
 #   Before running this test locally, bring up ipfs pod with libs/scripts/ipfs.sh
@@ -9,7 +9,7 @@ source ./scripts/utilities.sh
 source .test.env
 
 if [ ! -f .gitignore ]; then
-  echo "Run test script from coliving discovery provider root"
+  echo "Run test script from coliving discovery node root"
   exit
 fi
 

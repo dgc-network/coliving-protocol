@@ -51,7 +51,7 @@ Coliving protocol:
 
 | Library                                                        | Description                                                                                       
 | -- | --
-| [`libs`](https://github.com/dgc.network/coliving-protocol/tree/master/libs)     | A complete javascript interface to the Coliving smart contracts and Coliving services: Identity Service, Discovery Provider, Creator Node
+| [`libs`](https://github.com/dgc.network/coliving-protocol/tree/master/libs)     | A complete javascript interface to the Coliving smart contracts and Coliving services: Identity Service, Discovery Node, Creator Node
 
 ### Coliving Tools & Tests
 

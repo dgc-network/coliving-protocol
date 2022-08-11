@@ -27,7 +27,7 @@ export const getTrackFromFactory = async (trackId, trackFactory) => {
   }
 }
 
-/** Retrieves discovery provider from DiscoveryProviderFactory contract
+/** Retrieves discovery node from DiscoveryProviderFactory contract
     * @param {number} discprovId
     * @param {object} discprovFactory, deployed DiscoveryProvider truffle contract
     * @returns {object} dictionary with wallet address, discprov endpoint

@@ -21,7 +21,7 @@ function makeRequest (request, retries = 5) {
 }
 
 /**
- * @param {string} discoveryProvider - Discovery Provider endpoint
+ * @param {string} discoveryProvider - Discovery Node endpoint
  * @param {number} offset
  * @param {number} limit
  * @returns {Array<Object>} userBatch
@@ -51,7 +51,7 @@ async function getUsersBatch (discoveryProvider, offset, limit) {
 }
 
 /**
- * @param {string} discoveryProvider - Discovery Provider endpoint
+ * @param {string} discoveryProvider - Discovery Node endpoint
  * @param {number} batchSize - Batch Size to use for each request
  * @returns {Object} trackCids - A object mapping user id to a list of track cids
  */

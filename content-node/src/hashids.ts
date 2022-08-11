@@ -4,7 +4,7 @@ const Hashids = require('hashids/cjs')
  * to obfuscate our monotonically increasing int IDs as
  * strings in our consumable API.
  *
- * Discovery provider uses a python implementation of the same protocol
+ * Discovery node uses a python implementation of the same protocol
  * to encode and decode IDs.
  */
 const HASH_SALT = 'azowernasdfoia'

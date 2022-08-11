@@ -23,7 +23,7 @@
   # monitor local (remote-dev) setups that use docker
   ###################################################
 
-  # monitor discovery provider containers
+  # monitor discovery node containers
 
   - job_name: 'local-discovery-node'
     scheme: 'http'

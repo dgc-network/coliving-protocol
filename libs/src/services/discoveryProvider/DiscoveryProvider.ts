@@ -70,7 +70,7 @@ export type UserProfile = {
  * @param userStateManager singleton UserStateManager instance
  * @param ethContracts singleton EthContracts instance
  * @param web3Manager
- * @param reselectTimeout timeout to clear locally cached discovery providers
+ * @param reselectTimeout timeout to clear locally cached discovery nodes
  * @param selectionCallback invoked when a discovery node is selected
  * @param monitoringCallbacks callbacks to be invoked with metrics from requests sent to a service
  *  @param monitoringCallbacks.request
@@ -1042,8 +1042,8 @@ export class DiscoveryProvider {
 
       // If new DP endpoint is selected, update disc prov endpoint and reset attemptedRetries count
       if (this.discoveryProviderEndpoint !== newDiscProvEndpoint) {
-        let updateDiscProvEndpointMsg = `Current Discovery Provider endpoint ${this.discoveryProviderEndpoint} is unhealthy. `
-        updateDiscProvEndpointMsg += `Switching over to the new Discovery Provider endpoint ${newDiscProvEndpoint}!`
+        let updateDiscProvEndpointMsg = `Current Discovery Node endpoint ${this.discoveryProviderEndpoint} is unhealthy. `
+        updateDiscProvEndpointMsg += `Switching over to the new Discovery Node endpoint ${newDiscProvEndpoint}!`
         console.info(updateDiscProvEndpointMsg)
         this.discoveryProviderEndpoint = newDiscProvEndpoint
         attemptedRetries = 0
@@ -1066,7 +1066,7 @@ export class DiscoveryProvider {
       )
     } catch (e) {
       const error = e as { message: string; status: string }
-      const failureStr = 'Failed to make Discovery Provider request, '
+      const failureStr = 'Failed to make Discovery Node request, '
       const attemptStr = `attempt #${attemptedRetries}, `
       const errorStr = `error ${JSON.stringify(error.message)}, `
       const requestStr = `request: ${JSON.stringify(requestObj)}`
@@ -1153,9 +1153,9 @@ export class DiscoveryProvider {
   }
 
   /**
-   * Gets the healthy discovery provider endpoint used in creating the axios request later.
+   * Gets the healthy discovery node endpoint used in creating the axios request later.
    * If the number of retries is over the max count for retires, clear the cache and reselect
-   * another healthy discovery provider. Else, return the current discovery provider endpoint
+   * another healthy discovery node. Else, return the current discovery node endpoint
    * @param attemptedRetries the number of attempted requests made to the current disc prov endpoint
    */
   async getHealthyDiscoveryProviderEndpoint(attemptedRetries: number) {
@@ -1172,14 +1172,14 @@ export class DiscoveryProvider {
 
     // If there are no more available backups, throw error
     if (!endpoint) {
-      throw new Error('All Discovery Providers are unhealthy and unavailable.')
+      throw new Error('All Discovery Nodes are unhealthy and unavailable.')
     }
 
     return endpoint
   }
 
   /**
-   * Creates the discovery provider axios request object with necessary configs
+   * Creates the discovery node axios request object with necessary configs
    * @param requestObj
    * @param discoveryProviderEndpoint
    */

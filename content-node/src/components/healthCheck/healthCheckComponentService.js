@@ -12,7 +12,7 @@ const MIN_FILESYSTEM_SIZE = 1950000000000 // 1950 GB of file system storage
 
 /**
  * Perform a health check, returning the
- * currently selected discovery provider (if any),
+ * currently selected discovery node (if any),
  * the current git SHA, service version info, location info, and system info.
  * @param {*} ServiceRegistry
  * @param {*} logger

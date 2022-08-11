@@ -378,7 +378,7 @@ export class RewardsAttester {
     `)
 
     // If a list of endpoints was not specified,
-    // set the pool to the entire list of discovery providers.
+    // set the pool to the entire list of discovery nodes.
     // This overrides any configured whitelist for the service selector.
     if (this.endpointPool.size === 0) {
       const pool =

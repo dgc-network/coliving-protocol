@@ -23,7 +23,7 @@ function cd_eth_contracts_repo {
 }
 
 function cd_discprov_repo {
-  # Navigate to discovery provider repository
+  # Navigate to discovery node repository
   if [ -d "../discovery-node" ]; then
     cd ../discovery-node/
     pwd

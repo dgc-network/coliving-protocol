@@ -42,7 +42,7 @@ For more details on the Coliving architecture, see the [Coliving protocol whitep
 
 | Lib                                                                                           | Description                                                                                                                                          |
 | :-------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`libs`](https://github.com/dgc.network/coliving-protocol/tree/master/libs)                   | An easy interface to the distributed web and Coliving services: Identity Service, Discovery Node \(discovery provider\), Content Node \(creator node\) |
+| [`libs`](https://github.com/dgc.network/coliving-protocol/tree/master/libs)                   | An easy interface to the distributed web and Coliving services: Identity Service, Discovery Node \(discovery node\), Content Node \(creator node\) |
 | [`contracts`](https://github.com/dgc.network/coliving-protocol/tree/master/contracts)         | The smart contracts being developed for the Coliving streaming protocol                                                                                |
 | [`eth-contracts`](https://github.com/dgc.network/coliving-protocol/tree/master/eth-contracts) | The Ethereum smart contracts being developed for the Coliving streaming protocol                                                                       |
 

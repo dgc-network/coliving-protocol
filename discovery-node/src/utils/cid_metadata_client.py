@@ -15,7 +15,7 @@ GET_METADATA_ALL_GATEWAY_TIMEOUT_SECONDS = 5
 
 
 class CIDMetadataClient:
-    """Helper class for Coliving Discovery Provider + CID Metadata interaction"""
+    """Helper class for Coliving Discovery Node + CID Metadata interaction"""
 
     def __init__(
         self,

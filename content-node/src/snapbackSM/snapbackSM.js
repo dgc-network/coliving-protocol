@@ -1996,7 +1996,7 @@ class SnapbackSM {
     const discoveryNodeEndpoint =
       this.colivingLibs.discoveryProvider.discoveryProviderEndpoint
     if (!discoveryNodeEndpoint) {
-      throw new Error('No discovery provider currently selected, exiting')
+      throw new Error('No discovery node currently selected, exiting')
     }
 
     // Will throw error on non-200 response

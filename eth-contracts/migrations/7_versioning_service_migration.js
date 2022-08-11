@@ -25,7 +25,7 @@ const serviceTypeCN = web3.utils.utf8ToHex('content-node')
 // Maximum: 3,000,000
 const cnTypeMin = _lib.audToWei(200000)
 const cnTypeMax = _lib.audToWei(3000000)
-// Discovery provider
+// Discovery node
 // Minimum: 200,000
 // Maximum: 2,000,000
 const serviceTypeDP = web3.utils.utf8ToHex('discovery-node')

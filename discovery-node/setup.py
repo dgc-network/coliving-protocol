@@ -9,7 +9,7 @@ install_reqs = parse_requirements("requirements.txt", session=uuid.uuid1())
 requirements = [str(ir.req) for ir in install_reqs]
 
 config = {
-    "description": "Coliving Discovery Provider",
+    "description": "Coliving Discovery Node",
     "author": "Hareesh Nagaraj",
     "url": "",
     "download_url": "",

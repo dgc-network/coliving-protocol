@@ -164,10 +164,10 @@ export class Playlists extends Base {
       userId
     )
 
-    // error if playlist does not exist or hasn't been indexed by discovery provider
+    // error if playlist does not exist or hasn't been indexed by discovery node
     if (!Array.isArray(playlist) || !playlist.length) {
       throw new Error(
-        'Cannot add track - Playlist does not exist or has not yet been indexed by discovery provider'
+        'Cannot add track - Playlist does not exist or has not yet been indexed by discovery node'
       )
     }
     // error if playlist already at max length
@@ -205,10 +205,10 @@ export class Playlists extends Base {
       userId
     )
 
-    // error if playlist does not exist or hasn't been indexed by discovery provider
+    // error if playlist does not exist or hasn't been indexed by discovery node
     if (!Array.isArray(playlist) || !playlist.length) {
       throw new Error(
-        'Cannot order playlist - Playlist does not exist or has not yet been indexed by discovery provider'
+        'Cannot order playlist - Playlist does not exist or has not yet been indexed by discovery node'
       )
     }
 
@@ -259,10 +259,10 @@ export class Playlists extends Base {
       userId
     )
 
-    // error if playlist does not exist or hasn't been indexed by discovery provider
+    // error if playlist does not exist or hasn't been indexed by discovery node
     if (!Array.isArray(playlistsReponse) || !playlistsReponse.length) {
       throw new Error(
-        'Cannot validate playlist - Playlist does not exist, is private and not owned by current user or has not yet been indexed by discovery provider'
+        'Cannot validate playlist - Playlist does not exist, is private and not owned by current user or has not yet been indexed by discovery node'
       )
     }
 

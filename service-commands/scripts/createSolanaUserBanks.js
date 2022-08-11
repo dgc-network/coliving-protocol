@@ -40,7 +40,7 @@ const qs = require('qs')
 /**
  * Gets a batch of users from the /users endpoint to get their wallets
  * Preferred over depending on libs since we want to specify a DN manually
- * @param {string} discoveryProviderUrl the url to the selected discovery provider
+ * @param {string} discoveryProviderUrl the url to the selected discovery node
  * @param {number} batchNumber the current batch number (0 for first)
  * @param {number} batchSize the number of users to fetch
  * @return {Object[]} the users
@@ -63,7 +63,7 @@ async function getUserBatch(discoveryProviderUrl, batchNumber, batchSize) {
 /**
  * Gets a batch of users from the /users endpoint to get their wallets
  * Preferred over depending on libs since we want to specify a DN manually
- * @param {string} discoveryProviderUrl the url to the selected discovery provider
+ * @param {string} discoveryProviderUrl the url to the selected discovery node
  * @param {string[]} ids the ids of the users to fetch
  * @return {Object[]} the users
  */
@@ -86,7 +86,7 @@ async function getUserBatchFromIds(discoveryProviderUrl, ids) {
 /**
  * Check discovery to see if it indexed the changes.
  * Done by checking has_solana_bank is true for all users in the batch
- * @param {string} discoveryProviderUrl the discovery provider to query against
+ * @param {string} discoveryProviderUrl the discovery node to query against
  * @param {number[] | string[]} ids the list of user ids to check
  * @param {Options} options options object that includes what the throttle is and max retries
  * @param {number} attempt used in recursion to keep track of what attempt this is

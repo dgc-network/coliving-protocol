@@ -20,7 +20,7 @@ const SOLANA_ANCHOR_PROGRAM_ID = 'coliving_solana_anchor_data_program_id'
 const SOLANA_ANCHOR_ADMIN_STORAGE_PUBLIC_KEY = 'coliving_solana_anchor_admin_storage_public_key'
 
 // LOCAL DEVELOPMENT ONLY
-// Updates coliving_eth_contracts_registry in discovery provider
+// Updates coliving_eth_contracts_registry in discovery node
 const configureLocalDiscProv = async () => {
   const ethRegistryAddress = ethContractsMigrationOutput.registryAddress
   const solanaTrackListenCountAddress = solanaConfig.trackListenCountAddress
@@ -51,7 +51,7 @@ const configureLocalDiscProv = async () => {
   )
 }
 
-// Write an update to the local discovery provider config .env file
+// Write an update to the local discovery node config .env file
 const _updateDiscoveryProviderEnvFile = async (
   readPath,
   writePath,

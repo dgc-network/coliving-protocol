@@ -5,7 +5,7 @@
         "Track": {
             "type": "object",
             "additionalProperties": true,
-            "$comment": "Additional properties enabled because the data return by discovery providers may contain other properties like blockhash, is_current, which are not strictly part of the metadata.",
+            "$comment": "Additional properties enabled because the data return by discovery nodes may contain other properties like blockhash, is_current, which are not strictly part of the metadata.",
             "properties": {
                 "title": {
                     "type": "string",
@@ -218,7 +218,7 @@
             },
             "required": [
             ],
-            "$comment": "No required fields for FieldVisibility because it causes backwards compatibility issues. If we added a new property, we don't want old records to fail if all properties are not specified(and overwrite the values with the defaults), but we also don't want to set new properties especially on the discovery provider because then we'd be writing properties not present in the metadata written on chain.",
+            "$comment": "No required fields for FieldVisibility because it causes backwards compatibility issues. If we added a new property, we don't want old records to fail if all properties are not specified(and overwrite the values with the defaults), but we also don't want to set new properties especially on the discovery node because then we'd be writing properties not present in the metadata written on chain.",
             "title": "FieldVisibility"
         },
         "StemOf": {

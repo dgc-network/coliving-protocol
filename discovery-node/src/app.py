@@ -583,7 +583,7 @@ def configure_celery(celery, test_config=None):
 
     celery.autodiscover_tasks(["src.tasks"], "index", True)
 
-    # Subclassing celery task with discovery provider context
+    # Subclassing celery task with discovery node context
     # Provided through properties defined in 'DatabaseTask'
     celery.Task = WrappedDatabaseTask
 

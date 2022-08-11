@@ -25,7 +25,7 @@ contract('DiscoveryProviderFactory', async (accounts) => {
     await registry.addContract(_constants.discoveryProviderFactoryKey, discoveryProviderFactory.address)
   })
 
-  it('Should register one discovery provider', async () => {
+  it('Should register one discovery node', async () => {
     // add discprov
     let tx = await discoveryProviderFactory.register(endpoints[3])
 
@@ -39,7 +39,7 @@ contract('DiscoveryProviderFactory', async (accounts) => {
     _validator.validateRegisteredDiscprov(discprov, accounts[0], endpoints[3])
   })
 
-  it('Should retrieve all registered discovery providers', async () => {
+  it('Should retrieve all registered discovery nodes', async () => {
     // add a bunch of endpoints
     let transactions = []
     let i = 0

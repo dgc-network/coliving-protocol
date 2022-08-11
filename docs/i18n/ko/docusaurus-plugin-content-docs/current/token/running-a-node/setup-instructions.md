@@ -74,9 +74,9 @@ rm -rf /var/k8s/*
 
 ## 4. Service Setup
 
-See below for a guide to deploying [Creator Node](https://github.com/dgc.network/-k8s-manifests#content-node-1) and [Discovery Provider](https://github.com/dgc.network/-k8s-manifests#discovery-node-1) via `-cli`. After you finish setting up the service, please continue with the Logger section.
+See below for a guide to deploying [Creator Node](https://github.com/dgc.network/-k8s-manifests#content-node-1) and [Discovery Node](https://github.com/dgc.network/-k8s-manifests#discovery-node-1) via `-cli`. After you finish setting up the service, please continue with the Logger section.
 
-**Note:** "Creator Node" and "Discovery Provider" have recently been renamed to "Content Node" and "Discovery Node" respectively. However for consistency within the code and this README, we will continue to use the terms "Creator Node" and "Discovery Node".
+**Note:** "Creator Node" and "Discovery Node" have recently been renamed to "Content Node" and "Discovery Node" respectively. However for consistency within the code and this README, we will continue to use the terms "Creator Node" and "Discovery Node".
 
 ### Creator Node
 
@@ -158,9 +158,9 @@ k apply -f /content-node/content-node-deploy-backend.yaml
 
 You can verify your upgrade with the `\health_check` endpoint.
 
-### Discovery Provider
+### Discovery Node
 
-An Coliving Discovery Provider indexes the contents of the Coliving contracts on the Ethereum blockchain for clients to query.
+An Coliving Discovery Node indexes the contents of the Coliving contracts on the Ethereum blockchain for clients to query.
 
 The indexed content includes user, track, and album/playlist information along with social features. The data is stored for quick access, updated on a regular interval, and made available for clients via a RESTful API.
 
@@ -249,7 +249,7 @@ You can verify your upgrade with the `\health_check` endpoint.
 
 #### Next
 
-Once you've finished setting up the Discovery Provider, continue to the [Logger](https://github.com/dgc.network/-k8s-manifests#logger) section.
+Once you've finished setting up the Discovery Node, continue to the [Logger](https://github.com/dgc.network/-k8s-manifests#logger) section.
 
 
 ## 5. Logger
@@ -303,7 +303,7 @@ kubectl -n kube-system delete pod $(kubectl -n kube-system get pods | grep "flue
 
 ## 6. Security & Infrastructure configuration
 
-1.\) In order for clients to talk to your service, you'll need to expose two ports: the web server port and the IPFS swarm port. In order to find these ports, run `kubectl get svc`. The web server port is mapped to 4000 for creator node and 5000 for discovery provider. The IPFS swarm port is mapped to 4001
+1.\) In order for clients to talk to your service, you'll need to expose two ports: the web server port and the IPFS swarm port. In order to find these ports, run `kubectl get svc`. The web server port is mapped to 4000 for creator node and 5000 for discovery node. The IPFS swarm port is mapped to 4001
 
 ```text
 kubectl get svc
@@ -330,7 +330,7 @@ IPFS has some trouble identifying the public host and port inside kubernetes, th
 
 Example: `-cli configure-ipfs 108.174.10.10`
 
-4.\) Set load balancer timeouts. Minimum timeouts are 1 hour \(3600 seconds\) for Creator Node requests and 1 minutes \(60 seconds\) for Discovery Provider requests. Track uploads especially for larger files can take several minutes to complete.
+4.\) Set load balancer timeouts. Minimum timeouts are 1 hour \(3600 seconds\) for Creator Node requests and 1 minutes \(60 seconds\) for Discovery Node requests. Track uploads especially for larger files can take several minutes to complete.
 
 5.\) In addition to configuring your security groups to restrict access to just the web server and IPFS swarm port \(4001\), it's recommended that your server or load balancer is protected from DoS attacks. Services like Cloudfront and Cloudflare offer free or low cost services to do this. It would also be possible to use iptables to configure protection as laid out here [https://javapipe.com/blog/iptables-ddos-protection/](https://javapipe.com/blog/iptables-ddos-protection/). Please make sure proxies don't override the timeouts from Step 4.
 
@@ -360,7 +360,7 @@ All checks passed!
 
 If you see the message "Error running script" this script did not finish successfully. If you see "All checks passed!" this script finished successfully.
 
-**Discovery Provider**
+**Discovery Node**
 
 ```text
 ➜ discoveryNodeEndpoint=https://discoveryprovider.domain.co node healthChecks.js

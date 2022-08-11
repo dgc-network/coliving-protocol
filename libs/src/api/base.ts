@@ -17,7 +17,7 @@ import type { Wormhole } from '../services/wormhole'
 export const Services = Object.freeze({
   IDENTITY_SERVICE: 'Identity Service',
   HEDGEHOG: 'Hedgehog',
-  DISCOVERY_PROVIDER: 'Discovery Provider',
+  DISCOVERY_PROVIDER: 'Discovery Node',
   CREATOR_NODE: 'Creator Node',
   COMSTOCK: 'Comstock',
   SOLANA_WEB3_MANAGER: 'Solana Web3 Manager'

@@ -333,7 +333,7 @@ tx_batches = [batch_250_to_200, batch_300_to_250]
 Each batch is then processed in parallel and committed to the local database.
 
 It is important to note that we also limit the maximum size of tx_batches to ensure that this array
-does not grow unbounded over time and new discovery providers are able to safely recover all information.
+does not grow unbounded over time and new discovery nodes are able to safely recover all information.
 This is performed by simply slicing the tx_batches array and discarding the newest transactions until an intersection
 is found - these limiting parameters are defined as TX_SIGNATURES_MAX_BATCHES, TX_SIGNATURES_RESIZE_LENGTH
 """

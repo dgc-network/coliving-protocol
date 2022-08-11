@@ -109,9 +109,9 @@ rm -rf /var/k8s/*
 
 ## 4. Configuration du service
 
-Voir ci-dessous un guide de déploiement du [Creator Node](https://github.com/dgc.network/-k8s-manifests#content-node-1) et [Discovery Provider](https://github.com/dgc.network/-k8s-manifests#discovery-node-1) via `-cli`. Après avoir terminé la configuration du service, veuillez continuer avec la section Logger.
+Voir ci-dessous un guide de déploiement du [Creator Node](https://github.com/dgc.network/-k8s-manifests#content-node-1) et [Discovery Node](https://github.com/dgc.network/-k8s-manifests#discovery-node-1) via `-cli`. Après avoir terminé la configuration du service, veuillez continuer avec la section Logger.
 
-**Remarque** "Creator Node" et "Discovery Provider" ont récemment été renommés respectivement par "Content Node" et "Discovery Node". Cependant, pour des raisons de cohérence dans le code et dans ce README, nous continuerons à utiliser les termes "Creator Node" et "Discovery Node".
+**Remarque** "Creator Node" et "Discovery Node" ont récemment été renommés respectivement par "Content Node" et "Discovery Node". Cependant, pour des raisons de cohérence dans le code et dans ce README, nous continuerons à utiliser les termes "Creator Node" et "Discovery Node".
 
 
 
@@ -222,9 +222,9 @@ Vous pouvez vérifier votre mise à jour avec le endpoint. `\health_check`.
 
 
 
-### Discovery Provider
+### Discovery Node
 
-Un Discovery Provider Coliving indexe le contenu des contrats Coliving sur la blockchain Ethereum pour que les clients puissent les interroger.
+Un Discovery Node Coliving indexe le contenu des contrats Coliving sur la blockchain Ethereum pour que les clients puissent les interroger.
 
 Le contenu indexé comprend des informations sur l'utilisateur, la piste et l'album/la liste de lecture ainsi que des fonctionnalités sociales. Les données sont stockées pour un accès rapide, mises à jour à intervalles réguliers et mises à la disposition des clients via une RESTful API.
 
@@ -348,7 +348,7 @@ Vous pouvez vérifier votre mise à jour avec le endpoint. `\health_check`.
 
 #### Suivant
 
-Une fois que vous avez terminé la configuration du Discovery Provider, continuez vers la section [Logger](https://github.com/dgc.network/-k8s-manifests#logger).
+Une fois que vous avez terminé la configuration du Discovery Node, continuez vers la section [Logger](https://github.com/dgc.network/-k8s-manifests#logger).
 
 
 
@@ -454,7 +454,7 @@ IPFS a quelques difficultés à identifier l'hôte public et le port dans kubern
 
 Exemple : `-cli configure-ipfs 108.174.10.10`
 
-4.\) Définir le délai d'attente de l'équilibreur de charge. Les délais minimum sont 1 heure \(3600 secondes\) pour les requêtes de Creator Node et 1 minutes \(60 secondes\) pour les requêtes de Discovery Provider. Le téléchargement de pistes, en particulier pour les gros fichiers, peut prendre plusieurs minutes.
+4.\) Définir le délai d'attente de l'équilibreur de charge. Les délais minimum sont 1 heure \(3600 secondes\) pour les requêtes de Creator Node et 1 minutes \(60 secondes\) pour les requêtes de Discovery Node. Le téléchargement de pistes, en particulier pour les gros fichiers, peut prendre plusieurs minutes.
 
 5.\) En plus de configurer vos groupes de sécurité pour restreindre l'accès au seul serveur web et au port d'essaim IPFS \(4001\\), Il est recommandé que votre serveur ou votre répartiteur de charge soit protégé contre les attaques DoS. Des services tels que Cloudfront et Cloudflare offrent des services gratuits ou peu coûteux pour ce faire. Il serait également possible d'utiliser iptables pour configurer la protection comme indiqué ici [https://javapipe.com/blog/iptables-ddos-protection/](https://javapipe.com/blog/iptables-ddos-protection/). Veuillez vous assurer que les proxies ne remplacent pas les délais de l'étape 4.
 
@@ -489,7 +489,7 @@ All checks passed!
 
 Si vous voyez le message "Erreur lors de l'exécution du script" ce script ne s'est pas terminé. Si vous voyez "Toutes les vérifications sont réussies!" ce script s'est terminé avec succès.
 
-**Discovery Provider**
+**Discovery Node**
 
 
 

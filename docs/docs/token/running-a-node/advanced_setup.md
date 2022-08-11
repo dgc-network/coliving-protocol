@@ -36,13 +36,13 @@ key   : dbUrl
 value : <db url>
 ```
 
-#### Discovery Provider
-There are two required discovery provider environment variables, available in the discovery provider section [here](setup.md#discovery-node).
+#### Discovery Node
+There are two required discovery node environment variables, available in the discovery node section [here](setup.md#discovery-node).
 
 The full list of variables and explanations can be found [here](https://github.com/dgc.network/coliving-protocol/blob/master/discovery-node/default_config.ini). Generally node operators will not need to modify any other environment variables.
 
 
-##### External Discovery Provider Postgres Instance
+##### External Discovery Node Postgres Instance
 If you set an external Postgres url during setup you can skip this section.
 
 The below is only if using a externally managed Postgres (version 11.1+) database:
