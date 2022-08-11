@@ -328,7 +328,7 @@ def parse_user_event(
         )
         if not replica_set_upgraded:
             user_record.creator_node_endpoint = helpers.get_tx_arg(
-                entry, "_creatorNodeEndpoint"
+                entry, "_contentNodeEndpoint"
             )
 
     # New updated_at timestamp

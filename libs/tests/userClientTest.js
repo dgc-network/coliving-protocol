@@ -99,7 +99,7 @@ it('should call addUser and verify new creator', async function () {
     userId, metadata.creator_node_endpoint
   )
   assert.deepStrictEqual(
-    updateCreatorNodeEndpointResp.creatorNodeEndpoint,
+    updateCreatorNodeEndpointResp.contentNodeEndpoint,
     metadata.creator_node_endpoint,
     `Transaction failed - ${metadata.creator_node_endpoint}`
   )

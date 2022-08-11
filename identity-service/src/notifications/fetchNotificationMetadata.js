@@ -414,9 +414,9 @@ async function fetchNotificationMetadata (
   }
 }
 
-const formatGateway = (creatorNodeEndpoint) =>
-  creatorNodeEndpoint
-    ? `${creatorNodeEndpoint.split(',')[0]}/ipfs/`
+const formatGateway = (contentNodeEndpoint) =>
+  contentNodeEndpoint
+    ? `${contentNodeEndpoint.split(',')[0]}/ipfs/`
     : USER_NODE_IPFS_GATEWAY
 
 const getImageUrl = (cid, gateway, defaultImg) =>

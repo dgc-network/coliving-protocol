@@ -33,14 +33,14 @@ describe('test monitorState job processor', function () {
     server = appInfo.server
     sandbox = sinon.createSandbox()
     config.set('spID', 1)
-    originalContentNodeEndpoint = config.get('creatorNodeEndpoint')
+    originalContentNodeEndpoint = config.get('contentNodeEndpoint')
   })
 
   afterEach(async function () {
     await server.close()
     sandbox.restore()
 
-    config.set('creatorNodeEndpoint', originalContentNodeEndpoint)
+    config.set('contentNodeEndpoint', originalContentNodeEndpoint)
     getNodeUsersStub = null
     getUnhealthyPeersStub = null
     buildReplicaSetNodesToUserWalletsMapStub = null
@@ -142,7 +142,7 @@ describe('test monitorState job processor', function () {
     numUsersToProcess = NUM_USERS_TO_PROCESS,
     steps = {}
   }) {
-    config.set('creatorNodeEndpoint', contentNodeEndpoint)
+    config.set('contentNodeEndpoint', contentNodeEndpoint)
     config.set('snapbackUsersPerJob', numUsersToProcess)
     const jobFunc = makeProcessStateMonitoringJob({ ...steps })
     logger = {

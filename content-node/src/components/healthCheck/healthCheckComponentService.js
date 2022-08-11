@@ -135,7 +135,7 @@ const healthCheck = async (
     healthy: true,
     git: process.env.GIT_SHA,
     selectedDiscoveryProvider: 'none',
-    creatorNodeEndpoint: config.get('creatorNodeEndpoint'),
+    contentNodeEndpoint: config.get('contentNodeEndpoint'),
     spID: config.get('spID'),
     spOwnerWallet: config.get('spOwnerWallet'),
     isRegisteredOnURSM: config.get('isRegisteredOnURSM'),

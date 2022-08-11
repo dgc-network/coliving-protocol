@@ -24,7 +24,7 @@ describe('test findReplicaSetUpdates job processor', function () {
     server = appInfo.server
     sandbox = sinon.createSandbox()
     config.set('spID', 1)
-    originalContentNodeEndpoint = config.get('creatorNodeEndpoint')
+    originalContentNodeEndpoint = config.get('contentNodeEndpoint')
     logger = {
       info: sandbox.stub(),
       warn: sandbox.stub(),
@@ -35,7 +35,7 @@ describe('test findReplicaSetUpdates job processor', function () {
   afterEach(async function () {
     await server.close()
     sandbox.restore()
-    config.set('creatorNodeEndpoint', originalContentNodeEndpoint)
+    config.set('contentNodeEndpoint', originalContentNodeEndpoint)
     logger = null
   })
 
@@ -170,7 +170,7 @@ describe('test findReplicaSetUpdates job processor', function () {
 
   it('issues update for mismatched spIds when this node is primary', async function () {
     // Make this node be the user's primary
-    config.set('creatorNodeEndpoint', primary)
+    config.set('contentNodeEndpoint', primary)
 
     // Verify job outputs the correct results: secondary1 should be removed from replica set because its spId mismatches
     return runAndVerifyJobProcessor({
@@ -184,7 +184,7 @@ describe('test findReplicaSetUpdates job processor', function () {
 
   it('issues update for mismatched spIds when this node is secondary', async function () {
     // Make this node be the user's secondary
-    config.set('creatorNodeEndpoint', secondary2)
+    config.set('contentNodeEndpoint', secondary2)
 
     // Verify job outputs the correct results: secondary1 should be removed from replica set because its spId mismatches
     return runAndVerifyJobProcessor({
@@ -198,7 +198,7 @@ describe('test findReplicaSetUpdates job processor', function () {
 
   it('issues update for unhealthy primary when this node is secondary and primary fails extra health check', async function () {
     // Make this node be the user's secondary
-    config.set('creatorNodeEndpoint', secondary1)
+    config.set('contentNodeEndpoint', secondary1)
 
     // Verify job outputs the correct results: primary should be removed from replica set because it's unhealthy
     return runAndVerifyJobProcessor({
@@ -214,7 +214,7 @@ describe('test findReplicaSetUpdates job processor', function () {
 
   it('does not issue update for unhealthy primary when this node is secondary and primary passes extra health check', async function () {
     // Make this node be the user's secondary
-    config.set('creatorNodeEndpoint', secondary1)
+    config.set('contentNodeEndpoint', secondary1)
 
     // Verify job outputs the correct results: primary should NOT be removed from replica set because it's unhealthy but passed the extra health check
     return runAndVerifyJobProcessor({
@@ -230,7 +230,7 @@ describe('test findReplicaSetUpdates job processor', function () {
 
   it('issues update for node marked unhealthy when this node is primary', async function () {
     // Make this node be the user's primary
-    config.set('creatorNodeEndpoint', primary)
+    config.set('contentNodeEndpoint', primary)
 
     // Verify job outputs the correct results: secondary2 should be removed from replica set because it's unhealthy
     return runAndVerifyJobProcessor({
@@ -244,7 +244,7 @@ describe('test findReplicaSetUpdates job processor', function () {
 
   it('issues update for node marked unhealthy when this node is secondary', async function () {
     // Make this node be the user's secondary
-    config.set('creatorNodeEndpoint', secondary1)
+    config.set('contentNodeEndpoint', secondary1)
 
     // Verify job outputs the correct results: secondary2 should be removed from replica set because it's unhealthy
     return runAndVerifyJobProcessor({
@@ -266,7 +266,7 @@ describe('test findReplicaSetUpdates job processor', function () {
     }
 
     // Make this node be the user's primary
-    config.set('creatorNodeEndpoint', primary)
+    config.set('contentNodeEndpoint', primary)
 
     // Verify job outputs the correct results: secondary1 should be removed from replica set because its sync success rate is too low
     return runAndVerifyJobProcessor({

@@ -56,8 +56,8 @@ describe('test issueSyncRequest job processor', function () {
     server = appInfo.server
     sandbox = sinon.createSandbox()
     config.set('spID', 1)
-    originalContentNodeEndpoint = config.get('creatorNodeEndpoint')
-    config.set('creatorNodeEndpoint', primary)
+    originalContentNodeEndpoint = config.get('contentNodeEndpoint')
+    config.set('contentNodeEndpoint', primary)
     logger = {
       info: sandbox.stub(),
       warn: sandbox.stub(),
@@ -71,7 +71,7 @@ describe('test issueSyncRequest job processor', function () {
   afterEach(async function () {
     await server.close()
     sandbox.restore()
-    config.set('creatorNodeEndpoint', originalContentNodeEndpoint)
+    config.set('contentNodeEndpoint', originalContentNodeEndpoint)
     logger = null
     nock.cleanAll()
     nock.enableNetConnect()

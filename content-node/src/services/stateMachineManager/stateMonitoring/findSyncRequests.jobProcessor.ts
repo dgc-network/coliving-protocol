@@ -27,7 +27,7 @@ const {
 } = require('../stateReconciliation/stateReconciliationUtils')
 const { computeSyncModeForUserAndReplica } = require('./stateMonitoringUtils')
 
-const thisContentNodeEndpoint = config.get('creatorNodeEndpoint')
+const thisContentNodeEndpoint = config.get('contentNodeEndpoint')
 const minSecondaryUserSyncSuccessPercent =
   config.get('minimumSecondaryUserSyncSuccessPercent') / 100
 const minFailedSyncRequestsBeforeReconfig = config.get(

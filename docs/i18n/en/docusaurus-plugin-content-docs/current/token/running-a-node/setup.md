@@ -22,7 +22,7 @@ bash <(curl https://raw.githubusercontent.com/dgc.network/-docker-compose/main/i
 During installation there will be prompts for required environment variables. The variables are:
 
 ### Creator Node
-- `creatorNodeEndpoint` - The DNS of your content node. If you haven't registered the service yet, please enter the url you plan to register.
+- `contentNodeEndpoint` - The DNS of your content node. If you haven't registered the service yet, please enter the url you plan to register.
 - `delegateOwnerWallet` - Address of wallet that contains no tokens but that is registered on chain, used to sign JSON responses from server
 - `delegatePrivateKey` - Private key associated with `delegateOwnerWallet`
 - `spOwnerWallet` - Wallet that registered (or will register) the content node on chain

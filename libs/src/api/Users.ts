@@ -756,13 +756,13 @@ export class Users extends Base {
   /** Waits for a discovery provider to confirm that a creator node endpoint is updated. */
   async _waitForCreatorNodeEndpointIndexing(
     userId: number,
-    creatorNodeEndpoint: string
+    contentNodeEndpoint: string
   ) {
     while (true) {
       const userList = await this.discoveryProvider.getUsers(1, 0, [userId])
       if (userList) {
         const user = userList[0]
-        if (user && user.creator_node_endpoint === creatorNodeEndpoint) {
+        if (user && user.creator_node_endpoint === contentNodeEndpoint) {
           break
         }
       }
@@ -964,14 +964,14 @@ export class Users extends Base {
   // Perform replica set update
   // Conditionally write to UserFactory contract, else write to UserReplicaSetManager
   // This behavior is to ensure backwards compatibility prior to contract deploy
-  async _updateReplicaSetOnChain(userId: number, creatorNodeEndpoint: string) {
+  async _updateReplicaSetOnChain(userId: number, contentNodeEndpoint: string) {
     // Attempt to update through UserReplicaSetManagerClient if present
     if (!this.contracts.UserReplicaSetManagerClient) {
       await this.contracts.initUserReplicaSetManagerClient()
     }
 
-    const primaryEndpoint = CreatorNode.getPrimary(creatorNodeEndpoint)
-    const secondaries = CreatorNode.getSecondaries(creatorNodeEndpoint)
+    const primaryEndpoint = CreatorNode.getPrimary(contentNodeEndpoint)
+    const secondaries = CreatorNode.getSecondaries(contentNodeEndpoint)
 
     if (secondaries.length < 2) {
       throw new Error(

@@ -80,10 +80,10 @@ export class Account extends Base {
     )
     if (userAccount) {
       this.userStateManager.setCurrentUser(userAccount)
-      const creatorNodeEndpoint = userAccount.creator_node_endpoint
-      if (creatorNodeEndpoint) {
+      const contentNodeEndpoint = userAccount.creator_node_endpoint
+      if (contentNodeEndpoint) {
         this.creatorNode.setEndpoint(
-          CreatorNode.getPrimary(creatorNodeEndpoint)!
+          CreatorNode.getPrimary(contentNodeEndpoint)!
         )
       }
       return { user: userAccount, error: false, phase }

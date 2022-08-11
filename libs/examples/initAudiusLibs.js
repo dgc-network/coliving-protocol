@@ -4,7 +4,7 @@ const { libs: ColivingLibs } = require('../dist/index')
 const dataContractsConfig = require('../data-contracts/config.json')
 const ethContractsConfig = require('../eth-contracts/config.json')
 
-const creatorNodeEndpoint = 'http://localhost:4000'
+const contentNodeEndpoint = 'http://localhost:4000'
 const identityServiceEndpoint = 'http://localhost:7000'
 const dataWeb3ProviderEndpoints = [
   'http://localhost:8545',
@@ -62,7 +62,7 @@ async function initColivingLibs(
         ethWeb3ProviderEndpoint,
         ethContractsConfig.ownerWallet
       ),
-      creatorNodeConfig: ColivingLibs.configCreatorNode(creatorNodeEndpoint),
+      creatorNodeConfig: ColivingLibs.configCreatorNode(contentNodeEndpoint),
       discoveryProviderConfig: {},
       identityServiceConfig: ColivingLibs.configIdentityService(
         identityServiceEndpoint

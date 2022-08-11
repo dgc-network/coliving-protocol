@@ -30,11 +30,11 @@ const MAX_NUMBER_SECONDS_PRIMARY_REMAINS_UNHEALTHY = config.get(
 class PeerSetManager {
   constructor({
     discoveryProviderEndpoint,
-    creatorNodeEndpoint,
+    contentNodeEndpoint,
     maxNumberSecondsPrimaryRemainsUnhealthy
   }) {
     this.discoveryProviderEndpoint = discoveryProviderEndpoint
-    this.creatorNodeEndpoint = creatorNodeEndpoint
+    this.contentNodeEndpoint = contentNodeEndpoint
 
     /* We do not want to eagerly cycle off the primary when issuing reconfigs if necessary, as the primary may
       have data that the secondaries lack. This map is used to track the primary and the number of times it has
@@ -153,7 +153,7 @@ class PeerSetManager {
             baseURL: this.discoveryProviderEndpoint,
             url: `v1/full/users/content_node/all`,
             params: {
-              creator_node_endpoint: this.creatorNodeEndpoint,
+              creator_node_endpoint: this.contentNodeEndpoint,
               prev_user_id: prevUserId,
               max_users: maxUsers
             },
@@ -216,7 +216,7 @@ class PeerSetManager {
 
     peerList = peerList
       .filter(Boolean) // filter out false-y values to account for incomplete replica sets
-      .filter((peer) => peer !== this.creatorNodeEndpoint) // remove self from peerList
+      .filter((peer) => peer !== this.contentNodeEndpoint) // remove self from peerList
 
     const peerSet = new Set(peerList) // convert to Set to get uniques
 

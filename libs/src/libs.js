@@ -515,14 +515,14 @@ class ColivingLibs {
     /** Creator Node */
     if (this.creatorNodeConfig) {
       const currentUser = this.userStateManager.getCurrentUser()
-      const creatorNodeEndpoint = currentUser
+      const contentNodeEndpoint = currentUser
         ? CreatorNode.getPrimary(currentUser.creator_node_endpoint) ||
           this.creatorNodeConfig.fallbackUrl
         : this.creatorNodeConfig.fallbackUrl
 
       this.creatorNode = new CreatorNode(
         this.web3Manager,
-        creatorNodeEndpoint,
+        contentNodeEndpoint,
         this.isServer,
         this.userStateManager,
         this.creatorNodeConfig.lazyConnect,

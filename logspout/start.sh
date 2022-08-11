@@ -8,11 +8,11 @@ elif [[ "${logglyTags}" ]]; then
    tag_csv=${tag_csv},${logglyTags}
 fi
 
-# set hostname to ${coliving_discprov_url}, else ${creatorNodeEndpoint}
+# set hostname to ${coliving_discprov_url}, else ${contentNodeEndpoint}
 if [[ "${coliving_discprov_url}" ]]; then
    hostname=${coliving_discprov_url}
-elif [[ "${creatorNodeEndpoint}" ]]; then
-   hostname=${creatorNodeEndpoint}
+elif [[ "${contentNodeEndpoint}" ]]; then
+   hostname=${contentNodeEndpoint}
 fi
 
 # use regex to extract domain in url (source: https://stackoverflow.com/a/2506635/8674706)

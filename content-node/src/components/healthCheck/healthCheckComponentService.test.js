@@ -153,7 +153,7 @@ describe('Test Health Check', function () {
     config.set('manualSyncsDisabled', false)
     config.set('solDelegatePrivateKeyBase64', SOL_SECRET_KEY_BASE64)
 
-    config.set('creatorNodeEndpoint', 'http://test.endpoint')
+    config.set('contentNodeEndpoint', 'http://test.endpoint')
     config.set('spID', 10)
     config.set('dataProviderUrl', 'http://test.dataProviderUrl')
 
@@ -181,7 +181,7 @@ describe('Test Health Check', function () {
       selectedDiscoveryProvider: TEST_ENDPOINT,
       spID: config.get('spID'),
       spOwnerWallet: config.get('spOwnerWallet'),
-      creatorNodeEndpoint: config.get('creatorNodeEndpoint'),
+      contentNodeEndpoint: config.get('contentNodeEndpoint'),
       isRegisteredOnURSM: false,
       dataProviderUrl: config.get('dataProviderUrl'),
       colivingContentInfraSetup: '',
@@ -294,7 +294,7 @@ describe('Test Health Check', function () {
       selectedDiscoveryProvider: 'none',
       spID: config.get('spID'),
       spOwnerWallet: config.get('spOwnerWallet'),
-      creatorNodeEndpoint: config.get('creatorNodeEndpoint'),
+      contentNodeEndpoint: config.get('contentNodeEndpoint'),
       isRegisteredOnURSM: false,
       dataProviderUrl: config.get('dataProviderUrl'),
       colivingContentInfraSetup: '',
@@ -396,7 +396,7 @@ describe('Test Health Check', function () {
       selectedDiscoveryProvider: 'none',
       spID: config.get('spID'),
       spOwnerWallet: config.get('spOwnerWallet'),
-      creatorNodeEndpoint: config.get('creatorNodeEndpoint'),
+      contentNodeEndpoint: config.get('contentNodeEndpoint'),
       isRegisteredOnURSM: false,
       dataProviderUrl: config.get('dataProviderUrl'),
       colivingContentInfraSetup: '',
@@ -539,7 +539,7 @@ describe('Test Health Check Verbose', function () {
       selectedDiscoveryProvider: 'none',
       spID: config.get('spID'),
       spOwnerWallet: config.get('spOwnerWallet'),
-      creatorNodeEndpoint: config.get('creatorNodeEndpoint'),
+      contentNodeEndpoint: config.get('contentNodeEndpoint'),
       isRegisteredOnURSM: false,
       dataProviderUrl: config.get('dataProviderUrl'),
       colivingContentInfraSetup: '',

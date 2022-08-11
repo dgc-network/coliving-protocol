@@ -1,15 +1,15 @@
 /**
- * Enqueues sync operation into syncQueue for provided walletPublicKeys against provided creatorNodeEndpoint
+ * Enqueues sync operation into syncQueue for provided walletPublicKeys against provided contentNodeEndpoint
  */
 const enqueueSync = async ({
   serviceRegistry,
   walletPublicKeys,
-  creatorNodeEndpoint,
+  contentNodeEndpoint,
   forceResync
 }) => {
   await serviceRegistry.syncQueue.enqueueSync({
     walletPublicKeys,
-    creatorNodeEndpoint,
+    contentNodeEndpoint,
     forceResync
   })
 }

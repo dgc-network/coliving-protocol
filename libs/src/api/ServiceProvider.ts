@@ -83,7 +83,7 @@ export class ServiceProvider extends Base {
    * @returns { primary, secondaries, services }
    * // primary: string
    * // secondaries: string[]
-   * // services: { creatorNodeEndpoint: healthCheckResponse }
+   * // services: { contentNodeEndpoint: healthCheckResponse }
    */
   async autoSelectCreatorNodes({
     numberOfNodes = 3,

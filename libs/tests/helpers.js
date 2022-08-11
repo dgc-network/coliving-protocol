@@ -5,7 +5,7 @@ const ColivingLibs = require('../src/libs')
 const dataContractsConfig = require('../data-contracts/config.json')
 const ethContractsConfig = require('../eth-contracts/config.json')
 
-const creatorNodeEndpoint = 'http://localhost:4000'
+const contentNodeEndpoint = 'http://localhost:4000'
 const discoveryProviderEndpoint = 'http://localhost:5000'
 const identityServiceEndpoint = 'http://localhost:7000'
 const dataWeb3ProviderEndpoint = 'http://localhost:8545'

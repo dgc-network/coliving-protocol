@@ -24,7 +24,7 @@ const { retrieveUserInfoFromReplicaSet } = require('../stateMachineUtils')
 
 // Number of users to process each time monitor-state job processor is called
 const USERS_PER_JOB = config.get('snapbackUsersPerJob')
-const THIS_CNODE_ENDPOINT = config.get('creatorNodeEndpoint')
+const THIS_CNODE_ENDPOINT = config.get('contentNodeEndpoint')
 
 type Decision = {
   stage: string

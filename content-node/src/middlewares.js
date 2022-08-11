@@ -172,13 +172,13 @@ async function ensurePrimaryMiddleware(req, res, next) {
 
   /**
    * Convert replicaSetSpIDs to replicaSetEndpoints for later consumption (do not error on failure)
-   * Currently `req.session.creatorNodeEndpoints` is only used by `issueAndWaitForSecondarySyncRequests()`
-   * There is a possibility of failing to retrieve endpoints for each spID, so the consumer of req.session.creatorNodeEndpoints must perform null checks
+   * Currently `req.session.contentNodeEndpoints` is only used by `issueAndWaitForSecondarySyncRequests()`
+   * There is a possibility of failing to retrieve endpoints for each spID, so the consumer of req.session.contentNodeEndpoints must perform null checks
    */
   const allRegisteredCNodes = await utils.getAllRegisteredCNodes(libs, logger)
   const replicaSetEndpoints = replicaSetSpIDs.map((replicaSpID) => {
     if (replicaSpID === selfSpID) {
-      return nodeConfig.get('creatorNodeEndpoint')
+      return nodeConfig.get('contentNodeEndpoint')
     }
     // Get endpoint from registeredCNode matching current replicaSpID
     const replicaSetInfo = allRegisteredCNodes.filter(
@@ -188,11 +188,11 @@ async function ensurePrimaryMiddleware(req, res, next) {
       return replicaSetInfo.endpoint
     }
   })
-  req.session.creatorNodeEndpoints = replicaSetEndpoints.filter(Boolean)
+  req.session.contentNodeEndpoints = replicaSetEndpoints.filter(Boolean)
 
   req.logger.info(
-    `${logPrefix} succeeded ${Date.now() - start} ms. creatorNodeEndpoints: ${
-      req.session.creatorNodeEndpoints
+    `${logPrefix} succeeded ${Date.now() - start} ms. contentNodeEndpoints: ${
+      req.session.contentNodeEndpoints
     }`
   )
   next()
@@ -331,8 +331,8 @@ async function issueAndWaitForSecondarySyncRequests(
   try {
     if (
       !req.session.nodeIsPrimary ||
-      !req.session.creatorNodeEndpoints ||
-      !Array.isArray(req.session.creatorNodeEndpoints)
+      !req.session.contentNodeEndpoints ||
+      !Array.isArray(req.session.contentNodeEndpoints)
     ) {
       endHistogramTimer({
         enforceWriteQuorum: String(enforceWriteQuorum),
@@ -341,7 +341,7 @@ async function issueAndWaitForSecondarySyncRequests(
         result: 'failed_short_circuit'
       })
       const errorMsg =
-        'issueAndWaitForSecondarySyncRequests Error - Cannot process sync op - this node is not primary or invalid creatorNodeEndpoints'
+        'issueAndWaitForSecondarySyncRequests Error - Cannot process sync op - this node is not primary or invalid contentNodeEndpoints'
       req.logger.error(errorMsg)
       if (enforceWriteQuorum) {
         throw new Error(errorMsg)
@@ -349,12 +349,12 @@ async function issueAndWaitForSecondarySyncRequests(
       return
     }
 
-    let [primary, ...secondaries] = req.session.creatorNodeEndpoints
+    let [primary, ...secondaries] = req.session.contentNodeEndpoints
     secondaries = secondaries.filter(
       (secondary) => !!secondary && _isFQDN(secondary)
     )
 
-    if (primary !== config.get('creatorNodeEndpoint')) {
+    if (primary !== config.get('contentNodeEndpoint')) {
       endHistogramTimer({
         enforceWriteQuorum: String(enforceWriteQuorum),
         ignoreWriteQuorum: String(ignoreWriteQuorum),
@@ -457,15 +457,15 @@ async function issueAndWaitForSecondarySyncRequests(
  *    Bit of a chicken and egg problem here with timing of first time setup, but potential optimization here
  */
 async function getOwnEndpoint({ libs }) {
-  const creatorNodeEndpoint = config.get('creatorNodeEndpoint')
+  const contentNodeEndpoint = config.get('contentNodeEndpoint')
 
-  if (!creatorNodeEndpoint) {
-    throw new Error('Must provide either creatorNodeEndpoint config var.')
+  if (!contentNodeEndpoint) {
+    throw new Error('Must provide either contentNodeEndpoint config var.')
   }
 
   const spId =
     await libs.ethContracts.ServiceProviderFactoryClient.getServiceProviderIdFromEndpoint(
-      creatorNodeEndpoint
+      contentNodeEndpoint
     )
 
   if (!spId) {
@@ -492,13 +492,13 @@ async function getOwnEndpoint({ libs }) {
     spInfo.delegateOwnerWallet.toLowerCase() !==
       config.get('delegateOwnerWallet').toLowerCase() ||
     (spInfo.endpoint && !_isFQDN(spInfo.endpoint)) ||
-    spInfo.endpoint !== creatorNodeEndpoint
+    spInfo.endpoint !== contentNodeEndpoint
   ) {
     throw new Error(
       `Cannot getOwnEndpoint for node. Returned from chain=${JSON.stringify(
         spInfo
-      )}, configs=(creatorNodeEndpoint=${config.get(
-        'creatorNodeEndpoint'
+      )}, configs=(contentNodeEndpoint=${config.get(
+        'contentNodeEndpoint'
       )}, spOwnerWallet=${config.get(
         'spOwnerWallet'
       )}, delegateOwnerWallet=${config.get('delegateOwnerWallet')})`

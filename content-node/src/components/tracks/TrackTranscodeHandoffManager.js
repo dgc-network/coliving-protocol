@@ -12,7 +12,7 @@ const {
 } = require('../../apiSigning')
 const { removeTrackFolder } = require('../../fileManager')
 
-const CREATOR_NODE_ENDPOINT = config.get('creatorNodeEndpoint')
+const CREATOR_NODE_ENDPOINT = config.get('contentNodeEndpoint')
 const DELEGATE_PRIVATE_KEY = config.get('delegatePrivateKey')
 
 const NUMBER_OF_SPS_FOR_HANDOFF_TRACK = 3

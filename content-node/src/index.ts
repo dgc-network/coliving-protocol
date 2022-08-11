@@ -64,11 +64,11 @@ const startApp = async () => {
   // fail if delegateOwnerWallet & delegatePrivateKey not present
   const delegateOwnerWallet = config.get('delegateOwnerWallet')
   const delegatePrivateKey = config.get('delegatePrivateKey')
-  const creatorNodeEndpoint = config.get('creatorNodeEndpoint')
+  const contentNodeEndpoint = config.get('contentNodeEndpoint')
 
-  if (!delegateOwnerWallet || !delegatePrivateKey || !creatorNodeEndpoint) {
+  if (!delegateOwnerWallet || !delegatePrivateKey || !contentNodeEndpoint) {
     exitWithError(
-      'Cannot startup without delegateOwnerWallet, delegatePrivateKey, and creatorNodeEndpoint'
+      'Cannot startup without delegateOwnerWallet, delegatePrivateKey, and contentNodeEndpoint'
     )
   }
 

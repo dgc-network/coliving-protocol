@@ -5,7 +5,7 @@ export delegatePrivateKey=$(printenv "CN${replica}_SP_OWNER_PRIVATE_KEY")
 
 export spOwnerWallet=$(printenv "CN${replica}_SP_OWNER_ADDRESS")
 
-export creatorNodeEndpoint="http://$(hostname -i):4000"
+export contentNodeEndpoint="http://$(hostname -i):4000"
 
 cd ../coliving-libs
 npm link

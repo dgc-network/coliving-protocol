@@ -26,7 +26,7 @@ describe('test findSyncRequests job processor', function () {
     sandbox = sinon.createSandbox()
 
     config.set('spID', 1)
-    originalContentNodeEndpoint = config.get('creatorNodeEndpoint')
+    originalContentNodeEndpoint = config.get('contentNodeEndpoint')
 
     logger = {
       info: sandbox.stub(),
@@ -38,7 +38,7 @@ describe('test findSyncRequests job processor', function () {
   afterEach(async function () {
     await server.close()
     sandbox.restore()
-    config.set('creatorNodeEndpoint', originalContentNodeEndpoint)
+    config.set('contentNodeEndpoint', originalContentNodeEndpoint)
   })
 
   let primary = 'http://primary_cn.co'
@@ -152,7 +152,7 @@ describe('test findSyncRequests job processor', function () {
     const userSecondarySyncMetricsMap = {}
 
     // This node must be the primary in order to sync
-    config.set('creatorNodeEndpoint', primary)
+    config.set('contentNodeEndpoint', primary)
 
     /**
      * Create all stubs for jobProcessor
@@ -296,7 +296,7 @@ describe('test findSyncRequests job processor', function () {
     const userSecondarySyncMetricsMap = {}
 
     // This node must be the primary in order to sync
-    config.set('creatorNodeEndpoint', primary)
+    config.set('contentNodeEndpoint', primary)
 
     /**
      * Create all stubs for jobProcessor
@@ -436,7 +436,7 @@ describe('test findSyncRequests job processor', function () {
     const userSecondarySyncMetricsMap = {}
 
     // This node must be the primary in order to sync
-    config.set('creatorNodeEndpoint', primary)
+    config.set('contentNodeEndpoint', primary)
 
     /**
      * Create all stubs for jobProcessor
@@ -551,7 +551,7 @@ describe('test findSyncRequests job processor', function () {
     const userSecondarySyncMetricsMap = {}
 
     // This node must be the primary in order to sync
-    config.set('creatorNodeEndpoint', primary)
+    config.set('contentNodeEndpoint', primary)
 
     /**
      * Create all stubs for jobProcessor
@@ -673,7 +673,7 @@ describe('test findSyncRequests job processor', function () {
     }
 
     // This node must be the primary in order to sync
-    config.set('creatorNodeEndpoint', primary)
+    config.set('contentNodeEndpoint', primary)
 
     /**
      * Create all stubs for jobProcessor
@@ -788,7 +788,7 @@ describe('test findSyncRequests job processor', function () {
     const userSecondarySyncMetricsMap = {}
 
     // This node must be the primary in order to sync
-    config.set('creatorNodeEndpoint', primary)
+    config.set('contentNodeEndpoint', primary)
 
     /**
      * Create all stubs for jobProcessor
@@ -925,7 +925,7 @@ describe('test findSyncRequests job processor', function () {
     const userSecondarySyncMetricsMap = {}
 
     // This node must be the primary in order to sync
-    config.set('creatorNodeEndpoint', primary)
+    config.set('contentNodeEndpoint', primary)
 
     /**
      * Create all stubs for jobProcessor
@@ -1116,7 +1116,7 @@ describe('test findSyncRequests job processor', function () {
     const userSecondarySyncMetricsMap = {}
 
     // This node must be the primary in order to sync
-    config.set('creatorNodeEndpoint', CN1)
+    config.set('contentNodeEndpoint', CN1)
 
     /**
      * Create all stubs for jobProcessor

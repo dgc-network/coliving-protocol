@@ -147,12 +147,12 @@ key   : delegatePrivateKey
 value : <private key>
 
 -cli set-config content-node backend
-key   : creatorNodeEndpoint
+key   : contentNodeEndpoint
 value : <your service url>
 ```
 
 
-**Remarque:** si vous n'avez pas encore enregistré le service, veuillez entrer l'url que vous prévoyez d'enregistrer pour `creatorNodeEndpoint`.
+**Remarque:** si vous n'avez pas encore enregistré le service, veuillez entrer l'url que vous prévoyez d'enregistrer pour `contentNodeEndpoint`.
 
 Ensuite, exécutez la commande de lancement via `-cli`
 
@@ -476,8 +476,8 @@ Pour plus d'informations sur `sp-actions/` voir README dans le dossier [sp-actio
 ➜ pwd
 /Coliving/-k8s-manifests/sp-utilities/content-node
 
-# entering creatorNodeEndpoint and delegatePrivateKey sends those values as env vars to the script without having to export to your terminal
-➜ creatorNodeEndpoint=https://creatornode.domain.co delegatePrivateKey=5e468bc1b395e2eb8f3c90ef897406087b0599d139f6ca0060ba85dcc0dce8dc node healthChecks.js
+# entering contentNodeEndpoint and delegatePrivateKey sends those values as env vars to the script without having to export to your terminal
+➜ contentNodeEndpoint=https://creatornode.domain.co delegatePrivateKey=5e468bc1b395e2eb8f3c90ef897406087b0599d139f6ca0060ba85dcc0dce8dc node healthChecks.js
 Starting tests now. This may take a few minutes.
 ✓ Health check passed
 ✓ DB health check passed
@@ -494,7 +494,7 @@ Si vous voyez le message "Erreur lors de l'exécution du script" ce script ne s'
 
 
 ```text
-➜ discoveryProviderEndpoint=https://discoveryprovider.domain.co node healthChecks.js
+➜ discoveryNodeEndpoint=https://discoveryprovider.domain.co node healthChecks.js
 ✓ Health check passed
 All checks passed!
 ```

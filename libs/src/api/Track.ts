@@ -320,11 +320,11 @@ export class Track extends Base {
    * Checks if a download is available from provided creator node endpoints
    */
   async checkIfDownloadAvailable(
-    creatorNodeEndpoints: string,
+    contentNodeEndpoints: string,
     trackId: number
   ) {
     return await CreatorNode.checkIfDownloadAvailable(
-      creatorNodeEndpoints,
+      contentNodeEndpoints,
       trackId
     )
   }

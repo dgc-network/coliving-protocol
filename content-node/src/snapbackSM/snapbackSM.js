@@ -99,7 +99,7 @@ class SnapbackSM {
     // Toggle to switch logs
     this.debug = true
 
-    this.endpoint = this.nodeConfig.get('creatorNodeEndpoint')
+    this.endpoint = this.nodeConfig.get('contentNodeEndpoint')
     this.spID = this.nodeConfig.get('spID')
     this.delegatePrivateKey = this.nodeConfig.get('delegatePrivateKey')
     this.manualSyncsDisabled = this.nodeConfig.get('manualSyncsDisabled')
@@ -235,7 +235,7 @@ class SnapbackSM {
     this.peerSetManager = new PeerSetManager({
       discoveryProviderEndpoint:
         this.colivingLibs.discoveryProvider.discoveryProviderEndpoint,
-      creatorNodeEndpoint: this.endpoint
+      contentNodeEndpoint: this.endpoint
     })
 
     // SyncDeDuplicator ensure a sync for a (syncType, userWallet, secondaryEndpoint) tuple is only enqueued once

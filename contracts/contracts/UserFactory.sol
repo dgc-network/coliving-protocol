@@ -23,7 +23,7 @@ contract UserFactory is RegistryContract, SigningLogic {
     event UpdateCoverPhoto(uint _userId, bytes32 _coverPhotoDigest);
     event UpdateIsCreator(uint _userId, bool _isCreator);
     event UpdateIsVerified(uint _userId, bool _isVerified);
-    event UpdateCreatorNodeEndpoint(uint _userId, string _creatorNodeEndpoint);
+    event UpdateCreatorNodeEndpoint(uint _userId, string _contentNodeEndpoint);
 
     bytes32 constant ADD_USER_REQUEST_TYPEHASH = keccak256(
         "AddUserRequest(bytes16 handle,bytes32 nonce)"
@@ -282,7 +282,7 @@ contract UserFactory is RegistryContract, SigningLogic {
 
     function updateCreatorNodeEndpoint(
         uint _userId,
-        string calldata _creatorNodeEndpoint,
+        string calldata _contentNodeEndpoint,
         bytes32 _nonce,
         bytes calldata _subjectSig
     ) external
@@ -290,14 +290,14 @@ contract UserFactory is RegistryContract, SigningLogic {
         bytes32 _signatureDigest = generateUpdateUserStringRequestSchemaHash(
             UPDATE_USER_CREATOR_NODE_REQUEST_TYPEHASH,
             _userId,
-            _creatorNodeEndpoint,
+            _contentNodeEndpoint,
             _nonce
         );
         address signer = recoverSigner(_signatureDigest, _subjectSig);
         burnSignatureDigest(_signatureDigest, signer);
         this.callerOwnsUser(signer, _userId);   // will revert if false
 
-        emit UpdateCreatorNodeEndpoint(_userId, _creatorNodeEndpoint);
+        emit UpdateCreatorNodeEndpoint(_userId, _contentNodeEndpoint);
     }
 
     /** @notice returns true if handle is valid and not already taken, false otherwise */

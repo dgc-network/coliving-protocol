@@ -32,7 +32,7 @@ async function main() {
     try {
       const { data } = await axios({
         url: "/health_check",
-        baseURL: config.get("creatorNodeEndpoint"),
+        baseURL: config.get("contentNodeEndpoint"),
         method: "get",
         timeout: 1000,
       });
@@ -49,7 +49,7 @@ async function main() {
 
   const tx = await colivingLibs.ethContracts.ServiceProviderFactoryClient.register(
     "content-node",
-    config.get("creatorNodeEndpoint"),
+    config.get("contentNodeEndpoint"),
     new BN("200000000000000000000000"),
   );
 }

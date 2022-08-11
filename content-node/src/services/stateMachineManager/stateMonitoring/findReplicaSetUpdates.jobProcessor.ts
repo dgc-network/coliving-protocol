@@ -24,7 +24,7 @@ const CNodeHealthManager = require('../CNodeHealthManager')
 const CNodeToSpIdMapManager = require('../CNodeToSpIdMapManager')
 const config = require('../../../config')
 
-const thisContentNodeEndpoint = config.get('creatorNodeEndpoint')
+const thisContentNodeEndpoint = config.get('contentNodeEndpoint')
 const minSecondaryUserSyncSuccessPercent =
   config.get('minimumSecondaryUserSyncSuccessPercent') / 100
 const minFailedSyncRequestsBeforeReconfig = config.get(

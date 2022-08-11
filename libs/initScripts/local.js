@@ -19,10 +19,10 @@ const { getEthContractAccounts } = require('./helpers/utils')
 const serviceDirectoryList = ['discovery-node', 'content-node']
 const discProvEndpoint1 = 'http://dn1_web-server_1:5000'
 const discProvEndpoint2 = 'http://dn2_web-server_1:5001'
-const creatorNodeEndpoint1 = 'http://cn1_content-node_1:4000'
-const creatorNodeEndpoint2 = 'http://cn2_content-node_1:4001'
-const creatorNodeEndpoint3 = 'http://cn3_content-node_1:4002'
-const creatorNodeEndpoint4 = 'http://cn4_content-node_1:4003'
+const contentNodeEndpoint1 = 'http://cn1_content-node_1:4000'
+const contentNodeEndpoint2 = 'http://cn2_content-node_1:4001'
+const contentNodeEndpoint3 = 'http://cn3_content-node_1:4002'
+const contentNodeEndpoint4 = 'http://cn4_content-node_1:4003'
 const amountOfAuds = 2000000
 
 const contentNodeType = 'content-node'
@@ -528,13 +528,13 @@ const _deregisterAllSPs = async (colivingLibs, ethAccounts) => {
   await deregisterLocalService(colivingLibs2, discoveryNodeType, discProvEndpoint2)
 
   const colivingLibs3 = await initColivingLibs(true, null, ethAccounts[1])
-  await deregisterLocalService(colivingLibs3, contentNodeType, creatorNodeEndpoint1)
+  await deregisterLocalService(colivingLibs3, contentNodeType, contentNodeEndpoint1)
   const colivingLibs4 = await initColivingLibs(true, null, ethAccounts[2])
-  await deregisterLocalService(colivingLibs4, contentNodeType, creatorNodeEndpoint2)
+  await deregisterLocalService(colivingLibs4, contentNodeType, contentNodeEndpoint2)
   const colivingLibs5 = await initColivingLibs(true, null, ethAccounts[4])
-  await deregisterLocalService(colivingLibs5, contentNodeType, creatorNodeEndpoint3)
+  await deregisterLocalService(colivingLibs5, contentNodeType, contentNodeEndpoint3)
   const colivingLibs6 = await initColivingLibs(true, null, ethAccounts[5])
-  await deregisterLocalService(colivingLibs6, contentNodeType, creatorNodeEndpoint4)
+  await deregisterLocalService(colivingLibs6, contentNodeType, contentNodeEndpoint4)
 }
 
 const _initAllVersions = async (colivingLibs) => {

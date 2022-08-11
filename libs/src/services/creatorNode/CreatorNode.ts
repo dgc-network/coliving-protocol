@@ -131,7 +131,7 @@ export class CreatorNode {
   /* -------------- */
 
   web3Manager: Web3Manager
-  creatorNodeEndpoint: string
+  contentNodeEndpoint: string
   isServer: boolean
   userStateManager: UserStateManager
   lazyConnect: boolean
@@ -148,7 +148,7 @@ export class CreatorNode {
   /**
    * Constructs a service class for a creator node
    * @param web3Manager
-   * @param creatorNodeEndpoint fallback creator node endpoint (to be deprecated)
+   * @param contentNodeEndpoint fallback creator node endpoint (to be deprecated)
    * @param isServer
    * @param userStateManager  singleton UserStateManager instance
    * @param lazyConnect whether or not to lazy connect (sign in) on load
@@ -160,7 +160,7 @@ export class CreatorNode {
    */
   constructor(
     web3Manager: Web3Manager,
-    creatorNodeEndpoint: string,
+    contentNodeEndpoint: string,
     isServer: boolean,
     userStateManager: UserStateManager,
     lazyConnect: boolean,
@@ -172,7 +172,7 @@ export class CreatorNode {
   ) {
     this.web3Manager = web3Manager
     // This is just 1 endpoint (primary), unlike the creator_node_endpoint field in user metadata
-    this.creatorNodeEndpoint = creatorNodeEndpoint
+    this.contentNodeEndpoint = contentNodeEndpoint
     this.isServer = isServer
     this.userStateManager = userStateManager
     this.schemas = schemas
@@ -222,14 +222,14 @@ export class CreatorNode {
   }
 
   getEndpoint() {
-    return this.creatorNodeEndpoint
+    return this.contentNodeEndpoint
   }
 
   /**
-   * Switch from one creatorNodeEndpoint to another including logging out from the old node, updating the endpoint and logging into new node */
-  async setEndpoint(creatorNodeEndpoint: string) {
+   * Switch from one contentNodeEndpoint to another including logging out from the old node, updating the endpoint and logging into new node */
+  async setEndpoint(contentNodeEndpoint: string) {
     // If the endpoints are the same, no-op.
-    if (this.creatorNodeEndpoint === creatorNodeEndpoint) return
+    if (this.contentNodeEndpoint === contentNodeEndpoint) return
 
     if (this.connected) {
       try {
@@ -239,7 +239,7 @@ export class CreatorNode {
       }
     }
     this.connected = false
-    this.creatorNodeEndpoint = creatorNodeEndpoint
+    this.contentNodeEndpoint = contentNodeEndpoint
     if (!this.lazyConnect) {
       await this.connect()
     }
@@ -464,7 +464,7 @@ export class CreatorNode {
   }
 
   async pollProcessingStatus(uuid: string) {
-    const route = this.creatorNodeEndpoint + '/async_processing_status'
+    const route = this.contentNodeEndpoint + '/async_processing_status'
     const start = Date.now()
     while (Date.now() - start < MAX_TRACK_TRANSCODE_TIMEOUT) {
       try {
@@ -635,7 +635,7 @@ export class CreatorNode {
       clientChallengeKey = challengeResp.data.challenge
       url = '/users/login/challenge'
     } catch (e) {
-      const requestUrl = this.creatorNodeEndpoint + '/users/login/challenge'
+      const requestUrl = this.contentNodeEndpoint + '/users/login/challenge'
       await this._handleErrorHelper(e as Error, requestUrl)
     }
 
@@ -775,7 +775,7 @@ export class CreatorNode {
       const requestId = uuid()
       axiosRequestObj.headers['X-Request-ID'] = requestId
 
-      axiosRequestObj.baseURL = this.creatorNodeEndpoint
+      axiosRequestObj.baseURL = this.contentNodeEndpoint
 
       // Axios throws for non-200 responses
       const url = new URL(`${axiosRequestObj.baseURL}${axiosRequestObj.url}`)
@@ -919,7 +919,7 @@ export class CreatorNode {
     const requestId = headers['X-Request-ID']
 
     let total: number
-    const url = this.creatorNodeEndpoint + route
+    const url = this.contentNodeEndpoint + route
 
     try {
       // Hack alert!
@@ -1031,7 +1031,7 @@ export class CreatorNode {
 
       try {
         const newRequestId = uuid()
-        const endpoint = `${this.creatorNodeEndpoint}/health_check`
+        const endpoint = `${this.contentNodeEndpoint}/health_check`
         const res = await axios(endpoint, {
           headers: {
             'X-Request-ID': newRequestId

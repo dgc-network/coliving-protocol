@@ -107,7 +107,7 @@ const respondToURSMRequestForSignature = async (
     nodeHealthCheckResp,
     [
       'healthy',
-      'creatorNodeEndpoint',
+      'contentNodeEndpoint',
       'spID',
       'spOwnerWallet',
       'randomBytesToSign'
@@ -119,7 +119,7 @@ const respondToURSMRequestForSignature = async (
    */
   if (
     !responseData.healthy ||
-    responseData.creatorNodeEndpoint !== nodeEndpointFromSPFactory ||
+    responseData.contentNodeEndpoint !== nodeEndpointFromSPFactory ||
     responseData.spID !== spID ||
     responseData.spOwnerWallet.toLowerCase() !==
       ownerWalletFromSPFactory.toLowerCase()

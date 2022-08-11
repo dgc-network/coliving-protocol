@@ -34,7 +34,7 @@ module.exports = async function primarySyncFromSecondary({
   const start = Date.now()
 
   // This is used only for logging record endpoint of requesting node
-  const selfEndpoint = config.get('creatorNodeEndpoint') || null
+  const selfEndpoint = config.get('contentNodeEndpoint') || null
 
   // object to track if the function errored, returned at the end of the function
   let error = null

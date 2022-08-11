@@ -71,13 +71,13 @@ async function getUserById(userId, discoveryProviderEndpoint, timeout) {
 }
 
 async function getClockValues(
-  { wallet, creator_node_endpoint: creatorNodeEndpoint, handle },
+  { wallet, creator_node_endpoint: contentNodeEndpoint, handle },
   timeout
 ) {
-  const primaryCreatorNode = CreatorNode.getPrimary(creatorNodeEndpoint)
-  const secondaryCreatorNodes = CreatorNode.getSecondaries(creatorNodeEndpoint)
+  const primaryCreatorNode = CreatorNode.getPrimary(contentNodeEndpoint)
+  const secondaryCreatorNodes = CreatorNode.getSecondaries(contentNodeEndpoint)
 
-  if (!creatorNodeEndpoint) {
+  if (!contentNodeEndpoint) {
     return {
       primaryNode: '',
       primaryClockValue: '',

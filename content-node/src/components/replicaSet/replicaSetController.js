@@ -51,7 +51,7 @@ const respondToURSMRequestForProposalController = async (req) => {
 }
 
 /**
- * Given walletPublicKeys array and target creatorNodeEndpoint, will request export
+ * Given walletPublicKeys array and target contentNodeEndpoint, will request export
  * of all user data, update DB state accordingly, fetch all files and make them available.
  *
  * This route is only run on secondaries, to export and sync data from a user's primary.
@@ -74,7 +74,7 @@ const syncRouteController = async (req, res) => {
   const nodeConfig = serviceRegistry.nodeConfig
 
   const walletPublicKeys = req.body.wallet // array
-  const creatorNodeEndpoint = req.body.creator_node_endpoint // string
+  const contentNodeEndpoint = req.body.creator_node_endpoint // string
   const immediate = req.body.immediate === true || req.body.immediate === 'true' // boolean - default false
   const blockNumber = req.body.blockNumber // integer
   const forceResync =
@@ -93,7 +93,7 @@ const syncRouteController = async (req, res) => {
   const syncType = req.body.sync_type
   if (syncType) {
     req.logger.info(
-      `SyncRouteController - sync of type: ${syncType} initiated for ${walletPublicKeys} from ${creatorNodeEndpoint}`
+      `SyncRouteController - sync of type: ${syncType} initiated for ${walletPublicKeys} from ${contentNodeEndpoint}`
     )
   }
 
@@ -106,7 +106,7 @@ const syncRouteController = async (req, res) => {
       await secondarySyncFromPrimary(
         serviceRegistry,
         walletPublicKeys,
-        creatorNodeEndpoint,
+        contentNodeEndpoint,
         blockNumber,
         forceResync
       )
@@ -127,7 +127,7 @@ const syncRouteController = async (req, res) => {
         await enqueueSync({
           serviceRegistry,
           walletPublicKeys: [wallet],
-          creatorNodeEndpoint,
+          contentNodeEndpoint,
           blockNumber,
           forceResync
         })

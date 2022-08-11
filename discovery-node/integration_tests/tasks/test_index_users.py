@@ -115,17 +115,17 @@ def get_update_name_event():
     return event_type, AttrDict({"blockHash": block_hash, "args": update_name_event})
 
 
-def get_update_creator_node_endpoint_event():
-    event_type = user_event_types_lookup["update_creator_node_endpoint"]
-    update_creator_node_endpoint_event = AttrDict(
+def get_update_content_node_endpoint_event():
+    event_type = user_event_types_lookup["update_content_node_endpoint"]
+    update_content_node_endpoint_event = AttrDict(
         {
             "_userId": 1,
-            "_creatorNodeEndpoint": "http://cn2_content-node_1:4001,http://cn1_content-node_1:4000,"
+            "_contentNodeEndpoint": "http://cn2_content-node_1:4001,http://cn1_content-node_1:4000,"
             + "http://cn3_content-node_1:4002",
         }
     )
     return event_type, AttrDict(
-        {"blockHash": block_hash, "args": update_creator_node_endpoint_event}
+        {"blockHash": block_hash, "args": update_content_node_endpoint_event}
     )
 
 
@@ -147,7 +147,7 @@ cid_metadata_client = CIDMetadataClient(
             "cover_photo_sizes": "QmQnJ8uXf886crAticzPGgrfqxq68kAxBXXcK73geFakUo",
             "bio": "ðŸŒ\n;",
             "location": "chik fil yay!",
-            "creator_node_endpoint": "https://creatornode2.coliving.co,https://creatornode.coliving.co,"
+            "content_node_endpoint": "https://creatornode2.coliving.co,https://creatornode.coliving.co,"
             + "https://content-node.coliving.co",
             "associated_wallets": {
                 "0xEfFe2E2Dfc7945ED6Fd4C07c0B668589C52819BF": {
@@ -323,10 +323,10 @@ def test_index_users(bus_mock: mock.MagicMock, app):
         assert user_record.name == helpers.bytes32_to_str(entry.args._name)
 
         # ================== Test Update User CNodes Event for legacy ==================
-        event_type, entry = get_update_creator_node_endpoint_event()
+        event_type, entry = get_update_content_node_endpoint_event()
 
-        # `creator_node_endpoint` field is none by default
-        assert user_record.creator_node_endpoint == None
+        # `content_node_endpoint` field is none by default
+        assert user_record.content_node_endpoint == None
 
         # Set primary id so that creator node endpoints is not set
         assert user_record.primary_id == None
@@ -346,16 +346,16 @@ def test_index_users(bus_mock: mock.MagicMock, app):
         )
 
         # add_user should be updated fields: handle, handle_lc, wallet
-        assert user_record.creator_node_endpoint == None
+        assert user_record.content_node_endpoint == None
 
         # Set primary id back to none
         user_record.primary_id = None
 
         # ================== Test Update User CNodes Event ==================
-        event_type, entry = get_update_creator_node_endpoint_event()
+        event_type, entry = get_update_content_node_endpoint_event()
 
-        # `creator_node_endpoint` field is none by default
-        assert user_record.creator_node_endpoint == None
+        # `content_node_endpoint` field is none by default
+        assert user_record.content_node_endpoint == None
 
         parse_user_event(
             None,  # self - not used
@@ -371,7 +371,7 @@ def test_index_users(bus_mock: mock.MagicMock, app):
         )
 
         # add_user should be updated fields: handle, handle_lc, wallet
-        assert user_record.creator_node_endpoint == entry.args._creatorNodeEndpoint
+        assert user_record.content_node_endpoint == entry.args._contentNodeEndpoint
 
         # ================== Test Update User Profile Photo Event ==================
         event_type, entry = get_update_profile_photo_event()

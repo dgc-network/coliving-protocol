@@ -5,7 +5,7 @@ const { generateTimestampAndSignature } = require('./apiSigning')
 
 // required env variables
 const PRIVATE_KEY = process.env.delegatePrivateKey
-const CREATOR_NODE_ENDPOINT = process.env.creatorNodeEndpoint
+const CREATOR_NODE_ENDPOINT = process.env.contentNodeEndpoint
 const DISCOVERY_PROVIDER_ENDPOINT = process.env.discoveryProviderEndpoint
 
 const REQUEST_CONCURRENCY_LIMIT = 20

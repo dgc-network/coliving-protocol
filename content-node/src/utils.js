@@ -215,7 +215,7 @@ async function getAllRegisteredCNodes(libs, logger) {
 
     // Filter out self endpoint
     creatorNodes = creatorNodes.filter(
-      (node) => node.endpoint !== config.get('creatorNodeEndpoint')
+      (node) => node.endpoint !== config.get('contentNodeEndpoint')
     )
 
     // Write fetched value to Redis with 30min expiry
