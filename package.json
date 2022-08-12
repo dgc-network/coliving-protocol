@@ -17,6 +17,7 @@
     "check-secrets"
   ],
   "devDependencies": {
-    "@types/node": "^18.7.1"
+    "@types/node": "^18.7.1",
+    "typescript": "^4.7.4"
   }
 }
