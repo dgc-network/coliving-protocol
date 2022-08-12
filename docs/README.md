@@ -1,4 +1,4 @@
-# docs.coliving.org
+# docs.coliving.lol
 
 ## Dev
 
