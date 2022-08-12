@@ -2,10 +2,10 @@ import {
   Hedgehog as HedgehogBase,
   WalletManager,
   getPlatformCreateKey
-} from '@coliving/hedgehog'
+} from '@audius/hedgehog'
 import type { IdentityService } from '../identity'
 import type { LocalStorage } from '../../utils/localStorage'
-import type { SetAuthFn, SetUserFn, GetFn, CreateKey } from '@coliving/hedgehog'
+import type { SetAuthFn, SetUserFn, GetFn, CreateKey } from '@audius/hedgehog'
 
 export type HedgehogConfig = {
   identityService: IdentityService

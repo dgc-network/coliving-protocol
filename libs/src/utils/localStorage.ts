@@ -1,4 +1,4 @@
-import type { LocalStorage } from '@coliving/hedgehog'
+import type { LocalStorage } from '@audius/hedgehog'
 /**
  * Local storage interface that supports async storage implementations
  */
@@ -17,4 +17,4 @@ export const getPlatformLocalStorage = (): LocalStorage => {
   }
 }
 
-export type { LocalStorage } from '@coliving/hedgehog'
+export type { LocalStorage } from '@audius/hedgehog'

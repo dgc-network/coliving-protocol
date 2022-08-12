@@ -2,7 +2,7 @@ import solanaWeb3, { Connection, Keypair, PublicKey } from '@solana/web3.js'
 import type BN from 'bn.js'
 import splToken from '@solana/spl-token'
 import anchor, { Address, Idl, Program } from '@project-serum/anchor'
-import { idl } from '@coliving/anchor-coliving-data'
+import { idl } from '@audius/anchor-audius-data'
 
 import { transferWAudioBalance } from './transfer'
 import { getBankAccountAddress, createUserBankFrom } from './userBank'

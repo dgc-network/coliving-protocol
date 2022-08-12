@@ -1,4 +1,4 @@
-import type { Hedgehog as HedgehogBase } from '@coliving/hedgehog'
+import type { Hedgehog as HedgehogBase } from '@audius/hedgehog'
 import type { EthContracts } from '../ethContracts'
 import type { ContractReceipt } from 'ethers'
 import type { EthWeb3Manager } from '../ethWeb3Manager'

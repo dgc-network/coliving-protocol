@@ -34,8 +34,8 @@
     "gen:prod:full": "node ./src/sdk/api/generator/gen.js --api-flavor full"
   },
   "dependencies": {
-    "@coliving/anchor-coliving-data": "0.0.2",
-    "@coliving/hedgehog": "2.1.0",
+    "@audius/anchor-audius-data": "0.0.2",
+    "@audius/hedgehog": "2.1.0",
     "@babel/runtime": "^7.18.3",
     "@certusone/wormhole-sdk": "0.1.1",
     "@ethersproject/solidity": "5.0.5",

@@ -1,5 +1,5 @@
-import * as ColivingData from '@coliving/anchor-coliving-data'
-import type { ColivingDataProgram } from '@coliving/anchor-coliving-data'
+import * as ColivingData from '@audius/anchor-audius-data'
+import type { ColivingDataProgram } from '@audius/anchor-audius-data'
 import anchor, { BN, Idl } from '@project-serum/anchor'
 import type { SolanaWeb3Manager } from '../solana'
 import type { Web3Manager } from '../web3Manager'
@@ -34,7 +34,7 @@ export class SolanaColivingData {
   adminAccount!: PublicKey
   provider!: anchor.Provider
   web3Manager: Web3Manager
-  // Exposes all other methods from @coliving/anchor-coliving-data for ad hoc use
+  // Exposes all other methods from @audius/anchor-audius-data for ad hoc use
   ColivingData: any
 
   /**
