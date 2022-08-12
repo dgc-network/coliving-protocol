@@ -40,9 +40,9 @@ The independent sets of smart contracts that power the on-chain aspects of the C
 
 | Contracts                                                        | Description                                                                                       
 | -- | --
-| [`eth-contracts`](https://github.com/dgc.network/coliving-protocol/tree/master/eth-contracts) | The Ethereum smart contracts that run the Coliving protocol, encompassing the Coliving ERC20 token and functionality for staking, off-chain service registration / lookup, and governance
-| [`solana-programs`](https://github.com/dgc.network/coliving-protocol/tree/master/solana-programs) | The Solana programs for the Coliving protocol, encompassing user account, content listing, and content interaction functionality
-| [`contracts`](https://github.com/dgc.network/coliving-protocol/tree/master/contracts)         | The POA network smart contracts for the Coliving protocol, encompassing user account, content listing, and content interaction functionality
+| [`eth-contracts`](eth-contracts) | The Ethereum smart contracts that run the Coliving protocol, encompassing the Coliving ERC20 token and functionality for staking, off-chain service registration / lookup, and governance
+| [`solana-programs`](solana-programs) | The Solana programs for the Coliving protocol, encompassing user account, content listing, and content interaction functionality
+| [`contracts`](contracts)         | The POA network smart contracts for the Coliving protocol, encompassing user account, content listing, and content interaction functionality
 
 ### Coliving Client Libraries
 
@@ -51,7 +51,7 @@ Coliving protocol:
 
 | Library                                                        | Description                                                                                       
 | -- | --
-| [`libs`](https://github.com/dgc.network/coliving-protocol/tree/master/libs)     | A complete javascript interface to the Coliving smart contracts and Coliving services: Identity Service, Discovery Node, Creator Node
+| [`libs`](libs)     | A complete javascript interface to the Coliving smart contracts and Coliving services: Identity Service, Discovery Node, Creator Node
 
 ### Coliving Tools & Tests
 
@@ -59,8 +59,8 @@ Packages for developers to run and test Coliving
 
 | Library                                                        | Description                                                                                       
 | -- | --
-| [`service-commands`](https://github.com/dgc.network/coliving-protocol/tree/master/service-commands)     | Tooling to run an entire instance of Coliving locally with all dependencies
-| [`mad-dog`](https://github.com/dgc.network/coliving-protocol/tree/master/mad-dog)     | A system level test suite and tests for Coliving
+| [`service-commands`](service-commands)     | Tooling to run an entire instance of Coliving locally with all dependencies
+| [`mad-dog`](mad-dog)     | A system level test suite and tests for Coliving
 
 
 ## Development
@@ -73,7 +73,7 @@ Packages for developers to run and test Coliving
 
 ### Running the protocol
 ```bash
-git clone https://github.com/dgc.network/coliving-protocol.git
+git clone https://github.com/dgc-network/coliving-protocol.git
 cd coliving-protocol
 # Add a line to your rc file of choice
 # export PROTOCOL_DIR=$(pwd)
@@ -94,7 +94,7 @@ A run discovery-node up
 A run discovery-node down
 ```
 
-For more details on the `A` command and options, run `A --help` and checkout the service commands [README](https://github.com/dgc.network/coliving-protocol/tree/master/service-commands).
+For more details on the `A` command and options, run `A --help` and checkout the service commands [README](service-commands).
 
 
 ## Contributing
@@ -109,4 +109,4 @@ vulnerability and any steps to reproduce. Details on our bug bounty program are 
 
 ## License
 
-Apache 2.0: [LICENSE file](https://github.com/dgc.network/coliving-protocol/blob/master/LICENSE)
+Apache 2.0: [LICENSE file](LICENSE)
