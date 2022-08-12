@@ -1,4 +1,4 @@
-# Coliving Identity Service
+# Identity Service
 
 The identity service maintains all the identity aspects of the Coliving ecosystem such as storing encrypted auth ciphertexts, doing Twitter oauth and relay transactions on behalf of users
 
