@@ -15,8 +15,8 @@ These off-chain services are run by community members via the Coliving staking s
 
 | Service                                                        | Description                                                                                       
 | -- | --
-| [`content-node`](content-node)                  | Maintains the availability of users' content via the Coliving Storage Protocol, including user metadata, images, and audio content. Also known as Content Node.
-| [`discovery-node`](discovery-node)      | Indexes and stores the contents of the coliving contracts on the Ethereum & Solana blockchains for clients to query via an API. Also known as Discovery Node.
+| [`content-node`](content-node)                  | Maintains the availability of users' content via the Coliving Storage Protocol, including user metadata, images, and other contents.
+| [`discovery-node`](discovery-node)      | Indexes and stores the contents of the coliving contracts on the Ethereum & Solana blockchains for clients to query via an API.
 | [`identity-service`](identity-service)          | Stores encrypted auth ciphertexts and handles oauth artifacts
 
 ### Smart Contracts & Programs
