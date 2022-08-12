@@ -1,19 +1,4 @@
-<p align="center">
-  <br/>
-  <a target="_blank" href="https://coliving.lol">
-    <img src="https://avatars1.githubusercontent.com/u/38231615?s=400&u=c00678880596dabd2746dae13a47edbe7ea7210e&v=4" width="150px" >
-  </a>
-  <br/>
-
-  <p align="center">
-    <b>Coliving Protocol</b>
-  </p>
-</p>
-
-<br/>
-<br/>
-
-[![CircleCI](https://circleci.com/gh/dgc.network/coliving-protocol/tree/master.svg?style=svg&circle-token=e272a756b49e50a54dcc096af8fd8b0405f6bf41)](https://circleci.com/gh/dgc.network/coliving-protocol/tree/master)
+# Coliving Protocol
 
 Coliving is a decentralized, community-owned music-sharing protocol
 
