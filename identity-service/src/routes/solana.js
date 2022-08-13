@@ -33,7 +33,7 @@ solanaRouter.post(
     let socialProofRequiredToSend = true
     try {
       optimizelyClient = req.app.get('optimizelyClient')
-      socialProofRequiredToSend = getFeatureFlag(optimizelyClient, FEATURE_FLAGS.SOCIAL_PROOF_TO_SEND_AUDIO_ENABLED)
+      socialProofRequiredToSend = getFeatureFlag(optimizelyClient, FEATURE_FLAGS.SOCIAL_PROOF_TO_SEND_LIVE_ENABLED)
     } catch (error) {
       req.logger.error(`failed to retrieve optimizely feature flag for socialProofRequiredToSend: ${error}`)
     }

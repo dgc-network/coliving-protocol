@@ -94,16 +94,16 @@ const snippetMap = {
     return `${parentTrackUser.name} Co-signed your Remix of ${parentTrack.title}`
   },
   [NotificationType.ChallengeReward] (notification) {
-    return `You've earned $AUDIO for completing challenges`
+    return `You've earned $LIVE for completing challenges`
   },
   [NotificationType.AddTrackToPlaylist] (notification) {
     return `${notification.playlistOwner.name} added ${notification.track.title} to ${notification.playlist.playlist_name}`
   },
   [NotificationType.TipReceive] (notification) {
-    return `${notification.sendingUser.name} sent you a tip of ${notification.amount} $AUDIO`
+    return `${notification.sendingUser.name} sent you a tip of ${notification.amount} $LIVE`
   },
   [NotificationType.Reaction] (notification) {
-    return `${notification.reactingUser.name} reacted to your tip of ${notification.amount} $AUDIO`
+    return `${notification.reactingUser.name} reacted to your tip of ${notification.amount} $LIVE`
   },
   [NotificationType.SupporterRankUp] (notification) {
     return `${notification.sendingUser.name} became your #${notification.rank} top supporter`

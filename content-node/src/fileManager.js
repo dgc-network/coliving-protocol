@@ -13,11 +13,11 @@ const { logger: genericLogger } = require('./logging')
 const { sendResponse, errorResponseBadRequest } = require('./apiHelpers')
 const { findCIDInNetwork } = require('./utils')
 
-const MAX_AUDIO_FILE_SIZE = parseInt(config.get('maxAudioFileSizeBytes')) // Default = 250,000,000 bytes = 250MB
+const MAX_LIVE_FILE_SIZE = parseInt(config.get('maxAudioFileSizeBytes')) // Default = 250,000,000 bytes = 250MB
 const MAX_MEMORY_FILE_SIZE = parseInt(config.get('maxMemoryFileSizeBytes')) // Default = 50,000,000 bytes = 50MB
 
 const ALLOWED_UPLOAD_FILE_EXTENSIONS = config.get('allowedUploadFileExtensions') // default set in config.json
-const AUDIO_MIME_TYPE_REGEX = /audio\/(.*)/
+const LIVE_MIME_TYPE_REGEX = /audio\/(.*)/
 
 const EMPTY_FILE_CID = 'QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH' // deterministic CID for a 0 byte, completely empty file
 
@@ -581,7 +581,7 @@ const trackDiskStorage = multer.diskStorage({
 
 const trackFileUpload = multer({
   storage: trackDiskStorage,
-  limits: { fileSize: MAX_AUDIO_FILE_SIZE },
+  limits: { fileSize: MAX_LIVE_FILE_SIZE },
   fileFilter: function (req, file, cb) {
     try {
       checkFileType(req.logger, {
@@ -629,13 +629,13 @@ function checkFileType(logger, { fileName, fileMimeType }) {
   // the function should call `cb` with a boolean to indicate if the file should be accepted
   if (
     ALLOWED_UPLOAD_FILE_EXTENSIONS.includes(fileExtension) &&
-    AUDIO_MIME_TYPE_REGEX.test(fileMimeType)
+    LIVE_MIME_TYPE_REGEX.test(fileMimeType)
   ) {
     logger.info(`Filetype: ${fileExtension}`)
     logger.info(`Mimetype: ${fileMimeType}`)
   } else {
     throw new Error(
-      `File type not accepted. Must be one of [${ALLOWED_UPLOAD_FILE_EXTENSIONS}] with mime type matching ${AUDIO_MIME_TYPE_REGEX}, got file ${fileExtension} with mime ${fileMimeType}`
+      `File type not accepted. Must be one of [${ALLOWED_UPLOAD_FILE_EXTENSIONS}] with mime type matching ${LIVE_MIME_TYPE_REGEX}, got file ${fileExtension} with mime ${fileMimeType}`
     )
   }
 }
@@ -645,9 +645,9 @@ function checkFileType(logger, { fileName, fileMimeType }) {
  * @param {number} fileSize file size in bytes
  */
 function checkFileSize(fileSize) {
-  if (fileSize > MAX_AUDIO_FILE_SIZE) {
+  if (fileSize > MAX_LIVE_FILE_SIZE) {
     throw new Error(
-      `File exceeded maximum size (${MAX_AUDIO_FILE_SIZE}): fileSize=${fileSize}`
+      `File exceeded maximum size (${MAX_LIVE_FILE_SIZE}): fileSize=${fileSize}`
     )
   }
 }

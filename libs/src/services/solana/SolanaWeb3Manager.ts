@@ -23,7 +23,7 @@ import {
   SubmitAttestationsConfig as SubmitAttestationsBaseConfig,
   CreateSenderParams as CreateSenderBaseParams
 } from './rewards'
-import { AUDIO_DECMIALS, WAUDIO_DECMIALS } from '../../constants'
+import { LIVE_DECMIALS, WLIVE_DECMIALS } from '../../constants'
 import type { IdentityService } from '../identity'
 import type { Web3Manager } from '../web3Manager'
 
@@ -87,9 +87,9 @@ export type SolanaWeb3Config = {
  * It wraps methods to create and lookup user banks, transfer balances, and
  * interact with the @solana/web3 library.
  *
- * Note: Callers of this class should specify all $AUDIO amounts in units of wei.
- * The internals of this class should handle the conversion from wei AUDIO to wormhole
- * $AUDIO amounts.
+ * Note: Callers of this class should specify all $LIVE amounts in units of wei.
+ * The internals of this class should handle the conversion from wei LIVE to wormhole
+ * $LIVE amounts.
  */
 
 export class SolanaWeb3Manager {
@@ -340,8 +340,8 @@ export class SolanaWeb3Manager {
         }
       }
 
-      // Multiply by 10^10 to maintain same decimals as eth $AUDIO
-      const decimals = AUDIO_DECMIALS - WAUDIO_DECMIALS
+      // Multiply by 10^10 to maintain same decimals as eth $LIVE
+      const decimals = LIVE_DECMIALS - WLIVE_DECMIALS
       return tokenAccount.amount.mul(Utils.toBN('1'.padEnd(decimals + 1, '0')))
     } catch (e) {
       return null
@@ -354,14 +354,14 @@ export class SolanaWeb3Manager {
    *  Recipient solana address which is either a user bank, wAudio token account,
    *  or a solana account. In the last case, an associated token account is created
    *  if one does not already exist for the solana account
-   * @param {BN} amount the amount of $AUDIO to send in wei units of $AUDIO.
+   * @param {BN} amount the amount of $LIVE to send in wei units of $LIVE.
    * **IMPORTANT NOTE**
-   * wAudio (Solana) does not support 10^-18 (wei) units of $AUDIO. The smallest
-   * demarcation on that side is 10^-8, so the $AUDIO amount must be >= 10^8 and have no
+   * wAudio (Solana) does not support 10^-18 (wei) units of $LIVE. The smallest
+   * demarcation on that side is 10^-8, so the $LIVE amount must be >= 10^8 and have no
    * remainder after a division with 10^8 or this method will throw.
    *
    * Generally speaking, callers into the solanaWeb3Manager should use BN.js representation
-   * of wei $AUDIO for all method calls
+   * of wei $LIVE for all method calls
    */
   async transferWAudio(recipientSolanaAddress: string, amount: BN) {
     if (!this.web3Manager) {
@@ -395,7 +395,7 @@ export class SolanaWeb3Manager {
     }
 
     console.info(
-      `Transfering ${amount.toString()} wei $AUDIO to ${recipientSolanaAddress}`
+      `Transfering ${amount.toString()} wei $LIVE to ${recipientSolanaAddress}`
     )
 
     const wAudioAmount = wAudioFromWeiAudio(amount)

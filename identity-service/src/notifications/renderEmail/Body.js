@@ -123,13 +123,13 @@ var snippetMap = (_snippetMap = {}, _defineProperty(_snippetMap, _constants.noti
   });
   return "".concat(parentTrackUser.name, " Co-signed your Remix of ").concat(parentTrack.title);
 }), _defineProperty(_snippetMap, _constants.notificationTypes.ChallengeReward, function (notification) {
-  return "You've earned $AUDIO for completing challenges";
+  return "You've earned $LIVE for completing challenges";
 }), _defineProperty(_snippetMap, _constants.notificationTypes.AddTrackToPlaylist, function (notification) {
   return "".concat(notification.playlistOwner.name, " added ").concat(notification.track.title, " to ").concat(notification.playlist.playlist_name);
 }), _defineProperty(_snippetMap, _constants.notificationTypes.TipReceive, function (notification) {
-  return "".concat(notification.sendingUser.name, " sent you a tip of ").concat(notification.amount, " $AUDIO");
+  return "".concat(notification.sendingUser.name, " sent you a tip of ").concat(notification.amount, " $LIVE");
 }), _defineProperty(_snippetMap, _constants.notificationTypes.Reaction, function (notification) {
-  return "".concat(notification.reactingUser.name, " reacted to your tip of ").concat(notification.amount, " $AUDIO");
+  return "".concat(notification.reactingUser.name, " reacted to your tip of ").concat(notification.amount, " $LIVE");
 }), _defineProperty(_snippetMap, _constants.notificationTypes.SupporterRankUp, function (notification) {
   return "".concat(notification.sendingUser.name, " became your #").concat(notification.rank, " top supporter");
 }), _defineProperty(_snippetMap, _constants.notificationTypes.SupportingRankUp, function (notification) {

@@ -21,7 +21,7 @@ Coliving consiste en tres gráficos: Artistas (creadores de contenido), Fanátic
 * **Ventiladores** tracks de streams, crean listas de reproducción, suscribirse & seguir artistas y volver a compartir contenido a los demas
 * **Proveedores de Servicio** sirven tráfico de aplicaciones, streams y ayudan a proteger la red
 
-Los proveedores de servicios pueden proporcionar uno o más de los siguientes servicios haciendo stake de $AUDIO tokens y registrando su servicio:
+Los proveedores de servicios pueden proporcionar uno o más de los siguientes servicios haciendo stake de $LIVE tokens y registrando su servicio:
 
 * Nodo de Descubrimiento \(alojar un endpoint con soporte SSL y registrar endpoint con stake\)
 * Nodo de contenido \(alojar un endpoint con soporte SSL y registrar endpoint con stake\)

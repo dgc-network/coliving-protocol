@@ -8,7 +8,7 @@ get-eth-private-key () {
     jq -rc "map(select(.userId==$1).wallet.privKey)[0]" < ~/.coliving/seed-cache.json
 }
 
-# Mints $AUDIO and transfers it to a user bank
+# Mints $LIVE and transfers it to a user bank
 seed-audio () {
     user_id=$1
     amount=$2

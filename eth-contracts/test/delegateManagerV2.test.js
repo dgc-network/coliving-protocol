@@ -2690,7 +2690,7 @@ contract('DelegateManagerV2', async (accounts) => {
 
     it('lets a service provider return to valid bounds when a delegator changes delegation', async () => {
       /**
-       * Test case to address behavior exercised in Postmortem: $AUDIO Claim Error (Claim of 0 $AUDIO)
+       * Test case to address behavior exercised in Postmortem: $LIVE Claim Error (Claim of 0 $LIVE)
        * on 05-08-2021.
        *
        * Confirm initial state of serviceType and serviceProvider

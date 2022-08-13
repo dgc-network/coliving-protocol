@@ -15,20 +15,20 @@
     "message": "Consulta, transmite y busca Artistas, Canciones y Playlists desde tu propia aplicación, juego o proyecto",
     "description": "rest-api"
   },
-  "🎧 $AUDIO": {
-    "message": "🎧 $AUDIO",
+  "🎧 $LIVE": {
+    "message": "🎧 $LIVE",
     "description": "audio"
   },
-  "Learn about the $AUDIO Token and how it keeps the network secure & operational": {
-    "message": "Aprende sobre el token $AUDIO y cómo mantiene la red segura y operativa",
+  "Learn about the $LIVE Token and how it keeps the network secure & operational": {
+    "message": "Aprende sobre el token $LIVE y cómo mantiene la red segura y operativa",
     "description": "learn-about-the-token"
   },
   "🔓 Staking The Network": {
     "message": "🔓 Staking La Red",
     "description": "staking"
   },
-  "Stake & delegate the $AUDIO token, earn rewards, and participate in Governance": {
-    "message": "Haz Stake y delega el token $AUDIO, gana recompensas y participa en la gobernanza",
+  "Stake & delegate the $LIVE token, earn rewards, and participate in Governance": {
+    "message": "Haz Stake y delega el token $LIVE, gana recompensas y participa en la gobernanza",
     "description": "staking-and-delegating"
   },
   "🛠 Run A Node": {

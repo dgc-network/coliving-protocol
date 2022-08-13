@@ -1,6 +1,6 @@
 import BN from 'bn.js'
 
-const MIN_WAUDIO_AMOUNT = new BN('10000000000') // 10^10
+const MIN_WLIVE_AMOUNT = new BN('10000000000') // 10^10
 
 /**
  * Converts Wei Audio (BN) to wAudio (BN).
@@ -8,13 +8,13 @@ const MIN_WAUDIO_AMOUNT = new BN('10000000000') // 10^10
  * The amount must be >= 10^10 and have no remainder when divided by 10^10.
  */
 export const wAudioFromWeiAudio = (amount: BN) => {
-  if (amount.lt(MIN_WAUDIO_AMOUNT)) {
+  if (amount.lt(MIN_WLIVE_AMOUNT)) {
     throw new Error(
-      `${amount.toString()} is below minimum bounds ${MIN_WAUDIO_AMOUNT.toString()}`
+      `${amount.toString()} is below minimum bounds ${MIN_WLIVE_AMOUNT.toString()}`
     )
   }
   // @ts-expect-error divmod not in types for some reason
-  const { div, mod } = amount.divmod(MIN_WAUDIO_AMOUNT)
+  const { div, mod } = amount.divmod(MIN_WLIVE_AMOUNT)
   if (!mod.isZero()) {
     throw new Error(
       `${amount.toString()} is too precise for conversion to wAudio. Remainder: ${mod.toString()}`

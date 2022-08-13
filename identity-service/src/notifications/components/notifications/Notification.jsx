@@ -213,9 +213,9 @@ const notificationMap = {
     const { title, icon } = challengeRewardsConfig[notification.challengeId]
     let bodyText
     if (notification.challengeId === 'referred') {
-      bodyText = `You’ve received ${rewardAmount} $AUDIO for being referred! Invite your friends to join to earn more!`
+      bodyText = `You’ve received ${rewardAmount} $LIVE for being referred! Invite your friends to join to earn more!`
     } else {
-      bodyText = `You’ve earned ${rewardAmount} $AUDIO for completing this challenge!`
+      bodyText = `You’ve earned ${rewardAmount} $LIVE for completing this challenge!`
     }
     return (
           <span className={'notificationText'}>
@@ -250,7 +250,7 @@ const notificationMap = {
         <HighlightText text={capitalize(notification.reactingUser.name)} />
         <BodyText text={` reacted to your tip of `} />
         <HighlightText text={notification.amount} />
-        <BodyText text={` $AUDIO`} />
+        <BodyText text={` $LIVE`} />
       </span>
     )
   },
@@ -281,7 +281,7 @@ const notificationMap = {
         <HighlightText text={capitalize(notification.sendingUser.name)} />
         <BodyText text={` sent you a tip of `} />
         <HighlightText text={notification.amount} />
-        <BodyText text={` $AUDIO`} />
+        <BodyText text={` $LIVE`} />
       </span>
     )
   }
@@ -369,7 +369,7 @@ const getTwitter = (notification) => {
       }
     }
     case NotificationType.ChallengeReward: {
-      const text = `I earned $AUDIO for completing challenges on @dgc.network #AudioRewards`
+      const text = `I earned $LIVE for completing challenges on @dgc.network #AudioRewards`
       return {
         message: 'Share this with your fans',
         href: `http://twitter.com/share?text=${encodeURIComponent(text)}`

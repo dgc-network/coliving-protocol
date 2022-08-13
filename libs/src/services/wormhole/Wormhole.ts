@@ -242,14 +242,14 @@ export class Wormhole {
   ) {
     const phases = {
       GENERATE_SOL_ROOT_ACCT: 'GENERATE_SOL_ROOT_ACCT',
-      TRANSFER_WAUDIO_TO_ROOT: 'TRANSFER_WAUDIO_TO_ROOT',
+      TRANSFER_WLIVE_TO_ROOT: 'TRANSFER_WLIVE_TO_ROOT',
       TRANFER_FROM_SOL: 'TRANFER_FROM_SOL',
       GET_SIGNED_VAA: 'GET_SIGNED_VAA',
       GET_EMITTER_ADDR: 'GET_EMITTER_ADDR',
       REDEEM_ON_ETH: 'REDEEM_ON_ETH'
     }
     let phase = phases.GENERATE_SOL_ROOT_ACCT
-    const logs = [`Transferring ${amount} WAUDIO to ${ethTargetAddress}`]
+    const logs = [`Transferring ${amount} WLIVE to ${ethTargetAddress}`]
     try {
       if (
         typeof window === 'undefined' ||
@@ -292,7 +292,7 @@ export class Wormhole {
         )
       }
 
-      phase = phases.TRANSFER_WAUDIO_TO_ROOT
+      phase = phases.TRANSFER_WLIVE_TO_ROOT
       // Move wrapped audio from then user bank account to the user's token wallet
       await this.solanaWeb3Manager.transferWAudio(
         tokenAccountInfo!.address.toString(),
@@ -439,8 +439,8 @@ export class Wormhole {
   /**
    * Locks assets owned by `fromAccount` into the Solana wormhole with a target
    * solanaAccount destination via the provided relayer wallet.
-   * @param fromAccount the account holding the ETH AUDIO to transfer
-   * @param amount The amount of AUDIO to send in WEI (18 decimals)
+   * @param fromAccount the account holding the ETH LIVE to transfer
+   * @param amount The amount of LIVE to send in WEI (18 decimals)
    * @param solanaAccount The solana token account
    * @param relayer The eth relayer to permission to aprrove and transfer
    */

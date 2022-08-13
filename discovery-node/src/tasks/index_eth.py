@@ -27,9 +27,9 @@ web3 = Web3(provider)
 
 # Prepare stub ERC-20 contract object
 eth_abi_values = load_eth_abi_values()
-AUDIO_TOKEN_CONTRACT = web3.eth.contract(abi=eth_abi_values["ColivingToken"]["abi"])
+LIVE_TOKEN_CONTRACT = web3.eth.contract(abi=eth_abi_values["ColivingToken"]["abi"])
 
-AUDIO_CHECKSUM_ADDRESS = get_token_address(web3, shared_config)
+LIVE_CHECKSUM_ADDRESS = get_token_address(web3, shared_config)
 
 
 # This implementation follows the example outlined in the link below
@@ -39,9 +39,9 @@ def index_eth_transfer_events(db, redis_inst):
         db=db,
         redis=redis_inst,
         web3=web3,
-        contract=AUDIO_TOKEN_CONTRACT,
-        event_type=AUDIO_TOKEN_CONTRACT.events.Transfer,
-        filters={"address": AUDIO_CHECKSUM_ADDRESS},
+        contract=LIVE_TOKEN_CONTRACT,
+        event_type=LIVE_TOKEN_CONTRACT.events.Transfer,
+        filters={"address": LIVE_CHECKSUM_ADDRESS},
     )
     scanner.restore()
 
@@ -85,7 +85,7 @@ def index_eth_transfer_events(db, redis_inst):
 @celery.task(name="index_eth", bind=True)
 @save_duration_metric(metric_group="celery_task")
 def index_eth(self):
-    # Index AUDIO Transfer events to update user balances
+    # Index LIVE Transfer events to update user balances
     db = index_eth.db
     redis_inst = index_eth.redis
 

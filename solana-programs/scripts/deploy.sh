@@ -163,7 +163,7 @@ anchor deploy --provider.cluster "$SOLANA_HOST"
 cd ../..
 echo
 
-echo "Deploying wAUDIO token..."
+echo "Deploying wLIVE token..."
 spl-token create-token --decimals 8 -- "$token_keypair"
 echo
 
@@ -183,11 +183,11 @@ if [[ "$valid_signer_eth_address" != "" ]]; then
     echo
 fi
 
-echo "Creating wAUDIO token account..."
+echo "Creating wLIVE token account..."
 spl-token create-account "$(solana address -k "$token_keypair")"
 echo
 
-echo "Minting 100,000,000 wAUDIO..."
+echo "Minting 100,000,000 wLIVE..."
 spl-token mint "$(solana address -k "$token_keypair")" 100000000
 echo
 
@@ -205,7 +205,7 @@ echo "Initalizing reward manager..."
     --token-mint "$(solana address -k $token_keypair)"
 echo
 
-echo "Transferring wAUDIO to reward manager..."
+echo "Transferring wLIVE to reward manager..."
 spl-token transfer \
     "$(solana address -k $token_keypair)" \
     100000000 \

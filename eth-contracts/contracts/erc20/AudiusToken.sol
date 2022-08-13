@@ -18,7 +18,7 @@ contract ColivingToken is InitializableV2,
 {
     string constant NAME = "Coliving";
 
-    string constant SYMBOL = "AUDIO";
+    string constant SYMBOL = "LIVE";
 
     // Defines number of Wei in 1 token
     // 18 decimals is standard - imitates relationship between Ether and Wei

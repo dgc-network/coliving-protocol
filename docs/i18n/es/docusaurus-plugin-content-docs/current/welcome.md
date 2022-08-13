@@ -29,6 +29,6 @@ Coliving es la alternativa más directa al consumidor a las plataformas de strea
 
 ## Documentación
 
-Este sitio de documentación le guía a través de cómo familiarizarse con los conceptos de Coliving, cómo participar en el protocolo & comunidad desde una perspectiva técnica, y cómo interactuar y usar el token $AUDIO.
+Este sitio de documentación le guía a través de cómo familiarizarse con los conceptos de Coliving, cómo participar en el protocolo & comunidad desde una perspectiva técnica, y cómo interactuar y usar el token $LIVE.
 
 Si te has encontrado aquí y estás confundido, revisa la implementación del reproductor de música de referencia en [audio. o](https://.co) y únete a nuestro [Discord](https://discord.com/invite/).

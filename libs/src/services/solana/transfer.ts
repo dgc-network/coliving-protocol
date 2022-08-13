@@ -117,7 +117,7 @@ type TransferInstructionDataConfig = {
 }
 
 /**
- * Transfer wAUDIO between wallets on solana
+ * Transfer wLIVE between wallets on solana
  */
 class TransferInstructionData {
   target_pubkey: Buffer

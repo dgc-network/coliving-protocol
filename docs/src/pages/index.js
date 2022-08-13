@@ -121,13 +121,13 @@ const Main = () => {
                 <div className="card">
                   <div className="card__header">
                     <h3>
-                      <Translate description="audio">🎧 $AUDIO</Translate>
+                      <Translate description="audio">🎧 $LIVE</Translate>
                     </h3>
                   </div>
                   <div className="card__body">
                     <p>
                       <Translate description="learn-about-the-token">
-                        Learn about the $AUDIO Token and how it keeps the
+                        Learn about the $LIVE Token and how it keeps the
                         network secure & operational
                       </Translate>
                     </p>
@@ -148,7 +148,7 @@ const Main = () => {
                   <div className="card__body">
                     <p>
                       <Translate description="staking-and-delegating">
-                        Stake & delegate the $AUDIO token, earn rewards, and
+                        Stake & delegate the $LIVE token, earn rewards, and
                         participate in Governance
                       </Translate>
                     </p>

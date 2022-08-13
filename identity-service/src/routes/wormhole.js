@@ -23,7 +23,7 @@ const getTxProps = (senderAddress, method) => {
 }
 
 /**
- * Transfers erc20 AUDIO into spl AUDIO via the wormhole
+ * Transfers erc20 LIVE into spl LIVE via the wormhole
  * Relays the Permit method to our wormhole contract
  * Relays the TransferTokens method on our wormhole contract to send the funds into wormhole
  * Redeems the funds in solana

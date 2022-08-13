@@ -20,7 +20,7 @@ Coliving consists of three demographics of users: Artists (content creators), Fa
 * **Fans** stream tracks, create playlists, subscribe to & follow artists, and re-share content to their following
 * **Service Providers** serve app traffic, stream songs, and help secure the network
 
-Service providers can provide one or more of the following services by staking $AUDIO tokens and registering their service:
+Service providers can provide one or more of the following services by staking $LIVE tokens and registering their service:
 
 * Discovery node \(host an endpoint with SSL support and register endpoint with stake\)
 * Content node \(host an endpoint with SSL support and register endpoint with stake\)
