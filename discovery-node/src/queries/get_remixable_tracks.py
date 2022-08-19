@@ -1,87 +1,87 @@
 from sqlalchemy import desc
 from sqlalchemy.orm import aliased
-from src.models.tracks.aggregate_track import AggregateTrack
-from src.models.tracks.stem import Stem
-from src.models.tracks.track import Track
+from src.models.agreements.aggregate_agreement import AggregateAgreement
+from src.models.agreements.stem import Stem
+from src.models.agreements.agreement import Agreement
 from src.queries.query_helpers import (
-    add_users_to_tracks,
+    add_users_to_agreements,
     decayed_score,
-    populate_track_metadata,
+    populate_agreement_metadata,
 )
 from src.utils import helpers
 from src.utils.db_session import get_db_read_replica
 
 
-def get_remixable_tracks(args):
-    """Gets a list of remixable tracks"""
+def get_remixable_agreements(args):
+    """Gets a list of remixable agreements"""
     db = get_db_read_replica()
     limit = args.get("limit", 25)
     current_user_id = args.get("current_user_id", None)
 
-    StemTrack = aliased(Track)
+    StemAgreement = aliased(Agreement)
 
     with db.scoped_session() as session:
-        # Subquery to get current tracks that have stems
-        remixable_tracks_subquery = (
-            session.query(Track)
-            .join(Stem, Stem.parent_track_id == Track.track_id)
-            .join(StemTrack, Stem.child_track_id == StemTrack.track_id)
+        # Subquery to get current agreements that have stems
+        remixable_agreements_subquery = (
+            session.query(Agreement)
+            .join(Stem, Stem.parent_agreement_id == Agreement.agreement_id)
+            .join(StemAgreement, Stem.child_agreement_id == StemAgreement.agreement_id)
             .filter(
-                Track.is_current == True,
-                Track.is_unlisted == False,
-                Track.is_delete == False,
-                StemTrack.is_current == True,
-                StemTrack.is_unlisted == False,
-                StemTrack.is_delete == False,
+                Agreement.is_current == True,
+                Agreement.is_unlisted == False,
+                Agreement.is_delete == False,
+                StemAgreement.is_current == True,
+                StemAgreement.is_unlisted == False,
+                StemAgreement.is_delete == False,
             )
-            .distinct(Track.track_id)
+            .distinct(Agreement.agreement_id)
             .subquery()
         )
-        track_alias = aliased(Track, remixable_tracks_subquery)
+        agreement_alias = aliased(Agreement, remixable_agreements_subquery)
 
         count_subquery = session.query(
-            AggregateTrack.track_id.label("id"),
-            (AggregateTrack.repost_count + AggregateTrack.save_count).label("count"),
+            AggregateAgreement.agreement_id.label("id"),
+            (AggregateAgreement.repost_count + AggregateAgreement.save_count).label("count"),
         ).subquery()
 
         query = (
             session.query(
-                track_alias,
+                agreement_alias,
                 count_subquery.c["count"],
-                decayed_score(count_subquery.c["count"], track_alias.created_at).label(
+                decayed_score(count_subquery.c["count"], agreement_alias.created_at).label(
                     "score"
                 ),
             )
             .join(
                 count_subquery,
-                count_subquery.c["id"] == track_alias.track_id,
+                count_subquery.c["id"] == agreement_alias.agreement_id,
             )
-            .order_by(desc("score"), desc(track_alias.track_id))
+            .order_by(desc("score"), desc(agreement_alias.agreement_id))
             .limit(limit)
         )
 
         results = query.all()
 
-        tracks = []
+        agreements = []
         for result in results:
-            track = result[0]
+            agreement = result[0]
             score = result[-1]
-            track = helpers.model_to_dictionary(track)
-            track["score"] = score
-            tracks.append(track)
+            agreement = helpers.model_to_dictionary(agreement)
+            agreement["score"] = score
+            agreements.append(agreement)
 
-        track_ids = list(map(lambda track: track["track_id"], tracks))
+        agreement_ids = list(map(lambda agreement: agreement["agreement_id"], agreements))
 
-        # Get user specific data for tracks
-        tracks = populate_track_metadata(session, track_ids, tracks, current_user_id)
+        # Get user specific data for agreements
+        agreements = populate_agreement_metadata(session, agreement_ids, agreements, current_user_id)
 
         if args.get("with_users", False):
-            add_users_to_tracks(session, tracks, current_user_id)
+            add_users_to_agreements(session, agreements, current_user_id)
         else:
-            # Remove the user from the tracks
-            tracks = [
+            # Remove the user from the agreements
+            agreements = [
                 {key: val for key, val in dict.items() if key != "user"}
-                for dict in tracks
+                for dict in agreements
             ]
 
-    return tracks
+    return agreements

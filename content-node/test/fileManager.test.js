@@ -9,7 +9,7 @@ const { libs } = require('@coliving/sdk')
 const Utils = libs.Utils
 const { logger: genericLogger } = require('../src/logging')
 const {
-  removeTrackFolder,
+  removeAgreementFolder,
   saveFileFromBufferToDisk,
   copyMultihashToFs
 } = require('../src/fileManager')
@@ -36,7 +36,7 @@ const req = {
   }
 }
 
-// TODO - instead of using ./test/test-segments, use ./test/testTrackUploadDir
+// TODO - instead of using ./test/test-segments, use ./test/testAgreementUploadDir
 // consts used for testing generateNonImageCid()
 const segmentsDirPath = 'test/test-segments'
 const sourceFile = 'segment00001.ts'
@@ -45,7 +45,7 @@ const srcPath = path.join(segmentsDirPath, sourceFile)
 // consts used for testing saveFileFromBufferToDisk()
 const metadata = {
   test: 'field1',
-  track_segments: [
+  agreement_segments: [
     {
       multihash: 'QmYfSQCgCwhxwYcdEwCkFJHicDe6rzCAb7AtLz3GrHmuU6',
       duration: 1000
@@ -236,14 +236,14 @@ describe('test fileManager', () => {
   })
 })
 
-describe('test removeTrackFolder()', async function () {
-  const testTrackUploadDir = './test/testTrackUploadDir/'
-  const trackSourceFileDir = path.join(storagePath, 'testTrackSourceFileDir')
+describe('test removeAgreementFolder()', async function () {
+  const testAgreementUploadDir = './test/testAgreementUploadDir/'
+  const agreementSourceFileDir = path.join(storagePath, 'testAgreementSourceFileDir')
 
-  // copy test dir into /test_file_storage dir to be deleted by removeTrackFolder()
+  // copy test dir into /test_file_storage dir to be deleted by removeAgreementFolder()
   beforeEach(async function () {
     // uses `fs-extra` module for recursive directory copy since base `fs` module doesn't provide this
-    await fs.copy(testTrackUploadDir, storagePath)
+    await fs.copy(testAgreementUploadDir, storagePath)
   })
 
   afterEach(async function () {
@@ -252,26 +252,26 @@ describe('test removeTrackFolder()', async function () {
 
   it.skip('TODO - Failure cases', async function () {})
 
-  it('Successfully removes track folder', async function () {
-    // Ensure expected dir state before calling removeTrackFolder()
+  it('Successfully removes agreement folder', async function () {
+    // Ensure expected dir state before calling removeAgreementFolder()
     // Note that the contents of these files are never checked as only the dir structure/file naming matters here.
-    //    The file contents don't matter as these files are never accessed after completing track upload.
-    assert.ok(fs.existsSync(trackSourceFileDir))
-    assert.ok(fs.existsSync(path.join(trackSourceFileDir, 'segments')))
-    assert.ok(fs.existsSync(path.join(trackSourceFileDir, 'master.mp3')))
+    //    The file contents don't matter as these files are never accessed after completing agreement upload.
+    assert.ok(fs.existsSync(agreementSourceFileDir))
+    assert.ok(fs.existsSync(path.join(agreementSourceFileDir, 'segments')))
+    assert.ok(fs.existsSync(path.join(agreementSourceFileDir, 'master.mp3')))
     assert.ok(
-      fs.existsSync(path.join(trackSourceFileDir, 'trackManifest.m3u8'))
+      fs.existsSync(path.join(agreementSourceFileDir, 'agreementManifest.m3u8'))
     )
-    assert.ok(fs.existsSync(path.join(trackSourceFileDir, 'transcode.mp3')))
+    assert.ok(fs.existsSync(path.join(agreementSourceFileDir, 'transcode.mp3')))
 
-    // Call removeTrackFolder + expect success
+    // Call removeAgreementFolder + expect success
     try {
-      await removeTrackFolder(req, trackSourceFileDir)
+      await removeAgreementFolder(req, agreementSourceFileDir)
     } catch (e) {
       assert.fail(e.message)
     }
 
     // Ensure dir has been removed
-    assert.ok(!fs.existsSync(trackSourceFileDir))
+    assert.ok(!fs.existsSync(agreementSourceFileDir))
   })
 })

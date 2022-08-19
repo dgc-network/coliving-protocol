@@ -50,13 +50,13 @@ def upgrade():
 
                     CREATE MATERIALIZED VIEW trending_params as
                     SELECT
-                        t.track_id as track_id,
+                        t.agreement_id as agreement_id,
                         t.genre as genre,
                         t.owner_id as owner_id,
                         ap.play_count as play_count,
                         au.follower_count as owner_follower_count,
-                        COALESCE (aggregate_track.repost_count, 0) as repost_count,
-                        COALESCE (aggregate_track.save_count, 0) as save_count,
+                        COALESCE (aggregate_agreement.repost_count, 0) as repost_count,
+                        COALESCE (aggregate_agreement.save_count, 0) as save_count,
                         COALESCE (repost_week.repost_count, 0) as repost_week_count,
                         COALESCE (repost_month.repost_count, 0) as repost_month_count,
                         COALESCE (repost_year.repost_count, 0) as repost_year_count,
@@ -65,7 +65,7 @@ def upgrade():
                         COALESCE (save_year.repost_count, 0) as save_year_count,
                         COALESCE (karma.karma, 0) as karma
                     FROM
-                        tracks t
+                        agreements t
                     -- join on subquery for aggregate play count
                     LEFT OUTER JOIN (
                         SELECT
@@ -73,7 +73,7 @@ def upgrade():
                             ap.play_item_id as play_item_id
                         FROM
                             aggregate_plays ap
-                    ) as ap ON ap.play_item_id = t.track_id
+                    ) as ap ON ap.play_item_id = t.agreement_id
                     -- join on subquery for aggregate user
                     LEFT OUTER JOIN (
                         SELECT
@@ -82,102 +82,102 @@ def upgrade():
                         FROM
                             aggregate_user au
                     ) as au ON au.user_id = t.owner_id
-                    -- join on subquery for aggregate track
+                    -- join on subquery for aggregate agreement
                     LEFT OUTER JOIN (
                         SELECT
-                            aggregate_track.track_id as track_id,
-                            aggregate_track.repost_count as repost_count,
-                            aggregate_track.save_count as save_count
+                            aggregate_agreement.agreement_id as agreement_id,
+                            aggregate_agreement.repost_count as repost_count,
+                            aggregate_agreement.save_count as save_count
                         FROM
-                            aggregate_track
-                    ) as aggregate_track ON aggregate_track.track_id = t.track_id
+                            aggregate_agreement
+                    ) as aggregate_agreement ON aggregate_agreement.agreement_id = t.agreement_id
                     -- -- join on subquery for reposts by year
                     LEFT OUTER JOIN (
                         SELECT
-                            r.repost_item_id as track_id,
+                            r.repost_item_id as agreement_id,
                             count(r.repost_item_id) as repost_count
                         FROM
                             reposts r
                         WHERE
                             r.is_current is True AND
-                            r.repost_type = 'track' AND
+                            r.repost_type = 'agreement' AND
                             r.is_delete is False AND
                             r.created_at > (now() - interval '1 year')
                         GROUP BY r.repost_item_id
-                    ) repost_year ON repost_year.track_id = t.track_id
+                    ) repost_year ON repost_year.agreement_id = t.agreement_id
                     -- -- join on subquery for reposts by month
                     LEFT OUTER JOIN (
                         SELECT
-                            r.repost_item_id as track_id,
+                            r.repost_item_id as agreement_id,
                             count(r.repost_item_id) as repost_count
                         FROM
                             reposts r
                         WHERE
                             r.is_current is True AND
-                            r.repost_type = 'track' AND
+                            r.repost_type = 'agreement' AND
                             r.is_delete is False AND
                             r.created_at > (now() - interval '1 month')
                         GROUP BY r.repost_item_id
-                    ) repost_month ON repost_month.track_id = t.track_id
+                    ) repost_month ON repost_month.agreement_id = t.agreement_id
                     -- -- join on subquery for reposts by week
                     LEFT OUTER JOIN (
                         SELECT
-                            r.repost_item_id as track_id,
+                            r.repost_item_id as agreement_id,
                             count(r.repost_item_id) as repost_count
                         FROM
                             reposts r
                         WHERE
                             r.is_current is True AND
-                            r.repost_type = 'track' AND
+                            r.repost_type = 'agreement' AND
                             r.is_delete is False AND
                             r.created_at > (now() - interval '1 week')
                         GROUP BY r.repost_item_id
-                    ) repost_week ON repost_week.track_id = t.track_id
+                    ) repost_week ON repost_week.agreement_id = t.agreement_id
                     -- -- join on subquery for saves by year
                     LEFT OUTER JOIN (
                         SELECT
-                            r.save_item_id as track_id,
+                            r.save_item_id as agreement_id,
                             count(r.save_item_id) as repost_count
                         FROM
                             saves r
                         WHERE
                             r.is_current is True AND
-                            r.save_type = 'track' AND
+                            r.save_type = 'agreement' AND
                             r.is_delete is False AND
                             r.created_at > (now() - interval '1 year')
                         GROUP BY r.save_item_id
-                    ) save_year ON save_year.track_id = t.track_id
+                    ) save_year ON save_year.agreement_id = t.agreement_id
                     -- -- join on subquery for saves by month
                     LEFT OUTER JOIN (
                         SELECT
-                            r.save_item_id as track_id,
+                            r.save_item_id as agreement_id,
                             count(r.save_item_id) as repost_count
                         FROM
                             saves r
                         WHERE
                             r.is_current is True AND
-                            r.save_type = 'track' AND
+                            r.save_type = 'agreement' AND
                             r.is_delete is False AND
                             r.created_at > (now() - interval '1 month')
                         GROUP BY r.save_item_id
-                    ) save_month ON save_month.track_id = t.track_id
+                    ) save_month ON save_month.agreement_id = t.agreement_id
                     -- -- join on subquery for saves by week
                     LEFT OUTER JOIN (
                         SELECT
-                            r.save_item_id as track_id,
+                            r.save_item_id as agreement_id,
                             count(r.save_item_id) as repost_count
                         FROM
                             saves r
                         WHERE
                             r.is_current is True AND
-                            r.save_type = 'track' AND
+                            r.save_type = 'agreement' AND
                             r.is_delete is False AND
                             r.created_at > (now() - interval '1 week')
                         GROUP BY r.save_item_id
-                    ) save_week ON save_week.track_id = t.track_id
+                    ) save_week ON save_week.agreement_id = t.agreement_id
                     LEFT OUTER JOIN (
                         SELECT
-                            save_and_reposts.item_id as track_id,
+                            save_and_reposts.item_id as agreement_id,
                             sum(au.follower_count) as karma
                         FROM
                             (
@@ -193,7 +193,7 @@ def upgrade():
                                     where
                                         is_delete is false AND
                                         is_current is true AND
-                                        repost_type = 'track'
+                                        repost_type = 'agreement'
                                     union all
                                     select
                                         user_id,
@@ -203,7 +203,7 @@ def upgrade():
                                     where
                                         is_delete is false AND
                                         is_current is true AND
-                                        save_type = 'track'
+                                        save_type = 'agreement'
                                     ) r_and_s
                                 join
                                     users
@@ -218,14 +218,14 @@ def upgrade():
                         ON
                             save_and_reposts.user_id = au.user_id
                         GROUP BY save_and_reposts.item_id
-                    ) karma ON karma.track_id = t.track_id
+                    ) karma ON karma.agreement_id = t.agreement_id
                     WHERE
                         t.is_current is True AND
                         t.is_delete is False AND
                         t.is_unlisted is False AND
                         t.stem_of is Null;
 
-                    CREATE INDEX trending_params_track_id_idx ON trending_params (track_id);
+                    CREATE INDEX trending_params_agreement_id_idx ON trending_params (agreement_id);
 
 
                     -- user_lexeme_dict from af43df9fbde0
@@ -297,29 +297,29 @@ def downgrade():
         CREATE MATERIALIZED VIEW aggregate_user as
         SELECT
             distinct(u.user_id),
-            COALESCE (user_track.track_count, 0) as track_count,
+            COALESCE (user_agreement.agreement_count, 0) as agreement_count,
             COALESCE (user_playlist.playlist_count, 0) as playlist_count,
             COALESCE (user_album.album_count, 0) as album_count,
             COALESCE (user_follower.follower_count, 0) as follower_count,
             COALESCE (user_followee.followee_count, 0) as following_count,
             COALESCE (user_repost.repost_count, 0) as repost_count,
-            COALESCE (user_track_save.save_count, 0) as track_save_count
+            COALESCE (user_agreement_save.save_count, 0) as agreement_save_count
         FROM
             users u
-        -- join on subquery for tracks created
+        -- join on subquery for agreements created
         LEFT OUTER JOIN (
             SELECT
                 t.owner_id as owner_id,
-                count(t.owner_id) as track_count
+                count(t.owner_id) as agreement_count
             FROM
-                tracks t
+                agreements t
             WHERE
                 t.is_current is True AND
                 t.is_delete is False AND
                 t.is_unlisted is False AND
                 t.stem_of is Null
             GROUP BY t.owner_id
-        ) as user_track ON user_track.owner_id = u.user_id
+        ) as user_agreement ON user_agreement.owner_id = u.user_id
         -- join on subquery for playlists created
         LEFT OUTER JOIN (
             SELECT
@@ -384,7 +384,7 @@ def downgrade():
                 r.is_delete is False
             GROUP BY r.user_id
         ) user_repost ON user_repost.user_id = u.user_id
-        -- join on subquery for track saves
+        -- join on subquery for agreement saves
         LEFT OUTER JOIN (
             SELECT
                 s.user_id as user_id,
@@ -393,10 +393,10 @@ def downgrade():
                 saves s
             WHERE
                 s.is_current is True AND
-                s.save_type = 'track' AND
+                s.save_type = 'agreement' AND
                 s.is_delete is False
             GROUP BY s.user_id
-        ) user_track_save ON user_track_save.user_id = u.user_id
+        ) user_agreement_save ON user_agreement_save.user_id = u.user_id
         WHERE
             u.is_current is True;
 
@@ -407,13 +407,13 @@ def downgrade():
 
         CREATE MATERIALIZED VIEW trending_params as
         SELECT
-            t.track_id as track_id,
+            t.agreement_id as agreement_id,
             t.genre as genre,
             t.owner_id as owner_id,
             ap.play_count as play_count,
             au.follower_count as owner_follower_count,
-            COALESCE (aggregate_track.repost_count, 0) as repost_count,
-            COALESCE (aggregate_track.save_count, 0) as save_count,
+            COALESCE (aggregate_agreement.repost_count, 0) as repost_count,
+            COALESCE (aggregate_agreement.save_count, 0) as save_count,
             COALESCE (repost_week.repost_count, 0) as repost_week_count,
             COALESCE (repost_month.repost_count, 0) as repost_month_count,
             COALESCE (repost_year.repost_count, 0) as repost_year_count,
@@ -422,7 +422,7 @@ def downgrade():
             COALESCE (save_year.repost_count, 0) as save_year_count,
             COALESCE (karma.karma, 0) as karma
         FROM
-            tracks t
+            agreements t
         -- join on subquery for aggregate play count
         LEFT OUTER JOIN (
             SELECT
@@ -430,7 +430,7 @@ def downgrade():
                 ap.play_item_id as play_item_id
             FROM
                 aggregate_plays ap
-        ) as ap ON ap.play_item_id = t.track_id
+        ) as ap ON ap.play_item_id = t.agreement_id
         -- join on subquery for aggregate user
         LEFT OUTER JOIN (
             SELECT
@@ -439,102 +439,102 @@ def downgrade():
             FROM
                 aggregate_user au
         ) as au ON au.user_id = t.owner_id
-        -- join on subquery for aggregate track
+        -- join on subquery for aggregate agreement
         LEFT OUTER JOIN (
             SELECT
-                aggregate_track.track_id as track_id,
-                aggregate_track.repost_count as repost_count,
-                aggregate_track.save_count as save_count
+                aggregate_agreement.agreement_id as agreement_id,
+                aggregate_agreement.repost_count as repost_count,
+                aggregate_agreement.save_count as save_count
             FROM
-                aggregate_track
-        ) as aggregate_track ON aggregate_track.track_id = t.track_id
+                aggregate_agreement
+        ) as aggregate_agreement ON aggregate_agreement.agreement_id = t.agreement_id
         -- -- join on subquery for reposts by year
         LEFT OUTER JOIN (
             SELECT
-                r.repost_item_id as track_id,
+                r.repost_item_id as agreement_id,
                 count(r.repost_item_id) as repost_count
             FROM
                 reposts r
             WHERE
                 r.is_current is True AND
-                r.repost_type = 'track' AND
+                r.repost_type = 'agreement' AND
                 r.is_delete is False AND
                 r.created_at > (now() - interval '1 year')
             GROUP BY r.repost_item_id
-        ) repost_year ON repost_year.track_id = t.track_id
+        ) repost_year ON repost_year.agreement_id = t.agreement_id
         -- -- join on subquery for reposts by month
         LEFT OUTER JOIN (
             SELECT
-                r.repost_item_id as track_id,
+                r.repost_item_id as agreement_id,
                 count(r.repost_item_id) as repost_count
             FROM
                 reposts r
             WHERE
                 r.is_current is True AND
-                r.repost_type = 'track' AND
+                r.repost_type = 'agreement' AND
                 r.is_delete is False AND
                 r.created_at > (now() - interval '1 month')
             GROUP BY r.repost_item_id
-        ) repost_month ON repost_month.track_id = t.track_id
+        ) repost_month ON repost_month.agreement_id = t.agreement_id
         -- -- join on subquery for reposts by week
         LEFT OUTER JOIN (
             SELECT
-                r.repost_item_id as track_id,
+                r.repost_item_id as agreement_id,
                 count(r.repost_item_id) as repost_count
             FROM
                 reposts r
             WHERE
                 r.is_current is True AND
-                r.repost_type = 'track' AND
+                r.repost_type = 'agreement' AND
                 r.is_delete is False AND
                 r.created_at > (now() - interval '1 week')
             GROUP BY r.repost_item_id
-        ) repost_week ON repost_week.track_id = t.track_id
+        ) repost_week ON repost_week.agreement_id = t.agreement_id
         -- -- join on subquery for saves by year
         LEFT OUTER JOIN (
             SELECT
-                r.save_item_id as track_id,
+                r.save_item_id as agreement_id,
                 count(r.save_item_id) as repost_count
             FROM
                 saves r
             WHERE
                 r.is_current is True AND
-                r.save_type = 'track' AND
+                r.save_type = 'agreement' AND
                 r.is_delete is False AND
                 r.created_at > (now() - interval '1 year')
             GROUP BY r.save_item_id
-        ) save_year ON save_year.track_id = t.track_id
+        ) save_year ON save_year.agreement_id = t.agreement_id
         -- -- join on subquery for saves by month
         LEFT OUTER JOIN (
             SELECT
-                r.save_item_id as track_id,
+                r.save_item_id as agreement_id,
                 count(r.save_item_id) as repost_count
             FROM
                 saves r
             WHERE
                 r.is_current is True AND
-                r.save_type = 'track' AND
+                r.save_type = 'agreement' AND
                 r.is_delete is False AND
                 r.created_at > (now() - interval '1 month')
             GROUP BY r.save_item_id
-        ) save_month ON save_month.track_id = t.track_id
+        ) save_month ON save_month.agreement_id = t.agreement_id
         -- -- join on subquery for saves by week
         LEFT OUTER JOIN (
             SELECT
-                r.save_item_id as track_id,
+                r.save_item_id as agreement_id,
                 count(r.save_item_id) as repost_count
             FROM
                 saves r
             WHERE
                 r.is_current is True AND
-                r.save_type = 'track' AND
+                r.save_type = 'agreement' AND
                 r.is_delete is False AND
                 r.created_at > (now() - interval '1 week')
             GROUP BY r.save_item_id
-        ) save_week ON save_week.track_id = t.track_id
+        ) save_week ON save_week.agreement_id = t.agreement_id
         LEFT OUTER JOIN (
             SELECT
-                save_and_reposts.item_id as track_id,
+                save_and_reposts.item_id as agreement_id,
                 sum(au.follower_count) as karma
             FROM
                 (
@@ -550,7 +550,7 @@ def downgrade():
                         where
                             is_delete is false AND
                             is_current is true AND
-                            repost_type = 'track'
+                            repost_type = 'agreement'
                         union all
                         select
                             user_id,
@@ -560,7 +560,7 @@ def downgrade():
                         where
                             is_delete is false AND
                             is_current is true AND
-                            save_type = 'track'
+                            save_type = 'agreement'
                         ) r_and_s
                     join
                         users
@@ -575,14 +575,14 @@ def downgrade():
             ON
                 save_and_reposts.user_id = au.user_id
             GROUP BY save_and_reposts.item_id
-        ) karma ON karma.track_id = t.track_id
+        ) karma ON karma.agreement_id = t.agreement_id
         WHERE
             t.is_current is True AND
             t.is_delete is False AND
             t.is_unlisted is False AND
             t.stem_of is Null;
 
-        CREATE INDEX trending_params_track_id_idx ON trending_params (track_id);
+        CREATE INDEX trending_params_agreement_id_idx ON trending_params (agreement_id);
 
 
         -- user_lexeme_dict from af43df9fbde0

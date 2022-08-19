@@ -3,8 +3,8 @@ import {
   Registry,
   UserStorage,
   UserFactory,
-  TrackStorage,
-  TrackFactory,
+  AgreementStorage,
+  AgreementFactory,
   PlaylistStorage,
   PlaylistFactory,
   UserLibraryFactory
@@ -14,22 +14,22 @@ import * as _constants from './utils/constants'
 contract('UserLibrary', async (accounts) => {
   const testUserId1 = 1
   const testUserId2 = 2
-  const testTrackId1 = 1
-  const testTrackId2 = 2
+  const testAgreementId1 = 1
+  const testAgreementId2 = 2
   const invalidUserId = 3
-  const invalidTrackId = 3
+  const invalidAgreementId = 3
   const invalidPlaylistId = 2
 
   let playlistName = 'UserLibrary Test Playlist'
-  let playlistTracks = [1, 2]
+  let playlistAgreements = [1, 2]
   let expectedPlaylistId = 1
   let playlistOwnerId = testUserId1
 
   let registry
   let userStorage
   let userFactory
-  let trackStorage
-  let trackFactory
+  let agreementStorage
+  let agreementFactory
   let playlistStorage
   let playlistFactory
   let userLibraryFactory
@@ -40,12 +40,12 @@ contract('UserLibrary', async (accounts) => {
     const networkId = Registry.network_id
     userStorage = await UserStorage.new(registry.address)
     await registry.addContract(_constants.userStorageKey, userStorage.address)
-    trackStorage = await TrackStorage.new(registry.address)
-    await registry.addContract(_constants.trackStorageKey, trackStorage.address)
+    agreementStorage = await AgreementStorage.new(registry.address)
+    await registry.addContract(_constants.agreementStorageKey, agreementStorage.address)
     userFactory = await UserFactory.new(registry.address, _constants.userStorageKey, networkId, accounts[5])
     await registry.addContract(_constants.userFactoryKey, userFactory.address)
-    trackFactory = await TrackFactory.new(registry.address, _constants.trackStorageKey, _constants.userFactoryKey, networkId)
-    await registry.addContract(_constants.trackFactoryKey, trackFactory.address)
+    agreementFactory = await AgreementFactory.new(registry.address, _constants.agreementStorageKey, _constants.userFactoryKey, networkId)
+    await registry.addContract(_constants.agreementFactoryKey, agreementFactory.address)
 
     // Deploy playlist related contracts
     playlistStorage = await PlaylistStorage.new(registry.address)
@@ -54,7 +54,7 @@ contract('UserLibrary', async (accounts) => {
       registry.address,
       _constants.playlistStorageKey,
       _constants.userFactoryKey,
-      _constants.trackFactoryKey,
+      _constants.agreementFactoryKey,
       networkId)
 
     await registry.addContract(_constants.playlistFactoryKey, playlistFactory.address)
@@ -62,7 +62,7 @@ contract('UserLibrary', async (accounts) => {
     userLibraryFactory = await UserLibraryFactory.new(
       registry.address,
       _constants.userFactoryKey,
-      _constants.trackFactoryKey,
+      _constants.agreementFactoryKey,
       _constants.playlistFactoryKey,
       networkId)
 
@@ -84,18 +84,18 @@ contract('UserLibrary', async (accounts) => {
       _constants.userHandle2,
       true)
 
-    // Add 2 tracks
-    await _lib.addTrackAndValidate(
-      trackFactory,
-      testTrackId1,
+    // Add 2 agreements
+    await _lib.addAgreementAndValidate(
+      agreementFactory,
+      testAgreementId1,
       accounts[0],
       testUserId1,
       _constants.testMultihash.digest2,
       _constants.testMultihash.hashFn,
       _constants.testMultihash.size)
-    await _lib.addTrackAndValidate(
-      trackFactory,
-      testTrackId2,
+    await _lib.addAgreementAndValidate(
+      agreementFactory,
+      testAgreementId2,
       accounts[0],
       testUserId2,
       _constants.testMultihash.digest2,
@@ -111,32 +111,32 @@ contract('UserLibrary', async (accounts) => {
       playlistName,
       false,
       false,
-      playlistTracks)
+      playlistAgreements)
   })
 
-  it('Should add one track save', async () => {
-    // add track save and validate
-    await _lib.addTrackSaveAndValidate(
+  it('Should add one agreement save', async () => {
+    // add agreement save and validate
+    await _lib.addAgreementSaveAndValidate(
       userLibraryFactory,
       accounts[0],
       testUserId1,
-      testTrackId1)
+      testAgreementId1)
   })
 
-  it('Should delete one track save', async () => {
-    // add track save and validate
-    await _lib.addTrackSaveAndValidate(
+  it('Should delete one agreement save', async () => {
+    // add agreement save and validate
+    await _lib.addAgreementSaveAndValidate(
       userLibraryFactory,
       accounts[0],
       testUserId1,
-      testTrackId1)
+      testAgreementId1)
 
-    // delete track save and validate
-    await _lib.deleteTrackSaveAndValidate(
+    // delete agreement save and validate
+    await _lib.deleteAgreementSaveAndValidate(
       userLibraryFactory,
       accounts[0],
       testUserId1,
-      testTrackId1)
+      testAgreementId1)
   })
 
   it('Should add one playlist save', async () => {
@@ -247,14 +247,14 @@ contract('UserLibrary', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
   })
 
-  it('Should fail to add track save with non-existent user and non-existent track', async () => {
+  it('Should fail to add agreement save with non-existent user and non-existent agreement', async () => {
     let caughtError = false
     try {
-      await _lib.addTrackSaveAndValidate(
+      await _lib.addAgreementSaveAndValidate(
         userLibraryFactory,
         accounts[0],
         invalidUserId,
-        testTrackId1)
+        testAgreementId1)
     } catch (e) {
       // handle expected error
       if (e.message.indexOf('Caller does not own userId') >= 0) {
@@ -268,14 +268,14 @@ contract('UserLibrary', async (accounts) => {
 
     caughtError = false
     try {
-      await _lib.addTrackSaveAndValidate(
+      await _lib.addAgreementSaveAndValidate(
         userLibraryFactory,
         accounts[0],
         testUserId1,
-        invalidTrackId)
+        invalidAgreementId)
     } catch (e) {
       // handle expected error
-      if (e.message.indexOf('must provide valid track ID') >= 0) {
+      if (e.message.indexOf('must provide valid agreement ID') >= 0) {
         caughtError = true
       } else {
         // unexpected error - throw normally
@@ -285,14 +285,14 @@ contract('UserLibrary', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
   })
 
-  it('Should fail to delete track save with non-existent user and non-existent track', async () => {
+  it('Should fail to delete agreement save with non-existent user and non-existent agreement', async () => {
     let caughtError = false
     try {
-      await _lib.deleteTrackSaveAndValidate(
+      await _lib.deleteAgreementSaveAndValidate(
         userLibraryFactory,
         accounts[0],
         invalidUserId,
-        testTrackId1)
+        testAgreementId1)
     } catch (e) {
       // handle expected error
       if (e.message.indexOf('Caller does not own userId') >= 0) {
@@ -305,14 +305,14 @@ contract('UserLibrary', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
     caughtError = false
     try {
-      await _lib.deleteTrackSaveAndValidate(
+      await _lib.deleteAgreementSaveAndValidate(
         userLibraryFactory,
         accounts[0],
         testUserId1,
-        invalidTrackId)
+        invalidAgreementId)
     } catch (e) {
       // handle expected error
-      if (e.message.indexOf('must provide valid track ID') >= 0) {
+      if (e.message.indexOf('must provide valid agreement ID') >= 0) {
         caughtError = true
       } else {
         // unexpected error - throw normally
@@ -322,14 +322,14 @@ contract('UserLibrary', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
   })
 
-  it('Should fail to add track save due to lack of ownership of user', async () => {
+  it('Should fail to add agreement save due to lack of ownership of user', async () => {
     let caughtError = false
     try {
-      await _lib.addTrackSaveAndValidate(
+      await _lib.addAgreementSaveAndValidate(
         userLibraryFactory,
         accounts[8],
         testUserId1,
-        testTrackId1)
+        testAgreementId1)
     } catch (e) {
       // handle expected error
       if (e.message.indexOf('Caller does not own userId') >= 0) {
@@ -363,21 +363,21 @@ contract('UserLibrary', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
   })
 
-  it('Should fail to delete track save due to lack of ownership of user', async () => {
-    // add track save and validate
-    await _lib.addTrackSaveAndValidate(
+  it('Should fail to delete agreement save due to lack of ownership of user', async () => {
+    // add agreement save and validate
+    await _lib.addAgreementSaveAndValidate(
       userLibraryFactory,
       accounts[0],
       testUserId1,
-      testTrackId1
+      testAgreementId1
     )
     let caughtError = false
     try {
-      await _lib.deleteTrackSaveAndValidate(
+      await _lib.deleteAgreementSaveAndValidate(
         userLibraryFactory,
         accounts[8],
         testUserId1,
-        testTrackId1
+        testAgreementId1
       )
     } catch (e) {
       // handle expected error

@@ -72,32 +72,32 @@ const snippetMap = {
       return `You have reached over ${notification.value} Followers`
     }
   },
-  [NotificationType.TrendingTrack] (notification) {
+  [NotificationType.TrendingAgreement] (notification) {
     const rank = notification.rank
     const suffix = getNumberSuffix(rank)
-    return `Your Track ${notification.entity.title} is ${notification.rank}${suffix} on Trending Right Now!`
+    return `Your Agreement ${notification.entity.title} is ${notification.rank}${suffix} on Trending Right Now!`
   },
   [NotificationType.UserSubscription] (notification) {
     const [user] = notification.users
-    if (notification.entity.type === NotificationType.Track && !isNaN(notification.entity.count) && notification.entity.count > 1) {
+    if (notification.entity.type === NotificationType.Agreement && !isNaN(notification.entity.count) && notification.entity.count > 1) {
       return `${user.name} released ${notification.entity.count} new ${notification.entity.type}`
     }
     return `${user.name} released a new ${notification.entity.type.toLowerCase()} ${notification.entity.name}`
   },
   [NotificationType.RemixCreate] (notification) {
-    const { parentTrack } = notification
-    return `New remix of your track ${parentTrack.title}`
+    const { parentAgreement } = notification
+    return `New remix of your agreement ${parentAgreement.title}`
   },
   [NotificationType.RemixCosign] (notification) {
-    const { parentTrackUser, parentTracks } = notification
-    const parentTrack = parentTracks.find(t => t.ownerId === parentTrackUser.userId)
-    return `${parentTrackUser.name} Co-signed your Remix of ${parentTrack.title}`
+    const { parentAgreementUser, parentAgreements } = notification
+    const parentAgreement = parentAgreements.find(t => t.ownerId === parentAgreementUser.userId)
+    return `${parentAgreementUser.name} Co-signed your Remix of ${parentAgreement.title}`
   },
   [NotificationType.ChallengeReward] (notification) {
     return `You've earned $LIVE for completing challenges`
   },
-  [NotificationType.AddTrackToPlaylist] (notification) {
-    return `${notification.playlistOwner.name} added ${notification.track.title} to ${notification.playlist.playlist_name}`
+  [NotificationType.AddAgreementToPlaylist] (notification) {
+    return `${notification.playlistOwner.name} added ${notification.agreement.title} to ${notification.playlist.playlist_name}`
   },
   [NotificationType.TipReceive] (notification) {
     return `${notification.sendingUser.name} sent you a tip of ${notification.amount} $LIVE`
@@ -120,7 +120,7 @@ const mapNotification = (notification) => {
       return notification
     }
     case NotificationType.RemixCosign: {
-      notification.track = notification.remixTrack
+      notification.agreement = notification.remixAgreement
       return notification
     }
     default: {

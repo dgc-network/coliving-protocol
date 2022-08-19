@@ -198,7 +198,7 @@ In this specific query, `max by (route)` will display the longest latency across
 
 ##### Quantiles from Histograms
 
-Additionally, histogram metrics keep track of metric values within different statistical buckets. In order to [expose quantile information](https://prometheus.io/docs/practices/histograms/#quantiles), combine histogram `_bucket` metrics with `histogram_quantile()`.
+Additionally, histogram metrics keep agreement of metric values within different statistical buckets. In order to [expose quantile information](https://prometheus.io/docs/practices/histograms/#quantiles), combine histogram `_bucket` metrics with `histogram_quantile()`.
 
 ### Configuring Panels
 
@@ -339,13 +339,13 @@ Thresholds are best used when Alerts are defined within Panel `Description`. The
 
 ### Saving Dashboards
 
-Modifications to production dashboards are internally tracked by Grafana in case a quick restoration is required:
+Modifications to production dashboards are internally agreemented by Grafana in case a quick restoration is required:
 
 * Navigate to a dashboard
 * Open the Dashboard `Settings` (the cog on the top-right)
 * Click on `Versions` (from the left-sidebar)
 
-However, we track our dashboards via `git` as well since this allows us seemless local development of the same dashboards.
+However, we agreement our dashboards via `git` as well since this allows us seemless local development of the same dashboards.
 
 #### Saving Screenshots
 
@@ -378,7 +378,7 @@ cd ~/coliving-protocol/monitoring
 # pull and sanatize all production dashboards
 ./grafana/bin/save-dashboards.sh
 
-# open a PR to track changes to our production dashboards
+# open a PR to agreement changes to our production dashboards
 # git checkout -b grafana-$(date "+%F-%H-%M-%S")
 # git add grafana/dashboards/
 

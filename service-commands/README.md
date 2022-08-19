@@ -136,16 +136,16 @@ node setup.js run content-node down -i 1
 - You must run `A seed create-user` at least once to access any other actions.
 - For easy reference, user details for login are recorded locally in `~/.coliving/seed-cache.json`.
 - Because libs is stateful, each action must be performed by a user ("active" user in seed cache). To control this you can pass in a user ID via the `-u` or `--user-id` flag to set the user performing the action.
-- To facilitate seeding - when you don't provide certain params (e.g. metadata), random input will be generated for you. Additionally, when you don't provide a user or track ID, for single-user/single-track actions a random ID from current seed cache will be selected. This includes setting active user randomly from cached users.
-- The exception for this is destructive actions such as `unfollow-user` and `unrepost-track`, for which you must explicitly specify IDs.
+- To facilitate seeding - when you don't provide certain params (e.g. metadata), random input will be generated for you. Additionally, when you don't provide a user or agreement ID, for single-user/single-agreement actions a random ID from current seed cache will be selected. This includes setting active user randomly from cached users.
+- The exception for this is destructive actions such as `unfollow-user` and `unrepost-agreement`, for which you must explicitly specify IDs.
 - When you are done seeding (or simply done with a set of actions) you can clear your current cache via `A seed clear`.
 
 #### Troubleshooting
 
 - In general you can have two types of errors here - errors with user input (e.g. you're trying to reference something not in cache, or providing values in the wrong format), and errors with the network requests (e.g. )
 - Ensure that your local environment is set up correctly.
-- If relying on random user/track ID selection from cache, ensure that you have enough unique values in your seed cache file located in your ~/.coliving folder. For actions involving multiple users, ensure that your users are unique.
-- If passing in user/track/playlist ID(s) ensure that the IDs exist in current seed cache (for user) / in the DB (for tracks/playlists).
+- If relying on random user/agreement ID selection from cache, ensure that you have enough unique values in your seed cache file located in your ~/.coliving folder. For actions involving multiple users, ensure that your users are unique.
+- If passing in user/agreement/playlist ID(s) ensure that the IDs exist in current seed cache (for user) / in the DB (for agreements/playlists).
 - Slack @christine for help and ideas for improvement.
 
 #### Contributing
@@ -155,9 +155,9 @@ node setup.js run content-node down -i 1
 
 #### Unsupported functionality/TODO
 
-- Uploading images for users/tracks at creation time
+- Uploading images for users/agreements at creation time
 - Batch seed for actions beyond `create-user`
 - `A seed update-user`
-- `A seed remove-playlist-track`
+- `A seed remove-playlist-agreement`
 - `--reset-state` flag to clear DB for `A seed clear`
 - (maybe?) Read actions e.g. `A seed get-users`

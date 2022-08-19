@@ -44,11 +44,11 @@ The name of the enum type (generated in sequelize) was determined with the follo
 coliving_creator_node=# SELECT pg_type.typname AS enum_type, pg_enum.enumlabel AS enum_label FROM pg_type JOIN pg_enum ON pg_enum.enumtypid = pg_type.oid;
            enum_type           | enum_label
 -------------------------------+------------
- enum_ContentBlacklists_type   | TRACK
+ enum_ContentBlacklists_type   | AGREEMENT
  enum_ContentBlacklists_type   | USER
  enum_ContentBlacklists_type   | CID
  enum_ClockRecords_sourceTable | ColivingUser
- enum_ClockRecords_sourceTable | Track
+ enum_ClockRecords_sourceTable | Agreement
  enum_ClockRecords_sourceTable | File
  enum_ClockRecords_sourceTable | Playlist
 (7 rows)
@@ -60,7 +60,7 @@ async function addPlaylistToClockRecordSourceTables(
   await queryInterface.sequelize.query(
     `
   ALTER TYPE "enum_ClockRecords_sourceTable" RENAME TO "enum_ClockRecords_sourceTable_old";
-  CREATE TYPE "enum_ClockRecords_sourceTable" AS ENUM('ColivingUser', 'Track', 'File', 'Playlist');
+  CREATE TYPE "enum_ClockRecords_sourceTable" AS ENUM('ColivingUser', 'Agreement', 'File', 'Playlist');
   ALTER TABLE "ClockRecords" ALTER COLUMN "sourceTable" TYPE "enum_ClockRecords_sourceTable" USING "sourceTable"::text::"enum_ClockRecords_sourceTable";
   DROP TYPE "enum_ClockRecords_sourceTable_old";
   `,

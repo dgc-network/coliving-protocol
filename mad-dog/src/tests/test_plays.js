@@ -18,10 +18,10 @@ const uuid = () => {
   return uuid
 }
 
-async function logTrackListen(trackId, userId, solanaListen) {
+async function logAgreementListen(agreementId, userId, solanaListen) {
   return (await axios({
     method: 'post',
-    url: `http://localhost:7000/tracks/${trackId}/listen`,
+    url: `http://localhost:7000/agreements/${agreementId}/listen`,
     data: {
       userId,
       solanaListen,
@@ -51,24 +51,24 @@ async function getTotalAggregatePlays () {
   })).data.data
 }
 
-async function submitTrackListen (executeOne, trackId, userId, solanaListen) {
+async function submitAgreementListen (executeOne, agreementId, userId, solanaListen) {
   const initialPlays = await getTotalPlays()
 
   let signature
   try {
     await executeOne(0, async (libs) => {
       const start = Date.now()
-      const identityResponse = await logTrackListen(trackId, userId, solanaListen)
+      const identityResponse = await logAgreementListen(agreementId, userId, solanaListen)
       signature = identityResponse.solTxSignature
-      console.log(`Logged track listen (trackId=${trackId}, userId=${userId}, solanaListen=${solanaListen}) | Processed in ${Date.now() - start}ms`)
+      console.log(`Logged agreement listen (agreementId=${agreementId}, userId=${userId}, solanaListen=${solanaListen}) | Processed in ${Date.now() - start}ms`)
     })
   } catch (err) {
-    console.log(`Failed to log track listen (trackId=${trackId}, userId=${userId}, solanaListen=${solanaListen}) with error ${err}`)
+    console.log(`Failed to log agreement listen (agreementId=${agreementId}, userId=${userId}, solanaListen=${solanaListen}) with error ${err}`)
     return false
   }
 
   const pollStart = Date.now()
-  console.log(`Polling track listen (trackId=${trackId}, userId=${userId}, solanaListen=${solanaListen})`)
+  console.log(`Polling agreement listen (agreementId=${agreementId}, userId=${userId}, solanaListen=${solanaListen})`)
 
   if (solanaListen) {
     let resp = (await getSolPlay(signature)).data
@@ -76,7 +76,7 @@ async function submitTrackListen (executeOne, trackId, userId, solanaListen) {
       await delay(500)
       resp = (await getSolPlay(signature)).data
       if (Date.now() - pollStart > MaxPollDurationMs) {
-        throw new Error(`Failed to find ${signature} for userId=${userId}, trackId=${trackId} in ${MaxPollDurationMs}ms`)
+        throw new Error(`Failed to find ${signature} for userId=${userId}, agreementId=${agreementId} in ${MaxPollDurationMs}ms`)
       }
     }
   } else {
@@ -85,89 +85,89 @@ async function submitTrackListen (executeOne, trackId, userId, solanaListen) {
       await delay(500)
       plays = await getTotalPlays()
       if (Date.now() - pollStart > MaxPollDurationMs) {
-        throw new Error(`Failed to find listen for userId=${userId}, trackId=${trackId} in ${MaxPollDurationMs}ms`)
+        throw new Error(`Failed to find listen for userId=${userId}, agreementId=${agreementId} in ${MaxPollDurationMs}ms`)
       }
     }
   }
 
-  console.log(`Found track listen (trackId=${trackId}, userId=${userId}, solanaListen=${solanaListen}) in discovery-node`)
+  console.log(`Found agreement listen (agreementId=${agreementId}, userId=${userId}, solanaListen=${solanaListen}) in discovery-node`)
 
   return true
 }
 
-async function trackListenCountsTest ({ executeOne }) {
-  const numBaseTracks = 10
-  const numAnonBaseTracks = 10
-  const numSolanaTracks = 250
-  const numAnonSolanaTracks = 50
+async function agreementListenCountsTest ({ executeOne }) {
+  const numBaseAgreements = 10
+  const numAnonBaseAgreements = 10
+  const numSolanaAgreements = 250
+  const numAnonSolanaAgreements = 50
 
   const start = Date.now()
 
-  const numSuccessfulSolanaTrackListens = (await Promise.all(
-    Array.from({ length: numSolanaTracks }, async () => {
+  const numSuccessfulSolanaAgreementListens = (await Promise.all(
+    Array.from({ length: numSolanaAgreements }, async () => {
       const numListens = Math.floor(Math.random() * 5) + 1
-      const trackId = Math.floor(Math.random() * 10000000)
+      const agreementId = Math.floor(Math.random() * 10000000)
       const userId = Math.floor(Math.random() * 10000000)
 
       return (await Promise.all(
         Array.from({ length: numListens }, () =>
-          submitTrackListen(executeOne, trackId, userId, true)
+          submitAgreementListen(executeOne, agreementId, userId, true)
         )
       )).reduce((a, b) => a + b, 0)
     })
   )).reduce((a, b) => a + b, 0)
 
-  const numSuccessfulAnonSolanaTrackListens = (await Promise.all(
-    Array.from({ length: numAnonSolanaTracks }, async () => {
+  const numSuccessfulAnonSolanaAgreementListens = (await Promise.all(
+    Array.from({ length: numAnonSolanaAgreements }, async () => {
       const numListens = Math.floor(Math.random() * 5) + 1
-      const trackId = Math.floor(Math.random() * 10000000)
+      const agreementId = Math.floor(Math.random() * 10000000)
     const userId = uuid()
 
       return (await Promise.all(
         Array.from({ length: numListens }, () =>
-          submitTrackListen(executeOne, trackId, userId, true)
+          submitAgreementListen(executeOne, agreementId, userId, true)
         )
       )).reduce((a, b) => a + b, 0)
     })
   )).reduce((a, b) => a + b, 0)
 
-  let numSuccessfulBaseTrackListens = 0
-  for (let i = 0; i < numBaseTracks; i++) {
+  let numSuccessfulBaseAgreementListens = 0
+  for (let i = 0; i < numBaseAgreements; i++) {
     const numListens = Math.floor(Math.random() * 5) + 1
-    const trackId = Math.floor(Math.random() * 10000000)
+    const agreementId = Math.floor(Math.random() * 10000000)
     const userId = Math.floor(Math.random() * 10000000)
 
     for (let j = 0; j < numListens; j++) {
-      if (await submitTrackListen(executeOne, trackId, userId, false)) {
-        numSuccessfulBaseTrackListens += 1
+      if (await submitAgreementListen(executeOne, agreementId, userId, false)) {
+        numSuccessfulBaseAgreementListens += 1
       }
     }
   }
 
-  let numSuccessfulAnonBaseTrackListens = 0
-  for (let i = 0; i < numAnonBaseTracks; i++) {
+  let numSuccessfulAnonBaseAgreementListens = 0
+  for (let i = 0; i < numAnonBaseAgreements; i++) {
     const numListens = Math.floor(Math.random() * 5) + 1
-    const trackId = Math.floor(Math.random() * 10000000)
+    const agreementId = Math.floor(Math.random() * 10000000)
     const userId = uuid()
 
     for (let j = 0; j < numListens; j++) {
-      if (await submitTrackListen(executeOne, trackId, userId, false)) {
-        numSuccessfulAnonBaseTrackListens += 1
+      if (await submitAgreementListen(executeOne, agreementId, userId, false)) {
+        numSuccessfulAnonBaseAgreementListens += 1
       }
     }
   }
 
-  const totalSuccessfullyProcessed = numSuccessfulSolanaTrackListens +
-    numSuccessfulAnonSolanaTrackListens +
-    numSuccessfulBaseTrackListens +
-    numSuccessfulAnonBaseTrackListens
+  const totalSuccessfullyProcessed = numSuccessfulSolanaAgreementListens +
+    numSuccessfulAnonSolanaAgreementListens +
+    numSuccessfulBaseAgreementListens +
+    numSuccessfulAnonBaseAgreementListens
 
   console.log(
     `Processed ${totalSuccessfullyProcessed} (` +
-    `solana: ${numSuccessfulSolanaTrackListens}, ` +
-    `solana anon: ${numSuccessfulAnonSolanaTrackListens}, ` +
-    `base: ${numSuccessfulBaseTrackListens}, ` +
-    `base anon: ${numSuccessfulAnonBaseTrackListens}` +
+    `solana: ${numSuccessfulSolanaAgreementListens}, ` +
+    `solana anon: ${numSuccessfulAnonSolanaAgreementListens}, ` +
+    `base: ${numSuccessfulBaseAgreementListens}, ` +
+    `base anon: ${numSuccessfulAnonBaseAgreementListens}` +
     `) in ${Date.now() - start}ms`
   )
 
@@ -186,5 +186,5 @@ async function trackListenCountsTest ({ executeOne }) {
 }
 
 module.exports = {
-  trackListenCountsTest
+  agreementListenCountsTest
 }

@@ -4,13 +4,13 @@ from flask_restx.marshalling import marshal
 
 from .common import ns
 from .playlists import full_playlist_model, playlist_model
-from .tracks import track, track_full
+from .agreements import agreement, agreement_full
 
 
 class ItemType(fields.Raw):
     def format(self, value):
-        if value == "track":
-            return "track"
+        if value == "agreement":
+            return "agreement"
         if value == "playlist":
             return "playlist"
         raise MarshallingError("Unable to marshal as activity type")
@@ -19,8 +19,8 @@ class ItemType(fields.Raw):
 class ActivityItem(fields.Raw):
     def format(self, value):
         try:
-            if value.get("track_id"):
-                return marshal(value, track)
+            if value.get("agreement_id"):
+                return marshal(value, agreement)
             if value.get("playlist_id"):
                 return marshal(value, playlist_model)
         except Exception as e:
@@ -30,8 +30,8 @@ class ActivityItem(fields.Raw):
 class FullActivityItem(fields.Raw):
     def format(self, value):
         try:
-            if value.get("track_id"):
-                return marshal(value, track_full)
+            if value.get("agreement_id"):
+                return marshal(value, agreement_full)
             if value.get("playlist_id"):
                 return marshal(value, full_playlist_model)
         except Exception as e:

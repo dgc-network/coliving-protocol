@@ -2,11 +2,11 @@ import type { BaseConstructorArgs } from './base'
 
 import { Base, Services } from './base'
 import { CreatorNode } from '../services/creatorNode'
-import { Nullable, TrackMetadata, Utils } from '../utils'
+import { Nullable, AgreementMetadata, Utils } from '../utils'
 import retry from 'async-retry'
 import type { TransactionReceipt } from 'web3-core'
 
-const TRACK_PROPS = [
+const AGREEMENT_PROPS = [
   'owner_id',
   'title',
   'length',
@@ -18,68 +18,68 @@ const TRACK_PROPS = [
   'release_date',
   'file_type'
 ]
-const TRACK_REQUIRED_PROPS = ['owner_id', 'title']
+const AGREEMENT_REQUIRED_PROPS = ['owner_id', 'title']
 
 type ChainInfo = {
   metadataMultihash: string
   metadataFileUUID: string
-  transcodedTrackUUID: string
+  transcodedAgreementUUID: string
 }
 
-export class Track extends Base {
+export class Agreement extends Base {
   constructor(...args: BaseConstructorArgs) {
     super(...args)
-    this.getTracks = this.getTracks.bind(this)
-    this.getTracksIncludingUnlisted = this.getTracksIncludingUnlisted.bind(this)
-    this.getRandomTracks = this.getRandomTracks.bind(this)
-    this.getStemsForTrack = this.getStemsForTrack.bind(this)
-    this.getRemixesOfTrack = this.getRemixesOfTrack.bind(this)
-    this.getRemixTrackParents = this.getRemixTrackParents.bind(this)
-    this.getSavedTracks = this.getSavedTracks.bind(this)
-    this.getTrendingTracks = this.getTrendingTracks.bind(this)
-    this.getTrackListens = this.getTrackListens.bind(this)
-    this.getSaversForTrack = this.getSaversForTrack.bind(this)
+    this.getAgreements = this.getAgreements.bind(this)
+    this.getAgreementsIncludingUnlisted = this.getAgreementsIncludingUnlisted.bind(this)
+    this.getRandomAgreements = this.getRandomAgreements.bind(this)
+    this.getStemsForAgreement = this.getStemsForAgreement.bind(this)
+    this.getRemixesOfAgreement = this.getRemixesOfAgreement.bind(this)
+    this.getRemixAgreementParents = this.getRemixAgreementParents.bind(this)
+    this.getSavedAgreements = this.getSavedAgreements.bind(this)
+    this.getTrendingAgreements = this.getTrendingAgreements.bind(this)
+    this.getAgreementListens = this.getAgreementListens.bind(this)
+    this.getSaversForAgreement = this.getSaversForAgreement.bind(this)
     this.getSaversForPlaylist = this.getSaversForPlaylist.bind(this)
-    this.getRepostersForTrack = this.getRepostersForTrack.bind(this)
+    this.getRepostersForAgreement = this.getRepostersForAgreement.bind(this)
     this.getRepostersForPlaylist = this.getRepostersForPlaylist.bind(this)
-    this.getListenHistoryTracks = this.getListenHistoryTracks.bind(this)
+    this.getListenHistoryAgreements = this.getListenHistoryAgreements.bind(this)
     this.checkIfDownloadAvailable = this.checkIfDownloadAvailable.bind(this)
-    this.uploadTrack = this.uploadTrack.bind(this)
-    this.uploadTrackContentToCreatorNode =
-      this.uploadTrackContentToCreatorNode.bind(this)
-    this.addTracksToChainAndCnode = this.addTracksToChainAndCnode.bind(this)
-    this.updateTrack = this.updateTrack.bind(this)
-    this.logTrackListen = this.logTrackListen.bind(this)
-    this.addTrackRepost = this.addTrackRepost.bind(this)
-    this.deleteTrackRepost = this.deleteTrackRepost.bind(this)
-    this.addTrackSave = this.addTrackSave.bind(this)
-    this.deleteTrackSave = this.deleteTrackSave.bind(this)
-    this.deleteTrack = this.deleteTrack.bind(this)
+    this.uploadAgreement = this.uploadAgreement.bind(this)
+    this.uploadAgreementContentToCreatorNode =
+      this.uploadAgreementContentToCreatorNode.bind(this)
+    this.addAgreementsToChainAndCnode = this.addAgreementsToChainAndCnode.bind(this)
+    this.updateAgreement = this.updateAgreement.bind(this)
+    this.logAgreementListen = this.logAgreementListen.bind(this)
+    this.addAgreementRepost = this.addAgreementRepost.bind(this)
+    this.deleteAgreementRepost = this.deleteAgreementRepost.bind(this)
+    this.addAgreementSave = this.addAgreementSave.bind(this)
+    this.deleteAgreementSave = this.deleteAgreementSave.bind(this)
+    this.deleteAgreement = this.deleteAgreement.bind(this)
   }
   /* ------- GETTERS ------- */
 
   /**
-   * get tracks with all relevant track data
+   * get agreements with all relevant agreement data
    * can be filtered by providing an integer array of ids
    * @param limit
    * @param offset
    * @param idsArray
-   * @param targetUserId the owner of the tracks being queried
+   * @param targetUserId the owner of the agreements being queried
    * @param sort a string of form eg. blocknumber:asc,timestamp:desc describing a sort path
    * @param minBlockNumber The min block number
-   * @param filterDeleted If set to true filters out deleted tracks
-   * @returns Array of track metadata Objects
-   * additional metadata fields on track objects:
-   *  {Integer} repost_count - repost count for given track
-   *  {Integer} save_count - save count for given track
-   *  {Array} followee_reposts - followees of current user that have reposted given track
-   *  {Boolean} has_current_user_reposted - has current user reposted given track
-   *  {Boolean} has_current_user_saved - has current user saved given track
+   * @param filterDeleted If set to true filters out deleted agreements
+   * @returns Array of agreement metadata Objects
+   * additional metadata fields on agreement objects:
+   *  {Integer} repost_count - repost count for given agreement
+   *  {Integer} save_count - save count for given agreement
+   *  {Array} followee_reposts - followees of current user that have reposted given agreement
+   *  {Boolean} has_current_user_reposted - has current user reposted given agreement
+   *  {Boolean} has_current_user_saved - has current user saved given agreement
    * @example
-   * await getTracks()
-   * await getTracks(100, 0, [3,2,6]) - Invalid track ids will not be accepted
+   * await getAgreements()
+   * await getAgreements(100, 0, [3,2,6]) - Invalid agreement ids will not be accepted
    */
-  async getTracks(
+  async getAgreements(
     limit = 100,
     offset = 0,
     idsArray: Nullable<string[]> = null,
@@ -90,7 +90,7 @@ export class Track extends Base {
     withUsers = false
   ) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getTracks(
+    return await this.discoveryProvider.getAgreements(
       limit,
       offset,
       idsArray,
@@ -103,39 +103,39 @@ export class Track extends Base {
   }
 
   /**
-   * Gets tracks by their slug and owner handle
+   * Gets agreements by their slug and owner handle
    * @param handle the owner's handle
-   * @param slug the track's slug, including collision identifiers
+   * @param slug the agreement's slug, including collision identifiers
    */
-  async getTracksByHandleAndSlug(handle: string, slug: string) {
+  async getAgreementsByHandleAndSlug(handle: string, slug: string) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getTracksByHandleAndSlug(handle, slug)
+    return await this.discoveryProvider.getAgreementsByHandleAndSlug(handle, slug)
   }
 
   /**
-   * gets all tracks matching identifiers, including unlisted.
+   * gets all agreements matching identifiers, including unlisted.
    */
-  async getTracksIncludingUnlisted(identifiers: string[], withUsers = false) {
+  async getAgreementsIncludingUnlisted(identifiers: string[], withUsers = false) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getTracksIncludingUnlisted(
+    return await this.discoveryProvider.getAgreementsIncludingUnlisted(
       identifiers,
       withUsers
     )
   }
 
   /**
-   * Gets random tracks from trending tracks for a given genre.
-   * If genre not given, will return trending tracks across all genres.
-   * Excludes specified track ids.
+   * Gets random agreements from trending agreements for a given genre.
+   * If genre not given, will return trending agreements across all genres.
+   * Excludes specified agreement ids.
    */
-  async getRandomTracks(
+  async getRandomAgreements(
     genre: string,
     limit: number,
     exclusionList: number[],
     time: string
   ) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getRandomTracks(
+    return await this.discoveryProvider.getRandomAgreements(
       genre,
       limit,
       exclusionList,
@@ -144,58 +144,58 @@ export class Track extends Base {
   }
 
   /**
-   * Gets all stems for a given trackId as an array of tracks.
+   * Gets all stems for a given agreementId as an array of agreements.
    */
-  async getStemsForTrack(trackId: number) {
+  async getStemsForAgreement(agreementId: number) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getStemsForTrack(trackId)
+    return await this.discoveryProvider.getStemsForAgreement(agreementId)
   }
 
   /**
-   * Gets all the remixes of a given trackId as an array of tracks.
+   * Gets all the remixes of a given agreementId as an array of agreements.
    */
-  async getRemixesOfTrack(
-    trackId: number,
+  async getRemixesOfAgreement(
+    agreementId: number,
     limit: Nullable<number> = null,
     offset: Nullable<number> = null
   ) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getRemixesOfTrack(
-      trackId,
+    return await this.discoveryProvider.getRemixesOfAgreement(
+      agreementId,
       limit,
       offset
     )
   }
 
   /**
-   * Gets the remix parents of a given trackId as an array of tracks.
+   * Gets the remix parents of a given agreementId as an array of agreements.
    */
-  async getRemixTrackParents(
-    trackId: number,
+  async getRemixAgreementParents(
+    agreementId: number,
     limit: Nullable<number> = null,
     offset: Nullable<number> = null
   ) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getRemixTrackParents(
-      trackId,
+    return await this.discoveryProvider.getRemixAgreementParents(
+      agreementId,
       limit,
       offset
     )
   }
 
   /**
-   * Return saved tracks for current user
-   * NOTE in returned JSON, SaveType string one of track, playlist, album
+   * Return saved agreements for current user
+   * NOTE in returned JSON, SaveType string one of agreement, playlist, album
    */
-  async getSavedTracks(limit = 100, offset = 0, withUsers = false) {
+  async getSavedAgreements(limit = 100, offset = 0, withUsers = false) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getSavedTracks(limit, offset, withUsers)
+    return await this.discoveryProvider.getSavedAgreements(limit, offset, withUsers)
   }
 
   /**
-   * Gets tracks trending on Coliving.
+   * Gets agreements trending on Coliving.
    */
-  async getTrendingTracks(
+  async getTrendingAgreements(
     genre: Nullable<string> = null,
     time: Nullable<string> = null,
     idsArray: Nullable<number[]> = null,
@@ -203,7 +203,7 @@ export class Track extends Base {
     offset: Nullable<number> = null
   ) {
     this.REQUIRES(Services.IDENTITY_SERVICE)
-    return await this.discoveryProvider.getTrendingTracks(
+    return await this.discoveryProvider.getTrendingAgreements(
       genre,
       time,
       idsArray,
@@ -213,9 +213,9 @@ export class Track extends Base {
   }
 
   /**
-   * Gets listens for tracks bucketted by timeFrame.
+   * Gets listens for agreements bucketted by timeFrame.
    */
-  async getTrackListens(
+  async getAgreementListens(
     timeFrame = null,
     idsArray = null,
     startTime = null,
@@ -224,7 +224,7 @@ export class Track extends Base {
     offset = null
   ) {
     this.REQUIRES(Services.IDENTITY_SERVICE)
-    return await this.identityService.getTrackListens(
+    return await this.identityService.getAgreementListens(
       timeFrame,
       idsArray,
       startTime,
@@ -235,18 +235,18 @@ export class Track extends Base {
   }
 
   /**
-   * get users that saved saveTrackId, sorted by follower count descending
+   * get users that saved saveAgreementId, sorted by follower count descending
    * additional metadata fields on user objects:
    *  {Integer} follower_count - follower count of given user
    * @example
-   * getSaversForTrack(100, 0, 1) - ID must be valid
+   * getSaversForAgreement(100, 0, 1) - ID must be valid
    */
-  async getSaversForTrack(limit = 100, offset = 0, saveTrackId: number) {
+  async getSaversForAgreement(limit = 100, offset = 0, saveAgreementId: number) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getSaversForTrack(
+    return await this.discoveryProvider.getSaversForAgreement(
       limit,
       offset,
-      saveTrackId
+      saveAgreementId
     )
   }
 
@@ -267,18 +267,18 @@ export class Track extends Base {
   }
 
   /**
-   * get users that reposted repostTrackId, sorted by follower count descending
+   * get users that reposted repostAgreementId, sorted by follower count descending
    * additional metadata fields on user objects:
    *  {Integer} follower_count - follower count of given user
    * @example
-   * getRepostersForTrack(100, 0, 1) - ID must be valid
+   * getRepostersForAgreement(100, 0, 1) - ID must be valid
    */
-  async getRepostersForTrack(limit = 100, offset = 0, repostTrackId: number) {
+  async getRepostersForAgreement(limit = 100, offset = 0, repostAgreementId: number) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getRepostersForTrack(
+    return await this.discoveryProvider.getRepostersForAgreement(
       limit,
       offset,
-      repostTrackId
+      repostAgreementId
     )
   }
 
@@ -303,13 +303,13 @@ export class Track extends Base {
   }
 
   /**
-   * Return saved tracks for current user
-   * NOTE in returned JSON, SaveType string one of track, playlist, album
+   * Return saved agreements for current user
+   * NOTE in returned JSON, SaveType string one of agreement, playlist, album
    */
-  async getListenHistoryTracks(limit = 100, offset = 0) {
+  async getListenHistoryAgreements(limit = 100, offset = 0) {
     this.REQUIRES(Services.IDENTITY_SERVICE)
     const userId = this.userStateManager.getCurrentUserId()
-    return await this.identityService.getListenHistoryTracks(
+    return await this.identityService.getListenHistoryAgreements(
       userId!,
       limit,
       offset
@@ -321,11 +321,11 @@ export class Track extends Base {
    */
   async checkIfDownloadAvailable(
     contentNodeEndpoints: string,
-    trackId: number
+    agreementId: number
   ) {
     return await CreatorNode.checkIfDownloadAvailable(
       contentNodeEndpoints,
-      trackId
+      agreementId
     )
   }
 
@@ -338,25 +338,25 @@ export class Track extends Base {
    * uploads metadata, and finally returns metadata multihash
    * Wraps the stateless function in ColivingLib.
    *
-   * @param trackFile ReadableStream from server, or File handle on client
+   * @param agreementFile ReadableStream from server, or File handle on client
    * @param coverArtFile ReadableStream from server, or File handle on client
-   * @param metadata json of the track metadata with all fields, missing fields will error
+   * @param metadata json of the agreement metadata with all fields, missing fields will error
    * @param onProgress callback fired with (loaded, total) on byte upload progress
    */
-  async uploadTrack(
-    trackFile: File,
+  async uploadAgreement(
+    agreementFile: File,
     coverArtFile: File,
-    metadata: TrackMetadata,
+    metadata: AgreementMetadata,
     onProgress: () => void
   ) {
     this.REQUIRES(Services.CREATOR_NODE)
-    this.FILE_IS_VALID(trackFile)
+    this.FILE_IS_VALID(agreementFile)
 
     const phases = {
       GETTING_USER: 'GETTING_USER',
-      UPLOADING_TRACK_CONTENT: 'UPLOADING_TRACK_CONTENT',
-      ADDING_TRACK: 'ADDING_TRACK',
-      ASSOCIATING_TRACK: 'ASSOCIATING_TRACK'
+      UPLOADING_AGREEMENT_CONTENT: 'UPLOADING_AGREEMENT_CONTENT',
+      ADDING_AGREEMENT: 'ADDING_AGREEMENT',
+      ASSOCIATING_AGREEMENT: 'ASSOCIATING_AGREEMENT'
     }
 
     let phase = phases.GETTING_USER
@@ -375,20 +375,20 @@ export class Track extends Base {
       }
 
       metadata.owner_id = ownerId
-      this._validateTrackMetadata(metadata)
+      this._validateAgreementMetadata(metadata)
 
-      phase = phases.UPLOADING_TRACK_CONTENT
+      phase = phases.UPLOADING_AGREEMENT_CONTENT
 
       // Upload metadata
       const {
         metadataMultihash,
         metadataFileUUID,
-        transcodedTrackUUID,
-        transcodedTrackCID
+        transcodedAgreementUUID,
+        transcodedAgreementCID
       } = await retry(
         async () => {
-          return await this.creatorNode.uploadTrackContent(
-            trackFile,
+          return await this.creatorNode.uploadAgreementContent(
+            agreementFile,
             coverArtFile,
             metadata,
             onProgress
@@ -403,37 +403,37 @@ export class Track extends Base {
           retries: 3,
           onRetry: (err) => {
             if (err) {
-              console.log('uploadTrackContent retry error: ', err)
+              console.log('uploadAgreementContent retry error: ', err)
             }
           }
         }
       )
 
-      phase = phases.ADDING_TRACK
+      phase = phases.ADDING_AGREEMENT
 
       // Write metadata to chain
       const multihashDecoded = Utils.decodeMultihash(metadataMultihash)
-      const { txReceipt, trackId } =
-        await this.contracts.TrackFactoryClient.addTrack(
+      const { txReceipt, agreementId } =
+        await this.contracts.AgreementFactoryClient.addAgreement(
           ownerId,
           multihashDecoded.digest,
           multihashDecoded.hashFn,
           multihashDecoded.size
         )
 
-      phase = phases.ASSOCIATING_TRACK
-      // Associate the track id with the file metadata and block number
-      await this.creatorNode.associateTrack(
-        trackId,
+      phase = phases.ASSOCIATING_AGREEMENT
+      // Associate the agreement id with the file metadata and block number
+      await this.creatorNode.associateAgreement(
+        agreementId,
         metadataFileUUID,
         txReceipt.blockNumber,
-        transcodedTrackUUID
+        transcodedAgreementUUID
       )
       return {
         blockHash: txReceipt.blockHash,
         blockNumber: txReceipt.blockNumber,
-        trackId,
-        transcodedTrackCID,
+        agreementId,
+        transcodedAgreementCID,
         error: false
       }
     } catch (e) {
@@ -448,16 +448,16 @@ export class Track extends Base {
    * Takes in a readable stream if isServer is true, or a file reference if isServer is
    * false.
    * WARNING: Uploads file to creator node, but does not call contracts
-   * Please pair this with the addTracksToChainAndCnode
+   * Please pair this with the addAgreementsToChainAndCnode
    */
-  async uploadTrackContentToCreatorNode(
-    trackFile: File,
+  async uploadAgreementContentToCreatorNode(
+    agreementFile: File,
     coverArtFile: File,
-    metadata: TrackMetadata,
+    metadata: AgreementMetadata,
     onProgress: () => void
   ) {
     this.REQUIRES(Services.CREATOR_NODE)
-    this.FILE_IS_VALID(trackFile)
+    this.FILE_IS_VALID(agreementFile)
 
     if (coverArtFile) this.FILE_IS_VALID(coverArtFile)
 
@@ -469,18 +469,18 @@ export class Track extends Base {
     }
 
     metadata.owner_id = ownerId
-    this._validateTrackMetadata(metadata)
+    this._validateAgreementMetadata(metadata)
 
     // Upload metadata
     const {
       metadataMultihash,
       metadataFileUUID,
-      transcodedTrackCID,
-      transcodedTrackUUID
+      transcodedAgreementCID,
+      transcodedAgreementUUID
     } = await retry(
       async () => {
-        return await this.creatorNode.uploadTrackContent(
-          trackFile,
+        return await this.creatorNode.uploadAgreementContent(
+          agreementFile,
           coverArtFile,
           metadata,
           onProgress
@@ -495,7 +495,7 @@ export class Track extends Base {
         retries: 3,
         onRetry: (err) => {
           if (err) {
-            console.log('uploadTrackContentToCreatorNode retry error: ', err)
+            console.log('uploadAgreementContentToCreatorNode retry error: ', err)
           }
         }
       }
@@ -503,17 +503,17 @@ export class Track extends Base {
     return {
       metadataMultihash,
       metadataFileUUID,
-      transcodedTrackCID,
-      transcodedTrackUUID
+      transcodedAgreementCID,
+      transcodedAgreementUUID
     }
   }
 
   /**
    * Takes an array of [{metadataMultihash, metadataFileUUID}, {}, ]
-   * Adds tracks to chain for this user
-   * Associates tracks with user on creatorNode
+   * Adds agreements to chain for this user
+   * Associates agreements with user on creatorNode
    */
-  async addTracksToChainAndCnode(trackMultihashAndUUIDList: ChainInfo[]) {
+  async addAgreementsToChainAndCnode(agreementMultihashAndUUIDList: ChainInfo[]) {
     this.REQUIRES(Services.CREATOR_NODE)
     const ownerId = this.userStateManager.getCurrentUserId()
     if (!ownerId) {
@@ -522,21 +522,21 @@ export class Track extends Base {
 
     const addedToChain: Array<
       Omit<ChainInfo, 'metadataMultihash'> & {
-        trackId: number
+        agreementId: number
         txReceipt: TransactionReceipt
       }
     > = []
     let requestFailed = false
     await Promise.all(
-      trackMultihashAndUUIDList.map(async (trackInfo, i) => {
+      agreementMultihashAndUUIDList.map(async (agreementInfo, i) => {
         try {
-          const { metadataMultihash, metadataFileUUID, transcodedTrackUUID } =
-            trackInfo
+          const { metadataMultihash, metadataFileUUID, transcodedAgreementUUID } =
+            agreementInfo
 
           // Write metadata to chain
           const multihashDecoded = Utils.decodeMultihash(metadataMultihash)
-          const { txReceipt, trackId } =
-            await this.contracts.TrackFactoryClient.addTrack(
+          const { txReceipt, agreementId } =
+            await this.contracts.AgreementFactoryClient.addAgreement(
               ownerId,
               multihashDecoded.digest,
               multihashDecoded.hashFn,
@@ -544,9 +544,9 @@ export class Track extends Base {
             )
 
           addedToChain[i] = {
-            trackId,
+            agreementId,
             metadataFileUUID,
-            transcodedTrackUUID,
+            transcodedAgreementUUID,
             txReceipt
           }
         } catch (e) {
@@ -556,49 +556,49 @@ export class Track extends Base {
       })
     )
 
-    // Any failures in addTrack to the blockchain will prevent further progress
-    // The list of successful track uploads is returned for revert operations by caller
+    // Any failures in addAgreement to the blockchain will prevent further progress
+    // The list of successful agreement uploads is returned for revert operations by caller
     if (
       requestFailed ||
-      addedToChain.filter(Boolean).length !== trackMultihashAndUUIDList.length
+      addedToChain.filter(Boolean).length !== agreementMultihashAndUUIDList.length
     ) {
       return {
         error: true,
-        trackIds: addedToChain.filter(Boolean).map((x) => x.trackId)
+        agreementIds: addedToChain.filter(Boolean).map((x) => x.agreementId)
       }
     }
 
     const associatedWithCreatorNode = []
     try {
       await Promise.all(
-        addedToChain.map(async (chainTrackInfo) => {
-          const metadataFileUUID = chainTrackInfo.metadataFileUUID
-          const transcodedTrackUUID = chainTrackInfo.transcodedTrackUUID
-          const trackId = chainTrackInfo.trackId
-          await this.creatorNode.associateTrack(
-            trackId,
+        addedToChain.map(async (chainAgreementInfo) => {
+          const metadataFileUUID = chainAgreementInfo.metadataFileUUID
+          const transcodedAgreementUUID = chainAgreementInfo.transcodedAgreementUUID
+          const agreementId = chainAgreementInfo.agreementId
+          await this.creatorNode.associateAgreement(
+            agreementId,
             metadataFileUUID,
-            chainTrackInfo.txReceipt.blockNumber,
-            transcodedTrackUUID
+            chainAgreementInfo.txReceipt.blockNumber,
+            transcodedAgreementUUID
           )
-          associatedWithCreatorNode.push(trackId)
+          associatedWithCreatorNode.push(agreementId)
         })
       )
     } catch (e) {
       // Any single failure to associate also prevents further progress
-      // Returning error code along with associated track ids allows caller to revert
-      return { error: true, trackIds: addedToChain.map((x) => x.trackId) }
+      // Returning error code along with associated agreement ids allows caller to revert
+      return { error: true, agreementIds: addedToChain.map((x) => x.agreementId) }
     }
 
-    return { error: false, trackIds: addedToChain.map((x) => x.trackId) }
+    return { error: false, agreementIds: addedToChain.map((x) => x.agreementId) }
   }
 
   /**
-   * Updates an existing track given metadata. This function expects that all associated files
-   * such as track content, cover art are already on creator node.
-   * @param metadata json of the track metadata with all fields, missing fields will error
+   * Updates an existing agreement given metadata. This function expects that all associated files
+   * such as agreement content, cover art are already on creator node.
+   * @param metadata json of the agreement metadata with all fields, missing fields will error
    */
-  async updateTrack(metadata: TrackMetadata) {
+  async updateAgreement(metadata: AgreementMetadata) {
     this.REQUIRES(Services.CREATOR_NODE)
     this.IS_OBJECT(metadata)
 
@@ -608,41 +608,41 @@ export class Track extends Base {
       throw new Error('No users loaded for this wallet')
     }
     metadata.owner_id = ownerId
-    this._validateTrackMetadata(metadata)
+    this._validateAgreementMetadata(metadata)
 
     // Upload new metadata
     const { metadataMultihash, metadataFileUUID } =
-      await this.creatorNode.uploadTrackMetadata(metadata)
+      await this.creatorNode.uploadAgreementMetadata(metadata)
     // Write the new metadata to chain
     const multihashDecoded = Utils.decodeMultihash(metadataMultihash)
-    const trackId = metadata.track_id
-    const { txReceipt } = await this.contracts.TrackFactoryClient.updateTrack(
-      trackId,
+    const agreementId = metadata.agreement_id
+    const { txReceipt } = await this.contracts.AgreementFactoryClient.updateAgreement(
+      agreementId,
       ownerId,
       multihashDecoded.digest,
       multihashDecoded.hashFn,
       multihashDecoded.size
     )
-    // Re-associate the track id with the new metadata
-    await this.creatorNode.associateTrack(
-      trackId,
+    // Re-associate the agreement id with the new metadata
+    await this.creatorNode.associateAgreement(
+      agreementId,
       metadataFileUUID,
       txReceipt.blockNumber
     )
     return {
       blockHash: txReceipt.blockHash,
       blockNumber: txReceipt.blockNumber,
-      trackId
+      agreementId
     }
   }
 
   /**
-   * Logs a track listen for a given user id.
+   * Logs a agreement listen for a given user id.
    * @param unauthUuid account for those not logged in
-   * @param trackId listened to
+   * @param agreementId listened to
    */
-  async logTrackListen(
-    trackId: number,
+  async logAgreementListen(
+    agreementId: number,
     unauthUuid: number,
     solanaListen = false
   ) {
@@ -650,8 +650,8 @@ export class Track extends Base {
     const accountId = this.userStateManager.getCurrentUserId()
 
     const userId = accountId ?? unauthUuid
-    return await this.identityService.logTrackListen(
-      trackId,
+    return await this.identityService.logAgreementListen(
+      agreementId,
       userId,
       null,
       null,
@@ -659,64 +659,64 @@ export class Track extends Base {
     )
   }
 
-  /** Adds a repost for a given user and track
-   * @param trackId track being reposted
+  /** Adds a repost for a given user and agreement
+   * @param agreementId agreement being reposted
    */
-  async addTrackRepost(trackId: number) {
+  async addAgreementRepost(agreementId: number) {
     const userId = this.userStateManager.getCurrentUserId()
-    return await this.contracts.SocialFeatureFactoryClient.addTrackRepost(
+    return await this.contracts.SocialFeatureFactoryClient.addAgreementRepost(
       userId!,
-      trackId
+      agreementId
     )
   }
 
   /**
-   * Deletes a repost for a given user and track
-   * @param track id of deleted repost
+   * Deletes a repost for a given user and agreement
+   * @param agreement id of deleted repost
    */
-  async deleteTrackRepost(trackId: number) {
+  async deleteAgreementRepost(agreementId: number) {
     const userId = this.userStateManager.getCurrentUserId()
-    return await this.contracts.SocialFeatureFactoryClient.deleteTrackRepost(
+    return await this.contracts.SocialFeatureFactoryClient.deleteAgreementRepost(
       userId!,
-      trackId
+      agreementId
     )
   }
 
   /**
-   * Adds a rack save for a given user and track
-   * @param trackId track being saved
+   * Adds a rack save for a given user and agreement
+   * @param agreementId agreement being saved
    */
-  async addTrackSave(trackId: number) {
+  async addAgreementSave(agreementId: number) {
     const userId = this.userStateManager.getCurrentUserId()
-    return await this.contracts.UserLibraryFactoryClient.addTrackSave(
+    return await this.contracts.UserLibraryFactoryClient.addAgreementSave(
       userId!,
-      trackId
+      agreementId
     )
   }
 
   /**
-   * Delete a track save for a given user and track
-   * @param trackId save being removed
+   * Delete a agreement save for a given user and agreement
+   * @param agreementId save being removed
    */
-  async deleteTrackSave(trackId: number) {
+  async deleteAgreementSave(agreementId: number) {
     const userId = this.userStateManager.getCurrentUserId()
-    return await this.contracts.UserLibraryFactoryClient.deleteTrackSave(
+    return await this.contracts.UserLibraryFactoryClient.deleteAgreementSave(
       userId!,
-      trackId
+      agreementId
     )
   }
 
   /**
-   * Marks a tracks as deleted
-   * @param trackId
+   * Marks a agreements as deleted
+   * @param agreementId
    */
-  async deleteTrack(trackId: number) {
-    return await this.contracts.TrackFactoryClient.deleteTrack(trackId)
+  async deleteAgreement(agreementId: number) {
+    return await this.contracts.AgreementFactoryClient.deleteAgreement(agreementId)
   }
 
   /* ------- PRIVATE  ------- */
 
-  _validateTrackMetadata(metadata: TrackMetadata) {
-    this.OBJECT_HAS_PROPS(metadata, TRACK_PROPS, TRACK_REQUIRED_PROPS)
+  _validateAgreementMetadata(metadata: AgreementMetadata) {
+    this.OBJECT_HAS_PROPS(metadata, AGREEMENT_PROPS, AGREEMENT_REQUIRED_PROPS)
   }
 }

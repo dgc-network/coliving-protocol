@@ -18,7 +18,7 @@ const {
   testEthereumConstants,
   destroyUsers
 } = require('./lib/dataSeeds')
-const { uploadTrack } = require('./lib/helpers')
+const { uploadAgreement } = require('./lib/helpers')
 const BlacklistManager = require('../src/blacklistManager')
 const sessionManager = require('../src/sessionManager')
 const exportComponentService = require('../src/components/replicaSet/exportComponentService')
@@ -31,7 +31,7 @@ chai.use(require('sinon-chai'))
 chai.use(require('chai-as-promised'))
 const { expect } = chai
 
-const testAudioFilePath = path.resolve(__dirname, 'testTrack.mp3')
+const testAudioFilePath = path.resolve(__dirname, 'testAgreement.mp3')
 
 const DUMMY_WALLET = testEthereumConstants.pubKey.toLowerCase()
 const DUMMY_CNODEUSER_BLOCKNUMBER = 10
@@ -88,15 +88,15 @@ describe('test nodesync', async function () {
       sessionToken,
       metadataMultihash,
       metadataFileUUID,
-      transcodedTrackCID,
-      transcodedTrackUUID,
-      trackSegments,
+      transcodedAgreementCID,
+      transcodedAgreementUUID,
+      agreementSegments,
       sourceFile
-    let trackMetadataMultihash, trackMetadataFileUUID
+    let agreementMetadataMultihash, agreementMetadataFileUUID
 
     const { pubKey } = testEthereumConstants
 
-    const createUserAndTrack = async function () {
+    const createUserAndAgreement = async function () {
       // Create user
       ;({ cnodeUserUUID, sessionToken, userId } = await createStarterCNodeUser(
         userId
@@ -131,55 +131,55 @@ describe('test nodesync', async function () {
         .send(associateRequest)
         .expect(200)
 
-      /** Upload a track */
+      /** Upload a agreement */
 
-      const trackUploadResponse = await uploadTrack(
+      const agreementUploadResponse = await uploadAgreement(
         testAudioFilePath,
         cnodeUserUUID,
         mockServiceRegistry.blacklistManager
       )
 
-      transcodedTrackUUID = trackUploadResponse.transcodedTrackUUID
-      trackSegments = trackUploadResponse.track_segments
-      sourceFile = trackUploadResponse.source_file
-      transcodedTrackCID = trackUploadResponse.transcodedTrackCID
+      transcodedAgreementUUID = agreementUploadResponse.transcodedAgreementUUID
+      agreementSegments = agreementUploadResponse.agreement_segments
+      sourceFile = agreementUploadResponse.source_file
+      transcodedAgreementCID = agreementUploadResponse.transcodedAgreementCID
 
-      // Upload track metadata
-      const trackMetadata = {
+      // Upload agreement metadata
+      const agreementMetadata = {
         metadata: {
           test: 'field1',
           owner_id: 1,
-          track_segments: trackSegments
+          agreement_segments: agreementSegments
         },
         source_file: sourceFile
       }
-      const trackMetadataResp = await request(app)
-        .post('/tracks/metadata')
+      const agreementMetadataResp = await request(app)
+        .post('/agreements/metadata')
         .set('X-Session-ID', sessionToken)
         .set('User-Id', userId)
         .set('Enforce-Write-Quorum', false)
-        .send(trackMetadata)
+        .send(agreementMetadata)
         .expect(200)
-      trackMetadataMultihash = trackMetadataResp.body.data.metadataMultihash
-      trackMetadataFileUUID = trackMetadataResp.body.data.metadataFileUUID
+      agreementMetadataMultihash = agreementMetadataResp.body.data.metadataMultihash
+      agreementMetadataFileUUID = agreementMetadataResp.body.data.metadataFileUUID
 
-      // associate track + track metadata with blockchain ID
+      // associate agreement + agreement metadata with blockchain ID
       await request(app)
-        .post('/tracks')
+        .post('/agreements')
         .set('X-Session-ID', sessionToken)
         .set('User-Id', userId)
         .send({
-          blockchainTrackId: 1,
+          blockchainAgreementId: 1,
           blockNumber: 10,
-          metadataFileUUID: trackMetadataFileUUID,
-          transcodedTrackUUID
+          metadataFileUUID: agreementMetadataFileUUID,
+          transcodedAgreementUUID
         })
     }
 
-    describe('Confirm export object matches DB state with a user and track', async function () {
+    describe('Confirm export object matches DB state with a user and agreement', async function () {
       beforeEach(setupDepsAndApp)
 
-      beforeEach(createUserAndTrack)
+      beforeEach(createUserAndAgreement)
 
       it('Test default export', async function () {
         // confirm maxExportClockValueRange > cnodeUser.clock
@@ -211,12 +211,12 @@ describe('test nodesync', async function () {
           })
         )
 
-        // get transcoded track file
+        // get transcoded agreement file
         const copy320 = stringifiedDateFields(
           await models.File.findOne({
             where: {
-              multihash: transcodedTrackCID,
-              fileUUID: transcodedTrackUUID,
+              multihash: transcodedAgreementCID,
+              fileUUID: transcodedAgreementUUID,
               type: 'copy320'
             },
             raw: true
@@ -224,13 +224,13 @@ describe('test nodesync', async function () {
         )
 
         // get segment files
-        const segmentHashes = trackSegments.map((t) => t.multihash)
+        const segmentHashes = agreementSegments.map((t) => t.multihash)
         const segmentFiles = await Promise.all(
           segmentHashes.map(async (hash, i) => {
             const segment = await models.File.findOne({
               where: {
                 multihash: hash,
-                type: 'track'
+                type: 'agreement'
               },
               raw: true
             })
@@ -238,12 +238,12 @@ describe('test nodesync', async function () {
           })
         )
 
-        // Get track metadata file
-        const trackMetadataFile = stringifiedDateFields(
+        // Get agreement metadata file
+        const agreementMetadataFile = stringifiedDateFields(
           await models.File.findOne({
             where: {
-              multihash: trackMetadataMultihash,
-              fileUUID: trackMetadataFileUUID,
+              multihash: agreementMetadataMultihash,
+              fileUUID: agreementMetadataFileUUID,
               clock: 36
             },
             raw: true
@@ -279,12 +279,12 @@ describe('test nodesync', async function () {
           })
         ).map(stringifiedDateFields)
 
-        // get track file
-        const trackFile = stringifiedDateFields(
-          await models.Track.findOne({
+        // get agreement file
+        const agreementFile = stringifiedDateFields(
+          await models.Agreement.findOne({
             where: {
               cnodeUserUUID,
-              metadataFileUUID: trackMetadataFileUUID
+              metadataFileUUID: agreementMetadataFileUUID
             },
             raw: true
           })
@@ -301,12 +301,12 @@ describe('test nodesync', async function () {
           [cnodeUserUUID]: {
             ...cnodeUser,
             colivingUsers: [colivingUser],
-            tracks: [trackFile],
+            agreements: [agreementFile],
             files: [
               userMetadataFile,
               copy320,
               ...segmentFiles,
-              trackMetadataFile
+              agreementMetadataFile
             ],
             clockRecords,
             clockInfo
@@ -331,7 +331,7 @@ describe('test nodesync', async function () {
 
       beforeEach(setupDepsAndApp)
 
-      beforeEach(createUserAndTrack)
+      beforeEach(createUserAndAgreement)
 
       /**
        * unset maxExportClockValueRange
@@ -402,9 +402,9 @@ describe('test nodesync', async function () {
           })
         ).map(stringifiedDateFields)
 
-        // get tracks
-        const tracks = (
-          await models.Track.findAll({
+        // get agreements
+        const agreements = (
+          await models.Agreement.findAll({
             where: {
               cnodeUserUUID,
               clock: {
@@ -441,7 +441,7 @@ describe('test nodesync', async function () {
           [cnodeUserUUID]: {
             ...cnodeUser,
             colivingUsers,
-            tracks,
+            agreements,
             files,
             clockRecords,
             clockInfo
@@ -524,9 +524,9 @@ describe('test nodesync', async function () {
           })
         ).map(stringifiedDateFields)
 
-        // get tracks
-        const tracks = (
-          await models.Track.findAll({
+        // get agreements
+        const agreements = (
+          await models.Agreement.findAll({
             where: {
               cnodeUserUUID,
               clock: {
@@ -565,7 +565,7 @@ describe('test nodesync', async function () {
           [cnodeUserUUID]: {
             ...cnodeUser,
             colivingUsers,
-            tracks,
+            agreements,
             files,
             clockRecords,
             clockInfo
@@ -645,9 +645,9 @@ describe('test nodesync', async function () {
           })
         ).map(stringifiedDateFields)
 
-        // get tracks
-        const tracks = (
-          await models.Track.findAll({
+        // get agreements
+        const agreements = (
+          await models.Agreement.findAll({
             where: {
               cnodeUserUUID,
               clock: {
@@ -686,7 +686,7 @@ describe('test nodesync', async function () {
           [cnodeUserUUID]: {
             ...cnodeUser,
             colivingUsers,
-            tracks,
+            agreements,
             files,
             clockRecords,
             clockInfo
@@ -706,7 +706,7 @@ describe('test nodesync', async function () {
     describe('Confirm export throws an error with inconsistent data', async function () {
       beforeEach(setupDepsAndApp)
 
-      beforeEach(createUserAndTrack)
+      beforeEach(createUserAndAgreement)
 
       it('Inconsistent clock values', async function () {
         // Mock findOne DB function for cnodeUsers and ClockRecords
@@ -807,13 +807,13 @@ describe('test nodesync', async function () {
     const unpackSampleExportData = (sampleExportFilePath) => {
       const sampleExport = JSON.parse(fs.readFileSync(sampleExportFilePath))
       const cnodeUser = Object.values(sampleExport.data.cnodeUsers)[0]
-      const { colivingUsers, tracks, files, clockRecords } = cnodeUser
+      const { colivingUsers, agreements, files, clockRecords } = cnodeUser
 
       return {
         sampleExport,
         cnodeUser,
         colivingUsers,
-        tracks,
+        agreements,
         files,
         clockRecords
       }
@@ -879,14 +879,14 @@ describe('test nodesync', async function () {
     }
 
     /**
-     * Verifies local state for user with CNodeUserUUID for ColivingUsers, Tracks, Files, and ClockRecords tables
+     * Verifies local state for user with CNodeUserUUID for ColivingUsers, Agreements, Files, and ClockRecords tables
      */
     const verifyLocalStateForUser = async ({
       cnodeUserUUID,
       exportedColivingUsers,
       exportedClockRecords,
       exportedFiles,
-      exportedTracks
+      exportedAgreements
     }) => {
       /**
        * Verify local ColivingUsers table state matches export
@@ -908,12 +908,12 @@ describe('test nodesync', async function () {
       }
 
       /**
-       * Verify local Tracks table state matches export
+       * Verify local Agreements table state matches export
        */
-      for (const exportedTrack of exportedTracks) {
-        const { clock, blockchainId, metadataFileUUID } = exportedTrack
+      for (const exportedAgreement of exportedAgreements) {
+        const { clock, blockchainId, metadataFileUUID } = exportedAgreement
         const localFile = stringifiedDateFields(
-          await models.Track.findOne({
+          await models.Agreement.findOne({
             where: {
               clock,
               cnodeUserUUID,
@@ -925,7 +925,7 @@ describe('test nodesync', async function () {
         )
         assert.deepStrictEqual(
           _.omit(localFile, ['cnodeUserUUID']),
-          _.omit(exportedTrack, ['cnodeUserUUID'])
+          _.omit(exportedAgreement, ['cnodeUserUUID'])
         )
       }
 
@@ -1000,7 +1000,7 @@ describe('test nodesync', async function () {
         sampleExport,
         cnodeUser: exportedCnodeUser,
         colivingUsers: exportedColivingUsers,
-        tracks: exportedTracks,
+        agreements: exportedAgreements,
         files: exportedFiles,
         clockRecords: exportedClockRecords
       } = unpackSampleExportData(sampleExportDummyCIDPath)
@@ -1031,7 +1031,7 @@ describe('test nodesync', async function () {
         exportedColivingUsers,
         exportedClockRecords,
         exportedFiles,
-        exportedTracks
+        exportedAgreements
       })
     })
 
@@ -1040,7 +1040,7 @@ describe('test nodesync', async function () {
         sampleExport,
         cnodeUser: exportedCnodeUser,
         colivingUsers: exportedColivingUsers,
-        tracks: exportedTracks,
+        agreements: exportedAgreements,
         files: exportedFiles,
         clockRecords: exportedClockRecords
       } = unpackSampleExportData(sampleExportDummyCIDFromClock2Path)
@@ -1078,7 +1078,7 @@ describe('test nodesync', async function () {
         exportedColivingUsers,
         exportedClockRecords,
         exportedFiles,
-        exportedTracks
+        exportedAgreements
       })
     })
 
@@ -1087,7 +1087,7 @@ describe('test nodesync', async function () {
         sampleExport,
         cnodeUser: exportedCnodeUser,
         colivingUsers: exportedColivingUsers,
-        tracks: exportedTracks,
+        agreements: exportedAgreements,
         files: exportedFiles,
         clockRecords: exportedClockRecords
       } = unpackSampleExportData(sampleExportDummyCIDPath)
@@ -1129,7 +1129,7 @@ describe('test nodesync', async function () {
         exportedColivingUsers,
         exportedClockRecords,
         exportedFiles,
-        exportedTracks
+        exportedAgreements
       })
     })
   })
@@ -1159,19 +1159,19 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
     const cnodeUserInfo = Object.values(exportObj.data.cnodeUsers)[0]
     const cnodeUser = _.omit(cnodeUserInfo, [
       'colivingUsers',
-      'tracks',
+      'agreements',
       'files',
       'clockRecords',
       'clockInfo'
     ])
-    const { colivingUsers, tracks, files, clockRecords, clockInfo } =
+    const { colivingUsers, agreements, files, clockRecords, clockInfo } =
       cnodeUserInfo
 
     return {
       exportObj,
       cnodeUser,
       colivingUsers,
-      tracks,
+      agreements,
       files,
       clockRecords,
       clockInfo
@@ -1216,7 +1216,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
     const response = {
       cnodeUser: null,
       colivingUsers: null,
-      tracks: null,
+      agreements: null,
       files: null,
       clockRecords: null
     }
@@ -1246,13 +1246,13 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
     ).map(stringifiedDateFields)
     response.colivingUsers = colivingUsers
 
-    const tracks = (
-      await models.Track.findAll({
+    const agreements = (
+      await models.Agreement.findAll({
         where: { cnodeUserUUID },
         raw: true
       })
     ).map(stringifiedDateFields)
-    response.tracks = tracks
+    response.agreements = agreements
 
     const files = (
       await models.File.findAll({
@@ -1294,7 +1294,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
     const {
       cnodeUser: localCNodeUser,
       colivingUsers: localColivingUsers,
-      tracks: localTracks,
+      agreements: localAgreements,
       files: localFiles,
       clockRecords: localClockRecords
     } = await fetchDBStateForWallet(wallet)
@@ -1302,7 +1302,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
     const {
       exportedCnodeUser,
       exportedColivingUsers,
-      exportedTracks,
+      exportedAgreements,
       exportedFiles,
       exportedClockRecords
     } = exportedUserData
@@ -1318,7 +1318,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
       comparisonOmittedFields
     )
 
-    assertTableEquality(localTracks, exportedTracks, comparisonOmittedFields)
+    assertTableEquality(localAgreements, exportedAgreements, comparisonOmittedFields)
 
     assertTableEquality(localFiles, exportedFiles, comparisonOmittedFields)
 
@@ -1433,7 +1433,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
       exportObj,
       cnodeUser: exportedCnodeUser,
       colivingUsers: exportedColivingUsers,
-      tracks: exportedTracks,
+      agreements: exportedAgreements,
       files: exportedFiles,
       clockRecords: exportedClockRecords
     } = unpackExportDataFromFile(exportFilePath)
@@ -1459,7 +1459,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
     const exportedUserData = {
       exportedCnodeUser,
       exportedColivingUsers,
-      exportedTracks,
+      exportedAgreements,
       exportedFiles,
       exportedClockRecords
     }
@@ -1471,7 +1471,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
       exportObj,
       cnodeUser: exportedCnodeUser,
       colivingUsers: exportedColivingUsers,
-      tracks: exportedTracks,
+      agreements: exportedAgreements,
       files: exportedFiles,
       clockRecords: exportedClockRecords
     } = unpackExportDataFromFile(exportFilePath)
@@ -1495,7 +1495,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
     const {
       cnodeUser: localInitialCNodeUser,
       colivingUsers: localInitialColivingUsers,
-      tracks: localInitialTracks,
+      agreements: localInitialAgreements,
       files: localInitialFiles,
       clockRecords: localInitialClockRecords
     } = await fetchDBStateForWallet(USER_1_WALLET)
@@ -1515,7 +1515,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
       'metadataFileUUID'
     ])
 
-    assertTableEquality(localInitialTracks, [], comparisonOmittedFields)
+    assertTableEquality(localInitialAgreements, [], comparisonOmittedFields)
 
     assertTableEquality(
       localInitialFiles,
@@ -1543,7 +1543,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
     const {
       cnodeUser: localFinalCNodeUser,
       colivingUsers: localFinalColivingUsers,
-      tracks: localFinalTracks,
+      agreements: localFinalAgreements,
       files: localFinalFiles,
       clockRecords: localFinalClockRecords
     } = await fetchDBStateForWallet(USER_1_WALLET)
@@ -1568,7 +1568,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
       comparisonOmittedFields
     )
 
-    assertTableEquality(localFinalTracks, exportedTracks, [
+    assertTableEquality(localFinalAgreements, exportedAgreements, [
       ...comparisonOmittedFields,
       'clock'
     ])
@@ -1600,7 +1600,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
       exportObj,
       cnodeUser: exportedCnodeUser,
       colivingUsers: exportedColivingUsers,
-      tracks: exportedTracks,
+      agreements: exportedAgreements,
       files: exportedFiles,
       clockRecords: exportedClockRecords
     } = unpackExportDataFromFile(exportFilePath)
@@ -1665,7 +1665,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
     const exportedUserData = {
       exportedCnodeUser,
       exportedColivingUsers,
-      exportedTracks,
+      exportedAgreements,
       exportedFiles,
       exportedClockRecords
     }
@@ -1677,7 +1677,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
       exportObj,
       cnodeUser: exportedCnodeUser,
       colivingUsers: exportedColivingUsers,
-      tracks: exportedTracks,
+      agreements: exportedAgreements,
       files: exportedFiles,
       clockRecords: exportedClockRecords
     } = unpackExportDataFromFile(exportFilePath)
@@ -1696,19 +1696,19 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
     /**
      * Write all secondary state to primary
      */
-    const exportedNonTrackFiles = exportedFiles.filter((file) =>
-      models.File.NonTrackTypes.includes(file.type)
+    const exportedNonAgreementFiles = exportedFiles.filter((file) =>
+      models.File.NonAgreementTypes.includes(file.type)
     )
-    const exportedTrackFiles = exportedFiles.filter((file) =>
-      models.File.TrackTypes.includes(file.type)
+    const exportedAgreementFiles = exportedFiles.filter((file) =>
+      models.File.AgreementTypes.includes(file.type)
     )
     const transaction = await models.sequelize.transaction()
     await models.CNodeUser.create({ ...exportedCnodeUser }, { transaction })
     await models.ClockRecord.bulkCreate(exportedClockRecords, { transaction })
-    await models.File.bulkCreate(exportedNonTrackFiles, { transaction })
+    await models.File.bulkCreate(exportedNonAgreementFiles, { transaction })
     await models.ColivingUser.bulkCreate(exportedColivingUsers, { transaction })
-    await models.File.bulkCreate(exportedTrackFiles, { transaction })
-    await models.Track.bulkCreate(exportedTracks, { transaction })
+    await models.File.bulkCreate(exportedAgreementFiles, { transaction })
+    await models.Agreement.bulkCreate(exportedAgreements, { transaction })
     await transaction.commit()
 
     /**
@@ -1737,7 +1737,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
     const exportedUserData = {
       exportedCnodeUser,
       exportedColivingUsers,
-      exportedTracks,
+      exportedAgreements,
       exportedFiles,
       exportedClockRecords
     }
@@ -1749,7 +1749,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
       exportObj,
       cnodeUser: exportedCnodeUser,
       colivingUsers: exportedColivingUsers,
-      tracks: exportedTracks,
+      agreements: exportedAgreements,
       files: exportedFiles,
       clockRecords: exportedClockRecords
     } = unpackExportDataFromFile(exportFilePath)
@@ -1768,11 +1768,11 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
     /**
      * Write all secondary state to primary
      */
-    const exportedNonTrackFiles = exportedFiles.filter((file) =>
-      models.File.NonTrackTypes.includes(file.type)
+    const exportedNonAgreementFiles = exportedFiles.filter((file) =>
+      models.File.NonAgreementTypes.includes(file.type)
     )
-    const exportedTrackFiles = exportedFiles.filter((file) =>
-      models.File.TrackTypes.includes(file.type)
+    const exportedAgreementFiles = exportedFiles.filter((file) =>
+      models.File.AgreementTypes.includes(file.type)
     )
     const transaction = await models.sequelize.transaction()
     const cnodeUser = await models.CNodeUser.create(exportedCnodeUser, {
@@ -1780,10 +1780,10 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
       transaction
     })
     await models.ClockRecord.bulkCreate(exportedClockRecords, { transaction })
-    await models.File.bulkCreate(exportedNonTrackFiles, { transaction })
+    await models.File.bulkCreate(exportedNonAgreementFiles, { transaction })
     await models.ColivingUser.bulkCreate(exportedColivingUsers, { transaction })
-    await models.File.bulkCreate(exportedTrackFiles, { transaction })
-    await models.Track.bulkCreate(exportedTracks, { transaction })
+    await models.File.bulkCreate(exportedAgreementFiles, { transaction })
+    await models.Agreement.bulkCreate(exportedAgreements, { transaction })
     await transaction.commit()
 
     /**
@@ -1814,7 +1814,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
     const {
       cnodeUser: localInitialCNodeUser,
       colivingUsers: localInitialColivingUsers,
-      tracks: localInitialTracks,
+      agreements: localInitialAgreements,
       files: localInitialFiles,
       clockRecords: localInitialClockRecords
     } = await fetchDBStateForWallet(USER_1_WALLET)
@@ -1835,7 +1835,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
     const {
       cnodeUser: localFinalCNodeUser,
       colivingUsers: localFinalColivingUsers,
-      tracks: localFinalTracks,
+      agreements: localFinalAgreements,
       files: localFinalFiles,
       clockRecords: localFinalClockRecords
     } = await fetchDBStateForWallet(USER_1_WALLET)
@@ -1844,7 +1844,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
 
     assertTableEquality(localFinalColivingUsers, localInitialColivingUsers, [])
 
-    assertTableEquality(localFinalTracks, localInitialTracks, [])
+    assertTableEquality(localFinalAgreements, localInitialAgreements, [])
 
     assertTableEquality(localFinalFiles, localInitialFiles, [])
 

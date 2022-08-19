@@ -8,11 +8,11 @@ from src.challenges.challenge import (
     FullEventMetadata,
 )
 from src.models.rewards.user_challenge import UserChallenge
-from src.models.tracks.track import Track
+from src.models.agreements.agreement import Agreement
 
 
-class TrackUploadChallengeUpdater(ChallengeUpdater):
-    """Updates a track upload challenge.
+class AgreementUploadChallengeUpdater(ChallengeUpdater):
+    """Updates a agreement upload challenge.
     Requires user to upload N (e.g. 3) songs to Coliving to complete the challenge.
     """
 
@@ -27,10 +27,10 @@ class TrackUploadChallengeUpdater(ChallengeUpdater):
     ):
         if step_count is None or starting_block is None:
             raise Exception(
-                "Expected a step count and starting block for track upload challenge"
+                "Expected a step count and starting block for agreement upload challenge"
             )
 
-        num_tracks_per_user = self._get_num_track_uploads_by_user(
+        num_agreements_per_user = self._get_num_agreement_uploads_by_user(
             session,
             user_challenges,
             starting_block,
@@ -39,7 +39,7 @@ class TrackUploadChallengeUpdater(ChallengeUpdater):
         # Update the user_challenges
         for user_challenge in user_challenges:
             # Update step count
-            user_challenge.current_step_count = num_tracks_per_user[
+            user_challenge.current_step_count = num_agreements_per_user[
                 user_challenge.user_id
             ]
             # Update completion
@@ -48,26 +48,26 @@ class TrackUploadChallengeUpdater(ChallengeUpdater):
                 and user_challenge.current_step_count >= step_count
             )
 
-    def _get_num_track_uploads_by_user(
+    def _get_num_agreement_uploads_by_user(
         self, session: Session, user_challenges: List[UserChallenge], block_number: int
     ):
         user_ids = [user_challenge.user_id for user_challenge in user_challenges]
-        tracks = (
-            session.query(Track)
+        agreements = (
+            session.query(Agreement)
             .filter(
-                Track.owner_id.in_(user_ids),
-                Track.blocknumber >= block_number,
-                Track.is_current == True,
-                Track.is_delete == False,
-                Track.is_unlisted == False,
-                Track.stem_of == None,
+                Agreement.owner_id.in_(user_ids),
+                Agreement.blocknumber >= block_number,
+                Agreement.is_current == True,
+                Agreement.is_delete == False,
+                Agreement.is_unlisted == False,
+                Agreement.stem_of == None,
             )
             .all()
         )
-        num_tracks_per_user = Counter(map(lambda t: t.owner_id, tracks))
-        return num_tracks_per_user
+        num_agreements_per_user = Counter(map(lambda t: t.owner_id, agreements))
+        return num_agreements_per_user
 
 
-track_upload_challenge_manager = ChallengeManager(
-    "track-upload", TrackUploadChallengeUpdater()
+agreement_upload_challenge_manager = ChallengeManager(
+    "agreement-upload", AgreementUploadChallengeUpdater()
 )

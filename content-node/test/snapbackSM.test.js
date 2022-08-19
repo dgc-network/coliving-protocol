@@ -13,7 +13,7 @@ const { SnapbackSM, SyncType, RECONFIG_MODES } = require('../src/snapbackSM/snap
 const utils = require('../src/utils')
 const { getApp } = require('./lib/app')
 const nodeConfig = require('../src/config')
-const SecondarySyncHealthTracker = require('../src/snapbackSM/secondarySyncHealthTracker')
+const SecondarySyncHealthAgreementer = require('../src/snapbackSM/secondarySyncHealthAgreementer')
 
 const { expect } = chai
 chai.use(sinonChai)
@@ -1489,7 +1489,7 @@ describe.skip('test SnapbackSM -- additionalSyncIsRequired', function () {
     const { SnapbackSM: mockSnapback } = proxyquire(
       '../src/snapbackSM/snapbackSM.js',
       {
-        './secondarySyncHealthTracker': {
+        './secondarySyncHealthAgreementer': {
           recordSuccess: recordSuccessStub,
           recordFailure: recordFailureStub
         },
@@ -1538,7 +1538,7 @@ describe.skip('test SnapbackSM -- additionalSyncIsRequired', function () {
     const { SnapbackSM: mockSnapback } = proxyquire(
       '../src/snapbackSM/snapbackSM.js',
       {
-        './secondarySyncHealthTracker': {
+        './secondarySyncHealthAgreementer': {
           recordSuccess: recordSuccessStub,
           recordFailure: recordFailureStub
         },
@@ -1614,27 +1614,27 @@ describe.skip('test SnapbackSM -- computeUserSecondarySyncSuccessRatesMap', func
       }
     ]
 
-    await SecondarySyncHealthTracker.recordSuccess(
+    await SecondarySyncHealthAgreementer.recordSuccess(
       [nodeUsers[0].secondary1],
       [nodeUsers[0].wallet],
       SyncType.Recurring
     )
-    await SecondarySyncHealthTracker.recordSuccess(
+    await SecondarySyncHealthAgreementer.recordSuccess(
       [nodeUsers[0].secondary1],
       [nodeUsers[0].wallet],
       SyncType.Recurring
     )
-    await SecondarySyncHealthTracker.recordSuccess(
+    await SecondarySyncHealthAgreementer.recordSuccess(
       [nodeUsers[0].secondary1],
       [nodeUsers[0].wallet],
       SyncType.Recurring
     )
-    await SecondarySyncHealthTracker.recordFailure(
+    await SecondarySyncHealthAgreementer.recordFailure(
       [nodeUsers[0].secondary1],
       [nodeUsers[0].wallet],
       SyncType.Recurring
     )
-    await SecondarySyncHealthTracker.recordFailure(
+    await SecondarySyncHealthAgreementer.recordFailure(
       [nodeUsers[0].secondary2],
       [nodeUsers[0].wallet],
       SyncType.Recurring

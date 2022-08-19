@@ -16,7 +16,7 @@
 		"starting_block": 116023891
 	},
 	{
-		"id": "track-upload",
+		"id": "agreement-upload",
 		"type": "numeric",
 		"amount": "1",
 		"active": true,

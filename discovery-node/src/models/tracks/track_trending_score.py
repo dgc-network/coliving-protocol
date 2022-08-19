@@ -3,14 +3,14 @@ from src.models.base import Base
 from src.models.model_utils import RepresentableMixin
 
 
-class TrackTrendingScore(Base, RepresentableMixin):
+class AgreementTrendingScore(Base, RepresentableMixin):
     """
-    Trending Scores for tracks
+    Trending Scores for agreements
     """
 
-    __tablename__ = "track_trending_scores"
+    __tablename__ = "agreement_trending_scores"
 
-    track_id = Column(Integer, primary_key=True, nullable=False, index=True)
+    agreement_id = Column(Integer, primary_key=True, nullable=False, index=True)
     type = Column(String, primary_key=True, nullable=False, index=True)
     genre = Column(String, index=True)
     version = Column(String, primary_key=True, nullable=False)

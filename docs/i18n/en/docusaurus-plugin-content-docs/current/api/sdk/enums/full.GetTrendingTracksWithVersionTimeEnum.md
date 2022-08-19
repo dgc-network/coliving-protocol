@@ -1,13 +1,13 @@
 ---
-id: "full.GetTrendingTracksWithVersionTimeEnum"
-title: "Enumeration: GetTrendingTracksWithVersionTimeEnum"
-sidebar_label: "GetTrendingTracksWithVersionTimeEnum"
+id: "full.GetTrendingAgreementsWithVersionTimeEnum"
+title: "Enumeration: GetTrendingAgreementsWithVersionTimeEnum"
+sidebar_label: "GetTrendingAgreementsWithVersionTimeEnum"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).GetTrendingTracksWithVersionTimeEnum
+[full](../namespaces/full.md).GetTrendingAgreementsWithVersionTimeEnum
 
 **`export`**
 

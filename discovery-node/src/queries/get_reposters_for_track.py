@@ -1,7 +1,7 @@
 from sqlalchemy import desc, func
 from src import exceptions
 from src.models.social.repost import Repost, RepostType
-from src.models.tracks.track import Track
+from src.models.agreements.agreement import Agreement
 from src.models.users.aggregate_user import AggregateUser
 from src.models.users.user import User
 from src.queries import response_name_constants
@@ -10,25 +10,25 @@ from src.utils import helpers
 from src.utils.db_session import get_db_read_replica
 
 
-def get_reposters_for_track(args):
+def get_reposters_for_agreement(args):
     user_results = []
     current_user_id = args.get("current_user_id")
-    repost_track_id = args.get("repost_track_id")
+    repost_agreement_id = args.get("repost_agreement_id")
     limit = args.get("limit")
     offset = args.get("offset")
 
     db = get_db_read_replica()
     with db.scoped_session() as session:
-        # Ensure Track exists for provided repost_track_id.
-        track_entry = (
-            session.query(Track)
-            .filter(Track.track_id == repost_track_id, Track.is_current == True)
+        # Ensure Agreement exists for provided repost_agreement_id.
+        agreement_entry = (
+            session.query(Agreement)
+            .filter(Agreement.agreement_id == repost_agreement_id, Agreement.is_current == True)
             .first()
         )
-        if track_entry is None:
-            raise exceptions.NotFoundError("Resource not found for provided track id")
+        if agreement_entry is None:
+            raise exceptions.NotFoundError("Resource not found for provided agreement id")
 
-        # Get all Users that reposted track, ordered by follower_count desc & paginated.
+        # Get all Users that reposted agreement, ordered by follower_count desc & paginated.
         query = (
             session.query(
                 User,
@@ -41,11 +41,11 @@ def get_reposters_for_track(args):
             .outerjoin(AggregateUser, AggregateUser.user_id == User.user_id)
             .filter(
                 User.is_current == True,
-                # Only select users that reposted given track.
+                # Only select users that reposted given agreement.
                 User.user_id.in_(
                     session.query(Repost.user_id).filter(
-                        Repost.repost_item_id == repost_track_id,
-                        Repost.repost_type == RepostType.track,
+                        Repost.repost_item_id == repost_agreement_id,
+                        Repost.repost_type == RepostType.agreement,
                         Repost.is_current == True,
                         Repost.is_delete == False,
                     )

@@ -45,7 +45,7 @@
 - `executeOne`? `executeAll`? These are just two helper functions that make it easier to perform libs operations in a test. `executeAll` performs some operation on every initted instance of libs in parallel (we init a new libs instance for each wallet), while `executeOne` takes in index and performs the operation against that instance of libs. Both functions accept a function that is passed an instance of libs:
 
 ```
-const trackId = await executeOne(walletIndex, libs =>
-  uploadTrack(libs, track, TRACK_DIR)
+const agreementId = await executeOne(walletIndex, libs =>
+  uploadAgreement(libs, agreement, AGREEMENT_DIR)
 )
 ```

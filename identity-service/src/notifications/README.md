@@ -27,7 +27,7 @@ last block number parsed.
 | isHidden    | boolean | If the notification is marked hidden by the user  |
 | isViewed    | boolean | If the notification is viewed by the user         |
 | userId      | integer | The id of the user who the notification is for    |
-| entityId    | integer | Id of track/album/track/user depends on the type* |
+| entityId    | integer | Id of agreement/album/agreement/user depends on the type* |
 | blocknumber | integer | The blocknumber the notification action happened  |
 | timestamp   | date    | When the notification was created                 |
 
@@ -35,13 +35,13 @@ last block number parsed.
 ## Reference
 type enum values = 
   | 'Follow'
-  | 'RepostTrack'
+  | 'RepostAgreement'
   | 'RepostPlaylist'
   | 'RepostAlbum'
-  | 'FavoriteTrack'
+  | 'FavoriteAgreement'
   | 'FavoritePlaylist'
   | 'FavoriteAlbum'
-  | 'CreateTrack'
+  | 'CreateAgreement'
   | 'CreatePlaylist'
   | 'CreateAlbum'
   | 'Announcement'
@@ -51,7 +51,7 @@ type enum values =
   | 'MilestoneFollow'
   | 'RemixCreate'
   | 'RemixCosign'
-  | 'TrendingTrack'
+  | 'TrendingAgreement'
 ```
 \* ___Note that the entityId will vary based on the notification. To be explained in the notification types section___
 
@@ -63,8 +63,8 @@ The primary use case is for notifications w/ grouping. See examples in Notificat
 | :--------------- | :--------- | :---------------------------------------------------- |
 | id               | uuid       |                                                       |
 | notificationId   | foreignKey | References the id of the notification table           |
-| actionEntityType | text       | The type of the action entity: track/album/track/user |
-| actionEntityId   | integer    | Id of track/album/track/user depends on the type*     |
+| actionEntityType | text       | The type of the action entity: agreement/album/agreement/user |
+| actionEntityId   | integer    | Id of agreement/album/agreement/user depends on the type*     |
 | blocknumber      | integer    | The blocknumber the notification action happened      |
 
 * ___Note that the entityId will vary based on the notification___
@@ -88,20 +88,20 @@ Note if user U3 checks the notification after U1 follows and before U2 follows, 
 two notification db entries will be created w/ the new U2 follow referencing the new 
 notification. 
 
-**Repost (Track/Playlist/Album)**  
-Scenario: User U1 and U2 repost Track T1 owned by U3
+**Repost (Agreement/Playlist/Album)**  
+Scenario: User U1 and U2 repost Agreement T1 owned by U3
 DB Entries
-* Notification - userId: U3, entityId: T1, type: 'RepostTrack'
+* Notification - userId: U3, entityId: T1, type: 'RepostAgreement'
   * NotificationAction - actionEntityType: 'user', entityId: U1  
   * NotificationAction - actionEntityType: 'user', entityId: U2  
 
 Note: if user U3 checks the notification after U1 reposts and before U3 reposts, then 
 two notification db entries will be created w/ the new U2 repost referencing the new 
 notification.  
-Note: The pattern is the same for tracks/playlists/album with the only difference being 
-the notification type field being 'RepostTrack', 'RepostPlaylist', 'RepostAlbum'
+Note: The pattern is the same for agreements/playlists/album with the only difference being 
+the notification type field being 'RepostAgreement', 'RepostPlaylist', 'RepostAlbum'
 
-**Favorite (Track/Playlist/Album)**  
+**Favorite (Agreement/Playlist/Album)**  
 Scenario: User U1 and U2 favorite Playlist P1 owned by U3  
 DB Entries
 * Notification - userId: U3, entityId: P1, type: 'FavoritePlaylist'
@@ -111,16 +111,16 @@ DB Entries
 Note if user U3 checks the notification after U1 favorites and before U2 favorites, then 
 two notification db entries will be created w/ the new U2 favorite referencing the new 
 notification.  
-Note: The pattern is the same for tracks/playlists/album with the only difference being 
-the notification type field being 'FavoriteTrack', 'FavoritePlaylist', 'FavoriteAlbum'
+Note: The pattern is the same for agreements/playlists/album with the only difference being 
+the notification type field being 'FavoriteAgreement', 'FavoritePlaylist', 'FavoriteAlbum'
 
-**Create (Track/Playlist/Album)**  
-Scenario: User U1 and U2 subscribe to user U3 and U3 uploads a public Track T1  
+**Create (Agreement/Playlist/Album)**  
+Scenario: User U1 and U2 subscribe to user U3 and U3 uploads a public Agreement T1  
 DB Entries
-* Notification - userId: U1, entityId: U3, type: 'CreateTrack'
-  * NotificationAction - actionEntityType: 'track', entityId: T1  
-* Notification - userId: U2, entityId: P1, type: 'CreateTrack'
-  * NotificationAction - actionEntityType: 'track', entityId: T1  
+* Notification - userId: U1, entityId: U3, type: 'CreateAgreement'
+  * NotificationAction - actionEntityType: 'agreement', entityId: T1  
+* Notification - userId: U2, entityId: P1, type: 'CreateAgreement'
+  * NotificationAction - actionEntityType: 'agreement', entityId: T1  
 
 Scenario: User U1 subscribes to user U3 and U3 uploads a public Playlist P1  
 DB Entries
@@ -129,8 +129,8 @@ DB Entries
 
 Note: The pattern for create playlist and album are the same for with the only difference being 
 the notification type field 'CreatePlaylist', 'CreateAlbum'  
-Note: The reason track creation notifications are different from playlist/album notifications 
-is because tracks can be grouped together, but playlist/album creation cannot be.  
+Note: The reason agreement creation notifications are different from playlist/album notifications 
+is because agreements can be grouped together, but playlist/album creation cannot be.  
 
 **Announcement**  
 Scenario: New product feature notification to be sent to all users.  
@@ -145,34 +145,34 @@ TODO: Fill out information about the flow & script to automate the process.
 TODO: Fill in this section. 
 Note: Milestones use a different flow from the other notifications.
 
-**TrendingTrack**  
-Scenario: User U1 posts track T1 which breaking into the top 10 weekly trending tracks as number 3  
+**TrendingAgreement**  
+Scenario: User U1 posts agreement T1 which breaking into the top 10 weekly trending agreements as number 3  
 DB Entries
-* Notification - userId: U1, entityId: T1, type: 'TrendingTrack'
+* Notification - userId: U1, entityId: T1, type: 'TrendingAgreement'
   * NotificationAction - actionEntityType: 'weekly-all', entityId: 3
 
-A notification is only created if the track is in the top 10 trending list. 
-These notifications do not stack meaning a new notification with be created if the track moves up 
+A notification is only created if the agreement is in the top 10 trending list. 
+These notifications do not stack meaning a new notification with be created if the agreement moves up 
 the trending list. 
-If a track in the same genre already has a notification and 6 hours has passed and it has moved up the 
+If a agreement in the same genre already has a notification and 6 hours has passed and it has moved up the 
 trending list, then another notification is created.  
 
 **RemixCreate**  
-Scenario: User U1 uploads track T1 that remixes track T2 owned by user U2  
+Scenario: User U1 uploads agreement T1 that remixes agreement T2 owned by user U2  
 DB Entries
 * Notification - userId: U2, entityId: T1, type: 'RemixCreate'
-  * NotificationAction - actionEntityType: 'track', entityId: T2  
+  * NotificationAction - actionEntityType: 'agreement', entityId: T2  
 
 Note: RemixCreate notifications do not stack. The means that if multiple users remix the same 
-track, the original artist will not receive a single notifications will all of the remix, instead
+agreement, the original artist will not receive a single notifications will all of the remix, instead
 it will be multiple individual notifications.
 
 **RemixCosign**  
-Scenario: User U1 owns track T1 that remixes track T2 owned by user U2 and U2 cosigns T1  
+Scenario: User U1 owns agreement T1 that remixes agreement T2 owned by user U2 and U2 cosigns T1  
 DB Entries
-* Notification - userId: U1, entityId: T1, type: 'CosignTrack'
+* Notification - userId: U1, entityId: T1, type: 'CosignAgreement'
   * NotificationAction - actionEntityType: 'user', entityId: U2  
 
-Note: RemixCosign notifications do not stack. The means that if a track remixes multiple other tracks
-and the original artist of those tracks cosign the remix, the remix upload user will not receive a 
+Note: RemixCosign notifications do not stack. The means that if a agreement remixes multiple other agreements
+and the original artist of those agreements cosign the remix, the remix upload user will not receive a 
 single notifications will all of the remix cosigned, but instead get multiple individual notifications.

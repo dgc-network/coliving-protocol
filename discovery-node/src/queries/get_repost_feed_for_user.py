@@ -6,7 +6,7 @@ from sqlalchemy.sql.elements import and_, or_
 from src.models.playlists.playlist import Playlist
 from src.models.social.repost import Repost, RepostType
 from src.models.social.save import SaveType
-from src.models.tracks.track import Track
+from src.models.agreements.agreement import Agreement
 from src.models.users.user import User
 from src.queries import response_name_constants
 from src.queries.query_helpers import (
@@ -14,7 +14,7 @@ from src.queries.query_helpers import (
     get_users_by_id,
     get_users_ids,
     populate_playlist_metadata,
-    populate_track_metadata,
+    populate_agreement_metadata,
 )
 from src.utils import helpers
 from src.utils.db_session import get_db_read_replica
@@ -37,7 +37,7 @@ def get_repost_feed_for_user(user_id: int, args: GetRepostFeedForUserArgs):
         args: GetRepostFeedForUserArgs The parsed args from the request
 
     Returns:
-        Array of tracks and playlists (albums) interspersed ordered by
+        Array of agreements and playlists (albums) interspersed ordered by
         most recent repost
     """
     db = get_db_read_replica()
@@ -62,20 +62,20 @@ def _get_repost_feed_for_user(
         )
 
     # Query all reposts by a user.
-    # Outerjoin both tracks and playlists to collect both
-    # so that a single limit/offset pagination does what we intend when tracks or playlists
+    # Outerjoin both agreements and playlists to collect both
+    # so that a single limit/offset pagination does what we intend when agreements or playlists
     # are deleted.
     repost_query = (
-        session.query(Repost, Track, Playlist)
+        session.query(Repost, Agreement, Playlist)
         .outerjoin(
-            Track,
+            Agreement,
             and_(
-                Repost.repost_item_id == Track.track_id,
-                Repost.repost_type == "track",
-                Track.is_current == True,
-                Track.is_delete == False,
-                Track.is_unlisted == False,
-                Track.stem_of == None,
+                Repost.repost_item_id == Agreement.agreement_id,
+                Repost.repost_type == "agreement",
+                Agreement.is_current == True,
+                Agreement.is_delete == False,
+                Agreement.is_unlisted == False,
+                Agreement.stem_of == None,
             ),
         )
         .outerjoin(
@@ -92,8 +92,8 @@ def _get_repost_feed_for_user(
             Repost.is_current == True,
             Repost.is_delete == False,
             Repost.user_id == user_id,
-            # Drop rows that have no join found for either track or playlist
-            or_(Track.track_id != None, Playlist.playlist_id != None),
+            # Drop rows that have no join found for either agreement or playlist
+            or_(Agreement.agreement_id != None, Playlist.playlist_id != None),
         )
         .order_by(
             desc(Repost.created_at),
@@ -103,35 +103,35 @@ def _get_repost_feed_for_user(
     )
 
     reposts = add_query_pagination(repost_query, limit, offset).all()
-    # get track reposts from above
-    track_reposts = [r[0] for r in reposts if r[1] is not None]
-    track_reposts = helpers.query_result_to_list(track_reposts)
+    # get agreement reposts from above
+    agreement_reposts = [r[0] for r in reposts if r[1] is not None]
+    agreement_reposts = helpers.query_result_to_list(agreement_reposts)
 
     # get playlist reposts from above
     playlist_reposts = [r[0] for r in reposts if r[2] is not None]
     playlist_reposts = helpers.query_result_to_list(playlist_reposts)
 
-    # build track/playlist id --> repost dict from repost lists
-    track_repost_dict = {repost["repost_item_id"]: repost for repost in track_reposts}
+    # build agreement/playlist id --> repost dict from repost lists
+    agreement_repost_dict = {repost["repost_item_id"]: repost for repost in agreement_reposts}
     playlist_repost_dict = {
         repost["repost_item_id"]: repost for repost in playlist_reposts
     }
 
-    tracks = helpers.query_result_to_list(
+    agreements = helpers.query_result_to_list(
         filter(None, [repost[1] for repost in reposts])
     )
     playlists = helpers.query_result_to_list(
         filter(None, [repost[2] for repost in reposts])
     )
 
-    # get track ids
-    track_ids = [track["track_id"] for track in tracks]
+    # get agreement ids
+    agreement_ids = [agreement["agreement_id"] for agreement in agreements]
 
     # get playlist ids
     playlist_ids = [playlist["playlist_id"] for playlist in playlists]
 
     # populate full metadata
-    tracks = populate_track_metadata(session, track_ids, tracks, current_user_id)
+    agreements = populate_agreement_metadata(session, agreement_ids, agreements, current_user_id)
     playlists = populate_playlist_metadata(
         session,
         playlist_ids,
@@ -142,9 +142,9 @@ def _get_repost_feed_for_user(
     )
 
     # add activity timestamps
-    for track in tracks:
-        track[response_name_constants.activity_timestamp] = track_repost_dict[
-            track["track_id"]
+    for agreement in agreements:
+        agreement[response_name_constants.activity_timestamp] = agreement_repost_dict[
+            agreement["agreement_id"]
         ]["created_at"]
 
     for playlist in playlists:
@@ -152,7 +152,7 @@ def _get_repost_feed_for_user(
             playlist["playlist_id"]
         ]["created_at"]
 
-    unsorted_feed = tracks + playlists
+    unsorted_feed = agreements + playlists
 
     # sort feed by repost timestamp desc
     feed_results = sorted(

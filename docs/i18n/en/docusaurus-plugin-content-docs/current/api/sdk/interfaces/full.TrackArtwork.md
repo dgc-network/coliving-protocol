@@ -1,17 +1,17 @@
 ---
-id: "full.TrackArtwork"
-title: "Interface: TrackArtwork"
-sidebar_label: "TrackArtwork"
+id: "full.AgreementArtwork"
+title: "Interface: AgreementArtwork"
+sidebar_label: "AgreementArtwork"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).TrackArtwork
+[full](../namespaces/full.md).AgreementArtwork
 
 **`export`**
 
-**`interface`** TrackArtwork
+**`interface`** AgreementArtwork
 
 ## Properties
 
@@ -19,7 +19,7 @@ pagination_next: null
 
  `Optional` **\_1000x1000**: `string`
 
-**`memberof`** TrackArtwork
+**`memberof`** AgreementArtwork
 
 ___
 
@@ -27,7 +27,7 @@ ___
 
  `Optional` **\_150x150**: `string`
 
-**`memberof`** TrackArtwork
+**`memberof`** AgreementArtwork
 
 ___
 
@@ -35,4 +35,4 @@ ___
 
  `Optional` **\_480x480**: `string`
 
-**`memberof`** TrackArtwork
+**`memberof`** AgreementArtwork

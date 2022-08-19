@@ -17,7 +17,7 @@ from src.models.model_utils import RepresentableMixin
 
 
 class SaveType(str, enum.Enum):
-    track = "track"
+    agreement = "agreement"
     playlist = "playlist"
     album = "album"
 

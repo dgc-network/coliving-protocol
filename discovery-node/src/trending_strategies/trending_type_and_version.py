@@ -2,8 +2,8 @@ from enum import Enum
 
 
 class TrendingType(Enum):
-    TRACKS = 1
-    UNDERGROUND_TRACKS = 2
+    AGREEMENTS = 1
+    UNDERGROUND_AGREEMENTS = 2
     PLAYLISTS = 3
 
 

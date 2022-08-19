@@ -1,11 +1,11 @@
 ---
-id: "full.GetTrendingTracksWithVersionRequest"
-title: "Interface: GetTrendingTracksWithVersionRequest"
-sidebar_label: "GetTrendingTracksWithVersionRequest"
+id: "full.GetTrendingAgreementsWithVersionRequest"
+title: "Interface: GetTrendingAgreementsWithVersionRequest"
+sidebar_label: "GetTrendingAgreementsWithVersionRequest"
 custom_edit_url: null
 ---
 
-[full](../namespaces/full.md).GetTrendingTracksWithVersionRequest
+[full](../namespaces/full.md).GetTrendingAgreementsWithVersionRequest
 
 ## Properties
 
@@ -35,7 +35,7 @@ ___
 
 ### time
 
- `Optional` **time**: [`GetTrendingTracksWithVersionTimeEnum`](../enums/full.GetTrendingTracksWithVersionTimeEnum.md)
+ `Optional` **time**: [`GetTrendingAgreementsWithVersionTimeEnum`](../enums/full.GetTrendingAgreementsWithVersionTimeEnum.md)
 
 Calculate trending over a specified time range
 

@@ -1488,13 +1488,13 @@
                   "type": "prometheus"
                 },
                 "exemplar": true,
-                "expr": "max by (scope) (rate(coliving_dn_track_state_update_duration_seconds_sum{environment=~\"$env\", host=~\"$host\"}[5m]) / rate(coliving_dn_track_state_update_duration_seconds_count{environment=~\"$env\", host=~\"$host\"}[5m]))",
+                "expr": "max by (scope) (rate(coliving_dn_agreement_state_update_duration_seconds_sum{environment=~\"$env\", host=~\"$host\"}[5m]) / rate(coliving_dn_agreement_state_update_duration_seconds_count{environment=~\"$env\", host=~\"$host\"}[5m]))",
                 "interval": "",
                 "legendFormat": "{{host}}{{scope}}",
                 "refId": "A"
               }
             ],
-            "title": "Average Track State Runtimes",
+            "title": "Average Agreement State Runtimes",
             "type": "timeseries"
           },
           {

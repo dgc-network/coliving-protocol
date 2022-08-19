@@ -1,24 +1,24 @@
 from sqlalchemy import func
 from src import exceptions
 from src.models.playlists.playlist import Playlist
-from src.models.tracks.track import Track
+from src.models.agreements.agreement import Agreement
 from src.models.users.user import User
 from src.utils.db_session import get_db_read_replica
 
 
 def get_max_id(type):
-    if type not in ["track", "playlist", "user"]:
+    if type not in ["agreement", "playlist", "user"]:
         raise exceptions.ArgumentError(
-            "Invalid type provided, must be one of 'track', 'playlist', 'user'"
+            "Invalid type provided, must be one of 'agreement', 'playlist', 'user'"
         )
 
     db = get_db_read_replica()
     with db.scoped_session() as session:
-        if type == "track":
+        if type == "agreement":
             latest = (
-                session.query(func.max(Track.track_id))
-                .filter(Track.is_unlisted == False)
-                .filter(Track.is_current == True)
+                session.query(func.max(Agreement.agreement_id))
+                .filter(Agreement.is_unlisted == False)
+                .filter(Agreement.is_current == True)
                 .scalar()
             )
             return latest

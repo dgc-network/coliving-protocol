@@ -1,22 +1,22 @@
 ---
-id: "Track"
-title: "Interface: Track"
-sidebar_label: "Track"
+id: "Agreement"
+title: "Interface: Agreement"
+sidebar_label: "Agreement"
 sidebar_position: 0
 custom_edit_url: null
 ---
 
 **`export`**
 
-**`interface`** Track
+**`interface`** Agreement
 
 ## Properties
 
 ### artwork
 
- `Optional` **artwork**: [`TrackArtwork`](TrackArtwork.md)
+ `Optional` **artwork**: [`AgreementArtwork`](AgreementArtwork.md)
 
-**`memberof`** Track
+**`memberof`** Agreement
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
  `Optional` **description**: `string`
 
-**`memberof`** Track
+**`memberof`** Agreement
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
  `Optional` **downloadable**: `boolean`
 
-**`memberof`** Track
+**`memberof`** Agreement
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
  **duration**: `number`
 
-**`memberof`** Track
+**`memberof`** Agreement
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
  **favorite\_count**: `number`
 
-**`memberof`** Track
+**`memberof`** Agreement
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
  `Optional` **genre**: `string`
 
-**`memberof`** Track
+**`memberof`** Agreement
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
  **id**: `string`
 
-**`memberof`** Track
+**`memberof`** Agreement
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
  `Optional` **mood**: `string`
 
-**`memberof`** Track
+**`memberof`** Agreement
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
  `Optional` **permalink**: `string`
 
-**`memberof`** Track
+**`memberof`** Agreement
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
  **play\_count**: `number`
 
-**`memberof`** Track
+**`memberof`** Agreement
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
  `Optional` **release\_date**: `string`
 
-**`memberof`** Track
+**`memberof`** Agreement
 
 ___
 
@@ -104,7 +104,7 @@ ___
 
  `Optional` **remix\_of**: [`RemixParent`](RemixParent.md)
 
-**`memberof`** Track
+**`memberof`** Agreement
 
 ___
 
@@ -112,7 +112,7 @@ ___
 
  **repost\_count**: `number`
 
-**`memberof`** Track
+**`memberof`** Agreement
 
 ___
 
@@ -120,7 +120,7 @@ ___
 
  `Optional` **tags**: `string`
 
-**`memberof`** Track
+**`memberof`** Agreement
 
 ___
 
@@ -128,7 +128,7 @@ ___
 
  **title**: `string`
 
-**`memberof`** Track
+**`memberof`** Agreement
 
 ___
 
@@ -136,4 +136,4 @@ ___
 
  **user**: [`User`](User.md)
 
-**`memberof`** Track
+**`memberof`** Agreement

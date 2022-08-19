@@ -8,7 +8,7 @@ from src.models.social.follow import Follow
 from src.models.social.play import Play
 from src.models.social.repost import RepostType
 from src.models.social.save import SaveType
-from src.models.tracks.track import Track
+from src.models.agreements.agreement import Agreement
 from src.queries import response_name_constants
 from src.queries.query_helpers import (
     get_genre_list,
@@ -32,9 +32,9 @@ time_delta_map = {
 }
 
 
-# Returns listens counts for tracks, subject to time and
+# Returns listens counts for agreements, subject to time and
 # genre restrictions.
-# Returns [{ track_id: number, listens: number }]
+# Returns [{ agreement_id: number, listens: number }]
 def get_listen_counts(session, time, genre, limit, offset, net_multiplier=1):
 
     # Adds a created_at filter
@@ -66,31 +66,31 @@ def get_listen_counts(session, time, genre, limit, offset, net_multiplier=1):
         # string to account for umbrella genres
         # like 'Electronic
         genre_list = get_genre_list(genre)
-        return base_query.filter(Track.genre.in_(genre_list))
+        return base_query.filter(Agreement.genre.in_(genre_list))
 
     # Construct base query
     if time:
         # If we want to query plays by time, use the plays table directly
         base_query = session.query(
-            Play.play_item_id, func.count(Play.id).label("count"), Track.created_at
-        ).join(Track, Track.track_id == Play.play_item_id)
+            Play.play_item_id, func.count(Play.id).label("count"), Agreement.created_at
+        ).join(Agreement, Agreement.agreement_id == Play.play_item_id)
     else:
         # Otherwise, it's safe to just query over the aggregate plays table (all time)
         base_query = session.query(
             AggregatePlay.play_item_id.label("id"),
             AggregatePlay.count.label("count"),
-            Track.created_at,
-        ).join(Track, Track.track_id == AggregatePlay.play_item_id)
+            Agreement.created_at,
+        ).join(Agreement, Agreement.agreement_id == AggregatePlay.play_item_id)
 
     base_query = base_query.filter(
-        Track.is_current == True,
-        Track.is_delete == False,
-        Track.is_unlisted == False,
-        Track.stem_of == None,
+        Agreement.is_current == True,
+        Agreement.is_delete == False,
+        Agreement.is_unlisted == False,
+        Agreement.stem_of == None,
     )
 
     if time:
-        base_query = base_query.group_by(Play.play_item_id, Track.created_at)
+        base_query = base_query.group_by(Play.play_item_id, Agreement.created_at)
 
     # Add filters to query
     base_query = with_time_filter(base_query, time)
@@ -105,7 +105,7 @@ def get_listen_counts(session, time, genre, limit, offset, net_multiplier=1):
 
     # Format the results
     listens = [
-        {"track_id": listen[0], "listens": listen[1], "created_at": listen[2]}
+        {"agreement_id": listen[0], "listens": listen[1], "created_at": listen[2]}
         for listen in listens
     ]
     return listens
@@ -120,50 +120,50 @@ def generate_trending(session, time, genre, limit, offset, strategy):
     # Get listen counts
     listen_counts = get_listen_counts(session, time, genre, limit, offset, nm)
 
-    track_ids = [track[response_name_constants.track_id] for track in listen_counts]
+    agreement_ids = [agreement[response_name_constants.agreement_id] for agreement in listen_counts]
 
-    # Generate track id -> created_at date
-    track_created_at_dict = {
-        record["track_id"]: record["created_at"] for record in listen_counts
+    # Generate agreement id -> created_at date
+    agreement_created_at_dict = {
+        record["agreement_id"]: record["created_at"] for record in listen_counts
     }
 
     # Query repost counts
-    repost_counts = get_repost_counts(session, False, True, track_ids, None)
+    repost_counts = get_repost_counts(session, False, True, agreement_ids, None)
 
-    # Generate track_id --> repost_count mapping
-    track_repost_counts = {
+    # Generate agreement_id --> repost_count mapping
+    agreement_repost_counts = {
         repost_item_id: repost_count
         for (repost_item_id, repost_count, repost_type) in repost_counts
-        if repost_type == RepostType.track
+        if repost_type == RepostType.agreement
     }
 
     # Query repost count with respect to rolling time frame in URL (e.g. /trending/week -> window = rolling week)
-    track_repost_counts_for_time = get_repost_counts(
-        session, False, True, track_ids, None, None, time
+    agreement_repost_counts_for_time = get_repost_counts(
+        session, False, True, agreement_ids, None, None, time
     )
 
-    # Generate track_id --> windowed_repost_count mapping
-    track_repost_counts_for_time = {
+    # Generate agreement_id --> windowed_repost_count mapping
+    agreement_repost_counts_for_time = {
         repost_item_id: repost_count
-        for (repost_item_id, repost_count, repost_type) in track_repost_counts_for_time
-        if repost_type == RepostType.track
+        for (repost_item_id, repost_count, repost_type) in agreement_repost_counts_for_time
+        if repost_type == RepostType.agreement
     }
 
-    # Query follower info for each track owner
-    # Query each track owner
-    track_owners_query = (
-        session.query(Track.track_id, Track.owner_id).filter(
-            Track.is_current == True,
-            Track.is_unlisted == False,
-            Track.stem_of == None,
-            Track.track_id.in_(track_ids),
+    # Query follower info for each agreement owner
+    # Query each agreement owner
+    agreement_owners_query = (
+        session.query(Agreement.agreement_id, Agreement.owner_id).filter(
+            Agreement.is_current == True,
+            Agreement.is_unlisted == False,
+            Agreement.stem_of == None,
+            Agreement.agreement_id.in_(agreement_ids),
         )
     ).all()
 
-    # Generate track_id <-> owner_id mapping
-    track_owner_dict = dict(track_owners_query)
+    # Generate agreement_id <-> owner_id mapping
+    agreement_owner_dict = dict(agreement_owners_query)
     # Generate list of owner ids
-    track_owner_list = [owner_id for (track_id, owner_id) in track_owners_query]
+    agreement_owner_list = [owner_id for (agreement_id, owner_id) in agreement_owners_query]
 
     # build dict of owner_id --> follower_count
     follower_counts = (
@@ -171,7 +171,7 @@ def generate_trending(session, time, genre, limit, offset, strategy):
         .filter(
             Follow.is_current == True,
             Follow.is_delete == False,
-            Follow.followee_user_id.in_(track_owner_list),
+            Follow.followee_user_id.in_(agreement_owner_list),
         )
         .group_by(Follow.followee_user_id)
         .all()
@@ -183,75 +183,75 @@ def generate_trending(session, time, genre, limit, offset, strategy):
     }
 
     # Query save counts
-    save_counts = get_save_counts(session, False, True, track_ids, None)
-    # Generate track_id --> save_count mapping
-    track_save_counts = {
+    save_counts = get_save_counts(session, False, True, agreement_ids, None)
+    # Generate agreement_id --> save_count mapping
+    agreement_save_counts = {
         save_item_id: save_count
         for (save_item_id, save_count, save_type) in save_counts
-        if save_type == SaveType.track
+        if save_type == SaveType.agreement
     }
 
     # Query save counts with respect to rolling time frame in URL (e.g. /trending/week -> window = rolling week)
     save_counts_for_time = get_save_counts(
-        session, False, True, track_ids, None, None, time
+        session, False, True, agreement_ids, None, None, time
     )
-    # Generate track_id --> windowed_save_count mapping
-    track_save_counts_for_time = {
+    # Generate agreement_id --> windowed_save_count mapping
+    agreement_save_counts_for_time = {
         save_item_id: save_count
         for (save_item_id, save_count, save_type) in save_counts_for_time
-        if save_type == SaveType.track
+        if save_type == SaveType.agreement
     }
 
     karma_query = get_karma(
-        session, tuple(track_ids), strategy, None, False, xf, strategy
+        session, tuple(agreement_ids), strategy, None, False, xf, strategy
     )
     karma_counts_for_id = dict(karma_query)
 
-    trending_tracks = []
-    for track_entry in listen_counts:
-        track_id = track_entry[response_name_constants.track_id]
+    trending_agreements = []
+    for agreement_entry in listen_counts:
+        agreement_id = agreement_entry[response_name_constants.agreement_id]
 
         # Populate repost counts
-        track_entry[response_name_constants.repost_count] = track_repost_counts.get(
-            track_id, 0
+        agreement_entry[response_name_constants.repost_count] = agreement_repost_counts.get(
+            agreement_id, 0
         )
 
         # Populate repost counts with respect to time
-        track_entry[
+        agreement_entry[
             response_name_constants.windowed_repost_count
-        ] = track_repost_counts_for_time.get(track_id, 0)
+        ] = agreement_repost_counts_for_time.get(agreement_id, 0)
 
         # Populate save counts
-        track_entry[response_name_constants.save_count] = track_save_counts.get(
-            track_id, 0
+        agreement_entry[response_name_constants.save_count] = agreement_save_counts.get(
+            agreement_id, 0
         )
 
         # Populate save counts with respect to time
-        track_entry[
+        agreement_entry[
             response_name_constants.windowed_save_count
-        ] = track_save_counts_for_time.get(track_id, 0)
+        ] = agreement_save_counts_for_time.get(agreement_id, 0)
 
         # Populate owner follower count
-        owner_id = track_owner_dict[track_id]
+        owner_id = agreement_owner_dict[agreement_id]
         owner_follow_count = follower_count_dict.get(owner_id, 0)
-        track_entry[response_name_constants.track_owner_id] = owner_id
-        track_entry[response_name_constants.owner_follower_count] = owner_follow_count
+        agreement_entry[response_name_constants.agreement_owner_id] = owner_id
+        agreement_entry[response_name_constants.owner_follower_count] = owner_follow_count
 
         # Populate created at timestamps
-        if track_id in track_created_at_dict:
+        if agreement_id in agreement_created_at_dict:
             # datetime needs to be in isoformat for json.dumps() in `update_trending_cache()` to
             # properly process the dp response and add to redis cache
             # timespec = specifies additional components of the time to include
-            track_entry[response_name_constants.created_at] = track_created_at_dict[
-                track_id
+            agreement_entry[response_name_constants.created_at] = agreement_created_at_dict[
+                agreement_id
             ].isoformat(timespec="seconds")
         else:
-            track_entry[response_name_constants.created_at] = None
+            agreement_entry[response_name_constants.created_at] = None
 
-        track_entry["karma"] = karma_counts_for_id.get(track_id, 0)
+        agreement_entry["karma"] = karma_counts_for_id.get(agreement_id, 0)
 
-        trending_tracks.append(track_entry)
+        trending_agreements.append(agreement_entry)
 
     final_resp = {}
-    final_resp["listen_counts"] = trending_tracks
+    final_resp["listen_counts"] = trending_agreements
     return final_resp

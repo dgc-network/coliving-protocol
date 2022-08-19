@@ -11,13 +11,13 @@ const getEmailNotifications = require('../../src/notifications/fetchNotification
 const renderNotificationsEmail = require('../../src/notifications/renderEmail')
 const notifications = [
   {
-    // User id 2 reposts track 1 owner by user id 1
+    // User id 2 reposts agreement 1 owner by user id 1
     blocknumber: 2,
     initiator: 2,
     metadata: {
       entity_id: 1,
       entity_owner_id: 1,
-      entity_type: 'track'
+      entity_type: 'agreement'
     },
     timestamp: '2020-10-01T19:39:45 Z',
     type: 'Repost'
@@ -45,13 +45,13 @@ const notifications = [
     type: 'Follow'
   },
   {
-    // User id 2 favorites tracks id 1 owned by user id 1
+    // User id 2 favorites agreements id 1 owned by user id 1
     blocknumber: 4,
     initiator: 2,
     metadata: {
       entity_id: 1,
       entity_owner_id: 1,
-      entity_type: 'track'
+      entity_type: 'agreement'
     },
     timestamp: '2020-10-04T19:39:45 Z',
     type: 'Favorite'
@@ -81,12 +81,12 @@ const notifications = [
 ]
 
 const mockColivingLibs = {
-  Track: {
-    getTracks: (limit, offset, ids) => {
+  Agreement: {
+    getAgreements: (limit, offset, ids) => {
       return ids.map((id) => ({
-        track_id: id,
+        agreement_id: id,
         owner_id: id,
-        title: `TRACK_${id}`
+        title: `AGREEMENT_${id}`
       }))
     }
   },
@@ -123,7 +123,7 @@ const challengeNotifications = [
   {
     initiator: 1,
     metadata: {
-      challenge_id: 'track-upload'
+      challenge_id: 'agreement-upload'
     },
     slot: 112519142,
     type: 'ChallengeReward'

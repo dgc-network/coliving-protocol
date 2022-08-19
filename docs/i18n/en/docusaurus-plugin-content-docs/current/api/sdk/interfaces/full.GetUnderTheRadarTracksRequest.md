@@ -1,19 +1,19 @@
 ---
-id: "full.GetUnderTheRadarTracksRequest"
-title: "Interface: GetUnderTheRadarTracksRequest"
-sidebar_label: "GetUnderTheRadarTracksRequest"
+id: "full.GetUnderTheRadarAgreementsRequest"
+title: "Interface: GetUnderTheRadarAgreementsRequest"
+sidebar_label: "GetUnderTheRadarAgreementsRequest"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).GetUnderTheRadarTracksRequest
+[full](../namespaces/full.md).GetUnderTheRadarAgreementsRequest
 
 ## Properties
 
 ### filter
 
- `Optional` **filter**: [`GetUnderTheRadarTracksFilterEnum`](../enums/full.GetUnderTheRadarTracksFilterEnum.md)
+ `Optional` **filter**: [`GetUnderTheRadarAgreementsFilterEnum`](../enums/full.GetUnderTheRadarAgreementsFilterEnum.md)
 
 Filters for activity that is original vs reposts
 
@@ -35,11 +35,11 @@ The number of items to skip. Useful for pagination (page number * limit)
 
 ___
 
-### tracksOnly
+### agreementsOnly
 
- `Optional` **tracksOnly**: `boolean`
+ `Optional` **agreementsOnly**: `boolean`
 
-Whether to only include tracks
+Whether to only include agreements
 
 ___
 
@@ -55,4 +55,4 @@ ___
 
  `Optional` **withUsers**: `boolean`
 
-Boolean to include user info with tracks
+Boolean to include user info with agreements

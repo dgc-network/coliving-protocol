@@ -2,9 +2,9 @@ from datetime import datetime
 
 
 class ListenHistory:
-    def __init__(self, track_id: int, timestamp: datetime):
-        self.track_id = track_id
+    def __init__(self, agreement_id: int, timestamp: datetime):
+        self.agreement_id = agreement_id
         self.timestamp = timestamp
 
     def to_dict(self):
-        return {"track_id": self.track_id, "timestamp": str(self.timestamp)}
+        return {"agreement_id": self.agreement_id, "timestamp": str(self.timestamp)}

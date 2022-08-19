@@ -44,32 +44,32 @@ def upgrade():
     """
     )
 
-    # Track search index
+    # Agreement search index
     connection.execute(
         """
       -- since search fields are spread across multiple tables, denormalize data via materialized view
       --  - use custom text search config in building documents
       --  - document consists of every word from dictionary present in given dataset
       --  -   (accomplished with to_tsvector() and tsvector_to_array() functions)
-      --  - dataset = (track title + track tags)
-      --  - view row consists of unique track id + word pairs (accomplished via unnest())
+      --  - dataset = (agreement title + agreement tags)
+      --  - view row consists of unique agreement id + word pairs (accomplished via unnest())
       --  - all future searches can then do comparisons against any word present in documents,
-      --  -   and retrieve associated track id
-      CREATE MATERIALIZED VIEW track_lexeme_dict as
+      --  -   and retrieve associated agreement id
+      CREATE MATERIALIZED VIEW agreement_lexeme_dict as
       SELECT * FROM (
         SELECT
-          t.track_id,
+          t.agreement_id,
           unnest(tsvector_to_array(to_tsvector('coliving_ts_config', replace(COALESCE(t."title", ''), '&', 'and')) ||
           to_tsvector('coliving_ts_config', COALESCE(t."tags", '')))) as word
         FROM
-            "tracks" t
+            "agreements" t
         INNER JOIN "users" u ON t."owner_id" = u."user_id"
         WHERE t."is_current" = true and u."is_ready" = true and u."is_current" = true
-        GROUP BY t."track_id", t."title", t."tags"
+        GROUP BY t."agreement_id", t."title", t."tags"
       ) AS words;
 
       -- add index on above materialized view
-      CREATE INDEX track_words_idx ON track_lexeme_dict USING gin(word gin_trgm_ops);
+      CREATE INDEX agreement_words_idx ON agreement_lexeme_dict USING gin(word gin_trgm_ops);
     """
     )
 

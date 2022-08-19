@@ -7,7 +7,7 @@ module.exports = {
     const columnName = 'type'
     const previousEnumName = 'enum_ContentBlacklists_type'
     const newEnumName = 'enum_ContentBlacklists_type_new'
-    const newValues = ['TRACK', 'USER', 'CID']
+    const newValues = ['AGREEMENT', 'USER', 'CID']
 
     try {
       // Remove primary key constraints on type and value
@@ -68,7 +68,7 @@ module.exports = {
     }
   },
 
-  // IMPORTANT: running this will result in data loss for tracked segments! do not run this unless
+  // IMPORTANT: running this will result in data loss for agreemented segments! do not run this unless
   // you know what you are doing ! ! ! ! ! !
   down: async (queryInterface, Sequelize) => {
     const transaction = await queryInterface.sequelize.transaction()
@@ -76,7 +76,7 @@ module.exports = {
     const columnName = 'type'
     const previousEnumName = 'enum_ContentBlacklists_type'
     const revertEnumName = 'enum_ContentBlacklists_type_revert'
-    const prevValues = ['TRACK', 'USER']
+    const prevValues = ['AGREEMENT', 'USER']
 
     try {
       // Remove all entries with type 'CID'

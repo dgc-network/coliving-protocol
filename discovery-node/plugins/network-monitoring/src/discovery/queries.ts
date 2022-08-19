@@ -194,7 +194,7 @@ export const importCids = async (run_id: number) => {
     await sequelizeConn.query(`
         INSERT INTO network_monitoring_cids_from_discovery (cid, run_id, ctype, user_id)
         SELECT cover_art, :run_id, 'image', owner_id
-        FROM tracks
+        FROM agreements
         WHERE cover_art IS NOT NULL
         AND is_current = TRUE;
             `, {
@@ -202,12 +202,12 @@ export const importCids = async (run_id: number) => {
         logging: false,
     })
 
-    console.log(`\t -> tracks.cover_art`)
+    console.log(`\t -> agreements.cover_art`)
 
     await sequelizeConn.query(`
         INSERT INTO network_monitoring_cids_from_discovery (cid, run_id, ctype, user_id)
         SELECT cover_art_sizes, :run_id, 'dir', owner_id
-        FROM tracks 
+        FROM agreements 
         WHERE cover_art_sizes IS NOT NULL
         AND is_current = TRUE;
             `, {
@@ -215,12 +215,12 @@ export const importCids = async (run_id: number) => {
         logging: false,
     })
 
-    console.log(`\t -> tracks.cover_art_sizes`)
+    console.log(`\t -> agreements.cover_art_sizes`)
 
     await sequelizeConn.query(`
         INSERT INTO network_monitoring_cids_from_discovery (cid, run_id, ctype, user_id)
         SELECT metadata_multihash, :run_id, 'metadata', owner_id
-        FROM tracks 
+        FROM agreements 
         WHERE metadata_multihash IS NOT NULL
         AND is_current = TRUE;
             `, {
@@ -228,12 +228,12 @@ export const importCids = async (run_id: number) => {
         logging: false,
     })
 
-    console.log(`\t -> tracks.metadata_multihash`)
+    console.log(`\t -> agreements.metadata_multihash`)
 
     await sequelizeConn.query(`
         INSERT INTO network_monitoring_cids_from_discovery (cid, run_id, ctype, user_id)
-        SELECT download -> 'cid' as cid, :run_id, 'track', owner_id
-        FROM tracks 
+        SELECT download -> 'cid' as cid, :run_id, 'agreement', owner_id
+        FROM agreements 
         WHERE download -> 'cid' != 'null'
         AND is_current = TRUE;
             `, {
@@ -241,22 +241,22 @@ export const importCids = async (run_id: number) => {
         logging: false,
     })
 
-    console.log(`\t -> tracks.download->'cid'`)
+    console.log(`\t -> agreements.download->'cid'`)
 
     await sequelizeConn.query(`
         INSERT INTO network_monitoring_cids_from_discovery (cid, run_id, ctype, user_id)
         SELECT 
-            jsonb_array_elements(track_segments) -> 'multihash', 
+            jsonb_array_elements(agreement_segments) -> 'multihash', 
             :run_id, 
-            'track',
+            'agreement',
             owner_id
-        FROM tracks
-        WHERE track_segments IS NOT NULL
+        FROM agreements
+        WHERE agreement_segments IS NOT NULL
         AND is_current = TRUE;
     `, {
         replacements: { run_id },
         logging: false,
     })
 
-    console.log(`\t -> tracks.track_segments->'multihash'`)
+    console.log(`\t -> agreements.agreement_segments->'multihash'`)
 }

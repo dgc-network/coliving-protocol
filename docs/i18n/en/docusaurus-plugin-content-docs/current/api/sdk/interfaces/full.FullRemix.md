@@ -31,9 +31,9 @@ ___
 
 ___
 
-### parent\_track\_id
+### parent\_agreement\_id
 
- **parent\_track\_id**: `string`
+ **parent\_agreement\_id**: `string`
 
 **`memberof`** FullRemix
 

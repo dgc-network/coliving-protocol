@@ -228,7 +228,7 @@ export const fileHasher = {
   },
 
   /**
-   * Generates CID for a non-image file (track segment, track transcode, metadata)
+   * Generates CID for a non-image file (agreement segment, agreement transcode, metadata)
    * @param {Buffer|ReadStream|string} content a single Buffer, a ReadStream, or path to an existing file
    * @param {Object?} logger
    * @returns {string} only hash response cid

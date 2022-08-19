@@ -1,23 +1,23 @@
 ---
-id: "full.FullTrackResponse"
-title: "Interface: FullTrackResponse"
-sidebar_label: "FullTrackResponse"
+id: "full.FullAgreementResponse"
+title: "Interface: FullAgreementResponse"
+sidebar_label: "FullAgreementResponse"
 custom_edit_url: null
 ---
 
-[full](../namespaces/full.md).FullTrackResponse
+[full](../namespaces/full.md).FullAgreementResponse
 
 **`export`**
 
-**`interface`** FullTrackResponse
+**`interface`** FullAgreementResponse
 
 ## Properties
 
 ### data
 
- `Optional` **data**: [`TrackFull`](full.TrackFull.md)
+ `Optional` **data**: [`AgreementFull`](full.AgreementFull.md)
 
-**`memberof`** FullTrackResponse
+**`memberof`** FullAgreementResponse
 
 ___
 
@@ -25,7 +25,7 @@ ___
 
  **latest\_chain\_block**: `number`
 
-**`memberof`** FullTrackResponse
+**`memberof`** FullAgreementResponse
 
 ___
 
@@ -33,7 +33,7 @@ ___
 
  **latest\_chain\_slot\_plays**: `number`
 
-**`memberof`** FullTrackResponse
+**`memberof`** FullAgreementResponse
 
 ___
 
@@ -41,7 +41,7 @@ ___
 
  **latest\_indexed\_block**: `number`
 
-**`memberof`** FullTrackResponse
+**`memberof`** FullAgreementResponse
 
 ___
 
@@ -49,7 +49,7 @@ ___
 
  **latest\_indexed\_slot\_plays**: `number`
 
-**`memberof`** FullTrackResponse
+**`memberof`** FullAgreementResponse
 
 ___
 
@@ -57,7 +57,7 @@ ___
 
  **signature**: `string`
 
-**`memberof`** FullTrackResponse
+**`memberof`** FullAgreementResponse
 
 ___
 
@@ -65,7 +65,7 @@ ___
 
  **timestamp**: `string`
 
-**`memberof`** FullTrackResponse
+**`memberof`** FullAgreementResponse
 
 ___
 
@@ -73,4 +73,4 @@ ___
 
  **version**: [`VersionMetadata`](full.VersionMetadata.md)
 
-**`memberof`** FullTrackResponse
+**`memberof`** FullAgreementResponse

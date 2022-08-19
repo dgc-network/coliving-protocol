@@ -29,55 +29,55 @@ import {
 /**
  * 
  * @export
- * @interface TrackRepostsResponseFull
+ * @interface AgreementRepostsResponseFull
  */
-export interface TrackRepostsResponseFull {
+export interface AgreementRepostsResponseFull {
     /**
      * 
      * @type {number}
-     * @memberof TrackRepostsResponseFull
+     * @memberof AgreementRepostsResponseFull
      */
     latest_chain_block: number;
     /**
      * 
      * @type {number}
-     * @memberof TrackRepostsResponseFull
+     * @memberof AgreementRepostsResponseFull
      */
     latest_indexed_block: number;
     /**
      * 
      * @type {number}
-     * @memberof TrackRepostsResponseFull
+     * @memberof AgreementRepostsResponseFull
      */
     latest_chain_slot_plays: number;
     /**
      * 
      * @type {number}
-     * @memberof TrackRepostsResponseFull
+     * @memberof AgreementRepostsResponseFull
      */
     latest_indexed_slot_plays: number;
     /**
      * 
      * @type {string}
-     * @memberof TrackRepostsResponseFull
+     * @memberof AgreementRepostsResponseFull
      */
     signature: string;
     /**
      * 
      * @type {string}
-     * @memberof TrackRepostsResponseFull
+     * @memberof AgreementRepostsResponseFull
      */
     timestamp: string;
     /**
      * 
      * @type {VersionMetadata}
-     * @memberof TrackRepostsResponseFull
+     * @memberof AgreementRepostsResponseFull
      */
     version: VersionMetadata;
     /**
      * 
      * @type {Array<UserFull>}
-     * @memberof TrackRepostsResponseFull
+     * @memberof AgreementRepostsResponseFull
      */
     data?: Array<UserFull>;
 }

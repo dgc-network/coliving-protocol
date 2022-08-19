@@ -53,42 +53,42 @@ async function getUsersBatch (discoveryProvider, offset, limit) {
 /**
  * @param {string} discoveryProvider - Discovery Node endpoint
  * @param {number} batchSize - Batch Size to use for each request
- * @returns {Object} trackCids - A object mapping user id to a list of track cids
+ * @returns {Object} agreementCids - A object mapping user id to a list of agreement cids
  */
-async function getTrackCids (discoveryProvider, batchSize) {
-  const trackCids = {}
+async function getAgreementCids (discoveryProvider, batchSize) {
+  const agreementCids = {}
 
-  const totalTracks = (
+  const totalAgreements = (
     await makeRequest({
       method: 'get',
-      url: '/latest/track',
+      url: '/latest/agreement',
       baseURL: discoveryProvider
     })
   ).data.data
 
-  console.log(`Fetching tracks (total of ${totalTracks})`)
+  console.log(`Fetching agreements (total of ${totalAgreements})`)
 
-  for (let offset = 0; offset < totalTracks; offset += batchSize) {
-    console.time(`Fetching tracks (${offset} - ${offset + batchSize})`)
+  for (let offset = 0; offset < totalAgreements; offset += batchSize) {
+    console.time(`Fetching agreements (${offset} - ${offset + batchSize})`)
 
-    const tracksBatch = (
+    const agreementsBatch = (
       await makeRequest({
         method: 'get',
-        url: '/tracks',
+        url: '/agreements',
         baseURL: discoveryProvider,
         params: { offset, limit: batchSize }
       })
     ).data.data
 
-    tracksBatch.forEach(({ metadata_multihash, owner_id }) => {
-      trackCids[owner_id] = trackCids[owner_id] || []
-      trackCids[owner_id].push(metadata_multihash)
+    agreementsBatch.forEach(({ metadata_multihash, owner_id }) => {
+      agreementCids[owner_id] = agreementCids[owner_id] || []
+      agreementCids[owner_id].push(metadata_multihash)
     })
 
-    console.timeEnd(`Fetching tracks (${offset} - ${offset + batchSize})`)
+    console.timeEnd(`Fetching agreements (${offset} - ${offset + batchSize})`)
   }
 
-  return trackCids
+  return agreementCids
 }
 
 /**
@@ -225,12 +225,12 @@ async function run () {
   const discoveryProvider = 'https://discoveryprovider.coliving.lol/'
   // const discoveryProvider = "https://discoveryprovider.staging.coliving.lol/"
   // const discoveryProvider = 'http://localhost:5000'
-  const trackBatchSize = 500
+  const agreementBatchSize = 500
   const userBatchSize = 500
 
-  const trackCids = await getTrackCids(discoveryProvider, trackBatchSize)
-  fs.writeFileSync('trackCids.json', JSON.stringify(trackCids, null, 4))
-  // const trackCids = require('./trackCids.json')
+  const agreementCids = await getAgreementCids(discoveryProvider, agreementBatchSize)
+  fs.writeFileSync('agreementCids.json', JSON.stringify(agreementCids, null, 4))
+  // const agreementCids = require('./agreementCids.json')
 
   const totalUsers = (
     await makeRequest({
@@ -265,7 +265,7 @@ async function run () {
         profile_picture_sizes,
         metadata_multihash
       }) => {
-        cids[user_id] = Array.from(trackCids[user_id] || [])
+        cids[user_id] = Array.from(agreementCids[user_id] || [])
         if (metadata_multihash) {
           cids[user_id].push(metadata_multihash)
         }

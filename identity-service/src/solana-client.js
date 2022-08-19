@@ -8,8 +8,8 @@ const VALID_SIGNER = config.get('solanaValidSigner')
 const COLIVING_ETH_REGISTRY_PROGRAM = config.get('solanaColivingEthRegistryAddress') ? new solanaWeb3.PublicKey(
   config.get('solanaColivingEthRegistryAddress')
 ) : null
-const TRACK_LISTEN_PROGRAM = config.get('solanaTrackListenCountAddress') ? new solanaWeb3.PublicKey(
-  config.get('solanaTrackListenCountAddress')
+const AGREEMENT_LISTEN_PROGRAM = config.get('solanaAgreementListenCountAddress') ? new solanaWeb3.PublicKey(
+  config.get('solanaAgreementListenCountAddress')
 ) : null
 const INSTRUCTIONS_PROGRAM = new solanaWeb3.PublicKey(
   'Sysvar1nstructions1111111111111111111111111'
@@ -18,18 +18,18 @@ const CLOCK_PROGRAM = new solanaWeb3.PublicKey(
   'SysvarC1ock11111111111111111111111111111111'
 )
 
-class TrackData {
-  constructor ({ userId, trackId, source, timestamp }) {
+class AgreementData {
+  constructor ({ userId, agreementId, source, timestamp }) {
     this.userId = userId
-    this.trackId = trackId
+    this.agreementId = agreementId
     this.source = source
     this.timestamp = timestamp
   }
 }
 
 class InstructionArgs {
-  constructor ({ trackData, signature, recoveryId }) {
-    this.trackData = trackData
+  constructor ({ agreementData, signature, recoveryId }) {
+    this.agreementData = agreementData
     this.signature = signature
     this.recoveryId = recoveryId
   }
@@ -42,14 +42,14 @@ class InstructionEnum {
   }
 }
 
-const trackDataSchema = new Map([
+const agreementDataSchema = new Map([
   [
-    TrackData,
+    AgreementData,
     {
       kind: 'struct',
       fields: [
         ['userId', 'string'],
-        ['trackId', 'string'],
+        ['agreementId', 'string'],
         ['source', 'string'],
         ['timestamp', 'u64']
       ]
@@ -71,19 +71,19 @@ const instructionSchema = new Map([
     {
       kind: 'struct',
       fields: [
-        ['trackData', TrackData],
+        ['agreementData', AgreementData],
         ['signature', [64]],
         ['recoveryId', 'u8']
       ]
     }
   ],
   [
-    TrackData,
+    AgreementData,
     {
       kind: 'struct',
       fields: [
         ['userId', 'string'],
-        ['trackId', 'string'],
+        ['agreementId', 'string'],
         ['source', 'string'],
         ['timestamp', 'u64']
       ]
@@ -117,8 +117,8 @@ function getFeePayerKeypair (singleFeePayer = true) {
   return feePayerKeypairs[randomFeePayerIndex]
 }
 
-let cachedListenBlocktime = null // in seconds, tracks recent blocktime
-let lastRetrievedListenBlocktime = null // in seconds, tracks time when cachedListenBlocktime was fetched
+let cachedListenBlocktime = null // in seconds, agreements recent blocktime
+let lastRetrievedListenBlocktime = null // in seconds, agreements time when cachedListenBlocktime was fetched
 
 /**
  * Get the blocktime for a recently finalized block, this relative time will be passed into listen transaction.
@@ -142,11 +142,11 @@ async function getListenTimestamp (connection) {
   return blockTime
 }
 
-async function createTrackListenTransaction ({
+async function createAgreementListenTransaction ({
   validSigner,
   privateKey,
   userId,
-  trackId,
+  agreementId,
   source,
   location,
   connection
@@ -170,20 +170,20 @@ async function createTrackListenTransaction ({
   }
 
   // max sol tx size is 1232 bytes
-  let trackData = new TrackData({
+  let agreementData = new AgreementData({
     userId: userId,
-    trackId: trackId,
+    agreementId: agreementId,
     source: sourceData, // use api key as feature flag
     timestamp: (await getListenTimestamp(connection)) || Math.round(new Date().getTime() / 1000)
   })
 
-  const serializedTrackData = borsh.serialize(trackDataSchema, trackData)
-  let msgHash = keccak256(serializedTrackData.toJSON().data)
+  const serializedAgreementData = borsh.serialize(agreementDataSchema, agreementData)
+  let msgHash = keccak256(serializedAgreementData.toJSON().data)
 
   const sigObj = secp256k1.ecdsaSign(Uint8Array.from(msgHash), privKey)
 
   let instructionArgs = new InstructionArgs({
-    trackData: trackData,
+    agreementData: agreementData,
     signature: Array.from(sigObj.signature),
     recoveryId: sigObj.recid
   })
@@ -203,7 +203,7 @@ async function createTrackListenTransaction ({
   let secpInstruction = solanaWeb3.Secp256k1Program.createInstructionWithPublicKey(
     {
       publicKey: pubKey,
-      message: serializedTrackData.toJSON().data,
+      message: serializedAgreementData.toJSON().data,
       signature: sigObj.signature,
       recoveryId: sigObj.recid
     }
@@ -219,7 +219,7 @@ async function createTrackListenTransaction ({
       { pubkey: INSTRUCTIONS_PROGRAM, isSigner: false, isWritable: false },
       { pubkey: CLOCK_PROGRAM, isSigner: false, isWritable: false }
     ],
-    programId: TRACK_LISTEN_PROGRAM,
+    programId: AGREEMENT_LISTEN_PROGRAM,
     data: serializedInstructionArgs
   })
 
@@ -263,7 +263,7 @@ async function sendAndSignTransaction (connection, transaction, signers, timeout
       await delay(300)
     }
     let elapsed = getUnixTs() - startTime
-    logger.info(`TrackListen | Exited retry send loop for ${txid}, elapsed=${elapsed}, done=${done}, timeout=${timeout}, startTime=${startTime}`)
+    logger.info(`AgreementListen | Exited retry send loop for ${txid}, elapsed=${elapsed}, done=${done}, timeout=${timeout}, startTime=${startTime}`)
   })()
 
   try {
@@ -310,7 +310,7 @@ async function awaitTransactionSignatureConfirmation (
         )
       } catch (e) {
         done = true
-        logger.error('TrackListen | WS error in setup', txid, e)
+        logger.error('AgreementListen | WS error in setup', txid, e)
       }
       while (!done) {
         // eslint-disable-next-line no-loop-func
@@ -323,7 +323,7 @@ async function awaitTransactionSignatureConfirmation (
             if (!done) {
               if (!result) {
               } else if (result.err) {
-                logger.error('TrackListen | REST error for', txid, result)
+                logger.error('AgreementListen | REST error for', txid, result)
                 done = true
                 reject(result.err)
               } else if (!(result.confirmations || result.confirmationStatus === 'confirmed' || result.confirmationStatus === 'finalized')) {
@@ -346,6 +346,6 @@ async function awaitTransactionSignatureConfirmation (
   return result
 }
 
-exports.createTrackListenTransaction = createTrackListenTransaction
+exports.createAgreementListenTransaction = createAgreementListenTransaction
 exports.getFeePayerKeypair = getFeePayerKeypair
 exports.sendAndSignTransaction = sendAndSignTransaction

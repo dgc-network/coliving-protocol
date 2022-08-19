@@ -20,8 +20,8 @@ const shouldNotifyUser = (userId, prop, settings) => {
 
 const getRepostType = (type) => {
   switch (type) {
-    case 'track':
-      return notificationTypes.Repost.track
+    case 'agreement':
+      return notificationTypes.Repost.agreement
     case 'album':
       return notificationTypes.Repost.album
     case 'playlist':
@@ -33,8 +33,8 @@ const getRepostType = (type) => {
 
 const getFavoriteType = (type) => {
   switch (type) {
-    case 'track':
-      return notificationTypes.Favorite.track
+    case 'agreement':
+      return notificationTypes.Favorite.agreement
     case 'album':
       return notificationTypes.Favorite.album
     case 'playlist':
@@ -72,7 +72,7 @@ async function formatNotifications (notifications, notificationSettings, tx) {
     }
 
     // Handle the 'repost' notification type
-    // track/album/playlist
+    // agreement/album/playlist
     if (notif.type === notificationTypes.Repost.base) {
       let notificationTarget = notif.metadata.entity_owner_id
       const shouldNotify = shouldNotifyUser(notificationTarget, 'reposts', notificationSettings)
@@ -92,7 +92,7 @@ async function formatNotifications (notifications, notificationSettings, tx) {
       }
     }
 
-    // Handle the 'favorite' notification type, track/album/playlist
+    // Handle the 'favorite' notification type, agreement/album/playlist
     if (notif.type === notificationTypes.Favorite.base) {
       let notificationTarget = notif.metadata.entity_owner_id
       const shouldNotify = shouldNotifyUser(notificationTarget, 'favorites', notificationSettings)
@@ -114,22 +114,22 @@ async function formatNotifications (notifications, notificationSettings, tx) {
 
     // Handle the 'remix create' notification type
     if (notif.type === notificationTypes.RemixCreate) {
-      let notificationTarget = notif.metadata.remix_parent_track_user_id
+      let notificationTarget = notif.metadata.remix_parent_agreement_user_id
       const shouldNotify = shouldNotifyUser(notificationTarget, 'remixes', notificationSettings)
       if (shouldNotify.mobile || shouldNotify.browser) {
         const formattedRemixCreate = {
           ...notif,
           actions: [{
             actionEntityType: actionEntityTypes.User,
-            actionEntityId: notif.metadata.remix_parent_track_user_id,
+            actionEntityId: notif.metadata.remix_parent_agreement_user_id,
             blocknumber
           }, {
-            actionEntityType: actionEntityTypes.Track,
+            actionEntityType: actionEntityTypes.Agreement,
             actionEntityId: notif.metadata.entity_id,
             blocknumber
           }, {
-            actionEntityType: actionEntityTypes.Track,
-            actionEntityId: notif.metadata.remix_parent_track_id,
+            actionEntityType: actionEntityTypes.Agreement,
+            actionEntityId: notif.metadata.remix_parent_agreement_id,
             blocknumber
           }],
           entityId: notif.metadata.entity_id,
@@ -149,7 +149,7 @@ async function formatNotifications (notifications, notificationSettings, tx) {
           actionEntityId: notif.initiator,
           blocknumber
         }, {
-          actionEntityType: actionEntityTypes.Track,
+          actionEntityType: actionEntityTypes.Agreement,
           actionEntityId: notif.metadata.entity_id,
           blocknumber
         }],
@@ -183,7 +183,7 @@ async function formatNotifications (notifications, notificationSettings, tx) {
           entityId: notif.metadata.entity_id,
           type: notificationTypes.MilestoneListen,
           actions: [{
-            actionEntityType: actionEntityTypes.Track,
+            actionEntityType: actionEntityTypes.Agreement,
             actionEntityId: notif.metadata.threshold
           }]
         }
@@ -206,29 +206,29 @@ async function formatNotifications (notifications, notificationSettings, tx) {
       formattedNotifications.push(formattedTierChangeNotification)
     }
 
-    // Handle the 'create' notification type, track/album/playlist
+    // Handle the 'create' notification type, agreement/album/playlist
     if (notif.type === notificationTypes.Create.base) {
       await _processCreateNotifications(notif, tx)
     }
 
-    // Handle the 'track added to playlist' notification type
-    if (notif.type === notificationTypes.AddTrackToPlaylist) {
-      const formattedAddTrackToPlaylistNotification = {
+    // Handle the 'agreement added to playlist' notification type
+    if (notif.type === notificationTypes.AddAgreementToPlaylist) {
+      const formattedAddAgreementToPlaylistNotification = {
         ...notif,
         actions: [{
-          actionEntityType: actionEntityTypes.Track,
-          actionTrackId: notif.metadata.track_id,
+          actionEntityType: actionEntityTypes.Agreement,
+          actionAgreementId: notif.metadata.agreement_id,
           blocknumber
         }],
         metadata: {
-          trackOwnerId: notif.metadata.track_owner_id,
+          agreementOwnerId: notif.metadata.agreement_owner_id,
           playlistOwnerId: notif.initiator,
           playlistId: notif.metadata.playlist_id
         },
-        entityId: notif.metadata.track_id,
-        type: notificationTypes.AddTrackToPlaylist
+        entityId: notif.metadata.agreement_id,
+        type: notificationTypes.AddAgreementToPlaylist
       }
-      formattedNotifications.push(formattedAddTrackToPlaylistNotification)
+      formattedNotifications.push(formattedAddAgreementToPlaylistNotification)
     }
 
     if (notif.type === notificationTypes.Reaction) {
@@ -290,9 +290,9 @@ async function _processCreateNotifications (notif, tx) {
   let createType = null
   let actionEntityType = null
   switch (notif.metadata.entity_type) {
-    case 'track':
-      createType = notificationTypes.Create.track
-      actionEntityType = actionEntityTypes.Track
+    case 'agreement':
+      createType = notificationTypes.Create.agreement
+      actionEntityType = actionEntityTypes.Agreement
       break
     case 'album':
       createType = notificationTypes.Create.album
@@ -307,7 +307,7 @@ async function _processCreateNotifications (notif, tx) {
   }
 
   // Query user IDs from subscriptions table
-  // Notifications go to all users subscribing to this track uploader
+  // Notifications go to all users subscribing to this agreement uploader
   let subscribers = await models.Subscription.findAll({
     where: {
       userId: notif.initiator
@@ -318,19 +318,19 @@ async function _processCreateNotifications (notif, tx) {
   // No operation if no users subscribe to this creator
   if (subscribers.length === 0) { return [] }
 
-  // The notification entity id is the uploader id for tracks
-  // Each track will added to the notification actions table
+  // The notification entity id is the uploader id for agreements
+  // Each agreement will added to the notification actions table
   // For playlist/albums, the notification entity id is the collection id itself
   let notificationEntityId =
-    actionEntityType === actionEntityTypes.Track
+    actionEntityType === actionEntityTypes.Agreement
       ? notif.initiator
       : notif.metadata.entity_id
 
-  // Action table entity is trackId for CreateTrack notifications
-  // Allowing multiple track creates to be associated w/ a single notif for your subscription
+  // Action table entity is agreementId for CreateAgreement notifications
+  // Allowing multiple agreement creates to be associated w/ a single notif for your subscription
   // For collections, the entity is the owner id, producing a distinct notif for each
   let createdActionEntityId =
-    actionEntityType === actionEntityTypes.Track
+    actionEntityType === actionEntityTypes.Agreement
       ? notif.metadata.entity_id
       : notif.metadata.entity_owner_id
 
@@ -347,7 +347,7 @@ async function _processCreateNotifications (notif, tx) {
       entityId: notificationEntityId,
       time: Date.now(),
       pending: true,
-      // Add notification for this user indicating the uploader has added a track
+      // Add notification for this user indicating the uploader has added a agreement
       subscriberId: s.subscriberId,
       // we're going to overwrite this property so fetchNotificationMetadata can use it
       type: createType
@@ -358,20 +358,20 @@ async function _processCreateNotifications (notif, tx) {
   // Dedupe album /playlist notification
   if (createType === notificationTypes.Create.album ||
       createType === notificationTypes.Create.playlist) {
-    let trackIdObjectList = notif.metadata.collection_content.track_ids
-    let trackIdsArray = trackIdObjectList.map(x => x.track)
+    let agreementIdObjectList = notif.metadata.collection_content.agreement_ids
+    let agreementIdsArray = agreementIdObjectList.map(x => x.agreement)
 
-    if (trackIdObjectList.length > 0) {
+    if (agreementIdObjectList.length > 0) {
       // Clear duplicate push notifications in local queue
       let dupeFound = false
       for (let i = 0; i < subscriberPushNotifications.length; i++) {
         let pushNotif = subscriberPushNotifications[i]
         let type = pushNotif.type
-        if (type === notificationTypes.Create.track) {
+        if (type === notificationTypes.Create.agreement) {
           let pushActionEntityId = pushNotif.metadata.entity_id
-          // Check if this pending notification includes a duplicate track
-          if (trackIdsArray.includes(pushActionEntityId)) {
-            logger.debug(`Found dupe push notif ${type}, trackId: ${pushActionEntityId}`)
+          // Check if this pending notification includes a duplicate agreement
+          if (agreementIdsArray.includes(pushActionEntityId)) {
+            logger.debug(`Found dupe push notif ${type}, agreementId: ${pushActionEntityId}`)
             dupeFound = true
             subscriberPushNotifications[i].pending = false
           }

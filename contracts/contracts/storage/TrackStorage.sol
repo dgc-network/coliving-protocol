@@ -4,19 +4,19 @@ import "../registry/RegistryContract.sol";
 import "../interface/RegistryInterface.sol";
 
 
-/// @title The persistent storage for Coliving Tracks
-contract TrackStorage is RegistryContract {
+/// @title The persistent storage for Coliving Agreements
+contract AgreementStorage is RegistryContract {
 
-    bytes32 constant CALLER_REGISTRY_KEY = "TrackFactory";
+    bytes32 constant CALLER_REGISTRY_KEY = "AgreementFactory";
 
     RegistryInterface registry = RegistryInterface(0);
 
-    /** @dev - Uniquely assigned trackId, incremented for each new assignment */
-    uint trackId = 1;
-    /** @dev - Track userIds, key = trackId */
-    mapping(uint => uint) private trackOwnerIds;
-    /** @dev - Track ipfsKeys, key = trackId */
-    mapping(uint => Multihash) private trackMetadataMultihashes;
+    /** @dev - Uniquely assigned agreementId, incremented for each new assignment */
+    uint agreementId = 1;
+    /** @dev - Agreement userIds, key = agreementId */
+    mapping(uint => uint) private agreementOwnerIds;
+    /** @dev - Agreement ipfsKeys, key = agreementId */
+    mapping(uint => Multihash) private agreementMetadataMultihashes;
 
     constructor(address _registryAddress) public {
         require(
@@ -25,80 +25,80 @@ contract TrackStorage is RegistryContract {
         registry = RegistryInterface(_registryAddress);
     }
 
-    function getTrack(uint _trackId)
+    function getAgreement(uint _agreementId)
     external view onlyRegistrant(CALLER_REGISTRY_KEY) returns (
-        uint trackOwnerId,
+        uint agreementOwnerId,
         bytes32 multihashDigest,
         uint8 multihashHashFn,
         uint8 multihashSize
     )
     {
-        Multihash memory trackMultihash = trackMetadataMultihashes[_trackId];
+        Multihash memory agreementMultihash = agreementMetadataMultihashes[_agreementId];
         return (
-            trackOwnerIds[_trackId],
-            trackMultihash.digest,
-            trackMultihash.hashFn,
-            trackMultihash.size
+            agreementOwnerIds[_agreementId],
+            agreementMultihash.digest,
+            agreementMultihash.hashFn,
+            agreementMultihash.size
         );
     }
 
-    function addTrack(
-        uint _trackOwnerId,
+    function addAgreement(
+        uint _agreementOwnerId,
         bytes32 _multihashDigest,
         uint8 _multihashHashFn,
         uint8 _multihashSize
-    ) external onlyRegistrant(CALLER_REGISTRY_KEY) returns (uint newTrackId)
+    ) external onlyRegistrant(CALLER_REGISTRY_KEY) returns (uint newAgreementId)
     {
-        trackOwnerIds[trackId] = _trackOwnerId;
-        trackMetadataMultihashes[trackId] = Multihash({
+        agreementOwnerIds[agreementId] = _agreementOwnerId;
+        agreementMetadataMultihashes[agreementId] = Multihash({
             digest: _multihashDigest,
             hashFn: _multihashHashFn,
             size: _multihashSize
         });
 
-        newTrackId = trackId;
-        trackId += 1;
-        require(trackId != newTrackId, "expected incremented trackId");
+        newAgreementId = agreementId;
+        agreementId += 1;
+        require(agreementId != newAgreementId, "expected incremented agreementId");
 
-        return newTrackId;
+        return newAgreementId;
     }
 
-    function updateTrack(
-        uint _trackId,
-        uint _trackOwnerId,
+    function updateAgreement(
+        uint _agreementId,
+        uint _agreementOwnerId,
         bytes32 _multihashDigest,
         uint8 _multihashHashFn,
         uint8 _multihashSize
     ) external onlyRegistrant(CALLER_REGISTRY_KEY) returns (bool updatePerformed)
     {
         updatePerformed = false;
-        if (trackOwnerIds[_trackId] != _trackOwnerId) {
-            trackOwnerIds[_trackId] = _trackOwnerId;
+        if (agreementOwnerIds[_agreementId] != _agreementOwnerId) {
+            agreementOwnerIds[_agreementId] = _agreementOwnerId;
         }
 
-        if (trackMetadataMultihashes[_trackId].digest != _multihashDigest) {
-            trackMetadataMultihashes[_trackId].digest = _multihashDigest;
+        if (agreementMetadataMultihashes[_agreementId].digest != _multihashDigest) {
+            agreementMetadataMultihashes[_agreementId].digest = _multihashDigest;
             updatePerformed = true;
         }
 
-        if (trackMetadataMultihashes[_trackId].hashFn != _multihashHashFn) {
-            trackMetadataMultihashes[_trackId].hashFn = _multihashHashFn;
+        if (agreementMetadataMultihashes[_agreementId].hashFn != _multihashHashFn) {
+            agreementMetadataMultihashes[_agreementId].hashFn = _multihashHashFn;
             updatePerformed = true;
         }
 
-        if (trackMetadataMultihashes[_trackId].size != _multihashSize) {
-            trackMetadataMultihashes[_trackId].size = _multihashSize;
+        if (agreementMetadataMultihashes[_agreementId].size != _multihashSize) {
+            agreementMetadataMultihashes[_agreementId].size = _multihashSize;
             updatePerformed = true;
         }
 
         return updatePerformed;
     }
 
-    function trackExists(uint _id) external view onlyRegistrant(CALLER_REGISTRY_KEY)
+    function agreementExists(uint _id) external view onlyRegistrant(CALLER_REGISTRY_KEY)
     returns (bool exists)
     {
-        require(_id > 0, "invalid track ID");
-        return (trackOwnerIds[_id] != 0 && trackMetadataMultihashes[_id].digest != "");
+        require(_id > 0, "invalid agreement ID");
+        return (agreementOwnerIds[_id] != 0 && agreementMetadataMultihashes[_id].digest != "");
     }
 
 }

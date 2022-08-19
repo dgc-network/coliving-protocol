@@ -1,41 +1,41 @@
 'use strict'
 module.exports = {
   /**
-   * Fixes bug where track segment files were not associated with trackUUID upon track entry creation.
+   * Fixes bug where agreement segment files were not associated with agreementUUID upon agreement entry creation.
    */
   up: async (queryInterface, Sequelize) => {
     const start = Date.now()
-    // Set all file trackUUIDs to null before re-assigning.
-    await queryInterface.sequelize.query('update "Files" set "trackUUID" = null;')
+    // Set all file agreementUUIDs to null before re-assigning.
+    await queryInterface.sequelize.query('update "Files" set "agreementUUID" = null;')
 
-    const tracks = (await queryInterface.sequelize.query(
-      'select "trackUUID", "metadataJSON"->\'track_segments\' as segments, "cnodeUserUUID" from "Tracks";'
+    const agreements = (await queryInterface.sequelize.query(
+      'select "agreementUUID", "metadataJSON"->\'agreement_segments\' as segments, "cnodeUserUUID" from "Agreements";'
     ))[0]
 
-    /** For every track, find all potential un-matched files, check for matches and associate. */
-    for (const track of tracks) {
-      const cids = track.segments.map(segment => segment.multihash)
+    /** For every agreement, find all potential un-matched files, check for matches and associate. */
+    for (const agreement of agreements) {
+      const cids = agreement.segments.map(segment => segment.multihash)
       if (cids.length === 0) {
-        console.log(`trackUUID ${track.trackUUID} has track segments length 0.`)
+        console.log(`agreementUUID ${agreement.agreementUUID} has agreement segments length 0.`)
         continue
       }
 
-      const cnodeUserUUID = track.cnodeUserUUID
+      const cnodeUserUUID = agreement.cnodeUserUUID
 
-      // Find all segment files for CIDs in track, that don't already have a trackUUID.
+      // Find all segment files for CIDs in agreement, that don't already have a agreementUUID.
       let segmentFiles = (await queryInterface.sequelize.query(
-        'select * from "Files" where "type" = \'track\' and "multihash" in (:cids) and "cnodeUserUUID" = (:cnodeUserUUID) and "trackUUID" is null;',
+        'select * from "Files" where "type" = \'agreement\' and "multihash" in (:cids) and "cnodeUserUUID" = (:cnodeUserUUID) and "agreementUUID" is null;',
         { replacements: { cids, cnodeUserUUID } }
       ))[0]
       if (segmentFiles.length === 0) {
-        console.log(`trackUUID ${track.trackUUID} has segmentFiles length 0.`)
+        console.log(`agreementUUID ${agreement.agreementUUID} has segmentFiles length 0.`)
         continue
       }
 
-      // Get all segment files for sourceFiles from above, to account for tracks that are superset of current track.
+      // Get all segment files for sourceFiles from above, to account for agreements that are superset of current agreement.
       const sourceFiles = segmentFiles.map(segmentFile => segmentFile.sourceFile)
       segmentFiles = (await queryInterface.sequelize.query(
-        'select * from "Files" where "type" = \'track\' and "sourceFile" in (:sourceFiles) and "cnodeUserUUID" = (:cnodeUserUUID) and "trackUUID" is null;',
+        'select * from "Files" where "type" = \'agreement\' and "sourceFile" in (:sourceFiles) and "cnodeUserUUID" = (:cnodeUserUUID) and "agreementUUID" is null;',
         { replacements: { sourceFiles, cnodeUserUUID } }
       ))[0]
 
@@ -49,7 +49,7 @@ module.exports = {
         }
       }
 
-      // Check if segment files for sourceFile map 1-1 with track CIDs.
+      // Check if segment files for sourceFile map 1-1 with agreement CIDs.
       let fileUUIDs = []
       for (const [, filesMap] of Object.entries(sourceFileMap)) {
         fileUUIDs = []
@@ -62,17 +62,17 @@ module.exports = {
         if (fileUUIDs.length === cids.length) { break }
       }
       if (fileUUIDs.length === 0) {
-        console.log(`trackUUID ${track.trackUUID} has 0 matching available fileUUIDs. segmentFiles length ${segmentFiles.length}.`)
+        console.log(`agreementUUID ${agreement.agreementUUID} has 0 matching available fileUUIDs. segmentFiles length ${segmentFiles.length}.`)
         continue
       }
 
       // associate
       await queryInterface.sequelize.query(
-        'update "Files" set "trackUUID" = (:trackUUID) where "fileUUID" in (:fileUUIDs);',
-        { replacements: { trackUUID: track.trackUUID, fileUUIDs } }
+        'update "Files" set "agreementUUID" = (:agreementUUID) where "fileUUID" in (:fileUUIDs);',
+        { replacements: { agreementUUID: agreement.agreementUUID, fileUUIDs } }
       )
     }
-    console.log(`Finished processing ${tracks.length} tracks in ${Date.now() - start}ms.`)
+    console.log(`Finished processing ${agreements.length} agreements in ${Date.now() - start}ms.`)
   },
   down: (queryInterface, Sequelize) => { }
 }

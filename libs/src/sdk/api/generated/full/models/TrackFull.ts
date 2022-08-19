@@ -50,17 +50,17 @@ import {
     StemParentToJSON,
 } from './StemParent';
 import {
-    TrackArtwork,
-    TrackArtworkFromJSON,
-    TrackArtworkFromJSONTyped,
-    TrackArtworkToJSON,
-} from './TrackArtwork';
+    AgreementArtwork,
+    AgreementArtworkFromJSON,
+    AgreementArtworkFromJSONTyped,
+    AgreementArtworkToJSON,
+} from './AgreementArtwork';
 import {
-    TrackSegment,
-    TrackSegmentFromJSON,
-    TrackSegmentFromJSONTyped,
-    TrackSegmentToJSON,
-} from './TrackSegment';
+    AgreementSegment,
+    AgreementSegmentFromJSON,
+    AgreementSegmentFromJSONTyped,
+    AgreementSegmentToJSON,
+} from './AgreementSegment';
 import {
     UserFull,
     UserFullFromJSON,
@@ -71,241 +71,241 @@ import {
 /**
  * 
  * @export
- * @interface TrackFull
+ * @interface AgreementFull
  */
-export interface TrackFull {
+export interface AgreementFull {
     /**
      * 
-     * @type {TrackArtwork}
-     * @memberof TrackFull
+     * @type {AgreementArtwork}
+     * @memberof AgreementFull
      */
-    artwork?: TrackArtwork;
+    artwork?: AgreementArtwork;
     /**
      * 
      * @type {string}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     description?: string;
     /**
      * 
      * @type {string}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     genre?: string;
     /**
      * 
      * @type {string}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     id: string;
     /**
      * 
      * @type {string}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     mood?: string;
     /**
      * 
      * @type {string}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     release_date?: string;
     /**
      * 
      * @type {FullRemixParent}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     remix_of?: FullRemixParent;
     /**
      * 
      * @type {number}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     repost_count: number;
     /**
      * 
      * @type {number}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     favorite_count: number;
     /**
      * 
      * @type {string}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     tags?: string;
     /**
      * 
      * @type {string}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     title: string;
     /**
      * 
      * @type {UserFull}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     user: UserFull;
     /**
      * 
      * @type {number}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     duration: number;
     /**
      * 
      * @type {boolean}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     downloadable?: boolean;
     /**
      * 
      * @type {number}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     play_count: number;
     /**
      * 
      * @type {string}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     permalink?: string;
     /**
      * 
      * @type {number}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     blocknumber: number;
     /**
      * 
      * @type {string}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     create_date?: string;
     /**
      * 
      * @type {string}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     cover_art_sizes?: string;
     /**
      * 
      * @type {string}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     created_at?: string;
     /**
      * 
      * @type {string}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     credits_splits?: string;
     /**
      * 
      * @type {DownloadMetadata}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     download?: DownloadMetadata;
     /**
      * 
      * @type {string}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     isrc?: string;
     /**
      * 
      * @type {string}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     license?: string;
     /**
      * 
      * @type {string}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     iswc?: string;
     /**
      * 
      * @type {FieldVisibility}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     field_visibility?: FieldVisibility;
     /**
      * 
      * @type {Array<Repost>}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     followee_reposts: Array<Repost>;
     /**
      * 
      * @type {boolean}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     has_current_user_reposted: boolean;
     /**
      * 
      * @type {boolean}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     is_unlisted: boolean;
     /**
      * 
      * @type {boolean}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     has_current_user_saved: boolean;
     /**
      * 
      * @type {Array<Favorite>}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     followee_favorites: Array<Favorite>;
     /**
      * 
      * @type {string}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     route_id: string;
     /**
      * 
      * @type {StemParent}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     stem_of?: StemParent;
     /**
      * 
-     * @type {Array<TrackSegment>}
-     * @memberof TrackFull
+     * @type {Array<AgreementSegment>}
+     * @memberof AgreementFull
      */
-    track_segments?: Array<TrackSegment>;
+    agreement_segments?: Array<AgreementSegment>;
     /**
      * 
      * @type {string}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     updated_at?: string;
     /**
      * 
      * @type {string}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     user_id: string;
     /**
      * 
      * @type {boolean}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     is_delete?: boolean;
     /**
      * 
      * @type {string}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     cover_art?: string;
     /**
      * 
      * @type {boolean}
-     * @memberof TrackFull
+     * @memberof AgreementFull
      */
     is_available?: boolean;
 }

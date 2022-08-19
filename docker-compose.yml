@@ -121,7 +121,7 @@ services:
       dockerfile: Dockerfile.dev
       args:
         COLIVING_ETH_REGISTRY_PRIVATE_KEY: "${SOLANA_COLIVING_ETH_REGISTRY_SECRET_KEY}"
-        TRACK_LISTEN_COUNT_PRIVATE_KEY: "${SOLANA_TRACK_LISTEN_COUNT_SECRET_KEY}"
+        AGREEMENT_LISTEN_COUNT_PRIVATE_KEY: "${SOLANA_AGREEMENT_LISTEN_COUNT_SECRET_KEY}"
         CLAIMABLE_TOKENS_PRIVATE_KEY: "${SOLANA_CLAIMABLE_TOKENS_SECRET_KEY}"
         REWARD_MANAGER_PRIVATE_KEY: "${SOLANA_REWARD_MANAGER_SECRET_KEY}"
         COLIVING_DATA_PRIVATE_KEY: "${SOLANA_COLIVING_DATA_SECRET_KEY}"
@@ -224,7 +224,7 @@ services:
       ethOwnerWallet: "${ETH_OWNER_WALLET}"
 
       solanaEndpoint: "http://solana-test-validator:8899"
-      solanaTrackListenCountAddress: "${SOLANA_TRACK_LISTEN_COUNT_PUBLIC_KEY}"
+      solanaAgreementListenCountAddress: "${SOLANA_AGREEMENT_LISTEN_COUNT_PUBLIC_KEY}"
       solanaColivingEthRegistryAddress: "${SOLANA_COLIVING_ETH_REGISTRY_PUBLIC_KEY}"
       solanaValidSigner: "${SOLANA_VALID_SIGNER_PUBLIC_KEY}"
       solanaFeePayerWallets: "[{\"privateKey\":${SOLANA_FEEPAYER_SECRET_KEY}}]"
@@ -272,7 +272,7 @@ services:
       coliving_eth_contracts_token: "${ETH_TOKEN_ADDRESS}"
 
       coliving_solana_endpoint: "http://solana-test-validator:8899"
-      coliving_solana_track_listen_count_address: "${SOLANA_TRACK_LISTEN_COUNT_PUBLIC_KEY}"
+      coliving_solana_agreement_listen_count_address: "${SOLANA_AGREEMENT_LISTEN_COUNT_PUBLIC_KEY}"
       coliving_solana_signer_group_address: "${SOLANA_SIGNER_GROUP_PUBLIC_KEY}"
       coliving_solana_user_bank_program_address: "${SOLANA_CLAIMABLE_TOKENS_PUBLIC_KEY}"
       coliving_solana_wlive_mint: "${SOLANA_TOKEN_MINT_PUBLIC_KEY}"
@@ -315,7 +315,7 @@ services:
       rateLimitingUserReqLimit: 3000
       rateLimitingMetadataReqLimit: 3000
       rateLimitingImageReqLimit: 6000
-      rateLimitingTrackReqLimit: 6000
+      rateLimitingAgreementReqLimit: 6000
       rateLimitingBatchCidsExistLimit: 1
       maxAudioFileSizeBytes: 250000000
       maxMemoryFileSizeBytes: 50000000

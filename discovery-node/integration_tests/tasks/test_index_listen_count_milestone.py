@@ -27,7 +27,7 @@ milestone_threshold = [
 next_threshold = dict(zip(milestone_threshold[:-1], milestone_threshold[1:]))
 
 
-def get_next_track_milestone(play_count: int, prev_milestone: Optional[int] = None):
+def get_next_agreement_milestone(play_count: int, prev_milestone: Optional[int] = None):
     """
     Gets the next hightest milstone threshold avaiable given the play count,
     if past the last threshold or given an invalid previous milestone, will return None
@@ -37,7 +37,7 @@ def get_next_track_milestone(play_count: int, prev_milestone: Optional[int] = No
         if prev_milestone in next_threshold:
             next_milestone = next_threshold[prev_milestone]
         else:
-            # track is past the last milestone, so return none and stop
+            # agreement is past the last milestone, so return none and stop
             return None
 
     # If play counts have not passed the next threshold, return None
@@ -57,33 +57,33 @@ def get_next_track_milestone(play_count: int, prev_milestone: Optional[int] = No
     return next_milestone
 
 
-def test_get_next_track_milestone():
-    next_milestone = get_next_track_milestone(8)
+def test_get_next_agreement_milestone():
+    next_milestone = get_next_agreement_milestone(8)
     assert next_milestone == None
 
-    next_milestone = get_next_track_milestone(10)
+    next_milestone = get_next_agreement_milestone(10)
     assert next_milestone == 10
 
-    next_milestone = get_next_track_milestone(520)
+    next_milestone = get_next_agreement_milestone(520)
     assert next_milestone == 500
 
     # Test get next milestone with prev milestone defined
-    next_milestone = get_next_track_milestone(12, 10)
+    next_milestone = get_next_agreement_milestone(12, 10)
     assert next_milestone == None
 
-    next_milestone = get_next_track_milestone(28, 10)
+    next_milestone = get_next_agreement_milestone(28, 10)
     assert next_milestone == 25
 
-    next_milestone = get_next_track_milestone(50, 10)
+    next_milestone = get_next_agreement_milestone(50, 10)
     assert next_milestone == 50
 
-    next_milestone = get_next_track_milestone(520, 10)
+    next_milestone = get_next_agreement_milestone(520, 10)
     assert next_milestone == 500
 
-    next_milestone = get_next_track_milestone(1000100, 100000)
+    next_milestone = get_next_agreement_milestone(1000100, 100000)
     assert next_milestone == 1000000
 
-    next_milestone = get_next_track_milestone(1000100, 1000000)
+    next_milestone = get_next_agreement_milestone(1000100, 1000000)
     assert next_milestone == None
 
 

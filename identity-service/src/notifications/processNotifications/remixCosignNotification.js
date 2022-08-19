@@ -16,30 +16,30 @@ async function processCosignNotifications (notifications, tx) {
   const validNotifications = []
   for (const notification of notifications) {
     const {
-      entity_id: childTrackId,
-      entity_owner_id: childTrackUserId
+      entity_id: childAgreementId,
+      entity_owner_id: childAgreementUserId
     } = notification.metadata
-    const parentTrackUserId = notification.initiator
+    const parentAgreementUserId = notification.initiator
 
     // Query the Notification/NotificationActions to see if the notification already exists.
     let cosignNotifications = await models.Notification.findAll({
       where: {
-        userId: childTrackUserId,
+        userId: childAgreementUserId,
         type: notificationTypes.RemixCosign,
-        entityId: childTrackId
+        entityId: childAgreementId
       },
       include: [{
         model: models.NotificationAction,
         as: 'actions',
         where: {
           actionEntityType: actionEntityTypes.User,
-          actionEntityId: parentTrackUserId
+          actionEntityId: parentAgreementUserId
         }
       }],
       transaction: tx
     })
 
-    // If this track is already cosigned, ignore this notification
+    // If this agreement is already cosigned, ignore this notification
     if (cosignNotifications.length > 0) continue
 
     const blocknumber = notification.blocknumber
@@ -52,8 +52,8 @@ async function processCosignNotifications (notifications, tx) {
     // NOTE: Cosign Notifications do NOT stack. A new notification is created every time
     let cosignNotification = await models.Notification.create({
       type: notificationTypes.RemixCosign,
-      userId: childTrackUserId,
-      entityId: childTrackId,
+      userId: childAgreementUserId,
+      entityId: childAgreementId,
       blocknumber,
       timestamp: updatedTimestamp
     }, { transaction: tx })
@@ -61,7 +61,7 @@ async function processCosignNotifications (notifications, tx) {
     await models.NotificationAction.create({
       notificationId: cosignNotification.id,
       actionEntityType: actionEntityTypes.User,
-      actionEntityId: parentTrackUserId,
+      actionEntityId: parentAgreementUserId,
       blocknumber
     }, { transaction: tx })
     validNotifications.push(notification)

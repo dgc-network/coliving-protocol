@@ -1,4 +1,4 @@
-"""Add stem metadata to track table
+"""Add stem metadata to agreement table
 
 Revision ID: e7bf0280310b
 Revises: 5add54e23282
@@ -19,10 +19,10 @@ depends_on = None
 
 def upgrade():
     op.add_column(
-        "tracks",
+        "agreements",
         sa.Column("stem_of", postgresql.JSONB(astext_type=sa.Text()), nullable=True),
     )
 
 
 def downgrade():
-    op.drop_column("tracks", sa.Column("stem_of"))
+    op.drop_column("agreements", sa.Column("stem_of"))

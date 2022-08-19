@@ -1,13 +1,13 @@
 ---
-id: "full.GetRecommendedTracksRequest"
-title: "Interface: GetRecommendedTracksRequest"
-sidebar_label: "GetRecommendedTracksRequest"
+id: "full.GetRecommendedAgreementsRequest"
+title: "Interface: GetRecommendedAgreementsRequest"
+sidebar_label: "GetRecommendedAgreementsRequest"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).GetRecommendedTracksRequest
+[full](../namespaces/full.md).GetRecommendedAgreementsRequest
 
 ## Properties
 
@@ -15,7 +15,7 @@ pagination_next: null
 
  `Optional` **exclusionList**: `number`[]
 
-List of track ids to exclude
+List of agreement ids to exclude
 
 ___
 
@@ -37,7 +37,7 @@ ___
 
 ### time
 
- `Optional` **time**: [`GetRecommendedTracksTimeEnum`](../enums/full.GetRecommendedTracksTimeEnum.md)
+ `Optional` **time**: [`GetRecommendedAgreementsTimeEnum`](../enums/full.GetRecommendedAgreementsTimeEnum.md)
 
 Calculate trending over a specified time range
 

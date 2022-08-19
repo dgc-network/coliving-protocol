@@ -1,22 +1,22 @@
-# track/playlist metadata
-repost_count = "repost_count"  # integer - total repost count of given track/playlist
-save_count = "save_count"  # integer - total save count of given track/playlist
-play_count = "play_count"  # integer - total play count of given track
+# agreement/playlist metadata
+repost_count = "repost_count"  # integer - total repost count of given agreement/playlist
+save_count = "save_count"  # integer - total save count of given agreement/playlist
+play_count = "play_count"  # integer - total play count of given agreement
 total_play_count = "total_play_count"  # integer - total play count of a given playlist
-# boolean - has current user reposted given track/playlist
+# boolean - has current user reposted given agreement/playlist
 has_current_user_reposted = "has_current_user_reposted"
-# boolean - has current user saved given track/playlist
+# boolean - has current user saved given agreement/playlist
 has_current_user_saved = "has_current_user_saved"
-# array - followees of current user that have reposted given track/playlist
+# array - followees of current user that have reposted given agreement/playlist
 followee_reposts = "followee_reposts"
-# array - followees of current user that have saved given track/playlist
+# array - followees of current user that have saved given agreement/playlist
 followee_saves = "followee_saves"
 
-# remix track specific
-remix_of = "remix_of"  # dictionary - contains an array of parent track ids
-# boolean - does the remix track author repost the track
+# remix agreement specific
+remix_of = "remix_of"  # dictionary - contains an array of parent agreement ids
+# boolean - does the remix agreement author repost the agreement
 has_remix_author_reposted = "has_remix_author_reposted"
-# boolean - does the remix track author favorite the track
+# boolean - does the remix agreement author favorite the agreement
 has_remix_author_saved = "has_remix_author_saved"
 
 # user metadata
@@ -27,13 +27,13 @@ followee_count = "followee_count"  # integer - total followee count of given use
 playlist_count = "playlist_count"
 # integer - total count of albums created by given user (0 for all non-creators)
 album_count = "album_count"
-track_count = "track_count"  # integer - total count of tracks created by given user
-# integer - total count of tracks saves created by given user
-track_save_count = "track_save_count"
-created_at = "created_at"  # datetime - time track was created
+agreement_count = "agreement_count"  # integer - total count of agreements created by given user
+# integer - total count of agreements saves created by given user
+agreement_save_count = "agreement_save_count"
+created_at = "created_at"  # datetime - time agreement was created
 repost_count = "repost_count"  # integer - total count of reposts by given user
-# integer - blocknumber of latest track for user
-track_blocknumber = "track_blocknumber"
+# integer - blocknumber of latest agreement for user
+agreement_blocknumber = "agreement_blocknumber"
 windowed_repost_count = "windowed_repost_count"
 windowed_save_count = "windowed_save_count"
 balance = "balance"
@@ -62,14 +62,14 @@ does_support_current_user = "does_support_current_user"
 # string - timestamp of relevant activity on underlying object, used for sorting
 activity_timestamp = "activity_timestamp"
 
-track_owner_follower_count = "track_owner_follower_count"
-track_owner_id = "track_owner_id"
-track_id = "track_id"
+agreement_owner_follower_count = "agreement_owner_follower_count"
+agreement_owner_id = "agreement_owner_id"
+agreement_id = "agreement_id"
 playlist_id = "playlist_id"
 owner_id = "owner_id"
 listen_counts = "listen_counts"
 
-tracks = "tracks"
+agreements = "agreements"
 albums = "albums"
 playlists = "playlists"
 user = "user"
@@ -84,7 +84,7 @@ notification_type_remix_create = "RemixCreate"
 notification_type_remix_cosign = "RemixCosign"
 notification_type_playlist_update = "PlaylistUpdate"
 notification_type_tier_change = "TierChange"
-notification_type_add_track_to_playlist = "AddTrackToPlaylist"
+notification_type_add_agreement_to_playlist = "AddAgreementToPlaylist"
 
 notification_blocknumber = "blocknumber"
 notification_initiator = "initiator"
@@ -95,8 +95,8 @@ notification_entity_id = "entity_id"
 notification_entity_owner_id = "entity_owner_id"
 notification_collection_content = "collection_content"
 
-notification_remix_parent_track_user_id = "remix_parent_track_user_id"
-notification_remix_parent_track_id = "remix_parent_track_id"
+notification_remix_parent_agreement_user_id = "remix_parent_agreement_user_id"
+notification_remix_parent_agreement_id = "remix_parent_agreement_id"
 
 notification_follower_id = "follower_user_id"
 notification_followee_id = "followee_user_id"

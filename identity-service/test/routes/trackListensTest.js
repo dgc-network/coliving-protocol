@@ -5,17 +5,17 @@ const sinon = require('sinon')
 const { getApp } = require('../lib/app')
 const solClient = require('../../src/solana-client')
 
-describe('test Solana listen tracking', function () {
-  const TRACK_ID = 12345
+describe('test Solana listen agreementing', function () {
+  const AGREEMENT_ID = 12345
   const USER_ID = 54321
-  const TRACKING_LISTEN_SUBMISSION_KEY = 'listens-tx-submission-ts'
-  const TRACKING_LISTEN_SUCCESS_KEY = 'listens-tx-success-ts'
+  const AGREEMENTING_LISTEN_SUBMISSION_KEY = 'listens-tx-submission-ts'
+  const AGREEMENTING_LISTEN_SUCCESS_KEY = 'listens-tx-success-ts'
 
-  let app, server, sandbox, solanaWeb3Stub, createTrackListenTransactionStub, sendAndSignTransactionStub
+  let app, server, sandbox, solanaWeb3Stub, createAgreementListenTransactionStub, sendAndSignTransactionStub
   beforeEach(async () => {
-    delete require.cache[require.resolve('../../src/routes/trackListens')]
+    delete require.cache[require.resolve('../../src/routes/agreementListens')]
     sandbox = sinon.createSandbox()
-    createTrackListenTransactionStub = sandbox.stub(solClient, 'createTrackListenTransaction')
+    createAgreementListenTransactionStub = sandbox.stub(solClient, 'createAgreementListenTransaction')
     sendAndSignTransactionStub = sandbox.stub(solClient, 'sendAndSignTransaction')
     const appInfo = await getApp()
     app = appInfo.app
@@ -31,7 +31,7 @@ describe('test Solana listen tracking', function () {
 
   const recordSuccessfulListen = async (raw) => {
     // Common to both raw and non-raw path
-    createTrackListenTransactionStub.resolves('expected success')
+    createAgreementListenTransactionStub.resolves('expected success')
 
     if (raw) {
       sendAndSignTransactionStub.resolves('expected success')
@@ -40,7 +40,7 @@ describe('test Solana listen tracking', function () {
     }
 
     const resp = await request(app)
-      .post(`/tracks/${TRACK_ID}/listen`)
+      .post(`/agreements/${AGREEMENT_ID}/listen`)
       .send({
         userId: USER_ID,
         solanaListen: true,
@@ -50,11 +50,11 @@ describe('test Solana listen tracking', function () {
   }
 
   const recordFailedListen = async (raw) => {
-    // Failed listen just needs createTrackListenTransaction to fail because it's called before raw/non-raw logic
-    createTrackListenTransactionStub.rejects('intentional failure')
+    // Failed listen just needs createAgreementListenTransaction to fail because it's called before raw/non-raw logic
+    createAgreementListenTransactionStub.rejects('intentional failure')
 
     const resp = await request(app)
-      .post(`/tracks/${TRACK_ID}/listen`)
+      .post(`/agreements/${AGREEMENT_ID}/listen`)
       .send({
         userId: USER_ID,
         solanaListen: true,
@@ -65,7 +65,7 @@ describe('test Solana listen tracking', function () {
 
   const verifySuccessfulListens = async (numSuccess, numSubmission, percentSuccess, threshold) => {
     const resp = await request(app)
-      .get(`/tracks/listen/solana/status?percent=${threshold}`)
+      .get(`/agreements/listen/solana/status?percent=${threshold}`)
       .send()
     assert.strictEqual(resp.status, 200)
     assert.match(resp.headers['content-type'], /json/)
@@ -77,14 +77,14 @@ describe('test Solana listen tracking', function () {
 
   const verifyFailedListens = async (threshold) => {
     const resp = await request(app)
-      .get(`/tracks/listen/solana/status?percent=${threshold}`)
+      .get(`/agreements/listen/solana/status?percent=${threshold}`)
       .send()
     assert.strictEqual(resp.status, 400)
   }
 
   const verifyListensInRange = async (range, listens, listensInRange) => {
     const resp = await request(app)
-      .get(`/tracks/listen/solana/status?cutoffMinutes=${range}`)
+      .get(`/agreements/listen/solana/status?cutoffMinutes=${range}`)
       .send()
     assert.strictEqual(resp.status, 200)
     assert.match(resp.headers['content-type'], /json/)
@@ -127,11 +127,11 @@ describe('test Solana listen tracking', function () {
       const now = Date.now()
       const lastWeek = now - (24 * 60 * 60 * 1000 * 7 + 1)
       const redis = app.get('redis')
-      await redis.zadd(TRACKING_LISTEN_SUCCESS_KEY, now, now)
-      await redis.zadd(TRACKING_LISTEN_SUBMISSION_KEY, now, now)
-      await redis.zadd(TRACKING_LISTEN_SUCCESS_KEY, lastWeek, lastWeek)
-      await redis.zadd(TRACKING_LISTEN_SUBMISSION_KEY, lastWeek, lastWeek)
-      const successBeforeCleanup = await redis.zcount(TRACKING_LISTEN_SUCCESS_KEY, 0, Number.MAX_SAFE_INTEGER)
+      await redis.zadd(AGREEMENTING_LISTEN_SUCCESS_KEY, now, now)
+      await redis.zadd(AGREEMENTING_LISTEN_SUBMISSION_KEY, now, now)
+      await redis.zadd(AGREEMENTING_LISTEN_SUCCESS_KEY, lastWeek, lastWeek)
+      await redis.zadd(AGREEMENTING_LISTEN_SUBMISSION_KEY, lastWeek, lastWeek)
+      const successBeforeCleanup = await redis.zcount(AGREEMENTING_LISTEN_SUCCESS_KEY, 0, Number.MAX_SAFE_INTEGER)
       assert.strictEqual(successBeforeCleanup, 2)
       await verifySuccessfulListens(1, 1, 1, 1)
     })

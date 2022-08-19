@@ -29,20 +29,20 @@ def get_primary_endpoint(user):
     return raw_endpoint.split(",")[0]
 
 
-def add_track_artwork(track):
-    if "user" not in track:
-        return track
-    endpoint = get_primary_endpoint(track["user"])
-    cid = track["cover_art_sizes"]
+def add_agreement_artwork(agreement):
+    if "user" not in agreement:
+        return agreement
+    endpoint = get_primary_endpoint(agreement["user"])
+    cid = agreement["cover_art_sizes"]
     if not endpoint or not cid:
-        return track
+        return agreement
     artwork = {
         "150x150": make_image(endpoint, cid, 150, 150),
         "480x480": make_image(endpoint, cid, 480, 480),
         "1000x1000": make_image(endpoint, cid, 1000, 1000),
     }
-    track["artwork"] = artwork
-    return track
+    agreement["artwork"] = artwork
+    return agreement
 
 
 def add_playlist_artwork(playlist):
@@ -65,9 +65,9 @@ def add_playlist_added_timestamps(playlist):
     if "playlist_contents" not in playlist:
         return playlist
     added_timestamps = []
-    for track in playlist["playlist_contents"]["track_ids"]:
+    for agreement in playlist["playlist_contents"]["agreement_ids"]:
         added_timestamps.append(
-            {"track_id": encode_int_id(track["track"]), "timestamp": track["time"]}
+            {"agreement_id": encode_int_id(agreement["agreement"]), "timestamp": agreement["time"]}
         )
     return added_timestamps
 
@@ -104,10 +104,10 @@ def extend_search(resp):
         resp["users"] = list(map(extend_user, resp["users"]))
     if "followed_users" in resp:
         resp["followed_users"] = list(map(extend_user, resp["followed_users"]))
-    if "tracks" in resp:
-        resp["tracks"] = list(map(extend_track, resp["tracks"]))
-    if "saved_tracks" in resp:
-        resp["saved_tracks"] = list(map(extend_track, resp["saved_tracks"]))
+    if "agreements" in resp:
+        resp["agreements"] = list(map(extend_agreement, resp["agreements"]))
+    if "saved_agreements" in resp:
+        resp["saved_agreements"] = list(map(extend_agreement, resp["saved_agreements"]))
     if "playlists" in resp:
         resp["playlists"] = list(map(extend_playlist, resp["playlists"]))
     if "saved_playlists" in resp:
@@ -149,17 +149,17 @@ def extend_favorite(favorite):
 
 
 def extend_remix_of(remix_of):
-    def extend_track_element(track):
-        track_id = track["parent_track_id"]
-        track["parent_track_id"] = encode_int_id(track_id)
-        if "user" in track:
-            track["user"] = extend_user(track["user"])
-        return track
+    def extend_agreement_element(agreement):
+        agreement_id = agreement["parent_agreement_id"]
+        agreement["parent_agreement_id"] = encode_int_id(agreement_id)
+        if "user" in agreement:
+            agreement["user"] = extend_user(agreement["user"])
+        return agreement
 
-    if not remix_of or "tracks" not in remix_of or not remix_of["tracks"]:
+    if not remix_of or "agreements" not in remix_of or not remix_of["agreements"]:
         return remix_of
 
-    remix_of["tracks"] = list(map(extend_track_element, remix_of["tracks"]))
+    remix_of["agreements"] = list(map(extend_agreement_element, remix_of["agreements"]))
     return remix_of
 
 
@@ -185,58 +185,58 @@ def parse_unix_epoch_param_non_utc(time, default=0):
     return datetime.fromtimestamp(time)
 
 
-def extend_track(track):
-    track_id = encode_int_id(track["track_id"])
-    owner_id = encode_int_id(track["owner_id"])
-    if "user" in track:
-        track["user"] = extend_user(track["user"])
-    track["id"] = track_id
-    track["user_id"] = owner_id
-    if "followee_saves" in track:
-        track["followee_favorites"] = list(
-            map(extend_favorite, track["followee_saves"])
+def extend_agreement(agreement):
+    agreement_id = encode_int_id(agreement["agreement_id"])
+    owner_id = encode_int_id(agreement["owner_id"])
+    if "user" in agreement:
+        agreement["user"] = extend_user(agreement["user"])
+    agreement["id"] = agreement_id
+    agreement["user_id"] = owner_id
+    if "followee_saves" in agreement:
+        agreement["followee_favorites"] = list(
+            map(extend_favorite, agreement["followee_saves"])
         )
-    if "followee_reposts" in track:
-        track["followee_reposts"] = list(map(extend_repost, track["followee_reposts"]))
-    if "remix_of" in track:
-        track["remix_of"] = extend_remix_of(track["remix_of"])
+    if "followee_reposts" in agreement:
+        agreement["followee_reposts"] = list(map(extend_repost, agreement["followee_reposts"]))
+    if "remix_of" in agreement:
+        agreement["remix_of"] = extend_remix_of(agreement["remix_of"])
 
-    track = add_track_artwork(track)
+    agreement = add_agreement_artwork(agreement)
 
-    if "save_count" in track:
-        track["favorite_count"] = track["save_count"]
+    if "save_count" in agreement:
+        agreement["favorite_count"] = agreement["save_count"]
 
     duration = 0.0
-    for segment in track["track_segments"]:
-        # NOTE: Legacy track segments store the duration as a string
+    for segment in agreement["agreement_segments"]:
+        # NOTE: Legacy agreement segments store the duration as a string
         duration += float(segment["duration"])
-    track["duration"] = round(duration)
+    agreement["duration"] = round(duration)
 
     downloadable = (
-        "download" in track
-        and track["download"]
-        and track["download"]["is_downloadable"]
+        "download" in agreement
+        and agreement["download"]
+        and agreement["download"]["is_downloadable"]
     )
-    track["downloadable"] = bool(downloadable)
+    agreement["downloadable"] = bool(downloadable)
 
-    return track
-
-
-def get_encoded_track_id(track):
-    return {"id": encode_int_id(track["track_id"])}
+    return agreement
 
 
-def stem_from_track(track):
-    track_id = encode_int_id(track["track_id"])
-    parent_id = encode_int_id(track["stem_of"]["parent_track_id"])
-    category = track["stem_of"]["category"]
+def get_encoded_agreement_id(agreement):
+    return {"id": encode_int_id(agreement["agreement_id"])}
+
+
+def stem_from_agreement(agreement):
+    agreement_id = encode_int_id(agreement["agreement_id"])
+    parent_id = encode_int_id(agreement["stem_of"]["parent_agreement_id"])
+    category = agreement["stem_of"]["category"]
     return {
-        "id": track_id,
+        "id": agreement_id,
         "parent_id": parent_id,
         "category": category,
-        "cid": track["download"]["cid"],
-        "user_id": encode_int_id(track["owner_id"]),
-        "blocknumber": track["blocknumber"],
+        "cid": agreement["download"]["cid"],
+        "user_id": encode_int_id(agreement["owner_id"]),
+        "blocknumber": agreement["blocknumber"],
     }
 
 
@@ -262,22 +262,22 @@ def extend_playlist(playlist):
     playlist["added_timestamps"] = add_playlist_added_timestamps(playlist)
     playlist["cover_art"] = playlist["playlist_image_multihash"]
     playlist["cover_art_sizes"] = playlist["playlist_image_sizes_multihash"]
-    # If a trending playlist, we have 'track_count'
-    # already to preserve the original, non-abbreviated track count
-    playlist["track_count"] = (
-        playlist["track_count"]
-        if "track_count" in playlist
-        else len(playlist["playlist_contents"]["track_ids"])
+    # If a trending playlist, we have 'agreement_count'
+    # already to preserve the original, non-abbreviated agreement count
+    playlist["agreement_count"] = (
+        playlist["agreement_count"]
+        if "agreement_count" in playlist
+        else len(playlist["playlist_contents"]["agreement_ids"])
     )
     return playlist
 
 
 def extend_activity(item):
-    if item.get("track_id"):
+    if item.get("agreement_id"):
         return {
-            "item_type": "track",
+            "item_type": "agreement",
             "timestamp": item["activity_timestamp"],
-            "item": extend_track(item),
+            "item": extend_agreement(item),
         }
     if item.get("playlist_id"):
         return {
@@ -494,8 +494,8 @@ full_search_parser.add_argument(
     required=False,
     type=str,
     default="all",
-    choices=("all", "users", "tracks", "playlists", "albums"),
-    description="The type of response, one of: all, users, tracks, playlists, or albums",
+    choices=("all", "users", "agreements", "playlists", "albums"),
+    description="The type of response, one of: all, users, agreements, playlists, or albums",
 )
 
 verify_token_parser = reqparse.RequestParser(argument_class=DescriptiveArgument)

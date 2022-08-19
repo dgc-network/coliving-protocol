@@ -18,7 +18,7 @@ const {
   destroyUsers
 } = require('./lib/dataSeeds')
 const { generateRandomCID } = require('./lib/utils')
-const { uploadTrack } = require('./lib/helpers')
+const { uploadAgreement } = require('./lib/helpers')
 const { restartBlacklistManager } = require('./lib/blacklistManager')
 
 // Dummy keys from circle config.yml
@@ -33,7 +33,7 @@ const trustedNotifierConfig = {
   privateKey: 'fb0486224fc0221d1c23c00379cb10ce5f99aff2b0e5c1afd828c08b57f21429'
 }
 
-const testAudioFilePath = path.resolve(__dirname, 'testTrack.mp3')
+const testAudioFilePath = path.resolve(__dirname, 'testAgreement.mp3')
 
 describe('test ContentBlacklist', function () {
   let app, server, libsMock, mockServiceRegistry, userId
@@ -70,11 +70,11 @@ describe('test ContentBlacklist', function () {
     await redis.flushall()
   })
 
-  it('should expose the proper tracks if added', async function () {
+  it('should expose the proper agreements if added', async function () {
     const expectedIds = [1, 2, 3, 4, 5, 6, 7]
-    const addTrackData = generateTimestampAndSignature(
+    const addAgreementData = generateTimestampAndSignature(
       {
-        type: BlacklistManager.getTypes().track,
+        type: BlacklistManager.getTypes().agreement,
         values: expectedIds
       },
       DELEGATE_PRIVATE_KEY
@@ -83,15 +83,15 @@ describe('test ContentBlacklist', function () {
     await request(app)
       .post('/blacklist/add')
       .query({
-        type: BlacklistManager.getTypes().track,
+        type: BlacklistManager.getTypes().agreement,
         'values[]': expectedIds,
-        signature: addTrackData.signature,
-        timestamp: addTrackData.timestamp
+        signature: addAgreementData.signature,
+        timestamp: addAgreementData.timestamp
       })
       .expect(200)
 
     await request(app)
-      .get('/blacklist/tracks')
+      .get('/blacklist/agreements')
       .expect(200)
       .expect((resp) => {
         const actualIds = resp.body.data.values
@@ -101,9 +101,9 @@ describe('test ContentBlacklist', function () {
       })
   })
 
-  it('should expose empty list if no tracks are added', async function () {
+  it('should expose empty list if no agreements are added', async function () {
     await request(app)
-      .get('/blacklist/tracks')
+      .get('/blacklist/agreements')
       .expect(200)
       .expect((resp) => {
         const actualIds = resp.body.data.values
@@ -111,7 +111,7 @@ describe('test ContentBlacklist', function () {
       })
   })
 
-  it('should return the proper userIds, trackIds, and segments', async () => {
+  it('should return the proper userIds, agreementIds, and segments', async () => {
     const ids = [43021]
     const addUserData = generateTimestampAndSignature(
       {
@@ -131,9 +131,9 @@ describe('test ContentBlacklist', function () {
       })
       .expect(200)
 
-    const addTrackData = generateTimestampAndSignature(
+    const addAgreementData = generateTimestampAndSignature(
       {
-        type: BlacklistManager.getTypes().track,
+        type: BlacklistManager.getTypes().agreement,
         values: ids
       },
       DELEGATE_PRIVATE_KEY
@@ -142,10 +142,10 @@ describe('test ContentBlacklist', function () {
     await request(app)
       .post('/blacklist/add')
       .query({
-        type: BlacklistManager.getTypes().track,
+        type: BlacklistManager.getTypes().agreement,
         'values[]': ids,
-        signature: addTrackData.signature,
-        timestamp: addTrackData.timestamp
+        signature: addAgreementData.signature,
+        timestamp: addAgreementData.timestamp
       })
       .expect(200)
 
@@ -172,8 +172,8 @@ describe('test ContentBlacklist', function () {
       .get('/blacklist')
       .expect(200)
       .expect((resp) => {
-        assert.deepStrictEqual(resp.body.data.trackIds.length, 1)
-        assert.deepStrictEqual(resp.body.data.trackIds[0], '43021')
+        assert.deepStrictEqual(resp.body.data.agreementIds.length, 1)
+        assert.deepStrictEqual(resp.body.data.agreementIds[0], '43021')
         assert.deepStrictEqual(resp.body.data.userIds.length, 1)
         assert.deepStrictEqual(resp.body.data.userIds[0], '43021')
         assert.deepStrictEqual(resp.body.data.individualSegments.length, 1)
@@ -181,7 +181,7 @@ describe('test ContentBlacklist', function () {
       })
   })
 
-  it('should return the proper userIds, trackIds, and segments when sent by trusted notifier', async () => {
+  it('should return the proper userIds, agreementIds, and segments when sent by trusted notifier', async () => {
     mockServiceRegistry.trustedNotifierManager.trustedNotifierData.wallet =
       trustedNotifierConfig.wallet
 
@@ -204,9 +204,9 @@ describe('test ContentBlacklist', function () {
       })
       .expect(200)
 
-    const addTrackData = generateTimestampAndSignature(
+    const addAgreementData = generateTimestampAndSignature(
       {
-        type: BlacklistManager.getTypes().track,
+        type: BlacklistManager.getTypes().agreement,
         values: ids
       },
       trustedNotifierConfig.privateKey
@@ -215,10 +215,10 @@ describe('test ContentBlacklist', function () {
     await request(app)
       .post('/blacklist/add')
       .query({
-        type: BlacklistManager.getTypes().track,
+        type: BlacklistManager.getTypes().agreement,
         'values[]': ids,
-        signature: addTrackData.signature,
-        timestamp: addTrackData.timestamp
+        signature: addAgreementData.signature,
+        timestamp: addAgreementData.timestamp
       })
       .expect(200)
 
@@ -245,8 +245,8 @@ describe('test ContentBlacklist', function () {
       .get('/blacklist')
       .expect(200)
       .expect((resp) => {
-        assert.deepStrictEqual(resp.body.data.trackIds.length, 1)
-        assert.deepStrictEqual(resp.body.data.trackIds[0], '43021')
+        assert.deepStrictEqual(resp.body.data.agreementIds.length, 1)
+        assert.deepStrictEqual(resp.body.data.agreementIds[0], '43021')
         assert.deepStrictEqual(resp.body.data.userIds.length, 1)
         assert.deepStrictEqual(resp.body.data.userIds[0], '43021')
         assert.deepStrictEqual(resp.body.data.individualSegments.length, 1)
@@ -282,9 +282,9 @@ describe('test ContentBlacklist', function () {
     )
   })
 
-  it('should add track type and id to db and redis', async () => {
+  it('should add agreement type and id to db and redis', async () => {
     const ids = [Utils.getRandomInt(MAX_ID)]
-    const type = BlacklistManager.getTypes().track
+    const type = BlacklistManager.getTypes().agreement
     const { signature, timestamp } = generateTimestampAndSignature(
       { type, values: ids },
       DELEGATE_PRIVATE_KEY
@@ -295,7 +295,7 @@ describe('test ContentBlacklist', function () {
       .query({ type, 'values[]': ids, timestamp, signature })
       .expect(200)
 
-    const track = await models.ContentBlacklist.findOne({
+    const agreement = await models.ContentBlacklist.findOne({
       where: {
         value: {
           [models.Sequelize.Op.in]: ids.map((id) => id.toString())
@@ -303,10 +303,10 @@ describe('test ContentBlacklist', function () {
         type
       }
     })
-    assert.deepStrictEqual(track.value, ids[0].toString())
-    assert.deepStrictEqual(track.type, type)
+    assert.deepStrictEqual(agreement.value, ids[0].toString())
+    assert.deepStrictEqual(agreement.type, type)
     assert.deepStrictEqual(
-      await BlacklistManager.trackIdIsInBlacklist(track.value),
+      await BlacklistManager.agreementIdIsInBlacklist(agreement.value),
       1
     )
   })
@@ -344,9 +344,9 @@ describe('test ContentBlacklist', function () {
     )
   })
 
-  it('should remove track type and id from db and redis', async () => {
+  it('should remove agreement type and id from db and redis', async () => {
     const ids = [Utils.getRandomInt(MAX_ID)]
-    const type = BlacklistManager.getTypes().track
+    const type = BlacklistManager.getTypes().agreement
     const { signature, timestamp } = generateTimestampAndSignature(
       { type, values: ids },
       DELEGATE_PRIVATE_KEY
@@ -362,7 +362,7 @@ describe('test ContentBlacklist', function () {
       .query({ type, 'values[]': ids, timestamp, signature })
       .expect(200)
 
-    const track = await models.ContentBlacklist.findOne({
+    const agreement = await models.ContentBlacklist.findOne({
       where: {
         value: {
           [models.Sequelize.Op.in]: ids.map((id) => id.toString())
@@ -370,9 +370,9 @@ describe('test ContentBlacklist', function () {
         type
       }
     })
-    assert.deepStrictEqual(track, null)
+    assert.deepStrictEqual(agreement, null)
     assert.deepStrictEqual(
-      await BlacklistManager.trackIdIsInBlacklist(ids[0]),
+      await BlacklistManager.agreementIdIsInBlacklist(ids[0]),
       0
     )
   })
@@ -405,9 +405,9 @@ describe('test ContentBlacklist', function () {
     )
   })
 
-  it('should return success when removing a track that does not exist', async () => {
+  it('should return success when removing a agreement that does not exist', async () => {
     const ids = [Utils.getRandomInt(MAX_ID)]
-    const type = BlacklistManager.getTypes().track
+    const type = BlacklistManager.getTypes().agreement
     const { signature, timestamp } = generateTimestampAndSignature(
       { type, values: ids },
       DELEGATE_PRIVATE_KEY
@@ -418,7 +418,7 @@ describe('test ContentBlacklist', function () {
       .query({ type, 'values[]': ids, timestamp, signature })
       .expect(200)
 
-    const track = await models.ContentBlacklist.findOne({
+    const agreement = await models.ContentBlacklist.findOne({
       where: {
         value: {
           [models.Sequelize.Op.in]: ids.map((id) => id.toString())
@@ -426,16 +426,16 @@ describe('test ContentBlacklist', function () {
         type
       }
     })
-    assert.deepStrictEqual(track, null)
+    assert.deepStrictEqual(agreement, null)
     assert.deepStrictEqual(
-      await BlacklistManager.trackIdIsInBlacklist(ids[0]),
+      await BlacklistManager.agreementIdIsInBlacklist(ids[0]),
       0
     )
   })
 
-  it('should ignore duplicate add for track', async () => {
+  it('should ignore duplicate add for agreement', async () => {
     const ids = [Utils.getRandomInt(MAX_ID)]
-    const type = BlacklistManager.getTypes().track
+    const type = BlacklistManager.getTypes().agreement
     const { signature, timestamp } = generateTimestampAndSignature(
       { type, values: ids },
       DELEGATE_PRIVATE_KEY
@@ -451,7 +451,7 @@ describe('test ContentBlacklist', function () {
       .query({ type, 'values[]': ids, timestamp, signature })
       .expect(200)
 
-    const tracks = await models.ContentBlacklist.findAll({
+    const agreements = await models.ContentBlacklist.findAll({
       where: {
         value: {
           [models.Sequelize.Op.in]: ids.map((id) => id.toString())
@@ -459,12 +459,12 @@ describe('test ContentBlacklist', function () {
         type
       }
     })
-    assert.deepStrictEqual(tracks.length, 1)
-    const track = tracks[0]
-    assert.deepStrictEqual(track.value, ids[0].toString())
-    assert.deepStrictEqual(track.type, type)
+    assert.deepStrictEqual(agreements.length, 1)
+    const agreement = agreements[0]
+    assert.deepStrictEqual(agreement.value, ids[0].toString())
+    assert.deepStrictEqual(agreement.type, type)
     assert.deepStrictEqual(
-      await BlacklistManager.trackIdIsInBlacklist(track.value),
+      await BlacklistManager.agreementIdIsInBlacklist(agreement.value),
       1
     )
   })
@@ -537,10 +537,10 @@ describe('test ContentBlacklist', function () {
     )
   })
 
-  it('should only blacklist partial track ids list if only some ids are found', async () => {
+  it('should only blacklist partial agreement ids list if only some ids are found', async () => {
     const ids = [Utils.getRandomInt(MAX_ID), Utils.getRandomInt(MAX_ID)]
-    libsMock.Track.getTracks.returns([{ track_id: ids[0] }]) // only user @ index 0 is found
-    const type = BlacklistManager.getTypes().track
+    libsMock.Agreement.getAgreements.returns([{ agreement_id: ids[0] }]) // only user @ index 0 is found
+    const type = BlacklistManager.getTypes().agreement
     const { signature, timestamp } = generateTimestampAndSignature(
       { type, values: ids },
       DELEGATE_PRIVATE_KEY
@@ -551,20 +551,20 @@ describe('test ContentBlacklist', function () {
       .query({ type, 'values[]': ids, timestamp, signature })
       .expect(200)
 
-    // Ensure only one track was added to the blacklist
-    const tracks = await models.ContentBlacklist.findAll({
+    // Ensure only one agreement was added to the blacklist
+    const agreements = await models.ContentBlacklist.findAll({
       where: {
         value: { [models.Sequelize.Op.in]: ids.map((id) => id.toString()) },
         type
       }
     })
 
-    assert.deepStrictEqual(tracks.length, 1)
-    const track = tracks[0]
-    assert.deepStrictEqual(track.value, ids[0].toString())
-    assert.deepStrictEqual(track.type, type)
+    assert.deepStrictEqual(agreements.length, 1)
+    const agreement = agreements[0]
+    assert.deepStrictEqual(agreement.value, ids[0].toString())
+    assert.deepStrictEqual(agreement.type, type)
     assert.deepStrictEqual(
-      await BlacklistManager.trackIdIsInBlacklist(track.value),
+      await BlacklistManager.agreementIdIsInBlacklist(agreement.value),
       1
     )
   })
@@ -642,7 +642,7 @@ describe('test ContentBlacklist', function () {
 
   it('should throw an error if query params does not contain all necessary keys', async () => {
     const ids = [Utils.getRandomInt(MAX_ID)]
-    const type = BlacklistManager.getTypes().track
+    const type = BlacklistManager.getTypes().agreement
 
     await request(app)
       .post('/blacklist/add')
@@ -676,12 +676,12 @@ describe('test ContentBlacklist', function () {
 
   // TODO: need to consider the USER case UGHUAWIFEWHUIAWFHEWI
   it('should throw an error when adding an user id to the blacklist and streaming /ipfs/:CID route', async () => {
-    // Create user and upload track
-    const data = await createUserAndUploadTrack()
-    const trackId = data.track.blockchainId
-    const ids = [trackId]
+    // Create user and upload agreement
+    const data = await createUserAndUploadAgreement()
+    const agreementId = data.agreement.blockchainId
+    const ids = [agreementId]
 
-    // Blacklist trackId
+    // Blacklist agreementId
     const type = BlacklistManager.getTypes().user
     const { signature, timestamp } = generateTimestampAndSignature(
       { type, values: ids },
@@ -692,12 +692,12 @@ describe('test ContentBlacklist', function () {
       .query({ type, 'values[]': ids, signature, timestamp })
       .expect(200)
 
-    // Hit /ipfs/:CID route for all track CIDs and ensure error response is returned
+    // Hit /ipfs/:CID route for all agreement CIDs and ensure error response is returned
     await Promise.all(
-      data.track.trackSegments.map((segment) =>
+      data.agreement.agreementSegments.map((segment) =>
         request(app)
           .get(`/ipfs/${segment.multihash}`)
-          .query({ trackId })
+          .query({ agreementId })
           .expect(200)
       )
     )
@@ -705,14 +705,14 @@ describe('test ContentBlacklist', function () {
     // TODO: add remove and test that the segments are unblacklisted
   })
 
-  it('should throw an error when adding a track id to the blacklist, and streaming /ipfs/:CID without the trackId query string', async () => {
-    // Create user and upload track
-    const data = await createUserAndUploadTrack()
-    const trackId = data.track.blockchainId
-    const ids = [trackId]
+  it('should throw an error when adding a agreement id to the blacklist, and streaming /ipfs/:CID without the agreementId query string', async () => {
+    // Create user and upload agreement
+    const data = await createUserAndUploadAgreement()
+    const agreementId = data.agreement.blockchainId
+    const ids = [agreementId]
 
-    // Blacklist trackId
-    const type = BlacklistManager.getTypes().track
+    // Blacklist agreementId
+    const type = BlacklistManager.getTypes().agreement
     const { signature, timestamp } = generateTimestampAndSignature(
       { type, values: ids },
       DELEGATE_PRIVATE_KEY
@@ -722,22 +722,22 @@ describe('test ContentBlacklist', function () {
       .query({ type, 'values[]': ids, signature, timestamp })
       .expect(200)
 
-    // Hit /ipfs/:CID route for all track CIDs and ensure error response is returned because no trackId was passed
+    // Hit /ipfs/:CID route for all agreement CIDs and ensure error response is returned because no agreementId was passed
     await Promise.all(
-      data.track.trackSegments.map((segment) =>
+      data.agreement.agreementSegments.map((segment) =>
         request(app).get(`/ipfs/${segment.multihash}`).expect(403)
       )
     )
   })
 
-  it('should err when blacklisting track, and streaming /ipfs/:CID?trackId=<blacklistedTrackId>, then pass after removing from BL and streaming again', async () => {
-    // Create user and upload track
-    const data = await createUserAndUploadTrack()
-    const trackId = data.track.blockchainId
-    const ids = [trackId]
+  it('should err when blacklisting agreement, and streaming /ipfs/:CID?agreementId=<blacklistedAgreementId>, then pass after removing from BL and streaming again', async () => {
+    // Create user and upload agreement
+    const data = await createUserAndUploadAgreement()
+    const agreementId = data.agreement.blockchainId
+    const ids = [agreementId]
 
-    // Blacklist trackId
-    const type = BlacklistManager.getTypes().track
+    // Blacklist agreementId
+    const type = BlacklistManager.getTypes().agreement
     const { signature, timestamp } = generateTimestampAndSignature(
       { type, values: ids },
       DELEGATE_PRIVATE_KEY
@@ -747,12 +747,12 @@ describe('test ContentBlacklist', function () {
       .query({ type, 'values[]': ids, signature, timestamp })
       .expect(200)
 
-    // Hit /ipfs/:CID route for all track CIDs and ensure error response is returned
+    // Hit /ipfs/:CID route for all agreement CIDs and ensure error response is returned
     await Promise.all(
-      data.track.trackSegments.map((segment) =>
+      data.agreement.agreementSegments.map((segment) =>
         request(app)
           .get(`/ipfs/${segment.multihash}`)
-          .query({ trackId: data.track.blockchainId })
+          .query({ agreementId: data.agreement.blockchainId })
           .expect(403)
       )
     )
@@ -762,25 +762,25 @@ describe('test ContentBlacklist', function () {
       .query({ type, 'values[]': ids, signature, timestamp })
       .expect(200)
 
-    // After removing from blacklist, track should be streamable
+    // After removing from blacklist, agreement should be streamable
     await Promise.all(
-      data.track.trackSegments.map((segment) =>
+      data.agreement.agreementSegments.map((segment) =>
         request(app)
           .get(`/ipfs/${segment.multihash}`)
-          .query({ trackId })
+          .query({ agreementId })
           .expect(200)
       )
     )
   })
 
-  it('should throw an error when adding a track id to the blacklist, and streaming /ipfs/:CID?trackId=<trackIdThatDoesntContainCID>', async () => {
-    // Create user and upload track
-    const data = await createUserAndUploadTrack()
-    const trackId = data.track.blockchainId
-    const ids = [trackId]
+  it('should throw an error when adding a agreement id to the blacklist, and streaming /ipfs/:CID?agreementId=<agreementIdThatDoesntContainCID>', async () => {
+    // Create user and upload agreement
+    const data = await createUserAndUploadAgreement()
+    const agreementId = data.agreement.blockchainId
+    const ids = [agreementId]
 
-    // Blacklist trackId
-    const type = BlacklistManager.getTypes().track
+    // Blacklist agreementId
+    const type = BlacklistManager.getTypes().agreement
     const { signature, timestamp } = generateTimestampAndSignature(
       { type, values: ids },
       DELEGATE_PRIVATE_KEY
@@ -790,30 +790,30 @@ describe('test ContentBlacklist', function () {
       .query({ type, 'values[]': ids, signature, timestamp })
       .expect(200)
 
-    // Hit /ipfs/:CID route for all track CIDs and ensure error response is returned
+    // Hit /ipfs/:CID route for all agreement CIDs and ensure error response is returned
     await Promise.all(
-      data.track.trackSegments.map((segment) =>
+      data.agreement.agreementSegments.map((segment) =>
         request(app)
           .get(`/ipfs/${segment.multihash}`)
-          .query({ trackId: 1234 })
+          .query({ agreementId: 1234 })
           .expect(403)
       )
     )
   })
 
   // TODO: fix :(
-  it('should not throw an error when streaming a blacklisted CID of a non-blacklisted track at /ipfs/:CID?trackId=<trackIdOfNonBlacklistedTrack>', async () => {
-    // Create user and upload track
-    const track1 = await createUserAndUploadTrack()
-    const track2 = await createUserAndUploadTrack({
+  it('should not throw an error when streaming a blacklisted CID of a non-blacklisted agreement at /ipfs/:CID?agreementId=<agreementIdOfNonBlacklistedAgreement>', async () => {
+    // Create user and upload agreement
+    const agreement1 = await createUserAndUploadAgreement()
+    const agreement2 = await createUserAndUploadAgreement({
       inputUserId: 2,
-      trackId: 2,
+      agreementId: 2,
       pubKey: '0x3f8f51ed837b15af580eb96cee740c723d340e7f'
     })
-    const ids = [track1.track.blockchainId]
+    const ids = [agreement1.agreement.blockchainId]
 
-    // Blacklist trackId
-    const type = BlacklistManager.getTypes().track
+    // Blacklist agreementId
+    const type = BlacklistManager.getTypes().agreement
     const { signature, timestamp } = generateTimestampAndSignature(
       { type, values: ids },
       DELEGATE_PRIVATE_KEY
@@ -823,12 +823,12 @@ describe('test ContentBlacklist', function () {
       .query({ type, 'values[]': ids, signature, timestamp })
       .expect(200)
 
-    // Hit /ipfs/:CID route for all track CIDs and ensure no error response is returned
+    // Hit /ipfs/:CID route for all agreement CIDs and ensure no error response is returned
     await Promise.all(
-      track2.track.trackSegments.map((segment) =>
+      agreement2.agreement.agreementSegments.map((segment) =>
         request(app)
           .get(`/ipfs/${segment.multihash}`)
-          .query({ trackId: track2.track.blockchainId })
+          .query({ agreementId: agreement2.agreement.blockchainId })
           .expect(200)
       )
     )
@@ -887,10 +887,10 @@ describe('test ContentBlacklist', function () {
       .expect(400)
   })
 
-  it('should throw an error if track id does not exist', async () => {
-    libsMock.Track.getTracks.returns([])
+  it('should throw an error if agreement id does not exist', async () => {
+    libsMock.Agreement.getAgreements.returns([])
     const ids = [Utils.getRandomInt(MAX_ID)]
-    const type = BlacklistManager.getTypes().track
+    const type = BlacklistManager.getTypes().agreement
     const resp1 = generateTimestampAndSignature(
       { type, values: ids },
       DELEGATE_PRIVATE_KEY
@@ -985,14 +985,14 @@ describe('test ContentBlacklist', function () {
       .expect(400)
   })
 
-  it('should add the relevant CIDs to redis when adding a type TRACK to redis', async () => {
-    // Create user and upload track
-    const data = await createUserAndUploadTrack()
-    const trackId = data.track.blockchainId
-    const ids = [trackId]
+  it('should add the relevant CIDs to redis when adding a type AGREEMENT to redis', async () => {
+    // Create user and upload agreement
+    const data = await createUserAndUploadAgreement()
+    const agreementId = data.agreement.blockchainId
+    const ids = [agreementId]
 
-    // Blacklist trackId
-    const type = BlacklistManager.getTypes().track
+    // Blacklist agreementId
+    const type = BlacklistManager.getTypes().agreement
     const { signature, timestamp } = generateTimestampAndSignature(
       { type, values: ids },
       DELEGATE_PRIVATE_KEY
@@ -1002,19 +1002,19 @@ describe('test ContentBlacklist', function () {
       .query({ type, 'values[]': ids, signature, timestamp })
       .expect(200)
 
-    // Hit /ipfs/:CID route for all track CIDs and ensure error response is returned because no trackId was passed
+    // Hit /ipfs/:CID route for all agreement CIDs and ensure error response is returned because no agreementId was passed
     let blacklistedCIDs = await BlacklistManager.getAllCIDs()
     blacklistedCIDs = new Set(blacklistedCIDs)
-    for (const segment of data.track.trackSegments) {
+    for (const segment of data.agreement.agreementSegments) {
       assert.deepStrictEqual(blacklistedCIDs.has(segment.multihash), true)
     }
   })
 
   /** Helper setup method to test ContentBlacklist.  */
-  async function createUserAndUploadTrack(
-    { inputUserId, trackId, pubKey } = {
+  async function createUserAndUploadAgreement(
+    { inputUserId, agreementId, pubKey } = {
       inputUserId: userId,
-      trackId: Utils.getRandomInt(MAX_ID),
+      agreementId: Utils.getRandomInt(MAX_ID),
       pubKey: null
     }
   ) {
@@ -1062,49 +1062,49 @@ describe('test ContentBlacklist', function () {
       .set('User-Id', inputUserId)
       .send(associateRequest)
 
-    // Upload a track
-    const trackUploadResponse = await uploadTrack(
+    // Upload a agreement
+    const agreementUploadResponse = await uploadAgreement(
       testAudioFilePath,
       cnodeUserUUID,
       mockServiceRegistry.blacklistManager
     )
 
     const {
-      transcodedTrackUUID,
-      track_segments: trackSegments,
+      transcodedAgreementUUID,
+      agreement_segments: agreementSegments,
       source_file: sourceFile
-    } = trackUploadResponse
+    } = agreementUploadResponse
 
-    // set track metadata
-    const trackMetadata = {
+    // set agreement metadata
+    const agreementMetadata = {
       test: 'field1',
       owner_id: inputUserId,
-      track_segments: trackSegments
+      agreement_segments: agreementSegments
     }
     const {
       body: {
-        data: { metadataFileUUID: trackMetadataFileUUID }
+        data: { metadataFileUUID: agreementMetadataFileUUID }
       }
     } = await request(app)
-      .post('/tracks/metadata')
+      .post('/agreements/metadata')
       .set('X-Session-ID', sessionToken)
       .set('User-Id', inputUserId)
       .set('Enforce-Write-Quorum', false)
-      .send({ metadata: trackMetadata, source_file: sourceFile })
-    // associate track metadata with track
+      .send({ metadata: agreementMetadata, source_file: sourceFile })
+    // associate agreement metadata with agreement
     await request(app)
-      .post('/tracks')
+      .post('/agreements')
       .set('X-Session-ID', sessionToken)
       .set('User-Id', inputUserId)
       .send({
-        blockchainTrackId: trackId,
+        blockchainAgreementId: agreementId,
         blockNumber: 10,
-        metadataFileUUID: trackMetadataFileUUID,
-        transcodedTrackUUID
+        metadataFileUUID: agreementMetadataFileUUID,
+        transcodedAgreementUUID
       })
 
-    // Return user and some track data
-    return { cnodeUser, track: { trackSegments, blockchainId: trackId } }
+    // Return user and some agreement data
+    return { cnodeUser, agreement: { agreementSegments, blockchainId: agreementId } }
   }
 })
 
@@ -1114,14 +1114,14 @@ const setupLibsMock = (libsMock) => {
 
   delete libsMock.User.getUsers.atMost
   libsMock.User.getUsers.callsFake((limit, offset, ids) => {
-    // getUsers() is used in creating user/uploading track flow.
+    // getUsers() is used in creating user/uploading agreement flow.
     // setting ids to dummy value allows for above flows to work
     if (!ids) ids = [0]
     const resp = ids.map((id) => {
       return {
         creator_node_endpoint: 'http://localhost:5000',
         blocknumber: 10,
-        track_blocknumber: 10,
+        agreement_blocknumber: 10,
         user_id: id
       }
     })
@@ -1129,14 +1129,14 @@ const setupLibsMock = (libsMock) => {
     return resp
   })
 
-  libsMock.Track = { getTracks: sinon.mock() }
-  libsMock.Track.getTracks.callsFake((limit, offset, ids) => {
+  libsMock.Agreement = { getAgreements: sinon.mock() }
+  libsMock.Agreement.getAgreements.callsFake((limit, offset, ids) => {
     return ids.map((id) => {
       return {
-        track_id: id
+        agreement_id: id
       }
     })
   })
-  libsMock.Track.getTracks.atLeast(0)
+  libsMock.Agreement.getAgreements.atLeast(0)
   return libsMock
 }

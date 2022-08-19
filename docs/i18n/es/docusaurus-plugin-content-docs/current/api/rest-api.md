@@ -107,7 +107,7 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/users/
         "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
       },
       "repost_count": 5,
-      "track_count": 4
+      "agreement_count": 4
     }
   ]
 }
@@ -181,25 +181,25 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/users/
       "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
     },
     "repost_count": 5,
-    "track_count": 4
+    "agreement_count": 4
   }
 }
 ```
 
-### Obtener pistas favoritas del usuario <a id="get-user-39-s-favorite-tracks"></a>
+### Obtener pistas favoritas del usuario <a id="get-user-39-s-favorite-agreements"></a>
 
 `GET /users/{user_id}/favoritos`
 
 _Obtener las pistas favoritas para un usuario_
 
-#### Parámetros de consulta <a id="get-user&apos;s-favorite-tracks-parameters"></a>
+#### Parámetros de consulta <a id="get-user&apos;s-favorite-agreements-parameters"></a>
 
 | Nombre        | Tipo   | Requerido | Descripción      |
 |:------------- |:------ |:--------- |:---------------- |
 | usuario\_id | cadena | verdad    | Un ID de usuario |
 | app\_name   | cadena | verdad    | Nombre de tu app |
 
-#### Respuestas <a id="get-user&apos;s-favorite-tracks-responses"></a>
+#### Respuestas <a id="get-user&apos;s-favorite-agreements-responses"></a>
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                                                                 |
 |:------ |:------------------------------------------------------------------------------- |:-------------------- |:------------------------------------------------------------------------------------------------------- |
@@ -236,17 +236,17 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/users/
   "data": [
     {
       "favorite_item_id": "n3yVD",
-      "favorite_type": "SaveType.track",
+      "favorite_type": "SaveType.agreement",
       "user_id": "nlGNe"
     },
     {
       "favorite_item_id": "nlv5l",
-      "favorite_type": "SaveType.track",
+      "favorite_type": "SaveType.agreement",
       "user_id": "nlGNe"
     },
     {
       "favorite_item_id": "ezYKz",
-      "favorite_type": "SaveType.track",
+      "favorite_type": "SaveType.agreement",
       "user_id": "nlGNe"
     }
   ]
@@ -313,13 +313,13 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/users/
 }
 ```
 
-### Obtén las etiquetas de pista más utilizadas del usuario <a id="get-user-39-s-most-used-track-tags"></a>
+### Obtén las etiquetas de pista más utilizadas del usuario <a id="get-user-39-s-most-used-agreement-tags"></a>
 
 `GET /users/{user_id}/tags`
 
 _Obtener etiquetas más usadas en las pistas del usuario_
 
-#### Parámetros de consulta <a id="get-user&apos;s-most-used-track-tags-parameters"></a>
+#### Parámetros de consulta <a id="get-user&apos;s-most-used-agreement-tags-parameters"></a>
 
 | Nombre        | Tipo   | Requerido | Descripción                    |
 |:------------- |:------ |:--------- |:------------------------------ |
@@ -328,7 +328,7 @@ _Obtener etiquetas más usadas en las pistas del usuario_
 | app\_name   | cadena | verdad    | Nombre de tu app               |
 | usuario\_id | cadena | verdad    | ninguna                        |
 
-#### Respuestas <a id="get-user&apos;s-most-used-track-tags-responses"></a>
+#### Respuestas <a id="get-user&apos;s-most-used-agreement-tags-responses"></a>
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                                                            |
 |:------ |:------------------------------------------------------------------------------- |:-------------------- |:-------------------------------------------------------------------------------------------------- |
@@ -370,13 +370,13 @@ fetch('https://discoveryprovider.coliving1.prod-ichard west-2.staked. loud/v1/us
 }
 ```
 
-### Obtener pistas de usuario <a id="get-user-39-s-tracks"></a>
+### Obtener pistas de usuario <a id="get-user-39-s-agreements"></a>
 
-`GET /users/{user_id}/tracks`
+`GET /users/{user_id}/agreements`
 
 _Obtener una lista de pistas para un usuario_
 
-#### Parámetros de consulta <a id="get-user&apos;s-tracks-parameters"></a>
+#### Parámetros de consulta <a id="get-user&apos;s-agreements-parameters"></a>
 
 | Nombre        | Tipo   | Requerido | Descripción      |
 |:------------- |:------ |:--------- |:---------------- |
@@ -386,11 +386,11 @@ _Obtener una lista de pistas para un usuario_
 | ordenar       | cadena | falso     | Ordenar modo     |
 | app\_name   | cadena | verdad    | Nombre de tu app |
 
-#### Respuestas <a id="get-user&apos;s-tracks-responses"></a>
+#### Respuestas <a id="get-user&apos;s-agreements-responses"></a>
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                                                           |
 |:------ |:------------------------------------------------------------------------------- |:-------------------- |:------------------------------------------------------------------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [pistas\_respuesta](https://colivingproject.github.io/api-docs/?javascript#schematracks_response) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [pistas\_respuesta](https://colivingproject.github.io/api-docs/?javascript#schemaagreements_response) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                                                                           |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                                                                           |
 
@@ -402,7 +402,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/users/nlGNe/tracks?app_name=EXAMPLEAPP',
+fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/users/nlGNe/agreements?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -458,7 +458,7 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/users/
           "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
         },
         "repost_count": 5,
-        "track_count": 4
+        "agreement_count": 4
       }
     }
   ]
@@ -522,7 +522,7 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/playli
         "480x480": "https://usermetadata..co/ipfs/Qmc7RFzLGgW3DUTgKK49LzxEwe3Lmb47q85ZwJJRVYTXPr/480x480.jpg",
         "1000x1000": "https://usermetadata..co/ipfs/Qmc7RFzLGgW3DUTgKK49LzxEwe3Lmb47q85ZwJJRVYTXPr/1000x1000.jpg"
       },
-      "description": "All the latest hot new tracks on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
+      "description": "All the latest hot new agreements on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
       "id": "DOPRl",
       "is_album": true,
       "playlist_name": "Hot & New on Coliving 🔥",
@@ -549,7 +549,7 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/playli
           "1000x1000": "https://usermetadata..co/ipfs/QmNjJv1wQf2DJq3GNXjXzSL8UXFUGXfchg4NhL7UpbnF1f"
         },
         "repost_count": 200,
-        "track_count": 0
+        "agreement_count": 0
       }
     }
   ]
@@ -610,7 +610,7 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/playli
       "480x480": "https://usermetadata..co/ipfs/Qmc7RFzLGgW3DUTgKK49LzxEwe3Lmb47q85ZwJJRVYTXPr/480x480.jpg",
       "1000x1000": "https://usermetadata..co/ipfs/Qmc7RFzLGgW3DUTgKK49LzxEwe3Lmb47q85ZwJJRVYTXPr/1000x1000.jpg"
     },
-    "description": "All the latest hot new tracks on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
+    "description": "All the latest hot new agreements on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
     "id": "DOPRl",
     "is_album": true,
     "playlist_name": "Hot & New on Coliving 🔥",
@@ -637,30 +637,30 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/playli
         "1000x1000": "https://usermetadata. udio. o/ipfs/QmNjJv1wQf2DJq3GNXjXzSL8UXFUGXfchg4NhL7UpbnF1f"
       },
       "repost_count": 200,
-      "track_count": 0
+      "agreement_count": 0
     }
   }
 }
 ```
 
-### Obtener pistas de lista de reproducción <a id="get-playlist-tracks"></a>
+### Obtener pistas de lista de reproducción <a id="get-playlist-agreements"></a>
 
 `OBTENER /listas de reproducción/{playlist_id}/pistas`
 
 _Obtener pistas dentro de una lista de reproducción_
 
-#### Parámetros de consulta <a id="get-playlist-tracks-parameters"></a>
+#### Parámetros de consulta <a id="get-playlist-agreements-parameters"></a>
 
 | Nombre         | Tipo   | Requerido | Descripción                    |
 |:-------------- |:------ |:--------- |:------------------------------ |
 | playlist\_id | cadena | verdad    | Un ID de lista de reproducción |
 | app\_name    | cadena | verdad    | Nombre de tu app               |
 
-#### Respuestas <a id="get-playlist-tracks-responses"></a>
+#### Respuestas <a id="get-playlist-agreements-responses"></a>
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                                                                                |
 |:------ |:------------------------------------------------------------------------------- |:-------------------- |:---------------------------------------------------------------------------------------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [playlist\_pistas\_respuesta](https://colivingproject.github.io/api-docs/?javascript#schemaplaylist_tracks_response) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [playlist\_pistas\_respuesta](https://colivingproject.github.io/api-docs/?javascript#schemaplaylist_agreements_response) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                                                                                                |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                                                                                                |
 
@@ -729,22 +729,22 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/playli
           "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
         },
         "repost_count": 5,
-        "track_count": 4
+        "agreement_count": 4
       }
     }
   ]
 }
 ```
 
-## Pistas <a id="api-tracks"></a>
+## Pistas <a id="api-agreements"></a>
 
-### Buscar pistas <a id="search-tracks"></a>
+### Buscar pistas <a id="search-agreements"></a>
 
 `Obtener /pistas/búsqueda`
 
-_Buscar un track_
+_Buscar un agreement_
 
-#### Parámetros de consulta <a id="search-tracks-parameters"></a>
+#### Parámetros de consulta <a id="search-agreements-parameters"></a>
 
 | Nombre              | Tipo   | Requerido | Descripción                       |
 |:------------------- |:------ |:--------- |:--------------------------------- |
@@ -752,11 +752,11 @@ _Buscar un track_
 | sólo\_descargable | cadena | falso     | Devolver sólo pistas descargables |
 | app\_name         | cadena | verdad    | Nombre de tu app                  |
 
-#### Respuestas <a id="search-tracks-responses"></a>
+#### Respuestas <a id="search-agreements-responses"></a>
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                                                       |
 |:------ |:------------------------------------------------------------------------------- |:-------------------- |:--------------------------------------------------------------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [seguir\_búsqueda](https://colivingproject.github.io/api-docs/?javascript#schematrack_search) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [seguir\_búsqueda](https://colivingproject.github.io/api-docs/?javascript#schemaagreement_search) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                                                                       |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                                                                       |
 
@@ -770,7 +770,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/tracks/search?query=baauer b2b&app_name=EXAMPLEAPP',
+fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/agreements/search?query=baauer b2b&app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -826,20 +826,20 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/tracks
           "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
         },
         "repost_count": 5,
-        "track_count": 4
+        "agreement_count": 4
       }
     }
   ]
 }
 ```
 
-### Pistas populares <a id="trending-tracks"></a>
+### Pistas populares <a id="trending-agreements"></a>
 
-`GET /tracks/tendencia`
+`GET /agreements/tendencia`
 
 _Obtiene las 100 pistas más populares \(más popular\) en Coliving_
 
-#### Parámetros de consulta <a id="trending-tracks-parameters"></a>
+#### Parámetros de consulta <a id="trending-agreements-parameters"></a>
 
 | Nombre      | Tipo   | Requerido | Descripción                                                                    |
 |:----------- |:------ |:--------- |:------------------------------------------------------------------------------ |
@@ -847,11 +847,11 @@ _Obtiene las 100 pistas más populares \(más popular\) en Coliving_
 | tiempo      | cadena | falso     | Pistas populares en un rango de tiempo especificado \(semana, mes, allTime\) |
 | app\_name | cadena | verdad    | Nombre de tu app                                                               |
 
-#### Respuestas <a id="trending-tracks-responses"></a>
+#### Respuestas <a id="trending-agreements-responses"></a>
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                                                           |
 |:------ |:------------------------------------------------------------------------------- |:-------------------- |:------------------------------------------------------------------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [pistas\_respuesta](https://colivingproject.github.io/api-docs/?javascript#schematracks_response) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [pistas\_respuesta](https://colivingproject.github.io/api-docs/?javascript#schemaagreements_response) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                                                                           |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                                                                           |
 
@@ -863,7 +863,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/tracks/trending?app_name=EXAMPLEAPP',
+fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/agreements/trending?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -919,31 +919,31 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/tracks
           "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
         },
         "repost_count": 5,
-        "track_count": 4
+        "agreement_count": 4
       }
     }
   ]
 }
 ```
 
-### Obtener pista <a id="get-track"></a>
+### Obtener pista <a id="get-agreement"></a>
 
-`OBTENER/ Canción/ {track_id}`
+`OBTENER/ Canción/ {agreement_id}`
 
 _Obtener una pista_
 
-#### Parámetros de consulta <a id="get-track-parameters"></a>
+#### Parámetros de consulta <a id="get-agreement-parameters"></a>
 
 | Nombre      | Tipo   | Requerido | Descripción      |
 |:----------- |:------ |:--------- |:---------------- |
-| track\_id | cadena | verdad    | Un ID de pista   |
+| agreement\_id | cadena | verdad    | Un ID de pista   |
 | app\_name | cadena | verdad    | Nombre de tu app |
 
-#### Respuestas <a id="get-track-responses"></a>
+#### Respuestas <a id="get-agreement-responses"></a>
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                                                          |
 |:------ |:------------------------------------------------------------------------------- |:-------------------- |:------------------------------------------------------------------------------------------------ |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [pistas\_respuesta](https://colivingproject.github.io/api-docs/?javascript#schematrack_response) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [pistas\_respuesta](https://colivingproject.github.io/api-docs/?javascript#schemaagreement_response) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                                                                          |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                                                                          |
 
@@ -955,7 +955,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/tracks/D7KyD?app_name=EXAMPLEAPP',
+fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/agreements/D7KyD?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -1010,28 +1010,28 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/tracks
         "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
       },
       "repost_count": 5,
-      "track_count": 4
+      "agreement_count": 4
     }
   }
 }
 ```
 
-### Pista de streaming <a id="stream-track"></a>
+### Pista de streaming <a id="stream-agreement"></a>
 
-`GET /tracks/{track_id}/stream`
+`GET /agreements/{agreement_id}/stream`
 
 _Obtener el archivo mp3 streamable de la pista_
 
 Este extremo acepta la cabecera de Rango para streaming. https://developer.mozilla.org/es-US/docs/Web/HTTP/Range\_requests
 
-#### Parámetros de consulta <a id="stream-track-parameters"></a>
+#### Parámetros de consulta <a id="stream-agreement-parameters"></a>
 
 | Nombre      | Tipo   | Requerido | Descripción      |
 |:----------- |:------ |:--------- |:---------------- |
-| track\_id | cadena | verdad    | Un ID de pista   |
+| agreement\_id | cadena | verdad    | Un ID de pista   |
 | app\_name | cadena | verdad    | Nombre de tu app |
 
-#### Respuestas <a id="stream-track-responses"></a>
+#### Respuestas <a id="stream-agreement-responses"></a>
 
 | Estado | Significado                                                                     | Descripción                  | Esquema |
 |:------ |:------------------------------------------------------------------------------- |:---------------------------- |:------- |
@@ -1045,7 +1045,7 @@ Este extremo acepta la cabecera de Rango para streaming. https://developer.mozil
 
 ```javascript
 
-fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/tracks/D7KyD/stream?app_name=EXAMPLEAPP',
+fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/agreements/D7KyD/stream?app_name=EXAMPLEAPP',
 {
   method: 'GET'
 
@@ -1140,7 +1140,7 @@ Este endpoint le permite buscar y acceder a los recursos API cuando sólo conoce
 > Redirección interna
 
 ```text
-{"HTTP/1.1 302 Localización encontrada":"/v1/tracks/V4W8r"}
+{"HTTP/1.1 302 Localización encontrada":"/v1/agreements/V4W8r"}
 ```
 
 #### Respuestas <a id="resolve-responses"></a>
@@ -1201,7 +1201,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
       "1000x1000": "string"
     },
     "repost_count": 0,
-    "track_count": 0
+    "agreement_count": 0
   }
 }
 
@@ -1237,7 +1237,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
     "1000x1000": "string"
   },
   "repost_count": 0,
-  "track_count": 0
+  "agreement_count": 0
 }
 
 ```
@@ -1297,7 +1297,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 | 480 x 480 | cadena | falso     | ninguna       | ninguna     |
 | 1000x1000 | cadena | falso     | ninguna       | ninguna     |
 
-### pistas\_respuesta <a id="tocS_tracks_response"></a>
+### pistas\_respuesta <a id="tocS_agreements_response"></a>
 
 ```json
 {
@@ -1314,9 +1314,9 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
       "mood": "string",
       "release_date": "string",
       "remix_of": {
-        "tracks": [
+        "agreements": [
           {
-            "parent_track_id": "string"
+            "parent_agreement_id": "string"
           }
         ]
       },
@@ -1345,7 +1345,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "track_count": 0
+        "agreement_count": 0
       },
       "duration": 0,
       "downloadable": true,
@@ -1360,9 +1360,9 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre | Tipo                                                                            | Requerido | Restricciones | Descripción |
 |:------ |:------------------------------------------------------------------------------- |:--------- |:------------- |:----------- |
-| datos  | \[[Pista](https://colivingproject.github.io/api-docs/?javascript#schematrack)\] | falso     | ninguna       | ninguna     |
+| datos  | \[[Pista](https://colivingproject.github.io/api-docs/?javascript#schemaagreement)\] | falso     | ninguna       | ninguna     |
 
-### Pista <a id="tocS_Track"></a>
+### Pista <a id="tocS_Agreement"></a>
 
 ```json
 {
@@ -1377,9 +1377,9 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
   "mood": "string",
   "release_date": "string",
   "remix_of": {
-    "tracks": [
+    "agreements": [
       {
-        "parent_track_id": "string"
+        "parent_agreement_id": "string"
       }
     ]
   },
@@ -1408,7 +1408,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
       "1000x1000": "string"
     },
     "repost_count": 0,
-    "track_count": 0
+    "agreement_count": 0
   },
   "duration": 0,
   "downloadable": true,
@@ -1421,7 +1421,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre                | Tipo                                                                                          | Requerido | Restricciones | Descripción |
 |:--------------------- |:--------------------------------------------------------------------------------------------- |:--------- |:------------- |:----------- |
-| obra de arte          | [seguir\_artwork](https://colivingproject.github.io/api-docs/?javascript#schematrack_artwork) | falso     | ninguna       | ninguna     |
+| obra de arte          | [seguir\_artwork](https://colivingproject.github.io/api-docs/?javascript#schemaagreement_artwork) | falso     | ninguna       | ninguna     |
 | descripción           | cadena                                                                                        | falso     | ninguna       | ninguna     |
 | género                | cadena                                                                                        | falso     | ninguna       | ninguna     |
 | id                    | cadena                                                                                        | verdad    | ninguna       | ninguna     |
@@ -1437,7 +1437,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 | descargable           | boolean                                                                                       | falso     | ninguna       | ninguna     |
 | play\_count         | entero                                                                                        | verdad    | ninguna       | ninguna     |
 
-### track\_artwork <a id="tocS_track_artwork"></a>
+### agreement\_artwork <a id="tocS_agreement_artwork"></a>
 
 ```json
 {
@@ -1460,9 +1460,9 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 ```json
 {
-  "tracks": [
+  "agreements": [
     {
-      "parent_track_id": "string"
+      "parent_agreement_id": "string"
     }
   ]
 }
@@ -1473,13 +1473,13 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre | Tipo                                                                                    | Requerido | Restricciones | Descripción |
 |:------ |:--------------------------------------------------------------------------------------- |:--------- |:------------- |:----------- |
-| pistas | \[[pista](https://colivingproject.github.io/api-docs/?javascript#schematrack_element)\] | falso     | ninguna       | ninguna     |
+| pistas | \[[pista](https://colivingproject.github.io/api-docs/?javascript#schemaagreement_element)\] | falso     | ninguna       | ninguna     |
 
-### seguir\_elemento <a id="tocS_track_element"></a>
+### seguir\_elemento <a id="tocS_agreement_element"></a>
 
 ```json
 {
-  "parent_track_id": "string"
+  "parent_agreement_id": "string"
 }
 
 ```
@@ -1613,7 +1613,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
         "1000x1000": "string"
       },
       "repost_count": 0,
-      "track_count": 0
+      "agreement_count": 0
     }
   ]
 }
@@ -1667,7 +1667,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "track_count": 0
+        "agreement_count": 0
       }
     }
   ]
@@ -1718,7 +1718,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
       "1000x1000": "string"
     },
     "repost_count": 0,
-    "track_count": 0
+    "agreement_count": 0
   }
 }
 
@@ -1757,7 +1757,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 | 480 x 480 | cadena | falso     | ninguna       | ninguna     |
 | 1000x1000 | cadena | falso     | ninguna       | ninguna     |
 
-### playlist\_pistas\_respuesta <a id="tocS_playlist_tracks_response"></a>
+### playlist\_pistas\_respuesta <a id="tocS_playlist_agreements_response"></a>
 
 ```json
 {
@@ -1774,9 +1774,9 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
       "mood": "string",
       "release_date": "string",
       "remix_of": {
-        "tracks": [
+        "agreements": [
           {
-            "parent_track_id": "string"
+            "parent_agreement_id": "string"
           }
         ]
       },
@@ -1805,7 +1805,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "track_count": 0
+        "agreement_count": 0
       },
       "duration": 0,
       "downloadable": true,
@@ -1820,7 +1820,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre | Tipo                                                                            | Requerido | Restricciones | Descripción |
 |:------ |:------------------------------------------------------------------------------- |:--------- |:------------- |:----------- |
-| datos  | \[[Pista](https://colivingproject.github.io/api-docs/?javascript#schematrack)\] | falso     | ninguna       | ninguna     |
+| datos  | \[[Pista](https://colivingproject.github.io/api-docs/?javascript#schemaagreement)\] | falso     | ninguna       | ninguna     |
 
 ### playlist\_search\_result <a id="tocS_playlist_search_result"></a>
 
@@ -1861,7 +1861,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "track_count": 0
+        "agreement_count": 0
       }
     }
   ]
@@ -1875,7 +1875,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 |:------ |:-------------------------------------------------------------------------------------------------- |:--------- |:------------- |:----------- |
 | datos  | \[[lista de reproducción](https://colivingproject.github.io/api-docs/?javascript#schemaplaylist)\] | falso     | ninguna       | ninguna     |
 
-### pistas\_respuesta <a id="tocS_track_response"></a>
+### pistas\_respuesta <a id="tocS_agreement_response"></a>
 
 ```json
 {
@@ -1891,9 +1891,9 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
     "mood": "string",
     "release_date": "string",
     "remix_of": {
-      "tracks": [
+      "agreements": [
         {
-          "parent_track_id": "string"
+          "parent_agreement_id": "string"
         }
       ]
     },
@@ -1922,7 +1922,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
         "1000x1000": "string"
       },
       "repost_count": 0,
-      "track_count": 0
+      "agreement_count": 0
     },
     "duration": 0,
     "downloadable": true,
@@ -1936,9 +1936,9 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre | Tipo                                                                      | Requerido | Restricciones | Descripción |
 |:------ |:------------------------------------------------------------------------- |:--------- |:------------- |:----------- |
-| datos  | [Pista](https://colivingproject.github.io/api-docs/?javascript#schematrack) | falso     | ninguna       | ninguna     |
+| datos  | [Pista](https://colivingproject.github.io/api-docs/?javascript#schemaagreement) | falso     | ninguna       | ninguna     |
 
-### track\_buscar <a id="tocS_track_search"></a>
+### agreement\_buscar <a id="tocS_agreement_search"></a>
 
 ```json
 {
@@ -1955,9 +1955,9 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
       "mood": "string",
       "release_date": "string",
       "remix_of": {
-        "tracks": [
+        "agreements": [
           {
-            "parent_track_id": "string"
+            "parent_agreement_id": "string"
           }
         ]
       },
@@ -1986,7 +1986,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "track_count": 0
+        "agreement_count": 0
       },
       "duration": 0,
       "downloadable": true,
@@ -2001,7 +2001,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre | Estilo                                                                          | Requerido | Restricciones | Descripción |
 |:------ |:------------------------------------------------------------------------------- |:--------- |:------------- |:----------- |
-| datos  | \[[Pista](https://colivingproject.github.io/api-docs/?javascript#schematrack)\] | falso     | ninguna       | ninguna     |
+| datos  | \[[Pista](https://colivingproject.github.io/api-docs/?javascript#schemaagreement)\] | falso     | ninguna       | ninguna     |
 
 ### app\_name\_trailing\_response <a id="tocS_app_name_trailing_response"></a>
 

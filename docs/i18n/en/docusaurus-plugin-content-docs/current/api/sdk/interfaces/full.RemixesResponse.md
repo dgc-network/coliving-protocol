@@ -23,8 +23,8 @@ pagination_next: null
 
 ___
 
-### tracks
+### agreements
 
- `Optional` **tracks**: [`TrackFull`](full.TrackFull.md)[]
+ `Optional` **agreements**: [`AgreementFull`](full.AgreementFull.md)[]
 
 **`memberof`** RemixesResponse

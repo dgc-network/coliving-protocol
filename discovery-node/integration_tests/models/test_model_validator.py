@@ -8,35 +8,35 @@ logger = logging.getLogger("model_validator")
 
 # ##### Testing field validation with variation of instances ##### #
 def test_one_field_schema_pass():
-    track = {"title": "ok"}
+    agreement = {"title": "ok"}
     try:
-        ModelValidator.validate(to_validate=track, field="title", model="Track")
+        ModelValidator.validate(to_validate=agreement, field="title", model="Agreement")
     except ValidationError as e:
         assert False, f"test_model_validator [test_one_field_schema_pass] failed: {e}"
 
 
 def test_one_field_schema_bad_value():
-    track = {"title": 1}
+    agreement = {"title": 1}
     try:
-        ModelValidator.validate(to_validate=track, field="title", model="Track")
+        ModelValidator.validate(to_validate=agreement, field="title", model="Agreement")
         assert False, "test_model_validator [test_one_field_schema_bad_value] failed"
     except BaseException:
         assert True
 
 
 def test_one_field_schema_bad_key():
-    track = {"wrong": "ok"}
+    agreement = {"wrong": "ok"}
     try:
-        ModelValidator.validate(to_validate=track, field="title", model="Track")
+        ModelValidator.validate(to_validate=agreement, field="title", model="Agreement")
         assert False, "test_model_validator [test_one_field_schema_bad_key] failed"
     except BaseException:
         assert True
 
 
 def test_one_field_schema_bad_key_and_value():
-    track = {"wrong": 1}
+    agreement = {"wrong": 1}
     try:
-        ModelValidator.validate(to_validate=track, field="title", model="Track")
+        ModelValidator.validate(to_validate=agreement, field="title", model="Agreement")
         assert (
             False
         ), "test_model_validator [test_one_field_schema_bad_key_and_value] failed"
@@ -45,9 +45,9 @@ def test_one_field_schema_bad_key_and_value():
 
 
 def test_one_field_schema_with_additional_properties():
-    track = {"title": "ok", "wrong": 1}
+    agreement = {"title": "ok", "wrong": 1}
     try:
-        ModelValidator.validate(to_validate=track, field="title", model="Track")
+        ModelValidator.validate(to_validate=agreement, field="title", model="Agreement")
         assert (
             False
         ), "test_model_validator [test_one_field_schema_with_additional_properties] failed"
@@ -56,9 +56,9 @@ def test_one_field_schema_with_additional_properties():
 
 
 def test_one_field_schema_empty_object():
-    track = {}
+    agreement = {}
     try:
-        ModelValidator.validate(to_validate=track, field="title", model="Track")
+        ModelValidator.validate(to_validate=agreement, field="title", model="Agreement")
         assert False, "test_model_validator [test_one_field_schema_empty_object] failed"
     except BaseException:
         assert True

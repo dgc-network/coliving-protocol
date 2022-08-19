@@ -8,8 +8,8 @@ let playlistOwnerId
 // First created playlist
 let playlistId = 1
 
-// Initial tracks
-let playlistTracks = []
+// Initial agreements
+let playlistAgreements = []
 
 // Initial playlist configuration
 let initialPlaylistName = 'Test playlist name'
@@ -19,20 +19,20 @@ before(async function () {
   await colivingInstance.init()
   playlistOwnerId = (await colivingInstance.contracts.UserFactoryClient.addUser('playlistH')).userId
 
-  const cid = helpers.constants.trackMetadataCID // test metadata stored in DHT
-  const trackMultihashDecoded = Utils.decodeMultihash(cid)
-  playlistTracks.push((await colivingInstance.contracts.TrackFactoryClient.addTrack(
+  const cid = helpers.constants.agreementMetadataCID // test metadata stored in DHT
+  const agreementMultihashDecoded = Utils.decodeMultihash(cid)
+  playlistAgreements.push((await colivingInstance.contracts.AgreementFactoryClient.addAgreement(
     playlistOwnerId,
-    trackMultihashDecoded.digest,
-    trackMultihashDecoded.hashFn,
-    trackMultihashDecoded.size
-  )).trackId)
-  playlistTracks.push((await colivingInstance.contracts.TrackFactoryClient.addTrack(
+    agreementMultihashDecoded.digest,
+    agreementMultihashDecoded.hashFn,
+    agreementMultihashDecoded.size
+  )).agreementId)
+  playlistAgreements.push((await colivingInstance.contracts.AgreementFactoryClient.addAgreement(
     playlistOwnerId,
-    trackMultihashDecoded.digest,
-    trackMultihashDecoded.hashFn,
-    trackMultihashDecoded.size
-  )).trackId)
+    agreementMultihashDecoded.digest,
+    agreementMultihashDecoded.hashFn,
+    agreementMultihashDecoded.size
+  )).agreementId)
 })
 
 // TODO: Add validation to the below test cases, currently they just perform chain operations.
@@ -43,7 +43,7 @@ it('should create playlist', async function () {
     initialPlaylistName,
     initialIsPrivate,
     false,
-    playlistTracks)
+    playlistAgreements)
 })
 
 it('should create album', async function () {
@@ -52,7 +52,7 @@ it('should create album', async function () {
     initialPlaylistName,
     initialIsPrivate,
     true,
-    playlistTracks)
+    playlistAgreements)
 })
 
 it('should create and delete playlist', async function () {
@@ -62,63 +62,63 @@ it('should create and delete playlist', async function () {
     initialPlaylistName,
     initialIsPrivate,
     false,
-    playlistTracks)
+    playlistAgreements)
 
   // delete playlist + validate
   const { playlistId: deletedPlaylistId } = await colivingInstance.contracts.PlaylistFactoryClient.deletePlaylist(playlistId)
   assert.strictEqual(playlistId, deletedPlaylistId)
 })
 
-it('should add tracks to an existing playlist', async function () {
-  const cid = helpers.constants.trackMetadataCID // test metadata stored in DHT
-  const trackMultihashDecoded = Utils.decodeMultihash(cid)
+it('should add agreements to an existing playlist', async function () {
+  const cid = helpers.constants.agreementMetadataCID // test metadata stored in DHT
+  const agreementMultihashDecoded = Utils.decodeMultihash(cid)
 
-  // Add a new track
-  const { trackId } = await colivingInstance.contracts.TrackFactoryClient.addTrack(
+  // Add a new agreement
+  const { agreementId } = await colivingInstance.contracts.AgreementFactoryClient.addAgreement(
     playlistOwnerId,
-    trackMultihashDecoded.digest,
-    trackMultihashDecoded.hashFn,
-    trackMultihashDecoded.size
+    agreementMultihashDecoded.digest,
+    agreementMultihashDecoded.hashFn,
+    agreementMultihashDecoded.size
   )
-  const track = await colivingInstance.contracts.TrackFactoryClient.getTrack(trackId)
-  assert.strictEqual(track.multihashDigest, trackMultihashDecoded.digest)
+  const agreement = await colivingInstance.contracts.AgreementFactoryClient.getAgreement(agreementId)
+  assert.strictEqual(agreement.multihashDigest, agreementMultihashDecoded.digest)
 
-  const addPlaylistTrackTx = await colivingInstance.contracts.PlaylistFactoryClient.addPlaylistTrack(
+  const addPlaylistAgreementTx = await colivingInstance.contracts.PlaylistFactoryClient.addPlaylistAgreement(
     playlistId,
-    trackId)
+    agreementId)
 })
 
-it('should delete track from an existing playlist', async function () {
-  const cid = helpers.constants.trackMetadataCID // test metadata stored in DHT
-  const trackMultihashDecoded = Utils.decodeMultihash(cid)
+it('should delete agreement from an existing playlist', async function () {
+  const cid = helpers.constants.agreementMetadataCID // test metadata stored in DHT
+  const agreementMultihashDecoded = Utils.decodeMultihash(cid)
 
-  // Add a new track
-  const { trackId } = await colivingInstance.contracts.TrackFactoryClient.addTrack(
+  // Add a new agreement
+  const { agreementId } = await colivingInstance.contracts.AgreementFactoryClient.addAgreement(
     playlistOwnerId,
-    trackMultihashDecoded.digest,
-    trackMultihashDecoded.hashFn,
-    trackMultihashDecoded.size
+    agreementMultihashDecoded.digest,
+    agreementMultihashDecoded.hashFn,
+    agreementMultihashDecoded.size
   )
-  const track = await colivingInstance.contracts.TrackFactoryClient.getTrack(trackId)
-  assert.strictEqual(track.multihashDigest, trackMultihashDecoded.digest)
+  const agreement = await colivingInstance.contracts.AgreementFactoryClient.getAgreement(agreementId)
+  assert.strictEqual(agreement.multihashDigest, agreementMultihashDecoded.digest)
 
-  const addPlaylistTrackTx = await colivingInstance.contracts.PlaylistFactoryClient.addPlaylistTrack(
+  const addPlaylistAgreementTx = await colivingInstance.contracts.PlaylistFactoryClient.addPlaylistAgreement(
     playlistId,
-    trackId)
+    agreementId)
 
   const deletedTimestamp = 1552008725
-  // Delete the newly added track from the playlist
-  const deletedPlaylistTrackTx = await colivingInstance.contracts.PlaylistFactoryClient.deletePlaylistTrack(
+  // Delete the newly added agreement from the playlist
+  const deletedPlaylistAgreementTx = await colivingInstance.contracts.PlaylistFactoryClient.deletePlaylistAgreement(
     playlistId,
-    trackId,
+    agreementId,
     deletedTimestamp)
 })
 
-it('should reorder tracks in an existing playlist', async function () {
-  playlistTracks.push(playlistTracks.shift()) // put first element at end
-  const orderTracksTx = await colivingInstance.contracts.PlaylistFactoryClient.orderPlaylistTracks(
+it('should reorder agreements in an existing playlist', async function () {
+  playlistAgreements.push(playlistAgreements.shift()) // put first element at end
+  const orderAgreementsTx = await colivingInstance.contracts.PlaylistFactoryClient.orderPlaylistAgreements(
     playlistId,
-    playlistTracks)
+    playlistAgreements)
 })
 
 it('should update playlist privacy', async function () {
@@ -136,9 +136,9 @@ it('should update playlist name', async function () {
 })
 
 it('should update playlist cover photo', async function () {
-  const cid = helpers.constants.trackMetadataCID // test metadata stored in DHT
-  const trackMultihashDecoded = Utils.decodeMultihash(cid)
-  const testPhotoDigest = trackMultihashDecoded.digest
+  const cid = helpers.constants.agreementMetadataCID // test metadata stored in DHT
+  const agreementMultihashDecoded = Utils.decodeMultihash(cid)
+  const testPhotoDigest = agreementMultihashDecoded.digest
   const updatePlaylistCoverPhotoTx = await colivingInstance.contracts.PlaylistFactoryClient.updatePlaylistCoverPhoto(
     playlistId,
     testPhotoDigest)

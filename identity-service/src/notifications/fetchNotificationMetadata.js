@@ -12,7 +12,7 @@ const { logger } = require('../logging')
 const USER_NODE_IPFS_GATEWAY = config.get('environment').includes('staging') ? 'https://usermetadata.staging.coliving.lol/ipfs/' : 'https://usermetadata.coliving.lol/ipfs/'
 
 const DEFAULT_IMAGE_URL = 'https://download.coliving.lol/static-resources/email/imageProfilePicEmpty.png'
-const DEFAULT_TRACK_IMAGE_URL = 'https://download.coliving.lol/static-resources/email/imageTrackEmpty.jpg'
+const DEFAULT_AGREEMENT_IMAGE_URL = 'https://download.coliving.lol/static-resources/email/imageAgreementEmpty.jpg'
 
 // The number of users to fetch / display per notification (The displayed number of users)
 const USER_FETCH_LIMIT = 10
@@ -171,9 +171,9 @@ async function fetchNotificationMetadata (
   isEmailNotif = false
 ) {
   let userIdsToFetch = [...userIds]
-  let trackIdsToFetch = []
+  let agreementIdsToFetch = []
   let collectionIdsToFetch = []
-  let fetchTrackRemixParents = []
+  let fetchAgreementRemixParents = []
 
   for (let notification of notifications) {
     switch (notification.type) {
@@ -186,13 +186,13 @@ async function fetchNotificationMetadata (
         )
         break
       }
-      case NotificationType.Favorite.track:
-      case NotificationType.Repost.track: {
+      case NotificationType.Favorite.agreement:
+      case NotificationType.Repost.agreement: {
         userIdsToFetch.push(
           ...notification.actions
             .map(({ actionEntityId }) => actionEntityId).slice(0, USER_FETCH_LIMIT)
         )
-        trackIdsToFetch.push(notification.entityId)
+        agreementIdsToFetch.push(notification.entityId)
         break
       }
       case NotificationType.Favorite.playlist:
@@ -211,22 +211,22 @@ async function fetchNotificationMetadata (
       case NotificationType.MilestoneRepost:
       case NotificationType.MilestoneFavorite:
       case NotificationType.MilestoneListen: {
-        if (notification.actions[0].actionEntityType === Entity.Track) {
-          trackIdsToFetch.push(notification.entityId)
+        if (notification.actions[0].actionEntityType === Entity.Agreement) {
+          agreementIdsToFetch.push(notification.entityId)
         } else {
           collectionIdsToFetch.push(notification.entityId)
         }
         break
       }
-      case NotificationType.Create.track: {
-        trackIdsToFetch.push(...notification.actions.map(({ actionEntityId }) => actionEntityId))
+      case NotificationType.Create.agreement: {
+        agreementIdsToFetch.push(...notification.actions.map(({ actionEntityId }) => actionEntityId))
         break
       }
       case NotificationType.RemixCreate: {
-        trackIdsToFetch.push(notification.entityId)
+        agreementIdsToFetch.push(notification.entityId)
         for (const action of notification.actions) {
-          if (action.actionEntityType === Entity.Track) {
-            trackIdsToFetch.push(action.actionEntityId)
+          if (action.actionEntityType === Entity.Agreement) {
+            agreementIdsToFetch.push(action.actionEntityId)
           } else if (action.actionEntityType === Entity.User) {
             userIdsToFetch.push(action.actionEntityId)
           }
@@ -234,23 +234,23 @@ async function fetchNotificationMetadata (
         break
       }
       case NotificationType.RemixCosign: {
-        trackIdsToFetch.push(notification.entityId)
-        fetchTrackRemixParents.push(notification.entityId)
+        agreementIdsToFetch.push(notification.entityId)
+        fetchAgreementRemixParents.push(notification.entityId)
         for (const action of notification.actions) {
-          if (action.actionEntityType === Entity.Track) {
-            trackIdsToFetch.push(action.actionEntityId)
+          if (action.actionEntityType === Entity.Agreement) {
+            agreementIdsToFetch.push(action.actionEntityId)
           } else if (action.actionEntityType === Entity.User) {
             userIdsToFetch.push(action.actionEntityId)
           }
         }
         break
       }
-      case NotificationType.TrendingTrack: {
-        trackIdsToFetch.push(notification.entityId)
+      case NotificationType.TrendingAgreement: {
+        agreementIdsToFetch.push(notification.entityId)
         break
       }
-      case NotificationType.AddTrackToPlaylist: {
-        trackIdsToFetch.push(notification.entityId)
+      case NotificationType.AddAgreementToPlaylist: {
+        agreementIdsToFetch.push(notification.entityId)
         userIdsToFetch.push(notification.metadata.playlistOwnerId)
         collectionIdsToFetch.push(notification.metadata.playlistId)
         break
@@ -293,52 +293,52 @@ async function fetchNotificationMetadata (
     }
   }
 
-  const uniqueTrackIds = [...new Set(trackIdsToFetch)]
+  const uniqueAgreementIds = [...new Set(agreementIdsToFetch)]
 
-  const tracks = []
-  // Batch track fetches to avoid large request lines
-  const trackBatchSize = 100 // use default limit
-  for (let trackBatchOffset = 0; trackBatchOffset < uniqueTrackIds.length; trackBatchOffset += trackBatchSize) {
-    const trackBatch = uniqueTrackIds.slice(trackBatchOffset, trackBatchOffset + trackBatchSize)
-    const tracksResponse = await coliving.Track.getTracks(
-      /** limit */ trackBatch.length,
+  const agreements = []
+  // Batch agreement fetches to avoid large request lines
+  const agreementBatchSize = 100 // use default limit
+  for (let agreementBatchOffset = 0; agreementBatchOffset < uniqueAgreementIds.length; agreementBatchOffset += agreementBatchSize) {
+    const agreementBatch = uniqueAgreementIds.slice(agreementBatchOffset, agreementBatchOffset + agreementBatchSize)
+    const agreementsResponse = await coliving.Agreement.getAgreements(
+      /** limit */ agreementBatch.length,
       /** offset */ 0,
-      /** idsArray */ trackBatch
+      /** idsArray */ agreementBatch
     )
-    tracks.push(...tracksResponse)
+    agreements.push(...agreementsResponse)
   }
 
-  if (!Array.isArray(tracks)) {
-    logger.error(`fetchNotificationMetadata | Unable to fetch track ids ${uniqueTrackIds.join(',')}`)
+  if (!Array.isArray(agreements)) {
+    logger.error(`fetchNotificationMetadata | Unable to fetch agreement ids ${uniqueAgreementIds.join(',')}`)
   }
 
-  const trackMap = tracks.reduce((tm, track) => {
-    tm[track.track_id] = track
+  const agreementMap = agreements.reduce((tm, agreement) => {
+    tm[agreement.agreement_id] = agreement
     return tm
   }, {})
 
-  // Fetch the parents of the remix tracks & add to the tracks map
-  if (fetchTrackRemixParents.length > 0) {
-    const trackParentIds = fetchTrackRemixParents.reduce((parentTrackIds, remixTrackId) => {
-      const track = trackMap[remixTrackId]
-      const parentIds = (track.remix_of && Array.isArray(track.remix_of.tracks))
-        ? track.remix_of.tracks.map(t => t.parent_track_id)
+  // Fetch the parents of the remix agreements & add to the agreements map
+  if (fetchAgreementRemixParents.length > 0) {
+    const agreementParentIds = fetchAgreementRemixParents.reduce((parentAgreementIds, remixAgreementId) => {
+      const agreement = agreementMap[remixAgreementId]
+      const parentIds = (agreement.remix_of && Array.isArray(agreement.remix_of.agreements))
+        ? agreement.remix_of.agreements.map(t => t.parent_agreement_id)
         : []
-      return parentTrackIds.concat(parentIds)
+      return parentAgreementIds.concat(parentIds)
     }, [])
 
-    const uniqueParentTrackIds = [...new Set(trackParentIds)]
-    let parentTracks = await coliving.Track.getTracks(
-      /** limit */ uniqueParentTrackIds.length,
+    const uniqueParentAgreementIds = [...new Set(agreementParentIds)]
+    let parentAgreements = await coliving.Agreement.getAgreements(
+      /** limit */ uniqueParentAgreementIds.length,
       /** offset */ 0,
-      /** idsArray */ uniqueParentTrackIds
+      /** idsArray */ uniqueParentAgreementIds
     )
-    if (!Array.isArray(parentTracks)) {
-      logger.error(`fetchNotificationMetadata | Unable to fetch parent track ids ${uniqueParentTrackIds.join(',')}`)
+    if (!Array.isArray(parentAgreements)) {
+      logger.error(`fetchNotificationMetadata | Unable to fetch parent agreement ids ${uniqueParentAgreementIds.join(',')}`)
     }
 
-    parentTracks.forEach(track => {
-      trackMap[track.track_id] = track
+    parentAgreements.forEach(agreement => {
+      agreementMap[agreement.agreement_id] = agreement
     })
   }
 
@@ -354,7 +354,7 @@ async function fetchNotificationMetadata (
   }
 
   userIdsToFetch.push(
-    ...tracks.map(({ owner_id: id }) => id),
+    ...agreements.map(({ owner_id: id }) => id),
     ...collections.map(({ playlist_owner_id: id }) => id)
   )
   const uniqueUserIds = [...new Set(userIdsToFetch)]
@@ -401,14 +401,14 @@ async function fetchNotificationMetadata (
   }, {})
 
   if (fetchThumbnails) {
-    for (let trackId of Object.keys(trackMap)) {
-      const track = trackMap[trackId]
-      track.thumbnail = await getTrackImage(track, userMap)
+    for (let agreementId of Object.keys(agreementMap)) {
+      const agreement = agreementMap[agreementId]
+      agreement.thumbnail = await getAgreementImage(agreement, userMap)
     }
   }
 
   return {
-    tracks: trackMap,
+    agreements: agreementMap,
     collections: collectionMap,
     users: userMap
   }
@@ -445,16 +445,16 @@ async function getUserImage (user) {
   }
 }
 
-async function getTrackImage (track, usersMap) {
-  const trackOwnerId = track.owner_id
-  const trackOwner = usersMap[trackOwnerId]
-  const gateway = formatGateway(trackOwner.creator_node_endpoint)
-  const trackCoverArt = track.cover_art_sizes
-    ? `${track.cover_art_sizes}/480x480.jpg`
-    : track.cover_art
+async function getAgreementImage (agreement, usersMap) {
+  const agreementOwnerId = agreement.owner_id
+  const agreementOwner = usersMap[agreementOwnerId]
+  const gateway = formatGateway(agreementOwner.creator_node_endpoint)
+  const agreementCoverArt = agreement.cover_art_sizes
+    ? `${agreement.cover_art_sizes}/480x480.jpg`
+    : agreement.cover_art
 
-  let imageUrl = getImageUrl(trackCoverArt, gateway, DEFAULT_TRACK_IMAGE_URL)
-  if (imageUrl === DEFAULT_TRACK_IMAGE_URL) { return imageUrl }
+  let imageUrl = getImageUrl(agreementCoverArt, gateway, DEFAULT_AGREEMENT_IMAGE_URL)
+  if (imageUrl === DEFAULT_AGREEMENT_IMAGE_URL) { return imageUrl }
 
   try {
     await axios({
@@ -464,7 +464,7 @@ async function getTrackImage (track, usersMap) {
     })
     return imageUrl
   } catch (e) {
-    return DEFAULT_TRACK_IMAGE_URL
+    return DEFAULT_AGREEMENT_IMAGE_URL
   }
 }
 

@@ -5,18 +5,18 @@ const redisClient = require('./redis')
 
 // Processing fns
 const {
-  handleTrackContentRoute: trackContentUpload,
+  handleAgreementContentRoute: agreementContentUpload,
   handleTranscodeAndSegment: transcodeAndSegment,
   handleTranscodeHandOff: transcodeHandOff
-} = require('./components/tracks/tracksComponentService')
+} = require('./components/agreements/agreementsComponentService')
 const {
   processTranscodeAndSegments
-} = require('./components/tracks/trackContentUploadManager')
+} = require('./components/agreements/agreementContentUploadManager')
 
 const MAX_CONCURRENCY = 100
 const EXPIRATION_SECONDS = 86400 // 24 hours in seconds
 const PROCESS_NAMES = Object.freeze({
-  trackContentUpload: 'trackContentUpload',
+  agreementContentUpload: 'agreementContentUpload',
   transcodeAndSegment: 'transcodeAndSegment',
   processTranscodeAndSegments: 'processTranscodeAndSegments',
   transcodeHandOff: 'transcodeHandOff'
@@ -78,14 +78,14 @@ class AsyncProcessingQueue {
         this.logStatus(
           'Failed to hand off transcode. Retrying upload to current node...'
         )
-        await this.addTrackContentUploadTask({
+        await this.addAgreementContentUploadTask({
           logContext,
           req: job.data.req
         })
         done(null, {})
       } else {
         this.logStatus(
-          `Succesfully handed off transcoding and segmenting to sp=${sp}. Wrapping up remainder of track association..`
+          `Succesfully handed off transcoding and segmenting to sp=${sp}. Wrapping up remainder of agreement association..`
         )
         await this.addProcessTranscodeAndSegmentTask({
           logContext,
@@ -129,8 +129,8 @@ class AsyncProcessingQueue {
 
   // TODO: Make these jobs background processes
 
-  async addTrackContentUploadTask(params) {
-    params.task = PROCESS_NAMES.trackContentUpload
+  async addAgreementContentUploadTask(params) {
+    params.task = PROCESS_NAMES.agreementContentUpload
     return this.addTask(params)
   }
 
@@ -171,15 +171,15 @@ class AsyncProcessingQueue {
    */
   getFn(task) {
     switch (task) {
-      // Called via /track_content_async route (runs on primary)
-      case PROCESS_NAMES.trackContentUpload:
-        return trackContentUpload
+      // Called via /agreement_content_async route (runs on primary)
+      case PROCESS_NAMES.agreementContentUpload:
+        return agreementContentUpload
 
-      // Called via /transcode_and_segment (running on node that has been handed off track)
+      // Called via /transcode_and_segment (running on node that has been handed off agreement)
       case PROCESS_NAMES.transcodeAndSegment:
         return transcodeAndSegment
 
-      // Part 1 of transcode handoff flow - called via /track_content_async if currentNodeShouldHandleTranscode = false (runs on primary)
+      // Part 1 of transcode handoff flow - called via /agreement_content_async if currentNodeShouldHandleTranscode = false (runs on primary)
       case PROCESS_NAMES.transcodeHandOff:
         return transcodeHandOff
 
@@ -252,7 +252,7 @@ class AsyncProcessingQueue {
    * Example response:
    *
    * {
-   *    trackContentUpload: 1,
+   *    agreementContentUpload: 1,
    *    transcodeAndSegment: 4,
    *    processTranscodeAndSegments: 0,
    *    transcodeHandOff: 2
@@ -262,7 +262,7 @@ class AsyncProcessingQueue {
    */
   getTasks(jobs) {
     const response = {
-      trackContentUpload: 0,
+      agreementContentUpload: 0,
       transcodeAndSegment: 0,
       processTranscodeAndSegments: 0,
       transcodeHandOff: 0

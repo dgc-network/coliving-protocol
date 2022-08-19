@@ -1,15 +1,15 @@
 pragma solidity ^0.5.0;
 
 
-/// @title The interface for contracts to interact with the Coliving Track contract
-interface TrackFactoryInterface {
-  function callerOwnsTrack(address _caller, uint _trackId) external view;
+/// @title The interface for contracts to interact with the Coliving Agreement contract
+interface AgreementFactoryInterface {
+  function callerOwnsAgreement(address _caller, uint _agreementId) external view;
 
-  function getTrack(uint _id) external view returns (
-    uint trackOwnerId,
+  function getAgreement(uint _id) external view returns (
+    uint agreementOwnerId,
     bytes32 multihashDigest,
     uint8 multihashHashFn,
     uint8 multihashSize);
 
-  function trackExists(uint _id) external view returns (bool exists);
+  function agreementExists(uint _id) external view returns (bool exists);
 }

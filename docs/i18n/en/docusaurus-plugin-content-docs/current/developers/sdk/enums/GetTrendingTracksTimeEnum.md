@@ -1,7 +1,7 @@
 ---
-id: "GetTrendingTracksTimeEnum"
-title: "Enumeration: GetTrendingTracksTimeEnum"
-sidebar_label: "GetTrendingTracksTimeEnum"
+id: "GetTrendingAgreementsTimeEnum"
+title: "Enumeration: GetTrendingAgreementsTimeEnum"
+sidebar_label: "GetTrendingAgreementsTimeEnum"
 sidebar_position: 0
 custom_edit_url: null
 ---

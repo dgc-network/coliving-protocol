@@ -11,7 +11,7 @@ class AnalyticsProvider {
     }
   }
 
-  async track (eventName, userId, properties) {
+  async agreement (eventName, userId, properties) {
     try {
       await this.amplitudeInstance.logEvent({
         event_type: eventName,

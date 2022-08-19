@@ -23,10 +23,10 @@ var UserImage = function UserImage(_ref) {
   });
 };
 
-var TrackImage = function TrackImage(_ref2) {
-  var track = _ref2.track;
+var AgreementImage = function AgreementImage(_ref2) {
+  var agreement = _ref2.agreement;
   return /*#__PURE__*/_react["default"].createElement("img", {
-    src: track.image || track.thumbnail,
+    src: agreement.image || agreement.thumbnail,
     style: {
       height: '42px',
       width: '42px',
@@ -163,15 +163,15 @@ var Body = function Body(props) {
       paddingTop: props.title ? '8px' : hasUsers && !hasMultiUser ? '12px' : '16px',
       width: '100%'
     }
-  }, props.message)), props.trackMessage && /*#__PURE__*/_react["default"].createElement("tr", null, /*#__PURE__*/_react["default"].createElement("td", {
+  }, props.message)), props.agreementMessage && /*#__PURE__*/_react["default"].createElement("tr", null, /*#__PURE__*/_react["default"].createElement("td", {
     colspan: '1',
     valign: "center",
     style: {
       padding: '6px 0px 8px 16px',
       width: '60px'
     }
-  }, /*#__PURE__*/_react["default"].createElement(TrackImage, {
-    track: props.track
+  }, /*#__PURE__*/_react["default"].createElement(AgreementImage, {
+    agreement: props.agreement
   })), /*#__PURE__*/_react["default"].createElement("td", {
     colspan: 11,
     valign: "center",
@@ -180,7 +180,7 @@ var Body = function Body(props) {
       paddingLeft: '12px',
       width: '100%'
     }
-  }, props.trackMessage)), props.twitter && /*#__PURE__*/_react["default"].createElement("tr", null, /*#__PURE__*/_react["default"].createElement("td", {
+  }, props.agreementMessage)), props.twitter && /*#__PURE__*/_react["default"].createElement("tr", null, /*#__PURE__*/_react["default"].createElement("td", {
     colspan: '12',
     style: {
       padding: '4px 0px 16px 16px',

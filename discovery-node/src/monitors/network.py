@@ -2,7 +2,7 @@ import time
 
 import psutil
 
-# Global counters to keep track of last sent/recv value
+# Global counters to keep agreement of last sent/recv value
 bytes_sent = None
 bytes_sent_time = None
 bytes_recv = None

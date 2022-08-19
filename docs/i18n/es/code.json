@@ -11,7 +11,7 @@
     "message": "🎶 API",
     "description": "api-reference"
   },
-  "Query, stream, and search Arists, Tracks, and Playlists from your own app, game, or project": {
+  "Query, stream, and search Arists, Agreements, and Playlists from your own app, game, or project": {
     "message": "Consulta, transmite y busca Artistas, Canciones y Playlists desde tu propia aplicación, juego o proyecto",
     "description": "rest-api"
   },
@@ -262,7 +262,7 @@
     "message": "Etiquetas",
     "description": "The title of the tag list page"
   },
-  "Query, stream, and search Artists, Tracks, and Playlists from your own app, game, or project": {
+  "Query, stream, and search Artists, Agreements, and Playlists from your own app, game, or project": {
     "message": "Consulta, transmite y busca Artistas, Canciones y Playlists desde tu propia aplicación, juego o proyecto",
     "description": "rest-api"
   }

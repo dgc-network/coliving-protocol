@@ -16,19 +16,19 @@
 /**
  * 
  * @export
- * @interface TrackSegment
+ * @interface AgreementSegment
  */
-export interface TrackSegment {
+export interface AgreementSegment {
     /**
      * 
      * @type {number}
-     * @memberof TrackSegment
+     * @memberof AgreementSegment
      */
     duration: number;
     /**
      * 
      * @type {string}
-     * @memberof TrackSegment
+     * @memberof AgreementSegment
      */
     multihash: string;
 }

@@ -173,7 +173,7 @@ Once you know your user's Coliving user id, you can retrieve their Coliving info
 ## Example use cases
 
 - Provide a convenient way for users to sign up and/or log in to your app without having to set a password or fill in a profile form
-- Associate a user to their Coliving account so that you can retrieve their Coliving data (e.g. retrieve their tracks)
+- Associate a user to their Coliving account so that you can retrieve their Coliving data (e.g. retrieve their agreements)
 - Confirm if a user is a "Verified" Coliving artist
 
 However, note that this flow **CANNOT**:
@@ -183,7 +183,7 @@ However, note that this flow **CANNOT**:
 
 ### Authentication, not authorization
 
-Log in With Coliving is able to provide authentication, but not authorization (yet!). In other words, this flow does not enable you to perform actions on the user's behalf (for example, upload a track).
+Log in With Coliving is able to provide authentication, but not authorization (yet!). In other words, this flow does not enable you to perform actions on the user's behalf (for example, upload a agreement).
 
 ## Workflow
 

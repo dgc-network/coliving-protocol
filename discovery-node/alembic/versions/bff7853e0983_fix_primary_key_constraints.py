@@ -30,9 +30,9 @@ def upgrade():
             ALTER TABLE ursm_content_nodes ADD COLUMN IF NOT EXISTS txhash VARCHAR DEFAULT('') NOT NULL;
             ALTER TABLE ursm_content_nodes ADD CONSTRAINT ursm_content_nodes_pkey PRIMARY KEY (is_current, cnode_sp_id, blockhash, txhash);
 
-            ALTER TABLE tracks DROP CONSTRAINT tracks_pkey;
-            ALTER TABLE tracks ADD COLUMN IF NOT EXISTS txhash VARCHAR DEFAULT('') NOT NULL;
-            ALTER TABLE tracks ADD CONSTRAINT tracks_pkey PRIMARY KEY (is_current, track_id, blockhash, txhash);
+            ALTER TABLE agreements DROP CONSTRAINT agreements_pkey;
+            ALTER TABLE agreements ADD COLUMN IF NOT EXISTS txhash VARCHAR DEFAULT('') NOT NULL;
+            ALTER TABLE agreements ADD CONSTRAINT agreements_pkey PRIMARY KEY (is_current, agreement_id, blockhash, txhash);
 
             ALTER TABLE playlists DROP CONSTRAINT playlists_pkey;
             ALTER TABLE playlists ADD COLUMN IF NOT EXISTS txhash VARCHAR DEFAULT('') NOT NULL;
@@ -68,9 +68,9 @@ def downgrade():
             ALTER TABLE ursm_content_nodes DROP COLUMN txhash;
             ALTER TABLE ursm_content_nodes ADD CONSTRAINT ursm_content_nodes_pkey PRIMARY KEY (is_current, cnode_sp_id, blockhash);
 
-            ALTER TABLE tracks DROP CONSTRAINT tracks_pkey;
-            ALTER TABLE tracks DROP COLUMN txhash;
-            ALTER TABLE tracks ADD CONSTRAINT tracks_pkey PRIMARY KEY (is_current, track_id, blockhash);
+            ALTER TABLE agreements DROP CONSTRAINT agreements_pkey;
+            ALTER TABLE agreements DROP COLUMN txhash;
+            ALTER TABLE agreements ADD CONSTRAINT agreements_pkey PRIMARY KEY (is_current, agreement_id, blockhash);
 
             ALTER TABLE playlists DROP CONSTRAINT playlists_pkey;
             ALTER TABLE playlists DROP COLUMN txhash;

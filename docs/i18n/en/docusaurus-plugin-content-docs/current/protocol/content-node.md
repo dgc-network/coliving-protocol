@@ -8,7 +8,7 @@ sidebar_position: 3
 ## Overview
 
 An Coliving Content Node maintains the availability of all content in the network.  
-Content types include user and track metadata, user and track images, and live content.
+Content types include user and agreement metadata, user and agreement images, and live content.
 
 *NOTE - Previously, there was a concept of a ”creator node” that was separate from a content node. These have been combined into a single node type rather than being separate, with ”content node” referring to the merged type. Some references to ”creator node” still exist in Coliving code and in other documentation; those can safely be assumed to be referring to the content nodes outlined here.*
 
@@ -20,10 +20,10 @@ All registered content nodes are visible here: https://dashboard..org/services/c
 
 The content node's core service is a web server with an HTTP API to process incoming requests and perform the following functions:
 
-- user & track metadata upload
-- user & track image upload
-- user track file upload
-- user & track data, metadata, and track file retrieval
+- user & agreement metadata upload
+- user & agreement image upload
+- user agreement file upload
+- user & agreement data, metadata, and agreement file retrieval
 
 *The web server is a [NodeJS](https://nodejs.org) [Express app](https://expressjs.com/).*
 
@@ -41,9 +41,9 @@ A [Redis client](https://redis.io/) is used for for resource locking, request ra
 
 *Redis is managed in the codebase through the [ioredis](https://github.com/luin/ioredis) npm package*
 
-**Track Segmenting**
+**Agreement Segmenting**
 
-As defined by the [Coliving protocol](https://whitepaper..co), the content node uses [FFMPEG](https://ffmpeg.org/ffmpeg.html) to segment & transcode all uploaded track files before storing/serving.
+As defined by the [Coliving protocol](https://whitepaper..co), the content node uses [FFMPEG](https://ffmpeg.org/ffmpeg.html) to segment & transcode all uploaded agreement files before storing/serving.
 
 **Data Redundancy**
 

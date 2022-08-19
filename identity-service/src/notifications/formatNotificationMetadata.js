@@ -56,16 +56,16 @@ const formatMilestone = (achievement) => (notification, metadata) => {
   }
 }
 
-function formatTrendingTrack (notification, metadata) {
-  const trackId = notification.entityId
-  const track = metadata.tracks[trackId]
+function formatTrendingAgreement (notification, metadata) {
+  const agreementId = notification.entityId
+  const agreement = metadata.agreements[agreementId]
   if (!notification.actions.length === 1) return null
   const rank = notification.actions[0].actionEntityId
   const type = notification.actions[0].actionEntityType
   const [time, genre] = type.split(':')
   return {
-    type: NotificationType.TrendingTrack,
-    entity: track,
+    type: NotificationType.TrendingAgreement,
+    entity: agreement,
     rank,
     time,
     genre
@@ -76,8 +76,8 @@ function getMilestoneEntity (notification, metadata) {
   if (notification.type === NotificationType.MilestoneFollow) return undefined
   const type = notification.actions[0].actionEntityType
   const entityId = notification.entityId
-  const name = (type === Entity.Track)
-    ? metadata.tracks[entityId].title
+  const name = (type === Entity.Agreement)
+    ? metadata.agreements[entityId].title
     : metadata.collections[entityId].playlist_name
   return { type, name }
 }
@@ -103,38 +103,38 @@ function formatAnnouncement (notification) {
 }
 
 function formatRemixCreate (notification, metadata) {
-  const trackId = notification.entityId
-  const parentTrackAction = notification.actions.find(action =>
-    action.actionEntityType === actionEntityTypes.Track &&
-    action.actionEntityId !== trackId)
-  const parentTrackId = parentTrackAction.actionEntityId
-  const remixTrack = metadata.tracks[trackId]
-  const parentTrack = metadata.tracks[parentTrackId]
-  const userId = remixTrack.owner_id
-  const parentTrackUserId = parentTrack.owner_id
+  const agreementId = notification.entityId
+  const parentAgreementAction = notification.actions.find(action =>
+    action.actionEntityType === actionEntityTypes.Agreement &&
+    action.actionEntityId !== agreementId)
+  const parentAgreementId = parentAgreementAction.actionEntityId
+  const remixAgreement = metadata.agreements[agreementId]
+  const parentAgreement = metadata.agreements[parentAgreementId]
+  const userId = remixAgreement.owner_id
+  const parentAgreementUserId = parentAgreement.owner_id
 
   return {
     type: NotificationType.RemixCreate,
     remixUser: metadata.users[userId],
-    remixTrack,
-    parentTrackUser: metadata.users[parentTrackUserId],
-    parentTrack
+    remixAgreement,
+    parentAgreementUser: metadata.users[parentAgreementUserId],
+    parentAgreement
   }
 }
 
 function formatRemixCosign (notification, metadata) {
-  const trackId = notification.entityId
-  const parentTrackUserAction = notification.actions.find(action =>
+  const agreementId = notification.entityId
+  const parentAgreementUserAction = notification.actions.find(action =>
     action.actionEntityType === actionEntityTypes.User
   )
-  const parentTrackUserId = parentTrackUserAction.actionEntityId
-  const remixTrack = metadata.tracks[trackId]
-  const parentTracks = remixTrack.remix_of.tracks.map(t => metadata.tracks[t.parent_track_id])
+  const parentAgreementUserId = parentAgreementUserAction.actionEntityId
+  const remixAgreement = metadata.agreements[agreementId]
+  const parentAgreements = remixAgreement.remix_of.agreements.map(t => metadata.agreements[t.parent_agreement_id])
   return {
     type: NotificationType.RemixCosign,
-    parentTrackUser: metadata.users[parentTrackUserId],
-    parentTracks,
-    remixTrack
+    parentAgreementUser: metadata.users[parentAgreementUserId],
+    parentAgreements,
+    remixAgreement
   }
 }
 
@@ -147,10 +147,10 @@ function formatChallengeReward (notification) {
   }
 }
 
-function formatAddTrackToPlaylist (notification, metadata) {
+function formatAddAgreementToPlaylist (notification, metadata) {
   return {
-    type: NotificationType.AddTrackToPlaylist,
-    track: metadata.tracks[notification.entityId],
+    type: NotificationType.AddAgreementToPlaylist,
+    agreement: metadata.agreements[notification.entityId],
     playlist: metadata.collections[notification.metadata.playlistId],
     playlistOwner: metadata.users[notification.metadata.playlistOwnerId]
   }
@@ -246,9 +246,9 @@ function formatSupportingRankUpEmail (notification, extras) {
 
 const notificationResponseMap = {
   [NotificationType.Follow]: formatFollow,
-  [NotificationType.Favorite.track]: (notification, metadata) => {
-    const track = metadata.tracks[notification.entityId]
-    return formatFavorite(notification, metadata, { type: Entity.Track, name: track.title })
+  [NotificationType.Favorite.agreement]: (notification, metadata) => {
+    const agreement = metadata.agreements[notification.entityId]
+    return formatFavorite(notification, metadata, { type: Entity.Agreement, name: agreement.title })
   },
   [NotificationType.Favorite.playlist]: (notification, metadata) => {
     const collection = metadata.collections[notification.entityId]
@@ -258,9 +258,9 @@ const notificationResponseMap = {
     const collection = metadata.collections[notification.entityId]
     return formatFavorite(notification, metadata, { type: Entity.Album, name: collection.playlist_name })
   },
-  [NotificationType.Repost.track]: (notification, metadata) => {
-    const track = metadata.tracks[notification.entityId]
-    return formatRepost(notification, metadata, { type: Entity.Track, name: track.title })
+  [NotificationType.Repost.agreement]: (notification, metadata) => {
+    const agreement = metadata.agreements[notification.entityId]
+    return formatRepost(notification, metadata, { type: Entity.Agreement, name: agreement.title })
   },
   [NotificationType.Repost.playlist]: (notification, metadata) => {
     const collection = metadata.collections[notification.entityId]
@@ -270,13 +270,13 @@ const notificationResponseMap = {
     const collection = metadata.collections[notification.entityId]
     return formatRepost(notification, metadata, { type: Entity.Album, name: collection.playlist_name })
   },
-  [NotificationType.Create.track]: (notification, metadata) => {
-    const trackId = notification.actions[0].actionEntityId
-    const track = metadata.tracks[trackId]
+  [NotificationType.Create.agreement]: (notification, metadata) => {
+    const agreementId = notification.actions[0].actionEntityId
+    const agreement = metadata.agreements[agreementId]
     const count = notification.actions.length
     let user = metadata.users[notification.entityId]
     let users = [{ name: user.name, image: user.thumbnail }]
-    return formatUserSubscription(notification, metadata, { type: Entity.Track, count, name: track.title }, users)
+    return formatUserSubscription(notification, metadata, { type: Entity.Agreement, count, name: agreement.title }, users)
   },
   [NotificationType.Create.album]: (notification, metadata) => {
     const collection = metadata.collections[notification.entityId]
@@ -298,7 +298,7 @@ const notificationResponseMap = {
   },
   [NotificationType.RemixCreate]: formatRemixCreate,
   [NotificationType.RemixCosign]: formatRemixCosign,
-  [NotificationType.TrendingTrack]: formatTrendingTrack,
+  [NotificationType.TrendingAgreement]: formatTrendingAgreement,
   [NotificationType.ChallengeReward]: formatChallengeReward,
   [NotificationType.Reaction]: formatReaction,
   [NotificationType.TipReceive]: formatTipReceive,
@@ -309,8 +309,8 @@ const notificationResponseMap = {
   [NotificationType.MilestoneFavorite]: formatMilestone('favorite'),
   [NotificationType.MilestoneListen]: formatMilestone('listen'),
   [NotificationType.MilestoneFollow]: formatMilestone('follow'),
-  [NotificationType.AddTrackToPlaylist]: (notification, metadata) => {
-    return formatAddTrackToPlaylist(notification, metadata)
+  [NotificationType.AddAgreementToPlaylist]: (notification, metadata) => {
+    return formatAddAgreementToPlaylist(notification, metadata)
   }
 }
 
@@ -328,10 +328,10 @@ const NewFollowerTitle = 'New Follower'
 const NewMilestoneTitle = 'Congratulations! 🎉'
 const NewSubscriptionUpdateTitle = 'New Artist Update'
 
-const TrendingTrackTitle = 'Congrats - You’re Trending! 📈'
-const RemixCreateTitle = 'New Remix Of Your Track ♻️'
-const RemixCosignTitle = 'New Track Co-Sign! 🔥'
-const AddTrackToPlaylistTitle = 'Your track got on a playlist! 💿'
+const TrendingAgreementTitle = 'Congrats - You’re Trending! 📈'
+const RemixCreateTitle = 'New Remix Of Your Agreement ♻️'
+const RemixCosignTitle = 'New Agreement Co-Sign! 🔥'
+const AddAgreementToPlaylistTitle = 'Your agreement got on a playlist! 💿'
 const TipReceiveTitle = 'You Received a Tip!'
 
 const challengeInfoMap = {
@@ -343,8 +343,8 @@ const challengeInfoMap = {
     title: '🎧 Listening Streak: 7 Days',
     amount: 1
   },
-  'track-upload': {
-    title: '🎶 Upload 5 Tracks',
+  'agreement-upload': {
+    title: '🎶 Upload 5 Agreements',
     amount: 1
   },
   'referrals': {
@@ -374,22 +374,22 @@ const makeSupportingOrSupporterTitle = (notification) => `#${notification.rank} 
 
 const notificationResponseTitleMap = {
   [NotificationType.Follow]: () => NewFollowerTitle,
-  [NotificationType.Favorite.track]: () => NewFavoriteTitle,
+  [NotificationType.Favorite.agreement]: () => NewFavoriteTitle,
   [NotificationType.Favorite.playlist]: () => NewFavoriteTitle,
   [NotificationType.Favorite.album]: () => NewFavoriteTitle,
-  [NotificationType.Repost.track]: () => NewRepostTitle,
+  [NotificationType.Repost.agreement]: () => NewRepostTitle,
   [NotificationType.Repost.playlist]: () => NewRepostTitle,
   [NotificationType.Repost.album]: () => NewRepostTitle,
-  [NotificationType.Create.track]: () => NewSubscriptionUpdateTitle,
+  [NotificationType.Create.agreement]: () => NewSubscriptionUpdateTitle,
   [NotificationType.Create.album]: () => NewSubscriptionUpdateTitle,
   [NotificationType.Create.playlist]: () => NewSubscriptionUpdateTitle,
   [NotificationType.MilestoneListen]: () => NewMilestoneTitle,
   [NotificationType.Milestone]: () => NewMilestoneTitle,
-  [NotificationType.TrendingTrack]: () => TrendingTrackTitle,
+  [NotificationType.TrendingAgreement]: () => TrendingAgreementTitle,
   [NotificationType.RemixCreate]: () => RemixCreateTitle,
   [NotificationType.RemixCosign]: () => RemixCosignTitle,
   [NotificationType.ChallengeReward]: (notification) => challengeInfoMap[notification.challengeId].title,
-  [NotificationType.AddTrackToPlaylist]: () => AddTrackToPlaylistTitle,
+  [NotificationType.AddAgreementToPlaylist]: () => AddAgreementToPlaylistTitle,
   [NotificationType.Reaction]: makeReactionTitle,
   [NotificationType.TipReceive]: () => TipReceiveTitle,
   [NotificationType.SupporterRankUp]: makeSupportingOrSupporterTitle,
@@ -433,29 +433,29 @@ const pushNotificationMessagesMap = {
   [notificationTypes.Create.base] (notification) {
     const [user] = notification.users
     const type = notification.entity.type.toLowerCase()
-    if (notification.entity.type === actionEntityTypes.Track && !isNaN(notification.entity.count) && notification.entity.count > 1) {
+    if (notification.entity.type === actionEntityTypes.Agreement && !isNaN(notification.entity.count) && notification.entity.count > 1) {
       return `${user.name} released ${notification.entity.count} new ${type}s`
     }
     return `${user.name} released a new ${type} ${notification.entity.name}`
   },
   [notificationTypes.RemixCreate] (notification) {
-    return `New remix of your track ${notification.parentTrack.title}: ${notification.remixUser.name} uploaded ${notification.remixTrack.title}`
+    return `New remix of your agreement ${notification.parentAgreement.title}: ${notification.remixUser.name} uploaded ${notification.remixAgreement.title}`
   },
   [notificationTypes.RemixCosign] (notification) {
-    return `${notification.parentTrackUser.name} Co-Signed your Remix of ${notification.remixTrack.title}`
+    return `${notification.parentAgreementUser.name} Co-Signed your Remix of ${notification.remixAgreement.title}`
   },
-  [notificationTypes.TrendingTrack] (notification) {
+  [notificationTypes.TrendingAgreement] (notification) {
     const rank = notification.rank
     const rankSuffix = getRankSuffix(rank)
-    return `Your Track ${notification.entity.title} is ${notification.rank}${rankSuffix} on Trending Right Now! 🍾`
+    return `Your Agreement ${notification.entity.title} is ${notification.rank}${rankSuffix} on Trending Right Now! 🍾`
   },
   [notificationTypes.ChallengeReward] (notification) {
     return notification.challengeId === 'referred'
       ? `You’ve received ${challengeInfoMap[notification.challengeId].amount} $LIVE for being referred! Invite your friends to join to earn more!`
       : `You’ve earned ${challengeInfoMap[notification.challengeId].amount} $LIVE for completing this challenge!`
   },
-  [notificationTypes.AddTrackToPlaylist] (notification) {
-    return `${notification.playlistOwner.name} added ${notification.track.title} to their playlist ${notification.playlist.playlist_name}`
+  [notificationTypes.AddAgreementToPlaylist] (notification) {
+    return `${notification.playlistOwner.name} added ${notification.agreement.title} to their playlist ${notification.playlist.playlist_name}`
   },
   [notificationTypes.Reaction] (notification) {
     return `${capitalize(notification.reactingUser.name)} reacted to your tip of ${notification.amount} $LIVE`

@@ -118,7 +118,7 @@ class SolanaProgramIndexer(IndexerBase):
     def get_latest_slot(self):
         """
         Return the highest slot for this indexer's associated entity -
-        for example, track listens checks the Play table while the user
+        for example, agreement listens checks the Play table while the user
         bank indexer checks user_bank_txs
         """
         raise Exception(BASE_ERROR)

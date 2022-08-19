@@ -1,7 +1,7 @@
 ---
-id: "GetBulkTracksRequest"
-title: "Interface: GetBulkTracksRequest"
-sidebar_label: "GetBulkTracksRequest"
+id: "GetBulkAgreementsRequest"
+title: "Interface: GetBulkAgreementsRequest"
+sidebar_label: "GetBulkAgreementsRequest"
 sidebar_position: 0
 custom_edit_url: null
 ---
@@ -12,7 +12,7 @@ custom_edit_url: null
 
  `Optional` **id**: `string`[]
 
-The ID of the track(s)
+The ID of the agreement(s)
 
 ___
 
@@ -20,4 +20,4 @@ ___
 
  `Optional` **permalink**: `string`[]
 
-The permalink of the track(s)
+The permalink of the agreement(s)

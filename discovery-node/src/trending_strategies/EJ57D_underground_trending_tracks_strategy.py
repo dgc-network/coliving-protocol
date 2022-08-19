@@ -18,25 +18,25 @@ oi = 20
 nb = 750
 
 
-class UndergroundTrendingTracksStrategyEJ57D(BaseTrendingStrategy):
+class UndergroundTrendingAgreementsStrategyEJ57D(BaseTrendingStrategy):
     def __init__(self):
-        super().__init__(TrendingType.UNDERGROUND_TRACKS, TrendingVersion.EJ57D)
+        super().__init__(TrendingType.UNDERGROUND_AGREEMENTS, TrendingVersion.EJ57D)
 
-    def get_track_score(self, time_range, track):
+    def get_agreement_score(self, time_range, agreement):
         # pylint: disable=W,C,R
-        mn = track["listens"]
-        c = track["windowed_repost_count"]
-        x = track["repost_count"]
-        v = track["windowed_save_count"]
-        ut = track["save_count"]
-        ll = track["created_at"]
-        bq = track["owner_follower_count"]
-        ty = track["owner_verified"]
-        kz = track["karma"]
+        mn = agreement["listens"]
+        c = agreement["windowed_repost_count"]
+        x = agreement["repost_count"]
+        v = agreement["windowed_save_count"]
+        ut = agreement["save_count"]
+        ll = agreement["created_at"]
+        bq = agreement["owner_follower_count"]
+        ty = agreement["owner_verified"]
+        kz = agreement["karma"]
         xy = max
         uk = pow
         if bq < 3:
-            return {"score": 0, **track}
+            return {"score": 0, **agreement}
         oj = qq if ty else 1
         zu = 1
         if bq >= nb:
@@ -49,7 +49,7 @@ class UndergroundTrendingTracksStrategyEJ57D(BaseTrendingStrategy):
         rq = 1
         if ul > te:
             rq = xy((1.0 / u), (uk(u, (1 - ul / te))))
-        return {"score": vb * rq, **track}
+        return {"score": vb * rq, **agreement}
 
     def get_score_params(self):
         return {

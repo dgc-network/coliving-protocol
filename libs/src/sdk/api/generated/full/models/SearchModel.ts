@@ -20,11 +20,11 @@ import {
     PlaylistFullToJSON,
 } from './PlaylistFull';
 import {
-    TrackFull,
-    TrackFullFromJSON,
-    TrackFullFromJSONTyped,
-    TrackFullToJSON,
-} from './TrackFull';
+    AgreementFull,
+    AgreementFullFromJSON,
+    AgreementFullFromJSONTyped,
+    AgreementFullToJSON,
+} from './AgreementFull';
 import {
     UserFull,
     UserFullFromJSON,
@@ -52,16 +52,16 @@ export interface SearchModel {
     followed_users?: Array<UserFull>;
     /**
      * 
-     * @type {Array<TrackFull>}
+     * @type {Array<AgreementFull>}
      * @memberof SearchModel
      */
-    tracks: Array<TrackFull>;
+    agreements: Array<AgreementFull>;
     /**
      * 
-     * @type {Array<TrackFull>}
+     * @type {Array<AgreementFull>}
      * @memberof SearchModel
      */
-    saved_tracks?: Array<TrackFull>;
+    saved_agreements?: Array<AgreementFull>;
     /**
      * 
      * @type {Array<PlaylistFull>}

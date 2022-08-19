@@ -5,9 +5,9 @@ CREATE FOREIGN TABLE public.users
    SERVER fdw_server_connection
    OPTIONS (schema_name 'public', table_name 'dn_users');
 
-CREATE FOREIGN TABLE public.tracks
+CREATE FOREIGN TABLE public.agreements
    SERVER fdw_server_connection
-   OPTIONS (schema_name 'public', table_name 'dn_tracks');
+   OPTIONS (schema_name 'public', table_name 'dn_agreements');
 
 CREATE FOREIGN TABLE public.blocks
    SERVER fdw_server_connection

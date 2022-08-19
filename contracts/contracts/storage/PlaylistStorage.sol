@@ -21,7 +21,7 @@ contract PlaylistStorage is RegistryContract {
     mapping(uint => bool) private isAlbum;
 
     /** @dev - Mapping of playlist contents
-    *   playlistId -> <trackId -> trackCountInPlaylist>
+    *   playlistId -> <agreementId -> agreementCountInPlaylist>
     */
     mapping(uint => mapping(uint => uint)) private playlistContents;
 
@@ -35,14 +35,14 @@ contract PlaylistStorage is RegistryContract {
     function createPlaylist(
         uint _playlistOwnerId,
         bool _isAlbum,
-        uint[] calldata _trackIds
+        uint[] calldata _agreementIds
     ) external onlyRegistrant(CALLER_REGISTRY_KEY) returns (uint newPlaylistId)
     {
         newPlaylistId = playlistId;
         playlistId += 1;
 
-        // Number of tracks in playlist
-        uint playlistLength = _trackIds.length;
+        // Number of agreements in playlist
+        uint playlistLength = _agreementIds.length;
 
         require(playlistId != newPlaylistId, "expected incremented playlistId");
 
@@ -54,31 +54,31 @@ contract PlaylistStorage is RegistryContract {
 
         // Populate the playlist content mapping
         for (uint i = 0; i < playlistLength; i++) {
-            uint currentTrackId = _trackIds[i];
-            playlistContents[newPlaylistId][currentTrackId] += 1;
+            uint currentAgreementId = _agreementIds[i];
+            playlistContents[newPlaylistId][currentAgreementId] += 1;
         }
 
         return newPlaylistId;
     }
 
-    function addPlaylistTrack(
+    function addPlaylistAgreement(
         uint _playlistId,
-        uint _addedTrackId
+        uint _addedAgreementId
     ) external onlyRegistrant(CALLER_REGISTRY_KEY)
     {
-        playlistContents[_playlistId][_addedTrackId] += 1;
+        playlistContents[_playlistId][_addedAgreementId] += 1;
     }
 
-    function deletePlaylistTrack(
+    function deletePlaylistAgreement(
         uint _playlistId,
-        uint _deletedTrackId
+        uint _deletedAgreementId
     ) external onlyRegistrant(CALLER_REGISTRY_KEY)
     {
         require(
-            playlistContents[_playlistId][_deletedTrackId] > 0,
-            "Valid track in playlist required for delete"
+            playlistContents[_playlistId][_deletedAgreementId] > 0,
+            "Valid agreement in playlist required for delete"
         );
-        playlistContents[_playlistId][_deletedTrackId] -= 1;
+        playlistContents[_playlistId][_deletedAgreementId] -= 1;
     }
 
     function getPlaylistOwner(uint _playlistId)
@@ -87,12 +87,12 @@ contract PlaylistStorage is RegistryContract {
         return playlistOwner[_playlistId];
     }
 
-    function isTrackInPlaylist(
+    function isAgreementInPlaylist(
         uint _playlistId,
-        uint _trackId
+        uint _agreementId
     ) external view onlyRegistrant(CALLER_REGISTRY_KEY) returns (bool)
     {
-        return playlistContents[_playlistId][_trackId] > 0;
+        return playlistContents[_playlistId][_agreementId] > 0;
     }
 
     function playlistExists(uint _playlistId)

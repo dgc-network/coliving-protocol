@@ -34,9 +34,9 @@ const exportComponentService = async ({
       (cnodeUser) => cnodeUser.cnodeUserUUID
     )
 
-    // Fetch all data for cnodeUserUUIDs: colivingUsers, tracks, files, clockRecords.
+    // Fetch all data for cnodeUserUUIDs: colivingUsers, agreements, files, clockRecords.
 
-    const [colivingUsers, tracks, files, clockRecords] = await Promise.all([
+    const [colivingUsers, agreements, files, clockRecords] = await Promise.all([
       models.ColivingUser.findAll({
         where: {
           cnodeUserUUID: cnodeUserUUIDs,
@@ -49,7 +49,7 @@ const exportComponentService = async ({
         transaction,
         raw: true
       }),
-      models.Track.findAll({
+      models.Agreement.findAll({
         where: {
           cnodeUserUUID: cnodeUserUUIDs,
           clock: {
@@ -91,7 +91,7 @@ const exportComponentService = async ({
     for (const cnodeUser of cnodeUsers) {
       // Add cnodeUserUUID data fields
       cnodeUser.colivingUsers = []
-      cnodeUser.tracks = []
+      cnodeUser.agreements = []
       cnodeUser.files = []
       cnodeUser.clockRecords = []
 
@@ -131,8 +131,8 @@ const exportComponentService = async ({
     colivingUsers.forEach((colivingUser) => {
       cnodeUsersDict[colivingUser.cnodeUserUUID].colivingUsers.push(colivingUser)
     })
-    tracks.forEach((track) => {
-      cnodeUsersDict[track.cnodeUserUUID].tracks.push(track)
+    agreements.forEach((agreement) => {
+      cnodeUsersDict[agreement.cnodeUserUUID].agreements.push(agreement)
     })
     files.forEach((file) => {
       cnodeUsersDict[file.cnodeUserUUID].files.push(file)

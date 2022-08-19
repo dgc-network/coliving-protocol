@@ -21,7 +21,7 @@ contract('Random testing', async (accounts) => {
     let cnTypeInfo, dpTypeInfo
     let currentRound = 1
 
-    // Test tracking statistics
+    // Test agreementing statistics
     let totalClaimedRewards = _lib.toBN(0)
     let totalDeployerStaked = _lib.toBN(0)
     let totalDelegatedAmount = _lib.toBN(0)

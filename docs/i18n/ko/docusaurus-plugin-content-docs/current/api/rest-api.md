@@ -107,7 +107,7 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/users/
         "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
       },
       "repost_count": 5,
-      "track_count": 4
+      "agreement_count": 4
     }
   ]
 }
@@ -181,25 +181,25 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/users/
       "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
     },
     "repost_count": 5,
-    "track_count": 4
+    "agreement_count": 4
   }
 }
 ```
 
-### Get User's Favorite Tracks <a id="get-user-39-s-favorite-tracks"></a>
+### Get User's Favorite Agreements <a id="get-user-39-s-favorite-agreements"></a>
 
 `GET /users/{user_id}/favorites`
 
-_Fetch favorited tracks for a user_
+_Fetch favorited agreements for a user_
 
-#### Query Parameters <a id="get-user&apos;s-favorite-tracks-parameters"></a>
+#### Query Parameters <a id="get-user&apos;s-favorite-agreements-parameters"></a>
 
 | Name        | Type   | Required | Description   |
 |:----------- |:------ |:-------- |:------------- |
 | user\_id  | string | true     | A User ID     |
 | app\_name | string | true     | Your app name |
 
-#### Responses <a id="get-user&apos;s-favorite-tracks-responses"></a>
+#### Responses <a id="get-user&apos;s-favorite-agreements-responses"></a>
 
 | Status | Meaning                                                                    | Description  | Schema                                                                                                 |
 |:------ |:-------------------------------------------------------------------------- |:------------ |:------------------------------------------------------------------------------------------------------ |
@@ -236,17 +236,17 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/users/
   "data": [
     {
       "favorite_item_id": "n3yVD",
-      "favorite_type": "SaveType.track",
+      "favorite_type": "SaveType.agreement",
       "user_id": "nlGNe"
     },
     {
       "favorite_item_id": "nlv5l",
-      "favorite_type": "SaveType.track",
+      "favorite_type": "SaveType.agreement",
       "user_id": "nlGNe"
     },
     {
       "favorite_item_id": "ezYKz",
-      "favorite_type": "SaveType.track",
+      "favorite_type": "SaveType.agreement",
       "user_id": "nlGNe"
     }
   ]
@@ -313,13 +313,13 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/users/
 }
 ```
 
-### Get User's Most Used Track Tags <a id="get-user-39-s-most-used-track-tags"></a>
+### Get User's Most Used Agreement Tags <a id="get-user-39-s-most-used-agreement-tags"></a>
 
 `GET /users/{user_id}/tags`
 
-_Fetch most used tags in a user's tracks_
+_Fetch most used tags in a user's agreements_
 
-#### Query Parameters <a id="get-user&apos;s-most-used-track-tags-parameters"></a>
+#### Query Parameters <a id="get-user&apos;s-most-used-agreement-tags-parameters"></a>
 
 | Name        | Type    | Required | Description                 |
 |:----------- |:------- |:-------- |:--------------------------- |
@@ -328,7 +328,7 @@ _Fetch most used tags in a user's tracks_
 | app\_name | string  | true     | Your app name               |
 | user\_id  | string  | true     | none                        |
 
-#### Responses <a id="get-user&apos;s-most-used-track-tags-responses"></a>
+#### Responses <a id="get-user&apos;s-most-used-agreement-tags-responses"></a>
 
 | Status | Meaning                                                                    | Description  | Schema                                                                                       |
 |:------ |:-------------------------------------------------------------------------- |:------------ |:-------------------------------------------------------------------------------------------- |
@@ -370,13 +370,13 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/users/
 }
 ```
 
-### Get User's Tracks <a id="get-user-39-s-tracks"></a>
+### Get User's Agreements <a id="get-user-39-s-agreements"></a>
 
-`GET /users/{user_id}/tracks`
+`GET /users/{user_id}/agreements`
 
-_Fetch a list of tracks for a user_
+_Fetch a list of agreements for a user_
 
-#### Query Parameters <a id="get-user&apos;s-tracks-parameters"></a>
+#### Query Parameters <a id="get-user&apos;s-agreements-parameters"></a>
 
 | Name        | Type   | Required | Description   |
 |:----------- |:------ |:-------- |:------------- |
@@ -386,11 +386,11 @@ _Fetch a list of tracks for a user_
 | sort        | string | false    | Sort mode     |
 | app\_name | string | true     | Your app name |
 
-#### Responses <a id="get-user&apos;s-tracks-responses"></a>
+#### Responses <a id="get-user&apos;s-agreements-responses"></a>
 
 | Status | Meaning                                                                    | Description  | Schema                                                                                           |
 |:------ |:-------------------------------------------------------------------------- |:------------ |:------------------------------------------------------------------------------------------------ |
-| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [tracks\_response](https://colivingproject.github.io/api-docs/?javascript#schematracks_response) |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [agreements\_response](https://colivingproject.github.io/api-docs/?javascript#schemaagreements_response) |
 | 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | Bad request  | None                                                                                             |
 | 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Server error | None                                                                                             |
 
@@ -402,7 +402,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/users/nlGNe/tracks?app_name=EXAMPLEAPP',
+fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/users/nlGNe/agreements?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -458,7 +458,7 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/users/
           "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
         },
         "repost_count": 5,
-        "track_count": 4
+        "agreement_count": 4
       }
     }
   ]
@@ -522,7 +522,7 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/playli
         "480x480": "https://usermetadata..co/ipfs/Qmc7RFzLGgW3DUTgKK49LzxEwe3Lmb47q85ZwJJRVYTXPr/480x480.jpg",
         "1000x1000": "https://usermetadata..co/ipfs/Qmc7RFzLGgW3DUTgKK49LzxEwe3Lmb47q85ZwJJRVYTXPr/1000x1000.jpg"
       },
-      "description": "All the latest hot new tracks on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
+      "description": "All the latest hot new agreements on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
       "id": "DOPRl",
       "is_album": true,
       "playlist_name": "Hot & New on Coliving 🔥",
@@ -549,7 +549,7 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/playli
           "1000x1000": "https://usermetadata..co/ipfs/QmNjJv1wQf2DJq3GNXjXzSL8UXFUGXfchg4NhL7UpbnF1f"
         },
         "repost_count": 200,
-        "track_count": 0
+        "agreement_count": 0
       }
     }
   ]
@@ -610,7 +610,7 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/playli
       "480x480": "https://usermetadata..co/ipfs/Qmc7RFzLGgW3DUTgKK49LzxEwe3Lmb47q85ZwJJRVYTXPr/480x480.jpg",
       "1000x1000": "https://usermetadata..co/ipfs/Qmc7RFzLGgW3DUTgKK49LzxEwe3Lmb47q85ZwJJRVYTXPr/1000x1000.jpg"
     },
-    "description": "All the latest hot new tracks on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
+    "description": "All the latest hot new agreements on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
     "id": "DOPRl",
     "is_album": true,
     "playlist_name": "Hot & New on Coliving 🔥",
@@ -637,30 +637,30 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/playli
         "1000x1000": "https://usermetadata..co/ipfs/QmNjJv1wQf2DJq3GNXjXzSL8UXFUGXfchg4NhL7UpbnF1f"
       },
       "repost_count": 200,
-      "track_count": 0
+      "agreement_count": 0
     }
   }
 }
 ```
 
-### Get Playlist Tracks <a id="get-playlist-tracks"></a>
+### Get Playlist Agreements <a id="get-playlist-agreements"></a>
 
-`GET /playlists/{playlist_id}/tracks`
+`GET /playlists/{playlist_id}/agreements`
 
-_Fetch tracks within a playlist_
+_Fetch agreements within a playlist_
 
-#### Query Parameters <a id="get-playlist-tracks-parameters"></a>
+#### Query Parameters <a id="get-playlist-agreements-parameters"></a>
 
 | Name           | Type   | Required | Description   |
 |:-------------- |:------ |:-------- |:------------- |
 | playlist\_id | string | true     | A Playlist ID |
 | app\_name    | string | true     | Your app name |
 
-#### Responses <a id="get-playlist-tracks-responses"></a>
+#### Responses <a id="get-playlist-agreements-responses"></a>
 
 | Status | Meaning                                                                    | Description  | Schema                                                                                                                |
 |:------ |:-------------------------------------------------------------------------- |:------------ |:--------------------------------------------------------------------------------------------------------------------- |
-| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [playlist\_tracks\_response](https://colivingproject.github.io/api-docs/?javascript#schemaplaylist_tracks_response) |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [playlist\_agreements\_response](https://colivingproject.github.io/api-docs/?javascript#schemaplaylist_agreements_response) |
 | 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | Bad request  | None                                                                                                                  |
 | 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Server error | None                                                                                                                  |
 
@@ -673,7 +673,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/playlists/DOPRl/tracks?app_name=EXAMPLEAPP',
+fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/playlists/DOPRl/agreements?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -729,34 +729,34 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/playli
           "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
         },
         "repost_count": 5,
-        "track_count": 4
+        "agreement_count": 4
       }
     }
   ]
 }
 ```
 
-## Tracks <a id="api-tracks"></a>
+## Agreements <a id="api-agreements"></a>
 
-### Search Tracks <a id="search-tracks"></a>
+### Search Agreements <a id="search-agreements"></a>
 
-`GET /tracks/search`
+`GET /agreements/search`
 
-_Search for a track_
+_Search for a agreement_
 
-#### Query Parameters <a id="search-tracks-parameters"></a>
+#### Query Parameters <a id="search-agreements-parameters"></a>
 
 | Name                 | Type   | Required | Description                     |
 |:-------------------- |:------ |:-------- |:------------------------------- |
 | query                | string | true     | Search Query                    |
-| only\_downloadable | string | false    | Return only downloadable tracks |
+| only\_downloadable | string | false    | Return only downloadable agreements |
 | app\_name          | string | true     | Your app name                   |
 
-#### Responses <a id="search-tracks-responses"></a>
+#### Responses <a id="search-agreements-responses"></a>
 
 | Status | Meaning                                                                    | Description  | Schema                                                                                     |
 |:------ |:-------------------------------------------------------------------------- |:------------ |:------------------------------------------------------------------------------------------ |
-| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [track\_search](https://colivingproject.github.io/api-docs/?javascript#schematrack_search) |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [agreement\_search](https://colivingproject.github.io/api-docs/?javascript#schemaagreement_search) |
 | 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | Bad request  | None                                                                                       |
 | 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Server error | None                                                                                       |
 
@@ -770,7 +770,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/tracks/search?query=baauer b2b&app_name=EXAMPLEAPP',
+fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/agreements/search?query=baauer b2b&app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -826,32 +826,32 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/tracks
           "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
         },
         "repost_count": 5,
-        "track_count": 4
+        "agreement_count": 4
       }
     }
   ]
 }
 ```
 
-### Trending Tracks <a id="trending-tracks"></a>
+### Trending Agreements <a id="trending-agreements"></a>
 
-`GET /tracks/trending`
+`GET /agreements/trending`
 
-_Gets the top 100 trending \(most popular\) tracks on Coliving_
+_Gets the top 100 trending \(most popular\) agreements on Coliving_
 
-#### Query Parameters <a id="trending-tracks-parameters"></a>
+#### Query Parameters <a id="trending-agreements-parameters"></a>
 
 | Name        | Type   | Required | Description                                                            |
 |:----------- |:------ |:-------- |:---------------------------------------------------------------------- |
-| genre       | string | false    | Trending tracks for a specified genre                                  |
-| time        | string | false    | Trending tracks over a specified time range \(week, month, allTime\) |
+| genre       | string | false    | Trending agreements for a specified genre                                  |
+| time        | string | false    | Trending agreements over a specified time range \(week, month, allTime\) |
 | app\_name | string | true     | Your app name                                                          |
 
-#### Responses <a id="trending-tracks-responses"></a>
+#### Responses <a id="trending-agreements-responses"></a>
 
 | Status | Meaning                                                                    | Description  | Schema                                                                                           |
 |:------ |:-------------------------------------------------------------------------- |:------------ |:------------------------------------------------------------------------------------------------ |
-| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [tracks\_response](https://colivingproject.github.io/api-docs/?javascript#schematracks_response) |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [agreements\_response](https://colivingproject.github.io/api-docs/?javascript#schemaagreements_response) |
 | 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | Bad request  | None                                                                                             |
 | 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Server error | None                                                                                             |
 
@@ -863,7 +863,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/tracks/trending?app_name=EXAMPLEAPP',
+fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/agreements/trending?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -919,31 +919,31 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/tracks
           "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
         },
         "repost_count": 5,
-        "track_count": 4
+        "agreement_count": 4
       }
     }
   ]
 }
 ```
 
-### Get Track <a id="get-track"></a>
+### Get Agreement <a id="get-agreement"></a>
 
-`GET /tracks/{track_id}`
+`GET /agreements/{agreement_id}`
 
-_Fetch a track_
+_Fetch a agreement_
 
-#### Query Parameters <a id="get-track-parameters"></a>
+#### Query Parameters <a id="get-agreement-parameters"></a>
 
 | Name        | Type   | Required | Description   |
 |:----------- |:------ |:-------- |:------------- |
-| track\_id | string | true     | A Track ID    |
+| agreement\_id | string | true     | A Agreement ID    |
 | app\_name | string | true     | Your app name |
 
-#### Responses <a id="get-track-responses"></a>
+#### Responses <a id="get-agreement-responses"></a>
 
 | Status | Meaning                                                                    | Description  | Schema                                                                                         |
 |:------ |:-------------------------------------------------------------------------- |:------------ |:---------------------------------------------------------------------------------------------- |
-| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [track\_response](https://colivingproject.github.io/api-docs/?javascript#schematrack_response) |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [agreement\_response](https://colivingproject.github.io/api-docs/?javascript#schemaagreement_response) |
 | 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | Bad request  | None                                                                                           |
 | 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Server error | None                                                                                           |
 
@@ -955,7 +955,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/tracks/D7KyD?app_name=EXAMPLEAPP',
+fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/agreements/D7KyD?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -1010,28 +1010,28 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/tracks
         "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
       },
       "repost_count": 5,
-      "track_count": 4
+      "agreement_count": 4
     }
   }
 }
 ```
 
-### Stream Track <a id="stream-track"></a>
+### Stream Agreement <a id="stream-agreement"></a>
 
-`GET /tracks/{track_id}/stream`
+`GET /agreements/{agreement_id}/stream`
 
-_Get the track's streamable mp3 file_
+_Get the agreement's streamable mp3 file_
 
 This endpoint accepts the Range header for streaming. https://developer.mozilla.org/en-US/docs/Web/HTTP/Range\_requests
 
-#### Query Parameters <a id="stream-track-parameters"></a>
+#### Query Parameters <a id="stream-agreement-parameters"></a>
 
 | Name        | Type   | Required | Description   |
 |:----------- |:------ |:-------- |:------------- |
-| track\_id | string | true     | A Track ID    |
+| agreement\_id | string | true     | A Agreement ID    |
 | app\_name | string | true     | Your app name |
 
-#### Responses <a id="stream-track-responses"></a>
+#### Responses <a id="stream-agreement-responses"></a>
 
 | Status | Meaning                                                                    | Description           | Schema |
 |:------ |:-------------------------------------------------------------------------- |:--------------------- |:------ |
@@ -1045,7 +1045,7 @@ This endpoint accepts the Range header for streaming. https://developer.mozilla.
 
 ```javascript
 
-fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/tracks/D7KyD/stream?app_name=EXAMPLEAPP',
+fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/agreements/D7KyD/stream?app_name=EXAMPLEAPP',
 {
   method: 'GET'
 
@@ -1126,7 +1126,7 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/metric
 
 _Resolves and redirects a provided Coliving app URL to the API resource URL it represents_
 
-This endpoint allows you to lookup and access API resources when you only know the .co URL. Tracks, Playlists, and Users are supported.
+This endpoint allows you to lookup and access API resources when you only know the .co URL. Agreements, Playlists, and Users are supported.
 
 #### Query Parameters <a id="resolve-parameters"></a>
 
@@ -1140,7 +1140,7 @@ This endpoint allows you to lookup and access API resources when you only know t
 > Internal redirect
 
 ```text
-{"HTTP/1.1 302 Found Location":"/v1/tracks/V4W8r"}
+{"HTTP/1.1 302 Found Location":"/v1/agreements/V4W8r"}
 ```
 
 #### Responses <a id="resolve-responses"></a>
@@ -1201,7 +1201,7 @@ The following are examples of response formats you can expect to receive from th
       "1000x1000": "string"
     },
     "repost_count": 0,
-    "track_count": 0
+    "agreement_count": 0
   }
 }
 
@@ -1237,7 +1237,7 @@ The following are examples of response formats you can expect to receive from th
     "1000x1000": "string"
   },
   "repost_count": 0,
-  "track_count": 0
+  "agreement_count": 0
 }
 
 ```
@@ -1259,7 +1259,7 @@ The following are examples of response formats you can expect to receive from th
 | playlist\_count  | integer                                                                                          | true     | none         | none        |
 | profile\_picture | [profile\_picture](https://colivingproject.github.io/api-docs/?javascript#schemaprofile_picture) | false    | none         | none        |
 | repost\_count    | integer                                                                                          | true     | none         | none        |
-| track\_count     | integer                                                                                          | true     | none         | none        |
+| agreement\_count     | integer                                                                                          | true     | none         | none        |
 
 ### cover\_photo <a id="tocS_cover_photo"></a>
 
@@ -1297,7 +1297,7 @@ The following are examples of response formats you can expect to receive from th
 | 480x480   | string | false    | none         | none        |
 | 1000x1000 | string | false    | none         | none        |
 
-### tracks\_response <a id="tocS_tracks_response"></a>
+### agreements\_response <a id="tocS_agreements_response"></a>
 
 ```json
 {
@@ -1314,9 +1314,9 @@ The following are examples of response formats you can expect to receive from th
       "mood": "string",
       "release_date": "string",
       "remix_of": {
-        "tracks": [
+        "agreements": [
           {
-            "parent_track_id": "string"
+            "parent_agreement_id": "string"
           }
         ]
       },
@@ -1345,7 +1345,7 @@ The following are examples of response formats you can expect to receive from th
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "track_count": 0
+        "agreement_count": 0
       },
       "duration": 0,
       "downloadable": true,
@@ -1360,9 +1360,9 @@ The following are examples of response formats you can expect to receive from th
 
 | Name | Type                                                                            | Required | Restrictions | Description |
 |:---- |:------------------------------------------------------------------------------- |:-------- |:------------ |:----------- |
-| data | \[[Track](https://colivingproject.github.io/api-docs/?javascript#schematrack)\] | false    | none         | none        |
+| data | \[[Agreement](https://colivingproject.github.io/api-docs/?javascript#schemaagreement)\] | false    | none         | none        |
 
-### Track <a id="tocS_Track"></a>
+### Agreement <a id="tocS_Agreement"></a>
 
 ```json
 {
@@ -1377,9 +1377,9 @@ The following are examples of response formats you can expect to receive from th
   "mood": "string",
   "release_date": "string",
   "remix_of": {
-    "tracks": [
+    "agreements": [
       {
-        "parent_track_id": "string"
+        "parent_agreement_id": "string"
       }
     ]
   },
@@ -1408,7 +1408,7 @@ The following are examples of response formats you can expect to receive from th
       "1000x1000": "string"
     },
     "repost_count": 0,
-    "track_count": 0
+    "agreement_count": 0
   },
   "duration": 0,
   "downloadable": true,
@@ -1421,7 +1421,7 @@ The following are examples of response formats you can expect to receive from th
 
 | Name              | Type                                                                                         | Required | Restrictions | Description |
 |:----------------- |:-------------------------------------------------------------------------------------------- |:-------- |:------------ |:----------- |
-| artwork           | [track\_artwork](https://colivingproject.github.io/api-docs/?javascript#schematrack_artwork) | false    | none         | none        |
+| artwork           | [agreement\_artwork](https://colivingproject.github.io/api-docs/?javascript#schemaagreement_artwork) | false    | none         | none        |
 | description       | string                                                                                       | false    | none         | none        |
 | genre             | string                                                                                       | false    | none         | none        |
 | id                | string                                                                                       | true     | none         | none        |
@@ -1437,7 +1437,7 @@ The following are examples of response formats you can expect to receive from th
 | downloadable      | boolean                                                                                      | false    | none         | none        |
 | play\_count     | integer                                                                                      | true     | none         | none        |
 
-### track\_artwork <a id="tocS_track_artwork"></a>
+### agreement\_artwork <a id="tocS_agreement_artwork"></a>
 
 ```json
 {
@@ -1460,9 +1460,9 @@ The following are examples of response formats you can expect to receive from th
 
 ```json
 {
-  "tracks": [
+  "agreements": [
     {
-      "parent_track_id": "string"
+      "parent_agreement_id": "string"
     }
   ]
 }
@@ -1473,13 +1473,13 @@ The following are examples of response formats you can expect to receive from th
 
 | Name   | Type                                                                                               | Required | Restrictions | Description |
 |:------ |:-------------------------------------------------------------------------------------------------- |:-------- |:------------ |:----------- |
-| tracks | \[[track\_element](https://colivingproject.github.io/api-docs/?javascript#schematrack_element)\] | false    | none         | none        |
+| agreements | \[[agreement\_element](https://colivingproject.github.io/api-docs/?javascript#schemaagreement_element)\] | false    | none         | none        |
 
-### track\_element <a id="tocS_track_element"></a>
+### agreement\_element <a id="tocS_agreement_element"></a>
 
 ```json
 {
-  "parent_track_id": "string"
+  "parent_agreement_id": "string"
 }
 
 ```
@@ -1488,7 +1488,7 @@ The following are examples of response formats you can expect to receive from th
 
 | Name                  | Type   | Required | Restrictions | Description |
 |:--------------------- |:------ |:-------- |:------------ |:----------- |
-| parent\_track\_id | string | true     | none         | none        |
+| parent\_agreement\_id | string | true     | none         | none        |
 
 ### reposts <a id="tocS_reposts"></a>
 
@@ -1613,7 +1613,7 @@ The following are examples of response formats you can expect to receive from th
         "1000x1000": "string"
       },
       "repost_count": 0,
-      "track_count": 0
+      "agreement_count": 0
     }
   ]
 }
@@ -1665,7 +1665,7 @@ The following are examples of response formats you can expect to receive from th
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "track_count": 0
+        "agreement_count": 0
       }
     }
   ]
@@ -1716,7 +1716,7 @@ The following are examples of response formats you can expect to receive from th
       "1000x1000": "string"
     },
     "repost_count": 0,
-    "track_count": 0
+    "agreement_count": 0
   }
 }
 
@@ -1755,7 +1755,7 @@ The following are examples of response formats you can expect to receive from th
 | 480x480   | string | false    | none         | none        |
 | 1000x1000 | string | false    | none         | none        |
 
-### playlist\_tracks\_response <a id="tocS_playlist_tracks_response"></a>
+### playlist\_agreements\_response <a id="tocS_playlist_agreements_response"></a>
 
 ```json
 {
@@ -1772,9 +1772,9 @@ The following are examples of response formats you can expect to receive from th
       "mood": "string",
       "release_date": "string",
       "remix_of": {
-        "tracks": [
+        "agreements": [
           {
-            "parent_track_id": "string"
+            "parent_agreement_id": "string"
           }
         ]
       },
@@ -1803,7 +1803,7 @@ The following are examples of response formats you can expect to receive from th
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "track_count": 0
+        "agreement_count": 0
       },
       "duration": 0,
       "downloadable": true,
@@ -1818,7 +1818,7 @@ The following are examples of response formats you can expect to receive from th
 
 | Name | Type                                                                            | Required | Restrictions | Description |
 |:---- |:------------------------------------------------------------------------------- |:-------- |:------------ |:----------- |
-| data | \[[Track](https://colivingproject.github.io/api-docs/?javascript#schematrack)\] | false    | none         | none        |
+| data | \[[Agreement](https://colivingproject.github.io/api-docs/?javascript#schemaagreement)\] | false    | none         | none        |
 
 ### playlist\_search\_result <a id="tocS_playlist_search_result"></a>
 
@@ -1859,7 +1859,7 @@ The following are examples of response formats you can expect to receive from th
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "track_count": 0
+        "agreement_count": 0
       }
     }
   ]
@@ -1873,7 +1873,7 @@ The following are examples of response formats you can expect to receive from th
 |:---- |:------------------------------------------------------------------------------------- |:-------- |:------------ |:----------- |
 | data | \[[playlist](https://colivingproject.github.io/api-docs/?javascript#schemaplaylist)\] | false    | none         | none        |
 
-### track\_response <a id="tocS_track_response"></a>
+### agreement\_response <a id="tocS_agreement_response"></a>
 
 ```json
 {
@@ -1889,9 +1889,9 @@ The following are examples of response formats you can expect to receive from th
     "mood": "string",
     "release_date": "string",
     "remix_of": {
-      "tracks": [
+      "agreements": [
         {
-          "parent_track_id": "string"
+          "parent_agreement_id": "string"
         }
       ]
     },
@@ -1920,7 +1920,7 @@ The following are examples of response formats you can expect to receive from th
         "1000x1000": "string"
       },
       "repost_count": 0,
-      "track_count": 0
+      "agreement_count": 0
     },
     "duration": 0,
     "downloadable": true,
@@ -1934,9 +1934,9 @@ The following are examples of response formats you can expect to receive from th
 
 | Name | Type                                                                      | Required | Restrictions | Description |
 |:---- |:------------------------------------------------------------------------- |:-------- |:------------ |:----------- |
-| data | [Track](https://colivingproject.github.io/api-docs/?javascript#schematrack) | false    | none         | none        |
+| data | [Agreement](https://colivingproject.github.io/api-docs/?javascript#schemaagreement) | false    | none         | none        |
 
-### track\_search <a id="tocS_track_search"></a>
+### agreement\_search <a id="tocS_agreement_search"></a>
 
 ```json
 {
@@ -1953,9 +1953,9 @@ The following are examples of response formats you can expect to receive from th
       "mood": "string",
       "release_date": "string",
       "remix_of": {
-        "tracks": [
+        "agreements": [
           {
-            "parent_track_id": "string"
+            "parent_agreement_id": "string"
           }
         ]
       },
@@ -1984,7 +1984,7 @@ The following are examples of response formats you can expect to receive from th
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "track_count": 0
+        "agreement_count": 0
       },
       "duration": 0,
       "downloadable": true,
@@ -1999,7 +1999,7 @@ The following are examples of response formats you can expect to receive from th
 
 | Name | Type                                                                            | Required | Restrictions | Description |
 |:---- |:------------------------------------------------------------------------------- |:-------- |:------------ |:----------- |
-| data | \[[Track](https://colivingproject.github.io/api-docs/?javascript#schematrack)\] | false    | none         | none        |
+| data | \[[Agreement](https://colivingproject.github.io/api-docs/?javascript#schemaagreement)\] | false    | none         | none        |
 
 ### app\_name\_trailing\_response <a id="tocS_app_name_trailing_response"></a>
 

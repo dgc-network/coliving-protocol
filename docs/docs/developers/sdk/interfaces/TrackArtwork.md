@@ -1,14 +1,14 @@
 ---
-id: "TrackArtwork"
-title: "Interface: TrackArtwork"
-sidebar_label: "TrackArtwork"
+id: "AgreementArtwork"
+title: "Interface: AgreementArtwork"
+sidebar_label: "AgreementArtwork"
 sidebar_position: 0
 custom_edit_url: null
 ---
 
 **`export`**
 
-**`interface`** TrackArtwork
+**`interface`** AgreementArtwork
 
 ## Properties
 
@@ -16,7 +16,7 @@ custom_edit_url: null
 
  `Optional` **\_1000x1000**: `string`
 
-**`memberof`** TrackArtwork
+**`memberof`** AgreementArtwork
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
  `Optional` **\_150x150**: `string`
 
-**`memberof`** TrackArtwork
+**`memberof`** AgreementArtwork
 
 ___
 
@@ -32,4 +32,4 @@ ___
 
  `Optional` **\_480x480**: `string`
 
-**`memberof`** TrackArtwork
+**`memberof`** AgreementArtwork

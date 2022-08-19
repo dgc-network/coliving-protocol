@@ -14,11 +14,11 @@
  */
 
 import {
-    TrackFull,
-    TrackFullFromJSON,
-    TrackFullFromJSONTyped,
-    TrackFullToJSON,
-} from './TrackFull';
+    AgreementFull,
+    AgreementFullFromJSON,
+    AgreementFullFromJSONTyped,
+    AgreementFullToJSON,
+} from './AgreementFull';
 import {
     VersionMetadata,
     VersionMetadataFromJSON,
@@ -29,56 +29,56 @@ import {
 /**
  * 
  * @export
- * @interface FullTracksResponse
+ * @interface FullAgreementsResponse
  */
-export interface FullTracksResponse {
+export interface FullAgreementsResponse {
     /**
      * 
      * @type {number}
-     * @memberof FullTracksResponse
+     * @memberof FullAgreementsResponse
      */
     latest_chain_block: number;
     /**
      * 
      * @type {number}
-     * @memberof FullTracksResponse
+     * @memberof FullAgreementsResponse
      */
     latest_indexed_block: number;
     /**
      * 
      * @type {number}
-     * @memberof FullTracksResponse
+     * @memberof FullAgreementsResponse
      */
     latest_chain_slot_plays: number;
     /**
      * 
      * @type {number}
-     * @memberof FullTracksResponse
+     * @memberof FullAgreementsResponse
      */
     latest_indexed_slot_plays: number;
     /**
      * 
      * @type {string}
-     * @memberof FullTracksResponse
+     * @memberof FullAgreementsResponse
      */
     signature: string;
     /**
      * 
      * @type {string}
-     * @memberof FullTracksResponse
+     * @memberof FullAgreementsResponse
      */
     timestamp: string;
     /**
      * 
      * @type {VersionMetadata}
-     * @memberof FullTracksResponse
+     * @memberof FullAgreementsResponse
      */
     version: VersionMetadata;
     /**
      * 
-     * @type {Array<TrackFull>}
-     * @memberof FullTracksResponse
+     * @type {Array<AgreementFull>}
+     * @memberof FullAgreementsResponse
      */
-    data?: Array<TrackFull>;
+    data?: Array<AgreementFull>;
 }
 

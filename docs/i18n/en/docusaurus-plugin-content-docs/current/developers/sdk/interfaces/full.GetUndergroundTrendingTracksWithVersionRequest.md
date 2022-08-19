@@ -1,11 +1,11 @@
 ---
-id: "full.GetUndergroundTrendingTracksWithVersionRequest"
-title: "Interface: GetUndergroundTrendingTracksWithVersionRequest"
-sidebar_label: "GetUndergroundTrendingTracksWithVersionRequest"
+id: "full.GetUndergroundTrendingAgreementsWithVersionRequest"
+title: "Interface: GetUndergroundTrendingAgreementsWithVersionRequest"
+sidebar_label: "GetUndergroundTrendingAgreementsWithVersionRequest"
 custom_edit_url: null
 ---
 
-[full](../namespaces/full.md).GetUndergroundTrendingTracksWithVersionRequest
+[full](../namespaces/full.md).GetUndergroundTrendingAgreementsWithVersionRequest
 
 ## Properties
 

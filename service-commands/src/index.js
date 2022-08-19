@@ -5,7 +5,7 @@ const { LibsWrapper, Utils } = require('./libs')
 // Any method you add in these commands files will be automatically imported
 // and accessible via ServiceCommands
 const User = require('./commands/users')
-const Track = require('./commands/tracks')
+const Agreement = require('./commands/agreements')
 const File = require('./commands/files')
 const IpldBlacklist = require('./commands/ipldBlacklist')
 const Playlist = require('./commands/playlists')
@@ -22,7 +22,7 @@ module.exports = {
   Utils,
   ...Setup,
   ...User,
-  ...Track,
+  ...Agreement,
   ...File,
   ...IpldBlacklist,
   ...Playlist,

@@ -22,16 +22,16 @@ def upgrade():
         --- Drop user challenges
         delete from user_challenges
         where
-            challenge_id = 'trending-track' or
+            challenge_id = 'trending-agreement' or
             challenge_id = 'trending-playlist' or
-            challenge_id = 'trending-underground-track';
+            challenge_id = 'trending-underground-agreement';
 
         --- Drop challenges
         delete from challenges
         where
-            id = 'trending-track' or
+            id = 'trending-agreement' or
             id = 'trending-playlist' or
-            id = 'trending-underground-track';
+            id = 'trending-underground-agreement';
 
         --- Drop trending results
         delete from trending_results;

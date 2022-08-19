@@ -1,11 +1,11 @@
 ---
-id: "full.GetRemixableTracksRequest"
-title: "Interface: GetRemixableTracksRequest"
-sidebar_label: "GetRemixableTracksRequest"
+id: "full.GetRemixableAgreementsRequest"
+title: "Interface: GetRemixableAgreementsRequest"
+sidebar_label: "GetRemixableAgreementsRequest"
 custom_edit_url: null
 ---
 
-[full](../namespaces/full.md).GetRemixableTracksRequest
+[full](../namespaces/full.md).GetRemixableAgreementsRequest
 
 ## Properties
 
@@ -29,4 +29,4 @@ ___
 
  `Optional` **withUsers**: `boolean`
 
-Boolean to include user info with tracks
+Boolean to include user info with agreements

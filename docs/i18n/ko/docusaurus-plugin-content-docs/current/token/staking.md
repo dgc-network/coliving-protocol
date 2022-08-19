@@ -21,23 +21,23 @@ Those who stake more $LIVE stand to earn a larger portion of issuance in exchang
 
 On Coliving, content is routed to two different types of nodes:
 
-* _Content Nodes_ - To store and relay live content \(tracks, mixes, etc.\) streamed on Coliving
+* _Content Nodes_ - To store and relay live content \(agreements, mixes, etc.\) streamed on Coliving
 * _Discovery Nodes_ - To index and hash data like user profiles, playlists and followers.
 
 As an artist, uploading to Coliving feels no different than uploading to a platform like Soundcloud. But, what happens behind the scenes is what makes Coliving so unique.
 
-When an artist uploads a track to Coliving:
+When an artist uploads a agreement to Coliving:
 
 1. That content is uploaded to a Content Node.
-2. The data gets transcoded and returns a reference code used to identify the track
+2. The data gets transcoded and returns a reference code used to identify the agreement
 3. The data linked by the reference code is replicated to two other Content Nodes on the network.
-4. An onchain transaction is published signifying that the track exists on Coliving and that the metadata is attached to the profile that uploaded the track.
+4. An onchain transaction is published signifying that the agreement exists on Coliving and that the metadata is attached to the profile that uploaded the agreement.
 5. The transaction is picked up and indexed by a Discovery Node
-6. The client returns that the track was successfully published when it shows up on the Discovery Node, marking the upload complete!
+6. The client returns that the agreement was successfully published when it shows up on the Discovery Node, marking the upload complete!
 
 Super simple right! Well, this is where staking comes into play.
 
-On other platforms, a similar process is operated by the parent company, effectively making them the true owner of the content. Should that company cease to exist, so does all the content stored in its database. With Coliving, the track is maintained by the network and controlled by third-party and decentralized node operators. **Coliving is not dependent on one company to keep running**.
+On other platforms, a similar process is operated by the parent company, effectively making them the true owner of the content. Should that company cease to exist, so does all the content stored in its database. With Coliving, the agreement is maintained by the network and controlled by third-party and decentralized node operators. **Coliving is not dependent on one company to keep running**.
 
 **By staking $LIVE, you’re helping to protect and power the protocol.**
 

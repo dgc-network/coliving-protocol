@@ -8,9 +8,9 @@ const config = require('../config')
 const models = require('../models')
 const {
   saveFileFromBufferToDisk,
-  removeTrackFolder,
-  getTmpTrackUploadArtifactsPathWithInputUUID,
-  handleTrackContentUpload
+  removeAgreementFolder,
+  getTmpAgreementUploadArtifactsPathWithInputUUID,
+  handleAgreementContentUpload
 } = require('../fileManager')
 const {
   handleResponse,
@@ -43,18 +43,18 @@ const readFile = promisify(fs.readFile)
 const router = express.Router()
 
 /**
- * Add a track transcode task into the worker queue. If the track file is uploaded properly (not transcoded), return successResponse
- * @note this track content route is used in conjunction with the polling.
+ * Add a agreement transcode task into the worker queue. If the agreement file is uploaded properly (not transcoded), return successResponse
+ * @note this agreement content route is used in conjunction with the polling.
  */
 router.post(
-  '/track_content_async',
+  '/agreement_content_async',
   authMiddleware,
   ensurePrimaryMiddleware,
   ensureStorageMiddleware,
-  handleTrackContentUpload,
+  handleAgreementContentUpload,
   handleResponse(async (req, res) => {
     if (req.fileSizeError || req.fileFilterError) {
-      removeTrackFolder({ logContext: req.logContext }, req.fileDir)
+      removeAgreementFolder({ logContext: req.logContext }, req.fileDir)
       return errorResponseBadRequest(req.fileSizeError || req.fileFilterError)
     }
 
@@ -67,7 +67,7 @@ router.post(
     })
 
     if (selfTranscode) {
-      await AsyncProcessingQueue.addTrackContentUploadTask({
+      await AsyncProcessingQueue.addAgreementContentUploadTask({
         logContext: req.logContext,
         req: {
           fileName: req.fileName,
@@ -95,7 +95,7 @@ router.post(
 )
 
 /**
- * Delete all temporary transcode artifacts from track transcode handoff flow.
+ * Delete all temporary transcode artifacts from agreement transcode handoff flow.
  * This is called on the node that was handed off the transcode to clear the state from disk
  */
 router.post(
@@ -104,12 +104,12 @@ router.post(
   handleResponse(async (req, res) => {
     const fileDir = req.body.fileDir
     req.logger.info('Clearing filesystem fileDir', fileDir)
-    if (!fileDir.includes('tmp_track_artifacts')) {
+    if (!fileDir.includes('tmp_agreement_artifacts')) {
       return errorResponseBadRequest(
-        'Cannot remove track folder outside temporary track artifacts'
+        'Cannot remove agreement folder outside temporary agreement artifacts'
       )
     }
-    await removeTrackFolder({ logContext: req.logContext }, fileDir)
+    await removeAgreementFolder({ logContext: req.logContext }, fileDir)
 
     return successResponse()
   })
@@ -117,7 +117,7 @@ router.post(
 
 /**
  * Given that the requester is a valid SP, the current Content Node has enough storage,
- * upload the track to the current node and add a transcode and segmenting job to the queue.
+ * upload the agreement to the current node and add a transcode and segmenting job to the queue.
  *
  * This route is used on an available SP when the primary sends over a transcode and segment request
  * to initiate the transcode handoff. This route does not run on the primary.
@@ -126,7 +126,7 @@ router.post(
   '/transcode_and_segment',
   ensureValidSPMiddleware,
   ensureStorageMiddleware,
-  handleTrackContentUpload,
+  handleAgreementContentUpload,
   handleResponse(async (req, res) => {
     const AsyncProcessingQueue =
       req.app.get('serviceRegistry').asyncProcessingQueue
@@ -169,7 +169,7 @@ router.get(
       )
     }
 
-    const basePath = getTmpTrackUploadArtifactsPathWithInputUUID(uuid)
+    const basePath = getTmpAgreementUploadArtifactsPathWithInputUUID(uuid)
     let pathToFile
     if (fileType === 'transcode') {
       pathToFile = path.join(basePath, fileName)
@@ -194,11 +194,11 @@ router.get(
 )
 
 /**
- * Given track metadata object, save metadata to disk. Return metadata multihash if successful.
- * If metadata is for a downloadable track, ensures transcoded master record exists in DB
+ * Given agreement metadata object, save metadata to disk. Return metadata multihash if successful.
+ * If metadata is for a downloadable agreement, ensures transcoded master record exists in DB
  */
 router.post(
-  '/tracks/metadata',
+  '/agreements/metadata',
   authMiddleware,
   ensurePrimaryMiddleware,
   ensureStorageMiddleware,
@@ -208,16 +208,16 @@ router.post(
     if (
       !metadataJSON ||
       !metadataJSON.owner_id ||
-      !metadataJSON.track_segments ||
-      !Array.isArray(metadataJSON.track_segments) ||
-      !metadataJSON.track_segments.length
+      !metadataJSON.agreement_segments ||
+      !Array.isArray(metadataJSON.agreement_segments) ||
+      !metadataJSON.agreement_segments.length
     ) {
       return errorResponseBadRequest(
-        'Metadata object must include owner_id and non-empty track_segments array'
+        'Metadata object must include owner_id and non-empty agreement_segments array'
       )
     }
 
-    // If metadata indicates track is downloadable but doesn't provide a transcode CID,
+    // If metadata indicates agreement is downloadable but doesn't provide a transcode CID,
     //    ensure that a transcoded master record exists in DB
     if (
       metadataJSON.download &&
@@ -225,19 +225,19 @@ router.post(
       !metadataJSON.download.cid
     ) {
       const sourceFile = req.body.sourceFile
-      const trackId = metadataJSON.track_id
-      if (!sourceFile && !trackId) {
+      const agreementId = metadataJSON.agreement_id
+      if (!sourceFile && !agreementId) {
         return errorResponseBadRequest(
-          'Cannot make downloadable - A sourceFile must be provided or the metadata object must include track_id'
+          'Cannot make downloadable - A sourceFile must be provided or the metadata object must include agreement_id'
         )
       }
 
-      // See if the track already has a transcoded master
-      if (trackId) {
-        const { blockchainId } = await models.Track.findOne({
+      // See if the agreement already has a transcoded master
+      if (agreementId) {
+        const { blockchainId } = await models.Agreement.findOne({
           attributes: ['blockchainId'],
           where: {
-            blockchainId: trackId
+            blockchainId: agreementId
           },
           order: [['clock', 'DESC']]
         })
@@ -248,7 +248,7 @@ router.post(
           where: {
             cnodeUserUUID: req.session.cnodeUserUUID,
             type: 'copy320',
-            trackBlockchainId: blockchainId
+            agreementBlockchainId: blockchainId
           }
         })
         if (!transcodedFile) {
@@ -268,7 +268,7 @@ router.post(
       dstPath = resp.dstPath
     } catch (e) {
       return errorResponseServerError(
-        `/tracks/metadata saveFileFromBufferToDisk op failed: ${e}`
+        `/agreements/metadata saveFileFromBufferToDisk op failed: ${e}`
       )
     }
 
@@ -307,26 +307,26 @@ router.post(
 )
 
 /**
- * Given track blockchainTrackId, blockNumber, and metadataFileUUID, creates/updates Track DB track entry
- * and associates segment & image file entries with track. Ends track creation/update process.
+ * Given agreement blockchainAgreementId, blockNumber, and metadataFileUUID, creates/updates Agreement DB agreement entry
+ * and associates segment & image file entries with agreement. Ends agreement creation/update process.
  */
 router.post(
-  '/tracks',
+  '/agreements',
   authMiddleware,
   ensurePrimaryMiddleware,
   ensureStorageMiddleware,
   handleResponse(async (req, res) => {
     const {
-      blockchainTrackId,
+      blockchainAgreementId,
       blockNumber,
       metadataFileUUID,
-      transcodedTrackUUID
+      transcodedAgreementUUID
     } = req.body
 
     // Input validation
-    if (!blockchainTrackId || !blockNumber || !metadataFileUUID) {
+    if (!blockchainAgreementId || !blockNumber || !metadataFileUUID) {
       return errorResponseBadRequest(
-        'Must include blockchainTrackId, blockNumber, and metadataFileUUID.'
+        'Must include blockchainAgreementId, blockNumber, and metadataFileUUID.'
       )
     }
 
@@ -354,9 +354,9 @@ router.post(
       metadataJSON = JSON.parse(fileBuffer)
       if (
         !metadataJSON ||
-        !metadataJSON.track_segments ||
-        !Array.isArray(metadataJSON.track_segments) ||
-        !metadataJSON.track_segments.length
+        !metadataJSON.agreement_segments ||
+        !Array.isArray(metadataJSON.agreement_segments) ||
+        !metadataJSON.agreement_segments.length
       ) {
         return errorResponseServerError(
           `Malformatted metadataJSON stored for metadataFileUUID ${metadataFileUUID}.`
@@ -381,52 +381,52 @@ router.post(
 
     const transaction = await models.sequelize.transaction()
     try {
-      const existingTrackEntry = await models.Track.findOne({
+      const existingAgreementEntry = await models.Agreement.findOne({
         where: {
           cnodeUserUUID,
-          blockchainId: blockchainTrackId
+          blockchainId: blockchainAgreementId
         },
         order: [['clock', 'DESC']],
         transaction
       })
 
-      // Insert track entry in DB
-      const createTrackQueryObj = {
+      // Insert agreement entry in DB
+      const createAgreementQueryObj = {
         metadataFileUUID,
         metadataJSON,
-        blockchainId: blockchainTrackId,
+        blockchainId: blockchainAgreementId,
         coverArtFileUUID
       }
-      const track = await DBManager.createNewDataRecord(
-        createTrackQueryObj,
+      const agreement = await DBManager.createNewDataRecord(
+        createAgreementQueryObj,
         cnodeUserUUID,
-        models.Track,
+        models.Agreement,
         transaction
       )
 
       /**
-       * Associate matching transcode & segment files on DB with new/updated track
+       * Associate matching transcode & segment files on DB with new/updated agreement
        * Must be done in same transaction to atomicity
        *
-       * TODO - consider implications of edge-case -> two attempted /track_content before associate
+       * TODO - consider implications of edge-case -> two attempted /agreement_content before associate
        */
 
-      const trackSegmentCIDs = metadataJSON.track_segments.map(
+      const agreementSegmentCIDs = metadataJSON.agreement_segments.map(
         (segment) => segment.multihash
       )
 
-      // if track created, ensure files exist with trackBlockchainId = null and update them
-      if (!existingTrackEntry) {
-        if (!transcodedTrackUUID) {
-          throw new Error('Cannot create track without transcodedTrackUUID.')
+      // if agreement created, ensure files exist with agreementBlockchainId = null and update them
+      if (!existingAgreementEntry) {
+        if (!transcodedAgreementUUID) {
+          throw new Error('Cannot create agreement without transcodedAgreementUUID.')
         }
 
-        // Associate the transcode file db record with trackUUID
+        // Associate the transcode file db record with agreementUUID
         const transcodedFile = await models.File.findOne({
           where: {
-            fileUUID: transcodedTrackUUID,
+            fileUUID: transcodedAgreementUUID,
             cnodeUserUUID,
-            trackBlockchainId: null,
+            agreementBlockchainId: null,
             type: 'copy320'
           },
           transaction
@@ -437,12 +437,12 @@ router.post(
           )
         }
         const transcodeAssociateNumAffectedRows = await models.File.update(
-          { trackBlockchainId: track.blockchainId },
+          { agreementBlockchainId: agreement.blockchainId },
           {
             where: {
-              fileUUID: transcodedTrackUUID,
+              fileUUID: transcodedAgreementUUID,
               cnodeUserUUID,
-              trackBlockchainId: null,
+              agreementBlockchainId: null,
               type: 'copy320' // TODO - replace with model enum
             },
             transaction
@@ -450,36 +450,36 @@ router.post(
         )
         if (transcodeAssociateNumAffectedRows === 0) {
           throw new Error(
-            'Failed to associate the transcoded file for the provided track UUID.'
+            'Failed to associate the transcoded file for the provided agreement UUID.'
           )
         }
 
-        // Associate all segment file db records with trackUUID
-        const trackFiles = await models.File.findAll({
+        // Associate all segment file db records with agreementUUID
+        const agreementFiles = await models.File.findAll({
           where: {
-            multihash: trackSegmentCIDs,
+            multihash: agreementSegmentCIDs,
             cnodeUserUUID,
-            trackBlockchainId: null,
-            type: 'track',
+            agreementBlockchainId: null,
+            type: 'agreement',
             sourceFile: transcodedFile.sourceFile
           },
           transaction
         })
 
-        if (trackFiles.length !== trackSegmentCIDs.length) {
+        if (agreementFiles.length !== agreementSegmentCIDs.length) {
           req.logger.error(
-            `Did not find files for every track segment CID for user ${cnodeUserUUID} ${trackFiles} ${trackSegmentCIDs}`
+            `Did not find files for every agreement segment CID for user ${cnodeUserUUID} ${agreementFiles} ${agreementSegmentCIDs}`
           )
-          throw new Error('Did not find files for every track segment CID.')
+          throw new Error('Did not find files for every agreement segment CID.')
         }
         const segmentsAssociateNumAffectedRows = await models.File.update(
-          { trackBlockchainId: track.blockchainId },
+          { agreementBlockchainId: agreement.blockchainId },
           {
             where: {
-              multihash: trackSegmentCIDs,
+              multihash: agreementSegmentCIDs,
               cnodeUserUUID,
-              trackBlockchainId: null,
-              type: 'track',
+              agreementBlockchainId: null,
+              type: 'agreement',
               sourceFile: transcodedFile.sourceFile
             },
             transaction
@@ -487,51 +487,51 @@ router.post(
         )
         if (
           parseInt(segmentsAssociateNumAffectedRows, 10) !==
-          trackSegmentCIDs.length
+          agreementSegmentCIDs.length
         ) {
           req.logger.error(
-            `Failed to associate files for every track segment CID ${cnodeUserUUID} ${track.blockchainId} ${segmentsAssociateNumAffectedRows} ${trackSegmentCIDs.length}`
+            `Failed to associate files for every agreement segment CID ${cnodeUserUUID} ${agreement.blockchainId} ${segmentsAssociateNumAffectedRows} ${agreementSegmentCIDs.length}`
           )
           throw new Error(
-            'Failed to associate files for every track segment CID.'
+            'Failed to associate files for every agreement segment CID.'
           )
         }
-      } /** updateTrack scenario */ else {
+      } /** updateAgreement scenario */ else {
         /**
-         * If track updated, ensure files exist with trackBlockchainId
+         * If agreement updated, ensure files exist with agreementBlockchainId
          */
 
         // Ensure transcode file db record exists, if uuid provided
-        if (transcodedTrackUUID) {
+        if (transcodedAgreementUUID) {
           const transcodedFile = await models.File.findOne({
             where: {
-              fileUUID: transcodedTrackUUID,
+              fileUUID: transcodedAgreementUUID,
               cnodeUserUUID,
-              trackBlockchainId: track.blockchainId,
+              agreementBlockchainId: agreement.blockchainId,
               type: 'copy320'
             },
             transaction
           })
           if (!transcodedFile) {
             throw new Error(
-              'Did not find the corresponding transcoded file for the provided track UUID.'
+              'Did not find the corresponding transcoded file for the provided agreement UUID.'
             )
           }
         }
 
         // Ensure segment file db records exist for all CIDs
-        const trackFiles = await models.File.findAll({
+        const agreementFiles = await models.File.findAll({
           where: {
-            multihash: trackSegmentCIDs,
+            multihash: agreementSegmentCIDs,
             cnodeUserUUID,
-            trackBlockchainId: track.blockchainId,
-            type: 'track'
+            agreementBlockchainId: agreement.blockchainId,
+            type: 'agreement'
           },
           transaction
         })
-        if (trackFiles.length < trackSegmentCIDs.length) {
+        if (agreementFiles.length < agreementSegmentCIDs.length) {
           throw new Error(
-            'Did not find files for every track segment CID with trackBlockchainId.'
+            'Did not find files for every agreement segment CID with agreementBlockchainId.'
           )
         }
       }
@@ -572,41 +572,41 @@ router.post(
   })
 )
 
-/** Returns download status of track and 320kbps CID if ready + downloadable. */
+/** Returns download status of agreement and 320kbps CID if ready + downloadable. */
 router.get(
-  '/tracks/download_status/:blockchainId',
+  '/agreements/download_status/:blockchainId',
   handleResponse(async (req, res) => {
     const blockchainId = req.params.blockchainId
     if (!blockchainId) {
       return errorResponseBadRequest('Please provide blockchainId.')
     }
 
-    const track = await models.Track.findOne({
+    const agreement = await models.Agreement.findOne({
       where: { blockchainId },
       order: [['clock', 'DESC']]
     })
-    if (!track) {
+    if (!agreement) {
       return errorResponseBadRequest(
-        `No track found for blockchainId ${blockchainId}`
+        `No agreement found for blockchainId ${blockchainId}`
       )
     }
 
-    // Case: track is not marked as downloadable
+    // Case: agreement is not marked as downloadable
     if (
-      !track.metadataJSON ||
-      !track.metadataJSON.download ||
-      !track.metadataJSON.download.is_downloadable
+      !agreement.metadataJSON ||
+      !agreement.metadataJSON.download ||
+      !agreement.metadataJSON.download.is_downloadable
     ) {
       return successResponse({ isDownloadable: false, cid: null })
     }
 
-    // Case: track is marked as downloadable
-    // - Check if downloadable file exists. Since copyFile may or may not have trackBlockchainId association,
-    //    fetch a segmentFile for trackBlockchainId, and find copyFile for segmentFile's sourceFile.
+    // Case: agreement is marked as downloadable
+    // - Check if downloadable file exists. Since copyFile may or may not have agreementBlockchainId association,
+    //    fetch a segmentFile for agreementBlockchainId, and find copyFile for segmentFile's sourceFile.
     const segmentFile = await models.File.findOne({
       where: {
-        type: 'track',
-        trackBlockchainId: track.blockchainId
+        type: 'agreement',
+        agreementBlockchainId: agreement.blockchainId
       }
     })
     const copyFile = await models.File.findOne({
@@ -625,11 +625,11 @@ router.get(
 )
 
 /**
- * Gets a streamable mp3 link for a track by encodedId. Supports range request headers.
- * @dev - Wrapper around getCID, which retrieves track given its CID.
+ * Gets a streamable mp3 link for a agreement by encodedId. Supports range request headers.
+ * @dev - Wrapper around getCID, which retrieves agreement given its CID.
  **/
 router.get(
-  '/tracks/stream/:encodedId',
+  '/agreements/stream/:encodedId',
   async (req, res, next) => {
     const libs = req.app.get('colivingLibs')
     const redisClient = req.app.get('redisClient')
@@ -640,7 +640,7 @@ router.get(
       return sendResponse(
         req,
         res,
-        errorResponseBadRequest('Please provide a track ID')
+        errorResponseBadRequest('Please provide a agreement ID')
       )
     }
 
@@ -653,7 +653,7 @@ router.get(
       )
     }
 
-    const isNotServable = await BlacklistManager.trackIdIsInBlacklist(
+    const isNotServable = await BlacklistManager.agreementIdIsInBlacklist(
       blockchainId
     )
     if (isNotServable) {
@@ -661,7 +661,7 @@ router.get(
         req,
         res,
         errorResponseForbidden(
-          `trackId=${blockchainId} cannot be served by this node`
+          `agreementId=${blockchainId} cannot be served by this node`
         )
       )
     }
@@ -670,7 +670,7 @@ router.get(
       attributes: ['multihash'],
       where: {
         type: 'copy320',
-        trackBlockchainId: blockchainId
+        agreementBlockchainId: blockchainId
       },
       order: [['clock', 'DESC']]
     })
@@ -695,33 +695,33 @@ router.get(
       }
     }
 
-    // if track didn't finish the upload process and was never associated, there may not be a trackBlockchainId for the File records,
+    // if agreement didn't finish the upload process and was never associated, there may not be a agreementBlockchainId for the File records,
     // try to fall back to discovery to fetch the metadata multihash and see if you can deduce the copy320 file
     if (!fileRecord) {
       try {
-        let trackRecord = await libs.Track.getTracks(1, 0, [blockchainId])
+        let agreementRecord = await libs.Agreement.getAgreements(1, 0, [blockchainId])
         if (
-          !trackRecord ||
-          trackRecord.length === 0 ||
-          !trackRecord[0].hasOwnProperty('blocknumber')
+          !agreementRecord ||
+          agreementRecord.length === 0 ||
+          !agreementRecord[0].hasOwnProperty('blocknumber')
         ) {
           return sendResponse(
             req,
             res,
             errorResponseServerError(
-              'Missing or malformatted track fetched from discovery node.'
+              'Missing or malformatted agreement fetched from discovery node.'
             )
           )
         }
 
-        trackRecord = trackRecord[0]
+        agreementRecord = agreementRecord[0]
 
-        // query the files table for a metadata multihash from discovery for a given track
-        // no need to add CNodeUserUUID to the filter because the track is associated with a user and that contains the
+        // query the files table for a metadata multihash from discovery for a given agreement
+        // no need to add CNodeUserUUID to the filter because the agreement is associated with a user and that contains the
         // user_id inside it which is unique to the user
         const file = await models.File.findOne({
           where: {
-            multihash: trackRecord.metadata_multihash,
+            multihash: agreementRecord.metadata_multihash,
             type: 'metadata'
           }
         })
@@ -730,13 +730,13 @@ router.get(
             req,
             res,
             errorResponseServerError(
-              'Missing or malformatted track fetched from discovery node.'
+              'Missing or malformatted agreement fetched from discovery node.'
             )
           )
         }
 
-        // make sure all track segments have the same sourceFile
-        const segments = trackRecord.track_segments.map(
+        // make sure all agreement segments have the same sourceFile
+        const segments = agreementRecord.agreement_segments.map(
           (segment) => segment.multihash
         )
 
@@ -750,9 +750,9 @@ router.get(
         })
 
         // check that the number of files in the Files table for these segments for this user matches the number of segments from the metadata object
-        if (fileSegmentRecords.length !== trackRecord.track_segments.length) {
+        if (fileSegmentRecords.length !== agreementRecord.agreement_segments.length) {
           req.logger.warn(
-            `Track stream content mismatch for blockchainId ${blockchainId} - number of segments don't match between local and discovery`
+            `Agreement stream content mismatch for blockchainId ${blockchainId} - number of segments don't match between local and discovery`
           )
         }
 
@@ -763,7 +763,7 @@ router.get(
 
         if (uniqSourceFiles.length !== 1) {
           req.logger.warn(
-            `Track stream content mismatch for blockchainId ${blockchainId} - there's not one sourceFile that matches all segments`
+            `Agreement stream content mismatch for blockchainId ${blockchainId} - there's not one sourceFile that matches all segments`
           )
         }
 
@@ -806,14 +806,14 @@ router.get(
 
     if (libs.identityService) {
       req.logger.info(
-        `Logging listen for track ${blockchainId} by ${delegateOwnerWallet}`
+        `Logging listen for agreement ${blockchainId} by ${delegateOwnerWallet}`
       )
       const signatureData = generateListenTimestampAndSignature(
         config.get('delegatePrivateKey')
       )
       // Fire and forget listen recording
       // TODO: Consider queueing these requests
-      libs.identityService.logTrackListen(
+      libs.identityService.logAgreementListen(
         blockchainId,
         delegateOwnerWallet,
         req.ip,

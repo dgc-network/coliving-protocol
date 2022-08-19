@@ -5,26 +5,26 @@ import type { Web3Manager } from '../web3Manager'
 export class SocialFeatureFactoryClient extends ContractClient {
   override web3Manager!: Web3Manager
 
-  async addTrackRepost(userId: number, trackId: number) {
-    // generate new track repost request
+  async addAgreementRepost(userId: number, agreementId: number) {
+    // generate new agreement repost request
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
     const signatureData =
-      signatureSchemas.generators.getAddTrackRepostRequestData(
+      signatureSchemas.generators.getAddAgreementRepostRequestData(
         chainId,
         contractAddress,
         userId,
-        trackId,
+        agreementId,
         nonce
       )
     const sig = await this.web3Manager.signTypedData(signatureData)
 
-    // add new trackRepost to chain
+    // add new agreementRepost to chain
     const method = await this.getMethod(
-      'addTrackRepost',
+      'addAgreementRepost',
       userId,
-      trackId,
+      agreementId,
       nonce,
       sig
     )
@@ -35,26 +35,26 @@ export class SocialFeatureFactoryClient extends ContractClient {
     )
   }
 
-  async deleteTrackRepost(userId: number, trackId: number) {
-    // generate new delete track repost request
+  async deleteAgreementRepost(userId: number, agreementId: number) {
+    // generate new delete agreement repost request
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
     const signatureData =
-      signatureSchemas.generators.getDeleteTrackRepostRequestData(
+      signatureSchemas.generators.getDeleteAgreementRepostRequestData(
         chainId,
         contractAddress,
         userId,
-        trackId,
+        agreementId,
         nonce
       )
     const sig = await this.web3Manager.signTypedData(signatureData)
 
-    // delete trackRepost from chain
+    // delete agreementRepost from chain
     const method = await this.getMethod(
-      'deleteTrackRepost',
+      'deleteAgreementRepost',
       userId,
-      trackId,
+      agreementId,
       nonce,
       sig
     )

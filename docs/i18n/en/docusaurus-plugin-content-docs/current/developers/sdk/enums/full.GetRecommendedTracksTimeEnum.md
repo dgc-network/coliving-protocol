@@ -1,11 +1,11 @@
 ---
-id: "full.GetRecommendedTracksTimeEnum"
-title: "Enumeration: GetRecommendedTracksTimeEnum"
-sidebar_label: "GetRecommendedTracksTimeEnum"
+id: "full.GetRecommendedAgreementsTimeEnum"
+title: "Enumeration: GetRecommendedAgreementsTimeEnum"
+sidebar_label: "GetRecommendedAgreementsTimeEnum"
 custom_edit_url: null
 ---
 
-[full](../namespaces/full.md).GetRecommendedTracksTimeEnum
+[full](../namespaces/full.md).GetRecommendedAgreementsTimeEnum
 
 **`export`**
 

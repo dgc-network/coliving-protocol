@@ -3,22 +3,22 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     // Scope of the migration is:
-    // Remove trackUUID from Files and replace it with trackBlockchainId and migrate all existing values over
-    // Remove trackUUID field from Tracks table
-    // Remove UNIQUE constraint for blockchainId, trackUUID in Tracks table
-    // Add NOT NULL constraint for blockchainId in Tracks table
+    // Remove agreementUUID from Files and replace it with agreementBlockchainId and migrate all existing values over
+    // Remove agreementUUID field from Agreements table
+    // Remove UNIQUE constraint for blockchainId, agreementUUID in Agreements table
+    // Add NOT NULL constraint for blockchainId in Agreements table
     // Remove colivingUserUUID field from ColivingUsers table
     // Remove UNIQUE constraint for colivingUserUUID in ColivingUsers table (no unique constraint on blockchainId)
     // Add NOT NULL constraint for blockchainId in ColivingUsers table
 
-    console.log('STARTING MIGRATION 20200911004845-allow-track-and-colivingUsers-appends')
+    console.log('STARTING MIGRATION 20200911004845-allow-agreement-and-colivingUsers-appends')
     await queryInterface.sequelize.query(`
       BEGIN;
-      -- replace Files table in place with extra trackBlockchainId column and drops the trackUUID column
+      -- replace Files table in place with extra agreementBlockchainId column and drops the agreementUUID column
       CREATE TABLE "Files_new" ( like "Files" );
-      ALTER TABLE "Files_new" ADD COLUMN "trackBlockchainId" INTEGER;
-      INSERT INTO "Files_new" ("multihash", "sourceFile", "storagePath", "createdAt", "updatedAt", "fileUUID", "cnodeUserUUID", "trackUUID", "type", "fileName", "dirMultihash", "trackBlockchainId") SELECT f."multihash", f."sourceFile", f."storagePath", f."createdAt", f."updatedAt", f."fileUUID", f."cnodeUserUUID", f."trackUUID", f."type", f."fileName", f."dirMultihash", t."blockchainId" FROM "Files" f LEFT OUTER JOIN "Tracks" t ON f."trackUUID" = t."trackUUID";
-      ALTER TABLE "Files_new" DROP COLUMN "trackUUID";
+      ALTER TABLE "Files_new" ADD COLUMN "agreementBlockchainId" INTEGER;
+      INSERT INTO "Files_new" ("multihash", "sourceFile", "storagePath", "createdAt", "updatedAt", "fileUUID", "cnodeUserUUID", "agreementUUID", "type", "fileName", "dirMultihash", "agreementBlockchainId") SELECT f."multihash", f."sourceFile", f."storagePath", f."createdAt", f."updatedAt", f."fileUUID", f."cnodeUserUUID", f."agreementUUID", f."type", f."fileName", f."dirMultihash", t."blockchainId" FROM "Files" f LEFT OUTER JOIN "Agreements" t ON f."agreementUUID" = t."agreementUUID";
+      ALTER TABLE "Files_new" DROP COLUMN "agreementUUID";
       ALTER TABLE "Files" RENAME TO "Files_old";
       ALTER TABLE "Files_new" RENAME TO "Files";
       DROP TABLE "Files_old" CASCADE;
@@ -31,22 +31,22 @@ module.exports = {
       CREATE INDEX "Files_multihash_idx" ON public."Files" USING btree (multihash);
       CREATE INDEX "Files_cnodeUserUUID_idx" ON public."Files" USING btree ("cnodeUserUUID");
       CREATE INDEX "Files_dir_multihash_idx" ON public."Files" USING btree ("dirMultihash");
-      CREATE INDEX "Files_trackBlockchainId_idx" ON public."Files" USING btree ("trackBlockchainId");
+      CREATE INDEX "Files_agreementBlockchainId_idx" ON public."Files" USING btree ("agreementBlockchainId");
 
       -- add in the foreign key constraint from Files to other tables
-      -- No fkey from Files to Tracks because we don't have a unique constraint on trackUUID or blockchainId on Tracks so postgres would reject the fkey
+      -- No fkey from Files to Agreements because we don't have a unique constraint on agreementUUID or blockchainId on Agreements so postgres would reject the fkey
       ALTER TABLE "Files" ADD CONSTRAINT "Files_cnodeUserUUID_fkey" FOREIGN KEY ("cnodeUserUUID") REFERENCES "CNodeUsers" ("cnodeUserUUID") ON DELETE RESTRICT;
 
-      -- remove the unique constraints from Tracks
-      ALTER TABLE "Tracks" DROP CONSTRAINT "Tracks_trackUUID_key";
-      ALTER TABLE "Tracks" DROP CONSTRAINT "blockchainId_unique_idx";
+      -- remove the unique constraints from Agreements
+      ALTER TABLE "Agreements" DROP CONSTRAINT "Agreements_agreementUUID_key";
+      ALTER TABLE "Agreements" DROP CONSTRAINT "blockchainId_unique_idx";
 
-      -- add a not null constraint to Tracks blockchainId, just run a delete query to remove any outstanding Tracks without a blockchainId in case there are any
-      DELETE FROM "Tracks" WHERE "blockchainId" IS NULL;
-      ALTER TABLE "Tracks" ALTER COLUMN "blockchainId" SET NOT NULL;
+      -- add a not null constraint to Agreements blockchainId, just run a delete query to remove any outstanding Agreements without a blockchainId in case there are any
+      DELETE FROM "Agreements" WHERE "blockchainId" IS NULL;
+      ALTER TABLE "Agreements" ALTER COLUMN "blockchainId" SET NOT NULL;
 
-      -- remove the trackUUID column from Tracks
-      ALTER TABLE "Tracks" DROP COLUMN "trackUUID";
+      -- remove the agreementUUID column from Agreements
+      ALTER TABLE "Agreements" DROP COLUMN "agreementUUID";
 
       -- remove the unique constraint from ColivingUsers
       ALTER TABLE "ColivingUsers" DROP CONSTRAINT "ColivingUsers_colivingUserUUID_key";
@@ -63,7 +63,7 @@ module.exports = {
 
       COMMIT;
     `)
-    console.log('FINISHED MIGRATION 20200911004845-allow-track-and-colivingUsers-appends')
+    console.log('FINISHED MIGRATION 20200911004845-allow-agreement-and-colivingUsers-appends')
   },
 
   down: (queryInterface, Sequelize) => {

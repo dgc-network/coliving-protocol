@@ -25,7 +25,7 @@ const { ServiceProvider } = require('./api/ServiceProvider')
 
 const { Account } = require('./api/Account')
 const { Users } = require('./api/Users')
-const { Track } = require('./api/Track')
+const { Agreement } = require('./api/Agreement')
 const { Playlists } = require('./api/Playlist')
 const { File } = require('./api/File')
 const { Rewards } = require('./api/Rewards')
@@ -361,7 +361,7 @@ class ColivingLibs {
     // API
     this.Account = null
     this.User = null
-    this.Track = null
+    this.Agreement = null
     this.Playlist = null
     this.File = null
     this.Rewards = null
@@ -567,7 +567,7 @@ class ColivingLibs {
       ...services
     )
     this.Account = new Account(this.User, ...services)
-    this.Track = new Track(...services)
+    this.Agreement = new Agreement(...services)
     this.Playlist = new Playlists(...services)
     this.File = new File(this.User, ...services)
     this.Rewards = new Rewards(this.ServiceProvider, ...services)

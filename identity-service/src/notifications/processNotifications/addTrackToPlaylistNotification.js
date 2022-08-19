@@ -6,32 +6,32 @@ const {
 } = require('../constants')
 
 /**
- * Process track added to playlist notification
+ * Process agreement added to playlist notification
  * @param {Array<Object>} notifications
  * @param {*} tx The DB transaction to attach to DB requests
  */
-async function processAddTrackToPlaylistNotification (notifications, tx) {
+async function processAddAgreementToPlaylistNotification (notifications, tx) {
   const validNotifications = []
 
   for (const notification of notifications) {
     const {
       playlist_id: playlistId,
-      track_id: trackId,
-      track_owner_id: trackOwnerId
+      agreement_id: agreementId,
+      agreement_owner_id: agreementOwnerId
     } = notification.metadata
     const timestamp = Date.parse(notification.timestamp.slice(0, -2))
     const momentTimestamp = moment(timestamp)
     const updatedTimestamp = momentTimestamp.add(1, 's').format('YYYY-MM-DD HH:mm:ss')
 
-    const [addTrackToPlaylistNotification] = await models.Notification.findOrCreate({
+    const [addAgreementToPlaylistNotification] = await models.Notification.findOrCreate({
       where: {
-        type: notificationTypes.AddTrackToPlaylist,
-        userId: trackOwnerId,
-        entityId: trackId,
+        type: notificationTypes.AddAgreementToPlaylist,
+        userId: agreementOwnerId,
+        entityId: agreementId,
         metadata: {
           playlistOwnerId: notification.initiator,
           playlistId,
-          trackId
+          agreementId
         },
         blocknumber: notification.blocknumber,
         timestamp: updatedTimestamp
@@ -41,18 +41,18 @@ async function processAddTrackToPlaylistNotification (notifications, tx) {
 
     await models.NotificationAction.findOrCreate({
       where: {
-        notificationId: addTrackToPlaylistNotification.id,
-        actionEntityType: actionEntityTypes.Track,
-        actionEntityId: trackId,
+        notificationId: addAgreementToPlaylistNotification.id,
+        actionEntityType: actionEntityTypes.Agreement,
+        actionEntityId: agreementId,
         blocknumber: notification.blocknumber
       },
       transaction: tx
     })
 
-    validNotifications.push(addTrackToPlaylistNotification)
+    validNotifications.push(addAgreementToPlaylistNotification)
   }
 
   return validNotifications
 }
 
-module.exports = processAddTrackToPlaylistNotification
+module.exports = processAddAgreementToPlaylistNotification

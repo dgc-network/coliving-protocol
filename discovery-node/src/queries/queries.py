@@ -15,30 +15,30 @@ from src.queries.get_playlists import get_playlists
 from src.queries.get_previously_private_playlists import (
     get_previously_private_playlists,
 )
-from src.queries.get_previously_unlisted_tracks import get_previously_unlisted_tracks
-from src.queries.get_remix_track_parents import get_remix_track_parents
+from src.queries.get_previously_unlisted_agreements import get_previously_unlisted_agreements
+from src.queries.get_remix_agreement_parents import get_remix_agreement_parents
 from src.queries.get_remixes_of import get_remixes_of
 from src.queries.get_repost_feed_for_user import get_repost_feed_for_user
 from src.queries.get_reposters_for_playlist import get_reposters_for_playlist
-from src.queries.get_reposters_for_track import get_reposters_for_track
+from src.queries.get_reposters_for_agreement import get_reposters_for_agreement
 from src.queries.get_savers_for_playlist import get_savers_for_playlist
-from src.queries.get_savers_for_track import get_savers_for_track
+from src.queries.get_savers_for_agreement import get_savers_for_agreement
 from src.queries.get_saves import get_saves
 from src.queries.get_sol_plays import (
     get_sol_play,
     get_total_aggregate_plays,
-    get_track_listen_milestones,
+    get_agreement_listen_milestones,
 )
 from src.queries.get_stems_of import get_stems_of
 from src.queries.get_top_followee_saves import get_top_followee_saves
 from src.queries.get_top_followee_windowed import get_top_followee_windowed
 from src.queries.get_top_genre_users import get_top_genre_users
 from src.queries.get_top_playlists import get_top_playlists
-from src.queries.get_track_repost_intersection_users import (
-    get_track_repost_intersection_users,
+from src.queries.get_agreement_repost_intersection_users import (
+    get_agreement_repost_intersection_users,
 )
-from src.queries.get_tracks import get_tracks
-from src.queries.get_tracks_including_unlisted import get_tracks_including_unlisted
+from src.queries.get_agreements import get_agreements
+from src.queries.get_agreements_including_unlisted import get_agreements_including_unlisted
 from src.queries.get_ursm_cnodes import get_ursm_cnodes
 from src.queries.get_user_history import get_user_history
 from src.queries.get_users import get_users
@@ -86,11 +86,11 @@ def get_users_route():
     return api_helpers.success_response(users)
 
 
-# Returns all tracks (paginated) with each track's repost count
-# optionally filters by track ids
-@bp.route("/tracks", methods=("GET",))
+# Returns all agreements (paginated) with each agreement's repost count
+# optionally filters by agreement ids
+@bp.route("/agreements", methods=("GET",))
 @record_metrics
-def get_tracks_route():
+def get_agreements_route():
     args = to_dict(request.args)
     if "id" in request.args:
         args["id"] = parse_id_array_param(request.args.getlist("id"))
@@ -104,16 +104,16 @@ def get_tracks_route():
         args["min_block_number"] = request.args.get("min_block_number", type=int)
     current_user_id = get_current_user_id(required=False)
     args["current_user_id"] = current_user_id
-    tracks = get_tracks(args)
-    return api_helpers.success_response(tracks)
+    agreements = get_agreements(args)
+    return api_helpers.success_response(agreements)
 
 
-# Get all tracks matching a route_id and track_id.
+# Get all agreements matching a route_id and agreement_id.
 # Expects a JSON body of shape:
-#   { "tracks": [{ "id": number, "url_title": string, "handle": string }]}
-@bp.route("/tracks_including_unlisted", methods=("POST",))
+#   { "agreements": [{ "id": number, "url_title": string, "handle": string }]}
+@bp.route("/agreements_including_unlisted", methods=("POST",))
 @record_metrics
-def get_tracks_including_unlisted_route():
+def get_agreements_including_unlisted_route():
     args = to_dict(request.args)
     if "filter_deleted" in request.args:
         args["filter_deleted"] = parse_bool_param(request.args.get("filter_deleted"))
@@ -121,16 +121,16 @@ def get_tracks_including_unlisted_route():
         args["with_users"] = parse_bool_param(request.args.get("with_users"))
     current_user_id = get_current_user_id(required=False)
     args["current_user_id"] = current_user_id
-    identifiers = request.get_json()["tracks"]
+    identifiers = request.get_json()["agreements"]
     args["identifiers"] = identifiers
-    tracks = get_tracks_including_unlisted(args)
-    return api_helpers.success_response(tracks)
+    agreements = get_agreements_including_unlisted(args)
+    return api_helpers.success_response(agreements)
 
 
-@bp.route("/stems/<int:track_id>", methods=("GET",))
+@bp.route("/stems/<int:agreement_id>", methods=("GET",))
 @record_metrics
-def get_stems_of_route(track_id):
-    stems = get_stems_of(track_id)
+def get_stems_of_route(agreement_id):
+    stems = get_stems_of(agreement_id)
     return api_helpers.success_response(stems)
 
 
@@ -156,12 +156,12 @@ def get_playlists_route():
 # For a given user, current_user, we provide a feed of relevant content from around the coliving network.
 # This is generated in the following manner:
 #   - Generate list of users followed by current_user, known as 'followees'
-#   - Query all track and public playlist reposts from followees
-#     - Generate list of reposted track ids and reposted playlist ids
-#   - Query all track and public playlists reposted OR created by followees, ordered by timestamp
-#     - At this point, 2 separate arrays one for playlists / one for tracks
+#   - Query all agreement and public playlist reposts from followees
+#     - Generate list of reposted agreement ids and reposted playlist ids
+#   - Query all agreement and public playlists reposted OR created by followees, ordered by timestamp
+#     - At this point, 2 separate arrays one for playlists / one for agreements
 #   - Query additional metadata around feed entries in each array, repost + save counts, user repost boolean
-#   - Combine unsorted playlist and track arrays
+#   - Combine unsorted playlist and agreement arrays
 #   - Sort combined results by 'timestamp' field and return
 @bp.route("/feed", methods=("GET",))
 @record_metrics
@@ -177,8 +177,8 @@ def get_feed_route():
         args["filter"] = args.get("filter")
     else:
         args["filter"] = "all"
-    if "tracks_only" in request.args:
-        args["tracks_only"] = parse_bool_param(request.args.get("tracks_only"))
+    if "agreements_only" in request.args:
+        args["agreements_only"] = parse_bool_param(request.args.get("agreements_only"))
     if "with_users" in request.args:
         args["with_users"] = parse_bool_param(request.args.get("with_users"))
     if "followee_user_id" in request.args:
@@ -193,10 +193,10 @@ def get_feed_route():
 
 # user repost feed steps
 # - get all reposts by user
-# - get all track and public playlist reposts by user, ordered by timestamp
-# - get additional metadata for each track/playlist: save count, repost count, current_user_reposted, followee_reposts
+# - get all agreement and public playlist reposts by user, ordered by timestamp
+# - get additional metadata for each agreement/playlist: save count, repost count, current_user_reposted, followee_reposts
 # -   (if current_user == user, skip current_user_reposted check and set all to true)
-# - combine unsorted playlist and track arrays
+# - combine unsorted playlist and agreement arrays
 # - sort combined results by activity_timestamp field and return
 @bp.route("/feed/reposts/<int:user_id>", methods=("GET",))
 @record_metrics
@@ -222,18 +222,18 @@ def get_follow_intersection_users_route(followee_user_id, follower_user_id):
     return api_helpers.success_response(users)
 
 
-# get intersection of users that have reposted provided repost_track_id and users that are
+# get intersection of users that have reposted provided repost_agreement_id and users that are
 # followed by follower_user_id.
 # - Followee = user that is followed. Follower = user that follows.
-# - repost_track_id = track that is reposted. repost_user_id = user that reposted track.
+# - repost_agreement_id = agreement that is reposted. repost_user_id = user that reposted agreement.
 @bp.route(
-    "/users/intersection/repost/track/<int:repost_track_id>/<int:follower_user_id>",
+    "/users/intersection/repost/agreement/<int:repost_agreement_id>/<int:follower_user_id>",
     methods=("GET",),
 )
 @record_metrics
-def get_track_repost_intersection_users_route(repost_track_id, follower_user_id):
+def get_agreement_repost_intersection_users_route(repost_agreement_id, follower_user_id):
     try:
-        users = get_track_repost_intersection_users(repost_track_id, follower_user_id)
+        users = get_agreement_repost_intersection_users(repost_agreement_id, follower_user_id)
         return api_helpers.success_response(users)
     except exceptions.NotFoundError as e:
         return api_helpers.error_response(str(e), 404)
@@ -290,20 +290,20 @@ def get_followees_for_user_route(follower_user_id):
     return api_helpers.success_response(users)
 
 
-# Get paginated users that reposted provided repost_track_id, sorted by their follower count descending.
-@bp.route("/users/reposts/track/<int:repost_track_id>", methods=("GET",))
+# Get paginated users that reposted provided repost_agreement_id, sorted by their follower count descending.
+@bp.route("/users/reposts/agreement/<int:repost_agreement_id>", methods=("GET",))
 @record_metrics
-def get_reposters_for_track_route(repost_track_id):
+def get_reposters_for_agreement_route(repost_agreement_id):
     try:
         current_user_id = get_current_user_id(required=False)
         (limit, offset) = get_pagination_vars()
         args = {
-            "repost_track_id": repost_track_id,
+            "repost_agreement_id": repost_agreement_id,
             "current_user_id": current_user_id,
             "limit": limit,
             "offset": offset,
         }
-        user_results = get_reposters_for_track(args)
+        user_results = get_reposters_for_agreement(args)
         return api_helpers.success_response(user_results)
     except exceptions.NotFoundError as e:
         return api_helpers.error_response(str(e), 404)
@@ -328,20 +328,20 @@ def get_reposters_for_playlist_route(repost_playlist_id):
         return api_helpers.error_response(str(e), 404)
 
 
-# Get paginated users that saved provided save_track_id, sorted by their follower count descending.
-@bp.route("/users/saves/track/<int:save_track_id>", methods=("GET",))
+# Get paginated users that saved provided save_agreement_id, sorted by their follower count descending.
+@bp.route("/users/saves/agreement/<int:save_agreement_id>", methods=("GET",))
 @record_metrics
-def get_savers_for_track_route(save_track_id):
+def get_savers_for_agreement_route(save_agreement_id):
     try:
         current_user_id = get_current_user_id(required=False)
         (limit, offset) = get_pagination_vars()
         args = {
-            "save_track_id": save_track_id,
+            "save_agreement_id": save_agreement_id,
             "current_user_id": current_user_id,
             "limit": limit,
             "offset": offset,
         }
-        user_results = get_savers_for_track(args)
+        user_results = get_savers_for_agreement(args)
         return api_helpers.success_response(user_results)
     except exceptions.NotFoundError as e:
         return api_helpers.error_response(str(e), 404)
@@ -391,7 +391,7 @@ def get_users_account_route():
         return api_helpers.error_response(str(e), 400)
 
 
-# Gets the max id for tracks, playlists, or users.
+# Gets the max id for agreements, playlists, or users.
 @bp.route("/latest/<type>", methods=("GET",))
 @record_metrics
 def get_max_id_route(type):
@@ -449,7 +449,7 @@ def get_top_followee_windowed_route(type, window):
 
     Args:
         type: (string) The `type` (same as repost/save type) to query from. Currently only
-            track is supported.
+            agreement is supported.
         window: (string) The window from now() to look back over. Supports all standard
             SqlAlchemy interval notation (week, month, year, etc.).
         limit?: (number) default=25, max=100
@@ -464,8 +464,8 @@ def get_top_followee_windowed_route(type, window):
     user_id = get_current_user_id()
     args["user_id"] = user_id
     try:
-        tracks = get_top_followee_windowed(type, window, args)
-        return api_helpers.success_response(tracks)
+        agreements = get_top_followee_windowed(type, window, args)
+        return api_helpers.success_response(agreements)
     except exceptions.ArgumentError as e:
         return api_helpers.error_response(str(e), 400)
 
@@ -480,7 +480,7 @@ def get_top_followee_saves_route(type):
 
     Args:
         type: (string) The `type` (same as repost/save type) to query from. Currently only
-            track is supported.
+            agreement is supported.
         limit?: (number) default=25, max=100
     """
     args = to_dict(request.args)
@@ -493,16 +493,16 @@ def get_top_followee_saves_route(type):
     user_id = get_current_user_id()
     args["user_id"] = user_id
     try:
-        tracks = get_top_followee_saves(type, args)
-        return api_helpers.success_response(tracks)
+        agreements = get_top_followee_saves(type, args)
+        return api_helpers.success_response(agreements)
     except exceptions.ArgumentError as e:
         return api_helpers.error_response(str(e), 400)
 
 
 # Retrieves the top users for a requested genre under the follow parameters
 # - A given user can only be associated w/ one genre
-# - The user's associated genre is calculated by tallying the genre of the tracks and taking the max
-#   - If there is a tie for # of tracks in a genre, then the first genre alphabetically is taken
+# - The user's associated genre is calculated by tallying the genre of the agreements and taking the max
+#   - If there is a tie for # of agreements in a genre, then the first genre alphabetically is taken
 # - The users associated w/ the requested genre are then sorted by follower count
 # Route Parameters
 #   urlParam: {Array<string>?}  genre       List of genres to query for the 'top' users
@@ -518,13 +518,13 @@ def get_top_genre_users_route():
     return api_helpers.success_response(users)
 
 
-# Get the tracks that are 'children' remixes of the requested track
-# The results are sorted by if the original artist has reposted or saved the track
-@bp.route("/remixes/<int:track_id>/children", methods=("GET",))
+# Get the agreements that are 'children' remixes of the requested agreement
+# The results are sorted by if the original artist has reposted or saved the agreement
+@bp.route("/remixes/<int:agreement_id>/children", methods=("GET",))
 @record_metrics
-def get_remixes_of_route(track_id):
+def get_remixes_of_route(agreement_id):
     args = to_dict(request.args)
-    args["track_id"] = track_id
+    args["agreement_id"] = agreement_id
     args["current_user_id"] = get_current_user_id(required=False)
     limit, offset = get_pagination_vars()
     args["limit"] = limit
@@ -538,29 +538,29 @@ def get_remixes_of_route(track_id):
         return api_helpers.error_response(str(e), 400)
 
 
-# Get the tracks that are 'parent' remixes of the requested track
-@bp.route("/remixes/<int:track_id>/parents", methods=("GET",))
+# Get the agreements that are 'parent' remixes of the requested agreement
+@bp.route("/remixes/<int:agreement_id>/parents", methods=("GET",))
 @record_metrics
-def get_remix_track_parents_route(track_id):
+def get_remix_agreement_parents_route(agreement_id):
     args = to_dict(request.args)
     if "with_users" in request.args:
         args["with_users"] = parse_bool_param(request.args.get("with_users"))
-    args["track_id"] = track_id
+    args["agreement_id"] = agreement_id
     args["current_user_id"] = get_current_user_id(required=False)
     limit, offset = get_pagination_vars()
     args["limit"] = limit
     args["offset"] = offset
-    tracks = get_remix_track_parents(args)
-    return api_helpers.success_response(tracks)
+    agreements = get_remix_agreement_parents(args)
+    return api_helpers.success_response(agreements)
 
 
-# Get the tracks that were previously unlisted and became public after the date provided
-@bp.route("/previously_unlisted/track", methods=("GET",))
+# Get the agreements that were previously unlisted and became public after the date provided
+@bp.route("/previously_unlisted/agreement", methods=("GET",))
 @record_metrics
-def get_previously_unlisted_tracks_route():
+def get_previously_unlisted_agreements_route():
     try:
-        tracks = get_previously_unlisted_tracks(to_dict(request.args))
-        return api_helpers.success_response(tracks)
+        agreements = get_previously_unlisted_agreements(to_dict(request.args))
+        return api_helpers.success_response(agreements)
     except exceptions.ArgumentError as e:
         return api_helpers.error_response(str(e), 400)
 
@@ -610,13 +610,13 @@ def get_total_plays():
         return api_helpers.error_response(str(e), 400)
 
 
-# Get details for latest track listen milestones
+# Get details for latest agreement listen milestones
 # Used to parse and issue notifications
-@bp.route("/track_listen_milestones", methods=("GET",))
-def get_track_listen_milestone_data():
+@bp.route("/agreement_listen_milestones", methods=("GET",))
+def get_agreement_listen_milestone_data():
     try:
         # Assign value only if not None or empty string
-        data = get_track_listen_milestones(100)
+        data = get_agreement_listen_milestones(100)
         return api_helpers.success_response(data)
     except exceptions.ArgumentError as e:
         return api_helpers.error_response(str(e), 400)

@@ -17,10 +17,10 @@ contract SocialFeatureStorage is RegistryContract {
     RegistryInterface registry = RegistryInterface(0);
 
     /**
-     * @dev - Mapping of track repost contents
-     * userId -> <trackId -> repostedTrack>
+     * @dev - Mapping of agreement repost contents
+     * userId -> <agreementId -> repostedAgreement>
      */
-    mapping(uint => mapping(uint => bool)) private userTrackReposts;
+    mapping(uint => mapping(uint => bool)) private userAgreementReposts;
 
     /**
      * @dev - Mapping of playlist repost contents
@@ -35,26 +35,26 @@ contract SocialFeatureStorage is RegistryContract {
         registry = RegistryInterface(_registryAddress);
     }
 
-    function addTrackRepost(
+    function addAgreementRepost(
         uint _userId,
-        uint _trackId
+        uint _agreementId
     ) external onlyRegistrant(CALLER_REGISTRY_KEY)
     {   
-        userTrackReposts[_userId][_trackId] = true;
+        userAgreementReposts[_userId][_agreementId] = true;
     }
 
-    function deleteTrackRepost(
+    function deleteAgreementRepost(
         uint _userId,
-        uint _trackId
+        uint _agreementId
     ) external onlyRegistrant(CALLER_REGISTRY_KEY)
     {   
-        userTrackReposts[_userId][_trackId] = false;
+        userAgreementReposts[_userId][_agreementId] = false;
     }
 
-    function userRepostedTrack(uint _userId, uint _trackId)
+    function userRepostedAgreement(uint _userId, uint _agreementId)
     external view onlyRegistrant(CALLER_REGISTRY_KEY) returns (bool)
     {
-        return userTrackReposts[_userId][_trackId];
+        return userAgreementReposts[_userId][_agreementId];
     }
 
     function addPlaylistRepost(

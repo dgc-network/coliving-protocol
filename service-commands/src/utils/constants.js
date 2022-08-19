@@ -31,7 +31,7 @@ const config = {
     DATA_CONTRACTS_REGISTRY_ADDRESS: process.env.DATA_CONTRACTS_REGISTRY_ADDRESS || dataContractsConfig.registryAddress,
     HEDGEHOG_ENTROPY_KEY: 'hedgehog-entropy-key',
     SEED_CACHE_PATH: `${DOT_COLIVING_PATH}/seed-cache.json`,
-    TEMP_TRACK_STORAGE_PATH: `${SERVICE_COMMANDS_PATH}/local-storage/tmp-tracks`,
+    TEMP_AGREEMENT_STORAGE_PATH: `${SERVICE_COMMANDS_PATH}/local-storage/tmp-agreements`,
     TEMP_IMAGE_STORAGE_PATH: `${SERVICE_COMMANDS_PATH}/local-storage/tmp-imgs`,
     CONTENT_NODE_ALLOWLIST:  process.env.CONTENT_NODE_ALLOWLIST
         ? new Set(process.env.CONTENT_NODE_ALLOWLIST.split(','))

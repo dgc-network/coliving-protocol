@@ -81,7 +81,7 @@ def update_aggregate_table(
     # get name of the caller function
     task_name = f"{currentframe().f_back.f_code.co_name}()"
 
-    # get the last updated id that counted towards the current aggregate track
+    # get the last updated id that counted towards the current aggregate agreement
     prev_checkpoint = get_last_indexed_checkpoint(session, table_name)
     if not current_checkpoint or current_checkpoint == prev_checkpoint:
         logger.info(
@@ -90,7 +90,7 @@ def update_aggregate_table(
         )
         return
 
-    # update aggregate track with new tracks that came after the prev_checkpoint
+    # update aggregate agreement with new agreements that came after the prev_checkpoint
     logger.info(
         f"{task_name} | Updating {table_name}"
         f" | checkpoint: ({prev_checkpoint}, {current_checkpoint}]"

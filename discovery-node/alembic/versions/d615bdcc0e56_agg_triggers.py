@@ -25,13 +25,13 @@ def load_sql(name):
 
 up_files = [
     "migrate_agg_playlist.sql",
-    "migrate_agg_track.sql",
+    "migrate_agg_agreement.sql",
     "migrate_agg_user.sql",
     "handle_follow.sql",
     "handle_playlist.sql",
     "handle_repost.sql",
     "handle_save.sql",
-    "handle_track.sql",
+    "handle_agreement.sql",
     "handle_user.sql",
     "migrate_album_playlist_lexeme_dict.sql",
 ]

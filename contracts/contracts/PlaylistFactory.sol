@@ -4,44 +4,44 @@ import "./registry/RegistryContract.sol";
 import "./interface/RegistryInterface.sol";
 import "./interface/PlaylistStorageInterface.sol";
 import "./interface/UserFactoryInterface.sol";
-import "./interface/TrackFactoryInterface.sol";
+import "./interface/AgreementFactoryInterface.sol";
 import "./SigningLogic.sol";
 
 
 /** @title Contract responsible for managing playlist business logic */
 contract PlaylistFactory is RegistryContract, SigningLogic {
 
-    uint constant TRACK_LIMIT = 200;
+    uint constant AGREEMENT_LIMIT = 200;
 
     RegistryInterface registry = RegistryInterface(0);
     bytes32 playlistStorageRegistryKey;
     bytes32 userFactoryRegistryKey;
-    bytes32 trackFactoryRegistryKey;
+    bytes32 agreementFactoryRegistryKey;
 
     event PlaylistCreated(
         uint _playlistId,
         uint _playlistOwnerId,
         bool _isPrivate,
         bool _isAlbum,
-        uint[] _trackIds
+        uint[] _agreementIds
     );
 
     event PlaylistDeleted(uint _playlistId);
 
-    event PlaylistTrackAdded(
+    event PlaylistAgreementAdded(
         uint _playlistId,
-        uint _addedTrackId
+        uint _addedAgreementId
     );
 
-    event PlaylistTrackDeleted(
+    event PlaylistAgreementDeleted(
         uint _playlistId,
-        uint _deletedTrackId,
-        uint _deletedTrackTimestamp
+        uint _deletedAgreementId,
+        uint _deletedAgreementTimestamp
     );
 
-    event PlaylistTracksOrdered(
+    event PlaylistAgreementsOrdered(
         uint _playlistId,
-        uint[] _orderedTrackIds
+        uint[] _orderedAgreementIds
     );
 
     event PlaylistNameUpdated(
@@ -70,23 +70,23 @@ contract PlaylistFactory is RegistryContract, SigningLogic {
     );
 
     bytes32 constant CREATE_PLAYLIST_TYPEHASH = keccak256(
-        "CreatePlaylistRequest(uint playlistOwnerId,string playlistName,bool isPrivate,bool isAlbum,bytes32 trackIdsHash,bytes32 nonce)"
+        "CreatePlaylistRequest(uint playlistOwnerId,string playlistName,bool isPrivate,bool isAlbum,bytes32 agreementIdsHash,bytes32 nonce)"
     );
 
     bytes32 constant DELETE_PLAYLIST_TYPEHASH = keccak256(
         "DeletePlaylistRequest(uint playlistId,bytes32 nonce)"
     );
 
-    bytes32 constant ADD_PLAYLIST_TRACK_TYPEHASH = keccak256(
-        "AddPlaylistTrackRequest(uint playlistId,uint addedTrackId,bytes32 nonce)"
+    bytes32 constant ADD_PLAYLIST_AGREEMENT_TYPEHASH = keccak256(
+        "AddPlaylistAgreementRequest(uint playlistId,uint addedAgreementId,bytes32 nonce)"
     );
 
-    bytes32 constant DELETE_PLAYLIST_TRACK_TYPEHASH = keccak256(
-        "DeletePlaylistTrackRequest(uint playlistId,uint deletedTrackId,uint deletedTrackTimestamp,bytes32 nonce)"
+    bytes32 constant DELETE_PLAYLIST_AGREEMENT_TYPEHASH = keccak256(
+        "DeletePlaylistAgreementRequest(uint playlistId,uint deletedAgreementId,uint deletedAgreementTimestamp,bytes32 nonce)"
     );
 
-    bytes32 constant ORDER_PLAYLIST_TRACKS_TYPEHASH = keccak256(
-        "OrderPlaylistTracksRequest(uint playlistId,bytes32 trackIdsHash,bytes32 nonce)"
+    bytes32 constant ORDER_PLAYLIST_AGREEMENTS_TYPEHASH = keccak256(
+        "OrderPlaylistAgreementsRequest(uint playlistId,bytes32 agreementIdsHash,bytes32 nonce)"
     );
 
     bytes32 constant UPDATE_PLAYLIST_NAME_TYPEHASH = keccak256(
@@ -113,7 +113,7 @@ contract PlaylistFactory is RegistryContract, SigningLogic {
     constructor(address _registryAddress,
         bytes32 _playlistStorageRegistryKey,
         bytes32 _userFactoryRegistryKey,
-        bytes32 _trackFactoryRegistryKey,
+        bytes32 _agreementFactoryRegistryKey,
         uint _networkId
     ) SigningLogic("Playlist Factory", "1", _networkId)
     public {
@@ -121,13 +121,13 @@ contract PlaylistFactory is RegistryContract, SigningLogic {
             _registryAddress != address(0x00) &&
             _playlistStorageRegistryKey.length != 0 &&
             _userFactoryRegistryKey.length != 0 &&
-            _trackFactoryRegistryKey != 0,
-            "requires non-zero registryAddress, non-empty _playlistStorageRegistryKey, non-empty _trackFactoryRegistryKey"
+            _agreementFactoryRegistryKey != 0,
+            "requires non-zero registryAddress, non-empty _playlistStorageRegistryKey, non-empty _agreementFactoryRegistryKey"
         );
         registry = RegistryInterface(_registryAddress);
         playlistStorageRegistryKey = _playlistStorageRegistryKey;
         userFactoryRegistryKey = _userFactoryRegistryKey;
-        trackFactoryRegistryKey = _trackFactoryRegistryKey;
+        agreementFactoryRegistryKey = _agreementFactoryRegistryKey;
     }
 
     /*
@@ -141,14 +141,14 @@ contract PlaylistFactory is RegistryContract, SigningLogic {
         string calldata _playlistName,
         bool _isPrivate,
         bool _isAlbum,
-        uint[] calldata _trackIds,
+        uint[] calldata _agreementIds,
         bytes32 _nonce,
         bytes calldata _subjectSig
     ) external returns (uint newPlaylistId)
     {
         require(
-            _trackIds.length < TRACK_LIMIT,
-            "Maximum of 200 tracks in a playlist currently supported"
+            _agreementIds.length < AGREEMENT_LIMIT,
+            "Maximum of 200 agreements in a playlist currently supported"
         );
 
         bytes32 signatureDigest = generateCreatePlaylistRequestSchemaHash(
@@ -156,7 +156,7 @@ contract PlaylistFactory is RegistryContract, SigningLogic {
             _playlistName,
             _isPrivate,
             _isAlbum,
-            _trackIds,
+            _agreementIds,
             _nonce
         );
         address signer = recoverSigner(signatureDigest, _subjectSig);
@@ -165,24 +165,24 @@ contract PlaylistFactory is RegistryContract, SigningLogic {
             registry.getContract(userFactoryRegistryKey)
         ).callerOwnsUser(signer, _playlistOwnerId); // will revert if false
 
-        /* Validate that each track exists before creating the playlist */
-        for (uint i = 0; i < _trackIds.length; i++) {
-            bool trackExists = TrackFactoryInterface(
-                registry.getContract(trackFactoryRegistryKey)
-            ).trackExists(_trackIds[i]);
-            require(trackExists, "Expected valid track id");
+        /* Validate that each agreement exists before creating the playlist */
+        for (uint i = 0; i < _agreementIds.length; i++) {
+            bool agreementExists = AgreementFactoryInterface(
+                registry.getContract(agreementFactoryRegistryKey)
+            ).agreementExists(_agreementIds[i]);
+            require(agreementExists, "Expected valid agreement id");
         }
 
         uint playlistId = PlaylistStorageInterface(
             registry.getContract(playlistStorageRegistryKey)
-        ).createPlaylist(_playlistOwnerId, _isAlbum, _trackIds);
+        ).createPlaylist(_playlistOwnerId, _isAlbum, _agreementIds);
 
         emit PlaylistCreated(
             playlistId,
             _playlistOwnerId,
             _isPrivate,
             _isAlbum,
-            _trackIds
+            _agreementIds
         );
 
         // Emit second event with playlist name
@@ -211,92 +211,92 @@ contract PlaylistFactory is RegistryContract, SigningLogic {
         return true;
     }
 
-    function addPlaylistTrack(
+    function addPlaylistAgreement(
         uint _playlistId,
-        uint _addedTrackId,
+        uint _addedAgreementId,
         bytes32 _nonce,
         bytes calldata _subjectSig
     ) external
     {
-        bytes32 signatureDigest = generateAddPlaylistTrackSchemaHash(
+        bytes32 signatureDigest = generateAddPlaylistAgreementSchemaHash(
             _playlistId,
-            _addedTrackId,
+            _addedAgreementId,
             _nonce
         );
         address signer = recoverSigner(signatureDigest, _subjectSig);
         burnSignatureDigest(signatureDigest, signer);
         this.callerOwnsPlaylist(signer, _playlistId);   // will revert if false
 
-        bool trackExists = TrackFactoryInterface(
-            registry.getContract(trackFactoryRegistryKey)
-        ).trackExists(_addedTrackId);
-        require(trackExists, "Expected valid track id");
+        bool agreementExists = AgreementFactoryInterface(
+            registry.getContract(agreementFactoryRegistryKey)
+        ).agreementExists(_addedAgreementId);
+        require(agreementExists, "Expected valid agreement id");
 
         PlaylistStorageInterface(
             registry.getContract(playlistStorageRegistryKey)
-        ).addPlaylistTrack(_playlistId, _addedTrackId);
+        ).addPlaylistAgreement(_playlistId, _addedAgreementId);
 
-        emit PlaylistTrackAdded(_playlistId, _addedTrackId);
+        emit PlaylistAgreementAdded(_playlistId, _addedAgreementId);
     }
 
-    /* delete track from playlist */
-    function deletePlaylistTrack(
+    /* delete agreement from playlist */
+    function deletePlaylistAgreement(
         uint _playlistId,
-        uint _deletedTrackId,
-        uint _deletedTrackTimestamp,
+        uint _deletedAgreementId,
+        uint _deletedAgreementTimestamp,
         bytes32 _nonce,
         bytes calldata _subjectSig
     ) external
     {
-        bytes32 signatureDigest = generateDeletePlaylistTrackSchemaHash(
+        bytes32 signatureDigest = generateDeletePlaylistAgreementSchemaHash(
             _playlistId,
-            _deletedTrackId,
-            _deletedTrackTimestamp,
+            _deletedAgreementId,
+            _deletedAgreementTimestamp,
             _nonce
         );
         address signer = recoverSigner(signatureDigest, _subjectSig);
         burnSignatureDigest(signatureDigest, signer);
         this.callerOwnsPlaylist(signer, _playlistId);   // will revert if false
 
-        bool isValidTrack = this.isTrackInPlaylist(_playlistId, _deletedTrackId);
-        require(isValidTrack == true, "Expect valid track for delete operation");
+        bool isValidAgreement = this.isAgreementInPlaylist(_playlistId, _deletedAgreementId);
+        require(isValidAgreement == true, "Expect valid agreement for delete operation");
 
         PlaylistStorageInterface(
             registry.getContract(playlistStorageRegistryKey)
-        ).deletePlaylistTrack(_playlistId, _deletedTrackId);
+        ).deletePlaylistAgreement(_playlistId, _deletedAgreementId);
 
-        emit PlaylistTrackDeleted(_playlistId, _deletedTrackId, _deletedTrackTimestamp);
+        emit PlaylistAgreementDeleted(_playlistId, _deletedAgreementId, _deletedAgreementTimestamp);
     }
 
-    /* order playlist tracks */
-    function orderPlaylistTracks(
+    /* order playlist agreements */
+    function orderPlaylistAgreements(
         uint _playlistId,
-        uint[] calldata _trackIds,
+        uint[] calldata _agreementIds,
         bytes32 _nonce,
         bytes calldata _subjectSig
     ) external
     {
         require(
-            _trackIds.length < TRACK_LIMIT,
-            "Maximum of 200 tracks in a playlist currently supported"
+            _agreementIds.length < AGREEMENT_LIMIT,
+            "Maximum of 200 agreements in a playlist currently supported"
         );
 
-        bytes32 signatureDigest = generateOrderPlaylistTracksRequestSchemaHash(
+        bytes32 signatureDigest = generateOrderPlaylistAgreementsRequestSchemaHash(
             _playlistId,
-            _trackIds,
+            _agreementIds,
             _nonce
         );
         address signer = recoverSigner(signatureDigest, _subjectSig);
         burnSignatureDigest(signatureDigest, signer);
         this.callerOwnsPlaylist(signer, _playlistId);   // will revert if false
 
-        /* Validate that each track exists in the playlist */
-        for (uint i = 0; i < _trackIds.length; i++) {
-            bool isValidTrack = this.isTrackInPlaylist(_playlistId, _trackIds[i]);
-            require(isValidTrack, "Expected valid playlist track id");
+        /* Validate that each agreement exists in the playlist */
+        for (uint i = 0; i < _agreementIds.length; i++) {
+            bool isValidAgreement = this.isAgreementInPlaylist(_playlistId, _agreementIds[i]);
+            require(isValidAgreement, "Expected valid playlist agreement id");
         }
 
-        emit PlaylistTracksOrdered(_playlistId, _trackIds);
+        emit PlaylistAgreementsOrdered(_playlistId, _agreementIds);
     }
 
     function updatePlaylistName(
@@ -403,14 +403,14 @@ contract PlaylistFactory is RegistryContract, SigningLogic {
         ).playlistExists(_playlistId);
     }
 
-    function isTrackInPlaylist(
+    function isAgreementInPlaylist(
         uint _playlistId,
-        uint _trackId
+        uint _agreementId
     ) external view returns (bool)
     {
         return PlaylistStorageInterface(
             registry.getContract(playlistStorageRegistryKey)
-        ).isTrackInPlaylist(_playlistId, _trackId);
+        ).isAgreementInPlaylist(_playlistId, _agreementId);
     }
 
     /** @notice ensures that calling address owns playlist; reverts if not */
@@ -436,7 +436,7 @@ contract PlaylistFactory is RegistryContract, SigningLogic {
         string memory _playlistName,
         bool _isPrivate,
         bool _isAlbum,
-        uint[] memory _trackIds,
+        uint[] memory _agreementIds,
         bytes32 _nonce
     ) internal view returns (bytes32)
     {
@@ -448,7 +448,7 @@ contract PlaylistFactory is RegistryContract, SigningLogic {
                     keccak256(bytes(_playlistName)),
                     _isPrivate,
                     _isAlbum,
-                    keccak256(abi.encode(_trackIds)),
+                    keccak256(abi.encode(_agreementIds)),
                     _nonce
                 )
             )
@@ -471,56 +471,56 @@ contract PlaylistFactory is RegistryContract, SigningLogic {
         );
     }
 
-    function generateAddPlaylistTrackSchemaHash(
+    function generateAddPlaylistAgreementSchemaHash(
         uint _playlistId,
-        uint _addedTrackId,
+        uint _addedAgreementId,
         bytes32 _nonce
     ) internal view returns(bytes32)
     {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    ADD_PLAYLIST_TRACK_TYPEHASH,
+                    ADD_PLAYLIST_AGREEMENT_TYPEHASH,
                     _playlistId,
-                    _addedTrackId,
+                    _addedAgreementId,
                     _nonce
                 )
             )
         );
     }
 
-    function generateDeletePlaylistTrackSchemaHash(
+    function generateDeletePlaylistAgreementSchemaHash(
         uint _playlistId,
-        uint _deletedTrackId,
-        uint _deletedTrackTimestamp,
+        uint _deletedAgreementId,
+        uint _deletedAgreementTimestamp,
         bytes32 _nonce
     ) internal view returns(bytes32)
     {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    DELETE_PLAYLIST_TRACK_TYPEHASH,
+                    DELETE_PLAYLIST_AGREEMENT_TYPEHASH,
                     _playlistId,
-                    _deletedTrackId,
-                    _deletedTrackTimestamp,
+                    _deletedAgreementId,
+                    _deletedAgreementTimestamp,
                     _nonce
                 )
             )
         );
     }
 
-    function generateOrderPlaylistTracksRequestSchemaHash(
+    function generateOrderPlaylistAgreementsRequestSchemaHash(
         uint _playlistId,
-        uint[] memory _trackIds,
+        uint[] memory _agreementIds,
         bytes32 _nonce
     ) internal view returns (bytes32)
     {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    ORDER_PLAYLIST_TRACKS_TYPEHASH,
+                    ORDER_PLAYLIST_AGREEMENTS_TYPEHASH,
                     _playlistId,
-                    keccak256(abi.encode(_trackIds)),
+                    keccak256(abi.encode(_agreementIds)),
                     _nonce
                 )
             )

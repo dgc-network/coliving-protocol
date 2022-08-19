@@ -3,8 +3,8 @@ import {
   Registry,
   UserStorage,
   UserFactory,
-  TrackStorage,
-  TrackFactory,
+  AgreementStorage,
+  AgreementFactory,
   PlaylistStorage,
   PlaylistFactory,
   SocialFeatureStorage,
@@ -16,12 +16,12 @@ contract('SocialFeatureFactory', async (accounts) => {
   const testUserId1 = 1
   const testUserId2 = 2
   const testUserId3 = 3
-  const testTrackId1 = 1
-  const testTrackId2 = 2
-  const testTrackId3 = 3
+  const testAgreementId1 = 1
+  const testAgreementId2 = 2
+  const testAgreementId3 = 3
 
   let playlistName1 = 'playlistName1'
-  let playlistTracks1 = [1, 2]
+  let playlistAgreements1 = [1, 2]
   let playlistId1 = 1
   let playlistId2 = 2
   let playlistIsAlbum1 = false
@@ -29,8 +29,8 @@ contract('SocialFeatureFactory', async (accounts) => {
   let registry
   let userStorage
   let userFactory
-  let trackStorage
-  let trackFactory
+  let agreementStorage
+  let agreementFactory
   let playlistStorage
   let playlistFactory
   let socialFeatureStorage
@@ -45,20 +45,20 @@ contract('SocialFeatureFactory', async (accounts) => {
     await registry.addContract(_constants.userStorageKey, userStorage.address)
     userFactory = await UserFactory.new(registry.address, _constants.userStorageKey, networkId, accounts[5])
     await registry.addContract(_constants.userFactoryKey, userFactory.address)
-    trackStorage = await TrackStorage.new(registry.address)
-    await registry.addContract(_constants.trackStorageKey, trackStorage.address)
-    trackFactory = await TrackFactory.new(registry.address, _constants.trackStorageKey, _constants.userFactoryKey, networkId)
-    await registry.addContract(_constants.trackFactoryKey, trackFactory.address)
+    agreementStorage = await AgreementStorage.new(registry.address)
+    await registry.addContract(_constants.agreementStorageKey, agreementStorage.address)
+    agreementFactory = await AgreementFactory.new(registry.address, _constants.agreementStorageKey, _constants.userFactoryKey, networkId)
+    await registry.addContract(_constants.agreementFactoryKey, agreementFactory.address)
     playlistStorage = await PlaylistStorage.new(registry.address)
     await registry.addContract(_constants.playlistStorageKey, playlistStorage.address)
-    playlistFactory = await PlaylistFactory.new(registry.address, _constants.playlistStorageKey, _constants.userFactoryKey, _constants.trackFactoryKey, networkId)
+    playlistFactory = await PlaylistFactory.new(registry.address, _constants.playlistStorageKey, _constants.userFactoryKey, _constants.agreementFactoryKey, networkId)
     await registry.addContract(_constants.playlistFactoryKey, playlistFactory.address)
     socialFeatureStorage = await SocialFeatureStorage.new(registry.address)
     await registry.addContract(_constants.socialFeatureStorageKey, socialFeatureStorage.address)
-    socialFeatureFactory = await SocialFeatureFactory.new(registry.address, _constants.socialFeatureStorageKey, _constants.userFactoryKey, _constants.trackFactoryKey, _constants.playlistFactoryKey, networkId)
+    socialFeatureFactory = await SocialFeatureFactory.new(registry.address, _constants.socialFeatureStorageKey, _constants.userFactoryKey, _constants.agreementFactoryKey, _constants.playlistFactoryKey, networkId)
     await registry.addContract(_constants.socialFeatureFactoryKey, socialFeatureFactory.address)
 
-    // add users and tracks
+    // add users and agreements
     await _lib.addUserAndValidate(
       userFactory,
       testUserId1,
@@ -74,17 +74,17 @@ contract('SocialFeatureFactory', async (accounts) => {
       _constants.userHandle2,
       true)
 
-    await _lib.addTrackAndValidate(
-      trackFactory,
-      testTrackId1,
+    await _lib.addAgreementAndValidate(
+      agreementFactory,
+      testAgreementId1,
       accounts[0],
       testUserId1,
       _constants.testMultihash.digest2,
       _constants.testMultihash.hashFn,
       _constants.testMultihash.size)
-    await _lib.addTrackAndValidate(
-      trackFactory,
-      testTrackId2,
+    await _lib.addAgreementAndValidate(
+      agreementFactory,
+      testAgreementId2,
       accounts[0],
       testUserId1,
       _constants.testMultihash.digest2,
@@ -99,36 +99,36 @@ contract('SocialFeatureFactory', async (accounts) => {
       playlistName1,
       false,
       playlistIsAlbum1,
-      playlistTracks1
+      playlistAgreements1
     )
   })
 
-  /******************** TrackRepost ********************/
+  /******************** AgreementRepost ********************/
   /*****************************************************/
 
-  it('Should add one TrackRepost', async () => {
-    // add track repost and validate
-    await _lib.addTrackRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testTrackId1)
+  it('Should add one AgreementRepost', async () => {
+    // add agreement repost and validate
+    await _lib.addAgreementRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testAgreementId1)
   })
 
-  it('Should add and delete one TrackRepost', async () => {
-    // add track repost and validate
-    await _lib.addTrackRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testTrackId1)
+  it('Should add and delete one AgreementRepost', async () => {
+    // add agreement repost and validate
+    await _lib.addAgreementRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testAgreementId1)
 
-    // delete track repost and validate
-    await _lib.deleteTrackRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testTrackId1)
+    // delete agreement repost and validate
+    await _lib.deleteAgreementRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testAgreementId1)
   })
 
-  it('Should confirm duplicate add/delete TrackReposts throw', async () => {
-    // add track repost and validate
-    await _lib.addTrackRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testTrackId1)
+  it('Should confirm duplicate add/delete AgreementReposts throw', async () => {
+    // add agreement repost and validate
+    await _lib.addAgreementRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testAgreementId1)
 
-    // confirm duplicate track repost throws
+    // confirm duplicate agreement repost throws
     let caughtError = false
     try {
-      await _lib.addTrackRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testTrackId1)
+      await _lib.addAgreementRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testAgreementId1)
     } catch (e) {
-      if (e.message.indexOf('track repost already exists') >= 0) {
+      if (e.message.indexOf('agreement repost already exists') >= 0) {
         caughtError = true
       } else {
         // unexpected error - throw normally
@@ -137,15 +137,15 @@ contract('SocialFeatureFactory', async (accounts) => {
     }
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
 
-    // delete track repost and validate
-    await _lib.deleteTrackRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testTrackId1)
+    // delete agreement repost and validate
+    await _lib.deleteAgreementRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testAgreementId1)
 
-    // confirm duplicate track repost delete throws
+    // confirm duplicate agreement repost delete throws
     caughtError = false
     try {
-      await _lib.deleteTrackRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testTrackId1)
+      await _lib.deleteAgreementRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testAgreementId1)
     } catch (e) {
-      if (e.message.indexOf('track repost does not exist') >= 0) {
+      if (e.message.indexOf('agreement repost does not exist') >= 0) {
         caughtError = true
       } else {
         // unexpected error - throw normally
@@ -155,42 +155,10 @@ contract('SocialFeatureFactory', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
   })
 
-  it('Should fail to add TrackRepost with non-existent user', async () => {
+  it('Should fail to add AgreementRepost with non-existent user', async () => {
     let caughtError = false
     try {
-      await _lib.addTrackRepostAndValidate(socialFeatureFactory, accounts[0], testUserId3, testTrackId1)
-    } catch (e) {
-      // handle expected error
-      if (e.message.indexOf('Caller does not own userId') >= 0) {
-        caughtError = true
-      } else {
-        // unexpected error - throw normally
-        throw e
-      }
-    }
-    assert.isTrue(caughtError, 'Call succeeded unexpectedly')
-  })
-
-  it('Should fail to delete TrackRepost with non-existent track', async () => {
-    let caughtError = false
-    try {
-      await _lib.deleteTrackRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testTrackId3)
-    } catch (e) {
-      // handle expected error
-      if (e.message.indexOf('must provide valid track ID') >= 0) {
-        caughtError = true
-      } else {
-        // unexpected error - throw normally
-        throw e
-      }
-    }
-    assert.isTrue(caughtError, 'Call succeeded unexpectedly')
-  })
-
-  it('Should fail to add TrackRepost due to lack of ownership of reposter user', async () => {
-    let caughtError = false
-    try {
-      await _lib.addTrackRepostAndValidate(socialFeatureFactory, accounts[1], testUserId1, testTrackId1)
+      await _lib.addAgreementRepostAndValidate(socialFeatureFactory, accounts[0], testUserId3, testAgreementId1)
     } catch (e) {
       // handle expected error
       if (e.message.indexOf('Caller does not own userId') >= 0) {
@@ -203,10 +171,42 @@ contract('SocialFeatureFactory', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
   })
 
-  it('Should fail to delete TrackRepost due to lack of ownership of reposter user', async () => {
+  it('Should fail to delete AgreementRepost with non-existent agreement', async () => {
     let caughtError = false
     try {
-      await _lib.deleteTrackRepostAndValidate(socialFeatureFactory, accounts[1], testUserId1, testTrackId1)
+      await _lib.deleteAgreementRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testAgreementId3)
+    } catch (e) {
+      // handle expected error
+      if (e.message.indexOf('must provide valid agreement ID') >= 0) {
+        caughtError = true
+      } else {
+        // unexpected error - throw normally
+        throw e
+      }
+    }
+    assert.isTrue(caughtError, 'Call succeeded unexpectedly')
+  })
+
+  it('Should fail to add AgreementRepost due to lack of ownership of reposter user', async () => {
+    let caughtError = false
+    try {
+      await _lib.addAgreementRepostAndValidate(socialFeatureFactory, accounts[1], testUserId1, testAgreementId1)
+    } catch (e) {
+      // handle expected error
+      if (e.message.indexOf('Caller does not own userId') >= 0) {
+        caughtError = true
+      } else {
+        // unexpected error - throw normally
+        throw e
+      }
+    }
+    assert.isTrue(caughtError, 'Call succeeded unexpectedly')
+  })
+
+  it('Should fail to delete AgreementRepost due to lack of ownership of reposter user', async () => {
+    let caughtError = false
+    try {
+      await _lib.deleteAgreementRepostAndValidate(socialFeatureFactory, accounts[1], testUserId1, testAgreementId1)
     } catch (e) {
       // handle expected error
       if (e.message.indexOf('Caller does not own userId') >= 0) {

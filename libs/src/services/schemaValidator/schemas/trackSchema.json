@@ -1,8 +1,8 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$ref": "#/definitions/Track",
+    "$ref": "#/definitions/Agreement",
     "definitions": {
-        "Track": {
+        "Agreement": {
             "type": "object",
             "additionalProperties": true,
             "$comment": "Additional properties enabled because the data return by discovery nodes may contain other properties like blockhash, is_current, which are not strictly part of the metadata.",
@@ -71,11 +71,11 @@
                     "type": ["string", "null"],
                     "default": null
                 },
-                "track_segments": {
+                "agreement_segments": {
                     "type": "array",
                     "minItems": 1,
                     "items": {
-                        "$ref": "#/definitions/TrackSegment"
+                        "$ref": "#/definitions/AgreementSegment"
                     },
                     "default": [],
                     "$comment": "default set to empty array to unblock stalling indexing. if set to null, discprov db will reject because of not-NULL constraint"
@@ -137,39 +137,39 @@
                 "stem_of",
                 "tags",
                 "title",
-                "track_segments"
+                "agreement_segments"
             ],
-            "title": "Track"
+            "title": "Agreement"
         },
         "RemixOf": {
             "type": ["object", "null"],
             "additionalProperties": false,
             "properties": {
-                "tracks": {
+                "agreements": {
                     "type": "array",
                     "minItems": 1,
                     "items": {
-                        "$ref": "#/definitions/TrackElement"
+                        "$ref": "#/definitions/AgreementElement"
                     }
                 }
             },
             "required": [
-                "tracks"
+                "agreements"
             ],
             "title": "RemixOf"
         },
-        "TrackElement": {
+        "AgreementElement": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
-                "parent_track_id": {
+                "parent_agreement_id": {
                     "type": "integer"
                 }
             },
             "required": [
-                "parent_track_id"
+                "parent_agreement_id"
             ],
-            "title": "TrackElement"
+            "title": "AgreementElement"
         },
         "Download": {
             "type": ["object", "null"],
@@ -228,17 +228,17 @@
                 "category": {
                     "type": "string"
                 },
-                "parent_track_id": {
+                "parent_agreement_id": {
                     "type": "integer"
                 }
             },
             "required": [
                 "category",
-                "parent_track_id"
+                "parent_agreement_id"
             ],
             "title": "StemOf"
         },
-        "TrackSegment": {
+        "AgreementSegment": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
@@ -254,7 +254,7 @@
                 "duration",
                 "multihash"
             ],
-            "title": "TrackSegment"
+            "title": "AgreementSegment"
         },
         "CID": {
             "type": ["string", "null"],

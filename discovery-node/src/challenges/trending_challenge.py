@@ -11,13 +11,13 @@ from src.challenges.challenge import (
     FullEventMetadata,
 )
 from src.models.rewards.user_challenge import UserChallenge
-from src.models.tracks.trending_result import TrendingResult
+from src.models.agreements.trending_result import TrendingResult
 
 logger = logging.getLogger(__name__)
 
 
 class TrendingChallengeUpdater(ChallengeUpdater):
-    """Updates the trending track challenge."""
+    """Updates the trending agreement challenge."""
 
     def update_user_challenges(
         self,
@@ -51,9 +51,9 @@ class TrendingChallengeUpdater(ChallengeUpdater):
         return f"{extra['week']}:{extra['rank']}"
 
 
-trending_track_challenge_manager = ChallengeManager("tt", TrendingChallengeUpdater())
+trending_agreement_challenge_manager = ChallengeManager("tt", TrendingChallengeUpdater())
 
-trending_underground_track_challenge_manager = ChallengeManager(
+trending_underground_agreement_challenge_manager = ChallengeManager(
     "tut", TrendingChallengeUpdater()
 )
 

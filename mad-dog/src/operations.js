@@ -1,80 +1,80 @@
 // Common operation types for tests.
 
 const OPERATION_TYPE = Object.freeze({
-  TRACK_UPLOAD: 'TRACK_UPLOAD',
-  TRACK_REPOST: 'TRACK_REPOST',
-  ADD_PLAYLIST_TRACK: 'ADD_PLAYLIST_TRACK',
+  AGREEMENT_UPLOAD: 'AGREEMENT_UPLOAD',
+  AGREEMENT_REPOST: 'AGREEMENT_REPOST',
+  ADD_PLAYLIST_AGREEMENT: 'ADD_PLAYLIST_AGREEMENT',
   CREATE_PLAYLIST: 'CREATE_PLAYLIST'
 })
 
-function TrackUploadRequest (walletIndex, userId) {
+function AgreementUploadRequest (walletIndex, userId) {
   return {
-    type: OPERATION_TYPE.TRACK_UPLOAD,
+    type: OPERATION_TYPE.AGREEMENT_UPLOAD,
     walletIndex,
     userId
   }
 }
 
-function TrackUploadResponse (
+function AgreementUploadResponse (
   walletIndex,
-  trackId,
+  agreementId,
   metadata,
   success = true,
   error = null
 ) {
   return {
-    type: OPERATION_TYPE.TRACK_UPLOAD,
+    type: OPERATION_TYPE.AGREEMENT_UPLOAD,
     walletIndex,
-    trackId,
+    agreementId,
     metadata,
     success,
     error
   }
 }
 
-function TrackRepostRequest (walletIndex, userId) {
+function AgreementRepostRequest (walletIndex, userId) {
   return {
-    type: OPERATION_TYPE.TRACK_REPOST,
+    type: OPERATION_TYPE.AGREEMENT_REPOST,
     walletIndex,
     userId
   }
 }
 
-function TrackRepostResponse (
+function AgreementRepostResponse (
   walletIndex,
-  trackId,
+  agreementId,
   userId,
   success = true,
   error = null
 ) {
   return {
-    type: OPERATION_TYPE.TRACK_REPOST,
+    type: OPERATION_TYPE.AGREEMENT_REPOST,
     walletIndex,
-    trackId,
+    agreementId,
     userId,
     success,
     error
   }
 }
 
-function AddPlaylistTrackRequest (walletIndex, userId) {
+function AddPlaylistAgreementRequest (walletIndex, userId) {
   return {
-    type: OPERATION_TYPE.ADD_PLAYLIST_TRACK,
+    type: OPERATION_TYPE.ADD_PLAYLIST_AGREEMENT,
     walletIndex,
     userId
   }
 }
 
-function AddPlaylistTrackResponse (
+function AddPlaylistAgreementResponse (
   walletIndex,
-  trackId,
+  agreementId,
   success = true,
   error = null
 ) {
   return {
-    type: OPERATION_TYPE.ADD_PLAYLIST_TRACK,
+    type: OPERATION_TYPE.ADD_PLAYLIST_AGREEMENT,
     walletIndex,
-    trackId,
+    agreementId,
     success,
     error
   }
@@ -107,12 +107,12 @@ function CreatePlaylistResponse (
 
 module.exports = {
   OPERATION_TYPE,
-  TrackUploadRequest,
-  TrackUploadResponse,
-  TrackRepostRequest,
-  TrackRepostResponse,
-  AddPlaylistTrackRequest,
-  AddPlaylistTrackResponse,
+  AgreementUploadRequest,
+  AgreementUploadResponse,
+  AgreementRepostRequest,
+  AgreementRepostResponse,
+  AddPlaylistAgreementRequest,
+  AddPlaylistAgreementResponse,
   CreatePlaylistRequest,
   CreatePlaylistResponse
 }

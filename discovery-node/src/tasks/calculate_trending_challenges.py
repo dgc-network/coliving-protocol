@@ -11,9 +11,9 @@ from src.queries.get_trending_playlists import (
     GetTrendingPlaylistsArgs,
     _get_trending_playlists_with_session,
 )
-from src.queries.get_trending_tracks import _get_trending_tracks_with_session
+from src.queries.get_trending_agreements import _get_trending_agreements_with_session
 from src.queries.get_underground_trending import (
-    GetUndergroundTrendingTrackcArgs,
+    GetUndergroundTrendingAgreementcArgs,
     _get_underground_trending_with_session,
 )
 from src.tasks.aggregates import get_latest_blocknumber
@@ -50,19 +50,19 @@ def dispatch_trending_challenges(
     challenge_bus: ChallengeEventBus,
     challenge_event: ChallengeEvent,
     latest_blocknumber: int,
-    tracks,
+    agreements,
     version: str,
     date: datetime,
     type: TrendingType,
 ):
-    for idx, track in enumerate(tracks):
+    for idx, agreement in enumerate(agreements):
         challenge_bus.dispatch(
             challenge_event,
             latest_blocknumber,
-            track["owner_id"],
+            agreement["owner_id"],
             {
-                "id": track["track_id"],
-                "user_id": track["owner_id"],
+                "id": agreement["agreement_id"],
+                "user_id": agreement["owner_id"],
                 "rank": idx + 1,
                 "type": str(type),
                 "version": str(version),
@@ -87,42 +87,42 @@ def enqueue_trending_challenges(
             )
             return
 
-        trending_track_versions = trending_strategy_factory.get_versions_for_type(
-            TrendingType.TRACKS
+        trending_agreement_versions = trending_strategy_factory.get_versions_for_type(
+            TrendingType.AGREEMENTS
         ).keys()
 
         time_range = "week"
-        for version in trending_track_versions:
+        for version in trending_agreement_versions:
             strategy = trending_strategy_factory.get_strategy(
-                TrendingType.TRACKS, version
+                TrendingType.AGREEMENTS, version
             )
-            top_tracks = _get_trending_tracks_with_session(
+            top_agreements = _get_trending_agreements_with_session(
                 session, {"time": time_range}, strategy
             )
-            top_tracks = top_tracks[:TRENDING_LIMIT]
+            top_agreements = top_agreements[:TRENDING_LIMIT]
             dispatch_trending_challenges(
                 challenge_bus,
-                ChallengeEvent.trending_track,
+                ChallengeEvent.trending_agreement,
                 latest_blocknumber,
-                top_tracks,
+                top_agreements,
                 version,
                 date,
-                TrendingType.TRACKS,
+                TrendingType.AGREEMENTS,
             )
 
         # Cache underground trending
         underground_trending_versions = trending_strategy_factory.get_versions_for_type(
-            TrendingType.UNDERGROUND_TRACKS
+            TrendingType.UNDERGROUND_AGREEMENTS
         ).keys()
         for version in underground_trending_versions:
             strategy = trending_strategy_factory.get_strategy(
-                TrendingType.UNDERGROUND_TRACKS, version
+                TrendingType.UNDERGROUND_AGREEMENTS, version
             )
-            underground_args: GetUndergroundTrendingTrackcArgs = {
+            underground_args: GetUndergroundTrendingAgreementcArgs = {
                 "offset": 0,
                 "limit": TRENDING_LIMIT,
             }
-            top_tracks = _get_underground_trending_with_session(
+            top_agreements = _get_underground_trending_with_session(
                 session, underground_args, strategy, False
             )
 
@@ -130,10 +130,10 @@ def enqueue_trending_challenges(
                 challenge_bus,
                 ChallengeEvent.trending_underground,
                 latest_blocknumber,
-                top_tracks,
+                top_agreements,
                 version,
                 date,
-                TrendingType.UNDERGROUND_TRACKS,
+                TrendingType.UNDERGROUND_AGREEMENTS,
             )
 
         trending_playlist_versions = trending_strategy_factory.get_versions_for_type(

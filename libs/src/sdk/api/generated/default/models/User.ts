@@ -121,7 +121,7 @@ export interface User {
      * @type {number}
      * @memberof User
      */
-    track_count: number;
+    agreement_count: number;
     /**
      * 
      * @type {boolean}

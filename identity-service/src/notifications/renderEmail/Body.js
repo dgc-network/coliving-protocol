@@ -99,33 +99,33 @@ var snippetMap = (_snippetMap = {}, _defineProperty(_snippetMap, _constants.noti
   } else {
     return "You have reached over ".concat(notification.value, " Followers");
   }
-}), _defineProperty(_snippetMap, _constants.notificationTypes.TrendingTrack, function (notification) {
+}), _defineProperty(_snippetMap, _constants.notificationTypes.TrendingAgreement, function (notification) {
   var rank = notification.rank;
   var suffix = getNumberSuffix(rank);
-  return "Your Track ".concat(notification.entity.title, " is ").concat(notification.rank).concat(suffix, " on Trending Right Now!");
+  return "Your Agreement ".concat(notification.entity.title, " is ").concat(notification.rank).concat(suffix, " on Trending Right Now!");
 }), _defineProperty(_snippetMap, _constants.notificationTypes.UserSubscription, function (notification) {
   var _notification$users4 = _slicedToArray(notification.users, 1),
       user = _notification$users4[0];
 
-  if (notification.entity.type === _constants.notificationTypes.Track && !isNaN(notification.entity.count) && notification.entity.count > 1) {
+  if (notification.entity.type === _constants.notificationTypes.Agreement && !isNaN(notification.entity.count) && notification.entity.count > 1) {
     return "".concat(user.name, " released ").concat(notification.entity.count, " new ").concat(notification.entity.type);
   }
 
   return "".concat(user.name, " released a new ").concat(notification.entity.type.toLowerCase(), " ").concat(notification.entity.name);
 }), _defineProperty(_snippetMap, _constants.notificationTypes.RemixCreate, function (notification) {
-  var parentTrack = notification.parentTrack;
-  return "New remix of your track ".concat(parentTrack.title);
+  var parentAgreement = notification.parentAgreement;
+  return "New remix of your agreement ".concat(parentAgreement.title);
 }), _defineProperty(_snippetMap, _constants.notificationTypes.RemixCosign, function (notification) {
-  var parentTrackUser = notification.parentTrackUser,
-      parentTracks = notification.parentTracks;
-  var parentTrack = parentTracks.find(function (t) {
-    return t.ownerId === parentTrackUser.userId;
+  var parentAgreementUser = notification.parentAgreementUser,
+      parentAgreements = notification.parentAgreements;
+  var parentAgreement = parentAgreements.find(function (t) {
+    return t.ownerId === parentAgreementUser.userId;
   });
-  return "".concat(parentTrackUser.name, " Co-signed your Remix of ").concat(parentTrack.title);
+  return "".concat(parentAgreementUser.name, " Co-signed your Remix of ").concat(parentAgreement.title);
 }), _defineProperty(_snippetMap, _constants.notificationTypes.ChallengeReward, function (notification) {
   return "You've earned $LIVE for completing challenges";
-}), _defineProperty(_snippetMap, _constants.notificationTypes.AddTrackToPlaylist, function (notification) {
-  return "".concat(notification.playlistOwner.name, " added ").concat(notification.track.title, " to ").concat(notification.playlist.playlist_name);
+}), _defineProperty(_snippetMap, _constants.notificationTypes.AddAgreementToPlaylist, function (notification) {
+  return "".concat(notification.playlistOwner.name, " added ").concat(notification.agreement.title, " to ").concat(notification.playlist.playlist_name);
 }), _defineProperty(_snippetMap, _constants.notificationTypes.TipReceive, function (notification) {
   return "".concat(notification.sendingUser.name, " sent you a tip of ").concat(notification.amount, " $LIVE");
 }), _defineProperty(_snippetMap, _constants.notificationTypes.Reaction, function (notification) {
@@ -146,7 +146,7 @@ var mapNotification = function mapNotification(notification) {
 
     case _constants.notificationTypes.RemixCosign:
       {
-        notification.track = notification.remixTrack;
+        notification.agreement = notification.remixAgreement;
         return notification;
       }
 

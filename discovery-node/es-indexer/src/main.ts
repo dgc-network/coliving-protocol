@@ -2,7 +2,7 @@ import { RepostDoc, SaveDoc } from './types/docs'
 import { PlaylistIndexer } from './indexers/PlaylistIndexer'
 import { RepostIndexer } from './indexers/RepostIndexer'
 import { SaveIndexer } from './indexers/SaveIndexer'
-import { TrackIndexer } from './indexers/TrackIndexer'
+import { AgreementIndexer } from './indexers/AgreementIndexer'
 import { UserIndexer } from './indexers/UserIndexer'
 import { PendingUpdates, startListener, takePending } from './listener'
 import { logger } from './logger'
@@ -18,14 +18,14 @@ export const indexer = {
   playlists: new PlaylistIndexer(),
   reposts: new RepostIndexer(),
   saves: new SaveIndexer(),
-  tracks: new TrackIndexer(),
+  agreements: new AgreementIndexer(),
   users: new UserIndexer(),
 }
 
 async function processPending(pending: PendingUpdates) {
   return Promise.all([
     indexer.playlists.indexIds(Array.from(pending.playlistIds)),
-    indexer.tracks.indexIds(Array.from(pending.trackIds)),
+    indexer.agreements.indexIds(Array.from(pending.agreementIds)),
     indexer.users.indexIds(Array.from(pending.userIds)),
 
     indexer.reposts.indexRows(pending.reposts as RepostDoc[]),

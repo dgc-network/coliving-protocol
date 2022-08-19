@@ -5,7 +5,7 @@ const ethContractsMigrationOutput = require('../../eth-contracts/migrations/migr
 const solanaConfig = require('../../solana-programs/solana-program-config.json')
 
 const ETH_CONTRACTS_REGISTRY = 'coliving_eth_contracts_registry'
-const SOLANA_TRACK_LISTEN_COUNT_ADDRESS = 'coliving_solana_track_listen_count_address'
+const SOLANA_AGREEMENT_LISTEN_COUNT_ADDRESS = 'coliving_solana_agreement_listen_count_address'
 const SOLANA_ENDPOINT = 'coliving_solana_endpoint'
 
 const SOLANA_SIGNER_GROUP_ADDRESS = 'coliving_solana_signer_group_address'
@@ -23,7 +23,7 @@ const SOLANA_ANCHOR_ADMIN_STORAGE_PUBLIC_KEY = 'coliving_solana_anchor_admin_sto
 // Updates coliving_eth_contracts_registry in discovery node
 const configureLocalDiscProv = async () => {
   const ethRegistryAddress = ethContractsMigrationOutput.registryAddress
-  const solanaTrackListenCountAddress = solanaConfig.trackListenCountAddress
+  const solanaAgreementListenCountAddress = solanaConfig.agreementListenCountAddress
   const signerGroup = solanaConfig.signerGroup
   const solanaEndpoint = solanaConfig.endpoint
   const wliveMint = solanaConfig.splToken
@@ -39,7 +39,7 @@ const configureLocalDiscProv = async () => {
     envPath,
     envPath,
     ethRegistryAddress,
-    solanaTrackListenCountAddress,
+    solanaAgreementListenCountAddress,
     solanaEndpoint,
     signerGroup,
     wliveMint,
@@ -56,7 +56,7 @@ const _updateDiscoveryProviderEnvFile = async (
   readPath,
   writePath,
   ethRegistryAddress,
-  solanaTrackListenCountAddress,
+  solanaAgreementListenCountAddress,
   solanaEndpoint,
   signerGroup,
   wliveMint,
@@ -73,7 +73,7 @@ const _updateDiscoveryProviderEnvFile = async (
   })
   const output = []
   let ethRegistryAddressFound = false
-  let solanaTrackListenCountAddressFound = false
+  let solanaAgreementListenCountAddressFound = false
   let solanaEndpointFound = false
   let signerGroupFound = false
 
@@ -85,7 +85,7 @@ const _updateDiscoveryProviderEnvFile = async (
   let anchorAdminStoragePublicKeyFound = false
 
   const ethRegistryAddressLine = `${ETH_CONTRACTS_REGISTRY}=${ethRegistryAddress}`
-  const solanaTrackListenCountAddressLine = `${SOLANA_TRACK_LISTEN_COUNT_ADDRESS}=${solanaTrackListenCountAddress}`
+  const solanaAgreementListenCountAddressLine = `${SOLANA_AGREEMENT_LISTEN_COUNT_ADDRESS}=${solanaAgreementListenCountAddress}`
   const solanaEndpointLine = `${SOLANA_ENDPOINT}=${solanaEndpoint}`
   const signerGroupLine = `${SOLANA_SIGNER_GROUP_ADDRESS}=${signerGroup}`
   const wliveMintLine = `${SOLANA_WLIVE_MINT}=${wliveMint}`
@@ -99,9 +99,9 @@ const _updateDiscoveryProviderEnvFile = async (
     if (line.includes(ETH_CONTRACTS_REGISTRY)) {
       output.push(ethRegistryAddressLine)
       ethRegistryAddressFound = true
-    } else if (line.includes(SOLANA_TRACK_LISTEN_COUNT_ADDRESS)) {
-      output.push(solanaTrackListenCountAddressLine)
-      solanaTrackListenCountAddressFound = true
+    } else if (line.includes(SOLANA_AGREEMENT_LISTEN_COUNT_ADDRESS)) {
+      output.push(solanaAgreementListenCountAddressLine)
+      solanaAgreementListenCountAddressFound = true
     } else if (line.includes(SOLANA_ENDPOINT)) {
       output.push(solanaEndpointLine)
       solanaEndpointFound = true
@@ -133,8 +133,8 @@ const _updateDiscoveryProviderEnvFile = async (
   if (!ethRegistryAddressFound) {
     output.push(ethRegistryAddressLine)
   }
-  if (!solanaTrackListenCountAddressFound) {
-    output.push(solanaTrackListenCountAddressLine)
+  if (!solanaAgreementListenCountAddressFound) {
+    output.push(solanaAgreementListenCountAddressLine)
   }
   if (!solanaEndpointFound) {
     output.push(solanaEndpointLine)

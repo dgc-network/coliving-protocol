@@ -6,7 +6,7 @@ sidebar_position: 1
 # Overview
 
 An Coliving Content Node is a service that stores and maintains the availability of all content across the Coliving network.
-Content types include user, track, and playlist metadata, images and artwork, and live content.
+Content types include user, agreement, and playlist metadata, images and artwork, and live content.
 
 [github repository](https://github.com/dgc.network/-protocol/tree/master/content-node)
 [registered discovery nodes](https://dashboard..org/#/services/content-node)

@@ -22,7 +22,7 @@ describe('test AsyncProcessingQueue', function () {
     sinon.restore()
   })
 
-  it('If transcode load balance fails, add a track content upload task', async function () {
+  it('If transcode load balance fails, add a agreement content upload task', async function () {
     sinon
       .stub(apq, 'monitorProgress')
       .callsFake(async (taskName, taskFn, data) => {
@@ -34,7 +34,7 @@ describe('test AsyncProcessingQueue', function () {
       })
 
     let callCount = 0
-    sinon.stub(apq, 'addTrackContentUploadTask').callsFake(async () => {
+    sinon.stub(apq, 'addAgreementContentUploadTask').callsFake(async () => {
       callCount++
     })
 
@@ -54,7 +54,7 @@ describe('test AsyncProcessingQueue', function () {
     assert.strictEqual(callCount, 1)
   })
 
-  it('If transcode load balance succeeds, do not add another track content upload task', async function () {
+  it('If transcode load balance succeeds, do not add another agreement content upload task', async function () {
     sinon
       .stub(apq, 'monitorProgress')
       .callsFake(async (taskName, taskFn, data) => {
@@ -69,7 +69,7 @@ describe('test AsyncProcessingQueue', function () {
       })
 
     let callCount = 0
-    sinon.stub(apq, 'addTrackContentUploadTask').callsFake(async () => {
+    sinon.stub(apq, 'addAgreementContentUploadTask').callsFake(async () => {
       callCount++
     })
 

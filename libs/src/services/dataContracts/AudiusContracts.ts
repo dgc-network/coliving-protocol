@@ -3,7 +3,7 @@ import { Utils, Logger } from '../../utils'
 // load classes wrapping contracts
 import { RegistryClient } from './RegistryClient'
 import { UserFactoryClient } from './UserFactoryClient'
-import { TrackFactoryClient } from './TrackFactoryClient'
+import { AgreementFactoryClient } from './AgreementFactoryClient'
 import { SocialFeatureFactoryClient } from './SocialFeatureFactoryClient'
 import { PlaylistFactoryClient } from './PlaylistFactoryClient'
 import { UserLibraryFactoryClient } from './UserLibraryFactoryClient'
@@ -16,7 +16,7 @@ import type { ContractClient } from '../contracts/ContractClient'
 // import data contract ABI's
 const RegistryABI = Utils.importDataContractABI('Registry.json').abi
 const UserFactoryABI = Utils.importDataContractABI('UserFactory.json').abi
-const TrackFactoryABI = Utils.importDataContractABI('TrackFactory.json').abi
+const AgreementFactoryABI = Utils.importDataContractABI('AgreementFactory.json').abi
 const SocialFeatureFactoryABI = Utils.importDataContractABI(
   'SocialFeatureFactory.json'
 ).abi
@@ -35,7 +35,7 @@ const UserReplicaSetManagerABI = Utils.importDataContractABI(
 
 // define contract registry keys
 const UserFactoryRegistryKey = 'UserFactory'
-const TrackFactoryRegistryKey = 'TrackFactory'
+const AgreementFactoryRegistryKey = 'AgreementFactory'
 const SocialFeatureFactoryRegistryKey = 'SocialFeatureFactory'
 const PlaylistFactoryRegistryKey = 'PlaylistFactory'
 const UserLibraryFactoryRegistryKey = 'UserLibraryFactory'
@@ -49,7 +49,7 @@ export class ColivingContracts {
   logger: Logger
   RegistryClient: RegistryClient
   UserFactoryClient: UserFactoryClient
-  TrackFactoryClient: TrackFactoryClient
+  AgreementFactoryClient: AgreementFactoryClient
   SocialFeatureFactoryClient: SocialFeatureFactoryClient
   PlaylistFactoryClient: PlaylistFactoryClient
   UserLibraryFactoryClient: UserLibraryFactoryClient
@@ -86,10 +86,10 @@ export class ColivingContracts {
       this.logger
     )
 
-    this.TrackFactoryClient = new TrackFactoryClient(
+    this.AgreementFactoryClient = new AgreementFactoryClient(
       this.web3Manager,
-      TrackFactoryABI,
-      TrackFactoryRegistryKey,
+      AgreementFactoryABI,
+      AgreementFactoryRegistryKey,
       this.getRegistryAddressForContract,
       this.logger
     )
@@ -128,7 +128,7 @@ export class ColivingContracts {
 
     this.contractClients = [
       this.UserFactoryClient,
-      this.TrackFactoryClient,
+      this.AgreementFactoryClient,
       this.SocialFeatureFactoryClient,
       this.PlaylistFactoryClient,
       this.UserLibraryFactoryClient,

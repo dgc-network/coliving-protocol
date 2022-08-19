@@ -6,9 +6,9 @@ import {
   Registry,
   TestContract,
   UserStorage,
-  TrackStorage,
+  AgreementStorage,
   UserFactory,
-  TrackFactory
+  AgreementFactory
 } from './_lib/artifacts.js'
 import { getUserFromFactory } from './utils/getters'
 import { validateObj } from './utils/validator'
@@ -189,17 +189,17 @@ contract('Registry', async (accounts) => {
     const networkId = Registry.network_id
     let userStorage = await UserStorage.new(registry.address)
     await registry.addContract(_constants.userStorageKey, userStorage.address)
-    let trackStorage = await TrackStorage.new(registry.address)
-    await registry.addContract(_constants.trackStorageKey, trackStorage.address)
+    let agreementStorage = await AgreementStorage.new(registry.address)
+    await registry.addContract(_constants.agreementStorageKey, agreementStorage.address)
     let userFactory = await UserFactory.new(registry.address, _constants.userStorageKey, networkId, accounts[5])
     await registry.addContract(_constants.userFactoryKey, userFactory.address)
-    let trackFactory = await TrackFactory.new(registry.address, _constants.trackStorageKey, _constants.userFactoryKey, networkId)
-    await registry.addContract(_constants.trackFactoryKey, trackFactory.address)
+    let agreementFactory = await AgreementFactory.new(registry.address, _constants.agreementStorageKey, _constants.userFactoryKey, networkId)
+    await registry.addContract(_constants.agreementFactoryKey, agreementFactory.address)
 
-    // perform expected behavior - add+validate user, add+validate track
+    // perform expected behavior - add+validate user, add+validate agreement
     let userId = 1
-    let trackId = 1
-    let trackId2 = 2
+    let agreementId = 1
+    let agreementId2 = 2
     let userWallet = accounts[1]
     await _lib.addUserAndValidate(
       userFactory,
@@ -209,9 +209,9 @@ contract('Registry', async (accounts) => {
       _constants.userHandle1,
       true
     )
-    await _lib.addTrackAndValidate(
-      trackFactory,
-      trackId,
+    await _lib.addAgreementAndValidate(
+      agreementFactory,
+      agreementId,
       userWallet,
       userId,
       _constants.testMultihash.digest2,
@@ -225,19 +225,19 @@ contract('Registry', async (accounts) => {
     // re-point Coliving contracts to new registry
     await userStorage.setRegistry(registry2.address)
     await registry2.addContract(_constants.userStorageKey, userStorage.address)
-    await trackStorage.setRegistry(registry2.address)
-    await registry2.addContract(_constants.trackStorageKey, trackStorage.address)
+    await agreementStorage.setRegistry(registry2.address)
+    await registry2.addContract(_constants.agreementStorageKey, agreementStorage.address)
     await userFactory.setRegistry(registry2.address)
     await registry2.addContract(_constants.userFactoryKey, userFactory.address)
-    await trackFactory.setRegistry(registry2.address)
-    await registry2.addContract(_constants.trackFactoryKey, trackFactory.address)
+    await agreementFactory.setRegistry(registry2.address)
+    await registry2.addContract(_constants.agreementFactoryKey, agreementFactory.address)
 
-    // perform expected behavior - retrieve+validate previous user; add+validate new track with previous user
+    // perform expected behavior - retrieve+validate previous user; add+validate new agreement with previous user
     let user = await getUserFromFactory(userId, userFactory)
     validateObj(user, { wallet: userWallet, handle: toStr(_constants.userHandle1) })
-    await _lib.addTrackAndValidate(
-      trackFactory,
-      trackId2,
+    await _lib.addAgreementAndValidate(
+      agreementFactory,
+      agreementId2,
       userWallet,
       userId,
       _constants.testMultihash.digest2,

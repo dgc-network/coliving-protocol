@@ -39,9 +39,9 @@ def upgrade():
             challenge_id='tut' OR
             challenge_id='tp';
 
-        WITH track_uploads AS (
-            SELECT count(*) AS track_count, owner_id
-            FROM tracks
+        WITH agreement_uploads AS (
+            SELECT count(*) AS agreement_count, owner_id
+            FROM agreements
             WHERE
                 is_current=True AND
                 blocknumber >= 25346436
@@ -49,12 +49,12 @@ def upgrade():
         )
         UPDATE user_challenges
         SET
-            is_complete=(track_uploads.track_count >= 3),
-            current_step_count=track_uploads.track_count
+            is_complete=(agreement_uploads.agreement_count >= 3),
+            current_step_count=agreement_uploads.agreement_count
         FROM
-            track_uploads
+            agreement_uploads
         WHERE
-            challenge_id='track-upload' AND
+            challenge_id='agreement-upload' AND
             user_id=owner_id;
 
         COMMIT;

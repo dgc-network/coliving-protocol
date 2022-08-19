@@ -362,12 +362,12 @@ contract('DelegateManagerV2', async (accounts) => {
   /*
      Function to re-calculate expected delegator stake total given
       list of types and IDs, and compare calculated value with 
-      delegator balance tracked on chain
+      delegator balance agreemented on chain
   */
   const getTotalDelegatorStake = async (delegator) => {
     let validTypes = await serviceTypeManager.getValidServiceTypes()
     let totalDelegatorStake = _lib.toBN(0)
-    // Track whether we have processed a given service provider
+    // Agreement whether we have processed a given service provider
     // A single SP can have >1 endpoint and we don't need to double count
     let uniqueSPs = new Set()
     for (const serviceType of validTypes) {
@@ -1045,7 +1045,7 @@ contract('DelegateManagerV2', async (accounts) => {
         // Update dictionary of expected values
         let expectedDelegateStake = delegatorStake.add(delegateRewards)
         expectedDelegateStakeDictionary[delegator] = expectedDelegateStake
-        // Update total deployer cut tracking
+        // Update total deployer cut agreementing
         spDeployerCutRewards = spDeployerCutRewards.add(spDeployerCut)
         // Update total delegated stake increase
         totalDelegateStakeIncrease = totalDelegateStakeIncrease.add(delegateRewards)
@@ -2267,7 +2267,7 @@ contract('DelegateManagerV2', async (accounts) => {
         assert.isTrue(acctInfo.spFactoryStake.eq(DEFAULT_AMOUNT), 'Expect default in sp factory')
       })
 
-      it('Balance tracking inconsistency', async () => {
+      it('Balance agreementing inconsistency', async () => {
         const staker3Amt = _lib.toBN('384823535956494802781028')
         const staker4Amt = _lib.toBN('462563700468205107730431')
         const staker5Amt = _lib.toBN('221500000000000000000000')

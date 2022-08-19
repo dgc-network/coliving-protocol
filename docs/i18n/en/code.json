@@ -11,8 +11,8 @@
     "message": "🎶 API",
     "description": "api-reference"
   },
-  "Query, stream, and search Arists, Tracks, and Playlists from your own app, game, or project": {
-    "message": "Query, stream, and search Arists, Tracks, and Playlists from your own app, game, or project",
+  "Query, stream, and search Arists, Agreements, and Playlists from your own app, game, or project": {
+    "message": "Query, stream, and search Arists, Agreements, and Playlists from your own app, game, or project",
     "description": "rest-api"
   },
   "🎧 $LIVE": {
@@ -262,8 +262,8 @@
     "message": "Tags",
     "description": "The title of the tag list page"
   },
-  "Query, stream, and search Artists, Tracks, and Playlists from your own app, game, or project": {
-    "message": "Query, stream, and search Artists, Tracks, and Playlists from your own app, game, or project",
+  "Query, stream, and search Artists, Agreements, and Playlists from your own app, game, or project": {
+    "message": "Query, stream, and search Artists, Agreements, and Playlists from your own app, game, or project",
     "description": "rest-api"
   },
   "🧳 SDK": {

@@ -49,8 +49,8 @@ def get_savers_for_playlist(args):
                 User.user_id.in_(
                     session.query(Save.user_id).filter(
                         Save.save_item_id == save_playlist_id,
-                        # Select Saves for Playlists and Albums (i.e. not Tracks).
-                        Save.save_type != SaveType.track,
+                        # Select Saves for Playlists and Albums (i.e. not Agreements).
+                        Save.save_type != SaveType.agreement,
                         Save.is_current == True,
                         Save.is_delete == False,
                     )

@@ -1,18 +1,18 @@
 ---
-id: "full.GetTrackStemsRequest"
-title: "Interface: GetTrackStemsRequest"
-sidebar_label: "GetTrackStemsRequest"
+id: "full.GetAgreementStemsRequest"
+title: "Interface: GetAgreementStemsRequest"
+sidebar_label: "GetAgreementStemsRequest"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).GetTrackStemsRequest
+[full](../namespaces/full.md).GetAgreementStemsRequest
 
 ## Properties
 
-### trackId
+### agreementId
 
- **trackId**: `string`
+ **agreementId**: `string`
 
-A Track ID
+A Agreement ID

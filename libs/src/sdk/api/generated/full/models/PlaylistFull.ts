@@ -38,11 +38,11 @@ import {
     RepostToJSON,
 } from './Repost';
 import {
-    TrackFull,
-    TrackFullFromJSON,
-    TrackFullFromJSONTyped,
-    TrackFullToJSON,
-} from './TrackFull';
+    AgreementFull,
+    AgreementFullFromJSON,
+    AgreementFullFromJSONTyped,
+    AgreementFullToJSON,
+} from './AgreementFull';
 import {
     UserFull,
     UserFullFromJSON,
@@ -178,10 +178,10 @@ export interface PlaylistFull {
     user_id: string;
     /**
      * 
-     * @type {Array<TrackFull>}
+     * @type {Array<AgreementFull>}
      * @memberof PlaylistFull
      */
-    tracks: Array<TrackFull>;
+    agreements: Array<AgreementFull>;
     /**
      * 
      * @type {string}
@@ -199,6 +199,6 @@ export interface PlaylistFull {
      * @type {number}
      * @memberof PlaylistFull
      */
-    track_count: number;
+    agreement_count: number;
 }
 

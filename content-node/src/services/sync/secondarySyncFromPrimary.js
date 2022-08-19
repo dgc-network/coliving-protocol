@@ -335,33 +335,33 @@ const handleSyncFromPrimary = async (
          */
 
         /*
-         * Make list of all track Files to add after track creation
+         * Make list of all agreement Files to add after agreement creation
          *
-         * Files with trackBlockchainIds cannot be created until tracks have been created,
-         *    but tracks cannot be created until metadata and cover art files have been created.
+         * Files with agreementBlockchainIds cannot be created until agreements have been created,
+         *    but agreements cannot be created until metadata and cover art files have been created.
          */
 
-        const trackFiles = fetchedCNodeUser.files.filter((file) =>
-          models.File.TrackTypes.includes(file.type)
+        const agreementFiles = fetchedCNodeUser.files.filter((file) =>
+          models.File.AgreementTypes.includes(file.type)
         )
-        const nonTrackFiles = fetchedCNodeUser.files.filter((file) =>
-          models.File.NonTrackTypes.includes(file.type)
+        const nonAgreementFiles = fetchedCNodeUser.files.filter((file) =>
+          models.File.NonAgreementTypes.includes(file.type)
         )
-        const numTotalFiles = trackFiles.length + nonTrackFiles.length
+        const numTotalFiles = agreementFiles.length + nonAgreementFiles.length
 
         const CIDsThatFailedSaveFileOp = new Set()
 
-        // Save all track files to disk in batches (to limit concurrent load)
-        for (let i = 0; i < trackFiles.length; i += FileSaveMaxConcurrency) {
-          const trackFilesSlice = trackFiles.slice(
+        // Save all agreement files to disk in batches (to limit concurrent load)
+        for (let i = 0; i < agreementFiles.length; i += FileSaveMaxConcurrency) {
+          const agreementFilesSlice = agreementFiles.slice(
             i,
             i + FileSaveMaxConcurrency
           )
           logger.info(
             logPrefix,
-            `TrackFiles saveFileForMultihashToFS - processing trackFiles ${i} to ${
+            `AgreementFiles saveFileForMultihashToFS - processing agreementFiles ${i} to ${
               i + FileSaveMaxConcurrency
-            } out of total ${trackFiles.length}...`
+            } out of total ${agreementFiles.length}...`
           )
 
           /**
@@ -370,67 +370,67 @@ const handleSyncFromPrimary = async (
            * @notice `saveFileForMultihashToFS()` should never reject - it will return error indicator for post processing
            */
           await Promise.all(
-            trackFilesSlice.map(async (trackFile) => {
+            agreementFilesSlice.map(async (agreementFile) => {
               const success = await saveFileForMultihashToFS(
                 libs,
                 logger,
-                trackFile.multihash,
-                trackFile.storagePath,
+                agreementFile.multihash,
+                agreementFile.storagePath,
                 userReplicaSet,
                 null,
-                trackFile.trackBlockchainId
+                agreementFile.agreementBlockchainId
               )
 
               // If saveFile op failed, record CID for later processing
               if (!success) {
-                CIDsThatFailedSaveFileOp.add(trackFile.multihash)
+                CIDsThatFailedSaveFileOp.add(agreementFile.multihash)
               }
             })
           )
         }
-        logger.info(logPrefix, 'Saved all track files to disk.')
+        logger.info(logPrefix, 'Saved all agreement files to disk.')
 
-        // Save all non-track files to disk in batches (to limit concurrent load)
-        for (let i = 0; i < nonTrackFiles.length; i += FileSaveMaxConcurrency) {
-          const nonTrackFilesSlice = nonTrackFiles.slice(
+        // Save all non-agreement files to disk in batches (to limit concurrent load)
+        for (let i = 0; i < nonAgreementFiles.length; i += FileSaveMaxConcurrency) {
+          const nonAgreementFilesSlice = nonAgreementFiles.slice(
             i,
             i + FileSaveMaxConcurrency
           )
           logger.info(
             logPrefix,
-            `NonTrackFiles saveFileForMultihashToFS - processing files ${i} to ${
+            `NonAgreementFiles saveFileForMultihashToFS - processing files ${i} to ${
               i + FileSaveMaxConcurrency
-            } out of total ${nonTrackFiles.length}...`
+            } out of total ${nonAgreementFiles.length}...`
           )
           await Promise.all(
-            nonTrackFilesSlice.map(async (nonTrackFile) => {
+            nonAgreementFilesSlice.map(async (nonAgreementFile) => {
               // Skip over directories since there's no actual content to sync
               // The files inside the directory are synced separately
-              if (nonTrackFile.type !== 'dir') {
-                const multihash = nonTrackFile.multihash
+              if (nonAgreementFile.type !== 'dir') {
+                const multihash = nonAgreementFile.multihash
 
                 let success
 
                 // if it's an image file, we need to pass in the actual filename because the gateway request is /ipfs/Qm123/<filename>
                 // need to also check fileName is not null to make sure it's a dir-style image. non-dir images won't have a 'fileName' db column
                 if (
-                  nonTrackFile.type === 'image' &&
-                  nonTrackFile.fileName !== null
+                  nonAgreementFile.type === 'image' &&
+                  nonAgreementFile.fileName !== null
                 ) {
                   success = await saveFileForMultihashToFS(
                     libs,
                     logger,
                     multihash,
-                    nonTrackFile.storagePath,
+                    nonAgreementFile.storagePath,
                     userReplicaSet,
-                    nonTrackFile.fileName
+                    nonAgreementFile.fileName
                   )
                 } else {
                   success = await saveFileForMultihashToFS(
                     libs,
                     logger,
                     multihash,
-                    nonTrackFile.storagePath,
+                    nonAgreementFile.storagePath,
                     userReplicaSet
                   )
                 }
@@ -443,7 +443,7 @@ const handleSyncFromPrimary = async (
             })
           )
         }
-        logger.info(logPrefix, 'Saved all non-track files to disk.')
+        logger.info(logPrefix, 'Saved all non-agreement files to disk.')
 
         /**
          * Handle scenario where failed to retrieve/save > 0 CIDs
@@ -496,42 +496,42 @@ const handleSyncFromPrimary = async (
         logger.info(logPrefix, 'Saved all ClockRecord entries to DB')
 
         await models.File.bulkCreate(
-          nonTrackFiles.map((file) => {
+          nonAgreementFiles.map((file) => {
             if (CIDsThatFailedSaveFileOp.has(file.multihash)) {
               file.skipped = true // defaults to false
             }
             return {
               ...file,
-              trackBlockchainId: null,
+              agreementBlockchainId: null,
               cnodeUserUUID
             }
           }),
           { transaction }
         )
-        logger.info(logPrefix, 'Saved all non-track File entries to DB')
+        logger.info(logPrefix, 'Saved all non-agreement File entries to DB')
 
-        await models.Track.bulkCreate(
-          fetchedCNodeUser.tracks.map((track) => ({
-            ...track,
+        await models.Agreement.bulkCreate(
+          fetchedCNodeUser.agreements.map((agreement) => ({
+            ...agreement,
             cnodeUserUUID
           })),
           { transaction }
         )
-        logger.info(logPrefix, 'Saved all Track entries to DB')
+        logger.info(logPrefix, 'Saved all Agreement entries to DB')
 
         await models.File.bulkCreate(
-          trackFiles.map((trackFile) => {
-            if (CIDsThatFailedSaveFileOp.has(trackFile.multihash)) {
-              trackFile.skipped = true // defaults to false
+          agreementFiles.map((agreementFile) => {
+            if (CIDsThatFailedSaveFileOp.has(agreementFile.multihash)) {
+              agreementFile.skipped = true // defaults to false
             }
             return {
-              ...trackFile,
+              ...agreementFile,
               cnodeUserUUID
             }
           }),
           { transaction }
         )
-        logger.info(logPrefix, 'Saved all track File entries to DB')
+        logger.info(logPrefix, 'Saved all agreement File entries to DB')
 
         await models.ColivingUser.bulkCreate(
           fetchedCNodeUser.colivingUsers.map((colivingUser) => ({
@@ -549,7 +549,7 @@ const handleSyncFromPrimary = async (
           `Transaction successfully committed for cnodeUser wallet ${fetchedWalletPublicKey} with ${numTotalFiles} files processed and ${numCIDsThatFailedSaveFileOp} skipped.`
         )
 
-        // track that sync for this user was successful
+        // agreement that sync for this user was successful
         await SyncHistoryAggregator.recordSyncSuccess(fetchedWalletPublicKey)
       } catch (e) {
         logger.error(

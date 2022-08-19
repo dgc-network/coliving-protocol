@@ -26,7 +26,7 @@ def upgrade():
     drop index if exists fix_save_item_id_idx;
     drop index if exists fix_follows_followee_user_id;
     drop index if exists fix_follows_follower_user_id;
-    drop index if exists fix_track_owner_id_idx;
+    drop index if exists fix_agreement_owner_id_idx;
     drop index if exists fix_playlist_owner_id_idx;
     drop index if exists fix_save_user_id_idx;
     drop index if exists follows_inbound_idx;
@@ -37,12 +37,12 @@ def upgrade():
 
     -- undo partial indexes
 
-    DROP INDEX IF EXISTS track_owner_id_idx;
-    CREATE INDEX IF NOT EXISTS track_owner_id_idx ON tracks (owner_id);
+    DROP INDEX IF EXISTS agreement_owner_id_idx;
+    CREATE INDEX IF NOT EXISTS agreement_owner_id_idx ON agreements (owner_id);
 
 
-    drop index if exists track_created_at_idx;
-    CREATE INDEX IF NOT EXISTS track_created_at_idx ON tracks (created_at);
+    drop index if exists agreement_created_at_idx;
+    CREATE INDEX IF NOT EXISTS agreement_created_at_idx ON agreements (created_at);
 
 
     drop index if exists playlist_owner_id_idx;
@@ -86,7 +86,7 @@ def upgrade():
     create index if not exists follows_blocknumber_idx on follows(blocknumber);
     create index if not exists saves_blocknumber_idx on saves(blocknumber);
     create index if not exists reposts_blocknumber_idx on reposts(blocknumber);
-    create index if not exists tracks_blocknumber_idx on tracks(blocknumber);
+    create index if not exists agreements_blocknumber_idx on agreements(blocknumber);
     create index if not exists users_blocknumber_idx on users(blocknumber);
     create index if not exists playlists_blocknumber_idx on playlists(blocknumber);
 

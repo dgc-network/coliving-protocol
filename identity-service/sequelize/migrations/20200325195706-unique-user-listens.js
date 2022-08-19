@@ -1,31 +1,31 @@
 'use strict'
 
 /**
- * Makes entries in the user list table unique on track id and user id.
+ * Makes entries in the user list table unique on agreement id and user id.
  * Deletes currently conflicting entries. We aren't sure how these arose in the
  * first place.
  */
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.sequelize.query(`
-      DELETE FROM "UserTrackListens"
+      DELETE FROM "UserAgreementListens"
       WHERE "id" in (
         SELECT "id" FROM (
           SELECT *,
-          ROW_NUMBER() OVER (PARTITION BY "userId", "trackId" ORDER BY "userId", "trackId") as rowNumber
-          FROM "UserTrackListens"
+          ROW_NUMBER() OVER (PARTITION BY "userId", "agreementId" ORDER BY "userId", "agreementId") as rowNumber
+          FROM "UserAgreementListens"
         ) A
         WHERE A.rowNumber > 1
     )`).then(() => {
-      return queryInterface.addConstraint('UserTrackListens', ['userId', 'trackId'], {
+      return queryInterface.addConstraint('UserAgreementListens', ['userId', 'agreementId'], {
         type: 'unique',
-        name: 'unique_on_user_id_and_track_id'
+        name: 'unique_on_user_id_and_agreement_id'
       })
     })
   },
 
   down: (queryInterface, Sequelize) => {
     // return new Promise(resolve => resolve())
-    return queryInterface.removeConstraint('UserTrackListens', 'unique_on_user_id_and_track_id')
+    return queryInterface.removeConstraint('UserAgreementListens', 'unique_on_user_id_and_agreement_id')
   }
 }

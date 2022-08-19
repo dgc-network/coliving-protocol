@@ -2,7 +2,7 @@ const { Command } = require('commander')
 
 const ACTION_ARR = ['ADD', 'REMOVE']
 const ACTION_SET = new Set(ACTION_ARR)
-const TYPES_ARR = ['USER', 'TRACK', 'CID', 'TRACK_HASH_ID']
+const TYPES_ARR = ['USER', 'AGREEMENT', 'CID', 'AGREEMENT_HASH_ID']
 const TYPES_SET = new Set(TYPES_ARR)
 
 const COMMANDER_HELP_STRING =
@@ -10,13 +10,13 @@ const COMMANDER_HELP_STRING =
 
 // Example usage:
 // node delistContent/index.js -a add -l 1,3,7 -t user
-// node delistContent/index.js -a add -l 1,3,7 -t track
-// node delistContent/index.js -a add -l 7eP5n,ML51L -t track-hash-id
+// node delistContent/index.js -a add -l 1,3,7 -t agreement
+// node delistContent/index.js -a add -l 7eP5n,ML51L -t agreement-hash-id
 // node delistContent/index.js -a add -l Qm..., Qm..., -t cid
 
 // node delistContent/index.js -a remove -l 1,3,7 -t user
-// node delistContent/index.js -a remove -l 1,3,7 -t track
-// node delistContent/index.js -a remove -l 7eP5n,ML51L -t track-hash-id
+// node delistContent/index.js -a remove -l 1,3,7 -t agreement
+// node delistContent/index.js -a remove -l 7eP5n,ML51L -t agreement-hash-id
 // node delistContent/index.js -a remove -l Qm..., Qm..., -t cid
 `
 
@@ -29,7 +29,7 @@ class Commander {
     this.program = new Command()
     this.program
       .usage(COMMANDER_HELP_STRING)
-      .requiredOption('-t, --type <type>', `Type of id - either 'track', 'track-hash-id', 'user' or 'cid'.\n'track-hash-id' is an encoded version of a track id commonly found in URLs with this pattern 'https://contentnode.domain.com/tracks/stream/7eP5n'. In this case the 'track-hash-id' is '7eP5n'.`)
+      .requiredOption('-t, --type <type>', `Type of id - either 'agreement', 'agreement-hash-id', 'user' or 'cid'.\n'agreement-hash-id' is an encoded version of a agreement id commonly found in URLs with this pattern 'https://contentnode.domain.com/agreements/stream/7eP5n'. In this case the 'agreement-hash-id' is '7eP5n'.`)
       .requiredOption('-l, --list <list>', 'comma separated list of ids or cids', ids => ids.split(','))
       .requiredOption('-a, --act <action>', '`add` to set of delisted content or `remove` from set of delisted content')
       .option('-v, --verbose', 'verbose mode to print out debug logs', false)
@@ -53,7 +53,7 @@ class Commander {
 
     // Parse CLI args
     const action = this.program.act.toUpperCase()
-    // this is a let because TRACK_HASH_ID switches to type TRACK once the ids have been decoded
+    // this is a let because AGREEMENT_HASH_ID switches to type AGREEMENT once the ids have been decoded
     let type = this.program.type.toUpperCase().replace(/-/g, '_')
 
     if (!ACTION_SET.has(action) || !TYPES_SET.has(type)) {
@@ -65,23 +65,23 @@ class Commander {
     if (!values || values.length === 0) throw new Error('Please pass in a comma separated list of ids and/or cids.')
 
     // Parse ids into ints greater than 0
-    if (type === 'USER' || type === 'TRACK') {
+    if (type === 'USER' || type === 'AGREEMENT') {
       const originalNumIds = values.length
       values = values.filter(id => !isNaN(id)).map(id => parseInt(id)).filter(id => id >= 0)
       if (values.length === 0) throw new Error('List of ids is not proper.')
       if (originalNumIds !== values.length) {
         console.warn(`Filtered out non-numeric ids from input. Please only pass integers!`)
       }
-    } else if (type === 'TRACK_HASH_ID') {
+    } else if (type === 'AGREEMENT_HASH_ID') {
       const originalNumIds = values.length
       values = values.map(value => {
         const decodedId = hashIds.decode(value)
         if (decodedId) return decodedId
       }).filter(Boolean)
-      type = 'TRACK'
-      if (values.length === 0) throw new Error('List of track hash ids is not proper.')
+      type = 'AGREEMENT'
+      if (values.length === 0) throw new Error('List of agreement hash ids is not proper.')
       if (originalNumIds !== values.length) {
-        console.warn(`Filtered out invalid ids from input. Please only valid track hash ids!`)
+        console.warn(`Filtered out invalid ids from input. Please only valid agreement hash ids!`)
       }
     } else { // else will be CID
       // Parse cids and ensure they follow the pattern Qm...

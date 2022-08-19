@@ -1,19 +1,19 @@
 ---
-id: "PlaylistTracksResponse"
-title: "Interface: PlaylistTracksResponse"
-sidebar_label: "PlaylistTracksResponse"
+id: "PlaylistAgreementsResponse"
+title: "Interface: PlaylistAgreementsResponse"
+sidebar_label: "PlaylistAgreementsResponse"
 sidebar_position: 0
 custom_edit_url: null
 ---
 
 **`export`**
 
-**`interface`** PlaylistTracksResponse
+**`interface`** PlaylistAgreementsResponse
 
 ## Properties
 
 ### data
 
- `Optional` **data**: [`Track`](Track.md)[]
+ `Optional` **data**: [`Agreement`](Agreement.md)[]
 
-**`memberof`** PlaylistTracksResponse
+**`memberof`** PlaylistAgreementsResponse

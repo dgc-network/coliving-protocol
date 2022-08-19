@@ -1,7 +1,7 @@
 from src import exceptions
 from src.models.playlists.playlist import Playlist
 from src.models.social.save import Save, SaveType
-from src.models.tracks.track import Track
+from src.models.agreements.agreement import Agreement
 from src.queries.query_helpers import paginate_query
 from src.utils import helpers
 from src.utils.db_session import get_db_read_replica
@@ -13,8 +13,8 @@ def get_saves(save_type, user_id):
         save_query_type = SaveType.album
     elif save_type == "playlists":
         save_query_type = SaveType.playlist
-    elif save_type == "tracks":
-        save_query_type = SaveType.track
+    elif save_type == "agreements":
+        save_query_type = SaveType.agreement
     else:
         raise exceptions.ArgumentError("Invalid save type provided")
 
@@ -44,10 +44,10 @@ def get_saves(save_type, user_id):
                     )
                 )
             )
-        elif save_type == "tracks":
+        elif save_type == "agreements":
             query = query.filter(
                 Save.save_item_id.in_(
-                    session.query(Track.track_id).filter(Track.is_current == True)
+                    session.query(Agreement.agreement_id).filter(Agreement.is_current == True)
                 )
             )
 

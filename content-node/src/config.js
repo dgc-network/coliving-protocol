@@ -185,14 +185,14 @@ const config = convict({
     env: 'rateLimitingImageReqLimit',
     default: null
   },
-  rateLimitingTrackReqLimit: {
-    doc: 'Total requests per hour rate limit for /track routes',
+  rateLimitingAgreementReqLimit: {
+    doc: 'Total requests per hour rate limit for /agreement routes',
     format: 'nat',
-    env: 'rateLimitingTrackReqLimit',
+    env: 'rateLimitingAgreementReqLimit',
     default: null
   },
   rateLimitingBatchCidsExistLimit: {
-    doc: 'Total requests per hour rate limit for /track routes',
+    doc: 'Total requests per hour rate limit for /agreement routes',
     format: 'nat',
     env: 'rateLimitingBatchCidsExistLimit',
     default: null

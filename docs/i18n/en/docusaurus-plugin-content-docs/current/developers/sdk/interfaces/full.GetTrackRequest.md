@@ -1,11 +1,11 @@
 ---
-id: "full.GetTrackRequest"
-title: "Interface: GetTrackRequest"
-sidebar_label: "GetTrackRequest"
+id: "full.GetAgreementRequest"
+title: "Interface: GetAgreementRequest"
+sidebar_label: "GetAgreementRequest"
 custom_edit_url: null
 ---
 
-[full](../namespaces/full.md).GetTrackRequest
+[full](../namespaces/full.md).GetAgreementRequest
 
 ## Properties
 
@@ -13,7 +13,7 @@ custom_edit_url: null
 
  `Optional` **handle**: `string`
 
-The User handle of the track owner
+The User handle of the agreement owner
 
 ___
 
@@ -21,15 +21,15 @@ ___
 
  `Optional` **showUnlisted**: `boolean`
 
-Whether or not to show unlisted tracks
+Whether or not to show unlisted agreements
 
 ___
 
-### trackId
+### agreementId
 
- **trackId**: `string`
+ **agreementId**: `string`
 
-A Track ID
+A Agreement ID
 
 ___
 
@@ -37,7 +37,7 @@ ___
 
  `Optional` **urlTitle**: `string`
 
-The URLized title of the track
+The URLized title of the agreement
 
 ___
 

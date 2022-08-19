@@ -2,41 +2,41 @@ import * as _lib from './_lib/lib.js'
 import {
   Registry,
   UserStorage,
-  TrackStorage,
+  AgreementStorage,
   UserFactory,
-  TrackFactory
+  AgreementFactory
 } from './_lib/artifacts.js'
 import * as _constants from './utils/constants'
 import { parseTx } from './utils/parser'
-import { getTrackFromFactory } from './utils/getters'
+import { getAgreementFromFactory } from './utils/getters'
 
-contract('TrackFactory', async (accounts) => {
+contract('AgreementFactory', async (accounts) => {
   const testUserId = 1
   const testUserId2 = 2
-  const testTrackId1 = 1
-  const testTrackId2 = 2
+  const testAgreementId1 = 1
+  const testAgreementId2 = 2
 
   let registry
   let userStorage
   let userFactory
-  let trackStorage
-  let trackFactory
+  let agreementStorage
+  let agreementFactory
 
   beforeEach(async () => {
     registry = await Registry.new()
     const networkId = Registry.network_id
     userStorage = await UserStorage.new(registry.address)
     await registry.addContract(_constants.userStorageKey, userStorage.address)
-    trackStorage = await TrackStorage.new(registry.address)
-    await registry.addContract(_constants.trackStorageKey, trackStorage.address)
+    agreementStorage = await AgreementStorage.new(registry.address)
+    await registry.addContract(_constants.agreementStorageKey, agreementStorage.address)
     userFactory = await UserFactory.new(registry.address, _constants.userStorageKey, networkId, accounts[5])
     await registry.addContract(_constants.userFactoryKey, userFactory.address)
-    trackFactory = await TrackFactory.new(registry.address, _constants.trackStorageKey, _constants.userFactoryKey, networkId)
-    await registry.addContract(_constants.trackFactoryKey, trackFactory.address)
+    agreementFactory = await AgreementFactory.new(registry.address, _constants.agreementStorageKey, _constants.userFactoryKey, networkId)
+    await registry.addContract(_constants.agreementFactoryKey, agreementFactory.address)
   })
 
-  it('Should add single track', async () => {
-    // add user to associate track with
+  it('Should add single agreement', async () => {
+    // add user to associate agreement with
     await _lib.addUserAndValidate(
       userFactory,
       testUserId,
@@ -46,10 +46,10 @@ contract('TrackFactory', async (accounts) => {
       true
     )
 
-    // Add track
-    await _lib.addTrackAndValidate(
-      trackFactory,
-      testTrackId1,
+    // Add agreement
+    await _lib.addAgreementAndValidate(
+      agreementFactory,
+      testAgreementId1,
       accounts[0],
       testUserId,
       _constants.testMultihash.digest2,
@@ -58,8 +58,8 @@ contract('TrackFactory', async (accounts) => {
     )
   })
 
-  it('Should fail to add track due to lack of ownership of track owner', async () => {
-    // add user to associate track with
+  it('Should fail to add agreement due to lack of ownership of agreement owner', async () => {
+    // add user to associate agreement with
     await _lib.addUserAndValidate(
       userFactory,
       testUserId,
@@ -69,13 +69,13 @@ contract('TrackFactory', async (accounts) => {
       true
     )
 
-    // attempt to add track from different account
+    // attempt to add agreement from different account
     let caughtError = false
     try {
-      // Add track
-      await _lib.addTrackAndValidate(
-        trackFactory,
-        testTrackId1,
+      // Add agreement
+      await _lib.addAgreementAndValidate(
+        agreementFactory,
+        testAgreementId1,
         accounts[1],
         testUserId,
         _constants.testMultihash.digest2,
@@ -93,12 +93,12 @@ contract('TrackFactory', async (accounts) => {
     }
     assert.isTrue(
       caughtError,
-      "Failed to handle case where calling address tries to add track for user it doesn't own"
+      "Failed to handle case where calling address tries to add agreement for user it doesn't own"
     )
   })
 
-  it('Should add multiple tracks', async () => {
-    // add user to associate tracks with
+  it('Should add multiple agreements', async () => {
+    // add user to associate agreements with
     await _lib.addUserAndValidate(
       userFactory,
       testUserId,
@@ -107,18 +107,18 @@ contract('TrackFactory', async (accounts) => {
       _constants.userHandle1,
       true)
 
-    // add two tracks
-    await _lib.addTrackAndValidate(
-      trackFactory,
-      testTrackId1,
+    // add two agreements
+    await _lib.addAgreementAndValidate(
+      agreementFactory,
+      testAgreementId1,
       accounts[0],
       testUserId,
       _constants.testMultihash.digest2,
       _constants.testMultihash.hashFn,
       _constants.testMultihash.size)
-    await _lib.addTrackAndValidate(
-      trackFactory,
-      testTrackId2,
+    await _lib.addAgreementAndValidate(
+      agreementFactory,
+      testAgreementId2,
       accounts[0],
       testUserId,
       _constants.testMultihash.digest3,
@@ -126,8 +126,8 @@ contract('TrackFactory', async (accounts) => {
       _constants.testMultihash.size)
   })
 
-  it('Should upgrade TrackStorage used by TrackFactory', async () => {
-    // add user to associate track with
+  it('Should upgrade AgreementStorage used by AgreementFactory', async () => {
+    // add user to associate agreement with
     await _lib.addUserAndValidate(
       userFactory,
       testUserId,
@@ -136,29 +136,29 @@ contract('TrackFactory', async (accounts) => {
       _constants.userHandle1,
       true)
 
-    // add track and validate transaction
-    await _lib.addTrackAndValidate(
-      trackFactory,
-      testTrackId1,
+    // add agreement and validate transaction
+    await _lib.addAgreementAndValidate(
+      agreementFactory,
+      testAgreementId1,
       accounts[0],
       testUserId,
       _constants.testMultihash.digest2,
       _constants.testMultihash.hashFn,
       _constants.testMultihash.size)
 
-    // deploy new TrackStorage contract instance
-    let trackStorage2 = await TrackStorage.new(registry.address)
+    // deploy new AgreementStorage contract instance
+    let agreementStorage2 = await AgreementStorage.new(registry.address)
 
-    // upgrade registered TrackStorage
-    await registry.upgradeContract(_constants.trackStorageKey, trackStorage2.address)
+    // upgrade registered AgreementStorage
+    await registry.upgradeContract(_constants.agreementStorageKey, agreementStorage2.address)
 
-    // confirm first TrackStorage instance is dead
-    _lib.assertNoContractExists(trackStorage.address)
+    // confirm first AgreementStorage instance is dead
+    _lib.assertNoContractExists(agreementStorage.address)
 
-    // add another track and validate transaction
-    await _lib.addTrackAndValidate(
-      trackFactory,
-      testTrackId1,
+    // add another agreement and validate transaction
+    await _lib.addAgreementAndValidate(
+      agreementFactory,
+      testAgreementId1,
       accounts[0],
       testUserId,
       _constants.testMultihash.digest2,
@@ -166,7 +166,7 @@ contract('TrackFactory', async (accounts) => {
       _constants.testMultihash.size)
   })
 
-  it('Should update single track', async () => {
+  it('Should update single agreement', async () => {
     // Define initial and update data
     let initialData = {
       userId: testUserId,
@@ -182,7 +182,7 @@ contract('TrackFactory', async (accounts) => {
       size: 16
     }
 
-    // add user to associate track with
+    // add user to associate agreement with
     await _lib.addUserAndValidate(
       userFactory,
       initialData.userId,
@@ -200,20 +200,20 @@ contract('TrackFactory', async (accounts) => {
       _constants.userHandle2,
       _constants.isCreatorTrue)
 
-    // Add track
-    await _lib.addTrackAndValidate(
-      trackFactory,
-      testTrackId1,
+    // Add agreement
+    await _lib.addAgreementAndValidate(
+      agreementFactory,
+      testAgreementId1,
       accounts[0],
       initialData.userId,
       _constants.testMultihash.digest1,
       _constants.testMultihash.hashFn,
       _constants.testMultihash.size)
 
-    const tx = await _lib.updateTrack(
-      trackFactory,
+    const tx = await _lib.updateAgreement(
+      agreementFactory,
       accounts[0],
-      testTrackId1,
+      testAgreementId1,
       updateData.userId,
       updateData.digest,
       updateData.hashFn,
@@ -225,21 +225,21 @@ contract('TrackFactory', async (accounts) => {
     assert.isTrue(eventArgs._multihashDigest === updateData.digest, 'Event argument - expect updated digest')
     assert.isTrue(eventArgs._multihashHashFn.toNumber() === updateData.hashFn, 'Event argument - expect updated hash')
     assert.isTrue(eventArgs._multihashSize.toNumber() === updateData.size, 'Event argument - expect updated size')
-    assert.isTrue(eventArgs._trackOwnerId.toNumber() === updateData.userId, 'Event argument - expect updated userId')
+    assert.isTrue(eventArgs._agreementOwnerId.toNumber() === updateData.userId, 'Event argument - expect updated userId')
 
     // Verify updated contents on chain
-    let trackFromChain = await getTrackFromFactory(
-      testTrackId1,
-      trackFactory)
+    let agreementFromChain = await getAgreementFromFactory(
+      testAgreementId1,
+      agreementFactory)
 
-    assert.isTrue(trackFromChain.trackOwnerId.toNumber() === updateData.userId, 'Expect updated userId on chain')
-    assert.isTrue(trackFromChain.multihashDigest === updateData.digest, 'Expect updated digest')
-    assert.isTrue(trackFromChain.multihashHashFn.toNumber() === updateData.hashFn, 'Expect updated hash')
-    assert.isTrue(trackFromChain.multihashSize.toNumber() === updateData.size, 'Expect updated size')
+    assert.isTrue(agreementFromChain.agreementOwnerId.toNumber() === updateData.userId, 'Expect updated userId on chain')
+    assert.isTrue(agreementFromChain.multihashDigest === updateData.digest, 'Expect updated digest')
+    assert.isTrue(agreementFromChain.multihashHashFn.toNumber() === updateData.hashFn, 'Expect updated hash')
+    assert.isTrue(agreementFromChain.multihashSize.toNumber() === updateData.size, 'Expect updated size')
   })
 
-  it('Should fail to update track due to lack of ownership of track', async () => {
-    // add user to associate track with
+  it('Should fail to update agreement due to lack of ownership of agreement', async () => {
+    // add user to associate agreement with
     await _lib.addUserAndValidate(
       userFactory,
       testUserId,
@@ -249,10 +249,10 @@ contract('TrackFactory', async (accounts) => {
       true
     )
 
-    // Add track
-    await _lib.addTrackAndValidate(
-      trackFactory,
-      testTrackId1,
+    // Add agreement
+    await _lib.addAgreementAndValidate(
+      agreementFactory,
+      testAgreementId1,
       accounts[0],
       testUserId,
       _constants.testMultihash.digest2,
@@ -260,13 +260,13 @@ contract('TrackFactory', async (accounts) => {
       _constants.testMultihash.size
     )
 
-    // attempt to update track from different account
+    // attempt to update agreement from different account
     let caughtError = false
     try {
-      await _lib.updateTrack(
-        trackFactory,
+      await _lib.updateAgreement(
+        agreementFactory,
         accounts[1],
-        testTrackId1,
+        testAgreementId1,
         testUserId,
         _constants.testMultihash.digest2,
         _constants.testMultihash.hashFn,
@@ -283,11 +283,11 @@ contract('TrackFactory', async (accounts) => {
     }
     assert.isTrue(
       caughtError,
-      'Failed to handle case where calling address tries to update track it does not own'
+      'Failed to handle case where calling address tries to update agreement it does not own'
     )
   })
 
-  it('Should delete single track', async () => {
+  it('Should delete single agreement', async () => {
     // add user
     await _lib.addUserAndValidate(
       userFactory,
@@ -297,24 +297,24 @@ contract('TrackFactory', async (accounts) => {
       _constants.userHandle1,
       true)
 
-    // Add track
-    await _lib.addTrackAndValidate(
-      trackFactory,
-      testTrackId1,
+    // Add agreement
+    await _lib.addAgreementAndValidate(
+      agreementFactory,
+      testAgreementId1,
       accounts[0],
       testUserId,
       _constants.testMultihash.digest2,
       _constants.testMultihash.hashFn,
       _constants.testMultihash.size)
 
-    // delete track
-    await _lib.deleteTrackAndValidate(
-      trackFactory,
+    // delete agreement
+    await _lib.deleteAgreementAndValidate(
+      agreementFactory,
       accounts[0],
-      testTrackId1)
+      testAgreementId1)
   })
 
-  it('Should fail to delete non-existent track', async () => {
+  it('Should fail to delete non-existent agreement', async () => {
     // add user
     await _lib.addUserAndValidate(
       userFactory,
@@ -325,13 +325,13 @@ contract('TrackFactory', async (accounts) => {
       true
     )
 
-    // attempt to delete non-existent track
+    // attempt to delete non-existent agreement
     let caughtError = false
     try {
-      await _lib.deleteTrackAndValidate(
-        trackFactory,
+      await _lib.deleteAgreementAndValidate(
+        agreementFactory,
         accounts[0],
-        testTrackId1
+        testAgreementId1
       )
     } catch (e) {
       // expected error
@@ -344,12 +344,12 @@ contract('TrackFactory', async (accounts) => {
     }
     assert.isTrue(
       caughtError,
-      'Failed to handle case where calling address tries to delete non-existent track'
+      'Failed to handle case where calling address tries to delete non-existent agreement'
     )
   })
 
-  it('Should fail to delete track due to lack of ownership of track', async () => {
-    // add user to associate track with
+  it('Should fail to delete agreement due to lack of ownership of agreement', async () => {
+    // add user to associate agreement with
     await _lib.addUserAndValidate(
       userFactory,
       testUserId,
@@ -359,10 +359,10 @@ contract('TrackFactory', async (accounts) => {
       true
     )
 
-    // Add track
-    await _lib.addTrackAndValidate(
-      trackFactory,
-      testTrackId1,
+    // Add agreement
+    await _lib.addAgreementAndValidate(
+      agreementFactory,
+      testAgreementId1,
       accounts[0],
       testUserId,
       _constants.testMultihash.digest2,
@@ -370,13 +370,13 @@ contract('TrackFactory', async (accounts) => {
       _constants.testMultihash.size
     )
 
-    // attempt to delete track from different account
+    // attempt to delete agreement from different account
     let caughtError = false
     try {
-      await _lib.deleteTrackAndValidate(
-        trackFactory,
+      await _lib.deleteAgreementAndValidate(
+        agreementFactory,
         accounts[1],
-        testTrackId1
+        testAgreementId1
       )
     } catch (e) {
       // expected error
@@ -389,7 +389,7 @@ contract('TrackFactory', async (accounts) => {
     }
     assert.isTrue(
       caughtError,
-      'Failed to handle case where calling address tries to delete track it does not own'
+      'Failed to handle case where calling address tries to delete agreement it does not own'
     )
   })
 })

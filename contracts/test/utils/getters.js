@@ -12,18 +12,18 @@ export const getUserFromFactory = async (userId, userFactory) => {
     handle: toStr(user[1])
   }
 }
-/** Retrieves track from factory contract
-    * @param {number} trackId
-    * @param {object} trackFactory, deployed TrackFactory truffle contract
+/** Retrieves agreement from factory contract
+    * @param {number} agreementId
+    * @param {object} agreementFactory, deployed AgreementFactory truffle contract
     * @returns {object} dictionary with userId, multihashDigest, multihashHashFn, multihashSize
     */
-export const getTrackFromFactory = async (trackId, trackFactory) => {
-  let track = await trackFactory.getTrack.call(trackId)
+export const getAgreementFromFactory = async (agreementId, agreementFactory) => {
+  let agreement = await agreementFactory.getAgreement.call(agreementId)
   return {
-    trackOwnerId: track[0],
-    multihashDigest: track[1],
-    multihashHashFn: track[2],
-    multihashSize: track[3]
+    agreementOwnerId: agreement[0],
+    multihashDigest: agreement[1],
+    multihashHashFn: agreement[2],
+    multihashSize: agreement[3]
   }
 }
 

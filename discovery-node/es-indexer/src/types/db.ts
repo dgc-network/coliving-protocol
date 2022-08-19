@@ -29,7 +29,7 @@ export interface AggregateIntervalPlayRow {
   'created_at'?: Date | null;
   'genre'?: string | null;
   'month_listen_counts'?: string | null;
-  'track_id'?: number | null;
+  'agreement_id'?: number | null;
   'week_listen_counts'?: string | null;
 }
 export interface AggregateMonthlyAppNameMetricRow {
@@ -70,10 +70,10 @@ export interface AggregatePlayRow {
   'count'?: string | null;
   'play_item_id'?: number | null;
 }
-export interface AggregateTrackRow {
+export interface AggregateAgreementRow {
   'repost_count': number;
   'save_count': number;
-  'track_id': number;
+  'agreement_id': number;
 }
 export interface AggregateUserRow {
   'album_count'?: string | null;
@@ -83,8 +83,8 @@ export interface AggregateUserRow {
   'repost_count'?: string | null;
   'supporter_count'?: number;
   'supporting_count'?: number;
-  'track_count'?: string | null;
-  'track_save_count'?: string | null;
+  'agreement_count'?: string | null;
+  'agreement_save_count'?: string | null;
   'user_id': number;
 }
 export interface AggregateUserTipRow {
@@ -309,8 +309,8 @@ export interface RelatedArtistRow {
   'user_id': number;
 }
 export interface RemixeRow {
-  'child_track_id': number;
-  'parent_track_id': number;
+  'child_agreement_id': number;
+  'parent_agreement_id': number;
 }
 export interface RepostRow {
   'blockhash'?: string | null;
@@ -390,8 +390,8 @@ export interface SplTokenTxRow {
   'updated_at'?: Date;
 }
 export interface StemRow {
-  'child_track_id': number;
-  'parent_track_id': number;
+  'child_agreement_id': number;
+  'parent_agreement_id': number;
 }
 export interface SupporterRankUpRow {
   'rank': number;
@@ -399,22 +399,22 @@ export interface SupporterRankUpRow {
   'sender_user_id': number;
   'slot': number;
 }
-export interface TagTrackUserRow {
+export interface TagAgreementUserRow {
   'owner_id'?: number | null;
   'tag'?: string | null;
-  'track_id'?: number | null;
+  'agreement_id'?: number | null;
 }
-export interface TrackLexemeDictRow {
+export interface AgreementLexemeDictRow {
   'handle'?: string | null;
   'owner_id'?: number | null;
   'repost_count'?: number | null;
   'row_number'?: string | null;
-  'track_id'?: number | null;
-  'track_title'?: string | null;
+  'agreement_id'?: number | null;
+  'agreement_title'?: string | null;
   'user_name'?: string | null;
   'word'?: string | null;
 }
-export interface TrackRouteRow {
+export interface AgreementRouteRow {
   'blockhash': string;
   'blocknumber': number;
   'collision_id': number;
@@ -422,19 +422,19 @@ export interface TrackRouteRow {
   'owner_id': number;
   'slug': string;
   'title_slug': string;
-  'track_id': number;
+  'agreement_id': number;
   'txhash': string;
 }
-export interface TrackTrendingScoreRow {
+export interface AgreementTrendingScoreRow {
   'created_at': Date;
   'genre'?: string | null;
   'score': number;
   'time_range': string;
-  'track_id': number;
+  'agreement_id': number;
   'type': string;
   'version': string;
 }
-export interface TrackRow {
+export interface AgreementRow {
   'blockhash'?: string | null;
   'blocknumber'?: number | null;
   'cover_art'?: string | null;
@@ -464,8 +464,8 @@ export interface TrackRow {
   'stem_of'?: any | null;
   'tags'?: string | null;
   'title'?: string | null;
-  'track_id': number;
-  'track_segments': any;
+  'agreement_id': number;
+  'agreement_segments': any;
   'txhash'?: string;
   'updated_at': Date;
 }
@@ -483,7 +483,7 @@ export interface TrendingParamRow {
   'save_month_count'?: string | null;
   'save_week_count'?: string | null;
   'save_year_count'?: string | null;
-  'track_id'?: number | null;
+  'agreement_id'?: number | null;
 }
 export interface TrendingResultRow {
   'id'?: string | null;
@@ -616,12 +616,12 @@ export enum skippedtransactionlevel {
   'network' = 'network',
 }
 export enum savetype {
-  'track' = 'track',
+  'agreement' = 'agreement',
   'playlist' = 'playlist',
   'album' = 'album',
 }
 export enum reposttype {
-  'track' = 'track',
+  'agreement' = 'agreement',
   'playlist' = 'playlist',
   'album' = 'album',
 }

@@ -167,17 +167,17 @@ ___
 
 ___
 
-### track\_count
+### agreement\_count
 
- **track\_count**: `number`
+ **agreement\_count**: `number`
 
 **`memberof`** PlaylistFull
 
 ___
 
-### tracks
+### agreements
 
- **tracks**: [`TrackFull`](full.TrackFull.md)[]
+ **agreements**: [`AgreementFull`](full.AgreementFull.md)[]
 
 **`memberof`** PlaylistFull
 

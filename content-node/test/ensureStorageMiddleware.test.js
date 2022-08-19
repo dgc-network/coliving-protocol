@@ -53,7 +53,7 @@ describe('test ensureStorageMiddleware', () => {
     const storagePathUsed = await monitoringQueueMock.getRedisValue(storagePathUsedRedisKey)
     assert(storagePathUsed === '100')
 
-    const testPicture = path.resolve(__dirname, 'testTrackWrongFormat.jpg')
+    const testPicture = path.resolve(__dirname, 'testAgreementWrongFormat.jpg')
     let file = fs.readFileSync(testPicture)
     const resp = await request(app)
       .post('/image_upload')
@@ -85,15 +85,15 @@ describe('test ensureStorageMiddleware', () => {
     assert(errorObj.error.state === 'NODE_REACHED_CAPACITY')
   })
 
-  it('fails with bad request when storage capacity is reached (/track_content_async)', async () => {
+  it('fails with bad request when storage capacity is reached (/agreement_content_async)', async () => {
     await monitoringQueueMock.setRedisValue(storagePathUsedRedisKey, 100)
     const storagePathUsed = await monitoringQueueMock.getRedisValue(storagePathUsedRedisKey)
     assert(storagePathUsed === '100')
 
-    const testAudioFilePath = path.resolve(__dirname, 'testTrack.mp3')
+    const testAudioFilePath = path.resolve(__dirname, 'testAgreement.mp3')
     const file = fs.readFileSync(testAudioFilePath)
     const resp = await request(app)
-      .post('/track_content_async')
+      .post('/agreement_content_async')
       .attach('file', file, { filename: 'STARBOY.mp3' })
       .set('Content-Type', 'multipart/form-data')
       .set('X-Session-ID', session.sessionToken)
@@ -104,16 +104,16 @@ describe('test ensureStorageMiddleware', () => {
     assert(errorObj.error.state === 'NODE_REACHED_CAPACITY')
   })
 
-  it('fails with bad request when storage capacity is reached (/tracks/metadata)', async () => {
+  it('fails with bad request when storage capacity is reached (/agreements/metadata)', async () => {
     await monitoringQueueMock.setRedisValue(storagePathUsedRedisKey, 100)
     const storagePathUsed = await monitoringQueueMock.getRedisValue(storagePathUsedRedisKey)
     assert(storagePathUsed === '100')
 
-    // Using the test track was "too big", so this is a dummy file buffer
-    const file = Buffer.from('i am a track file!!!')
+    // Using the test agreement was "too big", so this is a dummy file buffer
+    const file = Buffer.from('i am a agreement file!!!')
 
     const resp = await request(app)
-      .post('/tracks/metadata')
+      .post('/agreements/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .send(
@@ -121,7 +121,7 @@ describe('test ensureStorageMiddleware', () => {
           metadata: {
             test: 'abel is my hero',
             owner_id: 1,
-            track_segments: ['tracksegment1', 'tracksegment2']
+            agreement_segments: ['agreementsegment1', 'agreementsegment2']
           },
           source_file: file
         }

@@ -3,7 +3,7 @@ const _ = require('lodash')
 const { libs: ColivingLibs } = require('@coliving/sdk')
 const {
   TEMP_IMAGE_STORAGE_PATH,
-  TEMP_TRACK_STORAGE_PATH,
+  TEMP_AGREEMENT_STORAGE_PATH,
   ETH_REGISTRY_ADDRESS,
   ETH_TOKEN_ADDRESS,
   ETH_OWNER_WALLET,
@@ -24,8 +24,8 @@ const {
 } = require('./constants')
 
 const {
-  getRandomTrackMetadata,
-  getRandomTrackFilePath,
+  getRandomAgreementMetadata,
+  getRandomAgreementFilePath,
   getRandomImageFilePath,
   r6
 } = require('./random')
@@ -92,12 +92,12 @@ const parseMetadataIntoObject = commaSeparatedKeyValuePairs => {
   return metadata
 }
 
-const getUserProvidedOrRandomTrackFile = async userInputPath => {
+const getUserProvidedOrRandomAgreementFile = async userInputPath => {
   let path
   if (userInputPath) {
     path = userInputPath
   } else {
-    path = await getRandomTrackFilePath(TEMP_TRACK_STORAGE_PATH)
+    path = await getRandomAgreementFilePath(TEMP_AGREEMENT_STORAGE_PATH)
   }
   return fs.createReadStream(path)
 }
@@ -114,17 +114,17 @@ const getUserProvidedOrRandomImageFile = async userInputPath => {
 
 const getProgressCallback = () => {
   const progressCallback = percentComplete => {
-    console.log(`${percentComplete} track upload completed...`)
+    console.log(`${percentComplete} agreement upload completed...`)
   }
   return progressCallback
 }
 
-const getUserProvidedOrRandomTrackMetadata = (
+const getUserProvidedOrRandomAgreementMetadata = (
   userProvidedMetadata,
   seedSession
 ) => {
   const { userId } = seedSession.cache.getActiveUser()
-  let metadataObj = getRandomTrackMetadata(userId)
+  let metadataObj = getRandomAgreementMetadata(userId)
   if (userProvidedMetadata) {
     metadataObj = Object.assign(metadataObj, userProvidedMetadata)
   }
@@ -163,24 +163,24 @@ const getRandomUserIdFromCurrentSeedSessionCache = (userInput, seedSession) => {
   return userId
 }
 
-const getRandomTrackIdFromCurrentSeedSessionCache = (
+const getRandomAgreementIdFromCurrentSeedSessionCache = (
   userInput,
   seedSession
 ) => {
-  let trackId
+  let agreementId
   if (userInput) {
-    trackId = userInput
+    agreementId = userInput
   } else {
-    const cachedTracks = seedSession.cache.getTracks()
-    trackId = _.sample(cachedTracks)
+    const cachedAgreements = seedSession.cache.getAgreements()
+    agreementId = _.sample(cachedAgreements)
   }
-  return trackId
+  return agreementId
 }
 
-const addTrackToSeedSessionCache = (response, seedSession) => {
-  const { trackId } = response
+const addAgreementToSeedSessionCache = (response, seedSession) => {
+  const { agreementId } = response
   const { userId } = seedSession.cache.getActiveUser()
-  seedSession.cache.addTrackToCachedUserDetails({ trackId, userId })
+  seedSession.cache.addAgreementToCachedUserDetails({ agreementId, userId })
 }
 
 const getActiveUserFromSeedSessionCache = (userInput, seedSession) => {
@@ -197,15 +197,15 @@ module.exports = {
   camelToKebabCase,
   kebabToCamelCase,
   parseMetadataIntoObject,
-  getUserProvidedOrRandomTrackFile,
+  getUserProvidedOrRandomAgreementFile,
   getUserProvidedOrRandomImageFile,
-  getUserProvidedOrRandomTrackMetadata,
+  getUserProvidedOrRandomAgreementMetadata,
   getProgressCallback,
   parseSeedActionRepeatCount,
   passThroughUserInput,
   getRandomUserIdFromCurrentSeedSessionCache,
-  getRandomTrackIdFromCurrentSeedSessionCache,
-  addTrackToSeedSessionCache,
+  getRandomAgreementIdFromCurrentSeedSessionCache,
+  addAgreementToSeedSessionCache,
   getActiveUserFromSeedSessionCache,
   getRandomString
 }

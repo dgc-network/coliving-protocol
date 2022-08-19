@@ -885,7 +885,7 @@ async fn failure_only_aao_attestations() {
         ..
     } = setup_test_environment().await;
 
-    // Add three more oracles, keeping track of them in a vec
+    // Add three more oracles, keeping agreement of them in a vec
     let mut oracles = vec![(oracle_derived_address, oracle_priv_key)];
 
     for _ in 0..3 {

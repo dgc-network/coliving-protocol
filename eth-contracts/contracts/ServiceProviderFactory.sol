@@ -78,7 +78,7 @@ contract ServiceProviderFactory is InitializableV2 {
     mapping(address => ServiceProviderDetails) private spDetails;
 
     /// @dev - Uniquely assigned serviceProvider ID, incremented for each service type
-    /// @notice - Keeps track of the total number of services registered regardless of
+    /// @notice - Keeps agreement of the total number of services registered regardless of
     ///           whether some have been deregistered since
     mapping(bytes32 => uint256) private serviceProviderTypeIDs;
 
@@ -754,7 +754,7 @@ contract ServiceProviderFactory is InitializableV2 {
             msg.sender == delegateManagerAddress,
             "ServiceProviderFactory: only callable by DelegateManager"
         );
-        // Update SP tracked total
+        // Update SP agreemented total
         spDetails[_serviceProvider].deployerStake = _amount;
         _updateServiceProviderBoundStatus(_serviceProvider);
     }

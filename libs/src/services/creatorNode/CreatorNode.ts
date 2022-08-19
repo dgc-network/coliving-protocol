@@ -1,10 +1,10 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios'
 import FormData from 'form-data'
 import retry from 'async-retry'
-import { TrackMetadata, Utils, uuid } from '../../utils'
+import { AgreementMetadata, Utils, uuid } from '../../utils'
 import {
   userSchemaType,
-  trackSchemaType,
+  agreementSchemaType,
   Schemas
 } from '../schemaValidator/SchemaValidator'
 import type { Web3Manager } from '../web3Manager'
@@ -12,7 +12,7 @@ import type { CurrentUser, UserStateManager } from '../../userStateManager'
 
 const { wait } = Utils
 
-const MAX_TRACK_TRANSCODE_TIMEOUT = 3600000 // 1 hour
+const MAX_AGREEMENT_TRANSCODE_TIMEOUT = 3600000 // 1 hour
 const POLL_STATUS_INTERVAL = 3000 // 3s
 const BROWSER_SESSION_REFRESH_TIMEOUT = 604800000 // 1 week
 
@@ -111,14 +111,14 @@ export class CreatorNode {
   /**
    * Checks if a download is available from provided creator node endpoints
    * @param endpoints creator node endpoints
-   * @param trackId
+   * @param agreementId
    */
-  static async checkIfDownloadAvailable(endpoints: string, trackId: number) {
+  static async checkIfDownloadAvailable(endpoints: string, agreementId: number) {
     const primary = CreatorNode.getPrimary(endpoints)
     if (primary) {
       const req: AxiosRequestConfig = {
         baseURL: primary,
-        url: `/tracks/download_status/${trackId}`,
+        url: `/agreements/download_status/${agreementId}`,
         method: 'get'
       }
       const { data: body } = await axios(req)
@@ -255,7 +255,7 @@ export class CreatorNode {
    * Uploads creator content to a creator node
    * @param metadata the creator metadata
    */
-  async uploadCreatorContent(metadata: TrackMetadata, blockNumber = null) {
+  async uploadCreatorContent(metadata: AgreementMetadata, blockNumber = null) {
     // this does the actual validation before sending to the creator node
     // if validation fails, validate() will throw an error
     try {
@@ -301,59 +301,59 @@ export class CreatorNode {
   }
 
   /**
-   * Uploads a track (including live and image content) to a creator node
-   * @param trackFile the live content
+   * Uploads a agreement (including live and image content) to a creator node
+   * @param agreementFile the live content
    * @param coverArtFile the image content
-   * @param metadata the metadata for the track
+   * @param metadata the metadata for the agreement
    * @param onProgress an optional on progress callback
    */
-  async uploadTrackContent(
-    trackFile: File,
+  async uploadAgreementContent(
+    agreementFile: File,
     coverArtFile: File,
-    metadata: TrackMetadata,
+    metadata: AgreementMetadata,
     onProgress: ProgressCB = () => {}
   ) {
     let loadedImageBytes = 0
-    let loadedTrackBytes = 0
+    let loadedAgreementBytes = 0
     let totalImageBytes = 0
-    let totalTrackBytes = 0
+    let totalAgreementBytes = 0
     const onImageProgress: ProgressCB = (loaded, total) => {
       loadedImageBytes = loaded
       if (!totalImageBytes) totalImageBytes += total
-      if (totalImageBytes && totalTrackBytes) {
+      if (totalImageBytes && totalAgreementBytes) {
         onProgress(
-          loadedImageBytes + loadedTrackBytes,
-          totalImageBytes + totalTrackBytes
+          loadedImageBytes + loadedAgreementBytes,
+          totalImageBytes + totalAgreementBytes
         )
       }
     }
-    const onTrackProgress: ProgressCB = (loaded, total) => {
-      loadedTrackBytes = loaded
-      if (!totalTrackBytes) totalTrackBytes += total
-      if ((!coverArtFile || totalImageBytes) && totalTrackBytes) {
+    const onAgreementProgress: ProgressCB = (loaded, total) => {
+      loadedAgreementBytes = loaded
+      if (!totalAgreementBytes) totalAgreementBytes += total
+      if ((!coverArtFile || totalImageBytes) && totalAgreementBytes) {
         onProgress(
-          loadedImageBytes + loadedTrackBytes,
-          totalImageBytes + totalTrackBytes
+          loadedImageBytes + loadedAgreementBytes,
+          totalImageBytes + totalAgreementBytes
         )
       }
     }
 
     const uploadPromises = []
-    uploadPromises.push(this.uploadTrackAudio(trackFile, onTrackProgress))
+    uploadPromises.push(this.uploadAgreementAudio(agreementFile, onAgreementProgress))
     if (coverArtFile)
       uploadPromises.push(this.uploadImage(coverArtFile, true, onImageProgress))
 
-    const [trackContentResp, coverArtResp] = await Promise.all(uploadPromises)
-    metadata.track_segments = trackContentResp.track_segments
+    const [agreementContentResp, coverArtResp] = await Promise.all(uploadPromises)
+    metadata.agreement_segments = agreementContentResp.agreement_segments
     if (metadata.download?.is_downloadable) {
-      metadata.download.cid = trackContentResp.transcodedTrackCID
+      metadata.download.cid = agreementContentResp.transcodedAgreementCID
     }
 
-    const sourceFile = trackContentResp.source_file
+    const sourceFile = agreementContentResp.source_file
     if (!sourceFile) {
       throw new Error(
         `Invalid or missing sourceFile in response: ${JSON.stringify(
-          trackContentResp
+          agreementContentResp
         )}`
       )
     }
@@ -361,31 +361,31 @@ export class CreatorNode {
     if (coverArtResp) {
       metadata.cover_art_sizes = coverArtResp.dirCID
     }
-    // Creates new track entity on creator node, making track's metadata available
-    // @returns {Object} {cid: CID of track metadata, id: id of track to be used with associate function}
-    const metadataResp = await this.uploadTrackMetadata(metadata, sourceFile)
-    return { ...metadataResp, ...trackContentResp }
+    // Creates new agreement entity on creator node, making agreement's metadata available
+    // @returns {Object} {cid: CID of agreement metadata, id: id of agreement to be used with associate function}
+    const metadataResp = await this.uploadAgreementMetadata(metadata, sourceFile)
+    return { ...metadataResp, ...agreementContentResp }
   }
 
   /**
-   * Uploads track metadata to a creator node
-   * The metadata object must include a `track_id` field or a
-   * source file must be provided (returned from uploading track content).
+   * Uploads agreement metadata to a creator node
+   * The metadata object must include a `agreement_id` field or a
+   * source file must be provided (returned from uploading agreement content).
    * @param metadata
    * @param sourceFile
    */
-  async uploadTrackMetadata(metadata: TrackMetadata, sourceFile?: string) {
+  async uploadAgreementMetadata(metadata: AgreementMetadata, sourceFile?: string) {
     // this does the actual validation before sending to the creator node
     // if validation fails, validate() will throw an error
     try {
-      this.schemas[trackSchemaType].validate?.(metadata)
+      this.schemas[agreementSchemaType].validate?.(metadata)
     } catch (e) {
-      console.error('Error validating track metadata', e)
+      console.error('Error validating agreement metadata', e)
     }
 
     const { data: body } = await this._makeRequest(
       {
-        url: '/tracks/metadata',
+        url: '/agreements/metadata',
         method: 'post',
         data: {
           metadata,
@@ -398,27 +398,27 @@ export class CreatorNode {
   }
 
   /**
-   * Creates a track on the content node, associating track id with file content
-   * @param colivingTrackId returned by track creation on-blockchain
+   * Creates a agreement on the content node, associating agreement id with file content
+   * @param colivingAgreementId returned by agreement creation on-blockchain
    * @param metadataFileUUID unique ID for metadata file
    * @param blockNumber
-   * @param transcodedTrackUUID the CID for the transcoded master if this is a first-time upload
+   * @param transcodedAgreementUUID the CID for the transcoded master if this is a first-time upload
    */
-  async associateTrack(
-    colivingTrackId: number,
+  async associateAgreement(
+    colivingAgreementId: number,
     metadataFileUUID: string,
     blockNumber: number,
-    transcodedTrackUUID?: string
+    transcodedAgreementUUID?: string
   ) {
     this.maxBlockNumber = Math.max(this.maxBlockNumber, blockNumber)
     await this._makeRequest({
-      url: '/tracks',
+      url: '/agreements',
       method: 'post',
       data: {
-        blockchainTrackId: colivingTrackId,
+        blockchainAgreementId: colivingAgreementId,
         metadataFileUUID,
         blockNumber: this.maxBlockNumber,
-        transcodedTrackUUID
+        transcodedAgreementUUID
       }
     })
   }
@@ -448,43 +448,43 @@ export class CreatorNode {
   }
 
   /**
-   * @param file track to upload
+   * @param file agreement to upload
    * @param onProgress called with loaded bytes and total bytes
    * @return response body
    */
-  async uploadTrackAudio(file: File, onProgress: ProgressCB) {
-    return await this.handleAsyncTrackUpload(file, onProgress)
+  async uploadAgreementAudio(file: File, onProgress: ProgressCB) {
+    return await this.handleAsyncAgreementUpload(file, onProgress)
   }
 
-  async handleAsyncTrackUpload(file: File, onProgress: ProgressCB) {
+  async handleAsyncAgreementUpload(file: File, onProgress: ProgressCB) {
     const {
       data: { uuid }
-    } = await this._uploadFile(file, '/track_content_async', onProgress)
+    } = await this._uploadFile(file, '/agreement_content_async', onProgress)
     return await this.pollProcessingStatus(uuid)
   }
 
   async pollProcessingStatus(uuid: string) {
     const route = this.contentNodeEndpoint + '/async_processing_status'
     const start = Date.now()
-    while (Date.now() - start < MAX_TRACK_TRANSCODE_TIMEOUT) {
+    while (Date.now() - start < MAX_AGREEMENT_TRANSCODE_TIMEOUT) {
       try {
-        const { status, resp } = await this.getTrackContentProcessingStatus(
+        const { status, resp } = await this.getAgreementContentProcessingStatus(
           uuid
         )
         // Should have a body structure of:
-        //   { transcodedTrackCID, transcodedTrackUUID, track_segments, source_file }
+        //   { transcodedAgreementCID, transcodedAgreementUUID, agreement_segments, source_file }
         if (status && status === 'DONE') return resp
         if (status && status === 'FAILED') {
           await this._handleErrorHelper(
             new Error(
-              `Track content async upload failed: uuid=${uuid}, error=${resp}`
+              `Agreement content async upload failed: uuid=${uuid}, error=${resp}`
             ),
             route,
             uuid
           )
         }
       } catch (e) {
-        // Catch errors here and swallow them. Errors don't signify that the track
+        // Catch errors here and swallow them. Errors don't signify that the agreement
         // upload has failed, just that we were unable to establish a connection to the node.
         // This allows polling to retry
         console.error(`Failed to poll for processing status, ${e}`)
@@ -493,10 +493,10 @@ export class CreatorNode {
       await wait(POLL_STATUS_INTERVAL)
     }
 
-    // TODO: update MAX_TRACK_TRANSCODE_TIMEOUT if generalizing this method
+    // TODO: update MAX_AGREEMENT_TRANSCODE_TIMEOUT if generalizing this method
     await this._handleErrorHelper(
       new Error(
-        `Track content async upload took over ${MAX_TRACK_TRANSCODE_TIMEOUT}ms. uuid=${uuid}`
+        `Agreement content async upload took over ${MAX_AGREEMENT_TRANSCODE_TIMEOUT}ms. uuid=${uuid}`
       ),
       route,
       uuid
@@ -505,10 +505,10 @@ export class CreatorNode {
 
   /**
    * Gets the task progress given the task type and uuid associated with the task
-   * @param uuid the uuid of the track transcoding task
+   * @param uuid the uuid of the agreement transcoding task
    * @returns the status, and the success or failed response if the task is complete
    */
-  async getTrackContentProcessingStatus(uuid: string) {
+  async getAgreementContentProcessingStatus(uuid: string) {
     const { data: body } = await this._makeRequest({
       url: '/async_processing_status',
       params: {
@@ -540,11 +540,11 @@ export class CreatorNode {
       return {
         status,
         userBlockNumber: user.blocknumber,
-        trackBlockNumber: user.track_blocknumber,
+        agreementBlockNumber: user.agreement_blocknumber,
         // Whether or not the endpoint is behind in syncing
         isBehind:
           status.latestBlockNumber <
-          Math.max(user.blocknumber!, user.track_blocknumber!),
+          Math.max(user.blocknumber!, user.agreement_blocknumber!),
         isConfigured: status.latestBlockNumber !== -1
       }
     }
@@ -895,7 +895,7 @@ export class CreatorNode {
   /**
    * Uploads a file to the connected creator node.
    * @param file
-   * @param route route to handle upload (image_upload, track_upload, etc.)
+   * @param route route to handle upload (image_upload, agreement_upload, etc.)
    * @param onProgress called with loaded bytes and total bytes
    * @param extraFormDataOptions extra FormData fields passed to the upload
    * @param retries max number of attempts made for axios request to upload file to CN before erroring

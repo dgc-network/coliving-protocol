@@ -13,7 +13,7 @@ from src.models.social.repost import RepostType
 from src.models.social.save import Save, SaveType
 from src.queries import response_name_constants
 from src.queries.get_unpopulated_playlists import get_unpopulated_playlists
-from src.queries.get_unpopulated_tracks import get_unpopulated_tracks
+from src.queries.get_unpopulated_agreements import get_unpopulated_agreements
 from src.queries.get_unpopulated_users import get_unpopulated_users
 from src.queries.query_helpers import (
     get_current_user_id,
@@ -21,7 +21,7 @@ from src.queries.query_helpers import (
     get_users_by_id,
     get_users_ids,
     populate_playlist_metadata,
-    populate_track_metadata,
+    populate_agreement_metadata,
     populate_user_metadata,
 )
 from src.queries.search_config import (
@@ -38,7 +38,7 @@ from src.queries.search_config import (
     user_name_weight,
 )
 from src.queries.search_es import search_es_full, search_tags_es
-from src.queries.search_track_tags import search_track_tags
+from src.queries.search_agreement_tags import search_agreement_tags
 from src.queries.search_user_tags import search_user_tags
 from src.utils.db_session import get_db_read_replica
 
@@ -51,7 +51,7 @@ bp = Blueprint("search_tags", __name__)
 
 class SearchKind(Enum):
     all = 1
-    tracks = 2
+    agreements = 2
     users = 3
     playlists = 4
     albums = 5
@@ -85,7 +85,7 @@ def search_tags():
         user_tag_count = "2"
 
     kind = request.args.get("kind", type=str, default="all")
-    validSearchKinds = [SearchKind.all, SearchKind.tracks, SearchKind.users]
+    validSearchKinds = [SearchKind.all, SearchKind.agreements, SearchKind.users]
     try:
         searchKind = SearchKind[kind]
         if searchKind not in validSearchKinds:
@@ -106,8 +106,8 @@ def search_tags():
 
     db = get_db_read_replica()
     with db.scoped_session() as session:
-        if searchKind in [SearchKind.all, SearchKind.tracks]:
-            results["tracks"] = search_track_tags(
+        if searchKind in [SearchKind.all, SearchKind.agreements]:
+            results["agreements"] = search_agreement_tags(
                 session,
                 {
                     "search_str": search_str,
@@ -131,29 +131,29 @@ def search_tags():
 
     # Add personalized results for a given user
     if current_user_id:
-        if searchKind in [SearchKind.all, SearchKind.tracks]:
-            # Query saved tracks for the current user that contain this tag
-            track_ids = [track["track_id"] for track in results["tracks"]]
+        if searchKind in [SearchKind.all, SearchKind.agreements]:
+            # Query saved agreements for the current user that contain this tag
+            agreement_ids = [agreement["agreement_id"] for agreement in results["agreements"]]
 
             saves_query = (
                 session.query(Save.save_item_id)
                 .filter(
                     Save.is_current == True,
                     Save.is_delete == False,
-                    Save.save_type == SaveType.track,
+                    Save.save_type == SaveType.agreement,
                     Save.user_id == current_user_id,
-                    Save.save_item_id.in_(track_ids),
+                    Save.save_item_id.in_(agreement_ids),
                 )
                 .all()
             )
-            saved_track_ids = {i[0] for i in saves_query}
-            saved_tracks = list(
+            saved_agreement_ids = {i[0] for i in saves_query}
+            saved_agreements = list(
                 filter(
-                    lambda track: track["track_id"] in saved_track_ids,
-                    results["tracks"],
+                    lambda agreement: agreement["agreement_id"] in saved_agreement_ids,
+                    results["agreements"],
                 )
             )
-            results["saved_tracks"] = saved_tracks
+            results["saved_agreements"] = saved_agreements
 
         if searchKind in [SearchKind.all, SearchKind.users]:
             # Query followed users that have referenced this tag
@@ -206,8 +206,8 @@ def perform_search_query(db, search_type, args):
         only_downloadable = args.get("only_downloadable")
 
         results = None
-        if search_type == "tracks":
-            results = track_search_query(
+        if search_type == "agreements":
+            results = agreement_search_query(
                 session,
                 search_str,
                 limit,
@@ -263,9 +263,9 @@ def perform_search_query(db, search_type, args):
 # - de-duplicates object_ids with multiple hits, returning highest match
 #
 # queries can be called for public data, or personalized data
-# - personalized data will return only saved tracks, saved playlists, or followed users given current_user_id
+# - personalized data will return only saved agreements, saved playlists, or followed users given current_user_id
 #
-# @devnote - track_ids argument should match tracks argument
+# @devnote - agreement_ids argument should match agreements argument
 
 
 def search(args):
@@ -329,8 +329,8 @@ def search(args):
                 futures.append(future)
                 futures_map[future] = search_type
 
-            if searchKind in [SearchKind.all, SearchKind.tracks]:
-                submit_and_add("tracks")
+            if searchKind in [SearchKind.all, SearchKind.agreements]:
+                submit_and_add("agreements")
 
             if searchKind in [SearchKind.all, SearchKind.users]:
                 submit_and_add("users")
@@ -346,9 +346,9 @@ def search(args):
 
                 # Add to the final results
                 # Add to user_ids
-                if future_type == "tracks":
-                    results["tracks"] = search_result["all"]
-                    results["saved_tracks"] = search_result["saved"]
+                if future_type == "agreements":
+                    results["agreements"] = search_result["all"]
+                    results["saved_agreements"] = search_result["saved"]
                 elif future_type == "users":
                     results["users"] = search_result["all"]
                     results["followed_users"] = search_result["followed"]
@@ -378,7 +378,7 @@ def search(args):
     return extend_search(results)
 
 
-def track_search_query(
+def agreement_search_query(
     session,
     search_str,
     limit,
@@ -391,10 +391,10 @@ def track_search_query(
     res = sqlalchemy.text(
         # pylint: disable=C0301
         f"""
-        select track_id, b.balance, b.associated_wallets_balance, u.is_saved from (
-            select distinct on (owner_id) track_id, owner_id, is_saved, total_score
+        select agreement_id, b.balance, b.associated_wallets_balance, u.is_saved from (
+            select distinct on (owner_id) agreement_id, owner_id, is_saved, total_score
             from (
-                select track_id, owner_id, is_saved,
+                select agreement_id, owner_id, is_saved,
                     (
                         (:similarity_weight * sum(score)) +
                         (:title_weight * similarity(coalesce(title, ''), query)) +
@@ -411,25 +411,25 @@ def track_search_query(
                     ) as total_score
                 from (
                     select
-                        d."track_id" as track_id, d."word" as word, similarity(d."word", :query) as score,
-                        d."track_title" as title, :query as query, d."user_name" as user_name, d."handle" as handle,
+                        d."agreement_id" as agreement_id, d."word" as word, similarity(d."word", :query) as score,
+                        d."agreement_title" as title, :query as query, d."user_name" as user_name, d."handle" as handle,
                         d."repost_count" as repost_count, d."owner_id" as owner_id
                         {
                             ',s."user_id" is not null as is_saved'
                             if current_user_id
                             else ", false as is_saved"
                         }
-                    from "track_lexeme_dict" d
+                    from "agreement_lexeme_dict" d
                     {
-                        "left outer join (select save_item_id, user_id from saves where saves.save_type = 'track' " +
+                        "left outer join (select save_item_id, user_id from saves where saves.save_type = 'agreement' " +
                         "and saves.is_current = true " +
                         "and saves.is_delete = false and saves.user_id = :current_user_id )" +
-                        " s on s.save_item_id = d.track_id"
+                        " s on s.save_item_id = d.agreement_id"
                         if current_user_id
                         else ""
                     }
                     {
-                        'inner join "tracks" t on t.track_id = d.track_id'
+                        'inner join "agreements" t on t.agreement_id = d.agreement_id'
                         if only_downloadable
                         else ""
                     }
@@ -440,7 +440,7 @@ def track_search_query(
                         else ""
                     }
                 ) as results
-                group by track_id, title, query, user_name, handle, repost_count, owner_id, is_saved
+                group by agreement_id, title, query, user_name, handle, repost_count, owner_id, is_saved
             ) as results2
             order by owner_id, total_score desc
         ) as u left join user_balances b on u.owner_id = b.user_id
@@ -450,7 +450,7 @@ def track_search_query(
         """
     )
 
-    track_result_proxy = session.execute(
+    agreement_result_proxy = session.execute(
         res,
         params={
             "query": search_str,
@@ -468,52 +468,52 @@ def track_search_query(
         },
     )
 
-    track_data = track_result_proxy.fetchall()
-    track_cols = track_result_proxy.keys()
+    agreement_data = agreement_result_proxy.fetchall()
+    agreement_cols = agreement_result_proxy.keys()
 
-    # track_ids is list of tuples - simplify to 1-D list
-    track_ids = [track[track_cols.index("track_id")] for track in track_data]
-    saved_tracks = {
-        track[0] for track in track_data if track[track_cols.index("is_saved")]
+    # agreement_ids is list of tuples - simplify to 1-D list
+    agreement_ids = [agreement[agreement_cols.index("agreement_id")] for agreement in agreement_data]
+    saved_agreements = {
+        agreement[0] for agreement in agreement_data if agreement[agreement_cols.index("is_saved")]
     }
 
-    tracks = get_unpopulated_tracks(session, track_ids, True)
+    agreements = get_unpopulated_agreements(session, agreement_ids, True)
 
-    # TODO: Populate track metadata should be sped up to be able to be
+    # TODO: Populate agreement metadata should be sped up to be able to be
     # used in search autocomplete as that'll give us better results.
     if is_auto_complete:
-        # fetch users for tracks
-        track_owner_ids = list(map(lambda track: track["owner_id"], tracks))
-        users = get_unpopulated_users(session, track_owner_ids)
+        # fetch users for agreements
+        agreement_owner_ids = list(map(lambda agreement: agreement["owner_id"], agreements))
+        users = get_unpopulated_users(session, agreement_owner_ids)
         users_dict = {user["user_id"]: user for user in users}
 
-        # attach user objects to track objects
-        for i, track in enumerate(tracks):
-            user = users_dict[track["owner_id"]]
+        # attach user objects to agreement objects
+        for i, agreement in enumerate(agreements):
+            user = users_dict[agreement["owner_id"]]
             # Add user balance
-            balance = track_data[i][1]
-            associated_balance = track_data[i][2]
+            balance = agreement_data[i][1]
+            associated_balance = agreement_data[i][2]
             user[response_name_constants.balance] = balance
             user[
                 response_name_constants.associated_wallets_balance
             ] = associated_balance
-            track["user"] = user
+            agreement["user"] = user
     else:
-        # bundle peripheral info into track results
-        tracks = populate_track_metadata(session, track_ids, tracks, current_user_id)
+        # bundle peripheral info into agreement results
+        agreements = populate_agreement_metadata(session, agreement_ids, agreements, current_user_id)
 
-    # Preserve order from track_ids above
-    tracks_map = {}
-    for t in tracks:
-        tracks_map[t["track_id"]] = t
-    tracks = [tracks_map[track_id] for track_id in track_ids]
+    # Preserve order from agreement_ids above
+    agreements_map = {}
+    for t in agreements:
+        agreements_map[t["agreement_id"]] = t
+    agreements = [agreements_map[agreement_id] for agreement_id in agreement_ids]
 
-    tracks_response = {
-        "all": tracks,
-        "saved": list(filter(lambda track: track["track_id"] in saved_tracks, tracks)),
+    agreements_response = {
+        "all": agreements,
+        "saved": list(filter(lambda agreement: agreement["agreement_id"] in saved_agreements, agreements)),
     }
 
-    return tracks_response
+    return agreements_response
 
 
 def user_search_query(

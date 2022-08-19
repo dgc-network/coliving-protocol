@@ -6,12 +6,12 @@ const {
 const {
   parseMetadataIntoObject,
   getProgressCallback,
-  getUserProvidedOrRandomTrackFile,
+  getUserProvidedOrRandomAgreementFile,
   getUserProvidedOrRandomImageFile,
-  getUserProvidedOrRandomTrackMetadata,
+  getUserProvidedOrRandomAgreementMetadata,
   getRandomUserIdFromCurrentSeedSessionCache,
-  getRandomTrackIdFromCurrentSeedSessionCache,
-  addTrackToSeedSessionCache,
+  getRandomAgreementIdFromCurrentSeedSessionCache,
+  addAgreementToSeedSessionCache,
   getActiveUserFromSeedSessionCache,
   getRandomString
 } = SeedUtils
@@ -48,16 +48,16 @@ Notes on params:
 */
 
 const CLI_TO_COMMAND_MAP = {
-    'upload-track': {
-      api: 'Track',
-      description: 'upload track with dummy live and cover art file',
-      method: 'uploadTrack',
+    'upload-agreement': {
+      api: 'Agreement',
+      description: 'upload agreement with dummy live and cover art file',
+      method: 'uploadAgreement',
       params: [
         {
-          name: 'trackFile',
-          description: 'path to track file on local FS',
+          name: 'agreementFile',
+          description: 'path to agreement file on local FS',
           userInputHandler: fs.ensureFileSync,
-          defaultHandler: getUserProvidedOrRandomTrackFile
+          defaultHandler: getUserProvidedOrRandomAgreementFile
         },
         {
           name: 'coverArtFile',
@@ -67,9 +67,9 @@ const CLI_TO_COMMAND_MAP = {
         },
         {
           name: 'metadata',
-          description: 'metadata for track in comma-separated string',
+          description: 'metadata for agreement in comma-separated string',
           userInputHandler: parseMetadataIntoObject,
-          defaultHandler: getUserProvidedOrRandomTrackMetadata,
+          defaultHandler: getUserProvidedOrRandomAgreementMetadata,
         },
         {
           name: 'onProgress',
@@ -77,7 +77,7 @@ const CLI_TO_COMMAND_MAP = {
           defaultHandler: getProgressCallback
         }
       ],
-      onSuccess: addTrackToSeedSessionCache
+      onSuccess: addAgreementToSeedSessionCache
     },
     // below is the only API not working right now - failing with tx rejection 'caller does not own userId'
     // 'update-user': {
@@ -124,29 +124,29 @@ const CLI_TO_COMMAND_MAP = {
         }
       ]
     },
-    'repost-track': {
-      api: 'Track',
-      description: 'add track repost by user',
-      method: 'addTrackRepost',
+    'repost-agreement': {
+      api: 'Agreement',
+      description: 'add agreement repost by user',
+      method: 'addAgreementRepost',
       params: [
         {
-          name: 'trackId',
-          description: 'track ID of track receiving the repost',
+          name: 'agreementId',
+          description: 'agreement ID of agreement receiving the repost',
           userInputHandler: Number,
-          defaultHandler: getRandomTrackIdFromCurrentSeedSessionCache
+          defaultHandler: getRandomAgreementIdFromCurrentSeedSessionCache
         }
       ]
     },
-    'favorite-track': {
-      api: 'Track',
-      description: 'add track favorite/save by user',
-      method: 'addTrackSave',
+    'favorite-agreement': {
+      api: 'Agreement',
+      description: 'add agreement favorite/save by user',
+      method: 'addAgreementSave',
       params: [
         {
-          name: 'trackId',
-          description: 'track ID of track receiving the favorite',
+          name: 'agreementId',
+          description: 'agreement ID of agreement receiving the favorite',
           userInputHandler: Number,
-          defaultHandler: getRandomTrackIdFromCurrentSeedSessionCache
+          defaultHandler: getRandomAgreementIdFromCurrentSeedSessionCache
         }
       ]
     },
@@ -179,25 +179,25 @@ const CLI_TO_COMMAND_MAP = {
           defaultHandler: () => false
         },
         {
-          name: 'trackIds',
-          description: 'comma-separated list of track IDs to associate with the playlist - example: 5,6',
+          name: 'agreementIds',
+          description: 'comma-separated list of agreement IDs to associate with the playlist - example: 5,6',
           userInputHandler: userInput => userInput.split(',').map(Number)
         }
       ]
     },
-    'add-playlist-track': {
+    'add-playlist-agreement': {
       api: 'Playlist',
-      description: 'add track to playlist (must be owned by user ID passed in as active user)',
-      method: 'addPlaylistTrack',
+      description: 'add agreement to playlist (must be owned by user ID passed in as active user)',
+      method: 'addPlaylistAgreement',
       params: [
         {
           name: 'playlistId',
-          description: 'ID of playlist to add track to (must already exist)',
+          description: 'ID of playlist to add agreement to (must already exist)',
           userInputHandler: Number
         },
         {
-          name: 'trackId',
-          description: 'ID of track to add',
+          name: 'agreementId',
+          description: 'ID of agreement to add',
           userInputHandler: Number
         }
       ]

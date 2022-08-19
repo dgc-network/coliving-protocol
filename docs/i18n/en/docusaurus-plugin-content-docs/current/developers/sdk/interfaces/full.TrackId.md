@@ -1,15 +1,15 @@
 ---
-id: "full.TrackId"
-title: "Interface: TrackId"
-sidebar_label: "TrackId"
+id: "full.AgreementId"
+title: "Interface: AgreementId"
+sidebar_label: "AgreementId"
 custom_edit_url: null
 ---
 
-[full](../namespaces/full.md).TrackId
+[full](../namespaces/full.md).AgreementId
 
 **`export`**
 
-**`interface`** TrackId
+**`interface`** AgreementId
 
 ## Properties
 
@@ -17,4 +17,4 @@ custom_edit_url: null
 
  **id**: `string`
 
-**`memberof`** TrackId
+**`memberof`** AgreementId

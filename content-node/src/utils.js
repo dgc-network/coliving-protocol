@@ -44,7 +44,7 @@ class Utils {
  * This function does not do further validation since image_upload provides remaining guarantees
  */
 async function validateStateForImageDirCIDAndReturnFileUUID(req, imageDirCID) {
-  // This handles case where a user/track metadata obj contains no image CID
+  // This handles case where a user/agreement metadata obj contains no image CID
   if (!imageDirCID) {
     return null
   }
@@ -108,7 +108,7 @@ async function validateStateForImageDirCIDAndReturnFileUUID(req, imageDirCID) {
  * @param {String} cid content hash of the file
  * @param {Object} logger logger object
  * @param {Object} libs libs instance
- * @param {Integer?} trackId optional trackId that corresponds to the cid, see file_lookup route for more info
+ * @param {Integer?} agreementId optional agreementId that corresponds to the cid, see file_lookup route for more info
  * @param {Array?} excludeList optional array of content nodes to exclude in network wide search
  * @returns {Boolean} returns true if the file was found in the network
  */
@@ -117,7 +117,7 @@ async function findCIDInNetwork(
   cid,
   logger,
   libs,
-  trackId = null,
+  agreementId = null,
   excludeList = []
 ) {
   let found = false
@@ -153,7 +153,7 @@ async function findCIDInNetwork(
           timestamp,
           delegateWallet,
           signature,
-          trackId
+          agreementId
         },
         responseType: 'stream',
         timeout: 1000
@@ -328,7 +328,7 @@ async function runShellCommand(command, args, logger) {
 }
 
 /**
- * A current node should handle a track transcode if there is enough room in the TranscodingQueue to accept more jobs
+ * A current node should handle a agreement transcode if there is enough room in the TranscodingQueue to accept more jobs
  *
  * If there is not enough room, if the spID is not set after app init, then the current node should still accept the transcode task
  * @param {Object} param
@@ -343,7 +343,7 @@ function currentNodeShouldHandleTranscode({
   // If the TranscodingQueue is available, let current node handle transcode
   if (transcodingQueueCanAcceptMoreJobs) return true
 
-  // Else, if spID is not initialized, the track cannot be handed off to another node to transcode.
+  // Else, if spID is not initialized, the agreement cannot be handed off to another node to transcode.
   // Continue with the upload on the current node.
   const currentNodeShouldHandleTranscode = !Number.isInteger(spID)
 

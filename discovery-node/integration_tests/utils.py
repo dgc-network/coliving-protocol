@@ -13,11 +13,11 @@ from src.models.social.hourly_play_counts import HourlyPlayCount
 from src.models.social.play import Play
 from src.models.social.repost import Repost
 from src.models.social.save import Save
-from src.models.tracks.aggregate_track import AggregateTrack
-from src.models.tracks.remix import Remix
-from src.models.tracks.stem import Stem
-from src.models.tracks.track import Track
-from src.models.tracks.track_route import TrackRoute
+from src.models.agreements.aggregate_agreement import AggregateAgreement
+from src.models.agreements.remix import Remix
+from src.models.agreements.stem import Stem
+from src.models.agreements.agreement import Agreement
+from src.models.agreements.agreement_route import AgreementRoute
 from src.models.users.aggregate_user import AggregateUser
 from src.models.users.associated_wallet import AssociatedWallet, WalletChain
 from src.models.users.user import User
@@ -78,11 +78,11 @@ def populate_mock_db_blocks(db, min, max):
 
 def populate_mock_db(db, entities, block_offset=None):
     """
-    Helper function to populate the mock DB with tracks, users, plays, and follows
+    Helper function to populate the mock DB with agreements, users, plays, and follows
 
     Args:
         db - sqlalchemy db session
-        entities - dict of keys tracks, users, plays of arrays of metadata
+        entities - dict of keys agreements, users, plays of arrays of metadata
     """
     with db.scoped_session() as session:
         # check if blocknumber already exists for longer running tests
@@ -93,20 +93,20 @@ def populate_mock_db(db, entities, block_offset=None):
             else:
                 block_offset = 0
 
-        tracks = entities.get("tracks", [])
+        agreements = entities.get("agreements", [])
         playlists = entities.get("playlists", [])
         users = entities.get("users", [])
         follows = entities.get("follows", [])
         reposts = entities.get("reposts", [])
         saves = entities.get("saves", [])
-        track_routes = entities.get("track_routes", [])
+        agreement_routes = entities.get("agreement_routes", [])
         remixes = entities.get("remixes", [])
         stems = entities.get("stems", [])
         challenges = entities.get("challenges", [])
         user_challenges = entities.get("user_challenges", [])
         plays = entities.get("plays", [])
         aggregate_plays = entities.get("aggregate_plays", [])
-        aggregate_track = entities.get("aggregate_track", [])
+        aggregate_agreement = entities.get("aggregate_agreement", [])
         aggregate_monthly_plays = entities.get("aggregate_monthly_plays", [])
         aggregate_user = entities.get("aggregate_user", [])
         indexing_checkpoints = entities.get("indexing_checkpoints", [])
@@ -117,7 +117,7 @@ def populate_mock_db(db, entities, block_offset=None):
         ursm_content_nodes = entities.get("ursm_content_nodes", [])
 
         num_blocks = max(
-            len(tracks), len(users), len(follows), len(saves), len(reposts)
+            len(agreements), len(users), len(follows), len(saves), len(reposts)
         )
         for i in range(block_offset, block_offset + num_blocks):
             max_block = session.query(Block).filter(Block.number == i).first()
@@ -134,33 +134,33 @@ def populate_mock_db(db, entities, block_offset=None):
                 session.add(block)
                 session.flush()
 
-        for i, track_meta in enumerate(tracks):
-            track_id = track_meta.get("track_id", i)
+        for i, agreement_meta in enumerate(agreements):
+            agreement_id = agreement_meta.get("agreement_id", i)
 
-            # mark previous tracks as is_current = False
-            session.query(Track).filter(Track.is_current == True).filter(
-                Track.track_id == track_id
+            # mark previous agreements as is_current = False
+            session.query(Agreement).filter(Agreement.is_current == True).filter(
+                Agreement.agreement_id == agreement_id
             ).update({"is_current": False})
 
-            track = Track(
+            agreement = Agreement(
                 blockhash=hex(i + block_offset),
                 blocknumber=i + block_offset,
-                txhash=track_meta.get("txhash", str(i + block_offset)),
-                track_id=track_id,
-                title=track_meta.get("title", f"track_{i}"),
-                is_current=track_meta.get("is_current", True),
-                is_delete=track_meta.get("is_delete", False),
-                owner_id=track_meta.get("owner_id", 1),
-                route_id=track_meta.get("route_id", ""),
-                track_segments=track_meta.get("track_segments", []),
-                tags=track_meta.get("tags", None),
-                genre=track_meta.get("genre", ""),
-                updated_at=track_meta.get("updated_at", datetime.now()),
-                created_at=track_meta.get("created_at", datetime.now()),
-                release_date=track_meta.get("release_date", None),
-                is_unlisted=track_meta.get("is_unlisted", False),
+                txhash=agreement_meta.get("txhash", str(i + block_offset)),
+                agreement_id=agreement_id,
+                title=agreement_meta.get("title", f"agreement_{i}"),
+                is_current=agreement_meta.get("is_current", True),
+                is_delete=agreement_meta.get("is_delete", False),
+                owner_id=agreement_meta.get("owner_id", 1),
+                route_id=agreement_meta.get("route_id", ""),
+                agreement_segments=agreement_meta.get("agreement_segments", []),
+                tags=agreement_meta.get("tags", None),
+                genre=agreement_meta.get("genre", ""),
+                updated_at=agreement_meta.get("updated_at", datetime.now()),
+                created_at=agreement_meta.get("created_at", datetime.now()),
+                release_date=agreement_meta.get("release_date", None),
+                is_unlisted=agreement_meta.get("is_unlisted", False),
             )
-            session.add(track)
+            session.add(agreement)
         for i, playlist_meta in enumerate(playlists):
             playlist = Playlist(
                 blockhash=hex(i + block_offset),
@@ -174,7 +174,7 @@ def populate_mock_db(db, entities, block_offset=None):
                 is_private=playlist_meta.get("is_private", False),
                 playlist_name=playlist_meta.get("playlist_name", f"playlist_{i}"),
                 playlist_contents=playlist_meta.get(
-                    "playlist_contents", {"track_ids": []}
+                    "playlist_contents", {"agreement_ids": []}
                 ),
                 playlist_image_multihash=playlist_meta.get(
                     "playlist_image_multihash", ""
@@ -237,7 +237,7 @@ def populate_mock_db(db, entities, block_offset=None):
                 txhash=repost_meta.get("txhash", str(i + block_offset)),
                 user_id=repost_meta.get("user_id", i + 1),
                 repost_item_id=repost_meta.get("repost_item_id", i),
-                repost_type=repost_meta.get("repost_type", "track"),
+                repost_type=repost_meta.get("repost_type", "agreement"),
                 is_current=repost_meta.get("is_current", True),
                 is_delete=repost_meta.get("is_delete", False),
                 created_at=repost_meta.get("created_at", datetime.now()),
@@ -250,7 +250,7 @@ def populate_mock_db(db, entities, block_offset=None):
                 txhash=save_meta.get("txhash", str(i + block_offset)),
                 user_id=save_meta.get("user_id", i + 1),
                 save_item_id=save_meta.get("save_item_id", i),
-                save_type=save_meta.get("save_type", "track"),
+                save_type=save_meta.get("save_type", "agreement"),
                 is_current=save_meta.get("is_current", True),
                 is_delete=save_meta.get("is_delete", False),
                 created_at=save_meta.get("created_at", datetime.now()),
@@ -277,13 +277,13 @@ def populate_mock_db(db, entities, block_offset=None):
             )
             session.add(aggregate_play)
 
-        for i, aggregate_track_meta in enumerate(aggregate_track):
-            aggregate_track = AggregateTrack(
-                track_id=aggregate_track_meta.get("track_id", i),
-                repost_count=aggregate_track_meta.get("repost_count", 0),
-                save_count=aggregate_track_meta.get("save_count", 0),
+        for i, aggregate_agreement_meta in enumerate(aggregate_agreement):
+            aggregate_agreement = AggregateAgreement(
+                agreement_id=aggregate_agreement_meta.get("agreement_id", i),
+                repost_count=aggregate_agreement_meta.get("repost_count", 0),
+                save_count=aggregate_agreement_meta.get("save_count", 0),
             )
-            session.add(aggregate_track)
+            session.add(aggregate_agreement)
 
         for i, aggregate_monthly_play_meta in enumerate(aggregate_monthly_plays):
             aggregate_monthly_play = AggregateMonthlyPlay(
@@ -296,13 +296,13 @@ def populate_mock_db(db, entities, block_offset=None):
         for i, aggregate_user_meta in enumerate(aggregate_user):
             user = AggregateUser(
                 user_id=aggregate_user_meta.get("user_id", i),
-                track_count=aggregate_user_meta.get("track_count", 0),
+                agreement_count=aggregate_user_meta.get("agreement_count", 0),
                 playlist_count=aggregate_user_meta.get("playlist_count", 0),
                 album_count=aggregate_user_meta.get("album_count", 0),
                 follower_count=aggregate_user_meta.get("follower_count", 0),
                 following_count=aggregate_user_meta.get("following_count", 0),
                 repost_count=aggregate_user_meta.get("repost_count", 0),
-                track_save_count=aggregate_user_meta.get("track_save_count", 0),
+                agreement_save_count=aggregate_user_meta.get("agreement_save_count", 0),
             )
             session.add(user)
 
@@ -335,14 +335,14 @@ def populate_mock_db(db, entities, block_offset=None):
                 )
                 session.add(indexing_checkpoint)
 
-        for i, route_meta in enumerate(track_routes):
-            route = TrackRoute(
+        for i, route_meta in enumerate(agreement_routes):
+            route = AgreementRoute(
                 slug=route_meta.get("slug", ""),
                 title_slug=route_meta.get("title_slug", ""),
                 blockhash=hex(i + block_offset),
                 blocknumber=route_meta.get("blocknumber", i + block_offset),
                 owner_id=route_meta.get("owner_id", i + 1),
-                track_id=route_meta.get("track_id", i + 1),
+                agreement_id=route_meta.get("agreement_id", i + 1),
                 is_current=route_meta.get("is_current", True),
                 txhash=route_meta.get("txhash", str(i + 1)),
                 collision_id=route_meta.get("collision_id", 0),
@@ -351,14 +351,14 @@ def populate_mock_db(db, entities, block_offset=None):
 
         for i, remix_meta in enumerate(remixes):
             remix = Remix(
-                parent_track_id=remix_meta.get("parent_track_id", i),
-                child_track_id=remix_meta.get("child_track_id", i + 1),
+                parent_agreement_id=remix_meta.get("parent_agreement_id", i),
+                child_agreement_id=remix_meta.get("child_agreement_id", i + 1),
             )
             session.add(remix)
         for i, stems_meta in enumerate(stems):
             stem = Stem(
-                parent_track_id=stems_meta.get("parent_track_id", i),
-                child_track_id=stems_meta.get("child_track_id", i + 1),
+                parent_agreement_id=stems_meta.get("parent_agreement_id", i),
+                child_agreement_id=stems_meta.get("child_agreement_id", i + 1),
             )
             session.add(stem)
 

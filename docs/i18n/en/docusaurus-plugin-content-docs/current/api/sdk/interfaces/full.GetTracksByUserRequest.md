@@ -1,13 +1,13 @@
 ---
-id: "full.GetTracksByUserRequest"
-title: "Interface: GetTracksByUserRequest"
-sidebar_label: "GetTracksByUserRequest"
+id: "full.GetAgreementsByUserRequest"
+title: "Interface: GetAgreementsByUserRequest"
+sidebar_label: "GetAgreementsByUserRequest"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).GetTracksByUserRequest
+[full](../namespaces/full.md).GetAgreementsByUserRequest
 
 ## Properties
 
@@ -37,7 +37,7 @@ ___
 
 ### sort
 
- `Optional` **sort**: [`GetTracksByUserSortEnum`](../enums/full.GetTracksByUserSortEnum.md)
+ `Optional` **sort**: [`GetAgreementsByUserSortEnum`](../enums/full.GetAgreementsByUserSortEnum.md)
 
 Field to sort by
 

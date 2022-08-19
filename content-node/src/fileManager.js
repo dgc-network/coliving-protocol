@@ -112,7 +112,7 @@ async function copyMultihashToFs(multihash, srcPath, logContext) {
  * @param {Array} gatewaysToTry List of gateway endpoints to try
  * @param {String?} fileNameForImage file name if the CID is image in dir.
  *                  eg original.jpg or 150x150.jpg
- * @param {number?} trackId if the CID is of a segment type, the trackId to which it belongs to
+ * @param {number?} agreementId if the CID is of a segment type, the agreementId to which it belongs to
  * @param {number?} numRetries optional number of times to retry this function if there was an error during content verification
  * @return {Boolean} true if success, false if error
  */
@@ -123,7 +123,7 @@ async function saveFileForMultihashToFS(
   expectedStoragePath,
   gatewaysToTry,
   fileNameForImage = null,
-  trackId = null,
+  agreementId = null,
   numRetries = 5
 ) {
   // stores all the stages of this function along with associated information relevant to that step
@@ -138,7 +138,7 @@ async function saveFileForMultihashToFS(
 
     let gatewayUrlsMapped = gatewaysToTry.map((endpoint) => {
       let baseUrl = `${endpoint.replace(/\/$/, '')}/ipfs/${multihash}`
-      if (trackId) baseUrl += `?trackId=${trackId}`
+      if (agreementId) baseUrl += `?agreementId=${agreementId}`
 
       return baseUrl
     })
@@ -404,7 +404,7 @@ async function saveFileForMultihashToFS(
           expectedStoragePath,
           gatewaysToTry,
           fileNameForImage,
-          trackId,
+          agreementId,
           numRetries - 1
         )
       }
@@ -448,7 +448,7 @@ const _printDecisionTreeObj = (decisionTree, logger) => {
 }
 
 /**
- * Removes all upload artifacts for track from filesystem. After successful upload these artifacts
+ * Removes all upload artifacts for agreement from filesystem. After successful upload these artifacts
  *    are all redundant since all synced content is replicated outside the upload folder.
  * (1) Remove all files in requested fileDir
  * (2) Confirm the only subdirectory is 'fileDir/segments'
@@ -456,10 +456,10 @@ const _printDecisionTreeObj = (decisionTree, logger) => {
  * (4) Remove 'fileDir/segments' and fileDir
  * @dev - Eventually this function execution should be moved off of main server process
  */
-async function removeTrackFolder({ logContext }, fileDir) {
+async function removeAgreementFolder({ logContext }, fileDir) {
   const logger = genericLogger.child(logContext)
   try {
-    logger.info(`Removing track folder at fileDir ${fileDir}...`)
+    logger.info(`Removing agreement folder at fileDir ${fileDir}...`)
     if (!fileDir) {
       throw new Error('Cannot remove null fileDir')
     }
@@ -469,7 +469,7 @@ async function removeTrackFolder({ logContext }, fileDir) {
       throw new Error('Expected directory input')
     }
 
-    // Remove all contents of track dir (process sequentially to limit cpu load)
+    // Remove all contents of agreement dir (process sequentially to limit cpu load)
     const files = await fs.readdir(fileDir)
     for (const file of files) {
       const curPath = path.join(fileDir, file)
@@ -507,7 +507,7 @@ async function removeTrackFolder({ logContext }, fileDir) {
 
     // Delete fileDir after all its contents have been deleted
     await fs.rmdir(fileDir)
-    logger.info(`Removed track folder at fileDir ${fileDir}`)
+    logger.info(`Removed agreement folder at fileDir ${fileDir}`)
     return null
   } catch (err) {
     logger.error(`Error removing ${fileDir}. ${err}`)
@@ -519,13 +519,13 @@ const getRandomFileName = () => {
   return getUuid()
 }
 
-const getTmpTrackUploadArtifactsPathWithInputUUID = (fileName) => {
-  return path.join(DiskManager.getTmpTrackUploadArtifactsPath(), fileName)
+const getTmpAgreementUploadArtifactsPathWithInputUUID = (fileName) => {
+  return path.join(DiskManager.getTmpAgreementUploadArtifactsPath(), fileName)
 }
 
 const getTmpSegmentsPath = (fileName) => {
   return path.join(
-    DiskManager.getTmpTrackUploadArtifactsPath(),
+    DiskManager.getTmpAgreementUploadArtifactsPath(),
     fileName,
     'segments'
   )
@@ -545,19 +545,19 @@ const uploadTempDiskStorage = multer({
   storage: tempDiskStorage
 })
 
-// Custom on-disk storage for track files to prep for segmentation
-const trackDiskStorage = multer.diskStorage({
+// Custom on-disk storage for agreement files to prep for segmentation
+const agreementDiskStorage = multer.diskStorage({
   destination: function (req, file, cb) {
     let fileName
     if (req.query.uuid) {
-      // Use the file name provided in the headers during track hand off
+      // Use the file name provided in the headers during agreement hand off
       fileName = req.query.uuid
     } else {
       // Save file under randomly named folders to avoid collisions
       fileName = getRandomFileName()
     }
 
-    const fileDir = getTmpTrackUploadArtifactsPathWithInputUUID(fileName)
+    const fileDir = getTmpAgreementUploadArtifactsPathWithInputUUID(fileName)
     const segmentsDir = getTmpSegmentsPath(fileName)
 
     // create directories for original file and segments
@@ -570,7 +570,7 @@ const trackDiskStorage = multer.diskStorage({
     req.fileName = fileName + fileExtension
 
     req.logger.info(
-      `Created track disk storage: ${req.fileDir}, ${req.fileName}`
+      `Created agreement disk storage: ${req.fileDir}, ${req.fileName}`
     )
     cb(null, fileDir)
   },
@@ -579,8 +579,8 @@ const trackDiskStorage = multer.diskStorage({
   }
 })
 
-const trackFileUpload = multer({
-  storage: trackDiskStorage,
+const agreementFileUpload = multer({
+  storage: agreementDiskStorage,
   limits: { fileSize: MAX_LIVE_FILE_SIZE },
   fileFilter: function (req, file, cb) {
     try {
@@ -596,8 +596,8 @@ const trackFileUpload = multer({
   }
 })
 
-const handleTrackContentUpload = (req, res, next) => {
-  trackFileUpload.single('file')(req, res, (err) => {
+const handleAgreementContentUpload = (req, res, next) => {
+  agreementFileUpload.single('file')(req, res, (err) => {
     if (err) {
       if (err.code === 'LIMIT_FILE_SIZE') {
         req.fileSizeError = err
@@ -726,15 +726,15 @@ async function removeFile(storagePath) {
 module.exports = {
   saveFileFromBufferToDisk,
   saveFileForMultihashToFS,
-  removeTrackFolder,
+  removeAgreementFolder,
   upload,
   uploadTempDiskStorage,
-  trackFileUpload,
-  handleTrackContentUpload,
+  agreementFileUpload,
+  handleAgreementContentUpload,
   hasEnoughStorageSpace,
   getFileExtension,
   checkFileMiddleware,
-  getTmpTrackUploadArtifactsPathWithInputUUID,
+  getTmpAgreementUploadArtifactsPathWithInputUUID,
   getTmpSegmentsPath,
   copyMultihashToFs,
   EMPTY_FILE_CID

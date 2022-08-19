@@ -24,7 +24,7 @@ const {
   retrieveClockValueForUserFromReplica,
   makeHistogramToRecord
 } = require('../stateMachineUtils')
-const SecondarySyncHealthTracker = require('./SecondarySyncHealthTracker')
+const SecondarySyncHealthAgreementer = require('./SecondarySyncHealthAgreementer')
 const {
   SYNC_MONITORING_RETRY_DELAY_MS,
   QUEUE_NAMES,
@@ -180,7 +180,7 @@ async function _handleIssueSyncRequest({
    * Do not issue syncRequest if SecondaryUserSyncFailureCountForToday already exceeded threshold
    */
   const secondaryUserSyncFailureCountForToday =
-    await SecondarySyncHealthTracker.getSecondaryUserSyncFailureCountForToday(
+    await SecondarySyncHealthAgreementer.getSecondaryUserSyncFailureCountForToday(
       secondaryEndpoint,
       userWallet,
       syncType
@@ -305,7 +305,7 @@ const _getUserPrimaryClockValues = async (wallets: string[]) => {
 /**
  * Monitor an ongoing sync operation for a given secondaryUrl and user wallet
  * Return boolean indicating if an additional sync is required and reason why (or 'none' if no additional sync is required)
- * Record SyncRequest outcomes to SecondarySyncHealthTracker
+ * Record SyncRequest outcomes to SecondarySyncHealthAgreementer
  */
 const _additionalSyncIsRequired = async (
   primaryClockValue = -1,
@@ -376,7 +376,7 @@ const _additionalSyncIsRequired = async (
   let additionalSyncIsRequired
   let outcome
   if (secondaryCaughtUpToPrimary) {
-    await SecondarySyncHealthTracker.recordSuccess(
+    await SecondarySyncHealthAgreementer.recordSuccess(
       secondaryUrl,
       userWallet,
       syncType
@@ -388,7 +388,7 @@ const _additionalSyncIsRequired = async (
     // Secondary completed sync but is still behind primary since it was behind by more than max export range
     // Since syncs are all-or-nothing, if secondary clock has increased at all, we know it successfully completed sync
   } else if (finalSecondaryClock > initialSecondaryClock) {
-    await SecondarySyncHealthTracker.recordSuccess(
+    await SecondarySyncHealthAgreementer.recordSuccess(
       secondaryUrl,
       userWallet,
       syncType
@@ -401,7 +401,7 @@ const _additionalSyncIsRequired = async (
 
     // (1) secondary did not catch up to primary AND (2) secondary did not complete sync
   } else {
-    await SecondarySyncHealthTracker.recordFailure(
+    await SecondarySyncHealthAgreementer.recordFailure(
       secondaryUrl,
       userWallet,
       syncType

@@ -37,9 +37,9 @@ import {
     FullReposts,
     FullRepostsFromJSON,
     FullRepostsToJSON,
-    FullTracks,
-    FullTracksFromJSON,
-    FullTracksToJSON,
+    FullAgreements,
+    FullAgreementsFromJSON,
+    FullAgreementsToJSON,
     FullUserResponse,
     FullUserResponseFromJSON,
     FullUserResponseToJSON,
@@ -265,7 +265,7 @@ export interface GetTopUsersInGenreRequest {
     genre?: Array<string>;
 }
 
-export interface GetTracksByUserRequest {
+export interface GetAgreementsByUserRequest {
     /**
      * A User ID
      */
@@ -285,10 +285,10 @@ export interface GetTracksByUserRequest {
     /**
      * Field to sort by
      */
-    sort?: GetTracksByUserSortEnum;
+    sort?: GetAgreementsByUserSortEnum;
 }
 
-export interface GetTracksByUserHandleRequest {
+export interface GetAgreementsByUserHandleRequest {
     /**
      * A User handle
      */
@@ -308,7 +308,7 @@ export interface GetTracksByUserHandleRequest {
     /**
      * Field to sort by
      */
-    sort?: GetTracksByUserHandleSortEnum;
+    sort?: GetAgreementsByUserHandleSortEnum;
 }
 
 export interface GetUserRequest {
@@ -333,7 +333,7 @@ export interface GetUserByHandleRequest {
     userId?: string;
 }
 
-export interface GetUsersTrackHistoryRequest {
+export interface GetUsersAgreementHistoryRequest {
     /**
      * A User ID
      */
@@ -358,7 +358,7 @@ export interface GetUsersTrackHistoryRequest {
 export class UsersApi extends runtime.BaseAPI {
 
     /**
-     * Gets a user\'s favorite tracks
+     * Gets a user\'s favorite agreements
      */
     async getFavorites(requestParameters: GetFavoritesRequest): Promise<NonNullable<FavoritesResponseFull["data"]>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -382,7 +382,7 @@ export class UsersApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/users/{id}/favorites/tracks`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/users/{id}/favorites/agreements`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -666,7 +666,7 @@ export class UsersApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get the Top Users having at least one track by follower count
+     * Get the Top Users having at least one agreement by follower count
      */
     async getTopUsers(requestParameters: GetTopUsersRequest = {}): Promise<NonNullable<TopUsersResponseFull["data"]>> {
         const queryParameters: any = {};
@@ -722,11 +722,11 @@ export class UsersApi extends runtime.BaseAPI {
     }
 
     /**
-     * Gets the tracks created by a user using their user ID
+     * Gets the agreements created by a user using their user ID
      */
-    async getTracksByUser(requestParameters: GetTracksByUserRequest): Promise<NonNullable<FullTracks["data"]>> {
+    async getAgreementsByUser(requestParameters: GetAgreementsByUserRequest): Promise<NonNullable<FullAgreements["data"]>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getTracksByUser.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getAgreementsByUser.');
         }
 
         const queryParameters: any = {};
@@ -750,19 +750,19 @@ export class UsersApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/users/{id}/tracks`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/users/{id}/agreements`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }) as Promise<NonNullable<FullTracks["data"]>>;
+        }) as Promise<NonNullable<FullAgreements["data"]>>;
     }
 
     /**
-     * Gets the tracks created by a user using the user\'s handle
+     * Gets the agreements created by a user using the user\'s handle
      */
-    async getTracksByUserHandle(requestParameters: GetTracksByUserHandleRequest): Promise<NonNullable<FullTracks["data"]>> {
+    async getAgreementsByUserHandle(requestParameters: GetAgreementsByUserHandleRequest): Promise<NonNullable<FullAgreements["data"]>> {
         if (requestParameters.handle === null || requestParameters.handle === undefined) {
-            throw new runtime.RequiredError('handle','Required parameter requestParameters.handle was null or undefined when calling getTracksByUserHandle.');
+            throw new runtime.RequiredError('handle','Required parameter requestParameters.handle was null or undefined when calling getAgreementsByUserHandle.');
         }
 
         const queryParameters: any = {};
@@ -786,11 +786,11 @@ export class UsersApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/users/handle/{handle}/tracks`.replace(`{${"handle"}}`, encodeURIComponent(String(requestParameters.handle))),
+            path: `/users/handle/{handle}/agreements`.replace(`{${"handle"}}`, encodeURIComponent(String(requestParameters.handle))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }) as Promise<NonNullable<FullTracks["data"]>>;
+        }) as Promise<NonNullable<FullAgreements["data"]>>;
     }
 
     /**
@@ -842,11 +842,11 @@ export class UsersApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get the tracks the user recently listened to.
+     * Get the agreements the user recently listened to.
      */
-    async getUsersTrackHistory(requestParameters: GetUsersTrackHistoryRequest): Promise<NonNullable<HistoryResponseFull["data"]>> {
+    async getUsersAgreementHistory(requestParameters: GetUsersAgreementHistoryRequest): Promise<NonNullable<HistoryResponseFull["data"]>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getUsersTrackHistory.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getUsersAgreementHistory.');
         }
 
         const queryParameters: any = {};
@@ -866,7 +866,7 @@ export class UsersApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/users/{id}/history/tracks`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/users/{id}/history/agreements`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -879,7 +879,7 @@ export class UsersApi extends runtime.BaseAPI {
     * @export
     * @enum {string}
     */
-export enum GetTracksByUserSortEnum {
+export enum GetAgreementsByUserSortEnum {
     Date = 'date',
     Plays = 'plays'
 }
@@ -887,7 +887,7 @@ export enum GetTracksByUserSortEnum {
     * @export
     * @enum {string}
     */
-export enum GetTracksByUserHandleSortEnum {
+export enum GetAgreementsByUserHandleSortEnum {
     Date = 'date',
     Plays = 'plays'
 }

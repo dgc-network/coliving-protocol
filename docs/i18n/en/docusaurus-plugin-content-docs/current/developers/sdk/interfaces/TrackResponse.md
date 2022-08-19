@@ -1,19 +1,19 @@
 ---
-id: "TrackResponse"
-title: "Interface: TrackResponse"
-sidebar_label: "TrackResponse"
+id: "AgreementResponse"
+title: "Interface: AgreementResponse"
+sidebar_label: "AgreementResponse"
 sidebar_position: 0
 custom_edit_url: null
 ---
 
 **`export`**
 
-**`interface`** TrackResponse
+**`interface`** AgreementResponse
 
 ## Properties
 
 ### data
 
- `Optional` **data**: [`Track`](Track.md)
+ `Optional` **data**: [`Agreement`](Agreement.md)
 
-**`memberof`** TrackResponse
+**`memberof`** AgreementResponse

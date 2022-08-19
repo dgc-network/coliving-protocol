@@ -10,7 +10,7 @@ from sqlalchemy import desc
 from sqlalchemy.orm.session import Session
 from src.models.indexing.coliving_data_tx import ColivingDataTx
 from src.models.indexing.ursm_content_node import UrsmContentNode
-from src.models.tracks.track import Track
+from src.models.agreements.agreement import Agreement
 from src.models.users.user import User
 from src.solana.anchor_parser import AnchorParser
 from src.solana.coliving_data_transaction_handlers import ParsedTx, transaction_handlers
@@ -111,19 +111,19 @@ class AnchorProgramIndexer(SolanaProgramIndexer):
                 )
                 for user in existing_users:
                     db_models["users"][user.user_id] = [user]
-            if entity_ids["tracks"]:
-                existing_tracks = (
-                    session.query(Track)
+            if entity_ids["agreements"]:
+                existing_agreements = (
+                    session.query(Agreement)
                     .filter(
-                        Track.is_current,
-                        Track.track_id.in_(list(entity_ids["tracks"])),
+                        Agreement.is_current,
+                        Agreement.agreement_id.in_(list(entity_ids["agreements"])),
                     )
                     .all()
                 )
-                for track in existing_tracks:
-                    db_models["tracks"][track.track_id] = [track]
+                for agreement in existing_agreements:
+                    db_models["agreements"][agreement.agreement_id] = [agreement]
 
-            # TODO: Find all other track/playlist/etc. models
+            # TODO: Find all other agreement/playlist/etc. models
 
             self.process_transactions(
                 session, parsed_transactions, db_models, metadata_dictionary
@@ -227,8 +227,8 @@ class AnchorProgramIndexer(SolanaProgramIndexer):
                 elif instruction_name == "manage_entity":
                     id = instruction["data"]["id"]
                     entity_type = instruction["data"]["entity_type"]
-                    if isinstance(entity_type, entity_type.Track):
-                        entities["tracks"].add(id)
+                    if isinstance(entity_type, entity_type.Agreement):
+                        entities["agreements"].add(id)
                 elif instruction_name == "create_content_node":
                     pass
                 elif instruction_name == "public_create_or_update_content_node":
@@ -290,7 +290,7 @@ class AnchorProgramIndexer(SolanaProgramIndexer):
                 return False
 
         # TODO update entity
-        # check if user owns track
+        # check if user owns agreement
 
         return True
 
@@ -313,7 +313,7 @@ class AnchorProgramIndexer(SolanaProgramIndexer):
     ) -> Dict[str, Dict]:
         cid_to_user_id: Dict[str, int] = {}
         cids_txhash_set: Set[Tuple[str, str]] = set()
-        cid_to_entity_type: Dict[str, str] = {}  # cid -> entity type track / user
+        cid_to_entity_type: Dict[str, str] = {}  # cid -> entity type agreement / user
         user_replica_set: Dict[int, str] = {}
 
         with self.db.scoped_session() as session:
@@ -349,8 +349,8 @@ class AnchorProgramIndexer(SolanaProgramIndexer):
                             user_replica_set[user_id] = ",".join(endpoints)
                     elif instruction["instruction_name"] == "manage_entity":
                         entity_type = instruction["data"]["entity_type"]
-                        if entity_type.Track == type(entity_type):
-                            cid_to_entity_type[cid] = "track"
+                        if entity_type.Agreement == type(entity_type):
+                            cid_to_entity_type[cid] = "agreement"
                             user_id = instruction["data"]["user_id_seed_bump"].user_id
                             cid_to_user_id[cid] = user_id
 
@@ -381,5 +381,5 @@ class AnchorProgramIndexer(SolanaProgramIndexer):
             metadata_dict[cid]["creator_node_endpoint"] = user_replica_set[user_id]
 
         # TODO maybe add some more validation
-        # check if track metadata's owner and instruction's user ID matches up?
+        # check if agreement metadata's owner and instruction's user ID matches up?
         return metadata_dict

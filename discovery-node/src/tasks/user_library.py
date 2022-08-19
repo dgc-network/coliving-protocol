@@ -32,12 +32,12 @@ def user_library_state_update(
     challenge_bus = update_task.challenge_event_bus
     block_datetime = datetime.utcfromtimestamp(block_timestamp)
 
-    track_save_state_changes: Dict[int, Dict[int, Save]] = {}
+    agreement_save_state_changes: Dict[int, Dict[int, Save]] = {}
     playlist_save_state_changes: Dict[int, Dict[int, Save]] = {}
 
     for tx_receipt in user_library_factory_txs:
         try:
-            add_track_save(
+            add_agreement_save(
                 self,
                 update_task.user_library_contract,
                 update_task,
@@ -45,7 +45,7 @@ def user_library_state_update(
                 tx_receipt,
                 block_number,
                 block_datetime,
-                track_save_state_changes,
+                agreement_save_state_changes,
             )
 
             add_playlist_save(
@@ -59,7 +59,7 @@ def user_library_state_update(
                 playlist_save_state_changes,
             )
 
-            delete_track_save(
+            delete_agreement_save(
                 self,
                 update_task.user_library_contract,
                 update_task,
@@ -67,7 +67,7 @@ def user_library_state_update(
                 tx_receipt,
                 block_number,
                 block_datetime,
-                track_save_state_changes,
+                agreement_save_state_changes,
             )
 
             delete_playlist_save(
@@ -88,13 +88,13 @@ def user_library_state_update(
                 "user_library", block_number, blockhash, txhash, str(e)
             ) from e
 
-    for user_id, track_ids in track_save_state_changes.items():
-        for track_id in track_ids:
-            invalidate_old_save(session, user_id, track_id, SaveType.track)
-            save = track_ids[track_id]
+    for user_id, agreement_ids in agreement_save_state_changes.items():
+        for agreement_id in agreement_ids:
+            invalidate_old_save(session, user_id, agreement_id, SaveType.agreement)
+            save = agreement_ids[agreement_id]
             session.add(save)
             dispatch_favorite(challenge_bus, save, block_number)
-        num_total_changes += len(track_ids)
+        num_total_changes += len(agreement_ids)
 
     for user_id, playlist_ids in playlist_save_state_changes.items():
         for playlist_id in playlist_ids:
@@ -133,7 +133,7 @@ def invalidate_old_save(session, user_id, playlist_id, save_type):
     return num_invalidated_save_entries
 
 
-def add_track_save(
+def add_agreement_save(
     self,
     user_library_contract,
     update_task,
@@ -141,40 +141,40 @@ def add_track_save(
     tx_receipt,
     block_number,
     block_datetime,
-    track_state_changes: Dict[int, Dict[int, Save]],
+    agreement_state_changes: Dict[int, Dict[int, Save]],
 ):
     txhash = update_task.web3.toHex(tx_receipt.transactionHash)
-    new_add_track_events = (
-        update_task.user_library_contract.events.TrackSaveAdded().processReceipt(
+    new_add_agreement_events = (
+        update_task.user_library_contract.events.AgreementSaveAdded().processReceipt(
             tx_receipt
         )
     )
 
-    for event in new_add_track_events:
+    for event in new_add_agreement_events:
         event_args = event["args"]
         save_user_id = event_args._userId
-        save_track_id = event_args._trackId
+        save_agreement_id = event_args._agreementId
 
-        if (save_user_id in track_state_changes) and (
-            save_track_id in track_state_changes[save_user_id]
+        if (save_user_id in agreement_state_changes) and (
+            save_agreement_id in agreement_state_changes[save_user_id]
         ):
-            track_state_changes[save_user_id][save_track_id].is_delete = False
+            agreement_state_changes[save_user_id][save_agreement_id].is_delete = False
         else:
             save = Save(
                 blockhash=update_task.web3.toHex(event.blockHash),
                 blocknumber=block_number,
                 txhash=txhash,
                 user_id=save_user_id,
-                save_item_id=save_track_id,
-                save_type=SaveType.track,
+                save_item_id=save_agreement_id,
+                save_type=SaveType.agreement,
                 created_at=block_datetime,
                 is_current=True,
                 is_delete=False,
             )
-            if save_user_id in track_state_changes:
-                track_state_changes[save_user_id][save_track_id] = save
+            if save_user_id in agreement_state_changes:
+                agreement_state_changes[save_user_id][save_agreement_id] = save
             else:
-                track_state_changes[save_user_id] = {save_track_id: save}
+                agreement_state_changes[save_user_id] = {save_agreement_id: save}
 
 
 def add_playlist_save(
@@ -234,7 +234,7 @@ def add_playlist_save(
                 playlist_state_changes[save_user_id] = {save_playlist_id: save}
 
 
-def delete_track_save(
+def delete_agreement_save(
     self,
     user_library_contract,
     update_task,
@@ -242,39 +242,39 @@ def delete_track_save(
     tx_receipt,
     block_number,
     block_datetime,
-    track_state_changes: Dict[int, Dict[int, Save]],
+    agreement_state_changes: Dict[int, Dict[int, Save]],
 ):
     txhash = update_task.web3.toHex(tx_receipt.transactionHash)
-    new_delete_track_events = (
-        update_task.user_library_contract.events.TrackSaveDeleted().processReceipt(
+    new_delete_agreement_events = (
+        update_task.user_library_contract.events.AgreementSaveDeleted().processReceipt(
             tx_receipt
         )
     )
-    for event in new_delete_track_events:
+    for event in new_delete_agreement_events:
         event_args = event["args"]
         save_user_id = event_args._userId
-        save_track_id = event_args._trackId
+        save_agreement_id = event_args._agreementId
 
-        if (save_user_id in track_state_changes) and (
-            save_track_id in track_state_changes[save_user_id]
+        if (save_user_id in agreement_state_changes) and (
+            save_agreement_id in agreement_state_changes[save_user_id]
         ):
-            track_state_changes[save_user_id][save_track_id].is_delete = True
+            agreement_state_changes[save_user_id][save_agreement_id].is_delete = True
         else:
             save = Save(
                 blockhash=update_task.web3.toHex(event.blockHash),
                 blocknumber=block_number,
                 txhash=txhash,
                 user_id=save_user_id,
-                save_item_id=save_track_id,
-                save_type=SaveType.track,
+                save_item_id=save_agreement_id,
+                save_type=SaveType.agreement,
                 created_at=block_datetime,
                 is_current=True,
                 is_delete=True,
             )
-            if save_user_id in track_state_changes:
-                track_state_changes[save_user_id][save_track_id] = save
+            if save_user_id in agreement_state_changes:
+                agreement_state_changes[save_user_id][save_agreement_id] = save
             else:
-                track_state_changes[save_user_id] = {save_track_id: save}
+                agreement_state_changes[save_user_id] = {save_agreement_id: save}
 
 
 def delete_playlist_save(

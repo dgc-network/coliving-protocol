@@ -8,7 +8,7 @@ from src.api.v1.helpers import (
     current_user_parser,
     decode_with_abort,
     extend_playlist,
-    extend_track,
+    extend_agreement,
     extend_user,
     full_trending_parser,
     get_current_user_id,
@@ -23,7 +23,7 @@ from src.api.v1.helpers import (
 )
 from src.api.v1.models.playlists import full_playlist_model, playlist_model
 from src.api.v1.models.users import user_model_full
-from src.queries.get_playlist_tracks import get_playlist_tracks
+from src.queries.get_playlist_agreements import get_playlist_agreements
 from src.queries.get_playlists import get_playlists
 from src.queries.get_reposters_for_playlist import get_reposters_for_playlist
 from src.queries.get_savers_for_playlist import get_savers_for_playlist
@@ -44,7 +44,7 @@ from src.utils.db_session import get_db_read_replica
 from src.utils.redis_cache import cache
 from src.utils.redis_metrics import record_metrics
 
-from .models.tracks import track
+from .models.agreements import agreement
 
 logger = logging.getLogger(__name__)
 
@@ -86,18 +86,18 @@ def get_playlist(playlist_id, current_user_id):
     return None
 
 
-def get_tracks_for_playlist(playlist_id, current_user_id=None):
+def get_agreements_for_playlist(playlist_id, current_user_id=None):
     db = get_db_read_replica()
     with db.scoped_session() as session:
         args = {
             "playlist_ids": [playlist_id],
-            "populate_tracks": True,
+            "populate_agreements": True,
             "current_user_id": current_user_id,
         }
-        playlist_tracks_map = get_playlist_tracks(session, args)
-        playlist_tracks = playlist_tracks_map[playlist_id]
-        tracks = list(map(extend_track, playlist_tracks))
-        return tracks
+        playlist_agreements_map = get_playlist_agreements(session, args)
+        playlist_agreements = playlist_agreements_map[playlist_id]
+        agreements = list(map(extend_agreement, playlist_agreements))
+        return agreements
 
 
 PLAYLIST_ROUTE = "/<string:playlist_id>"
@@ -121,8 +121,8 @@ class Playlist(Resource):
         return response
 
 
-playlist_tracks_response = make_response(
-    "playlist_tracks_response", ns, fields.List(fields.Nested(track))
+playlist_agreements_response = make_response(
+    "playlist_agreements_response", ns, fields.List(fields.Nested(agreement))
 )
 
 
@@ -143,27 +143,27 @@ class FullPlaylist(Resource):
 
         playlist = get_playlist(playlist_id, current_user_id)
         if playlist:
-            tracks = get_tracks_for_playlist(playlist_id, current_user_id)
-            playlist["tracks"] = tracks
+            agreements = get_agreements_for_playlist(playlist_id, current_user_id)
+            playlist["agreements"] = agreements
         response = success_response([playlist] if playlist else [])
         return response
 
 
-@ns.route("/<string:playlist_id>/tracks")
-class PlaylistTracks(Resource):
+@ns.route("/<string:playlist_id>/agreements")
+class PlaylistAgreements(Resource):
     @record_metrics
     @ns.doc(
-        id="""Get Playlist Tracks""",
-        description="""Fetch tracks within a playlist.""",
+        id="""Get Playlist Agreements""",
+        description="""Fetch agreements within a playlist.""",
         params={"playlist_id": "A Playlist ID"},
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
-    @ns.marshal_with(playlist_tracks_response)
+    @ns.marshal_with(playlist_agreements_response)
     @cache(ttl_sec=5)
     def get(self, playlist_id):
         decoded_id = decode_with_abort(playlist_id, ns)
-        tracks = get_tracks_for_playlist(decoded_id)
-        return success_response(tracks)
+        agreements = get_agreements_for_playlist(decoded_id)
+        return success_response(agreements)
 
 
 playlist_search_result = make_response(
@@ -245,7 +245,7 @@ playlist_favorites_response = make_full_response(
 
 
 @full_ns.route("/<string:playlist_id>/favorites")
-class FullTrackFavorites(Resource):
+class FullAgreementFavorites(Resource):
     @full_ns.doc(
         id="""Get Users From Playlist Favorites""",
         description="""Get users that favorited a playlist""",
@@ -344,7 +344,7 @@ class TrendingPlaylists(Resource):
         args = trending_playlist_parser.parse_args()
         time = args.get("time")
         time = "week" if time not in ["week", "month", "year"] else time
-        args = {"time": time, "with_tracks": False}
+        args = {"time": time, "with_agreements": False}
         strategy = trending_strategy_factory.get_strategy(
             TrendingType.PLAYLISTS, version_list[0]
         )

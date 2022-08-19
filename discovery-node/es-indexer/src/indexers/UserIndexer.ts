@@ -56,8 +56,8 @@ export class UserIndexer extends BaseIndexer<UserDoc> {
         // followers
         follower_count: { type: 'integer' },
 
-        track_count: { type: 'integer' },
-        tracks: {
+        agreement_count: { type: 'integer' },
+        agreements: {
           properties: {
             mood: { type: 'keyword' },
             genre: { type: 'keyword' },
@@ -79,13 +79,13 @@ export class UserIndexer extends BaseIndexer<UserDoc> {
       coalesce(user_balances.wlive, '0') as wlive_balance, -- do we need both wlive and wlive_balance
       user_balances.associated_sol_wallets_balance,
       user_bank_accounts.bank_account as spl_wallet,
-      coalesce(track_count, 0) as track_count,
+      coalesce(agreement_count, 0) as agreement_count,
       coalesce(playlist_count, 0) as playlist_count,
       coalesce(album_count, 0) as album_count,
       coalesce(follower_count, 0) as follower_count,
       coalesce(following_count, 0) as following_count,
       coalesce(repost_count, 0) as repost_count,
-      coalesce(track_save_count, 0) as track_save_count,
+      coalesce(agreement_save_count, 0) as agreement_save_count,
       coalesce(supporter_count, 0) as supporter_count,
       coalesce(supporting_count, 0) as supporting_count
     from
@@ -107,21 +107,21 @@ export class UserIndexer extends BaseIndexer<UserDoc> {
         union
         select followee_user_id from follows where is_current and blocknumber >= ${checkpoint.users}
         union
-        select owner_id from tracks where is_current and blocknumber >= ${checkpoint.tracks}
+        select owner_id from agreements where is_current and blocknumber >= ${checkpoint.agreements}
       )
     `
   }
 
   async withBatch(rows: UserDoc[]) {
-    // attach user's tracks
+    // attach user's agreements
     const userIds = rows.map((r) => r.user_id)
-    const [tracksByOwnerId, followMap] = await Promise.all([
-      this.userTracks(userIds),
+    const [agreementsByOwnerId, followMap] = await Promise.all([
+      this.userAgreements(userIds),
       this.userFollows(userIds),
     ])
     for (let user of rows) {
-      user.tracks = tracksByOwnerId[user.user_id] || []
-      user.track_count = user.tracks.length
+      user.agreements = agreementsByOwnerId[user.user_id] || []
+      user.agreement_count = user.agreements.length
       user.following_ids = followMap[user.user_id] || []
     }
   }
@@ -154,14 +154,14 @@ export class UserIndexer extends BaseIndexer<UserDoc> {
     return grouped
   }
 
-  private async userTracks(userIds: number[]) {
+  private async userAgreements(userIds: number[]) {
     if (!userIds.length) return {}
     const pg = dialPg()
     const idList = Array.from(userIds).join(',')
     const q = `
       select 
-        track_id, owner_id, genre, mood, tags, title, length, created_at
-      from tracks 
+        agreement_id, owner_id, genre, mood, tags, title, length, created_at
+      from agreements 
       where 
         is_current
         and not is_delete 
@@ -170,11 +170,11 @@ export class UserIndexer extends BaseIndexer<UserDoc> {
         and owner_id in (${idList})
       order by created_at desc
     `
-    const allTracks = await pg.query(q)
-    for (let t of allTracks.rows) {
+    const allAgreements = await pg.query(q)
+    for (let t of allAgreements.rows) {
       t.tags = splitTags(t.tags)
     }
-    const grouped = groupBy(allTracks.rows, 'owner_id')
+    const grouped = groupBy(allAgreements.rows, 'owner_id')
     return grouped
   }
 }

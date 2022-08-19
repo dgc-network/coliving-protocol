@@ -532,12 +532,12 @@ export class SolanaColivingData {
   // ============================= MANAGE ENTITY =============================
 
   /**
-   * Creates a track
+   * Creates a agreement
    *
    * @return {Promise<any>}
    * @memberof SolanaWeb3Manager
    */
-  async createTrack(
+  async createAgreement(
     params: OmitAndRequire<
       ColivingData.CreateEntityParams,
       'program',
@@ -550,7 +550,7 @@ export class SolanaColivingData {
       await this.getUserIdSeed(params.userId)
 
     const userSolKeypair = this.getUserKeyPair()
-    const tx = ColivingData.createTrack({
+    const tx = ColivingData.createAgreement({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,
@@ -568,12 +568,12 @@ export class SolanaColivingData {
   }
 
   /**
-   * Updates a track
+   * Updates a agreement
    *
    * @return {Promise<any>}
    * @memberof SolanaWeb3Manager
    */
-  async updateTrack(
+  async updateAgreement(
     params: OmitAndRequire<
       ColivingData.UpdateEntityParams,
       'program',
@@ -587,7 +587,7 @@ export class SolanaColivingData {
 
     const userSolKeypair = this.getUserKeyPair()
 
-    const tx = ColivingData.updateTrack({
+    const tx = ColivingData.updateAgreement({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,
@@ -605,12 +605,12 @@ export class SolanaColivingData {
   }
 
   /**
-   * Deletes a track
+   * Deletes a agreement
    *
    * @return {Promise<any>}
    * @memberof SolanaWeb3Manager
    */
-  async deleteTrack(
+  async deleteAgreement(
     params: OmitAndRequire<
       ColivingData.DeleteEntityParams,
       'program',
@@ -623,7 +623,7 @@ export class SolanaColivingData {
       await this.getUserIdSeed(params.userId)
 
     const userSolKeypair = this.getUserKeyPair()
-    const tx = ColivingData.deleteTrack({
+    const tx = ColivingData.deleteAgreement({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,
@@ -748,12 +748,12 @@ export class SolanaColivingData {
   // ============================= SOCIAL ACTIONS =============================
 
   /**
-   * Creates a solana transaction for addTrackRepost
+   * Creates a solana transaction for addAgreementRepost
    *
    * @return {Promise<any>}
    * @memberof SolanaWeb3Manager
    */
-  async addTrackSave(
+  async addAgreementSave(
     params: OmitAndRequire<
       ColivingData.EntitySocialActionParams,
       'program',
@@ -766,7 +766,7 @@ export class SolanaColivingData {
       await this.getUserIdSeed(params.userId)
 
     const userSolKeypair = this.getUserKeyPair()
-    const tx = ColivingData.addTrackSave({
+    const tx = ColivingData.addAgreementSave({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,
@@ -782,12 +782,12 @@ export class SolanaColivingData {
   }
 
   /**
-   * Creates a solana transaction for deleteTrackSave
+   * Creates a solana transaction for deleteAgreementSave
    *
    * @return {Promise<any>}
    * @memberof SolanaWeb3Manager
    */
-  async deleteTrackSave(
+  async deleteAgreementSave(
     params: OmitAndRequire<
       ColivingData.EntitySocialActionParams,
       'program',
@@ -800,7 +800,7 @@ export class SolanaColivingData {
       await this.getUserIdSeed(params.userId)
 
     const userSolKeypair = this.getUserKeyPair()
-    const tx = ColivingData.deleteTrackSave({
+    const tx = ColivingData.deleteAgreementSave({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,
@@ -816,12 +816,12 @@ export class SolanaColivingData {
   }
 
   /**
-   * Creates a solana transaction for addTrackRepost
+   * Creates a solana transaction for addAgreementRepost
    *
    * @return {Promise<any>}
    * @memberof SolanaWeb3Manager
    */
-  async addTrackRepost(
+  async addAgreementRepost(
     params: OmitAndRequire<
       ColivingData.EntitySocialActionParams,
       'program',
@@ -834,7 +834,7 @@ export class SolanaColivingData {
       await this.getUserIdSeed(params.userId)
 
     const userSolKeypair = this.getUserKeyPair()
-    const tx = ColivingData.addTrackRepost({
+    const tx = ColivingData.addAgreementRepost({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,
@@ -850,12 +850,12 @@ export class SolanaColivingData {
   }
 
   /**
-   * Creates a solana transaction for deleteTrackRepost
+   * Creates a solana transaction for deleteAgreementRepost
    *
    * @return {Promise<any>}
    * @memberof SolanaWeb3Manager
    */
-  async deleteTrackRepost(
+  async deleteAgreementRepost(
     params: OmitAndRequire<
       ColivingData.EntitySocialActionParams,
       'program',
@@ -868,7 +868,7 @@ export class SolanaColivingData {
       await this.getUserIdSeed(params.userId)
 
     const userSolKeypair = this.getUserKeyPair()
-    const tx = ColivingData.deleteTrackRepost({
+    const tx = ColivingData.deleteAgreementRepost({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,

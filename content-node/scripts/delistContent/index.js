@@ -170,26 +170,26 @@ async function verifyDelistedContent ({ type, values, action }) {
     throw new Error(errorMsg)
   }
 
-  // If the type is TRACK, we also need to check the stream route
-  if (type === 'TRACK') {
+  // If the type is AGREEMENT, we also need to check the stream route
+  if (type === 'AGREEMENT') {
     // Batch requests
-    let creatorNodeTrackResponses = []
-    const checkTrackDelistStatusRequests = values.map(trackId => checkIsTrackDelisted(trackId))
+    let creatorNodeAgreementResponses = []
+    const checkAgreementDelistStatusRequests = values.map(agreementId => checkIsAgreementDelisted(agreementId))
     for (let i = 0; i < values.length; i += REQUEST_CONCURRENCY_LIMIT) {
-      const creatorNodeTrackResponsesSlice = await Promise.all(checkTrackDelistStatusRequests.slice(i, i + REQUEST_CONCURRENCY_LIMIT))
-      creatorNodeTrackResponses = creatorNodeTrackResponses.concat(creatorNodeTrackResponsesSlice)
+      const creatorNodeAgreementResponsesSlice = await Promise.all(checkAgreementDelistStatusRequests.slice(i, i + REQUEST_CONCURRENCY_LIMIT))
+      creatorNodeAgreementResponses = creatorNodeAgreementResponses.concat(creatorNodeAgreementResponsesSlice)
     }
 
     // CIDs that were not accounted for during delist/undelist
-    const unaccountedTracks = creatorNodeTrackResponses
+    const unaccountedAgreements = creatorNodeAgreementResponses
       .filter(resp => filterFn(resp.delisted))
       .map(resp => resp.value)
 
-    Logger.debug('creatorNodeTrackResponses', creatorNodeTrackResponses)
-    if (unaccountedTracks.length > 0) {
-      let errorMsg = `Tracks with ids [${values}] were not delisted/undelisted.`
-      errorMsg += `\nNumber of Tracks: ${unaccountedTracks.length}`
-      errorMsg += `\nTracks: [${unaccountedTracks.toString()}]`
+    Logger.debug('creatorNodeAgreementResponses', creatorNodeAgreementResponses)
+    if (unaccountedAgreements.length > 0) {
+      let errorMsg = `Agreements with ids [${values}] were not delisted/undelisted.`
+      errorMsg += `\nNumber of Agreements: ${unaccountedAgreements.length}`
+      errorMsg += `\nAgreements: [${unaccountedAgreements.toString()}]`
       throw new Error(errorMsg)
     }
   }
@@ -199,7 +199,7 @@ async function verifyDelistedContent ({ type, values, action }) {
 
 /**
  * For resources of a valid type, get all the CIDs for the passed in id values
- * @param {String} type 'USER' or 'TRACK'
+ * @param {String} type 'USER' or 'AGREEMENT'
  * @param {(number[])} values ids for associated type
  * @returns
  */
@@ -212,28 +212,28 @@ async function getCIDs (type, values) {
     // Fetch all the CIDs via disc prov
     switch (type) {
       case 'USER': {
-        const map = await fetchUserToNumTracksMap(values)
+        const map = await fetchUserToNumAgreementsMap(values)
         const additionalRequests = []
         discProvRequests = values
           .map(value => {
-            let numTracksForUser = map[value]
+            let numAgreementsForUser = map[value]
             const axiosRequest = {
-              url: `${DISCOVERY_PROVIDER_ENDPOINT}/tracks`,
+              url: `${DISCOVERY_PROVIDER_ENDPOINT}/agreements`,
               method: 'get',
               params: { user_id: value, limit: MAX_LIMIT },
               responseType: 'json'
             }
 
-            if (numTracksForUser > MAX_LIMIT) {
-            // If users have over 500 tracks, add additional requests to query those tracks
+            if (numAgreementsForUser > MAX_LIMIT) {
+            // If users have over 500 agreements, add additional requests to query those agreements
               let offset = 0
-              while (numTracksForUser > MAX_LIMIT) {
+              while (numAgreementsForUser > MAX_LIMIT) {
                 const axiosRequestWithOffset = { ...axiosRequest }
                 axiosRequestWithOffset.params.offset = offset
                 additionalRequests.push(axios(axiosRequest))
 
                 offset += MAX_LIMIT
-                numTracksForUser -= MAX_LIMIT
+                numAgreementsForUser -= MAX_LIMIT
               }
               return null
             } else {
@@ -241,15 +241,15 @@ async function getCIDs (type, values) {
               return axios(axiosRequest)
             }
           })
-          // Filter out null resps from mapping requests with users with over 500 tracks
+          // Filter out null resps from mapping requests with users with over 500 agreements
           .filter(Boolean)
 
         discProvRequests.concat(additionalRequests)
         break
       }
-      case 'TRACK': {
+      case 'AGREEMENT': {
         discProvRequests = values.map(value => axios({
-          url: `${DISCOVERY_PROVIDER_ENDPOINT}/tracks`,
+          url: `${DISCOVERY_PROVIDER_ENDPOINT}/agreements`,
           method: 'get',
           params: { id: value },
           responseType: 'json'
@@ -265,11 +265,11 @@ async function getCIDs (type, values) {
       discProvResps = discProvResps.concat(discProvResponsesSlice)
     }
 
-    // Iterate through disc prov responses and grab all the track CIDs
+    // Iterate through disc prov responses and grab all the agreement CIDs
     let allCIDsObj = []
     for (const resp of discProvResps) {
-      for (const track of resp.data.data) {
-        allCIDsObj = allCIDsObj.concat(track.track_segments)
+      for (const agreement of resp.data.data) {
+        allCIDsObj = allCIDsObj.concat(agreement.agreement_segments)
       }
     }
     allCIDs = allCIDsObj.map(CIDObj => CIDObj.multihash)
@@ -280,10 +280,10 @@ async function getCIDs (type, values) {
 }
 
 /**
- * Fetches the total tracks count from all input userIds, and returns a map of user_id:track_count
+ * Fetches the total agreements count from all input userIds, and returns a map of user_id:agreement_count
  * @param {number[]} userIds
  */
-async function fetchUserToNumTracksMap (userIds) {
+async function fetchUserToNumAgreementsMap (userIds) {
   const resp = await axios({
     url: `${DISCOVERY_PROVIDER_ENDPOINT}/users`,
     method: 'get',
@@ -293,7 +293,7 @@ async function fetchUserToNumTracksMap (userIds) {
 
   const map = {}
   resp.data.data.map(resp => {
-    map[resp.user_id] = resp.track_count
+    map[resp.user_id] = resp.agreement_count
   })
   return map
 }
@@ -318,21 +318,21 @@ async function checkIsCIDDelisted (cid) {
   return { type: 'CID', value: cid, delisted: false }
 }
 
-async function checkIsTrackDelisted (id) {
+async function checkIsAgreementDelisted (id) {
   try {
     const encodedId = hashIds.encode(id)
-    await axios.head(`${CREATOR_NODE_ENDPOINT}/tracks/stream/${encodedId}`)
+    await axios.head(`${CREATOR_NODE_ENDPOINT}/agreements/stream/${encodedId}`)
   } catch (e) {
     if (e.response && e.response.status && e.response.status === 403) {
       return { value: id, delisted: true }
     }
 
     // CID was not found on node, would not have been served either way, return success
-    if (e.response.status === 404) return { type: 'TRACK', value: id, delisted: true }
+    if (e.response.status === 404) return { type: 'AGREEMENT', value: id, delisted: true }
 
-    Logger.error(`Failed to check for track [${id}]: ${e}`)
+    Logger.error(`Failed to check for agreement [${id}]: ${e}`)
   }
-  return { type: 'TRACK', value: id, delisted: false }
+  return { type: 'AGREEMENT', value: id, delisted: false }
 }
 
 /**

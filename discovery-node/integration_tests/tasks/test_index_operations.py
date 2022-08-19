@@ -8,7 +8,7 @@ import src.utils.multihash
 from chance import chance
 from integration_tests.utils import toBytes
 from src.models.indexing.block import Block
-from src.models.tracks.track import Track
+from src.models.agreements.agreement import Agreement
 from src.models.users.user import User
 from src.queries.get_skipped_transactions import get_indexing_error
 from src.utils.helpers import remove_test_file
@@ -21,12 +21,12 @@ INDEXING_ERROR_KEY = "indexing:error"
 redis = get_redis()
 
 test_file = "integration_tests/res/test_live_file.mp3"
-track_metadata_json_file = "integration_tests/res/test_track_metadata.json"
+agreement_metadata_json_file = "integration_tests/res/test_agreement_metadata.json"
 
 
 def seed_contract_data(task, contracts, web3):
     user_factory_contract = contracts["user_factory_contract"]
-    track_factory_contract = contracts["track_factory_contract"]
+    agreement_factory_contract = contracts["agreement_factory_contract"]
 
     ipfs_peer_host = task.shared_config["ipfs"]["host"]
     ipfs_peer_port = task.shared_config["ipfs"]["port"]
@@ -82,10 +82,10 @@ def seed_contract_data(task, contracts, web3):
     # Add live file to ipfs node
     res = ipfs.add(test_file)
     test_live_file_hash = res["Hash"]
-    test_track_segments = [{"multihash": test_live_file_hash, "duration": 28060}]
+    test_agreement_segments = [{"multihash": test_live_file_hash, "duration": 28060}]
 
-    # Create track metadata object
-    track_metadata = {
+    # Create agreement metadata object
+    agreement_metadata = {
         "owner_id": user_id_from_event,
         "title": chance.name(),
         "length": 0.4,
@@ -104,27 +104,27 @@ def seed_contract_data(task, contracts, web3):
         "create_date": str(chance.date()),
         "release_date": str(chance.date()),
         "file_type": "mp3",
-        "track_segments": test_track_segments,
+        "agreement_segments": test_agreement_segments,
     }
 
     # dump metadata to file
-    with open(track_metadata_json_file, "w") as f:
-        json.dump(track_metadata, f)
+    with open(agreement_metadata_json_file, "w") as f:
+        json.dump(agreement_metadata, f)
 
-    # add track metadata to ipfs
-    metadata_res = ipfs.add(track_metadata_json_file)
+    # add agreement metadata to ipfs
+    metadata_res = ipfs.add(agreement_metadata_json_file)
     metadata_hash = metadata_res["Hash"]
 
-    # get track metadata multihash
+    # get agreement metadata multihash
     metadata_decoded = src.utils.multihash.from_b58_string(metadata_hash)
     metadata_decoded_multihash = src.utils.multihash.decode(metadata_decoded)
 
-    new_track_nonce = "0x" + secrets.token_hex(32)
-    new_track_multihash_digest = "0x" + metadata_decoded_multihash["digest"].hex()
-    new_track_multihash_hash_fn = int(metadata_decoded_multihash["code"])
-    new_track_multihash_size = int(metadata_decoded_multihash["length"])
+    new_agreement_nonce = "0x" + secrets.token_hex(32)
+    new_agreement_multihash_digest = "0x" + metadata_decoded_multihash["digest"].hex()
+    new_agreement_multihash_hash_fn = int(metadata_decoded_multihash["code"])
+    new_agreement_multihash_size = int(metadata_decoded_multihash["length"])
 
-    new_track_signature_data = {
+    new_agreement_signature_data = {
         "types": {
             "EIP712Domain": [
                 {"name": "name", "type": "string"},
@@ -132,8 +132,8 @@ def seed_contract_data(task, contracts, web3):
                 {"name": "chainId", "type": "uint256"},
                 {"name": "verifyingContract", "type": "address"},
             ],
-            "AddTrackRequest": [
-                {"name": "trackOwnerId", "type": "uint"},
+            "AddAgreementRequest": [
+                {"name": "agreementOwnerId", "type": "uint"},
                 {"name": "multihashDigest", "type": "bytes32"},
                 {"name": "multihashHashFn", "type": "uint8"},
                 {"name": "multihashSize", "type": "uint8"},
@@ -141,39 +141,39 @@ def seed_contract_data(task, contracts, web3):
             ],
         },
         "domain": {
-            "name": "Track Factory",
+            "name": "Agreement Factory",
             "version": "1",
             "chainId": chain_id,
-            "verifyingContract": track_factory_contract.address,
+            "verifyingContract": agreement_factory_contract.address,
         },
-        "primaryType": "AddTrackRequest",
+        "primaryType": "AddAgreementRequest",
         "message": {
-            "trackOwnerId": user_id_from_event,
-            "multihashDigest": new_track_multihash_digest,
-            "multihashHashFn": new_track_multihash_hash_fn,
-            "multihashSize": new_track_multihash_size,
-            "nonce": new_track_nonce,
+            "agreementOwnerId": user_id_from_event,
+            "multihashDigest": new_agreement_multihash_digest,
+            "multihashHashFn": new_agreement_multihash_hash_fn,
+            "multihashSize": new_agreement_multihash_size,
+            "nonce": new_agreement_nonce,
         },
     }
 
-    new_track_signature = web3.eth.signTypedData(
-        web3.eth.defaultAccount, new_track_signature_data
+    new_agreement_signature = web3.eth.signTypedData(
+        web3.eth.defaultAccount, new_agreement_signature_data
     )
 
-    # add track to blockchain
-    track_factory_contract.functions.addTrack(
+    # add agreement to blockchain
+    agreement_factory_contract.functions.addAgreement(
         user_id_from_event,
-        new_track_multihash_digest,
-        new_track_multihash_hash_fn,
-        new_track_multihash_size,
-        new_track_nonce,
-        new_track_signature,
+        new_agreement_multihash_digest,
+        new_agreement_multihash_hash_fn,
+        new_agreement_multihash_size,
+        new_agreement_nonce,
+        new_agreement_signature,
     ).transact()
 
     return {
         "new_user_handle": new_user_handle,
         "new_user_id": user_id_from_event,
-        "track_metadata": track_metadata,
+        "agreement_metadata": agreement_metadata,
     }
 
 
@@ -197,7 +197,7 @@ def cleanup():
     set_json_cached_key(redis, INDEXING_ERROR_KEY, None)  # clear indexing error
 
     yield
-    remove_test_file(track_metadata_json_file)
+    remove_test_file(agreement_metadata_json_file)
 
 
 def test_index_operations(celery_app, celery_app_contracts, mocker):
@@ -218,7 +218,7 @@ def test_index_operations(celery_app, celery_app_contracts, mocker):
         autospec=True,
     )
 
-    mock_response = MockResponse(seed_data["track_metadata"], 200)
+    mock_response = MockResponse(seed_data["agreement_metadata"], 200)
     mocker.patch(
         "aiohttp.ClientSession.get",
         return_value=mock_response,
@@ -242,9 +242,9 @@ def test_index_operations(celery_app, celery_app_contracts, mocker):
 
         # Make sure the data we added is there
         users = session.query(User).filter(User.handle == new_user_handle).all()
-        tracks = session.query(Track).filter(Track.owner_id == new_user_id).all()
+        agreements = session.query(Agreement).filter(Agreement.owner_id == new_user_id).all()
         assert len(users) > 0
-        assert len(tracks) > 0
+        assert len(agreements) > 0
 
 
 def test_index_operations_metadata_fetch_error(
@@ -370,13 +370,13 @@ def test_index_operations_tx_parse_error(celery_app, celery_app_contracts, mocke
     db = task.db
     web3 = celery_app_contracts["web3"]
 
-    # patch parse track event to raise an exception
-    def parse_track_event(*_):
+    # patch parse agreement event to raise an exception
+    def parse_agreement_event(*_):
         raise Exception("Broken parser")
 
     mocker.patch(
-        "src.tasks.tracks.parse_track_event",
-        side_effect=parse_track_event,
+        "src.tasks.agreements.parse_agreement_event",
+        side_effect=parse_agreement_event,
         autospec=True,
     )
 
@@ -387,7 +387,7 @@ def test_index_operations_tx_parse_error(celery_app, celery_app_contracts, mocke
         autospec=True,
     )
 
-    mock_response = MockResponse(seed_data["track_metadata"], 200)
+    mock_response = MockResponse(seed_data["agreement_metadata"], 200)
     mocker.patch(
         "aiohttp.ClientSession.get",
         return_value=mock_response,
@@ -443,7 +443,7 @@ def test_index_operations_indexing_error_on_commit(
         autospec=True,
     )
 
-    mock_response = MockResponse(seed_data["track_metadata"], 200)
+    mock_response = MockResponse(seed_data["agreement_metadata"], 200)
     mocker.patch(
         "aiohttp.ClientSession.get",
         return_value=mock_response,
@@ -515,7 +515,7 @@ def test_index_operations_skip_block(celery_app, celery_app_contracts, mocker):
         autospec=True,
     )
 
-    mock_response = MockResponse(seed_data["track_metadata"], 200)
+    mock_response = MockResponse(seed_data["agreement_metadata"], 200)
     mocker.patch(
         "aiohttp.ClientSession.get",
         return_value=mock_response,

@@ -17,23 +17,23 @@ const FileManager = require('../../fileManager')
 const SEGMENT_FILE_BATCH_SIZE = 10
 
 /**
- * Manages track content upload in the DB and file system
+ * Manages agreement content upload in the DB and file system
  */
-class TrackContentUploadManager {
+class AgreementContentUploadManager {
   /**
-   * Create track transcode and segments, and save all to disk. Removes temp file dir of track data if failed to
+   * Create agreement transcode and segments, and save all to disk. Removes temp file dir of agreement data if failed to
    * segment or transcode.
    * @param {Object} logContext
    * @param {Object} transcodeAndSegmentParams
-   * @param {string} transcodeAndSegmentParams.fileName the file name of the uploaded track (<cid>.<file type extension>)
-   * @param {string} transcodeAndSegmentParams.fileDir the dir path of the temp track artifacts
+   * @param {string} transcodeAndSegmentParams.fileName the file name of the uploaded agreement (<cid>.<file type extension>)
+   * @param {string} transcodeAndSegmentParams.fileDir the dir path of the temp agreement artifacts
    * @returns an Object with the structure: 
    * {
       transcodeFilePath {string}: the path to the transcode file,
       segmentFileNames {string[]}: a list of segment file names; will have the structure `segment<number>.ts`,
       segmentFilePaths {string[]}: a list of segment file paths,
       m3u8FilePath {string}: the path to the m3u8 file,
-      fileName {string}: the original upload track file name
+      fileName {string}: the original upload agreement file name
     } 
    */
   static async transcodeAndSegment({ logContext }, { fileName, fileDir }) {
@@ -50,7 +50,7 @@ class TrackContentUploadManager {
       transcodeFilePath = response[1].transcodeFilePath
     } catch (err) {
       // Prune upload artifacts
-      FileManager.removeTrackFolder({ logContext }, fileDir)
+      FileManager.removeAgreementFolder({ logContext }, fileDir)
 
       throw new Error(err.toString())
     }
@@ -65,7 +65,7 @@ class TrackContentUploadManager {
     }
   }
 
-  // Helper methods for TrackContentUploadManager
+  // Helper methods for AgreementContentUploadManager
 
   /**
    * 1. Batch saves the transcode and segments to local dir
@@ -83,9 +83,9 @@ class TrackContentUploadManager {
    * @returns {Object}
    *  returns
    *  {
-   *    trancodedTrackCID {string} : the transcoded track's CID representation,
-   *    transcodedTrackUUID {string} : the transcoded track's UUID in the Files table,
-   *    track_segments {string[]} : the list of segments CIDs,
+   *    trancodedAgreementCID {string} : the transcoded agreement's CID representation,
+   *    transcodedAgreementUUID {string} : the transcoded agreement's UUID in the Files table,
+   *    agreement_segments {string[]} : the list of segments CIDs,
    *    source_file {string} : the filename of the uploaded artifact
    *  }
    */
@@ -126,7 +126,7 @@ class TrackContentUploadManager {
       `Successfully retrieved segment duration for file=${fileName}`
     )
 
-    const trackSegments = createSegmentToDurationMap({
+    const agreementSegments = createSegmentToDurationMap({
       segmentFileResult,
       segmentDurations,
       logContext,
@@ -148,12 +148,12 @@ class TrackContentUploadManager {
       `Successfully updated DB for file=${fileName}`
     )
 
-    FileManager.removeTrackFolder({ logContext }, fileDir)
+    FileManager.removeAgreementFolder({ logContext }, fileDir)
 
     return {
-      transcodedTrackCID: transcodeFileResult.multihash,
-      transcodedTrackUUID: transcodeFileUUID,
-      track_segments: trackSegments,
+      transcodedAgreementCID: transcodeFileResult.multihash,
+      transcodedAgreementUUID: transcodeFileUUID,
+      agreement_segments: agreementSegments,
       source_file: fileName
     }
   }
@@ -163,8 +163,8 @@ class TrackContentUploadManager {
  * Record entries for transcode and segment files in DB
  * @param {Object} dbParams
  * @param {Object} dbParams.transcodeFileResult object of transcode multihash and path
- * @param {string} dbParams.fileName the file name of the uploaded track (<cid>.<file type extension>)
- * @param {string} dbParams.fileDir the dir path of the temp track artifacts
+ * @param {string} dbParams.fileName the file name of the uploaded agreement (<cid>.<file type extension>)
+ * @param {string} dbParams.fileDir the dir path of the temp agreement artifacts
  * @param {string} dbParams.cnodeUserUUID the observed user's uuid
  * @param {Object} dbParams.segmentFileResult an array of { multihash, srcPath: segmentFilePath, dstPath }
  * @param {Object} dbParams.logContext
@@ -203,7 +203,7 @@ async function addFilesToDb({
         multihash,
         sourceFile: fileName,
         storagePath: dstPath,
-        type: models.File.Types.track
+        type: models.File.Types.agreement
       }
       await DBManager.createNewDataRecord(
         createSegmentFileQueryObj,
@@ -218,7 +218,7 @@ async function addFilesToDb({
     await transaction.rollback()
 
     // Prune upload artifacts
-    FileManager.removeTrackFolder({ logContext }, fileDir)
+    FileManager.removeAgreementFolder({ logContext }, fileDir)
 
     throw new Error(e.toString())
   }
@@ -231,9 +231,9 @@ async function addFilesToDb({
  * @param {Object} params
  * @param {Object} params.segmentFileResult an array of { multihash, srcPath: segmentFilePath, dstPath }
  * @param {Object} params.segmentDurations mapping of segment filePath (segmentName) => segment duration
- * @param {string} params.fileDir the dir path of the temp track artifacts
+ * @param {string} params.fileDir the dir path of the temp agreement artifacts
  * @param {Object} params.logContext
- * @returns an array of track segments with the structure { multihash, duration }
+ * @returns an array of agreement segments with the structure { multihash, duration }
  */
 function createSegmentToDurationMap({
   segmentFileResult,
@@ -241,7 +241,7 @@ function createSegmentToDurationMap({
   fileDir,
   logContext
 }) {
-  let trackSegments = segmentFileResult.map((segmentFile) => {
+  let agreementSegments = segmentFileResult.map((segmentFile) => {
     return {
       multihash: segmentFile.multihash,
       duration: segmentDurations[segmentFile.srcPath]
@@ -249,25 +249,25 @@ function createSegmentToDurationMap({
   })
 
   // exclude 0-length segments that are sometimes outputted by ffmpeg segmentation
-  trackSegments = trackSegments.filter((trackSegment) => trackSegment.duration)
+  agreementSegments = agreementSegments.filter((agreementSegment) => agreementSegment.duration)
 
-  // error if there are no track segments
-  if (!trackSegments || !trackSegments.length) {
+  // error if there are no agreement segments
+  if (!agreementSegments || !agreementSegments.length) {
     // Prune upload artifacts
-    FileManager.removeTrackFolder({ logContext }, fileDir)
+    FileManager.removeAgreementFolder({ logContext }, fileDir)
 
-    throw new Error('Track upload failed - no track segments')
+    throw new Error('Agreement upload failed - no agreement segments')
   }
 
-  return trackSegments
+  return agreementSegments
 }
 
 /**
  * Save transcode and segment files (in parallel batches) to disk.
  * @param {Object} batchParams
- * @param {string} batchParams.fileDir the dir path of the temp track artifacts
+ * @param {string} batchParams.fileDir the dir path of the temp agreement artifacts
  * @param {Object} batchParams.logContext
- * @param {string} batchParams.transcodeFilePath the transcoded track path
+ * @param {string} batchParams.transcodeFilePath the transcoded agreement path
  * @param {string} batchParams.segmentFilePaths the segments path
  * @returns an object of array of segment multihashes, src paths, and dest paths and transcode multihash and path
  */
@@ -321,4 +321,4 @@ async function batchSaveFilesToDisk({
   return { segmentFileResult, transcodeFileResult }
 }
 
-module.exports = TrackContentUploadManager
+module.exports = AgreementContentUploadManager

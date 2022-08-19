@@ -16,15 +16,15 @@ from src.models.social.follow import Follow
 from src.models.social.reaction import Reaction
 from src.models.social.repost import Repost, RepostType
 from src.models.social.save import Save, SaveType
-from src.models.tracks.remix import Remix
-from src.models.tracks.track import Track
+from src.models.agreements.remix import Remix
+from src.models.agreements.agreement import Agreement
 from src.models.users.aggregate_user import AggregateUser
 from src.models.users.supporter_rank_up import SupporterRankUp
 from src.models.users.user import User
 from src.models.users.user_balance_change import UserBalanceChange
 from src.models.users.user_tip import UserTip
 from src.queries import response_name_constants as const
-from src.queries.get_prev_track_entries import get_prev_track_entries
+from src.queries.get_prev_agreement_entries import get_prev_agreement_entries
 from src.utils import web3_provider
 from src.utils.config import shared_config
 from src.utils.db_session import get_db_read_replica
@@ -50,19 +50,19 @@ def get_owner_id(session, entity_type, entity_id):
 
     Args:
         session: (obj) The start block number for querying for notifications
-        entity_type: (string) Must be either 'track' | 'album' | 'playlist
+        entity_type: (string) Must be either 'agreement' | 'album' | 'playlist
         entity_id: (int) The id of the 'entity_type'
 
     Returns:
         owner_id: (int | None) The user id of the owner of the entity_type/entity_id
     """
-    if entity_type == "track":
+    if entity_type == "agreement":
         owner_id_query = (
-            session.query(Track.owner_id)
+            session.query(Agreement.owner_id)
             .filter(
-                Track.track_id == entity_id,
-                Track.is_delete == False,
-                Track.is_current == True,
+                Agreement.agreement_id == entity_id,
+                Agreement.is_delete == False,
+                Agreement.is_current == True,
             )
             .all()
         )
@@ -106,14 +106,14 @@ def get_owner_id(session, entity_type, entity_id):
     return None
 
 
-def get_cosign_remix_notifications(session, max_block_number, remix_tracks):
+def get_cosign_remix_notifications(session, max_block_number, remix_agreements):
     """
-    Get the notifications for remix tracks that are reposted/favorited by the parent remix author
+    Get the notifications for remix agreements that are reposted/favorited by the parent remix author
 
     Args:
         session: (DB)
         max_block_number: (int)
-        remix_tracks: (Array<{ }>)
+        remix_agreements: (Array<{ }>)
             'user_id'
             'item_id'
             const.notification_blocknumber
@@ -124,66 +124,66 @@ def get_cosign_remix_notifications(session, max_block_number, remix_tracks):
         Array of cosign notifications
 
     """
-    if not remix_tracks:
+    if not remix_agreements:
         return []
 
     remix_notifications = []
-    remix_track_ids = [r["item_id"] for r in remix_tracks]
+    remix_agreement_ids = [r["item_id"] for r in remix_agreements]
 
-    # Query for all the parent tracks of the remix tracks
-    tracks_subquery = (
-        session.query(Track)
+    # Query for all the parent agreements of the remix agreements
+    agreements_subquery = (
+        session.query(Agreement)
         .filter(
-            Track.is_unlisted == False,
-            Track.is_delete == False,
-            Track.is_current == True,
+            Agreement.is_unlisted == False,
+            Agreement.is_delete == False,
+            Agreement.is_current == True,
         )
         .subquery()
     )
 
-    parent_tracks = (
+    parent_agreements = (
         session.query(
-            Remix.child_track_id, Remix.parent_track_id, tracks_subquery.c.owner_id
+            Remix.child_agreement_id, Remix.parent_agreement_id, agreements_subquery.c.owner_id
         )
-        .join(tracks_subquery, Remix.parent_track_id == tracks_subquery.c.track_id)
-        .filter(Remix.child_track_id.in_(remix_track_ids))
+        .join(agreements_subquery, Remix.parent_agreement_id == agreements_subquery.c.agreement_id)
+        .filter(Remix.child_agreement_id.in_(remix_agreement_ids))
         .all()
     )
-    # Mapping of parent track users to child track to parent track
-    parent_track_users_to_remixes = {}
-    for track_parent in parent_tracks:
-        [remix_track_id, remix_parent_id, remix_parent_user_id] = track_parent
-        if remix_parent_user_id not in parent_track_users_to_remixes:
-            parent_track_users_to_remixes[remix_parent_user_id] = {
-                remix_track_id: remix_parent_id
+    # Mapping of parent agreement users to child agreement to parent agreement
+    parent_agreement_users_to_remixes = {}
+    for agreement_parent in parent_agreements:
+        [remix_agreement_id, remix_parent_id, remix_parent_user_id] = agreement_parent
+        if remix_parent_user_id not in parent_agreement_users_to_remixes:
+            parent_agreement_users_to_remixes[remix_parent_user_id] = {
+                remix_agreement_id: remix_parent_id
             }
         else:
-            parent_track_users_to_remixes[remix_parent_user_id][
-                remix_track_id
+            parent_agreement_users_to_remixes[remix_parent_user_id][
+                remix_agreement_id
             ] = remix_parent_id
 
-    for remix_track in remix_tracks:
-        user_id = remix_track["user_id"]
-        track_id = remix_track["item_id"]
+    for remix_agreement in remix_agreements:
+        user_id = remix_agreement["user_id"]
+        agreement_id = remix_agreement["item_id"]
 
         if (
-            user_id in parent_track_users_to_remixes
-            and track_id in parent_track_users_to_remixes[user_id]
+            user_id in parent_agreement_users_to_remixes
+            and agreement_id in parent_agreement_users_to_remixes[user_id]
         ):
             remix_notifications.append(
                 {
                     const.notification_type: const.notification_type_remix_cosign,
-                    const.notification_blocknumber: remix_track[
+                    const.notification_blocknumber: remix_agreement[
                         const.notification_blocknumber
                     ],
-                    const.notification_timestamp: remix_track[
+                    const.notification_timestamp: remix_agreement[
                         const.notification_timestamp
                     ],
                     const.notification_initiator: user_id,
                     const.notification_metadata: {
-                        const.notification_entity_id: track_id,
-                        const.notification_entity_type: "track",
-                        const.notification_entity_owner_id: remix_track[
+                        const.notification_entity_id: agreement_id,
+                        const.notification_entity_type: "agreement",
+                        const.notification_entity_owner_id: remix_agreement[
                             "item_owner_id"
                         ],
                     },
@@ -194,7 +194,7 @@ def get_cosign_remix_notifications(session, max_block_number, remix_tracks):
 
 
 class GroupMilestones(TypedDict):
-    tracks: Dict[int, int]
+    agreements: Dict[int, int]
     albums: Dict[int, int]
     playlists: Dict[int, int]
 
@@ -258,13 +258,13 @@ def get_milestone_info(
             playlist_reposts.append((id, threshold))
 
     favorite_milestones: GroupMilestones = {
-        "tracks": dict(milestones.get(MilestoneName.TRACK_SAVE_COUNT, [])),
+        "agreements": dict(milestones.get(MilestoneName.AGREEMENT_SAVE_COUNT, [])),
         "albums": dict(album_favorites),
         "playlists": dict(playlist_favorites),
     }
 
     repost_milestones: GroupMilestones = {
-        "tracks": dict(milestones.get(MilestoneName.TRACK_REPOST_COUNT, [])),
+        "agreements": dict(milestones.get(MilestoneName.AGREEMENT_REPOST_COUNT, [])),
         "albums": dict(album_reposts),
         "playlists": dict(playlist_reposts),
     }
@@ -286,8 +286,8 @@ def notifications():
     URL Params:
         min_block_number: (int) The start block number for querying for notifications
         max_block_number?: (int) The end block number for querying for notifications
-        track_id?: (Array<int>) Array of track id for fetching the track's owner id
-            and adding the track id to owner user id mapping to the `owners` response field
+        agreement_id?: (Array<int>) Array of agreement id for fetching the agreement's owner id
+            and adding the agreement id to owner user id mapping to the `owners` response field
             NOTE: this is added for notification for listen counts
 
     Response - Json object w/ the following fields
@@ -308,11 +308,11 @@ def notifications():
         milestones: Dictionary mapping of follows/reposts/favorites (processed within the blocks params)
             Root fields:
                 follower_counts: Contains a dictionary of user id => follower count (up to the max_block_number)
-                repost_counts: Contains a dictionary tracks/albums/playlists of id to repost count
-                favorite_counts: Contains a dictionary tracks/albums/playlists of id to favorite count
+                repost_counts: Contains a dictionary agreements/albums/playlists of id to repost count
+                favorite_counts: Contains a dictionary agreements/albums/playlists of id to favorite count
 
-        owners: Dictionary containing the mapping for track id / playlist id / album -> owner user id
-            The root keys are 'tracks', 'playlists', 'albums' and each contains the id to owner id mapping
+        owners: Dictionary containing the mapping for agreement id / playlist id / album -> owner user id
+            The root keys are 'agreements', 'playlists', 'albums' and each contains the id to owner id mapping
     """
 
     db = get_db_read_replica()
@@ -320,12 +320,12 @@ def notifications():
     min_block_number = request.args.get("min_block_number", type=int)
     max_block_number = request.args.get("max_block_number", type=int)
 
-    track_ids_to_owner = []
+    agreement_ids_to_owner = []
     try:
-        track_ids_str_list = request.args.getlist("track_id")
-        track_ids_to_owner = [int(y) for y in track_ids_str_list]
+        agreement_ids_str_list = request.args.getlist("agreement_id")
+        agreement_ids_to_owner = [int(y) for y in agreement_ids_str_list]
     except Exception as e:
-        logger.error(f"Failed to retrieve track list {e}")
+        logger.error(f"Failed to retrieve agreement list {e}")
 
     # Max block number is not explicitly required (yet)
     if not min_block_number and min_block_number != 0:
@@ -353,7 +353,7 @@ def notifications():
     milestone_info = {}
 
     # Cache owner info for network entities and pass in w/results
-    owner_info = {const.tracks: {}, const.albums: {}, const.playlists: {}}
+    owner_info = {const.agreements: {}, const.albums: {}, const.playlists: {}}
 
     start_time = datetime.now()
     logger.info(f"notifications.py | start_time ${start_time}")
@@ -407,13 +407,13 @@ def notifications():
         favorite_results = favorites_query.all()
 
         # ID lists to query count aggregates
-        favorited_track_ids = []
+        favorited_agreement_ids = []
         favorited_album_ids = []
         favorited_playlist_ids = []
 
         # List of favorite notifications
         favorite_notifications = []
-        favorite_remix_tracks = []
+        favorite_remix_agreements = []
 
         for entry in favorite_results:
             favorite_notif = {
@@ -431,15 +431,15 @@ def notifications():
 
             # NOTE if deleted, the favorite can still exist
             # TODO: Can we aggregate all owner queries and perform at once...?
-            if save_type == SaveType.track:
-                owner_id = get_owner_id(session, "track", save_item_id)
+            if save_type == SaveType.agreement:
+                owner_id = get_owner_id(session, "agreement", save_item_id)
                 if not owner_id:
                     continue
                 metadata[const.notification_entity_owner_id] = owner_id
-                favorited_track_ids.append(save_item_id)
-                owner_info[const.tracks][save_item_id] = owner_id
+                favorited_agreement_ids.append(save_item_id)
+                owner_info[const.agreements][save_item_id] = owner_id
 
-                favorite_remix_tracks.append(
+                favorite_remix_agreements.append(
                     {
                         const.notification_blocknumber: entry.blocknumber,
                         const.notification_timestamp: entry.created_at,
@@ -469,9 +469,9 @@ def notifications():
             favorite_notifications.append(favorite_notif)
         notifications_unsorted.extend(favorite_notifications)
 
-        if favorited_track_ids:
+        if favorited_agreement_ids:
             favorite_remix_notifications = get_cosign_remix_notifications(
-                session, max_block_number, favorite_remix_tracks
+                session, max_block_number, favorite_remix_agreements
             )
             notifications_unsorted.extend(favorite_remix_notifications)
 
@@ -536,7 +536,7 @@ def notifications():
         repost_results = repost_query.all()
 
         # ID lists to query counts
-        reposted_track_ids = []
+        reposted_agreement_ids = []
         reposted_album_ids = []
         reposted_playlist_ids = []
 
@@ -545,7 +545,7 @@ def notifications():
 
         # List of repost notifications
         repost_remix_notifications = []
-        repost_remix_tracks = []
+        repost_remix_agreements = []
 
         for entry in repost_results:
             repost_notif = {
@@ -560,14 +560,14 @@ def notifications():
                 const.notification_entity_type: repost_type,
                 const.notification_entity_id: repost_item_id,
             }
-            if repost_type == RepostType.track:
-                owner_id = get_owner_id(session, "track", repost_item_id)
+            if repost_type == RepostType.agreement:
+                owner_id = get_owner_id(session, "agreement", repost_item_id)
                 if not owner_id:
                     continue
                 metadata[const.notification_entity_owner_id] = owner_id
-                reposted_track_ids.append(repost_item_id)
-                owner_info[const.tracks][repost_item_id] = owner_id
-                repost_remix_tracks.append(
+                reposted_agreement_ids.append(repost_item_id)
+                owner_info[const.agreements][repost_item_id] = owner_id
+                repost_remix_agreements.append(
                     {
                         const.notification_blocknumber: entry.blocknumber,
                         const.notification_timestamp: entry.created_at,
@@ -601,162 +601,162 @@ def notifications():
 
         # Aggregate repost counts for relevant fields
         # Used to notify users of entity-specific milestones
-        if reposted_track_ids:
+        if reposted_agreement_ids:
             repost_remix_notifications = get_cosign_remix_notifications(
-                session, max_block_number, repost_remix_tracks
+                session, max_block_number, repost_remix_agreements
             )
             notifications_unsorted.extend(repost_remix_notifications)
 
-        # Query relevant created entity notification - tracks/albums/playlists
+        # Query relevant created entity notification - agreements/albums/playlists
         created_notifications = []
 
         logger.info(f"notifications.py | reposts at {datetime.now() - start_time}")
 
         #
-        # Query relevant created tracks for remix information
+        # Query relevant created agreements for remix information
         #
         remix_created_notifications = []
 
-        # Aggregate track notifs
-        tracks_query = session.query(Track)
-        # TODO: Is it valid to use Track.is_current here? Might not be the right info...
-        tracks_query = tracks_query.filter(
-            Track.is_unlisted == False,
-            Track.is_delete == False,
-            Track.stem_of == None,
-            Track.blocknumber > min_block_number,
-            Track.blocknumber <= max_block_number,
+        # Aggregate agreement notifs
+        agreements_query = session.query(Agreement)
+        # TODO: Is it valid to use Agreement.is_current here? Might not be the right info...
+        agreements_query = agreements_query.filter(
+            Agreement.is_unlisted == False,
+            Agreement.is_delete == False,
+            Agreement.stem_of == None,
+            Agreement.blocknumber > min_block_number,
+            Agreement.blocknumber <= max_block_number,
         )
-        tracks_query = tracks_query.filter(Track.created_at == Track.updated_at)
-        track_results = tracks_query.all()
-        for entry in track_results:
-            track_notif = {
+        agreements_query = agreements_query.filter(Agreement.created_at == Agreement.updated_at)
+        agreement_results = agreements_query.all()
+        for entry in agreement_results:
+            agreement_notif = {
                 const.notification_type: const.notification_type_create,
                 const.notification_blocknumber: entry.blocknumber,
                 const.notification_timestamp: entry.created_at,
                 const.notification_initiator: entry.owner_id,
-                # TODO: is entity owner id necessary for tracks?
+                # TODO: is entity owner id necessary for agreements?
                 const.notification_metadata: {
-                    const.notification_entity_type: "track",
-                    const.notification_entity_id: entry.track_id,
+                    const.notification_entity_type: "agreement",
+                    const.notification_entity_id: entry.agreement_id,
                     const.notification_entity_owner_id: entry.owner_id,
                 },
             }
-            created_notifications.append(track_notif)
+            created_notifications.append(agreement_notif)
 
             if entry.remix_of:
-                # Add notification to remix track owner
-                parent_remix_tracks = [
-                    t["parent_track_id"] for t in entry.remix_of["tracks"]
+                # Add notification to remix agreement owner
+                parent_remix_agreements = [
+                    t["parent_agreement_id"] for t in entry.remix_of["agreements"]
                 ]
-                remix_track_parents = (
-                    session.query(Track.owner_id, Track.track_id)
+                remix_agreement_parents = (
+                    session.query(Agreement.owner_id, Agreement.agreement_id)
                     .filter(
-                        Track.track_id.in_(parent_remix_tracks),
-                        Track.is_unlisted == False,
-                        Track.is_delete == False,
-                        Track.is_current == True,
+                        Agreement.agreement_id.in_(parent_remix_agreements),
+                        Agreement.is_unlisted == False,
+                        Agreement.is_delete == False,
+                        Agreement.is_current == True,
                     )
                     .all()
                 )
-                for remix_track_parent in remix_track_parents:
+                for remix_agreement_parent in remix_agreement_parents:
                     [
-                        remix_track_parent_owner,
-                        remix_track_parent_id,
-                    ] = remix_track_parent
+                        remix_agreement_parent_owner,
+                        remix_agreement_parent_id,
+                    ] = remix_agreement_parent
                     remix_notif = {
                         const.notification_type: const.notification_type_remix_create,
                         const.notification_blocknumber: entry.blocknumber,
                         const.notification_timestamp: entry.created_at,
                         const.notification_initiator: entry.owner_id,
-                        # TODO: is entity owner id necessary for tracks?
+                        # TODO: is entity owner id necessary for agreements?
                         const.notification_metadata: {
-                            const.notification_entity_type: "track",
-                            const.notification_entity_id: entry.track_id,
+                            const.notification_entity_type: "agreement",
+                            const.notification_entity_id: entry.agreement_id,
                             const.notification_entity_owner_id: entry.owner_id,
-                            const.notification_remix_parent_track_user_id: remix_track_parent_owner,
-                            const.notification_remix_parent_track_id: remix_track_parent_id,
+                            const.notification_remix_parent_agreement_user_id: remix_agreement_parent_owner,
+                            const.notification_remix_parent_agreement_id: remix_agreement_parent_id,
                         },
                     }
                     remix_created_notifications.append(remix_notif)
 
         logger.info(f"notifications.py | remixes at {datetime.now() - start_time}")
 
-        # Handle track update notifications
+        # Handle agreement update notifications
         # TODO: Consider switching blocknumber for updated at?
-        updated_tracks_query = session.query(Track)
-        updated_tracks_query = updated_tracks_query.filter(
-            Track.is_unlisted == False,
-            Track.stem_of == None,
-            Track.created_at != Track.updated_at,
-            Track.blocknumber > min_block_number,
-            Track.blocknumber <= max_block_number,
+        updated_agreements_query = session.query(Agreement)
+        updated_agreements_query = updated_agreements_query.filter(
+            Agreement.is_unlisted == False,
+            Agreement.stem_of == None,
+            Agreement.created_at != Agreement.updated_at,
+            Agreement.blocknumber > min_block_number,
+            Agreement.blocknumber <= max_block_number,
         )
-        updated_tracks = updated_tracks_query.all()
+        updated_agreements = updated_agreements_query.all()
 
-        prev_tracks = get_prev_track_entries(session, updated_tracks)
+        prev_agreements = get_prev_agreement_entries(session, updated_agreements)
 
-        for prev_entry in prev_tracks:
-            entry = next(t for t in updated_tracks if t.track_id == prev_entry.track_id)
+        for prev_entry in prev_agreements:
+            entry = next(t for t in updated_agreements if t.agreement_id == prev_entry.agreement_id)
             logger.info(
-                f"notifications.py | single track update {entry.track_id} {entry.blocknumber} {datetime.now() - start_time}"
+                f"notifications.py | single agreement update {entry.agreement_id} {entry.blocknumber} {datetime.now() - start_time}"
             )
 
-            # Tracks that were unlisted and turned to public
+            # Agreements that were unlisted and turned to public
             if prev_entry.is_unlisted == True:
                 logger.info(
-                    f"notifications.py | single track update to public {datetime.now() - start_time}"
+                    f"notifications.py | single agreement update to public {datetime.now() - start_time}"
                 )
-                track_notif = {
+                agreement_notif = {
                     const.notification_type: const.notification_type_create,
                     const.notification_blocknumber: entry.blocknumber,
                     const.notification_timestamp: entry.created_at,
                     const.notification_initiator: entry.owner_id,
-                    # TODO: is entity owner id necessary for tracks?
+                    # TODO: is entity owner id necessary for agreements?
                     const.notification_metadata: {
-                        const.notification_entity_type: "track",
-                        const.notification_entity_id: entry.track_id,
+                        const.notification_entity_type: "agreement",
+                        const.notification_entity_id: entry.agreement_id,
                         const.notification_entity_owner_id: entry.owner_id,
                     },
                 }
-                created_notifications.append(track_notif)
+                created_notifications.append(agreement_notif)
 
-            # Tracks that were not remixes and turned into remixes
+            # Agreements that were not remixes and turned into remixes
             if not prev_entry.remix_of and entry.remix_of:
-                # Add notification to remix track owner
-                parent_remix_tracks = [
-                    t["parent_track_id"] for t in entry.remix_of["tracks"]
+                # Add notification to remix agreement owner
+                parent_remix_agreements = [
+                    t["parent_agreement_id"] for t in entry.remix_of["agreements"]
                 ]
-                remix_track_parents = (
-                    session.query(Track.owner_id, Track.track_id)
+                remix_agreement_parents = (
+                    session.query(Agreement.owner_id, Agreement.agreement_id)
                     .filter(
-                        Track.track_id.in_(parent_remix_tracks),
-                        Track.is_unlisted == False,
-                        Track.is_delete == False,
-                        Track.is_current == True,
+                        Agreement.agreement_id.in_(parent_remix_agreements),
+                        Agreement.is_unlisted == False,
+                        Agreement.is_delete == False,
+                        Agreement.is_current == True,
                     )
                     .all()
                 )
                 logger.info(
-                    f"notifications.py | single track update parents {remix_track_parents} {datetime.now() - start_time}"
+                    f"notifications.py | single agreement update parents {remix_agreement_parents} {datetime.now() - start_time}"
                 )
-                for remix_track_parent in remix_track_parents:
+                for remix_agreement_parent in remix_agreement_parents:
                     [
-                        remix_track_parent_owner,
-                        remix_track_parent_id,
-                    ] = remix_track_parent
+                        remix_agreement_parent_owner,
+                        remix_agreement_parent_id,
+                    ] = remix_agreement_parent
                     remix_notif = {
                         const.notification_type: const.notification_type_remix_create,
                         const.notification_blocknumber: entry.blocknumber,
                         const.notification_timestamp: entry.created_at,
                         const.notification_initiator: entry.owner_id,
-                        # TODO: is entity owner id necessary for tracks?
+                        # TODO: is entity owner id necessary for agreements?
                         const.notification_metadata: {
-                            const.notification_entity_type: "track",
-                            const.notification_entity_id: entry.track_id,
+                            const.notification_entity_type: "agreement",
+                            const.notification_entity_id: entry.agreement_id,
                             const.notification_entity_owner_id: entry.owner_id,
-                            const.notification_remix_parent_track_user_id: remix_track_parent_owner,
-                            const.notification_remix_parent_track_id: remix_track_parent_id,
+                            const.notification_remix_parent_agreement_user_id: remix_agreement_parent_owner,
+                            const.notification_remix_parent_agreement_id: remix_agreement_parent_id,
                         },
                     }
                     remix_created_notifications.append(remix_notif)
@@ -764,7 +764,7 @@ def notifications():
         notifications_unsorted.extend(remix_created_notifications)
 
         logger.info(
-            f"notifications.py | track updates at {datetime.now() - start_time}"
+            f"notifications.py | agreement updates at {datetime.now() - start_time}"
         )
 
         # Aggregate playlist/album notifs
@@ -838,84 +838,84 @@ def notifications():
                 publish_playlist_notif[const.notification_metadata] = metadata
                 created_notifications.append(publish_playlist_notif)
 
-        # Playlists that had tracks added to them
+        # Playlists that had agreements added to them
         # Get all playlists that were modified over this range
-        playlist_track_added_query = session.query(Playlist).filter(
+        playlist_agreement_added_query = session.query(Playlist).filter(
             Playlist.is_current == True,
             Playlist.is_delete == False,
             Playlist.is_private == False,
             Playlist.blocknumber > min_block_number,
             Playlist.blocknumber <= max_block_number,
         )
-        playlist_track_added_results = playlist_track_added_query.all()
-        # Loop over all playlist updates and determine if there were tracks added
+        playlist_agreement_added_results = playlist_agreement_added_query.all()
+        # Loop over all playlist updates and determine if there were agreements added
         # at the block that the playlist update is at
-        track_added_to_playlist_notifications = []
-        track_ids = []
-        for entry in playlist_track_added_results:
-            # Get the track_ids from entry["playlist_contents"]
-            if not entry.playlist_contents["track_ids"]:
+        agreement_added_to_playlist_notifications = []
+        agreement_ids = []
+        for entry in playlist_agreement_added_results:
+            # Get the agreement_ids from entry["playlist_contents"]
+            if not entry.playlist_contents["agreement_ids"]:
                 # skip empty playlists
                 continue
             playlist_contents = entry.playlist_contents
             min_block = web3.eth.get_block(min_block_number)
             max_block = web3.eth.get_block(max_block_number)
 
-            for track in playlist_contents["track_ids"]:
-                track_id = track["track"]
-                track_timestamp = track["time"]
-                # We know that this track was added to the playlist at this specific update
+            for agreement in playlist_contents["agreement_ids"]:
+                agreement_id = agreement["agreement"]
+                agreement_timestamp = agreement["time"]
+                # We know that this agreement was added to the playlist at this specific update
                 if (
-                    min_block.timestamp < track_timestamp
-                    and track_timestamp <= max_block.timestamp
+                    min_block.timestamp < agreement_timestamp
+                    and agreement_timestamp <= max_block.timestamp
                 ):
-                    track_ids.append(track_id)
-                    track_added_to_playlist_notification = {
-                        const.notification_type: const.notification_type_add_track_to_playlist,
+                    agreement_ids.append(agreement_id)
+                    agreement_added_to_playlist_notification = {
+                        const.notification_type: const.notification_type_add_agreement_to_playlist,
                         const.notification_blocknumber: entry.blocknumber,
                         const.notification_timestamp: entry.created_at,
                         const.notification_initiator: entry.playlist_owner_id,
                     }
                     metadata = {
                         const.playlist_id: entry.playlist_id,
-                        const.track_id: track_id,
+                        const.agreement_id: agreement_id,
                     }
-                    track_added_to_playlist_notification[
+                    agreement_added_to_playlist_notification[
                         const.notification_metadata
                     ] = metadata
-                    track_added_to_playlist_notifications.append(
-                        track_added_to_playlist_notification
+                    agreement_added_to_playlist_notifications.append(
+                        agreement_added_to_playlist_notification
                     )
 
-        tracks = (
-            session.query(Track.owner_id, Track.track_id)
+        agreements = (
+            session.query(Agreement.owner_id, Agreement.agreement_id)
             .filter(
-                Track.track_id.in_(track_ids),
-                Track.is_unlisted == False,
-                Track.is_delete == False,
-                Track.is_current == True,
+                Agreement.agreement_id.in_(agreement_ids),
+                Agreement.is_unlisted == False,
+                Agreement.is_delete == False,
+                Agreement.is_current == True,
             )
             .all()
         )
-        track_owner_map = {}
-        for track in tracks:
-            owner_id, track_id = track
-            track_owner_map[track_id] = owner_id
+        agreement_owner_map = {}
+        for agreement in agreements:
+            owner_id, agreement_id = agreement
+            agreement_owner_map[agreement_id] = owner_id
 
         # Loop over notifications and populate their metadata
-        for notification in track_added_to_playlist_notifications:
-            track_id = notification[const.notification_metadata][const.track_id]
-            if track_id not in track_owner_map:
-                # Note: if track_id not in track_owner_map, it's because the track is either deleted, unlisted, or doesn't exist
+        for notification in agreement_added_to_playlist_notifications:
+            agreement_id = notification[const.notification_metadata][const.agreement_id]
+            if agreement_id not in agreement_owner_map:
+                # Note: if agreement_id not in agreement_owner_map, it's because the agreement is either deleted, unlisted, or doesn't exist
                 # In that case, it should not trigger a notification
                 continue
             else:
-                track_owner_id = track_owner_map[track_id]
-                if track_owner_id != notification[const.notification_initiator]:
-                    # add tracks that don't belong to the playlist owner
+                agreement_owner_id = agreement_owner_map[agreement_id]
+                if agreement_owner_id != notification[const.notification_initiator]:
+                    # add agreements that don't belong to the playlist owner
                     notification[const.notification_metadata][
-                        const.track_owner_id
-                    ] = track_owner_id
+                        const.agreement_owner_id
+                    ] = agreement_owner_id
                     created_notifications.append(notification)
 
         notifications_unsorted.extend(created_notifications)
@@ -923,17 +923,17 @@ def notifications():
         logger.info(f"notifications.py | playlists at {datetime.now() - start_time}")
 
         # Get additional owner info as requested for listen counts
-        tracks_owner_query = session.query(Track).filter(
-            Track.is_current == True, Track.track_id.in_(track_ids_to_owner)
+        agreements_owner_query = session.query(Agreement).filter(
+            Agreement.is_current == True, Agreement.agreement_id.in_(agreement_ids_to_owner)
         )
-        track_owner_results = tracks_owner_query.all()
-        for entry in track_owner_results:
+        agreement_owner_results = agreements_owner_query.all()
+        for entry in agreement_owner_results:
             owner = entry.owner_id
-            track_id = entry.track_id
-            owner_info[const.tracks][track_id] = owner
+            agreement_id = entry.agreement_id
+            owner_info[const.agreements][agreement_id] = owner
 
         logger.info(
-            f"notifications.py | owner info at {datetime.now() - start_time}, owners {len(track_owner_results)}"
+            f"notifications.py | owner info at {datetime.now() - start_time}, owners {len(agreement_owner_results)}"
         )
 
         # Get playlist updates
@@ -1144,29 +1144,29 @@ def solana_notifications():
                 }
             )
 
-        track_listen_milestone: List[Tuple(Milestone, int)] = (
-            session.query(Milestone, Track.owner_id)
+        agreement_listen_milestone: List[Tuple(Milestone, int)] = (
+            session.query(Milestone, Agreement.owner_id)
             .filter(
                 Milestone.name == MilestoneName.LISTEN_COUNT,
                 Milestone.slot > min_slot_number,
                 Milestone.slot <= max_slot_number,
             )
-            .join(Track, Track.track_id == Milestone.id and Track.is_current == True)
+            .join(Agreement, Agreement.agreement_id == Milestone.id and Agreement.is_current == True)
             .all()
         )
 
-        track_listen_milestones = []
-        for result in track_listen_milestone:
-            track_milestone, track_owner_id = result
-            track_listen_milestones.append(
+        agreement_listen_milestones = []
+        for result in agreement_listen_milestone:
+            agreement_milestone, agreement_owner_id = result
+            agreement_listen_milestones.append(
                 {
                     const.solana_notification_type: const.solana_notification_type_listen_milestone,
-                    const.solana_notification_slot: track_milestone.slot,
-                    const.solana_notification_initiator: track_owner_id,  # owner_id
+                    const.solana_notification_slot: agreement_milestone.slot,
+                    const.solana_notification_initiator: agreement_owner_id,  # owner_id
                     const.solana_notification_metadata: {
-                        const.solana_notification_threshold: track_milestone.threshold,
-                        const.notification_entity_id: track_milestone.id,  # track_id
-                        const.notification_entity_type: "track",
+                        const.solana_notification_threshold: agreement_milestone.threshold,
+                        const.notification_entity_id: agreement_milestone.id,  # agreement_id
+                        const.notification_entity_type: "agreement",
                     },
                 }
             )
@@ -1264,7 +1264,7 @@ def solana_notifications():
                 }
             )
         notifications_unsorted.extend(challenge_reward_notifications)
-        notifications_unsorted.extend(track_listen_milestones)
+        notifications_unsorted.extend(agreement_listen_milestones)
         notifications_unsorted.extend(supporter_rank_ups)
         notifications_unsorted.extend(tips)
         notifications_unsorted.extend(reactions)

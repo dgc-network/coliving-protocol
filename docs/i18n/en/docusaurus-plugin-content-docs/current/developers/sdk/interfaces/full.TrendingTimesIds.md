@@ -15,7 +15,7 @@ custom_edit_url: null
 
 ### month
 
- `Optional` **month**: [`TrackId`](full.TrackId.md)[]
+ `Optional` **month**: [`AgreementId`](full.AgreementId.md)[]
 
 **`memberof`** TrendingTimesIds
 
@@ -23,7 +23,7 @@ ___
 
 ### week
 
- `Optional` **week**: [`TrackId`](full.TrackId.md)[]
+ `Optional` **week**: [`AgreementId`](full.AgreementId.md)[]
 
 **`memberof`** TrendingTimesIds
 
@@ -31,6 +31,6 @@ ___
 
 ### year
 
- `Optional` **year**: [`TrackId`](full.TrackId.md)[]
+ `Optional` **year**: [`AgreementId`](full.AgreementId.md)[]
 
 **`memberof`** TrendingTimesIds

@@ -7,7 +7,7 @@ async function getClaimInfo (colivingLibs) {
   if (!colivingLibs) throw new Error('colivingLibs is not defined')
 
   // @dev -  instance numbering is off-by-1 from accounts to
-  // align with creator/track numbering below, which are 1-indexed
+  // align with creator/agreement numbering below, which are 1-indexed
   const claimInfo = await colivingLibs.ethContracts.StakingProxyClient.getClaimInfo()
   console.log('getClaimInfo', claimInfo)
   return claimInfo

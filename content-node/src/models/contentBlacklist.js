@@ -3,7 +3,7 @@
 module.exports = (sequelize, DataTypes) => {
   const types = Object.freeze({
     user: 'USER',
-    track: 'TRACK',
+    agreement: 'AGREEMENT',
     cid: 'CID'
   })
 
@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     type: {
       allowNull: false,
-      type: DataTypes.ENUM(types.user, types.track, types.cid)
+      type: DataTypes.ENUM(types.user, types.agreement, types.cid)
     },
     value: {
       allowNull: false,

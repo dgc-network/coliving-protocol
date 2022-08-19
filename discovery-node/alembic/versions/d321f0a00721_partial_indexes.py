@@ -20,12 +20,12 @@ def upgrade():
     query = """
     BEGIN;
 
-    -- make track_owner_id_idx a partial index
-    DROP INDEX IF EXISTS track_owner_id_idx;
-    CREATE INDEX IF NOT EXISTS track_owner_id_idx ON tracks (owner_id) WHERE is_current;
+    -- make agreement_owner_id_idx a partial index
+    DROP INDEX IF EXISTS agreement_owner_id_idx;
+    CREATE INDEX IF NOT EXISTS agreement_owner_id_idx ON agreements (owner_id) WHERE is_current;
 
-    -- add index for track_created_at
-    CREATE INDEX IF NOT EXISTS track_created_at_idx ON tracks (created_at) WHERE is_current;
+    -- add index for agreement_created_at
+    CREATE INDEX IF NOT EXISTS agreement_created_at_idx ON agreements (created_at) WHERE is_current;
 
     -- add index for playlist owner
     CREATE INDEX IF NOT EXISTS playlist_owner_id_idx ON playlists (playlist_owner_id) WHERE is_current;
@@ -68,10 +68,10 @@ def downgrade():
     query = """
     BEGIN;
 
-    -- track owner + track created_at
-    DROP INDEX IF EXISTS track_owner_id_idx;
-    CREATE INDEX IF NOT EXISTS track_owner_id_idx ON tracks (owner_id);
-    DROP INDEX IF EXISTS track_created_at_idx;
+    -- agreement owner + agreement created_at
+    DROP INDEX IF EXISTS agreement_owner_id_idx;
+    CREATE INDEX IF NOT EXISTS agreement_owner_id_idx ON agreements (owner_id);
+    DROP INDEX IF EXISTS agreement_created_at_idx;
 
     -- playlist owner + playlist created_at
     DROP INDEX IF EXISTS playlist_owner_id_idx;

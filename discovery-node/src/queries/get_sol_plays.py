@@ -6,7 +6,7 @@ from redis import Redis
 from sqlalchemy import desc, func
 from src import exceptions
 from src.models.social.play import Play
-from src.queries.query_helpers import get_sum_aggregate_plays, get_track_play_counts
+from src.queries.query_helpers import get_sum_aggregate_plays, get_agreement_play_counts
 from src.tasks.index_solana_plays import cache_latest_sol_play_db_tx
 from src.utils import helpers
 from src.utils.cache_solana_program import (
@@ -72,8 +72,8 @@ def get_latest_sol_plays(limit=10) -> Optional[List[PlayDict]]:
     return sol_plays
 
 
-# For the n most recently listened to tracks, return the all time listen counts for those tracks
-def get_track_listen_milestones(limit=100):
+# For the n most recently listened to agreements, return the all time listen counts for those agreements
+def get_agreement_listen_milestones(limit=100):
     db = get_db_read_replica()
 
     with db.scoped_session() as session:
@@ -88,10 +88,10 @@ def get_track_listen_milestones(limit=100):
             .all()
         )
 
-        track_ids = [result[0] for result in results]
-        track_id_play_counts = get_track_play_counts(session, track_ids)
+        agreement_ids = [result[0] for result in results]
+        agreement_id_play_counts = get_agreement_play_counts(session, agreement_ids)
 
-    return track_id_play_counts
+    return agreement_id_play_counts
 
 
 # Get total play count from aggregate plays

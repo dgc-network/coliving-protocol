@@ -39,7 +39,7 @@ ___
 
 **getFavorites**(`requestParameters`): `Promise`<[`Favorite`](../interfaces/Favorite.md)[]\>
 
-Gets a user's favorite tracks
+Gets a user's favorite agreements
 
 Example:
 
@@ -147,18 +147,18 @@ const supportings = await colivingSdk.users.getSupportings({
 
 ___
 
-### getTopTrackTags
+### getTopAgreementTags
 
-**getTopTrackTags**(`requestParameters`): `Promise`<`string`[]\>
+**getTopAgreementTags**(`requestParameters`): `Promise`<`string`[]\>
 
-Gets the most used track tags by a user.
-Fetch most used tags in a user's tracks
+Gets the most used agreement tags by a user.
+Fetch most used tags in a user's agreements
 
 Example:
 
 ```typescript
 
-const tags = await colivingSdk.users.getTopTrackTags({
+const tags = await colivingSdk.users.getTopAgreementTags({
     id: "eAZl3"
 })
 
@@ -168,7 +168,7 @@ const tags = await colivingSdk.users.getTopTrackTags({
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetTopTrackTagsRequest`](../interfaces/GetTopTrackTagsRequest.md) |
+| `requestParameters` | [`GetTopAgreementTagsRequest`](../interfaces/GetTopAgreementTagsRequest.md) |
 
 #### Returns
 
@@ -176,17 +176,17 @@ const tags = await colivingSdk.users.getTopTrackTags({
 
 ___
 
-### getTracksByUser
+### getAgreementsByUser
 
-**getTracksByUser**(`requestParameters`): `Promise`<[`Track`](../interfaces/Track.md)[]\>
+**getAgreementsByUser**(`requestParameters`): `Promise`<[`Agreement`](../interfaces/Agreement.md)[]\>
 
-Gets the tracks created by a user using their user ID
+Gets the agreements created by a user using their user ID
 
 Example:
 
 ```typescript
 
-const tracks = await colivingSdk.users.getTracksByUser({
+const agreements = await colivingSdk.users.getAgreementsByUser({
     id: "eAZl3"
 })
 
@@ -196,11 +196,11 @@ const tracks = await colivingSdk.users.getTracksByUser({
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetTracksByUserRequest`](../interfaces/GetTracksByUserRequest.md) |
+| `requestParameters` | [`GetAgreementsByUserRequest`](../interfaces/GetAgreementsByUserRequest.md) |
 
 #### Returns
 
-`Promise`<[`Track`](../interfaces/Track.md)[]\>
+`Promise`<[`Agreement`](../interfaces/Agreement.md)[]\>
 
 ___
 

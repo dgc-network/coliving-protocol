@@ -14,23 +14,23 @@
  */
 
 import {
-    Track,
-    TrackFromJSON,
-    TrackFromJSONTyped,
-    TrackToJSON,
-} from './Track';
+    Agreement,
+    AgreementFromJSON,
+    AgreementFromJSONTyped,
+    AgreementToJSON,
+} from './Agreement';
 
 /**
  * 
  * @export
- * @interface PlaylistTracksResponse
+ * @interface PlaylistAgreementsResponse
  */
-export interface PlaylistTracksResponse {
+export interface PlaylistAgreementsResponse {
     /**
      * 
-     * @type {Array<Track>}
-     * @memberof PlaylistTracksResponse
+     * @type {Array<Agreement>}
+     * @memberof PlaylistAgreementsResponse
      */
-    data?: Array<Track>;
+    data?: Array<Agreement>;
 }
 

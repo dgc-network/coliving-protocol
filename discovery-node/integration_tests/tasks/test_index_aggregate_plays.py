@@ -20,12 +20,12 @@ def test_index_aggregate_plays_populate(app):
 
     # run
     entities = {
-        "tracks": [
-            {"track_id": 0, "title": "track 0"},
-            {"track_id": 1, "title": "track 1"},
-            {"track_id": 2, "title": "track 2"},
-            {"track_id": 3, "title": "track 3"},
-            {"track_id": 4, "title": "track 4"},
+        "agreements": [
+            {"agreement_id": 0, "title": "agreement 0"},
+            {"agreement_id": 1, "title": "agreement 1"},
+            {"agreement_id": 2, "title": "agreement 2"},
+            {"agreement_id": 3, "title": "agreement 3"},
+            {"agreement_id": 4, "title": "agreement 4"},
         ],
         "plays": [
             # Current Plays
@@ -75,11 +75,11 @@ def test_index_aggregate_plays_update(app):
 
     # run
     entities = {
-        "tracks": [
-            {"track_id": 1, "title": "track 1"},
-            {"track_id": 2, "title": "track 2"},
-            {"track_id": 3, "title": "track 3"},
-            {"track_id": 4, "title": "track 4"},
+        "agreements": [
+            {"agreement_id": 1, "title": "agreement 1"},
+            {"agreement_id": 2, "title": "agreement 2"},
+            {"agreement_id": 3, "title": "agreement 3"},
+            {"agreement_id": 4, "title": "agreement 4"},
         ],
         "indexing_checkpoints": [
             {"tablename": "aggregate_plays", "last_checkpoint": 9}

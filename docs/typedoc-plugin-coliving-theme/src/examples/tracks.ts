@@ -1,26 +1,26 @@
-export const getBulkTracks = `
-const tracks = await colivingSdk.tracks.getBulkTracks();
+export const getBulkAgreements = `
+const agreements = await colivingSdk.agreements.getBulkAgreements();
 `;
 
-export const getTrack = `
-const track = await colivingSdk.tracks.getTrack({
-    trackId: "D7KyD",
+export const getAgreement = `
+const agreement = await colivingSdk.agreements.getAgreement({
+    agreementId: "D7KyD",
 });
 `;
 
-export const getTrendingTracks = `
-const tracks = await colivingSdk.tracks.getTrendingTracks();
+export const getTrendingAgreements = `
+const agreements = await colivingSdk.agreements.getTrendingAgreements();
 `;
 
-export const searchTracks = `
-const searchResult = await colivingSdk.tracks.searchTracks({
+export const searchAgreements = `
+const searchResult = await colivingSdk.agreements.searchAgreements({
     query: "skrillex",
 });
 `;
 
-export const streamTrack = `
-const url = await colivingSdk.tracks.streamTrack({
-    trackId: "PjdWN",
+export const streamAgreement = `
+const url = await colivingSdk.agreements.streamAgreement({
+    agreementId: "PjdWN",
 });
 const live = new Audio(url);
 live.play();

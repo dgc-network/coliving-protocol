@@ -4,11 +4,11 @@ from src.trending_strategies.BDNxn_trending_playlists_strategy import (
 from src.trending_strategies.EJ57D_trending_playlists_strategy import (
     TrendingPlaylistsStrategyEJ57D,
 )
-from src.trending_strategies.EJ57D_trending_tracks_strategy import (
-    TrendingTracksStrategyEJ57D,
+from src.trending_strategies.EJ57D_trending_agreements_strategy import (
+    TrendingAgreementsStrategyEJ57D,
 )
-from src.trending_strategies.EJ57D_underground_trending_tracks_strategy import (
-    UndergroundTrendingTracksStrategyEJ57D,
+from src.trending_strategies.EJ57D_underground_trending_agreements_strategy import (
+    UndergroundTrendingAgreementsStrategyEJ57D,
 )
 from src.trending_strategies.trending_type_and_version import (
     TrendingType,
@@ -16,8 +16,8 @@ from src.trending_strategies.trending_type_and_version import (
 )
 
 DEFAULT_TRENDING_VERSIONS = {
-    TrendingType.TRACKS: TrendingVersion.EJ57D,
-    TrendingType.UNDERGROUND_TRACKS: TrendingVersion.EJ57D,
+    TrendingType.AGREEMENTS: TrendingVersion.EJ57D,
+    TrendingType.UNDERGROUND_AGREEMENTS: TrendingVersion.EJ57D,
     TrendingType.PLAYLISTS: TrendingVersion.EJ57D,
 }
 
@@ -25,11 +25,11 @@ DEFAULT_TRENDING_VERSIONS = {
 class TrendingStrategyFactory:
     def __init__(self):
         self.strategies = {
-            TrendingType.TRACKS: {
-                TrendingVersion.EJ57D: TrendingTracksStrategyEJ57D(),
+            TrendingType.AGREEMENTS: {
+                TrendingVersion.EJ57D: TrendingAgreementsStrategyEJ57D(),
             },
-            TrendingType.UNDERGROUND_TRACKS: {
-                TrendingVersion.EJ57D: UndergroundTrendingTracksStrategyEJ57D(),
+            TrendingType.UNDERGROUND_AGREEMENTS: {
+                TrendingVersion.EJ57D: UndergroundTrendingAgreementsStrategyEJ57D(),
             },
             TrendingType.PLAYLISTS: {
                 TrendingVersion.EJ57D: TrendingPlaylistsStrategyEJ57D(),

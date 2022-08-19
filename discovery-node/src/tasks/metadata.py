@@ -1,8 +1,8 @@
 from typing import Any, Dict
 
-# Required format for track metadata retrieved from IPFS
+# Required format for agreement metadata retrieved from IPFS
 
-track_metadata_format: Dict[str, Any] = {
+agreement_metadata_format: Dict[str, Any] = {
     "owner_id": None,
     "title": None,
     "route_id": None,
@@ -20,7 +20,7 @@ track_metadata_format: Dict[str, Any] = {
     "license": None,
     "isrc": None,
     "iswc": None,
-    "track_segments": [],
+    "agreement_segments": [],
     "download": {},
     "remix_of": None,
     "is_unlisted": False,

@@ -30,6 +30,6 @@ export interface PlaylistAddedTimestamp {
      * @type {string}
      * @memberof PlaylistAddedTimestamp
      */
-    track_id: string;
+    agreement_id: string;
 }
 

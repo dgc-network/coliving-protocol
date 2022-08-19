@@ -34,16 +34,16 @@ def social_feature_state_update(
     block_datetime = datetime.utcfromtimestamp(block_timestamp)
 
     # stores net state changes of all reposts and follows and corresponding events in current block
-    #   track_repost_state_changes = { "user_id": { "track_id": {__Repost__} } }
+    #   agreement_repost_state_changes = { "user_id": { "agreement_id": {__Repost__} } }
     #   playlist_repost_state_changes = { "user_id": { "playlist_id": {__Repost__} } }
     #   follow_state_changes = { "follower_user_id": { "followee_user_id": {__Follow__} } }
-    track_repost_state_changes: Dict[int, Dict[int, Repost]] = {}
+    agreement_repost_state_changes: Dict[int, Dict[int, Repost]] = {}
     playlist_repost_state_changes: Dict[int, Dict[int, Repost]] = {}
     follow_state_changes: Dict[int, Dict[int, Follow]] = {}
 
     for tx_receipt in social_feature_factory_txs:
         try:
-            add_track_repost(
+            add_agreement_repost(
                 self,
                 update_task.social_feature_contract,
                 update_task,
@@ -51,9 +51,9 @@ def social_feature_state_update(
                 tx_receipt,
                 block_number,
                 block_datetime,
-                track_repost_state_changes,
+                agreement_repost_state_changes,
             )
-            delete_track_repost(
+            delete_agreement_repost(
                 self,
                 update_task.social_feature_contract,
                 update_task,
@@ -61,7 +61,7 @@ def social_feature_state_update(
                 tx_receipt,
                 block_number,
                 block_datetime,
-                track_repost_state_changes,
+                agreement_repost_state_changes,
             )
             add_playlist_repost(
                 self,
@@ -104,7 +104,7 @@ def social_feature_state_update(
                 follow_state_changes,
             )
         except Exception as e:
-            logger.info("Error in parse track transaction")
+            logger.info("Error in parse agreement transaction")
             txhash = update_task.web3.toHex(tx_receipt.transactionHash)
             blockhash = update_task.web3.toHex(block_hash)
             raise IndexingError(
@@ -113,15 +113,15 @@ def social_feature_state_update(
 
     # bulk process all repost and follow changes
 
-    for repost_user_id, repost_track_ids in track_repost_state_changes.items():
-        for repost_track_id in repost_track_ids:
+    for repost_user_id, repost_agreement_ids in agreement_repost_state_changes.items():
+        for repost_agreement_id in repost_agreement_ids:
             invalidate_old_repost(
-                session, repost_user_id, repost_track_id, RepostType.track
+                session, repost_user_id, repost_agreement_id, RepostType.agreement
             )
-            repost = repost_track_ids[repost_track_id]
+            repost = repost_agreement_ids[repost_agreement_id]
             session.add(repost)
             dispatch_challenge_repost(challenge_bus, repost, block_number)
-        num_total_changes += len(repost_track_ids)
+        num_total_changes += len(repost_agreement_ids)
 
     for repost_user_id, repost_playlist_ids in playlist_repost_state_changes.items():
         for repost_playlist_id in repost_playlist_ids:
@@ -188,7 +188,7 @@ def invalidate_old_follow(session, follower_user_id, followee_user_id):
     return num_invalidated_follow_entries
 
 
-def add_track_repost(
+def add_agreement_repost(
     self,
     social_feature_factory_contract,
     update_task,
@@ -196,24 +196,24 @@ def add_track_repost(
     tx_receipt,
     block_number,
     block_datetime,
-    track_repost_state_changes,
+    agreement_repost_state_changes,
 ):
     txhash = update_task.web3.toHex(tx_receipt.transactionHash)
-    new_track_repost_events = (
-        social_feature_factory_contract.events.TrackRepostAdded().processReceipt(
+    new_agreement_repost_events = (
+        social_feature_factory_contract.events.AgreementRepostAdded().processReceipt(
             tx_receipt
         )
     )
-    for event in new_track_repost_events:
+    for event in new_agreement_repost_events:
         event_args = event["args"]
         repost_user_id = event_args._userId
-        repost_track_id = event_args._trackId
+        repost_agreement_id = event_args._agreementId
 
-        if (repost_user_id in track_repost_state_changes) and (
-            repost_track_id in track_repost_state_changes[repost_user_id]
+        if (repost_user_id in agreement_repost_state_changes) and (
+            repost_agreement_id in agreement_repost_state_changes[repost_user_id]
         ):
-            track_repost_state_changes[repost_user_id][
-                repost_track_id
+            agreement_repost_state_changes[repost_user_id][
+                repost_agreement_id
             ].is_delete = False
         else:
             repost = Repost(
@@ -221,19 +221,19 @@ def add_track_repost(
                 blocknumber=block_number,
                 txhash=txhash,
                 user_id=repost_user_id,
-                repost_item_id=repost_track_id,
-                repost_type=RepostType.track,
+                repost_item_id=repost_agreement_id,
+                repost_type=RepostType.agreement,
                 is_current=True,
                 is_delete=False,
                 created_at=block_datetime,
             )
-            if repost_user_id in track_repost_state_changes:
-                track_repost_state_changes[repost_user_id][repost_track_id] = repost
+            if repost_user_id in agreement_repost_state_changes:
+                agreement_repost_state_changes[repost_user_id][repost_agreement_id] = repost
             else:
-                track_repost_state_changes[repost_user_id] = {repost_track_id: repost}
+                agreement_repost_state_changes[repost_user_id] = {repost_agreement_id: repost}
 
 
-def delete_track_repost(
+def delete_agreement_repost(
     self,
     social_feature_factory_contract,
     update_task,
@@ -241,39 +241,39 @@ def delete_track_repost(
     tx_receipt,
     block_number,
     block_datetime,
-    track_repost_state_changes,
+    agreement_repost_state_changes,
 ):
     txhash = update_task.web3.toHex(tx_receipt.transactionHash)
     new_repost_events = (
-        social_feature_factory_contract.events.TrackRepostDeleted().processReceipt(
+        social_feature_factory_contract.events.AgreementRepostDeleted().processReceipt(
             tx_receipt
         )
     )
     for event in new_repost_events:
         event_args = event["args"]
         repost_user_id = event_args._userId
-        repost_track_id = event_args._trackId
+        repost_agreement_id = event_args._agreementId
 
-        if (repost_user_id in track_repost_state_changes) and (
-            repost_track_id in track_repost_state_changes[repost_user_id]
+        if (repost_user_id in agreement_repost_state_changes) and (
+            repost_agreement_id in agreement_repost_state_changes[repost_user_id]
         ):
-            track_repost_state_changes[repost_user_id][repost_track_id].is_delete = True
+            agreement_repost_state_changes[repost_user_id][repost_agreement_id].is_delete = True
         else:
             repost = Repost(
                 blockhash=update_task.web3.toHex(event.blockHash),
                 blocknumber=block_number,
                 txhash=txhash,
                 user_id=repost_user_id,
-                repost_item_id=repost_track_id,
-                repost_type=RepostType.track,
+                repost_item_id=repost_agreement_id,
+                repost_type=RepostType.agreement,
                 is_current=True,
                 is_delete=True,
                 created_at=block_datetime,
             )
-            if repost_user_id in track_repost_state_changes:
-                track_repost_state_changes[repost_user_id][repost_track_id] = repost
+            if repost_user_id in agreement_repost_state_changes:
+                agreement_repost_state_changes[repost_user_id][repost_agreement_id] = repost
             else:
-                track_repost_state_changes[repost_user_id] = {repost_track_id: repost}
+                agreement_repost_state_changes[repost_user_id] = {repost_agreement_id: repost}
 
 
 def add_playlist_repost(

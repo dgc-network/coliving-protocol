@@ -41,7 +41,7 @@ export const getUsers = (
   return req
 }
 
-export const getTracks = (
+export const getAgreements = (
   limit = 100,
   offset = 0,
   idsArray: Nullable<string[]>,
@@ -66,7 +66,7 @@ export const getTracks = (
 
   if (idsArray) {
     if (!Array.isArray(idsArray)) {
-      throw new Error('Expected array of track ids')
+      throw new Error('Expected array of agreement ids')
     }
     queryParams.id = idsArray
   }
@@ -86,19 +86,19 @@ export const getTracks = (
     queryParams.with_users = true
   }
 
-  const req = { endpoint: 'tracks', queryParams }
+  const req = { endpoint: 'agreements', queryParams }
   return req
 }
 
-export const getTracksByHandleAndSlug = (handle: string, slug: string) => {
+export const getAgreementsByHandleAndSlug = (handle: string, slug: string) => {
   return {
-    endpoint: 'v1/tracks',
+    endpoint: 'v1/agreements',
     method: 'get',
     queryParams: { handle, slug }
   }
 }
 
-export const getTracksIncludingUnlisted = (
+export const getAgreementsIncludingUnlisted = (
   identifiers: string[],
   withUsers = false
 ) => {
@@ -109,10 +109,10 @@ export const getTracksIncludingUnlisted = (
   }
 
   const req = {
-    endpoint: 'tracks_including_unlisted',
+    endpoint: 'agreements_including_unlisted',
     method: 'post',
     data: {
-      tracks: identifiers
+      agreements: identifiers
     },
     queryParams
   }
@@ -120,14 +120,14 @@ export const getTracksIncludingUnlisted = (
   return req
 }
 
-export const getRandomTracks = (
+export const getRandomAgreements = (
   genre: string,
   limit: number,
   exclusionList: number[],
   time: string
 ) => {
   const req = {
-    endpoint: 'tracks/random',
+    endpoint: 'agreements/random',
     queryParams: {
       genre,
       limit,
@@ -138,9 +138,9 @@ export const getRandomTracks = (
   return req
 }
 
-export const getStemsForTrack = (trackId: number) => {
+export const getStemsForAgreement = (agreementId: number) => {
   const req = {
-    endpoint: `stems/${trackId}`,
+    endpoint: `stems/${agreementId}`,
     queryParams: {
       with_users: true
     }
@@ -148,13 +148,13 @@ export const getStemsForTrack = (trackId: number) => {
   return req
 }
 
-export const getRemixesOfTrack = (
-  trackId: number,
+export const getRemixesOfAgreement = (
+  agreementId: number,
   limit: number | null = null,
   offset: number | null = null
 ) => {
   const req = {
-    endpoint: `remixes/${trackId}/children`,
+    endpoint: `remixes/${agreementId}/children`,
     queryParams: {
       with_users: true,
       limit,
@@ -164,13 +164,13 @@ export const getRemixesOfTrack = (
   return req
 }
 
-export const getRemixTrackParents = (
-  trackId: number,
+export const getRemixAgreementParents = (
+  agreementId: number,
   limit: number | null = null,
   offset: number | null = null
 ) => {
   const req = {
-    endpoint: `remixes/${trackId}/parents`,
+    endpoint: `remixes/${agreementId}/parents`,
     queryParams: {
       with_users: true,
       limit,
@@ -180,7 +180,7 @@ export const getRemixTrackParents = (
   return req
 }
 
-export const getTrendingTracks = (
+export const getTrendingAgreements = (
   genre: string | null = null,
   timeFrame: string | null = null,
   idsArray: number[] | null = null,
@@ -246,7 +246,7 @@ export const getSocialFeed = (
   limit = 100,
   offset = 0,
   withUsers = false,
-  tracksOnly = false
+  agreementsOnly = false
 ) => {
   return {
     endpoint: 'feed',
@@ -255,7 +255,7 @@ export const getSocialFeed = (
       limit,
       offset,
       with_users: withUsers,
-      tracks_only: tracksOnly
+      agreements_only: agreementsOnly
     }
   }
 }
@@ -286,16 +286,16 @@ export const getFollowIntersectionUsers = (
   }
 }
 
-export const getTrackRepostIntersectionUsers = (
+export const getAgreementRepostIntersectionUsers = (
   limit = 100,
   offset = 0,
-  repostTrackId: number,
+  repostAgreementId: number,
   followerUserId: number
 ) => {
   return {
     endpoint: 'users',
     urlParams:
-      '/intersection/repost/track/' + repostTrackId + '/' + followerUserId,
+      '/intersection/repost/agreement/' + repostAgreementId + '/' + followerUserId,
     queryParams: { limit: limit, offset: offset }
   }
 }
@@ -341,14 +341,14 @@ export const getFolloweesForUser = (
   }
 }
 
-export const getRepostersForTrack = (
+export const getRepostersForAgreement = (
   limit = 100,
   offset = 0,
-  repostTrackId: number
+  repostAgreementId: number
 ) => {
   return {
     endpoint: 'users',
-    urlParams: '/reposts/track/' + repostTrackId,
+    urlParams: '/reposts/agreement/' + repostAgreementId,
     queryParams: { limit: limit, offset: offset }
   }
 }
@@ -365,14 +365,14 @@ export const getRepostersForPlaylist = (
   }
 }
 
-export const getSaversForTrack = (
+export const getSaversForAgreement = (
   limit = 100,
   offset = 0,
-  saveTrackId: number
+  saveAgreementId: number
 ) => {
   return {
     endpoint: 'users',
-    urlParams: '/saves/track/' + saveTrackId,
+    urlParams: '/saves/agreement/' + saveAgreementId,
     queryParams: { limit: limit, offset: offset }
   }
 }
@@ -445,9 +445,9 @@ export const getSavedAlbums = (limit = 100, offset = 0, withUsers = false) => {
   }
 }
 
-export const getSavedTracks = (limit = 100, offset = 0, withUsers = false) => {
+export const getSavedAgreements = (limit = 100, offset = 0, withUsers = false) => {
   return {
-    endpoint: 'saves/tracks',
+    endpoint: 'saves/agreements',
     queryParams: { limit: limit, offset: offset, with_users: withUsers }
   }
 }
@@ -538,7 +538,7 @@ export const getBestNewReleases = (
   withUsers = false
 ) => {
   return {
-    endpoint: `/v1/full/tracks/best_new_releases`,
+    endpoint: `/v1/full/agreements/best_new_releases`,
     queryParams: {
       window,
       limit,
@@ -548,13 +548,13 @@ export const getBestNewReleases = (
   }
 }
 
-export const getMostLovedTracks = (
+export const getMostLovedAgreements = (
   encodedUserId: string,
   limit: string,
   withUsers = false
 ) => {
   return {
-    endpoint: `/v1/full/tracks/most_loved`,
+    endpoint: `/v1/full/agreements/most_loved`,
     queryParams: {
       limit,
       user_id: encodedUserId,
@@ -606,14 +606,14 @@ export const getURSMContentNodes = (ownerWallet: string | null) => {
 
 export const getNotifications = (
   minBlockNumber: string,
-  trackIds: string[],
+  agreementIds: string[],
   timeout: number
 ) => {
   return {
     endpoint: 'notifications',
     queryParams: {
       min_block_number: minBlockNumber,
-      track_id: trackIds
+      agreement_id: agreementIds
     },
     timeout
   }
@@ -632,9 +632,9 @@ export const getSolanaNotifications = (
   }
 }
 
-export const getTrackListenMilestones = (timeout: number) => {
+export const getAgreementListenMilestones = (timeout: number) => {
   return {
-    endpoint: 'track_listen_milestones',
+    endpoint: 'agreement_listen_milestones',
     timeout
   }
 }

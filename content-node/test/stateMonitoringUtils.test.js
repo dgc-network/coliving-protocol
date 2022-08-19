@@ -25,7 +25,7 @@ const {
   SyncType,
   SYNC_MODES
 } = require('../src/services/stateMachineManager/stateMachineConstants')
-const SecondarySyncHealthTracker = require('../src/services/stateMachineManager/stateReconciliation/SecondarySyncHealthTracker')
+const SecondarySyncHealthAgreementer = require('../src/services/stateMachineManager/stateReconciliation/SecondarySyncHealthAgreementer')
 
 describe('test getLatestUserIdFromDiscovery()', function () {
   const DISCOVERY_NODE_ENDPOINT = 'https://discovery_endpoint.coliving.co'
@@ -382,27 +382,27 @@ describe('test computeUserSecondarySyncSuccessRatesMap()', function () {
       }
     ]
 
-    await SecondarySyncHealthTracker.recordSuccess(
+    await SecondarySyncHealthAgreementer.recordSuccess(
       [nodeUsers[0].secondary1],
       [nodeUsers[0].wallet],
       SyncType.Recurring
     )
-    await SecondarySyncHealthTracker.recordSuccess(
+    await SecondarySyncHealthAgreementer.recordSuccess(
       [nodeUsers[0].secondary1],
       [nodeUsers[0].wallet],
       SyncType.Recurring
     )
-    await SecondarySyncHealthTracker.recordSuccess(
+    await SecondarySyncHealthAgreementer.recordSuccess(
       [nodeUsers[0].secondary1],
       [nodeUsers[0].wallet],
       SyncType.Recurring
     )
-    await SecondarySyncHealthTracker.recordFailure(
+    await SecondarySyncHealthAgreementer.recordFailure(
       [nodeUsers[0].secondary1],
       [nodeUsers[0].wallet],
       SyncType.Recurring
     )
-    await SecondarySyncHealthTracker.recordFailure(
+    await SecondarySyncHealthAgreementer.recordFailure(
       [nodeUsers[0].secondary2],
       [nodeUsers[0].wallet],
       SyncType.Recurring

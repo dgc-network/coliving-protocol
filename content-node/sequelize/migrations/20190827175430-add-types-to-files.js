@@ -12,18 +12,18 @@ module.exports = {
       const userProfilePicFileUUIDSet = new Set(
         ((await queryInterface.sequelize.query(`SELECT "profilePicFileUUID" FROM "ColivingUsers" WHERE "profilePicFileUUID" IS NOT NULL;`, { transaction: t }))[0]).map(obj => obj.profilePicFileUUID)
       )
-      const trackMetadataFileUUIDSet = new Set(
-        ((await queryInterface.sequelize.query(`SELECT "metadataFileUUID" FROM "Tracks" WHERE "metadataFileUUID" IS NOT NULL;`, { transaction: t }))[0]).map(obj => obj.metadataFileUUID)
+      const agreementMetadataFileUUIDSet = new Set(
+        ((await queryInterface.sequelize.query(`SELECT "metadataFileUUID" FROM "Agreements" WHERE "metadataFileUUID" IS NOT NULL;`, { transaction: t }))[0]).map(obj => obj.metadataFileUUID)
       )
-      const trackCoverArtFileUUIDSet = new Set(
-        ((await queryInterface.sequelize.query(`SELECT "coverArtFileUUID" FROM "Tracks" WHERE "coverArtFileUUID" IS NOT NULL;`, { transaction: t }))[0]).map(obj => obj.coverArtFileUUID)
+      const agreementCoverArtFileUUIDSet = new Set(
+        ((await queryInterface.sequelize.query(`SELECT "coverArtFileUUID" FROM "Agreements" WHERE "coverArtFileUUID" IS NOT NULL;`, { transaction: t }))[0]).map(obj => obj.coverArtFileUUID)
       )
 
       // Populate type for all files
       const files = (await queryInterface.sequelize.query(`SELECT * FROM "Files";`, { transaction: t }))[0]
       let orphanedFiles = [] // no types
       let corruptedFiles = [] // multiple types
-      let trackFiles = []
+      let agreementFiles = []
       let metadataFiles = []
       let imageFiles = []
 
@@ -33,17 +33,17 @@ module.exports = {
 
         // Determine type of file
         if (file.sourceFile) {
-          type = 'track'
-          trackFiles.push(file)
+          type = 'agreement'
+          agreementFiles.push(file)
         }
-        if (userMetadataFileUUIDSet.has(fileUUID) || trackMetadataFileUUIDSet.has(fileUUID)) {
+        if (userMetadataFileUUIDSet.has(fileUUID) || agreementMetadataFileUUIDSet.has(fileUUID)) {
           if (type != null) {
             corruptedFiles.push(file)
           }
           type = 'metadata'
           metadataFiles.push(file)
         }
-        if (userCoverArtFileUUIDSet.has(fileUUID) || userProfilePicFileUUIDSet.has(fileUUID) || trackCoverArtFileUUIDSet.has(fileUUID)) {
+        if (userCoverArtFileUUIDSet.has(fileUUID) || userProfilePicFileUUIDSet.has(fileUUID) || agreementCoverArtFileUUIDSet.has(fileUUID)) {
           if (type != null) {
             corruptedFiles.push(file)
           }
@@ -61,7 +61,7 @@ module.exports = {
       }
       console.log('num orphaned files', orphanedFiles.length)
       console.log('num corrupted files', corruptedFiles.length)
-      console.log(`num track files ${trackFiles.length}`)
+      console.log(`num agreement files ${agreementFiles.length}`)
       console.log(`num metadata files ${metadataFiles.length}`)
       console.log(`num image files ${imageFiles.length}`)
 

@@ -69,13 +69,13 @@ Sample commands:
 
     > UserFactory.deployed().then(inst => cf = inst)
     >
-    > TrackFactory.deployed().then(inst => tf = inst)
+    > AgreementFactory.deployed().then(inst => tf = inst)
     >
     > cf.createUser('sid')
     >
     > tf.setUserFactoryContractAddress(cf.address)
     >
-    > tf.createTrack(0, 'track_key_0')
+    > tf.createAgreement(0, 'agreement_key_0')
 
 
 

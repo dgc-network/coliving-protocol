@@ -11,8 +11,8 @@ const colivingLibsWrapper = require('../colivingLibsInstance')
 // default configs
 const startBlock = config.get('notificationStartBlock')
 const startSlot = config.get('solanaNotificationStartSlot')
-// Number of tracks to fetch for new listens on each poll
-const trackListenMilestonePollCount = 100
+// Number of agreements to fetch for new listens on each poll
+const agreementListenMilestonePollCount = 100
 
 /**
  * For any users missing blockchain id, here we query the values from discprov and fill them in
@@ -70,21 +70,21 @@ async function updateBlockchainIds () {
 }
 
 /**
- * Queries the discovery node and returns n most listened to tracks, with the
- * total listen count for each of those tracks
- * This includes track listens writen to Solana
+ * Queries the discovery node and returns n most listened to agreements, with the
+ * total listen count for each of those agreements
+ * This includes agreement listens writen to Solana
  *
- * @returns Array [{trackId, listenCount}, trackId, listenCount]
+ * @returns Array [{agreementId, listenCount}, agreementId, listenCount]
  */
-async function calculateTrackListenMilestonesFromDiscovery (discoveryProvider) {
+async function calculateAgreementListenMilestonesFromDiscovery (discoveryProvider) {
   // Pull listen count notification data from discovery node
   const timeout = 2 /* min */ * 60 /* sec */ * 1000 /* ms */
-  const trackListenMilestones = await discoveryProvider.getTrackListenMilestones(timeout)
-  const listenCountBody = trackListenMilestones.data
+  const agreementListenMilestones = await discoveryProvider.getAgreementListenMilestones(timeout)
+  const listenCountBody = agreementListenMilestones.data
   let parsedListenCounts = []
   for (let key in listenCountBody) {
     parsedListenCounts.push({
-      trackId: key,
+      agreementId: key,
       listenCount: listenCountBody[key]
     })
   }
@@ -92,45 +92,45 @@ async function calculateTrackListenMilestonesFromDiscovery (discoveryProvider) {
 }
 
 /**
- * For the n most recently listened to tracks, return the all time listen counts for those tracks
- * where n is `trackListenMilestonePollCount
+ * For the n most recently listened to agreements, return the all time listen counts for those agreements
+ * where n is `agreementListenMilestonePollCount
  *
- * @returns Array [{trackId, listenCount}, trackId, listenCount}]
+ * @returns Array [{agreementId, listenCount}, agreementId, listenCount}]
  */
-async function calculateTrackListenMilestones () {
+async function calculateAgreementListenMilestones () {
   let recentListenCountQuery = {
-    attributes: [[models.Sequelize.col('trackId'), 'trackId'],
+    attributes: [[models.Sequelize.col('agreementId'), 'agreementId'],
       [models.Sequelize.fn('max', models.Sequelize.col('hour')), 'hour']],
     order: [[models.Sequelize.col('hour'), 'DESC']],
-    group: ['trackId'],
-    limit: trackListenMilestonePollCount
+    group: ['agreementId'],
+    limit: agreementListenMilestonePollCount
   }
 
-  // Distinct tracks
-  let res = await models.TrackListenCount.findAll(recentListenCountQuery)
-  let tracksListenedTo = res.map((listenEntry) => listenEntry.trackId)
+  // Distinct agreements
+  let res = await models.AgreementListenCount.findAll(recentListenCountQuery)
+  let agreementsListenedTo = res.map((listenEntry) => listenEntry.agreementId)
 
   // Total listens query
   let totalListens = {
     attributes: [
-      [models.Sequelize.col('trackId'), 'trackId'],
+      [models.Sequelize.col('agreementId'), 'agreementId'],
       [
         models.Sequelize.fn('date_trunc', 'millennium', models.Sequelize.col('hour')),
         'date'
       ],
       [models.Sequelize.fn('sum', models.Sequelize.col('listens')), 'listens']
     ],
-    group: ['trackId', 'date'],
+    group: ['agreementId', 'date'],
     order: [[models.Sequelize.col('listens'), 'DESC']],
     where: {
-      trackId: { [models.Sequelize.Op.in]: tracksListenedTo }
+      agreementId: { [models.Sequelize.Op.in]: agreementsListenedTo }
     }
   }
 
   // Map of listens
-  let totalListenQuery = await models.TrackListenCount.findAll(totalListens)
+  let totalListenQuery = await models.AgreementListenCount.findAll(totalListens)
   let processedTotalListens = totalListenQuery.map((x) => {
-    return { trackId: x.trackId, listenCount: x.listens }
+    return { agreementId: x.agreementId, listenCount: x.listens }
   })
 
   return processedTotalListens
@@ -249,8 +249,8 @@ module.exports = {
   encodeHashId,
   decodeHashId,
   updateBlockchainIds,
-  calculateTrackListenMilestones,
-  calculateTrackListenMilestonesFromDiscovery,
+  calculateAgreementListenMilestones,
+  calculateAgreementListenMilestonesFromDiscovery,
   getHighestBlockNumber,
   getHighestSlot,
   shouldNotifyUser,

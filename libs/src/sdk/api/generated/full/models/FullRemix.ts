@@ -31,7 +31,7 @@ export interface FullRemix {
      * @type {string}
      * @memberof FullRemix
      */
-    parent_track_id: string;
+    parent_agreement_id: string;
     /**
      * 
      * @type {UserFull}

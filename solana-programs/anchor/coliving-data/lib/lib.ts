@@ -756,7 +756,7 @@ export type DeleteEntityParams = {
   bumpSeed: number;
 };
 
-export const createTrack = ({
+export const createAgreement = ({
   id,
   program,
   baseAuthorityAccount,
@@ -774,7 +774,7 @@ export const createTrack = ({
     program.instruction.manageEntity(
       baseAuthorityAccount,
       { userId: userId.toNumber(), bump: bumpSeed },
-      EntityTypesEnumValues.track,
+      EntityTypesEnumValues.agreement,
       ManagementActions.create,
       id,
       metadata,
@@ -796,11 +796,11 @@ export const createTrack = ({
 /**
  * Manage entity
  * actions: create, update, delete
- * entities: track, playlist
+ * entities: agreement, playlist
  */
 
 export const EntityTypesEnumValues = {
-  track: { track: {} },
+  agreement: { agreement: {} },
   playlist: { playlist: {} },
 };
 
@@ -824,7 +824,7 @@ export type UpdateEntityParams = {
   authorityDelegationStatusAccount: anchor.web3.PublicKey;
 };
 
-export const updateTrack = ({
+export const updateAgreement = ({
   program,
   baseAuthorityAccount,
   id,
@@ -842,7 +842,7 @@ export const updateTrack = ({
     program.instruction.manageEntity(
       baseAuthorityAccount,
       { userId: userId.toNumber(), bump: bumpSeed },
-      EntityTypesEnumValues.track,
+      EntityTypesEnumValues.agreement,
       ManagementActions.update,
       id,
       metadata,
@@ -862,7 +862,7 @@ export const updateTrack = ({
 
 /// Initialize a user from the Coliving Admin account
 
-export const deleteTrack = ({
+export const deleteAgreement = ({
   program,
   id,
   userAccount,
@@ -879,7 +879,7 @@ export const deleteTrack = ({
     program.instruction.manageEntity(
       baseAuthorityAccount,
       { userId: userId.toNumber(), bump: bumpSeed },
-      EntityTypesEnumValues.track,
+      EntityTypesEnumValues.agreement,
       ManagementActions.delete,
       id,
       "",
@@ -1012,7 +1012,7 @@ export const deletePlaylist = ({
 /**
  * Write entity social actions
  * actions: save, repost
- * entities: track, playlist
+ * entities: agreement, playlist
  */
 
 export const EntitySocialActionEnumValues = {
@@ -1043,7 +1043,7 @@ export type EntitySocialActionParams = {
 };
 
 /// Social actions
-export const addTrackSave = ({
+export const addAgreementSave = ({
   program,
   baseAuthorityAccount,
   userAccount,
@@ -1061,7 +1061,7 @@ export const addTrackSave = ({
       baseAuthorityAccount,
       { userId: userId.toNumber(), bump: bumpSeed },
       EntitySocialActions.addSave,
-      EntityTypesEnumValues.track,
+      EntityTypesEnumValues.agreement,
       id,
       {
         accounts: {
@@ -1077,7 +1077,7 @@ export const addTrackSave = ({
   return tx;
 };
 
-export const deleteTrackSave = ({
+export const deleteAgreementSave = ({
   program,
   baseAuthorityAccount,
   userAccount,
@@ -1095,7 +1095,7 @@ export const deleteTrackSave = ({
       baseAuthorityAccount,
       { userId: userId.toNumber(), bump: bumpSeed },
       EntitySocialActions.deleteSave,
-      EntityTypesEnumValues.track,
+      EntityTypesEnumValues.agreement,
       id,
       {
         accounts: {
@@ -1111,7 +1111,7 @@ export const deleteTrackSave = ({
   return tx;
 };
 
-export const addTrackRepost = ({
+export const addAgreementRepost = ({
   program,
   baseAuthorityAccount,
   userAccount,
@@ -1129,7 +1129,7 @@ export const addTrackRepost = ({
       baseAuthorityAccount,
       { userId: userId.toNumber(), bump: bumpSeed },
       EntitySocialActions.addRepost,
-      EntityTypesEnumValues.track,
+      EntityTypesEnumValues.agreement,
       id,
       {
         accounts: {
@@ -1145,7 +1145,7 @@ export const addTrackRepost = ({
   return tx;
 };
 
-export const deleteTrackRepost = ({
+export const deleteAgreementRepost = ({
   program,
   baseAuthorityAccount,
   userAccount,
@@ -1163,7 +1163,7 @@ export const deleteTrackRepost = ({
       baseAuthorityAccount,
       { userId: userId.toNumber(), bump: bumpSeed },
       EntitySocialActions.deleteRepost,
-      EntityTypesEnumValues.track,
+      EntityTypesEnumValues.agreement,
       id,
       {
         accounts: {

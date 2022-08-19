@@ -1,18 +1,18 @@
 {
-  "contractName": "TrackStorageInterface",
+  "contractName": "AgreementStorageInterface",
   "abi": [
     {
       "constant": true,
       "inputs": [
         {
-          "name": "_trackId",
+          "name": "_agreementId",
           "type": "uint256"
         }
       ],
-      "name": "getTrack",
+      "name": "getAgreement",
       "outputs": [
         {
-          "name": "trackOwnerId",
+          "name": "agreementOwnerId",
           "type": "uint256"
         },
         {
@@ -36,7 +36,7 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_trackOwnerId",
+          "name": "_agreementOwnerId",
           "type": "uint256"
         },
         {
@@ -52,10 +52,10 @@
           "type": "uint8"
         }
       ],
-      "name": "addTrack",
+      "name": "addAgreement",
       "outputs": [
         {
-          "name": "newTrackId",
+          "name": "newAgreementId",
           "type": "uint256"
         }
       ],
@@ -67,11 +67,11 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_trackId",
+          "name": "_agreementId",
           "type": "uint256"
         },
         {
-          "name": "_trackOwnerId",
+          "name": "_agreementOwnerId",
           "type": "uint256"
         },
         {
@@ -87,7 +87,7 @@
           "type": "uint8"
         }
       ],
-      "name": "updateTrack",
+      "name": "updateAgreement",
       "outputs": [
         {
           "name": "updatePerformed",
@@ -106,7 +106,7 @@
           "type": "uint256"
         }
       ],
-      "name": "trackExists",
+      "name": "agreementExists",
       "outputs": [
         {
           "name": "exists",

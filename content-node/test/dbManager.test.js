@@ -26,7 +26,7 @@ const { getApp } = require('./lib/app')
 const { getLibsMock } = require('./lib/libsMock')
 const { saveFileToStorage, computeFilesHash } = require('./lib/helpers')
 
-const TestAudioFilePath = path.resolve(__dirname, 'testTrack.mp3')
+const TestAudioFilePath = path.resolve(__dirname, 'testAgreement.mp3')
 
 describe('Test createNewDataRecord()', async function () {
   const req = {
@@ -303,7 +303,7 @@ describe('Test createNewDataRecord()', async function () {
   })
 
   /**
-   * Simulates /image_upload and /track_content routes, which write multiple files sequentially in atomic tx
+   * Simulates /image_upload and /agreement_content routes, which write multiple files sequentially in atomic tx
    */
   it('Sequential createNewDataRecord - successfully makes multiple sequential calls in single transaction', async function () {
     const sequelizeTableInstance = models.File
@@ -637,7 +637,7 @@ describe('Test deleteAllCNodeUserDataFromDB()', async function () {
   const initialClockVal = 0
   const userId = 1
 
-  // Create the req context for handleTrackContentRoute
+  // Create the req context for handleAgreementContentRoute
   function getReqObj(fileUUID, fileDir, session) {
     return {
       fileName: `${fileUUID}.mp3`,
@@ -699,11 +699,11 @@ describe('Test deleteAllCNodeUserDataFromDB()', async function () {
         .expect(200)
     }
 
-    const uploadTrackState = async () => {
-      // Mock `generateNonImageCid()` in `handleTrackContentRoute()` to succeed
+    const uploadAgreementState = async () => {
+      // Mock `generateNonImageCid()` in `handleAgreementContentRoute()` to succeed
       const mockCid = 'QmYfSQCgCwhxwYcdEwCkFJHicDe6rzCAb7AtLz3GrHmuU6'
-      const { handleTrackContentRoute } = proxyquire(
-        '../src/components/tracks/tracksComponentService.js',
+      const { handleAgreementContentRoute } = proxyquire(
+        '../src/components/agreements/agreementsComponentService.js',
         {
           '@coliving/sdk': {
             libs: {
@@ -733,48 +733,48 @@ describe('Test deleteAllCNodeUserDataFromDB()', async function () {
         }
       )
 
-      // Upload track content
+      // Upload agreement content
       const { fileUUID, fileDir } = saveFileToStorage(TestAudioFilePath)
-      const trackContentResp = await handleTrackContentRoute(
+      const agreementContentResp = await handleAgreementContentRoute(
         {},
         getReqObj(fileUUID, fileDir, session)
       )
 
-      // Upload track metadata
+      // Upload agreement metadata
       const {
-        track_segments: trackSegments,
+        agreement_segments: agreementSegments,
         source_file: sourceFile,
-        transcodedTrackUUID
-      } = trackContentResp
-      const trackMetadata = {
+        transcodedAgreementUUID
+      } = agreementContentResp
+      const agreementMetadata = {
         test: 'field1',
-        track_segments: trackSegments,
+        agreement_segments: agreementSegments,
         owner_id: userId
       }
-      const expectedTrackMetadataMultihash =
+      const expectedAgreementMetadataMultihash =
         'QmTWhw49RfSMSJJmfm8cMHFBptgWoBGpNwjAc5jy2qeJfs'
-      const trackMetadataResp = await request(app)
-        .post('/tracks/metadata')
+      const agreementMetadataResp = await request(app)
+        .post('/agreements/metadata')
         .set('X-Session-ID', session.sessionToken)
         .set('User-Id', session.userId)
         .set('Enforce-Write-Quorum', false)
-        .send({ metadata: trackMetadata, sourceFile })
+        .send({ metadata: agreementMetadata, sourceFile })
         .expect(200)
       assert.deepStrictEqual(
-        trackMetadataResp.body.data.metadataMultihash,
-        expectedTrackMetadataMultihash
+        agreementMetadataResp.body.data.metadataMultihash,
+        expectedAgreementMetadataMultihash
       )
 
-      // Complete track upload
+      // Complete agreement upload
       await request(app)
-        .post('/tracks')
+        .post('/agreements')
         .set('X-Session-ID', session.sessionToken)
         .set('User-Id', session.userId)
         .send({
-          blockchainTrackId: 1,
+          blockchainAgreementId: 1,
           blockNumber: 10,
-          metadataFileUUID: trackMetadataResp.body.data.metadataFileUUID,
-          transcodedTrackUUID
+          metadataFileUUID: agreementMetadataResp.body.data.metadataFileUUID,
+          transcodedAgreementUUID
         })
         .expect(200)
     }
@@ -786,7 +786,7 @@ describe('Test deleteAllCNodeUserDataFromDB()', async function () {
       const colivingUserEntries = await models.ColivingUser.findAll({
         where: { cnodeUserUUID }
       })
-      const trackEntries = await models.Track.findAll({
+      const agreementEntries = await models.Agreement.findAll({
         where: { cnodeUserUUID }
       })
       const fileEntries = await models.File.findAll({
@@ -799,26 +799,26 @@ describe('Test deleteAllCNodeUserDataFromDB()', async function () {
       return {
         cnodeUserEntries,
         colivingUserEntries,
-        trackEntries,
+        agreementEntries,
         fileEntries,
         clockRecordEntries
       }
     }
 
     await uploadColivingUserState()
-    await uploadTrackState()
+    await uploadAgreementState()
 
     /** assert all tables non empty */
     let {
       cnodeUserEntries,
       colivingUserEntries,
-      trackEntries,
+      agreementEntries,
       fileEntries,
       clockRecordEntries
     } = await getAllDBRecordsForUser(cnodeUserUUID)
     assert.ok(cnodeUserEntries.length > 0)
     assert.ok(colivingUserEntries.length > 0)
-    assert.ok(trackEntries.length > 0)
+    assert.ok(agreementEntries.length > 0)
     assert.ok(fileEntries.length > 0)
     assert.ok(clockRecordEntries.length > 0)
 
@@ -831,13 +831,13 @@ describe('Test deleteAllCNodeUserDataFromDB()', async function () {
     ;({
       cnodeUserEntries,
       colivingUserEntries,
-      trackEntries,
+      agreementEntries,
       fileEntries,
       clockRecordEntries
     } = await getAllDBRecordsForUser(cnodeUserUUID))
     assert.strictEqual(cnodeUserEntries.length, 0)
     assert.strictEqual(colivingUserEntries.length, 0)
-    assert.strictEqual(trackEntries.length, 0)
+    assert.strictEqual(agreementEntries.length, 0)
     assert.strictEqual(fileEntries.length, 0)
     assert.strictEqual(clockRecordEntries.length, 0)
   })

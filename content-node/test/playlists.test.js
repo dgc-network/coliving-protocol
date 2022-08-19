@@ -145,7 +145,7 @@ describe('Test Playlists', function () {
   })
 
   it('successfully completes Coliving playlist creation with imageDirCID', async function () {
-    const testPicture = path.resolve(__dirname, 'testTrackWrongFormat.jpg')
+    const testPicture = path.resolve(__dirname, 'testAgreementWrongFormat.jpg')
     const file = fs.readFileSync(testPicture)
     // Upload test cover image
     const resp = await request(app)

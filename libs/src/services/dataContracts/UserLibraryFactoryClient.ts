@@ -6,22 +6,22 @@ export class UserLibraryFactoryClient extends ContractClient {
   override web3Manager!: Web3Manager
   /* ------- SETTERS ------- */
 
-  async addTrackSave(userId: number, trackId: number) {
+  async addAgreementSave(userId: number, agreementId: number) {
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
-    const signatureData = signatureSchemas.generators.getTrackSaveRequestData(
+    const signatureData = signatureSchemas.generators.getAgreementSaveRequestData(
       chainId,
       contractAddress,
       userId,
-      trackId,
+      agreementId,
       nonce
     )
     const sig = await this.web3Manager.signTypedData(signatureData)
     const contractMethod = await this.getMethod(
-      'addTrackSave',
+      'addAgreementSave',
       userId,
-      trackId,
+      agreementId,
       nonce,
       sig
     )
@@ -32,23 +32,23 @@ export class UserLibraryFactoryClient extends ContractClient {
     )
   }
 
-  async deleteTrackSave(userId: number, trackId: number) {
+  async deleteAgreementSave(userId: number, agreementId: number) {
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
     const signatureData =
-      signatureSchemas.generators.getDeleteTrackSaveRequestData(
+      signatureSchemas.generators.getDeleteAgreementSaveRequestData(
         chainId,
         contractAddress,
         userId,
-        trackId,
+        agreementId,
         nonce
       )
     const sig = await this.web3Manager.signTypedData(signatureData)
     const contractMethod = await this.getMethod(
-      'deleteTrackSave',
+      'deleteAgreementSave',
       userId,
-      trackId,
+      agreementId,
       nonce,
       sig
     )

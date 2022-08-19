@@ -19,12 +19,12 @@ const {
 // Each type can be configured as needed
 const baseMilestoneList = [10, 25, 50, 100, 250, 500, 1000, 5000, 10000, 20000, 50000, 100000, 1000000]
 const followerMilestoneList = baseMilestoneList
-// Repost milestone list shared across tracks/albums/playlists
+// Repost milestone list shared across agreements/albums/playlists
 const repostMilestoneList = baseMilestoneList
-// Favorite milestone list shared across tracks/albums/playlists
+// Favorite milestone list shared across agreements/albums/playlists
 const favoriteMilestoneList = baseMilestoneList
-// Track listen milestone list
-const trackListenMilestoneList = baseMilestoneList
+// Agreement listen milestone list
+const agreementListenMilestoneList = baseMilestoneList
 
 async function indexMilestones (milestones, owners, metadata, listenCounts, colivingLibs, tx) {
   // Index follower milestones into notifications table
@@ -85,22 +85,22 @@ async function updateFollowerMilestones (followerCounts, blocknumber, timestamp,
  *
  */
 async function updateRepostMilestones (repostCounts, owners, blocknumber, timestamp, colivingLibs, tx) {
-  let tracksReposted = Object.keys(repostCounts.tracks)
+  let agreementsReposted = Object.keys(repostCounts.agreements)
   let albumsReposted = Object.keys(repostCounts.albums)
   let playlistsReposted = Object.keys(repostCounts.playlists)
   const repostMilestoneNotificationType = notificationTypes.MilestoneRepost
 
-  for (var repostedTrackId of tracksReposted) {
-    let trackOwnerId = owners.tracks[repostedTrackId]
-    let trackRepostCount = repostCounts.tracks[repostedTrackId]
+  for (var repostedAgreementId of agreementsReposted) {
+    let agreementOwnerId = owners.agreements[repostedAgreementId]
+    let agreementRepostCount = repostCounts.agreements[repostedAgreementId]
     for (var i = repostMilestoneList.length; i >= 0; i--) {
       let milestoneValue = repostMilestoneList[i]
-      if (trackRepostCount === milestoneValue) {
+      if (agreementRepostCount === milestoneValue) {
         await _processMilestone(
           repostMilestoneNotificationType,
-          trackOwnerId,
-          repostedTrackId,
-          actionEntityTypes.Track,
+          agreementOwnerId,
+          repostedAgreementId,
+          actionEntityTypes.Agreement,
           milestoneValue,
           blocknumber,
           timestamp,
@@ -163,22 +163,22 @@ async function updateRepostMilestones (repostCounts, owners, blocknumber, timest
  *
  */
 async function updateFavoriteMilestones (favoriteCounts, owners, blocknumber, timestamp, colivingLibs, tx) {
-  let tracksFavorited = Object.keys(favoriteCounts.tracks)
+  let agreementsFavorited = Object.keys(favoriteCounts.agreements)
   let albumsFavorited = Object.keys(favoriteCounts.albums)
   let playlistsFavorited = Object.keys(favoriteCounts.playlists)
   const favoriteMilestoneNotificationType = notificationTypes.MilestoneFavorite
 
-  for (var favoritedTrackId of tracksFavorited) {
-    let trackOwnerId = owners.tracks[favoritedTrackId]
-    let trackFavoriteCount = favoriteCounts.tracks[favoritedTrackId]
+  for (var favoritedAgreementId of agreementsFavorited) {
+    let agreementOwnerId = owners.agreements[favoritedAgreementId]
+    let agreementFavoriteCount = favoriteCounts.agreements[favoritedAgreementId]
     for (var i = favoriteMilestoneList.length; i >= 0; i--) {
       let milestoneValue = favoriteMilestoneList[i]
-      if (trackFavoriteCount === milestoneValue) {
+      if (agreementFavoriteCount === milestoneValue) {
         await _processMilestone(
           favoriteMilestoneNotificationType,
-          trackOwnerId,
-          favoritedTrackId,
-          actionEntityTypes.Track,
+          agreementOwnerId,
+          favoritedAgreementId,
+          actionEntityTypes.Agreement,
           milestoneValue,
           blocknumber,
           timestamp,
@@ -240,21 +240,21 @@ async function updateFavoriteMilestones (favoriteCounts, owners, blocknumber, ti
  * Listens Milestones
  *
  */
-async function updateTrackListenMilestones (listenCounts, blocknumber, timestamp, colivingLibs, tx) { // eslint-disable-line no-unused-vars
+async function updateAgreementListenMilestones (listenCounts, blocknumber, timestamp, colivingLibs, tx) { // eslint-disable-line no-unused-vars
   const listensMilestoneNotificationType = notificationTypes.MilestoneListen
 
   for (var entry of listenCounts) {
-    let trackListenCount = Number.parseInt(entry.listenCount)
-    for (var i = trackListenMilestoneList.length; i >= 0; i--) {
-      let milestoneValue = trackListenMilestoneList[i]
-      if (trackListenCount === milestoneValue || (trackListenCount >= milestoneValue && trackListenCount <= milestoneValue * 1.1)) {
-        let trackId = entry.trackId
+    let agreementListenCount = Number.parseInt(entry.listenCount)
+    for (var i = agreementListenMilestoneList.length; i >= 0; i--) {
+      let milestoneValue = agreementListenMilestoneList[i]
+      if (agreementListenCount === milestoneValue || (agreementListenCount >= milestoneValue && agreementListenCount <= milestoneValue * 1.1)) {
+        let agreementId = entry.agreementId
         let ownerId = entry.owner
         await _processMilestone(
           listensMilestoneNotificationType,
           ownerId,
-          trackId,
-          actionEntityTypes.Track,
+          agreementId,
+          actionEntityTypes.Agreement,
           milestoneValue,
           blocknumber,
           timestamp,
@@ -293,8 +293,8 @@ async function _processMilestone (milestoneType, userId, entityId, entityType, m
     newMilestone = true
     // MilestoneListen/Favorite/Repost
     // userId=user achieving milestone
-    // entityId=Entity reaching milestone, one of track/collection
-    // actionEntityType=Entity achieving milestone, can be track/collection
+    // entityId=Entity reaching milestone, one of agreement/collection
+    // actionEntityType=Entity achieving milestone, can be agreement/collection
     // actionEntityId=Milestone achieved
     let createMilestoneTx = await models.Notification.create({
       userId: userId,

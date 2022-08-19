@@ -1,25 +1,25 @@
 ---
-id: "full.FullTracks"
-title: "Interface: FullTracks"
-sidebar_label: "FullTracks"
+id: "full.FullAgreements"
+title: "Interface: FullAgreements"
+sidebar_label: "FullAgreements"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).FullTracks
+[full](../namespaces/full.md).FullAgreements
 
 **`export`**
 
-**`interface`** FullTracks
+**`interface`** FullAgreements
 
 ## Properties
 
 ### data
 
- `Optional` **data**: [`TrackFull`](full.TrackFull.md)[]
+ `Optional` **data**: [`AgreementFull`](full.AgreementFull.md)[]
 
-**`memberof`** FullTracks
+**`memberof`** FullAgreements
 
 ___
 
@@ -27,7 +27,7 @@ ___
 
  **latest\_chain\_block**: `number`
 
-**`memberof`** FullTracks
+**`memberof`** FullAgreements
 
 ___
 
@@ -35,7 +35,7 @@ ___
 
  **latest\_chain\_slot\_plays**: `number`
 
-**`memberof`** FullTracks
+**`memberof`** FullAgreements
 
 ___
 
@@ -43,7 +43,7 @@ ___
 
  **latest\_indexed\_block**: `number`
 
-**`memberof`** FullTracks
+**`memberof`** FullAgreements
 
 ___
 
@@ -51,7 +51,7 @@ ___
 
  **latest\_indexed\_slot\_plays**: `number`
 
-**`memberof`** FullTracks
+**`memberof`** FullAgreements
 
 ___
 
@@ -59,7 +59,7 @@ ___
 
  **signature**: `string`
 
-**`memberof`** FullTracks
+**`memberof`** FullAgreements
 
 ___
 
@@ -67,7 +67,7 @@ ___
 
  **timestamp**: `string`
 
-**`memberof`** FullTracks
+**`memberof`** FullAgreements
 
 ___
 
@@ -75,4 +75,4 @@ ___
 
  **version**: [`VersionMetadata`](full.VersionMetadata.md)
 
-**`memberof`** FullTracks
+**`memberof`** FullAgreements

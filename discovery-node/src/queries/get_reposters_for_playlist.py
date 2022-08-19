@@ -49,8 +49,8 @@ def get_reposters_for_playlist(args):
                 User.user_id.in_(
                     session.query(Repost.user_id).filter(
                         Repost.repost_item_id == repost_playlist_id,
-                        # Select Reposts for Playlists and Albums (i.e. not Tracks).
-                        Repost.repost_type != RepostType.track,
+                        # Select Reposts for Playlists and Albums (i.e. not Agreements).
+                        Repost.repost_type != RepostType.agreement,
                         Repost.is_current == True,
                         Repost.is_delete == False,
                     )

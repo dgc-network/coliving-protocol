@@ -12,23 +12,23 @@ const {
 async function processMilestoneListenNotifications (notifications, tx) {
   const validNotifications = []
   for (const notification of notifications) {
-    const trackOwnerId = notification.initiator
-    const trackId = notification.metadata.entity_id
+    const agreementOwnerId = notification.initiator
+    const agreementId = notification.metadata.entity_id
     const threshold = notification.metadata.threshold
     const slot = notification.slot
 
     // Check for existing milestone
     let existingMilestoneQuery = await models.SolanaNotification.findAll({
       where: {
-        userId: trackOwnerId,
+        userId: agreementOwnerId,
         type: notificationTypes.MilestoneListen,
-        entityId: trackId
+        entityId: agreementId
       },
       include: [{
         model: models.SolanaNotificationAction,
         as: 'actions',
         where: {
-          actionEntityType: actionEntityTypes.Track,
+          actionEntityType: actionEntityTypes.Agreement,
           actionEntityId: threshold
         }
       }],
@@ -36,16 +36,16 @@ async function processMilestoneListenNotifications (notifications, tx) {
     })
     if (existingMilestoneQuery.length === 0) {
       let createMilestoneTx = await models.SolanaNotification.create({
-        userId: trackOwnerId,
+        userId: agreementOwnerId,
         type: notificationTypes.MilestoneListen,
-        entityId: trackId,
+        entityId: agreementId,
         slot
       }, { transaction: tx })
       let notificationId = createMilestoneTx.id
       await models.SolanaNotificationAction.findOrCreate({
         where: {
           notificationId,
-          actionEntityType: actionEntityTypes.Track,
+          actionEntityType: actionEntityTypes.Agreement,
           actionEntityId: threshold,
           slot
         },

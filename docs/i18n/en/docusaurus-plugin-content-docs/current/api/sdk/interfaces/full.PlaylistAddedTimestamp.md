@@ -23,8 +23,8 @@ pagination_next: null
 
 ___
 
-### track\_id
+### agreement\_id
 
- **track\_id**: `string`
+ **agreement\_id**: `string`
 
 **`memberof`** PlaylistAddedTimestamp

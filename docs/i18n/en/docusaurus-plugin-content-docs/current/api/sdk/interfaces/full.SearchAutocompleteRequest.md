@@ -15,7 +15,7 @@ pagination_next: null
 
  `Optional` **kind**: [`SearchAutocompleteKindEnum`](../enums/full.SearchAutocompleteKindEnum.md)
 
-The type of response, one of: all, users, tracks, playlists, or albums
+The type of response, one of: all, users, agreements, playlists, or albums
 
 ___
 

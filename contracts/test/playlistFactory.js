@@ -4,8 +4,8 @@ import {
   Registry,
   UserStorage,
   UserFactory,
-  TrackStorage,
-  TrackFactory,
+  AgreementStorage,
+  AgreementFactory,
   PlaylistStorage,
   PlaylistFactory
 } from './_lib/artifacts.js'
@@ -13,20 +13,20 @@ import {
 contract('PlaylistFactory', async (accounts) => {
   const testUserId1 = 1
   const testUserId2 = 2
-  const testTrackId1 = 1
-  const testTrackId2 = 2
-  const testTrackId3 = 3
+  const testAgreementId1 = 1
+  const testAgreementId2 = 2
+  const testAgreementId3 = 3
 
   let playlistName = 'PlaylistFactory Test Playlist'
-  let playlistTracks = [1, 2]
+  let playlistAgreements = [1, 2]
   let expectedPlaylistId = 1
   let playlistOwnerId = testUserId1
 
   let registry
   let userStorage
   let userFactory
-  let trackStorage
-  let trackFactory
+  let agreementStorage
+  let agreementFactory
   let playlistStorage
   let playlistFactory
 
@@ -35,12 +35,12 @@ contract('PlaylistFactory', async (accounts) => {
     const networkId = Registry.network_id
     userStorage = await UserStorage.new(registry.address)
     await registry.addContract(_constants.userStorageKey, userStorage.address)
-    trackStorage = await TrackStorage.new(registry.address)
-    await registry.addContract(_constants.trackStorageKey, trackStorage.address)
+    agreementStorage = await AgreementStorage.new(registry.address)
+    await registry.addContract(_constants.agreementStorageKey, agreementStorage.address)
     userFactory = await UserFactory.new(registry.address, _constants.userStorageKey, networkId, accounts[5])
     await registry.addContract(_constants.userFactoryKey, userFactory.address)
-    trackFactory = await TrackFactory.new(registry.address, _constants.trackStorageKey, _constants.userFactoryKey, networkId)
-    await registry.addContract(_constants.trackFactoryKey, trackFactory.address)
+    agreementFactory = await AgreementFactory.new(registry.address, _constants.agreementStorageKey, _constants.userFactoryKey, networkId)
+    await registry.addContract(_constants.agreementFactoryKey, agreementFactory.address)
 
     // Deploy playlist related contracts
     playlistStorage = await PlaylistStorage.new(registry.address)
@@ -49,7 +49,7 @@ contract('PlaylistFactory', async (accounts) => {
       registry.address,
       _constants.playlistStorageKey,
       _constants.userFactoryKey,
-      _constants.trackFactoryKey,
+      _constants.agreementFactoryKey,
       networkId)
 
     await registry.addContract(_constants.playlistFactoryKey, playlistFactory.address)
@@ -71,18 +71,18 @@ contract('PlaylistFactory', async (accounts) => {
       _constants.userHandle2,
       true)
 
-    // add two tracks
-    await _lib.addTrackAndValidate(
-      trackFactory,
-      testTrackId1,
+    // add two agreements
+    await _lib.addAgreementAndValidate(
+      agreementFactory,
+      testAgreementId1,
       accounts[0],
       testUserId1,
       _constants.testMultihash.digest2,
       _constants.testMultihash.hashFn,
       _constants.testMultihash.size)
-    await _lib.addTrackAndValidate(
-      trackFactory,
-      testTrackId2,
+    await _lib.addAgreementAndValidate(
+      agreementFactory,
+      testAgreementId2,
       accounts[0],
       testUserId2,
       _constants.testMultihash.digest2,
@@ -99,14 +99,14 @@ contract('PlaylistFactory', async (accounts) => {
       playlistName,
       false,
       false,
-      playlistTracks)
+      playlistAgreements)
   })
 
-  it('Should create a playlist and add a separate track', async () => {
-    // Add a 3rd track that is not in the initial playlist tracks list
-    await _lib.addTrackAndValidate(
-      trackFactory,
-      testTrackId3,
+  it('Should create a playlist and add a separate agreement', async () => {
+    // Add a 3rd agreement that is not in the initial playlist agreements list
+    await _lib.addAgreementAndValidate(
+      agreementFactory,
+      testAgreementId3,
       accounts[0],
       testUserId2,
       _constants.testMultihash.digest2,
@@ -122,16 +122,16 @@ contract('PlaylistFactory', async (accounts) => {
       playlistName,
       false,
       false,
-      playlistTracks)
+      playlistAgreements)
 
-    await _lib.addPlaylistTrack(
+    await _lib.addPlaylistAgreement(
       playlistFactory,
       accounts[0],
       expectedPlaylistId,
-      testTrackId3)
+      testAgreementId3)
   })
 
-  it('Should create a playlist and delete a track', async () => {
+  it('Should create a playlist and delete a agreement', async () => {
     // Create playlist
     await _lib.addPlaylistAndValidate(
       playlistFactory,
@@ -141,19 +141,19 @@ contract('PlaylistFactory', async (accounts) => {
       playlistName,
       false,
       false,
-      playlistTracks)
+      playlistAgreements)
 
-    await _lib.deletePlaylistTrack(
+    await _lib.deletePlaylistAgreement(
       playlistFactory,
       accounts[0],
       expectedPlaylistId,
-      testTrackId2,
+      testAgreementId2,
       1551912253)
   })
 
   it('Should create a playlist and perform update operations', async () => {
     // Test following update operations:
-    // 1 - Reorder tracks
+    // 1 - Reorder agreements
     // 2 - Update playlist name
     // 3 - Update playlist privacy
     // 4 - Update playlist cover photo
@@ -167,16 +167,16 @@ contract('PlaylistFactory', async (accounts) => {
       playlistName,
       false,
       false,
-      playlistTracks)
+      playlistAgreements)
 
-    let playlistTracksNewOrder = [2, 1]
+    let playlistAgreementsNewOrder = [2, 1]
 
     // 1 - Update playlist order
-    await _lib.orderPlaylistTracksAndValidate(
+    await _lib.orderPlaylistAgreementsAndValidate(
       playlistFactory,
       accounts[0],
       expectedPlaylistId,
-      playlistTracksNewOrder)
+      playlistAgreementsNewOrder)
 
     // 2 - Update playlist name
     await _lib.updatePlaylistNameAndValidate(
@@ -192,27 +192,27 @@ contract('PlaylistFactory', async (accounts) => {
       expectedPlaylistId,
       true)
 
-    // Attempt updating a playlist order with an invalid track
-    let invalidPlaylistTracksOrder = [2, 3, 1]
-    let updatedTrackOrder = null
+    // Attempt updating a playlist order with an invalid agreement
+    let invalidPlaylistAgreementsOrder = [2, 3, 1]
+    let updatedAgreementOrder = null
     try {
-      await _lib.orderPlaylistTracksAndValidate(
+      await _lib.orderPlaylistAgreementsAndValidate(
         playlistFactory,
         accounts[0],
         expectedPlaylistId,
-        invalidPlaylistTracksOrder)
+        invalidPlaylistAgreementsOrder)
 
-      updatedTrackOrder = true
+      updatedAgreementOrder = true
     } catch (err) {
       // Update flag to indicate that invalid update cannot be performed
-      if (err.message.indexOf('Expected valid playlist track id') >= 0) {
-        updatedTrackOrder = false
+      if (err.message.indexOf('Expected valid playlist agreement id') >= 0) {
+        updatedAgreementOrder = false
       }
     }
 
     assert.isFalse(
-      updatedTrackOrder,
-      'Expect failure with invalid track ID in reorder operation')
+      updatedAgreementOrder,
+      'Expect failure with invalid agreement ID in reorder operation')
 
     // 4 - Update playlist cover photo
     await _lib.updatePlaylistCoverPhotoAndValidate(
@@ -276,7 +276,7 @@ contract('PlaylistFactory', async (accounts) => {
       playlistName,
       false,
       false,
-      playlistTracks
+      playlistAgreements
     )
     await _lib.deletePlaylistAndValidate(
       playlistFactory,
@@ -296,7 +296,7 @@ contract('PlaylistFactory', async (accounts) => {
         playlistName,
         false,
         false,
-        playlistTracks
+        playlistAgreements
       )
     } catch (e) {
       // expected error
@@ -324,7 +324,7 @@ contract('PlaylistFactory', async (accounts) => {
         playlistName,
         false,
         false,
-        playlistTracks
+        playlistAgreements
       )
     } catch (e) {
       // expected error
@@ -374,7 +374,7 @@ contract('PlaylistFactory', async (accounts) => {
       playlistName,
       false,
       false,
-      playlistTracks
+      playlistAgreements
     )
 
     let caughtError = false
@@ -432,7 +432,7 @@ contract('PlaylistFactory', async (accounts) => {
       playlistName,
       false,
       false,
-      playlistTracks
+      playlistAgreements
     )
 
     let caughtError = false

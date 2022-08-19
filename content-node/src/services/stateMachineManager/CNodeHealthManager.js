@@ -21,13 +21,13 @@ const MAX_NUMBER_SECONDS_PRIMARY_REMAINS_UNHEALTHY = config.get(
 )
 
 /**
- * Tracks and caches health of Content Nodes.
+ * Agreements and caches health of Content Nodes.
  * TODO: Add caching for secondaries similar to how primaries have a threshold of time to remain unhealthy for.
  */
 class CNodeHealthManager {
   constructor() {
     /* We do not want to eagerly cycle off the primary when issuing reconfigs if necessary, as the primary may
-      have data that the secondaries lack. This map is used to track the primary and the number of times it has
+      have data that the secondaries lack. This map is used to agreement the primary and the number of times it has
       failed a health check.
 
       Schema:
@@ -210,9 +210,9 @@ class CNodeHealthManager {
 
   /**
    * Perform a simple health check to see if a primary is truly unhealthy. If the primary returns a
-   * non-200 response, track the timestamp in the map. If the health check has failed for a primary over
-   * `this.maxNumberSecondsPrimaryRemainsUnhealthy`, return as unhealthy. Else, keep track of the timestamp
-   * of the visit if not already tracked.
+   * non-200 response, agreement the timestamp in the map. If the health check has failed for a primary over
+   * `this.maxNumberSecondsPrimaryRemainsUnhealthy`, return as unhealthy. Else, keep agreement of the timestamp
+   * of the visit if not already agreemented.
    *
    * If the primary is healthy, reset the counter in the map and return as healthy.
    * @param {string} primary primary endpoint
@@ -244,7 +244,7 @@ class CNodeHealthManager {
       return true
     }
 
-    // If a primary ever becomes healthy again and was once marked as unhealthy, remove tracker
+    // If a primary ever becomes healthy again and was once marked as unhealthy, remove agreementer
     this.removePrimaryFromUnhealthyPrimaryMap(primary)
     return true
   }

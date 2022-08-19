@@ -1,11 +1,11 @@
 ---
-id: "full.GetTracksByUserSortEnum"
-title: "Enumeration: GetTracksByUserSortEnum"
-sidebar_label: "GetTracksByUserSortEnum"
+id: "full.GetAgreementsByUserSortEnum"
+title: "Enumeration: GetAgreementsByUserSortEnum"
+sidebar_label: "GetAgreementsByUserSortEnum"
 custom_edit_url: null
 ---
 
-[full](../namespaces/full.md).GetTracksByUserSortEnum
+[full](../namespaces/full.md).GetAgreementsByUserSortEnum
 
 **`export`**
 

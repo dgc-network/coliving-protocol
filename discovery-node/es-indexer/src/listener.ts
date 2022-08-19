@@ -5,7 +5,7 @@ import {
   PlaylistRow,
   RepostRow,
   SaveRow,
-  TrackRow,
+  AgreementRow,
   UserRow,
 } from './types/db'
 import { Client } from 'pg'
@@ -14,7 +14,7 @@ import { LISTEN_TABLES } from './setup'
 
 export class PendingUpdates {
   userIds: Set<number> = new Set()
-  trackIds: Set<number> = new Set()
+  agreementIds: Set<number> = new Set()
   playlistIds: Set<number> = new Set()
 
   reposts: Array<RepostRow> = []
@@ -27,7 +27,7 @@ export class PendingUpdates {
         this.saves.length +
         this.follows.length +
         this.userIds.size +
-        this.trackIds.size +
+        this.agreementIds.size +
         this.playlistIds.size ==
       0
     )
@@ -49,21 +49,21 @@ const handlers = {
   },
   aggregate_plays: (row: AggregatePlayRow) => {
     if (!row.play_item_id) return // when could this happen?
-    pending.trackIds.add(row.play_item_id)
+    pending.agreementIds.add(row.play_item_id)
   },
   // TODO: can we do trigger on agg playlist matview?
   saves: (save: SaveRow) => {
     pending.saves.push(save)
-    if (save.save_type == 'track') {
-      pending.trackIds.add(save.save_item_id)
+    if (save.save_type == 'agreement') {
+      pending.agreementIds.add(save.save_item_id)
     } else {
       pending.playlistIds.add(save.save_item_id)
     }
   },
   reposts: (repost: RepostRow) => {
     pending.reposts.push(repost)
-    if (repost.repost_type == 'track') {
-      pending.trackIds.add(repost.repost_item_id)
+    if (repost.repost_type == 'agreement') {
+      pending.agreementIds.add(repost.repost_item_id)
     } else {
       pending.playlistIds.add(repost.repost_item_id)
     }
@@ -81,8 +81,8 @@ const handlers = {
   users: (user: UserRow) => {
     pending.userIds.add(user.user_id)
   },
-  tracks: (track: TrackRow) => {
-    pending.trackIds.add(track.track_id)
+  agreements: (agreement: AgreementRow) => {
+    pending.agreementIds.add(agreement.agreement_id)
   },
   playlists: (playlist: PlaylistRow) => {
     pending.playlistIds.add(playlist.playlist_id)

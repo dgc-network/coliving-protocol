@@ -80,24 +80,24 @@ WITH recent_tips AS (
 )
 INSERT INTO aggregate_user (
     user_id,
-    track_count,
+    agreement_count,
     playlist_count,
     album_count,
     follower_count,
     following_count,
     repost_count,
-    track_save_count,
+    agreement_save_count,
     supporter_count,
     supporting_count
 )
 SELECT
     user_ids.user_id,
-    0 AS track_count,
+    0 AS agreement_count,
     0 AS playlist_count,
     0 AS album_count, 0 AS follower_count,
     0 AS following_count,
     0 AS repost_count,
-    0 AS track_save_count,
+    0 AS agreement_save_count,
     COALESCE(total_supporting, 0) AS supporting_count,
     COALESCE(total_supporters, 0) AS supporter_count
 FROM user_ids

@@ -10,8 +10,8 @@ begin
   -- this can be removed if we do this elsewhere
   -- but is here now for safety
   insert into aggregate_user (user_id) values (new.user_id) on conflict do nothing;
-  if new.repost_type = 'track' then
-    insert into aggregate_track (track_id) values (new.repost_item_id) on conflict do nothing;
+  if new.repost_type = 'agreement' then
+    insert into aggregate_agreement (agreement_id) values (new.repost_item_id) on conflict do nothing;
   else
     insert into aggregate_playlist (playlist_id) values (new.repost_item_id) on conflict do nothing;
   end if;
@@ -28,12 +28,12 @@ begin
   set repost_count = repost_count + delta
   where user_id = new.user_id;
 
-  -- update agg track or playlist
-  if new.repost_type = 'track' then
-    milestone_name := 'TRACK_REPOST_COUNT';
-    update aggregate_track 
+  -- update agg agreement or playlist
+  if new.repost_type = 'agreement' then
+    milestone_name := 'AGREEMENT_REPOST_COUNT';
+    update aggregate_agreement 
     set repost_count = repost_count + delta
-    where track_id = new.repost_item_id
+    where agreement_id = new.repost_item_id
     returning repost_count into new_val;
   else
     milestone_name := 'PLAYLIST_REPOST_COUNT';

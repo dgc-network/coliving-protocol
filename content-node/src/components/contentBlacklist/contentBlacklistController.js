@@ -4,7 +4,7 @@ const {
   getAllContentBlacklist,
   addToContentBlacklist,
   removeFromContentBlacklist,
-  getAllTrackIds
+  getAllAgreementIds
 } = require('./contentBlacklistComponentService')
 const {
   handleResponse,
@@ -21,23 +21,23 @@ const { logger } = require('../../logging')
 const router = express.Router()
 
 const types = models.ContentBlacklist.Types
-const TYPES_SET = new Set([types.cid, types.user, types.track])
+const TYPES_SET = new Set([types.cid, types.user, types.agreement])
 
 // Controllers
 
-const getTracksController = async (req) => {
-  let trackIds
+const getAgreementsController = async (req) => {
+  let agreementIds
   try {
-    trackIds = await getAllTrackIds()
+    agreementIds = await getAllAgreementIds()
   } catch (e) {
     req.logger.error(
-      `ContentBlackListController - Could not fetch tracks: ${e.message}`
+      `ContentBlackListController - Could not fetch agreements: ${e.message}`
     )
 
-    return errorResponseServerError(`Could not fetch tracks`)
+    return errorResponseServerError(`Could not fetch agreements`)
   }
 
-  return successResponse({ values: trackIds })
+  return successResponse({ values: agreementIds })
 }
 
 const contentBlacklistGetAllController = async (req) => {
@@ -159,8 +159,8 @@ const contentBlacklistRemoveController = async (req) => {
 /**
  * Parse query params. Should contain id, type, timestamp, signature
  * @param {Object} queryParams
- * @param {string} queryParams.type the type (user, track, cid) (paired with values)
- * @param {number[]} queryParams.values[] the ids (for tracks, users) or cids (segments)
+ * @param {string} queryParams.type the type (user, agreement, cid) (paired with values)
+ * @param {number[]} queryParams.values[] the ids (for agreements, users) or cids (segments)
  * @param {string} queryParams.timestamp the timestamp of when the data was signed
  */
 function parseQueryParams(queryParams) {
@@ -217,8 +217,8 @@ function parseQueryParams(queryParams) {
 /**
  * Verify that the requester is authorized to make changes to ContentBlacklist
  * @param {Object} data data to sign; structure of {type, values, timestamp}
- * @param {string} data.type the type (user, track, cid) (paired with ids)
- * @param {number[]} data.values[] the ids of either users or tracks, or segments
+ * @param {string} data.type the type (user, agreement, cid) (paired with ids)
+ * @param {number[]} data.values[] the ids of either users or agreements, or segments
  * @param {string} data.timestamp the timestamp of when the data was signed
  * @param {string} signature the signature generated from signing the data
  * @param {Object} trustedNotifierManager initialized instance of TrustedNotifierManager
@@ -257,15 +257,15 @@ const filterNonexistantIds = async (libs, type, ids) => {
     switch (type) {
       case 'USER':
         resp = await libs.User.getUsers(ids.length, 0, ids)
-        // If response is empty, then no users or tracks were found. Return error response
+        // If response is empty, then no users or agreements were found. Return error response
         if (!resp || resp.length === 0) throw new Error('Users not found.')
         // Else, if only some input ids were found, only blacklist the ids that were found
         if (resp.length < ids.length) ids = resp.map((user) => user.user_id)
         break
-      case 'TRACK':
-        resp = await libs.Track.getTracks(ids.length, 0, ids)
-        if (!resp || resp.length === 0) throw new Error('Tracks not found.')
-        if (resp.length < ids.length) ids = resp.map((track) => track.track_id)
+      case 'AGREEMENT':
+        resp = await libs.Agreement.getAgreements(ids.length, 0, ids)
+        if (!resp || resp.length === 0) throw new Error('Agreements not found.')
+        if (resp.length < ids.length) ids = resp.map((agreement) => agreement.agreement_id)
         break
       default:
         throw new Error('Could not recognize type.')
@@ -280,7 +280,7 @@ const filterNonexistantIds = async (libs, type, ids) => {
 }
 
 // Routes
-router.get('/blacklist/tracks', handleResponse(getTracksController))
+router.get('/blacklist/agreements', handleResponse(getAgreementsController))
 router.get('/blacklist', handleResponse(contentBlacklistGetAllController))
 router.post('/blacklist/add', handleResponse(contentBlacklistAddController))
 router.post(

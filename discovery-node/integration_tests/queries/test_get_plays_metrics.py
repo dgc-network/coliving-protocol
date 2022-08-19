@@ -21,10 +21,10 @@ def test_get_plays_metrics(app):
 
     date = datetime(2020, 10, 4).replace(minute=0, second=0, microsecond=0)
     test_entities = {
-        "tracks": [
-            {"track_id": 1, "title": "track 1"},
-            {"track_id": 2, "title": "track 2"},
-            {"track_id": 3, "title": "track 3"},
+        "agreements": [
+            {"agreement_id": 1, "title": "agreement 1"},
+            {"agreement_id": 2, "title": "agreement 2"},
+            {"agreement_id": 3, "title": "agreement 3"},
         ],
         "plays": [
             {"item_id": 1, "created_at": date + timedelta(hours=-1)},
@@ -66,10 +66,10 @@ def test_get_plays_metrics_with_weekly_buckets(app):
     # A Thursday
     date = datetime(2020, 10, 1).replace(minute=0, second=0, microsecond=0)
     test_entities = {
-        "tracks": [
-            {"track_id": 1, "title": "track 1"},
-            {"track_id": 2, "title": "track 2"},
-            {"track_id": 3, "title": "track 3"},
+        "agreements": [
+            {"agreement_id": 1, "title": "agreement 1"},
+            {"agreement_id": 2, "title": "agreement 2"},
+            {"agreement_id": 3, "title": "agreement 3"},
         ],
         "plays": [
             {"item_id": 1, "created_at": date + timedelta(hours=-1)},
@@ -109,10 +109,10 @@ def test_get_plays_metrics_with_yearly_buckets(app):
 
     date = datetime(2020, 10, 4).replace(minute=0, second=0, microsecond=0)
     test_entities = {
-        "tracks": [
-            {"track_id": 1, "title": "track 1"},
-            {"track_id": 2, "title": "track 2"},
-            {"track_id": 3, "title": "track 3"},
+        "agreements": [
+            {"agreement_id": 1, "title": "agreement 1"},
+            {"agreement_id": 2, "title": "agreement 2"},
+            {"agreement_id": 3, "title": "agreement 3"},
         ],
         "plays": [
             {"item_id": 1, "created_at": date + timedelta(days=-3 * DAYS_IN_A_YEAR)},

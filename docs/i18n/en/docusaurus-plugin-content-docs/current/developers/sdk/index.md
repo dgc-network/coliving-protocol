@@ -12,8 +12,8 @@ custom_edit_url: null
 
 The Coliving JavaScript (TypeScript) SDK allows you to easily build on and interact with the Coliving protocol.
 - ✍️ Log In with Coliving
-- 🎵 Fetch and stream tracks
-- 🔍 Search and display users, tracks, and playlists
+- 🎵 Fetch and stream agreements
+- 🔍 Search and display users, agreements, and playlists
 
 👷‍♀️ We're actively working on building out more SDK features and functionality - stay tuned!
 
@@ -43,8 +43,8 @@ const colivingSdk = sdk({ appName: 'Name of your app goes here' })
 #### 3. Make your first API call using the SDK!
 
 ```js
-const track = await colivingSdk.tracks.getTrack({ trackId: 'D7KyD' })
-console.log(track, 'Track fetched!')
+const agreement = await colivingSdk.agreements.getAgreement({ agreementId: 'D7KyD' })
+console.log(agreement, 'Agreement fetched!')
 ```
 
 #### Full example
@@ -58,8 +58,8 @@ window.Web3 = Web3
 
 const colivingSdk = sdk({ appName: 'Name of your app goes here' })
 
-const track = await colivingSdk.tracks.getTrack({ trackId: 'D7KyD' })
-console.log(track, 'Track fetched!')
+const agreement = await colivingSdk.agreements.getAgreement({ agreementId: 'D7KyD' })
+console.log(agreement, 'Agreement fetched!')
 ```
 
 > If your bundler doesn't automatically polyfill node libraries (like when using create-react-app v5) you will need to use the `web3` script tag instead of the `web3` npm package
@@ -84,7 +84,7 @@ const colivingSdk = window.colivingSdk({ appName: 'Name of your app goes here' }
 #### 3. Make your first API call using the SDK!
 
 ```js
-const track = await colivingSdk.tracks.getTrack({ trackId: 'D7KyD' })
+const agreement = await colivingSdk.agreements.getAgreement({ agreementId: 'D7KyD' })
 ```
 
 #### Full example
@@ -100,8 +100,8 @@ const track = await colivingSdk.tracks.getTrack({ trackId: 'D7KyD' })
         const colivingSdk = window.colivingSdk({
           appName: "My Example App",
         });
-        const track = await colivingSdk.tracks.getTrack({ trackId: 'D7KyD' });
-        console.log(track, "Track fetched!");
+        const agreement = await colivingSdk.agreements.getAgreement({ agreementId: 'D7KyD' });
+        console.log(agreement, "Agreement fetched!");
       }
       fn()
     </script>

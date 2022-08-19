@@ -1,5 +1,5 @@
 from flask_restx import fields
-from src.api.v1.models.tracks import track_full
+from src.api.v1.models.agreements import agreement_full
 from src.api.v1.models.users import user_model, user_model_full
 
 from .common import favorite, ns, repost
@@ -17,7 +17,7 @@ playlist_added_timestamp = ns.model(
     "playlist_added_timestamp",
     {
         "timestamp": fields.Integer(required=True),
-        "track_id": fields.String(required=True),
+        "agreement_id": fields.String(required=True),
     },
 )
 
@@ -54,9 +54,9 @@ full_playlist_model = ns.clone(
         ),
         "user_id": fields.String(required=True),
         "user": fields.Nested(user_model_full, required=True),
-        "tracks": fields.List(fields.Nested(track_full), required=True),
+        "agreements": fields.List(fields.Nested(agreement_full), required=True),
         "cover_art": fields.String,
         "cover_art_sizes": fields.String,
-        "track_count": fields.Integer(required=True),
+        "agreement_count": fields.Integer(required=True),
     },
 )

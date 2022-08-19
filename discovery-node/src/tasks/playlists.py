@@ -111,7 +111,7 @@ def playlist_state_update(
             invalidate_old_playlist(session, playlist_id)
             session.add(value_obj["playlist"])
             if (
-                playlist_event_types_lookup["playlist_track_added"]
+                playlist_event_types_lookup["playlist_agreement_added"]
                 in value_obj["events"]
             ):
                 challenge_bus.dispatch(
@@ -200,12 +200,12 @@ def parse_playlist_event(
         playlist_record.is_album = event_args._isAlbum
 
         playlist_content_array = []
-        for track_id in event_args._trackIds:
+        for agreement_id in event_args._agreementIds:
             playlist_content_array.append(
-                {"track": track_id, "time": block_integer_time}
+                {"agreement": agreement_id, "time": block_integer_time}
             )
 
-        playlist_record.playlist_contents = {"track_ids": playlist_content_array}
+        playlist_record.playlist_contents = {"agreement_ids": playlist_content_array}
         playlist_record.created_at = block_datetime
 
     if event_type == playlist_event_types_lookup["playlist_deleted"]:
@@ -214,89 +214,89 @@ def parse_playlist_event(
         )
         playlist_record.is_delete = True
 
-    if event_type == playlist_event_types_lookup["playlist_track_added"]:
+    if event_type == playlist_event_types_lookup["playlist_agreement_added"]:
         if getattr(playlist_record, "playlist_contents") is not None:
             logger.info(
-                f"index.py | playlists.py | Adding track {event_args._addedTrackId} to playlist \
+                f"index.py | playlists.py | Adding agreement {event_args._addedAgreementId} to playlist \
             {playlist_record.playlist_id}"
             )
-            old_playlist_content_array = playlist_record.playlist_contents["track_ids"]
+            old_playlist_content_array = playlist_record.playlist_contents["agreement_ids"]
             new_playlist_content_array = old_playlist_content_array
-            # Append new track object
+            # Append new agreement object
             new_playlist_content_array.append(
-                {"track": event_args._addedTrackId, "time": block_integer_time}
+                {"agreement": event_args._addedAgreementId, "time": block_integer_time}
             )
             playlist_record.playlist_contents = {
-                "track_ids": new_playlist_content_array
+                "agreement_ids": new_playlist_content_array
             }
             playlist_record.timestamp = block_datetime
             playlist_record.last_added_to = block_datetime
 
-    if event_type == playlist_event_types_lookup["playlist_track_deleted"]:
+    if event_type == playlist_event_types_lookup["playlist_agreement_deleted"]:
         if getattr(playlist_record, "playlist_contents") is not None:
             logger.info(
-                f"index.py | playlists.py | Removing track {event_args._deletedTrackId} from \
+                f"index.py | playlists.py | Removing agreement {event_args._deletedAgreementId} from \
             playlist {playlist_record.playlist_id}"
             )
-            old_playlist_content_array = playlist_record.playlist_contents["track_ids"]
+            old_playlist_content_array = playlist_record.playlist_contents["agreement_ids"]
             new_playlist_content_array = []
-            deleted_track_id = event_args._deletedTrackId
-            deleted_track_timestamp = int(event_args._deletedTrackTimestamp)
-            delete_track_entry_found = False
-            for track_entry in old_playlist_content_array:
+            deleted_agreement_id = event_args._deletedAgreementId
+            deleted_agreement_timestamp = int(event_args._deletedAgreementTimestamp)
+            delete_agreement_entry_found = False
+            for agreement_entry in old_playlist_content_array:
                 if (
-                    track_entry["track"] == deleted_track_id
-                    and track_entry["time"] == deleted_track_timestamp
-                    and not delete_track_entry_found
+                    agreement_entry["agreement"] == deleted_agreement_id
+                    and agreement_entry["time"] == deleted_agreement_timestamp
+                    and not delete_agreement_entry_found
                 ):
-                    delete_track_entry_found = True
+                    delete_agreement_entry_found = True
                     continue
-                new_playlist_content_array.append(track_entry)
+                new_playlist_content_array.append(agreement_entry)
 
             playlist_record.playlist_contents = {
-                "track_ids": new_playlist_content_array
+                "agreement_ids": new_playlist_content_array
             }
 
-    if event_type == playlist_event_types_lookup["playlist_tracks_ordered"]:
+    if event_type == playlist_event_types_lookup["playlist_agreements_ordered"]:
         if getattr(playlist_record, "playlist_contents") is not None:
             logger.info(
                 f"index.py | playlists.py | Ordering playlist {playlist_record.playlist_id}"
             )
-            old_playlist_content_array = playlist_record.playlist_contents["track_ids"]
+            old_playlist_content_array = playlist_record.playlist_contents["agreement_ids"]
 
-            intermediate_track_time_lookup_dict = {}
+            intermediate_agreement_time_lookup_dict = {}
 
             for old_playlist_entry in old_playlist_content_array:
-                track_id = old_playlist_entry["track"]
-                track_time = old_playlist_entry["time"]
+                agreement_id = old_playlist_entry["agreement"]
+                agreement_time = old_playlist_entry["time"]
 
-                if track_id not in intermediate_track_time_lookup_dict:
-                    intermediate_track_time_lookup_dict[track_id] = []
+                if agreement_id not in intermediate_agreement_time_lookup_dict:
+                    intermediate_agreement_time_lookup_dict[agreement_id] = []
 
-                intermediate_track_time_lookup_dict[track_id].append(track_time)
+                intermediate_agreement_time_lookup_dict[agreement_id].append(agreement_time)
 
             playlist_content_array = []
-            for track_id in event_args._orderedTrackIds:
-                if track_id in intermediate_track_time_lookup_dict:
-                    track_time_array_length = len(
-                        intermediate_track_time_lookup_dict[track_id]
+            for agreement_id in event_args._orderedAgreementIds:
+                if agreement_id in intermediate_agreement_time_lookup_dict:
+                    agreement_time_array_length = len(
+                        intermediate_agreement_time_lookup_dict[agreement_id]
                     )
-                    if track_time_array_length > 1:
-                        track_time = intermediate_track_time_lookup_dict[track_id].pop(
+                    if agreement_time_array_length > 1:
+                        agreement_time = intermediate_agreement_time_lookup_dict[agreement_id].pop(
                             0
                         )
-                    elif track_time_array_length == 1:
-                        track_time = intermediate_track_time_lookup_dict[track_id][0]
+                    elif agreement_time_array_length == 1:
+                        agreement_time = intermediate_agreement_time_lookup_dict[agreement_id][0]
                     else:
-                        track_time = block_integer_time
+                        agreement_time = block_integer_time
                 else:
                     logger.info(
-                        f"index.py | playlist.py | Track {track_id} not found, using track_time={block_integer_time}"
+                        f"index.py | playlist.py | Agreement {agreement_id} not found, using agreement_time={block_integer_time}"
                     )
-                    track_time = block_integer_time
-                playlist_content_array.append({"track": track_id, "time": track_time})
+                    agreement_time = block_integer_time
+                playlist_content_array.append({"agreement": agreement_id, "time": agreement_time})
 
-            playlist_record.playlist_contents = {"track_ids": playlist_content_array}
+            playlist_record.playlist_contents = {"agreement_ids": playlist_content_array}
 
     if event_type == playlist_event_types_lookup["playlist_name_updated"]:
         logger.info(

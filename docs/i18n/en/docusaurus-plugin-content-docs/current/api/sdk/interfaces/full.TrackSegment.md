@@ -1,17 +1,17 @@
 ---
-id: "full.TrackSegment"
-title: "Interface: TrackSegment"
-sidebar_label: "TrackSegment"
+id: "full.AgreementSegment"
+title: "Interface: AgreementSegment"
+sidebar_label: "AgreementSegment"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).TrackSegment
+[full](../namespaces/full.md).AgreementSegment
 
 **`export`**
 
-**`interface`** TrackSegment
+**`interface`** AgreementSegment
 
 ## Properties
 
@@ -19,7 +19,7 @@ pagination_next: null
 
  **duration**: `number`
 
-**`memberof`** TrackSegment
+**`memberof`** AgreementSegment
 
 ___
 
@@ -27,4 +27,4 @@ ___
 
  **multihash**: `string`
 
-**`memberof`** TrackSegment
+**`memberof`** AgreementSegment

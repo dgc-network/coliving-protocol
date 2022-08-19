@@ -50,10 +50,10 @@ def test_populate_playlist_metadata(app):
     with db.scoped_session() as session:
         playlist_ids = [1, 2, 3, 4]
         playlists = [
-            {"playlist_id": 1, "playlist_contents": {"track_ids": []}},
-            {"playlist_id": 2, "playlist_contents": {"track_ids": []}},
-            {"playlist_id": 3, "playlist_contents": {"track_ids": []}},
-            {"playlist_id": 4, "playlist_contents": {"track_ids": []}},
+            {"playlist_id": 1, "playlist_contents": {"agreement_ids": []}},
+            {"playlist_id": 2, "playlist_contents": {"agreement_ids": []}},
+            {"playlist_id": 3, "playlist_contents": {"agreement_ids": []}},
+            {"playlist_id": 4, "playlist_contents": {"agreement_ids": []}},
         ]
 
         playlists = populate_playlist_metadata(
@@ -82,9 +82,9 @@ def test_populate_playlist_metadata(app):
 
         curr_playlist_ids = [1, 2, 3]
         curr_playlists = [
-            {"playlist_id": 1, "playlist_contents": {"track_ids": []}},
-            {"playlist_id": 2, "playlist_contents": {"track_ids": []}},
-            {"playlist_id": 3, "playlist_contents": {"track_ids": []}},
+            {"playlist_id": 1, "playlist_contents": {"agreement_ids": []}},
+            {"playlist_id": 2, "playlist_contents": {"agreement_ids": []}},
+            {"playlist_id": 3, "playlist_contents": {"agreement_ids": []}},
         ]
 
         playlists = populate_playlist_metadata(

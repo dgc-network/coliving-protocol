@@ -12,7 +12,7 @@ class DBManager {
    * Steps:
    *  1. increments cnodeUser clock value by 1
    *  2. insert new ClockRecord entry with new clock value
-   *  3. insert new Data Table (File, Track, ColivingUser) entry with queryObj and new clock value
+   *  3. insert new Data Table (File, Agreement, ColivingUser) entry with queryObj and new clock value
    * In steps 2 and 3, clock values are read as subquery to guarantee atomicity
    *
    * B. Given a list of IDs, batch deletes user session tokens to expire sessions on the server-side.
@@ -99,29 +99,29 @@ class DBManager {
         `${cnodeUserUUIDLog} || numColivingUsersDeleted ${numColivingUsersDeleted}`
       )
 
-      // TrackFiles must be deleted before associated Tracks can be deleted
-      const numTrackFilesDeleted = await models.File.destroy({
+      // AgreementFiles must be deleted before associated Agreements can be deleted
+      const numAgreementFilesDeleted = await models.File.destroy({
         where: {
           cnodeUserUUID,
-          trackBlockchainId: { [models.Sequelize.Op.ne]: null } // Op.ne = notequal
+          agreementBlockchainId: { [models.Sequelize.Op.ne]: null } // Op.ne = notequal
         },
         transaction
       })
-      log(`${cnodeUserUUIDLog} || numTrackFilesDeleted ${numTrackFilesDeleted}`)
+      log(`${cnodeUserUUIDLog} || numAgreementFilesDeleted ${numAgreementFilesDeleted}`)
 
-      const numTracksDeleted = await models.Track.destroy({
+      const numAgreementsDeleted = await models.Agreement.destroy({
         where: { cnodeUserUUID },
         transaction
       })
-      log(`${cnodeUserUUIDLog} || numTracksDeleted ${numTracksDeleted}`)
+      log(`${cnodeUserUUIDLog} || numAgreementsDeleted ${numAgreementsDeleted}`)
 
       // Delete all remaining files (image / metadata files).
-      const numNonTrackFilesDeleted = await models.File.destroy({
+      const numNonAgreementFilesDeleted = await models.File.destroy({
         where: { cnodeUserUUID },
         transaction
       })
       log(
-        `${cnodeUserUUIDLog} || numNonTrackFilesDeleted ${numNonTrackFilesDeleted}`
+        `${cnodeUserUUIDLog} || numNonAgreementFilesDeleted ${numNonAgreementFilesDeleted}`
       )
 
       const numClockRecordsDeleted = await models.ClockRecord.destroy({

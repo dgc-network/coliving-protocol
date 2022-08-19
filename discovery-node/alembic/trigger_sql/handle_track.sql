@@ -1,22 +1,22 @@
-create or replace function handle_track() returns trigger as $$
+create or replace function handle_agreement() returns trigger as $$
 declare
-  old_row tracks%ROWTYPE;
+  old_row agreements%ROWTYPE;
   new_val int;
   delta int := 0;
 begin
-  -- ensure agg_track
+  -- ensure agg_agreement
   -- this could be the only place we do this one:
-  insert into aggregate_track (track_id) values (new.track_id) on conflict do nothing;
+  insert into aggregate_agreement (agreement_id) values (new.agreement_id) on conflict do nothing;
 
   -- for extra safety ensure agg_user
   -- this should just happen in handle_user
   insert into aggregate_user (user_id) values (new.owner_id) on conflict do nothing;
 
-  -- if it's a new track increment agg user track_count
+  -- if it's a new agreement increment agg user agreement_count
   -- assert new.is_current = true; -- not actually true in tests
-  select * into old_row from tracks where is_current = false and track_id = new.track_id order by blocknumber desc limit 1;
+  select * into old_row from agreements where is_current = false and agreement_id = new.agreement_id order by blocknumber desc limit 1;
 
-  -- track becomes invisible (one way change)
+  -- agreement becomes invisible (one way change)
   if old_row.is_delete != new.is_delete or old_row.is_unlisted != new.is_unlisted then
     delta := -1;
   end if;
@@ -27,12 +27,12 @@ begin
 
   if delta != 0 then
     update aggregate_user 
-    set track_count = track_count + delta
+    set agreement_count = agreement_count + delta
     where user_id = new.owner_id
-    returning track_count into new_val;
+    returning agreement_count into new_val;
 
     -- if delta = 1 and new_val = 3 then
-    --   raise notice 'could create rewards row for: user track_count = 3';
+    --   raise notice 'could create rewards row for: user agreement_count = 3';
     -- end if;
   end if;
 
@@ -42,7 +42,7 @@ $$ language plpgsql;
 
 
 
-drop trigger if exists on_track on tracks;
-create trigger on_track
-  after insert on tracks
-  for each row execute procedure handle_track();
+drop trigger if exists on_agreement on agreements;
+create trigger on_agreement
+  after insert on agreements
+  for each row execute procedure handle_agreement();

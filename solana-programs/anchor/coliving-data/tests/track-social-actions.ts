@@ -4,13 +4,13 @@ import chai, { assert, expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import {
   initAdmin,
-  addTrackRepost,
-  addTrackSave,
+  addAgreementRepost,
+  addAgreementSave,
   updateAdmin,
-  deleteTrackSave,
+  deleteAgreementSave,
   EntitySocialActionEnumValues,
   EntityTypesEnumValues,
-  deleteTrackRepost,
+  deleteAgreementRepost,
 } from "../lib/lib";
 import { getTransaction, randomString } from "../lib/utils";
 import { ColivingData } from "../target/types/coliving_data";
@@ -24,7 +24,7 @@ const { SystemProgram } = anchor.web3;
 chai.use(chaiAsPromised);
 
 const contentNodes = {};
-describe("track-actions", function () {
+describe("agreement-actions", function () {
   const provider = anchor.AnchorProvider.local("http://localhost:8899", {
     preflightCommitment: "confirmed",
     commitment: "confirmed",
@@ -39,7 +39,7 @@ describe("track-actions", function () {
   const adminAccountKeypair = anchor.web3.Keypair.generate();
   const verifierKeypair = anchor.web3.Keypair.generate();
 
-  it("track actions - Initializing admin account!", async function () {
+  it("agreement actions - Initializing admin account!", async function () {
     const tx = initAdmin({
       payer: provider.wallet.publicKey,
       program,
@@ -97,10 +97,10 @@ describe("track-actions", function () {
     });
   });
 
-  it("Delete save for a track", async function () {
+  it("Delete save for a agreement", async function () {
     const user = await createSolanaUser(program, provider, adminAccountKeypair);
 
-    const tx = deleteTrackSave({
+    const tx = deleteAgreementSave({
       program,
       baseAuthorityAccount: user.authority,
       adminAccount: adminAccountKeypair.publicKey,
@@ -126,14 +126,14 @@ describe("track-actions", function () {
       EntitySocialActionEnumValues.deleteSave
     );
     expect(decodedInstruction.data.entityType).to.deep.equal(
-      EntityTypesEnumValues.track
+      EntityTypesEnumValues.agreement
     );
   });
 
-  it("Save a newly created track", async function () {
+  it("Save a newly created agreement", async function () {
     const user = await createSolanaUser(program, provider, adminAccountKeypair);
 
-    const tx = addTrackSave({
+    const tx = addAgreementSave({
       program,
       baseAuthorityAccount: user.authority,
       adminAccount: adminAccountKeypair.publicKey,
@@ -160,14 +160,14 @@ describe("track-actions", function () {
       EntitySocialActionEnumValues.addSave
     );
     expect(decodedInstruction.data.entityType).to.deep.equal(
-      EntityTypesEnumValues.track
+      EntityTypesEnumValues.agreement
     );
   });
 
-  it("Repost a track", async function () {
+  it("Repost a agreement", async function () {
     const user = await createSolanaUser(program, provider, adminAccountKeypair);
 
-    const tx = addTrackRepost({
+    const tx = addAgreementRepost({
       program,
       baseAuthorityAccount: user.authority,
       adminAccount: adminAccountKeypair.publicKey,
@@ -194,11 +194,11 @@ describe("track-actions", function () {
       EntitySocialActionEnumValues.addRepost
     );
     expect(decodedInstruction.data.entityType).to.deep.equal(
-      EntityTypesEnumValues.track
+      EntityTypesEnumValues.agreement
     );
   });
 
-  it("Delegate reposts a track", async function () {
+  it("Delegate reposts a agreement", async function () {
     const userDelegate = await testCreateUserDelegate({
       adminKeypair,
       adminAccountKeypair: adminAccountKeypair,
@@ -206,7 +206,7 @@ describe("track-actions", function () {
       provider,
     });
 
-    const tx = addTrackRepost({
+    const tx = addAgreementRepost({
       program,
       baseAuthorityAccount: userDelegate.baseAuthorityAccount,
       adminAccount: adminAccountKeypair.publicKey,
@@ -237,14 +237,14 @@ describe("track-actions", function () {
       EntitySocialActionEnumValues.addRepost
     );
     expect(decodedInstruction.data.entityType).to.deep.equal(
-      EntityTypesEnumValues.track
+      EntityTypesEnumValues.agreement
     );
   });
 
-  it("Delete repost for a track", async function () {
+  it("Delete repost for a agreement", async function () {
     const user = await createSolanaUser(program, provider, adminAccountKeypair);
 
-    const tx = deleteTrackRepost({
+    const tx = deleteAgreementRepost({
       program,
       baseAuthorityAccount: user.authority,
       adminAccount: adminAccountKeypair.publicKey,
@@ -271,7 +271,7 @@ describe("track-actions", function () {
       EntitySocialActionEnumValues.deleteRepost
     );
     expect(decodedInstruction.data.entityType).to.deep.equal(
-      EntityTypesEnumValues.track
+      EntityTypesEnumValues.agreement
     );
   });
 });

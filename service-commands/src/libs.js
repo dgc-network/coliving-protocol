@@ -205,40 +205,40 @@ function LibsWrapper(walletIndex = 0) {
   }
 
   /**
-   * Upload a track.
+   * Upload a agreement.
    *
-   * @param {*} args trackFile and metadata
-   * @returns trackId
+   * @param {*} args agreementFile and metadata
+   * @returns agreementId
    * @throws any libs error
    */
-  this.uploadTrack = async ({ trackFile, trackMetadata }) => {
+  this.uploadAgreement = async ({ agreementFile, agreementMetadata }) => {
     assertLibsDidInit()
 
-    const { trackId, error } = await this.libsInstance.Track.uploadTrack(
-      trackFile,
+    const { agreementId, error } = await this.libsInstance.Agreement.uploadAgreement(
+      agreementFile,
       null /* image */,
-      trackMetadata,
+      agreementMetadata,
       () => { } /* on progress */
     )
     if (error) throw error
-    return trackId
+    return agreementId
   }
 
   /**
-   * Updates an existing track given metadata. This function expects that all associated files
-   * such as track content, cover art are already on creator node.
-   * @param {Object} metadata json of the track metadata with all fields, missing fields will error
+   * Updates an existing agreement given metadata. This function expects that all associated files
+   * such as agreement content, cover art are already on creator node.
+   * @param {Object} metadata json of the agreement metadata with all fields, missing fields will error
    */
-  this.updateTrackOnChainAndCnode = async metadata => {
+  this.updateAgreementOnChainAndCnode = async metadata => {
     const {
       blockHash,
       blockNumber,
-      trackId
-    } = await this.libsInstance.Track.updateTrack(metadata)
-    return { blockHash, blockNumber, trackId }
+      agreementId
+    } = await this.libsInstance.Agreement.updateAgreement(metadata)
+    return { blockHash, blockNumber, agreementId }
   }
 
-  this.uploadTrackCoverArt = async coverArtFilePath => {
+  this.uploadAgreementCoverArt = async coverArtFilePath => {
     const coverArtFile = fs.createReadStream(coverArtFilePath)
     const resp = await this.libsInstance.File.uploadImage(
       coverArtFile,
@@ -249,40 +249,40 @@ function LibsWrapper(walletIndex = 0) {
   }
 
   /**
-   * Repost a track.
+   * Repost a agreement.
    *
-   * @param {number} args trackId
+   * @param {number} args agreementId
    * @returns transaction receipt
    * @throws any libs error
    */
-  this.repostTrack = async trackId => {
+  this.repostAgreement = async agreementId => {
     assertLibsDidInit()
-    return await this.libsInstance.Track.addTrackRepost(trackId)
+    return await this.libsInstance.Agreement.addAgreementRepost(agreementId)
   }
 
   /**
-   * Gets reposters for a tracks.
+   * Gets reposters for a agreements.
    *
-   * @param {number} args trackId
-   * @returns trackId
+   * @param {number} args agreementId
+   * @returns agreementId
    * @throws any libs error
    */
-  this.getRepostersForTrack = async trackId => {
+  this.getRepostersForAgreement = async agreementId => {
     assertLibsDidInit()
-    return await this.libsInstance.Track.getRepostersForTrack(100, 0, trackId)
+    return await this.libsInstance.Agreement.getRepostersForAgreement(100, 0, agreementId)
   }
 
   /**
-   * Fetch track metadata from discprov.
-   * @param {*} trackId
-   * @returns track metadata
+   * Fetch agreement metadata from discprov.
+   * @param {*} agreementId
+   * @returns agreement metadata
    */
-  this.getTrack = async trackId => {
+  this.getAgreement = async agreementId => {
     assertLibsDidInit()
-    const tracks = await this.libsInstance.discoveryProvider.getTracks(
+    const agreements = await this.libsInstance.discoveryProvider.getAgreements(
       1 /* Limit */,
       0 /* Ofset */,
-      [trackId] /* idsArray */,
+      [agreementId] /* idsArray */,
       null /* targetUserId */,
       null /* sort */,
       null /* minBlockNumber */,
@@ -290,10 +290,10 @@ function LibsWrapper(walletIndex = 0) {
       true /* withUsers */
     )
 
-    if (!tracks || !tracks.length) {
-      throw new Error('No tracks returned.')
+    if (!agreements || !agreements.length) {
+      throw new Error('No agreements returned.')
     }
-    return tracks[0]
+    return agreements[0]
   }
 
   /**
@@ -458,43 +458,43 @@ function LibsWrapper(walletIndex = 0) {
   }
 
   /**
-   * Add an add track txn to chain
+   * Add an add agreement txn to chain
    * @param {int} userId
-   * @param {object} param2 track data
+   * @param {object} param2 agreement data
    */
-  this.addTrackToChain = async (userId, { digest, hashFn, size }) => {
+  this.addAgreementToChain = async (userId, { digest, hashFn, size }) => {
     assertLibsDidInit()
-    const trackTxReceipt = await this.libsInstance.contracts.TrackFactoryClient.addTrack(
+    const agreementTxReceipt = await this.libsInstance.contracts.AgreementFactoryClient.addAgreement(
       userId,
       digest,
       hashFn,
       size
     )
-    return trackTxReceipt
+    return agreementTxReceipt
   }
 
   /**
-   * Add an update track txn to chain.
+   * Add an update agreement txn to chain.
    * WARNING: This will break indexing if the tx contains CIDs that don't exist on any CN.
-   * Make sure you call uploadTrackMetadata first!
-   * @param {int} trackId
+   * Make sure you call uploadAgreementMetadata first!
+   * @param {int} agreementId
    * @param {int} userId
-   * @param {object} param3 track data
+   * @param {object} param3 agreement data
    */
-  this.updateTrackOnChain = async (
-    trackId,
+  this.updateAgreementOnChain = async (
+    agreementId,
     userId,
     { digest, hashFn, size }
   ) => {
     assertLibsDidInit()
-    const trackTxReceipt = await this.libsInstance.contracts.TrackFactoryClient.updateTrack(
-      trackId,
+    const agreementTxReceipt = await this.libsInstance.contracts.AgreementFactoryClient.updateAgreement(
+      agreementId,
       userId,
       digest,
       hashFn,
       size
     )
-    return trackTxReceipt
+    return agreementTxReceipt
   }
 
   /**
@@ -545,14 +545,14 @@ function LibsWrapper(walletIndex = 0) {
    * @param {string} playlistName
    * @param {boolean} isPrivate
    * @param {boolean} isAlbum
-   * @param {array} trackIds
+   * @param {array} agreementIds
    */
   this.createPlaylist = async (
     userId,
     playlistName,
     isPrivate,
     isAlbum,
-    trackIds
+    agreementIds
   ) => {
     assertLibsDidInit()
     const createPlaylistTxReceipt = await this.libsInstance.contracts.PlaylistFactoryClient.createPlaylist(
@@ -560,23 +560,23 @@ function LibsWrapper(walletIndex = 0) {
       playlistName,
       isPrivate,
       isAlbum,
-      trackIds
+      agreementIds
     )
     return createPlaylistTxReceipt
   }
 
   /**
-   * Add a playlist track addition txn to chain
+   * Add a playlist agreement addition txn to chain
    * @param {number} playlistId
-   * @param {number} trackId
+   * @param {number} agreementId
    */
-  this.addPlaylistTrack = async (playlistId, trackId) => {
+  this.addPlaylistAgreement = async (playlistId, agreementId) => {
     assertLibsDidInit()
-    const addPlaylistTrackTxReceipt = await this.libsInstance.contracts.PlaylistFactoryClient.addPlaylistTrack(
+    const addPlaylistAgreementTxReceipt = await this.libsInstance.contracts.PlaylistFactoryClient.addPlaylistAgreement(
       playlistId,
-      trackId
+      agreementId
     )
-    return addPlaylistTrackTxReceipt
+    return addPlaylistAgreementTxReceipt
   }
 
   this.uploadPlaylistCoverPhoto = async coverPhotoFile => {
@@ -687,16 +687,16 @@ function LibsWrapper(walletIndex = 0) {
     return this.libsInstance.discoveryProvider.getURSMContentNodes(ownerWallet)
   }
 
-  // Record a single track listen
-  this.logTrackListen = (
-    trackId,
+  // Record a single agreement listen
+  this.logAgreementListen = (
+    agreementId,
     userId,
     listenerAddress,
     signatureData,
     solanaListen
   ) => {
-    return this.libsInstance.identityService.logTrackListen(
-      trackId,
+    return this.libsInstance.identityService.logAgreementListen(
+      agreementId,
       userId,
       listenerAddress,
       signatureData,
@@ -717,7 +717,7 @@ function LibsWrapper(walletIndex = 0) {
 
     try {
       // Note: this is /not/ the block of which a certain txn occurred. This is just the
-      // latest block on chain. (e.g. Upload track occurred at block 80; latest block on chain
+      // latest block on chain. (e.g. Upload agreement occurred at block 80; latest block on chain
       // might be 83). This method is the quickest way to attempt to poll up to a reasonably
       // close block without having to change libs API.
       latestBlockOnChain = await this.getLatestBlockOnChain()
@@ -759,7 +759,7 @@ function LibsWrapper(walletIndex = 0) {
 
     try {
       // Note: this is /not/ the block of which a certain txn occurred. This is just the
-      // latest block on chain. (e.g. Upload track occurred at block 80; latest block on chain
+      // latest block on chain. (e.g. Upload agreement occurred at block 80; latest block on chain
       // might be 83). This method is the quickest way to attempt to poll up to a reasonably
       // close block without having to change libs API.
       latestBlockOnChain = await this.getLatestBlockOnChain()

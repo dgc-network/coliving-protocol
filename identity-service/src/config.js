@@ -192,28 +192,28 @@ const config = convict({
     env: 'rateLimitingTikTokLimit',
     default: null
   },
-  rateLimitingListensPerTrackPerHour: {
-    doc: 'Listens per track per user per Hour',
+  rateLimitingListensPerAgreementPerHour: {
+    doc: 'Listens per agreement per user per Hour',
     format: 'nat',
-    env: 'rateLimitingListensPerTrackPerHour',
+    env: 'rateLimitingListensPerAgreementPerHour',
     default: null
   },
-  rateLimitingListensPerIPTrackPerHour: {
-    doc: 'Listens per track per IP per Hour',
+  rateLimitingListensPerIPAgreementPerHour: {
+    doc: 'Listens per agreement per IP per Hour',
     format: 'nat',
-    env: 'rateLimitingListensPerIPTrackPerHour',
+    env: 'rateLimitingListensPerIPAgreementPerHour',
     default: null
   },
-  rateLimitingListensPerTrackPerDay: {
-    doc: 'Listens per track per user per Day',
+  rateLimitingListensPerAgreementPerDay: {
+    doc: 'Listens per agreement per user per Day',
     format: 'nat',
-    env: 'rateLimitingListensPerTrackPerDay',
+    env: 'rateLimitingListensPerAgreementPerDay',
     default: null
   },
-  rateLimitingListensPerIPTrackPerDay: {
-    doc: 'Listens per track per IP per Day',
+  rateLimitingListensPerIPAgreementPerDay: {
+    doc: 'Listens per agreement per IP per Day',
     format: 'nat',
-    env: 'rateLimitingListensPerIPTrackPerDay',
+    env: 'rateLimitingListensPerIPAgreementPerDay',
     default: null
   },
   rateLimitingListensPerIPPerHour: {
@@ -241,21 +241,21 @@ const config = convict({
     default: 50
   },
   rateLimitingEthRelaysPerWalletPerDay: {
-    doc: 'Listens per track per IP per Day',
+    doc: 'Listens per agreement per IP per Day',
     format: 'nat',
     env: 'rateLimitingEthRelaysPerWalletPerDay',
     default: 10
   },
-  rateLimitingListensPerTrackPerWeek: {
-    doc: 'Listens per track per user per Week',
+  rateLimitingListensPerAgreementPerWeek: {
+    doc: 'Listens per agreement per user per Week',
     format: 'nat',
-    env: 'rateLimitingListensPerTrackPerWeek',
+    env: 'rateLimitingListensPerAgreementPerWeek',
     default: null
   },
-  rateLimitingListensPerIPTrackPerWeek: {
-    doc: 'Listens per track per IP per Week',
+  rateLimitingListensPerIPAgreementPerWeek: {
+    doc: 'Listens per agreement per IP per Week',
     format: 'nat',
-    env: 'rateLimitingListensPerIPTrackPerWeek',
+    env: 'rateLimitingListensPerIPAgreementPerWeek',
     default: null
   },
   rateLimitingListensIPWhitelist: {
@@ -594,11 +594,11 @@ const config = convict({
     env: 'solanaEndpoint',
     default: null
   },
-  solanaTrackListenCountAddress: {
-    doc: 'solanaTrackListenCountAddress',
+  solanaAgreementListenCountAddress: {
+    doc: 'solanaAgreementListenCountAddress',
     format: String,
     default: '',
-    env: 'solanaTrackListenCountAddress'
+    env: 'solanaAgreementListenCountAddress'
   },
   solanaColivingEthRegistryAddress: {
     doc: 'solanaColivingEthRegistryAddress',
@@ -827,7 +827,7 @@ if (fs.existsSync('eth-contract-config.json')) {
 if (fs.existsSync('solana-program-config.json')) {
   let solanaContractConfig = require('../solana-program-config.json')
   config.load({
-    solanaTrackListenCountAddress: solanaContractConfig.trackListenCountAddress,
+    solanaAgreementListenCountAddress: solanaContractConfig.agreementListenCountAddress,
     solanaColivingEthRegistryAddress: solanaContractConfig.colivingEthRegistryAddress,
     solanaValidSigner: solanaContractConfig.validSigner,
     solanaFeePayerWallets: solanaContractConfig.feePayerWallets,

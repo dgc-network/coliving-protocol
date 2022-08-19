@@ -43,7 +43,7 @@ export class PlaylistIndexer extends BaseIndexer<PlaylistDoc> {
             searchable: standardText,
           },
         },
-        'playlist_contents.track_ids.track': { type: 'keyword' },
+        'playlist_contents.agreement_ids.agreement': { type: 'keyword' },
 
         user: {
           properties: {
@@ -74,7 +74,7 @@ export class PlaylistIndexer extends BaseIndexer<PlaylistDoc> {
         reposted_by: { type: 'keyword' },
         repost_count: { type: 'integer' },
 
-        tracks: {
+        agreements: {
           properties: {
             mood: { type: 'keyword' },
             genre: { type: 'keyword' },
@@ -139,12 +139,12 @@ export class PlaylistIndexer extends BaseIndexer<PlaylistDoc> {
   }
 
   checkpointSql(checkpoint: BlocknumberCheckpoint): string {
-    // really we should mark playlist stale if any of the playlist tracks changes
+    // really we should mark playlist stale if any of the playlist agreements changes
     // but don't know how to do the sql for that... so the low tech solution would be to re-do playlists from scratch
     // which might actually be faster, since it's a very small collection
     // in which case we could just delete this function
 
-    // track play_count will also go stale (same problem as above)
+    // agreement play_count will also go stale (same problem as above)
 
     return `
       and playlist_id in (
@@ -157,25 +157,25 @@ export class PlaylistIndexer extends BaseIndexer<PlaylistDoc> {
   }
 
   async withBatch(rows: PlaylistDoc[]) {
-    // collect all the track IDs
-    const trackIds = new Set<number>()
+    // collect all the agreement IDs
+    const agreementIds = new Set<number>()
     for (let row of rows) {
-      row.playlist_contents.track_ids
-        .map((t: any) => t.track)
+      row.playlist_contents.agreement_ids
+        .map((t: any) => t.agreement)
         .filter(Boolean)
-        .forEach((t: any) => trackIds.add(t))
+        .forEach((t: any) => agreementIds.add(t))
     }
 
-    // fetch the tracks...
-    const tracksById = await this.getTracks(Array.from(trackIds))
+    // fetch the agreements...
+    const agreementsById = await this.getAgreements(Array.from(agreementIds))
 
-    // pull track data onto playlist
+    // pull agreement data onto playlist
     for (let playlist of rows) {
-      playlist.tracks = playlist.playlist_contents.track_ids
-        .map((t: any) => tracksById[t.track])
+      playlist.agreements = playlist.playlist_contents.agreement_ids
+        .map((t: any) => agreementsById[t.agreement])
         .filter(Boolean)
 
-      playlist.total_play_count = playlist.tracks.reduce(
+      playlist.total_play_count = playlist.agreements.reduce(
         (acc, s) => acc + parseInt(s.play_count),
         0
       )
@@ -190,37 +190,37 @@ export class PlaylistIndexer extends BaseIndexer<PlaylistDoc> {
     row.save_count = row.saved_by.length
   }
 
-  private async getTracks(trackIds: number[]) {
-    if (!trackIds.length) return {}
+  private async getAgreements(agreementIds: number[]) {
+    if (!agreementIds.length) return {}
     const pg = dialPg()
-    const idList = Array.from(trackIds).join(',')
+    const idList = Array.from(agreementIds).join(',')
     // do we want artist name from users
-    // or save + repost counts from aggregate_track?
+    // or save + repost counts from aggregate_agreement?
     const q = `
       select 
-        track_id,
+        agreement_id,
         genre,
         mood,
         tags,
         title,
         length,
         created_at,
-        coalesce(aggregate_track.repost_count, 0) as repost_count,
-        coalesce(aggregate_track.save_count, 0) as save_count,
+        coalesce(aggregate_agreement.repost_count, 0) as repost_count,
+        coalesce(aggregate_agreement.save_count, 0) as save_count,
         coalesce(aggregate_plays.count, 0) as play_count
   
-      from tracks
-      left join aggregate_track using (track_id)
-      left join aggregate_plays on tracks.track_id = aggregate_plays.play_item_id
+      from agreements
+      left join aggregate_agreement using (agreement_id)
+      left join aggregate_plays on agreements.agreement_id = aggregate_plays.play_item_id
       where 
         is_current 
         and not is_delete 
         and not is_unlisted 
-        and track_id in (${idList})`
-    const allTracks = await pg.query(q)
-    for (let t of allTracks.rows) {
+        and agreement_id in (${idList})`
+    const allAgreements = await pg.query(q)
+    for (let t of allAgreements.rows) {
       t.tags = splitTags(t.tags)
     }
-    return keyBy(allTracks.rows, 'track_id')
+    return keyBy(allAgreements.rows, 'agreement_id')
   }
 }

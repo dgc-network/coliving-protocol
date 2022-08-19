@@ -16,7 +16,7 @@ REDIS_URL = shared_config["redis"]["url"]
 BLOCK_NUMBER = 10
 
 
-def test_profile_completion_challenge_with_tracks(app):
+def test_profile_completion_challenge_with_agreements(app):
 
     redis_conn = redis.Redis.from_url(url=REDIS_URL)
 
@@ -73,7 +73,7 @@ def test_profile_completion_challenge_with_tracks(app):
             blocknumber=BLOCK_NUMBER,
             user_id=1,
             repost_item_id=1,
-            repost_type=RepostType.track,
+            repost_type=RepostType.agreement,
             is_current=True,
             is_delete=False,
             created_at=datetime.now(),
@@ -92,7 +92,7 @@ def test_profile_completion_challenge_with_tracks(app):
             blocknumber=BLOCK_NUMBER,
             user_id=1,
             save_item_id=1,
-            save_type=SaveType.track,
+            save_type=SaveType.agreement,
             is_current=True,
             is_delete=False,
             created_at=datetime.now(),

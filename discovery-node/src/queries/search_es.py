@@ -5,17 +5,17 @@ from src.api.v1.helpers import (
     extend_favorite,
     extend_playlist,
     extend_repost,
-    extend_track,
+    extend_agreement,
     extend_user,
 )
 from src.queries.get_feed_es import fetch_followed_saves_and_reposts, item_key
 from src.utils.elasticdsl import (
     ES_PLAYLISTS,
-    ES_TRACKS,
+    ES_AGREEMENTS,
     ES_USERS,
     esclient,
     pluck_hits,
-    populate_track_or_playlist_metadata_es,
+    populate_agreement_or_playlist_metadata_es,
     populate_user_metadata_es,
 )
 
@@ -33,7 +33,7 @@ def search_es_full(args: dict):
     search_type = args.get("kind", "all")
     only_downloadable = args.get("only_downloadable")
     is_auto_complete = args.get("is_auto_complete")
-    do_tracks = search_type == "all" or search_type == "tracks"
+    do_agreements = search_type == "all" or search_type == "agreements"
     do_users = search_type == "all" or search_type == "users"
     do_playlists = search_type == "all" or search_type == "playlists"
     do_albums = search_type == "all" or search_type == "albums"
@@ -45,12 +45,12 @@ def search_es_full(args: dict):
     # Query score = boosted on text similarity, verified artists, personalization (current user saved or reposted or followed)
     # Function score multiplier = popularity (repost count)
 
-    # tracks
-    if do_tracks:
+    # agreements
+    if do_agreements:
         mdsl.extend(
             [
-                {"index": ES_TRACKS},
-                track_dsl(
+                {"index": ES_AGREEMENTS},
+                agreement_dsl(
                     search_str,
                     current_user_id,
                     must_saved=False,
@@ -59,12 +59,12 @@ def search_es_full(args: dict):
             ]
         )
 
-        # saved tracks
+        # saved agreements
         if current_user_id:
             mdsl.extend(
                 [
-                    {"index": ES_TRACKS},
-                    track_dsl(
+                    {"index": ES_AGREEMENTS},
+                    agreement_dsl(
                         search_str,
                         current_user_id,
                         must_saved=True,
@@ -128,8 +128,8 @@ def search_es_full(args: dict):
     mfound = esclient.msearch(searches=mdsl)
 
     response: Dict = {
-        "tracks": [],
-        "saved_tracks": [],
+        "agreements": [],
+        "saved_agreements": [],
         "users": [],
         "followed_users": [],
         "playlists": [],
@@ -138,10 +138,10 @@ def search_es_full(args: dict):
         "saved_albums": [],
     }
 
-    if do_tracks:
-        response["tracks"] = pluck_hits(mfound["responses"].pop(0))
+    if do_agreements:
+        response["agreements"] = pluck_hits(mfound["responses"].pop(0))
         if current_user_id:
-            response["saved_tracks"] = pluck_hits(mfound["responses"].pop(0))
+            response["saved_agreements"] = pluck_hits(mfound["responses"].pop(0))
 
     if do_users:
         response["users"] = pluck_hits(mfound["responses"].pop(0))
@@ -168,7 +168,7 @@ def search_tags_es(q: str, kind="all", current_user_id=None, limit=0, offset=0):
     if not esclient:
         raise Exception("esclient is None")
 
-    do_tracks = kind == "all" or kind == "tracks"
+    do_agreements = kind == "all" or kind == "agreements"
     do_users = kind == "all" or kind == "users"
     mdsl: Any = []
 
@@ -184,17 +184,17 @@ def search_tags_es(q: str, kind="all", current_user_id=None, limit=0, offset=0):
         }
         return match
 
-    if do_tracks:
-        mdsl.extend([{"index": ES_TRACKS}, tag_match("tag_list")])
+    if do_agreements:
+        mdsl.extend([{"index": ES_AGREEMENTS}, tag_match("tag_list")])
         if current_user_id:
             dsl = tag_match("tag_list")
             dsl["query"]["bool"]["must"].append(be_saved(current_user_id))
-            mdsl.extend([{"index": ES_TRACKS}, dsl])
+            mdsl.extend([{"index": ES_AGREEMENTS}, dsl])
 
     if do_users:
-        mdsl.extend([{"index": ES_USERS}, tag_match("tracks.tags")])
+        mdsl.extend([{"index": ES_USERS}, tag_match("agreements.tags")])
         if current_user_id:
-            dsl = tag_match("tracks.tags")
+            dsl = tag_match("agreements.tags")
             dsl["query"]["bool"]["must"].append(be_followed(current_user_id))
             mdsl.extend([{"index": ES_USERS}, dsl])
 
@@ -202,16 +202,16 @@ def search_tags_es(q: str, kind="all", current_user_id=None, limit=0, offset=0):
     mfound = esclient.msearch(searches=mdsl)
 
     response: Dict = {
-        "tracks": [],
-        "saved_tracks": [],
+        "agreements": [],
+        "saved_agreements": [],
         "users": [],
         "followed_users": [],
     }
 
-    if do_tracks:
-        response["tracks"] = pluck_hits(mfound["responses"].pop(0))
+    if do_agreements:
+        response["agreements"] = pluck_hits(mfound["responses"].pop(0))
         if current_user_id:
-            response["saved_tracks"] = pluck_hits(mfound["responses"].pop(0))
+            response["saved_agreements"] = pluck_hits(mfound["responses"].pop(0))
 
     if do_users:
         response["users"] = pluck_hits(mfound["responses"].pop(0))
@@ -286,13 +286,13 @@ def finalize_response(
             current_user_id, item_keys, 20
         )
 
-    # tracks: finalize
-    for k in ["tracks", "saved_tracks"]:
-        tracks = response[k]
-        hydrate_user(tracks, users_by_id)
+    # agreements: finalize
+    for k in ["agreements", "saved_agreements"]:
+        agreements = response[k]
+        hydrate_user(agreements, users_by_id)
         if not is_auto_complete:
-            hydrate_saves_reposts(tracks, follow_saves, follow_reposts, legacy_mode)
-        response[k] = [map_track(track, current_user, legacy_mode) for track in tracks]
+            hydrate_saves_reposts(agreements, follow_saves, follow_reposts, legacy_mode)
+        response[k] = [map_agreement(agreement, current_user, legacy_mode) for agreement in agreements]
 
     # users: finalize
     for k in ["users", "followed_users"]:
@@ -375,7 +375,7 @@ def default_function_score(dsl, ranking_field):
     }
 
 
-def track_dsl(search_str, current_user_id, must_saved=False, only_downloadable=False):
+def agreement_dsl(search_str, current_user_id, must_saved=False, only_downloadable=False):
     dsl = {
         "must": [
             *base_match(search_str),
@@ -498,15 +498,15 @@ def map_user(user, current_user, legacy_mode):
     return user
 
 
-def map_track(track, current_user, legacy_mode):
-    track = populate_track_or_playlist_metadata_es(track, current_user)
+def map_agreement(agreement, current_user, legacy_mode):
+    agreement = populate_agreement_or_playlist_metadata_es(agreement, current_user)
     if not legacy_mode:
-        track = extend_track(track)
-    return track
+        agreement = extend_agreement(agreement)
+    return agreement
 
 
 def map_playlist(playlist, current_user, legacy_mode):
-    playlist = populate_track_or_playlist_metadata_es(playlist, current_user)
+    playlist = populate_agreement_or_playlist_metadata_es(playlist, current_user)
     if not legacy_mode:
         playlist = extend_playlist(playlist)
     return playlist

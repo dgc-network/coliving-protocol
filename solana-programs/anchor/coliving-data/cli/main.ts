@@ -9,7 +9,7 @@ import {
   initUser,
   initUserSolPubkey,
   CreateEntityParams,
-  createTrack,
+  createAgreement,
   ManagementActions,
   EntityTypesEnumValues,
   createPlaylist,
@@ -18,7 +18,7 @@ import {
   createUser,
   createContentNode,
   updateAdmin,
-  updateTrack
+  updateAgreement
 } from "../lib/lib";
 import {
   findDerivedPair,
@@ -221,9 +221,9 @@ async function timeManageEntity(
 
       if (
         manageAction == ManagementActions.create &&
-        entityType == EntityTypesEnumValues.track
+        entityType == EntityTypesEnumValues.agreement
       ) {
-        const transaction = createTrack({
+        const transaction = createAgreement({
           id: args.id,
           program: args.program,
           baseAuthorityAccount: args.baseAuthorityAccount,
@@ -238,9 +238,9 @@ async function timeManageEntity(
             args.authorityDelegationStatusAccount,
         });
         tx = await provider.sendAndConfirm(transaction, [userAuthorityKeypair]);
-      } else if (manageAction == ManagementActions.update && entityType == EntityTypesEnumValues.track
+      } else if (manageAction == ManagementActions.update && entityType == EntityTypesEnumValues.agreement
       ) {
-        const transaction = updateTrack({
+        const transaction = updateAgreement({
           id: args.id,
           program: args.program,
           baseAuthorityAccount: args.baseAuthorityAccount,
@@ -333,9 +333,9 @@ const functionTypes = Object.freeze({
   initContentNode: "initContentNode",
   initUserSolPubkey: "initUserSolPubkey",
   createUser: "createUser",
-  createTrack: "createTrack",
-  updateTrack: "updateTrack",
-  getTrackId: "getTrackId",
+  createAgreement: "createAgreement",
+  updateAgreement: "updateAgreement",
+  getAgreementId: "getAgreementId",
   createPlaylist: "createPlaylist",
   updatePlaylist: "updatePlaylist",
   deletePlaylist: "deletePlaylist",
@@ -363,7 +363,7 @@ program
     "private key for message signing"
   )
   .option("--metadata <string>", "metadata CID")
-  .option("--num-tracks <integer>", "number of tracks to generate")
+  .option("--num-agreements <integer>", "number of agreements to generate")
   .option("--num-playlists <integer>", "number of playlists to generate")
   .option("--id <integer>", "ID of entity targeted by transaction")
   .option("-sp-id, --cn-sp-id <string>", "ID of incoming content node")
@@ -608,16 +608,16 @@ const main = async () => {
       break;
     }
     /**
-     * Track-related functions
+     * Agreement-related functions
      */
-    case functionTypes.createTrack: {
+    case functionTypes.createAgreement: {
       if (!options.metadata) {
-        throw new Error("Missing metadata in createTrack!");
+        throw new Error("Missing metadata in createAgreement!");
       }
 
-      const numTracks = options.numTracks ?? 1;
+      const numAgreements = options.numAgreements ?? 1;
       console.log(
-        `Number of tracks = ${numTracks}, Target User = ${options.userAccount}`
+        `Number of agreements = ${numAgreements}, Target User = ${options.userAccount}`
       );
 
       const promises = [];
@@ -628,7 +628,7 @@ const main = async () => {
           userIdSeed
         );
 
-      for (let i = 0; i < numTracks; i++) {
+      for (let i = 0; i < numAgreements; i++) {
         promises.push(
           timeManageEntity(
             {
@@ -647,24 +647,24 @@ const main = async () => {
             },
             cliVars.provider,
             ManagementActions.create,
-            EntityTypesEnumValues.track,
+            EntityTypesEnumValues.agreement,
             userSolKeypair
           )
         );
       }
       const start = Date.now();
       await Promise.all(promises);
-      console.log(`Processed ${numTracks} tracks in ${Date.now() - start}ms`);
+      console.log(`Processed ${numAgreements} agreements in ${Date.now() - start}ms`);
       break;
     }
-    case functionTypes.updateTrack: {
+    case functionTypes.updateAgreement: {
       if (!options.metadata) {
-        throw new Error("Missing metadata in createTrack!");
+        throw new Error("Missing metadata in createAgreement!");
       }
 
-      const numTracks = options.numTracks ?? 1;
+      const numAgreements = options.numAgreements ?? 1;
       console.log(
-        `Number of tracks = ${numTracks}, Target User = ${options.userAccount}`
+        `Number of agreements = ${numAgreements}, Target User = ${options.userAccount}`
       );
 
       const promises = [];
@@ -675,7 +675,7 @@ const main = async () => {
           userIdSeed
         );
 
-      for (let i = 0; i < numTracks; i++) {
+      for (let i = 0; i < numAgreements; i++) {
         promises.push(
           timeManageEntity(
             {
@@ -694,14 +694,14 @@ const main = async () => {
             },
             cliVars.provider,
             ManagementActions.update,
-            EntityTypesEnumValues.track,
+            EntityTypesEnumValues.agreement,
             userSolKeypair
           )
         );
       }
       const start = Date.now();
       await Promise.all(promises);
-      console.log(`Processed ${numTracks} tracks in ${Date.now() - start}ms`);
+      console.log(`Processed ${numAgreements} agreements in ${Date.now() - start}ms`);
       break;
     }
     /**

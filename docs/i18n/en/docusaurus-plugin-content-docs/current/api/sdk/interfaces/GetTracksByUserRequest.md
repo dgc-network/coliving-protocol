@@ -1,7 +1,7 @@
 ---
-id: "GetTracksByUserRequest"
-title: "Interface: GetTracksByUserRequest"
-sidebar_label: "GetTracksByUserRequest"
+id: "GetAgreementsByUserRequest"
+title: "Interface: GetAgreementsByUserRequest"
+sidebar_label: "GetAgreementsByUserRequest"
 sidebar_position: 0
 custom_edit_url: null
 pagination_prev: null
@@ -36,7 +36,7 @@ ___
 
 ### sort
 
- `Optional` **sort**: [`GetTracksByUserSortEnum`](../enums/GetTracksByUserSortEnum.md)
+ `Optional` **sort**: [`GetAgreementsByUserSortEnum`](../enums/GetAgreementsByUserSortEnum.md)
 
 Field to sort by
 

@@ -1,6 +1,6 @@
 ---
-id: "TracksApi"
-title: "Tracks"
+id: "AgreementsApi"
+title: "Agreements"
 sidebar_position: 0
 custom_edit_url: null
 pagination_prev: null
@@ -9,17 +9,17 @@ pagination_next: null
 
 ## Methods
 
-### getBulkTracks
+### getBulkAgreements
 
-**getBulkTracks**(`requestParameters?`): `Promise`<[`Track`](../interfaces/Track.md)[]\>
+**getBulkAgreements**(`requestParameters?`): `Promise`<[`Agreement`](../interfaces/Agreement.md)[]\>
 
-Gets a list of tracks using their IDs or permalinks
+Gets a list of agreements using their IDs or permalinks
 
 Example:
 
 ```typescript
 
-const tracks = await colivingSdk.tracks.getBulkTracks();
+const agreements = await colivingSdk.agreements.getBulkAgreements();
 
 ```
 
@@ -27,30 +27,30 @@ const tracks = await colivingSdk.tracks.getBulkTracks();
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetBulkTracksRequest`](../interfaces/GetBulkTracksRequest.md) |
+| `requestParameters` | [`GetBulkAgreementsRequest`](../interfaces/GetBulkAgreementsRequest.md) |
 
 #### Returns
 
-`Promise`<[`Track`](../interfaces/Track.md)[]\>
+`Promise`<[`Agreement`](../interfaces/Agreement.md)[]\>
 
 #### Inherited from
 
-GeneratedTracksApi.getBulkTracks
+GeneratedAgreementsApi.getBulkAgreements
 
 ___
 
-### getTrack
+### getAgreement
 
-**getTrack**(`requestParameters`): `Promise`<[`Track`](../interfaces/Track.md)\>
+**getAgreement**(`requestParameters`): `Promise`<[`Agreement`](../interfaces/Agreement.md)\>
 
-Gets a track by ID
+Gets a agreement by ID
 
 Example:
 
 ```typescript
 
-const track = await colivingSdk.tracks.getTrack({
-    trackId: "D7KyD",
+const agreement = await colivingSdk.agreements.getAgreement({
+    agreementId: "D7KyD",
 });
 
 ```
@@ -59,29 +59,29 @@ const track = await colivingSdk.tracks.getTrack({
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetTrackRequest`](../interfaces/GetTrackRequest.md) |
+| `requestParameters` | [`GetAgreementRequest`](../interfaces/GetAgreementRequest.md) |
 
 #### Returns
 
-`Promise`<[`Track`](../interfaces/Track.md)\>
+`Promise`<[`Agreement`](../interfaces/Agreement.md)\>
 
 #### Inherited from
 
-GeneratedTracksApi.getTrack
+GeneratedAgreementsApi.getAgreement
 
 ___
 
-### getTrendingTracks
+### getTrendingAgreements
 
-**getTrendingTracks**(`requestParameters?`): `Promise`<[`Track`](../interfaces/Track.md)[]\>
+**getTrendingAgreements**(`requestParameters?`): `Promise`<[`Agreement`](../interfaces/Agreement.md)[]\>
 
-Gets the top 100 trending (most popular) tracks on Coliving
+Gets the top 100 trending (most popular) agreements on Coliving
 
 Example:
 
 ```typescript
 
-const tracks = await colivingSdk.tracks.getTrendingTracks();
+const agreements = await colivingSdk.agreements.getTrendingAgreements();
 
 ```
 
@@ -89,29 +89,29 @@ const tracks = await colivingSdk.tracks.getTrendingTracks();
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetTrendingTracksRequest`](../interfaces/GetTrendingTracksRequest.md) |
+| `requestParameters` | [`GetTrendingAgreementsRequest`](../interfaces/GetTrendingAgreementsRequest.md) |
 
 #### Returns
 
-`Promise`<[`Track`](../interfaces/Track.md)[]\>
+`Promise`<[`Agreement`](../interfaces/Agreement.md)[]\>
 
 #### Inherited from
 
-GeneratedTracksApi.getTrendingTracks
+GeneratedAgreementsApi.getTrendingAgreements
 
 ___
 
-### searchTracks
+### searchAgreements
 
-**searchTracks**(`requestParameters`): `Promise`<[`Track`](../interfaces/Track.md)[]\>
+**searchAgreements**(`requestParameters`): `Promise`<[`Agreement`](../interfaces/Agreement.md)[]\>
 
-Search for a track or tracks
+Search for a agreement or agreements
 
 Example:
 
 ```typescript
 
-const searchResult = await colivingSdk.tracks.searchTracks({
+const searchResult = await colivingSdk.agreements.searchAgreements({
     query: "skrillex",
 });
 
@@ -121,30 +121,30 @@ const searchResult = await colivingSdk.tracks.searchTracks({
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`SearchTracksRequest`](../interfaces/SearchTracksRequest.md) |
+| `requestParameters` | [`SearchAgreementsRequest`](../interfaces/SearchAgreementsRequest.md) |
 
 #### Returns
 
-`Promise`<[`Track`](../interfaces/Track.md)[]\>
+`Promise`<[`Agreement`](../interfaces/Agreement.md)[]\>
 
 #### Inherited from
 
-GeneratedTracksApi.searchTracks
+GeneratedAgreementsApi.searchAgreements
 
 ___
 
-### streamTrack
+### streamAgreement
 
-**streamTrack**(`requestParameters`): `Promise`<`string`\>
+**streamAgreement**(`requestParameters`): `Promise`<`string`\>
 
-Get the url of the track's streamable mp3 file
+Get the url of the agreement's streamable mp3 file
 
 Example:
 
 ```typescript
 
-const url = await colivingSdk.tracks.streamTrack({
-    trackId: "PjdWN",
+const url = await colivingSdk.agreements.streamAgreement({
+    agreementId: "PjdWN",
 });
 const live = new Audio(url);
 live.play();
@@ -155,7 +155,7 @@ live.play();
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`StreamTrackRequest`](../interfaces/StreamTrackRequest.md) |
+| `requestParameters` | [`StreamAgreementRequest`](../interfaces/StreamAgreementRequest.md) |
 
 #### Returns
 

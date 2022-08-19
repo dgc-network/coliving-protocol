@@ -412,7 +412,7 @@ describe("replicaSet", function () {
     }
 
     if (initColivingAdminBalance === updatedColivingAdminBalance) {
-      throw new Error("Failed to deallocate track");
+      throw new Error("Failed to deallocate agreement");
     }
 
     try {

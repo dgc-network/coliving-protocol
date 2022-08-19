@@ -22,15 +22,15 @@ import {
 } from "../lib/utils";
 import { ColivingData } from "../target/types/coliving_data";
 import {
-  testCreateTrack,
+  testCreateAgreement,
   confirmLogInTransaction,
   initTestConstants,
   pollAccountBalance,
   testCreateUser,
   testInitUser,
   testInitUserSolPubkey,
-  testDeleteTrack,
-  testUpdateTrack,
+  testDeleteAgreement,
+  testUpdateAgreement,
   testCreateUserDelegate,
   createSolanaContentNode,
 } from "./test-helpers";
@@ -330,7 +330,7 @@ describe("coliving-data", function () {
     expect(accountPubKeys[2]).to.equal(SystemProgram.programId.toString());
   });
 
-  it("Initializing + claiming user, creating + updating track", async function () {
+  it("Initializing + claiming user, creating + updating agreement", async function () {
     const { ethAccount, userId, metadata } = initTestConstants();
 
     const {
@@ -373,19 +373,19 @@ describe("coliving-data", function () {
       userAccount,
     });
 
-    const trackMetadata = randomCID();
-    const trackID = randomId();
+    const agreementMetadata = randomCID();
+    const agreementID = randomId();
 
-    await testCreateTrack({
+    await testCreateAgreement({
       provider,
       program,
       baseAuthorityAccount,
       userId,
       bumpSeed,
-      id: trackID,
-      trackMetadata,
+      id: agreementID,
+      agreementMetadata,
       userAuthorityKeypair: newUserKeypair,
-      trackOwnerAccount: userAccount,
+      agreementOwnerAccount: userAccount,
       userAuthorityDelegateAccount: SystemProgram.programId,
       authorityDelegationStatusAccount: SystemProgram.programId,
       adminAccount: adminAccountKeypair.publicKey,
@@ -397,16 +397,16 @@ describe("coliving-data", function () {
       `Expecting error with public key ${wrongUserKeypair.publicKey}`
     );
     try {
-      await testCreateTrack({
+      await testCreateAgreement({
         provider,
         program,
         baseAuthorityAccount,
         userId,
         bumpSeed,
         id: randomId(),
-        trackMetadata,
+        agreementMetadata,
         userAuthorityKeypair: wrongUserKeypair,
-        trackOwnerAccount: userAccount,
+        agreementOwnerAccount: userAccount,
         userAuthorityDelegateAccount: SystemProgram.programId,
         authorityDelegationStatusAccount: SystemProgram.programId,
         adminAccount: adminAccountKeypair.publicKey,
@@ -414,20 +414,20 @@ describe("coliving-data", function () {
     } catch (e) {
       console.log(`Error found as expected ${e}`);
     }
-    const updatedTrackMetadata = randomCID();
-    await testUpdateTrack({
+    const updatedAgreementMetadata = randomCID();
+    await testUpdateAgreement({
       provider,
       program,
       baseAuthorityAccount,
       userId,
       bumpSeed,
       adminAccount: adminAccountKeypair.publicKey,
-      id: trackID,
+      id: agreementID,
       userAccount,
       userAuthorityDelegateAccount: SystemProgram.programId,
       authorityDelegationStatusAccount: SystemProgram.programId,
       userAuthorityKeypair: newUserKeypair,
-      metadata: updatedTrackMetadata,
+      metadata: updatedAgreementMetadata,
     });
   });
 
@@ -975,7 +975,7 @@ describe("coliving-data", function () {
     await confirmLogInTransaction(provider, txSignature, "success");
   });
 
-  it("creating + deleting a track", async function () {
+  it("creating + deleting a agreement", async function () {
     const { ethAccount, userId, metadata } = initTestConstants();
 
     const {
@@ -1016,29 +1016,29 @@ describe("coliving-data", function () {
       ...getURSMParams(),
     });
 
-    const trackMetadata = randomCID();
-    const trackID = randomId();
+    const agreementMetadata = randomCID();
+    const agreementID = randomId();
 
-    await testCreateTrack({
+    await testCreateAgreement({
       provider,
       program,
-      id: trackID,
+      id: agreementID,
       baseAuthorityAccount,
       userId,
       adminAccount: adminAccountKeypair.publicKey,
       bumpSeed,
-      trackMetadata,
+      agreementMetadata,
       userAuthorityKeypair: newUserKeypair,
-      trackOwnerAccount: userAccount,
+      agreementOwnerAccount: userAccount,
       userAuthorityDelegateAccount: SystemProgram.programId,
       authorityDelegationStatusAccount: SystemProgram.programId,
     });
 
-    await testDeleteTrack({
+    await testDeleteAgreement({
       program,
       provider,
-      id: trackID,
-      trackOwnerAccount: userAccount,
+      id: agreementID,
+      agreementOwnerAccount: userAccount,
       userAuthorityDelegateAccount: SystemProgram.programId,
       authorityDelegationStatusAccount: SystemProgram.programId,
       userAuthorityKeypair: newUserKeypair,
@@ -1049,7 +1049,7 @@ describe("coliving-data", function () {
     });
   });
 
-  it("delegate creates a track (manage entity) + all validation errors", async function () {
+  it("delegate creates a agreement (manage entity) + all validation errors", async function () {
     // create user and delegate
     const { ethAccount, userId, metadata } = initTestConstants();
     const {
@@ -1117,40 +1117,40 @@ describe("coliving-data", function () {
     );
     const userAuthorityDelegateAccountAddress = res[0];
 
-    const trackMetadata = randomCID();
-    const trackID = randomId();
+    const agreementMetadata = randomCID();
+    const agreementID = randomId();
 
-    // Attempt create track before init UserAuthorityDelegate
+    // Attempt create agreement before init UserAuthorityDelegate
     await expect(
-      testCreateTrack({
+      testCreateAgreement({
         provider,
         program,
-        id: trackID,
+        id: agreementID,
         baseAuthorityAccount: baseAuthorityAccount,
         userId: userId,
         adminAccount: adminAccountKeypair.publicKey,
         bumpSeed: userBumpSeed,
-        trackMetadata,
+        agreementMetadata,
         userAuthorityKeypair: userAuthorityDelegateKeypair, // substitute delegate
-        trackOwnerAccount: userAccountPDA,
+        agreementOwnerAccount: userAccountPDA,
         userAuthorityDelegateAccount: userAuthorityDelegateAccountAddress,
         authorityDelegationStatusAccount: authorityDelegationStatusPDA,
       })
     ).to.be.rejectedWith(Error);
 
-    // Attempt create track before init AuthorityDelegationStatus
+    // Attempt create agreement before init AuthorityDelegationStatus
     await expect(
-      testCreateTrack({
+      testCreateAgreement({
         provider,
         program,
-        id: trackID,
+        id: agreementID,
         baseAuthorityAccount: baseAuthorityAccount,
         userId: userId,
         adminAccount: adminAccountKeypair.publicKey,
         bumpSeed: userBumpSeed,
-        trackMetadata,
+        agreementMetadata,
         userAuthorityKeypair: userAuthorityDelegateKeypair, // substitute delegate
-        trackOwnerAccount: userAccountPDA,
+        agreementOwnerAccount: userAccountPDA,
         userAuthorityDelegateAccount: userAuthorityDelegateAccountAddress,
         authorityDelegationStatusAccount: authorityDelegationStatusPDA,
       })
@@ -1186,68 +1186,68 @@ describe("coliving-data", function () {
     await provider.sendAndConfirm(addUserAuthorityDelegateTx, [newUserKeypair]);
 
     await expect(
-      testCreateTrack({
+      testCreateAgreement({
         provider,
         program,
-        id: trackID,
+        id: agreementID,
         baseAuthorityAccount: baseAuthorityAccount,
         userId: userId,
         adminAccount: adminAccountKeypair.publicKey,
         bumpSeed: userBumpSeed,
-        trackMetadata,
+        agreementMetadata,
         userAuthorityKeypair: userAuthorityDelegateKeypair, // substitute delegate
-        trackOwnerAccount: userAccountPDA,
+        agreementOwnerAccount: userAccountPDA,
         userAuthorityDelegateAccount: SystemProgram.programId, // missing PDA
         authorityDelegationStatusAccount: authorityDelegationStatusPDA,
       })
     ).to.be.rejectedWith(Error);
 
     await expect(
-      testCreateTrack({
+      testCreateAgreement({
         provider,
         program,
-        id: trackID,
+        id: agreementID,
         baseAuthorityAccount: baseAuthorityAccount,
         userId: userId,
         adminAccount: adminAccountKeypair.publicKey,
         bumpSeed: userBumpSeed,
-        trackMetadata,
+        agreementMetadata,
         userAuthorityKeypair: userAuthorityDelegateKeypair, // substitute delegate
-        trackOwnerAccount: userAccountPDA,
+        agreementOwnerAccount: userAccountPDA,
         userAuthorityDelegateAccount: userAuthorityDelegateAccountAddress,
         authorityDelegationStatusAccount: SystemProgram.programId, // missing PDA
       })
     ).to.be.rejectedWith(Error);
 
     await expect(
-      testCreateTrack({
+      testCreateAgreement({
         provider,
         program: anchor.web3.Keypair.generate().publicKey, // wrong program
-        id: trackID,
+        id: agreementID,
         baseAuthorityAccount: baseAuthorityAccount,
         userId: userId,
         adminAccount: adminAccountKeypair.publicKey,
         bumpSeed: userBumpSeed,
-        trackMetadata,
+        agreementMetadata,
         userAuthorityKeypair: userAuthorityDelegateKeypair, // substitute delegate
-        trackOwnerAccount: userAccountPDA,
+        agreementOwnerAccount: userAccountPDA,
         userAuthorityDelegateAccount: userAuthorityDelegateAccountAddress,
         authorityDelegationStatusAccount: authorityDelegationStatusPDA,
       })
     ).to.be.rejectedWith(Error);
 
     await expect(
-      testCreateTrack({
+      testCreateAgreement({
         provider,
         program: anchor.web3.Keypair.generate().publicKey, // wrong program
-        id: trackID,
+        id: agreementID,
         baseAuthorityAccount: baseAuthorityAccount,
         userId: userId,
         adminAccount: adminAccountKeypair.publicKey,
         bumpSeed: userBumpSeed,
-        trackMetadata,
+        agreementMetadata,
         userAuthorityKeypair: userAuthorityDelegateKeypair, // substitute delegate
-        trackOwnerAccount: userAccountPDA,
+        agreementOwnerAccount: userAccountPDA,
         userAuthorityDelegateAccount: userAuthorityDelegateAccountAddress,
         authorityDelegationStatusAccount: authorityDelegationStatusPDA,
       })
@@ -1262,17 +1262,17 @@ describe("coliving-data", function () {
     });
 
     await expect(
-      testCreateTrack({
+      testCreateAgreement({
         provider,
         program: anchor.web3.Keypair.generate().publicKey, // wrong program
-        id: trackID,
+        id: agreementID,
         baseAuthorityAccount: baseAuthorityAccount,
         userId: userId,
         adminAccount: adminAccountKeypair.publicKey,
         bumpSeed: userBumpSeed,
-        trackMetadata,
+        agreementMetadata,
         userAuthorityKeypair: userAuthorityDelegateKeypair, // substitute delegate
-        trackOwnerAccount: userAccountPDA,
+        agreementOwnerAccount: userAccountPDA,
         userAuthorityDelegateAccount:
           badUserDelegate.authorityDelegationStatusAccount, // mismatched PDA
         authorityDelegationStatusAccount: authorityDelegationStatusPDA,
@@ -1282,40 +1282,40 @@ describe("coliving-data", function () {
     // use different authority delegation status PDA
 
     await expect(
-      testCreateTrack({
+      testCreateAgreement({
         provider,
         program: anchor.web3.Keypair.generate().publicKey, // wrong program
-        id: trackID,
+        id: agreementID,
         baseAuthorityAccount: baseAuthorityAccount,
         userId: userId,
         adminAccount: adminAccountKeypair.publicKey,
         bumpSeed: userBumpSeed,
-        trackMetadata,
+        agreementMetadata,
         userAuthorityKeypair: userAuthorityDelegateKeypair, // substitute delegate
-        trackOwnerAccount: userAccountPDA,
+        agreementOwnerAccount: userAccountPDA,
         userAuthorityDelegateAccount: userAuthorityDelegateAccountAddress,
         authorityDelegationStatusAccount:
           badUserDelegate.authorityDelegationStatusAccount,
       })
     ).to.be.rejectedWith(Error);
 
-    await testCreateTrack({
+    await testCreateAgreement({
       provider,
       program,
-      id: trackID,
+      id: agreementID,
       baseAuthorityAccount: baseAuthorityAccount,
       userId: userId,
       adminAccount: adminAccountKeypair.publicKey,
       bumpSeed: userBumpSeed,
-      trackMetadata,
+      agreementMetadata,
       userAuthorityKeypair: userAuthorityDelegateKeypair, // substitute delegate
-      trackOwnerAccount: userAccountPDA,
+      agreementOwnerAccount: userAccountPDA,
       userAuthorityDelegateAccount: userAuthorityDelegateAccountAddress,
       authorityDelegationStatusAccount: authorityDelegationStatusPDA,
     });
   });
 
-  it("create multiple tracks in parallel", async function () {
+  it("create multiple agreements in parallel", async function () {
     const { ethAccount, metadata, userId } = initTestConstants();
 
     const {
@@ -1358,12 +1358,12 @@ describe("coliving-data", function () {
       ...getURSMParams(),
     });
 
-    const trackMetadata = randomCID();
-    const trackMetadata2 = randomCID();
-    const trackMetadata3 = randomCID();
+    const agreementMetadata = randomCID();
+    const agreementMetadata2 = randomCID();
+    const agreementMetadata3 = randomCID();
     const start = Date.now();
     await Promise.all([
-      testCreateTrack({
+      testCreateAgreement({
         provider,
         program,
         baseAuthorityAccount,
@@ -1371,13 +1371,13 @@ describe("coliving-data", function () {
         bumpSeed,
         adminAccount: adminAccountKeypair.publicKey,
         id: randomId(),
-        trackMetadata,
+        agreementMetadata,
         userAuthorityKeypair: newUserKeypair,
-        trackOwnerAccount: userAccount,
+        agreementOwnerAccount: userAccount,
         userAuthorityDelegateAccount: SystemProgram.programId,
         authorityDelegationStatusAccount: SystemProgram.programId,
       }),
-      testCreateTrack({
+      testCreateAgreement({
         provider,
         program,
         baseAuthorityAccount,
@@ -1385,13 +1385,13 @@ describe("coliving-data", function () {
         bumpSeed,
         adminAccount: adminAccountKeypair.publicKey,
         id: randomId(),
-        trackMetadata: trackMetadata2,
+        agreementMetadata: agreementMetadata2,
         userAuthorityKeypair: newUserKeypair,
-        trackOwnerAccount: userAccount,
+        agreementOwnerAccount: userAccount,
         userAuthorityDelegateAccount: SystemProgram.programId,
         authorityDelegationStatusAccount: SystemProgram.programId,
       }),
-      testCreateTrack({
+      testCreateAgreement({
         provider,
         program,
         baseAuthorityAccount,
@@ -1399,13 +1399,13 @@ describe("coliving-data", function () {
         bumpSeed,
         adminAccount: adminAccountKeypair.publicKey,
         id: randomId(),
-        trackMetadata: trackMetadata3,
+        agreementMetadata: agreementMetadata3,
         userAuthorityKeypair: newUserKeypair,
-        trackOwnerAccount: userAccount,
+        agreementOwnerAccount: userAccount,
         userAuthorityDelegateAccount: SystemProgram.programId,
         authorityDelegationStatusAccount: SystemProgram.programId,
       }),
     ]);
-    console.log(`Created 3 tracks in ${Date.now() - start}ms`);
+    console.log(`Created 3 agreements in ${Date.now() - start}ms`);
   });
 });

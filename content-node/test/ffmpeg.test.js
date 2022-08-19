@@ -21,7 +21,7 @@ describe('test segmentFile()', () => {
 
   /**
    * Given: improper params are passed in
-   * When: track segmenting occurs
+   * When: agreement segmenting occurs
    * Then: an error is thrown
    */
   it('should throw an error if ffmpeg reads bad params', async () => {
@@ -34,30 +34,30 @@ describe('test segmentFile()', () => {
   })
 
   /**
-   * Given: a corrupted track is present (image)
+   * Given: a corrupted agreement is present (image)
    * Then: an error is thrown
    * When: it is segmented
   */
-  it('should throw an error if ffmpeg reads a bad track file (image)', async () => {
+  it('should throw an error if ffmpeg reads a bad agreement file (image)', async () => {
     const fileDir = __dirname
-    const fileName = 'testTrackWrongFormat.jpg'
+    const fileName = 'testAgreementWrongFormat.jpg'
 
     try {
       await segmentFile(fileDir, fileName, {})
-      assert.fail('Should have thrown error when segmenting a bad track (image)')
+      assert.fail('Should have thrown error when segmenting a bad agreement (image)')
     } catch (e) {
       assert.deepStrictEqual(e.message, 'FFMPEG Error')
     }
   })
 
   /**
-   * Given: a proper track of length 3:07 is present
+   * Given: a proper agreement of length 3:07 is present
    * When: it is segmented
-   * Then: there are 32 proper track segments present in tests/segments
+   * Then: there are 32 proper agreement segments present in tests/segments
   */
-  it('should properly segment track', async () => {
+  it('should properly segment agreement', async () => {
     const fileDir = __dirname
-    const fileName = 'testTrack.mp3'
+    const fileName = 'testAgreement.mp3'
 
     try {
       await segmentFile(fileDir, fileName, {})
@@ -66,12 +66,12 @@ describe('test segmentFile()', () => {
     }
 
     // read segments assets from /test-segments
-    // TODO - instead of using ./test/test-segments, use ./test/testTrackUploadDir
+    // TODO - instead of using ./test/test-segments, use ./test/testAgreementUploadDir
     const testSegmentsPath = path.join(fileDir, 'test-segments')
     fs.readdir(testSegmentsPath, (err, files) => {
       if (err) assert.fail(`Could not read directory at ${testSegmentsPath}`)
 
-      // check that testTrack.mp3 that 32 track segments are written
+      // check that testAgreement.mp3 that 32 agreement segments are written
       assert.deepStrictEqual(files.length, 32)
 
       const allSegmentsSet = new Set(files)

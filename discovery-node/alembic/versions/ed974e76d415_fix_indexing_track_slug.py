@@ -1,4 +1,4 @@
-"""fix-indexing-track-slug
+"""fix-indexing-agreement-slug
 
 Revision ID: ed974e76d415
 Revises: cb9aa46f1e46
@@ -60,13 +60,13 @@ parenthash={self.parenthash},number={self.number},\
 is_current={self.is_current})>"
 
 
-class Track(Base):
-    __tablename__ = "tracks"
+class Agreement(Base):
+    __tablename__ = "agreements"
 
     blockhash = Column(String, ForeignKey("blocks.blockhash"), nullable=False)
     blocknumber = Column(Integer, ForeignKey("blocks.number"), nullable=False)
     txhash = Column(String, default="", nullable=False)
-    track_id = Column(Integer, nullable=False)
+    agreement_id = Column(Integer, nullable=False)
     is_current = Column(Boolean, nullable=False)
     is_delete = Column(Boolean, nullable=False)
     owner_id = Column(Integer, nullable=False)
@@ -87,7 +87,7 @@ class Track(Base):
     license = Column(String, nullable=True)
     isrc = Column(String, nullable=True)
     iswc = Column(String, nullable=True)
-    track_segments = Column(postgresql.JSONB, nullable=False)
+    agreement_segments = Column(postgresql.JSONB, nullable=False)
     metadata_multihash = Column(String, nullable=True)
     download = Column(postgresql.JSONB, nullable=True)
     updated_at = Column(DateTime, nullable=False)
@@ -106,15 +106,15 @@ class Track(Base):
             return f"/{self.user[0].handle}/{self._slug}"
         return ""
 
-    PrimaryKeyConstraint(is_current, track_id, blockhash, txhash)
+    PrimaryKeyConstraint(is_current, agreement_id, blockhash, txhash)
 
     def __repr__(self):
         return (
-            f"<Track("
+            f"<Agreement("
             f"blockhash={self.blockhash},"
             f"blocknumber={self.blocknumber},"
             f"txhash={self.txhash},"
-            f"track_id={self.track_id},"
+            f"agreement_id={self.agreement_id},"
             f"is_current={self.is_current},"
             f"is_delete={self.is_delete},"
             f"owner_id={self.owner_id},"
@@ -135,7 +135,7 @@ class Track(Base):
             f"license={self.license},"
             f"isrc={self.isrc},"
             f"iswc={self.iswc},"
-            f"track_segments={self.track_segments},"
+            f"agreement_segments={self.agreement_segments},"
             f"metadata_multihash={self.metadata_multihash},"
             f"download={self.download},"
             f"updated_at={self.updated_at},"
@@ -146,17 +146,17 @@ class Track(Base):
         )
 
 
-class TrackRoute(Base):
-    __tablename__ = "track_routes"
+class AgreementRoute(Base):
+    __tablename__ = "agreement_routes"
 
-    # Actual URL slug for the track, includes collision_id
+    # Actual URL slug for the agreement, includes collision_id
     slug = Column(String, nullable=False)
-    # Just the title piece of the slug for the track, excludes collision_id
+    # Just the title piece of the slug for the agreement, excludes collision_id
     # Used for finding max collision_id needed for duplicate title_slugs
     title_slug = Column(String, nullable=False)
     collision_id = Column(Integer, nullable=False)
     owner_id = Column(Integer, nullable=False)
-    track_id = Column(Integer, nullable=False)
+    agreement_id = Column(Integer, nullable=False)
     is_current = Column(Boolean, nullable=False)
     blockhash = Column(String, nullable=False)
     blocknumber = Column(Integer, nullable=False)
@@ -165,12 +165,12 @@ class TrackRoute(Base):
     PrimaryKeyConstraint(owner_id, slug)
 
     def __repr__(self):
-        return f"<TrackRoute(\
+        return f"<AgreementRoute(\
 slug={self.slug},\
 title_slug={self.title_slug},\
 collision_id={self.collision_id},\
 owner_id={self.owner_id},\
-track_id={self.track_id},\
+agreement_id={self.agreement_id},\
 is_current={self.is_current},\
 blockhash={self.blockhash},\
 blocknumber={self.blocknumber},\
@@ -241,9 +241,9 @@ def upgrade():
 
     session.flush()
 
-    tracks = [
-        Track(
-            track_id=470883,
+    agreements = [
+        Agreement(
+            agreement_id=470883,
             blocknumber=22477107,
             is_current=True,
             is_delete=False,
@@ -267,7 +267,7 @@ def upgrade():
             license="All rights reserved",
             isrc=None,
             iswc=None,
-            track_segments=[
+            agreement_segments=[
                 {
                     "multihash": "QmW7kQwqbZcYWQHtYdXK6KezSCqQ1vRdwhdWtWvTT79rnk",
                     "duration": 6.016,
@@ -311,8 +311,8 @@ def upgrade():
             },
             stem_of=null(),
         ),
-        Track(
-            track_id=470884,
+        Agreement(
+            agreement_id=470884,
             blocknumber=22477427,
             is_current=True,
             is_delete=False,
@@ -336,7 +336,7 @@ def upgrade():
             license="All rights reserved",
             isrc=None,
             iswc=None,
-            track_segments=[
+            agreement_segments=[
                 {
                     "multihash": "QmW7kQwqbZcYWQHtYdXK6KezSCqQ1vRdwhdWtWvTT79rnk",
                     "duration": 6.016,
@@ -380,8 +380,8 @@ def upgrade():
             },
             stem_of=null(),
         ),
-        Track(
-            track_id=470892,
+        Agreement(
+            agreement_id=470892,
             blocknumber=22477062,
             is_current=True,
             is_delete=False,
@@ -405,7 +405,7 @@ def upgrade():
             license="All rights reserved",
             isrc=None,
             iswc=None,
-            track_segments=[
+            agreement_segments=[
                 {
                     "multihash": "QmW7kQwqbZcYWQHtYdXK6KezSCqQ1vRdwhdWtWvTT79rnk",
                     "duration": 6.016,
@@ -449,8 +449,8 @@ def upgrade():
             },
             stem_of=null(),
         ),
-        Track(
-            track_id=470910,
+        Agreement(
+            agreement_id=470910,
             blocknumber=22477832,
             is_current=True,
             is_delete=False,
@@ -474,7 +474,7 @@ def upgrade():
             license="All rights reserved",
             isrc=None,
             iswc=None,
-            track_segments=[
+            agreement_segments=[
                 {
                     "multihash": "QmW7kQwqbZcYWQHtYdXK6KezSCqQ1vRdwhdWtWvTT79rnk",
                     "duration": 6.016,
@@ -519,55 +519,55 @@ def upgrade():
             stem_of=null(),
         ),
     ]
-    session.add_all(tracks)
+    session.add_all(agreements)
 
-    track_routes = [
-        TrackRoute(
+    agreement_routes = [
+        AgreementRoute(
             slug="oWXPm",
             title_slug="oWXPm",
             collision_id=0,
             owner_id=3538,
-            track_id=470883,
+            agreement_id=470883,
             is_current=True,
             txhash="0xd16cd27f8635e84cbb6d02ecf6a5304bae998381cda1291d4cb690d9159196d9",
             blockhash="0x82ba068410ac71a70dfe95708b3c4ec08884355d8384423deb2337a6bcd64dd0",
             blocknumber=22477107,
         ),
-        TrackRoute(
+        AgreementRoute(
             slug="6YBxG",
             title_slug="6YBxG",
             collision_id=0,
             owner_id=3538,
-            track_id=470884,
+            agreement_id=470884,
             is_current=True,
             blocknumber=22477427,
             txhash="0x135c236ebb4d02a1d2bc13bf946e982871ad59a29ed413bbe6aed2acb60a1f17",
             blockhash="0x63b16e801cb90f3497043a904e0180a8161d9bbb45add0a9380e277b0befbbba",
         ),
-        TrackRoute(
+        AgreementRoute(
             slug="KV8xz",
             title_slug="KV8xz",
             collision_id=0,
             owner_id=3538,
-            track_id=470892,
+            agreement_id=470892,
             is_current=True,
             blocknumber=22477062,
             txhash="0x05771964bc0527268c330b78bb1819998d589d31a95e5f2f8aa846041de1dfee",
             blockhash="0x8e5f3edd55d1c7f3d6484a8fb7d2a9d825fb53ecb446c8959dd3887fa999d2e7",
         ),
-        TrackRoute(
+        AgreementRoute(
             slug="Nl2xw",
             title_slug="Nl2xw",
             collision_id=0,
             owner_id=3538,
-            track_id=470910,
+            agreement_id=470910,
             is_current=True,
             blocknumber=22477832,
             txhash="0xda0b64477469390eaa3b17098c01f3e03e5b0e52959ffd493804538dda039a92",
             blockhash="0x705d01ed50cf8f1d83686acc19c9d0bdd52493b3552532543629cdf07fba6005",
         ),
     ]
-    session.add_all(track_routes)
+    session.add_all(agreement_routes)
 
     session.query(SkippedTransaction).filter(
         SkippedTransaction.txhash.in_(

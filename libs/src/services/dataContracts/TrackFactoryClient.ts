@@ -2,19 +2,19 @@ import { ContractClient } from '../contracts/ContractClient'
 import * as signatureSchemas from '../../../data-contracts/signatureSchemas'
 import type { Web3Manager } from '../web3Manager'
 
-export class TrackFactoryClient extends ContractClient {
+export class AgreementFactoryClient extends ContractClient {
   override web3Manager!: Web3Manager
   /* -------  GETTERS ------- */
 
-  async getTrack(trackId: string) {
-    const method = await this.getMethod('getTrack', trackId)
+  async getAgreement(agreementId: string) {
+    const method = await this.getMethod('getAgreement', agreementId)
     return method.call()
   }
 
   /* -------  SETTERS ------- */
 
   /** uint _userId, bytes32 _multihashDigest, uint8 _multihashHashFn, uint8 _multihashSize */
-  async addTrack(
+  async addAgreement(
     userId: number,
     multihashDigest: string,
     multihashHashFn: number,
@@ -23,7 +23,7 @@ export class TrackFactoryClient extends ContractClient {
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
-    const signatureData = signatureSchemas.generators.getAddTrackRequestData(
+    const signatureData = signatureSchemas.generators.getAddAgreementRequestData(
       chainId,
       contractAddress,
       userId,
@@ -35,7 +35,7 @@ export class TrackFactoryClient extends ContractClient {
 
     const sig = await this.web3Manager.signTypedData(signatureData)
     const method = await this.getMethod(
-      'addTrack',
+      'addAgreement',
       userId,
       multihashDigest,
       multihashHashFn,
@@ -50,15 +50,15 @@ export class TrackFactoryClient extends ContractClient {
       contractAddress
     )
     return {
-      trackId: parseInt(tx.events?.['NewTrack']?.returnValues._id, 10),
+      agreementId: parseInt(tx.events?.['NewAgreement']?.returnValues._id, 10),
       txReceipt: tx
     }
   }
 
-  /** uint _trackId, uint _trackOwnerId, bytes32 _multihashDigest, uint8 _multihashHashFn, uint8 _multihashSize */
-  async updateTrack(
-    trackId: number,
-    trackOwnerId: number,
+  /** uint _agreementId, uint _agreementOwnerId, bytes32 _multihashDigest, uint8 _multihashHashFn, uint8 _multihashSize */
+  async updateAgreement(
+    agreementId: number,
+    agreementOwnerId: number,
     multihashDigest: string,
     multihashHashFn: number,
     multihashSize: number
@@ -66,11 +66,11 @@ export class TrackFactoryClient extends ContractClient {
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
-    const signatureData = signatureSchemas.generators.getUpdateTrackRequestData(
+    const signatureData = signatureSchemas.generators.getUpdateAgreementRequestData(
       chainId,
       contractAddress,
-      trackId,
-      trackOwnerId,
+      agreementId,
+      agreementOwnerId,
       multihashDigest,
       multihashHashFn,
       multihashSize,
@@ -79,9 +79,9 @@ export class TrackFactoryClient extends ContractClient {
 
     const sig = await this.web3Manager.signTypedData(signatureData)
     const method = await this.getMethod(
-      'updateTrack',
-      trackId,
-      trackOwnerId,
+      'updateAgreement',
+      agreementId,
+      agreementOwnerId,
       multihashDigest,
       multihashHashFn,
       multihashSize,
@@ -96,27 +96,27 @@ export class TrackFactoryClient extends ContractClient {
     )
 
     return {
-      trackId: parseInt(tx.events?.['UpdateTrack']?.returnValues._trackId, 10),
+      agreementId: parseInt(tx.events?.['UpdateAgreement']?.returnValues._agreementId, 10),
       txReceipt: tx
     }
   }
 
   /**
-   * @return deleted trackId from on-chain event log
+   * @return deleted agreementId from on-chain event log
    */
-  async deleteTrack(trackId: number) {
+  async deleteAgreement(agreementId: number) {
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
-    const signatureData = signatureSchemas.generators.getDeleteTrackRequestData(
+    const signatureData = signatureSchemas.generators.getDeleteAgreementRequestData(
       chainId,
       contractAddress,
-      trackId,
+      agreementId,
       nonce
     )
 
     const sig = await this.web3Manager.signTypedData(signatureData)
-    const method = await this.getMethod('deleteTrack', trackId, nonce, sig)
+    const method = await this.getMethod('deleteAgreement', agreementId, nonce, sig)
 
     const tx = await this.web3Manager.sendTransaction(
       method,
@@ -124,7 +124,7 @@ export class TrackFactoryClient extends ContractClient {
       contractAddress
     )
     return {
-      trackId: parseInt(tx.events?.['TrackDeleted']?.returnValues._trackId, 10),
+      agreementId: parseInt(tx.events?.['AgreementDeleted']?.returnValues._agreementId, 10),
       txReceipt: tx
     }
   }

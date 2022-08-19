@@ -6,7 +6,7 @@ import type {
 import type { WalletsToSecondariesMapping } from '../types'
 
 // eslint-disable-next-line import/no-unresolved
-import SecondarySyncHealthTracker from '../stateReconciliation/SecondarySyncHealthTracker'
+import SecondarySyncHealthAgreementer from '../stateReconciliation/SecondarySyncHealthAgreementer'
 
 const _ = require('lodash')
 const axios = require('axios')
@@ -183,7 +183,7 @@ const computeUserSecondarySyncSuccessRatesMap = async (
   }
 
   const userSecondarySyncMetricsMap: UserSecondarySyncMetricsMap =
-    await SecondarySyncHealthTracker.computeUsersSecondarySyncSuccessRatesForToday(
+    await SecondarySyncHealthAgreementer.computeUsersSecondarySyncSuccessRatesForToday(
       walletsToSecondariesMapping
     )
 

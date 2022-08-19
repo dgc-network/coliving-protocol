@@ -111,11 +111,11 @@
           "type": "uint256"
         },
         {
-          "name": "_trackId",
+          "name": "_agreementId",
           "type": "uint256"
         }
       ],
-      "name": "addTrackRepost",
+      "name": "addAgreementRepost",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -129,11 +129,11 @@
           "type": "uint256"
         },
         {
-          "name": "_trackId",
+          "name": "_agreementId",
           "type": "uint256"
         }
       ],
-      "name": "deleteTrackRepost",
+      "name": "deleteAgreementRepost",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -147,11 +147,11 @@
           "type": "uint256"
         },
         {
-          "name": "_trackId",
+          "name": "_agreementId",
           "type": "uint256"
         }
       ],
-      "name": "userRepostedTrack",
+      "name": "userRepostedAgreement",
       "outputs": [
         {
           "name": "",

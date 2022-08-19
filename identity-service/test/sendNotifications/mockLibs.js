@@ -1,4 +1,4 @@
-const trackTemplate = (id) => ({
+const agreementTemplate = (id) => ({
   'blockhash': '0xdebe84fe16960b2b1fe156d12c826257b8ac154581551e38e852bd326bc2b414',
   'blocknumber': 8593023,
   'cover_art': 'QmRwbZUcmCnHsWqiPSJbM36Sa6cuRzNbBoNouCmdPS1osd',
@@ -28,8 +28,8 @@ const trackTemplate = (id) => ({
   'play_count': 216,
   'release_date': 'Mon Apr 29 2019 16:58:04 GMT-0700',
   'remix_of': {
-    'tracks': [
-      { 'parent_track_id': id + 1 }
+    'agreements': [
+      { 'parent_agreement_id': id + 1 }
     ]
   },
   'repost_count': 3,
@@ -37,9 +37,9 @@ const trackTemplate = (id) => ({
   'save_count': 3,
   'stem_of': null,
   'tags': 'just,chill,2018,edm',
-  'title': `Title, Track id: ${id}`,
-  'track_id': id,
-  'track_segments': [],
+  'title': `Title, Agreement id: ${id}`,
+  'agreement_id': id,
+  'agreement_segments': [],
   'updated_at': '2019-04-30T00:02:50 Z'
 })
 
@@ -57,14 +57,14 @@ const playlistTemplate = (id) => ({
   'is_delete': false,
   'is_private': false,
   'playlist_contents': {
-    'track_ids': [
+    'agreement_ids': [
       {
         'time': 1603994075,
-        'track': id + 2
+        'agreement': id + 2
       },
       {
         'time': 1603994075,
-        'track': id + 1
+        'agreement': id + 1
       }
     ]
   },
@@ -104,16 +104,16 @@ const userTemplate = (id) => ({
   'profile_picture': 'QmXBLfsD6G8ALVeTr9A5XXKLCoiFRfoTGqXZmBbz9MoQrd',
   'profile_picture_sizes': null,
   'repost_count': 1183,
-  'track_blocknumber': 17311038,
-  'track_count': 16,
+  'agreement_blocknumber': 17311038,
+  'agreement_count': 16,
   'updated_at': '2020-10-23T22:15:25 Z',
   'user_id': id,
   'wallet': '0x7d273271690538cf855e5b3002a0dd8c154bb060'
 })
 
 const mockColivingLibs = {
-  Track: {
-    getTracks: (limit, offset, ids) => ids.map(id => trackTemplate(id))
+  Agreement: {
+    getAgreements: (limit, offset, ids) => ids.map(id => agreementTemplate(id))
   },
   Playlist: {
     getPlaylists: (limit, offset, ids) => ids.map(id => playlistTemplate(id))

@@ -2,20 +2,20 @@ from sqlalchemy import desc, func
 from src import exceptions
 from src.models.social.follow import Follow
 from src.models.social.save import Save
-from src.models.tracks.track import Track
+from src.models.agreements.agreement import Agreement
 from src.queries import response_name_constants
 from src.queries.query_helpers import (
     get_users_by_id,
     get_users_ids,
-    populate_track_metadata,
+    populate_agreement_metadata,
 )
 from src.utils import helpers
 from src.utils.db_session import get_db_read_replica
 
 
 def get_top_followee_saves(saveType, args):
-    if saveType != "track":
-        raise exceptions.ArgumentError("Invalid type provided, must be one of 'track'")
+    if saveType != "agreement":
+        raise exceptions.ArgumentError("Invalid type provided, must be one of 'agreement'")
 
     limit = args.get("limit", 25)
 
@@ -51,36 +51,36 @@ def get_top_followee_saves(saveType, args):
         )
         save_count_subquery = save_count.subquery()
 
-        # Query for tracks joined against followee save counts
-        tracks_query = (
+        # Query for agreements joined against followee save counts
+        agreements_query = (
             session.query(
-                Track,
+                Agreement,
             )
             .join(
                 save_count_subquery,
-                Track.track_id == save_count_subquery.c.save_item_id,
+                Agreement.agreement_id == save_count_subquery.c.save_item_id,
             )
             .filter(
-                Track.is_current == True,
-                Track.is_delete == False,
-                Track.is_unlisted == False,
-                Track.stem_of == None,
+                Agreement.is_current == True,
+                Agreement.is_delete == False,
+                Agreement.is_unlisted == False,
+                Agreement.stem_of == None,
             )
         )
 
-        tracks_query_results = tracks_query.all()
-        tracks = helpers.query_result_to_list(tracks_query_results)
-        track_ids = list(map(lambda track: track["track_id"], tracks))
+        agreements_query_results = agreements_query.all()
+        agreements = helpers.query_result_to_list(agreements_query_results)
+        agreement_ids = list(map(lambda agreement: agreement["agreement_id"], agreements))
 
-        # bundle peripheral info into track results
-        tracks = populate_track_metadata(session, track_ids, tracks, current_user_id)
+        # bundle peripheral info into agreement results
+        agreements = populate_agreement_metadata(session, agreement_ids, agreements, current_user_id)
 
         if args.get("with_users", False):
-            user_id_list = get_users_ids(tracks)
+            user_id_list = get_users_ids(agreements)
             users = get_users_by_id(session, user_id_list)
-            for track in tracks:
-                user = users[track["owner_id"]]
+            for agreement in agreements:
+                user = users[agreement["owner_id"]]
                 if user:
-                    track["user"] = user
+                    agreement["user"] = user
 
-    return tracks
+    return agreements

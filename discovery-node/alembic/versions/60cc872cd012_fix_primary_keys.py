@@ -34,11 +34,11 @@ def upgrade():
         USING "stems" T2
         WHERE
             T1.ctid < T2.ctid
-            AND T1.parent_track_id = T2.parent_track_id
-            AND T1.child_track_id = T2.child_track_id;
+            AND T1.parent_agreement_id = T2.parent_agreement_id
+            AND T1.child_agreement_id = T2.child_agreement_id;
 
         ALTER TABLE remixes DROP CONSTRAINT IF EXISTS remixes_pkey;
-        ALTER TABLE remixes ADD CONSTRAINT remixes_pkey PRIMARY KEY (parent_track_id, child_track_id);
+        ALTER TABLE remixes ADD CONSTRAINT remixes_pkey PRIMARY KEY (parent_agreement_id, child_agreement_id);
 
         -- Remove duplicates from stems
         DELETE
@@ -46,11 +46,11 @@ def upgrade():
         USING "stems" T2
         WHERE
             T1.ctid < T2.ctid
-            AND T1.parent_track_id = T2.parent_track_id
-            AND T1.child_track_id = T2.child_track_id;
+            AND T1.parent_agreement_id = T2.parent_agreement_id
+            AND T1.child_agreement_id = T2.child_agreement_id;
 
         ALTER TABLE stems DROP CONSTRAINT IF EXISTS stems_pkey;
-        ALTER TABLE stems ADD CONSTRAINT stems_pkey PRIMARY KEY (parent_track_id, child_track_id);
+        ALTER TABLE stems ADD CONSTRAINT stems_pkey PRIMARY KEY (parent_agreement_id, child_agreement_id);
         """
     )
 

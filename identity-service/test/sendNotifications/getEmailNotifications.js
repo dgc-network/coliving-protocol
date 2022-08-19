@@ -2,13 +2,13 @@ const assert = require('assert')
 
 const models = require('../../src/models')
 const getEmailNotifications = require('../../src/notifications/fetchNotificationMetadata.js')
-const { processTrendingTracks } = require('../../src/notifications/trendingTrackProcessing')
+const { processTrendingAgreements } = require('../../src/notifications/trendingAgreementProcessing')
 const renderEmail = require('../../src/notifications/renderEmail')
 
 const { clearDatabase, runMigrations } = require('../lib/app')
 
 // Mock Notifications
-const trendingTrack = require('./mockNotifications/trendingTrack.json')
+const trendingAgreement = require('./mockNotifications/trendingAgreement.json')
 
 const mockColivingLibs = require('./mockLibs')
 
@@ -20,7 +20,7 @@ describe('Test Get Email Notifications', function () {
 
   it('should have the correct email props for an email notifications', async function () {
     const tx1 = await models.sequelize.transaction()
-    await processTrendingTracks(null, 1, trendingTrack, tx1)
+    await processTrendingAgreements(null, 1, trendingAgreement, tx1)
     await tx1.commit()
 
     const userId = 1

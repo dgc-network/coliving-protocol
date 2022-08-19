@@ -1,41 +1,41 @@
 from src import exceptions
-from src.models.tracks.track import Track
+from src.models.agreements.agreement import Agreement
 from src.utils.db_session import get_db_read_replica
 
 
-def get_previously_unlisted_tracks(args):
+def get_previously_unlisted_agreements(args):
     db = get_db_read_replica()
     with db.scoped_session() as session:
         if "date" not in args:
             raise exceptions.ArgumentError(
-                "'date' required to query for retrieving previously unlisted tracks"
+                "'date' required to query for retrieving previously unlisted agreements"
             )
 
         date = args.get("date")
 
-        tracks_after_date = (
-            session.query(Track.track_id, Track.updated_at)
-            .distinct(Track.track_id)
-            .filter(Track.is_unlisted == False, Track.updated_at >= date)
+        agreements_after_date = (
+            session.query(Agreement.agreement_id, Agreement.updated_at)
+            .distinct(Agreement.agreement_id)
+            .filter(Agreement.is_unlisted == False, Agreement.updated_at >= date)
             .subquery()
         )
 
-        tracks_before_date = (
-            session.query(Track.track_id, Track.updated_at)
-            .distinct(Track.track_id)
-            .filter(Track.is_unlisted == True, Track.updated_at < date)
+        agreements_before_date = (
+            session.query(Agreement.agreement_id, Agreement.updated_at)
+            .distinct(Agreement.agreement_id)
+            .filter(Agreement.is_unlisted == True, Agreement.updated_at < date)
             .subquery()
         )
 
         previously_unlisted_results = (
-            session.query(tracks_before_date.c["track_id"])
+            session.query(agreements_before_date.c["agreement_id"])
             .join(
-                tracks_after_date,
-                tracks_after_date.c["track_id"] == tracks_before_date.c["track_id"],
+                agreements_after_date,
+                agreements_after_date.c["agreement_id"] == agreements_before_date.c["agreement_id"],
             )
             .all()
         )
 
-        track_ids = [result[0] for result in previously_unlisted_results]
+        agreement_ids = [result[0] for result in previously_unlisted_results]
 
-    return {"ids": track_ids}
+    return {"ids": agreement_ids}

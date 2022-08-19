@@ -24,9 +24,9 @@ def upgrade():
         unique=True,
     )
     op.create_index(
-        op.f("ix_track_lexeme_dict"),
-        "track_lexeme_dict",
-        ["track_id", "track_title", "word"],
+        op.f("ix_agreement_lexeme_dict"),
+        "agreement_lexeme_dict",
+        ["agreement_id", "agreement_title", "word"],
         unique=True,
     )
     op.create_index(
@@ -45,6 +45,6 @@ def upgrade():
 
 def downgrade():
     op.drop_index(op.f("ix_user_lexeme_dict"), table_name="user_lexeme_dict")
-    op.drop_index(op.f("ix_track_lexeme_dict"), table_name="track_lexeme_dict")
+    op.drop_index(op.f("ix_agreement_lexeme_dict"), table_name="agreement_lexeme_dict")
     op.drop_index(op.f("ix_playlist_lexeme_dict"), table_name="playlist_lexeme_dict")
     op.drop_index(op.f("ix_album_lexeme_dict"), table_name="album_lexeme_dict")

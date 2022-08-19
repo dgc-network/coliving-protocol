@@ -53,17 +53,17 @@ ___
 
 ___
 
-### saved\_tracks
+### saved\_agreements
 
- `Optional` **saved\_tracks**: [`TrackFull`](full.TrackFull.md)[]
+ `Optional` **saved\_agreements**: [`AgreementFull`](full.AgreementFull.md)[]
 
 **`memberof`** SearchModel
 
 ___
 
-### tracks
+### agreements
 
- **tracks**: [`TrackFull`](full.TrackFull.md)[]
+ **agreements**: [`AgreementFull`](full.AgreementFull.md)[]
 
 **`memberof`** SearchModel
 

@@ -11,8 +11,8 @@ from src.api.v1.resolve import ns as resolve_ns
 from src.api.v1.search import full_ns as full_search_ns
 from src.api.v1.tips import full_ns as full_tips_ns
 from src.api.v1.tips import ns as tips_ns
-from src.api.v1.tracks import full_ns as full_tracks_ns
-from src.api.v1.tracks import ns as tracks_ns
+from src.api.v1.agreements import full_ns as full_agreements_ns
+from src.api.v1.agreements import ns as agreements_ns
 from src.api.v1.users import full_ns as full_users_ns
 from src.api.v1.users import ns as users_ns
 
@@ -33,7 +33,7 @@ api_v1 = ApiWithHTTPS(bp, version="1.0", description="Coliving V1 API")
 api_v1.add_namespace(models_ns)
 api_v1.add_namespace(users_ns)
 api_v1.add_namespace(playlists_ns)
-api_v1.add_namespace(tracks_ns)
+api_v1.add_namespace(agreements_ns)
 api_v1.add_namespace(challenges_ns)
 api_v1.add_namespace(tips_ns)
 api_v1.add_namespace(metrics_ns)
@@ -42,7 +42,7 @@ api_v1.add_namespace(resolve_ns)
 bp_full = Blueprint("api_v1_full", __name__, url_prefix="/v1/full")
 api_v1_full = ApiWithHTTPS(bp_full, version="1.0")
 api_v1_full.add_namespace(models_ns)
-api_v1_full.add_namespace(full_tracks_ns)
+api_v1_full.add_namespace(full_agreements_ns)
 api_v1_full.add_namespace(full_playlists_ns)
 api_v1_full.add_namespace(full_users_ns)
 api_v1_full.add_namespace(full_search_ns)

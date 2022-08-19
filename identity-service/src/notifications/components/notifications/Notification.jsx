@@ -42,14 +42,14 @@ const challengeRewardsConfig = {
     title: 'Complete Your Profile',
     icon: <WhiteHeavyCheckMarkIcon />
   },
-  'track-upload': {
-    title: 'Upload 3 Tracks',
+  'agreement-upload': {
+    title: 'Upload 3 Agreements',
     icon: <MultipleMusicalNotesIcon />
   }
 }
 
 const EntityType = Object.freeze({
-  Track: 'Track',
+  Agreement: 'Agreement',
   Album: 'Album',
   Playlist: 'Playlist'
 })
@@ -95,9 +95,9 @@ export const getUsers = (users) => {
 }
 
 export const getEntity = (entity) => {
-  if (entity.type === EntityType.Track) {
+  if (entity.type === EntityType.Agreement) {
     return (
-      <> <BodyText text={'track '} /><HighlightText text={entity.name} /> </>
+      <> <BodyText text={'agreement '} /><HighlightText text={entity.name} /> </>
     )
   } else if (entity.type === EntityType.Album) {
     return (
@@ -158,13 +158,13 @@ const notificationMap = {
       )
     }
   },
-  [NotificationType.TrendingTrack] (notification) {
+  [NotificationType.TrendingAgreement] (notification) {
     const highlight = notification.entity.title
     const rank = notification.rank
     const rankSuffix = getRankSuffix(rank)
     return (
       <span className={'notificationText'}>
-        <BodyText text={`Your Track `} />
+        <BodyText text={`Your Agreement `} />
         <HighlightText text={highlight} />
         <BodyText text={` is ${rank}${rankSuffix} on Trending Right Now! 🍾`} />
       </span>
@@ -172,7 +172,7 @@ const notificationMap = {
   },
   [NotificationType.UserSubscription] (notification) {
     const [user] = notification.users
-    if (notification.entity.type === NotificationType.Track && !isNaN(notification.entity.count) && notification.entity.count > 1) {
+    if (notification.entity.type === NotificationType.Agreement && !isNaN(notification.entity.count) && notification.entity.count > 1) {
       return (
         <span className={'notificationText'}>
           <HighlightText text={user.name} />
@@ -188,23 +188,23 @@ const notificationMap = {
     )
   },
   [NotificationType.RemixCreate] (notification) {
-    const { remixUser, remixTrack, parentTrackUser, parentTrack } = notification
+    const { remixUser, remixAgreement, parentAgreementUser, parentAgreement } = notification
     return (
       <span className={'notificationText'}>
-        <HighlightText text={remixTrack.title} />
+        <HighlightText text={remixAgreement.title} />
         <BodyText text={` by `} />
         <HighlightText text={remixUser.name} />
       </span>
     )
   },
   [NotificationType.RemixCosign] (notification) {
-    const { parentTrackUser, parentTracks } = notification
-    const parentTrack = parentTracks.find(t => t.owner_id === parentTrackUser.user_id)
+    const { parentAgreementUser, parentAgreements } = notification
+    const parentAgreement = parentAgreements.find(t => t.owner_id === parentAgreementUser.user_id)
     return (
       <span className={'notificationText'}>
-        <HighlightText text={parentTrackUser.name} />
+        <HighlightText text={parentAgreementUser.name} />
         <BodyText text={` Co-signed your Remix of `} />
-        <HighlightText text={parentTrack.title} />
+        <HighlightText text={parentAgreement.title} />
       </span>
     )
   },
@@ -233,12 +233,12 @@ const notificationMap = {
       </span>
     )
   },
-  [NotificationType.AddTrackToPlaylist] (notification) {
+  [NotificationType.AddAgreementToPlaylist] (notification) {
     return (
       <span className={'notificationText'}>
         <HighlightText text={notification.playlistOwner.name} />
-        <BodyText text={` added your track `} />
-        <HighlightText text={notification.track.title} />
+        <BodyText text={` added your agreement `} />
+        <HighlightText text={notification.agreement.title} />
         <BodyText text={` to their playlist `} />
         <HighlightText text={notification.playlist.playlist_name} />
       </span>
@@ -296,11 +296,11 @@ const getMessage = (notification) => {
 const getTitle = (notification) => {
   switch (notification.type) {
     case NotificationType.RemixCreate: {
-      const { parentTrack } = notification
+      const { parentAgreement } = notification
       return (
         <span className={'notificationText'}>
-          <BodyText text={`New remix of your track `} />
-          <HighlightText text={parentTrack.title} />
+          <BodyText text={`New remix of your agreement `} />
+          <HighlightText text={parentAgreement.title} />
         </span>
       )
     }
@@ -309,13 +309,13 @@ const getTitle = (notification) => {
   }
 }
 
-const getTrackMessage = (notification) => {
+const getAgreementMessage = (notification) => {
   switch (notification.type) {
     case NotificationType.RemixCosign: {
-      const { remixTrack } = notification
+      const { remixAgreement } = notification
       return (
         <span className={'notificationText'}>
-          <HighlightText text={remixTrack.title} />
+          <HighlightText text={remixAgreement.title} />
         </span>
       )
     }
@@ -324,19 +324,19 @@ const getTrackMessage = (notification) => {
   }
 }
 
-export const getTrackLink = (track) => {
-  return `https://coliving.lol/${track.route_id}-${track.track_id}`
+export const getAgreementLink = (agreement) => {
+  return `https://coliving.lol/${agreement.route_id}-${agreement.agreement_id}`
 }
 
 const getTwitter = (notification) => {
   switch (notification.type) {
     case NotificationType.RemixCreate: {
-      const { parentTrack, parentTrackUser, remixUser, remixTrack } = notification
-      const twitterHandle = parentTrackUser.twitterHandle 
-        ? `@${parentTrackUser.twitterHandle}`
-        : parentTrackUser.name
-      const text = `New remix of ${parentTrack.title} by ${twitterHandle} on @dgc.network #Coliving`
-      const url = getTrackLink(remixTrack)
+      const { parentAgreement, parentAgreementUser, remixUser, remixAgreement } = notification
+      const twitterHandle = parentAgreementUser.twitterHandle 
+        ? `@${parentAgreementUser.twitterHandle}`
+        : parentAgreementUser.name
+      const text = `New remix of ${parentAgreement.title} by ${twitterHandle} on @dgc.network #Coliving`
+      const url = getAgreementLink(remixAgreement)
       return {
         message: 'Share With Your Friends',
         href: `http://twitter.com/share?url=${encodeURIComponent(url)
@@ -344,24 +344,24 @@ const getTwitter = (notification) => {
       }
     }
     case NotificationType.RemixCosign: {
-      const { parentTracks, parentTrackUser, remixTrack } = notification
-      const parentTrack = parentTracks.find(t => t.owner_id === parentTrackUser.user_id)
-      const url = getTrackLink(remixTrack)
-      const twitterHandle = parentTrackUser.twitterHandle 
-        ? `@${parentTrackUser.twitterHandle}`
-        : parentTrackUser.name
-      const text = `My remix of ${parentTrack.title} was Co-Signed by ${twitterHandle} on @dgc.network #Coliving`
+      const { parentAgreements, parentAgreementUser, remixAgreement } = notification
+      const parentAgreement = parentAgreements.find(t => t.owner_id === parentAgreementUser.user_id)
+      const url = getAgreementLink(remixAgreement)
+      const twitterHandle = parentAgreementUser.twitterHandle 
+        ? `@${parentAgreementUser.twitterHandle}`
+        : parentAgreementUser.name
+      const text = `My remix of ${parentAgreement.title} was Co-Signed by ${twitterHandle} on @dgc.network #Coliving`
       return {
         message: 'Share With Your Friends',
         href: `http://twitter.com/share?url=${encodeURIComponent(url)
           }&text=${encodeURIComponent(text)}`
       }
     }
-    case NotificationType.TrendingTrack: {
+    case NotificationType.TrendingAgreement: {
       const { rank, entity } = notification
-      const url = getTrackLink(entity)
+      const url = getAgreementLink(entity)
       const rankSuffix = getRankSuffix(rank)
-      const text = `My track ${entity.title} is trending ${rank}${rankSuffix} on @dgc.network! #ColivingTrending #Coliving`
+      const text = `My agreement ${entity.title} is trending ${rank}${rankSuffix} on @dgc.network! #ColivingTrending #Coliving`
       return {
         message: 'Share this Milestone',
         href: `http://twitter.com/share?url=${encodeURIComponent(url)
@@ -383,14 +383,14 @@ const getTwitter = (notification) => {
 const Notification = (props) => {
   const message = getMessage(props)
   const title = getTitle(props)
-  const trackMessage = getTrackMessage(props)
+  const agreementMessage = getAgreementMessage(props)
   const twitter = getTwitter(props)
   return (
     <NotificationBody
       {...props}
       title={title}
       message={message}
-      trackMessage={trackMessage}
+      agreementMessage={agreementMessage}
       twitter={twitter}
     />
   )

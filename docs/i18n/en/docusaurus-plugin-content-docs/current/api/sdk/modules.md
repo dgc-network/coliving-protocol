@@ -16,9 +16,9 @@ pagination_next: null
 
 - [GetTipsCurrentUserFollowsEnum](enums/GetTipsCurrentUserFollowsEnum.md)
 - [GetTipsUniqueByEnum](enums/GetTipsUniqueByEnum.md)
-- [GetTracksByUserSortEnum](enums/GetTracksByUserSortEnum.md)
+- [GetAgreementsByUserSortEnum](enums/GetAgreementsByUserSortEnum.md)
 - [GetTrendingPlaylistsTimeEnum](enums/GetTrendingPlaylistsTimeEnum.md)
-- [GetTrendingTracksTimeEnum](enums/GetTrendingTracksTimeEnum.md)
+- [GetTrendingAgreementsTimeEnum](enums/GetTrendingAgreementsTimeEnum.md)
 
 ## Classes
 
@@ -26,7 +26,7 @@ pagination_next: null
 - [Playlists](classes/PlaylistsApi.md)
 - [Resolve](classes/ResolveApi.md)
 - [Tips](classes/TipsApi.md)
-- [Tracks](classes/TracksApi.md)
+- [Agreements](classes/AgreementsApi.md)
 - [Users](classes/UsersApi.md)
 
 ## Interfaces
@@ -40,11 +40,11 @@ pagination_next: null
 - [EncodedUserId](interfaces/EncodedUserId.md)
 - [Favorite](interfaces/Favorite.md)
 - [FavoritesResponse](interfaces/FavoritesResponse.md)
-- [GetBulkTracksRequest](interfaces/GetBulkTracksRequest.md)
+- [GetBulkAgreementsRequest](interfaces/GetBulkAgreementsRequest.md)
 - [GetConnectedWalletsRequest](interfaces/GetConnectedWalletsRequest.md)
 - [GetFavoritesRequest](interfaces/GetFavoritesRequest.md)
 - [GetPlaylistRequest](interfaces/GetPlaylistRequest.md)
-- [GetPlaylistTracksRequest](interfaces/GetPlaylistTracksRequest.md)
+- [GetPlaylistAgreementsRequest](interfaces/GetPlaylistAgreementsRequest.md)
 - [GetRepostsRequest](interfaces/GetRepostsRequest.md)
 - [GetSupporters](interfaces/GetSupporters.md)
 - [GetSupportersRequest](interfaces/GetSupportersRequest.md)
@@ -52,36 +52,36 @@ pagination_next: null
 - [GetSupportingsRequest](interfaces/GetSupportingsRequest.md)
 - [GetTipsRequest](interfaces/GetTipsRequest.md)
 - [GetTipsResponse](interfaces/GetTipsResponse.md)
-- [GetTopTrackTagsRequest](interfaces/GetTopTrackTagsRequest.md)
-- [GetTrackRequest](interfaces/GetTrackRequest.md)
-- [GetTracksByUserRequest](interfaces/GetTracksByUserRequest.md)
+- [GetTopAgreementTagsRequest](interfaces/GetTopAgreementTagsRequest.md)
+- [GetAgreementRequest](interfaces/GetAgreementRequest.md)
+- [GetAgreementsByUserRequest](interfaces/GetAgreementsByUserRequest.md)
 - [GetTrendingPlaylistsRequest](interfaces/GetTrendingPlaylistsRequest.md)
-- [GetTrendingTracksRequest](interfaces/GetTrendingTracksRequest.md)
+- [GetTrendingAgreementsRequest](interfaces/GetTrendingAgreementsRequest.md)
 - [GetUserIDFromWalletRequest](interfaces/GetUserIDFromWalletRequest.md)
 - [GetUserRequest](interfaces/GetUserRequest.md)
 - [Playlist](interfaces/Playlist.md)
 - [PlaylistArtwork](interfaces/PlaylistArtwork.md)
 - [PlaylistResponse](interfaces/PlaylistResponse.md)
 - [PlaylistSearchResult](interfaces/PlaylistSearchResult.md)
-- [PlaylistTracksResponse](interfaces/PlaylistTracksResponse.md)
+- [PlaylistAgreementsResponse](interfaces/PlaylistAgreementsResponse.md)
 - [ProfilePicture](interfaces/ProfilePicture.md)
 - [RemixParent](interfaces/RemixParent.md)
 - [Reposts](interfaces/Reposts.md)
 - [ResolveRequest](interfaces/ResolveRequest.md)
 - [SearchPlaylistsRequest](interfaces/SearchPlaylistsRequest.md)
-- [SearchTracksRequest](interfaces/SearchTracksRequest.md)
+- [SearchAgreementsRequest](interfaces/SearchAgreementsRequest.md)
 - [SearchUsersRequest](interfaces/SearchUsersRequest.md)
-- [StreamTrackRequest](interfaces/StreamTrackRequest.md)
+- [StreamAgreementRequest](interfaces/StreamAgreementRequest.md)
 - [Supporter](interfaces/Supporter.md)
 - [Supporting](interfaces/Supporting.md)
 - [TagsResponse](interfaces/TagsResponse.md)
 - [Tip](interfaces/Tip.md)
-- [Track](interfaces/Track.md)
-- [TrackArtwork](interfaces/TrackArtwork.md)
-- [TrackElement](interfaces/TrackElement.md)
-- [TrackResponse](interfaces/TrackResponse.md)
-- [TrackSearch](interfaces/TrackSearch.md)
-- [TracksResponse](interfaces/TracksResponse.md)
+- [Agreement](interfaces/Agreement.md)
+- [AgreementArtwork](interfaces/AgreementArtwork.md)
+- [AgreementElement](interfaces/AgreementElement.md)
+- [AgreementResponse](interfaces/AgreementResponse.md)
+- [AgreementSearch](interfaces/AgreementSearch.md)
+- [AgreementsResponse](interfaces/AgreementsResponse.md)
 - [TrendingPlaylistsResponse](interfaces/TrendingPlaylistsResponse.md)
 - [User](interfaces/User.md)
 - [UserAssociatedWalletResponse](interfaces/UserAssociatedWalletResponse.md)
@@ -131,16 +131,16 @@ The Coliving SDK
 
 | Name | Type |
 | :------ | :------ |
-| `full` | { `playlists`: [`Playlists`](classes/full.PlaylistsApi.md) ; `reactions`: [`Reactions`](classes/full.ReactionsApi.md) ; `search`: [`Search`](classes/full.SearchApi.md) ; `tips`: [`Tips`](classes/full.TipsApi.md) ; `tracks`: [`Tracks`](classes/full.TracksApi.md) ; `users`: [`Users`](classes/full.UsersApi.md)  } |
+| `full` | { `playlists`: [`Playlists`](classes/full.PlaylistsApi.md) ; `reactions`: [`Reactions`](classes/full.ReactionsApi.md) ; `search`: [`Search`](classes/full.SearchApi.md) ; `tips`: [`Tips`](classes/full.TipsApi.md) ; `agreements`: [`Agreements`](classes/full.AgreementsApi.md) ; `users`: [`Users`](classes/full.UsersApi.md)  } |
 | `full.playlists` | [`Playlists`](classes/full.PlaylistsApi.md) |
 | `full.reactions` | [`Reactions`](classes/full.ReactionsApi.md) |
 | `full.search` | [`Search`](classes/full.SearchApi.md) |
 | `full.tips` | [`Tips`](classes/full.TipsApi.md) |
-| `full.tracks` | [`Tracks`](classes/full.TracksApi.md) |
+| `full.agreements` | [`Agreements`](classes/full.AgreementsApi.md) |
 | `full.users` | [`Users`](classes/full.UsersApi.md) |
 | `oauth` | `undefined` \| `Oauth` |
 | `playlists` | [`Playlists`](classes/PlaylistsApi.md) |
 | `resolve` | <T\>(`requestParameters`: [`ResolveRequest`](interfaces/ResolveRequest.md)) => `Promise`<`T`\> |
 | `tips` | [`Tips`](classes/TipsApi.md) |
-| `tracks` | [`Tracks`](classes/TracksApi.md) |
+| `agreements` | [`Agreements`](classes/AgreementsApi.md) |
 | `users` | [`Users`](classes/UsersApi.md) |

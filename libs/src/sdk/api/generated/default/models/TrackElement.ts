@@ -16,14 +16,14 @@
 /**
  * 
  * @export
- * @interface TrackElement
+ * @interface AgreementElement
  */
-export interface TrackElement {
+export interface AgreementElement {
     /**
      * 
      * @type {string}
-     * @memberof TrackElement
+     * @memberof AgreementElement
      */
-    parent_track_id: string;
+    parent_agreement_id: string;
 }
 

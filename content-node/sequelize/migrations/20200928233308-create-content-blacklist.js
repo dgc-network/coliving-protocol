@@ -10,7 +10,7 @@ module.exports = {
       },
       type: {
         allowNull: false,
-        type: Sequelize.ENUM('USER', 'TRACK'),
+        type: Sequelize.ENUM('USER', 'AGREEMENT'),
         primaryKey: true
       },
       createdAt: {

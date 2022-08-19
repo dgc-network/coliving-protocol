@@ -1,10 +1,10 @@
 import logging
 
-from src.api.v1.helpers import extend_track, format_limit, format_offset, to_dict
-from src.queries.get_trending_tracks import (
+from src.api.v1.helpers import extend_agreement, format_limit, format_offset, to_dict
+from src.queries.get_trending_agreements import (
     TRENDING_LIMIT,
     TRENDING_TTL_SEC,
-    get_trending_tracks,
+    get_trending_agreements,
 )
 from src.utils.helpers import decode_string_id  # pylint: disable=C0302
 from src.utils.redis_cache import get_trending_cache_key, use_redis_cache
@@ -30,8 +30,8 @@ def get_trending(args, strategy):
         decoded_id = decode_string_id(current_user_id)
         args["current_user_id"] = decoded_id
 
-    tracks = get_trending_tracks(args, strategy)
-    return list(map(extend_track, tracks))
+    agreements = get_trending_agreements(args, strategy)
+    return list(map(extend_agreement, agreements))
 
 
 def get_full_trending(request, args, strategy):
@@ -39,12 +39,12 @@ def get_full_trending(request, args, strategy):
     limit = format_limit(args, TRENDING_LIMIT)
     key = get_trending_cache_key(to_dict(request.args), request.path)
 
-    # Attempt to use the cached tracks list
+    # Attempt to use the cached agreements list
     if args["user_id"] is not None:
         full_trending = get_trending(args, strategy)
     else:
         full_trending = use_redis_cache(
             key, TRENDING_TTL_SEC, lambda: get_trending(args, strategy)
         )
-    trending_tracks = full_trending[offset : limit + offset]
-    return trending_tracks
+    trending_agreements = full_trending[offset : limit + offset]
+    return trending_agreements

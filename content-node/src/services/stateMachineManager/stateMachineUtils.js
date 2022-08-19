@@ -97,7 +97,7 @@ const retrieveUserInfoFromReplicaSet = async (replicaToWalletMap) => {
         // Add response data to output aggregate map
         batchClockStatusResp.forEach((clockStatusResp) => {
           /**
-           * @notice `filesHash` will be null if node has no files for user. This can happen even if clock > 0 if user has ColivingUser or Track table records without any File table records
+           * @notice `filesHash` will be null if node has no files for user. This can happen even if clock > 0 if user has ColivingUser or Agreement table records without any File table records
            */
           const { walletPublicKey, clock, filesHash } = clockStatusResp
           replicaToAllUserInfoMaps[replica][walletPublicKey] = {

@@ -16,13 +16,13 @@
 /**
  * 
  * @export
- * @interface TrackId
+ * @interface AgreementId
  */
-export interface TrackId {
+export interface AgreementId {
     /**
      * 
      * @type {string}
-     * @memberof TrackId
+     * @memberof AgreementId
      */
     id: string;
 }

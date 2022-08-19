@@ -15,8 +15,8 @@ pagination_next: null
 
 ## Properties
 
-### tracks
+### agreements
 
- `Optional` **tracks**: [`FullRemix`](full.FullRemix.md)[]
+ `Optional` **agreements**: [`FullRemix`](full.FullRemix.md)[]
 
 **`memberof`** FullRemixParent

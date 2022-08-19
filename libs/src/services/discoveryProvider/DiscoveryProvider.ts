@@ -140,7 +140,7 @@ export class DiscoveryProvider {
     this.selectionRequestRetries = selectionRequestRetries
     this.unhealthySlotDiffPlays = unhealthySlotDiffPlays
 
-    // Keep track of the number of times a request 404s so we know when a true 404 occurs
+    // Keep agreement of the number of times a request 404s so we know when a true 404 occurs
     // Due to incident where some discovery nodes may erroneously be missing content #flare-51,
     // we treat 404s differently than generic 4xx's or other 5xx errors.
     // In the case of a 404, try a few other nodes
@@ -184,13 +184,13 @@ export class DiscoveryProvider {
    * can be filtered by providing an integer array of ids
    * @returns Array of User metadata Objects
    * additional metadata fields on user objects:
-   *  {Integer} track_count - track count for given user
+   *  {Integer} agreement_count - agreement count for given user
    *  {Integer} playlist_count - playlist count for given user
    *  {Integer} album_count - album count for given user
    *  {Integer} follower_count - follower count for given user
    *  {Integer} followee_count - followee count for given user
    *  {Integer} repost_count - repost count for given user
-   *  {Integer} track_blocknumber - blocknumber of latest track for user
+   *  {Integer} agreement_blocknumber - blocknumber of latest agreement for user
    *  {Boolean} does_current_user_follow - does current user follow given user
    *  {Array} followee_follows - followees of current user that follow given user
    * @example
@@ -217,27 +217,27 @@ export class DiscoveryProvider {
   }
 
   /**
-   * get tracks with all relevant track data
+   * get agreements with all relevant agreement data
    * can be filtered by providing an integer array of ids
    * @param limit
    * @param offset
    * @param idsArray
-   * @param targetUserId the owner of the tracks being queried
+   * @param targetUserId the owner of the agreements being queried
    * @param sort a string of form eg. blocknumber:asc,timestamp:desc describing a sort path
    * @param minBlockNumber The min block number
-   * @param filterDeleted If set to true, filters the deleted tracks
-   * @returns Array of track metadata Objects
-   * additional metadata fields on track objects:
-   *  {Integer} repost_count - repost count for given track
-   *  {Integer} save_count - save count for given track
-   *  {Array} followee_reposts - followees of current user that have reposted given track
-   *  {Boolean} has_current_user_reposted - has current user reposted given track
-   *  {Boolean} has_current_user_saved - has current user saved given track
+   * @param filterDeleted If set to true, filters the deleted agreements
+   * @returns Array of agreement metadata Objects
+   * additional metadata fields on agreement objects:
+   *  {Integer} repost_count - repost count for given agreement
+   *  {Integer} save_count - save count for given agreement
+   *  {Array} followee_reposts - followees of current user that have reposted given agreement
+   *  {Boolean} has_current_user_reposted - has current user reposted given agreement
+   *  {Boolean} has_current_user_saved - has current user saved given agreement
    * @example
-   * await getTracks()
-   * await getTracks(100, 0, [3,2,6]) - Invalid track ids will not be accepted
+   * await getAgreements()
+   * await getAgreements(100, 0, [3,2,6]) - Invalid agreement ids will not be accepted
    */
-  async getTracks(
+  async getAgreements(
     limit = 100,
     offset = 0,
     idsArray: Nullable<string[]>,
@@ -247,7 +247,7 @@ export class DiscoveryProvider {
     filterDeleted: Nullable<boolean>,
     withUsers?: boolean
   ) {
-    const req = Requests.getTracks(
+    const req = Requests.getAgreements(
       limit,
       offset,
       idsArray,
@@ -262,87 +262,87 @@ export class DiscoveryProvider {
   }
 
   /**
-   * Gets a particular track by its creator's handle and the track's URL slug
-   * @param handle the handle of the owner of the track
-   * @param slug the URL slug of the track, generally the title urlized
-   * @returns the requested track's metadata
+   * Gets a particular agreement by its creator's handle and the agreement's URL slug
+   * @param handle the handle of the owner of the agreement
+   * @param slug the URL slug of the agreement, generally the title urlized
+   * @returns the requested agreement's metadata
    */
-  async getTracksByHandleAndSlug(handle: string, slug: string) {
+  async getAgreementsByHandleAndSlug(handle: string, slug: string) {
     // Note: retries are disabled here because the v1 API response returns a 404 instead
     // of an empty array, which can cause a retry storm.
     // TODO: Rewrite this API with something more effective, change makeRequest to
     // support 404s and not retry & use ColivingAPIClient.
     return await this._makeRequest(
-      Requests.getTracksByHandleAndSlug(handle, slug),
+      Requests.getAgreementsByHandleAndSlug(handle, slug),
       /* retry */ false
     )
   }
 
   /**
-   * gets all tracks matching identifiers, including unlisted.
+   * gets all agreements matching identifiers, including unlisted.
    *
    */
-  async getTracksIncludingUnlisted(identifiers: string[], withUsers = false) {
-    const req = Requests.getTracksIncludingUnlisted(identifiers, withUsers)
+  async getAgreementsIncludingUnlisted(identifiers: string[], withUsers = false) {
+    const req = Requests.getAgreementsIncludingUnlisted(identifiers, withUsers)
     return await this._makeRequest(req)
   }
 
   /**
-   * Gets random tracks from trending tracks for a given genre.
-   * If genre not given, will return trending tracks across all genres.
-   * Excludes specified track ids.
+   * Gets random agreements from trending agreements for a given genre.
+   * If genre not given, will return trending agreements across all genres.
+   * Excludes specified agreement ids.
    */
-  async getRandomTracks(
+  async getRandomAgreements(
     genre: string,
     limit: number,
     exclusionList: number[],
     time: string
   ) {
-    const req = Requests.getRandomTracks(genre, limit, exclusionList, time)
+    const req = Requests.getRandomAgreements(genre, limit, exclusionList, time)
     return await this._makeRequest(req)
   }
 
   /**
-   * Gets all stems for a given trackId as an array of tracks.
+   * Gets all stems for a given agreementId as an array of agreements.
    */
-  async getStemsForTrack(trackId: number) {
-    const req = Requests.getStemsForTrack(trackId)
+  async getStemsForAgreement(agreementId: number) {
+    const req = Requests.getStemsForAgreement(agreementId)
     return await this._makeRequest(req)
   }
 
   /**
-   * Gets all the remixes of a given trackId as an array of tracks.
+   * Gets all the remixes of a given agreementId as an array of agreements.
    */
-  async getRemixesOfTrack(
-    trackId: number,
+  async getRemixesOfAgreement(
+    agreementId: number,
     limit: Nullable<number>,
     offset: Nullable<number>
   ) {
-    const req = Requests.getRemixesOfTrack(trackId, limit, offset)
+    const req = Requests.getRemixesOfAgreement(agreementId, limit, offset)
     return await this._makeRequest(req)
   }
 
   /**
-   * Gets the remix parents of a given trackId as an array of tracks.
+   * Gets the remix parents of a given agreementId as an array of agreements.
    */
-  async getRemixTrackParents(
-    trackId: number,
+  async getRemixAgreementParents(
+    agreementId: number,
     limit: Nullable<number>,
     offset: Nullable<number>
   ) {
-    const req = Requests.getRemixTrackParents(trackId, limit, offset)
+    const req = Requests.getRemixAgreementParents(agreementId, limit, offset)
     return await this._makeRequest(req)
   }
 
   /**
-   * Gets tracks trending on Coliving.
+   * Gets agreements trending on Coliving.
    * @param genre
    * @param timeFrame one of day, week, month, or year
-   * @param idsArray track ids
+   * @param idsArray agreement ids
    * @param limit
    * @param offset
    */
-  async getTrendingTracks(
+  async getTrendingAgreements(
     genre: Nullable<string>,
     timeFrame: Nullable<string>,
     idsArray: Nullable<number[]>,
@@ -350,7 +350,7 @@ export class DiscoveryProvider {
     offset: Nullable<number>,
     withUsers = false
   ) {
-    const req = Requests.getTrendingTracks(
+    const req = Requests.getTrendingAgreements(
       genre,
       timeFrame,
       idsArray,
@@ -359,12 +359,12 @@ export class DiscoveryProvider {
       withUsers
     )
     return await this._makeRequest<{
-      listenCounts: Array<{ trackId: number; listens: number }>
+      listenCounts: Array<{ agreementId: number; listens: number }>
     }>(req)
   }
 
   /**
-   * get full playlist objects, including tracks, for passed in array of playlistId
+   * get full playlist objects, including agreements, for passed in array of playlistId
    * @returns array of playlist objects
    * additional metadata fields on playlist objects:
    *  {Integer} repost_count - repost count for given playlist
@@ -396,28 +396,28 @@ export class DiscoveryProvider {
    * @param filter - filter by "all", "original", or "repost"
    * @param limit - max # of items to return
    * @param offset - offset into list to return from (for pagination)
-   * @returns Array of track and playlist metadata objects
-   * additional metadata fields on track and playlist objects:
-   *  {String} activity_timestamp - timestamp of requested user's repost for given track or playlist,
+   * @returns Array of agreement and playlist metadata objects
+   * additional metadata fields on agreement and playlist objects:
+   *  {String} activity_timestamp - timestamp of requested user's repost for given agreement or playlist,
    *    used for sorting feed
-   *  {Integer} repost_count - repost count of given track/playlist
-   *  {Integer} save_count - save count of given track/playlist
-   *  {Boolean} has_current_user_reposted - has current user reposted given track/playlist
-   *  {Array} followee_reposts - followees of current user that have reposted given track/playlist
+   *  {Integer} repost_count - repost count of given agreement/playlist
+   *  {Integer} save_count - save count of given agreement/playlist
+   *  {Boolean} has_current_user_reposted - has current user reposted given agreement/playlist
+   *  {Array} followee_reposts - followees of current user that have reposted given agreement/playlist
    */
   async getSocialFeed(
     filter: string,
     limit = 100,
     offset = 0,
     withUsers = false,
-    tracksOnly = false
+    agreementsOnly = false
   ) {
     const req = Requests.getSocialFeed(
       filter,
       limit,
       offset,
       withUsers,
-      tracksOnly
+      agreementsOnly
     )
     return await this._makeRequest(req)
   }
@@ -427,14 +427,14 @@ export class DiscoveryProvider {
    * @param userId - requested user id
    * @param limit - max # of items to return (for pagination)
    * @param offset - offset into list to return from (for pagination)
-   * @returns Array of track and playlist metadata objects}
-   * additional metadata fields on track and playlist objects:
-   *  {String} activity_timestamp - timestamp of requested user's repost for given track or playlist,
+   * @returns Array of agreement and playlist metadata objects}
+   * additional metadata fields on agreement and playlist objects:
+   *  {String} activity_timestamp - timestamp of requested user's repost for given agreement or playlist,
    *    used for sorting feed
-   *  {Integer} repost_count - repost count of given track/playlist
-   *  {Integer} save_count - save count of given track/playlist
-   *  {Boolean} has_current_user_reposted - has current user reposted given track/playlist
-   *  {Array} followee_reposts - followees of current user that have reposted given track/playlist
+   *  {Integer} repost_count - repost count of given agreement/playlist
+   *  {Integer} save_count - save count of given agreement/playlist
+   *  {Boolean} has_current_user_reposted - has current user reposted given agreement/playlist
+   *  {Array} followee_reposts - followees of current user that have reposted given agreement/playlist
    */
   async getUserRepostFeed(
     userId: number,
@@ -469,23 +469,23 @@ export class DiscoveryProvider {
   }
 
   /**
-   * get intersection of users that have reposted repostTrackId and users that are followed by followerUserId
+   * get intersection of users that have reposted repostAgreementId and users that are followed by followerUserId
    * followee = user that is followed; follower = user that follows
-   * @param repostTrackId track that is reposted
-   * @param followerUserId user that reposted track
+   * @param repostAgreementId agreement that is reposted
+   * @param followerUserId user that reposted agreement
    * @example
-   * getTrackRepostIntersectionUsers(100, 0, 1, 1) - IDs must be valid
+   * getAgreementRepostIntersectionUsers(100, 0, 1, 1) - IDs must be valid
    */
-  async getTrackRepostIntersectionUsers(
+  async getAgreementRepostIntersectionUsers(
     limit = 100,
     offset = 0,
-    repostTrackId: number,
+    repostAgreementId: number,
     followerUserId: number
   ) {
-    const req = Requests.getTrackRepostIntersectionUsers(
+    const req = Requests.getAgreementRepostIntersectionUsers(
       limit,
       offset,
-      repostTrackId,
+      repostAgreementId,
       followerUserId
     )
     return await this._makeRequest(req)
@@ -495,7 +495,7 @@ export class DiscoveryProvider {
    * get intersection of users that have reposted repostPlaylistId and users that are followed by followerUserId
    * followee = user that is followed; follower = user that follows
    * @param repostPlaylistId playlist that is reposted
-   * @param followerUserId user that reposted track
+   * @param followerUserId user that reposted agreement
    * @example
    * getPlaylistRepostIntersectionUsers(100, 0, 1, 1) - IDs must be valid
    */
@@ -535,16 +535,16 @@ export class DiscoveryProvider {
   }
 
   /**
-   * get users that reposted repostTrackId, sorted by follower count descending
-   * @param repostTrackId
+   * get users that reposted repostAgreementId, sorted by follower count descending
+   * @param repostAgreementId
    * @return array of user objects
    * additional metadata fields on user objects:
    *  {Integer} follower_count - follower count of given user
    * @example
-   * getRepostersForTrack(100, 0, 1) - ID must be valid
+   * getRepostersForAgreement(100, 0, 1) - ID must be valid
    */
-  async getRepostersForTrack(limit = 100, offset = 0, repostTrackId: number) {
-    const req = Requests.getRepostersForTrack(limit, offset, repostTrackId)
+  async getRepostersForAgreement(limit = 100, offset = 0, repostAgreementId: number) {
+    const req = Requests.getRepostersForAgreement(limit, offset, repostAgreementId)
     return await this._makeRequest(req)
   }
 
@@ -571,16 +571,16 @@ export class DiscoveryProvider {
   }
 
   /**
-   * get users that saved saveTrackId, sorted by follower count descending
-   * @param saveTrackId
+   * get users that saved saveAgreementId, sorted by follower count descending
+   * @param saveAgreementId
    * @return array of user objects
    * additional metadata fields on user objects:
    *  {Integer} follower_count - follower count of given user
    * @example
-   * getSaversForTrack(100, 0, 1) - ID must be valid
+   * getSaversForAgreement(100, 0, 1) - ID must be valid
    */
-  async getSaversForTrack(limit = 100, offset = 0, saveTrackId: number) {
-    const req = Requests.getSaversForTrack(limit, offset, saveTrackId)
+  async getSaversForAgreement(limit = 100, offset = 0, saveAgreementId: number) {
+    const req = Requests.getSaversForAgreement(limit, offset, saveAgreementId)
     return await this._makeRequest(req)
   }
 
@@ -614,11 +614,11 @@ export class DiscoveryProvider {
   }
 
   /**
-   * Perform a full-text search. Returns tracks, users, playlists, albums
+   * Perform a full-text search. Returns agreements, users, playlists, albums
    *    with optional user-specific results for each
-   *  - user, track, and playlist objects have all same data as returned from standalone endpoints
+   *  - user, agreement, and playlist objects have all same data as returned from standalone endpoints
    * @param text search query
-   * @param kind 'tracks', 'users', 'playlists', 'albums', 'all'
+   * @param kind 'agreements', 'users', 'playlists', 'albums', 'all'
    * @param limit max # of items to return per list (for pagination)
    * @param offset offset into list to return from (for pagination)
    */
@@ -628,9 +628,9 @@ export class DiscoveryProvider {
   }
 
   /**
-   * Perform a lighter-weight full-text search. Returns tracks, users, playlists, albums
+   * Perform a lighter-weight full-text search. Returns agreements, users, playlists, albums
    *    with optional user-specific results for each
-   *  - user, track, and playlist objects have core data, and track & playlist objects
+   *  - user, agreement, and playlist objects have core data, and agreement & playlist objects
    *    also return user object
    * @param text search query
    * @param limit max # of items to return per list (for pagination)
@@ -642,11 +642,11 @@ export class DiscoveryProvider {
   }
 
   /**
-   * Perform a tags-only search. Returns tracks with required tag and users
+   * Perform a tags-only search. Returns agreements with required tag and users
    * that have used a tag greater than a specified number of times
    * @param text search query
    * @param userTagCount min # of times a user must have used a tag to be returned
-   * @param kind 'tracks', 'users', 'playlists', 'albums', 'all'
+   * @param kind 'agreements', 'users', 'playlists', 'albums', 'all'
    * @param limit max # of items to return per list (for pagination)
    * @param offset offset into list to return from (for pagination)
    */
@@ -663,7 +663,7 @@ export class DiscoveryProvider {
 
   /**
    * Return saved playlists for current user
-   * NOTE in returned JSON, SaveType string one of track, playlist, album
+   * NOTE in returned JSON, SaveType string one of agreement, playlist, album
    * @param limit - max # of items to return
    * @param offset - offset into list to return from (for pagination)
    */
@@ -674,7 +674,7 @@ export class DiscoveryProvider {
 
   /**
    * Return saved albums for current user
-   * NOTE in returned JSON, SaveType string one of track, playlist, album
+   * NOTE in returned JSON, SaveType string one of agreement, playlist, album
    * @param limit - max # of items to return
    * @param offset - offset into list to return from (for pagination)
    */
@@ -684,13 +684,13 @@ export class DiscoveryProvider {
   }
 
   /**
-   * Return saved tracks for current user
-   * NOTE in returned JSON, SaveType string one of track, playlist, album
+   * Return saved agreements for current user
+   * NOTE in returned JSON, SaveType string one of agreement, playlist, album
    * @param limit - max # of items to return
    * @param offset - offset into list to return from (for pagination)
    */
-  async getSavedTracks(limit = 100, offset = 0, withUsers = false) {
-    const req = Requests.getSavedTracks(limit, offset, withUsers)
+  async getSavedAgreements(limit = 100, offset = 0, withUsers = false) {
+    const req = Requests.getSavedAgreements(limit, offset, withUsers)
     return await this._makeRequest(req)
   }
 
@@ -762,19 +762,19 @@ export class DiscoveryProvider {
   }
 
   /**
-   * @deprecated Migrate to using getMostLovedTracks
+   * @deprecated Migrate to using getMostLovedAgreements
    */
   async getTopFolloweeSaves(type: string, limit: string, withUsers = false) {
     const req = Requests.getTopFolloweeSaves(type, limit, withUsers)
     return await this._makeRequest(req)
   }
 
-  async getMostLovedTracks(
+  async getMostLovedAgreements(
     encodedUserId: string,
     limit: string,
     withUsers = false
   ) {
-    const req = Requests.getMostLovedTracks(encodedUserId, limit, withUsers)
+    const req = Requests.getMostLovedAgreements(encodedUserId, limit, withUsers)
     return await this._makeRequest(req)
   }
 
@@ -805,10 +805,10 @@ export class DiscoveryProvider {
 
   async getNotifications(
     minBlockNumber: string,
-    trackIds: string[],
+    agreementIds: string[],
     timeout: number
   ) {
-    const req = Requests.getNotifications(minBlockNumber, trackIds, timeout)
+    const req = Requests.getNotifications(minBlockNumber, agreementIds, timeout)
     return await this._makeRequest(req)
   }
 
@@ -817,8 +817,8 @@ export class DiscoveryProvider {
     return await this._makeRequest(req)
   }
 
-  async getTrackListenMilestones(timeout: number) {
-    const req = Requests.getTrackListenMilestones(timeout)
+  async getAgreementListenMilestones(timeout: number) {
+    const req = Requests.getAgreementListenMilestones(timeout)
     return await this._makeRequest(req)
   }
 

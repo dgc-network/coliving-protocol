@@ -1,4 +1,4 @@
-"""create track routes table
+"""create agreement routes table
 
 Revision ID: 301b1e42dc4b
 Revises: 436c10e54758
@@ -21,28 +21,28 @@ Session = sessionmaker()
 
 def upgrade():
     op.create_table(
-        "track_routes",
+        "agreement_routes",
         sa.Column("slug", sa.String(), nullable=False, index=False),
         sa.Column("title_slug", sa.String(), nullable=False, index=False),
         sa.Column("collision_id", sa.Integer(), nullable=False, index=False),
         sa.Column("owner_id", sa.Integer(), nullable=False, index=False),
-        sa.Column("track_id", sa.Integer(), nullable=False, index=False),
+        sa.Column("agreement_id", sa.Integer(), nullable=False, index=False),
         sa.Column("is_current", sa.Boolean(), nullable=False, index=False),
         sa.Column("blockhash", sa.String(), nullable=False, index=False),
         sa.Column("blocknumber", sa.Integer(), nullable=False, index=False),
         sa.Column("txhash", sa.String(), nullable=False, index=False),
         sa.PrimaryKeyConstraint("owner_id", "slug"),
-        sa.Index("track_id", "is_current"),
+        sa.Index("agreement_id", "is_current"),
     )
     bind = op.get_bind()
     session = Session(bind=bind)
 
-    # Bring over existing routes (current tracks)
+    # Bring over existing routes (current agreements)
     session.execute(
         sa.text(
             """
-            INSERT INTO track_routes (
-                track_id
+            INSERT INTO agreement_routes (
+                agreement_id
                 , owner_id
                 , slug
                 , title_slug
@@ -53,22 +53,22 @@ def upgrade():
                 , txhash
             )
             SELECT
-                track_id
+                agreement_id
                 , owner_id
-                , CONCAT(SPLIT_PART(route_id, '/', 2),  '-', track_id)
+                , CONCAT(SPLIT_PART(route_id, '/', 2),  '-', agreement_id)
                     AS slug
-                , CONCAT(SPLIT_PART(route_id, '/', 2),  '-', track_id)
+                , CONCAT(SPLIT_PART(route_id, '/', 2),  '-', agreement_id)
                     AS title_slug
                 , 0 AS collision_id
                 , is_current
                 , blockhash
                 , blocknumber
                 ,txhash
-            FROM tracks
+            FROM agreements
             WHERE is_current
             GROUP BY
                 owner_id
-                , track_id
+                , agreement_id
                 , route_id
                 , is_current
                 , blockhash
@@ -78,12 +78,12 @@ def upgrade():
         )
     )
 
-    # Bring over existing routes (non-current tracks)
+    # Bring over existing routes (non-current agreements)
     session.execute(
         sa.text(
             """
-            INSERT INTO track_routes (
-                track_id
+            INSERT INTO agreement_routes (
+                agreement_id
                 , owner_id
                 , slug
                 , title_slug
@@ -94,7 +94,7 @@ def upgrade():
                 , txhash
             )
             SELECT
-                t.track_id
+                t.agreement_id
                 , t.owner_id
                 , t.slug
                 , t.title_slug
@@ -105,17 +105,17 @@ def upgrade():
                 , t.txhash
             FROM (
                 SELECT
-                    nc.track_id
+                    nc.agreement_id
                     , nc.owner_id
                     , CONCAT(
                             SPLIT_PART(nc.route_id, '/', 2),
                             '-',
-                            nc.track_id
+                            nc.agreement_id
                         ) AS slug
                     , CONCAT(
                             SPLIT_PART(nc.route_id, '/', 2),
                             '-',
-                            nc.track_id
+                            nc.agreement_id
                         ) AS title_slug
                     , 0 AS collision_id
                     , nc.is_current
@@ -126,12 +126,12 @@ def upgrade():
                             PARTITION BY nc.route_id
                             ORDER BY nc.blocknumber DESC
                         ) AS rank
-                FROM tracks AS c_tracks
-                JOIN tracks AS nc
-                ON c_tracks.track_id = nc.track_id
+                FROM agreements AS c_agreements
+                JOIN agreements AS nc
+                ON c_agreements.agreement_id = nc.agreement_id
                 WHERE NOT nc.is_current
-                AND c_tracks.is_current
-                AND NOT nc.route_id = c_tracks.route_id
+                AND c_agreements.is_current
+                AND NOT nc.route_id = c_agreements.route_id
             ) t
             WHERE t.rank = 1;
             """
@@ -140,4 +140,4 @@ def upgrade():
 
 
 def downgrade():
-    op.drop_table("track_routes")
+    op.drop_table("agreement_routes")

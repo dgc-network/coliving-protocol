@@ -15,7 +15,7 @@ from src.api.v1.helpers import (
     extend_favorite,
     extend_supporter,
     extend_supporting,
-    extend_track,
+    extend_agreement,
     extend_user,
     format_limit,
     format_offset,
@@ -46,7 +46,7 @@ from src.api.v1.models.users import (
     user_model_full,
     user_replica_set,
 )
-from src.api.v1.playlists import get_tracks_for_playlist
+from src.api.v1.playlists import get_agreements_for_playlist
 from src.challenges.challenge_event_bus import setup_challenge_bus
 from src.queries.get_associated_user_id import get_associated_user_id
 from src.queries.get_associated_user_wallet import get_associated_user_wallet
@@ -55,16 +55,16 @@ from src.queries.get_followees_for_user import get_followees_for_user
 from src.queries.get_followers_for_user import get_followers_for_user
 from src.queries.get_related_artists import get_related_artists
 from src.queries.get_repost_feed_for_user import get_repost_feed_for_user
-from src.queries.get_save_tracks import get_save_tracks
+from src.queries.get_save_agreements import get_save_agreements
 from src.queries.get_saves import get_saves
 from src.queries.get_support_for_user import (
     get_support_received_by_user,
     get_support_sent_by_user,
 )
 from src.queries.get_top_genre_users import get_top_genre_users
-from src.queries.get_top_user_track_tags import get_top_user_track_tags
+from src.queries.get_top_user_agreement_tags import get_top_user_agreement_tags
 from src.queries.get_top_users import get_top_users
-from src.queries.get_tracks import get_tracks
+from src.queries.get_agreements import get_agreements
 from src.queries.get_user_listening_history import (
     GetUserListeningHistoryArgs,
     get_user_listening_history,
@@ -82,7 +82,7 @@ from src.utils.redis_cache import cache
 from src.utils.redis_metrics import record_metrics
 
 from .models.activities import activity_model, activity_model_full
-from .models.tracks import track, track_full
+from .models.agreements import agreement, agreement_full
 
 logger = logging.getLogger(__name__)
 
@@ -190,9 +190,9 @@ class UserHandle(FullUserHandle):
         return super()._get(handle)
 
 
-USER_TRACKS_ROUTE = "/<string:id>/tracks"
-user_tracks_route_parser = pagination_with_current_user_parser.copy()
-user_tracks_route_parser.add_argument(
+USER_AGREEMENTS_ROUTE = "/<string:id>/agreements"
+user_agreements_route_parser = pagination_with_current_user_parser.copy()
+user_agreements_route_parser.add_argument(
     "sort",
     required=False,
     type=str,
@@ -201,29 +201,29 @@ user_tracks_route_parser.add_argument(
     description="Field to sort by",
 )
 
-tracks_response = make_response(
-    "tracks_response", ns, fields.List(fields.Nested(track))
+agreements_response = make_response(
+    "agreements_response", ns, fields.List(fields.Nested(agreement))
 )
 
 
-@ns.route(USER_TRACKS_ROUTE)
-class TrackList(Resource):
+@ns.route(USER_AGREEMENTS_ROUTE)
+class AgreementList(Resource):
     @record_metrics
     @ns.doc(
-        id="""Get Tracks by User""",
-        description="""Gets the tracks created by a user using their user ID""",
+        id="""Get Agreements by User""",
+        description="""Gets the agreements created by a user using their user ID""",
         params={
             "id": "A User ID",
         },
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
-    @ns.expect(user_tracks_route_parser)
-    @ns.marshal_with(tracks_response)
+    @ns.expect(user_agreements_route_parser)
+    @ns.marshal_with(agreements_response)
     @auth_middleware()
     @cache(ttl_sec=5)
     def get(self, id, authed_user_id=None):
         decoded_id = decode_with_abort(id, ns)
-        args = user_tracks_route_parser.parse_args()
+        args = user_agreements_route_parser.parse_args()
 
         current_user_id = get_current_user_id(args)
 
@@ -241,34 +241,34 @@ class TrackList(Resource):
             "limit": limit,
             "offset": offset,
         }
-        tracks = get_tracks(args)
-        tracks = list(map(extend_track, tracks))
-        return success_response(tracks)
+        agreements = get_agreements(args)
+        agreements = list(map(extend_agreement, agreements))
+        return success_response(agreements)
 
 
-full_tracks_response = make_full_response(
-    "full_tracks", full_ns, fields.List(fields.Nested(track_full))
+full_agreements_response = make_full_response(
+    "full_agreements", full_ns, fields.List(fields.Nested(agreement_full))
 )
 
 
-@full_ns.route(USER_TRACKS_ROUTE)
-class FullTrackList(Resource):
+@full_ns.route(USER_AGREEMENTS_ROUTE)
+class FullAgreementList(Resource):
     @record_metrics
     @full_ns.doc(
-        id="""Get Tracks by User""",
-        description="""Gets the tracks created by a user using their user ID""",
+        id="""Get Agreements by User""",
+        description="""Gets the agreements created by a user using their user ID""",
         params={
             "id": "A User ID",
         },
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
-    @full_ns.expect(user_tracks_route_parser)
-    @full_ns.marshal_with(full_tracks_response)
+    @full_ns.expect(user_agreements_route_parser)
+    @full_ns.marshal_with(full_agreements_response)
     @auth_middleware()
     @cache(ttl_sec=5)
     def get(self, id, authed_user_id=None):
         decoded_id = decode_with_abort(id, ns)
-        args = user_tracks_route_parser.parse_args()
+        args = user_agreements_route_parser.parse_args()
 
         current_user_id = get_current_user_id(args)
 
@@ -286,20 +286,20 @@ class FullTrackList(Resource):
             "limit": limit,
             "offset": offset,
         }
-        tracks = get_tracks(args)
-        tracks = list(map(extend_track, tracks))
-        return success_response(tracks)
+        agreements = get_agreements(args)
+        agreements = list(map(extend_agreement, agreements))
+        return success_response(agreements)
 
 
-USER_HANDLE_TRACKS = "/handle/<string:handle>/tracks"
+USER_HANDLE_AGREEMENTS = "/handle/<string:handle>/agreements"
 
 
-@full_ns.route(USER_HANDLE_TRACKS)
-class HandleFullTrackList(Resource):
+@full_ns.route(USER_HANDLE_AGREEMENTS)
+class HandleFullAgreementList(Resource):
     @record_metrics
     @cache(ttl_sec=5)
     def _get(self, handle, authed_user_id=None):
-        args = user_tracks_route_parser.parse_args()
+        args = user_agreements_route_parser.parse_args()
 
         current_user_id = get_current_user_id(args)
 
@@ -317,38 +317,38 @@ class HandleFullTrackList(Resource):
             "limit": limit,
             "offset": offset,
         }
-        tracks = get_tracks(args)
-        tracks = list(map(extend_track, tracks))
-        return success_response(tracks)
+        agreements = get_agreements(args)
+        agreements = list(map(extend_agreement, agreements))
+        return success_response(agreements)
 
     @auth_middleware()
     @full_ns.doc(
-        id="""Get Tracks by User Handle""",
-        description="""Gets the tracks created by a user using the user's handle""",
+        id="""Get Agreements by User Handle""",
+        description="""Gets the agreements created by a user using the user's handle""",
         params={
             "handle": "A User handle",
         },
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
-    @full_ns.expect(user_tracks_route_parser)
-    @full_ns.marshal_with(full_tracks_response)
+    @full_ns.expect(user_agreements_route_parser)
+    @full_ns.marshal_with(full_agreements_response)
     def get(self, handle, authed_user_id=None):
         return self._get(handle, authed_user_id)
 
 
-@ns.route(USER_HANDLE_TRACKS)
-class HandleTrackList(HandleFullTrackList):
+@ns.route(USER_HANDLE_AGREEMENTS)
+class HandleAgreementList(HandleFullAgreementList):
     @auth_middleware()
     @ns.doc(
-        id="""Get Tracks by User Handle""",
-        description="""Gets the tracks created by a user using the user's handle""",
+        id="""Get Agreements by User Handle""",
+        description="""Gets the agreements created by a user using the user's handle""",
         params={
             "handle": "A User handle",
         },
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
-    @ns.expect(user_tracks_route_parser)
-    @ns.marshal_with(tracks_response)
+    @ns.expect(user_agreements_route_parser)
+    @ns.marshal_with(agreements_response)
     def get(self, handle, authed_user_id):
         return super()._get(handle, authed_user_id)
 
@@ -433,7 +433,7 @@ class FullRepostList(Resource):
         reposts = get_repost_feed_for_user(decoded_id, args)
         for repost in reposts:
             if "playlist_id" in repost:
-                repost["tracks"] = get_tracks_for_playlist(
+                repost["agreements"] = get_agreements_for_playlist(
                     repost["playlist_id"], current_user_id
                 )
         activities = list(map(extend_activity, reposts))
@@ -466,7 +466,7 @@ class HandleFullRepostList(Resource):
         reposts = get_repost_feed_for_user(None, args)
         for repost in reposts:
             if "playlist_id" in repost:
-                repost["tracks"] = get_tracks_for_playlist(
+                repost["agreements"] = get_agreements_for_playlist(
                     repost["playlist_id"], current_user_id
                 )
         activities = list(map(extend_activity, reposts))
@@ -512,8 +512,8 @@ tags_response = make_response("tags_response", ns, fields.List(fields.String))
 class MostUsedTags(Resource):
     @record_metrics
     @ns.doc(
-        id="""Get Top Track Tags""",
-        description="""Gets the most used track tags by a user.""",
+        id="""Get Top Agreement Tags""",
+        description="""Gets the most used agreement tags by a user.""",
         params={"id": "A User ID"},
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
@@ -521,11 +521,11 @@ class MostUsedTags(Resource):
     @ns.marshal_with(tags_response)
     @cache(ttl_sec=60 * 5)
     def get(self, id):
-        """Fetch most used tags in a user's tracks."""
+        """Fetch most used tags in a user's agreements."""
         decoded_id = decode_with_abort(id, ns)
         args = tags_route_parser.parse_args()
         limit = format_limit(args)
-        tags = get_top_user_track_tags({"user_id": decoded_id, "limit": limit})
+        tags = get_top_user_agreement_tags({"user_id": decoded_id, "limit": limit})
         return success_response(tags)
 
 
@@ -537,13 +537,13 @@ favorites_full_response = make_full_response(
 )
 
 
-# different route from /<string:id>/favorites/tracks
+# different route from /<string:id>/favorites/agreements
 @ns.route("/<string:id>/favorites")
-class FavoritedTracks(Resource):
+class FavoritedAgreements(Resource):
     @record_metrics
     @ns.doc(
         id="""Get Favorites""",
-        description="""Gets a user's favorite tracks""",
+        description="""Gets a user's favorite agreements""",
         params={"id": "A User ID"},
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
@@ -551,27 +551,27 @@ class FavoritedTracks(Resource):
     @cache(ttl_sec=5)
     def get(self, id):
         decoded_id = decode_with_abort(id, ns)
-        favorites = get_saves("tracks", decoded_id)
+        favorites = get_saves("agreements", decoded_id)
         favorites = list(map(extend_favorite, favorites))
         return success_response(favorites)
 
 
-USER_FAVORITED_TRACKS_ROUTE = "/<string:id>/favorites/tracks"
+USER_FAVORITED_AGREEMENTS_ROUTE = "/<string:id>/favorites/agreements"
 
 
-@full_ns.route(USER_FAVORITED_TRACKS_ROUTE)
-class UserFavoritedTracksFull(Resource):
+@full_ns.route(USER_FAVORITED_AGREEMENTS_ROUTE)
+class UserFavoritedAgreementsFull(Resource):
     @record_metrics
     @cache(ttl_sec=5)
     def _get(self, id):
-        """Fetch favorited tracks for a user."""
+        """Fetch favorited agreements for a user."""
         args = pagination_with_current_user_parser.parse_args()
         decoded_id = decode_with_abort(id, ns)
         current_user_id = get_current_user_id(args)
 
         offset = format_offset(args)
         limit = format_limit(args)
-        get_tracks_args = {
+        get_agreements_args = {
             "filter_deleted": False,
             "user_id": decoded_id,
             "current_user_id": current_user_id,
@@ -579,13 +579,13 @@ class UserFavoritedTracksFull(Resource):
             "offset": offset,
             "with_users": True,
         }
-        track_saves = get_save_tracks(get_tracks_args)
-        tracks = list(map(extend_activity, track_saves))
-        return success_response(tracks)
+        agreement_saves = get_save_agreements(get_agreements_args)
+        agreements = list(map(extend_activity, agreement_saves))
+        return success_response(agreements)
 
     @full_ns.doc(
         id="""Get Favorites""",
-        description="""Gets a user's favorite tracks""",
+        description="""Gets a user's favorite agreements""",
         params={"id": "A User ID"},
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
@@ -602,11 +602,11 @@ history_response_full = make_full_response(
     "history_response_full", full_ns, fields.List(fields.Nested(activity_model_full))
 )
 
-USER_HISTORY_TRACKS_ROUTE = "/<string:id>/history/tracks"
+USER_HISTORY_AGREEMENTS_ROUTE = "/<string:id>/history/agreements"
 
 
-@full_ns.route(USER_HISTORY_TRACKS_ROUTE)
-class TrackHistoryFull(Resource):
+@full_ns.route(USER_HISTORY_AGREEMENTS_ROUTE)
+class AgreementHistoryFull(Resource):
     @record_metrics
     @cache(ttl_sec=5)
     def _get(self, id):
@@ -615,19 +615,19 @@ class TrackHistoryFull(Resource):
         current_user_id = get_current_user_id(args)
         offset = format_offset(args)
         limit = format_limit(args)
-        get_tracks_args = GetUserListeningHistoryArgs(
+        get_agreements_args = GetUserListeningHistoryArgs(
             user_id=decoded_id,
             current_user_id=current_user_id,
             limit=limit,
             offset=offset,
         )
-        track_history = get_user_listening_history(get_tracks_args)
-        tracks = list(map(extend_activity, track_history))
-        return success_response(tracks)
+        agreement_history = get_user_listening_history(get_agreements_args)
+        agreements = list(map(extend_activity, agreement_history))
+        return success_response(agreements)
 
     @full_ns.doc(
-        id="""Get User's Track History""",
-        description="""Get the tracks the user recently listened to.""",
+        id="""Get User's Agreement History""",
+        description="""Get the agreements the user recently listened to.""",
         params={"id": "A User ID"},
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
@@ -637,11 +637,11 @@ class TrackHistoryFull(Resource):
         return self._get(id)
 
 
-@ns.route(USER_HISTORY_TRACKS_ROUTE)
-class TrackHistory(TrackHistoryFull):
+@ns.route(USER_HISTORY_AGREEMENTS_ROUTE)
+class AgreementHistory(AgreementHistoryFull):
     @ns.doc(
-        id="""Get User's Track History""",
-        description="""Get the tracks the user recently listened to.""",
+        id="""Get User's Agreement History""",
+        description="""Get the agreements the user recently listened to.""",
         params={"id": "A User ID"},
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
@@ -930,7 +930,7 @@ class FullTopUsers(Resource):
 
     @full_ns.doc(
         id="""Get Top Users""",
-        description="""Get the Top Users having at least one track by follower count""",
+        description="""Get the Top Users having at least one agreement by follower count""",
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
     @full_ns.expect(pagination_with_current_user_parser)
@@ -943,7 +943,7 @@ class FullTopUsers(Resource):
 class TopUsers(FullTopUsers):
     @ns.doc(
         id="""Get Top Users""",
-        description="""Get the Top Users having at least one track by follower count""",
+        description="""Get the Top Users having at least one agreement by follower count""",
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
     @ns.expect(pagination_with_current_user_parser)

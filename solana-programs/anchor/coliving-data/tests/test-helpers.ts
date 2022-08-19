@@ -16,12 +16,12 @@ import {
 import {
   createContentNode,
   createUser,
-  createTrack,
+  createAgreement,
   createPlaylist,
   initUser,
   initUserSolPubkey,
-  deleteTrack,
-  updateTrack,
+  deleteAgreement,
+  updateAgreement,
   EntityTypesEnumValues,
   ManagementActions,
   deletePlaylist,
@@ -211,7 +211,7 @@ export const testCreateUser = async ({
   expect(chainAuthority, "authority").to.equal(expectedAuthority);
 };
 
-export const testCreateTrack = async ({
+export const testCreateAgreement = async ({
   provider,
   program,
   id,
@@ -219,20 +219,20 @@ export const testCreateTrack = async ({
   userId,
   bumpSeed,
   adminAccount,
-  trackMetadata,
+  agreementMetadata,
   userAuthorityKeypair,
-  trackOwnerAccount,
+  agreementOwnerAccount,
   userAuthorityDelegateAccount,
   authorityDelegationStatusAccount,
 }) => {
-  const tx = await createTrack({
+  const tx = await createAgreement({
     id,
     program,
     userAuthorityPublicKey: userAuthorityKeypair.publicKey,
-    userAccount: trackOwnerAccount,
+    userAccount: agreementOwnerAccount,
     userAuthorityDelegateAccount,
     authorityDelegationStatusAccount,
-    metadata: trackMetadata,
+    metadata: agreementMetadata,
     baseAuthorityAccount,
     userId,
     adminAccount,
@@ -245,22 +245,22 @@ export const testCreateTrack = async ({
   // Validate instruction data
   expect(decodedInstruction.name).to.equal("manageEntity");
   expect(decodedData.id.toString()).to.deep.equal(id.toString());
-  expect(decodedData.metadata).to.equal(trackMetadata);
-  expect(decodedData.entityType).to.deep.equal(EntityTypesEnumValues.track);
+  expect(decodedData.metadata).to.equal(agreementMetadata);
+  expect(decodedData.entityType).to.deep.equal(EntityTypesEnumValues.agreement);
   expect(decodedData.managementAction).to.deep.equal(ManagementActions.create);
   // Assert on instruction struct
-  // 1st index = track owner user storage account
+  // 1st index = agreement owner user storage account
   // 2nd index = user authority keypair
-  // Indexing code must check that the track owner PDA is known before processing
-  expect(accountPubKeys[1]).to.equal(trackOwnerAccount.toString());
+  // Indexing code must check that the agreement owner PDA is known before processing
+  expect(accountPubKeys[1]).to.equal(agreementOwnerAccount.toString());
   expect(accountPubKeys[2]).to.equal(userAuthorityKeypair.publicKey.toString());
 };
 
-export const testDeleteTrack = async ({
+export const testDeleteAgreement = async ({
   provider,
   program,
   id,
-  trackOwnerAccount,
+  agreementOwnerAccount,
   userAuthorityDelegateAccount,
   authorityDelegationStatusAccount,
   userAuthorityKeypair,
@@ -269,10 +269,10 @@ export const testDeleteTrack = async ({
   bumpSeed,
   adminAccount,
 }) => {
-  const tx = deleteTrack({
+  const tx = deleteAgreement({
     id,
     program,
-    userAccount: trackOwnerAccount,
+    userAccount: agreementOwnerAccount,
     userAuthorityDelegateAccount,
     authorityDelegationStatusAccount,
     userAuthorityPublicKey: userAuthorityKeypair.publicKey,
@@ -287,17 +287,17 @@ export const testDeleteTrack = async ({
     await getTransactionWithData(program, provider, txSignature, 0);
   expect(decodedInstruction.name).to.equal("manageEntity");
   expect(decodedData.id.toString()).to.equal(id.toString());
-  expect(decodedData.entityType).to.deep.equal(EntityTypesEnumValues.track);
+  expect(decodedData.entityType).to.deep.equal(EntityTypesEnumValues.agreement);
   expect(decodedData.managementAction).to.deep.equal(ManagementActions.delete);
   // Assert on instruction struct
-  // 0th index = track owner user storage account
+  // 0th index = agreement owner user storage account
   // 1st index = user authority keypair
-  // Indexing code must check that the track owner PDA is known before processing
-  expect(accountPubKeys[1]).to.equal(trackOwnerAccount.toString());
+  // Indexing code must check that the agreement owner PDA is known before processing
+  expect(accountPubKeys[1]).to.equal(agreementOwnerAccount.toString());
   expect(accountPubKeys[2]).to.equal(userAuthorityKeypair.publicKey.toString());
 };
 
-export const testUpdateTrack = async ({
+export const testUpdateAgreement = async ({
   provider,
   program,
   id,
@@ -311,7 +311,7 @@ export const testUpdateTrack = async ({
   bumpSeed,
   adminAccount,
 }) => {
-  const tx = await updateTrack({
+  const tx = await updateAgreement({
     program,
     baseAuthorityAccount,
     userId,
@@ -332,12 +332,12 @@ export const testUpdateTrack = async ({
   expect(decodedInstruction.name).to.equal("manageEntity");
   expect(decodedData.id.toString()).to.equal(id.toString());
   expect(decodedData.metadata).to.equal(metadata);
-  expect(decodedData.entityType).to.deep.equal(EntityTypesEnumValues.track);
+  expect(decodedData.entityType).to.deep.equal(EntityTypesEnumValues.agreement);
   expect(decodedData.managementAction).to.deep.equal(ManagementActions.update);
   // Assert on instruction struct
-  // 0th index = track owner user storage account
+  // 0th index = agreement owner user storage account
   // 1st index = user authority keypair
-  // Indexing code must check that the track owner PDA is known before processing
+  // Indexing code must check that the agreement owner PDA is known before processing
   expect(accountPubKeys[1]).to.equal(userAccount.toString());
   expect(accountPubKeys[2]).to.equal(userAuthorityKeypair.publicKey.toString());
 };

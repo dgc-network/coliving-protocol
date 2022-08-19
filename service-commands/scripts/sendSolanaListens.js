@@ -15,17 +15,17 @@ async function run (
 
   const success = await Promise.all(
     Array.apply(null, { length: requests }).map(async () => {
-      const trackId = Math.floor(Math.random() * 1000000)
+      const agreementId = Math.floor(Math.random() * 1000000)
       const userId = Math.floor(Math.random() * 1000000)
 
       try {
         console.log(
-          `Sending track listen | trackId=${trackId}, userId=${userId}`
+          `Sending agreement listen | agreementId=${agreementId}, userId=${userId}`
         )
 
         const requestOptions = {
           method: 'POST',
-          url: `${identityEndpoint}/tracks/${trackId}/listen`,
+          url: `${identityEndpoint}/agreements/${agreementId}/listen`,
           headers: { 'content-type': 'application/json' },
           data: { solanaListen: true, userId }
         }
@@ -34,7 +34,7 @@ async function run (
         const signature = response.solTxSignature
 
         console.log(
-          `Successfully sent track listen | trackId=${trackId}, userId=${userId} | signature=${signature}`
+          `Successfully sent agreement listen | agreementId=${agreementId}, userId=${userId} | signature=${signature}`
         )
 
         const pollStart = Date.now()
@@ -69,7 +69,7 @@ async function run (
         }
       } catch (e) {
         console.log(
-          `Failed to send track listen | trackId=${trackId}, userId=${userId}`
+          `Failed to send agreement listen | agreementId=${agreementId}, userId=${userId}`
         )
         return false
       }

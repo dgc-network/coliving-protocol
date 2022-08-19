@@ -2,48 +2,48 @@ const path = require('path')
 const ServiceCommands = require('@coliving/service-commands')
 const { logger } = require('../logger.js')
 const {
-  uploadTrack,
+  uploadAgreement,
   RandomUtils
 } = ServiceCommands
 const {
-  getRandomTrackMetadata,
-  getRandomTrackFilePath
+  getRandomAgreementMetadata,
+  getRandomAgreementFilePath
 } = RandomUtils
 
 const TEMP_STORAGE_PATH = path.resolve('./local-storage/tmp/')
 
-const uploadTracksforUsers = async ({
+const uploadAgreementsforUsers = async ({
   executeAll,
   executeOne,
   walletIndexToUserIdMap
 }) => {
   // Issue parallel uploads for all users
-  const trackIds = await executeAll(async (libs, i) => {
+  const agreementIds = await executeAll(async (libs, i) => {
     // Retrieve user id if known from walletIndexToUserIdMap
     // NOTE - It might be easier to just create a map of wallets instead of using 'index'
     const userId = walletIndexToUserIdMap[i]
-    const newTrackMetadata = getRandomTrackMetadata(userId)
-    const randomTrackFilePath = await getRandomTrackFilePath(TEMP_STORAGE_PATH)
+    const newAgreementMetadata = getRandomAgreementMetadata(userId)
+    const randomAgreementFilePath = await getRandomAgreementFilePath(TEMP_STORAGE_PATH)
     logger.info(
-      `Uploading Track for userId:${userId} (${libs.walletAddress}), ${randomTrackFilePath}, ${JSON.stringify(newTrackMetadata)}`
+      `Uploading Agreement for userId:${userId} (${libs.walletAddress}), ${randomAgreementFilePath}, ${JSON.stringify(newAgreementMetadata)}`
     )
     try {
       const startTime = Date.now()
-      const trackId = await executeOne(i, (l) =>
-        uploadTrack(
+      const agreementId = await executeOne(i, (l) =>
+        uploadAgreement(
           l,
-          newTrackMetadata,
-          randomTrackFilePath
+          newAgreementMetadata,
+          randomAgreementFilePath
         )
       )
       const duration = Date.now() - startTime
-      logger.info(`Uploaded track for userId=${userId}, trackId=${trackId} in ${duration}ms`)
-      return trackId
+      logger.info(`Uploaded agreement for userId=${userId}, agreementId=${agreementId} in ${duration}ms`)
+      return agreementId
     } catch (e) {
-      logger.error(`Error uploading track for userId:${userId} :${e}`)
+      logger.error(`Error uploading agreement for userId:${userId} :${e}`)
     }
   })
-  return trackIds
+  return agreementIds
 }
 
-module.exports.uploadTracksforUsers = uploadTracksforUsers
+module.exports.uploadAgreementsforUsers = uploadAgreementsforUsers

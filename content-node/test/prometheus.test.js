@@ -39,14 +39,14 @@ describe('test Prometheus metrics', async function () {
     )
   })
 
-  it('Checks that hitting unregistered routes does not track prometheus metrics', async function () {
+  it('Checks that hitting unregistered routes does not agreement prometheus metrics', async function () {
     await request(app).get('/blahblahblah')
     const resp = await request(app).get('/prometheus_metrics').expect(200)
 
     assert.ok(!resp.text.includes('blahblahblah'))
   })
 
-  it('Checks the middleware tracks routes with route params', async function () {
+  it('Checks the middleware agreements routes with route params', async function () {
     await request(app).get('/ipfs/QmVickyWasHere')
     await request(app).get('/content/QmVickyWasHere')
 

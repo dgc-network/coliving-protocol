@@ -42,7 +42,7 @@ def upgrade():
             (u.profile_picture is not null or u.profile_picture_sizes is not null) as profile_picture,
             (u.cover_photo is not null or u.cover_photo_sizes is not null) as profile_cover_photo,
             au.following_count >= 5 as follows,
-            au.track_save_count >= 1 as favorites,
+            au.agreement_save_count >= 1 as favorites,
             au.repost_count >= 1 as reposts
         from users u
         join aggregate_user au on au.user_id = u.user_id

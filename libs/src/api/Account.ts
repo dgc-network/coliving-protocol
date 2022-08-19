@@ -340,11 +340,11 @@ export class Account extends Base {
   }
 
   /**
-   * Perform a full-text search. Returns tracks, users, playlists, albums
+   * Perform a full-text search. Returns agreements, users, playlists, albums
    *    with optional user-specific results for each
-   *  - user, track, and playlist objects have all same data as returned from standalone endpoints
+   *  - user, agreement, and playlist objects have all same data as returned from standalone endpoints
    * @param text search query
-   * @param kind 'tracks', 'users', 'playlists', 'albums', 'all'
+   * @param kind 'agreements', 'users', 'playlists', 'albums', 'all'
    * @param limit max # of items to return per list (for pagination)
    * @param offset offset into list to return from (for pagination)
    */
@@ -354,9 +354,9 @@ export class Account extends Base {
   }
 
   /**
-   * Perform a lighter-weight full-text search. Returns tracks, users, playlists, albums
+   * Perform a lighter-weight full-text search. Returns agreements, users, playlists, albums
    *    with optional user-specific results for each
-   *  - user, track, and playlist objects have core data, and track & playlist objects
+   *  - user, agreement, and playlist objects have core data, and agreement & playlist objects
    *    also return user object
    * @param text search query
    * @param limit max # of items to return per list (for pagination)
@@ -368,11 +368,11 @@ export class Account extends Base {
   }
 
   /**
-   * Perform a tags-only search. Returns tracks with required tag and users
+   * Perform a tags-only search. Returns agreements with required tag and users
    * that have used a tag greater than a specified number of times
    * @param text search query
    * @param userTagCount min # of times a user must have used a tag to be returned
-   * @param kind 'tracks', 'users', 'playlists', 'albums', 'all'
+   * @param kind 'agreements', 'users', 'playlists', 'albums', 'all'
    * @param limit max # of items to return per list (for pagination)
    * @param offset offset into list to return from (for pagination)
    */

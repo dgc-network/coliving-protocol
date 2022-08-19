@@ -14,13 +14,13 @@ def test_get_milestones(app):
 
     test_entities = {
         "users": [{"user_id": 1}, {"user_id": 2}, {"user_id": 3}, {"user_id": 4}],
-        "tracks": [
+        "agreements": [
             {
-                "track_id": 1,
+                "agreement_id": 1,
                 "owner_id": 1,
             },
             {
-                "track_id": 2,
+                "agreement_id": 2,
                 "owner_id": 3,
             },
         ],
@@ -74,14 +74,14 @@ def test_get_milestones(app):
                 ),
                 Milestone(
                     id=1,
-                    name=MilestoneName.TRACK_REPOST_COUNT,
+                    name=MilestoneName.AGREEMENT_REPOST_COUNT,
                     threshold=1000,
                     blocknumber=6,
                     timestamp=date,
                 ),
                 Milestone(
                     id=2,
-                    name=MilestoneName.TRACK_SAVE_COUNT,
+                    name=MilestoneName.AGREEMENT_SAVE_COUNT,
                     threshold=100,
                     blocknumber=10,
                     timestamp=date,
@@ -94,12 +94,12 @@ def test_get_milestones(app):
         assert milestones == {
             "follower_counts": {1: 10, 2: 25},
             "repost_counts": {
-                "tracks": {1: 1000},
+                "agreements": {1: 1000},
                 "albums": {},
                 "playlists": {1: 10, 2: 25},
             },
             "favorite_counts": {
-                "tracks": {2: 100},
+                "agreements": {2: 100},
                 "albums": {3: 500},
                 "playlists": {},
             },

@@ -1,11 +1,11 @@
 ---
-id: "full.GetTrendingTracksTimeEnum"
-title: "Enumeration: GetTrendingTracksTimeEnum"
-sidebar_label: "GetTrendingTracksTimeEnum"
+id: "full.GetTrendingAgreementsTimeEnum"
+title: "Enumeration: GetTrendingAgreementsTimeEnum"
+sidebar_label: "GetTrendingAgreementsTimeEnum"
 custom_edit_url: null
 ---
 
-[full](../namespaces/full.md).GetTrendingTracksTimeEnum
+[full](../namespaces/full.md).GetTrendingAgreementsTimeEnum
 
 **`export`**
 

@@ -1,13 +1,13 @@
 ---
-id: "full.GetUsersTrackHistoryRequest"
-title: "Interface: GetUsersTrackHistoryRequest"
-sidebar_label: "GetUsersTrackHistoryRequest"
+id: "full.GetUsersAgreementHistoryRequest"
+title: "Interface: GetUsersAgreementHistoryRequest"
+sidebar_label: "GetUsersAgreementHistoryRequest"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).GetUsersTrackHistoryRequest
+[full](../namespaces/full.md).GetUsersAgreementHistoryRequest
 
 ## Properties
 

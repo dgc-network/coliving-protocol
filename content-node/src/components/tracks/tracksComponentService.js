@@ -4,41 +4,41 @@ const {
   getStartTime
 } = require('../../logging')
 
-const TrackTranscodeHandoffManager = require('./TrackTranscodeHandoffManager')
-const TrackContentUploadManager = require('./trackContentUploadManager')
+const AgreementTranscodeHandoffManager = require('./AgreementTranscodeHandoffManager')
+const AgreementContentUploadManager = require('./agreementContentUploadManager')
 
 /**
- * Upload track segment files and make avail - will later be associated with Coliving track
+ * Upload agreement segment files and make avail - will later be associated with Coliving agreement
  *
- * Also the logic used in /track_content_async route. Params are extracted to keys that are necessary for the job so that
+ * Also the logic used in /agreement_content_async route. Params are extracted to keys that are necessary for the job so that
  * we can pass this task into a worker queue.
  *
  * @param {Object} logContext the context of the request used to create a generic logger
  * @param {Object} requestProps more request specific context, NOT the req object from Express
  * @returns a success or error server response
  *
- * upload track segment files and make avail - will later be associated with Coliving track
+ * upload agreement segment files and make avail - will later be associated with Coliving agreement
  * @dev - Prune upload artifacts after successful and failed uploads. Make call without awaiting, and let async queue clean up.
  */
-const handleTrackContentRoute = async ({ logContext }, requestProps) => {
+const handleAgreementContentRoute = async ({ logContext }, requestProps) => {
   const logger = genericLogger.child(logContext)
   const { fileName, fileDir, fileDestination, cnodeUserUUID } = requestProps
 
   const routeTimeStart = getStartTime()
 
-  // Create track transcode and segments, and save all to disk
+  // Create agreement transcode and segments, and save all to disk
   const codeBlockTimeStart = getStartTime()
   const { transcodeFilePath, segmentFileNames } =
-    await TrackContentUploadManager.transcodeAndSegment(
+    await AgreementContentUploadManager.transcodeAndSegment(
       { logContext },
       { fileName, fileDir }
     )
   logInfoWithDuration(
     { logger, startTime: codeBlockTimeStart },
-    `Successfully re-encoded track file=${fileName}`
+    `Successfully re-encoded agreement file=${fileName}`
   )
 
-  const resp = await TrackContentUploadManager.processTranscodeAndSegments(
+  const resp = await AgreementContentUploadManager.processTranscodeAndSegments(
     { logContext },
     {
       cnodeUserUUID,
@@ -51,7 +51,7 @@ const handleTrackContentRoute = async ({ logContext }, requestProps) => {
   )
   logInfoWithDuration(
     { logger, startTime: routeTimeStart },
-    `Successfully handled track content for file=${fileName}`
+    `Successfully handled agreement content for file=${fileName}`
   )
 
   return resp
@@ -61,7 +61,7 @@ async function handleTranscodeAndSegment(
   { logContext },
   { fileName, fileDir }
 ) {
-  return TrackContentUploadManager.transcodeAndSegment(
+  return AgreementContentUploadManager.transcodeAndSegment(
     { logContext },
     { fileName, fileDir }
   )
@@ -79,7 +79,7 @@ async function handleTranscodeHandOff(
     headers
   }
 ) {
-  return TrackTranscodeHandoffManager.handOff(
+  return AgreementTranscodeHandoffManager.handOff(
     { logContext },
     {
       libs,
@@ -94,7 +94,7 @@ async function handleTranscodeHandOff(
 }
 
 module.exports = {
-  handleTrackContentRoute,
+  handleAgreementContentRoute,
   handleTranscodeAndSegment,
   handleTranscodeHandOff
 }

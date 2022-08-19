@@ -12,8 +12,8 @@ custom_edit_url: null
 
 ## Properties
 
-### tracks
+### agreements
 
- `Optional` **tracks**: [`TrackElement`](TrackElement.md)[]
+ `Optional` **agreements**: [`AgreementElement`](AgreementElement.md)[]
 
 **`memberof`** RemixParent

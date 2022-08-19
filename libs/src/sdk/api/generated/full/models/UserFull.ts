@@ -127,7 +127,7 @@ export interface UserFull {
      * @type {number}
      * @memberof UserFull
      */
-    track_count: number;
+    agreement_count: number;
     /**
      * 
      * @type {boolean}

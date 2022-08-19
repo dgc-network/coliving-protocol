@@ -27,8 +27,8 @@ from src.utils.prometheus_metric import PrometheusMetric, PrometheusMetricNames
 from src.utils.redis_constants import (
     LAST_REACTIONS_INDEX_TIME_KEY,
     LAST_SEEN_NEW_REACTION_TIME_KEY,
-    UPDATE_TRACK_IS_AVAILABLE_FINISH_REDIS_KEY,
-    UPDATE_TRACK_IS_AVAILABLE_START_REDIS_KEY,
+    UPDATE_AGREEMENT_IS_AVAILABLE_FINISH_REDIS_KEY,
+    UPDATE_AGREEMENT_IS_AVAILABLE_START_REDIS_KEY,
     challenges_last_processed_event_redis_key,
     index_eth_last_completion_redis_key,
     latest_block_hash_redis_key,
@@ -38,7 +38,7 @@ from src.utils.redis_constants import (
     most_recent_indexed_block_redis_key,
     oldest_unarchived_play_key,
     trending_playlists_last_completion_redis_key,
-    trending_tracks_last_completion_redis_key,
+    trending_agreements_last_completion_redis_key,
     user_balances_refresh_last_completion_redis_key,
 )
 
@@ -149,8 +149,8 @@ def get_health(args: GetHealthArgs, use_redis_cache: bool = True) -> Tuple[Dict,
     latest_block_hash: Optional[str] = None
     latest_indexed_block_num: Optional[int] = None
     latest_indexed_block_hash: Optional[str] = None
-    last_track_unavailability_job_start_time: Optional[str] = None
-    last_track_unavailability_job_end_time: Optional[str] = None
+    last_agreement_unavailability_job_start_time: Optional[str] = None
+    last_agreement_unavailability_job_end_time: Optional[str] = None
 
     if use_redis_cache:
         # get latest blockchain state from redis cache, or fallback to chain if None
@@ -199,8 +199,8 @@ def get_health(args: GetHealthArgs, use_redis_cache: bool = True) -> Tuple[Dict,
         args.get("reactions_max_last_reaction_drift"),
     )
 
-    trending_tracks_age_sec = get_elapsed_time_redis(
-        redis, trending_tracks_last_completion_redis_key
+    trending_agreements_age_sec = get_elapsed_time_redis(
+        redis, trending_agreements_last_completion_redis_key
     )
     trending_playlists_age_sec = get_elapsed_time_redis(
         redis, trending_playlists_last_completion_redis_key
@@ -230,24 +230,24 @@ def get_health(args: GetHealthArgs, use_redis_cache: bool = True) -> Tuple[Dict,
     )
 
     try:
-        last_track_unavailability_job_start_time = str(
-            redis.get(UPDATE_TRACK_IS_AVAILABLE_START_REDIS_KEY).decode()
+        last_agreement_unavailability_job_start_time = str(
+            redis.get(UPDATE_AGREEMENT_IS_AVAILABLE_START_REDIS_KEY).decode()
         )
     except Exception as e:
         logger.error(
-            f"Could not get latest track unavailability job start timestamp: {e}"
+            f"Could not get latest agreement unavailability job start timestamp: {e}"
         )
-        last_track_unavailability_job_start_time = None
+        last_agreement_unavailability_job_start_time = None
 
     try:
-        last_track_unavailability_job_end_time = str(
-            redis.get(UPDATE_TRACK_IS_AVAILABLE_FINISH_REDIS_KEY).decode()
+        last_agreement_unavailability_job_end_time = str(
+            redis.get(UPDATE_AGREEMENT_IS_AVAILABLE_FINISH_REDIS_KEY).decode()
         )
     except Exception as e:
         logger.error(
-            f"Could not get latest track unavailability job end timestamp: {e}"
+            f"Could not get latest agreement unavailability job end timestamp: {e}"
         )
-        last_track_unavailability_job_end_time = None
+        last_agreement_unavailability_job_end_time = None
 
     # Get system information monitor values
     sys_info = monitors.get_monitors(
@@ -274,15 +274,15 @@ def get_health(args: GetHealthArgs, use_redis_cache: bool = True) -> Tuple[Dict,
             "blockhash": latest_indexed_block_hash,
         },
         "git": os.getenv("GIT_SHA"),
-        "trending_tracks_age_sec": trending_tracks_age_sec,
+        "trending_agreements_age_sec": trending_agreements_age_sec,
         "trending_playlists_age_sec": trending_playlists_age_sec,
         "challenge_last_event_age_sec": challenge_events_age_sec,
         "user_balances_age_sec": user_balances_age_sec,
         "num_users_in_lazy_balance_refresh_queue": num_users_in_lazy_balance_refresh_queue,
         "num_users_in_immediate_balance_refresh_queue": num_users_in_immediate_balance_refresh_queue,
         "last_scanned_block_for_balance_refresh": last_scanned_block_for_balance_refresh,
-        "last_track_unavailability_job_start_time": last_track_unavailability_job_start_time,
-        "last_track_unavailability_job_end_time": last_track_unavailability_job_end_time,
+        "last_agreement_unavailability_job_start_time": last_agreement_unavailability_job_start_time,
+        "last_agreement_unavailability_job_end_time": last_agreement_unavailability_job_end_time,
         "index_eth_age_sec": index_eth_age_sec,
         "number_of_cpus": number_of_cpus,
         **sys_info,

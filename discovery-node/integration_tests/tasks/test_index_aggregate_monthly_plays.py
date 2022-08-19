@@ -28,10 +28,10 @@ def test_index_aggregate_monthly_plays_populate(app):
 
     # run
     entities = {
-        "tracks": [
-            {"track_id": 1, "title": "track 1"},
-            {"track_id": 2, "title": "track 2"},
-            {"track_id": 3, "title": "track 3"},
+        "agreements": [
+            {"agreement_id": 1, "title": "agreement 1"},
+            {"agreement_id": 2, "title": "agreement 2"},
+            {"agreement_id": 3, "title": "agreement 3"},
         ],
         "plays": [
             # Last year
@@ -94,10 +94,10 @@ def test_index_aggregate_monthly_plays_update(app):
 
     # run
     entities = {
-        "tracks": [
-            {"track_id": 1, "title": "track 1"},
-            {"track_id": 2, "title": "track 2"},
-            {"track_id": 3, "title": "track 3"},
+        "agreements": [
+            {"agreement_id": 1, "title": "agreement 1"},
+            {"agreement_id": 2, "title": "agreement 2"},
+            {"agreement_id": 3, "title": "agreement 3"},
         ],
         "aggregate_monthly_plays": [
             {
@@ -183,11 +183,11 @@ def test_index_aggregate_monthly_plays_same_checkpoint(app):
 
     # run
     entities = {
-        "tracks": [
-            {"track_id": 1, "title": "track 1"},
-            {"track_id": 2, "title": "track 2"},
-            {"track_id": 3, "title": "track 3"},
-            {"track_id": 4, "title": "track 4"},
+        "agreements": [
+            {"agreement_id": 1, "title": "agreement 1"},
+            {"agreement_id": 2, "title": "agreement 2"},
+            {"agreement_id": 3, "title": "agreement 3"},
+            {"agreement_id": 4, "title": "agreement 4"},
         ],
         "aggregate_monthly_plays": [
             {

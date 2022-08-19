@@ -6,12 +6,12 @@ const {
   ensureReplicaSetSyncIsConsistent
 } = require('../helpers.js')
 const {
-  uploadTrack,
+  uploadAgreement,
   RandomUtils
 } = ServiceCommands
 const {
-  getRandomTrackMetadata,
-  getRandomTrackFilePath
+  getRandomAgreementMetadata,
+  getRandomAgreementFilePath
 } = RandomUtils
 
 const TEMP_STORAGE_PATH = path.resolve('./local-storage/tmp/')
@@ -48,24 +48,24 @@ const snapbackSMParallelSyncTest = async ({
     // Retrieve user id if known from walletIndexToUserIdMap
     // NOTE - It might be easier to just create a map of wallets instead of using 'index'
     const userId = walletIndexToUserIdMap[i]
-    const newTrackMetadata = getRandomTrackMetadata(userId)
-    const randomTrackFilePath = await getRandomTrackFilePath(TEMP_STORAGE_PATH)
+    const newAgreementMetadata = getRandomAgreementMetadata(userId)
+    const randomAgreementFilePath = await getRandomAgreementFilePath(TEMP_STORAGE_PATH)
     logger.info(
-      `Uploading Track for userId:${userId} (${libs.walletAddress}), ${randomTrackFilePath}, ${JSON.stringify(newTrackMetadata)}`
+      `Uploading Agreement for userId:${userId} (${libs.walletAddress}), ${randomAgreementFilePath}, ${JSON.stringify(newAgreementMetadata)}`
     )
     try {
       const startTime = Date.now()
-      const trackId = await executeOne(i, (l) =>
-        uploadTrack(
+      const agreementId = await executeOne(i, (l) =>
+        uploadAgreement(
           l,
-          newTrackMetadata,
-          randomTrackFilePath
+          newAgreementMetadata,
+          randomAgreementFilePath
         )
       )
       const duration = Date.now() - startTime
-      logger.info(`Uploaded track for userId=${userId}, trackId=${trackId} in ${duration}ms`)
+      logger.info(`Uploaded agreement for userId=${userId}, agreementId=${agreementId} in ${duration}ms`)
     } catch (e) {
-      logger.error(`Error uploading track for userId:${userId} :${e}`)
+      logger.error(`Error uploading agreement for userId:${userId} :${e}`)
     }
   })
 

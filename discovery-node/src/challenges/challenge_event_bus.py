@@ -18,11 +18,11 @@ from src.challenges.referral_challenge import (
     verified_referral_challenge_manager,
 )
 from src.challenges.send_first_tip_challenge import send_first_tip_challenge_manager
-from src.challenges.track_upload_challenge import track_upload_challenge_manager
+from src.challenges.agreement_upload_challenge import agreement_upload_challenge_manager
 from src.challenges.trending_challenge import (
     trending_playlist_challenge_manager,
-    trending_track_challenge_manager,
-    trending_underground_track_challenge_manager,
+    trending_agreement_challenge_manager,
+    trending_underground_agreement_challenge_manager,
 )
 from src.utils.redis_connection import get_redis
 
@@ -209,9 +209,9 @@ def setup_challenge_bus():
     bus.register_listener(ChallengeEvent.follow, profile_challenge_manager)
     bus.register_listener(ChallengeEvent.favorite, profile_challenge_manager)
     # listen_streak_challenge_manager listeners
-    bus.register_listener(ChallengeEvent.track_listen, listen_streak_challenge_manager)
-    # track_upload_challenge_manager listeners
-    bus.register_listener(ChallengeEvent.track_upload, track_upload_challenge_manager)
+    bus.register_listener(ChallengeEvent.agreement_listen, listen_streak_challenge_manager)
+    # agreement_upload_challenge_manager listeners
+    bus.register_listener(ChallengeEvent.agreement_upload, agreement_upload_challenge_manager)
     # referral challenge managers
     bus.register_listener(ChallengeEvent.referral_signup, referral_challenge_manager)
     bus.register_listener(
@@ -226,11 +226,11 @@ def setup_challenge_bus():
         ChallengeEvent.mobile_install, mobile_install_challenge_manager
     )
     bus.register_listener(
-        ChallengeEvent.trending_track, trending_track_challenge_manager
+        ChallengeEvent.trending_agreement, trending_agreement_challenge_manager
     )
     bus.register_listener(
         ChallengeEvent.trending_underground,
-        trending_underground_track_challenge_manager,
+        trending_underground_agreement_challenge_manager,
     )
     bus.register_listener(
         ChallengeEvent.trending_playlist, trending_playlist_challenge_manager

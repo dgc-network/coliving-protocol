@@ -5,11 +5,11 @@ from src.utils.elasticdsl import (
     ES_PLAYLISTS,
     ES_REPOSTS,
     ES_SAVES,
-    ES_TRACKS,
+    ES_AGREEMENTS,
     ES_USERS,
     esclient,
     pluck_hits,
-    populate_track_or_playlist_metadata_es,
+    populate_agreement_or_playlist_metadata_es,
     populate_user_metadata_es,
 )
 
@@ -54,7 +54,7 @@ def get_feed_es(args, limit=10):
     if load_orig:
         mdsl.extend(
             [
-                {"index": ES_TRACKS},
+                {"index": ES_AGREEMENTS},
                 {
                     "query": {
                         "bool": {
@@ -89,7 +89,7 @@ def get_feed_es(args, limit=10):
         )
 
     repost_agg = []
-    tracks = []
+    agreements = []
     playlists = []
 
     founds = esclient.msearch(searches=mdsl)
@@ -103,26 +103,26 @@ def get_feed_es(args, limit=10):
         repost_agg.sort(key=lambda b: b["min_created_at"]["value"])
 
     if load_orig:
-        tracks = pluck_hits(founds["responses"].pop(0))
+        agreements = pluck_hits(founds["responses"].pop(0))
         playlists = pluck_hits(founds["responses"].pop(0))
 
-    # track timestamps and duplicates
+    # agreement timestamps and duplicates
     seen = set()
     unsorted_feed = []
 
     for playlist in playlists:
-        # Q: should es-indexer set item_key on track / playlist too?
+        # Q: should es-indexer set item_key on agreement / playlist too?
         #    instead of doing it dynamically here?
         playlist["item_key"] = item_key(playlist)
         seen.add(playlist["item_key"])
-        # Q: should we add playlist tracks to seen?
-        #    get_feed will "debounce" tracks in playlist
+        # Q: should we add playlist agreements to seen?
+        #    get_feed will "debounce" agreements in playlist
         unsorted_feed.append(playlist)
 
-    for track in tracks:
-        track["item_key"] = item_key(track)
-        seen.add(track["item_key"])
-        unsorted_feed.append(track)
+    for agreement in agreements:
+        agreement["item_key"] = item_key(agreement)
+        seen.add(agreement["item_key"])
+        unsorted_feed.append(agreement)
 
     # remove duplicates from repost feed
     for r in repost_agg:
@@ -134,14 +134,14 @@ def get_feed_es(args, limit=10):
 
     # sorted feed with repost records
     # the repost records are stubs that we'll now "hydrate"
-    # with the related track / playlist
+    # with the related agreement / playlist
     sorted_with_reposts = sorted(
         unsorted_feed,
         key=lambda entry: entry["created_at"],
         reverse=True,
     )
 
-    # take a "soft limit" here.  Some tracks / reposts might get filtered out below
+    # take a "soft limit" here.  Some agreements / reposts might get filtered out below
     # if is_delete
     sorted_with_reposts = sorted_with_reposts[0 : limit * 2]
 
@@ -154,8 +154,8 @@ def get_feed_es(args, limit=10):
         if "min_created_at" not in r:
             continue
         (kind, id) = r["key"].split(":")
-        if kind == "track":
-            mget_reposts.append({"_index": ES_TRACKS, "_id": id})
+        if kind == "agreement":
+            mget_reposts.append({"_index": ES_AGREEMENTS, "_id": id})
         else:
             mget_reposts.append({"_index": ES_PLAYLISTS, "_id": id})
 
@@ -163,9 +163,9 @@ def get_feed_es(args, limit=10):
         reposted_docs = esclient.mget(docs=mget_reposts)
         for doc in reposted_docs["docs"]:
             if not doc["found"]:
-                # MISSING: a repost for a track or playlist not in the index?
-                # this should only happen if repost indexing is running ahead of track / playlist
-                # should be transient... but should maybe still be tracked?
+                # MISSING: a repost for a agreement or playlist not in the index?
+                # this should only happen if repost indexing is running ahead of agreement / playlist
+                # should be transient... but should maybe still be agreemented?
                 continue
             s = doc["_source"]
             s["item_key"] = item_key(s)
@@ -227,7 +227,7 @@ def get_feed_es(args, limit=10):
 
     # populate metadata + remove extra fields from items
     sorted_feed = [
-        populate_track_or_playlist_metadata_es(item, current_user)
+        populate_agreement_or_playlist_metadata_es(item, current_user)
         for item in sorted_feed
     ]
 
@@ -286,8 +286,8 @@ def fetch_followed_saves_and_reposts(current_user_id, item_keys, limit):
 
 
 def item_key(item):
-    if "track_id" in item:
-        return "track:" + str(item["track_id"])
+    if "agreement_id" in item:
+        return "agreement:" + str(item["agreement_id"])
     elif "playlist_id" in item:
         if item["is_album"]:
             return "album:" + str(item["playlist_id"])

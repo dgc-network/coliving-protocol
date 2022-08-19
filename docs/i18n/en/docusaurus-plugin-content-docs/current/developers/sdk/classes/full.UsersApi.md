@@ -11,8 +11,8 @@ custom_edit_url: null
 
 **getFavorites**(`requestParameters`): `Promise`<[`ActivityFull`](../interfaces/full.ActivityFull.md)[]\>
 
-Gets a user's favorite tracks
-Fetch favorited tracks for a user
+Gets a user's favorite agreements
+Fetch favorited agreements for a user
 
 Example:
 
@@ -232,7 +232,7 @@ ___
 
 **getTopUsers**(`requestParameters?`): `Promise`<[`UserFull`](../interfaces/full.UserFull.md)[]\>
 
-Get the Top Users having at least one track by follower count
+Get the Top Users having at least one agreement by follower count
 
 #### Parameters
 
@@ -264,17 +264,17 @@ Get the Top Users for a Given Genre
 
 ___
 
-### getTracksByUser
+### getAgreementsByUser
 
-**getTracksByUser**(`requestParameters`): `Promise`<[`TrackFull`](../interfaces/full.TrackFull.md)[]\>
+**getAgreementsByUser**(`requestParameters`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
 
-Gets the tracks created by a user using their user ID
+Gets the agreements created by a user using their user ID
 
 Example:
 
 ```typescript
 
-const tracks = await colivingSdk.users.getTracksByUser({
+const agreements = await colivingSdk.users.getAgreementsByUser({
     id: "eAZl3"
 })
 
@@ -284,29 +284,29 @@ const tracks = await colivingSdk.users.getTracksByUser({
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetTracksByUserRequest`](../interfaces/full.GetTracksByUserRequest.md) |
+| `requestParameters` | [`GetAgreementsByUserRequest`](../interfaces/full.GetAgreementsByUserRequest.md) |
 
 #### Returns
 
-`Promise`<[`TrackFull`](../interfaces/full.TrackFull.md)[]\>
+`Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
 
 ___
 
-### getTracksByUserHandle
+### getAgreementsByUserHandle
 
-**getTracksByUserHandle**(`requestParameters`): `Promise`<[`TrackFull`](../interfaces/full.TrackFull.md)[]\>
+**getAgreementsByUserHandle**(`requestParameters`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
 
-Gets the tracks created by a user using the user's handle
+Gets the agreements created by a user using the user's handle
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetTracksByUserHandleRequest`](../interfaces/full.GetTracksByUserHandleRequest.md) |
+| `requestParameters` | [`GetAgreementsByUserHandleRequest`](../interfaces/full.GetAgreementsByUserHandleRequest.md) |
 
 #### Returns
 
-`Promise`<[`TrackFull`](../interfaces/full.TrackFull.md)[]\>
+`Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
 
 ___
 
@@ -356,17 +356,17 @@ Gets a single user by their handle
 
 ___
 
-### getUsersTrackHistory
+### getUsersAgreementHistory
 
-**getUsersTrackHistory**(`requestParameters`): `Promise`<[`ActivityFull`](../interfaces/full.ActivityFull.md)[]\>
+**getUsersAgreementHistory**(`requestParameters`): `Promise`<[`ActivityFull`](../interfaces/full.ActivityFull.md)[]\>
 
-Get the tracks the user recently listened to.
+Get the agreements the user recently listened to.
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetUsersTrackHistoryRequest`](../interfaces/full.GetUsersTrackHistoryRequest.md) |
+| `requestParameters` | [`GetUsersAgreementHistoryRequest`](../interfaces/full.GetUsersAgreementHistoryRequest.md) |
 
 #### Returns
 

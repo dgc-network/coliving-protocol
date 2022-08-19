@@ -36,7 +36,7 @@ module.exports = async function primarySyncFromSecondary({
   // This is used only for logging record endpoint of requesting node
   const selfEndpoint = config.get('contentNodeEndpoint') || null
 
-  // object to track if the function errored, returned at the end of the function
+  // object to agreement if the function errored, returned at the end of the function
   let error = null
 
   try {
@@ -181,18 +181,18 @@ async function saveFilesToDisk({ files, userReplicaSet, libs, logger }) {
   const FileSaveMaxConcurrency = config.get('nodeSyncFileSaveMaxConcurrency')
 
   try {
-    const trackFiles = files.filter((file) =>
-      models.File.TrackTypes.includes(file.type)
+    const agreementFiles = files.filter((file) =>
+      models.File.AgreementTypes.includes(file.type)
     )
-    const nonTrackFiles = files.filter((file) =>
-      models.File.NonTrackTypes.includes(file.type)
+    const nonAgreementFiles = files.filter((file) =>
+      models.File.NonAgreementTypes.includes(file.type)
     )
 
     /**
-     * Save all Track files to disk
+     * Save all Agreement files to disk
      */
-    for (let i = 0; i < trackFiles.length; i += FileSaveMaxConcurrency) {
-      const trackFilesSlice = trackFiles.slice(i, i + FileSaveMaxConcurrency)
+    for (let i = 0; i < agreementFiles.length; i += FileSaveMaxConcurrency) {
+      const agreementFilesSlice = agreementFiles.slice(i, i + FileSaveMaxConcurrency)
 
       /**
        * Fetch content for each CID + save to FS
@@ -201,19 +201,19 @@ async function saveFilesToDisk({ files, userReplicaSet, libs, logger }) {
        * - `saveFileForMultihashToFS()` should never reject - it will return error indicator for post processing
        */
       await Promise.all(
-        trackFilesSlice.map(async (trackFile) => {
+        agreementFilesSlice.map(async (agreementFile) => {
           const succeeded = await saveFileForMultihashToFS(
             libs,
             logger,
-            trackFile.multihash,
-            trackFile.storagePath,
+            agreementFile.multihash,
+            agreementFile.storagePath,
             userReplicaSet,
             null, // fileNameForImage
-            trackFile.trackBlockchainId
+            agreementFile.agreementBlockchainId
           )
           if (!succeeded) {
             throw new Error(
-              `[saveFileForMultihashToFS] Failed for multihash ${trackFile.multihash}`
+              `[saveFileForMultihashToFS] Failed for multihash ${agreementFile.multihash}`
             )
           }
         })
@@ -221,42 +221,42 @@ async function saveFilesToDisk({ files, userReplicaSet, libs, logger }) {
     }
 
     /**
-     * Save all non-Track files to disk
+     * Save all non-Agreement files to disk
      */
-    for (let i = 0; i < nonTrackFiles.length; i += FileSaveMaxConcurrency) {
-      const nonTrackFilesSlice = nonTrackFiles.slice(
+    for (let i = 0; i < nonAgreementFiles.length; i += FileSaveMaxConcurrency) {
+      const nonAgreementFilesSlice = nonAgreementFiles.slice(
         i,
         i + FileSaveMaxConcurrency
       )
 
       await Promise.all(
-        nonTrackFilesSlice.map(async (nonTrackFile) => {
+        nonAgreementFilesSlice.map(async (nonAgreementFile) => {
           // Skip over directories since there's no actual content to sync
           // The files inside the directory are synced separately
-          if (nonTrackFile.type === 'dir') {
+          if (nonAgreementFile.type === 'dir') {
             return
           }
 
-          const multihash = nonTrackFile.multihash
+          const multihash = nonAgreementFile.multihash
 
           // if it's an image file, we need to pass in the actual filename because the gateway request is /ipfs/Qm123/<filename>
           // need to also check fileName is not null to make sure it's a dir-style image. non-dir images won't have a 'fileName' db column
           let succeeded
-          if (nonTrackFile.type === 'image' && nonTrackFile.fileName !== null) {
+          if (nonAgreementFile.type === 'image' && nonAgreementFile.fileName !== null) {
             succeeded = await saveFileForMultihashToFS(
               libs,
               logger,
               multihash,
-              nonTrackFile.storagePath,
+              nonAgreementFile.storagePath,
               userReplicaSet,
-              nonTrackFile.fileName
+              nonAgreementFile.fileName
             )
           } else {
             succeeded = await saveFileForMultihashToFS(
               libs,
               logger,
               multihash,
-              nonTrackFile.storagePath,
+              nonAgreementFile.storagePath,
               userReplicaSet
             )
           }
@@ -284,7 +284,7 @@ async function saveEntriesToDB({ fetchedCNodeUser, logger, logPrefix }) {
     let {
       walletPublicKey,
       colivingUsers: fetchedColivingUsers,
-      tracks: fetchedTracks,
+      agreements: fetchedAgreements,
       files: fetchedFiles
     } = fetchedCNodeUser
 
@@ -321,18 +321,18 @@ async function saveEntriesToDB({ fetchedCNodeUser, logger, logPrefix }) {
         comparisonFields: colivingUserComparisonFields
       })
 
-      const trackComparisonFields = [
+      const agreementComparisonFields = [
         'blockchainId',
         'metadataFileUUID',
         'metadataJSON',
         'coverArtFileUUID'
       ]
-      fetchedTracks = await filterOutAlreadyPresentDBEntries({
+      fetchedAgreements = await filterOutAlreadyPresentDBEntries({
         cnodeUserUUID,
-        tableInstance: models.Track,
-        fetchedEntries: fetchedTracks,
+        tableInstance: models.Agreement,
+        fetchedEntries: fetchedAgreements,
         transaction,
-        comparisonFields: trackComparisonFields
+        comparisonFields: agreementComparisonFields
       })
 
       const fileComparisonFields = ['fileUUID']
@@ -363,9 +363,9 @@ async function saveEntriesToDB({ fetchedCNodeUser, logger, logPrefix }) {
         tableInstance: models.ColivingUser,
         entry: colivingUser
       })),
-      fetchedTracks.map((track) => ({
-        tableInstance: models.Track,
-        entry: track
+      fetchedAgreements.map((agreement) => ({
+        tableInstance: models.Agreement,
+        entry: agreement
       })),
       fetchedFiles.map((file) => ({ tableInstance: models.File, entry: file }))
     )

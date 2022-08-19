@@ -13,10 +13,10 @@ if es_url and not esclient:
 ES_PLAYLISTS = "playlists"
 ES_REPOSTS = "reposts"
 ES_SAVES = "saves"
-ES_TRACKS = "tracks"
+ES_AGREEMENTS = "agreements"
 ES_USERS = "users"
 
-ES_INDEXES = [ES_PLAYLISTS, ES_REPOSTS, ES_SAVES, ES_TRACKS, ES_USERS]
+ES_INDEXES = [ES_PLAYLISTS, ES_REPOSTS, ES_SAVES, ES_AGREEMENTS, ES_USERS]
 
 
 def listify(things):
@@ -73,7 +73,7 @@ def populate_user_metadata_es(user, current_user):
     return omit_indexed_fields(user)
 
 
-def populate_track_or_playlist_metadata_es(item, current_user):
+def populate_agreement_or_playlist_metadata_es(item, current_user):
     if current_user:
         my_id = current_user["user_id"]
         item["has_current_user_reposted"] = my_id in item["reposted_by"]
@@ -88,8 +88,8 @@ omit_keys = [
     # user index
     "following_ids",
     "follower_ids",
-    "tracks",
-    # track index
+    "agreements",
+    # agreement index
     "reposted_by",
     "saved_by",
     # saves + reposts
@@ -100,7 +100,7 @@ omit_keys = [
 def omit_indexed_fields(doc):
     doc = copy.copy(doc)
 
-    # track
+    # agreement
     if "tags" in doc and isinstance(doc["tags"], list):
         doc["tags"] = ",".join(doc["tags"])
 

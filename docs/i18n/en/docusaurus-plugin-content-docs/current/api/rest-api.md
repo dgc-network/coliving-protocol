@@ -8,12 +8,12 @@ description: >-
 
 # REST API
 
-The Coliving REST API lets you query, stream, and search for tracks, users & playlists across the network.
+The Coliving REST API lets you query, stream, and search for agreements, users & playlists across the network.
 
 Try it out!
 
 ```bash
-curl https://discoveryprovider.coliving.lol/v1/tracks/trending?app_name=ExampleApp
+curl https://discoveryprovider.coliving.lol/v1/agreements/trending?app_name=ExampleApp
 ```
 
 ## [Full API Reference](https://colivingproject.github.io/api-docs/#coliving-api-docs)  👈  

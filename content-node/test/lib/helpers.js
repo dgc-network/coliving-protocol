@@ -6,18 +6,18 @@ const crypto = require('crypto')
 const DiskManager = require('../../src/diskManager')
 
 const {
-  handleTrackContentRoute
-} = require('../../src/components/tracks/tracksComponentService')
+  handleAgreementContentRoute
+} = require('../../src/components/agreements/agreementsComponentService')
 
-const uploadTrack = async (filePath, cnodeUserUUID, blacklistManager) => {
+const uploadAgreement = async (filePath, cnodeUserUUID, blacklistManager) => {
   const { fileUUID, fileDir } = saveFileToStorage(filePath)
-  const resp = await handleTrackContentRoute(
+  const resp = await handleAgreementContentRoute(
     {
       logContext: {
         requestID: uuid(),
         requestMethod: 'POST',
         requestHostname: '127.0.0.1',
-        requestUrl: '/track_content_async'
+        requestUrl: '/agreement_content_async'
       }
     },
     {
@@ -35,7 +35,7 @@ const saveFileToStorage = (filePath) => {
   const file = fs.readFileSync(filePath)
   const fileName = uuid()
   const fileDir = path.join(
-    DiskManager.getTmpTrackUploadArtifactsPath(),
+    DiskManager.getTmpAgreementUploadArtifactsPath(),
     fileName
   )
   fs.mkdirSync(fileDir)
@@ -55,7 +55,7 @@ const computeFilesHash = function (multihashes) {
 }
 
 module.exports = {
-  uploadTrack,
+  uploadAgreement,
   saveFileToStorage,
   computeFilesHash
 }

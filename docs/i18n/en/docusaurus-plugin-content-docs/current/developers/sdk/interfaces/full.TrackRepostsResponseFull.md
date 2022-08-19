@@ -1,15 +1,15 @@
 ---
-id: "full.TrackRepostsResponseFull"
-title: "Interface: TrackRepostsResponseFull"
-sidebar_label: "TrackRepostsResponseFull"
+id: "full.AgreementRepostsResponseFull"
+title: "Interface: AgreementRepostsResponseFull"
+sidebar_label: "AgreementRepostsResponseFull"
 custom_edit_url: null
 ---
 
-[full](../namespaces/full.md).TrackRepostsResponseFull
+[full](../namespaces/full.md).AgreementRepostsResponseFull
 
 **`export`**
 
-**`interface`** TrackRepostsResponseFull
+**`interface`** AgreementRepostsResponseFull
 
 ## Properties
 
@@ -17,7 +17,7 @@ custom_edit_url: null
 
  `Optional` **data**: [`UserFull`](full.UserFull.md)[]
 
-**`memberof`** TrackRepostsResponseFull
+**`memberof`** AgreementRepostsResponseFull
 
 ___
 
@@ -25,7 +25,7 @@ ___
 
  **latest\_chain\_block**: `number`
 
-**`memberof`** TrackRepostsResponseFull
+**`memberof`** AgreementRepostsResponseFull
 
 ___
 
@@ -33,7 +33,7 @@ ___
 
  **latest\_chain\_slot\_plays**: `number`
 
-**`memberof`** TrackRepostsResponseFull
+**`memberof`** AgreementRepostsResponseFull
 
 ___
 
@@ -41,7 +41,7 @@ ___
 
  **latest\_indexed\_block**: `number`
 
-**`memberof`** TrackRepostsResponseFull
+**`memberof`** AgreementRepostsResponseFull
 
 ___
 
@@ -49,7 +49,7 @@ ___
 
  **latest\_indexed\_slot\_plays**: `number`
 
-**`memberof`** TrackRepostsResponseFull
+**`memberof`** AgreementRepostsResponseFull
 
 ___
 
@@ -57,7 +57,7 @@ ___
 
  **signature**: `string`
 
-**`memberof`** TrackRepostsResponseFull
+**`memberof`** AgreementRepostsResponseFull
 
 ___
 
@@ -65,7 +65,7 @@ ___
 
  **timestamp**: `string`
 
-**`memberof`** TrackRepostsResponseFull
+**`memberof`** AgreementRepostsResponseFull
 
 ___
 
@@ -73,4 +73,4 @@ ___
 
  **version**: [`VersionMetadata`](full.VersionMetadata.md)
 
-**`memberof`** TrackRepostsResponseFull
+**`memberof`** AgreementRepostsResponseFull

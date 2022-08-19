@@ -1,133 +1,133 @@
 /* global assert */
 
 import { assertEqualValues, parseTx, parseTxWithResp } from '../utils/parser'
-import { getTrackFromFactory, getNetworkIdForContractInstance } from '../utils/getters'
+import { getAgreementFromFactory, getNetworkIdForContractInstance } from '../utils/getters'
 import { eth_signTypedData } from '../utils/util'
 import { validateObj } from '../utils/validator'
 const signatureSchemas = require('../../signature_schemas/signatureSchemas')
 
 /****** EXTERNAL E2E FUNCTIONS ******/
 
-/** Adds track to blockchain using function input fields,
-  *   validates emitted event and track data on-chain
-  * @returns {object} with event and track data
+/** Adds agreement to blockchain using function input fields,
+  *   validates emitted event and agreement data on-chain
+  * @returns {object} with event and agreement data
   */
-export const addTrackAndValidate = async (trackFactory, trackId, walletAddress, trackOwnerId, multihashDigest, multihashHashFn, multihashSize) => {
+export const addAgreementAndValidate = async (agreementFactory, agreementId, walletAddress, agreementOwnerId, multihashDigest, multihashHashFn, multihashSize) => {
   // Validate args - TODO
-  // generate new track request
+  // generate new agreement request
   const nonce = signatureSchemas.getNonce()
-  const chainId = getNetworkIdForContractInstance(trackFactory) // in testing use the network id as chain ID because chain ID is unavailable
-  const signatureData = signatureSchemas.generators.getAddTrackRequestData(chainId, trackFactory.address, trackOwnerId, multihashDigest, multihashHashFn, multihashSize, nonce)
+  const chainId = getNetworkIdForContractInstance(agreementFactory) // in testing use the network id as chain ID because chain ID is unavailable
+  const signatureData = signatureSchemas.generators.getAddAgreementRequestData(chainId, agreementFactory.address, agreementOwnerId, multihashDigest, multihashHashFn, multihashSize, nonce)
   const sig = await eth_signTypedData(walletAddress, signatureData)
-  // Add new track to contract
-  let tx = await trackFactory.addTrack(trackOwnerId, multihashDigest, multihashHashFn, multihashSize, nonce, sig)
+  // Add new agreement to contract
+  let tx = await agreementFactory.addAgreement(agreementOwnerId, multihashDigest, multihashHashFn, multihashSize, nonce, sig)
   // validate event output = transaction input
-  let event = parseTxWithResp(tx, { _id: true, _trackOwnerId: true, _multihashDigest: true, _multihashHashFn: true, _multihashSize: true })
-  validateObj(event, { eventName: 'NewTrack', trackId, trackOwnerId, multihashDigest, multihashHashFn, multihashSize })
-  // retrieve track from contract
-  let track = await getTrackFromFactory(trackId, trackFactory)
-  validateObj(track, { trackOwnerId, multihashDigest, multihashHashFn, multihashSize })
+  let event = parseTxWithResp(tx, { _id: true, _agreementOwnerId: true, _multihashDigest: true, _multihashHashFn: true, _multihashSize: true })
+  validateObj(event, { eventName: 'NewAgreement', agreementId, agreementOwnerId, multihashDigest, multihashHashFn, multihashSize })
+  // retrieve agreement from contract
+  let agreement = await getAgreementFromFactory(agreementId, agreementFactory)
+  validateObj(agreement, { agreementOwnerId, multihashDigest, multihashHashFn, multihashSize })
   return {
     event: event,
-    track: track
+    agreement: agreement
   }
 }
 
-/** Deletes track from blockchain using function input fields,
-  *   validates emitted event and track data on-chain
+/** Deletes agreement from blockchain using function input fields,
+  *   validates emitted event and agreement data on-chain
   * @returns {object} with event data
   */
-export const deleteTrackAndValidate = async (trackFactory, walletAddress, trackId) => {
+export const deleteAgreementAndValidate = async (agreementFactory, walletAddress, agreementId) => {
   // Validate args - TODO
   const nonce = signatureSchemas.getNonce()
-  const chainId = getNetworkIdForContractInstance(trackFactory) // in testing use the network ID as chain ID because chain ID is unavailable
-  const signatureData = signatureSchemas.generators.getDeleteTrackRequestData(chainId, trackFactory.address, trackId, nonce)
+  const chainId = getNetworkIdForContractInstance(agreementFactory) // in testing use the network ID as chain ID because chain ID is unavailable
+  const signatureData = signatureSchemas.generators.getDeleteAgreementRequestData(chainId, agreementFactory.address, agreementId, nonce)
   const sig = await eth_signTypedData(walletAddress, signatureData)
-  // call delete track from chain
-  let tx = await trackFactory.deleteTrack(trackId, nonce, sig)
+  // call delete agreement from chain
+  let tx = await agreementFactory.deleteAgreement(agreementId, nonce, sig)
   // validate event output = transaction input
-  let event = parseTxWithResp(tx, { _trackId: true })
-  validateObj(event, { eventName: 'TrackDeleted', trackId })
-  // TODO after storage implemented - attemt to retrieve track from chain
-  // TODO after storage implemented - validate track does not exist
+  let event = parseTxWithResp(tx, { _agreementId: true })
+  validateObj(event, { eventName: 'AgreementDeleted', agreementId })
+  // TODO after storage implemented - attemt to retrieve agreement from chain
+  // TODO after storage implemented - validate agreement does not exist
   return {
     event: event
   }
 }
 
-export const updateTrack = async (trackFactory, walletAddress, trackId, trackOwnerId, multihashDigest, multihashHashFn, multihashSize) => {
-  // generate update track request
+export const updateAgreement = async (agreementFactory, walletAddress, agreementId, agreementOwnerId, multihashDigest, multihashHashFn, multihashSize) => {
+  // generate update agreement request
   const nonce = signatureSchemas.getNonce()
-  const chainId = getNetworkIdForContractInstance(trackFactory)
+  const chainId = getNetworkIdForContractInstance(agreementFactory)
   // in testing use the network id as chain ID because chain ID is unavailable
-  const signatureData = signatureSchemas.generators.getUpdateTrackRequestData(chainId, trackFactory.address, trackId, trackOwnerId, multihashDigest, multihashHashFn, multihashSize, nonce)
+  const signatureData = signatureSchemas.generators.getUpdateAgreementRequestData(chainId, agreementFactory.address, agreementId, agreementOwnerId, multihashDigest, multihashHashFn, multihashSize, nonce)
   const sig = await eth_signTypedData(walletAddress, signatureData)
-  return trackFactory.updateTrack(trackId, trackOwnerId, multihashDigest, multihashHashFn, multihashSize, nonce, sig)
+  return agreementFactory.updateAgreement(agreementId, agreementOwnerId, multihashDigest, multihashHashFn, multihashSize, nonce, sig)
 }
 
-/** Adds trackRepost to blockchain using function input fields, validates emitted event
+/** Adds agreementRepost to blockchain using function input fields, validates emitted event
   * @returns {object} with event data
   */
-export const addTrackRepostAndValidate = async (socialFeatureFactory, userAddress, userId, trackId) => {
-  // generate new add track repost request
+export const addAgreementRepostAndValidate = async (socialFeatureFactory, userAddress, userId, agreementId) => {
+  // generate new add agreement repost request
   const nonce = signatureSchemas.getNonce()
   const chainId = getNetworkIdForContractInstance(socialFeatureFactory) // in testing use the network id as chain ID because chain ID is unavailable
-  const signatureData = signatureSchemas.generators.getAddTrackRepostRequestData(chainId, socialFeatureFactory.address, userId, trackId, nonce)
+  const signatureData = signatureSchemas.generators.getAddAgreementRepostRequestData(chainId, socialFeatureFactory.address, userId, agreementId, nonce)
   const sig = await eth_signTypedData(userAddress, signatureData)
-  // add new trackRepost to chain
-  let tx = await socialFeatureFactory.addTrackRepost(userId, trackId, nonce, sig)
+  // add new agreementRepost to chain
+  let tx = await socialFeatureFactory.addAgreementRepost(userId, agreementId, nonce, sig)
   // validate event output = transaction input
-  let event = parseTxWithResp(tx, { _userId: true, _trackId: true })
-  validateObj(event, { eventName: 'TrackRepostAdded', userId, trackId })
+  let event = parseTxWithResp(tx, { _userId: true, _agreementId: true })
+  validateObj(event, { eventName: 'AgreementRepostAdded', userId, agreementId })
   // validate storage
-  let isTrackReposted = await socialFeatureFactory.userRepostedTrack.call(userId, trackId)
-  assert.isTrue(isTrackReposted, 'Expect storage to confirm state change')
+  let isAgreementReposted = await socialFeatureFactory.userRepostedAgreement.call(userId, agreementId)
+  assert.isTrue(isAgreementReposted, 'Expect storage to confirm state change')
   return {
     event: event
   }
 }
 
-/** deletes trackRepost from blockchain using function input fields, validates emitted event
+/** deletes agreementRepost from blockchain using function input fields, validates emitted event
   * @returns {object} with event data
   */
-export const deleteTrackRepostAndValidate = async (socialFeatureFactory, userAddress, userId, trackId) => {
-  // generate delete track repost request
+export const deleteAgreementRepostAndValidate = async (socialFeatureFactory, userAddress, userId, agreementId) => {
+  // generate delete agreement repost request
   const nonce = signatureSchemas.getNonce()
   const chainId = getNetworkIdForContractInstance(socialFeatureFactory) // in testing use the network id as chain ID because chain ID is unavailable
-  const signatureData = signatureSchemas.generators.getDeleteTrackRepostRequestData(chainId, socialFeatureFactory.address, userId, trackId, nonce)
+  const signatureData = signatureSchemas.generators.getDeleteAgreementRepostRequestData(chainId, socialFeatureFactory.address, userId, agreementId, nonce)
   const sig = await eth_signTypedData(userAddress, signatureData)
-  // delete trackRepost from chain
-  let tx = await socialFeatureFactory.deleteTrackRepost(userId, trackId, nonce, sig)
+  // delete agreementRepost from chain
+  let tx = await socialFeatureFactory.deleteAgreementRepost(userId, agreementId, nonce, sig)
   // validate event output = transaction input
-  let event = parseTxWithResp(tx, { _userId: true, _trackId: true })
-  validateObj(event, { eventName: 'TrackRepostDeleted', userId, trackId })
+  let event = parseTxWithResp(tx, { _userId: true, _agreementId: true })
+  validateObj(event, { eventName: 'AgreementRepostDeleted', userId, agreementId })
   // validate storage
-  let isTrackReposted = await socialFeatureFactory.userRepostedTrack.call(userId, trackId)
-  assert.isFalse(isTrackReposted, 'Expect storage to confirm added track repost')
+  let isAgreementReposted = await socialFeatureFactory.userRepostedAgreement.call(userId, agreementId)
+  assert.isFalse(isAgreementReposted, 'Expect storage to confirm added agreement repost')
   return {
     event: event
   }
 }
 
-export const addTrackSaveAndValidate = async (userLibraryFactory, userAddress, userId, trackId) => {
+export const addAgreementSaveAndValidate = async (userLibraryFactory, userAddress, userId, agreementId) => {
   const nonce = signatureSchemas.getNonce()
   // in testing use the network id as chain ID because chain ID is unavailable
   const chainId = getNetworkIdForContractInstance(userLibraryFactory)
-  const signatureData = signatureSchemas.generators.getTrackSaveRequestData(chainId, userLibraryFactory.address, userId, trackId, nonce)
+  const signatureData = signatureSchemas.generators.getAgreementSaveRequestData(chainId, userLibraryFactory.address, userId, agreementId, nonce)
   const sig = await eth_signTypedData(userAddress, signatureData)
-  let tx = await userLibraryFactory.addTrackSave(userId, trackId, nonce, sig)
-  let parsedTrackSave = parseTx(tx)
-  let eventInfo = parsedTrackSave.event.args
-  assertEqualValues(parsedTrackSave, undefined, { _userId: eventInfo._userId, _trackId: eventInfo._trackId })
+  let tx = await userLibraryFactory.addAgreementSave(userId, agreementId, nonce, sig)
+  let parsedAgreementSave = parseTx(tx)
+  let eventInfo = parsedAgreementSave.event.args
+  assertEqualValues(parsedAgreementSave, undefined, { _userId: eventInfo._userId, _agreementId: eventInfo._agreementId })
 }
 
-export const deleteTrackSaveAndValidate = async (userLibraryFactory, userAddress, userId, trackId) => {
+export const deleteAgreementSaveAndValidate = async (userLibraryFactory, userAddress, userId, agreementId) => {
   const nonce = signatureSchemas.getNonce()
   const chainId = getNetworkIdForContractInstance(userLibraryFactory)
-  const signatureData = signatureSchemas.generators.getDeleteTrackSaveRequestData(chainId, userLibraryFactory.address, userId, trackId, nonce)
+  const signatureData = signatureSchemas.generators.getDeleteAgreementSaveRequestData(chainId, userLibraryFactory.address, userId, agreementId, nonce)
   const sig = await eth_signTypedData(userAddress, signatureData)
-  let tx = await userLibraryFactory.deleteTrackSave(userId, trackId, nonce, sig)
-  let parsedDeleteTrackSave = parseTx(tx)
-  let eventInfo = parsedDeleteTrackSave.event.args
-  assertEqualValues(parsedDeleteTrackSave, undefined, { _userId: eventInfo._userId, _trackId: eventInfo._trackId })
+  let tx = await userLibraryFactory.deleteAgreementSave(userId, agreementId, nonce, sig)
+  let parsedDeleteAgreementSave = parseTx(tx)
+  let eventInfo = parsedDeleteAgreementSave.event.args
+  assertEqualValues(parsedDeleteAgreementSave, undefined, { _userId: eventInfo._userId, _agreementId: eventInfo._agreementId })
 }

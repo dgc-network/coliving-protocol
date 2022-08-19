@@ -145,8 +145,8 @@ echo "Deploying coliving-eth-registry..."
 solana program deploy target/deploy/coliving_eth_registry.so
 echo
 
-echo "Deploying coliving-track-listen-count..."
-solana program deploy target/deploy/track_listen_count.so
+echo "Deploying coliving-agreement-listen-count..."
+solana program deploy target/deploy/agreement_listen_count.so
 echo
 
 echo "Deploying coliving-claimable-tokens..."
@@ -257,7 +257,7 @@ cat >solana-program-config.json <<EOF
     "anchorAdminPrivateKey": "$(cat "$admin_authority_keypair")",
     "anchorAdminStoragePublicKey": "$(solana address -k "$admin_account_keypair")",
     "anchorAdminStoragePrivateKey": "$(cat "$admin_account_keypair")",
-    "trackListenCountAddress": "$(solana address -k target/deploy/track_listen_count-keypair.json)",
+    "agreementListenCountAddress": "$(solana address -k target/deploy/agreement_listen_count-keypair.json)",
     "colivingEthRegistryAddress": "$(solana address -k target/deploy/coliving_eth_registry-keypair.json)",
     "validSigner": "$(solana address -k "$valid_signer_keypair")"
     "signerGroup": "$(solana address -k "$signer_group_keypair")",

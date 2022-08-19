@@ -1,10 +1,10 @@
 from typing import TypedDict
 
 from sqlalchemy.orm.session import Session
-from src.models.tracks.track import Track
+from src.models.agreements.agreement import Agreement
 from src.models.users.user_listening_history import UserListeningHistory
 from src.queries import response_name_constants
-from src.queries.query_helpers import add_users_to_tracks, populate_track_metadata
+from src.queries.query_helpers import add_users_to_agreements, populate_agreement_metadata
 from src.utils import helpers
 from src.utils.db_session import get_db_read_replica
 
@@ -31,7 +31,7 @@ def get_user_listening_history(args: GetUserListeningHistoryArgs):
         args: GetUserListeningHistoryArgs The parsed args from the request
 
     Returns:
-        Array of tracks the user listened to starting from most recently listened
+        Array of agreements the user listened to starting from most recently listened
     """
 
     db = get_db_read_replica()
@@ -60,31 +60,31 @@ def _get_user_listening_history(session: Session, args: GetUserListeningHistoryA
     # add query pagination
     listening_history_results = listening_history_results[offset : offset + limit]
 
-    track_ids = []
+    agreement_ids = []
     listen_dates = []
     for listen in listening_history_results:
-        track_ids.append(listen["track_id"])
+        agreement_ids.append(listen["agreement_id"])
         listen_dates.append(listen["timestamp"])
 
-    track_results = (session.query(Track).filter(Track.track_id.in_(track_ids))).all()
+    agreement_results = (session.query(Agreement).filter(Agreement.agreement_id.in_(agreement_ids))).all()
 
-    track_results_dict = {
-        track_result.track_id: track_result for track_result in track_results
+    agreement_results_dict = {
+        agreement_result.agreement_id: agreement_result for agreement_result in agreement_results
     }
 
-    # sort tracks in listening history order
-    sorted_track_results = []
-    for track_id in track_ids:
-        if track_id in track_results_dict:
-            sorted_track_results.append(track_results_dict[track_id])
+    # sort agreements in listening history order
+    sorted_agreement_results = []
+    for agreement_id in agreement_ids:
+        if agreement_id in agreement_results_dict:
+            sorted_agreement_results.append(agreement_results_dict[agreement_id])
 
-    tracks = helpers.query_result_to_list(sorted_track_results)
+    agreements = helpers.query_result_to_list(sorted_agreement_results)
 
-    # bundle peripheral info into track results
-    tracks = populate_track_metadata(session, track_ids, tracks, current_user_id)
-    add_users_to_tracks(session, tracks, current_user_id)
+    # bundle peripheral info into agreement results
+    agreements = populate_agreement_metadata(session, agreement_ids, agreements, current_user_id)
+    add_users_to_agreements(session, agreements, current_user_id)
 
-    for idx, track in enumerate(tracks):
-        track[response_name_constants.activity_timestamp] = listen_dates[idx]
+    for idx, agreement in enumerate(agreements):
+        agreement[response_name_constants.activity_timestamp] = listen_dates[idx]
 
-    return tracks
+    return agreements

@@ -5,18 +5,18 @@ const config = require('./config')
 
 const CID_WHITELIST = new Set(config.get('cidWhitelist').split(','))
 
-const REDIS_SET_BLACKLIST_TRACKID_KEY = 'BM.SET.BLACKLIST.TRACKID'
+const REDIS_SET_BLACKLIST_AGREEMENTID_KEY = 'BM.SET.BLACKLIST.AGREEMENTID'
 const REDIS_SET_BLACKLIST_USERID_KEY = 'BM.SET.BLACKLIST.USERID'
 const REDIS_SET_BLACKLIST_SEGMENTCID_KEY = 'BM.SET.BLACKLIST.SEGMENTCID'
-const REDIS_MAP_TRACKID_TO_SEGMENTCIDS_KEY = 'BM.MAP.TRACKID.SEGMENTCIDS'
-const REDIS_SET_INVALID_TRACKIDS_KEY = 'BM.SET.INVALID.TRACKIDS'
+const REDIS_MAP_AGREEMENTID_TO_SEGMENTCIDS_KEY = 'BM.MAP.AGREEMENTID.SEGMENTCIDS'
+const REDIS_SET_INVALID_AGREEMENTIDS_KEY = 'BM.SET.INVALID.AGREEMENTIDS'
 
-const SEGMENTCID_TO_TRACKID_EXPIRATION_SECONDS =
+const SEGMENTCID_TO_AGREEMENTID_EXPIRATION_SECONDS =
   14 /* days */ * 24 /* hours */ * 60 /* minutes */ * 60 /* seconds */
-const INVALID_TRACKID_EXPIRATION_SECONDS =
+const INVALID_AGREEMENTID_EXPIRATION_SECONDS =
   1 /* hour */ * 60 /* minutes */ * 60 /* seconds */
 
-const PROCESS_TRACKS_BATCH_SIZE = 200
+const PROCESS_AGREEMENTS_BATCH_SIZE = 200
 
 const types = models.ContentBlacklist.Types
 
@@ -29,10 +29,10 @@ class BlacklistManager {
     try {
       this.log('Initializing BlacklistManager...')
 
-      const { trackIdsToBlacklist, userIdsToBlacklist, segmentsToBlacklist } =
+      const { agreementIdsToBlacklist, userIdsToBlacklist, segmentsToBlacklist } =
         await this.getDataToBlacklist()
       await this.fetchCIDsAndAddToRedis({
-        trackIdsToBlacklist,
+        agreementIdsToBlacklist,
         userIdsToBlacklist,
         segmentsToBlacklist
       })
@@ -45,13 +45,13 @@ class BlacklistManager {
     }
   }
 
-  /** Return list of trackIds, userIds, and CIDs to be blacklisted. */
+  /** Return list of agreementIds, userIds, and CIDs to be blacklisted. */
   static async getDataToBlacklist() {
     // CBL = ContentBlacklist
-    const tracksFromCBL = await models.ContentBlacklist.findAll({
+    const agreementsFromCBL = await models.ContentBlacklist.findAll({
       attributes: ['value'],
       where: {
-        type: types.track
+        type: types.agreement
       },
       raw: true
     })
@@ -74,36 +74,36 @@ class BlacklistManager {
     const userIdsToBlacklist = usersFromCBL.map((entry) =>
       parseInt(entry.value)
     )
-    const trackIdsToBlacklist = tracksFromCBL.map((entry) =>
+    const agreementIdsToBlacklist = agreementsFromCBL.map((entry) =>
       parseInt(entry.value)
     )
 
-    return { trackIdsToBlacklist, userIdsToBlacklist, segmentsToBlacklist }
+    return { agreementIdsToBlacklist, userIdsToBlacklist, segmentsToBlacklist }
   }
 
   /**
-   * 1. Given trackIds and userIds to blacklist, fetch all segmentCIDs, and then add the ultimate set of segments to redis.
-   * 2. Add the trackIds and userIds to redis as sets.
-   * 3. Create mapping of explicitly blacklisted tracks with the structure <blacklisted-segmentCIDs : set of trackIds> in redis.
+   * 1. Given agreementIds and userIds to blacklist, fetch all segmentCIDs, and then add the ultimate set of segments to redis.
+   * 2. Add the agreementIds and userIds to redis as sets.
+   * 3. Create mapping of explicitly blacklisted agreements with the structure <blacklisted-segmentCIDs : set of agreementIds> in redis.
    */
   static async fetchCIDsAndAddToRedis({
-    trackIdsToBlacklist = [],
+    agreementIdsToBlacklist = [],
     userIdsToBlacklist = [],
     segmentsToBlacklist = []
   }) {
-    // Get all tracks from users and combine with explicit trackIds to BL
-    const tracksFromUsers = await this.getTracksFromUsers(userIdsToBlacklist)
-    const allTrackIdsToBlacklist = trackIdsToBlacklist.concat(
-      tracksFromUsers.map((track) => track.blockchainId)
+    // Get all agreements from users and combine with explicit agreementIds to BL
+    const agreementsFromUsers = await this.getAgreementsFromUsers(userIdsToBlacklist)
+    const allAgreementIdsToBlacklist = agreementIdsToBlacklist.concat(
+      agreementsFromUsers.map((agreement) => agreement.blockchainId)
     )
 
-    // Dedupe trackIds
-    const allTrackIdsToBlacklistSet = new Set(allTrackIdsToBlacklist)
+    // Dedupe agreementIds
+    const allAgreementIdsToBlacklistSet = new Set(allAgreementIdsToBlacklist)
 
     try {
       await this.addToRedis(
-        REDIS_SET_BLACKLIST_TRACKID_KEY,
-        allTrackIdsToBlacklist
+        REDIS_SET_BLACKLIST_AGREEMENTID_KEY,
+        allAgreementIdsToBlacklist
       )
       await this.addToRedis(REDIS_SET_BLACKLIST_USERID_KEY, userIdsToBlacklist)
       await this.addToRedis(
@@ -112,54 +112,54 @@ class BlacklistManager {
       )
     } catch (e) {
       throw new Error(
-        `[fetchCIDsAndAddToRedis] - Failed to add track ids, user ids, or explicitly blacklisted segments to blacklist: ${e.message}`
+        `[fetchCIDsAndAddToRedis] - Failed to add agreement ids, user ids, or explicitly blacklisted segments to blacklist: ${e.message}`
       )
     }
 
     await BlacklistManager.addAggregateCIDsToRedis([
-      ...allTrackIdsToBlacklistSet
+      ...allAgreementIdsToBlacklistSet
     ])
   }
 
   /**
-   * Helper method to batch adding CIDs from tracks and users to the blacklist
-   * @param {number[]} allTrackIdsToBlacklist aggregate list of track ids to blacklist from explicit track id blacklist and tracks from blacklisted users
+   * Helper method to batch adding CIDs from agreements and users to the blacklist
+   * @param {number[]} allAgreementIdsToBlacklist aggregate list of agreement ids to blacklist from explicit agreement id blacklist and agreements from blacklisted users
    */
-  static async addAggregateCIDsToRedis(allTrackIdsToBlacklist) {
+  static async addAggregateCIDsToRedis(allAgreementIdsToBlacklist) {
     const transaction = await models.sequelize.transaction()
 
     let i
     for (
       i = 0;
-      i < allTrackIdsToBlacklist.length;
-      i = i + PROCESS_TRACKS_BATCH_SIZE
+      i < allAgreementIdsToBlacklist.length;
+      i = i + PROCESS_AGREEMENTS_BATCH_SIZE
     ) {
       try {
-        const tracksSlice = allTrackIdsToBlacklist.slice(
+        const agreementsSlice = allAgreementIdsToBlacklist.slice(
           i,
-          i + PROCESS_TRACKS_BATCH_SIZE
+          i + PROCESS_AGREEMENTS_BATCH_SIZE
         )
 
         this.logDebug(
-          `[addAggregateCIDsToRedis] - tracks slice size: ${tracksSlice.length}`
+          `[addAggregateCIDsToRedis] - agreements slice size: ${agreementsSlice.length}`
         )
 
-        const segmentsFromTrackIdsToBlacklist =
-          await BlacklistManager.getCIDsToBlacklist(tracksSlice, transaction)
+        const segmentsFromAgreementIdsToBlacklist =
+          await BlacklistManager.getCIDsToBlacklist(agreementsSlice, transaction)
 
         this.logDebug(
-          `[addAggregateCIDsToRedis] - number of segments: ${segmentsFromTrackIdsToBlacklist.length}`
+          `[addAggregateCIDsToRedis] - number of segments: ${segmentsFromAgreementIdsToBlacklist.length}`
         )
 
         await BlacklistManager.addToRedis(
           REDIS_SET_BLACKLIST_SEGMENTCID_KEY,
-          segmentsFromTrackIdsToBlacklist
+          segmentsFromAgreementIdsToBlacklist
         )
       } catch (e) {
         await transaction.rollback()
         throw new Error(
-          `[addAggregateCIDsToRedis] - Could not add tracks slice ${i} to ${
-            i + PROCESS_TRACKS_BATCH_SIZE
+          `[addAggregateCIDsToRedis] - Could not add agreements slice ${i} to ${
+            i + PROCESS_AGREEMENTS_BATCH_SIZE
           }: ${e.message}`
         )
       }
@@ -169,36 +169,36 @@ class BlacklistManager {
   }
 
   /**
-   * Given trackIds and userIds to remove from blacklist, fetch all segmentCIDs.
-   * Also remove the trackIds, userIds, and segmentCIDs from redis blacklist sets to prevent future interaction.
+   * Given agreementIds and userIds to remove from blacklist, fetch all segmentCIDs.
+   * Also remove the agreementIds, userIds, and segmentCIDs from redis blacklist sets to prevent future interaction.
    */
   static async fetchCIDsAndRemoveFromRedis({
-    trackIdsToRemove = [],
+    agreementIdsToRemove = [],
     userIdsToRemove = [],
     segmentsToRemove = []
   }) {
-    // Get all tracks from users and combine with explicit trackIds to BL
-    const tracksFromUsers = await this.getTracksFromUsers(userIdsToRemove)
-    const allTrackIdsToBlacklist = trackIdsToRemove.concat(
-      tracksFromUsers.map((track) => track.blockchainId)
+    // Get all agreements from users and combine with explicit agreementIds to BL
+    const agreementsFromUsers = await this.getAgreementsFromUsers(userIdsToRemove)
+    const allAgreementIdsToBlacklist = agreementIdsToRemove.concat(
+      agreementsFromUsers.map((agreement) => agreement.blockchainId)
     )
 
-    // Dedupe trackIds
-    const allTrackIdsToBlacklistSet = new Set(allTrackIdsToBlacklist)
+    // Dedupe agreementIds
+    const allAgreementIdsToBlacklistSet = new Set(allAgreementIdsToBlacklist)
 
-    // Retrieves CIDs from deduped trackIds
-    const segmentsFromTrackIds = await this.getCIDsToBlacklist([
-      ...allTrackIdsToBlacklistSet
+    // Retrieves CIDs from deduped agreementIds
+    const segmentsFromAgreementIds = await this.getCIDsToBlacklist([
+      ...allAgreementIdsToBlacklistSet
     ])
 
-    let segmentCIDsToRemove = segmentsFromTrackIds.concat(segmentsToRemove)
+    let segmentCIDsToRemove = segmentsFromAgreementIds.concat(segmentsToRemove)
     const segmentCIDsToRemoveSet = new Set(segmentCIDsToRemove)
     segmentCIDsToRemove = [...segmentCIDsToRemoveSet]
 
     try {
       await this.removeFromRedis(
-        REDIS_SET_BLACKLIST_TRACKID_KEY,
-        allTrackIdsToBlacklist
+        REDIS_SET_BLACKLIST_AGREEMENTID_KEY,
+        allAgreementIdsToBlacklist
       )
       await this.removeFromRedis(
         REDIS_SET_BLACKLIST_USERID_KEY,
@@ -214,59 +214,59 @@ class BlacklistManager {
   }
 
   /**
-   * Retrieves track objects from specified users
+   * Retrieves agreement objects from specified users
    * @param {int[]} userIdsBlacklist
    */
-  static async getTracksFromUsers(userIdsBlacklist) {
-    let tracks = []
+  static async getAgreementsFromUsers(userIdsBlacklist) {
+    let agreements = []
 
     if (userIdsBlacklist.length > 0) {
-      tracks = (
+      agreements = (
         await models.sequelize.query(
-          'select "blockchainId" from "Tracks" where "cnodeUserUUID" in (' +
+          'select "blockchainId" from "Agreements" where "cnodeUserUUID" in (' +
             'select "cnodeUserUUID" from "ColivingUsers" where "blockchainId" in (:userIdsBlacklist)' +
             ');',
           { replacements: { userIdsBlacklist } }
         )
       )[0]
     }
-    return tracks
+    return agreements
   }
 
   /**
-   * Retrieves all CIDs from input trackIds from db
-   * @param {number[]} trackIds
+   * Retrieves all CIDs from input agreementIds from db
+   * @param {number[]} agreementIds
    * @param {Object} transaction sequelize transaction object
-   * @returns {Object[]} array of track model objects from table
+   * @returns {Object[]} array of agreement model objects from table
    */
-  static async getAllCIDsFromTrackIdsInDb(trackIds, transaction) {
-    const queryConfig = { where: { blockchainId: trackIds } }
+  static async getAllCIDsFromAgreementIdsInDb(agreementIds, transaction) {
+    const queryConfig = { where: { blockchainId: agreementIds } }
     if (transaction) {
       queryConfig.transaction = transaction
     }
 
-    return models.Track.findAll(queryConfig)
+    return models.Agreement.findAll(queryConfig)
   }
 
   /**
-   * Retrieves all the deduped CIDs from the params and builds a mapping to <trackId: segments> for explicit trackIds (i.e. trackIds from table, not tracks belonging to users).
-   * @param {number[]} allTrackIds all the trackIds to find CIDs for (explictly blacklisted tracks and tracks from blacklisted users)
+   * Retrieves all the deduped CIDs from the params and builds a mapping to <agreementId: segments> for explicit agreementIds (i.e. agreementIds from table, not agreements belonging to users).
+   * @param {number[]} allAgreementIds all the agreementIds to find CIDs for (explictly blacklisted agreements and agreements from blacklisted users)
    * @param {Object} transaction sequelize transaction object
-   * @returns {string[]} all CIDs that are blacklisted from input track ids
+   * @returns {string[]} all CIDs that are blacklisted from input agreement ids
    */
-  static async getCIDsToBlacklist(inputTrackIds, transaction) {
-    const tracks = await this.getAllCIDsFromTrackIdsInDb(
-      inputTrackIds,
+  static async getCIDsToBlacklist(inputAgreementIds, transaction) {
+    const agreements = await this.getAllCIDsFromAgreementIdsInDb(
+      inputAgreementIds,
       transaction
     )
 
     const segmentCIDs = new Set()
 
-    // Retrieve CIDs from the track metadata and build mapping of <trackId: segments>
-    for (const track of tracks) {
-      if (!track.metadataJSON || !track.metadataJSON.track_segments) continue
+    // Retrieve CIDs from the agreement metadata and build mapping of <agreementId: segments>
+    for (const agreement of agreements) {
+      if (!agreement.metadataJSON || !agreement.metadataJSON.agreement_segments) continue
 
-      for (const segment of track.metadataJSON.track_segments) {
+      for (const segment of agreement.metadataJSON.agreement_segments) {
         if (!segment.multihash || CID_WHITELIST.has(segment.multihash)) continue
 
         segmentCIDs.add(segment.multihash)
@@ -274,10 +274,10 @@ class BlacklistManager {
     }
 
     // also retrieves the CID's directly from the files table so we get copy320
-    if (inputTrackIds.length > 0) {
+    if (inputAgreementIds.length > 0) {
       const queryConfig = {
         where: {
-          trackBlockchainId: inputTrackIds
+          agreementBlockchainId: inputAgreementIds
         }
       }
       if (transaction) {
@@ -288,7 +288,7 @@ class BlacklistManager {
 
       for (const file of files) {
         if (
-          file.type === 'track' ||
+          file.type === 'agreement' ||
           file.type === 'copy320' ||
           !CID_WHITELIST.has(file.multihash)
         ) {
@@ -306,12 +306,12 @@ class BlacklistManager {
     // add to redis
     switch (type) {
       case 'USER':
-        // add user ids to redis under userid key + its associated track segments
+        // add user ids to redis under userid key + its associated agreement segments
         await this.fetchCIDsAndAddToRedis({ userIdsToBlacklist: values })
         break
-      case 'TRACK':
-        // add track ids to redis under trackid key + its associated track segments
-        await this.fetchCIDsAndAddToRedis({ trackIdsToBlacklist: values })
+      case 'AGREEMENT':
+        // add agreement ids to redis under agreementid key + its associated agreement segments
+        await this.fetchCIDsAndAddToRedis({ agreementIdsToBlacklist: values })
         break
       case 'CID':
         // add segments to redis under segment key
@@ -325,12 +325,12 @@ class BlacklistManager {
 
     switch (type) {
       case 'USER':
-        // Remove user ids from redis under userid key + its associated track segments
+        // Remove user ids from redis under userid key + its associated agreement segments
         await this.fetchCIDsAndRemoveFromRedis({ userIdsToRemove: values })
         break
-      case 'TRACK':
-        // Remove track ids from redis under trackid key + its associated track segments
-        await this.fetchCIDsAndRemoveFromRedis({ trackIdsToRemove: values })
+      case 'AGREEMENT':
+        // Remove agreement ids from redis under agreementid key + its associated agreement segments
+        await this.fetchCIDsAndRemoveFromRedis({ agreementIdsToRemove: values })
         break
       case 'CID':
         // Remove segments from redis under segment key
@@ -341,8 +341,8 @@ class BlacklistManager {
 
   /**
    * Adds ids and types as individual entries to ContentBlacklist table
-   * @param {number} id user or track id
-   * @param {'USER'|'TRACK'|'CID'} type
+   * @param {number} id user or agreement id
+   * @param {'USER'|'AGREEMENT'|'CID'} type
    */
   static async addToDb({ values, type }) {
     try {
@@ -365,8 +365,8 @@ class BlacklistManager {
 
   /**
    * Removes entry from Contentblacklist table
-   * @param {number} id user or track id
-   * @param {'USER'|'TRACK'|'CID'} type
+   * @param {number} id user or agreement id
+   * @param {'USER'|'AGREEMENT'|'CID'} type
    */
   static async removeFromDb({ values, type }) {
     let numRowsDestroyed
@@ -401,7 +401,7 @@ class BlacklistManager {
    * so break this up into multiple redis add calls
    * https://github.com/StackExchange/StackExchange.Redis/issues/201
    * @param {string} redisKey key
-   * @param {number[] | string[] | Object} data either array of userIds, trackIds, CIDs, or <trackId: [CIDs]>
+   * @param {number[] | string[] | Object} data either array of userIds, agreementIds, CIDs, or <agreementId: [CIDs]>
    */
   static async _addToRedisChunkHelper(redisKey, data) {
     const redisAddMaxItemsSize = 100000
@@ -422,25 +422,25 @@ class BlacklistManager {
   /**
    * Adds key with value to redis.
    * @param {string} redisKey type of value
-   * @param {number[] | string[] | Object} data either array of userIds, trackIds, CIDs, or <trackId: [CIDs]>
+   * @param {number[] | string[] | Object} data either array of userIds, agreementIds, CIDs, or <agreementId: [CIDs]>
    * @param {number?} expirationSec number of seconds for entry in redis to expire
    */
   static async addToRedis(redisKey, data, expirationSec = null) {
     switch (redisKey) {
-      case REDIS_MAP_TRACKID_TO_SEGMENTCIDS_KEY: {
-        // Add "MAP.TRACKID.SEGMENTCIDS:::<trackId>" to set of cids into redis
+      case REDIS_MAP_AGREEMENTID_TO_SEGMENTCIDS_KEY: {
+        // Add "MAP.AGREEMENTID.SEGMENTCIDS:::<agreementId>" to set of cids into redis
         const errors = []
-        for (let [trackId, cids] of Object.entries(data)) {
-          trackId = parseInt(trackId)
-          const redisTrackIdToCIDsKey = this.getRedisTrackIdToCIDsKey(trackId)
+        for (let [agreementId, cids] of Object.entries(data)) {
+          agreementId = parseInt(agreementId)
+          const redisAgreementIdToCIDsKey = this.getRedisAgreementIdToCIDsKey(agreementId)
           try {
-            await this._addToRedisChunkHelper(redisTrackIdToCIDsKey, cids)
+            await this._addToRedisChunkHelper(redisAgreementIdToCIDsKey, cids)
             if (expirationSec) {
-              await redis.expire(redisTrackIdToCIDsKey, expirationSec)
+              await redis.expire(redisAgreementIdToCIDsKey, expirationSec)
             }
           } catch (e) {
             errors.push(
-              `Unable to add ${redisTrackIdToCIDsKey}:${trackId}: ${e.toString()}`
+              `Unable to add ${redisAgreementIdToCIDsKey}:${agreementId}: ${e.toString()}`
             )
           }
         }
@@ -450,9 +450,9 @@ class BlacklistManager {
         }
         break
       }
-      case REDIS_SET_INVALID_TRACKIDS_KEY:
+      case REDIS_SET_INVALID_AGREEMENTIDS_KEY:
       case REDIS_SET_BLACKLIST_SEGMENTCID_KEY:
-      case REDIS_SET_BLACKLIST_TRACKID_KEY:
+      case REDIS_SET_BLACKLIST_AGREEMENTID_KEY:
       case REDIS_SET_BLACKLIST_USERID_KEY:
       default: {
         if (!data || data.length === 0) return
@@ -470,12 +470,12 @@ class BlacklistManager {
   /**
    * Removes key with value to redis. If value does not exist, redis should ignore.
    * @param {string} redisKey type of value
-   * @param {number[] | string[] | Object} data either array of userIds, trackIds, CIDs, or <trackId: [CIDs]>
+   * @param {number[] | string[] | Object} data either array of userIds, agreementIds, CIDs, or <agreementId: [CIDs]>
    */
   static async removeFromRedis(redisKey, data) {
     switch (redisKey) {
       case REDIS_SET_BLACKLIST_SEGMENTCID_KEY:
-      case REDIS_SET_BLACKLIST_TRACKID_KEY:
+      case REDIS_SET_BLACKLIST_AGREEMENTID_KEY:
       case REDIS_SET_BLACKLIST_USERID_KEY:
       default: {
         if (!data || data.length === 0) return
@@ -492,79 +492,79 @@ class BlacklistManager {
     }
   }
 
-  static async isServable(cid, trackId = null) {
+  static async isServable(cid, agreementId = null) {
     try {
-      // if the trackId is on the blacklist, do not serve
-      const trackIdIsInBlacklist =
-        trackId && Number.isInteger(trackId)
-          ? await this.trackIdIsInBlacklist(trackId)
+      // if the agreementId is on the blacklist, do not serve
+      const agreementIdIsInBlacklist =
+        agreementId && Number.isInteger(agreementId)
+          ? await this.agreementIdIsInBlacklist(agreementId)
           : false
-      if (trackIdIsInBlacklist) return false
+      if (agreementIdIsInBlacklist) return false
 
       // If the CID is not in the blacklist, allow serve
       const CIDIsInBlacklist = await this.CIDIsInBlacklist(cid)
       if (!CIDIsInBlacklist) return true
 
-      // If the CID is in the blacklist and an invalid trackId was passed in, do not serve
-      // Also, if the CID is not of track type and is in the blacklist, do not serve anyway
+      // If the CID is in the blacklist and an invalid agreementId was passed in, do not serve
+      // Also, if the CID is not of agreement type and is in the blacklist, do not serve anyway
       if (
-        !trackId ||
-        isNaN(trackId) ||
-        trackId < 0 ||
-        !Number.isInteger(trackId)
+        !agreementId ||
+        isNaN(agreementId) ||
+        agreementId < 0 ||
+        !Number.isInteger(agreementId)
       )
         return false
 
-      trackId = parseInt(trackId)
+      agreementId = parseInt(agreementId)
 
-      // Check to see if CID belongs to input trackId from redis.
-      let cidsOfInputTrackId = await this.getAllCIDsFromTrackIdInRedis(trackId)
+      // Check to see if CID belongs to input agreementId from redis.
+      let cidsOfInputAgreementId = await this.getAllCIDsFromAgreementIdInRedis(agreementId)
 
-      // If nothing is found, check redis to see if track is valid.
-      // If valid, add the <trackId:[cids]> mapping redis for quick lookup later.
-      // Else, add to invalid trackIds set
-      if (cidsOfInputTrackId.length === 0) {
-        const invalid = await this.trackIdIsInvalid(trackId)
+      // If nothing is found, check redis to see if agreement is valid.
+      // If valid, add the <agreementId:[cids]> mapping redis for quick lookup later.
+      // Else, add to invalid agreementIds set
+      if (cidsOfInputAgreementId.length === 0) {
+        const invalid = await this.agreementIdIsInvalid(agreementId)
 
-        // If track has been marked as invalid before, do not serve
+        // If agreement has been marked as invalid before, do not serve
         if (invalid) {
           return false
         }
 
         // Check the db for the segments
-        const track = (await this.getAllCIDsFromTrackIdsInDb([trackId]))[0]
+        const agreement = (await this.getAllCIDsFromAgreementIdsInDb([agreementId]))[0]
 
-        // If segments are not found, add to invalid trackIds set
-        if (!track) {
+        // If segments are not found, add to invalid agreementIds set
+        if (!agreement) {
           await this.addToRedis(
-            REDIS_SET_INVALID_TRACKIDS_KEY,
-            [trackId],
-            // Set expiry in case track with this trackId eventually gets uploaded to CN
-            INVALID_TRACKID_EXPIRATION_SECONDS
+            REDIS_SET_INVALID_AGREEMENTIDS_KEY,
+            [agreementId],
+            // Set expiry in case agreement with this agreementId eventually gets uploaded to CN
+            INVALID_AGREEMENTID_EXPIRATION_SECONDS
           )
           return false
         }
 
-        if (track.metadataJSON && track.metadataJSON.track_segments) {
-          // Track is found. Add <trackId:[cids]> to redis for quick lookup later
-          cidsOfInputTrackId = track.metadataJSON.track_segments.map(
+        if (agreement.metadataJSON && agreement.metadataJSON.agreement_segments) {
+          // Agreement is found. Add <agreementId:[cids]> to redis for quick lookup later
+          cidsOfInputAgreementId = agreement.metadataJSON.agreement_segments.map(
             (s) => s.multihash
           )
 
           await this.addToRedis(
-            REDIS_MAP_TRACKID_TO_SEGMENTCIDS_KEY,
-            { [trackId]: cidsOfInputTrackId },
-            SEGMENTCID_TO_TRACKID_EXPIRATION_SECONDS
+            REDIS_MAP_AGREEMENTID_TO_SEGMENTCIDS_KEY,
+            { [agreementId]: cidsOfInputAgreementId },
+            SEGMENTCID_TO_AGREEMENTID_EXPIRATION_SECONDS
           )
         }
       }
 
-      cidsOfInputTrackId = new Set(cidsOfInputTrackId)
+      cidsOfInputAgreementId = new Set(cidsOfInputAgreementId)
 
-      // CID belongs to input trackId and the track is not blacklisted; allow serve.
-      if (cidsOfInputTrackId.has(cid)) return true
+      // CID belongs to input agreementId and the agreement is not blacklisted; allow serve.
+      if (cidsOfInputAgreementId.has(cid)) return true
 
-      // CID does not belong to passed in trackId; do not serve
+      // CID does not belong to passed in agreementId; do not serve
       return false
     } catch (e) {
       // Error in checking CID. Default to false.
@@ -581,8 +581,8 @@ class BlacklistManager {
 
   /** Retrieves redis keys */
 
-  static getRedisTrackIdKey() {
-    return REDIS_SET_BLACKLIST_TRACKID_KEY
+  static getRedisAgreementIdKey() {
+    return REDIS_SET_BLACKLIST_AGREEMENTID_KEY
   }
 
   static getRedisUserIdKey() {
@@ -593,38 +593,38 @@ class BlacklistManager {
     return REDIS_SET_BLACKLIST_SEGMENTCID_KEY
   }
 
-  static getRedisTrackIdToCIDsKey(trackId) {
-    return `${REDIS_MAP_TRACKID_TO_SEGMENTCIDS_KEY}:::${trackId}`
+  static getRedisAgreementIdToCIDsKey(agreementId) {
+    return `${REDIS_MAP_AGREEMENTID_TO_SEGMENTCIDS_KEY}:::${agreementId}`
   }
 
-  static getInvalidTrackIdsKey() {
-    return REDIS_SET_INVALID_TRACKIDS_KEY
+  static getInvalidAgreementIdsKey() {
+    return REDIS_SET_INVALID_AGREEMENTIDS_KEY
   }
 
-  /** Checks if userId, trackId, and CID exists in redis  */
+  /** Checks if userId, agreementId, and CID exists in redis  */
 
   static async userIdIsInBlacklist(userId) {
     return redis.sismember(REDIS_SET_BLACKLIST_USERID_KEY, userId)
   }
 
-  static async trackIdIsInBlacklist(trackId) {
-    return redis.sismember(REDIS_SET_BLACKLIST_TRACKID_KEY, trackId)
+  static async agreementIdIsInBlacklist(agreementId) {
+    return redis.sismember(REDIS_SET_BLACKLIST_AGREEMENTID_KEY, agreementId)
   }
 
-  // Checks if the input CID is blacklisted from USER, TRACK, or SEGMENT type
+  // Checks if the input CID is blacklisted from USER, AGREEMENT, or SEGMENT type
   static async CIDIsInBlacklist(cid) {
     return redis.sismember(REDIS_SET_BLACKLIST_SEGMENTCID_KEY, cid)
   }
 
-  // Check if the input CID belongs to the track with the input trackId in redis.
-  static async CIDIsInTrackRedis(trackId, cid) {
-    const redisKey = this.getRedisTrackIdToCIDsKey(trackId)
+  // Check if the input CID belongs to the agreement with the input agreementId in redis.
+  static async CIDIsInAgreementRedis(agreementId, cid) {
+    const redisKey = this.getRedisAgreementIdToCIDsKey(agreementId)
     return redis.sismember(redisKey, cid)
   }
 
-  // Check to see if the input trackId is invalid
-  static async trackIdIsInvalid(trackId) {
-    return redis.sismember(REDIS_SET_INVALID_TRACKIDS_KEY, trackId)
+  // Check to see if the input agreementId is invalid
+  static async agreementIdIsInvalid(agreementId) {
+    return redis.sismember(REDIS_SET_INVALID_AGREEMENTIDS_KEY, agreementId)
   }
 
   // Retrieves all CIDs in redis
@@ -637,22 +637,22 @@ class BlacklistManager {
     return redis.smembers(REDIS_SET_BLACKLIST_USERID_KEY)
   }
 
-  // Retrieves all track ids in redis
-  static async getAllTrackIds() {
-    return redis.smembers(REDIS_SET_BLACKLIST_TRACKID_KEY)
+  // Retrieves all agreement ids in redis
+  static async getAllAgreementIds() {
+    return redis.smembers(REDIS_SET_BLACKLIST_AGREEMENTID_KEY)
   }
 
-  static async getAllInvalidTrackIds() {
-    return redis.smembers(REDIS_SET_INVALID_TRACKIDS_KEY)
+  static async getAllInvalidAgreementIds() {
+    return redis.smembers(REDIS_SET_INVALID_AGREEMENTIDS_KEY)
   }
 
   /**
-   * Retrieve all the relevant CIDs from the input trackId in redis.
-   * @param {number} trackId
-   * @returns {string[]} cids associated with trackId
+   * Retrieve all the relevant CIDs from the input agreementId in redis.
+   * @param {number} agreementId
+   * @returns {string[]} cids associated with agreementId
    */
-  static async getAllCIDsFromTrackIdInRedis(trackId) {
-    const redisKey = this.getRedisTrackIdToCIDsKey(trackId)
+  static async getAllCIDsFromAgreementIdInRedis(agreementId) {
+    const redisKey = this.getRedisAgreementIdToCIDsKey(agreementId)
     return redis.smembers(redisKey)
   }
 

@@ -11,7 +11,7 @@ The discovery node uses PostgreSQL. Our Postgres database is managed through [SQ
 
 ## Flask
 
-The discovery node web server serves as the entrypoint for reading data through the coliving protocol. All queries are returned as JSON objects parsed from SQLAlchemy query resultsn, and can be found in [src/queries](https://github.com/dgc.network/coliving-protocol/tree/master/discovery-node/src/queries). Some examples of queries include user-specific feeds, track data, playlist data, etc.
+The discovery node web server serves as the entrypoint for reading data through the coliving protocol. All queries are returned as JSON objects parsed from SQLAlchemy query resultsn, and can be found in [src/queries](https://github.com/dgc.network/coliving-protocol/tree/master/discovery-node/src/queries). Some examples of queries include user-specific feeds, agreement data, playlist data, etc.
 
 ## Celery
 
@@ -32,7 +32,7 @@ What happens when 'index_blocks' is actually executed? The celery task does the 
     - block indexing window is equivalent to the maximum number of blocks to be processed in a single indexing operation
 2. Traverse over each block in the block array produced after the above step. 
 
-    In each block, check if any transactions relevant to the coliving smart contracts are present. If present, we retrieve specific event information from the associated transaction hash - examples include creator and track metadata. To do so, the discovery node *must* be aware of both the contract ABIs as well as each contract's address - these are shipped with each discovery node image. 
+    In each block, check if any transactions relevant to the coliving smart contracts are present. If present, we retrieve specific event information from the associated transaction hash - examples include creator and agreement metadata. To do so, the discovery node *must* be aware of both the contract ABIs as well as each contract's address - these are shipped with each discovery node image. 
 
 3. Given operations from coliving contracts in a given block, the task updates the corresponding table in the database. Certain index operations require a metadata fetch from decentralized storage (Coliving Storage Protocol). Metadata formats can be found [here](https://github.com/dgc.network/coliving-protocol/blob/master/discovery-node/src/tasks/metadata.py).
 

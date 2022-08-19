@@ -6,14 +6,14 @@ from typing import List, Optional, Tuple
 from redis import Redis
 from sqlalchemy.orm.session import Session
 from src.models.indexing.block import Block
-from src.models.tracks.track import Track
-from src.queries.get_trending_tracks import (
+from src.models.agreements.agreement import Agreement
+from src.queries.get_trending_agreements import (
     generate_unpopulated_trending,
     generate_unpopulated_trending_from_mat_views,
     make_trending_cache_key,
 )
 from src.queries.get_underground_trending import (
-    make_get_unpopulated_tracks,
+    make_get_unpopulated_agreements,
     make_underground_trending_cache_key,
 )
 from src.tasks.celery_app import celery
@@ -26,7 +26,7 @@ from src.utils.prometheus_metric import (
     save_duration_metric,
 )
 from src.utils.redis_cache import set_json_cached_key
-from src.utils.redis_constants import trending_tracks_last_completion_redis_key
+from src.utils.redis_constants import trending_agreements_last_completion_redis_key
 from src.utils.session_manager import SessionManager
 from web3 import Web3
 
@@ -79,7 +79,7 @@ genre_allowlist = {
     "R&B/Soul",
     "Reggae",
     "Rock",
-    "Soundtrack",
+    "Soundagreement",
     "Spoken Word",
     "Tech House",
     "Techno",
@@ -93,7 +93,7 @@ genre_allowlist = {
 
 def get_genres(session: Session) -> List[str]:
     """Returns all genres"""
-    genres: List[Tuple[str]] = (session.query(Track.genre).distinct(Track.genre)).all()
+    genres: List[Tuple[str]] = (session.query(Agreement.genre).distinct(Agreement.genre)).all()
     genres = filter(  # type: ignore
         lambda x: x[0] is not None and x[0] != "" and x[0] in genre_allowlist, genres
     )
@@ -134,22 +134,22 @@ def index_trending(self, db: SessionManager, redis: Redis, timestamp):
         # Make sure to cache empty genre
         genres.append(None)  # type: ignore
 
-        trending_track_versions = trending_strategy_factory.get_versions_for_type(
-            TrendingType.TRACKS
+        trending_agreement_versions = trending_strategy_factory.get_versions_for_type(
+            TrendingType.AGREEMENTS
         ).keys()
 
         update_view(session, AGGREGATE_INTERVAL_PLAYS)
         update_view(session, TRENDING_PARAMS)
-        for version in trending_track_versions:
+        for version in trending_agreement_versions:
             strategy = trending_strategy_factory.get_strategy(
-                TrendingType.TRACKS, version
+                TrendingType.AGREEMENTS, version
             )
             if strategy.use_mat_view:
-                strategy.update_track_score_query(session)
+                strategy.update_agreement_score_query(session)
 
-        for version in trending_track_versions:
+        for version in trending_agreement_versions:
             strategy = trending_strategy_factory.get_strategy(
-                TrendingType.TRACKS, version
+                TrendingType.AGREEMENTS, version
             )
             for genre in genres:
                 for time_range in time_ranges:
@@ -173,14 +173,14 @@ def index_trending(self, db: SessionManager, redis: Redis, timestamp):
 
         # Cache underground trending
         underground_trending_versions = trending_strategy_factory.get_versions_for_type(
-            TrendingType.UNDERGROUND_TRACKS
+            TrendingType.UNDERGROUND_AGREEMENTS
         ).keys()
         for version in underground_trending_versions:
             strategy = trending_strategy_factory.get_strategy(
-                TrendingType.UNDERGROUND_TRACKS, version
+                TrendingType.UNDERGROUND_AGREEMENTS, version
             )
             cache_start_time = time.time()
-            res = make_get_unpopulated_tracks(session, redis, strategy)()
+            res = make_get_unpopulated_agreements(session, redis, strategy)()
             key = make_underground_trending_cache_key(version)
             set_json_cached_key(redis, key, res)
             cache_end_time = time.time()
@@ -197,8 +197,8 @@ def index_trending(self, db: SessionManager, redis: Redis, timestamp):
         f"index_trending.py | Finished indexing trending in {update_total} seconds",
         extra={"job": "index_trending", "total_time": update_total},
     )
-    # Update cache key to track the last time trending finished indexing
-    redis.set(trending_tracks_last_completion_redis_key, int(update_end))
+    # Update cache key to agreement the last time trending finished indexing
+    redis.set(trending_agreements_last_completion_redis_key, int(update_end))
     set_last_trending_datetime(redis, timestamp)
 
 

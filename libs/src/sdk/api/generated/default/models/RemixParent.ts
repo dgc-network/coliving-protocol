@@ -14,11 +14,11 @@
  */
 
 import {
-    TrackElement,
-    TrackElementFromJSON,
-    TrackElementFromJSONTyped,
-    TrackElementToJSON,
-} from './TrackElement';
+    AgreementElement,
+    AgreementElementFromJSON,
+    AgreementElementFromJSONTyped,
+    AgreementElementToJSON,
+} from './AgreementElement';
 
 /**
  * 
@@ -28,9 +28,9 @@ import {
 export interface RemixParent {
     /**
      * 
-     * @type {Array<TrackElement>}
+     * @type {Array<AgreementElement>}
      * @memberof RemixParent
      */
-    tracks?: Array<TrackElement>;
+    agreements?: Array<AgreementElement>;
 }
 

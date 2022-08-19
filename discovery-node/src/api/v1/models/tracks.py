@@ -3,8 +3,8 @@ from flask_restx import fields
 from .common import favorite, ns, repost
 from .users import user_model, user_model_full
 
-track_artwork = ns.model(
-    "track_artwork",
+agreement_artwork = ns.model(
+    "agreement_artwork",
     {
         "150x150": fields.String,
         "480x480": fields.String,
@@ -12,26 +12,26 @@ track_artwork = ns.model(
     },
 )
 
-track_segment = ns.model(
-    "track_segment",
+agreement_segment = ns.model(
+    "agreement_segment",
     {
         "duration": fields.Float(required=True),
         "multihash": fields.String(required=True),
     },
 )
 
-track_element = ns.model(
-    "track_element", {"parent_track_id": fields.String(required=True)}
+agreement_element = ns.model(
+    "agreement_element", {"parent_agreement_id": fields.String(required=True)}
 )
 
 remix_parent = ns.model(
-    "remix_parent", {"tracks": fields.List(fields.Nested(track_element))}
+    "remix_parent", {"agreements": fields.List(fields.Nested(agreement_element))}
 )
 
 full_remix = ns.model(
     "full_remix",
     {
-        "parent_track_id": fields.String(required=True),
+        "parent_agreement_id": fields.String(required=True),
         "user": fields.Nested(user_model_full, required=True),
         "has_remix_author_reposted": fields.Boolean(required=True),
         "has_remix_author_saved": fields.Boolean(required=True),
@@ -39,14 +39,14 @@ full_remix = ns.model(
 )
 
 full_remix_parent = ns.model(
-    "full_remix_parent", {"tracks": fields.List(fields.Nested(full_remix))}
+    "full_remix_parent", {"agreements": fields.List(fields.Nested(full_remix))}
 )
 
 stem_parent = ns.model(
     "stem_parent",
     {
         "category": fields.String(required=True),
-        "parent_track_id": fields.Integer(required=True),
+        "parent_agreement_id": fields.Integer(required=True),
     },
 )
 
@@ -70,10 +70,10 @@ field_visibility = ns.model(
         "remixes": fields.Boolean,
     },
 )
-track = ns.model(
-    "Track",
+agreement = ns.model(
+    "Agreement",
     {
-        "artwork": fields.Nested(track_artwork, allow_null=True),
+        "artwork": fields.Nested(agreement_artwork, allow_null=True),
         "description": fields.String,
         "genre": fields.String,
         "id": fields.String(required=True),
@@ -85,19 +85,19 @@ track = ns.model(
         "tags": fields.String,
         "title": fields.String(required=True),
         "user": fields.Nested(user_model, required=True),
-        # Total track duration, rounded to the nearest second
+        # Total agreement duration, rounded to the nearest second
         "duration": fields.Integer(required=True),
-        # Whether or not the track is downloadable, see `download`
-        # on `track_full` for more details
+        # Whether or not the agreement is downloadable, see `download`
+        # on `agreement_full` for more details
         "downloadable": fields.Boolean,
         "play_count": fields.Integer(required=True),
         "permalink": fields.String,
     },
 )
 
-track_full = ns.clone(
-    "track_full",
-    track,
+agreement_full = ns.clone(
+    "agreement_full",
+    agreement,
     {
         "blocknumber": fields.Integer(required=True),
         "create_date": fields.String,
@@ -116,7 +116,7 @@ track_full = ns.clone(
         "followee_favorites": fields.List(fields.Nested(favorite), required=True),
         "route_id": fields.String(required=True),
         "stem_of": fields.Nested(stem_parent),
-        "track_segments": fields.List(fields.Nested(track_segment)),
+        "agreement_segments": fields.List(fields.Nested(agreement_segment)),
         "updated_at": fields.String,
         "user_id": fields.String(required=True),
         "user": fields.Nested(user_model_full, required=True),
@@ -143,6 +143,6 @@ remixes_response = ns.model(
     "remixes_response",
     {
         "count": fields.Integer(required=True),
-        "tracks": fields.List(fields.Nested(track_full)),
+        "agreements": fields.List(fields.Nested(agreement_full)),
     },
 )

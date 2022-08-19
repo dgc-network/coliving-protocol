@@ -39,7 +39,7 @@ What are these 2 accounts?
 
     - adminKeypair - the Account required to sign administrative operations within the protocol
 
-    - adminStorageKeypair - the Account where administrative info is stored on chain, includes various metadata such as global track ID nonce (to be expanded). This account has a reference to the adminKeypair
+    - adminStorageKeypair - the Account where administrative info is stored on chain, includes various metadata such as global agreement ID nonce (to be expanded). This account has a reference to the adminKeypair
 
 ## 2. Initializing a user account from administrator
 
@@ -85,11 +85,11 @@ yarn run ts-node cli/main.ts -f initUserSolPubkey \
 --eth-private-key d540ca11a0d12345f512e65e00bf8bf87435aa40b3731cbf0322971709eba60f
 ```
 
-## 4. Creating a track
-Finally, using the parameters known from above, we can call createTrack - it is important to note that there is no 'metadata' flag as of now and the string is randomly generated. This object will be the pointer to a CID which contains track related information.
+## 4. Creating a agreement
+Finally, using the parameters known from above, we can call createAgreement - it is important to note that there is no 'metadata' flag as of now and the string is randomly generated. This object will be the pointer to a CID which contains agreement related information.
 
 ```
-yarn run ts-node cli/main.ts -f createTrack \
+yarn run ts-node cli/main.ts -f createAgreement \
 -k ~/.config/solana/id.json \
 --user-solana-keypair $PWD/userKeypair.json \
 --user-storage-pubkey $USER_STORAGE_PUBKEY \

@@ -5,7 +5,7 @@
     "metadata": {
         "entity_id": 100,
         "entity_owner_id": 2,
-        "entity_type": "track"
+        "entity_type": "agreement"
     },
     "timestamp": "2020-10-24T19:39:45 Z",
     "type": "Repost"
@@ -15,7 +15,7 @@
     "metadata": {
         "entity_id": 101,
         "entity_owner_id": 2,
-        "entity_type": "track"
+        "entity_type": "agreement"
     },
     "timestamp": "2020-10-24T19:39:45 Z",
     "type": "Repost"
@@ -25,7 +25,7 @@
       "metadata": {
           "entity_id": 102,
           "entity_owner_id": 4,
-          "entity_type": "track"
+          "entity_type": "agreement"
       },
       "timestamp": "2020-10-24T19:39:45 Z",
       "type": "Repost"

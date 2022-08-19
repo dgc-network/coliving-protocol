@@ -13,8 +13,8 @@ custom_edit_url: null
 
 ## Properties
 
-### tracks
+### agreements
 
- `Optional` **tracks**: [`FullRemix`](full.FullRemix.md)[]
+ `Optional` **agreements**: [`FullRemix`](full.FullRemix.md)[]
 
 **`memberof`** FullRemixParent

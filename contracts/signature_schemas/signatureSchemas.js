@@ -26,8 +26,8 @@ domains.getUserFactoryDomain = function (chainId, contractAddress) {
   return getDomainData('User Factory', '1', chainId, contractAddress)
 }
 
-domains.getTrackFactoryDomain = function (chainId, contractAddress) {
-  return getDomainData('Track Factory', '1', chainId, contractAddress)
+domains.getAgreementFactoryDomain = function (chainId, contractAddress) {
+  return getDomainData('Agreement Factory', '1', chainId, contractAddress)
 }
 
 domains.getPlaylistFactoryDomain = function (chainId, contractAddress) {
@@ -86,37 +86,37 @@ schemas.updateUserBool = [
   { name: 'nonce', type: 'bytes32' }
 ]
 
-/* track factory requests */
-schemas.addTrackRequest = [
-  { name: 'trackOwnerId', type: 'uint' },
+/* agreement factory requests */
+schemas.addAgreementRequest = [
+  { name: 'agreementOwnerId', type: 'uint' },
   { name: 'multihashDigest', type: 'bytes32' },
   { name: 'multihashHashFn', type: 'uint8' },
   { name: 'multihashSize', type: 'uint8' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-schemas.updateTrackRequest = [
-  { name: 'trackId', type: 'uint' },
-  { name: 'trackOwnerId', type: 'uint' },
+schemas.updateAgreementRequest = [
+  { name: 'agreementId', type: 'uint' },
+  { name: 'agreementOwnerId', type: 'uint' },
   { name: 'multihashDigest', type: 'bytes32' },
   { name: 'multihashHashFn', type: 'uint8' },
   { name: 'multihashSize', type: 'uint8' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-schemas.deleteTrackRequest = [
-  { name: 'trackId', type: 'uint' },
+schemas.deleteAgreementRequest = [
+  { name: 'agreementId', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
 /* social features */
-schemas.addTrackRepostRequest = [
+schemas.addAgreementRepostRequest = [
   { name: 'userId', type: 'uint' },
-  { name: 'trackId', type: 'uint' },
+  { name: 'agreementId', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-schemas.deleteTrackRepostRequest = schemas.addTrackRepostRequest
+schemas.deleteAgreementRepostRequest = schemas.addAgreementRepostRequest
 
 schemas.addPlaylistRepostRequest = [
   { name: 'userId', type: 'uint' },
@@ -139,7 +139,7 @@ schemas.createPlaylistRequest = [
   { name: 'playlistName', type: 'string' },
   { name: 'isPrivate', type: 'bool' },
   { name: 'isAlbum', type: 'bool' },
-  { name: 'trackIdsHash', type: 'bytes32' },
+  { name: 'agreementIdsHash', type: 'bytes32' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
@@ -148,22 +148,22 @@ schemas.deletePlaylistRequest = [
   { name: 'nonce', type: 'bytes32' }
 ]
 
-schemas.addPlaylistTrackRequest = [
+schemas.addPlaylistAgreementRequest = [
   { name: 'playlistId', type: 'uint' },
-  { name: 'addedTrackId', type: 'uint' },
+  { name: 'addedAgreementId', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-schemas.deletePlaylistTrackRequest = [
+schemas.deletePlaylistAgreementRequest = [
   { name: 'playlistId', type: 'uint' },
-  { name: 'deletedTrackId', type: 'uint' },
-  { name: 'deletedTrackTimestamp', type: 'uint' },
+  { name: 'deletedAgreementId', type: 'uint' },
+  { name: 'deletedAgreementTimestamp', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-schemas.orderPlaylistTracksRequest = [
+schemas.orderPlaylistAgreementsRequest = [
   { name: 'playlistId', type: 'uint' },
-  { name: 'trackIdsHash', type: 'bytes32' },
+  { name: 'agreementIdsHash', type: 'bytes32' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
@@ -197,13 +197,13 @@ schemas.updatePlaylistUPCRequest = [
   { name: 'nonce', type: 'bytes32' }
 ]
 
-schemas.trackSaveRequest = [
+schemas.agreementSaveRequest = [
   { name: 'userId', type: 'uint' },
-  { name: 'trackId', type: 'uint' },
+  { name: 'agreementId', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-schemas.deleteTrackSaveRequest = schemas.trackSaveRequest
+schemas.deleteAgreementSaveRequest = schemas.agreementSaveRequest
 
 schemas.playlistSaveRequest = [
   { name: 'userId', type: 'uint' },
@@ -408,88 +408,88 @@ generators.getUpdateUserVerifiedRequestData = function (chainId, contractAddress
   )
 }
 
-/* Track Factory Generators */
-generators.getAddTrackRequestData = function (chainId, contractAddress, trackOwnerId, multihashDigest, multihashHashFn, multihashSize, nonce) {
+/* Agreement Factory Generators */
+generators.getAddAgreementRequestData = function (chainId, contractAddress, agreementOwnerId, multihashDigest, multihashHashFn, multihashSize, nonce) {
   const message = {
-    trackOwnerId: trackOwnerId,
+    agreementOwnerId: agreementOwnerId,
     multihashDigest: multihashDigest,
     multihashHashFn: multihashHashFn,
     multihashSize: multihashSize,
     nonce: nonce
   }
   return getRequestData(
-    domains.getTrackFactoryDomain,
+    domains.getAgreementFactoryDomain,
     chainId,
     contractAddress,
-    'AddTrackRequest',
-    schemas.addTrackRequest,
+    'AddAgreementRequest',
+    schemas.addAgreementRequest,
     message
   )
 }
 
-generators.getUpdateTrackRequestData = function (chainId, contractAddress, trackId, trackOwnerId, multihashDigest, multihashHashFn, multihashSize, nonce) {
+generators.getUpdateAgreementRequestData = function (chainId, contractAddress, agreementId, agreementOwnerId, multihashDigest, multihashHashFn, multihashSize, nonce) {
   const message = {
-    trackId: trackId,
-    trackOwnerId: trackOwnerId,
+    agreementId: agreementId,
+    agreementOwnerId: agreementOwnerId,
     multihashDigest: multihashDigest,
     multihashHashFn: multihashHashFn,
     multihashSize: multihashSize,
     nonce: nonce
   }
   return getRequestData(
-    domains.getTrackFactoryDomain,
+    domains.getAgreementFactoryDomain,
     chainId,
     contractAddress,
-    'UpdateTrackRequest',
-    schemas.updateTrackRequest,
+    'UpdateAgreementRequest',
+    schemas.updateAgreementRequest,
     message
   )
 }
 
-generators.getDeleteTrackRequestData = function (chainId, contractAddress, trackId, nonce) {
+generators.getDeleteAgreementRequestData = function (chainId, contractAddress, agreementId, nonce) {
   const message = {
-    trackId: trackId,
+    agreementId: agreementId,
     nonce: nonce
   }
   return getRequestData(
-    domains.getTrackFactoryDomain,
+    domains.getAgreementFactoryDomain,
     chainId,
     contractAddress,
-    'DeleteTrackRequest',
-    schemas.deleteTrackRequest,
+    'DeleteAgreementRequest',
+    schemas.deleteAgreementRequest,
     message
   )
 }
 
 /* Social Feature Factory Generators */
-generators.getAddTrackRepostRequestData = function (chainId, contractAddress, userId, trackId, nonce) {
+generators.getAddAgreementRepostRequestData = function (chainId, contractAddress, userId, agreementId, nonce) {
   const message = {
     userId: userId,
-    trackId: trackId,
+    agreementId: agreementId,
     nonce: nonce
   }
   return getRequestData(
     domains.getSocialFeatureFactoryDomain,
     chainId,
     contractAddress,
-    'AddTrackRepostRequest',
-    schemas.addTrackRepostRequest,
+    'AddAgreementRepostRequest',
+    schemas.addAgreementRepostRequest,
     message
   )
 }
 
-generators.getDeleteTrackRepostRequestData = function (chainId, contractAddress, userId, trackId, nonce) {
+generators.getDeleteAgreementRepostRequestData = function (chainId, contractAddress, userId, agreementId, nonce) {
   const message = {
     userId: userId,
-    trackId: trackId,
+    agreementId: agreementId,
     nonce: nonce
   }
   return getRequestData(
     domains.getSocialFeatureFactoryDomain,
     chainId,
     contractAddress,
-    'DeleteTrackRepostRequest',
-    schemas.deleteTrackRepostRequest,
+    'DeleteAgreementRepostRequest',
+    schemas.deleteAgreementRepostRequest,
     message
   )
 }
@@ -558,10 +558,10 @@ generators.getDeleteUserFollowRequestData = function (chainId, contractAddress, 
   )
 }
 
-generators.getTrackSaveRequestData = function (chainId, contractAddress, userId, trackId, nonce) {
+generators.getAgreementSaveRequestData = function (chainId, contractAddress, userId, agreementId, nonce) {
   const message = {
     userId: userId,
-    trackId: trackId,
+    agreementId: agreementId,
     nonce: nonce
   }
 
@@ -569,16 +569,16 @@ generators.getTrackSaveRequestData = function (chainId, contractAddress, userId,
     domains.getUserLibraryFactoryDomain,
     chainId,
     contractAddress,
-    'TrackSaveRequest',
-    schemas.trackSaveRequest,
+    'AgreementSaveRequest',
+    schemas.agreementSaveRequest,
     message
   )
 }
 
-generators.getDeleteTrackSaveRequestData = function (chainId, contractAddress, userId, trackId, nonce) {
+generators.getDeleteAgreementSaveRequestData = function (chainId, contractAddress, userId, agreementId, nonce) {
   const message = {
     userId: userId,
-    trackId: trackId,
+    agreementId: agreementId,
     nonce: nonce
   }
 
@@ -586,8 +586,8 @@ generators.getDeleteTrackSaveRequestData = function (chainId, contractAddress, u
     domains.getUserLibraryFactoryDomain,
     chainId,
     contractAddress,
-    'DeleteTrackSaveRequest',
-    schemas.deleteTrackSaveRequest,
+    'DeleteAgreementSaveRequest',
+    schemas.deleteAgreementSaveRequest,
     message
   )
 }
@@ -628,16 +628,16 @@ generators.getDeletePlaylistSaveRequestData = function (chainId, contractAddress
 
 /* Playlist Factory Generators */
 
-/* NOTE: Ensure the value for trackIds hash is generated using the following snippet prior to calling this generator function:
- * web3New.utils.soliditySha3(web3New.eth.abi.encodeParameter('uint[]', trackIds))
+/* NOTE: Ensure the value for agreementIds hash is generated using the following snippet prior to calling this generator function:
+ * web3New.utils.soliditySha3(web3New.eth.abi.encodeParameter('uint[]', agreementIds))
  */
-generators.getCreatePlaylistRequestData = function (chainId, contractAddress, playlistOwnerId, playlistName, isPrivate, isAlbum, trackIdsHash, nonce) {
+generators.getCreatePlaylistRequestData = function (chainId, contractAddress, playlistOwnerId, playlistName, isPrivate, isAlbum, agreementIdsHash, nonce) {
   const message = {
     playlistOwnerId: playlistOwnerId,
     playlistName: playlistName,
     isPrivate: isPrivate,
     isAlbum: isAlbum,
-    trackIdsHash: trackIdsHash,
+    agreementIdsHash: agreementIdsHash,
     nonce: nonce
   }
 
@@ -666,10 +666,10 @@ generators.getDeletePlaylistRequestData = function (chainId, contractAddress, pl
   )
 }
 
-generators.getAddPlaylistTrackRequestData = function (chainId, contractAddress, playlistId, addedTrackId, nonce) {
+generators.getAddPlaylistAgreementRequestData = function (chainId, contractAddress, playlistId, addedAgreementId, nonce) {
   const message = {
     playlistId: playlistId,
-    addedTrackId: addedTrackId,
+    addedAgreementId: addedAgreementId,
     nonce: nonce
   }
 
@@ -677,17 +677,17 @@ generators.getAddPlaylistTrackRequestData = function (chainId, contractAddress, 
     domains.getPlaylistFactoryDomain,
     chainId,
     contractAddress,
-    'AddPlaylistTrackRequest',
-    schemas.addPlaylistTrackRequest,
+    'AddPlaylistAgreementRequest',
+    schemas.addPlaylistAgreementRequest,
     message
   )
 }
 
-generators.getDeletePlaylistTrackRequestData = function (chainId, contractAddress, playlistId, deletedTrackId, deletedTrackTimestamp, nonce) {
+generators.getDeletePlaylistAgreementRequestData = function (chainId, contractAddress, playlistId, deletedAgreementId, deletedAgreementTimestamp, nonce) {
   const message = {
     playlistId: playlistId,
-    deletedTrackId: deletedTrackId,
-    deletedTrackTimestamp: deletedTrackTimestamp,
+    deletedAgreementId: deletedAgreementId,
+    deletedAgreementTimestamp: deletedAgreementTimestamp,
     nonce: nonce
   }
 
@@ -695,16 +695,16 @@ generators.getDeletePlaylistTrackRequestData = function (chainId, contractAddres
     domains.getPlaylistFactoryDomain,
     chainId,
     contractAddress,
-    'DeletePlaylistTrackRequest',
-    schemas.deletePlaylistTrackRequest,
+    'DeletePlaylistAgreementRequest',
+    schemas.deletePlaylistAgreementRequest,
     message
   )
 }
 
-generators.getOrderPlaylistTracksRequestData = function (chainId, contractAddress, playlistId, trackIdsHash, nonce) {
+generators.getOrderPlaylistAgreementsRequestData = function (chainId, contractAddress, playlistId, agreementIdsHash, nonce) {
   const message = {
     playlistId: playlistId,
-    trackIdsHash: trackIdsHash,
+    agreementIdsHash: agreementIdsHash,
     nonce: nonce
   }
 
@@ -712,8 +712,8 @@ generators.getOrderPlaylistTracksRequestData = function (chainId, contractAddres
     domains.getPlaylistFactoryDomain,
     chainId,
     contractAddress,
-    'OrderPlaylistTracksRequest',
-    schemas.orderPlaylistTracksRequest,
+    'OrderPlaylistAgreementsRequest',
+    schemas.orderPlaylistAgreementsRequest,
     message
   )
 }

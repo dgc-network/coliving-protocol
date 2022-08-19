@@ -1,10 +1,10 @@
-"""repair_poorly_sorted_tracks
+"""repair_poorly_sorted_agreements
 
-Tracks on coliving created before datetime(2021, 5, 19, 15, 27, 45) contain improperly sorted segments.
+Agreements on coliving created before datetime(2021, 5, 19, 15, 27, 45) contain improperly sorted segments.
 See https://github.com/dgc.network/coliving-protocol/commit/27576f58c4cdfa8e18e3f90f2c427d1e4a7eb51c
 for the forward looking fix.
 
-This migration retroactively repairs older tracks
+This migration retroactively repairs older agreements
 
 Revision ID: c8d2be7dcccc
 Revises: d9992d2d598c
@@ -110,14 +110,14 @@ def get_default_value(field, value, model, e):
     return default_value
 
 
-# Copy of Track model at time of migration to avoid deps on changing models
-class Track(Base):
-    __tablename__ = "tracks"
+# Copy of Agreement model at time of migration to avoid deps on changing models
+class Agreement(Base):
+    __tablename__ = "agreements"
 
     blockhash = Column(String, ForeignKey("blocks.blockhash"), nullable=False)
     blocknumber = Column(Integer, ForeignKey("blocks.number"), nullable=False)
     txhash = Column(String, default="", nullable=False)
-    track_id = Column(Integer, nullable=False)
+    agreement_id = Column(Integer, nullable=False)
     is_current = Column(Boolean, nullable=False)
     is_delete = Column(Boolean, nullable=False)
     owner_id = Column(Integer, nullable=False)
@@ -138,7 +138,7 @@ class Track(Base):
     license = Column(String, nullable=True)
     isrc = Column(String, nullable=True)
     iswc = Column(String, nullable=True)
-    track_segments = Column(postgresql.JSONB, nullable=False)
+    agreement_segments = Column(postgresql.JSONB, nullable=False)
     metadata_multihash = Column(String, nullable=True)
     download = Column(postgresql.JSONB, nullable=True)
     updated_at = Column(DateTime, nullable=False)
@@ -147,23 +147,23 @@ class Track(Base):
     field_visibility = Column(postgresql.JSONB, nullable=True)
     stem_of = Column(postgresql.JSONB, nullable=True)
 
-    PrimaryKeyConstraint(is_current, track_id, blockhash, txhash)
+    PrimaryKeyConstraint(is_current, agreement_id, blockhash, txhash)
 
-    ModelValidator.init_model_schemas("Track")
-    fields = get_fields_to_validate("Track")
+    ModelValidator.init_model_schemas("Agreement")
+    fields = get_fields_to_validate("Agreement")
 
     # unpacking args into @validates
     @validates(*fields)
     def validate_field(self, field, value):
-        return validate_field_helper(field, value, "Track", getattr(Track, field).type)
+        return validate_field_helper(field, value, "Agreement", getattr(Agreement, field).type)
 
     def __repr__(self):
         return (
-            f"<Track("
+            f"<Agreement("
             f"blockhash={self.blockhash},"
             f"blocknumber={self.blocknumber},"
             f"txhash={self.txhash},"
-            f"track_id={self.track_id},"
+            f"agreement_id={self.agreement_id},"
             f"is_current={self.is_current},"
             f"is_delete={self.is_delete},"
             f"owner_id={self.owner_id},"
@@ -184,7 +184,7 @@ class Track(Base):
             f"license={self.license},"
             f"isrc={self.isrc},"
             f"iswc={self.iswc},"
-            f"track_segments={self.track_segments},"
+            f"agreement_segments={self.agreement_segments},"
             f"metadata_multihash={self.metadata_multihash},"
             f"download={self.download},"
             f"updated_at={self.updated_at},"
@@ -270,19 +270,19 @@ def upgrade():
     bind = op.get_bind()
     session = Session(bind=bind)
 
-    target_tracks_query = session.query(Track).filter(
-        Track.is_current == True,
-        Track.created_at < CUTOFF_DATE,
-        jsonb_array_length(Track.track_segments) > 1000,
+    target_agreements_query = session.query(Agreement).filter(
+        Agreement.is_current == True,
+        Agreement.created_at < CUTOFF_DATE,
+        jsonb_array_length(Agreement.agreement_segments) > 1000,
     )
-    target_tracks = target_tracks_query.all()
-    if len(target_tracks) > 2000:
+    target_agreements = target_agreements_query.all()
+    if len(target_agreements) > 2000:
         # Something is wrong here, we should not have this many. Back out.
         return
 
-    logger.warning(f"Fixing {len(target_tracks)} target tracks")
-    for track in target_tracks:
-        track.track_segments = fix_segments(track.track_segments)
+    logger.warning(f"Fixing {len(target_agreements)} target agreements")
+    for agreement in target_agreements:
+        agreement.agreement_segments = fix_segments(agreement.agreement_segments)
     session.commit()
 
 
@@ -290,17 +290,17 @@ def downgrade():
     bind = op.get_bind()
     session = Session(bind=bind)
 
-    target_tracks_query = session.query(Track).filter(
-        Track.is_current == True,
-        Track.created_at < CUTOFF_DATE,
-        jsonb_array_length(Track.track_segments) > 1000,
+    target_agreements_query = session.query(Agreement).filter(
+        Agreement.is_current == True,
+        Agreement.created_at < CUTOFF_DATE,
+        jsonb_array_length(Agreement.agreement_segments) > 1000,
     )
-    target_tracks = target_tracks_query.all()
-    if len(target_tracks) > 2000:
+    target_agreements = target_agreements_query.all()
+    if len(target_agreements) > 2000:
         # Something is wrong here, we should not have this many. Back out.
         return
 
-    logger.warning(f"Un-fixing {len(target_tracks)} target tracks")
-    for track in target_tracks:
-        track.track_segments = unfix_segments(track.track_segments)
+    logger.warning(f"Un-fixing {len(target_agreements)} target agreements")
+    for agreement in target_agreements:
+        agreement.agreement_segments = unfix_segments(agreement.agreement_segments)
     session.commit()

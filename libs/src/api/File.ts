@@ -37,21 +37,21 @@ export class File extends Base {
    * @param creatorNodeGateways Content Node gateways to fetch content from
    * @param callback callback called on each successful/failed fetch with
    *  [String, Bool](gateway, succeeded)
-   *  Can be used for tracking metrics on which gateways were used.
+   *  Can be used for agreementing metrics on which gateways were used.
    */
   async fetchCID(
     cid: string,
     creatorNodeGateways: string[],
     callback: Nullable<(url: string) => void> = null,
     responseType: ResponseType = 'blob',
-    trackId = null
+    agreementId = null
   ) {
     const urls: string[] = []
 
     creatorNodeGateways.forEach((gateway) => {
       let gatewayWithCid = urlJoin(gateway, cid)
-      if (trackId)
-        gatewayWithCid = urlJoin(gatewayWithCid, { query: { trackId } })
+      if (agreementId)
+        gatewayWithCid = urlJoin(gatewayWithCid, { query: { agreementId } })
       urls.push(gatewayWithCid)
     })
 
@@ -82,7 +82,7 @@ export class File extends Base {
           }
           return response
         } catch (e) {
-          // TODO: Remove this fallback logic when no more users/tracks/playlists
+          // TODO: Remove this fallback logic when no more users/agreements/playlists
           // contain "legacy" image formats (no dir cid)
           if (cid.includes('/')) {
             // dirCID -- an image

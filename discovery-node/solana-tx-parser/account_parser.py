@@ -10,7 +10,7 @@ from utils import get_idl
 
 
 def get_account_client(account_name: str) -> AccountClient:
-    # account names: ColivingAdmin, User, Track, Playlist, UserAuthorityDelegate
+    # account names: ColivingAdmin, User, Agreement, Playlist, UserAuthorityDelegate
     idl = get_idl()
     accounts = idl.accounts
     program_id = SYS_PROGRAM_ID

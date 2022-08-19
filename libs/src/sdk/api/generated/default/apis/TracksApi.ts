@@ -16,36 +16,36 @@
 
 import * as runtime from '../runtime';
 import {
-    TrackResponse,
-    TrackResponseFromJSON,
-    TrackResponseToJSON,
-    TrackSearch,
-    TrackSearchFromJSON,
-    TrackSearchToJSON,
-    TracksResponse,
-    TracksResponseFromJSON,
-    TracksResponseToJSON,
+    AgreementResponse,
+    AgreementResponseFromJSON,
+    AgreementResponseToJSON,
+    AgreementSearch,
+    AgreementSearchFromJSON,
+    AgreementSearchToJSON,
+    AgreementsResponse,
+    AgreementsResponseFromJSON,
+    AgreementsResponseToJSON,
 } from '../models';
 
-export interface GetBulkTracksRequest {
+export interface GetBulkAgreementsRequest {
     /**
-     * The permalink of the track(s)
+     * The permalink of the agreement(s)
      */
     permalink?: Array<string>;
     /**
-     * The ID of the track(s)
+     * The ID of the agreement(s)
      */
     id?: Array<string>;
 }
 
-export interface GetTrackRequest {
+export interface GetAgreementRequest {
     /**
-     * A Track ID
+     * A Agreement ID
      */
-    trackId: string;
+    agreementId: string;
 }
 
-export interface GetTrendingTracksRequest {
+export interface GetTrendingAgreementsRequest {
     /**
      * Filter trending to a specified genre
      */
@@ -53,36 +53,36 @@ export interface GetTrendingTracksRequest {
     /**
      * Calculate trending over a specified time range
      */
-    time?: GetTrendingTracksTimeEnum;
+    time?: GetTrendingAgreementsTimeEnum;
 }
 
-export interface SearchTracksRequest {
+export interface SearchAgreementsRequest {
     /**
      * The search query
      */
     query: string;
     /**
-     * Return only downloadable tracks
+     * Return only downloadable agreements
      */
     onlyDownloadable?: string;
 }
 
-export interface StreamTrackRequest {
+export interface StreamAgreementRequest {
     /**
-     * A Track ID
+     * A Agreement ID
      */
-    trackId: string;
+    agreementId: string;
 }
 
 /**
  * 
  */
-export class TracksApi extends runtime.BaseAPI {
+export class AgreementsApi extends runtime.BaseAPI {
 
     /**
-     * Gets a list of tracks using their IDs or permalinks
+     * Gets a list of agreements using their IDs or permalinks
      */
-    async getBulkTracks(requestParameters: GetBulkTracksRequest = {}): Promise<NonNullable<TracksResponse["data"]>> {
+    async getBulkAgreements(requestParameters: GetBulkAgreementsRequest = {}): Promise<NonNullable<AgreementsResponse["data"]>> {
         const queryParameters: any = {};
 
         if (requestParameters.permalink) {
@@ -96,19 +96,19 @@ export class TracksApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/tracks`,
+            path: `/agreements`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }) as Promise<NonNullable<TracksResponse["data"]>>;
+        }) as Promise<NonNullable<AgreementsResponse["data"]>>;
     }
 
     /**
-     * Gets a track by ID
+     * Gets a agreement by ID
      */
-    async getTrack(requestParameters: GetTrackRequest): Promise<NonNullable<TrackResponse["data"]>> {
-        if (requestParameters.trackId === null || requestParameters.trackId === undefined) {
-            throw new runtime.RequiredError('trackId','Required parameter requestParameters.trackId was null or undefined when calling getTrack.');
+    async getAgreement(requestParameters: GetAgreementRequest): Promise<NonNullable<AgreementResponse["data"]>> {
+        if (requestParameters.agreementId === null || requestParameters.agreementId === undefined) {
+            throw new runtime.RequiredError('agreementId','Required parameter requestParameters.agreementId was null or undefined when calling getAgreement.');
         }
 
         const queryParameters: any = {};
@@ -116,17 +116,17 @@ export class TracksApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/tracks/{track_id}`.replace(`{${"track_id"}}`, encodeURIComponent(String(requestParameters.trackId))),
+            path: `/agreements/{agreement_id}`.replace(`{${"agreement_id"}}`, encodeURIComponent(String(requestParameters.agreementId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }) as Promise<NonNullable<TrackResponse["data"]>>;
+        }) as Promise<NonNullable<AgreementResponse["data"]>>;
     }
 
     /**
-     * Gets the top 100 trending (most popular) tracks on Coliving
+     * Gets the top 100 trending (most popular) agreements on Coliving
      */
-    async getTrendingTracks(requestParameters: GetTrendingTracksRequest = {}): Promise<NonNullable<TracksResponse["data"]>> {
+    async getTrendingAgreements(requestParameters: GetTrendingAgreementsRequest = {}): Promise<NonNullable<AgreementsResponse["data"]>> {
         const queryParameters: any = {};
 
         if (requestParameters.genre !== undefined) {
@@ -140,19 +140,19 @@ export class TracksApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/tracks/trending`,
+            path: `/agreements/trending`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }) as Promise<NonNullable<TracksResponse["data"]>>;
+        }) as Promise<NonNullable<AgreementsResponse["data"]>>;
     }
 
     /**
-     * Search for a track or tracks
+     * Search for a agreement or agreements
      */
-    async searchTracks(requestParameters: SearchTracksRequest): Promise<NonNullable<TrackSearch["data"]>> {
+    async searchAgreements(requestParameters: SearchAgreementsRequest): Promise<NonNullable<AgreementSearch["data"]>> {
         if (requestParameters.query === null || requestParameters.query === undefined) {
-            throw new runtime.RequiredError('query','Required parameter requestParameters.query was null or undefined when calling searchTracks.');
+            throw new runtime.RequiredError('query','Required parameter requestParameters.query was null or undefined when calling searchAgreements.');
         }
 
         const queryParameters: any = {};
@@ -168,11 +168,11 @@ export class TracksApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/tracks/search`,
+            path: `/agreements/search`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }) as Promise<NonNullable<TrackSearch["data"]>>;
+        }) as Promise<NonNullable<AgreementSearch["data"]>>;
     }
 
 }
@@ -181,7 +181,7 @@ export class TracksApi extends runtime.BaseAPI {
     * @export
     * @enum {string}
     */
-export enum GetTrendingTracksTimeEnum {
+export enum GetTrendingAgreementsTimeEnum {
     Week = 'week',
     Month = 'month',
     Year = 'year',

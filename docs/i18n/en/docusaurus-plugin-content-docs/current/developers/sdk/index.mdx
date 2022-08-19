@@ -17,8 +17,8 @@ import TabItem from '@theme/TabItem';
 
 The Coliving JavaScript (TypeScript) SDK allows you to easily build upon and interact with the Coliving protocol.
 - ✍️ Log in with Coliving
-- 🎵 Fetch and stream tracks
-- 🔍 Search and display users, tracks, and playlists
+- 🎵 Fetch and stream agreements
+- 🔍 Search and display users, agreements, and playlists
 
 👷‍♀️ We're actively working on building out more SDK features and functionality - stay tuned!
 
@@ -46,8 +46,8 @@ The Coliving JavaScript (TypeScript) SDK allows you to easily build upon and int
     ### 3. Make your first API call using the SDK!
 
     ```js
-    const tracks = await colivingSdk.discoveryNode.getTracks()
-    console.log(tracks, 'Tracks fetched!')
+    const agreements = await colivingSdk.discoveryNode.getAgreements()
+    console.log(agreements, 'Agreements fetched!')
     ```
 
     ### Full example
@@ -61,8 +61,8 @@ The Coliving JavaScript (TypeScript) SDK allows you to easily build upon and int
 
     const colivingSdk = sdk({ appName: 'My Example App' })
 
-    const tracks = await colivingSdk.discoveryNode.getTracks()
-    console.log(tracks, 'Tracks fetched!')
+    const agreements = await colivingSdk.discoveryNode.getAgreements()
+    console.log(agreements, 'Agreements fetched!')
     ```
 
   </TabItem>
@@ -98,7 +98,7 @@ const colivingSdk = window.colivingSdk({ appName: 'Name of your app goes here' }
 #### 3. Make your first API call using the SDK!
 
 ```js
-const tracks = await colivingSdk.discoveryNode.getTracks()
+const agreements = await colivingSdk.discoveryNode.getAgreements()
 ```
 
 #### Full example
@@ -113,8 +113,8 @@ const tracks = await colivingSdk.discoveryNode.getTracks()
       const colivingSdk = window.colivingSdk({
         appName: "My Example App",
       });
-      const tracks = await colivingSdk.discoveryNode.getTracks();
-      console.log(tracks, "Tracks fetched!");
+      const agreements = await colivingSdk.discoveryNode.getAgreements();
+      console.log(agreements, "Agreements fetched!");
     </script>
   </head>
   <body>

@@ -1,5 +1,5 @@
 /**
- * SecondarySyncHealthTracker
+ * SecondarySyncHealthAgreementer
  * API for Primary to measure SyncRequest success and failure counts per Secondary, User, and Day
  */
 
@@ -136,13 +136,13 @@ const Utils = {
       await redisClient.expire(redisKey, DailyRedisKeyExpirationSec)
 
       logger.info(
-        `SecondarySyncHealthTracker:_recordSyncRequestOutcome || Recorded ${redisKey}`
+        `SecondarySyncHealthAgreementer:_recordSyncRequestOutcome || Recorded ${redisKey}`
       )
 
       // Swallow error + log
     } catch (e: any) {
       logger.error(
-        `SecondarySyncHealthTracker:_recordSyncRequestOutcome Error || ${e.message}`
+        `SecondarySyncHealthAgreementer:_recordSyncRequestOutcome Error || ${e.message}`
       )
     }
   }
@@ -235,7 +235,7 @@ const Getters = {
       return Utils._getMetricsMatchingPattern(pattern)
     } catch (e: any) {
       logger.error(
-        `SecondarySyncHealthTracker - getSyncRequestOutcomeMetrics() Error || ${e.message}`
+        `SecondarySyncHealthAgreementer - getSyncRequestOutcomeMetrics() Error || ${e.message}`
       )
       return {}
     }
@@ -253,7 +253,7 @@ const Getters = {
       return Utils._getMetricsMatchingPattern(pattern, wallets)
     } catch (e: any) {
       logger.error(
-        `SecondarySyncHealthTracker - batchGetSyncRequestOutcomeMetricsForToday() Error || ${e.message}`
+        `SecondarySyncHealthAgreementer - batchGetSyncRequestOutcomeMetricsForToday() Error || ${e.message}`
       )
       return {}
     }
@@ -286,7 +286,7 @@ const Getters = {
   }
 }
 
-const SecondarySyncHealthTracker = {
+const SecondarySyncHealthAgreementer = {
   Outcomes,
 
   // Setters
@@ -301,5 +301,5 @@ const SecondarySyncHealthTracker = {
     Getters.getSecondaryUserSyncFailureCountForToday
 }
 
-export default SecondarySyncHealthTracker
-module.exports = SecondarySyncHealthTracker
+export default SecondarySyncHealthAgreementer
+module.exports = SecondarySyncHealthAgreementer

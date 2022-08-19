@@ -172,7 +172,7 @@ const getCID = async (req, res) => {
   }
 
   const CID = req.params.CID
-  const trackId = parseInt(req.query.trackId)
+  const agreementId = parseInt(req.query.agreementId)
 
   const decisionTree = [{ stage: `BEGIN`, time: `${Date.now()}` }]
   const logPrefix = `[getCID] [CID=${CID}]`
@@ -182,7 +182,7 @@ const getCID = async (req, res) => {
    */
   let startMs = Date.now()
   const BlacklistManager = req.app.get('blacklistManager')
-  const isServable = await BlacklistManager.isServable(CID, trackId)
+  const isServable = await BlacklistManager.isServable(CID, agreementId)
   decisionTree.push({
     stage: `BLACKLIST_MANAGER_CHECK_IS_SERVABLE`,
     time: `${Date.now() - startMs}ms`
@@ -471,7 +471,7 @@ const getCID = async (req, res) => {
       CID,
       req.logger,
       libs,
-      trackId
+      agreementId
     )
     if (!found) {
       throw new Error('Not found in network')
@@ -510,7 +510,7 @@ const getDirCID = async (req, res) => {
     )
   }
 
-  // Do not act as a public gateway. Only serve files that are tracked by this creator node.
+  // Do not act as a public gateway. Only serve files that are agreemented by this creator node.
   const dirCID = req.params.dirCID
   const filename = req.params.filename
   const path = `${dirCID}/${filename}`
@@ -754,7 +754,7 @@ router.post(
  * @param req.query
  * @param {string} req.query.filename filename to set as the content-disposition header
  * @dev This route does not handle responses by design, so we can pipe the response to client.
- * TODO: It seems like handleResponse does work with piped responses, as seen from the track/stream endpoint.
+ * TODO: It seems like handleResponse does work with piped responses, as seen from the agreement/stream endpoint.
  */
 router.get(['/ipfs/:CID', '/content/:CID'], getCID)
 
@@ -765,7 +765,7 @@ router.get(['/ipfs/:CID', '/content/:CID'], getCID)
  * @param req.query
  * @param {string} req.query.filename the actual filename to retrieve w/in the IPFS directory (e.g. 480x480.jpg)
  * @dev This route does not handle responses by design, so we can pipe the gateway response.
- * TODO: It seems like handleResponse does work with piped responses, as seen from the track/stream endpoint.
+ * TODO: It seems like handleResponse does work with piped responses, as seen from the agreement/stream endpoint.
  */
 router.get(['/ipfs/:dirCID/:filename', '/content/:dirCID/:filename'], getDirCID)
 
@@ -896,14 +896,14 @@ router.post(
  * @param req.query.delegateWallet the wallet address that signed this request
  * @param req.query.timestamp the timestamp when the request was made
  * @param req.query.signature the hashed signature of the object {filePath, delegateWallet, timestamp}
- * @param {string?} req.query.trackId the trackId of the requested file lookup
+ * @param {string?} req.query.agreementId the agreementId of the requested file lookup
  */
 router.get('/file_lookup', async (req, res) => {
   const BlacklistManager = req.app.get('blacklistManager')
   const { filePath, timestamp, signature } = req.query
-  let { delegateWallet, trackId } = req.query
+  let { delegateWallet, agreementId } = req.query
   delegateWallet = delegateWallet.toLowerCase()
-  trackId = parseInt(trackId)
+  agreementId = parseInt(agreementId)
 
   // no filePath passed in
   if (!filePath)
@@ -942,7 +942,7 @@ router.get('/file_lookup', async (req, res) => {
     )
 
   const { outer, inner } = matchObj
-  let isServable = await BlacklistManager.isServable(outer, trackId)
+  let isServable = await BlacklistManager.isServable(outer, agreementId)
   if (!isServable) {
     return sendResponse(
       req,
@@ -956,7 +956,7 @@ router.get('/file_lookup', async (req, res) => {
   // inner will only be set for image dir CID
   // if there's an inner CID, check if CID is blacklisted and set content disposition header
   if (inner) {
-    isServable = await BlacklistManager.isServable(inner, trackId)
+    isServable = await BlacklistManager.isServable(inner, agreementId)
     if (!isServable) {
       return sendResponse(
         req,

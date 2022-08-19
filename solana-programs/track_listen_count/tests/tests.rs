@@ -6,7 +6,7 @@ use rand::{thread_rng, Rng};
 use secp256k1::{PublicKey, SecretKey};
 use sha3::Digest;
 use solana_program::{hash::Hash, pubkey::Pubkey, system_instruction};
-use track_listen_count::*;
+use agreement_listen_count::*;
 use solana_program_test::*;
 use solana_sdk::{
     secp256k1_instruction,
@@ -18,7 +18,7 @@ use chrono::Utc;
 
 pub fn program_test() -> ProgramTest {
     ProgramTest::new(
-        "track_listen_count",
+        "agreement_listen_count",
         id(),
         processor!(processor::Processor::process_instruction),
     )
@@ -138,21 +138,21 @@ fn construct_eth_address(
 }
 
 #[tokio::test]
-async fn test_call_track_listen_instruction() {
+async fn test_call_agreement_listen_instruction() {
     let mut rng = thread_rng();
     let key: [u8; 32] = rng.gen();
     let priv_key = SecretKey::parse(&key).unwrap();
     let secp_pubkey = PublicKey::from_secret_key(&priv_key);
     let eth_address = construct_eth_address(&secp_pubkey);
 
-    let track_data = state::TrackData {
+    let agreement_data = state::AgreementData {
         user_id: String::from("U348512"),
-        track_id: String::from("T52354"),
+        agreement_id: String::from("T52354"),
         source: String::from("some/path/to/source"),
         timestamp: Utc::now().timestamp(),
     };
 
-    let message = track_data.try_to_vec().unwrap();
+    let message = agreement_data.try_to_vec().unwrap();
 
     let secp256_program_instruction =
         secp256k1_instruction::new_secp256k1_instruction(&priv_key, message.as_ref());
@@ -211,7 +211,7 @@ async fn test_call_track_listen_instruction() {
     .unwrap();
 
     let instruction_args = instruction::InstructionArgs {
-        track_data,
+        agreement_data,
         signature,
         recovery_id,
     };

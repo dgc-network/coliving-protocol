@@ -13,7 +13,7 @@ custom_edit_url: null
 
  `Optional` **kind**: [`SearchKindEnum`](../enums/full.SearchKindEnum.md)
 
-The type of response, one of: all, users, tracks, playlists, or albums
+The type of response, one of: all, users, agreements, playlists, or albums
 
 ___
 

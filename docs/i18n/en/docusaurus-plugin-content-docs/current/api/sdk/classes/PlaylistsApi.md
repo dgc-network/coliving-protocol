@@ -37,17 +37,17 @@ const playlist = await colivingSdk.playlists.getPlaylist({
 
 ___
 
-### getPlaylistTracks
+### getPlaylistAgreements
 
-**getPlaylistTracks**(`requestParameters`): `Promise`<[`Track`](../interfaces/Track.md)[]\>
+**getPlaylistAgreements**(`requestParameters`): `Promise`<[`Agreement`](../interfaces/Agreement.md)[]\>
 
-Fetch tracks within a playlist.
+Fetch agreements within a playlist.
 
 Example:
 
 ```typescript
 
-const tracks = await colivingSdk.playlists.getPlaylistTracks({
+const agreements = await colivingSdk.playlists.getPlaylistAgreements({
     playlistId: "AxRP0",
 });
 
@@ -57,11 +57,11 @@ const tracks = await colivingSdk.playlists.getPlaylistTracks({
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetPlaylistTracksRequest`](../interfaces/GetPlaylistTracksRequest.md) |
+| `requestParameters` | [`GetPlaylistAgreementsRequest`](../interfaces/GetPlaylistAgreementsRequest.md) |
 
 #### Returns
 
-`Promise`<[`Track`](../interfaces/Track.md)[]\>
+`Promise`<[`Agreement`](../interfaces/Agreement.md)[]\>
 
 ___
 

@@ -29,55 +29,55 @@ import {
 /**
  * 
  * @export
- * @interface TrackFavoritesResponseFull
+ * @interface AgreementFavoritesResponseFull
  */
-export interface TrackFavoritesResponseFull {
+export interface AgreementFavoritesResponseFull {
     /**
      * 
      * @type {number}
-     * @memberof TrackFavoritesResponseFull
+     * @memberof AgreementFavoritesResponseFull
      */
     latest_chain_block: number;
     /**
      * 
      * @type {number}
-     * @memberof TrackFavoritesResponseFull
+     * @memberof AgreementFavoritesResponseFull
      */
     latest_indexed_block: number;
     /**
      * 
      * @type {number}
-     * @memberof TrackFavoritesResponseFull
+     * @memberof AgreementFavoritesResponseFull
      */
     latest_chain_slot_plays: number;
     /**
      * 
      * @type {number}
-     * @memberof TrackFavoritesResponseFull
+     * @memberof AgreementFavoritesResponseFull
      */
     latest_indexed_slot_plays: number;
     /**
      * 
      * @type {string}
-     * @memberof TrackFavoritesResponseFull
+     * @memberof AgreementFavoritesResponseFull
      */
     signature: string;
     /**
      * 
      * @type {string}
-     * @memberof TrackFavoritesResponseFull
+     * @memberof AgreementFavoritesResponseFull
      */
     timestamp: string;
     /**
      * 
      * @type {VersionMetadata}
-     * @memberof TrackFavoritesResponseFull
+     * @memberof AgreementFavoritesResponseFull
      */
     version: VersionMetadata;
     /**
      * 
      * @type {Array<UserFull>}
-     * @memberof TrackFavoritesResponseFull
+     * @memberof AgreementFavoritesResponseFull
      */
     data?: Array<UserFull>;
 }

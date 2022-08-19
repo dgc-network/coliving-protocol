@@ -35,8 +35,8 @@ async function run () {
     const reqParam = signedLocalData
     reqParam.randomBytes = randomBytesToSign
 
-    let sampleTrack = new FormData()
-    sampleTrack.append('file', (await axios({
+    let sampleAgreement = new FormData()
+    sampleAgreement.append('file', (await axios({
       method: 'get',
       url: 'https://s3-us-west-1.amazonaws.com/download.coliving.co/sp-health-check-files/97mb_music.mp3', // 97 MB
       responseType: 'stream'
@@ -44,13 +44,13 @@ async function run () {
 
     let requestConfig = {
       headers: {
-        ...sampleTrack.getHeaders()
+        ...sampleAgreement.getHeaders()
       },
       url: `${CREATOR_NODE_ENDPOINT}/health_check/fileupload`,
       method: 'post',
       params: reqParam,
       responseType: 'json',
-      data: sampleTrack,
+      data: sampleAgreement,
       maxContentLength: Infinity,
       maxBodyLength: Infinity
     }

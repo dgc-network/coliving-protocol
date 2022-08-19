@@ -8,7 +8,7 @@ export const LISTEN_TABLES = [
   'playlists',
   'reposts',
   'saves',
-  'tracks',
+  'agreements',
   'users',
 ]
 
@@ -18,8 +18,8 @@ const trigger = `
 create or replace function ${functionName}() returns trigger as $$
 begin
   case TG_TABLE_NAME
-    when 'tracks' then
-      PERFORM pg_notify(TG_TABLE_NAME, json_build_object('track_id', new.track_id)::text);
+    when 'agreements' then
+      PERFORM pg_notify(TG_TABLE_NAME, json_build_object('agreement_id', new.agreement_id)::text);
     when 'users' then
       PERFORM pg_notify(TG_TABLE_NAME, json_build_object('user_id', new.user_id)::text);
     when 'playlists' then

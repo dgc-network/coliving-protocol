@@ -18,15 +18,15 @@ from src.models.model_utils import (
     get_fields_to_validate,
     validate_field_helper,
 )
-from src.models.tracks.track_route import TrackRoute
+from src.models.agreements.agreement_route import AgreementRoute
 from src.models.users.user import User
 
 
-class Track(Base, RepresentableMixin):
-    __tablename__ = "tracks"
+class Agreement(Base, RepresentableMixin):
+    __tablename__ = "agreements"
 
     blockhash = Column(ForeignKey("blocks.blockhash"))  # type: ignore
-    track_id = Column(Integer, primary_key=True, nullable=False)
+    agreement_id = Column(Integer, primary_key=True, nullable=False)
     is_current = Column(Boolean, primary_key=True, nullable=False)
     is_delete = Column(Boolean, nullable=False)
     owner_id = Column(Integer, nullable=False, index=True)
@@ -42,7 +42,7 @@ class Track(Base, RepresentableMixin):
     file_type = Column(String)
     metadata_multihash = Column(String)
     blocknumber = Column(ForeignKey("blocks.number"), index=True)  # type: ignore
-    track_segments = Column(JSONB(), nullable=False)
+    agreement_segments = Column(JSONB(), nullable=False)
     created_at = Column(DateTime, nullable=False, index=True)
     description = Column(String)
     isrc = Column(String)
@@ -66,17 +66,17 @@ class Track(Base, RepresentableMixin):
     is_available = Column(Boolean, nullable=False, server_default=text("true"))
 
     block = relationship(  # type: ignore
-        "Block", primaryjoin="Track.blockhash == Block.blockhash"
+        "Block", primaryjoin="Agreement.blockhash == Block.blockhash"
     )
     block1 = relationship(  # type: ignore
-        "Block", primaryjoin="Track.blocknumber == Block.number"
+        "Block", primaryjoin="Agreement.blocknumber == Block.number"
     )
 
     _routes = relationship(  # type: ignore
-        TrackRoute,
+        AgreementRoute,
         primaryjoin="and_(\
-            remote(Track.track_id) == foreign(TrackRoute.track_id),\
-            TrackRoute.is_current)",
+            remote(Agreement.agreement_id) == foreign(AgreementRoute.agreement_id),\
+            AgreementRoute.is_current)",
         lazy="joined",
         viewonly=True,
     )
@@ -84,7 +84,7 @@ class Track(Base, RepresentableMixin):
     user = relationship(  # type: ignore
         User,
         primaryjoin="and_(\
-            remote(Track.owner_id) == foreign(User.user_id),\
+            remote(Agreement.owner_id) == foreign(User.user_id),\
             User.is_current)",
         lazy="joined",
         viewonly=True,
@@ -100,12 +100,12 @@ class Track(Base, RepresentableMixin):
             return f"/{self.user[0].handle}/{self._slug}"
         return ""
 
-    PrimaryKeyConstraint(is_current, track_id, txhash)
+    PrimaryKeyConstraint(is_current, agreement_id, txhash)
 
-    ModelValidator.init_model_schemas("Track")
-    fields = get_fields_to_validate("Track")
+    ModelValidator.init_model_schemas("Agreement")
+    fields = get_fields_to_validate("Agreement")
 
     # unpacking args into @validates
     @validates(*fields)
     def validate_field(self, field, value):
-        return validate_field_helper(field, value, "Track", getattr(Track, field).type)
+        return validate_field_helper(field, value, "Agreement", getattr(Agreement, field).type)

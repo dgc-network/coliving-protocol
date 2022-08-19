@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from src.models.indexing.block import Block
 from src.models.social.aggregate_plays import AggregatePlay
 from src.models.social.play import Play
-from src.models.tracks.track import Track
+from src.models.agreements.agreement import Agreement
 from src.tasks.generate_trending import get_listen_counts
 
 
@@ -11,13 +11,13 @@ from src.tasks.generate_trending import get_listen_counts
 def setup_trending(db, date):
     # Test data
 
-    # test tracks
-    # when creating tracks, track_id == index
-    test_tracks = [
+    # test agreements
+    # when creating agreements, agreement_id == index
+    test_agreements = [
         {"genre": "Electronic"},
         {"genre": "Pop"},
         {"genre": "Electronic"},
-        # Tracks we don't want to count
+        # Agreements we don't want to count
         {"genre": "Electronic", "is_unlisted": True},
         {"genre": "Electronic", "is_delete": True},
     ]
@@ -34,7 +34,7 @@ def setup_trending(db, date):
         {"item_id": 2, "created_at": date - timedelta(weeks=2)},
         {"item_id": 2, "created_at": date - timedelta(weeks=2)},
         {"item_id": 3, "created_at": date - timedelta(weeks=2)},
-        # We don't want to count these guys (tracks deleted/unlisted)
+        # We don't want to count these guys (agreements deleted/unlisted)
         {"item_id": 3},
         {"item_id": 3},
         {"item_id": 4},
@@ -43,8 +43,8 @@ def setup_trending(db, date):
 
     # pylint: disable=W0621
     with db.scoped_session() as session:
-        # seed tracks + blocks
-        for i, track_meta in enumerate(test_tracks):
+        # seed agreements + blocks
+        for i, agreement_meta in enumerate(test_agreements):
             blockhash = hex(i)
             block = Block(
                 blockhash=blockhash,
@@ -53,27 +53,27 @@ def setup_trending(db, date):
                 is_current=True,
             )
 
-            track = Track(
+            agreement = Agreement(
                 blockhash=blockhash,
                 blocknumber=i,
-                track_id=i,
-                is_current=track_meta.get("is_current", True),
-                is_delete=track_meta.get("is_delete", False),
+                agreement_id=i,
+                is_current=agreement_meta.get("is_current", True),
+                is_delete=agreement_meta.get("is_delete", False),
                 owner_id=300,
                 route_id="",
-                track_segments=[],
-                genre=track_meta.get("genre", ""),
-                updated_at=track_meta.get("updated_at", date),
-                created_at=track_meta.get("created_at", date),
-                is_unlisted=track_meta.get("is_unlisted", False),
+                agreement_segments=[],
+                genre=agreement_meta.get("genre", ""),
+                updated_at=agreement_meta.get("updated_at", date),
+                created_at=agreement_meta.get("created_at", date),
+                is_unlisted=agreement_meta.get("is_unlisted", False),
             )
 
             # add block and then flush before
-            # adding track, bc track.blocknumber foreign key
+            # adding agreement, bc agreement.blocknumber foreign key
             # references block
             session.add(block)
             session.flush()
-            session.add(track)
+            session.add(agreement)
 
         # seed plays
         aggregate_plays = {}
@@ -94,8 +94,8 @@ def setup_trending(db, date):
 
 # Helper to sort results before validating
 def validate_results(actual, expected):
-    assert sorted(actual, key=lambda x: x["track_id"]) == sorted(
-        expected, key=lambda x: x["track_id"]
+    assert sorted(actual, key=lambda x: x["agreement_id"]) == sorted(
+        expected, key=lambda x: x["agreement_id"]
     )
 
 
@@ -114,9 +114,9 @@ def test_get_listen_counts_year(postgres_mock_db):
 
     # validate
     expected = [
-        {"track_id": 0, "listens": 2, "created_at": date},
-        {"track_id": 1, "listens": 2, "created_at": date},
-        {"track_id": 2, "listens": 3, "created_at": date},
+        {"agreement_id": 0, "listens": 2, "created_at": date},
+        {"agreement_id": 1, "listens": 2, "created_at": date},
+        {"agreement_id": 2, "listens": 3, "created_at": date},
     ]
     validate_results(res, expected)
 
@@ -133,9 +133,9 @@ def test_get_listen_counts_week(postgres_mock_db):
 
     # validate
     expected = [
-        {"track_id": 0, "listens": 2, "created_at": date},
-        {"track_id": 1, "listens": 2, "created_at": date},
-        {"track_id": 2, "listens": 1, "created_at": date},
+        {"agreement_id": 0, "listens": 2, "created_at": date},
+        {"agreement_id": 1, "listens": 2, "created_at": date},
+        {"agreement_id": 2, "listens": 1, "created_at": date},
     ]
     validate_results(res, expected)
 
@@ -151,7 +151,7 @@ def test_get_listen_counts_genre_filtered(postgres_mock_db):
         res = get_listen_counts(session, "year", "Pop", 10, 0)
 
     # validate
-    expected = [{"track_id": 1, "listens": 2, "created_at": date}]
+    expected = [{"agreement_id": 1, "listens": 2, "created_at": date}]
     validate_results(res, expected)
 
 
@@ -167,8 +167,8 @@ def test_get_listen_counts_all_time(postgres_mock_db):
 
     # validate
     expected = [
-        {"track_id": 0, "listens": 2, "created_at": date},
-        {"track_id": 1, "listens": 2, "created_at": date},
-        {"track_id": 2, "listens": 3, "created_at": date},
+        {"agreement_id": 0, "listens": 2, "created_at": date},
+        {"agreement_id": 1, "listens": 2, "created_at": date},
+        {"agreement_id": 2, "listens": 3, "created_at": date},
     ]
     validate_results(res, expected)

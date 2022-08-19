@@ -1,13 +1,13 @@
 ---
-id: "full.GetTrendingTracksIDsWithVersionRequest"
-title: "Interface: GetTrendingTracksIDsWithVersionRequest"
-sidebar_label: "GetTrendingTracksIDsWithVersionRequest"
+id: "full.GetTrendingAgreementsIDsWithVersionRequest"
+title: "Interface: GetTrendingAgreementsIDsWithVersionRequest"
+sidebar_label: "GetTrendingAgreementsIDsWithVersionRequest"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).GetTrendingTracksIDsWithVersionRequest
+[full](../namespaces/full.md).GetTrendingAgreementsIDsWithVersionRequest
 
 ## Properties
 

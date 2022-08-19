@@ -1,4 +1,4 @@
-"""user-track-collection-mat-views
+"""user-agreement-collection-mat-views
 
 Revision ID: 5bcbe23f6c70
 Revises: 2ff46a8686fa
@@ -28,29 +28,29 @@ def upgrade():
         CREATE MATERIALIZED VIEW aggregate_user as
         SELECT
             distinct(u.user_id),
-            COALESCE (user_track.track_count, 0) as track_count,
+            COALESCE (user_agreement.agreement_count, 0) as agreement_count,
             COALESCE (user_playlist.playlist_count, 0) as playlist_count,
             COALESCE (user_album.album_count, 0) as album_count,
             COALESCE (user_follower.follower_count, 0) as follower_count,
             COALESCE (user_followee.followee_count, 0) as following_count,
             COALESCE (user_repost.repost_count, 0) as repost_count,
-            COALESCE (user_track_save.save_count, 0) as track_save_count
+            COALESCE (user_agreement_save.save_count, 0) as agreement_save_count
         FROM 
             users u
-        -- join on subquery for tracks created
+        -- join on subquery for agreements created
         LEFT OUTER JOIN (
             SELECT
                 t.owner_id as owner_id,
-                count(t.owner_id) as track_count
+                count(t.owner_id) as agreement_count
             FROM
-                tracks t
+                agreements t
             WHERE
                 t.is_current is True AND
                 t.is_delete is False AND
                 t.is_unlisted is False AND
                 t.stem_of is Null
             GROUP BY t.owner_id
-        ) as user_track ON user_track.owner_id = u.user_id
+        ) as user_agreement ON user_agreement.owner_id = u.user_id
         -- join on subquery for playlists created
         LEFT OUTER JOIN (
             SELECT
@@ -115,7 +115,7 @@ def upgrade():
                 r.is_delete is False
             GROUP BY r.user_id
         ) user_repost ON user_repost.user_id = u.user_id
-        -- join on subquery for track saves
+        -- join on subquery for agreement saves
         LEFT OUTER JOIN (
             SELECT
                 s.user_id as user_id,
@@ -124,57 +124,57 @@ def upgrade():
                 saves s
             WHERE
                 s.is_current is True AND
-                s.save_type = 'track' AND
+                s.save_type = 'agreement' AND
                 s.is_delete is False
             GROUP BY s.user_id
-        ) user_track_save ON user_track_save.user_id = u.user_id
+        ) user_agreement_save ON user_agreement_save.user_id = u.user_id
         WHERE
             u.is_current is True;
 
         CREATE UNIQUE INDEX aggregate_user_idx ON aggregate_user (user_id);    
 
-        --- ======================= AGGREGATE TRACK =======================
-        DROP MATERIALIZED VIEW IF EXISTS aggregate_track;
-        DROP INDEX IF EXISTS aggregate_track_idx;
+        --- ======================= AGGREGATE AGREEMENT =======================
+        DROP MATERIALIZED VIEW IF EXISTS aggregate_agreement;
+        DROP INDEX IF EXISTS aggregate_agreement_idx;
 
-        CREATE MATERIALIZED VIEW aggregate_track as
+        CREATE MATERIALIZED VIEW aggregate_agreement as
         SELECT
-          t.track_id,
-          COALESCE (track_repost.repost_count, 0) as repost_count,
-          COALESCE (track_save.save_count, 0) as save_count
+          t.agreement_id,
+          COALESCE (agreement_repost.repost_count, 0) as repost_count,
+          COALESCE (agreement_save.save_count, 0) as save_count
         FROM 
-          tracks t
+          agreements t
         -- inner join on subquery for reposts
         LEFT OUTER JOIN (
           SELECT
-            r.repost_item_id as track_id,
+            r.repost_item_id as agreement_id,
             count(r.repost_item_id) as repost_count
           FROM
             reposts r
           WHERE
             r.is_current is True AND
-            r.repost_type = 'track' AND
+            r.repost_type = 'agreement' AND
             r.is_delete is False
           GROUP BY r.repost_item_id
-        ) track_repost ON track_repost.track_id = t.track_id
-        -- inner join on subquery for track saves
+        ) agreement_repost ON agreement_repost.agreement_id = t.agreement_id
+        -- inner join on subquery for agreement saves
         LEFT OUTER JOIN (
           SELECT
-            s.save_item_id as track_id,
+            s.save_item_id as agreement_id,
             count(s.save_item_id) as save_count
           FROM
             saves s
           WHERE
             s.is_current is True AND
-            s.save_type = 'track' AND
+            s.save_type = 'agreement' AND
             s.is_delete is False
           GROUP BY s.save_item_id
-        ) track_save ON track_save.track_id = t.track_id
+        ) agreement_save ON agreement_save.agreement_id = t.agreement_id
         WHERE
           t.is_current is True AND
           t.is_delete is False;
 
-        CREATE UNIQUE INDEX aggregate_track_idx ON aggregate_track (track_id);
+        CREATE UNIQUE INDEX aggregate_agreement_idx ON aggregate_agreement (agreement_id);
 
         --- ======================= AGGREGATE PLAYLIST =======================
         DROP MATERIALIZED VIEW IF EXISTS aggregate_playlist;
@@ -201,7 +201,7 @@ def upgrade():
             r.is_delete is False
           GROUP BY r.repost_item_id
         ) playlist_repost ON playlist_repost.playlist_id = p.playlist_id
-        -- inner join on subquery for track saves
+        -- inner join on subquery for agreement saves
         LEFT OUTER JOIN (
           SELECT
             s.save_item_id as playlist_id,
@@ -232,10 +232,10 @@ def downgrade():
         """
       begin;
         DROP INDEX IF EXISTS aggregate_user_idx;
-        DROP INDEX IF EXISTS aggregate_track_idx;
+        DROP INDEX IF EXISTS aggregate_agreement_idx;
         DROP INDEX IF EXISTS aggregate_playlist_idx;
         DROP MATERIALIZED VIEW aggregate_user;
-        DROP MATERIALIZED VIEW aggregate_track;
+        DROP MATERIALIZED VIEW aggregate_agreement;
         DROP MATERIALIZED VIEW aggregate_playlist;
       commit;
     """

@@ -1,5 +1,5 @@
 {
-  "contractName": "TrackFactory",
+  "contractName": "AgreementFactory",
   "abi": [
     {
       "constant": false,
@@ -101,7 +101,7 @@
           "type": "address"
         },
         {
-          "name": "_trackStorageRegistryKey",
+          "name": "_agreementStorageRegistryKey",
           "type": "bytes32"
         },
         {
@@ -127,7 +127,7 @@
         },
         {
           "indexed": false,
-          "name": "_trackOwnerId",
+          "name": "_agreementOwnerId",
           "type": "uint256"
         },
         {
@@ -146,7 +146,7 @@
           "type": "uint8"
         }
       ],
-      "name": "NewTrack",
+      "name": "NewAgreement",
       "type": "event"
     },
     {
@@ -154,12 +154,12 @@
       "inputs": [
         {
           "indexed": false,
-          "name": "_trackId",
+          "name": "_agreementId",
           "type": "uint256"
         },
         {
           "indexed": false,
-          "name": "_trackOwnerId",
+          "name": "_agreementOwnerId",
           "type": "uint256"
         },
         {
@@ -178,7 +178,7 @@
           "type": "uint8"
         }
       ],
-      "name": "UpdateTrack",
+      "name": "UpdateAgreement",
       "type": "event"
     },
     {
@@ -186,11 +186,11 @@
       "inputs": [
         {
           "indexed": false,
-          "name": "_trackId",
+          "name": "_agreementId",
           "type": "uint256"
         }
       ],
-      "name": "TrackDeleted",
+      "name": "AgreementDeleted",
       "type": "event"
     },
     {
@@ -218,7 +218,7 @@
           "type": "uint256"
         }
       ],
-      "name": "trackExists",
+      "name": "agreementExists",
       "outputs": [
         {
           "name": "exists",
@@ -233,7 +233,7 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_trackOwnerId",
+          "name": "_agreementOwnerId",
           "type": "uint256"
         },
         {
@@ -257,7 +257,7 @@
           "type": "bytes"
         }
       ],
-      "name": "addTrack",
+      "name": "addAgreement",
       "outputs": [
         {
           "name": "",
@@ -272,11 +272,11 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_trackId",
+          "name": "_agreementId",
           "type": "uint256"
         },
         {
-          "name": "_trackOwnerId",
+          "name": "_agreementOwnerId",
           "type": "uint256"
         },
         {
@@ -300,7 +300,7 @@
           "type": "bytes"
         }
       ],
-      "name": "updateTrack",
+      "name": "updateAgreement",
       "outputs": [
         {
           "name": "",
@@ -315,7 +315,7 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_trackId",
+          "name": "_agreementId",
           "type": "uint256"
         },
         {
@@ -327,7 +327,7 @@
           "type": "bytes"
         }
       ],
-      "name": "deleteTrack",
+      "name": "deleteAgreement",
       "outputs": [
         {
           "name": "status",
@@ -346,11 +346,11 @@
           "type": "address"
         },
         {
-          "name": "_trackId",
+          "name": "_agreementId",
           "type": "uint256"
         }
       ],
-      "name": "callerOwnsTrack",
+      "name": "callerOwnsAgreement",
       "outputs": [],
       "payable": false,
       "stateMutability": "view",
@@ -364,10 +364,10 @@
           "type": "uint256"
         }
       ],
-      "name": "getTrack",
+      "name": "getAgreement",
       "outputs": [
         {
-          "name": "trackOwnerId",
+          "name": "agreementOwnerId",
           "type": "uint256"
         },
         {

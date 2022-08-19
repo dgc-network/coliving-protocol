@@ -7,12 +7,12 @@ const assert = require('assert')
 const ServiceCommands = require('@coliving/service-commands')
 const {
   OPERATION_TYPE,
-  TrackUploadRequest,
-  TrackUploadResponse,
-  TrackRepostRequest,
-  TrackRepostResponse,
-  AddPlaylistTrackRequest,
-  AddPlaylistTrackResponse,
+  AgreementUploadRequest,
+  AgreementUploadResponse,
+  AgreementRepostRequest,
+  AgreementRepostResponse,
+  AddPlaylistAgreementRequest,
+  AddPlaylistAgreementResponse,
   CreatePlaylistRequest,
   CreatePlaylistResponse
 } = require('../operations.js')
@@ -26,13 +26,13 @@ const {
 } = require('../helpers.js')
 const {
   getContentNodeEndpoints,
-  getRepostersForTrack,
+  getRepostersForAgreement,
   createPlaylist,
   getPlaylists,
   RandomUtils,
-  uploadTrack,
-  repostTrack,
-  getTrackMetadata,
+  uploadAgreement,
+  repostAgreement,
+  getAgreementMetadata,
   getUser,
   getUsers,
   verifyCIDExistsOnCreatorNode,
@@ -40,11 +40,11 @@ const {
   setCreatorNodeEndpoint,
   updateCreator,
   getURSMContentNodes,
-  addPlaylistTrack
+  addPlaylistAgreement
 } = ServiceCommands
 const {
-  getRandomTrackMetadata,
-  getRandomTrackFilePath,
+  getRandomAgreementMetadata,
+  getRandomAgreementFilePath,
   r6,
   genRandomString
 } = RandomUtils
@@ -56,14 +56,14 @@ const TEMP_IMG_STORAGE_PATH = path.resolve('./local-storage/tmp-imgs/')
 
 const SECOND_USER_PIC_PATH = path.resolve('assets/images/duck.jpg')
 const THIRD_USER_PIC_PATH = path.resolve('assets/images/sid.png')
-const repostedTracks = []
-const uploadedTracks = []
+const repostedAgreements = []
+const uploadedAgreements = []
 const userRepostedMap = {}
 const createdPlaylists = []
-const addedPlaylistTracks = []
+const addedPlaylistAgreements = []
 
 /**
- * Randomly uploads tracks over the duration of the test,
+ * Randomly uploads agreements over the duration of the test,
  * testing that the CIDs are on the respective CNodes at the end of the test.
  */
 module.exports = coreIntegration = async ({
@@ -105,9 +105,9 @@ module.exports = coreIntegration = async ({
   await fs.ensureDir(TEMP_STORAGE_PATH)
   await fs.ensureDir(TEMP_IMG_STORAGE_PATH)
 
-  // map of walletId => trackId => metadata
-  const walletTrackMap = {}
-  // map of walletId => trackId => metadata
+  // map of walletId => agreementId => metadata
+  const walletAgreementMap = {}
+  // map of walletId => agreementId => metadata
   const failedUploads = {}
 
   // Create the Emitter Based Test
@@ -117,33 +117,33 @@ module.exports = coreIntegration = async ({
   })
 
   // Register the request listener. The only request type this test
-  // currently handles is to upload tracks.
+  // currently handles is to upload agreements.
   emitterTest.registerOnRequestListener(async (request, emit) => {
     const { type, walletIndex, userId } = request
     let res
     switch (type) {
-      case OPERATION_TYPE.TRACK_UPLOAD: {
-        const track = getRandomTrackMetadata(userId)
+      case OPERATION_TYPE.AGREEMENT_UPLOAD: {
+        const agreement = getRandomAgreementMetadata(userId)
 
-        const randomTrackFilePath = await getRandomTrackFilePath(TEMP_STORAGE_PATH)
+        const randomAgreementFilePath = await getRandomAgreementFilePath(TEMP_STORAGE_PATH)
 
         try {
-          // Execute a track upload request against a single
+          // Execute a agreement upload request against a single
           // instance of libs.
           await executeOne(walletIndex, l => l.waitForLatestBlock())
           await retry(async () => {
-            const trackId = await executeOne(walletIndex, l =>
-              uploadTrack(l, track, randomTrackFilePath)
+            const agreementId = await executeOne(walletIndex, l =>
+              uploadAgreement(l, agreement, randomAgreementFilePath)
             )
-            uploadedTracks.push({ trackId: trackId, userId: userId })
-            res = new TrackUploadResponse(walletIndex, trackId, track)
+            uploadedAgreements.push({ agreementId: agreementId, userId: userId })
+            res = new AgreementUploadResponse(walletIndex, agreementId, agreement)
           }, {})
         } catch (e) {
-          logger.error(`Caught error [${e.message}] uploading track: [${JSON.stringify(track)}]\n${e.stack}`)
-          res = new TrackUploadResponse(
+          logger.error(`Caught error [${e.message}] uploading agreement: [${JSON.stringify(agreement)}]\n${e.stack}`)
+          res = new AgreementUploadResponse(
             walletIndex,
             null,
-            track,
+            agreement,
             false,
             e.message
           )
@@ -152,75 +152,75 @@ module.exports = coreIntegration = async ({
         emit(Event.RESPONSE, res)
         break
       }
-      case OPERATION_TYPE.TRACK_REPOST: {
-        // repost candidates include tracks from other users that have not already been reposted by current user
-        const repostCandidates = uploadedTracks
+      case OPERATION_TYPE.AGREEMENT_REPOST: {
+        // repost candidates include agreements from other users that have not already been reposted by current user
+        const repostCandidates = uploadedAgreements
           .filter(obj => obj.userId !== userId)
           .filter(obj => {
             if (!userRepostedMap[obj.userId]) {
               return true
             }
-            return !userRepostedMap[obj.userId].includes(obj.trackId)
+            return !userRepostedMap[obj.userId].includes(obj.agreementId)
           })
-          .map(obj => obj.trackId)
+          .map(obj => obj.agreementId)
         if (repostCandidates.length === 0) {
-          const missingTrackMessage = 'No tracks available to repost'
-          logger.info(missingTrackMessage)
-          res = new TrackRepostResponse(walletIndex, null, userId, false)
+          const missingAgreementMessage = 'No agreements available to repost'
+          logger.info(missingAgreementMessage)
+          res = new AgreementRepostResponse(walletIndex, null, userId, false)
           return emit(Event.RESPONSE, res)
         } else {
-          const trackId = repostCandidates[_.random(repostCandidates.length - 1)]
+          const agreementId = repostCandidates[_.random(repostCandidates.length - 1)]
           try {
             await retry(async () => {
-              // verify track has not been reposted
+              // verify agreement has not been reposted
               await executeOne(walletIndex, l => l.waitForLatestBlock())
-              let reposters = await executeOne(walletIndex, l => getRepostersForTrack(l, trackId))
+              let reposters = await executeOne(walletIndex, l => getRepostersForAgreement(l, agreementId))
               let usersReposted = reposters.map(obj => obj.user_id)
               if (usersReposted.includes(userId)) {
-                res = new TrackRepostResponse(
+                res = new AgreementRepostResponse(
                   walletIndex,
-                  trackId,
+                  agreementId,
                   userId,
                   false,
-                  'Track already reposted.'
+                  'Agreement already reposted.'
                 )
                 return emit(Event.RESPONSE, res)
               }
 
-              const transaction = await executeOne(walletIndex, l => repostTrack(l, trackId))
+              const transaction = await executeOne(walletIndex, l => repostAgreement(l, agreementId))
               if (!transaction.status) {
-                res = new TrackRepostResponse(
+                res = new AgreementRepostResponse(
                   walletIndex,
-                  trackId,
+                  agreementId,
                   userId,
                   false,
-                  'Transaction failed because track was already reposted.'
+                  'Transaction failed because agreement was already reposted.'
                 )
                 return emit(Event.RESPONSE, res)
               }
 
-              // verify track reposted
+              // verify agreement reposted
               await executeOne(walletIndex, l => l.waitForLatestBlock())
-              reposters = await executeOne(walletIndex, l => getRepostersForTrack(l, trackId))
+              reposters = await executeOne(walletIndex, l => getRepostersForAgreement(l, agreementId))
               usersReposted = reposters.map(obj => obj.user_id)
               if (!usersReposted.includes(userId)) {
-                throw new Error(`Reposters for track [${trackId}] do not include user [${userId}]`)
+                throw new Error(`Reposters for agreement [${agreementId}] do not include user [${userId}]`)
               }
               if (!userRepostedMap[userId]) {
                 userRepostedMap[userId] = []
               }
-              userRepostedMap[userId].push(trackId)
-              res = new TrackRepostResponse(walletIndex, trackId, userId)
+              userRepostedMap[userId].push(agreementId)
+              res = new AgreementRepostResponse(walletIndex, agreementId, userId)
               return emit(Event.RESPONSE, res)
             }, {
               retries: 3,
               factor: 2
             })
           } catch (e) {
-            logger.error(`Caught error [${e.message}] reposting track: [${trackId}]\n${e.stack}`)
-            res = new TrackRepostResponse(
+            logger.error(`Caught error [${e.message}] reposting agreement: [${agreementId}]\n${e.stack}`)
+            res = new AgreementRepostResponse(
               walletIndex,
-              trackId,
+              agreementId,
               userId,
               false,
               e.message
@@ -256,42 +256,42 @@ module.exports = coreIntegration = async ({
         emit(Event.RESPONSE, res)
         break
       }
-      case OPERATION_TYPE.ADD_PLAYLIST_TRACK: {
-        if (uploadedTracks.length === 0 || !createdPlaylists[userId]) {
-          res = new AddPlaylistTrackResponse(
+      case OPERATION_TYPE.ADD_PLAYLIST_AGREEMENT: {
+        if (uploadedAgreements.length === 0 || !createdPlaylists[userId]) {
+          res = new AddPlaylistAgreementResponse(
             walletIndex,
             null,
             false,
-            new Error('Adding a track to a playlist requires a track to be uploaded.')
+            new Error('Adding a agreement to a playlist requires a agreement to be uploaded.')
           )
         } else {
-          const trackId = uploadedTracks[_.random(uploadedTracks.length - 1)].trackId
+          const agreementId = uploadedAgreements[_.random(uploadedAgreements.length - 1)].agreementId
           try {
-            // add track to playlist
+            // add agreement to playlist
             const playlistId = createdPlaylists[userId][_.random(createdPlaylists[userId].length - 1)]
             await executeOne(walletIndex, l =>
-              addPlaylistTrack(l, playlistId, trackId)
+              addPlaylistAgreement(l, playlistId, agreementId)
             )
-            logger.info(`Track [${trackId}] added to playlist [${playlistId}].`)
+            logger.info(`Agreement [${agreementId}] added to playlist [${playlistId}].`)
             await executeOne(walletIndex, l => l.waitForLatestBlock())
 
-            // verify playlist track add
+            // verify playlist agreement add
             await retry(async () => {
               const playlists = await executeOne(walletIndex, l =>
                 getPlaylists(l, 100, 0, [playlistId], userId)
               )
-              const playlistTracks = playlists[0].playlist_contents.track_ids.map(obj => obj.track)
-              if (!playlistTracks.includes(trackId)) {
-                throw new Error(`Track [${trackId}] not found in playlist [${playlistId}]`)
+              const playlistAgreements = playlists[0].playlist_contents.agreement_ids.map(obj => obj.agreement)
+              if (!playlistAgreements.includes(agreementId)) {
+                throw new Error(`Agreement [${agreementId}] not found in playlist [${playlistId}]`)
               }
             }, {
               retries: 20,
               factor: 2
             })
-            res = new AddPlaylistTrackResponse(walletIndex, trackId)
+            res = new AddPlaylistAgreementResponse(walletIndex, agreementId)
           } catch (e) {
-            logger.error(`Caught error [${e.message}] adding track: [${trackId}] to playlist \n${e.stack}`)
-            res = new AddPlaylistTrackResponse(
+            logger.error(`Caught error [${e.message}] adding agreement: [${agreementId}] to playlist \n${e.stack}`)
+            res = new AddPlaylistAgreementResponse(
               walletIndex,
               null,
               false,
@@ -311,11 +311,11 @@ module.exports = coreIntegration = async ({
   })
 
   // Register the response listener. Currently only handles
-  // track upload responses.
+  // agreement upload responses.
   emitterTest.registerOnResponseListener(res => {
     switch (res.type) {
-      case OPERATION_TYPE.TRACK_UPLOAD: {
-        const { walletIndex, trackId, metadata, success } = res
+      case OPERATION_TYPE.AGREEMENT_UPLOAD: {
+        const { walletIndex, agreementId, metadata, success } = res
         // If it failed, log it
         if (!success) {
           if (!failedUploads[walletIndex]) {
@@ -323,22 +323,22 @@ module.exports = coreIntegration = async ({
           }
 
           failedUploads[walletIndex] = {
-            [trackId]: metadata
+            [agreementId]: metadata
           }
         } else {
-          if (!walletTrackMap[walletIndex]) {
-            walletTrackMap[walletIndex] = []
+          if (!walletAgreementMap[walletIndex]) {
+            walletAgreementMap[walletIndex] = []
           }
-          if (trackId) { // only add successfully uploaded tracks
-            walletTrackMap[walletIndex].push(trackId)
+          if (agreementId) { // only add successfully uploaded agreements
+            walletAgreementMap[walletIndex].push(agreementId)
           }
         }
         break
       }
-      case OPERATION_TYPE.TRACK_REPOST: {
-        const { walletIndex, trackId, userId, success } = res
+      case OPERATION_TYPE.AGREEMENT_REPOST: {
+        const { walletIndex, agreementId, userId, success } = res
         if (success) {
-          repostedTracks.push({ trackId: trackId, userId: userId })
+          repostedAgreements.push({ agreementId: agreementId, userId: userId })
         }
         break
       }
@@ -352,10 +352,10 @@ module.exports = coreIntegration = async ({
         }
         break
       }
-      case OPERATION_TYPE.ADD_PLAYLIST_TRACK: {
-        const { walletIndex, trackId, success } = res
+      case OPERATION_TYPE.ADD_PLAYLIST_AGREEMENT: {
+        const { walletIndex, agreementId, success } = res
         if (success) {
-          addedPlaylistTracks.push(trackId)
+          addedPlaylistAgreements.push(agreementId)
         }
         break
       }
@@ -365,15 +365,15 @@ module.exports = coreIntegration = async ({
     }
   })
 
-  // Emit one track upload request per tick. This can be adapted to emit other kinds
+  // Emit one agreement upload request per tick. This can be adapted to emit other kinds
   // of events.
   emitterTest.registerOnTickListener(emit => {
     const requesterIdx = _.random(0, numUsers - 1)
-    const trackUploadRequest = new TrackUploadRequest(
+    const agreementUploadRequest = new AgreementUploadRequest(
       requesterIdx,
       walletIdMap[requesterIdx]
     )
-    const trackRepostRequest = new TrackRepostRequest(
+    const agreementRepostRequest = new AgreementRepostRequest(
       requesterIdx,
       walletIdMap[requesterIdx]
     )
@@ -381,11 +381,11 @@ module.exports = coreIntegration = async ({
       requesterIdx,
       walletIdMap[requesterIdx]
     )
-    const addPlaylistTrackRequest = new AddPlaylistTrackRequest(
+    const addPlaylistAgreementRequest = new AddPlaylistAgreementRequest(
       requesterIdx,
       walletIdMap[requesterIdx]
     )
-    const requests = [trackUploadRequest, trackRepostRequest, createPlaylistRequest, addPlaylistTrackRequest]
+    const requests = [agreementUploadRequest, agreementRepostRequest, createPlaylistRequest, addPlaylistAgreementRequest]
     for (const request of requests) {
       const randomEmit = _.random(1)
       if (randomEmit) {
@@ -444,7 +444,7 @@ module.exports = coreIntegration = async ({
     })
   } catch (e) {
     return {
-      error: `User pre-track upload -- ${e.message}`
+      error: `User pre-agreement upload -- ${e.message}`
     }
   }
 
@@ -470,23 +470,23 @@ module.exports = coreIntegration = async ({
     await ensureReplicaSetSyncIsConsistent({ i, executeOne, libs })
   })
 
-  // create array of track upload info to verify
-  const trackUploadInfo = []
-  for (const walletIndex of Object.keys(walletTrackMap)) {
+  // create array of agreement upload info to verify
+  const agreementUploadInfo = []
+  for (const walletIndex of Object.keys(walletAgreementMap)) {
     const userId = walletIdMap[walletIndex]
-    const tracks = walletTrackMap[walletIndex]
-    if (!tracks) continue
-    for (const trackId of tracks) {
-      trackUploadInfo.push({
+    const agreements = walletAgreementMap[walletIndex]
+    if (!agreements) continue
+    for (const agreementId of agreements) {
+      agreementUploadInfo.push({
         walletIndex,
-        trackId,
+        agreementId,
         userId
       })
     }
   }
 
   // Ensure all CIDs exist on all replicas
-  const allCIDsExistOnCNodes = await verifyAllCIDsExistOnCNodes(trackUploadInfo, executeOne)
+  const allCIDsExistOnCNodes = await verifyAllCIDsExistOnCNodes(agreementUploadInfo, executeOne)
   if (!allCIDsExistOnCNodes) {
     return { error: 'Not all CIDs exist on creator nodes.' }
   }
@@ -539,9 +539,9 @@ module.exports = coreIntegration = async ({
     return getUsers(libsWrapper, userIds)
   })
 
-  // Check that certain MD fields in disc node are what we expected it to be after uploading first track
+  // Check that certain MD fields in disc node are what we expected it to be after uploading first agreement
   userMetadatas.forEach(user => {
-    logger.info(`Checking post track upload metadata for user=${user.user_id}...`)
+    logger.info(`Checking post agreement upload metadata for user=${user.user_id}...`)
 
     if (!user.creator_node_endpoint) {
       return {
@@ -569,7 +569,7 @@ module.exports = coreIntegration = async ({
   } catch (e) {
     console.log(e)
     return {
-      error: `User post track upload -- ${e.message}`
+      error: `User post agreement upload -- ${e.message}`
     }
   }
 
@@ -577,16 +577,16 @@ module.exports = coreIntegration = async ({
 }
 
 /**
- * Expects trackUploads in the shape of Array<{ userId, walletIndex, trackId }>
+ * Expects agreementUploads in the shape of Array<{ userId, walletIndex, agreementId }>
  */
-const verifyAllCIDsExistOnCNodes = async (trackUploads, executeOne) => {
+const verifyAllCIDsExistOnCNodes = async (agreementUploads, executeOne) => {
   // map userId => CID[]
   const userCIDMap = {}
-  for (const { trackId, walletIndex, userId } of trackUploads) {
-    const trackMetadata = await executeOne(walletIndex, l =>
-      getTrackMetadata(l, trackId)
+  for (const { agreementId, walletIndex, userId } of agreementUploads) {
+    const agreementMetadata = await executeOne(walletIndex, l =>
+      getAgreementMetadata(l, agreementId)
     )
-    const segmentCIDs = trackMetadata.track_segments.map(s => s.multihash)
+    const segmentCIDs = agreementMetadata.agreement_segments.map(s => s.multihash)
     if (userCIDMap[userId] === undefined) {
       userCIDMap[userId] = []
     }
@@ -597,7 +597,7 @@ const verifyAllCIDsExistOnCNodes = async (trackUploads, executeOne) => {
 
   // make a map of userID => array of cnode endpoints in user replica set
   const userIdRSetMap = {}
-  const userIds = trackUploads.map(u => u.userId)
+  const userIds = agreementUploads.map(u => u.userId)
   for (const userId of userIds) {
     const user = await executeOne(0, l => getUser(l, userId))
     userIdRSetMap[userId] = user.creator_node_endpoint.split(',')
@@ -736,19 +736,19 @@ async function checkMetadataEquality({ endpoints, metadataMultihash, userId }) {
 const verifyThresholds = (emitterTest) => {
   // NOTE - # of ticks = (duration / interval) - 1
   // thresholds are approximated based on the number of ticks, randomization, and dependencies
-  // e.g., reposted has a lower threshold since it depends on an existing track that's not yet reposted
+  // e.g., reposted has a lower threshold since it depends on an existing agreement that's not yet reposted
 
   const numberOfTicks = (emitterTest.testDurationSeconds / emitterTest.tickIntervalSeconds) - 1
-  assert.ok(uploadedTracks.length > (numberOfTicks / 5))
-  assert.ok(repostedTracks.length > (numberOfTicks / 10))
+  assert.ok(uploadedAgreements.length > (numberOfTicks / 5))
+  assert.ok(repostedAgreements.length > (numberOfTicks / 10))
   assert.ok(Object.values(createdPlaylists).flat().length > (numberOfTicks / 10))
-  assert.ok(addedPlaylistTracks.length > (numberOfTicks / 10))
+  assert.ok(addedPlaylistAgreements.length > (numberOfTicks / 10))
 }
 
 const printTestSummary = () => {
   logger.info('\n------------------------ COLIVING CORE INTEGRATION TEST Summary ------------------------')
-  logger.info(`uploadedTracks: ${uploadedTracks.length}                | Total uploaded tracks`)
-  logger.info(`repostedTracks: ${repostedTracks.length}                | Total reposted tracks`)
+  logger.info(`uploadedAgreements: ${uploadedAgreements.length}                | Total uploaded agreements`)
+  logger.info(`repostedAgreements: ${repostedAgreements.length}                | Total reposted agreements`)
   logger.info(`createdPlaylists: ${Object.values(createdPlaylists).flat().length}                | Total created playlists`)
-  logger.info(`addedPlaylistTracks: ${addedPlaylistTracks.length}                | Total added playlist tracks`)
+  logger.info(`addedPlaylistAgreements: ${addedPlaylistAgreements.length}                | Total added playlist agreements`)
 }

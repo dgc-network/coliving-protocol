@@ -16,10 +16,10 @@ const ClientNotificationTypes = new Set([
   NotificationType.Announcement,
   NotificationType.UserSubscription,
   NotificationType.Milestone,
-  NotificationType.TrendingTrack,
+  NotificationType.TrendingAgreement,
   NotificationType.ChallengeReward,
   NotificationType.TierChange,
-  NotificationType.AddTrackToPlaylist,
+  NotificationType.AddAgreementToPlaylist,
   NotificationType.TipSend,
   NotificationType.TipReceive,
   NotificationType.Reaction,
@@ -28,7 +28,7 @@ const ClientNotificationTypes = new Set([
 ])
 
 const Entity = Object.freeze({
-  Track: 'Track',
+  Agreement: 'Agreement',
   Playlist: 'Playlist',
   Album: 'Album',
   User: 'User'
@@ -54,10 +54,10 @@ const formatUserSubscriptionCollection = entityType => notification => {
   }
 }
 
-const formatUserSubscriptionTrack = notification => {
+const formatUserSubscriptionAgreement = notification => {
   return {
     ...getCommonNotificationsFields(notification),
-    entityType: Entity.Track,
+    entityType: Entity.Agreement,
     entityOwnerId: notification.entityId,
     entityIds: notification.actions.map(action => action.actionEntityId),
     userId: notification.entityId,
@@ -147,8 +147,8 @@ const formatRemixCreate = (notification) => {
   return {
     ...getCommonNotificationsFields(notification),
     type: NotificationType.RemixCreate,
-    parentTrackId: notification.actions[0].actionEntityId,
-    childTrackId: notification.entityId
+    parentAgreementId: notification.actions[0].actionEntityId,
+    childAgreementId: notification.entityId
   }
 }
 
@@ -156,17 +156,17 @@ const formatRemixCosign = (notification) => {
   return {
     ...getCommonNotificationsFields(notification),
     type: NotificationType.RemixCosign,
-    parentTrackUserId: notification.actions[0].actionEntityId,
-    childTrackId: notification.entityId
+    parentAgreementUserId: notification.actions[0].actionEntityId,
+    childAgreementId: notification.entityId
   }
 }
 
-const formatTrendingTrack = (notification) => {
+const formatTrendingAgreement = (notification) => {
   const [time, genre] = notification.actions[0].actionEntityType.split(':')
   return {
     ...getCommonNotificationsFields(notification),
-    type: NotificationType.TrendingTrack,
-    entityType: Entity.Track,
+    type: NotificationType.TrendingAgreement,
+    entityType: Entity.Agreement,
     entityId: notification.entityId,
     rank: notification.actions[0].actionEntityId,
     time,
@@ -226,12 +226,12 @@ const formatReaction = (notification) => ({
   entityType: Entity.User
 })
 
-const formatAddTrackToPlaylist = (notification) => ({
+const formatAddAgreementToPlaylist = (notification) => ({
   ...getCommonNotificationsFields(notification),
   type: notification.type,
   playlistId: notification.metadata.playlistId,
   playlistOwnerId: notification.metadata.playlistOwnerId,
-  trackId: notification.metadata.trackId
+  agreementId: notification.metadata.agreementId
 })
 
 const getCommonNotificationsFields = (notification) => ({
@@ -244,13 +244,13 @@ const getCommonNotificationsFields = (notification) => ({
 
 const notificationResponseMap = {
   [NotificationType.Follow]: formatFollow,
-  [NotificationType.Favorite.track]: formatFavorite(Entity.Track),
+  [NotificationType.Favorite.agreement]: formatFavorite(Entity.Agreement),
   [NotificationType.Favorite.playlist]: formatFavorite(Entity.Playlist),
   [NotificationType.Favorite.album]: formatFavorite(Entity.Album),
-  [NotificationType.Repost.track]: formatRepost(Entity.Track),
+  [NotificationType.Repost.agreement]: formatRepost(Entity.Agreement),
   [NotificationType.Repost.playlist]: formatRepost(Entity.Playlist),
   [NotificationType.Repost.album]: formatRepost(Entity.Album),
-  [NotificationType.Create.track]: formatUserSubscriptionTrack,
+  [NotificationType.Create.agreement]: formatUserSubscriptionAgreement,
   [NotificationType.Create.album]: formatUserSubscriptionCollection(Entity.Album),
   [NotificationType.Create.playlist]: formatUserSubscriptionCollection(Entity.Playlist),
   [NotificationType.Announcement]: formatAnnouncement,
@@ -260,14 +260,14 @@ const notificationResponseMap = {
   [NotificationType.MilestoneFollow]: formatMilestone,
   [NotificationType.RemixCreate]: formatRemixCreate,
   [NotificationType.RemixCosign]: formatRemixCosign,
-  [NotificationType.TrendingTrack]: formatTrendingTrack,
+  [NotificationType.TrendingAgreement]: formatTrendingAgreement,
   [NotificationType.ChallengeReward]: formatChallengeReward,
   [NotificationType.TipReceive]: formatTipReceive,
   [NotificationType.TipSend]: formatTipSend,
   [NotificationType.Reaction]: formatReaction,
   [NotificationType.SupporterRankUp]: formatSupporterRankUp,
   [NotificationType.SupportingRankUp]: formatSupportingRankUp,
-  [NotificationType.AddTrackToPlaylist]: formatAddTrackToPlaylist
+  [NotificationType.AddAgreementToPlaylist]: formatAddAgreementToPlaylist
 }
 
 /* Merges the notifications with the user announcements in time sorted order (Most recent first).

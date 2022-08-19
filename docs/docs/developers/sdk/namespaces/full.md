@@ -8,17 +8,17 @@ custom_edit_url: null
 
 ## Enumerations
 
-### GetRecommendedTracksTimeEnum
+### GetRecommendedAgreementsTimeEnum
 
- **GetRecommendedTracksTimeEnum**: `Object`
+ **GetRecommendedAgreementsTimeEnum**: `Object`
 
 **`export`**
 
 ___
 
-### GetRecommendedTracksWithVersionTimeEnum
+### GetRecommendedAgreementsWithVersionTimeEnum
 
- **GetRecommendedTracksWithVersionTimeEnum**: `Object`
+ **GetRecommendedAgreementsWithVersionTimeEnum**: `Object`
 
 **`export`**
 
@@ -40,17 +40,17 @@ ___
 
 ___
 
-### GetTracksByUserHandleSortEnum
+### GetAgreementsByUserHandleSortEnum
 
- **GetTracksByUserHandleSortEnum**: `Object`
+ **GetAgreementsByUserHandleSortEnum**: `Object`
 
 **`export`**
 
 ___
 
-### GetTracksByUserSortEnum
+### GetAgreementsByUserSortEnum
 
- **GetTracksByUserSortEnum**: `Object`
+ **GetAgreementsByUserSortEnum**: `Object`
 
 **`export`**
 
@@ -72,25 +72,25 @@ ___
 
 ___
 
-### GetTrendingTracksTimeEnum
+### GetTrendingAgreementsTimeEnum
 
- **GetTrendingTracksTimeEnum**: `Object`
-
-**`export`**
-
-___
-
-### GetTrendingTracksWithVersionTimeEnum
-
- **GetTrendingTracksWithVersionTimeEnum**: `Object`
+ **GetTrendingAgreementsTimeEnum**: `Object`
 
 **`export`**
 
 ___
 
-### GetUnderTheRadarTracksFilterEnum
+### GetTrendingAgreementsWithVersionTimeEnum
 
- **GetUnderTheRadarTracksFilterEnum**: `Object`
+ **GetTrendingAgreementsWithVersionTimeEnum**: `Object`
+
+**`export`**
+
+___
+
+### GetUnderTheRadarAgreementsFilterEnum
+
+ **GetUnderTheRadarAgreementsFilterEnum**: `Object`
 
 **`export`**
 
@@ -142,9 +142,9 @@ ___
 
 ___
 
-### TracksApi
+### AgreementsApi
 
- **TracksApi**: `Object`
+ **AgreementsApi**: `Object`
 
 ___
 
@@ -346,33 +346,33 @@ ___
 
 ___
 
-### FullTrackResponse
+### FullAgreementResponse
 
- **FullTrackResponse**: `Object`
+ **FullAgreementResponse**: `Object`
 
 **`export`**
 
-**`interface`** FullTrackResponse
+**`interface`** FullAgreementResponse
 
 ___
 
-### FullTracks
+### FullAgreements
 
- **FullTracks**: `Object`
+ **FullAgreements**: `Object`
 
 **`export`**
 
-**`interface`** FullTracks
+**`interface`** FullAgreements
 
 ___
 
-### FullTracksResponse
+### FullAgreementsResponse
 
- **FullTracksResponse**: `Object`
+ **FullAgreementsResponse**: `Object`
 
 **`export`**
 
-**`interface`** FullTracksResponse
+**`interface`** FullAgreementsResponse
 
 ___
 
@@ -396,9 +396,9 @@ ___
 
 ___
 
-### GetBulkTracksRequest
+### GetBulkAgreementsRequest
 
- **GetBulkTracksRequest**: `Object`
+ **GetBulkAgreementsRequest**: `Object`
 
 ___
 
@@ -420,9 +420,9 @@ ___
 
 ___
 
-### GetMostLovedTracksRequest
+### GetMostLovedAgreementsRequest
 
- **GetMostLovedTracksRequest**: `Object`
+ **GetMostLovedAgreementsRequest**: `Object`
 
 ___
 
@@ -432,15 +432,15 @@ ___
 
 ___
 
-### GetRecommendedTracksRequest
+### GetRecommendedAgreementsRequest
 
- **GetRecommendedTracksRequest**: `Object`
+ **GetRecommendedAgreementsRequest**: `Object`
 
 ___
 
-### GetRecommendedTracksWithVersionRequest
+### GetRecommendedAgreementsWithVersionRequest
 
- **GetRecommendedTracksWithVersionRequest**: `Object`
+ **GetRecommendedAgreementsWithVersionRequest**: `Object`
 
 ___
 
@@ -450,9 +450,9 @@ ___
 
 ___
 
-### GetRemixableTracksRequest
+### GetRemixableAgreementsRequest
 
- **GetRemixableTracksRequest**: `Object`
+ **GetRemixableAgreementsRequest**: `Object`
 
 ___
 
@@ -520,39 +520,39 @@ ___
 
 ___
 
-### GetTrackRemixParentsRequest
+### GetAgreementRemixParentsRequest
 
- **GetTrackRemixParentsRequest**: `Object`
-
-___
-
-### GetTrackRemixesRequest
-
- **GetTrackRemixesRequest**: `Object`
+ **GetAgreementRemixParentsRequest**: `Object`
 
 ___
 
-### GetTrackRequest
+### GetAgreementRemixesRequest
 
- **GetTrackRequest**: `Object`
-
-___
-
-### GetTrackStemsRequest
-
- **GetTrackStemsRequest**: `Object`
+ **GetAgreementRemixesRequest**: `Object`
 
 ___
 
-### GetTracksByUserHandleRequest
+### GetAgreementRequest
 
- **GetTracksByUserHandleRequest**: `Object`
+ **GetAgreementRequest**: `Object`
 
 ___
 
-### GetTracksByUserRequest
+### GetAgreementStemsRequest
 
- **GetTracksByUserRequest**: `Object`
+ **GetAgreementStemsRequest**: `Object`
+
+___
+
+### GetAgreementsByUserHandleRequest
+
+ **GetAgreementsByUserHandleRequest**: `Object`
+
+___
+
+### GetAgreementsByUserRequest
+
+ **GetAgreementsByUserRequest**: `Object`
 
 ___
 
@@ -568,45 +568,45 @@ ___
 
 ___
 
-### GetTrendingTrackIDsRequest
+### GetTrendingAgreementIDsRequest
 
- **GetTrendingTrackIDsRequest**: `Object`
-
-___
-
-### GetTrendingTracksIDsWithVersionRequest
-
- **GetTrendingTracksIDsWithVersionRequest**: `Object`
+ **GetTrendingAgreementIDsRequest**: `Object`
 
 ___
 
-### GetTrendingTracksRequest
+### GetTrendingAgreementsIDsWithVersionRequest
 
- **GetTrendingTracksRequest**: `Object`
-
-___
-
-### GetTrendingTracksWithVersionRequest
-
- **GetTrendingTracksWithVersionRequest**: `Object`
+ **GetTrendingAgreementsIDsWithVersionRequest**: `Object`
 
 ___
 
-### GetUnderTheRadarTracksRequest
+### GetTrendingAgreementsRequest
 
- **GetUnderTheRadarTracksRequest**: `Object`
-
-___
-
-### GetUndergroundTrendingTracksRequest
-
- **GetUndergroundTrendingTracksRequest**: `Object`
+ **GetTrendingAgreementsRequest**: `Object`
 
 ___
 
-### GetUndergroundTrendingTracksWithVersionRequest
+### GetTrendingAgreementsWithVersionRequest
 
- **GetUndergroundTrendingTracksWithVersionRequest**: `Object`
+ **GetTrendingAgreementsWithVersionRequest**: `Object`
+
+___
+
+### GetUnderTheRadarAgreementsRequest
+
+ **GetUnderTheRadarAgreementsRequest**: `Object`
+
+___
+
+### GetUndergroundTrendingAgreementsRequest
+
+ **GetUndergroundTrendingAgreementsRequest**: `Object`
+
+___
+
+### GetUndergroundTrendingAgreementsWithVersionRequest
+
+ **GetUndergroundTrendingAgreementsWithVersionRequest**: `Object`
 
 ___
 
@@ -646,9 +646,9 @@ ___
 
 ___
 
-### GetUsersTrackHistoryRequest
+### GetUsersAgreementHistoryRequest
 
- **GetUsersTrackHistoryRequest**: `Object`
+ **GetUsersAgreementHistoryRequest**: `Object`
 
 ___
 
@@ -864,63 +864,63 @@ ___
 
 ___
 
-### TrackArtwork
+### AgreementArtwork
 
- **TrackArtwork**: `Object`
+ **AgreementArtwork**: `Object`
 
 **`export`**
 
-**`interface`** TrackArtwork
+**`interface`** AgreementArtwork
 
 ___
 
-### TrackFavoritesResponseFull
+### AgreementFavoritesResponseFull
 
- **TrackFavoritesResponseFull**: `Object`
+ **AgreementFavoritesResponseFull**: `Object`
 
 **`export`**
 
-**`interface`** TrackFavoritesResponseFull
+**`interface`** AgreementFavoritesResponseFull
 
 ___
 
-### TrackFull
+### AgreementFull
 
- **TrackFull**: `Object`
+ **AgreementFull**: `Object`
 
 **`export`**
 
-**`interface`** TrackFull
+**`interface`** AgreementFull
 
 ___
 
-### TrackId
+### AgreementId
 
- **TrackId**: `Object`
+ **AgreementId**: `Object`
 
 **`export`**
 
-**`interface`** TrackId
+**`interface`** AgreementId
 
 ___
 
-### TrackRepostsResponseFull
+### AgreementRepostsResponseFull
 
- **TrackRepostsResponseFull**: `Object`
+ **AgreementRepostsResponseFull**: `Object`
 
 **`export`**
 
-**`interface`** TrackRepostsResponseFull
+**`interface`** AgreementRepostsResponseFull
 
 ___
 
-### TrackSegment
+### AgreementSegment
 
- **TrackSegment**: `Object`
+ **AgreementSegment**: `Object`
 
 **`export`**
 
-**`interface`** TrackSegment
+**`interface`** AgreementSegment
 
 ___
 

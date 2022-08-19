@@ -50,15 +50,15 @@ def upgrade():
       CREATE INDEX user_words_idx ON user_lexeme_dict USING gin(word gin_trgm_ops);
 
 
-      --- Add "title" field to track_lexeme_dict.
+      --- Add "title" field to agreement_lexeme_dict.
 
-      DROP MATERIALIZED VIEW track_lexeme_dict;
-      DROP INDEX IF EXISTS track_words_idx;
-      CREATE MATERIALIZED VIEW track_lexeme_dict as
+      DROP MATERIALIZED VIEW agreement_lexeme_dict;
+      DROP INDEX IF EXISTS agreement_words_idx;
+      CREATE MATERIALIZED VIEW agreement_lexeme_dict as
       SELECT * FROM (
         SELECT
-          t.track_id,
-          t.title as track_title,
+          t.agreement_id,
+          t.title as agreement_title,
           unnest(
             tsvector_to_array(
               to_tsvector(
@@ -68,14 +68,14 @@ def upgrade():
             )
           ) as word
         FROM
-            tracks t
+            agreements t
         INNER JOIN users u ON t.owner_id = u.user_id
         WHERE
           t.is_current = true and t.is_unlisted = false
           and u.is_current = true
-        GROUP BY t.track_id, t.title
+        GROUP BY t.agreement_id, t.title
       ) AS words;
-      CREATE INDEX track_words_idx ON track_lexeme_dict USING gin(word gin_trgm_ops);
+      CREATE INDEX agreement_words_idx ON agreement_lexeme_dict USING gin(word gin_trgm_ops);
 
 
       --- Add "playlist_name" field to playlist_lexeme_dict and album_lexeme_dict;

@@ -27,25 +27,25 @@ const { getLibsMock } = require('./lib/libsMock')
 const { sortKeys } = require('../src/apiSigning')
 const { saveFileToStorage, computeFilesHash } = require('./lib/helpers')
 
-const testAudioFilePath = path.resolve(__dirname, 'testTrack.mp3')
+const testAudioFilePath = path.resolve(__dirname, 'testAgreement.mp3')
 const testAudioFileWrongFormatPath = path.resolve(
   __dirname,
-  'testTrackWrongFormat.jpg'
+  'testAgreementWrongFormat.jpg'
 )
 
-const TestColivingTrackFileNumSegments = 32
-const TRACK_CONTENT_POLLING_ROUTE = '/track_content_async'
+const TestColivingAgreementFileNumSegments = 32
+const AGREEMENT_CONTENT_POLLING_ROUTE = '/agreement_content_async'
 
 const logContext = {
   logContext: {
     requestID: uuid(),
     requestMethod: 'POST',
     requestHostname: '127.0.0.1',
-    requestUrl: TRACK_CONTENT_POLLING_ROUTE
+    requestUrl: AGREEMENT_CONTENT_POLLING_ROUTE
   }
 }
 
-// Create the req context for handleTrackContentRoute
+// Create the req context for handleAgreementContentRoute
 function getReqObj(fileUUID, fileDir, session) {
   return {
     fileName: `${fileUUID}.mp3`,
@@ -57,7 +57,7 @@ function getReqObj(fileUUID, fileDir, session) {
 
 /**
  * Given index of segment, returns filepath of expected segment file in /test/test-segments/ dir
- * TODO - instead of using ./test/test-segments, use ./test/testTrackUploadDir
+ * TODO - instead of using ./test/test-segments, use ./test/testAgreementUploadDir
  */
 function _getTestSegmentFilePathAtIndex(index) {
   let suffix = '000'
@@ -69,11 +69,11 @@ function _getTestSegmentFilePathAtIndex(index) {
   return path.join(__dirname, 'test-segments', `segment${suffix}.ts`)
 }
 
-describe('test Polling Tracks with mocked IPFS', function () {
+describe('test Polling Agreements with mocked IPFS', function () {
   let app,
     server,
     libsMock,
-    handleTrackContentRoute
+    handleAgreementContentRoute
   let session, userId, userWallet
 
   const spId = 1
@@ -92,10 +92,10 @@ describe('test Polling Tracks with mocked IPFS', function () {
     server = appInfo.server
     session = await createStarterCNodeUser(userId, userWallet)
 
-    // Mock `generateNonImageCid()` in `handleTrackContentRoute()` to succeed
+    // Mock `generateNonImageCid()` in `handleAgreementContentRoute()` to succeed
     const mockCid = 'QmYfSQCgCwhxwYcdEwCkFJHicDe6rzCAb7AtLz3GrHmuU6'
-    ;({ handleTrackContentRoute } = proxyquire(
-      '../src/components/tracks/tracksComponentService.js',
+    ;({ handleAgreementContentRoute } = proxyquire(
+      '../src/components/agreements/agreementsComponentService.js',
       {
         '@coliving/sdk': {
           libs: {
@@ -131,12 +131,12 @@ describe('test Polling Tracks with mocked IPFS', function () {
     await server.close()
   })
 
-  // Testing middleware -- leave as /track_content_async
+  // Testing middleware -- leave as /agreement_content_async
   it('fails to upload when format is not accepted', async function () {
     const file = fs.readFileSync(testAudioFileWrongFormatPath)
 
     await request(app)
-      .post(TRACK_CONTENT_POLLING_ROUTE)
+      .post(AGREEMENT_CONTENT_POLLING_ROUTE)
       .attach('file', file, { filename: 'fname.jpg' })
       .set('Content-Type', 'multipart/form-data')
       .set('X-Session-ID', session.sessionToken)
@@ -144,7 +144,7 @@ describe('test Polling Tracks with mocked IPFS', function () {
       .expect(400)
   })
 
-  // Testing middleware -- leave as /track_content_async
+  // Testing middleware -- leave as /agreement_content_async
   it('fails to upload when maxAudioFileSizeBytes exceeded', async function () {
     // Configure extremely small file size
     process.env.maxAudioFileSizeBytes = 10
@@ -160,7 +160,7 @@ describe('test Polling Tracks with mocked IPFS', function () {
     // Confirm max live file size is respected by multer
     const file = fs.readFileSync(testAudioFilePath)
     await request(app)
-      .post(TRACK_CONTENT_POLLING_ROUTE)
+      .post(AGREEMENT_CONTENT_POLLING_ROUTE)
       .attach('file', file, { filename: 'fname.mp3' })
       .set('Content-Type', 'multipart/form-data')
       .set('X-Session-ID', session.sessionToken)
@@ -196,40 +196,40 @@ describe('test Polling Tracks with mocked IPFS', function () {
     process.env.maxMemoryFileSizeBytes = defaultConfig.maxMemoryFileSizeBytes
   })
 
-  it('uploads /track_content_async', async function () {
+  it('uploads /agreement_content_async', async function () {
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
-    const resp = await handleTrackContentRoute(
+    const resp = await handleAgreementContentRoute(
       logContext,
       getReqObj(fileUUID, fileDir, session)
     )
 
     const {
-      track_segments: trackSegments,
+      agreement_segments: agreementSegments,
       source_file: sourceFile,
-      transcodedTrackCID,
-      transcodedTrackUUID
+      transcodedAgreementCID,
+      transcodedAgreementUUID
     } = resp
 
     assert.deepStrictEqual(
-      trackSegments[0].multihash,
+      agreementSegments[0].multihash,
       'QmYfSQCgCwhxwYcdEwCkFJHicDe6rzCAb7AtLz3GrHmuU6'
     )
-    assert.deepStrictEqual(trackSegments.length, 32)
+    assert.deepStrictEqual(agreementSegments.length, 32)
     assert.deepStrictEqual(sourceFile.includes('.mp3'), true)
     assert.deepStrictEqual(
-      transcodedTrackCID,
+      transcodedAgreementCID,
       'QmYfSQCgCwhxwYcdEwCkFJHicDe6rzCAb7AtLz3GrHmuU6'
     )
-    assert.deepStrictEqual(typeof transcodedTrackUUID, 'string')
+    assert.deepStrictEqual(typeof transcodedAgreementUUID, 'string')
   })
 
-  // depends on "uploads /track_content_async"
-  it('Confirm /users/clock_status works with user and track state', async function () {
-    const numExpectedFilesForUser = TestColivingTrackFileNumSegments + 1 // numSegments + 320kbps copy
+  // depends on "uploads /agreement_content_async"
+  it('Confirm /users/clock_status works with user and agreement state', async function () {
+    const numExpectedFilesForUser = TestColivingAgreementFileNumSegments + 1 // numSegments + 320kbps copy
 
-    /** Upload track */
+    /** Upload agreement */
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
-    let resp = await handleTrackContentRoute(
+    let resp = await handleAgreementContentRoute(
       logContext,
       getReqObj(fileUUID, fileDir, session)
     )
@@ -253,19 +253,19 @@ describe('test Polling Tracks with mocked IPFS', function () {
       CIDSkipInfo: { numCIDs: numExpectedFilesForUser, numSkippedCIDs: 0 }
     })
 
-    // Update track DB entries to be skipped
+    // Update agreement DB entries to be skipped
     const numAffectedRows = (
       await models.File.update(
         { skipped: true },
         {
           where: {
             cnodeUserUUID: session.cnodeUserUUID,
-            type: 'track'
+            type: 'agreement'
           }
         }
       )
     )[0]
-    assert.strictEqual(numAffectedRows, TestColivingTrackFileNumSegments)
+    assert.strictEqual(numAffectedRows, TestColivingAgreementFileNumSegments)
 
     // Confirm /users/clock_status returns expected info with returnSkipInfo flag when some entries are skipped
     resp = await request(app)
@@ -276,7 +276,7 @@ describe('test Polling Tracks with mocked IPFS', function () {
       syncInProgress: false,
       CIDSkipInfo: {
         numCIDs: numExpectedFilesForUser,
-        numSkippedCIDs: TestColivingTrackFileNumSegments
+        numSkippedCIDs: TestColivingAgreementFileNumSegments
       }
     })
 
@@ -408,13 +408,13 @@ describe('test Polling Tracks with mocked IPFS', function () {
     })
   })
 
-  it('Confirms /users/batch_clock_status works with user and track state for 2 users', async () => {
-    const numExpectedFilesForUser = TestColivingTrackFileNumSegments + 1 // numSegments + 320kbps copy
+  it('Confirms /users/batch_clock_status works with user and agreement state for 2 users', async () => {
+    const numExpectedFilesForUser = TestColivingAgreementFileNumSegments + 1 // numSegments + 320kbps copy
 
-    /** Upload track for user 1 */
+    /** Upload agreement for user 1 */
     const { fileUUID: fileUUID1, fileDir: fileDir1 } =
       saveFileToStorage(testAudioFilePath)
-    await handleTrackContentRoute(
+    await handleAgreementContentRoute(
       logContext,
       getReqObj(fileUUID1, fileDir1, session)
     )
@@ -429,10 +429,10 @@ describe('test Polling Tracks with mocked IPFS', function () {
     const pubKey2 = '0xadD36bad12002f1097Cdb7eE24085C28e9random'
     const session2 = await createStarterCNodeUser(userId2, pubKey2)
 
-    /** Upload track for user 2 */
+    /** Upload agreement for user 2 */
     const { fileUUID: fileUUID2, fileDir: fileDir2 } =
       saveFileToStorage(testAudioFilePath)
-    await handleTrackContentRoute(
+    await handleAgreementContentRoute(
       logContext,
       getReqObj(fileUUID2, fileDir2, session2)
     )
@@ -516,33 +516,33 @@ describe('test Polling Tracks with mocked IPFS', function () {
     })
   })
 
-  // depends on "uploads /track_content_async"; if that test fails, this test will fail to due to similarity
-  it('creates Coliving track using application logic for /track_content_async', async function () {
+  // depends on "uploads /agreement_content_async"; if that test fails, this test will fail to due to similarity
+  it('creates Coliving agreement using application logic for /agreement_content_async', async function () {
     libsMock.User.getUsers.exactly(2)
 
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
-    const resp = await handleTrackContentRoute(
+    const resp = await handleAgreementContentRoute(
       logContext,
       getReqObj(fileUUID, fileDir, session)
     )
 
-    const { track_segments: trackSegments, source_file: sourceFile } = resp
+    const { agreement_segments: agreementSegments, source_file: sourceFile } = resp
     assert.deepStrictEqual(
-      trackSegments[0].multihash,
+      agreementSegments[0].multihash,
       'QmYfSQCgCwhxwYcdEwCkFJHicDe6rzCAb7AtLz3GrHmuU6'
     )
-    assert.deepStrictEqual(trackSegments.length, 32)
+    assert.deepStrictEqual(agreementSegments.length, 32)
     assert.deepStrictEqual(sourceFile.includes('.mp3'), true)
 
-    // creates Coliving track
+    // creates Coliving agreement
     const metadata = {
       test: 'field1',
       owner_id: 1,
-      track_segments: trackSegments
+      agreement_segments: agreementSegments
     }
 
-    const trackMetadataResp = await request(app)
-      .post('/tracks/metadata')
+    const agreementMetadataResp = await request(app)
+      .post('/agreements/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .set('Enforce-Write-Quorum', false)
@@ -550,38 +550,38 @@ describe('test Polling Tracks with mocked IPFS', function () {
       .expect(200)
 
     assert.deepStrictEqual(
-      trackMetadataResp.body.data.metadataMultihash,
+      agreementMetadataResp.body.data.metadataMultihash,
       'QmYhusD7qFv7gxNqi9nyaoiqaRXYQvoCvVgXY75nSoydmy'
     )
   })
 
-  // depends on "uploads /track_content_async"
-  it('fails to create Coliving track when segments not provided', async function () {
+  // depends on "uploads /agreement_content_async"
+  it('fails to create Coliving agreement when segments not provided', async function () {
     libsMock.User.getUsers.exactly(2)
 
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
-    const resp = await handleTrackContentRoute(
+    const resp = await handleAgreementContentRoute(
       logContext,
       getReqObj(fileUUID, fileDir, session)
     )
 
-    const { track_segments: trackSegments, source_file: sourceFile } = resp
+    const { agreement_segments: agreementSegments, source_file: sourceFile } = resp
 
     assert.deepStrictEqual(
-      trackSegments[0].multihash,
+      agreementSegments[0].multihash,
       'QmYfSQCgCwhxwYcdEwCkFJHicDe6rzCAb7AtLz3GrHmuU6'
     )
-    assert.deepStrictEqual(trackSegments.length, 32)
+    assert.deepStrictEqual(agreementSegments.length, 32)
     assert.deepStrictEqual(sourceFile.includes('.mp3'), true)
 
-    // creates Coliving track
+    // creates Coliving agreement
     const metadata = {
       test: 'field1',
       owner_id: 1
     }
 
     await request(app)
-      .post('/tracks/metadata')
+      .post('/agreements/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .set('Enforce-Write-Quorum', false)
@@ -589,56 +589,56 @@ describe('test Polling Tracks with mocked IPFS', function () {
       .expect(400)
   })
 
-  // depends on "uploads /track_content_async"
-  it('fails to create Coliving track when invalid segment multihashes are provided', async function () {
+  // depends on "uploads /agreement_content_async"
+  it('fails to create Coliving agreement when invalid segment multihashes are provided', async function () {
     libsMock.User.getUsers.exactly(2)
 
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
-    const resp = await handleTrackContentRoute(
+    const resp = await handleAgreementContentRoute(
       logContext,
       getReqObj(fileUUID, fileDir, session)
     )
 
-    const { track_segments: trackSegments, source_file: sourceFile } = resp
+    const { agreement_segments: agreementSegments, source_file: sourceFile } = resp
 
     assert.deepStrictEqual(
-      trackSegments[0].multihash,
+      agreementSegments[0].multihash,
       'QmYfSQCgCwhxwYcdEwCkFJHicDe6rzCAb7AtLz3GrHmuU6'
     )
-    assert.deepStrictEqual(trackSegments.length, 32)
+    assert.deepStrictEqual(agreementSegments.length, 32)
     assert.deepStrictEqual(sourceFile.includes('.mp3'), true)
 
-    // creates Coliving track
+    // creates Coliving agreement
     const metadata = {
       test: 'field1',
-      track_segments: [{ multihash: 'incorrectCIDLink', duration: 1000 }],
+      agreement_segments: [{ multihash: 'incorrectCIDLink', duration: 1000 }],
       owner_id: 1
     }
 
     await request(app)
-      .post('/tracks')
+      .post('/agreements')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .send({ metadata, sourceFile })
       .expect(400)
   })
 
-  // depends on "uploads /track_content_async"
-  it('fails to create Coliving track when owner_id is not provided', async function () {
+  // depends on "uploads /agreement_content_async"
+  it('fails to create Coliving agreement when owner_id is not provided', async function () {
     libsMock.User.getUsers.exactly(2)
 
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
-    const resp = await handleTrackContentRoute(
+    const resp = await handleAgreementContentRoute(
       logContext,
       getReqObj(fileUUID, fileDir, session)
     )
 
     const { source_file: sourceFile } = resp
 
-    // creates Coliving track
+    // creates Coliving agreement
     const metadata = {
       test: 'field1',
-      track_segments: [
+      agreement_segments: [
         {
           multihash: 'QmYfSQCgCwhxwYcdEwCkFJHicDe6rzCAb7AtLz3GrHmuU6',
           duration: 1000
@@ -647,35 +647,35 @@ describe('test Polling Tracks with mocked IPFS', function () {
     }
 
     await request(app)
-      .post('/tracks')
+      .post('/agreements')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .send({ metadata, sourceFile })
       .expect(400)
   })
 
-  // depends on "uploads /track_content_async" and "creates Coliving track" tests
-  it('completes Coliving track creation', async function () {
+  // depends on "uploads /agreement_content_async" and "creates Coliving agreement" tests
+  it('completes Coliving agreement creation', async function () {
     libsMock.User.getUsers.exactly(4)
 
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
     const {
-      track_segments: trackSegments,
+      agreement_segments: agreementSegments,
       source_file: sourceFile,
-      transcodedTrackUUID
-    } = await handleTrackContentRoute(
+      transcodedAgreementUUID
+    } = await handleAgreementContentRoute(
       logContext,
       getReqObj(fileUUID, fileDir, session)
     )
 
     const metadata = {
       test: 'field1',
-      track_segments: trackSegments,
+      agreement_segments: agreementSegments,
       owner_id: 1
     }
 
-    const trackMetadataResp = await request(app)
-      .post('/tracks/metadata')
+    const agreementMetadataResp = await request(app)
+      .post('/agreements/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .set('Enforce-Write-Quorum', false)
@@ -683,45 +683,45 @@ describe('test Polling Tracks with mocked IPFS', function () {
       .expect(200)
 
     assert.deepStrictEqual(
-      trackMetadataResp.body.data.metadataMultihash,
+      agreementMetadataResp.body.data.metadataMultihash,
       'QmTWhw49RfSMSJJmfm8cMHFBptgWoBGpNwjAc5jy2qeJfs'
     )
 
     await request(app)
-      .post('/tracks')
+      .post('/agreements')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .send({
-        blockchainTrackId: 1,
+        blockchainAgreementId: 1,
         blockNumber: 10,
-        metadataFileUUID: trackMetadataResp.body.data.metadataFileUUID,
-        transcodedTrackUUID
+        metadataFileUUID: agreementMetadataResp.body.data.metadataFileUUID,
+        transcodedAgreementUUID
       })
       .expect(200)
   })
 
-  // depends on "uploads /track_content_async"
-  it('fails to create downloadable track with no track_id and no source_id present', async function () {
+  // depends on "uploads /agreement_content_async"
+  it('fails to create downloadable agreement with no agreement_id and no source_id present', async function () {
     libsMock.User.getUsers.exactly(2)
 
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
-    const resp = await handleTrackContentRoute(
+    const resp = await handleAgreementContentRoute(
       logContext,
       getReqObj(fileUUID, fileDir, session)
     )
 
-    const { track_segments: trackSegments } = resp
+    const { agreement_segments: agreementSegments } = resp
     assert.deepStrictEqual(
-      trackSegments[0].multihash,
+      agreementSegments[0].multihash,
       'QmYfSQCgCwhxwYcdEwCkFJHicDe6rzCAb7AtLz3GrHmuU6'
     )
-    assert.deepStrictEqual(trackSegments.length, 32)
+    assert.deepStrictEqual(agreementSegments.length, 32)
 
-    // creates a downloadable Coliving track with no track_id and no source_file
+    // creates a downloadable Coliving agreement with no agreement_id and no source_file
     const metadata = {
       test: 'field1',
       owner_id: 1,
-      track_segments: [
+      agreement_segments: [
         {
           multihash: 'QmYfSQCgCwhxwYcdEwCkFJHicDe6rzCAb7AtLz3GrHmuU6',
           duration: 1000
@@ -734,7 +734,7 @@ describe('test Polling Tracks with mocked IPFS', function () {
     }
 
     await request(app)
-      .post('/tracks/metadata')
+      .post('/agreements/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .set('Enforce-Write-Quorum', false)
@@ -742,31 +742,31 @@ describe('test Polling Tracks with mocked IPFS', function () {
       .expect(400)
   })
 
-  // depends on "uploads /track_content_async" and "creates Coliving track" tests
-  it('creates a downloadable track', async function () {
+  // depends on "uploads /agreement_content_async" and "creates Coliving agreement" tests
+  it('creates a downloadable agreement', async function () {
     libsMock.User.getUsers.exactly(4)
 
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
     const {
-      track_segments: trackSegments,
+      agreement_segments: agreementSegments,
       source_file: sourceFile,
-      transcodedTrackUUID
-    } = await handleTrackContentRoute(
+      transcodedAgreementUUID
+    } = await handleAgreementContentRoute(
       logContext,
       getReqObj(fileUUID, fileDir, session)
     )
 
     assert.deepStrictEqual(
-      trackSegments[0].multihash,
+      agreementSegments[0].multihash,
       'QmYfSQCgCwhxwYcdEwCkFJHicDe6rzCAb7AtLz3GrHmuU6'
     )
-    assert.deepStrictEqual(trackSegments.length, 32)
+    assert.deepStrictEqual(agreementSegments.length, 32)
     assert.deepStrictEqual(sourceFile.includes('.mp3'), true)
 
     // needs debugging as to why this 'cid' key is needed for test to work
     const metadata = {
       test: 'field1',
-      track_segments: trackSegments,
+      agreement_segments: agreementSegments,
       owner_id: 1,
       download: {
         is_downloadable: true,
@@ -775,8 +775,8 @@ describe('test Polling Tracks with mocked IPFS', function () {
       }
     }
 
-    const trackMetadataResp = await request(app)
-      .post('/tracks/metadata')
+    const agreementMetadataResp = await request(app)
+      .post('/agreements/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .set('Enforce-Write-Quorum', false)
@@ -784,26 +784,26 @@ describe('test Polling Tracks with mocked IPFS', function () {
       .expect(200)
 
     assert.deepStrictEqual(
-      trackMetadataResp.body.data.metadataMultihash,
+      agreementMetadataResp.body.data.metadataMultihash,
       'QmPjrvx9MBcvf495t43ZhiMpKWwu1JnqkcNUN3Z9EBWm49'
     )
 
     await request(app)
-      .post('/tracks')
+      .post('/agreements')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .send({
-        blockchainTrackId: 1,
+        blockchainAgreementId: 1,
         blockNumber: 10,
-        metadataFileUUID: trackMetadataResp.body.data.metadataFileUUID,
-        transcodedTrackUUID
+        metadataFileUUID: agreementMetadataResp.body.data.metadataFileUUID,
+        transcodedAgreementUUID
       })
       .expect(200)
   })
 })
 
-describe('test Polling Tracks with real files', function () {
-  let app2, server, session, libsMock, handleTrackContentRoute, userId
+describe('test Polling Agreements with real files', function () {
+  let app2, server, session, libsMock, handleAgreementContentRoute, userId
 
   /** Inits libs mock, web server app, blacklist manager, and creates starter CNodeUser */
   beforeEach(async () => {
@@ -819,8 +819,8 @@ describe('test Polling Tracks with real files', function () {
     server = appInfo.server
     session = await createStarterCNodeUser(userId)
 
-    handleTrackContentRoute =
-      require('../src/components/tracks/tracksComponentService').handleTrackContentRoute
+    handleAgreementContentRoute =
+      require('../src/components/agreements/agreementsComponentService').handleAgreementContentRoute
   })
 
   /** Reset sinon & close server */
@@ -829,10 +829,10 @@ describe('test Polling Tracks with real files', function () {
     await server.close()
   })
 
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~ /track_content_async TESTS ~~~~~~~~~~~~~~~~~~~~~~~~~
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~ /agreement_content_async TESTS ~~~~~~~~~~~~~~~~~~~~~~~~~
   it('sends server error response if segmenting fails', async function () {
-    const { handleTrackContentRoute } = proxyquire(
-      '../src/components/tracks/tracksComponentService.js',
+    const { handleAgreementContentRoute } = proxyquire(
+      '../src/components/agreements/agreementsComponentService.js',
       {
         '../../TranscodingQueue': {
           segment: sinon
@@ -845,7 +845,7 @@ describe('test Polling Tracks with real files', function () {
 
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
     try {
-      await handleTrackContentRoute(
+      await handleAgreementContentRoute(
         logContext,
         getReqObj(fileUUID, fileDir, session)
       )
@@ -856,8 +856,8 @@ describe('test Polling Tracks with real files', function () {
   })
 
   it('sends server error response if transcoding fails', async function () {
-    const { handleTrackContentRoute } = proxyquire(
-      '../src/components/tracks/tracksComponentService.js',
+    const { handleAgreementContentRoute } = proxyquire(
+      '../src/components/agreements/agreementsComponentService.js',
       {
         '../../TranscodingQueue': {
           transcode320: sinon
@@ -870,7 +870,7 @@ describe('test Polling Tracks with real files', function () {
 
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
     try {
-      await handleTrackContentRoute(
+      await handleAgreementContentRoute(
         logContext,
         getReqObj(fileUUID, fileDir, session)
       )
@@ -880,34 +880,34 @@ describe('test Polling Tracks with real files', function () {
     }
   })
 
-  it('should successfully upload track + transcode and prune upload artifacts when TranscodingQueue is available', async function () {
+  it('should successfully upload agreement + transcode and prune upload artifacts when TranscodingQueue is available', async function () {
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
-    const resp = await handleTrackContentRoute(
+    const resp = await handleAgreementContentRoute(
       logContext,
       getReqObj(fileUUID, fileDir, session)
     )
 
-    const { track_segments: trackSegments, transcodedTrackCID } = resp
+    const { agreement_segments: agreementSegments, transcodedAgreementCID } = resp
 
-    // check that the generated transcoded track is the same as the transcoded track in /tests
-    const transcodedTrackAssetPath = path.join(
+    // check that the generated transcoded agreement is the same as the transcoded agreement in /tests
+    const transcodedAgreementAssetPath = path.join(
       __dirname,
-      'testTranscoded320Track.mp3'
+      'testTranscoded320Agreement.mp3'
     )
-    const transcodedTrackAssetBuf = fs.readFileSync(transcodedTrackAssetPath)
-    const transcodedTrackPath = DiskManager.computeFilePath(transcodedTrackCID)
-    const transcodedTrackTestBuf = fs.readFileSync(transcodedTrackPath)
+    const transcodedAgreementAssetBuf = fs.readFileSync(transcodedAgreementAssetPath)
+    const transcodedAgreementPath = DiskManager.computeFilePath(transcodedAgreementCID)
+    const transcodedAgreementTestBuf = fs.readFileSync(transcodedAgreementPath)
     assert.deepStrictEqual(
-      transcodedTrackAssetBuf.compare(transcodedTrackTestBuf),
+      transcodedAgreementAssetBuf.compare(transcodedAgreementTestBuf),
       0
     )
 
     // Ensure 32 segments are returned, each segment has a corresponding file on disk,
     //    and each segment disk file is exactly as expected
-    // Note - The exact output of track segmentation is deterministic only for a given environment/ffmpeg version
+    // Note - The exact output of agreement segmentation is deterministic only for a given environment/ffmpeg version
     //    This test may break in the future but at that point we should re-generate the reference segment files.
-    assert.deepStrictEqual(trackSegments.length, TestColivingTrackFileNumSegments)
-    trackSegments.map(function (cid, index) {
+    assert.deepStrictEqual(agreementSegments.length, TestColivingAgreementFileNumSegments)
+    agreementSegments.map(function (cid, index) {
       const cidPath = DiskManager.computeFilePath(cid.multihash)
 
       // Ensure file exists
@@ -924,10 +924,10 @@ describe('test Polling Tracks with real files', function () {
     })
   })
 
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~ /tracks/metadata TESTS ~~~~~~~~~~~~~~~~~~~~~~~~~
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~ /agreements/metadata TESTS ~~~~~~~~~~~~~~~~~~~~~~~~~
   it('should throw an error if no metadata is passed', async function () {
     const resp = await request(app2)
-      .post('/tracks/metadata')
+      .post('/agreements/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .set('Enforce-Write-Quorum', false)
@@ -936,7 +936,7 @@ describe('test Polling Tracks with real files', function () {
 
     assert.deepStrictEqual(
       resp.body.error,
-      'Metadata object must include owner_id and non-empty track_segments array'
+      'Metadata object must include owner_id and non-empty agreement_segments array'
     )
   })
 
@@ -944,7 +944,7 @@ describe('test Polling Tracks with real files', function () {
     sinon.stub(BlacklistManager, 'CIDIsInBlacklist').returns(true)
     const metadata = {
       test: 'field1',
-      track_segments: [
+      agreement_segments: [
         {
           multihash: 'QmYfSQCgCwhxwYcdEwCkFJHicDe6rzCAb7AtLz3GrHmuU6',
           duration: 1000
@@ -954,7 +954,7 @@ describe('test Polling Tracks with real files', function () {
     }
 
     await request(app2)
-      .post('/tracks/metadata')
+      .post('/agreements/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .set('Enforce-Write-Quorum', false)
@@ -965,7 +965,7 @@ describe('test Polling Tracks with real files', function () {
   it('successfully adds metadata file to filesystem and db', async function () {
     const metadata = sortKeys({
       test: 'field1',
-      track_segments: [
+      agreement_segments: [
         {
           multihash: 'QmYfSQCgCwhxwYcdEwCkFJHicDe6rzCAb7AtLz3GrHmuU6',
           duration: 1000
@@ -975,7 +975,7 @@ describe('test Polling Tracks with real files', function () {
     })
 
     const resp = await request(app2)
-      .post('/tracks/metadata')
+      .post('/agreements/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .set('Enforce-Write-Quorum', false)
@@ -1004,130 +1004,130 @@ describe('test Polling Tracks with real files', function () {
     assert.ok(file)
   })
 
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~ /tracks TESTS ~~~~~~~~~~~~~~~~~~~~~~~~~
-  it('POST /tracks tests', async function () {
-    // Upload track content
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~ /agreements TESTS ~~~~~~~~~~~~~~~~~~~~~~~~~
+  it('POST /agreements tests', async function () {
+    // Upload agreement content
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
     const {
-      track_segments: trackSegments,
-      transcodedTrackUUID,
+      agreement_segments: agreementSegments,
+      transcodedAgreementUUID,
       source_file: sourceFile
-    } = await handleTrackContentRoute(
+    } = await handleAgreementContentRoute(
       logContext,
       getReqObj(fileUUID, fileDir, session)
     )
 
-    // Upload track metadata
-    const trackMetadata = {
+    // Upload agreement metadata
+    const agreementMetadata = {
       metadata: {
         owner_id: userId,
-        track_segments: trackSegments
+        agreement_segments: agreementSegments
       },
       source_file: sourceFile
     }
-    const trackMetadataResp = await request(app2)
-      .post('/tracks/metadata')
+    const agreementMetadataResp = await request(app2)
+      .post('/agreements/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', userId)
       .set('Enforce-Write-Quorum', false)
-      .send(trackMetadata)
+      .send(agreementMetadata)
       .expect(200)
-    const trackMetadataFileUUID = trackMetadataResp.body.data.metadataFileUUID
+    const agreementMetadataFileUUID = agreementMetadataResp.body.data.metadataFileUUID
 
-    // Complete track creation
+    // Complete agreement creation
     await request(app2)
-      .post('/tracks')
+      .post('/agreements')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', userId)
       .send({
-        blockchainTrackId: 1,
+        blockchainAgreementId: 1,
         blockNumber: 10,
-        metadataFileUUID: trackMetadataFileUUID,
-        transcodedTrackUUID
+        metadataFileUUID: agreementMetadataFileUUID,
+        transcodedAgreementUUID
       })
   })
 
-  it('parallel track upload', async function () {
-    // Upload track content
+  it('parallel agreement upload', async function () {
+    // Upload agreement content
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
     const {
-      track_segments: trackSegments,
-      transcodedTrackUUID,
+      agreement_segments: agreementSegments,
+      transcodedAgreementUUID,
       source_file: sourceFile
-    } = await handleTrackContentRoute(
+    } = await handleAgreementContentRoute(
       logContext,
       getReqObj(fileUUID, fileDir, session)
     )
 
-    // Upload same track content again
+    // Upload same agreement content again
     const { fileUUID: fileUUID2, fileDir: fileDir2 } =
       saveFileToStorage(testAudioFilePath)
     const {
-      track_segments: track2Segments,
-      transcodedTrackUUID: transcodedTrack2UUID,
+      agreement_segments: agreement2Segments,
+      transcodedAgreementUUID: transcodedAgreement2UUID,
       source_file: sourceFile2
-    } = await handleTrackContentRoute(
+    } = await handleAgreementContentRoute(
       logContext,
       getReqObj(fileUUID2, fileDir2, session)
     )
 
-    // Upload track 1 metadata
-    const trackMetadata = {
+    // Upload agreement 1 metadata
+    const agreementMetadata = {
       metadata: {
         owner_id: userId,
-        track_segments: trackSegments
+        agreement_segments: agreementSegments
       },
       source_file: sourceFile
     }
-    const trackMetadataResp = await request(app2)
-      .post('/tracks/metadata')
+    const agreementMetadataResp = await request(app2)
+      .post('/agreements/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', userId)
       .set('Enforce-Write-Quorum', false)
-      .send(trackMetadata)
+      .send(agreementMetadata)
       .expect(200)
-    const trackMetadataFileUUID = trackMetadataResp.body.data.metadataFileUUID
+    const agreementMetadataFileUUID = agreementMetadataResp.body.data.metadataFileUUID
 
-    // Upload track 2 metadata
-    const track2Metadata = {
+    // Upload agreement 2 metadata
+    const agreement2Metadata = {
       metadata: {
         owner_id: userId,
-        track_segments: track2Segments
+        agreement_segments: agreement2Segments
       },
       source_file: sourceFile
     }
-    const track2MetadataResp = await request(app2)
-      .post('/tracks/metadata')
+    const agreement2MetadataResp = await request(app2)
+      .post('/agreements/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', userId)
       .set('Enforce-Write-Quorum', false)
-      .send(track2Metadata)
+      .send(agreement2Metadata)
       .expect(200)
-    const track2MetadataFileUUID = track2MetadataResp.body.data.metadataFileUUID
+    const agreement2MetadataFileUUID = agreement2MetadataResp.body.data.metadataFileUUID
 
-    // Complete track1 creation
+    // Complete agreement1 creation
     await request(app2)
-      .post('/tracks')
+      .post('/agreements')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', userId)
       .send({
-        blockchainTrackId: 1,
+        blockchainAgreementId: 1,
         blockNumber: 10,
-        metadataFileUUID: trackMetadataFileUUID,
-        transcodedTrackUUID
+        metadataFileUUID: agreementMetadataFileUUID,
+        transcodedAgreementUUID
       })
       .expect(200)
 
-    // Complete track2 creation
+    // Complete agreement2 creation
     await request(app2)
-      .post('/tracks')
+      .post('/agreements')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', userId)
       .send({
-        blockchainTrackId: 2,
+        blockchainAgreementId: 2,
         blockNumber: 20,
-        metadataFileUUID: track2MetadataFileUUID,
-        transcodedTrackUUID: transcodedTrack2UUID
+        metadataFileUUID: agreement2MetadataFileUUID,
+        transcodedAgreementUUID: transcodedAgreement2UUID
       })
       .expect(200)
   })

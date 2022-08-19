@@ -3,7 +3,7 @@ const verifyValidCNs = require('./verifyValidCN')
 const deregisterRandomCreatorNode = require('./deregisterRandomCreatorNode.js')
 const stopRandomCreatorNode = require('./stopRandomCreatorNode.js')
 const setNumCreatorNodes = require('./setNumCreatorNodes.js')
-const { uploadTracksforUsers } = require('../../utils/uploadTracksForUsers')
+const { uploadAgreementsforUsers } = require('../../utils/uploadAgreementsForUsers')
 const { logger } = require('../../logger')
 const { delay } = require('../../helpers')
 
@@ -38,8 +38,8 @@ const deregisterCN = async ({
   for (let iteration = 0; iteration < iterations; iteration++) {
     creatorNodeIDToInfoMapping = await setNumCreatorNodes(numCreatorNodes, executeOne)
 
-    // Upload tracks to users
-    await uploadTracksforUsers({ executeAll, executeOne, walletIndexToUserIdMap })
+    // Upload agreements to users
+    await uploadAgreementsforUsers({ executeAll, executeOne, walletIndexToUserIdMap })
 
     const deregisteredCreatorNodeId = await deregisterRandomCreatorNode(creatorNodeIDToInfoMapping)
 

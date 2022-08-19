@@ -165,8 +165,8 @@ def get_user_id_cache_key(id):
     return f"user:id:{id}"
 
 
-def get_track_id_cache_key(id):
-    return f"track:id:{id}"
+def get_agreement_id_cache_key(id):
+    return f"agreement:id:{id}"
 
 
 def get_playlist_id_cache_key(id):
@@ -185,12 +185,12 @@ def remove_cached_user_ids(redis, user_ids):
         logger.error("Unable to remove cached users: %s", e, exc_info=True)
 
 
-def remove_cached_track_ids(redis, track_ids):
+def remove_cached_agreement_ids(redis, agreement_ids):
     try:
-        track_keys = list(map(get_track_id_cache_key, track_ids))
-        redis.delete(*track_keys)
+        agreement_keys = list(map(get_agreement_id_cache_key, agreement_ids))
+        redis.delete(*agreement_keys)
     except Exception as e:
-        logger.error("Unable to remove cached tracks: %s", e, exc_info=True)
+        logger.error("Unable to remove cached agreements: %s", e, exc_info=True)
 
 
 def remove_cached_playlist_ids(redis, playlist_ids):

@@ -1,4 +1,4 @@
-"""unlisted_tracks
+"""unlisted_agreements
 
 Revision ID: cf614359625e
 Revises: dbefdfcc9a3b
@@ -18,11 +18,11 @@ depends_on = None
 
 def upgrade():
     op.add_column(
-        "tracks",
+        "agreements",
         sa.Column("is_unlisted", sa.Boolean(), server_default="false", nullable=False),
     )
     op.add_column(
-        "tracks",
+        "agreements",
         sa.Column(
             "field_visibility", postgresql.JSONB(astext_type=sa.Text()), nullable=True
         ),
@@ -30,5 +30,5 @@ def upgrade():
 
 
 def downgrade():
-    op.drop_column("tracks", "is_unlisted")
-    op.drop_column("tracks", "field_visibility")
+    op.drop_column("agreements", "is_unlisted")
+    op.drop_column("agreements", "field_visibility")

@@ -10,12 +10,12 @@ const { logger: genericLogger } = require('../../logging')
 const {
   generateTimestampAndSignatureForSPVerification
 } = require('../../apiSigning')
-const { removeTrackFolder } = require('../../fileManager')
+const { removeAgreementFolder } = require('../../fileManager')
 
 const CREATOR_NODE_ENDPOINT = config.get('contentNodeEndpoint')
 const DELEGATE_PRIVATE_KEY = config.get('delegatePrivateKey')
 
-const NUMBER_OF_SPS_FOR_HANDOFF_TRACK = 3
+const NUMBER_OF_SPS_FOR_HANDOFF_AGREEMENT = 3
 const POLLING_TRANSCODE_AND_SEGMENTS_RETRIES = 50
 const POLLING_TRANSCODE_AND_SEGMENTS_MIN_TIMEOUT = 1000
 const POLLING_TRANSCODE_AND_SEGMENTS_MAX_TIMEOUT = 5000
@@ -33,16 +33,16 @@ const HAND_OFF_STATES = Object.freeze({
 
 // Handles sending a transcode and segment request to an available node in the network
 
-class TrackTranscodeHandoffManager {
+class AgreementTranscodeHandoffManager {
   static logContext = {}
-  static logger = genericLogger.child(TrackTranscodeHandoffManager.logContext)
+  static logger = genericLogger.child(AgreementTranscodeHandoffManager.logContext)
 
   /**
    * Wrapper function to:
    * 1. Select random Content Nodes in the network
    * 2. Iteratively:
-   *    1. Send the uploaded track artifact to one of the randomly selected SPs
-   *    2. Have the randomly selected SP transcode and segment the uploaded track artifact
+   *    1. Send the uploaded agreement artifact to one of the randomly selected SPs
+   *    2. Have the randomly selected SP transcode and segment the uploaded agreement artifact
    *    3. Poll the randomly selected SP to see if the transcoding is complete
    *    4. Fetch and write the files to current node disk if transcode is complete
    *
@@ -61,11 +61,11 @@ class TrackTranscodeHandoffManager {
    *    headers
    * }
    *
-   * See routes/tracks.js for more information
+   * See routes/agreements.js for more information
    * @returns
    */
   static async handOff({ logContext }, req) {
-    const logger = TrackTranscodeHandoffManager.initLogger(logContext)
+    const logger = AgreementTranscodeHandoffManager.initLogger(logContext)
 
     const decisionTree = { state: HAND_OFF_STATES.INITIALIZED }
     const libs = req.libs
@@ -74,7 +74,7 @@ class TrackTranscodeHandoffManager {
     let sps
     try {
       decisionTree.state = HAND_OFF_STATES.SELECTING_RANDOM_SPS
-      sps = await TrackTranscodeHandoffManager.selectRandomSPs(libs)
+      sps = await AgreementTranscodeHandoffManager.selectRandomSPs(libs)
     } catch (e) {
       logger.warn(`Could not select random SPs: ${e.message}`)
       return resp
@@ -83,22 +83,22 @@ class TrackTranscodeHandoffManager {
     for (const sp of sps) {
       decisionTree.sp = sp
       try {
-        logger.info(`Handing track off to sp=${sp}`)
+        logger.info(`Handing agreement off to sp=${sp}`)
         decisionTree.state = HAND_OFF_STATES.HANDING_OFF_TO_SP
 
         const transcodeAndSegmentUUID =
-          await TrackTranscodeHandoffManager.sendTrackToSp({ sp, req })
+          await AgreementTranscodeHandoffManager.sendAgreementToSp({ sp, req })
 
         decisionTree.state = HAND_OFF_STATES.POLLING_FOR_TRANSCODE
         const polledTranscodeResponse =
-          await TrackTranscodeHandoffManager.pollForTranscode({
+          await AgreementTranscodeHandoffManager.pollForTranscode({
             sp,
             uuid: transcodeAndSegmentUUID
           })
 
         decisionTree.state = HAND_OFF_STATES.FETCHING_FILES_AND_WRITING_TO_FS
         const localFilePaths =
-          await TrackTranscodeHandoffManager.fetchFilesAndWriteToFs({
+          await AgreementTranscodeHandoffManager.fetchFilesAndWriteToFs({
             ...polledTranscodeResponse,
             sp,
             fileNameNoExtension: req.fileNameNoExtension
@@ -124,7 +124,7 @@ class TrackTranscodeHandoffManager {
         break
       } catch (e) {
         logger.warn(
-          `Could not hand off track: state=${JSON.stringify(
+          `Could not hand off agreement: state=${JSON.stringify(
             decisionTree
           )} err=${e.toString()}`
         )
@@ -146,9 +146,9 @@ class TrackTranscodeHandoffManager {
     // If there are less Content Nodes than the default number, set the cap to the number
     // of available SPs. This will probably only happen in local dev :shrugs:
     const numberOfSps =
-      allSPs.length < NUMBER_OF_SPS_FOR_HANDOFF_TRACK
+      allSPs.length < NUMBER_OF_SPS_FOR_HANDOFF_AGREEMENT
         ? allSPs.length
-        : NUMBER_OF_SPS_FOR_HANDOFF_TRACK
+        : NUMBER_OF_SPS_FOR_HANDOFF_AGREEMENT
 
     const validSPs = new Set()
     while (validSPs.size < numberOfSps) {
@@ -165,21 +165,21 @@ class TrackTranscodeHandoffManager {
   }
 
   /**
-   * Sends the uploaded track artifact to the passed in sp
+   * Sends the uploaded agreement artifact to the passed in sp
    * @param {Object} param
-   * @param {string} param.sp the Content Node to hand off the track to
+   * @param {string} param.sp the Content Node to hand off the agreement to
    * @param {Object} param.req request object with the params {fileDir, fileName, fileNameNoExtension}
    * @returns the transcoding job uuid
    */
-  static async sendTrackToSp({ sp, req }) {
-    const logger = TrackTranscodeHandoffManager.logger
+  static async sendAgreementToSp({ sp, req }) {
+    const logger = AgreementTranscodeHandoffManager.logger
     const { fileDir, fileName, fileNameNoExtension } = req
 
-    await TrackTranscodeHandoffManager.fetchHealthCheck(sp)
+    await AgreementTranscodeHandoffManager.fetchHealthCheck(sp)
 
     logger.info({ sp }, `Sending off transcode and segmenting request...`)
     const transcodeAndSegmentUUID =
-      await TrackTranscodeHandoffManager.sendTranscodeAndSegmentRequest({
+      await AgreementTranscodeHandoffManager.sendTranscodeAndSegmentRequest({
         sp,
         fileDir,
         fileName,
@@ -197,14 +197,14 @@ class TrackTranscodeHandoffManager {
    * @returns the transcode job results
    */
   static async pollForTranscode({ uuid, sp }) {
-    const logger = TrackTranscodeHandoffManager.logger
+    const logger = AgreementTranscodeHandoffManager.logger
     logger.info(
       { sp },
       `Polling for transcode and segments with uuid=${uuid}...`
     )
 
     return asyncRetry({
-      logger: TrackTranscodeHandoffManager.logger,
+      logger: AgreementTranscodeHandoffManager.logger,
       asyncFn: async (bail, num) => {
         if (num === 50) {
           bail(
@@ -214,7 +214,7 @@ class TrackTranscodeHandoffManager {
         }
 
         const { status, resp } =
-          await TrackTranscodeHandoffManager.fetchTranscodeProcessingStatus({
+          await AgreementTranscodeHandoffManager.fetchTranscodeProcessingStatus({
             sp,
             uuid
           })
@@ -252,7 +252,7 @@ class TrackTranscodeHandoffManager {
    * Fetches files from the Content Node that handled transcoding, and writes to current
    * node's filesystem.
    * @param {Object} param
-   * @param {string} param.fileNameNoExtension the uploaded track artifact file name without the extension
+   * @param {string} param.fileNameNoExtension the uploaded agreement artifact file name without the extension
    * @param {string} param.transcodeFilePath the transcode file path
    * @param {string[]} param.segmentFileNames an array of segment file names
    * @param {string} param.m3u8FilePath the m3u8 file path
@@ -274,7 +274,7 @@ class TrackTranscodeHandoffManager {
     fileDir,
     sp
   }) {
-    const logger = TrackTranscodeHandoffManager.logger
+    const logger = AgreementTranscodeHandoffManager.logger
 
     let res
 
@@ -287,7 +287,7 @@ class TrackTranscodeHandoffManager {
         const segmentFileName = segmentFileNames[i]
         const segmentFilePath = segmentFilePaths[i]
 
-        res = await TrackTranscodeHandoffManager.fetchSegment(
+        res = await AgreementTranscodeHandoffManager.fetchSegment(
           sp,
           segmentFileName,
           fileNameNoExtension
@@ -297,7 +297,7 @@ class TrackTranscodeHandoffManager {
 
       // Get transcode and write to tmp disk
       logger.info({ sp, transcodeFilePath }, 'Fetching transcode...')
-      res = await TrackTranscodeHandoffManager.fetchTranscode(
+      res = await AgreementTranscodeHandoffManager.fetchTranscode(
         sp,
         fileNameNoExtension
       )
@@ -305,7 +305,7 @@ class TrackTranscodeHandoffManager {
 
       // Get m3u8 file and write to tmp disk
       logger.info({ sp, m3u8FilePath }, 'Fetching m3u8...')
-      res = await TrackTranscodeHandoffManager.fetchM3U8File(
+      res = await AgreementTranscodeHandoffManager.fetchM3U8File(
         sp,
         fileNameNoExtension
       )
@@ -314,7 +314,7 @@ class TrackTranscodeHandoffManager {
       logger.error(
         `Could not complete writing files to disk: ${e.message}. Removing files..`
       )
-      removeTrackFolder(TrackTranscodeHandoffManager.logContext, fileDir)
+      removeAgreementFolder(AgreementTranscodeHandoffManager.logContext, fileDir)
       throw e
     }
 
@@ -330,8 +330,8 @@ class TrackTranscodeHandoffManager {
    * @param {Object} param
    * @param {string} param.sp the Content Node to send the transcode and segment request to
    * @param {string} param.fileDir the file directory that holds the transcode, segments, and m3u8 file paths
-   * @param {string} param.fileName tthe uploaded track artifact file name
-   * @param {string} param.fileNameNoExtension the uploaded track artifact file name without the extension
+   * @param {string} param.fileName tthe uploaded agreement artifact file name
+   * @param {string} param.fileNameNoExtension the uploaded agreement artifact file name without the extension
    * @returns the transcode and segment job uuid used for polling
    */
   static async sendTranscodeAndSegmentRequest({
@@ -340,8 +340,8 @@ class TrackTranscodeHandoffManager {
     fileName,
     fileNameNoExtension
   }) {
-    const originalTrackFormData =
-      await TrackTranscodeHandoffManager.createFormData(
+    const originalAgreementFormData =
+      await AgreementTranscodeHandoffManager.createFormData(
         fileDir + '/' + fileName
       )
 
@@ -350,15 +350,15 @@ class TrackTranscodeHandoffManager {
     const { timestamp, signature } =
       generateTimestampAndSignatureForSPVerification(spID, DELEGATE_PRIVATE_KEY)
 
-    const resp = await TrackTranscodeHandoffManager.asyncRetryNotOn404({
-      logger: TrackTranscodeHandoffManager.logger,
+    const resp = await AgreementTranscodeHandoffManager.asyncRetryNotOn404({
+      logger: AgreementTranscodeHandoffManager.logger,
       asyncFn: async () => {
         return axios({
           url: `${sp}/transcode_and_segment`,
           method: 'post',
-          data: originalTrackFormData,
+          data: originalAgreementFormData,
           headers: {
-            ...originalTrackFormData.getHeaders()
+            ...originalAgreementFormData.getHeaders()
           },
           params: {
             uuid: fileNameNoExtension,
@@ -382,7 +382,7 @@ class TrackTranscodeHandoffManager {
 
   /**
    * Creates the form data necessary to send over transcode and segment request
-   * @param {string} pathToFile path to the uploaded track artifact
+   * @param {string} pathToFile path to the uploaded agreement artifact
    * @returns formData object passed in axios to send a transcode and segment request
    */
   static async createFormData(pathToFile) {
@@ -412,8 +412,8 @@ class TrackTranscodeHandoffManager {
   /**
    * Gets the status of the transcode processing
    * @param {Object} param
-   * @param {string} param.sp the current sp selected for track processing
-   * @param {string} param.uuid the uuid of the track transcoding task
+   * @param {string} param.sp the current sp selected for agreement processing
+   * @param {string} param.uuid the uuid of the agreement transcoding task
    * @returns the status, and the success or failed response if the task is complete
    */
   static async fetchTranscodeProcessingStatus({ sp, uuid }) {
@@ -422,8 +422,8 @@ class TrackTranscodeHandoffManager {
       generateTimestampAndSignatureForSPVerification(spID, DELEGATE_PRIVATE_KEY)
 
     const { data: body } =
-      await TrackTranscodeHandoffManager.asyncRetryNotOn404({
-        logger: TrackTranscodeHandoffManager.logger,
+      await AgreementTranscodeHandoffManager.asyncRetryNotOn404({
+        logger: AgreementTranscodeHandoffManager.logger,
         asyncFn: async () => {
           return axios({
             url: `${sp}/async_processing_status`,
@@ -432,7 +432,7 @@ class TrackTranscodeHandoffManager {
             timeout: FETCH_PROCESSING_STATUS_TIMEOUT_MS
           })
         },
-        logLabel: 'fetch track content processing status'
+        logLabel: 'fetch agreement content processing status'
       })
 
     return body.data
@@ -442,7 +442,7 @@ class TrackTranscodeHandoffManager {
    * Fetches a segment from a sp
    * @param {string} sp the endpoint of the Content Node to fetch the segment from
    * @param {string} segmentFileName the filename of the segment
-   * @param {string} fileNameNoExtension the file name of the uploaded track artifact without extension
+   * @param {string} fileNameNoExtension the file name of the uploaded agreement artifact without extension
    * @returns the fetched segment
    */
   static async fetchSegment(sp, segmentFileName, fileNameNoExtension) {
@@ -450,8 +450,8 @@ class TrackTranscodeHandoffManager {
     const { timestamp, signature } =
       generateTimestampAndSignatureForSPVerification(spID, DELEGATE_PRIVATE_KEY)
 
-    return TrackTranscodeHandoffManager.asyncRetryNotOn404({
-      logger: TrackTranscodeHandoffManager.logger,
+    return AgreementTranscodeHandoffManager.asyncRetryNotOn404({
+      logger: AgreementTranscodeHandoffManager.logger,
       asyncFn: async () => {
         return axios({
           url: `${sp}/transcode_and_segment`,
@@ -475,7 +475,7 @@ class TrackTranscodeHandoffManager {
   /**
    * Fetches a transcode
    * @param {string} sp the endpoint of the Content Node to fetch the transcode from
-   * @param {string} fileNameNoExtension the file name of the uploaded track artifact without extension
+   * @param {string} fileNameNoExtension the file name of the uploaded agreement artifact without extension
    * @returns
    */
   static async fetchTranscode(sp, fileNameNoExtension) {
@@ -484,8 +484,8 @@ class TrackTranscodeHandoffManager {
     const { timestamp, signature } =
       generateTimestampAndSignatureForSPVerification(spID, DELEGATE_PRIVATE_KEY)
 
-    return TrackTranscodeHandoffManager.asyncRetryNotOn404({
-      logger: TrackTranscodeHandoffManager.logger,
+    return AgreementTranscodeHandoffManager.asyncRetryNotOn404({
+      logger: AgreementTranscodeHandoffManager.logger,
       asyncFn: async () => {
         return axios({
           url: `${sp}/transcode_and_segment`,
@@ -509,7 +509,7 @@ class TrackTranscodeHandoffManager {
   /**
    * Fetches a m3u8
    * @param {string} sp the endpoint of the Content Node to fetch the transcode from
-   * @param {string} fileNameNoExtension the file name of the uploaded track artifact without extension
+   * @param {string} fileNameNoExtension the file name of the uploaded agreement artifact without extension
    * @returns
    */
   static async fetchM3U8File(sp, fileNameNoExtension) {
@@ -518,8 +518,8 @@ class TrackTranscodeHandoffManager {
     const { timestamp, signature } =
       generateTimestampAndSignatureForSPVerification(spID, DELEGATE_PRIVATE_KEY)
 
-    return TrackTranscodeHandoffManager.asyncRetryNotOn404({
-      logger: TrackTranscodeHandoffManager.logger,
+    return AgreementTranscodeHandoffManager.asyncRetryNotOn404({
+      logger: AgreementTranscodeHandoffManager.logger,
       asyncFn: async () => {
         return axios({
           url: `${sp}/transcode_and_segment`,
@@ -545,10 +545,10 @@ class TrackTranscodeHandoffManager {
    * @param {Object} logContext
    */
   static initLogger(logContext) {
-    TrackTranscodeHandoffManager.logContext = logContext
-    TrackTranscodeHandoffManager.logger = genericLogger.child(logContext)
+    AgreementTranscodeHandoffManager.logContext = logContext
+    AgreementTranscodeHandoffManager.logger = genericLogger.child(logContext)
 
-    return TrackTranscodeHandoffManager.logger
+    return AgreementTranscodeHandoffManager.logger
   }
 
   /**
@@ -598,4 +598,4 @@ class TrackTranscodeHandoffManager {
   }
 }
 
-module.exports = TrackTranscodeHandoffManager
+module.exports = AgreementTranscodeHandoffManager

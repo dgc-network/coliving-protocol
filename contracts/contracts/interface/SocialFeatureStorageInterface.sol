@@ -3,17 +3,17 @@ pragma solidity ^0.5.0;
 
 /// @title The interface for contracts to interact with the Coliving Social Feature Storage contract
 interface SocialFeatureStorageInterface {
-  function addTrackRepost(
+  function addAgreementRepost(
     uint _userId,
-    uint _trackId) external; 
+    uint _agreementId) external; 
 
-  function deleteTrackRepost(
+  function deleteAgreementRepost(
     uint _userId,
-    uint _trackId) external;
+    uint _agreementId) external;
 
-  function userRepostedTrack(
+  function userRepostedAgreement(
     uint _userId,
-    uint _trackId) external view returns (bool reposted);
+    uint _agreementId) external view returns (bool reposted);
 
   function addPlaylistRepost(
     uint _userId,

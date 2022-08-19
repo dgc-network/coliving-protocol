@@ -19,14 +19,14 @@ depends_on = None
 def upgrade():
     op.create_table(
         "remixes",
-        # A child track "remixes" parent track (and can remixes many)
-        sa.Column("parent_track_id", sa.Integer(), nullable=False, index=False),
-        sa.Column("child_track_id", sa.Integer(), nullable=False, index=False),
+        # A child agreement "remixes" parent agreement (and can remixes many)
+        sa.Column("parent_agreement_id", sa.Integer(), nullable=False, index=False),
+        sa.Column("child_agreement_id", sa.Integer(), nullable=False, index=False),
         # TODO: Consider a way to make this possible. It's not right now because
-        # there is no unique constraint on tracks.track_id
-        # sa.ForeignKeyConstraint(['parent_track_id'], ['tracks.track_id'], ),
-        # sa.ForeignKeyConstraint(['child_track_id'], ['tracks.track_id'], ),
-        sa.PrimaryKeyConstraint("parent_track_id", "child_track_id"),
+        # there is no unique constraint on agreements.agreement_id
+        # sa.ForeignKeyConstraint(['parent_agreement_id'], ['agreements.agreement_id'], ),
+        # sa.ForeignKeyConstraint(['child_agreement_id'], ['agreements.agreement_id'], ),
+        sa.PrimaryKeyConstraint("parent_agreement_id", "child_agreement_id"),
     )
 
 

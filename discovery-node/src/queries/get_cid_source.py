@@ -10,7 +10,7 @@ redis = redis_connection.get_redis()
 
 def get_cid_source(cid):
     """
-    Returns the CID source (e.g. CID is a metadata hash, a cover photo, a track segment, etc.)
+    Returns the CID source (e.g. CID is a metadata hash, a cover photo, a agreement segment, etc.)
 
     Args: the observed CID
     """
@@ -76,24 +76,24 @@ def get_cid_source(cid):
                         UNION ALL
                         (
                             SELECT
-                                "track_id" as "id",
-                                'tracks' as "table_name",
-                                'track_metadata' as "type",
+                                "agreement_id" as "id",
+                                'agreements' as "table_name",
+                                'agreement_metadata' as "type",
                                 "is_current"
                             FROM
-                                "tracks"
+                                "agreements"
                             WHERE
                                 (table cid_const) = "metadata_multihash"
                         )
                         UNION ALL
                         (
                             SELECT
-                                "track_id" as "id",
-                                'tracks' as "table_name",
+                                "agreement_id" as "id",
+                                'agreements' as "table_name",
                                 'cover_art_size' as "type",
                                 "is_current"
                             FROM
-                                "tracks"
+                                "agreements"
                             WHERE
                                 (table cid_const) = "cover_art_sizes"
                         )
@@ -112,8 +112,8 @@ def get_cid_source(cid):
                         """
                         WITH cid_const AS (VALUES (:cid))
                             SELECT
-                                "track_id" as "id",
-                                'tracks' as "table_name",
+                                "agreement_id" as "id",
+                                'agreements' as "table_name",
                                 'segment' as "type",
                                 "is_current"
                             FROM
@@ -121,16 +121,16 @@ def get_cid_source(cid):
                                     SELECT
                                         jb -> 'duration' as "d",
                                         jb -> 'multihash' :: varchar as "cid",
-                                        "track_id",
+                                        "agreement_id",
                                         "is_current"
                                     FROM
                                         (
                                             SELECT
-                                                jsonb_array_elements("track_segments") as "jb",
-                                                "track_id",
+                                                jsonb_array_elements("agreement_segments") as "jb",
+                                                "agreement_id",
                                                 "is_current"
                                             FROM
-                                                "tracks"
+                                                "agreements"
                                         ) as a
                                 ) as a2
                             WHERE

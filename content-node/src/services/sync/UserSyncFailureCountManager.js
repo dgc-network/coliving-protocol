@@ -1,5 +1,5 @@
 /**
- * Tracks user SyncRequest failure counts (on secondary)
+ * Agreements user SyncRequest failure counts (on secondary)
  * Records in-memory, state reset with each node restart (this is ok)
  */
 const UserSyncFailureCountManager = {

@@ -31,7 +31,7 @@ def get_playlist_repost_intersection_users(repost_playlist_id, follower_user_id)
                 session.query(Repost.user_id)
                 .filter(
                     Repost.repost_item_id == repost_playlist_id,
-                    Repost.repost_type != RepostType.track,
+                    Repost.repost_type != RepostType.agreement,
                     Repost.is_current == True,
                     Repost.is_delete == False,
                 )

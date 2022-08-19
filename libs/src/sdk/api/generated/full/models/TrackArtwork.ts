@@ -16,25 +16,25 @@
 /**
  * 
  * @export
- * @interface TrackArtwork
+ * @interface AgreementArtwork
  */
-export interface TrackArtwork {
+export interface AgreementArtwork {
     /**
      * 
      * @type {string}
-     * @memberof TrackArtwork
+     * @memberof AgreementArtwork
      */
     _150x150?: string;
     /**
      * 
      * @type {string}
-     * @memberof TrackArtwork
+     * @memberof AgreementArtwork
      */
     _480x480?: string;
     /**
      * 
      * @type {string}
-     * @memberof TrackArtwork
+     * @memberof AgreementArtwork
      */
     _1000x1000?: string;
 }

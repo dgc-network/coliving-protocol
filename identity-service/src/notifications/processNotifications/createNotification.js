@@ -6,10 +6,10 @@ const {
 
 const getNotifType = (entityType) => {
   switch (entityType) {
-    case 'track':
+    case 'agreement':
       return {
-        createType: notificationTypes.Create.track,
-        actionEntityType: actionEntityTypes.Track
+        createType: notificationTypes.Create.agreement,
+        actionEntityType: actionEntityTypes.Agreement
       }
     case 'album':
       return {
@@ -28,7 +28,7 @@ const getNotifType = (entityType) => {
 
 /**
  * Batch process create notifications, by bulk insertion in the DB for each
- * set of subscribers and dedpupe tracks in collections.
+ * set of subscribers and dedpupe agreements in collections.
  * @param {Array<Object>} notifications
  * @param {*} tx The DB transcation to attach to DB requests
  */
@@ -54,19 +54,19 @@ async function processCreateNotifications (notifications, tx) {
     // No operation if no users subscribe to this creator
     if (subscribers.length === 0) continue
 
-    // The notification entity id is the uploader id for tracks
-    // Each track will added to the notification actions table
+    // The notification entity id is the uploader id for agreements
+    // Each agreement will added to the notification actions table
     // For playlist/albums, the notification entity id is the collection id itself
     let notificationEntityId =
-      actionEntityType === actionEntityTypes.Track
+      actionEntityType === actionEntityTypes.Agreement
         ? notification.initiator
         : notification.metadata.entity_id
 
-    // Action table entity is trackId for CreateTrack notifications
-    // Allowing multiple track creates to be associated w/ a single notification for your subscription
+    // Action table entity is agreementId for CreateAgreement notifications
+    // Allowing multiple agreement creates to be associated w/ a single notification for your subscription
     // For collections, the entity is the owner id, producing a distinct notification for each
     let createdActionEntityId =
-      actionEntityType === actionEntityTypes.Track
+      actionEntityType === actionEntityTypes.Agreement
         ? notification.metadata.entity_id
         : notification.metadata.entity_owner_id
 
@@ -86,7 +86,7 @@ async function processCreateNotifications (notifications, tx) {
     const subscriberIdsWithoutNotification = subscriberIds.filter(s => !unreadSubscribersUserIds.has(s))
     if (subscriberIdsWithoutNotification.length > 0) {
       // Bulk create notifications for users that do not have a un-viewed notification
-      const createTrackNotifTx = await models.Notification.bulkCreate(subscriberIdsWithoutNotification.map(id => ({
+      const createAgreementNotifTx = await models.Notification.bulkCreate(subscriberIdsWithoutNotification.map(id => ({
         isViewed: false,
         isRead: false,
         isHidden: false,
@@ -96,11 +96,11 @@ async function processCreateNotifications (notifications, tx) {
         blocknumber,
         timestamp
       }), { transaction: tx }))
-      notificationIds.push(...createTrackNotifTx.map(notif => notif.id))
+      notificationIds.push(...createAgreementNotifTx.map(notif => notif.id))
     }
 
     await Promise.all(notificationIds.map(async (notificationId) => {
-      // Action entity id can be one of album/playlist/track
+      // Action entity id can be one of album/playlist/agreement
       let notifActionCreateTx = await models.NotificationAction.findOrCreate({
         where: {
           notificationId,
@@ -128,15 +128,15 @@ async function processCreateNotifications (notifications, tx) {
     // Dedupe album /playlist notification
     if (createType === notificationTypes.Create.album ||
         createType === notificationTypes.Create.playlist) {
-      let trackIdObjectList = notification.metadata.collection_content.track_ids
-      if (trackIdObjectList.length > 0) {
+      let agreementIdObjectList = notification.metadata.collection_content.agreement_ids
+      if (agreementIdObjectList.length > 0) {
         // Clear duplicate notifications from identity database
-        for (var entry of trackIdObjectList) {
-          let trackId = entry.track
+        for (var entry of agreementIdObjectList) {
+          let agreementId = entry.agreement
           await models.NotificationAction.destroy({
             where: {
-              actionEntityType: actionEntityTypes.Track,
-              actionEntityId: trackId
+              actionEntityType: actionEntityTypes.Agreement,
+              actionEntityId: agreementId
             },
             transaction: tx
           })

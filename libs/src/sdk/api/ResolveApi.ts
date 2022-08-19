@@ -2,7 +2,7 @@ import {
   HTTPHeaders,
   Playlist,
   RequiredError,
-  Track,
+  Agreement,
   User
 } from './generated/default'
 import {
@@ -14,12 +14,12 @@ export class ResolveApi extends GeneratedResolveApi {
   /**
    * Resolves a provided Coliving app URL to the API resource it represents
    */
-  async resolve<T extends Track | Playlist | User>(
+  async resolve<T extends Agreement | Playlist | User>(
     requestParameters: ResolveRequest
   ): Promise<T> {
     if (requestParameters.url === null || requestParameters.url === undefined) {
       throw new RequiredError(
-        'trackId',
+        'agreementId',
         'Required parameter requestParameters.url was null or undefined when calling resolve.'
       )
     }

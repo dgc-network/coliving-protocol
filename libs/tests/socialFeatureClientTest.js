@@ -8,32 +8,32 @@ before(async function () {
   await colivingInstance.init()
 })
 
-it('Should add + delete track repost', async function () {
+it('Should add + delete agreement repost', async function () {
   // add creator
   const handle = 'sid' + Math.floor(Math.random() * 10000000)
   const creatorId = (await colivingInstance.contracts.UserFactoryClient.addUser(handle)).userId
   assert.ok(creatorId && Number.isInteger(creatorId), 'invalid creatorId')
 
-  // add track
-  const cid = helpers.constants.trackMetadataCID
-  const trackMultihashDecoded = Utils.decodeMultihash(cid)
-  const { trackId } = await colivingInstance.contracts.TrackFactoryClient.addTrack(
+  // add agreement
+  const cid = helpers.constants.agreementMetadataCID
+  const agreementMultihashDecoded = Utils.decodeMultihash(cid)
+  const { agreementId } = await colivingInstance.contracts.AgreementFactoryClient.addAgreement(
     creatorId,
-    trackMultihashDecoded.digest,
-    trackMultihashDecoded.hashFn,
-    trackMultihashDecoded.size
+    agreementMultihashDecoded.digest,
+    agreementMultihashDecoded.hashFn,
+    agreementMultihashDecoded.size
   )
-  assert.ok(trackId && Number.isInteger(trackId), 'invalid trackId')
-  const track = await colivingInstance.contracts.TrackFactoryClient.getTrack(trackId)
-  assert.strictEqual(track.multihashDigest, trackMultihashDecoded.digest, 'Unexpected track multihash digest')
+  assert.ok(agreementId && Number.isInteger(agreementId), 'invalid agreementId')
+  const agreement = await colivingInstance.contracts.AgreementFactoryClient.getAgreement(agreementId)
+  assert.strictEqual(agreement.multihashDigest, agreementMultihashDecoded.digest, 'Unexpected agreement multihash digest')
 
-  // add track repost
-  const addTrackRepostTx = await colivingInstance.contracts.SocialFeatureFactoryClient.addTrackRepost(creatorId, trackId)
-  assert.ok('TrackRepostAdded' in addTrackRepostTx.events, 'Did not find TrackRepostAdded event in transaction')
+  // add agreement repost
+  const addAgreementRepostTx = await colivingInstance.contracts.SocialFeatureFactoryClient.addAgreementRepost(creatorId, agreementId)
+  assert.ok('AgreementRepostAdded' in addAgreementRepostTx.events, 'Did not find AgreementRepostAdded event in transaction')
 
-  // delete track repost
-  const deleteTrackRepostTx = await colivingInstance.contracts.SocialFeatureFactoryClient.deleteTrackRepost(creatorId, trackId)
-  assert.ok('TrackRepostDeleted' in deleteTrackRepostTx.events, 'Did not find TrackRepostDeleted event in transaction')
+  // delete agreement repost
+  const deleteAgreementRepostTx = await colivingInstance.contracts.SocialFeatureFactoryClient.deleteAgreementRepost(creatorId, agreementId)
+  assert.ok('AgreementRepostDeleted' in deleteAgreementRepostTx.events, 'Did not find AgreementRepostDeleted event in transaction')
 })
 
 it('Should add + delete playlist repost', async function () {

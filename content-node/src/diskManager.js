@@ -10,9 +10,9 @@ const CID = require('cids')
 const CID_DIRECTORY_REGEX =
   /\/(?<outer>Qm[a-zA-Z0-9]{44})\/?(?<inner>Qm[a-zA-Z0-9]{44})?/
 
-// variable to cache if we've run `ensureDirPathExists` in getTmpTrackUploadArtifactsPath so we don't run
-// it every time a track is uploaded
-let TMP_TRACK_ARTIFACTS_CREATED = false
+// variable to cache if we've run `ensureDirPathExists` in getTmpAgreementUploadArtifactsPath so we don't run
+// it every time a agreement is uploaded
+let TMP_AGREEMENT_ARTIFACTS_CREATED = false
 
 class DiskManager {
   /**
@@ -23,19 +23,19 @@ class DiskManager {
   }
 
   /**
-   * Returns the folder that stores track artifacts uploaded by creators. The reason this is all stored together
+   * Returns the folder that stores agreement artifacts uploaded by creators. The reason this is all stored together
    * is we should be able to delete the contents of this folder without scanning through other folders with the
    * naming scheme.
    */
-  static getTmpTrackUploadArtifactsPath() {
+  static getTmpAgreementUploadArtifactsPath() {
     const dirPath = path.join(
       config.get('storagePath'),
       'files',
-      'tmp_track_artifacts'
+      'tmp_agreement_artifacts'
     )
-    if (!TMP_TRACK_ARTIFACTS_CREATED) {
+    if (!TMP_AGREEMENT_ARTIFACTS_CREATED) {
       this.ensureDirPathExists(dirPath)
-      TMP_TRACK_ARTIFACTS_CREATED = true
+      TMP_AGREEMENT_ARTIFACTS_CREATED = true
     }
     return dirPath
   }

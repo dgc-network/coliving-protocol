@@ -1,85 +1,85 @@
 const fs = require('fs')
 const assert = require('assert')
 
-const Track = {}
+const Agreement = {}
 
-Track.uploadTrack = async (libs, trackMetadata, trackPath) => {
-  const trackFile = fs.createReadStream(trackPath)
+Agreement.uploadAgreement = async (libs, agreementMetadata, agreementPath) => {
+  const agreementFile = fs.createReadStream(agreementPath)
 
-  const trackId = await libs.uploadTrack({
-    trackFile,
-    trackMetadata
+  const agreementId = await libs.uploadAgreement({
+    agreementFile,
+    agreementMetadata
   })
 
   // Wait for discovery node to index user
   await libs.waitForLatestBlock()
 
-  // Check that uploaded track is what we expect
-  const uploadedTrackMetadata = await libs.getTrack(trackId)
+  // Check that uploaded agreement is what we expect
+  const uploadedAgreementMetadata = await libs.getAgreement(agreementId)
 
   const errors = []
-  for (const [key, value] of Object.entries(trackMetadata)) {
+  for (const [key, value] of Object.entries(agreementMetadata)) {
     try {
-      assert.deepStrictEqual(uploadedTrackMetadata[key], value)
+      assert.deepStrictEqual(uploadedAgreementMetadata[key], value)
     } catch (e) {
-      errors.push({ key, expected: value, actual: uploadedTrackMetadata[key] })
+      errors.push({ key, expected: value, actual: uploadedAgreementMetadata[key] })
     }
   }
 
   if (errors.length > 0) {
     console.log(
-      '[uploadTrack] There are discreptancies from what is uploaded and what is returned.'
+      '[uploadAgreement] There are discreptancies from what is uploaded and what is returned.'
     )
     console.log(errors)
   }
-  console.log(`Uploaded trackId=${trackId} successfully, `)
+  console.log(`Uploaded agreementId=${agreementId} successfully, `)
 
-  return trackId
+  return agreementId
 }
 
-Track.repostTrack = async (libs, trackId) => {
-  return libs.repostTrack(trackId)
+Agreement.repostAgreement = async (libs, agreementId) => {
+  return libs.repostAgreement(agreementId)
 }
 
-Track.getRepostersForTrack = async (libs, trackId) => {
-  return libs.getRepostersForTrack(trackId)
+Agreement.getRepostersForAgreement = async (libs, agreementId) => {
+  return libs.getRepostersForAgreement(agreementId)
 }
 
-Track.getTrackMetadata = async (libs, trackId) => {
-  return libs.getTrack(trackId)
+Agreement.getAgreementMetadata = async (libs, agreementId) => {
+  return libs.getAgreement(agreementId)
 }
 
-Track.addTrackToChain = async (libs, userId, { digest, hashFn, size }) => {
-  const trackTxReceipt = await libs.addTrackToChain(userId, {
+Agreement.addAgreementToChain = async (libs, userId, { digest, hashFn, size }) => {
+  const agreementTxReceipt = await libs.addAgreementToChain(userId, {
     digest,
     hashFn,
     size
   })
-  return trackTxReceipt
+  return agreementTxReceipt
 }
 
-Track.updateTrackOnChainAndCnode = async (libs, metadata) => {
-  const { blockHash, blockNumber, trackId } = await libs.updateTrackOnChainAndCnode(metadata)
-  return { blockHash, blockNumber, trackId }
+Agreement.updateAgreementOnChainAndCnode = async (libs, metadata) => {
+  const { blockHash, blockNumber, agreementId } = await libs.updateAgreementOnChainAndCnode(metadata)
+  return { blockHash, blockNumber, agreementId }
 }
 
-Track.uploadTrackCoverArt = async (libs, imageFilePath) => {
-  return libs.uploadTrackCoverArt(imageFilePath)
+Agreement.uploadAgreementCoverArt = async (libs, imageFilePath) => {
+  return libs.uploadAgreementCoverArt(imageFilePath)
 }
 
-Track.updateTrackOnChain = async (
+Agreement.updateAgreementOnChain = async (
   libs,
-  trackId,
+  agreementId,
   userId,
   { digest, hashFn, size }
 ) => {
-  const trackTxReceipt = await libs.updateTrackOnChain(trackId, userId, {
+  const agreementTxReceipt = await libs.updateAgreementOnChain(agreementId, userId, {
     digest,
     hashFn,
     size
   })
 
-  return trackTxReceipt
+  return agreementTxReceipt
 }
 
-module.exports = Track
+module.exports = Agreement

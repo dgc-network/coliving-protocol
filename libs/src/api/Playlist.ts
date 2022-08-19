@@ -11,9 +11,9 @@ export class Playlists extends Base {
     this.getSavedPlaylists = this.getSavedPlaylists.bind(this)
     this.getSavedAlbums = this.getSavedAlbums.bind(this)
     this.createPlaylist = this.createPlaylist.bind(this)
-    this.addPlaylistTrack = this.addPlaylistTrack.bind(this)
-    this.orderPlaylistTracks = this.orderPlaylistTracks.bind(this)
-    this.validateTracksInPlaylist = this.validateTracksInPlaylist.bind(this)
+    this.addPlaylistAgreement = this.addPlaylistAgreement.bind(this)
+    this.orderPlaylistAgreements = this.orderPlaylistAgreements.bind(this)
+    this.validateAgreementsInPlaylist = this.validateAgreementsInPlaylist.bind(this)
     this.uploadPlaylistCoverPhoto = this.uploadPlaylistCoverPhoto.bind(this)
     this.updatePlaylistCoverPhoto = this.updatePlaylistCoverPhoto.bind(this)
     this.updatePlaylistName = this.updatePlaylistName.bind(this)
@@ -21,7 +21,7 @@ export class Playlists extends Base {
     this.updatePlaylistPrivacy = this.updatePlaylistPrivacy.bind(this)
     this.addPlaylistRepost = this.addPlaylistRepost.bind(this)
     this.deletePlaylistRepost = this.deletePlaylistRepost.bind(this)
-    this.deletePlaylistTrack = this.deletePlaylistTrack.bind(this)
+    this.deletePlaylistAgreement = this.deletePlaylistAgreement.bind(this)
     this.addPlaylistSave = this.addPlaylistSave.bind(this)
     this.deletePlaylistSave = this.deletePlaylistSave.bind(this)
     this.deletePlaylist = this.deletePlaylist.bind(this)
@@ -30,7 +30,7 @@ export class Playlists extends Base {
   /* ------- GETTERS ------- */
 
   /**
-   * get full playlist objects, including tracks, for passed in array of playlistId
+   * get full playlist objects, including agreements, for passed in array of playlistId
    * @param limit max # of items to return
    * @param offset offset into list to return from (for pagination)
    * @param idsArray list of playlist ids
@@ -64,7 +64,7 @@ export class Playlists extends Base {
 
   /**
    * Return saved playlists for current user
-   * NOTE in returned JSON, SaveType string one of track, playlist, album
+   * NOTE in returned JSON, SaveType string one of agreement, playlist, album
    * @param limit - max # of items to return
    * @param offset - offset into list to return from (for pagination)
    */
@@ -79,7 +79,7 @@ export class Playlists extends Base {
 
   /**
    * Return saved albums for current user
-   * NOTE in returned JSON, SaveType string one of track, playlist, album
+   * NOTE in returned JSON, SaveType string one of agreement, playlist, album
    * @param limit - max # of items to return
    * @param offset - offset into list to return from (for pagination)
    */
@@ -98,11 +98,11 @@ export class Playlists extends Base {
     playlistName: string,
     isPrivate: boolean,
     isAlbum: boolean,
-    trackIds: number[]
+    agreementIds: number[]
   ) {
-    const maxInitialTracks = 50
-    const createInitialIdsArray = trackIds.slice(0, maxInitialTracks)
-    const postInitialIdsArray = trackIds.slice(maxInitialTracks)
+    const maxInitialAgreements = 50
+    const createInitialIdsArray = agreementIds.slice(0, maxInitialAgreements)
+    const postInitialIdsArray = agreementIds.slice(maxInitialAgreements)
     let playlistId: number
     let receipt: Partial<TransactionReceipt> = {}
     try {
@@ -117,22 +117,22 @@ export class Playlists extends Base {
       playlistId = response.playlistId
       receipt = response.txReceipt
 
-      // Add remaining tracks
+      // Add remaining agreements
       await Promise.all(
-        postInitialIdsArray.map(async (trackId) => {
-          return await this.contracts.PlaylistFactoryClient.addPlaylistTrack(
+        postInitialIdsArray.map(async (agreementId) => {
+          return await this.contracts.PlaylistFactoryClient.addPlaylistAgreement(
             playlistId,
-            trackId
+            agreementId
           )
         })
       )
 
-      // Order tracks
+      // Order agreements
       if (postInitialIdsArray.length > 0) {
         receipt =
-          await this.contracts.PlaylistFactoryClient.orderPlaylistTracks(
+          await this.contracts.PlaylistFactoryClient.orderPlaylistAgreements(
             playlistId,
-            trackIds
+            agreementIds
           )
       }
     } catch (e) {
@@ -151,9 +151,9 @@ export class Playlists extends Base {
   }
 
   /**
-   * Adds a track to a given playlist
+   * Adds a agreement to a given playlist
    */
-  async addPlaylistTrack(playlistId: number, trackId: number) {
+  async addPlaylistAgreement(playlistId: number, agreementId: number) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
 
     const userId = this.userStateManager.getCurrentUserId()
@@ -167,34 +167,34 @@ export class Playlists extends Base {
     // error if playlist does not exist or hasn't been indexed by discovery node
     if (!Array.isArray(playlist) || !playlist.length) {
       throw new Error(
-        'Cannot add track - Playlist does not exist or has not yet been indexed by discovery node'
+        'Cannot add agreement - Playlist does not exist or has not yet been indexed by discovery node'
       )
     }
     // error if playlist already at max length
     if (
-      playlist[0]!.playlist_contents.track_ids.length >= MAX_PLAYLIST_LENGTH
+      playlist[0]!.playlist_contents.agreement_ids.length >= MAX_PLAYLIST_LENGTH
     ) {
       throw new Error(
-        `Cannot add track - playlist is already at max length of ${MAX_PLAYLIST_LENGTH}`
+        `Cannot add agreement - playlist is already at max length of ${MAX_PLAYLIST_LENGTH}`
       )
     }
-    return await this.contracts.PlaylistFactoryClient.addPlaylistTrack(
+    return await this.contracts.PlaylistFactoryClient.addPlaylistAgreement(
       playlistId,
-      trackId
+      agreementId
     )
   }
 
   /**
-   * Reorders the tracks in a playlist
+   * Reorders the agreements in a playlist
    */
-  async orderPlaylistTracks(
+  async orderPlaylistAgreements(
     playlistId: number,
-    trackIds: number[],
+    agreementIds: number[],
     retriesOverride?: number
   ) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    if (!Array.isArray(trackIds)) {
-      throw new Error('Cannot order playlist - trackIds must be array')
+    if (!Array.isArray(agreementIds)) {
+      throw new Error('Cannot order playlist - agreementIds must be array')
     }
 
     const userId = this.userStateManager.getCurrentUserId()
@@ -212,43 +212,43 @@ export class Playlists extends Base {
       )
     }
 
-    const playlistTrackIds = playlist[0]!.playlist_contents.track_ids.map(
-      (a) => a.track
+    const playlistAgreementIds = playlist[0]!.playlist_contents.agreement_ids.map(
+      (a) => a.agreement
     )
-    // error if trackIds arg array length does not match playlist length
-    if (trackIds.length !== playlistTrackIds.length) {
+    // error if agreementIds arg array length does not match playlist length
+    if (agreementIds.length !== playlistAgreementIds.length) {
       throw new Error(
-        'Cannot order playlist - trackIds length must match playlist length'
+        'Cannot order playlist - agreementIds length must match playlist length'
       )
     }
 
-    // ensure existing playlist tracks and trackIds have same content, regardless of order
-    const trackIdsSorted = [...trackIds].sort()
-    const playlistTrackIdsSorted = playlistTrackIds.sort()
-    for (let i = 0; i < trackIdsSorted.length; i++) {
-      if (trackIdsSorted[i] !== playlistTrackIdsSorted[i]) {
+    // ensure existing playlist agreements and agreementIds have same content, regardless of order
+    const agreementIdsSorted = [...agreementIds].sort()
+    const playlistAgreementIdsSorted = playlistAgreementIds.sort()
+    for (let i = 0; i < agreementIdsSorted.length; i++) {
+      if (agreementIdsSorted[i] !== playlistAgreementIdsSorted[i]) {
         throw new Error(
-          'Cannot order playlist - trackIds must have same content as playlist tracks'
+          'Cannot order playlist - agreementIds must have same content as playlist agreements'
         )
       }
     }
 
-    return await this.contracts.PlaylistFactoryClient.orderPlaylistTracks(
+    return await this.contracts.PlaylistFactoryClient.orderPlaylistAgreements(
       playlistId,
-      trackIds,
+      agreementIds,
       retriesOverride
     )
   }
 
   /**
    * Checks if a playlist has entered a corrupted state
-   * Check that each of the tracks within a playlist retrieved from discprov are in the onchain playlist
-   * Note: the onchain playlists stores the tracks as a mapping of track ID to track count and the
-   * track order is an event that is indexed by discprov. The track order event does not validate that the
-   * updated order of tracks has the correct track count, so a track order event w/ duplicate tracks can
+   * Check that each of the agreements within a playlist retrieved from discprov are in the onchain playlist
+   * Note: the onchain playlists stores the agreements as a mapping of agreement ID to agreement count and the
+   * agreement order is an event that is indexed by discprov. The agreement order event does not validate that the
+   * updated order of agreements has the correct agreement count, so a agreement order event w/ duplicate agreements can
    * lead the playlist entering a corrupted state.
    */
-  async validateTracksInPlaylist(playlistId: number) {
+  async validateAgreementsInPlaylist(playlistId: number) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER, Services.CREATOR_NODE)
 
     const userId = this.userStateManager.getCurrentUserId()
@@ -267,24 +267,24 @@ export class Playlists extends Base {
     }
 
     const playlist = playlistsReponse[0]!
-    const playlistTrackIds = playlist.playlist_contents.track_ids.map(
-      (a) => a.track
+    const playlistAgreementIds = playlist.playlist_contents.agreement_ids.map(
+      (a) => a.agreement
     )
 
-    // Check if each track is in the playlist
-    const invalidTrackIds = []
-    for (const trackId of playlistTrackIds) {
-      const trackInPlaylist =
-        await this.contracts.PlaylistFactoryClient.isTrackInPlaylist(
+    // Check if each agreement is in the playlist
+    const invalidAgreementIds = []
+    for (const agreementId of playlistAgreementIds) {
+      const agreementInPlaylist =
+        await this.contracts.PlaylistFactoryClient.isAgreementInPlaylist(
           playlistId,
-          trackId
+          agreementId
         )
-      if (!trackInPlaylist) invalidTrackIds.push(trackId)
+      if (!agreementInPlaylist) invalidAgreementIds.push(agreementId)
     }
 
     return {
-      isValid: invalidTrackIds.length === 0,
-      invalidTrackIds
+      isValid: invalidAgreementIds.length === 0,
+      invalidAgreementIds
     }
   }
 
@@ -379,22 +379,22 @@ export class Playlists extends Base {
   }
 
   /**
-   * Marks a track to be deleted from a playlist. The playlist entry matching
+   * Marks a agreement to be deleted from a playlist. The playlist entry matching
    * the provided timestamp is deleted in the case of duplicates.
    * @param playlistId
-   * @param deletedTrackId
+   * @param deletedAgreementId
    * @param deletedPlaylistTimestamp parseable timestamp (to be copied from playlist metadata)
    * @param {number?} retriesOverride [Optional, defaults to web3Manager.sendTransaction retries default]
    */
-  async deletePlaylistTrack(
+  async deletePlaylistAgreement(
     playlistId: number,
-    deletedTrackId: number,
+    deletedAgreementId: number,
     deletedPlaylistTimestamp: number,
     retriesOverride?: number
   ) {
-    return await this.contracts.PlaylistFactoryClient.deletePlaylistTrack(
+    return await this.contracts.PlaylistFactoryClient.deletePlaylistAgreement(
       playlistId,
-      deletedTrackId,
+      deletedAgreementId,
       deletedPlaylistTimestamp,
       retriesOverride
     )

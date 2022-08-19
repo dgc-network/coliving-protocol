@@ -15,7 +15,7 @@ class BaseTrendingStrategy(ABC):
         self.use_mat_view = use_mat_view
 
     @abstractmethod
-    def get_track_score(self, time_range: str, track):
+    def get_agreement_score(self, time_range: str, agreement):
         pass
 
     @abstractmethod

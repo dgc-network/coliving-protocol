@@ -20,11 +20,11 @@ import {
     RemixParentToJSON,
 } from './RemixParent';
 import {
-    TrackArtwork,
-    TrackArtworkFromJSON,
-    TrackArtworkFromJSONTyped,
-    TrackArtworkToJSON,
-} from './TrackArtwork';
+    AgreementArtwork,
+    AgreementArtworkFromJSON,
+    AgreementArtworkFromJSONTyped,
+    AgreementArtworkToJSON,
+} from './AgreementArtwork';
 import {
     User,
     UserFromJSON,
@@ -35,103 +35,103 @@ import {
 /**
  * 
  * @export
- * @interface Track
+ * @interface Agreement
  */
-export interface Track {
+export interface Agreement {
     /**
      * 
-     * @type {TrackArtwork}
-     * @memberof Track
+     * @type {AgreementArtwork}
+     * @memberof Agreement
      */
-    artwork?: TrackArtwork;
+    artwork?: AgreementArtwork;
     /**
      * 
      * @type {string}
-     * @memberof Track
+     * @memberof Agreement
      */
     description?: string;
     /**
      * 
      * @type {string}
-     * @memberof Track
+     * @memberof Agreement
      */
     genre?: string;
     /**
      * 
      * @type {string}
-     * @memberof Track
+     * @memberof Agreement
      */
     id: string;
     /**
      * 
      * @type {string}
-     * @memberof Track
+     * @memberof Agreement
      */
     mood?: string;
     /**
      * 
      * @type {string}
-     * @memberof Track
+     * @memberof Agreement
      */
     release_date?: string;
     /**
      * 
      * @type {RemixParent}
-     * @memberof Track
+     * @memberof Agreement
      */
     remix_of?: RemixParent;
     /**
      * 
      * @type {number}
-     * @memberof Track
+     * @memberof Agreement
      */
     repost_count: number;
     /**
      * 
      * @type {number}
-     * @memberof Track
+     * @memberof Agreement
      */
     favorite_count: number;
     /**
      * 
      * @type {string}
-     * @memberof Track
+     * @memberof Agreement
      */
     tags?: string;
     /**
      * 
      * @type {string}
-     * @memberof Track
+     * @memberof Agreement
      */
     title: string;
     /**
      * 
      * @type {User}
-     * @memberof Track
+     * @memberof Agreement
      */
     user: User;
     /**
      * 
      * @type {number}
-     * @memberof Track
+     * @memberof Agreement
      */
     duration: number;
     /**
      * 
      * @type {boolean}
-     * @memberof Track
+     * @memberof Agreement
      */
     downloadable?: boolean;
     /**
      * 
      * @type {number}
-     * @memberof Track
+     * @memberof Agreement
      */
     play_count: number;
     /**
      * 
      * @type {string}
-     * @memberof Track
+     * @memberof Agreement
      */
     permalink?: string;
 }

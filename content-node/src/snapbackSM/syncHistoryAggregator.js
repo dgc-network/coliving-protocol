@@ -107,12 +107,12 @@ class SyncHistoryAggregator {
       await redisClient.expire(dailyWalletSyncKey[state], dailyWalletSyncKeyTTL)
 
       logger.info(
-        `SyncHistoryAggregator - Successfully tracked ${state} sync for wallet ${wallet} at ${timeOfEvent}`
+        `SyncHistoryAggregator - Successfully agreemented ${state} sync for wallet ${wallet} at ${timeOfEvent}`
       )
     } catch (e) {
       // Only log error to not block any main thread
       logger.error(
-        `SyncHistoryAggregator - Failed to track ${state} sync for wallet ${wallet} at ${timeOfEvent}: ${e.toString()}`
+        `SyncHistoryAggregator - Failed to agreement ${state} sync for wallet ${wallet} at ${timeOfEvent}: ${e.toString()}`
       )
     }
   }

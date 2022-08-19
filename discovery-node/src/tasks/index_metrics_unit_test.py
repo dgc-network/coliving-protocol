@@ -16,9 +16,9 @@ def test_process_route_keys(redis_mock, db_mock):
 
     routes = {
         "/v1/users/search?query=ray": "3",
-        "/v1/tracks/trending?genre=rap&timeRange=week": "2",
+        "/v1/agreements/trending?genre=rap&timeRange=week": "2",
         "/v1/playlists/hash": "1",
-        "/tracks": "1",
+        "/agreements": "1",
     }
 
     key = "API_METRICS:routes:192.168.0.1:2020/08/06:19"
@@ -51,11 +51,11 @@ def test_process_route_keys(redis_mock, db_mock):
         )
         assert len(user_search) == 1
 
-        trending_tracks = (
+        trending_agreements = (
             session.query(RouteMetric)
             .filter(
                 RouteMetric.version == "1",
-                RouteMetric.route_path == "tracks/trending",
+                RouteMetric.route_path == "agreements/trending",
                 RouteMetric.query_string == "genre=rap&timeRange=week",
                 RouteMetric.ip == "192.168.0.1",
                 RouteMetric.count == 2,
@@ -63,7 +63,7 @@ def test_process_route_keys(redis_mock, db_mock):
             )
             .all()
         )
-        assert len(trending_tracks) == 1
+        assert len(trending_agreements) == 1
 
         playlist_route = (
             session.query(RouteMetric)
@@ -79,11 +79,11 @@ def test_process_route_keys(redis_mock, db_mock):
 
         assert len(playlist_route) == 1
 
-        no_version_tracks = (
+        no_version_agreements = (
             session.query(RouteMetric)
             .filter(
                 RouteMetric.version == "0",
-                RouteMetric.route_path == "tracks",
+                RouteMetric.route_path == "agreements",
                 RouteMetric.ip == "192.168.0.1",
                 RouteMetric.count == 1,
                 RouteMetric.timestamp == date,
@@ -91,7 +91,7 @@ def test_process_route_keys(redis_mock, db_mock):
             .all()
         )
 
-        assert len(no_version_tracks) == 1
+        assert len(no_version_agreements) == 1
 
     keys = redis_mock.keys(key)
     assert not keys

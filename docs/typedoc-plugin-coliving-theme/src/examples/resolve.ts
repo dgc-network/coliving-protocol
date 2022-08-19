@@ -1,5 +1,5 @@
 export const resolve = `
-const track = await colivingSdk.resolve<Track>({
+const agreement = await colivingSdk.resolve<Agreement>({
   url: "https://coliving.lol/camouflybeats/hypermantra-86216",
 });
 `;

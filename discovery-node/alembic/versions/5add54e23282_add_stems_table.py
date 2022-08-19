@@ -19,9 +19,9 @@ depends_on = None
 def upgrade():
     op.create_table(
         "stems",
-        sa.Column("parent_track_id", sa.Integer(), nullable=False),
-        sa.Column("child_track_id", sa.Integer(), nullable=False),
-        sa.PrimaryKeyConstraint("parent_track_id", "child_track_id"),
+        sa.Column("parent_agreement_id", sa.Integer(), nullable=False),
+        sa.Column("child_agreement_id", sa.Integer(), nullable=False),
+        sa.PrimaryKeyConstraint("parent_agreement_id", "child_agreement_id"),
     )
 
 

@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull: false
       },
-      // only non-null for track/copy320 files (as opposed to image/metadata files)
-      trackBlockchainId: {
+      // only non-null for agreement/copy320 files (as opposed to image/metadata files)
+      agreementBlockchainId: {
         type: DataTypes.INTEGER,
         allowNull: true
       },
@@ -23,8 +23,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: false
       },
-      // only non-null for track files (as opposed to image/metadata files)
-      // contains original track file name (meaning all track segment Files will contain same track sourceFile)
+      // only non-null for agreement files (as opposed to image/metadata files)
+      // contains original agreement file name (meaning all agreement segment Files will contain same agreement sourceFile)
       sourceFile: {
         type: DataTypes.TEXT,
         allowNull: true
@@ -49,8 +49,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(16),
         allowNull: true,
         validate: {
-          // track and non types broken down below and attached to Track model
-          isIn: [['track', 'metadata', 'image', 'dir', 'copy320']]
+          // agreement and non types broken down below and attached to Agreement model
+          isIn: [['agreement', 'metadata', 'image', 'dir', 'copy320']]
         }
       },
       clock: {
@@ -75,7 +75,7 @@ module.exports = (sequelize, DataTypes) => {
           fields: ['dirMultihash']
         },
         {
-          fields: ['trackBlockchainId']
+          fields: ['agreementBlockchainId']
         },
         {
           unique: true,
@@ -89,7 +89,7 @@ module.exports = (sequelize, DataTypes) => {
   )
 
   /**
-   * @dev - there is intentionally no reference from File.trackBlockchainId to Track.blockchainId. This is to
+   * @dev - there is intentionally no reference from File.agreementBlockchainId to Agreement.blockchainId. This is to
    *    remove the two-way association between these models
    */
   File.associate = function (models) {
@@ -103,15 +103,15 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   File.Types = {
-    track: 'track',
+    agreement: 'agreement',
     copy320: 'copy320',
     dir: 'dir',
     image: 'image',
     metadata: 'metadata'
   }
 
-  File.TrackTypes = [File.Types.track, File.Types.copy320]
-  File.NonTrackTypes = [File.Types.dir, File.Types.image, File.Types.metadata]
+  File.AgreementTypes = [File.Types.agreement, File.Types.copy320]
+  File.NonAgreementTypes = [File.Types.dir, File.Types.image, File.Types.metadata]
 
   return File
 }

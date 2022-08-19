@@ -16,12 +16,12 @@
 
 import * as runtime from '../runtime';
 import {
-    FullTrackResponse,
-    FullTrackResponseFromJSON,
-    FullTrackResponseToJSON,
-    FullTracksResponse,
-    FullTracksResponseFromJSON,
-    FullTracksResponseToJSON,
+    FullAgreementResponse,
+    FullAgreementResponseFromJSON,
+    FullAgreementResponseToJSON,
+    FullAgreementsResponse,
+    FullAgreementsResponseFromJSON,
+    FullAgreementsResponseToJSON,
     RemixesResponseFull,
     RemixesResponseFullFromJSON,
     RemixesResponseFullToJSON,
@@ -31,48 +31,48 @@ import {
     StemsResponse,
     StemsResponseFromJSON,
     StemsResponseToJSON,
-    TrackFavoritesResponseFull,
-    TrackFavoritesResponseFullFromJSON,
-    TrackFavoritesResponseFullToJSON,
-    TrackRepostsResponseFull,
-    TrackRepostsResponseFullFromJSON,
-    TrackRepostsResponseFullToJSON,
+    AgreementFavoritesResponseFull,
+    AgreementFavoritesResponseFullFromJSON,
+    AgreementFavoritesResponseFullToJSON,
+    AgreementRepostsResponseFull,
+    AgreementRepostsResponseFullFromJSON,
+    AgreementRepostsResponseFullToJSON,
     TrendingIdsResponse,
     TrendingIdsResponseFromJSON,
     TrendingIdsResponseToJSON,
 } from '../models';
 
-export interface GetBulkTracksRequest {
+export interface GetBulkAgreementsRequest {
     /**
      * The user ID of the user making the request
      */
     userId?: string;
     /**
-     * The permalink of the track(s)
+     * The permalink of the agreement(s)
      */
     permalink?: Array<string>;
     /**
-     * The ID of the track(s)
+     * The ID of the agreement(s)
      */
     id?: Array<string>;
 }
 
-export interface GetMostLovedTracksRequest {
+export interface GetMostLovedAgreementsRequest {
     /**
      * The user ID of the user making the request
      */
     userId?: string;
     /**
-     * Number of tracks to fetch
+     * Number of agreements to fetch
      */
     limit?: number;
     /**
-     * Boolean to include user info with tracks
+     * Boolean to include user info with agreements
      */
     withUsers?: boolean;
 }
 
-export interface GetRecommendedTracksRequest {
+export interface GetRecommendedAgreementsRequest {
     /**
      * The number of items to fetch
      */
@@ -84,9 +84,9 @@ export interface GetRecommendedTracksRequest {
     /**
      * Calculate trending over a specified time range
      */
-    time?: GetRecommendedTracksTimeEnum;
+    time?: GetRecommendedAgreementsTimeEnum;
     /**
-     * List of track ids to exclude
+     * List of agreement ids to exclude
      */
     exclusionList?: Array<number>;
     /**
@@ -95,7 +95,7 @@ export interface GetRecommendedTracksRequest {
     userId?: string;
 }
 
-export interface GetRecommendedTracksWithVersionRequest {
+export interface GetRecommendedAgreementsWithVersionRequest {
     /**
      * The strategy version of trending to use
      */
@@ -111,9 +111,9 @@ export interface GetRecommendedTracksWithVersionRequest {
     /**
      * Calculate trending over a specified time range
      */
-    time?: GetRecommendedTracksWithVersionTimeEnum;
+    time?: GetRecommendedAgreementsWithVersionTimeEnum;
     /**
-     * List of track ids to exclude
+     * List of agreement ids to exclude
      */
     exclusionList?: Array<number>;
     /**
@@ -122,7 +122,7 @@ export interface GetRecommendedTracksWithVersionRequest {
     userId?: string;
 }
 
-export interface GetRemixableTracksRequest {
+export interface GetRemixableAgreementsRequest {
     /**
      * The number of items to fetch
      */
@@ -132,58 +132,39 @@ export interface GetRemixableTracksRequest {
      */
     userId?: string;
     /**
-     * Boolean to include user info with tracks
+     * Boolean to include user info with agreements
      */
     withUsers?: boolean;
 }
 
-export interface GetTrackRequest {
+export interface GetAgreementRequest {
     /**
-     * A Track ID
+     * A Agreement ID
      */
-    trackId: string;
+    agreementId: string;
     /**
      * The user ID of the user making the request
      */
     userId?: string;
     /**
-     * The User handle of the track owner
+     * The User handle of the agreement owner
      */
     handle?: string;
     /**
-     * The URLized title of the track
+     * The URLized title of the agreement
      */
     urlTitle?: string;
     /**
-     * Whether or not to show unlisted tracks
+     * Whether or not to show unlisted agreements
      */
     showUnlisted?: boolean;
 }
 
-export interface GetTrackRemixParentsRequest {
+export interface GetAgreementRemixParentsRequest {
     /**
-     * A Track ID
+     * A Agreement ID
      */
-    trackId: string;
-    /**
-     * The number of items to skip. Useful for pagination (page number * limit)
-     */
-    offset?: number;
-    /**
-     * The number of items to fetch
-     */
-    limit?: number;
-    /**
-     * The user ID of the user making the request
-     */
-    userId?: string;
-}
-
-export interface GetTrackRemixesRequest {
-    /**
-     * A Track ID
-     */
-    trackId: string;
+    agreementId: string;
     /**
      * The number of items to skip. Useful for pagination (page number * limit)
      */
@@ -198,21 +179,11 @@ export interface GetTrackRemixesRequest {
     userId?: string;
 }
 
-export interface GetTrackStemsRequest {
+export interface GetAgreementRemixesRequest {
     /**
-     * A Track ID
+     * A Agreement ID
      */
-    trackId: string;
-}
-
-export interface GetTrendingTrackIDsRequest {
-    /**
-     * Filter trending to a specified genre
-     */
-    genre?: string;
-}
-
-export interface GetTrendingTracksRequest {
+    agreementId: string;
     /**
      * The number of items to skip. Useful for pagination (page number * limit)
      */
@@ -225,32 +196,23 @@ export interface GetTrendingTracksRequest {
      * The user ID of the user making the request
      */
     userId?: string;
-    /**
-     * Filter trending to a specified genre
-     */
-    genre?: string;
-    /**
-     * Calculate trending over a specified time range
-     */
-    time?: GetTrendingTracksTimeEnum;
 }
 
-export interface GetTrendingTracksIDsWithVersionRequest {
+export interface GetAgreementStemsRequest {
     /**
-     * The strategy version of trending to use
+     * A Agreement ID
      */
-    version: string;
+    agreementId: string;
+}
+
+export interface GetTrendingAgreementIDsRequest {
     /**
      * Filter trending to a specified genre
      */
     genre?: string;
 }
 
-export interface GetTrendingTracksWithVersionRequest {
-    /**
-     * The strategy version of trending to use
-     */
-    version: string;
+export interface GetTrendingAgreementsRequest {
     /**
      * The number of items to skip. Useful for pagination (page number * limit)
      */
@@ -270,10 +232,48 @@ export interface GetTrendingTracksWithVersionRequest {
     /**
      * Calculate trending over a specified time range
      */
-    time?: GetTrendingTracksWithVersionTimeEnum;
+    time?: GetTrendingAgreementsTimeEnum;
 }
 
-export interface GetUnderTheRadarTracksRequest {
+export interface GetTrendingAgreementsIDsWithVersionRequest {
+    /**
+     * The strategy version of trending to use
+     */
+    version: string;
+    /**
+     * Filter trending to a specified genre
+     */
+    genre?: string;
+}
+
+export interface GetTrendingAgreementsWithVersionRequest {
+    /**
+     * The strategy version of trending to use
+     */
+    version: string;
+    /**
+     * The number of items to skip. Useful for pagination (page number * limit)
+     */
+    offset?: number;
+    /**
+     * The number of items to fetch
+     */
+    limit?: number;
+    /**
+     * The user ID of the user making the request
+     */
+    userId?: string;
+    /**
+     * Filter trending to a specified genre
+     */
+    genre?: string;
+    /**
+     * Calculate trending over a specified time range
+     */
+    time?: GetTrendingAgreementsWithVersionTimeEnum;
+}
+
+export interface GetUnderTheRadarAgreementsRequest {
     /**
      * The number of items to skip. Useful for pagination (page number * limit)
      */
@@ -289,18 +289,18 @@ export interface GetUnderTheRadarTracksRequest {
     /**
      * Filters for activity that is original vs reposts
      */
-    filter?: GetUnderTheRadarTracksFilterEnum;
+    filter?: GetUnderTheRadarAgreementsFilterEnum;
     /**
-     * Whether to only include tracks
+     * Whether to only include agreements
      */
-    tracksOnly?: boolean;
+    agreementsOnly?: boolean;
     /**
-     * Boolean to include user info with tracks
+     * Boolean to include user info with agreements
      */
     withUsers?: boolean;
 }
 
-export interface GetUndergroundTrendingTracksRequest {
+export interface GetUndergroundTrendingAgreementsRequest {
     /**
      * The number of items to skip. Useful for pagination (page number * limit)
      */
@@ -315,7 +315,7 @@ export interface GetUndergroundTrendingTracksRequest {
     userId?: string;
 }
 
-export interface GetUndergroundTrendingTracksWithVersionRequest {
+export interface GetUndergroundTrendingAgreementsWithVersionRequest {
     /**
      * The strategy version of trending to user
      */
@@ -336,9 +336,9 @@ export interface GetUndergroundTrendingTracksWithVersionRequest {
 
 export interface GetUsersFromFavoritesRequest {
     /**
-     * A Track ID
+     * A Agreement ID
      */
-    trackId: string;
+    agreementId: string;
     /**
      * The number of items to skip. Useful for pagination (page number * limit)
      */
@@ -355,9 +355,9 @@ export interface GetUsersFromFavoritesRequest {
 
 export interface GetUsersFromRepostsRequest {
     /**
-     * A Track ID
+     * A Agreement ID
      */
-    trackId: string;
+    agreementId: string;
     /**
      * The number of items to skip. Useful for pagination (page number * limit)
      */
@@ -375,28 +375,28 @@ export interface GetUsersFromRepostsRequest {
 /**
  * 
  */
-export class TracksApi extends runtime.BaseAPI {
+export class AgreementsApi extends runtime.BaseAPI {
 
     /**
-     * Gets the tracks found on the \"Best New Releases\" smart playlist
+     * Gets the agreements found on the \"Best New Releases\" smart playlist
      */
-    async bestNewReleases(): Promise<NonNullable<FullTracksResponse["data"]>> {
+    async bestNewReleases(): Promise<NonNullable<FullAgreementsResponse["data"]>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/tracks/best_new_releases`,
+            path: `/agreements/best_new_releases`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }) as Promise<NonNullable<FullTracksResponse["data"]>>;
+        }) as Promise<NonNullable<FullAgreementsResponse["data"]>>;
     }
 
     /**
-     * Gets a list of tracks using their IDs or permalinks
+     * Gets a list of agreements using their IDs or permalinks
      */
-    async getBulkTracks(requestParameters: GetBulkTracksRequest = {}): Promise<NonNullable<FullTrackResponse["data"]>> {
+    async getBulkAgreements(requestParameters: GetBulkAgreementsRequest = {}): Promise<NonNullable<FullAgreementResponse["data"]>> {
         const queryParameters: any = {};
 
         if (requestParameters.userId !== undefined) {
@@ -414,17 +414,17 @@ export class TracksApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/tracks`,
+            path: `/agreements`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }) as Promise<NonNullable<FullTrackResponse["data"]>>;
+        }) as Promise<NonNullable<FullAgreementResponse["data"]>>;
     }
 
     /**
-     * Gets the tracks found on the \"Most Loved\" smart playlist
+     * Gets the agreements found on the \"Most Loved\" smart playlist
      */
-    async getMostLovedTracks(requestParameters: GetMostLovedTracksRequest = {}): Promise<NonNullable<FullTracksResponse["data"]>> {
+    async getMostLovedAgreements(requestParameters: GetMostLovedAgreementsRequest = {}): Promise<NonNullable<FullAgreementsResponse["data"]>> {
         const queryParameters: any = {};
 
         if (requestParameters.userId !== undefined) {
@@ -442,17 +442,17 @@ export class TracksApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/tracks/most_loved`,
+            path: `/agreements/most_loved`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }) as Promise<NonNullable<FullTracksResponse["data"]>>;
+        }) as Promise<NonNullable<FullAgreementsResponse["data"]>>;
     }
 
     /**
-     * Get recommended tracks
+     * Get recommended agreements
      */
-    async getRecommendedTracks(requestParameters: GetRecommendedTracksRequest = {}): Promise<NonNullable<FullTracksResponse["data"]>> {
+    async getRecommendedAgreements(requestParameters: GetRecommendedAgreementsRequest = {}): Promise<NonNullable<FullAgreementsResponse["data"]>> {
         const queryParameters: any = {};
 
         if (requestParameters.limit !== undefined) {
@@ -478,19 +478,19 @@ export class TracksApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/tracks/recommended`,
+            path: `/agreements/recommended`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }) as Promise<NonNullable<FullTracksResponse["data"]>>;
+        }) as Promise<NonNullable<FullAgreementsResponse["data"]>>;
     }
 
     /**
-     * Get recommended tracks using the given trending strategy version
+     * Get recommended agreements using the given trending strategy version
      */
-    async getRecommendedTracksWithVersion(requestParameters: GetRecommendedTracksWithVersionRequest): Promise<NonNullable<FullTracksResponse["data"]>> {
+    async getRecommendedAgreementsWithVersion(requestParameters: GetRecommendedAgreementsWithVersionRequest): Promise<NonNullable<FullAgreementsResponse["data"]>> {
         if (requestParameters.version === null || requestParameters.version === undefined) {
-            throw new runtime.RequiredError('version','Required parameter requestParameters.version was null or undefined when calling getRecommendedTracksWithVersion.');
+            throw new runtime.RequiredError('version','Required parameter requestParameters.version was null or undefined when calling getRecommendedAgreementsWithVersion.');
         }
 
         const queryParameters: any = {};
@@ -518,17 +518,17 @@ export class TracksApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/tracks/recommended/{version}`.replace(`{${"version"}}`, encodeURIComponent(String(requestParameters.version))),
+            path: `/agreements/recommended/{version}`.replace(`{${"version"}}`, encodeURIComponent(String(requestParameters.version))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }) as Promise<NonNullable<FullTracksResponse["data"]>>;
+        }) as Promise<NonNullable<FullAgreementsResponse["data"]>>;
     }
 
     /**
-     * Gets a list of tracks that have stems available for remixing
+     * Gets a list of agreements that have stems available for remixing
      */
-    async getRemixableTracks(requestParameters: GetRemixableTracksRequest = {}): Promise<NonNullable<FullTrackResponse["data"]>> {
+    async getRemixableAgreements(requestParameters: GetRemixableAgreementsRequest = {}): Promise<NonNullable<FullAgreementResponse["data"]>> {
         const queryParameters: any = {};
 
         if (requestParameters.limit !== undefined) {
@@ -546,19 +546,19 @@ export class TracksApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/tracks/remixables`,
+            path: `/agreements/remixables`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }) as Promise<NonNullable<FullTrackResponse["data"]>>;
+        }) as Promise<NonNullable<FullAgreementResponse["data"]>>;
     }
 
     /**
-     * Gets a track by ID. If `show_unlisted` is true, then `handle` and `url_title` are required.
+     * Gets a agreement by ID. If `show_unlisted` is true, then `handle` and `url_title` are required.
      */
-    async getTrack(requestParameters: GetTrackRequest): Promise<NonNullable<FullTrackResponse["data"]>> {
-        if (requestParameters.trackId === null || requestParameters.trackId === undefined) {
-            throw new runtime.RequiredError('trackId','Required parameter requestParameters.trackId was null or undefined when calling getTrack.');
+    async getAgreement(requestParameters: GetAgreementRequest): Promise<NonNullable<FullAgreementResponse["data"]>> {
+        if (requestParameters.agreementId === null || requestParameters.agreementId === undefined) {
+            throw new runtime.RequiredError('agreementId','Required parameter requestParameters.agreementId was null or undefined when calling getAgreement.');
         }
 
         const queryParameters: any = {};
@@ -582,19 +582,19 @@ export class TracksApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/tracks/{track_id}`.replace(`{${"track_id"}}`, encodeURIComponent(String(requestParameters.trackId))),
+            path: `/agreements/{agreement_id}`.replace(`{${"agreement_id"}}`, encodeURIComponent(String(requestParameters.agreementId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }) as Promise<NonNullable<FullTrackResponse["data"]>>;
+        }) as Promise<NonNullable<FullAgreementResponse["data"]>>;
     }
 
     /**
-     * Gets all the tracks that the given track remixes
+     * Gets all the agreements that the given agreement remixes
      */
-    async getTrackRemixParents(requestParameters: GetTrackRemixParentsRequest): Promise<NonNullable<RemixingResponse["data"]>> {
-        if (requestParameters.trackId === null || requestParameters.trackId === undefined) {
-            throw new runtime.RequiredError('trackId','Required parameter requestParameters.trackId was null or undefined when calling getTrackRemixParents.');
+    async getAgreementRemixParents(requestParameters: GetAgreementRemixParentsRequest): Promise<NonNullable<RemixingResponse["data"]>> {
+        if (requestParameters.agreementId === null || requestParameters.agreementId === undefined) {
+            throw new runtime.RequiredError('agreementId','Required parameter requestParameters.agreementId was null or undefined when calling getAgreementRemixParents.');
         }
 
         const queryParameters: any = {};
@@ -614,7 +614,7 @@ export class TracksApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/tracks/{track_id}/remixing`.replace(`{${"track_id"}}`, encodeURIComponent(String(requestParameters.trackId))),
+            path: `/agreements/{agreement_id}/remixing`.replace(`{${"agreement_id"}}`, encodeURIComponent(String(requestParameters.agreementId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -622,11 +622,11 @@ export class TracksApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get all tracks that remix the given track
+     * Get all agreements that remix the given agreement
      */
-    async getTrackRemixes(requestParameters: GetTrackRemixesRequest): Promise<NonNullable<RemixesResponseFull["data"]>> {
-        if (requestParameters.trackId === null || requestParameters.trackId === undefined) {
-            throw new runtime.RequiredError('trackId','Required parameter requestParameters.trackId was null or undefined when calling getTrackRemixes.');
+    async getAgreementRemixes(requestParameters: GetAgreementRemixesRequest): Promise<NonNullable<RemixesResponseFull["data"]>> {
+        if (requestParameters.agreementId === null || requestParameters.agreementId === undefined) {
+            throw new runtime.RequiredError('agreementId','Required parameter requestParameters.agreementId was null or undefined when calling getAgreementRemixes.');
         }
 
         const queryParameters: any = {};
@@ -646,7 +646,7 @@ export class TracksApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/tracks/{track_id}/remixes`.replace(`{${"track_id"}}`, encodeURIComponent(String(requestParameters.trackId))),
+            path: `/agreements/{agreement_id}/remixes`.replace(`{${"agreement_id"}}`, encodeURIComponent(String(requestParameters.agreementId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -654,11 +654,11 @@ export class TracksApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get the remixable stems of a track
+     * Get the remixable stems of a agreement
      */
-    async getTrackStems(requestParameters: GetTrackStemsRequest): Promise<NonNullable<StemsResponse["data"]>> {
-        if (requestParameters.trackId === null || requestParameters.trackId === undefined) {
-            throw new runtime.RequiredError('trackId','Required parameter requestParameters.trackId was null or undefined when calling getTrackStems.');
+    async getAgreementStems(requestParameters: GetAgreementStemsRequest): Promise<NonNullable<StemsResponse["data"]>> {
+        if (requestParameters.agreementId === null || requestParameters.agreementId === undefined) {
+            throw new runtime.RequiredError('agreementId','Required parameter requestParameters.agreementId was null or undefined when calling getAgreementStems.');
         }
 
         const queryParameters: any = {};
@@ -666,7 +666,7 @@ export class TracksApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/tracks/{track_id}/stems`.replace(`{${"track_id"}}`, encodeURIComponent(String(requestParameters.trackId))),
+            path: `/agreements/{agreement_id}/stems`.replace(`{${"agreement_id"}}`, encodeURIComponent(String(requestParameters.agreementId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -674,9 +674,9 @@ export class TracksApi extends runtime.BaseAPI {
     }
 
     /**
-     * Gets the track IDs of the top trending tracks on Coliving
+     * Gets the agreement IDs of the top trending agreements on Coliving
      */
-    async getTrendingTrackIDs(requestParameters: GetTrendingTrackIDsRequest = {}): Promise<NonNullable<TrendingIdsResponse["data"]>> {
+    async getTrendingAgreementIDs(requestParameters: GetTrendingAgreementIDsRequest = {}): Promise<NonNullable<TrendingIdsResponse["data"]>> {
         const queryParameters: any = {};
 
         if (requestParameters.genre !== undefined) {
@@ -686,7 +686,7 @@ export class TracksApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/tracks/trending/ids`,
+            path: `/agreements/trending/ids`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -694,9 +694,9 @@ export class TracksApi extends runtime.BaseAPI {
     }
 
     /**
-     * Gets the top 100 trending (most popular) tracks on Coliving
+     * Gets the top 100 trending (most popular) agreements on Coliving
      */
-    async getTrendingTracks(requestParameters: GetTrendingTracksRequest = {}): Promise<NonNullable<FullTracksResponse["data"]>> {
+    async getTrendingAgreements(requestParameters: GetTrendingAgreementsRequest = {}): Promise<NonNullable<FullAgreementsResponse["data"]>> {
         const queryParameters: any = {};
 
         if (requestParameters.offset !== undefined) {
@@ -722,19 +722,19 @@ export class TracksApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/tracks/trending`,
+            path: `/agreements/trending`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }) as Promise<NonNullable<FullTracksResponse["data"]>>;
+        }) as Promise<NonNullable<FullAgreementsResponse["data"]>>;
     }
 
     /**
-     * Gets the track IDs of the top trending tracks on Coliving based on the given trending strategy version
+     * Gets the agreement IDs of the top trending agreements on Coliving based on the given trending strategy version
      */
-    async getTrendingTracksIDsWithVersion(requestParameters: GetTrendingTracksIDsWithVersionRequest): Promise<NonNullable<TrendingIdsResponse["data"]>> {
+    async getTrendingAgreementsIDsWithVersion(requestParameters: GetTrendingAgreementsIDsWithVersionRequest): Promise<NonNullable<TrendingIdsResponse["data"]>> {
         if (requestParameters.version === null || requestParameters.version === undefined) {
-            throw new runtime.RequiredError('version','Required parameter requestParameters.version was null or undefined when calling getTrendingTracksIDsWithVersion.');
+            throw new runtime.RequiredError('version','Required parameter requestParameters.version was null or undefined when calling getTrendingAgreementsIDsWithVersion.');
         }
 
         const queryParameters: any = {};
@@ -746,7 +746,7 @@ export class TracksApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/tracks/trending/ids/{version}`.replace(`{${"version"}}`, encodeURIComponent(String(requestParameters.version))),
+            path: `/agreements/trending/ids/{version}`.replace(`{${"version"}}`, encodeURIComponent(String(requestParameters.version))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -754,11 +754,11 @@ export class TracksApi extends runtime.BaseAPI {
     }
 
     /**
-     * Gets the top 100 trending (most popular tracks on Coliving using a given trending strategy version
+     * Gets the top 100 trending (most popular agreements on Coliving using a given trending strategy version
      */
-    async getTrendingTracksWithVersion(requestParameters: GetTrendingTracksWithVersionRequest): Promise<NonNullable<FullTracksResponse["data"]>> {
+    async getTrendingAgreementsWithVersion(requestParameters: GetTrendingAgreementsWithVersionRequest): Promise<NonNullable<FullAgreementsResponse["data"]>> {
         if (requestParameters.version === null || requestParameters.version === undefined) {
-            throw new runtime.RequiredError('version','Required parameter requestParameters.version was null or undefined when calling getTrendingTracksWithVersion.');
+            throw new runtime.RequiredError('version','Required parameter requestParameters.version was null or undefined when calling getTrendingAgreementsWithVersion.');
         }
 
         const queryParameters: any = {};
@@ -786,17 +786,17 @@ export class TracksApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/tracks/trending/{version}`.replace(`{${"version"}}`, encodeURIComponent(String(requestParameters.version))),
+            path: `/agreements/trending/{version}`.replace(`{${"version"}}`, encodeURIComponent(String(requestParameters.version))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }) as Promise<NonNullable<FullTracksResponse["data"]>>;
+        }) as Promise<NonNullable<FullAgreementsResponse["data"]>>;
     }
 
     /**
-     * Gets the tracks found on the \"Under the Radar\" smart playlist
+     * Gets the agreements found on the \"Under the Radar\" smart playlist
      */
-    async getUnderTheRadarTracks(requestParameters: GetUnderTheRadarTracksRequest = {}): Promise<NonNullable<FullTracksResponse["data"]>> {
+    async getUnderTheRadarAgreements(requestParameters: GetUnderTheRadarAgreementsRequest = {}): Promise<NonNullable<FullAgreementsResponse["data"]>> {
         const queryParameters: any = {};
 
         if (requestParameters.offset !== undefined) {
@@ -815,8 +815,8 @@ export class TracksApi extends runtime.BaseAPI {
             queryParameters['filter'] = requestParameters.filter;
         }
 
-        if (requestParameters.tracksOnly !== undefined) {
-            queryParameters['tracks_only'] = requestParameters.tracksOnly;
+        if (requestParameters.agreementsOnly !== undefined) {
+            queryParameters['agreements_only'] = requestParameters.agreementsOnly;
         }
 
         if (requestParameters.withUsers !== undefined) {
@@ -826,17 +826,17 @@ export class TracksApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/tracks/under_the_radar`,
+            path: `/agreements/under_the_radar`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }) as Promise<NonNullable<FullTracksResponse["data"]>>;
+        }) as Promise<NonNullable<FullAgreementsResponse["data"]>>;
     }
 
     /**
-     * Gets the top 100 trending underground tracks on Coliving
+     * Gets the top 100 trending underground agreements on Coliving
      */
-    async getUndergroundTrendingTracks(requestParameters: GetUndergroundTrendingTracksRequest = {}): Promise<NonNullable<FullTracksResponse["data"]>> {
+    async getUndergroundTrendingAgreements(requestParameters: GetUndergroundTrendingAgreementsRequest = {}): Promise<NonNullable<FullAgreementsResponse["data"]>> {
         const queryParameters: any = {};
 
         if (requestParameters.offset !== undefined) {
@@ -854,19 +854,19 @@ export class TracksApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/tracks/trending/underground`,
+            path: `/agreements/trending/underground`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }) as Promise<NonNullable<FullTracksResponse["data"]>>;
+        }) as Promise<NonNullable<FullAgreementsResponse["data"]>>;
     }
 
     /**
-     * Gets the top 100 trending underground tracks on Coliving using a given trending strategy version
+     * Gets the top 100 trending underground agreements on Coliving using a given trending strategy version
      */
-    async getUndergroundTrendingTracksWithVersion(requestParameters: GetUndergroundTrendingTracksWithVersionRequest): Promise<NonNullable<FullTracksResponse["data"]>> {
+    async getUndergroundTrendingAgreementsWithVersion(requestParameters: GetUndergroundTrendingAgreementsWithVersionRequest): Promise<NonNullable<FullAgreementsResponse["data"]>> {
         if (requestParameters.version === null || requestParameters.version === undefined) {
-            throw new runtime.RequiredError('version','Required parameter requestParameters.version was null or undefined when calling getUndergroundTrendingTracksWithVersion.');
+            throw new runtime.RequiredError('version','Required parameter requestParameters.version was null or undefined when calling getUndergroundTrendingAgreementsWithVersion.');
         }
 
         const queryParameters: any = {};
@@ -886,19 +886,19 @@ export class TracksApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/tracks/trending/underground/{version}`.replace(`{${"version"}}`, encodeURIComponent(String(requestParameters.version))),
+            path: `/agreements/trending/underground/{version}`.replace(`{${"version"}}`, encodeURIComponent(String(requestParameters.version))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }) as Promise<NonNullable<FullTracksResponse["data"]>>;
+        }) as Promise<NonNullable<FullAgreementsResponse["data"]>>;
     }
 
     /**
-     * Get users that favorited a track
+     * Get users that favorited a agreement
      */
-    async getUsersFromFavorites(requestParameters: GetUsersFromFavoritesRequest): Promise<NonNullable<TrackFavoritesResponseFull["data"]>> {
-        if (requestParameters.trackId === null || requestParameters.trackId === undefined) {
-            throw new runtime.RequiredError('trackId','Required parameter requestParameters.trackId was null or undefined when calling getUsersFromFavorites.');
+    async getUsersFromFavorites(requestParameters: GetUsersFromFavoritesRequest): Promise<NonNullable<AgreementFavoritesResponseFull["data"]>> {
+        if (requestParameters.agreementId === null || requestParameters.agreementId === undefined) {
+            throw new runtime.RequiredError('agreementId','Required parameter requestParameters.agreementId was null or undefined when calling getUsersFromFavorites.');
         }
 
         const queryParameters: any = {};
@@ -918,19 +918,19 @@ export class TracksApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/tracks/{track_id}/favorites`.replace(`{${"track_id"}}`, encodeURIComponent(String(requestParameters.trackId))),
+            path: `/agreements/{agreement_id}/favorites`.replace(`{${"agreement_id"}}`, encodeURIComponent(String(requestParameters.agreementId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }) as Promise<NonNullable<TrackFavoritesResponseFull["data"]>>;
+        }) as Promise<NonNullable<AgreementFavoritesResponseFull["data"]>>;
     }
 
     /**
-     * Get the users that reposted a track
+     * Get the users that reposted a agreement
      */
-    async getUsersFromReposts(requestParameters: GetUsersFromRepostsRequest): Promise<NonNullable<TrackRepostsResponseFull["data"]>> {
-        if (requestParameters.trackId === null || requestParameters.trackId === undefined) {
-            throw new runtime.RequiredError('trackId','Required parameter requestParameters.trackId was null or undefined when calling getUsersFromReposts.');
+    async getUsersFromReposts(requestParameters: GetUsersFromRepostsRequest): Promise<NonNullable<AgreementRepostsResponseFull["data"]>> {
+        if (requestParameters.agreementId === null || requestParameters.agreementId === undefined) {
+            throw new runtime.RequiredError('agreementId','Required parameter requestParameters.agreementId was null or undefined when calling getUsersFromReposts.');
         }
 
         const queryParameters: any = {};
@@ -950,11 +950,11 @@ export class TracksApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/tracks/{track_id}/reposts`.replace(`{${"track_id"}}`, encodeURIComponent(String(requestParameters.trackId))),
+            path: `/agreements/{agreement_id}/reposts`.replace(`{${"agreement_id"}}`, encodeURIComponent(String(requestParameters.agreementId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }) as Promise<NonNullable<TrackRepostsResponseFull["data"]>>;
+        }) as Promise<NonNullable<AgreementRepostsResponseFull["data"]>>;
     }
 
 }
@@ -963,7 +963,7 @@ export class TracksApi extends runtime.BaseAPI {
     * @export
     * @enum {string}
     */
-export enum GetRecommendedTracksTimeEnum {
+export enum GetRecommendedAgreementsTimeEnum {
     Week = 'week',
     Month = 'month',
     Year = 'year',
@@ -973,7 +973,7 @@ export enum GetRecommendedTracksTimeEnum {
     * @export
     * @enum {string}
     */
-export enum GetRecommendedTracksWithVersionTimeEnum {
+export enum GetRecommendedAgreementsWithVersionTimeEnum {
     Week = 'week',
     Month = 'month',
     Year = 'year',
@@ -983,7 +983,7 @@ export enum GetRecommendedTracksWithVersionTimeEnum {
     * @export
     * @enum {string}
     */
-export enum GetTrendingTracksTimeEnum {
+export enum GetTrendingAgreementsTimeEnum {
     Week = 'week',
     Month = 'month',
     Year = 'year',
@@ -993,7 +993,7 @@ export enum GetTrendingTracksTimeEnum {
     * @export
     * @enum {string}
     */
-export enum GetTrendingTracksWithVersionTimeEnum {
+export enum GetTrendingAgreementsWithVersionTimeEnum {
     Week = 'week',
     Month = 'month',
     Year = 'year',
@@ -1003,7 +1003,7 @@ export enum GetTrendingTracksWithVersionTimeEnum {
     * @export
     * @enum {string}
     */
-export enum GetUnderTheRadarTracksFilterEnum {
+export enum GetUnderTheRadarAgreementsFilterEnum {
     All = 'all',
     Repost = 'repost',
     Original = 'original'

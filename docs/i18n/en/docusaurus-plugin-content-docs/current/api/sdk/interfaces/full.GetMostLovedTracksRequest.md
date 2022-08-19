@@ -1,13 +1,13 @@
 ---
-id: "full.GetMostLovedTracksRequest"
-title: "Interface: GetMostLovedTracksRequest"
-sidebar_label: "GetMostLovedTracksRequest"
+id: "full.GetMostLovedAgreementsRequest"
+title: "Interface: GetMostLovedAgreementsRequest"
+sidebar_label: "GetMostLovedAgreementsRequest"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).GetMostLovedTracksRequest
+[full](../namespaces/full.md).GetMostLovedAgreementsRequest
 
 ## Properties
 
@@ -15,7 +15,7 @@ pagination_next: null
 
  `Optional` **limit**: `number`
 
-Number of tracks to fetch
+Number of agreements to fetch
 
 ___
 
@@ -31,4 +31,4 @@ ___
 
  `Optional` **withUsers**: `boolean`
 
-Boolean to include user info with tracks
+Boolean to include user info with agreements

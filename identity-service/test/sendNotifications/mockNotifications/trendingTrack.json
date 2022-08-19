@@ -1,28 +1,28 @@
 [
   {
-    "trackId": 100,
+    "agreementId": 100,
     "userId": 1,
     "rank": 1,
-    "type": "TrendingTrack"
+    "type": "TrendingAgreement"
   }, {
-    "trackId": 101,
+    "agreementId": 101,
     "userId": 1,
     "rank": 2,
-    "type": "TrendingTrack"
+    "type": "TrendingAgreement"
   }, {
-    "trackId": 102,
+    "agreementId": 102,
     "userId": 2,
     "rank": 3,
-    "type": "TrendingTrack"
+    "type": "TrendingAgreement"
   }, {
-    "trackId": 103,
+    "agreementId": 103,
     "userId": 3,
     "rank": 4,
-    "type": "TrendingTrack"
+    "type": "TrendingAgreement"
   }, {
-    "trackId": 104,
+    "agreementId": 104,
     "userId": 4,
     "rank": 5,
-    "type": "TrendingTrack"
+    "type": "TrendingAgreement"
   }
 ]

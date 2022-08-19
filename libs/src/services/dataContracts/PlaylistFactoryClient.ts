@@ -13,21 +13,21 @@ export class PlaylistFactoryClient extends ContractClient {
     playlistName: string,
     isPrivate: boolean,
     isAlbum: boolean,
-    trackIds: number[]
+    agreementIds: number[]
   ) {
-    if (!Array.isArray(trackIds) || trackIds.length > MAX_PLAYLIST_LENGTH) {
+    if (!Array.isArray(agreementIds) || agreementIds.length > MAX_PLAYLIST_LENGTH) {
       throw new Error(
-        `Cannot create playlist - trackIds must be array with length <= ${MAX_PLAYLIST_LENGTH}`
+        `Cannot create playlist - agreementIds must be array with length <= ${MAX_PLAYLIST_LENGTH}`
       )
     }
 
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
-    const trackIdsHash = this.web3Manager
+    const agreementIdsHash = this.web3Manager
       .getWeb3()
       .utils.soliditySha3(
-        this.web3Manager.getWeb3().eth.abi.encodeParameter('uint[]', trackIds)
+        this.web3Manager.getWeb3().eth.abi.encodeParameter('uint[]', agreementIds)
       )
     const signatureData =
       signatureSchemas.generators.getCreatePlaylistRequestData(
@@ -37,7 +37,7 @@ export class PlaylistFactoryClient extends ContractClient {
         playlistName,
         isPrivate,
         isAlbum,
-        trackIdsHash,
+        agreementIdsHash,
         nonce
       )
     const sig = await this.web3Manager.signTypedData(signatureData)
@@ -48,7 +48,7 @@ export class PlaylistFactoryClient extends ContractClient {
       playlistName,
       isPrivate,
       isAlbum,
-      trackIds,
+      agreementIds,
       nonce,
       sig
     )
@@ -101,24 +101,24 @@ export class PlaylistFactoryClient extends ContractClient {
     }
   }
 
-  async addPlaylistTrack(playlistId: number, addedTrackId: number) {
+  async addPlaylistAgreement(playlistId: number, addedAgreementId: number) {
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
     const signatureData =
-      signatureSchemas.generators.getAddPlaylistTrackRequestData(
+      signatureSchemas.generators.getAddPlaylistAgreementRequestData(
         chainId,
         contractAddress,
         playlistId,
-        addedTrackId,
+        addedAgreementId,
         nonce
       )
     const sig = await this.web3Manager.signTypedData(signatureData)
 
     const method = await this.getMethod(
-      'addPlaylistTrack',
+      'addPlaylistAgreement',
       playlistId,
-      addedTrackId,
+      addedAgreementId,
       nonce,
       sig
     )
@@ -130,9 +130,9 @@ export class PlaylistFactoryClient extends ContractClient {
     )
   }
 
-  async deletePlaylistTrack(
+  async deletePlaylistAgreement(
     playlistId: number,
-    deletedTrackId: number,
+    deletedAgreementId: number,
     deletedPlaylistTimestamp: number,
     retries?: number
   ) {
@@ -140,20 +140,20 @@ export class PlaylistFactoryClient extends ContractClient {
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
     const signatureData =
-      signatureSchemas.generators.getDeletePlaylistTrackRequestData(
+      signatureSchemas.generators.getDeletePlaylistAgreementRequestData(
         chainId,
         contractAddress,
         playlistId,
-        deletedTrackId,
+        deletedAgreementId,
         deletedPlaylistTimestamp,
         nonce
       )
 
     const sig = await this.web3Manager.signTypedData(signatureData)
     const method = await this.getMethod(
-      'deletePlaylistTrack',
+      'deletePlaylistAgreement',
       playlistId,
-      deletedTrackId,
+      deletedAgreementId,
       deletedPlaylistTimestamp,
       nonce,
       sig
@@ -167,33 +167,33 @@ export class PlaylistFactoryClient extends ContractClient {
     )
   }
 
-  async orderPlaylistTracks(
+  async orderPlaylistAgreements(
     playlistId: number,
-    trackIds: number[],
+    agreementIds: number[],
     retries?: number
   ) {
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
-    const trackIdsHash = this.web3Manager
+    const agreementIdsHash = this.web3Manager
       .getWeb3()
       .utils.soliditySha3(
-        this.web3Manager.getWeb3().eth.abi.encodeParameter('uint[]', trackIds)
+        this.web3Manager.getWeb3().eth.abi.encodeParameter('uint[]', agreementIds)
       )
     const signatureData =
-      signatureSchemas.generators.getOrderPlaylistTracksRequestData(
+      signatureSchemas.generators.getOrderPlaylistAgreementsRequestData(
         chainId,
         contractAddress,
         playlistId,
-        trackIdsHash,
+        agreementIdsHash,
         nonce
       )
     const sig = await this.web3Manager.signTypedData(signatureData)
 
     const method = await this.getMethod(
-      'orderPlaylistTracks',
+      'orderPlaylistAgreements',
       playlistId,
-      trackIds,
+      agreementIds,
       nonce,
       sig
     )
@@ -358,11 +358,11 @@ export class PlaylistFactoryClient extends ContractClient {
     )
   }
 
-  async isTrackInPlaylist(playlistId: number, trackId: number) {
+  async isAgreementInPlaylist(playlistId: number, agreementId: number) {
     const method = await this.getMethod(
-      'isTrackInPlaylist',
+      'isAgreementInPlaylist',
       playlistId,
-      trackId
+      agreementId
     )
     const result = await method.call()
     return result

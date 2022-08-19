@@ -3,7 +3,7 @@ import { merge } from 'lodash'
 import { splitTags } from '../helpers/splitTags'
 import { indexNames } from '../indexNames'
 import { BlocknumberCheckpoint } from '../types/blocknumber_checkpoint'
-import { TrackDoc } from '../types/docs'
+import { AgreementDoc } from '../types/docs'
 import { BaseIndexer } from './BaseIndexer'
 import {
   sharedIndexSettings,
@@ -11,14 +11,14 @@ import {
   standardText,
 } from './sharedIndexSettings'
 
-export class TrackIndexer extends BaseIndexer<TrackDoc> {
+export class AgreementIndexer extends BaseIndexer<AgreementDoc> {
   constructor() {
-    super('tracks', 'track_id')
+    super('agreements', 'agreement_id')
     this.batchSize = 500
   }
 
   mapping: IndicesCreateRequest = {
-    index: indexNames.tracks,
+    index: indexNames.agreements,
     settings: merge(sharedIndexSettings, {
       analysis: {
         tokenizer: {
@@ -103,21 +103,21 @@ export class TrackIndexer extends BaseIndexer<TrackDoc> {
         stem_of: {
           properties: {
             category: { type: 'keyword' },
-            parent_track_id: { type: 'keyword' },
+            parent_agreement_id: { type: 'keyword' },
           },
         },
 
-        'remix_of.tracks.parent_track_id': { type: 'keyword' },
+        'remix_of.agreements.parent_agreement_id': { type: 'keyword' },
       },
     },
   }
 
   baseSelect(): string {
     return `
-    -- etl tracks
+    -- etl agreements
     select 
-      tracks.*,
-      (tracks.download->>'is_downloadable')::boolean as downloadable,
+      agreements.*,
+      (agreements.download->>'is_downloadable')::boolean as downloadable,
       coalesce(aggregate_plays.count, 0) as play_count,
   
       json_build_object(
@@ -132,9 +132,9 @@ export class TrackIndexer extends BaseIndexer<TrackDoc> {
 
       array(
         select slug 
-        from track_routes r
+        from agreement_routes r
         where
-          r.track_id = tracks.track_id
+          r.agreement_id = agreements.agreement_id
         order by is_current
       ) as routes,
   
@@ -144,8 +144,8 @@ export class TrackIndexer extends BaseIndexer<TrackDoc> {
         where
           is_current = true
           and is_delete = false
-          and repost_type = 'track' 
-          and repost_item_id = track_id
+          and repost_type = 'agreement' 
+          and repost_item_id = agreement_id
         order by created_at desc
       ) as reposted_by,
     
@@ -155,35 +155,35 @@ export class TrackIndexer extends BaseIndexer<TrackDoc> {
         where
           is_current = true
           and is_delete = false
-          and save_type = 'track' 
-          and save_item_id = track_id
+          and save_type = 'agreement' 
+          and save_item_id = agreement_id
         order by created_at desc
       ) as saved_by
     
-    from tracks
+    from agreements
       join users on owner_id = user_id 
       left join aggregate_user on users.user_id = aggregate_user.user_id
-      left join aggregate_plays on tracks.track_id = aggregate_plays.play_item_id
-    WHERE tracks.is_current = true 
+      left join aggregate_plays on agreements.agreement_id = aggregate_plays.play_item_id
+    WHERE agreements.is_current = true 
       AND users.is_current = true
     `
   }
 
   checkpointSql(checkpoint: BlocknumberCheckpoint): string {
     return `
-    and track_id in (
-      select track_id from tracks where is_current and blocknumber >= ${checkpoint.tracks}
+    and agreement_id in (
+      select agreement_id from agreements where is_current and blocknumber >= ${checkpoint.agreements}
       union
-      select save_item_id from saves where is_current and save_type = 'track' and blocknumber >= ${checkpoint.saves}
+      select save_item_id from saves where is_current and save_type = 'agreement' and blocknumber >= ${checkpoint.saves}
       union
-      select repost_item_id from reposts where is_current and repost_type = 'track' and blocknumber >= ${checkpoint.reposts}
+      select repost_item_id from reposts where is_current and repost_type = 'agreement' and blocknumber >= ${checkpoint.reposts}
       union
       select play_item_id FROM plays WHERE created_at > NOW() - INTERVAL '10 minutes'
     )
     `
   }
 
-  withRow(row: TrackDoc) {
+  withRow(row: AgreementDoc) {
     row.suggest = [row.title, row.user.handle, row.user.name]
       .filter((x) => x)
       .join(' ')
@@ -191,7 +191,7 @@ export class TrackIndexer extends BaseIndexer<TrackDoc> {
     row.repost_count = row.reposted_by.length
     row.favorite_count = row.saved_by.length
     row.duration = Math.ceil(
-      row.track_segments.reduce((acc, s) => acc + parseFloat(s.duration), 0)
+      row.agreement_segments.reduce((acc, s) => acc + parseFloat(s.duration), 0)
     )
     row.length = row.duration
 

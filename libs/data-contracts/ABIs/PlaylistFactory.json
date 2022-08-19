@@ -109,7 +109,7 @@
           "type": "bytes32"
         },
         {
-          "name": "_trackFactoryRegistryKey",
+          "name": "_agreementFactoryRegistryKey",
           "type": "bytes32"
         },
         {
@@ -146,7 +146,7 @@
         },
         {
           "indexed": false,
-          "name": "_trackIds",
+          "name": "_agreementIds",
           "type": "uint256[]"
         }
       ],
@@ -175,11 +175,11 @@
         },
         {
           "indexed": false,
-          "name": "_addedTrackId",
+          "name": "_addedAgreementId",
           "type": "uint256"
         }
       ],
-      "name": "PlaylistTrackAdded",
+      "name": "PlaylistAgreementAdded",
       "type": "event"
     },
     {
@@ -192,16 +192,16 @@
         },
         {
           "indexed": false,
-          "name": "_deletedTrackId",
+          "name": "_deletedAgreementId",
           "type": "uint256"
         },
         {
           "indexed": false,
-          "name": "_deletedTrackTimestamp",
+          "name": "_deletedAgreementTimestamp",
           "type": "uint256"
         }
       ],
-      "name": "PlaylistTrackDeleted",
+      "name": "PlaylistAgreementDeleted",
       "type": "event"
     },
     {
@@ -214,11 +214,11 @@
         },
         {
           "indexed": false,
-          "name": "_orderedTrackIds",
+          "name": "_orderedAgreementIds",
           "type": "uint256[]"
         }
       ],
-      "name": "PlaylistTracksOrdered",
+      "name": "PlaylistAgreementsOrdered",
       "type": "event"
     },
     {
@@ -343,7 +343,7 @@
           "type": "bool"
         },
         {
-          "name": "_trackIds",
+          "name": "_agreementIds",
           "type": "uint256[]"
         },
         {
@@ -401,7 +401,7 @@
           "type": "uint256"
         },
         {
-          "name": "_addedTrackId",
+          "name": "_addedAgreementId",
           "type": "uint256"
         },
         {
@@ -413,7 +413,7 @@
           "type": "bytes"
         }
       ],
-      "name": "addPlaylistTrack",
+      "name": "addPlaylistAgreement",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -427,11 +427,11 @@
           "type": "uint256"
         },
         {
-          "name": "_deletedTrackId",
+          "name": "_deletedAgreementId",
           "type": "uint256"
         },
         {
-          "name": "_deletedTrackTimestamp",
+          "name": "_deletedAgreementTimestamp",
           "type": "uint256"
         },
         {
@@ -443,7 +443,7 @@
           "type": "bytes"
         }
       ],
-      "name": "deletePlaylistTrack",
+      "name": "deletePlaylistAgreement",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -457,7 +457,7 @@
           "type": "uint256"
         },
         {
-          "name": "_trackIds",
+          "name": "_agreementIds",
           "type": "uint256[]"
         },
         {
@@ -469,7 +469,7 @@
           "type": "bytes"
         }
       ],
-      "name": "orderPlaylistTracks",
+      "name": "orderPlaylistAgreements",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -632,11 +632,11 @@
           "type": "uint256"
         },
         {
-          "name": "_trackId",
+          "name": "_agreementId",
           "type": "uint256"
         }
       ],
-      "name": "isTrackInPlaylist",
+      "name": "isAgreementInPlaylist",
       "outputs": [
         {
           "name": "",

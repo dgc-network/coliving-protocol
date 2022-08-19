@@ -3,38 +3,38 @@ pragma solidity ^0.5.0;
 import "./interface/RegistryInterface.sol";
 import "./registry/RegistryContract.sol";
 import "./interface/UserFactoryInterface.sol";
-import "./interface/TrackFactoryInterface.sol";
+import "./interface/AgreementFactoryInterface.sol";
 import "./interface/PlaylistFactoryInterface.sol";
 import "./interface/SocialFeatureStorageInterface.sol";
 import "./SigningLogic.sol";
 
 
 /** @title Logic contract for all Coliving social features including
-* addTrackRepost, deleteTrackRepost, addUserFollow, deleteUserFollow */
+* addAgreementRepost, deleteAgreementRepost, addUserFollow, deleteUserFollow */
 contract SocialFeatureFactory is RegistryContract, SigningLogic {
 
     RegistryInterface registry = RegistryInterface(0);
     bytes32 socialFeatureStorageRegistryKey;
     bytes32 userFactoryRegistryKey;
-    bytes32 trackFactoryRegistryKey;
+    bytes32 agreementFactoryRegistryKey;
     bytes32 playlistFactoryRegistryKey;
 
-    event TrackRepostAdded(uint _userId, uint _trackId);
-    event TrackRepostDeleted(uint _userId, uint _trackId);
+    event AgreementRepostAdded(uint _userId, uint _agreementId);
+    event AgreementRepostDeleted(uint _userId, uint _agreementId);
     event PlaylistRepostAdded(uint _userId, uint _playlistId);
     event PlaylistRepostDeleted(uint _userId, uint _playlistId);
     event UserFollowAdded(uint _followerUserId, uint _followeeUserId);
     event UserFollowDeleted(uint _followerUserId, uint _followeeUserId);
 
     /* EIP-712 */
-    bytes32 constant TRACK_REPOST_REQUEST_TYPEHASH = keccak256(
-        "AddTrackRepostRequest(uint userId,uint trackId,bytes32 nonce)"
+    bytes32 constant AGREEMENT_REPOST_REQUEST_TYPEHASH = keccak256(
+        "AddAgreementRepostRequest(uint userId,uint agreementId,bytes32 nonce)"
     );
     bytes32 constant PLAYLIST_REPOST_REQUEST_TYPEHASH = keccak256(
         "AddPlaylistRepostRequest(uint userId,uint playlistId,bytes32 nonce)"
     );
-    bytes32 constant DELETE_TRACK_REPOST_REQUEST_TYPEHASH = keccak256(
-        "DeleteTrackRepostRequest(uint userId,uint trackId,bytes32 nonce)"
+    bytes32 constant DELETE_AGREEMENT_REPOST_REQUEST_TYPEHASH = keccak256(
+        "DeleteAgreementRepostRequest(uint userId,uint agreementId,bytes32 nonce)"
     );   
     bytes32 constant USER_FOLLOW_REQUEST_TYPEHASH = keccak256(
         "UserFollowRequest(uint followerUserId,uint followeeUserId,bytes32 nonce)"
@@ -46,12 +46,12 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
         "DeletePlaylistRepostRequest(uint userId,uint playlistId,bytes32 nonce)"
     );
 
-    /** @notice Sets registry address, and registryKeys for userFactory and trackFactory */
+    /** @notice Sets registry address, and registryKeys for userFactory and agreementFactory */
     constructor(
         address _registryAddress,
         bytes32 _socialFeatureStorageRegistryKey,
         bytes32 _userFactoryRegistryKey,
-        bytes32 _trackFactoryRegistryKey,
+        bytes32 _agreementFactoryRegistryKey,
         bytes32 _playlistFactoryRegistryKey,
         uint _networkId
     ) SigningLogic("Social Feature Factory", "1", _networkId) public
@@ -60,30 +60,30 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
             _registryAddress != address(0x00) &&
             _socialFeatureStorageRegistryKey.length != 0 &&
             _userFactoryRegistryKey.length != 0 &&
-            _trackFactoryRegistryKey.length != 0 &&
+            _agreementFactoryRegistryKey.length != 0 &&
             _playlistFactoryRegistryKey.length != 0,
             "requires non-zero _registryAddress and non-empty registry key strings"
         );
         registry = RegistryInterface(_registryAddress);
         socialFeatureStorageRegistryKey = _socialFeatureStorageRegistryKey;
         userFactoryRegistryKey = _userFactoryRegistryKey;
-        trackFactoryRegistryKey = _trackFactoryRegistryKey;
+        agreementFactoryRegistryKey = _agreementFactoryRegistryKey;
         playlistFactoryRegistryKey = _playlistFactoryRegistryKey;
     }
 
     /**
-    * Request that a repost be created for the given trackId and userId on behalf of the
+    * Request that a repost be created for the given agreementId and userId on behalf of the
     * given user address
     */
-    function addTrackRepost(
+    function addAgreementRepost(
         uint _userId,
-        uint _trackId,
+        uint _agreementId,
         bytes32 _requestNonce,
         bytes calldata _subjectSig
     ) external
     {
-        bytes32 signatureDigest = generateTrackRepostRequestSchemaHash(
-            _userId, _trackId, _requestNonce
+        bytes32 signatureDigest = generateAgreementRepostRequestSchemaHash(
+            _userId, _agreementId, _requestNonce
         );
         address signer = recoverSigner(signatureDigest, _subjectSig);
         burnSignatureDigest(signatureDigest, signer);
@@ -91,21 +91,21 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
             registry.getContract(userFactoryRegistryKey)
         ).callerOwnsUser(signer, _userId);  // will revert if false
 
-        bool trackExists = TrackFactoryInterface(
-            registry.getContract(trackFactoryRegistryKey)
-        ).trackExists(_trackId);
-        require(trackExists == true, "must provide valid track ID");
+        bool agreementExists = AgreementFactoryInterface(
+            registry.getContract(agreementFactoryRegistryKey)
+        ).agreementExists(_agreementId);
+        require(agreementExists == true, "must provide valid agreement ID");
 
-        bool trackRepostExists = SocialFeatureStorageInterface(
+        bool agreementRepostExists = SocialFeatureStorageInterface(
             registry.getContract(socialFeatureStorageRegistryKey)
-        ).userRepostedTrack(_userId, _trackId);
-        require(trackRepostExists == false, "track repost already exists");
+        ).userRepostedAgreement(_userId, _agreementId);
+        require(agreementRepostExists == false, "agreement repost already exists");
 
         SocialFeatureStorageInterface(
             registry.getContract(socialFeatureStorageRegistryKey)
-        ).addTrackRepost(_userId, _trackId);
+        ).addAgreementRepost(_userId, _agreementId);
 
-        emit TrackRepostAdded(_userId, _trackId);
+        emit AgreementRepostAdded(_userId, _agreementId);
     }
 
     function addPlaylistRepost(
@@ -141,15 +141,15 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
         emit PlaylistRepostAdded(_userId, _playlistId);
     }
 
-    function deleteTrackRepost(
+    function deleteAgreementRepost(
         uint _userId,
-        uint _trackId,
+        uint _agreementId,
         bytes32 _requestNonce,
         bytes calldata _subjectSig
     ) external
     {
-        bytes32 signatureDigest = generateDeleteTrackRepostRequestSchemaHash(
-            _userId, _trackId, _requestNonce
+        bytes32 signatureDigest = generateDeleteAgreementRepostRequestSchemaHash(
+            _userId, _agreementId, _requestNonce
         );
         address signer = recoverSigner(signatureDigest, _subjectSig);
         burnSignatureDigest(signatureDigest, signer);
@@ -157,21 +157,21 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
             registry.getContract(userFactoryRegistryKey)
         ).callerOwnsUser(signer, _userId);  // will revert if false
 
-        bool trackExists = TrackFactoryInterface(
-            registry.getContract(trackFactoryRegistryKey)
-        ).trackExists(_trackId);
-        require(trackExists == true, "must provide valid track ID");
+        bool agreementExists = AgreementFactoryInterface(
+            registry.getContract(agreementFactoryRegistryKey)
+        ).agreementExists(_agreementId);
+        require(agreementExists == true, "must provide valid agreement ID");
 
-        bool trackRepostExists = SocialFeatureStorageInterface(
+        bool agreementRepostExists = SocialFeatureStorageInterface(
             registry.getContract(socialFeatureStorageRegistryKey)
-        ).userRepostedTrack(_userId, _trackId);
-        require(trackRepostExists == true, "track repost does not exist"); 
+        ).userRepostedAgreement(_userId, _agreementId);
+        require(agreementRepostExists == true, "agreement repost does not exist"); 
 
         SocialFeatureStorageInterface(
             registry.getContract(socialFeatureStorageRegistryKey)
-        ).deleteTrackRepost(_userId, _trackId);
+        ).deleteAgreementRepost(_userId, _agreementId);
 
-        emit TrackRepostDeleted(_userId, _trackId);
+        emit AgreementRepostDeleted(_userId, _agreementId);
     }
 
     function deletePlaylistRepost(
@@ -265,14 +265,14 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
         return true;
     }
 
-    function userRepostedTrack(
+    function userRepostedAgreement(
         uint _userId,
-        uint _trackId
+        uint _agreementId
     ) external view returns (bool)
     {
         return SocialFeatureStorageInterface(
             registry.getContract(socialFeatureStorageRegistryKey)
-        ).userRepostedTrack(_userId, _trackId);
+        ).userRepostedAgreement(_userId, _agreementId);
     }
 
     function userRepostedPlaylist(
@@ -285,18 +285,18 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
         ).userRepostedPlaylist(_userId, _playlistId);
     }
 
-    function generateTrackRepostRequestSchemaHash(
+    function generateAgreementRepostRequestSchemaHash(
         uint _userId,
-        uint _trackId,
+        uint _agreementId,
         bytes32 _nonce
     ) internal view returns (bytes32)
     {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    TRACK_REPOST_REQUEST_TYPEHASH,
+                    AGREEMENT_REPOST_REQUEST_TYPEHASH,
                     _userId,
-                    _trackId,
+                    _agreementId,
                     _nonce
                 )
             )
@@ -321,18 +321,18 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
         );
     }
 
-    function generateDeleteTrackRepostRequestSchemaHash(
+    function generateDeleteAgreementRepostRequestSchemaHash(
         uint _userId,
-        uint _trackId,
+        uint _agreementId,
         bytes32 _nonce
     ) internal view returns (bytes32)
     {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    DELETE_TRACK_REPOST_REQUEST_TYPEHASH,
+                    DELETE_AGREEMENT_REPOST_REQUEST_TYPEHASH,
                     _userId,
-                    _trackId,
+                    _agreementId,
                     _nonce
                 )
             )

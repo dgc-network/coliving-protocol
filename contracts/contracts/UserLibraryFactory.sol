@@ -3,31 +3,31 @@ pragma solidity ^0.5.0;
 import "./interface/RegistryInterface.sol";
 import "./registry/RegistryContract.sol";
 import "./interface/UserFactoryInterface.sol";
-import "./interface/TrackFactoryInterface.sol";
+import "./interface/AgreementFactoryInterface.sol";
 import "./interface/PlaylistFactoryInterface.sol";
 import "./SigningLogic.sol";
 
 
 /** @title Logic contract for Coliving user library features including
-* track saves and playlist/album saves */
+* agreement saves and playlist/album saves */
 contract UserLibraryFactory is RegistryContract, SigningLogic {
 
     RegistryInterface registry = RegistryInterface(0);
     bytes32 userFactoryRegistryKey;
-    bytes32 trackFactoryRegistryKey;
+    bytes32 agreementFactoryRegistryKey;
     bytes32 playlistFactoryRegistryKey;
 
-    event TrackSaveAdded(uint _userId, uint _trackId);
-    event TrackSaveDeleted(uint _userId, uint _trackId);
+    event AgreementSaveAdded(uint _userId, uint _agreementId);
+    event AgreementSaveDeleted(uint _userId, uint _agreementId);
     event PlaylistSaveAdded(uint _userId, uint _playlistId);
     event PlaylistSaveDeleted(uint _userId, uint _playlistId);
 
     /* EIP-712 saved signature generation / verification */
-    bytes32 constant TRACK_SAVE_REQUEST_TYPEHASH = keccak256(
-        "TrackSaveRequest(uint userId,uint trackId,bytes32 nonce)"
+    bytes32 constant AGREEMENT_SAVE_REQUEST_TYPEHASH = keccak256(
+        "AgreementSaveRequest(uint userId,uint agreementId,bytes32 nonce)"
     );
-    bytes32 constant DELETE_TRACK_SAVE_REQUEST_TYPEHASH = keccak256(
-        "DeleteTrackSaveRequest(uint userId,uint trackId,bytes32 nonce)"
+    bytes32 constant DELETE_AGREEMENT_SAVE_REQUEST_TYPEHASH = keccak256(
+        "DeleteAgreementSaveRequest(uint userId,uint agreementId,bytes32 nonce)"
     );
     bytes32 constant PLAYLIST_SAVE_REQUEST_TYPEHASH = keccak256(
         "PlaylistSaveRequest(uint userId,uint playlistId,bytes32 nonce)"
@@ -38,7 +38,7 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
 
     constructor(address _registryAddress,
         bytes32 _userFactoryRegistryKey,
-        bytes32 _trackFactoryRegistryKey,
+        bytes32 _agreementFactoryRegistryKey,
         bytes32 _playlistFactoryRegistryKey,
         uint _networkId
     ) SigningLogic("User Library Factory", "1", _networkId) public
@@ -46,26 +46,26 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
         require(
             _registryAddress != address(0x00) &&
             _userFactoryRegistryKey.length != 0 &&
-            _trackFactoryRegistryKey.length != 0 &&
+            _agreementFactoryRegistryKey.length != 0 &&
             _playlistFactoryRegistryKey.length != 0,
             "requires non-zero _registryAddress"
         );
 
         registry = RegistryInterface(_registryAddress);
         userFactoryRegistryKey = _userFactoryRegistryKey;
-        trackFactoryRegistryKey = _trackFactoryRegistryKey;
+        agreementFactoryRegistryKey = _agreementFactoryRegistryKey;
         playlistFactoryRegistryKey = _playlistFactoryRegistryKey;
     }
 
-    function addTrackSave(
+    function addAgreementSave(
         uint _userId,
-        uint _trackId,
+        uint _agreementId,
         bytes32 _requestNonce,
         bytes calldata _subjectSig
     ) external returns (bool status)
     {
-        bytes32 signatureDigest = generateTrackSaveRequestSchemaHash(
-            _userId, _trackId, _requestNonce
+        bytes32 signatureDigest = generateAgreementSaveRequestSchemaHash(
+            _userId, _agreementId, _requestNonce
         );
         address signer = recoverSigner(signatureDigest, _subjectSig);
         burnSignatureDigest(signatureDigest, signer);
@@ -73,24 +73,24 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
             registry.getContract(userFactoryRegistryKey)
         ).callerOwnsUser(signer, _userId);  // will revert if false
 
-        bool trackExists = TrackFactoryInterface(
-            registry.getContract(trackFactoryRegistryKey)
-        ).trackExists(_trackId);
-        require(trackExists == true, "must provide valid track ID");
+        bool agreementExists = AgreementFactoryInterface(
+            registry.getContract(agreementFactoryRegistryKey)
+        ).agreementExists(_agreementId);
+        require(agreementExists == true, "must provide valid agreement ID");
 
-        emit TrackSaveAdded(_userId, _trackId);
+        emit AgreementSaveAdded(_userId, _agreementId);
         return true;
     }
 
-    function deleteTrackSave(
+    function deleteAgreementSave(
         uint _userId,
-        uint _trackId,
+        uint _agreementId,
         bytes32 _requestNonce,
         bytes calldata _subjectSig
     ) external returns (bool status)
     {
-        bytes32 signatureDigest = generateDeleteTrackSaveRequestSchemaHash(
-            _userId, _trackId, _requestNonce
+        bytes32 signatureDigest = generateDeleteAgreementSaveRequestSchemaHash(
+            _userId, _agreementId, _requestNonce
         );
         address signer = recoverSigner(signatureDigest, _subjectSig);
         burnSignatureDigest(signatureDigest, signer);
@@ -98,12 +98,12 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
             registry.getContract(userFactoryRegistryKey)
         ).callerOwnsUser(signer, _userId);  // will revert if false
 
-        bool trackExists = TrackFactoryInterface(
-            registry.getContract(trackFactoryRegistryKey)
-        ).trackExists(_trackId);
-        require(trackExists == true, "must provide valid track ID");
+        bool agreementExists = AgreementFactoryInterface(
+            registry.getContract(agreementFactoryRegistryKey)
+        ).agreementExists(_agreementId);
+        require(agreementExists == true, "must provide valid agreement ID");
 
-        emit TrackSaveDeleted(_userId, _trackId);
+        emit AgreementSaveDeleted(_userId, _agreementId);
         return true;
     }
 
@@ -193,36 +193,36 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
         );
     }
 
-    function generateDeleteTrackSaveRequestSchemaHash(
+    function generateDeleteAgreementSaveRequestSchemaHash(
         uint _userId,
-        uint _trackId,
+        uint _agreementId,
         bytes32 _nonce
     ) internal view returns (bytes32)
     {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    DELETE_TRACK_SAVE_REQUEST_TYPEHASH,
+                    DELETE_AGREEMENT_SAVE_REQUEST_TYPEHASH,
                     _userId,
-                    _trackId,
+                    _agreementId,
                     _nonce
                 )
             )
         );
     }
 
-    function generateTrackSaveRequestSchemaHash(
+    function generateAgreementSaveRequestSchemaHash(
         uint _userId,
-        uint _trackId,
+        uint _agreementId,
         bytes32 _nonce
     ) internal view returns (bytes32)
     {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    TRACK_SAVE_REQUEST_TYPEHASH,
+                    AGREEMENT_SAVE_REQUEST_TYPEHASH,
                     _userId,
-                    _trackId,
+                    _agreementId,
                     _nonce
                 )
             )

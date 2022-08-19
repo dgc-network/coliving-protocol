@@ -1,19 +1,19 @@
 ---
-id: "TrackElement"
-title: "Interface: TrackElement"
-sidebar_label: "TrackElement"
+id: "AgreementElement"
+title: "Interface: AgreementElement"
+sidebar_label: "AgreementElement"
 sidebar_position: 0
 custom_edit_url: null
 ---
 
 **`export`**
 
-**`interface`** TrackElement
+**`interface`** AgreementElement
 
 ## Properties
 
-### parent\_track\_id
+### parent\_agreement\_id
 
- **parent\_track\_id**: `string`
+ **parent\_agreement\_id**: `string`
 
-**`memberof`** TrackElement
+**`memberof`** AgreementElement

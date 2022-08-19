@@ -24,13 +24,13 @@ def upgrade():
         -- same query as 92571f94989a but without year count
         CREATE MATERIALIZED VIEW IF NOT EXISTS aggregate_interval_plays as
         SELECT
-            tracks.track_id as track_id,
-            tracks.genre as genre,
-            tracks.created_at as created_at,
+            agreements.agreement_id as agreement_id,
+            agreements.genre as genre,
+            agreements.created_at as created_at,
             COALESCE (week_listen_counts.count, 0) as week_listen_counts,
             COALESCE (month_listen_counts.count, 0) as month_listen_counts
         FROM
-            tracks
+            agreements
         LEFT OUTER JOIN (
             SELECT
                 plays.play_item_id as play_item_id,
@@ -40,7 +40,7 @@ def upgrade():
             WHERE
                 plays.created_at > (now() - interval '1 week')
             GROUP BY plays.play_item_id
-        ) as week_listen_counts ON week_listen_counts.play_item_id = tracks.track_id
+        ) as week_listen_counts ON week_listen_counts.play_item_id = agreements.agreement_id
         LEFT OUTER JOIN (
             SELECT
                 plays.play_item_id as play_item_id,
@@ -50,15 +50,15 @@ def upgrade():
             WHERE
                 plays.created_at > (now() - interval '1 month')
             GROUP BY plays.play_item_id
-        ) as month_listen_counts ON month_listen_counts.play_item_id = tracks.track_id
+        ) as month_listen_counts ON month_listen_counts.play_item_id = agreements.agreement_id
         WHERE
-            tracks.is_current is True AND
-            tracks.is_delete is False AND
-            tracks.is_unlisted is False AND
-            tracks.stem_of is Null;
+            agreements.is_current is True AND
+            agreements.is_delete is False AND
+            agreements.is_unlisted is False AND
+            agreements.stem_of is Null;
 
         -- create primary key
-        CREATE INDEX IF NOT EXISTS interval_play_track_id_idx ON aggregate_interval_plays (track_id);
+        CREATE INDEX IF NOT EXISTS interval_play_agreement_id_idx ON aggregate_interval_plays (agreement_id);
         CREATE INDEX IF NOT EXISTS interval_play_week_count_idx ON aggregate_interval_plays (week_listen_counts);
         CREATE INDEX IF NOT EXISTS interval_play_month_count_idx ON aggregate_interval_plays (month_listen_counts);
     """
@@ -73,14 +73,14 @@ def downgrade():
 
         CREATE MATERIALIZED VIEW IF NOT EXISTS aggregate_interval_plays as
         SELECT
-            tracks.track_id as track_id,
-            tracks.genre as genre,
-            tracks.created_at as created_at,
+            agreements.agreement_id as agreement_id,
+            agreements.genre as genre,
+            agreements.created_at as created_at,
             COALESCE (week_listen_counts.count, 0) as week_listen_counts,
             COALESCE (month_listen_counts.count, 0) as month_listen_counts,
             COALESCE (year_listen_counts.count, 0) as year_listen_counts
         FROM
-            tracks
+            agreements
         LEFT OUTER JOIN (
             SELECT
                 plays.play_item_id as play_item_id,
@@ -90,7 +90,7 @@ def downgrade():
             WHERE
                 plays.created_at > (now() - interval '1 week')
             GROUP BY plays.play_item_id
-        ) as week_listen_counts ON week_listen_counts.play_item_id = tracks.track_id
+        ) as week_listen_counts ON week_listen_counts.play_item_id = agreements.agreement_id
         LEFT OUTER JOIN (
             SELECT
                 plays.play_item_id as play_item_id,
@@ -100,7 +100,7 @@ def downgrade():
             WHERE
                 plays.created_at > (now() - interval '1 month')
             GROUP BY plays.play_item_id
-        ) as month_listen_counts ON month_listen_counts.play_item_id = tracks.track_id
+        ) as month_listen_counts ON month_listen_counts.play_item_id = agreements.agreement_id
         LEFT OUTER JOIN (
             SELECT
                 plays.play_item_id as play_item_id,
@@ -110,14 +110,14 @@ def downgrade():
             WHERE
                 plays.created_at > (now() - interval '1 year')
             GROUP BY plays.play_item_id
-        ) as year_listen_counts ON year_listen_counts.play_item_id = tracks.track_id
+        ) as year_listen_counts ON year_listen_counts.play_item_id = agreements.agreement_id
         WHERE
-            tracks.is_current is True AND
-            tracks.is_delete is False AND
-            tracks.is_unlisted is False AND
-            tracks.stem_of is Null;
+            agreements.is_current is True AND
+            agreements.is_delete is False AND
+            agreements.is_unlisted is False AND
+            agreements.stem_of is Null;
 
-        CREATE INDEX IF NOT EXISTS interval_play_track_id_idx ON aggregate_interval_plays (track_id);
+        CREATE INDEX IF NOT EXISTS interval_play_agreement_id_idx ON aggregate_interval_plays (agreement_id);
         CREATE INDEX IF NOT EXISTS interval_play_week_count_idx ON aggregate_interval_plays (week_listen_counts);
         CREATE INDEX IF NOT EXISTS interval_play_month_count_idx ON aggregate_interval_plays (month_listen_counts);
         CREATE INDEX IF NOT EXISTS interval_play_year_count_idx ON aggregate_interval_plays (year_listen_counts);

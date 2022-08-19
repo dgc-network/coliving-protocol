@@ -26,18 +26,18 @@ T = {"day": 1, "week": 7, "month": 30, "year": 365, "allTime": 100000}
 y = 3
 
 
-def z(time, track):
+def z(time, agreement):
     # pylint: disable=W,C,R
-    E = track["listens"]
-    e = track["windowed_repost_count"]
-    t = track["repost_count"]
-    x = track["windowed_save_count"]
-    A = track["save_count"]
-    o = track["created_at"]
-    l = track["owner_follower_count"]
-    j = track["karma"]
+    E = agreement["listens"]
+    e = agreement["windowed_repost_count"]
+    t = agreement["repost_count"]
+    x = agreement["windowed_save_count"]
+    A = agreement["save_count"]
+    o = agreement["created_at"]
+    l = agreement["owner_follower_count"]
+    j = agreement["karma"]
     if l < y:
-        return {"score": 0, **track}
+        return {"score": 0, **agreement}
     H = (N * E + F * e + O * x + R * t + i * A) * j
     L = T[time]
     K = datetime.now()
@@ -46,28 +46,28 @@ def z(time, track):
     Q = 1
     if k > L:
         Q = a((1.0 / q), (M(q, (1 - k / L))))
-    return {"score": H * Q, **track}
+    return {"score": H * Q, **agreement}
 
 
-class TrendingTracksStrategyEJ57D(BaseTrendingStrategy):
+class TrendingAgreementsStrategyEJ57D(BaseTrendingStrategy):
     def __init__(self):
-        super().__init__(TrendingType.TRACKS, TrendingVersion.EJ57D, True)
+        super().__init__(TrendingType.AGREEMENTS, TrendingVersion.EJ57D, True)
 
-    def get_track_score(self, time_range, track):
+    def get_agreement_score(self, time_range, agreement):
         logger.error(
-            f"get_track_score not implemented for Trending Tracks Strategy with version {TrendingVersion.EJ57D}"
+            f"get_agreement_score not implemented for Trending Agreements Strategy with version {TrendingVersion.EJ57D}"
         )
 
-    def update_track_score_query(self, session):
+    def update_agreement_score_query(self, session):
         start_time = time.time()
-        trending_track_query = text(
+        trending_agreement_query = text(
             """
             begin;
-                DELETE FROM track_trending_scores WHERE type=:type AND version=:version;
-                INSERT INTO track_trending_scores
-                    (track_id, genre, type, version, time_range, score, created_at)
+                DELETE FROM agreement_trending_scores WHERE type=:type AND version=:version;
+                INSERT INTO agreement_trending_scores
+                    (agreement_id, genre, type, version, time_range, score, created_at)
                     select
-                        tp.track_id,
+                        tp.agreement_id,
                         tp.genre,
                         :type,
                         :version,
@@ -82,11 +82,11 @@ class TrendingTracksStrategyEJ57D(BaseTrendingStrategy):
                         now()
                     from trending_params tp
                     inner join aggregate_interval_plays aip
-                        on tp.track_id = aip.track_id;
-                INSERT INTO track_trending_scores
-                    (track_id, genre, type, version, time_range, score, created_at)
+                        on tp.agreement_id = aip.agreement_id;
+                INSERT INTO agreement_trending_scores
+                    (agreement_id, genre, type, version, time_range, score, created_at)
                     select
-                        tp.track_id,
+                        tp.agreement_id,
                         tp.genre,
                         :type,
                         :version,
@@ -101,11 +101,11 @@ class TrendingTracksStrategyEJ57D(BaseTrendingStrategy):
                         now()
                     from trending_params tp
                     inner join aggregate_interval_plays aip
-                        on tp.track_id = aip.track_id;
-                INSERT INTO track_trending_scores
-                    (track_id, genre, type, version, time_range, score, created_at)
+                        on tp.agreement_id = aip.agreement_id;
+                INSERT INTO agreement_trending_scores
+                    (agreement_id, genre, type, version, time_range, score, created_at)
                     select
-                        tp.track_id,
+                        tp.agreement_id,
                         tp.genre,
                         :type,
                         :version,
@@ -118,9 +118,9 @@ class TrendingTracksStrategyEJ57D(BaseTrendingStrategy):
                         now()
                     from trending_params tp
                     inner join aggregate_plays ap
-                        on tp.track_id = ap.play_item_id
-                    inner join tracks t
-                        on ap.play_item_id = t.track_id
+                        on tp.agreement_id = ap.play_item_id
+                    inner join agreements t
+                        on ap.play_item_id = t.agreement_id
                     where -- same filtering for aggregate_interval_plays
                         t.is_current is True AND
                         t.is_delete is False AND
@@ -130,7 +130,7 @@ class TrendingTracksStrategyEJ57D(BaseTrendingStrategy):
         """
         )
         session.execute(
-            trending_track_query,
+            trending_agreement_query,
             {
                 "week": T["week"],
                 "month": T["month"],
@@ -150,7 +150,7 @@ class TrendingTracksStrategyEJ57D(BaseTrendingStrategy):
         )
         duration = time.time() - start_time
         logger.info(
-            f"trending_tracks_strategy | Finished calculating trending scores in {duration} seconds",
+            f"trending_agreements_strategy | Finished calculating trending scores in {duration} seconds",
             extra={
                 "id": "trending_strategy",
                 "type": self.trending_type.name,

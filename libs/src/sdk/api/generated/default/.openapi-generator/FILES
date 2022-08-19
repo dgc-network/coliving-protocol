@@ -1,7 +1,7 @@
 apis/PlaylistsApi.ts
 apis/ResolveApi.ts
 apis/TipsApi.ts
-apis/TracksApi.ts
+apis/AgreementsApi.ts
 apis/UsersApi.ts
 apis/index.ts
 index.ts
@@ -24,7 +24,7 @@ models/Playlist.ts
 models/PlaylistArtwork.ts
 models/PlaylistResponse.ts
 models/PlaylistSearchResult.ts
-models/PlaylistTracksResponse.ts
+models/PlaylistAgreementsResponse.ts
 models/ProfilePicture.ts
 models/RelatedArtistResponse.ts
 models/RemixParent.ts
@@ -35,12 +35,12 @@ models/TagsResponse.ts
 models/Tip.ts
 models/TopGenreUsersResponse.ts
 models/TopUsersResponse.ts
-models/Track.ts
-models/TrackArtwork.ts
-models/TrackElement.ts
-models/TrackResponse.ts
-models/TrackSearch.ts
-models/TracksResponse.ts
+models/Agreement.ts
+models/AgreementArtwork.ts
+models/AgreementElement.ts
+models/AgreementResponse.ts
+models/AgreementSearch.ts
+models/AgreementsResponse.ts
 models/TrendingPlaylistsResponse.ts
 models/User.ts
 models/UserAssociatedWalletResponse.ts

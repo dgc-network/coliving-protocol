@@ -8,7 +8,7 @@ const models = require('../models')
 const { handleResponse, successResponse, errorResponseBadRequest, errorResponseServerError } = require('../apiHelpers')
 const { logger } = require('../logging')
 const authMiddleware = require('../authMiddleware')
-const { createTrackListenTransaction, getFeePayerKeypair, sendAndSignTransaction } = require('../solana-client')
+const { createAgreementListenTransaction, getFeePayerKeypair, sendAndSignTransaction } = require('../solana-client')
 const config = require('../config.js')
 const { getFeatureFlag, FEATURE_FLAGS } = require('../featureFlag')
 
@@ -31,8 +31,8 @@ const maxLimit = 500
 const defaultOffset = 0
 const minOffset = 0
 
-// Duration for listen tracking redis keys prior to expiry is 1 week (in seconds)
-const redisTxTrackingExpirySeconds = oneWeekInMs / 1000
+// Duration for listen agreementing redis keys prior to expiry is 1 week (in seconds)
+const redisTxAgreementingExpirySeconds = oneWeekInMs / 1000
 
 const getPaginationVars = (limit, offset) => {
   if (!limit) limit = defaultLimit
@@ -61,7 +61,7 @@ const parseTimeframe = (inputTime) => {
   return inputTime
 }
 
-const getTrackListens = async (
+const getAgreementListens = async (
   idList,
   timeFrame = undefined,
   startTime = undefined,
@@ -69,7 +69,7 @@ const getTrackListens = async (
   limit = undefined,
   offset = undefined) => {
   if (idList !== undefined && !Array.isArray(idList)) {
-    return errorResponseBadRequest('Invalid id list provided. Please provide an array of track IDs')
+    return errorResponseBadRequest('Invalid id list provided. Please provide an array of agreement IDs')
   }
   let boundariesRequested = false
   try {
@@ -89,19 +89,19 @@ const getTrackListens = async (
 
   let dbQuery = {
     attributes: [
-      [models.Sequelize.col('trackId'), 'trackId'],
+      [models.Sequelize.col('agreementId'), 'agreementId'],
       [
         models.Sequelize.fn('date_trunc', timeFrame, models.Sequelize.col('hour')),
         'date'
       ],
       [models.Sequelize.fn('sum', models.Sequelize.col('listens')), 'listens']
     ],
-    group: ['trackId', 'date'],
+    group: ['agreementId', 'date'],
     order: [[models.Sequelize.col('listens'), 'DESC']],
     where: {}
   }
   if (idList && idList.length > 0) {
-    dbQuery.where.trackId = { [models.Sequelize.Op.in]: idList }
+    dbQuery.where.agreementId = { [models.Sequelize.Op.in]: idList }
   }
 
   if (limit) {
@@ -115,7 +115,7 @@ const getTrackListens = async (
   if (boundariesRequested) {
     dbQuery.where.hour = { [models.Sequelize.Op.gte]: startTime, [models.Sequelize.Op.lte]: endTime }
   }
-  let listenCounts = await models.TrackListenCount.findAll(dbQuery)
+  let listenCounts = await models.AgreementListenCount.findAll(dbQuery)
   let output = {}
   for (let i = 0; i < listenCounts.length; i++) {
     let currentEntry = listenCounts[i]
@@ -123,18 +123,18 @@ const getTrackListens = async (
     let date = (values['date']).toISOString()
     let listens = parseInt(values.listens)
     currentEntry.dataValues.listens = listens
-    let trackId = values.trackId
+    let agreementId = values.agreementId
     if (!output.hasOwnProperty(date)) {
       output[date] = {}
       output[date]['utcMilliseconds'] = values['date'].getTime()
       output[date]['totalListens'] = 0
-      output[date]['trackIds'] = []
+      output[date]['agreementIds'] = []
       output[date]['listenCounts'] = []
     }
 
     output[date]['totalListens'] += listens
-    if (!output[date]['trackIds'].includes(trackId)) {
-      output[date]['trackIds'].push(trackId)
+    if (!output[date]['agreementIds'].includes(agreementId)) {
+      output[date]['agreementIds'].push(agreementId)
     }
 
     output[date]['listenCounts'].push(currentEntry)
@@ -143,25 +143,25 @@ const getTrackListens = async (
   return output
 }
 
-const getTrendingTracks = async (
+const getTrendingAgreements = async (
   idList,
   timeFrame,
   limit,
   offset) => {
   if (idList !== undefined && !Array.isArray(idList)) {
-    return errorResponseBadRequest('Invalid id list provided. Please provide an array of track IDs')
+    return errorResponseBadRequest('Invalid id list provided. Please provide an array of agreement IDs')
   }
 
   let dbQuery = {
-    attributes: ['trackId', [models.Sequelize.fn('sum', models.Sequelize.col('listens')), 'listens']],
-    group: ['trackId'],
-    order: [[models.Sequelize.col('listens'), 'DESC'], [models.Sequelize.col('trackId'), 'DESC']],
+    attributes: ['agreementId', [models.Sequelize.fn('sum', models.Sequelize.col('listens')), 'listens']],
+    group: ['agreementId'],
+    order: [[models.Sequelize.col('listens'), 'DESC'], [models.Sequelize.col('agreementId'), 'DESC']],
     where: {}
   }
 
   // If id list present, add filter
   if (idList) {
-    dbQuery.where.trackId = { [models.Sequelize.Op.in]: idList }
+    dbQuery.where.agreementId = { [models.Sequelize.Op.in]: idList }
   }
 
   const currentHour = trimToHour(new Date())
@@ -198,22 +198,22 @@ const getTrendingTracks = async (
     dbQuery.offset = offset
   }
 
-  let listenCounts = await models.TrackListenCount.findAll(dbQuery)
+  let listenCounts = await models.AgreementListenCount.findAll(dbQuery)
   let parsedListenCounts = []
-  let seenTrackIds = []
+  let seenAgreementIds = []
   listenCounts.forEach((elem) => {
-    parsedListenCounts.push({ trackId: elem.trackId, listens: parseInt(elem.listens) })
-    seenTrackIds.push(elem.trackId)
+    parsedListenCounts.push({ agreementId: elem.agreementId, listens: parseInt(elem.listens) })
+    seenAgreementIds.push(elem.agreementId)
   })
 
   return parsedListenCounts
 }
 
 /**
- * Generate the redis keys required for tracking listen submission vs success
+ * Generate the redis keys required for agreementing listen submission vs success
  * @param {string} hour formatted as such - 2022-01-25T21:00:00.000Z
  */
-const getTrackingListenKeys = (hour) => {
+const getAgreementingListenKeys = (hour) => {
   return {
     submission: `listens-tx-submission::${hour}`,
     success: `listens-tx-success::${hour}`
@@ -233,11 +233,11 @@ const initializeExpiringRedisKey = async (redis, key, expiry) => {
   }
 }
 
-const TRACKING_LISTEN_SUBMISSION_KEY = 'listens-tx-submission-ts'
-const TRACKING_LISTEN_SUCCESS_KEY = 'listens-tx-success-ts'
+const AGREEMENTING_LISTEN_SUBMISSION_KEY = 'listens-tx-submission-ts'
+const AGREEMENTING_LISTEN_SUCCESS_KEY = 'listens-tx-success-ts'
 
 module.exports = function (app) {
-  app.get('/tracks/listen/solana/status', handleResponse(async (req, res) => {
+  app.get('/agreements/listen/solana/status', handleResponse(async (req, res) => {
     const redis = req.app.get('redis')
     const results = await redis.keys('listens-tx-*')
     // Expected percent success
@@ -248,12 +248,12 @@ module.exports = function (app) {
       let split = entry.split('::')
       if (split.length >= 2) {
         let hourSuffix = split[1]
-        const trackingRedisKeys = getTrackingListenKeys(hourSuffix)
+        const agreementingRedisKeys = getAgreementingListenKeys(hourSuffix)
 
         if (!hourlyResponseData.hasOwnProperty(hourSuffix)) {
           hourlyResponseData[hourSuffix] = {
-            submission: Number(await redis.get(trackingRedisKeys.submission)),
-            success: Number(await redis.get(trackingRedisKeys.success)),
+            submission: Number(await redis.get(agreementingRedisKeys.submission)),
+            success: Number(await redis.get(agreementingRedisKeys.success)),
             time: new Date(hourSuffix)
           }
         }
@@ -261,12 +261,12 @@ module.exports = function (app) {
     }
 
     // Clean up time series entries that are greater than 1 week old
-    const oldestExpireMillis = Date.now() - redisTxTrackingExpirySeconds * 1000
-    await redis.zremrangebyscore(TRACKING_LISTEN_SUBMISSION_KEY, 0, oldestExpireMillis)
-    await redis.zremrangebyscore(TRACKING_LISTEN_SUCCESS_KEY, 0, oldestExpireMillis)
+    const oldestExpireMillis = Date.now() - redisTxAgreementingExpirySeconds * 1000
+    await redis.zremrangebyscore(AGREEMENTING_LISTEN_SUBMISSION_KEY, 0, oldestExpireMillis)
+    await redis.zremrangebyscore(AGREEMENTING_LISTEN_SUCCESS_KEY, 0, oldestExpireMillis)
 
-    const totalSuccessCount = await redis.zcount(TRACKING_LISTEN_SUCCESS_KEY, 0, Number.MAX_SAFE_INTEGER)
-    const totalSubmissionCount = await redis.zcount(TRACKING_LISTEN_SUBMISSION_KEY, 0, Number.MAX_SAFE_INTEGER)
+    const totalSuccessCount = await redis.zcount(AGREEMENTING_LISTEN_SUCCESS_KEY, 0, Number.MAX_SAFE_INTEGER)
+    const totalSubmissionCount = await redis.zcount(AGREEMENTING_LISTEN_SUBMISSION_KEY, 0, Number.MAX_SAFE_INTEGER)
     const totalPercentSuccess = totalSubmissionCount === 0 ? 1 : totalSuccessCount / totalSubmissionCount
     // Sort response in descending time order
     const sortedHourlyData =
@@ -278,8 +278,8 @@ module.exports = function (app) {
     const now = Date.now()
     const nowPlusEntropy = now + 9 // Account for the fact that each date has a random UUID appended to it
     const nowMinusCutoff = now - (cutoffMinutes * 60 * 1000)
-    const recentSuccessCount = await redis.zcount(TRACKING_LISTEN_SUCCESS_KEY, nowMinusCutoff, nowPlusEntropy)
-    const recentSubmissionCount = await redis.zcount(TRACKING_LISTEN_SUBMISSION_KEY, nowMinusCutoff, nowPlusEntropy)
+    const recentSuccessCount = await redis.zcount(AGREEMENTING_LISTEN_SUCCESS_KEY, nowMinusCutoff, nowPlusEntropy)
+    const recentSubmissionCount = await redis.zcount(AGREEMENTING_LISTEN_SUBMISSION_KEY, nowMinusCutoff, nowPlusEntropy)
     const recentSuccessPercent = recentSubmissionCount === 0 ? 1 : recentSuccessCount / recentSubmissionCount
     const recentInfo = {
       recentSubmissionCount,
@@ -300,15 +300,15 @@ module.exports = function (app) {
     return successResponse(resp)
   }))
 
-  app.post('/tracks/:id/listen', handleResponse(async (req, res) => {
+  app.post('/agreements/:id/listen', handleResponse(async (req, res) => {
     const libs = req.app.get('colivingLibs')
     const connection = libs.solanaWeb3Manager.connection
     const solanaWeb3 = libs.solanaWeb3Manager.solanaWeb3
     const redis = req.app.get('redis')
-    const trackId = parseInt(req.params.id)
+    const agreementId = parseInt(req.params.id)
     const userId = req.body.userId
-    if (!userId || !trackId) {
-      return errorResponseBadRequest('Must include user id and valid track id')
+    if (!userId || !agreementId) {
+      return errorResponseBadRequest('Must include user id and valid agreement id')
     }
 
     const optimizelyClient = app.get('optimizelyClient')
@@ -325,14 +325,14 @@ module.exports = function (app) {
       const entropy = uuidv4()
 
       // Example key format = listens-tx-success::2022-01-25T21:00:00.000Z
-      const trackingRedisKeys = getTrackingListenKeys(suffix)
-      await initializeExpiringRedisKey(redis, trackingRedisKeys.submission, redisTxTrackingExpirySeconds)
-      await initializeExpiringRedisKey(redis, trackingRedisKeys.success, redisTxTrackingExpirySeconds)
+      const agreementingRedisKeys = getAgreementingListenKeys(suffix)
+      await initializeExpiringRedisKey(redis, agreementingRedisKeys.submission, redisTxAgreementingExpirySeconds)
+      await initializeExpiringRedisKey(redis, agreementingRedisKeys.success, redisTxAgreementingExpirySeconds)
 
-      req.logger.info(`TrackListen tx submission, trackId=${trackId} userId=${userId}, ${JSON.stringify(trackingRedisKeys)}`)
+      req.logger.info(`AgreementListen tx submission, agreementId=${agreementId} userId=${userId}, ${JSON.stringify(agreementingRedisKeys)}`)
 
-      await redis.incr(trackingRedisKeys.submission)
-      await redis.zadd(TRACKING_LISTEN_SUBMISSION_KEY, Date.now(), Date.now() + entropy)
+      await redis.incr(agreementingRedisKeys.submission)
+      await redis.zadd(AGREEMENTING_LISTEN_SUBMISSION_KEY, Date.now(), Date.now() + entropy)
       let location
       try {
         let clientIPAddress = (req.headers['x-forwarded-for'] || '').split(',').pop().trim() || req.socket.remoteAddress
@@ -349,16 +349,16 @@ module.exports = function (app) {
           country: locationResponse.country_name
         }
       } catch (e) {
-        req.logger.info(`TrackListen location fetch failed: ${e}`)
+        req.logger.info(`AgreementListen location fetch failed: ${e}`)
         location = {}
       }
 
       try {
-        let trackListenTransaction = await createTrackListenTransaction({
+        let agreementListenTransaction = await createAgreementListenTransaction({
           validSigner: null,
           privateKey: config.get('solanaSignerPrivateKey'),
           userId: userId.toString(),
-          trackId: trackId.toString(),
+          agreementId: agreementId.toString(),
           source: 'relay',
           location,
           connection
@@ -366,20 +366,20 @@ module.exports = function (app) {
         let feePayerAccount = getFeePayerKeypair(false)
         let solTxSignature
         if (sendRawTransaction) {
-          req.logger.info(`TrackListen tx submission, trackId=${trackId} userId=${userId} - sendRawTransaction`)
+          req.logger.info(`AgreementListen tx submission, agreementId=${agreementId} userId=${userId} - sendRawTransaction`)
           solTxSignature = await sendAndSignTransaction(
             connection,
-            trackListenTransaction,
+            agreementListenTransaction,
             feePayerAccount,
             timeout,
             logger
           )
         } else {
           await retry(async () => {
-            req.logger.info(`TrackListen tx submission, trackId=${trackId} userId=${userId} - sendAndConfirmTransaction`)
+            req.logger.info(`AgreementListen tx submission, agreementId=${agreementId} userId=${userId} - sendAndConfirmTransaction`)
             solTxSignature = await solanaWeb3.sendAndConfirmTransaction(
               connection,
-              trackListenTransaction,
+              agreementListenTransaction,
               [feePayerAccount],
               {
                 skipPreflight: false,
@@ -396,47 +396,47 @@ module.exports = function (app) {
             retries: 3,
             onRetry: (err, i) => {
               if (err) {
-                req.logger.error(`TrackListens tx retry error, trackId=${trackId} userId=${userId} : ${err}`)
+                req.logger.error(`AgreementListens tx retry error, agreementId=${agreementId} userId=${userId} : ${err}`)
               }
             }
           })
         }
 
-        req.logger.info(`TrackListen tx confirmed, ${solTxSignature} userId=${userId}, trackId=${trackId}, sendRawTransaction=${sendRawTransaction}`)
+        req.logger.info(`AgreementListen tx confirmed, ${solTxSignature} userId=${userId}, agreementId=${agreementId}, sendRawTransaction=${sendRawTransaction}`)
 
-        // Increment success tracker
-        await redis.incr(trackingRedisKeys.success)
-        await redis.zadd(TRACKING_LISTEN_SUCCESS_KEY, Date.now(), Date.now() + entropy)
+        // Increment success agreementer
+        await redis.incr(agreementingRedisKeys.success)
+        await redis.zadd(AGREEMENTING_LISTEN_SUCCESS_KEY, Date.now(), Date.now() + entropy)
         return successResponse({
           solTxSignature
         })
       } catch (e) {
-        return errorResponseServerError(`TrackListens tx error, trackId=${trackId} userId=${userId} : ${e}`)
+        return errorResponseServerError(`AgreementListens tx error, agreementId=${agreementId} userId=${userId} : ${e}`)
       }
     }
 
     // TODO: Make all of this conditional based on request parameters
-    let trackListenRecord = await models.TrackListenCount.findOrCreate(
+    let agreementListenRecord = await models.AgreementListenCount.findOrCreate(
       {
-        where: { hour: currentHour, trackId }
+        where: { hour: currentHour, agreementId }
       })
-    if (trackListenRecord && trackListenRecord[1]) {
-      logger.info(`New track listen record inserted ${trackListenRecord}`)
+    if (agreementListenRecord && agreementListenRecord[1]) {
+      logger.info(`New agreement listen record inserted ${agreementListenRecord}`)
     }
-    await models.TrackListenCount.increment('listens', { where: { hour: currentHour, trackId: req.params.id } })
+    await models.AgreementListenCount.increment('listens', { where: { hour: currentHour, agreementId: req.params.id } })
 
     // Clients will send a randomly generated string UUID for anonymous users.
-    // Those listened should NOT be recorded in the userTrackListen table
+    // Those listened should NOT be recorded in the userAgreementListen table
     const isRealUser = typeof userId === 'number'
     if (isRealUser) {
-      // Find / Create the record of the user listening to the track
-      const [userTrackListenRecord, created] = await models.UserTrackListen
-        .findOrCreate({ where: { userId, trackId } })
+      // Find / Create the record of the user listening to the agreement
+      const [userAgreementListenRecord, created] = await models.UserAgreementListen
+        .findOrCreate({ where: { userId, agreementId } })
 
       // If the record was not created, updated the timestamp
       if (!created) {
-        await userTrackListenRecord.increment('count')
-        await userTrackListenRecord.save()
+        await userAgreementListenRecord.increment('count')
+        await userAgreementListenRecord.save()
       }
     }
 
@@ -445,15 +445,15 @@ module.exports = function (app) {
 
   /*
    * Return listen history for a given user
-   *  tracks/history/
-   *    - tracks w/ recorded listen event sorted by date listened
+   *  agreements/history/
+   *    - agreements w/ recorded listen event sorted by date listened
    *
    *  GET query parameters (optional):
    *    userId (int) - userId of the requester
    *    limit (int) - limits number of results w/ a max of 100
    *    offset (int) - offset results
    */
-  app.get('/tracks/history', handleResponse(async (req, res) => {
+  app.get('/agreements/history', handleResponse(async (req, res) => {
     const userId = parseInt(req.query.userId)
     const limit = isNaN(req.query.limit) ? 100 : Math.min(parseInt(req.query.limit), 100)
     const offset = isNaN(req.query.offset) ? 0 : parseInt(req.query.offset)
@@ -461,27 +461,27 @@ module.exports = function (app) {
       return errorResponseBadRequest('Must include user id')
     }
 
-    const trackListens = await models.UserTrackListen.findAll({
+    const agreementListens = await models.UserAgreementListen.findAll({
       where: { userId },
       order: [['updatedAt', 'DESC']],
-      attributes: ['trackId', 'updatedAt'],
+      attributes: ['agreementId', 'updatedAt'],
       limit,
       offset
     })
 
     return successResponse({
-      tracks: trackListens.map(track => ({ trackId: track.trackId, listenDate: track.updatedAt }))
+      agreements: agreementListens.map(agreement => ({ agreementId: agreement.agreementId, listenDate: agreement.updatedAt }))
     })
   }))
 
   /*
-   * Return track listen history grouped by a specific time frame
-   *  tracks/listens/
-   *    - all tracks, sorted by play count
+   * Return agreement listen history grouped by a specific time frame
+   *  agreements/listens/
+   *    - all agreements, sorted by play count
    *
-   *  tracks/listens/<time>
+   *  agreements/listens/<time>
    *    - <time> - day, week, month, year
-   *    - returns all track listen info for given time period, sorted by play count
+   *    - returns all agreement listen info for given time period, sorted by play count
    *
    *  POST body parameters (optional):
    *    limit (int) - limits number of results
@@ -489,7 +489,7 @@ module.exports = function (app) {
    *    start (string) - ISO time string, used to define the start time period for query
    *    end (string) - ISO time string, used to define the end time period for query
    *    start/end are BOTH required if filtering based on time
-   *    track_ids - filter results for specific track(s)
+   *    agreement_ids - filter results for specific agreement(s)
    *
    *  GET query parameters (optional):
    *    limit (int) - limits number of results
@@ -497,16 +497,16 @@ module.exports = function (app) {
    *    start (string) - ISO time string, used to define the start time period for query
    *    end (string) - ISO time string, used to define the end time period for query
    *    start/end are BOTH required if filtering based on time
-   *    id (array of int) - filter results for specific track(s)
+   *    id (array of int) - filter results for specific agreement(s)
    */
-  app.post('/tracks/listens/:timeframe*?', handleResponse(async (req, res, next) => {
+  app.post('/agreements/listens/:timeframe*?', handleResponse(async (req, res, next) => {
     let body = req.body
-    let idList = body.track_ids
+    let idList = body.agreement_ids
     let startTime = body.startTime
     let endTime = body.endTime
     let time = parseTimeframe(req.params.timeframe)
     let { limit, offset } = getPaginationVars(body.limit, body.offset)
-    let output = await getTrackListens(
+    let output = await getAgreementListens(
       idList,
       time,
       startTime,
@@ -517,13 +517,13 @@ module.exports = function (app) {
     return successResponse(output)
   }))
 
-  app.get('/tracks/listens/:timeframe*?', handleResponse(async (req, res) => {
+  app.get('/agreements/listens/:timeframe*?', handleResponse(async (req, res) => {
     let idList = req.query.id
     let startTime = req.query.start
     let endTime = req.query.end
     let time = parseTimeframe(req.params.timeframe)
     let { limit, offset } = getPaginationVars(req.query.limit, req.query.offset)
-    let output = await getTrackListens(
+    let output = await getAgreementListens(
       idList,
       time,
       startTime,
@@ -534,30 +534,30 @@ module.exports = function (app) {
   }))
 
   /*
-   * Return aggregate track listen count with various parameters
-   *  tracks/trending/
-   *    - all tracks, sorted by play count
+   * Return aggregate agreement listen count with various parameters
+   *  agreements/trending/
+   *    - all agreements, sorted by play count
    *
-   *  tracks/trending/<time>
+   *  agreements/trending/<time>
    *    - <time> - day, week, month, year
-   *    - returns all tracks for given time period, sorted by play count
+   *    - returns all agreements for given time period, sorted by play count
    *
    *  POST body parameters (optional):
    *    limit (int) - limits number of results
    *    offset (int) - offset results
-   *    track_ids (array of int) - filter results for specific track(s)
+   *    agreement_ids (array of int) - filter results for specific agreement(s)
    *
    *  GET query parameters (optional):
    *    limit (int) - limits number of results
    *    offset (int) - offset results
-   *    id (array of int) - filter results for specific track(s)
+   *    id (array of int) - filter results for specific agreement(s)
    */
-  app.post('/tracks/trending/:time*?', handleResponse(async (req, res) => {
+  app.post('/agreements/trending/:time*?', handleResponse(async (req, res) => {
     let time = req.params.time
     let body = req.body
-    let idList = body.track_ids
+    let idList = body.agreement_ids
     let { limit, offset } = getPaginationVars(body.limit, body.offset)
-    let parsedListenCounts = await getTrendingTracks(
+    let parsedListenCounts = await getTrendingAgreements(
       idList,
       time,
       limit,
@@ -565,11 +565,11 @@ module.exports = function (app) {
     return successResponse({ listenCounts: parsedListenCounts })
   }))
 
-  app.get('/tracks/trending/:time*?', handleResponse(async (req, res) => {
+  app.get('/agreements/trending/:time*?', handleResponse(async (req, res) => {
     let time = req.params.time
     let idList = req.query.id
     let { limit, offset } = getPaginationVars(req.query.limit, req.query.offset)
-    let parsedListenCounts = await getTrendingTracks(
+    let parsedListenCounts = await getTrendingAgreements(
       idList,
       time,
       limit,
@@ -579,18 +579,18 @@ module.exports = function (app) {
   }))
 
   /*
-   * Gets the tracks and listen counts for a user.
+   * Gets the agreements and listen counts for a user.
    * Useful for populating views like "Heavy Rotation" which
-   * require sorted lists of track listens for a given user.
+   * require sorted lists of agreement listens for a given user.
    *
    * GET query parameters:
-   *  limit: (optional) The number of tracks to fetch
+   *  limit: (optional) The number of agreements to fetch
    */
   app.get('/users/listens/top', authMiddleware, handleResponse(async (req, res) => {
     const { blockchainUserId: userId } = req.user
     const { limit = 25 } = req.query
 
-    const listens = await models.UserTrackListen.findAll({
+    const listens = await models.UserAgreementListen.findAll({
       where: {
         userId: {
           [Sequelize.Op.eq]: userId
@@ -608,38 +608,38 @@ module.exports = function (app) {
   }))
 
   /*
-   * Gets whether or not tracks have been listened to by a target user.
-   * Useful in filtering out tracks that a user has already listened to.
+   * Gets whether or not agreements have been listened to by a target user.
+   * Useful in filtering out agreements that a user has already listened to.
    * Requires auth.
    *
    * GET query parameters:
-   *  trackIdList: The ids of tracks to check
+   *  agreementIdList: The ids of agreements to check
    */
   app.get('/users/listens', authMiddleware, handleResponse(async (req, res) => {
     const { blockchainUserId: userId } = req.user
-    const { trackIdList } = req.query
+    const { agreementIdList } = req.query
 
-    if (!trackIdList || !Array.isArray(trackIdList)) {
-      return errorResponseBadRequest('Please provide an array of track ids')
+    if (!agreementIdList || !Array.isArray(agreementIdList)) {
+      return errorResponseBadRequest('Please provide an array of agreement ids')
     }
 
-    const listens = await models.UserTrackListen.findAll({
+    const listens = await models.UserAgreementListen.findAll({
       where: {
         userId: {
           [Sequelize.Op.eq]: userId
         },
-        trackId: {
-          [Sequelize.Op.in]: trackIdList
+        agreementId: {
+          [Sequelize.Op.in]: agreementIdList
         }
       }
     })
 
     const listenMap = listens.reduce((acc, listen) => {
-      acc[listen.dataValues.trackId] = listen.dataValues.count
+      acc[listen.dataValues.agreementId] = listen.dataValues.count
       return acc
     }, {})
 
-    trackIdList.forEach(id => {
+    agreementIdList.forEach(id => {
       if (!(id in listenMap)) {
         listenMap[id] = 0
       }
@@ -679,21 +679,21 @@ module.exports = function (app) {
       return errorResponseBadRequest(`Provided startTime ${startTime} not parseable`)
     }
 
-    const userListens = await models.UserTrackListen.findAll({
+    const userListens = await models.UserAgreementListen.findAll({
       attributes: { exclude: ['id'] },
       where: {
         updatedAt: { [models.Sequelize.Op.gt]: updatedAtMoment.toDate() }
       },
-      order: [['updatedAt', 'ASC'], ['trackId', 'ASC']],
+      order: [['updatedAt', 'ASC'], ['agreementId', 'ASC']],
       limit
     })
 
-    const anonListens = await models.TrackListenCount.findAll({
-      attributes: ['trackId', ['listens', 'count'], ['hour', 'createdAt'], 'updatedAt'],
+    const anonListens = await models.AgreementListenCount.findAll({
+      attributes: ['agreementId', ['listens', 'count'], ['hour', 'createdAt'], 'updatedAt'],
       where: {
         updatedAt: { [models.Sequelize.Op.gt]: updatedAtMoment.toDate() }
       },
-      order: [['updatedAt', 'ASC'], ['trackId', 'ASC']],
+      order: [['updatedAt', 'ASC'], ['agreementId', 'ASC']],
       limit
     })
 

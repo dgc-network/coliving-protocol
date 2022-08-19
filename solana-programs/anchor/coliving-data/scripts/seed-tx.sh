@@ -64,9 +64,9 @@ yarn run ts-node cli/main.ts -f initUserSolPubkey \
     --user-account "$USER_ACCOUNT" \
     --eth-private-key d540ca11a0d12345f512e65e00bf8bf87435aa40b3731cbf0322971709eba60f
 
-echo "Creating track"
+echo "Creating agreement"
 
-yarn run ts-node cli/main.ts -f createTrack \
+yarn run ts-node cli/main.ts -f createAgreement \
     -k "$OWNER_KEYPAIR_PATH" \
     --user-solana-keypair "$USER_KEYPAIR_PATH" \
     --user-account "$USER_ACCOUNT" \

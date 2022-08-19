@@ -21,8 +21,8 @@ custom_edit_url: null
 
 ___
 
-### track\_id
+### agreement\_id
 
- **track\_id**: `string`
+ **agreement\_id**: `string`
 
 **`memberof`** PlaylistAddedTimestamp

@@ -3,14 +3,14 @@
 use solana_program::clock::UnixTimestamp;
 use borsh::{BorshDeserialize, BorshSerialize};
 
-/// Track data
+/// Agreement data
 #[derive(BorshSerialize, BorshDeserialize, Clone)]
-pub struct TrackData {
+pub struct AgreementData {
     /// user ID
     pub user_id: String,
-    /// track ID
-    pub track_id: String,
-    /// track source
+    /// agreement ID
+    pub agreement_id: String,
+    /// agreement source
     pub source: String,
     /// timestamp as nonce
     pub timestamp: UnixTimestamp,

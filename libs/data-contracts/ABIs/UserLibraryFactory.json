@@ -105,7 +105,7 @@
           "type": "bytes32"
         },
         {
-          "name": "_trackFactoryRegistryKey",
+          "name": "_agreementFactoryRegistryKey",
           "type": "bytes32"
         },
         {
@@ -131,11 +131,11 @@
         },
         {
           "indexed": false,
-          "name": "_trackId",
+          "name": "_agreementId",
           "type": "uint256"
         }
       ],
-      "name": "TrackSaveAdded",
+      "name": "AgreementSaveAdded",
       "type": "event"
     },
     {
@@ -148,11 +148,11 @@
         },
         {
           "indexed": false,
-          "name": "_trackId",
+          "name": "_agreementId",
           "type": "uint256"
         }
       ],
-      "name": "TrackSaveDeleted",
+      "name": "AgreementSaveDeleted",
       "type": "event"
     },
     {
@@ -214,7 +214,7 @@
           "type": "uint256"
         },
         {
-          "name": "_trackId",
+          "name": "_agreementId",
           "type": "uint256"
         },
         {
@@ -226,7 +226,7 @@
           "type": "bytes"
         }
       ],
-      "name": "addTrackSave",
+      "name": "addAgreementSave",
       "outputs": [
         {
           "name": "status",
@@ -245,7 +245,7 @@
           "type": "uint256"
         },
         {
-          "name": "_trackId",
+          "name": "_agreementId",
           "type": "uint256"
         },
         {
@@ -257,7 +257,7 @@
           "type": "bytes"
         }
       ],
-      "name": "deleteTrackSave",
+      "name": "deleteAgreementSave",
       "outputs": [
         {
           "name": "status",

@@ -523,7 +523,7 @@ func main() {
         "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
       },
       "repost_count": 5,
-      "track_count": 4
+      "agreement_count": 4
     }
   ]
 }
@@ -710,7 +710,7 @@ func main() {
       "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
     },
     "repost_count": 5,
-    "track_count": 4
+    "agreement_count": 4
   }
 }
 ```
@@ -903,7 +903,7 @@ func main() {
 
 ## Obtener pistas favoritas del usuario
 
-<a id="opIdGet User's Favorite Tracks"></a>
+<a id="opIdGet User's Favorite Agreements"></a>
 
 > Muestra de código
 
@@ -1043,7 +1043,7 @@ func main() {
 
 *Obtener las pistas favoritas para un usuario*
 
-<h3 id="get-user's-favorite-tracks-parameters">Parámetros de consulta</h3>
+<h3 id="get-user's-favorite-agreements-parameters">Parámetros de consulta</h3>
 
 | Nombre     | Tipo   | Requerido | Descripción      |
 | ---------- | ------ | --------- | ---------------- |
@@ -1056,24 +1056,24 @@ func main() {
   "data": [
     {
       "favorite_item_id": "n3yVD",
-      "favorite_type": "SaveType.track",
+      "favorite_type": "SaveType.agreement",
       "user_id": "nlGNe"
     },
     {
       "favorite_item_id": "nlv5l",
-      "favorite_type": "SaveType.track",
+      "favorite_type": "SaveType.agreement",
       "user_id": "nlGNe"
     },
     {
       "favorite_item_id": "ezYKz",
-      "favorite_type": "SaveType.track",
+      "favorite_type": "SaveType.agreement",
       "user_id": "nlGNe"
     }
   ]
 }
 ```
 
-<h3 id="get-user's-favorite-tracks-responses">Respuestas</h3>
+<h3 id="get-user's-favorite-agreements-responses">Respuestas</h3>
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                          |
 | ------ | ------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------ |
@@ -1255,7 +1255,7 @@ func main() {
 
 ## Obtén las etiquetas de pista más utilizadas del usuario
 
-<a id="opIdGet User's Most Used Track Tags"></a>
+<a id="opIdGet User's Most Used Agreement Tags"></a>
 
 > Muestra de código
 
@@ -1398,7 +1398,7 @@ func main() {
 
 *Obtener etiquetas más usadas en las pistas del usuario*
 
-<h3 id="get-user's-most-used-track-tags-parameters">Parámetros de consulta</h3>
+<h3 id="get-user's-most-used-agreement-tags-parameters">Parámetros de consulta</h3>
 
 | Nombre     | Tipo   | Requerido | Descripción                    |
 | ---------- | ------ | --------- | ------------------------------ |
@@ -1418,7 +1418,7 @@ func main() {
 }
 ```
 
-<h3 id="get-user's-most-used-track-tags-responses">Respuestas</h3>
+<h3 id="get-user's-most-used-agreement-tags-responses">Respuestas</h3>
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                     |
 | ------ | ------------------------------------------------------------------------------- | -------------------- | ------------------------------------------- |
@@ -1428,18 +1428,18 @@ func main() {
 
 ## Obtener pistas de usuario
 
-<a id="opIdGet User's Tracks"></a>
+<a id="opIdGet User's Agreements"></a>
 
 > Muestra de código
 
 ```shell
-curl COLIVING_API_HOST/v1/users/nlGNe/tracks 
+curl COLIVING_API_HOST/v1/users/nlGNe/agreements 
 
 
 ```
 
 ```http
-GET COLIVING_API_HOST/v1/users/nlGNe/tracks HTTP/1.1
+GET COLIVING_API_HOST/v1/users/nlGNe/agreements HTTP/1.1
 
 ```
 
@@ -1449,7 +1449,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('COLIVING_API_HOST/v1/users/nlGNe/tracks',
+fetch('COLIVING_API_HOST/v1/users/nlGNe/agreements',
 {
   method: 'GET',
 
@@ -1471,7 +1471,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'COLIVING_API_HOST/v1/users/nlGNe/tracks',
+result = RestClient.get 'COLIVING_API_HOST/v1/users/nlGNe/agreements',
   params: {
   }, headers: headers
 
@@ -1485,7 +1485,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('COLIVING_API_HOST/v1/users/nlGNe/tracks', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/users/nlGNe/agreements', headers = headers)
 
 print(r.json())
 
@@ -1506,7 +1506,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','COLIVING_API_HOST/v1/users/nlGNe/tracks', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/users/nlGNe/agreements', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -1523,7 +1523,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("COLIVING_API_HOST/v1/users/nlGNe/tracks");
+URL obj = new URL("COLIVING_API_HOST/v1/users/nlGNe/agreements");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -1554,7 +1554,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/users/nlGNe/tracks", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/users/nlGNe/agreements", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -1564,11 +1564,11 @@ func main() {
 
 ```
 
-`GET /users/{user_id}/tracks`
+`GET /users/{user_id}/agreements`
 
 *Obtener una lista de pistas para un usuario*
 
-<h3 id="get-user's-tracks-parameters">Parámetros de consulta</h3>
+<h3 id="get-user's-agreements-parameters">Parámetros de consulta</h3>
 
 | Nombre     | Tipo   | Requerido | Descripción      |
 | ---------- | ------ | --------- | ---------------- |
@@ -1619,18 +1619,18 @@ func main() {
           "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
         },
         "repost_count": 5,
-        "track_count": 4
+        "agreement_count": 4
       }
     }
   ]
 }
 ```
 
-<h3 id="get-user's-tracks-responses">Respuestas</h3>
+<h3 id="get-user's-agreements-responses">Respuestas</h3>
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                   |
 | ------ | ------------------------------------------------------------------------------- | -------------------- | ----------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [tracks_response](#schematracks_response) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [agreements_response](#schemaagreements_response) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                   |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                   |
 
@@ -1799,7 +1799,7 @@ func main() {
         "480x480": "https://usermetadata..co/ipfs/Qmc7RFzLGgW3DUTgKK49LzxEwe3Lmb47q85ZwJJRVYTXPr/480x480.jpg",
         "1000x1000": "https://usermetadata..co/ipfs/Qmc7RFzLGgW3DUTgKK49LzxEwe3Lmb47q85ZwJJRVYTXPr/1000x1000.jpg"
       },
-      "description": "All the latest hot new tracks on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
+      "description": "All the latest hot new agreements on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
       "id": "DOPRl",
       "is_album": true,
       "playlist_name": "Hot & New on Coliving 🔥",
@@ -1826,7 +1826,7 @@ func main() {
           "1000x1000": "https://usermetadata..co/ipfs/QmNjJv1wQf2DJq3GNXjXzSL8UXFUGXfchg4NhL7UpbnF1f"
         },
         "repost_count": 200,
-        "track_count": 0
+        "agreement_count": 0
       }
     }
   ]
@@ -2031,7 +2031,7 @@ func main() {
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "track_count": 0
+        "agreement_count": 0
       }
     }
   ]
@@ -2204,7 +2204,7 @@ func main() {
       "480x480": "https://usermetadata..co/ipfs/Qmc7RFzLGgW3DUTgKK49LzxEwe3Lmb47q85ZwJJRVYTXPr/480x480.jpg",
       "1000x1000": "https://usermetadata..co/ipfs/Qmc7RFzLGgW3DUTgKK49LzxEwe3Lmb47q85ZwJJRVYTXPr/1000x1000.jpg"
     },
-    "description": "All the latest hot new tracks on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
+    "description": "All the latest hot new agreements on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
     "id": "DOPRl",
     "is_album": true,
     "playlist_name": "Hot & New on Coliving 🔥",
@@ -2231,7 +2231,7 @@ func main() {
         "1000x1000": "https://usermetadata..co/ipfs/QmNjJv1wQf2DJq3GNXjXzSL8UXFUGXfchg4NhL7UpbnF1f"
       },
       "repost_count": 200,
-      "track_count": 0
+      "agreement_count": 0
     }
   }
 }
@@ -2247,18 +2247,18 @@ func main() {
 
 ## Obtener pistas de lista de reproducción
 
-<a id="opIdGet Playlist Tracks"></a>
+<a id="opIdGet Playlist Agreements"></a>
 
 > Muestra de código
 
 ```shell
-curl COLIVING_API_HOST/v1/playlists/DOPRl/tracks 
+curl COLIVING_API_HOST/v1/playlists/DOPRl/agreements 
 
 
 ```
 
 ```http
-GET COLIVING_API_HOST/v1/playlists/DOPRl/tracks HTTP/1.1
+GET COLIVING_API_HOST/v1/playlists/DOPRl/agreements HTTP/1.1
 
 ```
 
@@ -2268,7 +2268,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('COLIVING_API_HOST/v1/playlists/DOPRl/tracks',
+fetch('COLIVING_API_HOST/v1/playlists/DOPRl/agreements',
 {
   method: 'GET',
 
@@ -2290,7 +2290,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'COLIVING_API_HOST/v1/playlists/DOPRl/tracks',
+result = RestClient.get 'COLIVING_API_HOST/v1/playlists/DOPRl/agreements',
   params: {
   }, headers: headers
 
@@ -2304,7 +2304,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('COLIVING_API_HOST/v1/playlists/DOPRl/tracks', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/playlists/DOPRl/agreements', headers = headers)
 
 print(r.json())
 
@@ -2325,7 +2325,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','COLIVING_API_HOST/v1/playlists/DOPRl/tracks', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/playlists/DOPRl/agreements', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -2342,7 +2342,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("COLIVING_API_HOST/v1/playlists/DOPRl/tracks");
+URL obj = new URL("COLIVING_API_HOST/v1/playlists/DOPRl/agreements");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -2373,7 +2373,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/playlists/DOPRl/tracks", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/playlists/DOPRl/agreements", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -2387,7 +2387,7 @@ func main() {
 
 *Obtener pistas dentro de una lista de reproducción*
 
-<h3 id="get-playlist-tracks-parameters">Parámetros de consulta</h3>
+<h3 id="get-playlist-agreements-parameters">Parámetros de consulta</h3>
 
 | Nombre      | Tipo   | Requerido | Descripción                    |
 | ----------- | ------ | --------- | ------------------------------ |
@@ -2435,37 +2435,37 @@ func main() {
           "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
         },
         "repost_count": 5,
-        "track_count": 4
+        "agreement_count": 4
       }
     }
   ]
 }
 ```
 
-<h3 id="get-playlist-tracks-responses">Respuestas</h3>
+<h3 id="get-playlist-agreements-responses">Respuestas</h3>
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                         |
 | ------ | ------------------------------------------------------------------------------- | -------------------- | --------------------------------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [playlist_pistas_respuesta_](#schemaplaylist_tracks_response) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [playlist_pistas_respuesta_](#schemaplaylist_agreements_response) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                                         |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                                         |
 
-<h1 id="api-tracks">pistas</h1>
+<h1 id="api-agreements">pistas</h1>
 
 ## Obtener pistas de forma manual y Slug
 
-<a id="opIdGet Track By Handle and Slug"></a>
+<a id="opIdGet Agreement By Handle and Slug"></a>
 
 > Muestra de código
 
 ```shell
-curl COLIVING_API_HOST/v1/tracks 
+curl COLIVING_API_HOST/v1/agreements 
 
 
 ```
 
 ```http
-GET COLIVING_API_HOST/v1/tracks HTTP/1.1
+GET COLIVING_API_HOST/v1/agreements HTTP/1.1
 
 ```
 
@@ -2475,7 +2475,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('COLIVING_API_HOST/v1/tracks',
+fetch('COLIVING_API_HOST/v1/agreements',
 {
   method: 'GET',
 
@@ -2497,7 +2497,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'COLIVING_API_HOST/v1/tracks',
+result = RestClient.get 'COLIVING_API_HOST/v1/agreements',
   params: {
   }, headers: headers
 
@@ -2511,7 +2511,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('COLIVING_API_HOST/v1/tracks', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/agreements', headers = headers)
 
 print(r.json())
 
@@ -2532,7 +2532,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','COLIVING_API_HOST/v1/tracks', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/agreements', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -2549,7 +2549,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("COLIVING_API_HOST/v1/tracks");
+URL obj = new URL("COLIVING_API_HOST/v1/agreements");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -2580,7 +2580,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/tracks", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/agreements", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -2590,9 +2590,9 @@ func main() {
 
 ```
 
-`Obtener /tracks`
+`Obtener /agreements`
 
-<h3 id="get-track-by-handle-and-slug-parameters">Parámetros de consulta</h3>
+<h3 id="get-agreement-by-handle-and-slug-parameters">Parámetros de consulta</h3>
 
 | Nombre | Tipo   | Requerido | Descripción          |
 | ------ | ------ | --------- | -------------------- |
@@ -2617,9 +2617,9 @@ func main() {
     "mood": "string",
     "release_date": "string",
     "remix_of": {
-      "tracks": [
+      "agreements": [
         {
-          "parent_track_id": "string"
+          "parent_agreement_id": "string"
         }
       ]
     },
@@ -2648,7 +2648,7 @@ func main() {
         "1000x1000": "string"
       },
       "repost_count": 0,
-      "track_count": 0
+      "agreement_count": 0
     },
     "duration": 0,
     "downloadable": true,
@@ -2658,28 +2658,28 @@ func main() {
 }
 ```
 
-<h3 id="get-track-by-handle-and-slug-responses">Respuestas</h3>
+<h3 id="get-agreement-by-handle-and-slug-responses">Respuestas</h3>
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                 |
 | ------ | ------------------------------------------------------------------------------- | -------------------- | --------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | Exitoso              | [track_response](#schematrack_response) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | Exitoso              | [agreement_response](#schemaagreement_response) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                 |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                 |
 
 ## Pistas Recomendadas
 
-<a id="opIdRecommended Tracks"></a>
+<a id="opIdRecommended Agreements"></a>
 
 > Muestra de código
 
 ```shell
-curl COLIVING_API_HOST/v1/tracks/recommended/string 
+curl COLIVING_API_HOST/v1/agreements/recommended/string 
 
 
 ```
 
 ```http
-GET COLIVING_API_HOST/v1/tracks/recommended/string HTTP/1.1
+GET COLIVING_API_HOST/v1/agreements/recommended/string HTTP/1.1
 
 ```
 
@@ -2689,7 +2689,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('COLIVING_API_HOST/v1/tracks/recommended/string',
+fetch('COLIVING_API_HOST/v1/agreements/recommended/string',
 {
   method: 'GET',
 
@@ -2711,7 +2711,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'COLIVING_API_HOST/v1/tracks/recommended/string',
+result = RestClient.get 'COLIVING_API_HOST/v1/agreements/recommended/string',
   params: {
   }, headers: headers
 
@@ -2725,7 +2725,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('COLIVING_API_HOST/v1/tracks/recommended/string', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/agreements/recommended/string', headers = headers)
 
 print(r.json())
 
@@ -2746,7 +2746,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','COLIVING_API_HOST/v1/tracks/recommended/string', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/agreements/recommended/string', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -2763,7 +2763,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("COLIVING_API_HOST/v1/tracks/recommended/string");
+URL obj = new URL("COLIVING_API_HOST/v1/agreements/recommended/string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -2794,7 +2794,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/tracks/recommended/string", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/agreements/recommended/string", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -2804,13 +2804,13 @@ func main() {
 
 ```
 
-`GET /tracks/recommended/{version}`
+`GET /agreements/recommended/{version}`
 
-<h3 id="recommended-tracks-parameters">Parámetros de consulta</h3>
+<h3 id="recommended-agreements-parameters">Parámetros de consulta</h3>
 
 | Nombre             | Tipo   | Requerido | Descripción                                                                  |
 | ------------------ | ------ | --------- | ---------------------------------------------------------------------------- |
-| género             | cadena | falso     | Tracks de tendencia recomendados para un género especificado                 |
+| género             | cadena | falso     | Agreements de tendencia recomendados para un género especificado                 |
 | límite             | cadena | falso     | Número de pistas recomendadas a buscar                                       |
 | lista de exclusión | cadena | falso     | Lista de identificadores de pista a excluir                                  |
 | tiempo             | cadena | falso     | Pistas populares en un rango de tiempo especificado \(semana, mes, allTime) |
@@ -2835,9 +2835,9 @@ func main() {
       "mood": "string",
       "release_date": "string",
       "remix_of": {
-        "tracks": [
+        "agreements": [
           {
-            "parent_track_id": "string"
+            "parent_agreement_id": "string"
           }
         ]
       },
@@ -2866,7 +2866,7 @@ func main() {
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "track_count": 0
+        "agreement_count": 0
       },
       "duration": 0,
       "downloadable": true,
@@ -2877,28 +2877,28 @@ func main() {
 }
 ```
 
-<h3 id="recommended-tracks-responses">Respuestas</h3>
+<h3 id="recommended-agreements-responses">Respuestas</h3>
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                   |
 | ------ | ------------------------------------------------------------------------------- | -------------------- | ----------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | Exitoso              | [tracks_response](#schematracks_response) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | Exitoso              | [agreements_response](#schemaagreements_response) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                   |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                   |
 
 ## Buscar pistas
 
-<a id="opIdSearch Tracks"></a>
+<a id="opIdSearch Agreements"></a>
 
 > Muestra de código
 
 ```shell
-curl COLIVING_API_HOST/v1/tracks/search?query=baauer b2b 
+curl COLIVING_API_HOST/v1/agreements/search?query=baauer b2b 
 
 
 ```
 
 ```http
-GET COLIVING_API_HOST/v1/tracks/search?query=baauer b2b HTTP/1.1
+GET COLIVING_API_HOST/v1/agreements/search?query=baauer b2b HTTP/1.1
 
 ```
 
@@ -2908,7 +2908,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('COLIVING_API_HOST/v1/tracks/search?query=baauer b2b',
+fetch('COLIVING_API_HOST/v1/agreements/search?query=baauer b2b',
 {
   method: 'GET',
 
@@ -2930,7 +2930,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'COLIVING_API_HOST/v1/tracks/search',
+result = RestClient.get 'COLIVING_API_HOST/v1/agreements/search',
   params: {
   'query' => 'string'
 }, headers: headers
@@ -2945,7 +2945,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('COLIVING_API_HOST/v1/tracks/search', params={
+r = requests.get('COLIVING_API_HOST/v1/agreements/search', params={
   'query': 'baauer b2b'
 }, headers = headers)
 
@@ -2968,7 +2968,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','COLIVING_API_HOST/v1/tracks/search', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/agreements/search', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -2985,7 +2985,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("COLIVING_API_HOST/v1/tracks/search?query=baauer b2b");
+URL obj = new URL("COLIVING_API_HOST/v1/agreements/search?query=baauer b2b");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -3016,7 +3016,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/tracks/search", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/agreements/search", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -3028,9 +3028,9 @@ func main() {
 
 `Obtener /pistas/búsqueda`
 
-*Buscar un track*
+*Buscar un agreement*
 
-<h3 id="search-tracks-parameters">Parámetros de consulta</h3>
+<h3 id="search-agreements-parameters">Parámetros de consulta</h3>
 
 | Nombre           | Tipo   | Requerido | Descripción                       |
 | ---------------- | ------ | --------- | --------------------------------- |
@@ -3079,35 +3079,35 @@ func main() {
           "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
         },
         "repost_count": 5,
-        "track_count": 4
+        "agreement_count": 4
       }
     }
   ]
 }
 ```
 
-<h3 id="search-tracks-responses">Respuestas</h3>
+<h3 id="search-agreements-responses">Respuestas</h3>
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                     |
 | ------ | ------------------------------------------------------------------------------- | -------------------- | ------------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [búsqueda_seguimiento](#schematrack_search) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [búsqueda_seguimiento](#schemaagreement_search) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                     |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                     |
 
 ## Pistas populares
 
-<a id="opIdTrending Tracks"></a>
+<a id="opIdTrending Agreements"></a>
 
 > Muestra de código
 
 ```shell
-curl COLIVING_API_HOST/v1/tracks/trending/string 
+curl COLIVING_API_HOST/v1/agreements/trending/string 
 
 
 ```
 
 ```http
-GET COLIVING_API_HOST/v1/tracks/trending/string HTTP/1.1
+GET COLIVING_API_HOST/v1/agreements/trending/string HTTP/1.1
 
 ```
 
@@ -3117,7 +3117,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('COLIVING_API_HOST/v1/tracks/trending/string',
+fetch('COLIVING_API_HOST/v1/agreements/trending/string',
 {
   method: 'GET',
 
@@ -3139,7 +3139,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'COLIVING_API_HOST/v1/tracks/trending/string',
+result = RestClient.get 'COLIVING_API_HOST/v1/agreements/trending/string',
   params: {
   }, headers: headers
 
@@ -3153,7 +3153,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('COLIVING_API_HOST/v1/tracks/trending/string', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/agreements/trending/string', headers = headers)
 
 print(r.json())
 
@@ -3174,7 +3174,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','COLIVING_API_HOST/v1/tracks/trending/string', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/agreements/trending/string', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -3191,7 +3191,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("COLIVING_API_HOST/v1/tracks/trending/string");
+URL obj = new URL("COLIVING_API_HOST/v1/agreements/trending/string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -3222,7 +3222,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/tracks/trending/string", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/agreements/trending/string", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -3232,11 +3232,11 @@ func main() {
 
 ```
 
-`GET /tracks/trending/{version}`
+`GET /agreements/trending/{version}`
 
 *Obtiene las 100 pistas más populares \(más popular\) en Coliving*
 
-<h3 id="trending-tracks-parameters">Parámetros de consulta</h3>
+<h3 id="trending-agreements-parameters">Parámetros de consulta</h3>
 
 | Nombre    | Tipo   | Requerido | Descripción                                                                  |
 | --------- | ------ | --------- | ---------------------------------------------------------------------------- |
@@ -3263,9 +3263,9 @@ func main() {
       "mood": "string",
       "release_date": "string",
       "remix_of": {
-        "tracks": [
+        "agreements": [
           {
-            "parent_track_id": "string"
+            "parent_agreement_id": "string"
           }
         ]
       },
@@ -3294,7 +3294,7 @@ func main() {
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "track_count": 0
+        "agreement_count": 0
       },
       "duration": 0,
       "downloadable": true,
@@ -3305,28 +3305,28 @@ func main() {
 }
 ```
 
-<h3 id="trending-tracks-responses">Respuestas</h3>
+<h3 id="trending-agreements-responses">Respuestas</h3>
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                   |
 | ------ | ------------------------------------------------------------------------------- | -------------------- | ----------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | Exitoso              | [tracks_response](#schematracks_response) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | Exitoso              | [agreements_response](#schemaagreements_response) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                   |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                   |
 
 ## Obtener pista
 
-<a id="opIdGet Track"></a>
+<a id="opIdGet Agreement"></a>
 
 > Muestra de código
 
 ```shell
-curl COLIVING_API_HOST/v1/tracks/D7KyD 
+curl COLIVING_API_HOST/v1/agreements/D7KyD 
 
 
 ```
 
 ```http
-GET COLIVING_API_HOST/v1/tracks/D7KyD HTTP/1.1
+GET COLIVING_API_HOST/v1/agreements/D7KyD HTTP/1.1
 
 ```
 
@@ -3336,7 +3336,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('COLIVING_API_HOST/v1/tracks/D7KyD',
+fetch('COLIVING_API_HOST/v1/agreements/D7KyD',
 {
   method: 'GET',
 
@@ -3358,7 +3358,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'COLIVING_API_HOST/v1/tracks/D7KyD',
+result = RestClient.get 'COLIVING_API_HOST/v1/agreements/D7KyD',
   params: {
   }, headers: headers
 
@@ -3372,7 +3372,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('COLIVING_API_HOST/v1/tracks/D7KyD', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/agreements/D7KyD', headers = headers)
 
 print(r.json())
 
@@ -3393,7 +3393,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','COLIVING_API_HOST/v1/tracks/D7KyD', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/agreements/D7KyD', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -3410,7 +3410,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("COLIVING_API_HOST/v1/tracks/D7KyD");
+URL obj = new URL("COLIVING_API_HOST/v1/agreements/D7KyD");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -3441,7 +3441,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/tracks/D7KyD", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/agreements/D7KyD", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -3451,15 +3451,15 @@ func main() {
 
 ```
 
-`GET /tracks/{track_id}`
+`GET /agreements/{agreement_id}`
 
-*Fetch a track*
+*Fetch a agreement*
 
-<h3 id="get-track-parameters">Parámetros de consulta</h3>
+<h3 id="get-agreement-parameters">Parámetros de consulta</h3>
 
 | Nombre   | Tipo   | Requerido | Descripción    |
 | -------- | ------ | --------- | -------------- |
-| track_id | cadena | verdad    | Un ID de pista |
+| agreement_id | cadena | verdad    | Un ID de pista |
 
 > Ejemplo de respuesta
 
@@ -3502,39 +3502,39 @@ func main() {
         "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
       },
       "repost_count": 5,
-      "track_count": 4
+      "agreement_count": 4
     }
   }
 }
 ```
 
-<h3 id="get-track-responses">Respuestas</h3>
+<h3 id="get-agreement-responses">Respuestas</h3>
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                 |
 | ------ | ------------------------------------------------------------------------------- | -------------------- | --------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [track_response](#schematrack_response) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [agreement_response](#schemaagreement_response) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                 |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                 |
 
 ## Pista de streaming
 
-<a id="opIdStream Track"></a>
+<a id="opIdStream Agreement"></a>
 
 > Muestra de código
 
 ```shell
-curl COLIVING_API_HOST/v1/tracks/D7KyD/stream
+curl COLIVING_API_HOST/v1/agreements/D7KyD/stream
 
 ```
 
 ```http
-GET COLIVING_API_HOST/v1/tracks/D7KyD/stream HTTP/1.1
+GET COLIVING_API_HOST/v1/agreements/D7KyD/stream HTTP/1.1
 
 ```
 
 ```javascript
 
-fetch('COLIVING_API_HOST/v1/tracks/D7KyD/stream',
+fetch('COLIVING_API_HOST/v1/agreements/D7KyD/stream',
 {
   method: 'GET'
 
@@ -3551,7 +3551,7 @@ fetch('COLIVING_API_HOST/v1/tracks/D7KyD/stream',
 require 'rest-client'
 require 'json'
 
-result = RestClient.get 'COLIVING_API_HOST/v1/tracks/D7KyD/stream',
+result = RestClient.get 'COLIVING_API_HOST/v1/agreements/D7KyD/stream',
   params: {
   }
 
@@ -3562,7 +3562,7 @@ p JSON.parse(result)
 ```python
 import requests
 
-r = requests.get('COLIVING_API_HOST/v1/tracks/D7KyD/stream')
+r = requests.get('COLIVING_API_HOST/v1/agreements/D7KyD/stream')
 
 print(r.json())
 
@@ -3579,7 +3579,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','COLIVING_API_HOST/v1/tracks/D7KyD/stream', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/agreements/D7KyD/stream', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -3596,7 +3596,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("COLIVING_API_HOST/v1/tracks/D7KyD/stream");
+URL obj = new URL("COLIVING_API_HOST/v1/agreements/D7KyD/stream");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -3623,7 +3623,7 @@ import (
 func main() {
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/tracks/D7KyD/stream", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/agreements/D7KyD/stream", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -3633,19 +3633,19 @@ func main() {
 
 ```
 
-`GET /tracks/{track_id}/stream`
+`GET /agreements/{agreement_id}/stream`
 
 *Obtener el archivo mp3 streamable de la pista*
 
 Este extremo acepta la cabecera de Rango para streaming. https://developer.mozilla.org/en-US/docs/Web/HTTP/Range_requests
 
-<h3 id="stream-track-parameters">Parámetros de consulta</h3>
+<h3 id="stream-agreement-parameters">Parámetros de consulta</h3>
 
 | Nombre   | Tipo   | Requerido | Descripción    |
 | -------- | ------ | --------- | -------------- |
-| track_id | cadena | verdad    | Un ID de pista |
+| agreement_id | cadena | verdad    | Un ID de pista |
 
-<h3 id="stream-track-responses">Respuestas</h3>
+<h3 id="stream-agreement-responses">Respuestas</h3>
 
 | Estado | Significado                                                                     | Descripción                  | Esquema |
 | ------ | ------------------------------------------------------------------------------- | ---------------------------- | ------- |
@@ -4335,7 +4335,7 @@ Este endpoint le permite buscar y acceder a los recursos API cuando sólo conoce
 > Redirección interna
 
 ```
-{"HTTP/1.1 302 Found Location":"/v1/tracks/V4W8r"}
+{"HTTP/1.1 302 Found Location":"/v1/agreements/V4W8r"}
 ```
 
 <h3 id="resolve-responses">Respuestas</h3>
@@ -4379,7 +4379,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
       "1000x1000": "string"
     },
     "repost_count": 0,
-    "track_count": 0
+    "agreement_count": 0
   }
 }
 
@@ -4419,7 +4419,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
     "1000x1000": "string"
   },
   "repost_count": 0,
-  "track_count": 0
+  "agreement_count": 0
 }
 
 ```
@@ -4441,7 +4441,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 | contador de listas      | entero                                  | verdad    | ninguna       | ninguna     |
 | imagen_perfil           | [imagen_perfil](#schemaprofile_picture) | falso     | ninguna       | ninguna     |
 | contador_repost_count | entero                                  | verdad    | ninguna       | ninguna     |
-| track_count             | entero                                  | verdad    | ninguna       | ninguna     |
+| agreement_count             | entero                                  | verdad    | ninguna       | ninguna     |
 
 <a id="schemacover_photo"></a>
 <a id="schema_cover_photo"></a>
@@ -4487,11 +4487,11 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 | 480 x 480 | cadena | falso     | ninguna       | ninguna     |
 | 1000x1000 | cadena | falso     | ninguna       | ninguna     |
 
-<a id="schematracks_response"></a>
-<a id="schema_tracks_response"></a>
-<a id="tocStracks_response"></a>
-<a id="tocstracks_response"></a>
-<h2 id="tocS_tracks_response">tracks_response</h2>
+<a id="schemaagreements_response"></a>
+<a id="schema_agreements_response"></a>
+<a id="tocSagreements_response"></a>
+<a id="tocsagreements_response"></a>
+<h2 id="tocS_agreements_response">agreements_response</h2>
 
 ```json
 {
@@ -4508,9 +4508,9 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
       "mood": "string",
       "release_date": "string",
       "remix_of": {
-        "tracks": [
+        "agreements": [
           {
-            "parent_track_id": "string"
+            "parent_agreement_id": "string"
           }
         ]
       },
@@ -4539,7 +4539,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "track_count": 0
+        "agreement_count": 0
       },
       "duration": 0,
       "downloadable": true,
@@ -4555,13 +4555,13 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre | Tipo                    | Requerido | Restricciones | Descripción |
 | ------ | ----------------------- | --------- | ------------- | ----------- |
-| datos  | [[Pista](#schematrack)] | falso     | ninguna       | ninguna     |
+| datos  | [[Pista](#schemaagreement)] | falso     | ninguna       | ninguna     |
 
-<a id="schematrack"></a>
-<a id="schema_Track"></a>
-<a id="tocStrack"></a>
-<a id="tocstrack"></a>
-<h2 id="tocS_Track">Pista</h2>
+<a id="schemaagreement"></a>
+<a id="schema_Agreement"></a>
+<a id="tocSagreement"></a>
+<a id="tocsagreement"></a>
+<h2 id="tocS_Agreement">Pista</h2>
 
 ```json
 {
@@ -4576,9 +4576,9 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
   "mood": "string",
   "release_date": "string",
   "remix_of": {
-    "tracks": [
+    "agreements": [
       {
-        "parent_track_id": "string"
+        "parent_agreement_id": "string"
       }
     ]
   },
@@ -4607,7 +4607,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
       "1000x1000": "string"
     },
     "repost_count": 0,
-    "track_count": 0
+    "agreement_count": 0
   },
   "duration": 0,
   "downloadable": true,
@@ -4621,7 +4621,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre                  | Estilo                                | Requerido | Restricciones | Descripción |
 | ----------------------- | ------------------------------------- | --------- | ------------- | ----------- |
-| obra de arte            | [track_artwork](#schematrack_artwork) | falso     | ninguna       | ninguna     |
+| obra de arte            | [agreement_artwork](#schemaagreement_artwork) | falso     | ninguna       | ninguna     |
 | descripción             | cadena                                | falso     | ninguna       | ninguna     |
 | género                  | cadena                                | falso     | ninguna       | ninguna     |
 | id                      | cadena                                | verdad    | ninguna       | ninguna     |
@@ -4638,11 +4638,11 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 | contar_jugar            | entero                                | verdad    | ninguna       | ninguna     |
 | permalink               | cadena                                | falso     | ninguna       | ninguna     |
 
-<a id="schematrack_artwork"></a>
-<a id="schema_track_artwork"></a>
-<a id="tocStrack_artwork"></a>
-<a id="tocstrack_artwork"></a>
-<h2 id="tocS_track_artwork">track_artwork</h2>
+<a id="schemaagreement_artwork"></a>
+<a id="schema_agreement_artwork"></a>
+<a id="tocSagreement_artwork"></a>
+<a id="tocsagreement_artwork"></a>
+<h2 id="tocS_agreement_artwork">agreement_artwork</h2>
 
 ```json
 {
@@ -4669,9 +4669,9 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 ```json
 {
-  "tracks": [
+  "agreements": [
     {
-      "parent_track_id": "string"
+      "parent_agreement_id": "string"
     }
   ]
 }
@@ -4682,17 +4682,17 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre | Tipo                                    | Requerido | Restricciones | Descripción |
 | ------ | --------------------------------------- | --------- | ------------- | ----------- |
-| pistas | [[track_element](#schematrack_element)] | falso     | ninguna       | ninguna     |
+| pistas | [[agreement_element](#schemaagreement_element)] | falso     | ninguna       | ninguna     |
 
-<a id="schematrack_element"></a>
-<a id="schema_track_element"></a>
-<a id="tocStrack_element"></a>
-<a id="tocstrack_element"></a>
-<h2 id="tocS_track_element">track_element</h2>
+<a id="schemaagreement_element"></a>
+<a id="schema_agreement_element"></a>
+<a id="tocSagreement_element"></a>
+<a id="tocsagreement_element"></a>
+<h2 id="tocS_agreement_element">agreement_element</h2>
 
 ```json
 {
-  "parent_track_id": "string"
+  "parent_agreement_id": "string"
 }
 
 ```
@@ -4701,7 +4701,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre            | Tipo   | Requerido | Restricciones | Descripción |
 | ----------------- | ------ | --------- | ------------- | ----------- |
-| parent_track_id | cadena | verdad    | ninguna       | ninguna     |
+| parent_agreement_id | cadena | verdad    | ninguna       | ninguna     |
 
 <a id="schemareposts"></a>
 <a id="schema_reposts"></a>
@@ -4850,7 +4850,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
         "1000x1000": "string"
       },
       "repost_count": 0,
-      "track_count": 0
+      "agreement_count": 0
     }
   ]
 }
@@ -5066,7 +5066,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "track_count": 0
+        "agreement_count": 0
       }
     }
   ]
@@ -5121,7 +5121,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
       "1000x1000": "string"
     },
     "repost_count": 0,
-    "track_count": 0
+    "agreement_count": 0
   }
 }
 
@@ -5164,11 +5164,11 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 | 480 x 480 | cadena | falso     | ninguna       | ninguna     |
 | 1000x1000 | cadena | falso     | ninguna       | ninguna     |
 
-<a id="schemaplaylist_tracks_response"></a>
-<a id="schema_playlist_tracks_response"></a>
-<a id="tocSplaylist_tracks_response"></a>
-<a id="tocsplaylist_tracks_response"></a>
-<h2 id="tocS_playlist_tracks_response">playlist_pistas_respuesta_</h2>
+<a id="schemaplaylist_agreements_response"></a>
+<a id="schema_playlist_agreements_response"></a>
+<a id="tocSplaylist_agreements_response"></a>
+<a id="tocsplaylist_agreements_response"></a>
+<h2 id="tocS_playlist_agreements_response">playlist_pistas_respuesta_</h2>
 
 ```json
 {
@@ -5185,9 +5185,9 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
       "mood": "string",
       "release_date": "string",
       "remix_of": {
-        "tracks": [
+        "agreements": [
           {
-            "parent_track_id": "string"
+            "parent_agreement_id": "string"
           }
         ]
       },
@@ -5216,7 +5216,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "track_count": 0
+        "agreement_count": 0
       },
       "duration": 0,
       "downloadable": true,
@@ -5232,7 +5232,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre | Tipo                    | Requerido | Restricciones | Descripción |
 | ------ | ----------------------- | --------- | ------------- | ----------- |
-| datos  | [[Pista](#schematrack)] | falso     | ninguna       | ninguna     |
+| datos  | [[Pista](#schemaagreement)] | falso     | ninguna       | ninguna     |
 
 <a id="schemaplaylist_search_result"></a>
 <a id="schema_playlist_search_result"></a>
@@ -5277,7 +5277,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "track_count": 0
+        "agreement_count": 0
       }
     }
   ]
@@ -5334,7 +5334,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "track_count": 0
+        "agreement_count": 0
       }
     }
   ]
@@ -5348,11 +5348,11 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 | ------ | ------------------------------------------ | --------- | ------------- | ----------- |
 | datos  | [[lista de reproducción](#schemaplaylist)] | falso     | ninguna       | ninguna     |
 
-<a id="schematrack_response"></a>
-<a id="schema_track_response"></a>
-<a id="tocStrack_response"></a>
-<a id="tocstrack_response"></a>
-<h2 id="tocS_track_response">track_response</h2>
+<a id="schemaagreement_response"></a>
+<a id="schema_agreement_response"></a>
+<a id="tocSagreement_response"></a>
+<a id="tocsagreement_response"></a>
+<h2 id="tocS_agreement_response">agreement_response</h2>
 
 ```json
 {
@@ -5368,9 +5368,9 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
     "mood": "string",
     "release_date": "string",
     "remix_of": {
-      "tracks": [
+      "agreements": [
         {
-          "parent_track_id": "string"
+          "parent_agreement_id": "string"
         }
       ]
     },
@@ -5399,7 +5399,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
         "1000x1000": "string"
       },
       "repost_count": 0,
-      "track_count": 0
+      "agreement_count": 0
     },
     "duration": 0,
     "downloadable": true,
@@ -5414,13 +5414,13 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre | Tipo                  | Requerido | Restricciones | Descripción |
 | ------ | --------------------- | --------- | ------------- | ----------- |
-| datos  | [Pista](#schematrack) | falso     | ninguna       | ninguna     |
+| datos  | [Pista](#schemaagreement) | falso     | ninguna       | ninguna     |
 
-<a id="schematrack_search"></a>
-<a id="schema_track_search"></a>
-<a id="tocStrack_search"></a>
-<a id="tocstrack_search"></a>
-<h2 id="tocS_track_search">búsqueda_seguimiento</h2>
+<a id="schemaagreement_search"></a>
+<a id="schema_agreement_search"></a>
+<a id="tocSagreement_search"></a>
+<a id="tocsagreement_search"></a>
+<h2 id="tocS_agreement_search">búsqueda_seguimiento</h2>
 
 ```json
 {
@@ -5437,9 +5437,9 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
       "mood": "string",
       "release_date": "string",
       "remix_of": {
-        "tracks": [
+        "agreements": [
           {
-            "parent_track_id": "string"
+            "parent_agreement_id": "string"
           }
         ]
       },
@@ -5468,7 +5468,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "track_count": 0
+        "agreement_count": 0
       },
       "duration": 0,
       "downloadable": true,
@@ -5484,7 +5484,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre | Tipo                    | Requerido | Restricciones | Descripción |
 | ------ | ----------------------- | --------- | ------------- | ----------- |
-| datos  | [[Pista](#schematrack)] | falso     | ninguna       | ninguna     |
+| datos  | [[Pista](#schemaagreement)] | falso     | ninguna       | ninguna     |
 
 <a id="schemaattestation_reponse"></a>
 <a id="schema_attestation_reponse"></a>

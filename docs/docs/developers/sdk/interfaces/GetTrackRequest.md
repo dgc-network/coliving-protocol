@@ -1,15 +1,15 @@
 ---
-id: "GetTrackRequest"
-title: "Interface: GetTrackRequest"
-sidebar_label: "GetTrackRequest"
+id: "GetAgreementRequest"
+title: "Interface: GetAgreementRequest"
+sidebar_label: "GetAgreementRequest"
 sidebar_position: 0
 custom_edit_url: null
 ---
 
 ## Properties
 
-### trackId
+### agreementId
 
- **trackId**: `string`
+ **agreementId**: `string`
 
-A Track ID
+A Agreement ID

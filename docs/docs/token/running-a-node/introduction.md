@@ -13,7 +13,7 @@ The Coliving protocol is powered by two off-chain services, the Discovery Node a
 
 * Indexes blockchains used by the Coliving protocol \(Main-net Ethereum, POA, and Solana\)
 * Serves API traffic
-* Tracks usage metrics
+* Agreements usage metrics
 
 **Content Node**
 

@@ -14,23 +14,23 @@
  */
 
 import {
-    Track,
-    TrackFromJSON,
-    TrackFromJSONTyped,
-    TrackToJSON,
-} from './Track';
+    Agreement,
+    AgreementFromJSON,
+    AgreementFromJSONTyped,
+    AgreementToJSON,
+} from './Agreement';
 
 /**
  * 
  * @export
- * @interface TrackSearch
+ * @interface AgreementSearch
  */
-export interface TrackSearch {
+export interface AgreementSearch {
     /**
      * 
-     * @type {Array<Track>}
-     * @memberof TrackSearch
+     * @type {Array<Agreement>}
+     * @memberof AgreementSearch
      */
-    data?: Array<Track>;
+    data?: Array<Agreement>;
 }
 

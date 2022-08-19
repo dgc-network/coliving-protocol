@@ -1,7 +1,7 @@
 'use strict'
 module.exports = (sequelize, DataTypes) => {
-  const TrackListenCount = sequelize.define('TrackListenCount', {
-    trackId: {
+  const AgreementListenCount = sequelize.define('AgreementListenCount', {
+    agreementId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       autoIncrement: false,
@@ -17,8 +17,8 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true
     }
   }, {})
-  TrackListenCount.associate = function (models) {
+  AgreementListenCount.associate = function (models) {
     // associations can be defined here
   }
-  return TrackListenCount
+  return AgreementListenCount
 }

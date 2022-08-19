@@ -6,13 +6,13 @@ const authMiddleware = require('../authMiddleware')
 module.exports = function (app) {
   app.post('/artist_pick', authMiddleware, handleResponse(async (req, res, next) => {
     const handle = req.user.handle
-    const { trackId } = req.body
+    const { agreementId } = req.body
 
     if (!handle) return errorResponseBadRequest('Please provide handle')
 
     await models.SocialHandles.upsert({
       handle,
-      pinnedTrackId: trackId || null
+      pinnedAgreementId: agreementId || null
     })
     return successResponse()
   }))
@@ -29,7 +29,7 @@ module.exports = function (app) {
       }
     })
     return successResponse({
-      artistPicks: userSocials.map(({ handle, pinnedTrackId }) => ({ handle, pinnedTrackId }))
+      artistPicks: userSocials.map(({ handle, pinnedAgreementId }) => ({ handle, pinnedAgreementId }))
     })
   }))
 }

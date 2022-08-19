@@ -3,7 +3,7 @@ import {
   PlaylistRow,
   RepostRow,
   SaveRow,
-  TrackRow,
+  AgreementRow,
   UserRow,
 } from './db'
 
@@ -18,7 +18,7 @@ export type EntityUserDoc = {
 
 export type PlaylistDoc = PlaylistRow & {
   suggest: string
-  tracks: TrackDoc[]
+  agreements: AgreementDoc[]
   save_count: number
   saved_by: number[]
   repost_count: number
@@ -29,13 +29,13 @@ export type PlaylistDoc = PlaylistRow & {
 
 export type UserDoc = UserRow & {
   suggest: string
-  tracks: TrackRow[]
-  track_count: number
+  agreements: AgreementRow[]
+  agreement_count: number
   following_ids: number[]
   following_count: number
 }
 
-export type TrackDoc = TrackRow & {
+export type AgreementDoc = AgreementRow & {
   suggest: string
   reposted_by: number[]
   saved_by: number[]

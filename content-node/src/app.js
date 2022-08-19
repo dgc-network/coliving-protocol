@@ -12,7 +12,7 @@ const {
 } = require('./middlewares/readOnly/readOnlyMiddleware')
 const {
   userReqLimiter,
-  trackReqLimiter,
+  agreementReqLimiter,
   colivingUserReqLimiter,
   metadataReqLimiter,
   imageReqLimiter,
@@ -35,7 +35,7 @@ function errorHandler(err, req, res, next) {
 }
 
 /**
- * Get the path, method, and regex used to match to routes. Used to track route durations
+ * Get the path, method, and regex used to match to routes. Used to agreement route durations
  *
  * Structure:
  *  {regex: <some regex>, path: <path that a matched path will route to in the normalize fn in prometheus middleware>}
@@ -47,7 +47,7 @@ function errorHandler(err, req, res, next) {
  * }
  * @param {Object[]} routers Array of Express routers
  */
-function _setupRouteDurationTracking(routers) {
+function _setupRouteDurationAgreementing(routers) {
   let layers = routers.map((route) => route.stack)
   layers = _.flatten(layers)
 
@@ -116,7 +116,7 @@ const initializeApp = (port, serviceRegistry) => {
 
   // Rate limit routes
   app.use('/users/', userReqLimiter)
-  app.use('/track*', trackReqLimiter)
+  app.use('/agreement*', agreementReqLimiter)
   app.use('/coliving_user/', colivingUserReqLimiter)
   app.use('/metadata', metadataReqLimiter)
   app.use('/image_upload', imageReqLimiter)
@@ -134,11 +134,11 @@ const initializeApp = (port, serviceRegistry) => {
     replicaSetRoutes
   ]
 
-  const { routesWithParams, routes } = _setupRouteDurationTracking(routers)
+  const { routesWithParams, routes } = _setupRouteDurationAgreementing(routers)
 
   const prometheusRegistry = serviceRegistry.prometheusRegistry
 
-  // Metric tracking middleware
+  // Metric agreementing middleware
   app.use(
     routes.map((route) => route.path),
     prometheusMiddleware({
@@ -147,9 +147,9 @@ const initializeApp = (port, serviceRegistry) => {
       promRegistry: prometheusRegistry.registry,
       // Override metric name to include namespace prefix
       httpDurationMetricName: `${prometheusRegistry.namespacePrefix}_http_request_duration_seconds`,
-      // Include HTTP method in duration tracking
+      // Include HTTP method in duration agreementing
       includeMethod: true,
-      // Include HTTP status code in duration tracking
+      // Include HTTP status code in duration agreementing
       includePath: true,
       // Disable default gauge counter to indicate if this middleware is running
       includeUp: false,
@@ -157,7 +157,7 @@ const initializeApp = (port, serviceRegistry) => {
       buckets: [0.2, 0.5, ...exponentialBucketsRange(1, 60, 4)],
       // Do not register the default /metrics route, since we have the /prometheus_metrics
       autoregister: false,
-      // Normalizes the path to be tracked in this middleware. For routes with route params,
+      // Normalizes the path to be agreemented in this middleware. For routes with route params,
       // this fn maps those routes to generic paths. e.g. /ipfs/QmSomeCid -> /ipfs/#CID
       normalizePath: function (req, opts) {
         const path = prometheusMiddleware.normalizePath(req, opts)
@@ -170,7 +170,7 @@ const initializeApp = (port, serviceRegistry) => {
           }
         } catch (e) {
           req.logger.warn(
-            `DurationTracking || Could not match on regex: ${e.message}`
+            `DurationAgreementing || Could not match on regex: ${e.message}`
           )
         }
         return path

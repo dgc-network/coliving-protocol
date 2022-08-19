@@ -14,11 +14,11 @@
  */
 
 import {
-    TrackId,
-    TrackIdFromJSON,
-    TrackIdFromJSONTyped,
-    TrackIdToJSON,
-} from './TrackId';
+    AgreementId,
+    AgreementIdFromJSON,
+    AgreementIdFromJSONTyped,
+    AgreementIdToJSON,
+} from './AgreementId';
 
 /**
  * 
@@ -28,21 +28,21 @@ import {
 export interface TrendingTimesIds {
     /**
      * 
-     * @type {Array<TrackId>}
+     * @type {Array<AgreementId>}
      * @memberof TrendingTimesIds
      */
-    week?: Array<TrackId>;
+    week?: Array<AgreementId>;
     /**
      * 
-     * @type {Array<TrackId>}
+     * @type {Array<AgreementId>}
      * @memberof TrendingTimesIds
      */
-    month?: Array<TrackId>;
+    month?: Array<AgreementId>;
     /**
      * 
-     * @type {Array<TrackId>}
+     * @type {Array<AgreementId>}
      * @memberof TrendingTimesIds
      */
-    year?: Array<TrackId>;
+    year?: Array<AgreementId>;
 }
 

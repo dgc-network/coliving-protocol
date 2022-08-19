@@ -6,23 +6,23 @@ from src.models.playlists.playlist import Playlist
 from src.models.social.follow import Follow
 from src.models.social.repost import Repost, RepostType
 from src.models.social.save import SaveType
-from src.models.tracks.track import Track
+from src.models.agreements.agreement import Agreement
 from src.queries import response_name_constants
 from src.queries.get_feed_es import get_feed_es
-from src.queries.get_unpopulated_tracks import get_unpopulated_tracks
+from src.queries.get_unpopulated_agreements import get_unpopulated_agreements
 from src.queries.query_helpers import (
     get_pagination_vars,
     get_users_by_id,
     get_users_ids,
     paginate_query,
     populate_playlist_metadata,
-    populate_track_metadata,
+    populate_agreement_metadata,
 )
 from src.utils import helpers
 from src.utils.db_session import get_db_read_replica
 from src.utils.elasticdsl import es_url
 
-trackDedupeMaxMinutes = 10
+agreementDedupeMaxMinutes = 10
 
 
 def get_feed(args):
@@ -43,8 +43,8 @@ def get_feed_sql(args):
     db = get_db_read_replica()
 
     feed_filter = args.get("filter")
-    # Allow for fetching only tracks
-    tracks_only = args.get("tracks_only", False)
+    # Allow for fetching only agreements
+    agreements_only = args.get("agreements_only", False)
 
     followee_user_ids = args.get("followee_user_ids", [])
 
@@ -66,7 +66,7 @@ def get_feed_sql(args):
 
         # Fetch followee creations if requested
         if feed_filter in ["original", "all"]:
-            if not tracks_only:
+            if not agreements_only:
                 # Query playlists posted by followees, sorted and paginated by created_at desc
                 created_playlists_query = (
                     session.query(Playlist)
@@ -80,62 +80,62 @@ def get_feed_sql(args):
                 )
                 created_playlists = paginate_query(created_playlists_query, False).all()
 
-                # get track ids for all tracks in playlists
-                playlist_track_ids = set()
+                # get agreement ids for all agreements in playlists
+                playlist_agreement_ids = set()
                 for playlist in created_playlists:
-                    for track in playlist.playlist_contents["track_ids"]:
-                        playlist_track_ids.add(track["track"])
+                    for agreement in playlist.playlist_contents["agreement_ids"]:
+                        playlist_agreement_ids.add(agreement["agreement"])
 
-                # get all track objects for track ids
-                playlist_tracks = get_unpopulated_tracks(session, playlist_track_ids)
-                playlist_tracks_dict = {
-                    track["track_id"]: track for track in playlist_tracks
+                # get all agreement objects for agreement ids
+                playlist_agreements = get_unpopulated_agreements(session, playlist_agreement_ids)
+                playlist_agreements_dict = {
+                    agreement["agreement_id"]: agreement for agreement in playlist_agreements
                 }
 
-                # get all track ids that have same owner as playlist and created in "same action"
-                # "same action": track created within [x time] before playlist creation
-                tracks_to_dedupe = set()
+                # get all agreement ids that have same owner as playlist and created in "same action"
+                # "same action": agreement created within [x time] before playlist creation
+                agreements_to_dedupe = set()
                 for playlist in created_playlists:
-                    for track_entry in playlist.playlist_contents["track_ids"]:
-                        track = playlist_tracks_dict.get(track_entry["track"])
-                        if not track:
+                    for agreement_entry in playlist.playlist_contents["agreement_ids"]:
+                        agreement = playlist_agreements_dict.get(agreement_entry["agreement"])
+                        if not agreement:
                             continue
                         max_timedelta = datetime.timedelta(
-                            minutes=trackDedupeMaxMinutes
+                            minutes=agreementDedupeMaxMinutes
                         )
                         if (
-                            (track["owner_id"] == playlist.playlist_owner_id)
-                            and (track["created_at"] <= playlist.created_at)
+                            (agreement["owner_id"] == playlist.playlist_owner_id)
+                            and (agreement["created_at"] <= playlist.created_at)
                             and (
-                                playlist.created_at - track["created_at"]
+                                playlist.created_at - agreement["created_at"]
                                 <= max_timedelta
                             )
                         ):
-                            tracks_to_dedupe.add(track["track_id"])
-                tracks_to_dedupe = list(tracks_to_dedupe)
+                            agreements_to_dedupe.add(agreement["agreement_id"])
+                agreements_to_dedupe = list(agreements_to_dedupe)
             else:
                 # No playlists to consider
-                tracks_to_dedupe = []
+                agreements_to_dedupe = []
                 created_playlists = []
 
-            # Query tracks posted by followees, sorted & paginated by created_at desc
-            # exclude tracks that were posted in "same action" as playlist
-            created_tracks_query = (
-                session.query(Track)
+            # Query agreements posted by followees, sorted & paginated by created_at desc
+            # exclude agreements that were posted in "same action" as playlist
+            created_agreements_query = (
+                session.query(Agreement)
                 .filter(
-                    Track.is_current == True,
-                    Track.is_delete == False,
-                    Track.is_unlisted == False,
-                    Track.stem_of == None,
-                    Track.owner_id.in_(followee_user_ids),
-                    Track.track_id.notin_(tracks_to_dedupe),
+                    Agreement.is_current == True,
+                    Agreement.is_delete == False,
+                    Agreement.is_unlisted == False,
+                    Agreement.stem_of == None,
+                    Agreement.owner_id.in_(followee_user_ids),
+                    Agreement.agreement_id.notin_(agreements_to_dedupe),
                 )
-                .order_by(desc(Track.created_at))
+                .order_by(desc(Agreement.created_at))
             )
-            created_tracks = paginate_query(created_tracks_query, False).all()
+            created_agreements = paginate_query(created_agreements_query, False).all()
 
-            # extract created_track_ids and created_playlist_ids
-            created_track_ids = [track.track_id for track in created_tracks]
+            # extract created_agreement_ids and created_playlist_ids
+            created_agreement_ids = [agreement.agreement_id for agreement in created_agreements]
             created_playlist_ids = [
                 playlist.playlist_id for playlist in created_playlists
             ]
@@ -154,11 +154,11 @@ def get_feed_sql(args):
                 repost_subquery = repost_subquery.filter(
                     or_(
                         and_(
-                            Repost.repost_type == RepostType.track,
-                            Repost.repost_item_id.notin_(created_track_ids),
+                            Repost.repost_type == RepostType.agreement,
+                            Repost.repost_item_id.notin_(created_agreement_ids),
                         ),
                         and_(
-                            Repost.repost_type != RepostType.track,
+                            Repost.repost_type != RepostType.agreement,
                             Repost.repost_item_id.notin_(created_playlist_ids),
                         ),
                     )
@@ -178,16 +178,16 @@ def get_feed_sql(args):
             )
             followee_reposts = paginate_query(repost_query, False).all()
 
-            # build dict of track_id / playlist_id -> oldest followee repost timestamp from followee_reposts above
-            track_repost_timestamp_dict = {}
+            # build dict of agreement_id / playlist_id -> oldest followee repost timestamp from followee_reposts above
+            agreement_repost_timestamp_dict = {}
             playlist_repost_timestamp_dict = {}
             for (
                 repost_item_id,
                 repost_type,
                 oldest_followee_repost_timestamp,
             ) in followee_reposts:
-                if repost_type == RepostType.track:
-                    track_repost_timestamp_dict[
+                if repost_type == RepostType.agreement:
+                    agreement_repost_timestamp_dict[
                         repost_item_id
                     ] = oldest_followee_repost_timestamp
                 elif repost_type in (RepostType.playlist, RepostType.album):
@@ -195,26 +195,26 @@ def get_feed_sql(args):
                         repost_item_id
                     ] = oldest_followee_repost_timestamp
 
-            # extract reposted_track_ids and reposted_playlist_ids
-            reposted_track_ids = list(track_repost_timestamp_dict.keys())
+            # extract reposted_agreement_ids and reposted_playlist_ids
+            reposted_agreement_ids = list(agreement_repost_timestamp_dict.keys())
             reposted_playlist_ids = list(playlist_repost_timestamp_dict.keys())
 
-            # Query tracks reposted by followees
-            reposted_tracks = session.query(Track).filter(
-                Track.is_current == True,
-                Track.is_delete == False,
-                Track.is_unlisted == False,
-                Track.stem_of == None,
-                Track.track_id.in_(reposted_track_ids),
+            # Query agreements reposted by followees
+            reposted_agreements = session.query(Agreement).filter(
+                Agreement.is_current == True,
+                Agreement.is_delete == False,
+                Agreement.is_unlisted == False,
+                Agreement.stem_of == None,
+                Agreement.agreement_id.in_(reposted_agreement_ids),
             )
-            # exclude tracks already fetched from above, in case of "all" filter
+            # exclude agreements already fetched from above, in case of "all" filter
             if feed_filter == "all":
-                reposted_tracks = reposted_tracks.filter(
-                    Track.track_id.notin_(created_track_ids)
+                reposted_agreements = reposted_agreements.filter(
+                    Agreement.agreement_id.notin_(created_agreement_ids)
                 )
-            reposted_tracks = reposted_tracks.order_by(desc(Track.created_at)).all()
+            reposted_agreements = reposted_agreements.order_by(desc(Agreement.created_at)).all()
 
-            if not tracks_only:
+            if not agreements_only:
                 # Query playlists reposted by followees, excluding playlists already fetched from above
                 reposted_playlists = session.query(Playlist).filter(
                     Playlist.is_current == True,
@@ -234,27 +234,27 @@ def get_feed_sql(args):
                 reposted_playlists = []
 
         if feed_filter == "original":
-            tracks_to_process = created_tracks
+            agreements_to_process = created_agreements
             playlists_to_process = created_playlists
         elif feed_filter == "repost":
-            tracks_to_process = reposted_tracks
+            agreements_to_process = reposted_agreements
             playlists_to_process = reposted_playlists
         else:
-            tracks_to_process = created_tracks + reposted_tracks
+            agreements_to_process = created_agreements + reposted_agreements
             playlists_to_process = created_playlists + reposted_playlists
 
-        tracks = helpers.query_result_to_list(tracks_to_process)
+        agreements = helpers.query_result_to_list(agreements_to_process)
         playlists = helpers.query_result_to_list(playlists_to_process)
 
         # define top level feed activity_timestamp to enable sorting
         # activity_timestamp: created_at if item created by followee, else reposted_at
-        for track in tracks:
-            if track["owner_id"] in followee_user_ids:
-                track[response_name_constants.activity_timestamp] = track["created_at"]
+        for agreement in agreements:
+            if agreement["owner_id"] in followee_user_ids:
+                agreement[response_name_constants.activity_timestamp] = agreement["created_at"]
             else:
-                track[
+                agreement[
                     response_name_constants.activity_timestamp
-                ] = track_repost_timestamp_dict[track["track_id"]]
+                ] = agreement_repost_timestamp_dict[agreement["agreement_id"]]
         for playlist in playlists:
             if playlist["playlist_owner_id"] in followee_user_ids:
                 playlist[response_name_constants.activity_timestamp] = playlist[
@@ -265,10 +265,10 @@ def get_feed_sql(args):
                     response_name_constants.activity_timestamp
                 ] = playlist_repost_timestamp_dict[playlist["playlist_id"]]
 
-        # bundle peripheral info into track and playlist objects
-        track_ids = list(map(lambda track: track["track_id"], tracks))
+        # bundle peripheral info into agreement and playlist objects
+        agreement_ids = list(map(lambda agreement: agreement["agreement_id"], agreements))
         playlist_ids = list(map(lambda playlist: playlist["playlist_id"], playlists))
-        tracks = populate_track_metadata(session, track_ids, tracks, current_user_id)
+        agreements = populate_agreement_metadata(session, agreement_ids, agreements, current_user_id)
         playlists = populate_playlist_metadata(
             session,
             playlist_ids,
@@ -278,8 +278,8 @@ def get_feed_sql(args):
             current_user_id,
         )
 
-        # build combined feed of tracks and playlists
-        unsorted_feed = tracks + playlists
+        # build combined feed of agreements and playlists
+        unsorted_feed = agreements + playlists
 
         # sort feed based on activity_timestamp
         sorted_feed = sorted(

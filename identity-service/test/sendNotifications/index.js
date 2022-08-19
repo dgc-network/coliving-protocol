@@ -5,7 +5,7 @@ const models = require('../../src/models')
 const processNotifications = require('../../src/notifications/processNotifications/index.js')
 const { challengeInfoMap } = require('../../src/notifications/formatNotificationMetadata.js')
 const sendNotifications = require('../../src/notifications/sendNotifications/index.js')
-const { processTrendingTracks } = require('../../src/notifications/trendingTrackProcessing')
+const { processTrendingAgreements } = require('../../src/notifications/trendingAgreementProcessing')
 const { pushNotificationQueue } = require('../../src/notifications/notificationQueue')
 const { clearDatabase, runMigrations } = require('../lib/app')
 const notificationUtils = require('../../src/notifications/sendNotifications/utils')
@@ -17,7 +17,7 @@ const follow = require('./mockNotifications/follow.json')
 const repost = require('./mockNotifications/repost.json')
 const favorite = require('./mockNotifications/favorite.json')
 const create = require('./mockNotifications/create.json')
-const trendingTrack = require('./mockNotifications/trendingTrack.json')
+const trendingAgreement = require('./mockNotifications/trendingAgreement.json')
 const challengeReward = require('./mockNotifications/challengeReward.json')
 
 const mockColivingLibs = require('./mockLibs')
@@ -49,7 +49,7 @@ describe('Test Send Notifications', function () {
     let pushNotifications = pushNotificationQueue.PUSH_NOTIFICATIONS_BUFFER
 
     for (const notification of pushNotifications) {
-      assert.deepStrictEqual(notification.notificationParams.title, 'New Remix Of Your Track ♻️')
+      assert.deepStrictEqual(notification.notificationParams.title, 'New Remix Of Your Agreement ♻️')
     }
     const user100Notifs = pushNotifications.filter(n => n.userId === 100)
     assert.deepStrictEqual(user100Notifs.length, 2)
@@ -77,16 +77,16 @@ describe('Test Send Notifications', function () {
     const pushNotifications = pushNotificationQueue.PUSH_NOTIFICATIONS_BUFFER
 
     for (const notification of pushNotifications) {
-      assert.deepStrictEqual(notification.notificationParams.title, 'New Track Co-Sign! 🔥')
+      assert.deepStrictEqual(notification.notificationParams.title, 'New Agreement Co-Sign! 🔥')
       assert.deepStrictEqual(notification.types, ['mobile', 'browser'])
     }
     const user2Notifs = pushNotifications.filter(n => n.userId === 2)
     assert.deepStrictEqual(user2Notifs.length, 1)
-    assert.deepStrictEqual(user2Notifs[0].notificationParams.message, 'user 1 Co-Signed your Remix of Title, Track id: 10')
+    assert.deepStrictEqual(user2Notifs[0].notificationParams.message, 'user 1 Co-Signed your Remix of Title, Agreement id: 10')
 
     const user3Notifs = pushNotifications.filter(n => n.userId === 3)
     assert.deepStrictEqual(user3Notifs.length, 1)
-    assert.deepStrictEqual(user3Notifs[0].notificationParams.message, 'user 1 Co-Signed your Remix of Title, Track id: 11')
+    assert.deepStrictEqual(user3Notifs[0].notificationParams.message, 'user 1 Co-Signed your Remix of Title, Agreement id: 11')
   })
 
   it('should have the correct follow notifications', async function () {
@@ -139,8 +139,8 @@ describe('Test Send Notifications', function () {
 
     const user2Notifs = pushNotifications.filter(n => n.userId === 2)
     assert.deepStrictEqual(user2Notifs.length, 3)
-    assert.deepStrictEqual(user2Notifs[0].notificationParams.message, 'user 1 reposted your track Title, Track id: 100')
-    assert.deepStrictEqual(user2Notifs[1].notificationParams.message, 'user 2 reposted your track Title, Track id: 101')
+    assert.deepStrictEqual(user2Notifs[0].notificationParams.message, 'user 1 reposted your agreement Title, Agreement id: 100')
+    assert.deepStrictEqual(user2Notifs[1].notificationParams.message, 'user 2 reposted your agreement Title, Agreement id: 101')
     assert.deepStrictEqual(user2Notifs[2].notificationParams.message, 'user 3 reposted your playlist PLaylist id: 100')
 
     const user7Notifs = pushNotifications.filter(n => n.userId === 7)
@@ -169,8 +169,8 @@ describe('Test Send Notifications', function () {
 
     const user2Notifs = pushNotifications.filter(n => n.userId === 2)
     assert.deepStrictEqual(user2Notifs.length, 3)
-    assert.deepStrictEqual(user2Notifs[0].notificationParams.message, 'user 1 favorited your track Title, Track id: 100')
-    assert.deepStrictEqual(user2Notifs[1].notificationParams.message, 'user 2 favorited your track Title, Track id: 101')
+    assert.deepStrictEqual(user2Notifs[0].notificationParams.message, 'user 1 favorited your agreement Title, Agreement id: 100')
+    assert.deepStrictEqual(user2Notifs[1].notificationParams.message, 'user 2 favorited your agreement Title, Agreement id: 101')
     assert.deepStrictEqual(user2Notifs[2].notificationParams.message, 'user 3 favorited your playlist PLaylist id: 100')
 
     const user7Notifs = pushNotifications.filter(n => n.userId === 7)
@@ -180,7 +180,7 @@ describe('Test Send Notifications', function () {
     // NOTE: No notifications for user 4 who has no settings set.
   })
 
-  it('should have the correct trending track notifications', async function () {
+  it('should have the correct trending agreement notifications', async function () {
     await models.UserNotificationMobileSettings.bulkCreate([1, 2, 3].map(userId => ({ userId })))
     await models.UserNotificationMobileSettings.update(
       { milestonesAndAchievements: false },
@@ -188,7 +188,7 @@ describe('Test Send Notifications', function () {
     )
 
     const tx1 = await models.sequelize.transaction()
-    await processTrendingTracks(mockColivingLibs, 1, trendingTrack, tx1)
+    await processTrendingAgreements(mockColivingLibs, 1, trendingAgreement, tx1)
     await tx1.commit()
 
     const pushNotifications = pushNotificationQueue.PUSH_NOTIFICATIONS_BUFFER
@@ -202,19 +202,19 @@ describe('Test Send Notifications', function () {
 
     const user1Notifs = pushNotifications.filter(n => n.userId === 1)
     assert.deepStrictEqual(user1Notifs.length, 2)
-    assert.deepStrictEqual(user1Notifs[0].notificationParams.message, `Your Track Title, Track id: 100 is 1st on Trending Right Now! 🍾`)
-    assert.deepStrictEqual(user1Notifs[1].notificationParams.message, `Your Track Title, Track id: 101 is 2nd on Trending Right Now! 🍾`)
+    assert.deepStrictEqual(user1Notifs[0].notificationParams.message, `Your Agreement Title, Agreement id: 100 is 1st on Trending Right Now! 🍾`)
+    assert.deepStrictEqual(user1Notifs[1].notificationParams.message, `Your Agreement Title, Agreement id: 101 is 2nd on Trending Right Now! 🍾`)
 
     const user2Notifs = pushNotifications.filter(n => n.userId === 2)
     assert.deepStrictEqual(user2Notifs.length, 1)
-    assert.deepStrictEqual(user2Notifs[0].notificationParams.message, `Your Track Title, Track id: 102 is 3rd on Trending Right Now! 🍾`)
+    assert.deepStrictEqual(user2Notifs[0].notificationParams.message, `Your Agreement Title, Agreement id: 102 is 3rd on Trending Right Now! 🍾`)
   })
 
   it('should have the correct create notifications', async function () {
-    // User 1 creates tracks 1, 2, 3, 4
-    // User 2 creates track 5
-    // User 1 creates playlist 1 w/ tracks 1
-    // User 1 creates album 2 w/ tracks 2
+    // User 1 creates agreements 1, 2, 3, 4
+    // User 2 creates agreement 5
+    // User 1 creates playlist 1 w/ agreements 1
+    // User 1 creates album 2 w/ agreements 2
 
     // ======================================= Set subscribers for create notifications =======================================
     await models.Subscription.bulkCreate([
@@ -232,7 +232,7 @@ describe('Test Send Notifications', function () {
 
     assert.deepStrictEqual(pushNotifications.length, 0)
 
-    // Wait 60 seconds to debounce tracks / album notifications
+    // Wait 60 seconds to debounce agreements / album notifications
     await new Promise(resolve => setTimeout(resolve, 5 * 1000))
     const tx2 = await models.sequelize.transaction()
     await sendNotifications(mockColivingLibs, [], tx2)
@@ -247,8 +247,8 @@ describe('Test Send Notifications', function () {
     }
 
     const user3Messages = [
-      'user 1 released a new track Title, Track id: 3',
-      'user 1 released a new track Title, Track id: 4',
+      'user 1 released a new agreement Title, Agreement id: 3',
+      'user 1 released a new agreement Title, Agreement id: 4',
       'user 1 released a new playlist PLaylist id: 1',
       'user 1 released a new album PLaylist id: 2'
     ]
@@ -259,7 +259,7 @@ describe('Test Send Notifications', function () {
       assert.deepStrictEqual(user3Notifs.some(n => n.notificationParams.message === message), true)
     }
 
-    const user4Messages = user3Messages.concat('user 2 released a new track Title, Track id: 5')
+    const user4Messages = user3Messages.concat('user 2 released a new agreement Title, Agreement id: 5')
     const user4Notifs = pushNotifications.filter(n => n.userId === 4)
     assert.deepStrictEqual(user4Notifs.length, 5)
     for (let message of user4Messages) {
@@ -283,7 +283,7 @@ describe('Test Send Notifications', function () {
         msg: `You’ve received ${challengeInfoMap['referred'].amount} $LIVE for being referred! Invite your friends to join to earn more!`
       },
       ...([
-        'profile-completion', 'listen-streak', 'track-upload', 'referrals', 'ref-v', 'connect-verified', 'mobile-install'
+        'profile-completion', 'listen-streak', 'agreement-upload', 'referrals', 'ref-v', 'connect-verified', 'mobile-install'
       ].map(id => ({
         title: challengeInfoMap[id].title,
         msg: `You’ve earned ${challengeInfoMap[id].amount} $LIVE for completing this challenge!`
@@ -301,8 +301,8 @@ describe('Test Send Notifications', function () {
     }))
   })
 
-  it('should batch track metadata fetches', async function () {
-    // User 1 creates 500 tracks
+  it('should batch agreement metadata fetches', async function () {
+    // User 1 creates 500 agreements
 
     // ======================================= Set subscribers for create notifications =======================================
     await models.Subscription.bulkCreate([
@@ -319,7 +319,7 @@ describe('Test Send Notifications', function () {
         'metadata': {
           'entity_id': i,
           'entity_owner_id': 1,
-          'entity_type': 'track'
+          'entity_type': 'agreement'
         },
         'timestamp': '2020-10-27T15:14:20 Z',
         'type': 'Create'
@@ -334,7 +334,7 @@ describe('Test Send Notifications', function () {
 
     assert.deepStrictEqual(pushNotifications.length, 0)
 
-    // Wait 60 seconds to debounce tracks / album notifications
+    // Wait 60 seconds to debounce agreements / album notifications
     await new Promise(resolve => setTimeout(resolve, 5 * 1000))
     const tx2 = await models.sequelize.transaction()
     await sendNotifications(mockColivingLibs, [], tx2)
@@ -348,7 +348,7 @@ describe('Test Send Notifications', function () {
       assert.deepStrictEqual(notification.types, ['mobile', 'browser'])
     }
 
-    const user3Message = 'user 1 released a new track Title, Track id: '
+    const user3Message = 'user 1 released a new agreement Title, Agreement id: '
 
     const user3Notifs = pushNotifications.filter(n => n.userId === 3)
     assert.deepStrictEqual(user3Notifs.length, mockNotifications.length)

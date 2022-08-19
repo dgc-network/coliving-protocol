@@ -10,7 +10,7 @@ const {
  userReplicaSetManagerTest,
  IpldBlacklistTest,
  userReplicaSetBlockSaturationTest,
- trackListenCountsTest,
+ agreementListenCountsTest,
  SnapbackReconfigTests
 } = require('./tests/')
  
@@ -237,8 +237,8 @@ async function main () {
      }
      case 'test-listencount': {
        const test = makeTest(
-         'trackListenCountsTest',
-         trackListenCountsTest,
+         'agreementListenCountsTest',
+         agreementListenCountsTest,
          {
            numUsers: 1
          }
@@ -296,9 +296,9 @@ async function main () {
            numUsers: 1
          })
  
-       const trackListenCountTest = makeTest(
-         'trackListenCountsTest',
-         trackListenCountsTest,
+       const agreementListenCountTest = makeTest(
+         'agreementListenCountsTest',
+         agreementListenCountsTest,
          {
            numUsers: 1
          }
@@ -330,7 +330,7 @@ async function main () {
          ...blacklistTests,
          ursmTest,
          ursmBlockSaturationTest,
-         trackListenCountTest,
+         agreementListenCountTest,
          deregisterCNTest,
          forceCNUnavailabilityTest
        ]

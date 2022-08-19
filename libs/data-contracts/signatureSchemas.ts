@@ -39,8 +39,8 @@ const getUserFactoryDomain: DomainFn = (chainId, contractAddress) => {
   return getDomainData('User Factory', '1', chainId, contractAddress)
 }
 
-const getTrackFactoryDomain: DomainFn = (chainId, contractAddress) => {
-  return getDomainData('Track Factory', '1', chainId, contractAddress)
+const getAgreementFactoryDomain: DomainFn = (chainId, contractAddress) => {
+  return getDomainData('Agreement Factory', '1', chainId, contractAddress)
 }
 
 const getPlaylistFactoryDomain: DomainFn = (chainId, contractAddress) => {
@@ -67,7 +67,7 @@ const getUserReplicaSetManagerDomain: DomainFn = (chainId, contractAddress) => {
 export const domains = {
   getSocialFeatureFactoryDomain,
   getUserFactoryDomain,
-  getTrackFactoryDomain,
+  getAgreementFactoryDomain,
   getPlaylistFactoryDomain,
   getUserLibraryFactoryDomain,
   getIPLDBlacklistFactoryDomain,
@@ -108,37 +108,37 @@ const updateUserBool = [
   { name: 'nonce', type: 'bytes32' }
 ]
 
-/* track factory requests */
-const addTrackRequest = [
-  { name: 'trackOwnerId', type: 'uint' },
+/* agreement factory requests */
+const addAgreementRequest = [
+  { name: 'agreementOwnerId', type: 'uint' },
   { name: 'multihashDigest', type: 'bytes32' },
   { name: 'multihashHashFn', type: 'uint8' },
   { name: 'multihashSize', type: 'uint8' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-const updateTrackRequest = [
-  { name: 'trackId', type: 'uint' },
-  { name: 'trackOwnerId', type: 'uint' },
+const updateAgreementRequest = [
+  { name: 'agreementId', type: 'uint' },
+  { name: 'agreementOwnerId', type: 'uint' },
   { name: 'multihashDigest', type: 'bytes32' },
   { name: 'multihashHashFn', type: 'uint8' },
   { name: 'multihashSize', type: 'uint8' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-const deleteTrackRequest = [
-  { name: 'trackId', type: 'uint' },
+const deleteAgreementRequest = [
+  { name: 'agreementId', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
 /* social features */
-const addTrackRepostRequest = [
+const addAgreementRepostRequest = [
   { name: 'userId', type: 'uint' },
-  { name: 'trackId', type: 'uint' },
+  { name: 'agreementId', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-const deleteTrackRepostRequest = addTrackRepostRequest
+const deleteAgreementRepostRequest = addAgreementRepostRequest
 
 const addPlaylistRepostRequest = [
   { name: 'userId', type: 'uint' },
@@ -161,7 +161,7 @@ const createPlaylistRequest = [
   { name: 'playlistName', type: 'string' },
   { name: 'isPrivate', type: 'bool' },
   { name: 'isAlbum', type: 'bool' },
-  { name: 'trackIdsHash', type: 'bytes32' },
+  { name: 'agreementIdsHash', type: 'bytes32' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
@@ -170,22 +170,22 @@ const deletePlaylistRequest = [
   { name: 'nonce', type: 'bytes32' }
 ]
 
-const addPlaylistTrackRequest = [
+const addPlaylistAgreementRequest = [
   { name: 'playlistId', type: 'uint' },
-  { name: 'addedTrackId', type: 'uint' },
+  { name: 'addedAgreementId', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-const deletePlaylistTrackRequest = [
+const deletePlaylistAgreementRequest = [
   { name: 'playlistId', type: 'uint' },
-  { name: 'deletedTrackId', type: 'uint' },
-  { name: 'deletedTrackTimestamp', type: 'uint' },
+  { name: 'deletedAgreementId', type: 'uint' },
+  { name: 'deletedAgreementTimestamp', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-const orderPlaylistTracksRequest = [
+const orderPlaylistAgreementsRequest = [
   { name: 'playlistId', type: 'uint' },
-  { name: 'trackIdsHash', type: 'bytes32' },
+  { name: 'agreementIdsHash', type: 'bytes32' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
@@ -219,13 +219,13 @@ const updatePlaylistUPCRequest = [
   { name: 'nonce', type: 'bytes32' }
 ]
 
-const trackSaveRequest = [
+const agreementSaveRequest = [
   { name: 'userId', type: 'uint' },
-  { name: 'trackId', type: 'uint' },
+  { name: 'agreementId', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-const deleteTrackSaveRequest = trackSaveRequest
+const deleteAgreementSaveRequest = agreementSaveRequest
 
 const playlistSaveRequest = [
   { name: 'userId', type: 'uint' },
@@ -264,27 +264,27 @@ export const schemas = {
   updateUserBytes32,
   updateUserString,
   updateUserBool,
-  addTrackRequest,
-  updateTrackRequest,
-  deleteTrackRequest,
-  addTrackRepostRequest,
-  deleteTrackRepostRequest,
+  addAgreementRequest,
+  updateAgreementRequest,
+  deleteAgreementRequest,
+  addAgreementRepostRequest,
+  deleteAgreementRepostRequest,
   addPlaylistRepostRequest,
   deletePlaylistRepostRequest,
   userFollowRequest,
   deleteUserFollowRequest,
   createPlaylistRequest,
   deletePlaylistRequest,
-  addPlaylistTrackRequest,
-  deletePlaylistTrackRequest,
-  orderPlaylistTracksRequest,
+  addPlaylistAgreementRequest,
+  deletePlaylistAgreementRequest,
+  orderPlaylistAgreementsRequest,
   updatePlaylistPrivacyRequest,
   updatePlaylistNameRequest,
   updatePlaylistCoverPhotoRequest,
   updatePlaylistDescriptionRequest,
   updatePlaylistUPCRequest,
-  trackSaveRequest,
-  deleteTrackSaveRequest,
+  agreementSaveRequest,
+  deleteAgreementSaveRequest,
   playlistSaveRequest,
   deletePlaylistSaveRequest,
   addIPLDBlacklist,
@@ -530,122 +530,122 @@ const getUpdateUserVerifiedRequestData: UserUpdateRequestFn = (
   )
 }
 
-/* Track Factory Generators */
-const getAddTrackRequestData = (
+/* Agreement Factory Generators */
+const getAddAgreementRequestData = (
   chainId: number,
   contractAddress: string,
-  trackOwnerId: number,
+  agreementOwnerId: number,
   multihashDigest: string,
   multihashHashFn: number,
   multihashSize: number,
   nonce: string
 ) => {
   const message = {
-    trackOwnerId: trackOwnerId,
+    agreementOwnerId: agreementOwnerId,
     multihashDigest: multihashDigest,
     multihashHashFn: multihashHashFn,
     multihashSize: multihashSize,
     nonce: nonce
   }
   return getRequestData(
-    domains.getTrackFactoryDomain,
+    domains.getAgreementFactoryDomain,
     chainId,
     contractAddress,
-    'AddTrackRequest',
-    schemas.addTrackRequest,
+    'AddAgreementRequest',
+    schemas.addAgreementRequest,
     message
   )
 }
 
-const getUpdateTrackRequestData = (
+const getUpdateAgreementRequestData = (
   chainId: number,
   contractAddress: string,
-  trackId: number,
-  trackOwnerId: number,
+  agreementId: number,
+  agreementOwnerId: number,
   multihashDigest: string,
   multihashHashFn: number,
   multihashSize: number,
   nonce: string
 ) => {
   const message = {
-    trackId: trackId,
-    trackOwnerId: trackOwnerId,
+    agreementId: agreementId,
+    agreementOwnerId: agreementOwnerId,
     multihashDigest: multihashDigest,
     multihashHashFn: multihashHashFn,
     multihashSize: multihashSize,
     nonce: nonce
   }
   return getRequestData(
-    domains.getTrackFactoryDomain,
+    domains.getAgreementFactoryDomain,
     chainId,
     contractAddress,
-    'UpdateTrackRequest',
-    schemas.updateTrackRequest,
+    'UpdateAgreementRequest',
+    schemas.updateAgreementRequest,
     message
   )
 }
 
-const getDeleteTrackRequestData = (
+const getDeleteAgreementRequestData = (
   chainId: number,
   contractAddress: string,
-  trackId: number,
+  agreementId: number,
   nonce: string
 ) => {
   const message = {
-    trackId: trackId,
+    agreementId: agreementId,
     nonce: nonce
   }
   return getRequestData(
-    domains.getTrackFactoryDomain,
+    domains.getAgreementFactoryDomain,
     chainId,
     contractAddress,
-    'DeleteTrackRequest',
-    schemas.deleteTrackRequest,
+    'DeleteAgreementRequest',
+    schemas.deleteAgreementRequest,
     message
   )
 }
 
 /* Social Feature Factory Generators */
-const getAddTrackRepostRequestData = (
+const getAddAgreementRepostRequestData = (
   chainId: number,
   contractAddress: string,
   userId: number,
-  trackId: number,
+  agreementId: number,
   nonce: string
 ) => {
   const message = {
     userId: userId,
-    trackId: trackId,
+    agreementId: agreementId,
     nonce: nonce
   }
   return getRequestData(
     domains.getSocialFeatureFactoryDomain,
     chainId,
     contractAddress,
-    'AddTrackRepostRequest',
-    schemas.addTrackRepostRequest,
+    'AddAgreementRepostRequest',
+    schemas.addAgreementRepostRequest,
     message
   )
 }
 
-const getDeleteTrackRepostRequestData = (
+const getDeleteAgreementRepostRequestData = (
   chainId: number,
   contractAddress: string,
   userId: number,
-  trackId: number,
+  agreementId: number,
   nonce: string
 ) => {
   const message = {
     userId: userId,
-    trackId: trackId,
+    agreementId: agreementId,
     nonce: nonce
   }
   return getRequestData(
     domains.getSocialFeatureFactoryDomain,
     chainId,
     contractAddress,
-    'DeleteTrackRepostRequest',
-    schemas.deleteTrackRepostRequest,
+    'DeleteAgreementRepostRequest',
+    schemas.deleteAgreementRepostRequest,
     message
   )
 }
@@ -738,16 +738,16 @@ const getDeleteUserFollowRequestData = (
   )
 }
 
-const getTrackSaveRequestData = (
+const getAgreementSaveRequestData = (
   chainId: number,
   contractAddress: string,
   userId: number,
-  trackId: number,
+  agreementId: number,
   nonce: string
 ) => {
   const message = {
     userId: userId,
-    trackId: trackId,
+    agreementId: agreementId,
     nonce: nonce
   }
 
@@ -755,22 +755,22 @@ const getTrackSaveRequestData = (
     domains.getUserLibraryFactoryDomain,
     chainId,
     contractAddress,
-    'TrackSaveRequest',
-    schemas.trackSaveRequest,
+    'AgreementSaveRequest',
+    schemas.agreementSaveRequest,
     message
   )
 }
 
-const getDeleteTrackSaveRequestData = (
+const getDeleteAgreementSaveRequestData = (
   chainId: number,
   contractAddress: string,
   userId: number,
-  trackId: number,
+  agreementId: number,
   nonce: string
 ) => {
   const message = {
     userId: userId,
-    trackId: trackId,
+    agreementId: agreementId,
     nonce: nonce
   }
 
@@ -778,8 +778,8 @@ const getDeleteTrackSaveRequestData = (
     domains.getUserLibraryFactoryDomain,
     chainId,
     contractAddress,
-    'DeleteTrackSaveRequest',
-    schemas.deleteTrackSaveRequest,
+    'DeleteAgreementSaveRequest',
+    schemas.deleteAgreementSaveRequest,
     message
   )
 }
@@ -832,8 +832,8 @@ const getDeletePlaylistSaveRequestData = (
 
 /* Playlist Factory Generators */
 
-/* NOTE: Ensure the value for trackIds hash is generated using the following snippet prior to calling this generator function:
- * web3New.utils.soliditySha3(web3New.eth.abi.encodeParameter('uint[]', trackIds))
+/* NOTE: Ensure the value for agreementIds hash is generated using the following snippet prior to calling this generator function:
+ * web3New.utils.soliditySha3(web3New.eth.abi.encodeParameter('uint[]', agreementIds))
  */
 const getCreatePlaylistRequestData = (
   chainId: number,
@@ -842,7 +842,7 @@ const getCreatePlaylistRequestData = (
   playlistName: string,
   isPrivate: boolean,
   isAlbum: boolean,
-  trackIdsHash: string | null,
+  agreementIdsHash: string | null,
   nonce: string
 ) => {
   const message = {
@@ -850,7 +850,7 @@ const getCreatePlaylistRequestData = (
     playlistName: playlistName,
     isPrivate: isPrivate,
     isAlbum: isAlbum,
-    trackIdsHash: trackIdsHash,
+    agreementIdsHash: agreementIdsHash,
     nonce: nonce
   }
 
@@ -884,16 +884,16 @@ const getDeletePlaylistRequestData = (
   )
 }
 
-const getAddPlaylistTrackRequestData = (
+const getAddPlaylistAgreementRequestData = (
   chainId: number,
   contractAddress: string,
   playlistId: number,
-  addedTrackId: number,
+  addedAgreementId: number,
   nonce: string
 ) => {
   const message = {
     playlistId: playlistId,
-    addedTrackId: addedTrackId,
+    addedAgreementId: addedAgreementId,
     nonce: nonce
   }
 
@@ -901,24 +901,24 @@ const getAddPlaylistTrackRequestData = (
     domains.getPlaylistFactoryDomain,
     chainId,
     contractAddress,
-    'AddPlaylistTrackRequest',
-    schemas.addPlaylistTrackRequest,
+    'AddPlaylistAgreementRequest',
+    schemas.addPlaylistAgreementRequest,
     message
   )
 }
 
-const getDeletePlaylistTrackRequestData = (
+const getDeletePlaylistAgreementRequestData = (
   chainId: number,
   contractAddress: string,
   playlistId: number,
-  deletedTrackId: number,
-  deletedTrackTimestamp: number,
+  deletedAgreementId: number,
+  deletedAgreementTimestamp: number,
   nonce: string
 ) => {
   const message = {
     playlistId: playlistId,
-    deletedTrackId: deletedTrackId,
-    deletedTrackTimestamp: deletedTrackTimestamp,
+    deletedAgreementId: deletedAgreementId,
+    deletedAgreementTimestamp: deletedAgreementTimestamp,
     nonce: nonce
   }
 
@@ -926,22 +926,22 @@ const getDeletePlaylistTrackRequestData = (
     domains.getPlaylistFactoryDomain,
     chainId,
     contractAddress,
-    'DeletePlaylistTrackRequest',
-    schemas.deletePlaylistTrackRequest,
+    'DeletePlaylistAgreementRequest',
+    schemas.deletePlaylistAgreementRequest,
     message
   )
 }
 
-const getOrderPlaylistTracksRequestData = (
+const getOrderPlaylistAgreementsRequestData = (
   chainId: number,
   contractAddress: string,
   playlistId: number,
-  trackIdsHash: string | null,
+  agreementIdsHash: string | null,
   nonce: string
 ) => {
   const message = {
     playlistId: playlistId,
-    trackIdsHash: trackIdsHash,
+    agreementIdsHash: agreementIdsHash,
     nonce: nonce
   }
 
@@ -949,8 +949,8 @@ const getOrderPlaylistTracksRequestData = (
     domains.getPlaylistFactoryDomain,
     chainId,
     contractAddress,
-    'OrderPlaylistTracksRequest',
-    schemas.orderPlaylistTracksRequest,
+    'OrderPlaylistAgreementsRequest',
+    schemas.orderPlaylistAgreementsRequest,
     message
   )
 }
@@ -1156,24 +1156,24 @@ export const generators = {
   getUpdateUserCreatorNodeRequestData,
   getUpdateUserCreatorRequestData,
   getUpdateUserVerifiedRequestData,
-  getAddTrackRequestData,
-  getUpdateTrackRequestData,
-  getDeleteTrackRequestData,
-  getAddTrackRepostRequestData,
-  getDeleteTrackRepostRequestData,
+  getAddAgreementRequestData,
+  getUpdateAgreementRequestData,
+  getDeleteAgreementRequestData,
+  getAddAgreementRepostRequestData,
+  getDeleteAgreementRepostRequestData,
   getAddPlaylistRepostRequestData,
   getDeletePlaylistRepostRequestData,
   getUserFollowRequestData,
   getDeleteUserFollowRequestData,
-  getTrackSaveRequestData,
-  getDeleteTrackSaveRequestData,
+  getAgreementSaveRequestData,
+  getDeleteAgreementSaveRequestData,
   getPlaylistSaveRequestData,
   getDeletePlaylistSaveRequestData,
   getCreatePlaylistRequestData,
   getDeletePlaylistRequestData,
-  getAddPlaylistTrackRequestData,
-  getDeletePlaylistTrackRequestData,
-  getOrderPlaylistTracksRequestData,
+  getAddPlaylistAgreementRequestData,
+  getDeletePlaylistAgreementRequestData,
+  getOrderPlaylistAgreementsRequestData,
   getUpdatePlaylistNameRequestData,
   getUpdatePlaylistPrivacyRequestData,
   getUpdatePlaylistCoverPhotoRequestData,

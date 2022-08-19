@@ -1,7 +1,7 @@
 ---
-id: "StreamTrackRequest"
-title: "Interface: StreamTrackRequest"
-sidebar_label: "StreamTrackRequest"
+id: "StreamAgreementRequest"
+title: "Interface: StreamAgreementRequest"
+sidebar_label: "StreamAgreementRequest"
 sidebar_position: 0
 custom_edit_url: null
 pagination_prev: null
@@ -10,8 +10,8 @@ pagination_next: null
 
 ## Properties
 
-### trackId
+### agreementId
 
- **trackId**: `string`
+ **agreementId**: `string`
 
-A Track ID
+A Agreement ID

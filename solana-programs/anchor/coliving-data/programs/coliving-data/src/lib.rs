@@ -940,7 +940,7 @@ pub struct ManageEntity<'info> {
     pub authority_delegation_status: AccountInfo<'info>,
 }
 
-/// Instruction container for track social action event
+/// Instruction container for agreement social action event
 /// Confirm that the user authority matches signer authority field
 #[derive(Accounts)]
 #[instruction(base: Pubkey, user_id_seed_bump: UserIdSeedBump)]
@@ -1043,7 +1043,7 @@ pub enum UserAction {
     UnsubscribeUser,
 }
 
-// Track actions enum, used to save / repost based on function arguments
+// Agreement actions enum, used to save / repost based on function arguments
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq)]
 pub enum EntitySocialActionValues {
     AddSave,
@@ -1061,7 +1061,7 @@ pub enum ManagementActions {
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq)]
 pub enum EntityTypes {
-    Track,
+    Agreement,
     Playlist,
 }
 

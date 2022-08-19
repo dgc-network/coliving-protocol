@@ -4,83 +4,83 @@ let { Utils } = require('../src/utils')
 
 let colivingInstance = helpers.colivingInstance
 
-let trackMultihashDecoded = Utils.decodeMultihash(helpers.constants.trackMetadataCID)
-let trackMultihashDecoded2 = Utils.decodeMultihash(helpers.constants.trackMetadataCID2)
+let agreementMultihashDecoded = Utils.decodeMultihash(helpers.constants.agreementMetadataCID)
+let agreementMultihashDecoded2 = Utils.decodeMultihash(helpers.constants.agreementMetadataCID2)
 
 let creatorId1
 let creatorId2
-let trackId1
-let trackId2
+let agreementId1
+let agreementId2
 
 before(async function () {
   await colivingInstance.init()
 })
 
-it('should call getTrack on invalid value and return empty', async function () {
-  let track = await colivingInstance.contracts.TrackFactoryClient.getTrack(0)
-  assert.strictEqual(track.multihashDigest, helpers.constants['0x0'])
+it('should call getAgreement on invalid value and return empty', async function () {
+  let agreement = await colivingInstance.contracts.AgreementFactoryClient.getAgreement(0)
+  assert.strictEqual(agreement.multihashDigest, helpers.constants['0x0'])
 })
 
-it('should call addTrack', async function () {
+it('should call addAgreement', async function () {
   // Add creator so we have creatorId
   let handle = 'dheeraj' + Math.floor(Math.random() * 10000000)
 
   creatorId1 = (await colivingInstance.contracts.UserFactoryClient.addUser(handle)).userId
 
   if (creatorId1 && Number.isInteger(creatorId1)) {
-    trackId1 = (await colivingInstance.contracts.TrackFactoryClient.addTrack(
+    agreementId1 = (await colivingInstance.contracts.AgreementFactoryClient.addAgreement(
       creatorId1,
-      trackMultihashDecoded.digest,
-      trackMultihashDecoded.hashFn,
-      trackMultihashDecoded.size
-    )).trackId
-    let track = await colivingInstance.contracts.TrackFactoryClient.getTrack(trackId1)
-    assert.strictEqual(track.multihashDigest, trackMultihashDecoded.digest)
+      agreementMultihashDecoded.digest,
+      agreementMultihashDecoded.hashFn,
+      agreementMultihashDecoded.size
+    )).agreementId
+    let agreement = await colivingInstance.contracts.AgreementFactoryClient.getAgreement(agreementId1)
+    assert.strictEqual(agreement.multihashDigest, agreementMultihashDecoded.digest)
   } else throw new Error('creatorId is not a valid integer')
 })
 
-it('should call updateTrack', async function () {
+it('should call updateAgreement', async function () {
   // Add creator so we have creatorId
   const handle = 'skippy' + Math.floor(Math.random() * 10000000)
 
   creatorId2 = (await colivingInstance.contracts.UserFactoryClient.addUser(handle)).userId
 
   if (creatorId2 && Number.isInteger(creatorId2)) {
-    // add track
-    trackId1 = (await colivingInstance.contracts.TrackFactoryClient.addTrack(
+    // add agreement
+    agreementId1 = (await colivingInstance.contracts.AgreementFactoryClient.addAgreement(
       creatorId2,
-      trackMultihashDecoded.digest,
-      trackMultihashDecoded.hashFn,
-      trackMultihashDecoded.size
-    )).trackId
-    let track = await colivingInstance.contracts.TrackFactoryClient.getTrack(trackId1)
-    assert.strictEqual(track.multihashDigest, trackMultihashDecoded.digest)
+      agreementMultihashDecoded.digest,
+      agreementMultihashDecoded.hashFn,
+      agreementMultihashDecoded.size
+    )).agreementId
+    let agreement = await colivingInstance.contracts.AgreementFactoryClient.getAgreement(agreementId1)
+    assert.strictEqual(agreement.multihashDigest, agreementMultihashDecoded.digest)
 
-    // update track
-    await colivingInstance.contracts.TrackFactoryClient.updateTrack(
-      trackId1,
+    // update agreement
+    await colivingInstance.contracts.AgreementFactoryClient.updateAgreement(
+      agreementId1,
       creatorId2,
-      trackMultihashDecoded2.digest,
-      trackMultihashDecoded2.hashFn,
-      trackMultihashDecoded2.size
+      agreementMultihashDecoded2.digest,
+      agreementMultihashDecoded2.hashFn,
+      agreementMultihashDecoded2.size
     )
-    track = await colivingInstance.contracts.TrackFactoryClient.getTrack(trackId1)
-    assert.strictEqual(track.multihashDigest, trackMultihashDecoded2.digest)
+    agreement = await colivingInstance.contracts.AgreementFactoryClient.getAgreement(agreementId1)
+    assert.strictEqual(agreement.multihashDigest, agreementMultihashDecoded2.digest)
   } else throw new Error('creatorId is not a valid integer')
 })
 
-it('should call deleteTrack', async function () {
-  // add track
-  trackId2 = (await colivingInstance.contracts.TrackFactoryClient.addTrack(
+it('should call deleteAgreement', async function () {
+  // add agreement
+  agreementId2 = (await colivingInstance.contracts.AgreementFactoryClient.addAgreement(
     creatorId2,
-    trackMultihashDecoded.digest,
-    trackMultihashDecoded.hashFn,
-    trackMultihashDecoded.size
-  )).trackId
-  let track = await colivingInstance.contracts.TrackFactoryClient.getTrack(trackId2)
-  assert.strictEqual(track.multihashDigest, trackMultihashDecoded.digest)
+    agreementMultihashDecoded.digest,
+    agreementMultihashDecoded.hashFn,
+    agreementMultihashDecoded.size
+  )).agreementId
+  let agreement = await colivingInstance.contracts.AgreementFactoryClient.getAgreement(agreementId2)
+  assert.strictEqual(agreement.multihashDigest, agreementMultihashDecoded.digest)
 
-  // delete track
-  let { trackId } = await colivingInstance.contracts.TrackFactoryClient.deleteTrack(trackId2)
-  assert.strictEqual(trackId, trackId2)
+  // delete agreement
+  let { agreementId } = await colivingInstance.contracts.AgreementFactoryClient.deleteAgreement(agreementId2)
+  assert.strictEqual(agreementId, agreementId2)
 })

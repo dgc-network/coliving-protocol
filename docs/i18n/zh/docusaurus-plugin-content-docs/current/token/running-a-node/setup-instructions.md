@@ -162,7 +162,7 @@ You can verify your upgrade with the `\health_check` endpoint.
 
 An Coliving Discovery Node indexes the contents of the Coliving contracts on the Ethereum blockchain for clients to query.
 
-The indexed content includes user, track, and album/playlist information along with social features. The data is stored for quick access, updated on a regular interval, and made available for clients via a RESTful API.
+The indexed content includes user, agreement, and album/playlist information along with social features. The data is stored for quick access, updated on a regular interval, and made available for clients via a RESTful API.
 
 #### Run
 
@@ -330,7 +330,7 @@ coliving-cli configure-ipfs <hostname>
 
 Example: `coliving-cli configure-ipfs 108.174.10.10`
 
-4.\) Set load balancer timeouts. Minimum timeouts are 1 hour \(3600 seconds\) for Creator Node requests and 1 minutes \(60 seconds\) for Discovery Node requests. Track uploads especially for larger files can take several minutes to complete.
+4.\) Set load balancer timeouts. Minimum timeouts are 1 hour \(3600 seconds\) for Creator Node requests and 1 minutes \(60 seconds\) for Discovery Node requests. Agreement uploads especially for larger files can take several minutes to complete.
 
 5.\) In addition to configuring your security groups to restrict access to just the web server and IPFS swarm port \(4001\), it's recommended that your server or load balancer is protected from DoS attacks. Services like Cloudfront and Cloudflare offer free or low cost services to do this. It would also be possible to use iptables to configure protection as laid out here [https://javapipe.com/blog/iptables-ddos-protection/](https://javapipe.com/blog/iptables-ddos-protection/). Please make sure proxies don't override the timeouts from Step 4.
 

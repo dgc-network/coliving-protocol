@@ -32,8 +32,8 @@ mkdir -p ${CARGO_TARGET_DIR:-target}/deploy anchor/coliving-data/target/deploy
 generate_key ${CARGO_TARGET_DIR:-target}/deploy/coliving_eth_registry-keypair.json "$COLIVING_ETH_REGISTRY_PRIVATE_KEY"
 replace_address coliving_eth_registry/src/lib.rs ${CARGO_TARGET_DIR:-target}/deploy/coliving_eth_registry-keypair.json
 
-generate_key ${CARGO_TARGET_DIR:-target}/deploy/track_listen_count-keypair.json "$TRACK_LISTEN_COUNT_PRIVATE_KEY"
-replace_address track_listen_count/src/lib.rs ${CARGO_TARGET_DIR:-target}/deploy/track_listen_count-keypair.json
+generate_key ${CARGO_TARGET_DIR:-target}/deploy/agreement_listen_count-keypair.json "$AGREEMENT_LISTEN_COUNT_PRIVATE_KEY"
+replace_address agreement_listen_count/src/lib.rs ${CARGO_TARGET_DIR:-target}/deploy/agreement_listen_count-keypair.json
 
 generate_key ${CARGO_TARGET_DIR:-target}/deploy/claimable_tokens-keypair.json "$CLAIMABLE_TOKENS_PRIVATE_KEY"
 replace_address claimable-tokens/program/src/lib.rs ${CARGO_TARGET_DIR:-target}/deploy/claimable_tokens-keypair.json

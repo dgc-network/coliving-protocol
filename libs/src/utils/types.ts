@@ -50,7 +50,7 @@ export type UserMetadata = {
   playlist_count: number
   profile_picture: Nullable<CID>
   repost_count: number
-  track_count: number
+  agreement_count: number
   cover_photo_sizes: Nullable<CID>
   profile_picture_sizes: Nullable<CID>
   metadata_multihash: Nullable<CID>
@@ -59,7 +59,7 @@ export type UserMetadata = {
 
   // Only present on the "current" account
   does_follow_current_user?: boolean
-  track_save_count?: number
+  agreement_save_count?: number
   twitter_handle?: string
   instagram_handle?: string
   tiktok_handle?: string
@@ -72,7 +72,7 @@ export type UserMetadata = {
 
 export type User = UserMetadata
 
-export interface TrackSegment {
+export interface AgreementSegment {
   duration: string
   multihash: CID
 }
@@ -82,11 +82,11 @@ export interface Download {
   cid: Nullable<string>
 }
 
-export type TrackMetadata = {
+export type AgreementMetadata = {
   blocknumber: number
   activity_timestamp?: string
   is_delete: boolean
-  track_id: number
+  agreement_id: number
   created_at: string
   isrc: Nullable<string>
   iswc: Nullable<string>
@@ -105,7 +105,7 @@ export type TrackMetadata = {
   save_count: number
   tags: Nullable<string>
   title: string
-  track_segments: TrackSegment[]
+  agreement_segments: AgreementSegment[]
   cover_art: Nullable<CID>
   cover_art_sizes: Nullable<CID>
   is_unlisted: boolean
@@ -116,7 +116,7 @@ export type TrackMetadata = {
   // Optional Fields
   is_invalid?: boolean
   stem_of?: {
-    parent_track_id: ID
+    parent_agreement_id: ID
   }
 
   // Added fields
@@ -133,10 +133,10 @@ export type CollectionMetadata = {
   is_delete: boolean
   is_private: boolean
   playlist_contents: {
-    track_ids: Array<{ time: number; track: ID; uid?: UID }>
+    agreement_ids: Array<{ time: number; agreement: ID; uid?: UID }>
   }
-  tracks?: TrackMetadata[]
-  track_count: number
+  agreements?: AgreementMetadata[]
+  agreement_count: number
   playlist_id: ID
   cover_art: CID | null
   cover_art_sizes: Nullable<CID>

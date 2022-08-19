@@ -7,7 +7,7 @@ import { EthWeb3Config, EthWeb3Manager } from '../services/ethWeb3Manager'
 import { IdentityService } from '../services/identity'
 import { UserStateManager } from '../userStateManager'
 import { Oauth } from './oauth'
-import { TracksApi } from './api/TracksApi'
+import { AgreementsApi } from './api/AgreementsApi'
 import { ResolveApi } from './api/ResolveApi'
 import {
   Configuration,
@@ -20,7 +20,7 @@ import {
   PlaylistsApi as PlaylistsApiFull,
   ReactionsApi as ReactionsApiFull,
   SearchApi as SearchApiFull,
-  TracksApi as TracksApiFull,
+  AgreementsApi as AgreementsApiFull,
   UsersApi as UsersApiFull,
   TipsApi as TipsApiFull
 } from './api/generated/full'
@@ -171,14 +171,14 @@ const initializeApis = ({
     }
   })
 
-  const tracks = new TracksApi(generatedApiClientConfig, discoveryProvider)
+  const agreements = new AgreementsApi(generatedApiClientConfig, discoveryProvider)
   const users = new UsersApi(generatedApiClientConfig)
   const playlists = new PlaylistsApi(generatedApiClientConfig)
   const tips = new TipsApi(generatedApiClientConfig)
   const { resolve } = new ResolveApi(generatedApiClientConfig)
 
   const full = {
-    tracks: new TracksApiFull(generatedApiClientConfig as any),
+    agreements: new AgreementsApiFull(generatedApiClientConfig as any),
     users: new UsersApiFull(generatedApiClientConfig as any),
     search: new SearchApiFull(generatedApiClientConfig as any),
     playlists: new PlaylistsApiFull(generatedApiClientConfig as any),
@@ -187,7 +187,7 @@ const initializeApis = ({
   }
 
   return {
-    tracks,
+    agreements,
     users,
     playlists,
     tips,

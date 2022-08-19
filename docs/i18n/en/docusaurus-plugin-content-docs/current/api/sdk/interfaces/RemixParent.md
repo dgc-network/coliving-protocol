@@ -14,8 +14,8 @@ pagination_next: null
 
 ## Properties
 
-### tracks
+### agreements
 
- `Optional` **tracks**: [`TrackElement`](TrackElement.md)[]
+ `Optional` **agreements**: [`AgreementElement`](AgreementElement.md)[]
 
 **`memberof`** RemixParent

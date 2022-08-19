@@ -13,9 +13,9 @@ const UserImage = ({ user }) => (
   />
 )
 
-const TrackImage = ({ track }) => (
+const AgreementImage = ({ agreement }) => (
   <img
-    src={track.image || track.thumbnail}
+    src={agreement.image || agreement.thumbnail}
     style={{
       height: '42px',
       width: '42px',
@@ -197,7 +197,7 @@ const Body = (props) => {
                   {props.message}
                 </td>
               </tr>
-              {props.trackMessage && (
+              {props.agreementMessage && (
                 <tr>
                   <td
                     colspan={'1'}
@@ -207,7 +207,7 @@ const Body = (props) => {
                       width: '60px'
                     }}
                   >
-                    <TrackImage track={props.track} />
+                    <AgreementImage agreement={props.agreement} />
                   </td>
                   <td
                     colspan={11}
@@ -218,7 +218,7 @@ const Body = (props) => {
                       width: '100%'
                     }}
                   >
-                    {props.trackMessage}
+                    {props.agreementMessage}
                   </td>
                 </tr>
               )}

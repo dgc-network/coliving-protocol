@@ -27,7 +27,7 @@ def build_minhash(session: Session):
             from follows
             join aggregate_user on followee_user_id = aggregate_user.user_id
             where is_current and not is_delete
-            and track_count > 0
+            and agreement_count > 0
             group by 1
             """
         )

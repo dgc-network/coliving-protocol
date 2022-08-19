@@ -8,14 +8,14 @@ Playlist.createPlaylist = async (
   playlistName,
   isPrivate,
   isAlbum,
-  trackIds
+  agreementIds
 ) => {
   const createPlaylistTxReceipt = await libs.createPlaylist(
     userId,
     playlistName,
     isPrivate,
     isAlbum,
-    trackIds
+    agreementIds
   )
   return createPlaylistTxReceipt
 }
@@ -52,12 +52,12 @@ Playlist.getPlaylists = async (
   return await libs.getPlaylists(limit, offset, idsArray, targetUserId, withUsers)
 }
 
-Playlist.addPlaylistTrack = async (
+Playlist.addPlaylistAgreement = async (
   libs,
   playlistId,
-  trackId
+  agreementId
 ) => {
-  return await libs.addPlaylistTrack(playlistId, trackId)
+  return await libs.addPlaylistAgreement(playlistId, agreementId)
 }
 
 module.exports = Playlist

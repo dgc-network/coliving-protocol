@@ -14,11 +14,11 @@
  */
 
 import {
-    TrackFull,
-    TrackFullFromJSON,
-    TrackFullFromJSONTyped,
-    TrackFullToJSON,
-} from './TrackFull';
+    AgreementFull,
+    AgreementFullFromJSON,
+    AgreementFullFromJSONTyped,
+    AgreementFullToJSON,
+} from './AgreementFull';
 
 /**
  * 
@@ -34,9 +34,9 @@ export interface RemixesResponse {
     count: number;
     /**
      * 
-     * @type {Array<TrackFull>}
+     * @type {Array<AgreementFull>}
      * @memberof RemixesResponse
      */
-    tracks?: Array<TrackFull>;
+    agreements?: Array<AgreementFull>;
 }
 

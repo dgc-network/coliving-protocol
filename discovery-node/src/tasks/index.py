@@ -16,8 +16,8 @@ from src.models.playlists.playlist import Playlist
 from src.models.social.follow import Follow
 from src.models.social.repost import Repost
 from src.models.social.save import Save
-from src.models.tracks.track import Track
-from src.models.tracks.track_route import TrackRoute
+from src.models.agreements.agreement import Agreement
+from src.models.agreements.agreement_route import AgreementRoute
 from src.models.users.associated_wallet import AssociatedWallet
 from src.models.users.user import User
 from src.models.users.user_events import UserEvent
@@ -34,7 +34,7 @@ from src.tasks.celery_app import celery
 from src.tasks.playlists import playlist_state_update
 from src.tasks.social_features import social_feature_state_update
 from src.tasks.sort_block_transactions import sort_block_transactions
-from src.tasks.tracks import track_event_types_lookup, track_state_update
+from src.tasks.agreements import agreement_event_types_lookup, agreement_state_update
 from src.tasks.user_library import user_library_state_update
 from src.tasks.user_replica_set import user_replica_set_state_update
 from src.tasks.users import user_event_types_lookup, user_state_update
@@ -56,7 +56,7 @@ from src.utils.prometheus_metric import (
 )
 from src.utils.redis_cache import (
     remove_cached_playlist_ids,
-    remove_cached_track_ids,
+    remove_cached_agreement_ids,
     remove_cached_user_ids,
 )
 from src.utils.redis_constants import (
@@ -68,14 +68,14 @@ from src.utils.redis_constants import (
 from src.utils.session_manager import SessionManager
 
 USER_FACTORY = CONTRACT_TYPES.USER_FACTORY.value
-TRACK_FACTORY = CONTRACT_TYPES.TRACK_FACTORY.value
+AGREEMENT_FACTORY = CONTRACT_TYPES.AGREEMENT_FACTORY.value
 SOCIAL_FEATURE_FACTORY = CONTRACT_TYPES.SOCIAL_FEATURE_FACTORY.value
 PLAYLIST_FACTORY = CONTRACT_TYPES.PLAYLIST_FACTORY.value
 USER_LIBRARY_FACTORY = CONTRACT_TYPES.USER_LIBRARY_FACTORY.value
 USER_REPLICA_SET_MANAGER = CONTRACT_TYPES.USER_REPLICA_SET_MANAGER.value
 
 USER_FACTORY_CONTRACT_NAME = CONTRACT_NAMES_ON_CHAIN[CONTRACT_TYPES.USER_FACTORY]
-TRACK_FACTORY_CONTRACT_NAME = CONTRACT_NAMES_ON_CHAIN[CONTRACT_TYPES.TRACK_FACTORY]
+AGREEMENT_FACTORY_CONTRACT_NAME = CONTRACT_NAMES_ON_CHAIN[CONTRACT_TYPES.AGREEMENT_FACTORY]
 SOCIAL_FEATURE_FACTORY_CONTRACT_NAME = CONTRACT_NAMES_ON_CHAIN[
     CONTRACT_TYPES.SOCIAL_FEATURE_FACTORY
 ]
@@ -91,7 +91,7 @@ USER_REPLICA_SET_MANAGER_CONTRACT_NAME = CONTRACT_NAMES_ON_CHAIN[
 
 TX_TYPE_TO_HANDLER_MAP = {
     USER_FACTORY: user_state_update,
-    TRACK_FACTORY: track_state_update,
+    AGREEMENT_FACTORY: agreement_state_update,
     SOCIAL_FEATURE_FACTORY: social_feature_state_update,
     PLAYLIST_FACTORY: playlist_state_update,
     USER_LIBRARY_FACTORY: user_library_state_update,
@@ -265,14 +265,14 @@ def fetch_tx_receipts(self, block):
 def fetch_cid_metadata(
     db,
     user_factory_txs,
-    track_factory_txs,
+    agreement_factory_txs,
 ):
     start_time = datetime.now()
     user_contract = update_task.user_contract
-    track_contract = update_task.track_contract
+    agreement_contract = update_task.agreement_contract
 
     cids_txhash_set: Tuple[str, Any] = set()
-    cid_type: Dict[str, str] = {}  # cid -> entity type track / user
+    cid_type: Dict[str, str] = {}  # cid -> entity type agreement / user
 
     # cid -> user_id lookup to make fetching replica set more efficient
     cid_to_user_id: Dict[str, int] = {}
@@ -293,29 +293,29 @@ def fetch_cid_metadata(
                 user_id = event_args._userId
                 cid_to_user_id[cid] = user_id
 
-        for tx_receipt in track_factory_txs:
+        for tx_receipt in agreement_factory_txs:
             txhash = update_task.web3.toHex(tx_receipt.transactionHash)
             for event_type in [
-                track_event_types_lookup["new_track"],
-                track_event_types_lookup["update_track"],
+                agreement_event_types_lookup["new_agreement"],
+                agreement_event_types_lookup["update_agreement"],
             ]:
-                track_events_tx = getattr(
-                    track_contract.events, event_type
+                agreement_events_tx = getattr(
+                    agreement_contract.events, event_type
                 )().processReceipt(tx_receipt)
-                for entry in track_events_tx:
+                for entry in agreement_events_tx:
                     event_args = entry["args"]
-                    track_metadata_digest = event_args._multihashDigest.hex()
-                    track_metadata_hash_fn = event_args._multihashHashFn
-                    track_owner_id = event_args._trackOwnerId
+                    agreement_metadata_digest = event_args._multihashDigest.hex()
+                    agreement_metadata_hash_fn = event_args._multihashHashFn
+                    agreement_owner_id = event_args._agreementOwnerId
                     buf = multihash.encode(
-                        bytes.fromhex(track_metadata_digest), track_metadata_hash_fn
+                        bytes.fromhex(agreement_metadata_digest), agreement_metadata_hash_fn
                     )
                     cid = multihash.to_b58_string(buf)
                     cids_txhash_set.add((cid, txhash))
-                    cid_type[cid] = "track"
-                    cid_to_user_id[cid] = track_owner_id
+                    cid_type[cid] = "agreement"
+                    cid_to_user_id[cid] = agreement_owner_id
 
-        # user -> replica set string lookup, used to make user and track cid get_metadata fetches faster
+        # user -> replica set string lookup, used to make user and agreement cid get_metadata fetches faster
         user_to_replica_set = dict(
             session.query(User.user_id, User.creator_node_endpoint)
             .filter(
@@ -478,7 +478,7 @@ def process_state_changes(
 
     changed_entity_ids_map = {
         USER_FACTORY: [],
-        TRACK_FACTORY: [],
+        AGREEMENT_FACTORY: [],
         PLAYLIST_FACTORY: [],
         USER_REPLICA_SET_MANAGER: [],
     }
@@ -517,7 +517,7 @@ def remove_updated_entities_from_cache(redis, changed_entity_type_to_updated_ids
     CONTRACT_TYPE_TO_CLEAR_CACHE_HANDLERS = {
         USER_FACTORY: remove_cached_user_ids,
         USER_REPLICA_SET_MANAGER: remove_cached_user_ids,
-        TRACK_FACTORY: remove_cached_track_ids,
+        AGREEMENT_FACTORY: remove_cached_agreement_ids,
         PLAYLIST_FACTORY: remove_cached_playlist_ids,
     }
     for (
@@ -582,7 +582,7 @@ def index_blocks(self, db, blocks_list):
             else:
                 txs_grouped_by_type = {
                     USER_FACTORY: [],
-                    TRACK_FACTORY: [],
+                    AGREEMENT_FACTORY: [],
                     SOCIAL_FEATURE_FACTORY: [],
                     PLAYLIST_FACTORY: [],
                     USER_LIBRARY_FACTORY: [],
@@ -647,11 +647,11 @@ def index_blocks(self, db, blocks_list):
                     """
                     fetch_ipfs_metadata_start_time = time.time()
                     # pre-fetch cids asynchronously to not have it block in user_state_update
-                    # and track_state_update
+                    # and agreement_state_update
                     cid_metadata = fetch_cid_metadata(
                         db,
                         txs_grouped_by_type[USER_FACTORY],
-                        txs_grouped_by_type[TRACK_FACTORY],
+                        txs_grouped_by_type[AGREEMENT_FACTORY],
                     )
                     logger.info(
                         f"index.py | index_blocks - fetch_ipfs_metadata in {time.time() - fetch_ipfs_metadata_start_time}s"
@@ -688,7 +688,7 @@ def index_blocks(self, db, blocks_list):
                     )
 
                     """
-                    Add state changes in block to db (users, tracks, etc.)
+                    Add state changes in block to db (users, agreements, etc.)
                     """
                     process_state_changes_start_time = time.time()
                     # bulk process operations once all tx's for block have been parsed
@@ -778,7 +778,7 @@ def index_blocks(self, db, blocks_list):
         logger.info(f"index.py | index_blocks | Indexed {num_blocks} blocks")
 
 
-# transactions are reverted in reverse dependency order (social features --> playlists --> tracks --> users)
+# transactions are reverted in reverse dependency order (social features --> playlists --> agreements --> users)
 def revert_blocks(self, db, revert_blocks_list):
     # TODO: Remove this exception once the unexpected revert scenario has been diagnosed
     num_revert_blocks = len(revert_blocks_list)
@@ -804,7 +804,7 @@ def revert_blocks(self, db, revert_blocks_list):
     with db.scoped_session() as session:
 
         rebuild_playlist_index = False
-        rebuild_track_index = False
+        rebuild_agreement_index = False
         rebuild_user_index = False
 
         for revert_block in revert_blocks_list:
@@ -839,8 +839,8 @@ def revert_blocks(self, db, revert_blocks_list):
             revert_playlist_entries = (
                 session.query(Playlist).filter(Playlist.blockhash == revert_hash).all()
             )
-            revert_track_entries = (
-                session.query(Track).filter(Track.blockhash == revert_hash).all()
+            revert_agreement_entries = (
+                session.query(Agreement).filter(Agreement.blockhash == revert_hash).all()
             )
             revert_user_entries = (
                 session.query(User).filter(User.blockhash == revert_hash).all()
@@ -860,9 +860,9 @@ def revert_blocks(self, db, revert_blocks_list):
                 .filter(UserEvent.blockhash == revert_hash)
                 .all()
             )
-            revert_track_routes = (
-                session.query(TrackRoute)
-                .filter(TrackRoute.blockhash == revert_hash)
+            revert_agreement_routes = (
+                session.query(AgreementRoute)
+                .filter(AgreementRoute.blockhash == revert_hash)
                 .all()
             )
 
@@ -936,21 +936,21 @@ def revert_blocks(self, db, revert_blocks_list):
                 # Remove outdated playlist entry
                 session.delete(playlist_to_revert)
 
-            for track_to_revert in revert_track_entries:
-                track_id = track_to_revert.track_id
-                previous_track_entry = (
-                    session.query(Track)
-                    .filter(Track.track_id == track_id)
-                    .filter(Track.blocknumber < revert_block_number)
-                    .order_by(Track.blocknumber.desc())
+            for agreement_to_revert in revert_agreement_entries:
+                agreement_id = agreement_to_revert.agreement_id
+                previous_agreement_entry = (
+                    session.query(Agreement)
+                    .filter(Agreement.agreement_id == agreement_id)
+                    .filter(Agreement.blocknumber < revert_block_number)
+                    .order_by(Agreement.blocknumber.desc())
                     .first()
                 )
-                if previous_track_entry:
-                    # First element in descending order is new current track item
-                    previous_track_entry.is_current = True
-                # Remove track entries
-                logger.info(f"Reverting track: {track_to_revert}")
-                session.delete(track_to_revert)
+                if previous_agreement_entry:
+                    # First element in descending order is new current agreement item
+                    previous_agreement_entry.is_current = True
+                # Remove agreement entries
+                logger.info(f"Reverting agreement: {agreement_to_revert}")
+                session.delete(agreement_to_revert)
 
             for ursm_content_node_to_revert in revert_ursm_content_node_entries:
                 cnode_sp_id = ursm_content_node_to_revert.cnode_sp_id
@@ -1015,21 +1015,21 @@ def revert_blocks(self, db, revert_blocks_list):
 
             revert_user_events(session, revert_user_events_entries, revert_block_number)
 
-            for track_route_to_revert in revert_track_routes:
-                track_id = track_route_to_revert.track_id
-                previous_track_route_entry = (
-                    session.query(TrackRoute)
+            for agreement_route_to_revert in revert_agreement_routes:
+                agreement_id = agreement_route_to_revert.agreement_id
+                previous_agreement_route_entry = (
+                    session.query(AgreementRoute)
                     .filter(
-                        TrackRoute.track_id == track_id,
-                        TrackRoute.blocknumber < revert_block_number,
+                        AgreementRoute.agreement_id == agreement_id,
+                        AgreementRoute.blocknumber < revert_block_number,
                     )
-                    .order_by(TrackRoute.blocknumber.desc(), TrackRoute.slug.asc())
+                    .order_by(AgreementRoute.blocknumber.desc(), AgreementRoute.slug.asc())
                     .first()
                 )
-                if previous_track_route_entry:
-                    previous_track_route_entry.is_current = True
-                logger.info(f"Reverting track route {track_route_to_revert}")
-                session.delete(track_route_to_revert)
+                if previous_agreement_route_entry:
+                    previous_agreement_route_entry.is_current = True
+                logger.info(f"Reverting agreement route {agreement_route_to_revert}")
+                session.delete(agreement_route_to_revert)
 
             # Remove outdated block entry
             session.query(Block).filter(Block.blockhash == revert_hash).delete()
@@ -1037,7 +1037,7 @@ def revert_blocks(self, db, revert_blocks_list):
             rebuild_playlist_index = rebuild_playlist_index or bool(
                 revert_playlist_entries
             )
-            rebuild_track_index = rebuild_track_index or bool(revert_track_entries)
+            rebuild_agreement_index = rebuild_agreement_index or bool(revert_agreement_entries)
             rebuild_user_index = rebuild_user_index or bool(revert_user_entries)
     # TODO - if we enable revert, need to set the most_recent_indexed_block_redis_key key in redis
 
@@ -1072,9 +1072,9 @@ def update_task(self):
     redis = update_task.redis
 
     # Initialize contracts and attach to the task singleton
-    track_abi = update_task.abi_values[TRACK_FACTORY_CONTRACT_NAME]["abi"]
-    track_contract = update_task.web3.eth.contract(
-        address=get_contract_addresses()["track_factory"], abi=track_abi
+    agreement_abi = update_task.abi_values[AGREEMENT_FACTORY_CONTRACT_NAME]["abi"]
+    agreement_contract = update_task.web3.eth.contract(
+        address=get_contract_addresses()["agreement_factory"], abi=agreement_abi
     )
 
     user_abi = update_task.abi_values[USER_FACTORY_CONTRACT_NAME]["abi"]
@@ -1108,7 +1108,7 @@ def update_task(self):
         abi=user_replica_set_manager_abi,
     )
 
-    update_task.track_contract = track_contract
+    update_task.agreement_contract = agreement_contract
     update_task.user_contract = user_contract
     update_task.playlist_contract = playlist_contract
     update_task.social_feature_contract = social_feature_contract

@@ -1,7 +1,7 @@
 'use strict'
 
 /**
- * Content Tables = ColivingUsers, Tracks, Files
+ * Content Tables = ColivingUsers, Agreements, Files
  * CNodeUsers Table considered a Reference Table only
  */
 
@@ -16,7 +16,7 @@ module.exports = {
     // Create Clock table
     await createClockRecordsTable(queryInterface, Sequelize, transaction)
 
-    // Add composite unique constraint on (blockchainId, clock) to ColivingUsers and Tracks
+    // Add composite unique constraint on (blockchainId, clock) to ColivingUsers and Agreements
     // Add composite unique constraint on (cnodeUserUUID, clock) to Files
     await addCompositeUniqueConstraints(queryInterface, Sequelize, transaction)
 
@@ -38,7 +38,7 @@ async function addClockColumn (queryInterface, Sequelize, transaction) {
     unique: false,
     allowNull: true
   }, { transaction })
-  await queryInterface.addColumn('Tracks', 'clock', {
+  await queryInterface.addColumn('Agreements', 'clock', {
     type: Sequelize.INTEGER,
     unique: false,
     allowNull: true
@@ -61,11 +61,11 @@ async function addCompositeUniqueConstraints (queryInterface, Sequelize, transac
     }
   )
   await queryInterface.addConstraint(
-    'Tracks',
+    'Agreements',
     {
       type: 'UNIQUE',
       fields: ['blockchainId', 'clock'],
-      name: 'Tracks_unique_(blockchainId,clock)',
+      name: 'Agreements_unique_(blockchainId,clock)',
       transaction
     }
   )
@@ -101,7 +101,7 @@ async function createClockRecordsTable (queryInterface, Sequelize, transaction) 
       allowNull: false
     },
     sourceTable: {
-      type: Sequelize.ENUM('ColivingUser', 'Track', 'File'),
+      type: Sequelize.ENUM('ColivingUser', 'Agreement', 'File'),
       allowNull: false
     },
     createdAt: {

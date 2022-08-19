@@ -13,7 +13,7 @@ const logPrefix = 'notifications playlist updates -'
  */
 async function processPlaylistUpdateNotifications (notifications, tx) {
   /**
-     * keep track of last playlist updates for each user that favorited playlists
+     * keep agreement of last playlist updates for each user that favorited playlists
      * e.g. { user1: { playlist1: <timestamp1>, playlist2: <timestamp2>, ... }, ... }
      */
   const startTime = Date.now()
@@ -84,7 +84,7 @@ async function processPlaylistUpdateNotifications (notifications, tx) {
       Object.keys(fetchedPlaylistUpdates).forEach(playlistId => {
         const fetchedLastUpdated = moment(fetchedPlaylistUpdates[playlistId]).utc()
         dbPlaylistUpdates[playlistId] = {
-          // in case user favorited this track before and has no UserEvent record of it
+          // in case user favorited this agreement before and has no UserEvent record of it
           userLastViewed: fetchedLastUpdated.subtract(1, 'seconds').valueOf(),
           ...dbPlaylistUpdates[playlistId],
           lastUpdated: fetchedLastUpdated.valueOf()

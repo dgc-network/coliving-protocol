@@ -53,7 +53,7 @@ const checkPropertiesExist = (tx, properties) => {
 }
 
 // Asserts that the tx key-value matches the expected values
-// TODO check for the properties emittedTrackIds, _addedTrackId (potentially more)
+// TODO check for the properties emittedAgreementIds, _addedAgreementId (potentially more)
 export const assertEqualValues = (tx, name, properties) => {
   if (name) {
     assert.equal(tx.event.name, name, 'Expected same event name')
@@ -62,8 +62,8 @@ export const assertEqualValues = (tx, name, properties) => {
     switch (p) {
       case '_id':
       case '_userId':
-      case '_trackOwnerId':
-      case '_trackId':
+      case '_agreementOwnerId':
+      case '_agreementId':
       case '_playlistId':
       case '_followeeUserId':
       case '_primaryId':
@@ -91,11 +91,11 @@ const buildReturnObj = (tx, properties) => {
   for (var p in properties) {
     switch (p) {
       case '_id':
-        returnObj['trackId'] = tx.event.args[p].toNumber()
+        returnObj['agreementId'] = tx.event.args[p].toNumber()
         break
       case '_userId':
-      case '_trackOwnerId':
-      case '_trackId':
+      case '_agreementOwnerId':
+      case '_agreementId':
       case '_playlistId':
       case '_followeeUserId':
         // Slices the property starting at index 1 to remove _

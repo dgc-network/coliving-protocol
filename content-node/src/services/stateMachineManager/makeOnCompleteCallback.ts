@@ -135,7 +135,7 @@ const enqueueJobs = async (
     `Attempting to add ${jobs?.length} jobs in bulk to queue ${queueNameToAddTo}`
   )
 
-  // Add 'enqueuedBy' field for tracking
+  // Add 'enqueuedBy' field for agreementing
   try {
     const bulkAddResult = await queueToAddTo.addBulk(
       jobs.map((job) => {

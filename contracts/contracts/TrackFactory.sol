@@ -2,79 +2,79 @@ pragma solidity ^0.5.0;
 
 import "./interface/UserFactoryInterface.sol";
 import "./registry/RegistryContract.sol";
-import "./interface/TrackStorageInterface.sol";
+import "./interface/AgreementStorageInterface.sol";
 import "./interface/RegistryInterface.sol";
 import "./SigningLogic.sol";
 
 
-/** @title Contract responsible for managing track business logic */
-contract TrackFactory is RegistryContract, SigningLogic {
+/** @title Contract responsible for managing agreement business logic */
+contract AgreementFactory is RegistryContract, SigningLogic {
 
     RegistryInterface registry = RegistryInterface(0);
     bytes32 userFactoryRegistryKey;
-    bytes32 trackStorageRegistryKey;
+    bytes32 agreementStorageRegistryKey;
 
-    event NewTrack(
+    event NewAgreement(
         uint _id,
-        uint _trackOwnerId,
+        uint _agreementOwnerId,
         bytes32 _multihashDigest,
         uint8 _multihashHashFn,
         uint8 _multihashSize
     );
-    event UpdateTrack(
-        uint _trackId,
-        uint _trackOwnerId,
+    event UpdateAgreement(
+        uint _agreementId,
+        uint _agreementOwnerId,
         bytes32 _multihashDigest,
         uint8 _multihashHashFn,
         uint8 _multihashSize
     );
-    event TrackDeleted(uint _trackId);
+    event AgreementDeleted(uint _agreementId);
 
-    bytes32 constant ADD_TRACK_REQUEST_TYPEHASH = keccak256(
-        "AddTrackRequest(uint trackOwnerId,bytes32 multihashDigest,uint8 multihashHashFn,uint8 multihashSize,bytes32 nonce)"
+    bytes32 constant ADD_AGREEMENT_REQUEST_TYPEHASH = keccak256(
+        "AddAgreementRequest(uint agreementOwnerId,bytes32 multihashDigest,uint8 multihashHashFn,uint8 multihashSize,bytes32 nonce)"
     );
-    bytes32 constant UPDATE_TRACK_REQUEST_TYPEHASH = keccak256(
-        "UpdateTrackRequest(uint trackId,uint trackOwnerId,bytes32 multihashDigest,uint8 multihashHashFn,uint8 multihashSize,bytes32 nonce)"
+    bytes32 constant UPDATE_AGREEMENT_REQUEST_TYPEHASH = keccak256(
+        "UpdateAgreementRequest(uint agreementId,uint agreementOwnerId,bytes32 multihashDigest,uint8 multihashHashFn,uint8 multihashSize,bytes32 nonce)"
     );
-    bytes32 constant DELETE_TRACK_REQUEST_TYPEHASH = keccak256(
-        "DeleteTrackRequest(uint trackId,bytes32 nonce)"
+    bytes32 constant DELETE_AGREEMENT_REQUEST_TYPEHASH = keccak256(
+        "DeleteAgreementRequest(uint agreementId,bytes32 nonce)"
     );
 
     /**
-    * @notice Sets registry address and user factory and track storage keys
+    * @notice Sets registry address and user factory and agreement storage keys
     */
     constructor(
         address _registryAddress,
-        bytes32 _trackStorageRegistryKey,
+        bytes32 _agreementStorageRegistryKey,
         bytes32 _userFactoryRegistryKey,
         uint _networkId
-    ) SigningLogic("Track Factory", "1", _networkId) public {
+    ) SigningLogic("Agreement Factory", "1", _networkId) public {
         require(
             _registryAddress != address(0x00) &&
-            _trackStorageRegistryKey.length != 0 && _userFactoryRegistryKey.length != 0,
-            "requires non-zero _registryAddress, non-empty _trackStorageRegistryKey, non-empty _userFactoryRegistryKey"
+            _agreementStorageRegistryKey.length != 0 && _userFactoryRegistryKey.length != 0,
+            "requires non-zero _registryAddress, non-empty _agreementStorageRegistryKey, non-empty _userFactoryRegistryKey"
         );
         registry = RegistryInterface(_registryAddress);
         userFactoryRegistryKey = _userFactoryRegistryKey;
-        trackStorageRegistryKey = _trackStorageRegistryKey;
+        agreementStorageRegistryKey = _agreementStorageRegistryKey;
     }
 
-    function trackExists(uint _id) external view returns (bool exists) {
-        return TrackStorageInterface(
-            registry.getContract(trackStorageRegistryKey)
-        ).trackExists(_id);
+    function agreementExists(uint _id) external view returns (bool exists) {
+        return AgreementStorageInterface(
+            registry.getContract(agreementStorageRegistryKey)
+        ).agreementExists(_id);
     }
 
     /**
-    * @notice adds a new track to TrackStorage
-    * @param _trackOwnerId - id of the track's owner from the UserFactory
+    * @notice adds a new agreement to AgreementStorage
+    * @param _agreementOwnerId - id of the agreement's owner from the UserFactory
     * @param _multihashDigest - metadata multihash digest
     * @param _multihashHashFn - hash function used to generate multihash
     * @param _multihashSize - size of digest
     * TODO(roneilr): stop saving multihash information to chain (wasteful of gas)
     */
-    function addTrack(
-        uint _trackOwnerId,
+    function addAgreement(
+        uint _agreementOwnerId,
         bytes32 _multihashDigest,
         uint8 _multihashHashFn,
         uint8 _multihashSize,
@@ -82,8 +82,8 @@ contract TrackFactory is RegistryContract, SigningLogic {
         bytes calldata _subjectSig
     ) external returns (uint)
     {
-        bytes32 signatureDigest = generateAddTrackRequestSchemaHash(
-            _trackOwnerId,
+        bytes32 signatureDigest = generateAddAgreementRequestSchemaHash(
+            _agreementOwnerId,
             _multihashDigest,
             _multihashHashFn,
             _multihashSize,
@@ -93,33 +93,33 @@ contract TrackFactory is RegistryContract, SigningLogic {
         burnSignatureDigest(signatureDigest, signer);
         UserFactoryInterface(
             registry.getContract(userFactoryRegistryKey)
-        ).callerOwnsUser(signer, _trackOwnerId);    // will revert if false
+        ).callerOwnsUser(signer, _agreementOwnerId);    // will revert if false
 
-        uint trackId = TrackStorageInterface(
-            registry.getContract(trackStorageRegistryKey)
-        ).addTrack(_trackOwnerId, _multihashDigest, _multihashHashFn, _multihashSize);
+        uint agreementId = AgreementStorageInterface(
+            registry.getContract(agreementStorageRegistryKey)
+        ).addAgreement(_agreementOwnerId, _multihashDigest, _multihashHashFn, _multihashSize);
 
-        emit NewTrack(
-            trackId,
-            _trackOwnerId,
+        emit NewAgreement(
+            agreementId,
+            _agreementOwnerId,
             _multihashDigest,
             _multihashHashFn,
             _multihashSize
         );
-        return trackId;
+        return agreementId;
     }
 
     /**
-    * @notice Updates an existing track in TrackStorage
-    * @param _trackId - id of track to update
-    * @param _trackOwnerId - id of the track's creator from the CreatorFactory
+    * @notice Updates an existing agreement in AgreementStorage
+    * @param _agreementId - id of agreement to update
+    * @param _agreementOwnerId - id of the agreement's creator from the CreatorFactory
     * @param _multihashDigest - metadata multihash digest
     * @param _multihashHashFn - hash function used to generate multihash
     * @param _multihashSize - size of digest
     */
-    function updateTrack(
-        uint _trackId,
-        uint _trackOwnerId,
+    function updateAgreement(
+        uint _agreementId,
+        uint _agreementOwnerId,
         bytes32 _multihashDigest,
         uint8 _multihashHashFn,
         uint8 _multihashSize,
@@ -127,9 +127,9 @@ contract TrackFactory is RegistryContract, SigningLogic {
         bytes calldata _subjectSig
     ) external returns (bool)
     {
-        bytes32 signatureDigest = generateUpdateTrackRequestSchemaHash(
-            _trackId,
-            _trackOwnerId,
+        bytes32 signatureDigest = generateUpdateAgreementRequestSchemaHash(
+            _agreementId,
+            _agreementOwnerId,
             _multihashDigest,
             _multihashHashFn,
             _multihashSize,
@@ -137,75 +137,75 @@ contract TrackFactory is RegistryContract, SigningLogic {
         );
         address signer = recoverSigner(signatureDigest, _subjectSig);
         burnSignatureDigest(signatureDigest, signer);
-        this.callerOwnsTrack(signer, _trackId); // will revert if false
+        this.callerOwnsAgreement(signer, _agreementId); // will revert if false
 
-        bool trackUpdated = TrackStorageInterface(
-            registry.getContract(trackStorageRegistryKey)
-        ).updateTrack(
-            _trackId,
-            _trackOwnerId,
+        bool agreementUpdated = AgreementStorageInterface(
+            registry.getContract(agreementStorageRegistryKey)
+        ).updateAgreement(
+            _agreementId,
+            _agreementOwnerId,
             _multihashDigest,
             _multihashHashFn,
             _multihashSize
         );
 
-        emit UpdateTrack(
-            _trackId,
-            _trackOwnerId,
+        emit UpdateAgreement(
+            _agreementId,
+            _agreementOwnerId,
             _multihashDigest,
             _multihashHashFn,
             _multihashSize
         );
-        return trackUpdated;
+        return agreementUpdated;
     }
 
     /**
-    * @notice deletes existing track given its ID
-    * @notice does not delete track from storage by design
-    * @param _trackId - id of track to delete
+    * @notice deletes existing agreement given its ID
+    * @notice does not delete agreement from storage by design
+    * @param _agreementId - id of agreement to delete
     */
-    function deleteTrack(
-        uint _trackId,
+    function deleteAgreement(
+        uint _agreementId,
         bytes32 _nonce,
         bytes calldata _subjectSig
     ) external returns (bool status)
     {
-        bytes32 signatureDigest = generateDeleteTrackRequestSchemaHash(_trackId, _nonce);
+        bytes32 signatureDigest = generateDeleteAgreementRequestSchemaHash(_agreementId, _nonce);
         address signer = recoverSigner(signatureDigest, _subjectSig);
         burnSignatureDigest(signatureDigest, signer);
-        this.callerOwnsTrack(signer, _trackId); // will revert if false
+        this.callerOwnsAgreement(signer, _agreementId); // will revert if false
 
-        emit TrackDeleted(_trackId);
+        emit AgreementDeleted(_agreementId);
         return true;
     }
 
-    /** @notice ensures that calling address owns track; reverts if not */
-    function callerOwnsTrack(address _caller, uint _trackId) external view {
-        // get user id of track owner
-        (uint trackOwnerId,,,) = TrackStorageInterface(
-            registry.getContract(trackStorageRegistryKey)
-        ).getTrack(_trackId);
+    /** @notice ensures that calling address owns agreement; reverts if not */
+    function callerOwnsAgreement(address _caller, uint _agreementId) external view {
+        // get user id of agreement owner
+        (uint agreementOwnerId,,,) = AgreementStorageInterface(
+            registry.getContract(agreementStorageRegistryKey)
+        ).getAgreement(_agreementId);
 
-        // confirm caller owns track owner
+        // confirm caller owns agreement owner
         UserFactoryInterface(
             registry.getContract(userFactoryRegistryKey)
-        ).callerOwnsUser(_caller, trackOwnerId);    // will revert if false
+        ).callerOwnsUser(_caller, agreementOwnerId);    // will revert if false
     }
 
     /**
-    * @notice returns the user and location of a track given its id
-    * @param _id - id of the track
+    * @notice returns the user and location of a agreement given its id
+    * @param _id - id of the agreement
     */
-    function getTrack(uint _id) external view returns (
-        uint trackOwnerId, bytes32 multihashDigest, uint8 multihashHashFn, uint8 multihashSize)
+    function getAgreement(uint _id) external view returns (
+        uint agreementOwnerId, bytes32 multihashDigest, uint8 multihashHashFn, uint8 multihashSize)
     {
-        return TrackStorageInterface(
-            registry.getContract(trackStorageRegistryKey)
-        ).getTrack(_id);
+        return AgreementStorageInterface(
+            registry.getContract(agreementStorageRegistryKey)
+        ).getAgreement(_id);
     }
 
-    function generateAddTrackRequestSchemaHash(
-        uint _trackOwnerId,
+    function generateAddAgreementRequestSchemaHash(
+        uint _agreementOwnerId,
         bytes32 _multihashDigest,
         uint8 _multihashHashFn,
         uint8 _multihashSize,
@@ -215,8 +215,8 @@ contract TrackFactory is RegistryContract, SigningLogic {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    ADD_TRACK_REQUEST_TYPEHASH,
-                    _trackOwnerId,
+                    ADD_AGREEMENT_REQUEST_TYPEHASH,
+                    _agreementOwnerId,
                     _multihashDigest,
                     _multihashHashFn,
                     _multihashSize,
@@ -226,9 +226,9 @@ contract TrackFactory is RegistryContract, SigningLogic {
         );
     }
 
-    function generateUpdateTrackRequestSchemaHash(
-        uint _trackId,
-        uint _trackOwnerId,
+    function generateUpdateAgreementRequestSchemaHash(
+        uint _agreementId,
+        uint _agreementOwnerId,
         bytes32 _multihashDigest,
         uint8 _multihashHashFn,
         uint8 _multihashSize,
@@ -238,9 +238,9 @@ contract TrackFactory is RegistryContract, SigningLogic {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    UPDATE_TRACK_REQUEST_TYPEHASH,
-                    _trackId,
-                    _trackOwnerId,
+                    UPDATE_AGREEMENT_REQUEST_TYPEHASH,
+                    _agreementId,
+                    _agreementOwnerId,
                     _multihashDigest,
                     _multihashHashFn,
                     _multihashSize,
@@ -250,16 +250,16 @@ contract TrackFactory is RegistryContract, SigningLogic {
         );
     }
 
-    function generateDeleteTrackRequestSchemaHash(
-        uint _trackId,
+    function generateDeleteAgreementRequestSchemaHash(
+        uint _agreementId,
         bytes32 _nonce
     ) internal view returns (bytes32)
     {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    DELETE_TRACK_REQUEST_TYPEHASH,
-                    _trackId,
+                    DELETE_AGREEMENT_REQUEST_TYPEHASH,
+                    _agreementId,
                     _nonce
                 )
             )

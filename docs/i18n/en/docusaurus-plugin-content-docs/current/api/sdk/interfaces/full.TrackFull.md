@@ -1,25 +1,25 @@
 ---
-id: "full.TrackFull"
-title: "Interface: TrackFull"
-sidebar_label: "TrackFull"
+id: "full.AgreementFull"
+title: "Interface: AgreementFull"
+sidebar_label: "AgreementFull"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).TrackFull
+[full](../namespaces/full.md).AgreementFull
 
 **`export`**
 
-**`interface`** TrackFull
+**`interface`** AgreementFull
 
 ## Properties
 
 ### artwork
 
- `Optional` **artwork**: [`TrackArtwork`](full.TrackArtwork.md)
+ `Optional` **artwork**: [`AgreementArtwork`](full.AgreementArtwork.md)
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -27,7 +27,7 @@ ___
 
  **blocknumber**: `number`
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -35,7 +35,7 @@ ___
 
  `Optional` **cover\_art**: `string`
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -43,7 +43,7 @@ ___
 
  `Optional` **cover\_art\_sizes**: `string`
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -51,7 +51,7 @@ ___
 
  `Optional` **create\_date**: `string`
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -59,7 +59,7 @@ ___
 
  `Optional` **created\_at**: `string`
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -67,7 +67,7 @@ ___
 
  `Optional` **credits\_splits**: `string`
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -75,7 +75,7 @@ ___
 
  `Optional` **description**: `string`
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -83,7 +83,7 @@ ___
 
  `Optional` **download**: [`DownloadMetadata`](full.DownloadMetadata.md)
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -91,7 +91,7 @@ ___
 
  `Optional` **downloadable**: `boolean`
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -99,7 +99,7 @@ ___
 
  **duration**: `number`
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -107,7 +107,7 @@ ___
 
  **favorite\_count**: `number`
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -115,7 +115,7 @@ ___
 
  `Optional` **field\_visibility**: [`FieldVisibility`](full.FieldVisibility.md)
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -123,7 +123,7 @@ ___
 
  **followee\_favorites**: [`Favorite`](full.Favorite.md)[]
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -131,7 +131,7 @@ ___
 
  **followee\_reposts**: [`Repost`](full.Repost.md)[]
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -139,7 +139,7 @@ ___
 
  `Optional` **genre**: `string`
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -147,7 +147,7 @@ ___
 
  **has\_current\_user\_reposted**: `boolean`
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -155,7 +155,7 @@ ___
 
  **has\_current\_user\_saved**: `boolean`
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -163,7 +163,7 @@ ___
 
  **id**: `string`
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -171,7 +171,7 @@ ___
 
  `Optional` **is\_available**: `boolean`
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -179,7 +179,7 @@ ___
 
  `Optional` **is\_delete**: `boolean`
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -187,7 +187,7 @@ ___
 
  **is\_unlisted**: `boolean`
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -195,7 +195,7 @@ ___
 
  `Optional` **isrc**: `string`
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -203,7 +203,7 @@ ___
 
  `Optional` **iswc**: `string`
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -211,7 +211,7 @@ ___
 
  `Optional` **license**: `string`
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -219,7 +219,7 @@ ___
 
  `Optional` **mood**: `string`
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -227,7 +227,7 @@ ___
 
  `Optional` **permalink**: `string`
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -235,7 +235,7 @@ ___
 
  **play\_count**: `number`
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -243,7 +243,7 @@ ___
 
  `Optional` **release\_date**: `string`
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -251,7 +251,7 @@ ___
 
  `Optional` **remix\_of**: [`FullRemixParent`](full.FullRemixParent.md)
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -259,7 +259,7 @@ ___
 
  **repost\_count**: `number`
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -267,7 +267,7 @@ ___
 
  **route\_id**: `string`
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -275,7 +275,7 @@ ___
 
  `Optional` **stem\_of**: [`StemParent`](full.StemParent.md)
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -283,7 +283,7 @@ ___
 
  `Optional` **tags**: `string`
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -291,15 +291,15 @@ ___
 
  **title**: `string`
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
-### track\_segments
+### agreement\_segments
 
- `Optional` **track\_segments**: [`TrackSegment`](full.TrackSegment.md)[]
+ `Optional` **agreement\_segments**: [`AgreementSegment`](full.AgreementSegment.md)[]
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -307,7 +307,7 @@ ___
 
  `Optional` **updated\_at**: `string`
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -315,7 +315,7 @@ ___
 
  **user**: [`UserFull`](full.UserFull.md)
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull
 
 ___
 
@@ -323,4 +323,4 @@ ___
 
  **user\_id**: `string`
 
-**`memberof`** TrackFull
+**`memberof`** AgreementFull

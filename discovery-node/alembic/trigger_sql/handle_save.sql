@@ -10,8 +10,8 @@ begin
   -- this can be removed if we do this elsewhere
   -- but is here now for safety
   insert into aggregate_user (user_id) values (new.user_id) on conflict do nothing;
-  if new.save_type = 'track' then
-    insert into aggregate_track (track_id) values (new.save_item_id) on conflict do nothing;
+  if new.save_type = 'agreement' then
+    insert into aggregate_agreement (agreement_id) values (new.save_item_id) on conflict do nothing;
   else
     insert into aggregate_playlist (playlist_id) values (new.save_item_id) on conflict do nothing;
   end if;
@@ -23,17 +23,17 @@ begin
     delta := 1;
   end if;
 
-  -- update agg track or playlist
-  if new.save_type = 'track' then
-    milestone_name := 'TRACK_SAVE_COUNT';
-    update aggregate_track 
+  -- update agg agreement or playlist
+  if new.save_type = 'agreement' then
+    milestone_name := 'AGREEMENT_SAVE_COUNT';
+    update aggregate_agreement 
     set save_count = save_count + delta
-    where track_id = new.save_item_id
+    where agreement_id = new.save_item_id
     returning save_count into new_val;
 
     -- update agg user
     update aggregate_user 
-    set track_save_count = track_save_count + delta
+    set agreement_save_count = agreement_save_count + delta
     where user_id = new.user_id;
 
   else

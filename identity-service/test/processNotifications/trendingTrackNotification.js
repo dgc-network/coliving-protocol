@@ -3,12 +3,12 @@ const moment = require('moment')
 const nock = require('nock')
 const models = require('../../src/models')
 const {
-  processTrendingTracks,
+  processTrendingAgreements,
   getTimeGenreActionType,
   TRENDING_TIME,
   TRENDING_GENRE,
-  getTrendingTracks
-} = require('../../src/notifications/trendingTrackProcessing')
+  getTrendingAgreements
+} = require('../../src/notifications/trendingAgreementProcessing')
 const {
   notificationTypes
 } = require('../../src/notifications/constants')
@@ -17,81 +17,81 @@ const { clearDatabase, runMigrations } = require('../lib/app')
 const { encodeHashId } = require('../../src/notifications/utils')
 
 /**
- * Track id 100 owned by user id 1 is #1 trending
- * Track id 101 owned by user id 1 is #2 trending
- * Track id 102 owned by user id 2 is #3 trending
- * Track id 103 owned by user id 3 is #4 trending
- * Track id 104 owned by user id 4 is #5 trending
+ * Agreement id 100 owned by user id 1 is #1 trending
+ * Agreement id 101 owned by user id 1 is #2 trending
+ * Agreement id 102 owned by user id 2 is #3 trending
+ * Agreement id 103 owned by user id 3 is #4 trending
+ * Agreement id 104 owned by user id 4 is #5 trending
  */
 const initialNotifications = [
   {
-    'trackId': 100,
+    'agreementId': 100,
     'userId': 1,
     'rank': 1,
-    'type': notificationTypes.TrendingTrack
+    'type': notificationTypes.TrendingAgreement
   }, {
-    'trackId': 101,
+    'agreementId': 101,
     'userId': 1,
     'rank': 2,
-    'type': notificationTypes.TrendingTrack
+    'type': notificationTypes.TrendingAgreement
   }, {
-    'trackId': 102,
+    'agreementId': 102,
     'userId': 2,
     'rank': 3,
-    'type': notificationTypes.TrendingTrack
+    'type': notificationTypes.TrendingAgreement
   }, {
-    'trackId': 103,
+    'agreementId': 103,
     'userId': 3,
     'rank': 4,
-    'type': notificationTypes.TrendingTrack
+    'type': notificationTypes.TrendingAgreement
   }, {
-    'trackId': 104,
+    'agreementId': 104,
     'userId': 4,
     'rank': 5,
-    'type': notificationTypes.TrendingTrack
+    'type': notificationTypes.TrendingAgreement
   }
 ]
 
 /**
- * Track id 103 owned by user id 3 is #1 trending <= increase
- * Track id 104 owned by user id 4 is #2 trending <= increase
- * Track id 100 owned by user id 1 is #3 trending <= decrease
- * Track id 110 owned by user id 10 is #4 trending <= new
- * Track id 101 owned by user id 1 is #5 trending <= decrease
+ * Agreement id 103 owned by user id 3 is #1 trending <= increase
+ * Agreement id 104 owned by user id 4 is #2 trending <= increase
+ * Agreement id 100 owned by user id 1 is #3 trending <= decrease
+ * Agreement id 110 owned by user id 10 is #4 trending <= new
+ * Agreement id 101 owned by user id 1 is #5 trending <= decrease
  */
 const additionalNotifications = [
   {
-    'trackId': 103,
+    'agreementId': 103,
     'userId': 3,
     'rank': 1,
-    'type': notificationTypes.TrendingTrack
+    'type': notificationTypes.TrendingAgreement
   }, {
-    'trackId': 104,
+    'agreementId': 104,
     'userId': 4,
     'rank': 2,
-    'type': notificationTypes.TrendingTrack
+    'type': notificationTypes.TrendingAgreement
   }, {
-    'trackId': 100,
+    'agreementId': 100,
     'userId': 1,
     'rank': 3,
-    'type': notificationTypes.TrendingTrack
+    'type': notificationTypes.TrendingAgreement
   }, {
-    'trackId': 110,
+    'agreementId': 110,
     'userId': 10,
     'rank': 4,
-    'type': notificationTypes.TrendingTrack
+    'type': notificationTypes.TrendingAgreement
   }, {
-    'trackId': 101,
+    'agreementId': 101,
     'userId': 1,
     'rank': 5,
-    'type': notificationTypes.TrendingTrack
+    'type': notificationTypes.TrendingAgreement
   }
 ]
 
 const makeTrendingResponse = (ids) => {
   const data = ids.map(id => ({
-    title: `Track ${id}`,
-    description: `Track description ${id}`,
+    title: `Agreement ${id}`,
+    description: `Agreement description ${id}`,
     genre: 'Electronic',
     id: encodeHashId(id),
     user: {
@@ -104,7 +104,7 @@ const makeTrendingResponse = (ids) => {
   })
 }
 
-describe('Test Trending Track Notification', () => {
+describe('Test Trending Agreement Notification', () => {
   beforeEach(async () => {
     await clearDatabase()
     await runMigrations()
@@ -117,28 +117,28 @@ describe('Test Trending Track Notification', () => {
       'https://discoveryc.com'
     ]
     nock(endpoints[0])
-      .get('/v1/full/tracks/trending?time=week&limit=10')
+      .get('/v1/full/agreements/trending?time=week&limit=10')
       .reply(200, makeTrendingResponse([1, 8, 6, 4, 5, 3, 2, 9, 10, 7]))
     nock(endpoints[1])
-      .get('/v1/full/tracks/trending?time=week&limit=10')
+      .get('/v1/full/agreements/trending?time=week&limit=10')
       .reply(200, makeTrendingResponse([1, 8, 6, 4, 5, 3, 2, 9, 10, 7]))
     nock(endpoints[2])
-      .get('/v1/full/tracks/trending?time=week&limit=10')
+      .get('/v1/full/agreements/trending?time=week&limit=10')
       .reply(200, makeTrendingResponse([1, 8, 6, 4, 5, 3, 2, 9, 10, 7]))
 
-    const { trendingTracks, blocknumber } = await getTrendingTracks('', endpoints)
+    const { trendingAgreements, blocknumber } = await getTrendingAgreements('', endpoints)
     assert.deepStrictEqual(blocknumber, 100)
-    assert.deepStrictEqual(trendingTracks, [
-      { trackId: 1, rank: 1, userId: 1 },
-      { trackId: 8, rank: 2, userId: 8 },
-      { trackId: 6, rank: 3, userId: 6 },
-      { trackId: 4, rank: 4, userId: 4 },
-      { trackId: 5, rank: 5, userId: 5 },
-      { trackId: 3, rank: 6, userId: 3 },
-      { trackId: 2, rank: 7, userId: 2 },
-      { trackId: 9, rank: 8, userId: 9 },
-      { trackId: 10, rank: 9, userId: 10 },
-      { trackId: 7, rank: 10, userId: 7 }
+    assert.deepStrictEqual(trendingAgreements, [
+      { agreementId: 1, rank: 1, userId: 1 },
+      { agreementId: 8, rank: 2, userId: 8 },
+      { agreementId: 6, rank: 3, userId: 6 },
+      { agreementId: 4, rank: 4, userId: 4 },
+      { agreementId: 5, rank: 5, userId: 5 },
+      { agreementId: 3, rank: 6, userId: 3 },
+      { agreementId: 2, rank: 7, userId: 2 },
+      { agreementId: 9, rank: 8, userId: 9 },
+      { agreementId: 10, rank: 9, userId: 10 },
+      { agreementId: 7, rank: 10, userId: 7 }
     ])
   })
 
@@ -149,48 +149,48 @@ describe('Test Trending Track Notification', () => {
       'https://discoveryc.com'
     ]
     nock(endpoints[0])
-      .get('/v1/full/tracks/trending?time=week&limit=10')
+      .get('/v1/full/agreements/trending?time=week&limit=10')
       .reply(200, makeTrendingResponse([1, 8, 6, 4, 5, 3, 2, 9, 10, 7]))
     nock(endpoints[1])
-      .get('/v1/full/tracks/trending?time=week&limit=10')
+      .get('/v1/full/agreements/trending?time=week&limit=10')
       // Note: items 2 & 3 are flipped here
       .reply(200, makeTrendingResponse([1, 8, 6, 4, 5, 2, 3, 9, 10, 7]))
     nock(endpoints[2])
-      .get('/v1/full/tracks/trending?time=week&limit=10')
+      .get('/v1/full/agreements/trending?time=week&limit=10')
       .reply(200, makeTrendingResponse([1, 8, 6, 4, 5, 3, 2, 9, 10, 7]))
 
-    const result = await getTrendingTracks('', endpoints)
+    const result = await getTrendingAgreements('', endpoints)
     assert.deepStrictEqual(result, null)
   })
 
   it('should insert rows into notifications and notifications actions tables', async () => {
     // ======================================= Process initial Notifications =======================================
     const tx1 = await models.sequelize.transaction()
-    await processTrendingTracks(null, 1, initialNotifications, tx1)
+    await processTrendingAgreements(null, 1, initialNotifications, tx1)
     await tx1.commit()
 
     // ======================================= Run checks against the Notifications =======================================
     // User 20 Should have 2 notifications
-    // 1.) users 1 & 2 liked track 10 (owned by user 20)
-    // 2) user 2 liked track 11 (owned by user 20)
+    // 1.) users 1 & 2 liked agreement 10 (owned by user 20)
+    // 2) user 2 liked agreement 11 (owned by user 20)
     const user1Notifs = await models.Notification.findAll({ where: { userId: 1 } })
     assert.deepStrictEqual(user1Notifs.length, 2)
-    const track100Notification = user1Notifs.find(notif => notif.entityId === 100)
-    assert.ok(track100Notification)
-    const track101Notification = user1Notifs.find(notif => notif.entityId === 101)
-    assert.ok(track101Notification)
+    const agreement100Notification = user1Notifs.find(notif => notif.entityId === 100)
+    assert.ok(agreement100Notification)
+    const agreement101Notification = user1Notifs.find(notif => notif.entityId === 101)
+    assert.ok(agreement101Notification)
 
-    // For the track 100 rank 1 check that the notification action is correct
-    const track100NotificationActions = await models.NotificationAction.findAll({ where: { notificationId: track100Notification.id } })
-    assert.deepStrictEqual(track100NotificationActions.length, 1)
-    assert.deepStrictEqual(track100NotificationActions[0].actionEntityId, 1)
-    assert.deepStrictEqual(track100NotificationActions[0].actionEntityType, getTimeGenreActionType(TRENDING_TIME.WEEK, TRENDING_GENRE.ALL))
+    // For the agreement 100 rank 1 check that the notification action is correct
+    const agreement100NotificationActions = await models.NotificationAction.findAll({ where: { notificationId: agreement100Notification.id } })
+    assert.deepStrictEqual(agreement100NotificationActions.length, 1)
+    assert.deepStrictEqual(agreement100NotificationActions[0].actionEntityId, 1)
+    assert.deepStrictEqual(agreement100NotificationActions[0].actionEntityType, getTimeGenreActionType(TRENDING_TIME.WEEK, TRENDING_GENRE.ALL))
 
-    // For the track 100 rank 1 check that the notification action is correct
-    const track101NotificationActions = await models.NotificationAction.findAll({ where: { notificationId: track101Notification.id } })
-    assert.deepStrictEqual(track101NotificationActions.length, 1)
-    assert.deepStrictEqual(track101NotificationActions[0].actionEntityId, 2)
-    assert.deepStrictEqual(track101NotificationActions[0].actionEntityType, getTimeGenreActionType(TRENDING_TIME.WEEK, TRENDING_GENRE.ALL))
+    // For the agreement 100 rank 1 check that the notification action is correct
+    const agreement101NotificationActions = await models.NotificationAction.findAll({ where: { notificationId: agreement101Notification.id } })
+    assert.deepStrictEqual(agreement101NotificationActions.length, 1)
+    assert.deepStrictEqual(agreement101NotificationActions[0].actionEntityId, 2)
+    assert.deepStrictEqual(agreement101NotificationActions[0].actionEntityType, getTimeGenreActionType(TRENDING_TIME.WEEK, TRENDING_GENRE.ALL))
 
     const allNotifs = await models.Notification.findAll()
     assert.deepStrictEqual(allNotifs.length, 5)
@@ -199,9 +199,9 @@ describe('Test Trending Track Notification', () => {
 
     // increase time
 
-    // ======================================= Process the same trending tracks =======================================
+    // ======================================= Process the same trending agreements =======================================
     const tx2 = await models.sequelize.transaction()
-    await processTrendingTracks(null, 2, initialNotifications, tx2)
+    await processTrendingAgreements(null, 2, initialNotifications, tx2)
     await tx2.commit()
 
     // Check that there are the same number of notifications
@@ -214,28 +214,28 @@ describe('Test Trending Track Notification', () => {
     const threeHrsAgo = moment(Date.now()).subtract(1, 'h')
     await models.Notification.update({ timestamp: threeHrsAgo }, { where: {} })
 
-    // ======================================= Process the new trending tracks =======================================
+    // ======================================= Process the new trending agreements =======================================
     const tx3 = await models.sequelize.transaction()
-    await processTrendingTracks(null, 3, additionalNotifications, tx3)
+    await processTrendingAgreements(null, 3, additionalNotifications, tx3)
     await tx3.commit()
 
     // Check that there is one more notification
     const allNotifsAfterUpdated = await models.Notification.findAll()
-    console.log({ allNotifsAfterUpdated: allNotifsAfterUpdated.map(n => ({ userId: n.userId, track: n.entityId })) })
+    console.log({ allNotifsAfterUpdated: allNotifsAfterUpdated.map(n => ({ userId: n.userId, agreement: n.entityId })) })
     assert.deepStrictEqual(allNotifsAfterUpdated.length, 6)
 
     const user10Notifs = await models.Notification.findAll({ where: { userId: 10 } })
     assert.deepStrictEqual(user10Notifs.length, 1)
-    const track110Notification = user10Notifs.find(notif => notif.entityId === 110)
-    assert.ok(track110Notification)
+    const agreement110Notification = user10Notifs.find(notif => notif.entityId === 110)
+    assert.ok(agreement110Notification)
 
     // Do some more checks
     const sevenHrsAgo = moment(Date.now()).subtract(7, 'h')
     await models.Notification.update({ timestamp: sevenHrsAgo }, { where: {} })
 
-    // ======================================= Process the new trending tracks =======================================
+    // ======================================= Process the new trending agreements =======================================
     const tx4 = await models.sequelize.transaction()
-    await processTrendingTracks(null, 4, additionalNotifications, tx4)
+    await processTrendingAgreements(null, 4, additionalNotifications, tx4)
     await tx4.commit()
 
     // Check that there is one more notification

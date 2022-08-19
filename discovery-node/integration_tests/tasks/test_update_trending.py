@@ -3,10 +3,10 @@ from datetime import datetime, timedelta
 
 from integration_tests.utils import populate_mock_db
 from src.models.social.aggregate_interval_plays import t_aggregate_interval_plays
-from src.models.tracks.track_trending_score import TrackTrendingScore
-from src.models.tracks.trending_param import t_trending_params
-from src.trending_strategies.EJ57D_trending_tracks_strategy import (
-    TrendingTracksStrategyEJ57D,
+from src.models.agreements.agreement_trending_score import AgreementTrendingScore
+from src.models.agreements.trending_param import t_trending_params
+from src.trending_strategies.EJ57D_trending_agreements_strategy import (
+    TrendingAgreementsStrategyEJ57D,
 )
 from src.utils.db_session import get_db
 
@@ -17,8 +17,8 @@ logger = logging.getLogger(__name__)
 def setup_trending(db):
     # Test data
 
-    # test tracks
-    # when creating tracks, track_id == index
+    # test agreements
+    # when creating agreements, agreement_id == index
     test_entities = {
         "users": [
             *[
@@ -45,32 +45,32 @@ def setup_trending(db):
                 for i in range(5, 20)
             ],
         ],
-        "tracks": [
-            {"track_id": 1, "owner_id": 1},
+        "agreements": [
+            {"agreement_id": 1, "owner_id": 1},
             {
-                "track_id": 2,
+                "agreement_id": 2,
                 "owner_id": 1,
                 "created_at": datetime.now() - timedelta(days=1),
             },
             {
-                "track_id": 3,
+                "agreement_id": 3,
                 "owner_id": 2,
                 "created_at": datetime.now() - timedelta(weeks=2),
             },
             {
-                "track_id": 4,
+                "agreement_id": 4,
                 "owner_id": 2,
                 "created_at": datetime.now() - timedelta(weeks=6),
             },
             {
-                "track_id": 5,
+                "agreement_id": 5,
                 "owner_id": 2,
                 "created_at": datetime.now() - timedelta(weeks=60),
             },
-            {"track_id": 6, "owner_id": 2},
-            {"track_id": 7, "owner_id": 3},
-            {"track_id": 8, "owner_id": 3, "is_delete": True},
-            {"track_id": 9, "owner_id": 3, "is_unlisted": True},
+            {"agreement_id": 6, "owner_id": 2},
+            {"agreement_id": 7, "owner_id": 3},
+            {"agreement_id": 8, "owner_id": 3, "is_delete": True},
+            {"agreement_id": 9, "owner_id": 3, "is_unlisted": True},
         ],
         "follows": [
             # at least 200 followers for user_0
@@ -277,17 +277,17 @@ def test_update_interval_plays(app):
         session.execute("REFRESH MATERIALIZED VIEW aggregate_interval_plays")
         aggregate_interval_plays = session.query(t_aggregate_interval_plays).all()
 
-        def get_track_plays(track_id):
+        def get_agreement_plays(agreement_id):
             for param in aggregate_interval_plays:
-                if param.track_id == track_id:
+                if param.agreement_id == agreement_id:
                     return param
             return None
 
         assert len(aggregate_interval_plays) == 7
 
-        track_plays = get_track_plays(1)
-        assert track_plays.week_listen_counts == 10
-        assert track_plays.month_listen_counts == 20
+        agreement_plays = get_agreement_plays(1)
+        assert agreement_plays.week_listen_counts == 10
+        assert agreement_plays.month_listen_counts == 20
 
 
 def test_update_trending_params(app):
@@ -303,17 +303,17 @@ def test_update_trending_params(app):
         session.execute("REFRESH MATERIALIZED VIEW trending_params")
         trending_params = session.query(t_trending_params).all()
 
-        # Test that trending_params are not generated for hidden/deleted tracks
-        # There should be 7 valid tracks with trending params
+        # Test that trending_params are not generated for hidden/deleted agreements
+        # There should be 7 valid agreements with trending params
         assert len(trending_params) == 7
 
-        def get_track_id(track_id):
+        def get_agreement_id(agreement_id):
             for param in trending_params:
-                if param.track_id == track_id:
+                if param.agreement_id == agreement_id:
                     return param
             return None
 
-        t1 = get_track_id(1)
+        t1 = get_agreement_id(1)
         assert t1.play_count == 40
         assert t1.owner_follower_count == 10
         assert t1.repost_count == 63
@@ -334,28 +334,28 @@ def test_update_trending_params(app):
         assert float(t1.karma) == 172
 
 
-def test_update_track_score_query(app):
+def test_update_agreement_score_query(app):
     """Happy path test: test that we get all valid listens from prior year"""
     with app.app_context():
         db = get_db()
 
     # setup
     setup_trending(db)
-    udpated_strategy = TrendingTracksStrategyEJ57D()
+    udpated_strategy = TrendingAgreementsStrategyEJ57D()
 
     with db.scoped_session() as session:
         session.execute("REFRESH MATERIALIZED VIEW aggregate_interval_plays")
         session.execute("REFRESH MATERIALIZED VIEW trending_params")
-        udpated_strategy.update_track_score_query(session)
-        scores = session.query(TrackTrendingScore).all()
-        # Test that scores are not generated for hidden/deleted tracks
-        # There should be 7 valid tracks * 3 valid time ranges (week/month/year)
+        udpated_strategy.update_agreement_score_query(session)
+        scores = session.query(AgreementTrendingScore).all()
+        # Test that scores are not generated for hidden/deleted agreements
+        # There should be 7 valid agreements * 3 valid time ranges (week/month/year)
         assert len(scores) == 21
 
         def get_time_sorted(time_range):
             return sorted(
                 [score for score in scores if score.time_range == time_range],
-                key=lambda k: (k.score, k.track_id),
+                key=lambda k: (k.score, k.agreement_id),
                 reverse=True,
             )
 

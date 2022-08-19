@@ -1,17 +1,17 @@
 ---
-id: "full.TrackFavoritesResponseFull"
-title: "Interface: TrackFavoritesResponseFull"
-sidebar_label: "TrackFavoritesResponseFull"
+id: "full.AgreementFavoritesResponseFull"
+title: "Interface: AgreementFavoritesResponseFull"
+sidebar_label: "AgreementFavoritesResponseFull"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).TrackFavoritesResponseFull
+[full](../namespaces/full.md).AgreementFavoritesResponseFull
 
 **`export`**
 
-**`interface`** TrackFavoritesResponseFull
+**`interface`** AgreementFavoritesResponseFull
 
 ## Properties
 
@@ -19,7 +19,7 @@ pagination_next: null
 
  `Optional` **data**: [`UserFull`](full.UserFull.md)[]
 
-**`memberof`** TrackFavoritesResponseFull
+**`memberof`** AgreementFavoritesResponseFull
 
 ___
 
@@ -27,7 +27,7 @@ ___
 
  **latest\_chain\_block**: `number`
 
-**`memberof`** TrackFavoritesResponseFull
+**`memberof`** AgreementFavoritesResponseFull
 
 ___
 
@@ -35,7 +35,7 @@ ___
 
  **latest\_chain\_slot\_plays**: `number`
 
-**`memberof`** TrackFavoritesResponseFull
+**`memberof`** AgreementFavoritesResponseFull
 
 ___
 
@@ -43,7 +43,7 @@ ___
 
  **latest\_indexed\_block**: `number`
 
-**`memberof`** TrackFavoritesResponseFull
+**`memberof`** AgreementFavoritesResponseFull
 
 ___
 
@@ -51,7 +51,7 @@ ___
 
  **latest\_indexed\_slot\_plays**: `number`
 
-**`memberof`** TrackFavoritesResponseFull
+**`memberof`** AgreementFavoritesResponseFull
 
 ___
 
@@ -59,7 +59,7 @@ ___
 
  **signature**: `string`
 
-**`memberof`** TrackFavoritesResponseFull
+**`memberof`** AgreementFavoritesResponseFull
 
 ___
 
@@ -67,7 +67,7 @@ ___
 
  **timestamp**: `string`
 
-**`memberof`** TrackFavoritesResponseFull
+**`memberof`** AgreementFavoritesResponseFull
 
 ___
 
@@ -75,4 +75,4 @@ ___
 
  **version**: [`VersionMetadata`](full.VersionMetadata.md)
 
-**`memberof`** TrackFavoritesResponseFull
+**`memberof`** AgreementFavoritesResponseFull

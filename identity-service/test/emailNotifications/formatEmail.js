@@ -6,7 +6,7 @@ const moment = require('moment')
 const { clearDatabase, runMigrations } = require('../lib/app')
 
 /**
- * User id 2 reposts track id 1 created by user id 1
+ * User id 2 reposts agreement id 1 created by user id 1
  */
 const respostNotifications = [
   {
@@ -15,7 +15,7 @@ const respostNotifications = [
     'metadata': {
       'entity_id': 1,
       'entity_owner_id': 1,
-      'entity_type': 'track'
+      'entity_type': 'agreement'
     },
     'timestamp': '2020-10-01T19:39:45 Z',
     'type': 'Repost'
@@ -49,7 +49,7 @@ const initFollows = [
 ]
 
 /**
- * User id 2 favorites track id 1 created by user id 1
+ * User id 2 favorites agreement id 1 created by user id 1
  */
 const favoriteNotifications = [
   {
@@ -58,7 +58,7 @@ const favoriteNotifications = [
     'metadata': {
       'entity_id': 1,
       'entity_owner_id': 1,
-      'entity_type': 'track'
+      'entity_type': 'agreement'
     },
     'timestamp': '2020-10-04T19:39:45 Z',
     'type': 'Favorite'
@@ -128,7 +128,7 @@ describe('Test Favorite Notification', function () {
       limit
     })
 
-    assert.deepStrictEqual(notifications.map(n => n.type), [ 'FavoriteTrack', 'Follow', 'RepostTrack' ])
+    assert.deepStrictEqual(notifications.map(n => n.type), [ 'FavoriteAgreement', 'Follow', 'RepostAgreement' ])
 
     let followNotif = notifications.find(notif => notif.type === 'Follow')
     assert.deepStrictEqual(followNotif.actions.map(n => n.actionEntityId), [3, 2])
@@ -161,7 +161,7 @@ describe('Test Favorite Notification', function () {
       limit
     })
 
-    assert.deepStrictEqual(nextNotifs.map(n => n.type), ['Follow', 'FavoriteTrack', 'RepostTrack'])
+    assert.deepStrictEqual(nextNotifs.map(n => n.type), ['Follow', 'FavoriteAgreement', 'RepostAgreement'])
     followNotif = nextNotifs.find(notif => notif.type === 'Follow')
     assert.deepStrictEqual(followNotif.actions.map(n => n.actionEntityId), [4, 3, 2])
   })

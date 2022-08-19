@@ -1,7 +1,7 @@
 //! Program state processor
 
 use crate::{
-    error::TrackListenCountError,
+    error::AgreementListenCountError,
     instruction::{InstructionArgs, TemplateInstruction},
 };
 use solana_program::clock::UnixTimestamp;
@@ -21,7 +21,7 @@ const MAX_TIME_DIFF_SECONDS: UnixTimestamp = 600;
 pub struct Processor {}
 impl Processor {
     /// Call Coliving program to verify signature
-    pub fn process_track_listen_instruction(
+    pub fn process_agreement_listen_instruction(
         _program_id: &Pubkey,
         accounts: &[AccountInfo],
         instruction_data: InstructionArgs,
@@ -39,16 +39,16 @@ impl Processor {
         let clock_account_info = next_account_info(account_info_iter)?;
         let clock = Clock::from_account_info(&clock_account_info)?;
 
-        if (clock.unix_timestamp - instruction_data.track_data.timestamp).abs() > MAX_TIME_DIFF_SECONDS {
-            return Err(TrackListenCountError::InvalidTimestamp.into());
+        if (clock.unix_timestamp - instruction_data.agreement_data.timestamp).abs() > MAX_TIME_DIFF_SECONDS {
+            return Err(AgreementListenCountError::InvalidTimestamp.into());
         }
 
         let signature_data = Box::new(SignatureData {
             recovery_id: instruction_data.recovery_id,
             message: instruction_data
-                .track_data
+                .agreement_data
                 .try_to_vec()
-                .or(Err(TrackListenCountError::InvalidTrackData))?,
+                .or(Err(AgreementListenCountError::InvalidAgreementData))?,
         });
 
         invoke(
@@ -78,11 +78,11 @@ impl Processor {
         input: &[u8],
     ) -> ProgramResult {
         let instruction = TemplateInstruction::try_from_slice(input)
-            .or(Err(TrackListenCountError::InstructionUnpackError))?;
+            .or(Err(AgreementListenCountError::InstructionUnpackError))?;
         match instruction {
-            TemplateInstruction::TrackListenInstruction(signature_data) => {
-                msg!("Instruction: TrackListenInstruction");
-                Self::process_track_listen_instruction(program_id, accounts, signature_data)
+            TemplateInstruction::AgreementListenInstruction(signature_data) => {
+                msg!("Instruction: AgreementListenInstruction");
+                Self::process_agreement_listen_instruction(program_id, accounts, signature_data)
             }
         }
     }

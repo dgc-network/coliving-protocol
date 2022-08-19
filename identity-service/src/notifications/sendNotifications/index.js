@@ -15,9 +15,9 @@ function getUserIdsToNotify (notifications) {
       case notificationTypes.Favorite.base:
         return userIds.concat(notification.metadata.entity_owner_id)
       case notificationTypes.RemixCreate:
-        return userIds.concat(notification.metadata.remix_parent_track_user_id)
-      case notificationTypes.AddTrackToPlaylist:
-        return userIds.concat(notification.metadata.track_owner_id)
+        return userIds.concat(notification.metadata.remix_parent_agreement_user_id)
+      case notificationTypes.AddAgreementToPlaylist:
+        return userIds.concat(notification.metadata.agreement_owner_id)
       case notificationTypes.ChallengeReward:
       case notificationTypes.MilestoneListen:
       case notificationTypes.TierChange:
@@ -85,7 +85,7 @@ async function sendNotifications (colivingLibs, notifications, tx, optimizelyCli
   // Format the notifications, so that the extra information needed to build the notification is in a standard format
   const { notifications: formattedNotifications, users } = await formatNotifications(notifications, userNotificationSettings, tx)
 
-  // Get the metadata for the notifications - users/tracks/playlists from DP that are in the notification
+  // Get the metadata for the notifications - users/agreements/playlists from DP that are in the notification
   const metadata = await fetchNotificationMetadata(colivingLibs, users, formattedNotifications)
 
   // using the metadata, populate the notifications, and push them to the publish queue

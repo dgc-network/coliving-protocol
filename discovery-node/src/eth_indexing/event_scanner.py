@@ -75,7 +75,7 @@ class EventScanner:
         :param redis: redis handle
         :param web3: Web3 instantiated with provider url
         :param contract: Contract
-        :param state: state manager to keep tracks of last scanned block and persisting events to db
+        :param state: state manager to keep agreements of last scanned block and persisting events to db
         :param event_type: web3 Event we scan
         :param filters: Filters passed to get_logs e.g. { "address": <token-address> }
         """

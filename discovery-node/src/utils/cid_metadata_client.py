@@ -5,7 +5,7 @@ from typing import Dict, KeysView, Set, Tuple
 from urllib.parse import urlparse
 
 import aiohttp
-from src.tasks.metadata import track_metadata_format, user_metadata_format
+from src.tasks.metadata import agreement_metadata_format, user_metadata_format
 from src.utils.eth_contracts_helpers import fetch_all_registered_content_nodes
 
 logger = logging.getLogger(__name__)
@@ -158,8 +158,8 @@ class CIDMetadataClient:
 
                     # TODO add playlist type
                     metadata_format = (
-                        track_metadata_format
-                        if cid_type[cid] == "track"
+                        agreement_metadata_format
+                        if cid_type[cid] == "agreement"
                         else user_metadata_format
                     )
 

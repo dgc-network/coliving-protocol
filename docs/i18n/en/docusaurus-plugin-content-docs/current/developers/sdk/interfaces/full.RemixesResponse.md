@@ -21,8 +21,8 @@ custom_edit_url: null
 
 ___
 
-### tracks
+### agreements
 
- `Optional` **tracks**: [`TrackFull`](full.TrackFull.md)[]
+ `Optional` **agreements**: [`AgreementFull`](full.AgreementFull.md)[]
 
 **`memberof`** RemixesResponse

@@ -1,7 +1,7 @@
 ---
-id: "GetPlaylistTracksRequest"
-title: "Interface: GetPlaylistTracksRequest"
-sidebar_label: "GetPlaylistTracksRequest"
+id: "GetPlaylistAgreementsRequest"
+title: "Interface: GetPlaylistAgreementsRequest"
+sidebar_label: "GetPlaylistAgreementsRequest"
 sidebar_position: 0
 custom_edit_url: null
 ---

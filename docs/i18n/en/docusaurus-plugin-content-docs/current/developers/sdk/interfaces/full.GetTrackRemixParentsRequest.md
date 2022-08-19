@@ -1,11 +1,11 @@
 ---
-id: "full.GetTrackRemixParentsRequest"
-title: "Interface: GetTrackRemixParentsRequest"
-sidebar_label: "GetTrackRemixParentsRequest"
+id: "full.GetAgreementRemixParentsRequest"
+title: "Interface: GetAgreementRemixParentsRequest"
+sidebar_label: "GetAgreementRemixParentsRequest"
 custom_edit_url: null
 ---
 
-[full](../namespaces/full.md).GetTrackRemixParentsRequest
+[full](../namespaces/full.md).GetAgreementRemixParentsRequest
 
 ## Properties
 
@@ -25,11 +25,11 @@ The number of items to skip. Useful for pagination (page number * limit)
 
 ___
 
-### trackId
+### agreementId
 
- **trackId**: `string`
+ **agreementId**: `string`
 
-A Track ID
+A Agreement ID
 
 ___
 

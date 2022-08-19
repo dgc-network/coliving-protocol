@@ -8,18 +8,18 @@ import { validateObj } from '../utils/validator'
 import { web3New } from '../utils/web3New'
 
 const signatureSchemas = require('../../signature_schemas/signatureSchemas')
-export const addPlaylistAndValidate = async (playlistFactory, expectedPlaylistId, walletAddress, playlistOwnerId, playlistName, isPrivate, isAlbum, trackIds) => {
+export const addPlaylistAndValidate = async (playlistFactory, expectedPlaylistId, walletAddress, playlistOwnerId, playlistName, isPrivate, isAlbum, agreementIds) => {
   const nonce = signatureSchemas.getNonce()
   const chainId = getNetworkIdForContractInstance(playlistFactory)
 
-  // trackIdsHash calculated by hashing encoded trackIds[]
+  // agreementIdsHash calculated by hashing encoded agreementIds[]
 
   // required to generate signed/typed signature below
-  let trackIdsHash = web3New.utils.soliditySha3(web3New.eth.abi.encodeParameter('uint[]', trackIds))
-  const signatureData = signatureSchemas.generators.getCreatePlaylistRequestData(chainId, playlistFactory.address, playlistOwnerId, playlistName, isPrivate, isAlbum, trackIdsHash, nonce)
+  let agreementIdsHash = web3New.utils.soliditySha3(web3New.eth.abi.encodeParameter('uint[]', agreementIds))
+  const signatureData = signatureSchemas.generators.getCreatePlaylistRequestData(chainId, playlistFactory.address, playlistOwnerId, playlistName, isPrivate, isAlbum, agreementIdsHash, nonce)
 
   const signature = await eth_signTypedData(walletAddress, signatureData)
-  let tx = await playlistFactory.createPlaylist(playlistOwnerId, playlistName, isPrivate, isAlbum, trackIds, nonce, signature)
+  let tx = await playlistFactory.createPlaylist(playlistOwnerId, playlistName, isPrivate, isAlbum, agreementIds, nonce, signature)
 
   let parsedCreatePlaylist = parseTx(tx)
   let parsedCreatePlaylistName = tx.logs[1].args._updatedPlaylistName
@@ -36,18 +36,18 @@ export const addPlaylistAndValidate = async (playlistFactory, expectedPlaylistId
   let emittedEventIsAlbum = eventInfo._isAlbum
   assert.equal(isAlbum, emittedEventIsAlbum, 'Expected emitted album status to equal input')
 
-  // Assert on track id array
-  let emittedTrackIds = eventInfo._trackIds
-  for (let i = 0; i < emittedTrackIds.length; i++) {
-    let emittedTrackId = emittedTrackIds[i].toNumber()
+  // Assert on agreement id array
+  let emittedAgreementIds = eventInfo._agreementIds
+  for (let i = 0; i < emittedAgreementIds.length; i++) {
+    let emittedAgreementId = emittedAgreementIds[i].toNumber()
 
-    assert.equal(emittedTrackId, trackIds[i], 'Expected ordered event trackId to match input')
+    assert.equal(emittedAgreementId, agreementIds[i], 'Expected ordered event agreementId to match input')
   }
 
   // Validate storage playlist contents
-  for (let i = 0; i < trackIds; i++) {
-    let isTrackInPlaylist = await playlistFactory.isTrackInPlaylist.call(expectedPlaylistId, trackIds[i])
-    assert.equal(isTrackInPlaylist, true, 'Expected all tracks to be added to playlist')
+  for (let i = 0; i < agreementIds; i++) {
+    let isAgreementInPlaylist = await playlistFactory.isAgreementInPlaylist.call(expectedPlaylistId, agreementIds[i])
+    assert.equal(isAgreementInPlaylist, true, 'Expected all agreements to be added to playlist')
   }
 }
 
@@ -74,33 +74,33 @@ export const deletePlaylistAndValidate = async (playlistFactory, walletAddress, 
   }
 }
 
-export const orderPlaylistTracksAndValidate = async (playlistFactory, walletAddress, playlistId, trackIds) => {
+export const orderPlaylistAgreementsAndValidate = async (playlistFactory, walletAddress, playlistId, agreementIds) => {
   const nonce = signatureSchemas.getNonce()
   const chainId = getNetworkIdForContractInstance(playlistFactory)
 
-  // trackIdsHash calculated by hashing encoded trackIds[]
+  // agreementIdsHash calculated by hashing encoded agreementIds[]
 
   // required to generate signed/typed signature below
-  let trackIdsHash = web3New.utils.soliditySha3(web3New.eth.abi.encodeParameter('uint[]', trackIds))
-  const signatureData = signatureSchemas.generators.getOrderPlaylistTracksRequestData(chainId, playlistFactory.address, playlistId, trackIdsHash, nonce)
+  let agreementIdsHash = web3New.utils.soliditySha3(web3New.eth.abi.encodeParameter('uint[]', agreementIds))
+  const signatureData = signatureSchemas.generators.getOrderPlaylistAgreementsRequestData(chainId, playlistFactory.address, playlistId, agreementIdsHash, nonce)
 
   const signature = await eth_signTypedData(walletAddress, signatureData)
-  let tx = await playlistFactory.orderPlaylistTracks(playlistId, trackIds, nonce, signature)
+  let tx = await playlistFactory.orderPlaylistAgreements(playlistId, agreementIds, nonce, signature)
 
-  let parsedOrderPlaylistTracks = parseTx(tx)
-  let eventInfo = parsedOrderPlaylistTracks.event.args
+  let parsedOrderPlaylistAgreements = parseTx(tx)
+  let eventInfo = parsedOrderPlaylistAgreements.event.args
   let emittedPlaylistId = eventInfo._playlistId.toNumber()
 
   assert.equal(emittedPlaylistId, playlistId, 'Expected update event playlistId array to match input')
-  let emittedTrackIds = eventInfo._orderedTrackIds
-  assert.equal(emittedTrackIds.length, trackIds.length, 'Expected ordered event trackId array to match input')
-  for (let i = 0; i < emittedTrackIds.length; i++) {
-    let emittedTrackId = emittedTrackIds[i].toNumber()
+  let emittedAgreementIds = eventInfo._orderedAgreementIds
+  assert.equal(emittedAgreementIds.length, agreementIds.length, 'Expected ordered event agreementId array to match input')
+  for (let i = 0; i < emittedAgreementIds.length; i++) {
+    let emittedAgreementId = emittedAgreementIds[i].toNumber()
 
-    assert.equal(emittedTrackId, trackIds[i], 'Expected ordered event trackId to match input')
+    assert.equal(emittedAgreementId, agreementIds[i], 'Expected ordered event agreementId to match input')
   }
 
-  return parsedOrderPlaylistTracks
+  return parsedOrderPlaylistAgreements
 }
 
 export const updatePlaylistPrivacyAndValidate = async (playlistFactory, walletAddress, playlistId, updatedPlaylistPrivacy) => {
@@ -237,52 +237,52 @@ export const deletePlaylistRepostAndValidate = async (socialFeatureFactory, user
   }
 }
 
-export const addPlaylistTrack = async (playlistFactory, walletAddress, playlistId, addedTrackId) => {
+export const addPlaylistAgreement = async (playlistFactory, walletAddress, playlistId, addedAgreementId) => {
   const nonce = signatureSchemas.getNonce()
   const chainId = getNetworkIdForContractInstance(playlistFactory)
-  const signatureData = signatureSchemas.generators.getAddPlaylistTrackRequestData(chainId, playlistFactory.address, playlistId, addedTrackId, nonce)
+  const signatureData = signatureSchemas.generators.getAddPlaylistAgreementRequestData(chainId, playlistFactory.address, playlistId, addedAgreementId, nonce)
 
   const signature = await eth_signTypedData(walletAddress, signatureData)
-  let tx = await playlistFactory.addPlaylistTrack(playlistId, addedTrackId, nonce, signature)
+  let tx = await playlistFactory.addPlaylistAgreement(playlistId, addedAgreementId, nonce, signature)
 
   // TODO:  asserts
-  let parsedAddPlaylistTrack = parseTx(tx)
-  let eventInfo = parsedAddPlaylistTrack.event.args
+  let parsedAddPlaylistAgreement = parseTx(tx)
+  let eventInfo = parsedAddPlaylistAgreement.event.args
   let emittedPlaylistId = eventInfo._playlistId.toNumber()
 
   assert.equal(emittedPlaylistId, playlistId, 'Expected update event playlistId to match input')
-  let emittedAddedTrackId = eventInfo._addedTrackId.toNumber()
+  let emittedAddedAgreementId = eventInfo._addedAgreementId.toNumber()
 
-  assert.equal(emittedAddedTrackId, addedTrackId, 'Expected update event added track id to match input')
+  assert.equal(emittedAddedAgreementId, addedAgreementId, 'Expected update event added agreement id to match input')
 
   // Validate storage playlist value
-  let isTrackInPlaylist = await playlistFactory.isTrackInPlaylist.call(playlistId, addedTrackId)
-  assert.isTrue(isTrackInPlaylist, 'Expected newly added tracks to be in playlist')
-  return parsedAddPlaylistTrack
+  let isAgreementInPlaylist = await playlistFactory.isAgreementInPlaylist.call(playlistId, addedAgreementId)
+  assert.isTrue(isAgreementInPlaylist, 'Expected newly added agreements to be in playlist')
+  return parsedAddPlaylistAgreement
 }
 
-export const deletePlaylistTrack = async (playlistFactory, walletAddress, playlistId, deletedTrackId, deletedTimestamp) => {
+export const deletePlaylistAgreement = async (playlistFactory, walletAddress, playlistId, deletedAgreementId, deletedTimestamp) => {
   const nonce = signatureSchemas.getNonce()
   const chainId = getNetworkIdForContractInstance(playlistFactory)
-  const signatureData = signatureSchemas.generators.getDeletePlaylistTrackRequestData(chainId, playlistFactory.address, playlistId, deletedTrackId, deletedTimestamp, nonce)
+  const signatureData = signatureSchemas.generators.getDeletePlaylistAgreementRequestData(chainId, playlistFactory.address, playlistId, deletedAgreementId, deletedTimestamp, nonce)
 
   const signature = await eth_signTypedData(walletAddress, signatureData)
-  let tx = await playlistFactory.deletePlaylistTrack(playlistId, deletedTrackId, deletedTimestamp, nonce, signature)
+  let tx = await playlistFactory.deletePlaylistAgreement(playlistId, deletedAgreementId, deletedTimestamp, nonce, signature)
 
-  let parsedDeletePlaylistTrack = parseTx(tx)
-  let eventInfo = parsedDeletePlaylistTrack.event.args
+  let parsedDeletePlaylistAgreement = parseTx(tx)
+  let eventInfo = parsedDeletePlaylistAgreement.event.args
   let emittedPlaylistId = eventInfo._playlistId.toNumber()
 
   assert.equal(emittedPlaylistId, playlistId, 'Expected update event playlistId to match input')
-  let emittedDeletedTrackId = eventInfo._deletedTrackId.toNumber()
+  let emittedDeletedAgreementId = eventInfo._deletedAgreementId.toNumber()
 
-  assert.equal(emittedDeletedTrackId, deletedTrackId, 'Expected update event added track id to match input')
+  assert.equal(emittedDeletedAgreementId, deletedAgreementId, 'Expected update event added agreement id to match input')
 
-  // Validate storage playlist track value
-  let isTrackInPlaylist = await playlistFactory.isTrackInPlaylist.call(playlistId, deletedTrackId)
-  assert.isFalse(isTrackInPlaylist, 'Expected newly deleted tracks to not be in playlist')
+  // Validate storage playlist agreement value
+  let isAgreementInPlaylist = await playlistFactory.isAgreementInPlaylist.call(playlistId, deletedAgreementId)
+  assert.isFalse(isAgreementInPlaylist, 'Expected newly deleted agreements to not be in playlist')
 
-  return parsedDeletePlaylistTrack
+  return parsedDeletePlaylistAgreement
 }
 
 export const addPlaylistSaveAndValidate = async (userLibraryFactory, userAddress, userId, playlistId) => {

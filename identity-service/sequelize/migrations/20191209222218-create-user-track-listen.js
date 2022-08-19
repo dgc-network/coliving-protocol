@@ -1,7 +1,7 @@
 'use strict'
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('UserTrackListens', {
+    return queryInterface.createTable('UserAgreementListens', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -12,7 +12,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false
       },
-      trackId: {
+      agreementId: {
         type: Sequelize.INTEGER,
         allowNull: false
       },
@@ -24,10 +24,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    }).then(() => queryInterface.addIndex('UserTrackListens', ['userId']))
+    }).then(() => queryInterface.addIndex('UserAgreementListens', ['userId']))
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.removeIndex('UserTrackListens', ['userId'])
-      .then(() => queryInterface.dropTable('UserTrackListens'))
+    return queryInterface.removeIndex('UserAgreementListens', ['userId'])
+      .then(() => queryInterface.dropTable('UserAgreementListens'))
   }
 }

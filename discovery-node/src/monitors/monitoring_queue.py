@@ -35,7 +35,7 @@ def refresh(redis, db, monitor):
     redis.set(key, value)
 
     if "ttl" in monitor:
-        # Set a TTL (in seconds) key to track when this value needs refreshing.
+        # Set a TTL (in seconds) key to agreement when this value needs refreshing.
         # We store a separate TTL key rather than expiring the value itself
         # so that in the case of an error, the current value can still be read
         redis.set(ttl_key, 1, monitor["ttl"])

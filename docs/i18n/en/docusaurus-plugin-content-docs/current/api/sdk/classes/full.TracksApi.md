@@ -1,6 +1,6 @@
 ---
-id: "full.TracksApi"
-title: "Tracks"
+id: "full.AgreementsApi"
+title: "Agreements"
 sidebar_position: 0
 custom_edit_url: null
 pagination_prev: null
@@ -11,27 +11,27 @@ pagination_next: null
 
 ### bestNewReleases
 
-**bestNewReleases**(): `Promise`<[`TrackFull`](../interfaces/full.TrackFull.md)[]\>
+**bestNewReleases**(): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
 
-Gets the tracks found on the \"Best New Releases\" smart playlist
+Gets the agreements found on the \"Best New Releases\" smart playlist
 
 #### Returns
 
-`Promise`<[`TrackFull`](../interfaces/full.TrackFull.md)[]\>
+`Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
 
 ___
 
-### getBulkTracks
+### getBulkAgreements
 
-**getBulkTracks**(`requestParameters?`): `Promise`<[`TrackFull`](../interfaces/full.TrackFull.md)\>
+**getBulkAgreements**(`requestParameters?`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)\>
 
-Gets a list of tracks using their IDs or permalinks
+Gets a list of agreements using their IDs or permalinks
 
 Example:
 
 ```typescript
 
-const tracks = await colivingSdk.tracks.getBulkTracks();
+const agreements = await colivingSdk.agreements.getBulkAgreements();
 
 ```
 
@@ -39,98 +39,98 @@ const tracks = await colivingSdk.tracks.getBulkTracks();
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetBulkTracksRequest`](../interfaces/full.GetBulkTracksRequest.md) |
+| `requestParameters` | [`GetBulkAgreementsRequest`](../interfaces/full.GetBulkAgreementsRequest.md) |
 
 #### Returns
 
-`Promise`<[`TrackFull`](../interfaces/full.TrackFull.md)\>
+`Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)\>
 
 ___
 
-### getMostLovedTracks
+### getMostLovedAgreements
 
-**getMostLovedTracks**(`requestParameters?`): `Promise`<[`TrackFull`](../interfaces/full.TrackFull.md)[]\>
+**getMostLovedAgreements**(`requestParameters?`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
 
-Gets the tracks found on the \"Most Loved\" smart playlist
+Gets the agreements found on the \"Most Loved\" smart playlist
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetMostLovedTracksRequest`](../interfaces/full.GetMostLovedTracksRequest.md) |
+| `requestParameters` | [`GetMostLovedAgreementsRequest`](../interfaces/full.GetMostLovedAgreementsRequest.md) |
 
 #### Returns
 
-`Promise`<[`TrackFull`](../interfaces/full.TrackFull.md)[]\>
+`Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
 
 ___
 
-### getRecommendedTracks
+### getRecommendedAgreements
 
-**getRecommendedTracks**(`requestParameters?`): `Promise`<[`TrackFull`](../interfaces/full.TrackFull.md)[]\>
+**getRecommendedAgreements**(`requestParameters?`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
 
-Get recommended tracks
+Get recommended agreements
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetRecommendedTracksRequest`](../interfaces/full.GetRecommendedTracksRequest.md) |
+| `requestParameters` | [`GetRecommendedAgreementsRequest`](../interfaces/full.GetRecommendedAgreementsRequest.md) |
 
 #### Returns
 
-`Promise`<[`TrackFull`](../interfaces/full.TrackFull.md)[]\>
+`Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
 
 ___
 
-### getRecommendedTracksWithVersion
+### getRecommendedAgreementsWithVersion
 
-**getRecommendedTracksWithVersion**(`requestParameters`): `Promise`<[`TrackFull`](../interfaces/full.TrackFull.md)[]\>
+**getRecommendedAgreementsWithVersion**(`requestParameters`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
 
-Get recommended tracks using the given trending strategy version
+Get recommended agreements using the given trending strategy version
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetRecommendedTracksWithVersionRequest`](../interfaces/full.GetRecommendedTracksWithVersionRequest.md) |
+| `requestParameters` | [`GetRecommendedAgreementsWithVersionRequest`](../interfaces/full.GetRecommendedAgreementsWithVersionRequest.md) |
 
 #### Returns
 
-`Promise`<[`TrackFull`](../interfaces/full.TrackFull.md)[]\>
+`Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
 
 ___
 
-### getRemixableTracks
+### getRemixableAgreements
 
-**getRemixableTracks**(`requestParameters?`): `Promise`<[`TrackFull`](../interfaces/full.TrackFull.md)\>
+**getRemixableAgreements**(`requestParameters?`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)\>
 
-Gets a list of tracks that have stems available for remixing
+Gets a list of agreements that have stems available for remixing
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetRemixableTracksRequest`](../interfaces/full.GetRemixableTracksRequest.md) |
+| `requestParameters` | [`GetRemixableAgreementsRequest`](../interfaces/full.GetRemixableAgreementsRequest.md) |
 
 #### Returns
 
-`Promise`<[`TrackFull`](../interfaces/full.TrackFull.md)\>
+`Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)\>
 
 ___
 
-### getTrack
+### getAgreement
 
-**getTrack**(`requestParameters`): `Promise`<[`TrackFull`](../interfaces/full.TrackFull.md)\>
+**getAgreement**(`requestParameters`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)\>
 
-Gets a track by ID. If `show_unlisted` is true, then `handle` and `url_title` are required.
+Gets a agreement by ID. If `show_unlisted` is true, then `handle` and `url_title` are required.
 
 Example:
 
 ```typescript
 
-const track = await colivingSdk.tracks.getTrack({
-    trackId: "D7KyD",
+const agreement = await colivingSdk.agreements.getAgreement({
+    agreementId: "D7KyD",
 });
 
 ```
@@ -139,43 +139,43 @@ const track = await colivingSdk.tracks.getTrack({
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetTrackRequest`](../interfaces/full.GetTrackRequest.md) |
+| `requestParameters` | [`GetAgreementRequest`](../interfaces/full.GetAgreementRequest.md) |
 
 #### Returns
 
-`Promise`<[`TrackFull`](../interfaces/full.TrackFull.md)\>
+`Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)\>
 
 ___
 
-### getTrackRemixParents
+### getAgreementRemixParents
 
-**getTrackRemixParents**(`requestParameters`): `Promise`<[`TrackFull`](../interfaces/full.TrackFull.md)[]\>
+**getAgreementRemixParents**(`requestParameters`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
 
-Gets all the tracks that the given track remixes
+Gets all the agreements that the given agreement remixes
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetTrackRemixParentsRequest`](../interfaces/full.GetTrackRemixParentsRequest.md) |
+| `requestParameters` | [`GetAgreementRemixParentsRequest`](../interfaces/full.GetAgreementRemixParentsRequest.md) |
 
 #### Returns
 
-`Promise`<[`TrackFull`](../interfaces/full.TrackFull.md)[]\>
+`Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
 
 ___
 
-### getTrackRemixes
+### getAgreementRemixes
 
-**getTrackRemixes**(`requestParameters`): `Promise`<[`RemixesResponse`](../interfaces/full.RemixesResponse.md)\>
+**getAgreementRemixes**(`requestParameters`): `Promise`<[`RemixesResponse`](../interfaces/full.RemixesResponse.md)\>
 
-Get all tracks that remix the given track
+Get all agreements that remix the given agreement
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetTrackRemixesRequest`](../interfaces/full.GetTrackRemixesRequest.md) |
+| `requestParameters` | [`GetAgreementRemixesRequest`](../interfaces/full.GetAgreementRemixesRequest.md) |
 
 #### Returns
 
@@ -183,17 +183,17 @@ Get all tracks that remix the given track
 
 ___
 
-### getTrackStems
+### getAgreementStems
 
-**getTrackStems**(`requestParameters`): `Promise`<[`StemFull`](../interfaces/full.StemFull.md)[]\>
+**getAgreementStems**(`requestParameters`): `Promise`<[`StemFull`](../interfaces/full.StemFull.md)[]\>
 
-Get the remixable stems of a track
+Get the remixable stems of a agreement
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetTrackStemsRequest`](../interfaces/full.GetTrackStemsRequest.md) |
+| `requestParameters` | [`GetAgreementStemsRequest`](../interfaces/full.GetAgreementStemsRequest.md) |
 
 #### Returns
 
@@ -201,17 +201,17 @@ Get the remixable stems of a track
 
 ___
 
-### getTrendingTrackIDs
+### getTrendingAgreementIDs
 
-**getTrendingTrackIDs**(`requestParameters?`): `Promise`<[`TrendingTimesIds`](../interfaces/full.TrendingTimesIds.md)\>
+**getTrendingAgreementIDs**(`requestParameters?`): `Promise`<[`TrendingTimesIds`](../interfaces/full.TrendingTimesIds.md)\>
 
-Gets the track IDs of the top trending tracks on Coliving
+Gets the agreement IDs of the top trending agreements on Coliving
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetTrendingTrackIDsRequest`](../interfaces/full.GetTrendingTrackIDsRequest.md) |
+| `requestParameters` | [`GetTrendingAgreementIDsRequest`](../interfaces/full.GetTrendingAgreementIDsRequest.md) |
 
 #### Returns
 
@@ -219,17 +219,17 @@ Gets the track IDs of the top trending tracks on Coliving
 
 ___
 
-### getTrendingTracks
+### getTrendingAgreements
 
-**getTrendingTracks**(`requestParameters?`): `Promise`<[`TrackFull`](../interfaces/full.TrackFull.md)[]\>
+**getTrendingAgreements**(`requestParameters?`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
 
-Gets the top 100 trending (most popular) tracks on Coliving
+Gets the top 100 trending (most popular) agreements on Coliving
 
 Example:
 
 ```typescript
 
-const tracks = await colivingSdk.tracks.getTrendingTracks();
+const agreements = await colivingSdk.agreements.getTrendingAgreements();
 
 ```
 
@@ -237,25 +237,25 @@ const tracks = await colivingSdk.tracks.getTrendingTracks();
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetTrendingTracksRequest`](../interfaces/full.GetTrendingTracksRequest.md) |
+| `requestParameters` | [`GetTrendingAgreementsRequest`](../interfaces/full.GetTrendingAgreementsRequest.md) |
 
 #### Returns
 
-`Promise`<[`TrackFull`](../interfaces/full.TrackFull.md)[]\>
+`Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
 
 ___
 
-### getTrendingTracksIDsWithVersion
+### getTrendingAgreementsIDsWithVersion
 
-**getTrendingTracksIDsWithVersion**(`requestParameters`): `Promise`<[`TrendingTimesIds`](../interfaces/full.TrendingTimesIds.md)\>
+**getTrendingAgreementsIDsWithVersion**(`requestParameters`): `Promise`<[`TrendingTimesIds`](../interfaces/full.TrendingTimesIds.md)\>
 
-Gets the track IDs of the top trending tracks on Coliving based on the given trending strategy version
+Gets the agreement IDs of the top trending agreements on Coliving based on the given trending strategy version
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetTrendingTracksIDsWithVersionRequest`](../interfaces/full.GetTrendingTracksIDsWithVersionRequest.md) |
+| `requestParameters` | [`GetTrendingAgreementsIDsWithVersionRequest`](../interfaces/full.GetTrendingAgreementsIDsWithVersionRequest.md) |
 
 #### Returns
 
@@ -263,75 +263,75 @@ Gets the track IDs of the top trending tracks on Coliving based on the given tre
 
 ___
 
-### getTrendingTracksWithVersion
+### getTrendingAgreementsWithVersion
 
-**getTrendingTracksWithVersion**(`requestParameters`): `Promise`<[`TrackFull`](../interfaces/full.TrackFull.md)[]\>
+**getTrendingAgreementsWithVersion**(`requestParameters`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
 
-Gets the top 100 trending (most popular tracks on Coliving using a given trending strategy version
+Gets the top 100 trending (most popular agreements on Coliving using a given trending strategy version
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetTrendingTracksWithVersionRequest`](../interfaces/full.GetTrendingTracksWithVersionRequest.md) |
+| `requestParameters` | [`GetTrendingAgreementsWithVersionRequest`](../interfaces/full.GetTrendingAgreementsWithVersionRequest.md) |
 
 #### Returns
 
-`Promise`<[`TrackFull`](../interfaces/full.TrackFull.md)[]\>
+`Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
 
 ___
 
-### getUnderTheRadarTracks
+### getUnderTheRadarAgreements
 
-**getUnderTheRadarTracks**(`requestParameters?`): `Promise`<[`TrackFull`](../interfaces/full.TrackFull.md)[]\>
+**getUnderTheRadarAgreements**(`requestParameters?`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
 
-Gets the tracks found on the \"Under the Radar\" smart playlist
+Gets the agreements found on the \"Under the Radar\" smart playlist
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetUnderTheRadarTracksRequest`](../interfaces/full.GetUnderTheRadarTracksRequest.md) |
+| `requestParameters` | [`GetUnderTheRadarAgreementsRequest`](../interfaces/full.GetUnderTheRadarAgreementsRequest.md) |
 
 #### Returns
 
-`Promise`<[`TrackFull`](../interfaces/full.TrackFull.md)[]\>
+`Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
 
 ___
 
-### getUndergroundTrendingTracks
+### getUndergroundTrendingAgreements
 
-**getUndergroundTrendingTracks**(`requestParameters?`): `Promise`<[`TrackFull`](../interfaces/full.TrackFull.md)[]\>
+**getUndergroundTrendingAgreements**(`requestParameters?`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
 
-Gets the top 100 trending underground tracks on Coliving
+Gets the top 100 trending underground agreements on Coliving
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetUndergroundTrendingTracksRequest`](../interfaces/full.GetUndergroundTrendingTracksRequest.md) |
+| `requestParameters` | [`GetUndergroundTrendingAgreementsRequest`](../interfaces/full.GetUndergroundTrendingAgreementsRequest.md) |
 
 #### Returns
 
-`Promise`<[`TrackFull`](../interfaces/full.TrackFull.md)[]\>
+`Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
 
 ___
 
-### getUndergroundTrendingTracksWithVersion
+### getUndergroundTrendingAgreementsWithVersion
 
-**getUndergroundTrendingTracksWithVersion**(`requestParameters`): `Promise`<[`TrackFull`](../interfaces/full.TrackFull.md)[]\>
+**getUndergroundTrendingAgreementsWithVersion**(`requestParameters`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
 
-Gets the top 100 trending underground tracks on Coliving using a given trending strategy version
+Gets the top 100 trending underground agreements on Coliving using a given trending strategy version
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetUndergroundTrendingTracksWithVersionRequest`](../interfaces/full.GetUndergroundTrendingTracksWithVersionRequest.md) |
+| `requestParameters` | [`GetUndergroundTrendingAgreementsWithVersionRequest`](../interfaces/full.GetUndergroundTrendingAgreementsWithVersionRequest.md) |
 
 #### Returns
 
-`Promise`<[`TrackFull`](../interfaces/full.TrackFull.md)[]\>
+`Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
 
 ___
 
@@ -339,7 +339,7 @@ ___
 
 **getUsersFromFavorites**(`requestParameters`): `Promise`<[`UserFull`](../interfaces/full.UserFull.md)[]\>
 
-Get users that favorited a track
+Get users that favorited a agreement
 
 #### Parameters
 
@@ -357,7 +357,7 @@ ___
 
 **getUsersFromReposts**(`requestParameters`): `Promise`<[`UserFull`](../interfaces/full.UserFull.md)[]\>
 
-Get the users that reposted a track
+Get the users that reposted a agreement
 
 #### Parameters
 

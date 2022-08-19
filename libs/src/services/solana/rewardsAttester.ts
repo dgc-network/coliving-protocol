@@ -229,7 +229,7 @@ type AttesterState = {
  * either succeeded or failed attestation. It retries errors that might be due to DN
  * timing issues, and skips AAO errors and some Solana program errors.
  *
- * Internally, state is tracked with two variables: `offset` and `startingBlock`.
+ * Internally, state is agreemented with two variables: `offset` and `startingBlock`.
  * `startingBlock` represents which block it start requesting attestations from, while `offset` determines
  * where within those results we offset. AAO rejected rewards
  * are never cleared from the DN rewards queue, so we have to move past them either with `offset` or `startingBlock`.

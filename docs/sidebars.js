@@ -57,7 +57,7 @@ module.exports = {
             },
             {
               type: "doc",
-              id: "developers/sdk/classes/TracksApi",
+              id: "developers/sdk/classes/AgreementsApi",
             },
             {
               type: "doc",

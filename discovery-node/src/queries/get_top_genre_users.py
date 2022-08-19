@@ -2,7 +2,7 @@ import logging
 
 from sqlalchemy import asc, desc, func
 from src.models.social.follow import Follow
-from src.models.tracks.track import Track
+from src.models.agreements.agreement import Agreement
 from src.models.users.user import User
 from src.queries.get_unpopulated_users import get_unpopulated_users
 from src.queries.query_helpers import paginate_query, populate_user_metadata
@@ -25,29 +25,29 @@ def get_top_genre_users(args):
     with db.scoped_session() as session:
         with_genres = len(genres) != 0
 
-        # Associate the user w/ a genre by counting the total # of tracks per genre
-        # taking the genre w/ the most tracks (using genre name as secondary sort)
+        # Associate the user w/ a genre by counting the total # of agreements per genre
+        # taking the genre w/ the most agreements (using genre name as secondary sort)
         user_genre_count_query = (
             session.query(
                 User.user_id.label("user_id"),
-                Track.genre.label("genre"),
+                Agreement.genre.label("genre"),
                 func.row_number()
                 .over(
                     partition_by=User.user_id,
-                    order_by=(desc(func.count(Track.genre)), asc(Track.genre)),
+                    order_by=(desc(func.count(Agreement.genre)), asc(Agreement.genre)),
                 )
                 .label("row_number"),
             )
-            .join(Track, Track.owner_id == User.user_id)
+            .join(Agreement, Agreement.owner_id == User.user_id)
             .filter(
                 User.is_current == True,
-                Track.is_unlisted == False,
-                Track.stem_of == None,
-                Track.is_current == True,
-                Track.is_delete == False,
+                Agreement.is_unlisted == False,
+                Agreement.stem_of == None,
+                Agreement.is_current == True,
+                Agreement.is_delete == False,
             )
-            .group_by(User.user_id, Track.genre)
-            .order_by(desc(func.count(Track.genre)), asc(Track.genre))
+            .group_by(User.user_id, Agreement.genre)
+            .order_by(desc(func.count(Agreement.genre)), asc(Agreement.genre))
         )
 
         user_genre_count_query = user_genre_count_query.subquery(

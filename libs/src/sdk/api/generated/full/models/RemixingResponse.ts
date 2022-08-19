@@ -14,11 +14,11 @@
  */
 
 import {
-    TrackFull,
-    TrackFullFromJSON,
-    TrackFullFromJSONTyped,
-    TrackFullToJSON,
-} from './TrackFull';
+    AgreementFull,
+    AgreementFullFromJSON,
+    AgreementFullFromJSONTyped,
+    AgreementFullToJSON,
+} from './AgreementFull';
 import {
     VersionMetadata,
     VersionMetadataFromJSON,
@@ -76,9 +76,9 @@ export interface RemixingResponse {
     version: VersionMetadata;
     /**
      * 
-     * @type {Array<TrackFull>}
+     * @type {Array<AgreementFull>}
      * @memberof RemixingResponse
      */
-    data?: Array<TrackFull>;
+    data?: Array<AgreementFull>;
 }
 

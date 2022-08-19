@@ -110,7 +110,7 @@ export const generateTimestampAndSignature = (data: object, privateKey: string) 
 }
 
 /**
- * used to track unhealthy nodes and avoid frequent repeated requests to speed up processing
+ * used to agreement unhealthy nodes and avoid frequent repeated requests to speed up processing
  */
 
 export const nodeRecentlyMarkedUnhealthy = (endpoint: string) => {

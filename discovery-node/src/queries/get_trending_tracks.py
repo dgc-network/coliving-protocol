@@ -2,12 +2,12 @@ from typing import Optional, TypedDict
 
 from sqlalchemy import desc
 from sqlalchemy.orm.session import Session
-from src.models.tracks.track_trending_score import TrackTrendingScore
-from src.queries.get_unpopulated_tracks import get_unpopulated_tracks
+from src.models.agreements.agreement_trending_score import AgreementTrendingScore
+from src.queries.get_unpopulated_agreements import get_unpopulated_agreements
 from src.queries.query_helpers import (
     get_users_by_id,
     get_users_ids,
-    populate_track_metadata,
+    populate_agreement_metadata,
 )
 from src.tasks.generate_trending import generate_trending
 from src.trending_strategies.base_trending_strategy import BaseTrendingStrategy
@@ -24,12 +24,12 @@ TRENDING_TTL_SEC = 30 * 60
 
 
 def make_trending_cache_key(
-    time_range, genre, version=DEFAULT_TRENDING_VERSIONS[TrendingType.TRACKS]
+    time_range, genre, version=DEFAULT_TRENDING_VERSIONS[TrendingType.AGREEMENTS]
 ):
     """Makes a cache key resembling `generated-trending:week:electronic`"""
     version_name = (
         f":{version.name}"
-        if version != DEFAULT_TRENDING_VERSIONS[TrendingType.TRACKS]
+        if version != DEFAULT_TRENDING_VERSIONS[TrendingType.AGREEMENTS]
         else ""
     )
     return f"generated-trending{version_name}:{time_range}:{(genre.lower() if genre else '')}"
@@ -38,20 +38,20 @@ def make_trending_cache_key(
 def generate_unpopulated_trending(
     session, genre, time_range, strategy, limit=TRENDING_LIMIT
 ):
-    trending_tracks = generate_trending(session, time_range, genre, limit, 0, strategy)
+    trending_agreements = generate_trending(session, time_range, genre, limit, 0, strategy)
 
-    track_scores = [
-        strategy.get_track_score(time_range, track)
-        for track in trending_tracks["listen_counts"]
+    agreement_scores = [
+        strategy.get_agreement_score(time_range, agreement)
+        for agreement in trending_agreements["listen_counts"]
     ]
-    # Re apply the limit just in case we did decide to include more tracks in the scoring than the limit
-    sorted_track_scores = sorted(
-        track_scores, key=lambda k: (k["score"], k["track_id"]), reverse=True
+    # Re apply the limit just in case we did decide to include more agreements in the scoring than the limit
+    sorted_agreement_scores = sorted(
+        agreement_scores, key=lambda k: (k["score"], k["agreement_id"]), reverse=True
     )[:limit]
-    track_ids = [track["track_id"] for track in sorted_track_scores]
+    agreement_ids = [agreement["agreement_id"] for agreement in sorted_agreement_scores]
 
-    tracks = get_unpopulated_tracks(session, track_ids)
-    return (tracks, track_ids)
+    agreements = get_unpopulated_agreements(session, agreement_ids)
+    return (agreements, agreement_ids)
 
 
 def generate_unpopulated_trending_from_mat_views(
@@ -64,30 +64,30 @@ def generate_unpopulated_trending_from_mat_views(
     elif strategy.version != TrendingVersion.EJ57D and time_range == "allTime":
         time_range = "year"
 
-    trending_track_ids_query = session.query(
-        TrackTrendingScore.track_id, TrackTrendingScore.score
+    trending_agreement_ids_query = session.query(
+        AgreementTrendingScore.agreement_id, AgreementTrendingScore.score
     ).filter(
-        TrackTrendingScore.type == strategy.trending_type.name,
-        TrackTrendingScore.version == strategy.version.name,
-        TrackTrendingScore.time_range == time_range,
+        AgreementTrendingScore.type == strategy.trending_type.name,
+        AgreementTrendingScore.version == strategy.version.name,
+        AgreementTrendingScore.time_range == time_range,
     )
 
     if genre:
-        trending_track_ids_query = trending_track_ids_query.filter(
-            TrackTrendingScore.genre == genre
+        trending_agreement_ids_query = trending_agreement_ids_query.filter(
+            AgreementTrendingScore.genre == genre
         )
 
-    trending_track_ids = (
-        trending_track_ids_query.order_by(
-            desc(TrackTrendingScore.score), desc(TrackTrendingScore.track_id)
+    trending_agreement_ids = (
+        trending_agreement_ids_query.order_by(
+            desc(AgreementTrendingScore.score), desc(AgreementTrendingScore.agreement_id)
         )
         .limit(limit)
         .all()
     )
 
-    track_ids = [track_id[0] for track_id in trending_track_ids]
-    tracks = get_unpopulated_tracks(session, track_ids)
-    return (tracks, track_ids)
+    agreement_ids = [agreement_id[0] for agreement_id in trending_agreement_ids]
+    agreements = get_unpopulated_agreements(session, agreement_ids)
+    return (agreements, agreement_ids)
 
 
 def make_generate_unpopulated_trending(session, genre, time_range, strategy):
@@ -104,21 +104,21 @@ def make_generate_unpopulated_trending(session, genre, time_range, strategy):
     return wrapped
 
 
-class GetTrendingTracksArgs(TypedDict, total=False):
+class GetTrendingAgreementsArgs(TypedDict, total=False):
     current_user_id: Optional[int]
     genre: Optional[str]
     time: str
 
 
-def get_trending_tracks(args: GetTrendingTracksArgs, strategy: BaseTrendingStrategy):
-    """Gets trending by getting the currently cached tracks and then populating them."""
+def get_trending_agreements(args: GetTrendingAgreementsArgs, strategy: BaseTrendingStrategy):
+    """Gets trending by getting the currently cached agreements and then populating them."""
     db = get_db_read_replica()
     with db.scoped_session() as session:
-        return _get_trending_tracks_with_session(session, args, strategy)
+        return _get_trending_agreements_with_session(session, args, strategy)
 
 
-def _get_trending_tracks_with_session(
-    session: Session, args: GetTrendingTracksArgs, strategy: BaseTrendingStrategy
+def _get_trending_agreements_with_session(
+    session: Session, args: GetTrendingAgreementsArgs, strategy: BaseTrendingStrategy
 ):
     current_user_id, genre, time = (
         args.get("current_user_id"),
@@ -130,24 +130,24 @@ def _get_trending_tracks_with_session(
 
     # Will try to hit cached trending from task, falling back
     # to generating it here if necessary and storing it with no TTL
-    (tracks, track_ids) = use_redis_cache(
+    (agreements, agreement_ids) = use_redis_cache(
         key,
         None,
         make_generate_unpopulated_trending(session, genre, time_range, strategy),
     )
 
-    # populate track metadata
-    tracks = populate_track_metadata(session, track_ids, tracks, current_user_id)
-    tracks_map = {track["track_id"]: track for track in tracks}
+    # populate agreement metadata
+    agreements = populate_agreement_metadata(session, agreement_ids, agreements, current_user_id)
+    agreements_map = {agreement["agreement_id"]: agreement for agreement in agreements}
 
-    # Re-sort the populated tracks b/c it loses sort order in sql query
-    sorted_tracks = [tracks_map[track_id] for track_id in track_ids]
+    # Re-sort the populated agreements b/c it loses sort order in sql query
+    sorted_agreements = [agreements_map[agreement_id] for agreement_id in agreement_ids]
 
     if args.get("with_users", False):
-        user_id_list = get_users_ids(sorted_tracks)
+        user_id_list = get_users_ids(sorted_agreements)
         users = get_users_by_id(session, user_id_list, current_user_id)
-        for track in sorted_tracks:
-            user = users[track["owner_id"]]
+        for agreement in sorted_agreements:
+            user = users[agreement["owner_id"]]
             if user:
-                track["user"] = user
-    return sorted_tracks
+                agreement["user"] = user
+    return sorted_agreements

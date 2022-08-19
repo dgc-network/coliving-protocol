@@ -2,8 +2,8 @@ import { web3New } from './web3New'
 
 export const userStorageKey = web3New.utils.utf8ToHex('UserStorage')
 export const userFactoryKey = web3New.utils.utf8ToHex('UserFactory')
-export const trackStorageKey = web3New.utils.utf8ToHex('TrackStorage')
-export const trackFactoryKey = web3New.utils.utf8ToHex('TrackFactory')
+export const agreementStorageKey = web3New.utils.utf8ToHex('AgreementStorage')
+export const agreementFactoryKey = web3New.utils.utf8ToHex('AgreementFactory')
 export const discoveryProviderStorageKey = web3New.utils.utf8ToHex('DiscoveryProviderStorage')
 export const discoveryProviderFactoryKey = web3New.utils.utf8ToHex('DiscoveryProviderFactory')
 export const playlistStorageKey = web3New.utils.utf8ToHex('PlaylistStorage')

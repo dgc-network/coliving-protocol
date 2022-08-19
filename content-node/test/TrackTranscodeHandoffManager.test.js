@@ -10,14 +10,14 @@ const { getLibsMock } = require('./lib/libsMock')
 
 const { logger: genericLogger } = require('../src/logging')
 const Utils = require('../src/utils')
-const TrackTranscodeHandoffManager = require('../src/components/tracks/TrackTranscodeHandoffManager')
+const AgreementTranscodeHandoffManager = require('../src/components/agreements/AgreementTranscodeHandoffManager')
 
-describe('test TrackTranscodeHandoffManager', function () {
+describe('test AgreementTranscodeHandoffManager', function () {
   let libsMock, reqMock
   beforeEach(async () => {
     libsMock = getLibsMock()
     reqMock = {
-      logContext: { env: 'TrackTranscodeHandoffManager test' },
+      logContext: { env: 'AgreementTranscodeHandoffManager test' },
       fileDir: 'testFileDir',
       fileName: 'testFileName.mp3',
       fileNameNoExtension: 'testFileName',
@@ -34,10 +34,10 @@ describe('test TrackTranscodeHandoffManager', function () {
 
   it('If selecting random sps fails, return empty response', async function () {
     sinon
-      .stub(TrackTranscodeHandoffManager, 'selectRandomSPs')
+      .stub(AgreementTranscodeHandoffManager, 'selectRandomSPs')
       .rejects(new Error('i have failed'))
 
-    const resp = await TrackTranscodeHandoffManager.handOff(
+    const resp = await AgreementTranscodeHandoffManager.handOff(
       { logContext: reqMock.logContext },
       reqMock
     )
@@ -47,20 +47,20 @@ describe('test TrackTranscodeHandoffManager', function () {
 
   it('When polling for transcode, if polling fails, return empty response', async function () {
     sinon
-      .stub(TrackTranscodeHandoffManager, 'selectRandomSPs')
+      .stub(AgreementTranscodeHandoffManager, 'selectRandomSPs')
       .resolves(['http://cn1.com', 'http://cn2.com', 'http://cn3.com'])
 
     const expectedUuid = uuid.v4()
     sinon
-      .stub(TrackTranscodeHandoffManager, 'sendTrackToSp')
+      .stub(AgreementTranscodeHandoffManager, 'sendAgreementToSp')
       .resolves(expectedUuid)
 
     sinon
-      .stub(TrackTranscodeHandoffManager, 'pollForTranscode')
+      .stub(AgreementTranscodeHandoffManager, 'pollForTranscode')
       .rejects(new Error('polling failed'))
 
     try {
-      const resp = await TrackTranscodeHandoffManager.handOff(
+      const resp = await AgreementTranscodeHandoffManager.handOff(
         { logContext: reqMock.logContext },
         reqMock
       )
@@ -81,7 +81,7 @@ describe('test TrackTranscodeHandoffManager', function () {
       }
     }
     try {
-      await TrackTranscodeHandoffManager.selectRandomSPs(libsMock)
+      await AgreementTranscodeHandoffManager.selectRandomSPs(libsMock)
       assert.fail(
         'Selecting random SPs should have failed if the libs called failed'
       )
@@ -95,7 +95,7 @@ describe('test TrackTranscodeHandoffManager', function () {
     const allSPsSet = new Set(allSPs.map((sp) => sp.endpoint))
 
     // Return 3 SPs for libs
-    const randomSPs = await TrackTranscodeHandoffManager.selectRandomSPs(
+    const randomSPs = await AgreementTranscodeHandoffManager.selectRandomSPs(
       libsMock
     )
     assert.strictEqual(randomSPs.length, 3)
@@ -109,21 +109,21 @@ describe('test TrackTranscodeHandoffManager', function () {
     }
 
     // Return 1 SP for libs
-    const oneSP = await TrackTranscodeHandoffManager.selectRandomSPs(libsMock)
+    const oneSP = await AgreementTranscodeHandoffManager.selectRandomSPs(libsMock)
     assert.strictEqual(oneSP.length, 1)
     assert.ok(allSPsSet.has(oneSP[0]))
   })
 
-  // sendTrackToSp()
+  // sendAgreementToSp()
 
   it('When handing off transcode request to an sp, if the health check fails, throw error', async function () {
     sinon
-      .stub(TrackTranscodeHandoffManager, 'fetchHealthCheck')
+      .stub(AgreementTranscodeHandoffManager, 'fetchHealthCheck')
       .rejects(new Error('failed to fetch health check response'))
 
     let resp
     try {
-      resp = await TrackTranscodeHandoffManager.sendTrackToSp({
+      resp = await AgreementTranscodeHandoffManager.sendAgreementToSp({
         sp: 'http://some_cn.com',
         req: reqMock
       })
@@ -134,15 +134,15 @@ describe('test TrackTranscodeHandoffManager', function () {
   })
 
   it('When handing off transcode request to an sp, if the health check passes but transcode req does not, throw error', async function () {
-    sinon.stub(TrackTranscodeHandoffManager, 'fetchHealthCheck').resolves()
+    sinon.stub(AgreementTranscodeHandoffManager, 'fetchHealthCheck').resolves()
 
     sinon
-      .stub(TrackTranscodeHandoffManager, 'sendTranscodeAndSegmentRequest')
+      .stub(AgreementTranscodeHandoffManager, 'sendTranscodeAndSegmentRequest')
       .rejects(new Error('failed to send transcode and segment request'))
 
     let resp
     try {
-      resp = await TrackTranscodeHandoffManager.sendTrackToSp({
+      resp = await AgreementTranscodeHandoffManager.sendAgreementToSp({
         sp: 'http://some_cn.com',
         req: reqMock
       })
@@ -153,15 +153,15 @@ describe('test TrackTranscodeHandoffManager', function () {
   })
 
   it('When handing off transcode request to an sp, if both the health check and transcode passes, return uuid', async function () {
-    sinon.stub(TrackTranscodeHandoffManager, 'fetchHealthCheck').resolves()
+    sinon.stub(AgreementTranscodeHandoffManager, 'fetchHealthCheck').resolves()
 
     const expectedUuid = uuid.v4()
     sinon
-      .stub(TrackTranscodeHandoffManager, 'sendTranscodeAndSegmentRequest')
+      .stub(AgreementTranscodeHandoffManager, 'sendTranscodeAndSegmentRequest')
       .resolves(expectedUuid)
 
     try {
-      const actualUuid = await TrackTranscodeHandoffManager.sendTrackToSp({
+      const actualUuid = await AgreementTranscodeHandoffManager.sendAgreementToSp({
         sp: 'http://some_cn.com',
         req: reqMock
       })
@@ -175,18 +175,18 @@ describe('test TrackTranscodeHandoffManager', function () {
 
   it('When fetching segment and writing to fs, if fetching fails, throw error and no files from this call are written to tmp dir', async function () {
     sinon
-      .stub(TrackTranscodeHandoffManager, 'fetchSegment')
+      .stub(AgreementTranscodeHandoffManager, 'fetchSegment')
       .rejects(new Error('fetching segment failed'))
 
     try {
-      await TrackTranscodeHandoffManager.fetchFilesAndWriteToFs({
+      await AgreementTranscodeHandoffManager.fetchFilesAndWriteToFs({
         fileNameNoExtension: reqMock.fileNameNoExtension,
-        transcodeFilePath: `/test_file_storage/files/tmp_track_artifacts/${reqMock.uuid}/${reqMock.uuid}.mp3`,
+        transcodeFilePath: `/test_file_storage/files/tmp_agreement_artifacts/${reqMock.uuid}/${reqMock.uuid}.mp3`,
         segmentFileNames: ['segment00000.ts'],
         segmentFilePaths: [
-          `/test_file_storage/files/tmp_track_artifacts/${reqMock.uuid}/segments/segment00000.ts`
+          `/test_file_storage/files/tmp_agreement_artifacts/${reqMock.uuid}/segments/segment00000.ts`
         ],
-        m3u8FilePath: `/test_file_storage/files/tmp_track_artifacts/${reqMock.uuid}/${reqMock.uuid}.m3u8`
+        m3u8FilePath: `/test_file_storage/files/tmp_agreement_artifacts/${reqMock.uuid}/${reqMock.uuid}.m3u8`
       })
       assert.fail('if fetching segment fails, should not pass')
       // TODO: assert that the files are removed
@@ -198,21 +198,21 @@ describe('test TrackTranscodeHandoffManager', function () {
   it('When fetching transcode and writing to fs, if fetching fails, throw error and no files from this call are written to tmp dir', async function () {
     sinon.stub(Utils, 'writeStreamToFileSystem').resolves()
     sinon
-      .stub(TrackTranscodeHandoffManager, 'fetchSegment')
+      .stub(AgreementTranscodeHandoffManager, 'fetchSegment')
       .resolves({ data: 'some stream' })
     sinon
-      .stub(TrackTranscodeHandoffManager, 'fetchTranscode')
+      .stub(AgreementTranscodeHandoffManager, 'fetchTranscode')
       .rejects(new Error('fetching transcode failed'))
 
     try {
-      await TrackTranscodeHandoffManager.fetchFilesAndWriteToFs({
+      await AgreementTranscodeHandoffManager.fetchFilesAndWriteToFs({
         fileNameNoExtension: reqMock.fileNameNoExtension,
-        transcodeFilePath: `/test_file_storage/files/tmp_track_artifacts/${reqMock.uuid}/${reqMock.uuid}.mp3`,
+        transcodeFilePath: `/test_file_storage/files/tmp_agreement_artifacts/${reqMock.uuid}/${reqMock.uuid}.mp3`,
         segmentFileNames: ['segment00000.ts'],
         segmentFilePaths: [
-          `/test_file_storage/files/tmp_track_artifacts/${reqMock.uuid}/segments/segment00000.ts`
+          `/test_file_storage/files/tmp_agreement_artifacts/${reqMock.uuid}/segments/segment00000.ts`
         ],
-        m3u8FilePath: `/test_file_storage/files/tmp_track_artifacts/${reqMock.uuid}/${reqMock.uuid}.m3u8`
+        m3u8FilePath: `/test_file_storage/files/tmp_agreement_artifacts/${reqMock.uuid}/${reqMock.uuid}.m3u8`
       })
       assert.fail('if fetching transcode fails, should not pass')
       // TODO: assert that the files are removed
@@ -224,24 +224,24 @@ describe('test TrackTranscodeHandoffManager', function () {
   it('When fetching m3u8 and writing to fs, if fetching fails, throw error and no files from this call are written to tmp dir', async function () {
     sinon.stub(Utils, 'writeStreamToFileSystem').resolves()
     sinon
-      .stub(TrackTranscodeHandoffManager, 'fetchSegment')
+      .stub(AgreementTranscodeHandoffManager, 'fetchSegment')
       .resolves({ data: 'some stream' })
     sinon
-      .stub(TrackTranscodeHandoffManager, 'fetchTranscode')
+      .stub(AgreementTranscodeHandoffManager, 'fetchTranscode')
       .resolves({ data: 'some more stream' })
     sinon
-      .stub(TrackTranscodeHandoffManager, 'fetchM3U8File')
+      .stub(AgreementTranscodeHandoffManager, 'fetchM3U8File')
       .rejects(new Error('fetching m3u8 failed'))
 
     try {
-      await TrackTranscodeHandoffManager.fetchFilesAndWriteToFs({
+      await AgreementTranscodeHandoffManager.fetchFilesAndWriteToFs({
         fileNameNoExtension: reqMock.fileNameNoExtension,
-        transcodeFilePath: `/test_file_storage/files/tmp_track_artifacts/${reqMock.uuid}/${reqMock.uuid}.mp3`,
+        transcodeFilePath: `/test_file_storage/files/tmp_agreement_artifacts/${reqMock.uuid}/${reqMock.uuid}.mp3`,
         segmentFileNames: ['segment00000.ts'],
         segmentFilePaths: [
-          `/test_file_storage/files/tmp_track_artifacts/${reqMock.uuid}/segments/segment00000.ts`
+          `/test_file_storage/files/tmp_agreement_artifacts/${reqMock.uuid}/segments/segment00000.ts`
         ],
-        m3u8FilePath: `/test_file_storage/files/tmp_track_artifacts/${reqMock.uuid}/${reqMock.uuid}.m3u8`
+        m3u8FilePath: `/test_file_storage/files/tmp_agreement_artifacts/${reqMock.uuid}/${reqMock.uuid}.m3u8`
       })
       assert.fail('if fetching m3u8 fails, should not pass')
       // TODO: assert that the files are removed
@@ -253,35 +253,35 @@ describe('test TrackTranscodeHandoffManager', function () {
   it('When fetching files and writing to fs, if fetching succeeds, return the file paths', async function () {
     sinon.stub(Utils, 'writeStreamToFileSystem').resolves()
     sinon
-      .stub(TrackTranscodeHandoffManager, 'fetchSegment')
+      .stub(AgreementTranscodeHandoffManager, 'fetchSegment')
       .resolves({ data: 'some stream' })
     sinon
-      .stub(TrackTranscodeHandoffManager, 'fetchTranscode')
+      .stub(AgreementTranscodeHandoffManager, 'fetchTranscode')
       .resolves({ data: 'some more stream' })
     sinon
-      .stub(TrackTranscodeHandoffManager, 'fetchM3U8File')
+      .stub(AgreementTranscodeHandoffManager, 'fetchM3U8File')
       .resolves({ data: 'some more more stream' })
 
     try {
-      const resp = await TrackTranscodeHandoffManager.fetchFilesAndWriteToFs({
+      const resp = await AgreementTranscodeHandoffManager.fetchFilesAndWriteToFs({
         fileNameNoExtension: reqMock.fileNameNoExtension,
-        transcodeFilePath: `/test_file_storage/files/tmp_track_artifacts/${reqMock.uuid}/${reqMock.uuid}.mp3`,
+        transcodeFilePath: `/test_file_storage/files/tmp_agreement_artifacts/${reqMock.uuid}/${reqMock.uuid}.mp3`,
         segmentFileNames: ['segment00000.ts'],
         segmentFilePaths: [
-          `/test_file_storage/files/tmp_track_artifacts/${reqMock.uuid}/segments/segment00000.ts`
+          `/test_file_storage/files/tmp_agreement_artifacts/${reqMock.uuid}/segments/segment00000.ts`
         ],
-        m3u8FilePath: `/test_file_storage/files/tmp_track_artifacts/${reqMock.uuid}/${reqMock.uuid}.m3u8`
+        m3u8FilePath: `/test_file_storage/files/tmp_agreement_artifacts/${reqMock.uuid}/${reqMock.uuid}.m3u8`
       })
 
       assert.strictEqual(
         resp.transcodeFilePath,
-        `/test_file_storage/files/tmp_track_artifacts/${reqMock.uuid}/${reqMock.uuid}.mp3`
+        `/test_file_storage/files/tmp_agreement_artifacts/${reqMock.uuid}/${reqMock.uuid}.mp3`
       )
       assert.strictEqual(resp.segmentFileNames.length, 1)
       assert.strictEqual(resp.segmentFileNames[0], 'segment00000.ts')
       assert.strictEqual(
         resp.m3u8FilePath,
-        `/test_file_storage/files/tmp_track_artifacts/${reqMock.uuid}/${reqMock.uuid}.m3u8`
+        `/test_file_storage/files/tmp_agreement_artifacts/${reqMock.uuid}/${reqMock.uuid}.m3u8`
       )
     } catch (e) {
       assert.fail('if fetching files succeed, should not err')
@@ -295,7 +295,7 @@ describe('test TrackTranscodeHandoffManager', function () {
 
     let didRetry = false
     try {
-      await TrackTranscodeHandoffManager.asyncRetryNotOn404({
+      await AgreementTranscodeHandoffManager.asyncRetryNotOn404({
         logger: genericLogger,
         asyncFn: async () => {
           return axios({

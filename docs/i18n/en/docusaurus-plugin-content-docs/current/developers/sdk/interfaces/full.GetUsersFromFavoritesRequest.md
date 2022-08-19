@@ -25,11 +25,11 @@ The number of items to skip. Useful for pagination (page number * limit)
 
 ___
 
-### trackId
+### agreementId
 
- **trackId**: `string`
+ **agreementId**: `string`
 
-A Track ID
+A Agreement ID
 
 ___
 

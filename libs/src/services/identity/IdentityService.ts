@@ -3,7 +3,7 @@ import { AuthHeaders } from '../../constants'
 import { uuid } from '../../utils/uuid'
 import type { Captcha, Nullable } from '../../utils'
 
-import { getTrackListens, TimeFrame } from './requests'
+import { getAgreementListens, TimeFrame } from './requests'
 import type { Web3Manager } from '../web3Manager'
 import type { TransactionReceipt } from 'web3-core'
 import type Wallet from 'ethereumjs-wallet'
@@ -204,14 +204,14 @@ export class IdentityService {
   }
 
   /**
-   * Logs a track listen for a given user id.
-   * @param trackId
+   * Logs a agreement listen for a given user id.
+   * @param agreementId
    * @param userId
    * @param listenerAddress if logging this listen on behalf of another IP address, pass through here
    * @param signatureData if logging this listen via a 3p service, a signed piece of data proving authenticity
    */
-  async logTrackListen(
-    trackId: number,
+  async logAgreementListen(
+    agreementId: number,
     userId: number,
     listenerAddress: Nullable<string>,
     signatureData: Nullable<{ signature: string; timestamp: string }>,
@@ -228,7 +228,7 @@ export class IdentityService {
       data.timestamp = signatureData.timestamp
     }
     const request: AxiosRequestConfig = {
-      url: `/tracks/${trackId}/listen`,
+      url: `/agreements/${agreementId}/listen`,
       method: 'post',
       data
     }
@@ -242,15 +242,15 @@ export class IdentityService {
   }
 
   /**
-   * Return listen history tracks for a given user id.
+   * Return listen history agreements for a given user id.
    * @param userId - User ID
    * @param limit - max # of items to return
    * @param offset - offset into list to return from (for pagination)
    */
-  async getListenHistoryTracks(userId: number, limit = 100, offset = 0) {
+  async getListenHistoryAgreements(userId: number, limit = 100, offset = 0) {
     const req: AxiosRequestConfig = {
       method: 'get',
-      url: '/tracks/history',
+      url: '/agreements/history',
       params: { userId, limit, offset }
     }
     return await this._makeRequest(req)
@@ -273,19 +273,19 @@ export class IdentityService {
   }
 
   /**
-   * Gets tracks trending on Coliving.
+   * Gets agreements trending on Coliving.
    * @param timeFrame one of day, week, month, or year
-   * @param idsArray track ids
+   * @param idsArray agreement ids
    * @param limit
    * @param offset
    */
-  async getTrendingTracks(
+  async getTrendingAgreements(
     timeFrame: string | null = null,
     idsArray: number[] | null = null,
     limit: number | null = null,
     offset: number | null = null
   ) {
-    let queryUrl = '/tracks/trending/'
+    let queryUrl = '/agreements/trending/'
 
     if (timeFrame != null) {
       switch (timeFrame) {
@@ -314,7 +314,7 @@ export class IdentityService {
     }
 
     return await this._makeRequest<{
-      listenCounts: Array<{ trackId: number; listens: number }>
+      listenCounts: Array<{ agreementId: number; listens: number }>
     }>({
       url: queryUrl,
       method: 'get',
@@ -323,15 +323,15 @@ export class IdentityService {
   }
 
   /**
-   * Gets listens for tracks bucketted by timeFrame.
+   * Gets listens for agreements bucketted by timeFrame.
    * @param timeFrame one of day, week, month, or year
-   * @param idsArray track ids
+   * @param idsArray agreement ids
    * @param startTime parseable by Date.parse
    * @param endTime parseable by Date.parse
    * @param limit
    * @param offset
    */
-  async getTrackListens(
+  async getAgreementListens(
     timeFrame: TimeFrame | null = null,
     idsArray: number[] | null = null,
     startTime: string | null = null,
@@ -339,9 +339,9 @@ export class IdentityService {
     limit: number | null = null,
     offset: number | null = null
   ): Promise<{
-    bucket: Array<{ trackId: number; date: string; listens: number }>
+    bucket: Array<{ agreementId: number; date: string; listens: number }>
   }> {
-    const req = getTrackListens(
+    const req = getAgreementListens(
       timeFrame,
       idsArray,
       startTime,

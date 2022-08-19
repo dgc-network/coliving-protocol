@@ -33,7 +33,7 @@ def dispatch_play(offset: int, session: Session, bus: ChallengeEventBus):
     session.add(play)
     session.flush()
     bus.dispatch(
-        ChallengeEvent.track_listen,
+        ChallengeEvent.agreement_listen,
         BLOCK_NUMBER,
         1,
         {"created_at": play.created_at.timestamp()},
@@ -80,7 +80,7 @@ def test_listen_streak_challenge(app):
     redis_conn = redis.Redis.from_url(url=REDIS_URL)
     bus = ChallengeEventBus(redis_conn)
     # Register events with the bus
-    bus.register_listener(ChallengeEvent.track_listen, listen_streak_challenge_manager)
+    bus.register_listener(ChallengeEvent.agreement_listen, listen_streak_challenge_manager)
 
     with app.app_context():
         db = get_db()
@@ -138,7 +138,7 @@ def test_multiple_listens(app):
     redis_conn = redis.Redis.from_url(url=REDIS_URL)
     bus = ChallengeEventBus(redis_conn)
     # Register events with the bus
-    bus.register_listener(ChallengeEvent.track_listen, listen_streak_challenge_manager)
+    bus.register_listener(ChallengeEvent.agreement_listen, listen_streak_challenge_manager)
 
     with app.app_context():
         db = get_db()
@@ -177,7 +177,7 @@ def test_anon_listen(app):
     redis_conn = redis.Redis.from_url(url=REDIS_URL)
     bus = ChallengeEventBus(redis_conn)
     # Register events with the bus
-    bus.register_listener(ChallengeEvent.track_listen, listen_streak_challenge_manager)
+    bus.register_listener(ChallengeEvent.agreement_listen, listen_streak_challenge_manager)
 
     with app.app_context():
         db = get_db()
@@ -186,7 +186,7 @@ def test_anon_listen(app):
         setup_challenges(session)
         with bus.use_scoped_dispatch_queue():
             bus.dispatch(
-                ChallengeEvent.track_listen,
+                ChallengeEvent.agreement_listen,
                 BLOCK_NUMBER,
                 None,
                 {"created_at": datetime.now()},

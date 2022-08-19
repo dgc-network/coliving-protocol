@@ -1,7 +1,7 @@
 import logging
 
 from sqlalchemy import desc, func
-from src.models.tracks.track import Track
+from src.models.agreements.agreement import Agreement
 from src.utils import db_session
 
 logger = logging.getLogger(__name__)
@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 def get_genre_metrics(args):
     """
-    Returns metrics for track genres over the provided bucket
+    Returns metrics for agreement genres over the provided bucket
 
     Args:
         args: dict The parsed args from the request
@@ -27,14 +27,14 @@ def get_genre_metrics(args):
 
 def _get_genre_metrics(session, args):
     metrics_query = (
-        session.query(Track.genre, func.count(Track.track_id).label("count"))
+        session.query(Agreement.genre, func.count(Agreement.agreement_id).label("count"))
         .filter(
-            Track.genre != None,
-            Track.genre != "",
-            Track.is_current == True,
-            Track.created_at > args.get("start_time"),
+            Agreement.genre != None,
+            Agreement.genre != "",
+            Agreement.is_current == True,
+            Agreement.created_at > args.get("start_time"),
         )
-        .group_by(Track.genre)
+        .group_by(Agreement.genre)
         .order_by(desc("count"))
         .limit(args.get("limit"))
         .offset(args.get("offset"))

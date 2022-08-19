@@ -6,8 +6,8 @@ from src.models.users.user import User
 from src.utils.db_session import get_db
 
 
-def test_resolve_track_url(app):
-    """Tests that it resolves a track url"""
+def test_resolve_agreement_url(app):
+    """Tests that it resolves a agreement url"""
     with app.test_request_context():
         db = get_db()
         with db.scoped_session() as session:
@@ -16,7 +16,7 @@ def test_resolve_track_url(app):
 
             assert (
                 resolved_url
-                == "/v1/tracks?slug=mb-shola-vivienne-%22westwood%22-87325&handle=urbanbankai"
+                == "/v1/agreements?slug=mb-shola-vivienne-%22westwood%22-87325&handle=urbanbankai"
             )
 
 
@@ -32,7 +32,7 @@ def test_resolve_playlist_url(app):
 
 
 def test_resolve_non_fully_qualified_url(app):
-    """Tests that it resolves a track url when not fully qualified"""
+    """Tests that it resolves a agreement url when not fully qualified"""
     with app.test_request_context():
         db = get_db()
         with db.scoped_session() as session:
@@ -41,7 +41,7 @@ def test_resolve_non_fully_qualified_url(app):
 
             assert (
                 resolved_url
-                == "/v1/tracks?slug=mb-shola-vivienne-%22westwood%22-87325&handle=urbanbankai"
+                == "/v1/agreements?slug=mb-shola-vivienne-%22westwood%22-87325&handle=urbanbankai"
             )
 
 

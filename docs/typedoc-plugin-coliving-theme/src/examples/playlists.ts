@@ -4,8 +4,8 @@ const playlist = await colivingSdk.playlists.getPlaylist({
 });
 `;
 
-export const getPlaylistTracks = `
-const tracks = await colivingSdk.playlists.getPlaylistTracks({
+export const getPlaylistAgreements = `
+const agreements = await colivingSdk.playlists.getPlaylistAgreements({
     playlistId: "AxRP0",
 });
 `;

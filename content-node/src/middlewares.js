@@ -563,7 +563,7 @@ async function getCreatorNodeEndpoints({
           !fetchedUser ||
           fetchedUser.length === 0 ||
           !fetchedUser[0].hasOwnProperty('blocknumber') ||
-          !fetchedUser[0].hasOwnProperty('track_blocknumber')
+          !fetchedUser[0].hasOwnProperty('agreement_blocknumber')
         ) {
           throw new Error('Missing or malformatted user fetched from discprov.')
         }
@@ -571,7 +571,7 @@ async function getCreatorNodeEndpoints({
         user = fetchedUser
         discprovBlockNumber = Math.max(
           user[0].blocknumber,
-          user[0].track_blocknumber
+          user[0].agreement_blocknumber
         )
 
         if (discprovBlockNumber >= blockNumber) {

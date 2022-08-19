@@ -8,7 +8,7 @@ const moment = require('moment')
 const streamPipeline = util.promisify(require('stream').pipeline)
 const { logger } = require('./logger.js')
 
-const TRACK_URLS = [
+const AGREEMENT_URLS = [
   'https://royalty-free-content.s3-us-west-2.amazonaws.com/live/Gipsy.mp3',
   'https://royalty-free-content.s3-us-west-2.amazonaws.com/live/First+Rain.mp3',
   'https://royalty-free-content.s3-us-west-2.amazonaws.com/live/Miracle.mp3',
@@ -48,9 +48,9 @@ const getRandomUser = () => {
 }
 
 /**
- * Generates a random track.
+ * Generates a random agreement.
  */
-const getRandomTrackMetadata = userId => {
+const getRandomAgreementMetadata = userId => {
   return {
     owner_id: userId,
     cover_art: null,
@@ -69,25 +69,25 @@ const getRandomTrackMetadata = userId => {
     license: '',
     isrc: '',
     iswc: '',
-    track_segments: []
+    agreement_segments: []
   }
 }
 
 /**
- * Randomly selects url from TRACK_URLS, downloads track file from url to temp local storage, & returns its file path
+ * Randomly selects url from AGREEMENT_URLS, downloads agreement file from url to temp local storage, & returns its file path
  *
- * @notice this depends on TRACK_URLS pointing to valid urls in S3. Ideally we'd be able to
+ * @notice this depends on AGREEMENT_URLS pointing to valid urls in S3. Ideally we'd be able to
  *    randomly select any file from the parent folder.
  */
-const getRandomTrackFilePath = async localDirPath => {
+const getRandomAgreementFilePath = async localDirPath => {
   if (!fs.existsSync(localDirPath)) {
     fs.mkdirSync(localDirPath)
   }
 
-  const trackURL = _.sample(TRACK_URLS)
+  const agreementURL = _.sample(AGREEMENT_URLS)
   const targetFilePath = path.resolve(localDirPath, `${genRandomString(6)}.mp3`)
 
-  const response = await fetch(trackURL)
+  const response = await fetch(agreementURL)
   if (!response.ok) {
     throw new Error(`unexpected response ${response.statusText}`)
   }
@@ -96,9 +96,9 @@ const getRandomTrackFilePath = async localDirPath => {
     await fs.ensureDir(localDirPath)
     await streamPipeline(response.body, fs.createWriteStream(targetFilePath))
 
-    logger.info(`Wrote track to temp local storage at ${targetFilePath}`)
+    logger.info(`Wrote agreement to temp local storage at ${targetFilePath}`)
   } catch (e) {
-    const errorMsg = `Error with writing track to path ${localDirPath}`
+    const errorMsg = `Error with writing agreement to path ${localDirPath}`
     logger.error(errorMsg)
     console.error(e)
     throw new Error(`${errorMsg}: ${e.message}`)
@@ -206,9 +206,9 @@ const getRandomUserMetadata = (email, password) => {
 module.exports = {
   genRandomUsers,
   getRandomUser,
-  getRandomTrackMetadata,
+  getRandomAgreementMetadata,
   genRandomString,
-  getRandomTrackFilePath,
+  getRandomAgreementFilePath,
   getRandomImageFilePath,
   r6,
   getRandomPassword,

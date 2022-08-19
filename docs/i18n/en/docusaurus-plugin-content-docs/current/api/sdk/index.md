@@ -47,7 +47,7 @@ const colivingSdk = window.colivingSdk({ appName: 'Name of your app goes here' }
 #### 3. Make your first API call using the SDK!
 
 ```js
-const tracks = await colivingSdk.discoveryNode.getTracks()
+const agreements = await colivingSdk.discoveryNode.getAgreements()
 ```
 
 #### Full example
@@ -62,8 +62,8 @@ const tracks = await colivingSdk.discoveryNode.getTracks()
       const colivingSdk = window.colivingSdk({
         appName: "My Example App",
       });
-      const tracks = await colivingSdk.discoveryNode.getTracks();
-      console.log(tracks, "Tracks fetched!");
+      const agreements = await colivingSdk.discoveryNode.getAgreements();
+      console.log(agreements, "Agreements fetched!");
     </script>
   </head>
   <body>
@@ -108,8 +108,8 @@ const colivingSdk = sdk({ appName: 'Name of your app goes here' })
 #### 4. Make your first API call using the SDK!
 
 ```js
-const tracks = await colivingSdk.discoveryNode.getTracks()
-console.log(tracks, 'Tracks fetched!')
+const agreements = await colivingSdk.discoveryNode.getAgreements()
+console.log(agreements, 'Agreements fetched!')
 ```
 
 #### Full example
@@ -120,6 +120,6 @@ import { sdk } from '@/sdk'
 
 window.Web3 = Web3
 const colivingSdk = sdk({ appName: 'My Example App' })
-const tracks = await colivingSdk.discoveryNode.getTracks()
-console.log(tracks, 'Tracks fetched!')
+const agreements = await colivingSdk.discoveryNode.getAgreements()
+console.log(agreements, 'Agreements fetched!')
 ```

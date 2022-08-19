@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = exports.getTrackLink = exports.getEntity = exports.getUsers = void 0;
+exports["default"] = exports.getAgreementLink = exports.getEntity = exports.getUsers = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
@@ -66,13 +66,13 @@ var challengeRewardsConfig = {
     title: 'Complete Your Profile',
     icon: /*#__PURE__*/_react["default"].createElement(_Icons.WhiteHeavyCheckMarkIcon, null)
   },
-  'track-upload': {
-    title: 'Upload 3 Tracks',
+  'agreement-upload': {
+    title: 'Upload 3 Agreements',
     icon: /*#__PURE__*/_react["default"].createElement(_Icons.MultipleMusicalNotesIcon, null)
   }
 };
 var EntityType = Object.freeze({
-  Track: 'Track',
+  Agreement: 'Agreement',
   Album: 'Album',
   Playlist: 'Playlist'
 });
@@ -123,9 +123,9 @@ var getUsers = function getUsers(users) {
 exports.getUsers = getUsers;
 
 var getEntity = function getEntity(entity) {
-  if (entity.type === EntityType.Track) {
+  if (entity.type === EntityType.Agreement) {
     return /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, null, " ", /*#__PURE__*/_react["default"].createElement(BodyText, {
-      text: 'track '
+      text: 'agreement '
     }), /*#__PURE__*/_react["default"].createElement(HighlightText, {
       text: entity.name
     }), " ");
@@ -193,14 +193,14 @@ var notificationMap = (_notificationMap = {}, _defineProperty(_notificationMap, 
       text: "You have reached over ".concat(notification.value, " Followers ")
     });
   }
-}), _defineProperty(_notificationMap, _constants.notificationTypes.TrendingTrack, function (notification) {
+}), _defineProperty(_notificationMap, _constants.notificationTypes.TrendingAgreement, function (notification) {
   var highlight = notification.entity.title;
   var rank = notification.rank;
   var rankSuffix = (0, _formatNotificationMetadata.getRankSuffix)(rank);
   return /*#__PURE__*/_react["default"].createElement("span", {
     className: 'notificationText'
   }, /*#__PURE__*/_react["default"].createElement(BodyText, {
-    text: "Your Track "
+    text: "Your Agreement "
   }), /*#__PURE__*/_react["default"].createElement(HighlightText, {
     text: highlight
   }), /*#__PURE__*/_react["default"].createElement(BodyText, {
@@ -210,7 +210,7 @@ var notificationMap = (_notificationMap = {}, _defineProperty(_notificationMap, 
   var _notification$users = _slicedToArray(notification.users, 1),
       user = _notification$users[0];
 
-  if (notification.entity.type === _constants.notificationTypes.Track && !isNaN(notification.entity.count) && notification.entity.count > 1) {
+  if (notification.entity.type === _constants.notificationTypes.Agreement && !isNaN(notification.entity.count) && notification.entity.count > 1) {
     return /*#__PURE__*/_react["default"].createElement("span", {
       className: 'notificationText'
     }, /*#__PURE__*/_react["default"].createElement(HighlightText, {
@@ -229,32 +229,32 @@ var notificationMap = (_notificationMap = {}, _defineProperty(_notificationMap, 
   }));
 }), _defineProperty(_notificationMap, _constants.notificationTypes.RemixCreate, function (notification) {
   var remixUser = notification.remixUser,
-      remixTrack = notification.remixTrack,
-      parentTrackUser = notification.parentTrackUser,
-      parentTrack = notification.parentTrack;
+      remixAgreement = notification.remixAgreement,
+      parentAgreementUser = notification.parentAgreementUser,
+      parentAgreement = notification.parentAgreement;
   return /*#__PURE__*/_react["default"].createElement("span", {
     className: 'notificationText'
   }, /*#__PURE__*/_react["default"].createElement(HighlightText, {
-    text: remixTrack.title
+    text: remixAgreement.title
   }), /*#__PURE__*/_react["default"].createElement(BodyText, {
     text: " by "
   }), /*#__PURE__*/_react["default"].createElement(HighlightText, {
     text: remixUser.name
   }));
 }), _defineProperty(_notificationMap, _constants.notificationTypes.RemixCosign, function (notification) {
-  var parentTrackUser = notification.parentTrackUser,
-      parentTracks = notification.parentTracks;
-  var parentTrack = parentTracks.find(function (t) {
-    return t.owner_id === parentTrackUser.user_id;
+  var parentAgreementUser = notification.parentAgreementUser,
+      parentAgreements = notification.parentAgreements;
+  var parentAgreement = parentAgreements.find(function (t) {
+    return t.owner_id === parentAgreementUser.user_id;
   });
   return /*#__PURE__*/_react["default"].createElement("span", {
     className: 'notificationText'
   }, /*#__PURE__*/_react["default"].createElement(HighlightText, {
-    text: parentTrackUser.name
+    text: parentAgreementUser.name
   }), /*#__PURE__*/_react["default"].createElement(BodyText, {
     text: " Co-signed your Remix of "
   }), /*#__PURE__*/_react["default"].createElement(HighlightText, {
-    text: parentTrack.title
+    text: parentAgreement.title
   }));
 }), _defineProperty(_notificationMap, _constants.notificationTypes.ChallengeReward, function (notification) {
   var rewardAmount = notification.rewardAmount;
@@ -282,15 +282,15 @@ var notificationMap = (_notificationMap = {}, _defineProperty(_notificationMap, 
   })))), /*#__PURE__*/_react["default"].createElement(BodyText, {
     text: bodyText
   }));
-}), _defineProperty(_notificationMap, _constants.notificationTypes.AddTrackToPlaylist, function (notification) {
+}), _defineProperty(_notificationMap, _constants.notificationTypes.AddAgreementToPlaylist, function (notification) {
   return /*#__PURE__*/_react["default"].createElement("span", {
     className: 'notificationText'
   }, /*#__PURE__*/_react["default"].createElement(HighlightText, {
     text: notification.playlistOwner.name
   }), /*#__PURE__*/_react["default"].createElement(BodyText, {
-    text: " added your track "
+    text: " added your agreement "
   }), /*#__PURE__*/_react["default"].createElement(HighlightText, {
-    text: notification.track.title
+    text: notification.agreement.title
   }), /*#__PURE__*/_react["default"].createElement(BodyText, {
     text: " to their playlist "
   }), /*#__PURE__*/_react["default"].createElement(HighlightText, {
@@ -358,13 +358,13 @@ var getTitle = function getTitle(notification) {
   switch (notification.type) {
     case _constants.notificationTypes.RemixCreate:
       {
-        var parentTrack = notification.parentTrack;
+        var parentAgreement = notification.parentAgreement;
         return /*#__PURE__*/_react["default"].createElement("span", {
           className: 'notificationText'
         }, /*#__PURE__*/_react["default"].createElement(BodyText, {
-          text: "New remix of your track "
+          text: "New remix of your agreement "
         }), /*#__PURE__*/_react["default"].createElement(HighlightText, {
-          text: parentTrack.title
+          text: parentAgreement.title
         }));
       }
 
@@ -373,15 +373,15 @@ var getTitle = function getTitle(notification) {
   }
 };
 
-var getTrackMessage = function getTrackMessage(notification) {
+var getAgreementMessage = function getAgreementMessage(notification) {
   switch (notification.type) {
     case _constants.notificationTypes.RemixCosign:
       {
-        var remixTrack = notification.remixTrack;
+        var remixAgreement = notification.remixAgreement;
         return /*#__PURE__*/_react["default"].createElement("span", {
           className: 'notificationText'
         }, /*#__PURE__*/_react["default"].createElement(HighlightText, {
-          text: remixTrack.title
+          text: remixAgreement.title
         }));
       }
 
@@ -390,23 +390,23 @@ var getTrackMessage = function getTrackMessage(notification) {
   }
 };
 
-var getTrackLink = function getTrackLink(track) {
-  return "https://coliving.lol/".concat(track.route_id, "-").concat(track.track_id);
+var getAgreementLink = function getAgreementLink(agreement) {
+  return "https://coliving.lol/".concat(agreement.route_id, "-").concat(agreement.agreement_id);
 };
 
-exports.getTrackLink = getTrackLink;
+exports.getAgreementLink = getAgreementLink;
 
 var getTwitter = function getTwitter(notification) {
   switch (notification.type) {
     case _constants.notificationTypes.RemixCreate:
       {
-        var parentTrack = notification.parentTrack,
-            parentTrackUser = notification.parentTrackUser,
+        var parentAgreement = notification.parentAgreement,
+            parentAgreementUser = notification.parentAgreementUser,
             remixUser = notification.remixUser,
-            remixTrack = notification.remixTrack;
-        var twitterHandle = parentTrackUser.twitterHandle ? "@".concat(parentTrackUser.twitterHandle) : parentTrackUser.name;
-        var text = "New remix of ".concat(parentTrack.title, " by ").concat(twitterHandle, " on @dgc.network #Coliving");
-        var url = getTrackLink(remixTrack);
+            remixAgreement = notification.remixAgreement;
+        var twitterHandle = parentAgreementUser.twitterHandle ? "@".concat(parentAgreementUser.twitterHandle) : parentAgreementUser.name;
+        var text = "New remix of ".concat(parentAgreement.title, " by ").concat(twitterHandle, " on @dgc.network #Coliving");
+        var url = getAgreementLink(remixAgreement);
         return {
           message: 'Share With Your Friends',
           href: "http://twitter.com/share?url=".concat(encodeURIComponent(url), "&text=").concat(encodeURIComponent(text))
@@ -415,19 +415,19 @@ var getTwitter = function getTwitter(notification) {
 
     case _constants.notificationTypes.RemixCosign:
       {
-        var parentTracks = notification.parentTracks,
-            _parentTrackUser = notification.parentTrackUser,
-            _remixTrack = notification.remixTrack;
+        var parentAgreements = notification.parentAgreements,
+            _parentAgreementUser = notification.parentAgreementUser,
+            _remixAgreement = notification.remixAgreement;
 
-        var _parentTrack = parentTracks.find(function (t) {
-          return t.owner_id === _parentTrackUser.user_id;
+        var _parentAgreement = parentAgreements.find(function (t) {
+          return t.owner_id === _parentAgreementUser.user_id;
         });
 
-        var _url = getTrackLink(_remixTrack);
+        var _url = getAgreementLink(_remixAgreement);
 
-        var _twitterHandle = _parentTrackUser.twitterHandle ? "@".concat(_parentTrackUser.twitterHandle) : _parentTrackUser.name;
+        var _twitterHandle = _parentAgreementUser.twitterHandle ? "@".concat(_parentAgreementUser.twitterHandle) : _parentAgreementUser.name;
 
-        var _text = "My remix of ".concat(_parentTrack.title, " was Co-Signed by ").concat(_twitterHandle, " on @dgc.network #Coliving");
+        var _text = "My remix of ".concat(_parentAgreement.title, " was Co-Signed by ").concat(_twitterHandle, " on @dgc.network #Coliving");
 
         return {
           message: 'Share With Your Friends',
@@ -435,16 +435,16 @@ var getTwitter = function getTwitter(notification) {
         };
       }
 
-    case _constants.notificationTypes.TrendingTrack:
+    case _constants.notificationTypes.TrendingAgreement:
       {
         var rank = notification.rank,
             entity = notification.entity;
 
-        var _url2 = getTrackLink(entity);
+        var _url2 = getAgreementLink(entity);
 
         var rankSuffix = (0, _formatNotificationMetadata.getRankSuffix)(rank);
 
-        var _text2 = "My track ".concat(entity.title, " is trending ").concat(rank).concat(rankSuffix, " on @dgc.network! #ColivingTrending #Coliving");
+        var _text2 = "My agreement ".concat(entity.title, " is trending ").concat(rank).concat(rankSuffix, " on @dgc.network! #ColivingTrending #Coliving");
 
         return {
           message: 'Share this Milestone',
@@ -469,12 +469,12 @@ var getTwitter = function getTwitter(notification) {
 var Notification = function Notification(props) {
   var message = getMessage(props);
   var title = getTitle(props);
-  var trackMessage = getTrackMessage(props);
+  var agreementMessage = getAgreementMessage(props);
   var twitter = getTwitter(props);
   return /*#__PURE__*/_react["default"].createElement(_NotificationBody["default"], _extends({}, props, {
     title: title,
     message: message,
-    trackMessage: trackMessage,
+    agreementMessage: agreementMessage,
     twitter: twitter
   }));
 };

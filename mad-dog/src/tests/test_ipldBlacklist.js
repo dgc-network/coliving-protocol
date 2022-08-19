@@ -1,14 +1,14 @@
 const ServiceCommands = require('@coliving/service-commands')
 const {
   addIPLDToBlacklist,
-  updateTrackOnChain,
-  updateTrackOnChainAndCnode,
-  addTrackToChain,
-  uploadTrack,
-  uploadTrackCoverArt,
+  updateAgreementOnChain,
+  updateAgreementOnChainAndCnode,
+  addAgreementToChain,
+  uploadAgreement,
+  uploadAgreementCoverArt,
   uploadProfilePic,
   uploadCoverPhoto,
-  getTrackMetadata,
+  getAgreementMetadata,
   updateMultihash,
   updateCreator,
   updateCoverPhoto,
@@ -29,8 +29,8 @@ const {
 } = require('../helpers.js')
 const {
   getRandomImageFilePath,
-  getRandomTrackMetadata,
-  getRandomTrackFilePath,
+  getRandomAgreementMetadata,
+  getRandomAgreementFilePath,
   genRandomString
 } = RandomUtils
 const { logger } = require('../logger.js')
@@ -44,8 +44,8 @@ const CREATOR_INDEX = 1
 
 const IpldBlacklistTest = {}
 
-// TEST NEW TRACK FLOW -- BLACKLISTED METADATA CID
-IpldBlacklistTest.newTrackMetadata = async ({
+// TEST NEW AGREEMENT FLOW -- BLACKLISTED METADATA CID
+IpldBlacklistTest.newAgreementMetadata = async ({
   numUsers,
   executeAll,
   executeOne,
@@ -59,55 +59,55 @@ IpldBlacklistTest.newTrackMetadata = async ({
       numCreatorNodes
     })
 
-    // Create and upload a throwaway track
-    const throwawayTrack = getRandomTrackMetadata(userId)
-    const randomTrackFilePath = await getRandomTrackFilePath(TEMP_STORAGE_PATH)
-    const throwawayTrackId = await executeOne(CREATOR_INDEX, libsWrapper => {
-      return uploadTrack(libsWrapper, throwawayTrack, randomTrackFilePath)
+    // Create and upload a throwaway agreement
+    const throwawayAgreement = getRandomAgreementMetadata(userId)
+    const randomAgreementFilePath = await getRandomAgreementFilePath(TEMP_STORAGE_PATH)
+    const throwawayAgreementId = await executeOne(CREATOR_INDEX, libsWrapper => {
+      return uploadAgreement(libsWrapper, throwawayAgreement, randomAgreementFilePath)
     })
 
-    // Verify that fetching the throwaway track doesn't throw any errors
-    const uploadedThrowawayTrack = await executeOne(CREATOR_INDEX, libsWrapper => {
-      return getTrackMetadata(libsWrapper, throwawayTrackId)
+    // Verify that fetching the throwaway agreement doesn't throw any errors
+    const uploadedThrowawayAgreement = await executeOne(CREATOR_INDEX, libsWrapper => {
+      return getAgreementMetadata(libsWrapper, throwawayAgreementId)
     })
-    const throwawayTrackMetadataCid = uploadedThrowawayTrack.metadata_multihash
+    const throwawayAgreementMetadataCid = uploadedThrowawayAgreement.metadata_multihash
     await executeOne(CREATOR_INDEX, libs => libs.waitForLatestBlock())
 
-    // Make a new track with a different title so it has a different metadata CID
-    const blacklistedTrackMetadata = {
-      ...throwawayTrack,
-      title: `Blacklisted Track ${genRandomString(8)}`
+    // Make a new agreement with a different title so it has a different metadata CID
+    const blacklistedAgreementMetadata = {
+      ...throwawayAgreement,
+      title: `Blacklisted Agreement ${genRandomString(8)}`
     }
     const blacklistedMetadataCid = await LibsUtils.fileHasher.generateNonImageCid(
-      Buffer.from(JSON.stringify(blacklistedTrackMetadata))
+      Buffer.from(JSON.stringify(blacklistedAgreementMetadata))
     )
-    if (blacklistedMetadataCid === throwawayTrackMetadataCid) {
+    if (blacklistedMetadataCid === throwawayAgreementMetadataCid) {
       return {
-        error: "Metadata of blacklisted track should have different CID from throwaway track's metadata."
+        error: "Metadata of blacklisted agreement should have different CID from throwaway agreement's metadata."
       }
     }
 
-    // Blacklist the track metadata's CID before uploading it
-    const trackMultihashDecoded = Utils.decodeMultihash(blacklistedMetadataCid)
+    // Blacklist the agreement metadata's CID before uploading it
+    const agreementMultihashDecoded = Utils.decodeMultihash(blacklistedMetadataCid)
     logger.info(`Adding CID ${blacklistedMetadataCid} to the IPLD Blacklist!`)
     const ipldTxReceipt = await executeOne(BLACKLISTER_INDEX, libsWrapper => {
-      return addIPLDToBlacklist(libsWrapper, trackMultihashDecoded.digest)
+      return addIPLDToBlacklist(libsWrapper, agreementMultihashDecoded.digest)
     })
     await executeOne(BLACKLISTER_INDEX, libs => libs.waitForLatestIPLDBlock())
 
-    // Verify that attempting to upload the track with blacklisted metadata fails
+    // Verify that attempting to upload the agreement with blacklisted metadata fails
     try {
-      const blacklistedTrackId = await executeOne(CREATOR_INDEX, libsWrapper => {
-        return uploadTrack(libsWrapper, blacklistedTrackMetadata, randomTrackFilePath)
+      const blacklistedAgreementId = await executeOne(CREATOR_INDEX, libsWrapper => {
+        return uploadAgreement(libsWrapper, blacklistedAgreementMetadata, randomAgreementFilePath)
       })
-      const uploadedTrackAfterUpdate = await executeOne(CREATOR_INDEX, libsWrapper => {
-        return getTrackMetadata(libsWrapper, blacklistedTrackId)
+      const uploadedAgreementAfterUpdate = await executeOne(CREATOR_INDEX, libsWrapper => {
+        return getAgreementMetadata(libsWrapper, blacklistedAgreementId)
       })
-      throw new Error(`Upload succeeded but should have failed with error 'No tracks returned.'`)
+      throw new Error(`Upload succeeded but should have failed with error 'No agreements returned.'`)
     } catch (e) {
-      if (e.message !== 'No tracks returned.') {
+      if (e.message !== 'No agreements returned.') {
         return {
-          error: `Error with IPLD Blacklist test for new track with blacklisted metadata: ${e.message}`
+          error: `Error with IPLD Blacklist test for new agreement with blacklisted metadata: ${e.message}`
         }
       }
     }
@@ -118,15 +118,15 @@ IpldBlacklistTest.newTrackMetadata = async ({
     }
 
     return {
-      error: `Error with IPLD Blacklist test for update track with blacklisted metadata CID: ${error}`
+      error: `Error with IPLD Blacklist test for update agreement with blacklisted metadata CID: ${error}`
     }
   } finally {
     await fs.remove(TEMP_STORAGE_PATH)
   }
 }
 
-// TEST UPDATE TRACK FLOW -- BLACKLISTED METADATA CID
-IpldBlacklistTest.updateTrackMetadata = async ({
+// TEST UPDATE AGREEMENT FLOW -- BLACKLISTED METADATA CID
+IpldBlacklistTest.updateAgreementMetadata = async ({
   numUsers,
   executeAll,
   executeOne,
@@ -140,81 +140,81 @@ IpldBlacklistTest.updateTrackMetadata = async ({
       numCreatorNodes
     })
 
-    // Create and upload track
-    const track = getRandomTrackMetadata(userId)
-    const randomTrackFilePath = await getRandomTrackFilePath(TEMP_STORAGE_PATH)
-    const trackId = await executeOne(CREATOR_INDEX, libsWrapper => {
-      return uploadTrack(libsWrapper, track, randomTrackFilePath)
+    // Create and upload agreement
+    const agreement = getRandomAgreementMetadata(userId)
+    const randomAgreementFilePath = await getRandomAgreementFilePath(TEMP_STORAGE_PATH)
+    const agreementId = await executeOne(CREATOR_INDEX, libsWrapper => {
+      return uploadAgreement(libsWrapper, agreement, randomAgreementFilePath)
     })
 
-    // Keep track of original metadata CID
-    const uploadedTrackBeforeUpdate = await executeOne(CREATOR_INDEX, libsWrapper => {
-      return getTrackMetadata(libsWrapper, trackId)
+    // Keep agreement of original metadata CID
+    const uploadedAgreementBeforeUpdate = await executeOne(CREATOR_INDEX, libsWrapper => {
+      return getAgreementMetadata(libsWrapper, agreementId)
     })
-    const originalMetadataCID = uploadedTrackBeforeUpdate.metadata_multihash
+    const originalMetadataCID = uploadedAgreementBeforeUpdate.metadata_multihash
     await executeOne(CREATOR_INDEX, libs => libs.waitForLatestBlock())
 
     // Modify a copy of the metadata to generate a new CID that's acceptable (not blacklisted)
-    const acceptableTrackMetadata = {
-      ...track,
-      track_id: uploadedTrackBeforeUpdate.track_id,
-      track_segments: uploadedTrackBeforeUpdate.track_segments,
+    const acceptableAgreementMetadata = {
+      ...agreement,
+      agreement_id: uploadedAgreementBeforeUpdate.agreement_id,
+      agreement_segments: uploadedAgreementBeforeUpdate.agreement_segments,
       title: `Updated Title ${genRandomString(8)}`
     }
-    const acceptableMetadataCid = await LibsUtils.fileHasher.generateNonImageCid(Buffer.from(JSON.stringify(acceptableTrackMetadata)))
+    const acceptableMetadataCid = await LibsUtils.fileHasher.generateNonImageCid(Buffer.from(JSON.stringify(acceptableAgreementMetadata)))
 
-    // Update the track to metadata that's acceptable (not blacklisted)
+    // Update the agreement to metadata that's acceptable (not blacklisted)
     await executeOne(CREATOR_INDEX, libsWrapper => {
-      return updateTrackOnChainAndCnode(libsWrapper, acceptableTrackMetadata)
+      return updateAgreementOnChainAndCnode(libsWrapper, acceptableAgreementMetadata)
     })
     await executeOne(CREATOR_INDEX, libs => libs.waitForLatestBlock())
 
-    // Ensure that the update was successful (track has new metadata CID)
-    const uploadedTrackAfterAcceptableUpdate = await executeOne(CREATOR_INDEX, libsWrapper => {
-      return getTrackMetadata(libsWrapper, trackId)
+    // Ensure that the update was successful (agreement has new metadata CID)
+    const uploadedAgreementAfterAcceptableUpdate = await executeOne(CREATOR_INDEX, libsWrapper => {
+      return getAgreementMetadata(libsWrapper, agreementId)
     })
-    const updatedAcceptableTrackMetadataCid = uploadedTrackAfterAcceptableUpdate.metadata_multihash
-    if (updatedAcceptableTrackMetadataCid === originalMetadataCID) {
+    const updatedAcceptableAgreementMetadataCid = uploadedAgreementAfterAcceptableUpdate.metadata_multihash
+    if (updatedAcceptableAgreementMetadataCid === originalMetadataCID) {
       return {
-        error: "Track metadata CID should've updated. The rest of the test will produce a false positive."
+        error: "Agreement metadata CID should've updated. The rest of the test will produce a false positive."
       }
     }
-    if (updatedAcceptableTrackMetadataCid !== acceptableMetadataCid) {
+    if (updatedAcceptableAgreementMetadataCid !== acceptableMetadataCid) {
       return {
-        error: 'Track metadata CID does not match the expected metadata. The rest of this test relies on the hashing logic to be consistent, so it will fail.'
+        error: 'Agreement metadata CID does not match the expected metadata. The rest of this test relies on the hashing logic to be consistent, so it will fail.'
       }
     }
 
     // Make new metadata again and this time blacklist its CID
-    const blacklistedTrackMetadata = {
-      ...track,
-      track_id: uploadedTrackBeforeUpdate.track_id,
-      track_segments: uploadedTrackBeforeUpdate.track_segments,
+    const blacklistedAgreementMetadata = {
+      ...agreement,
+      agreement_id: uploadedAgreementBeforeUpdate.agreement_id,
+      agreement_segments: uploadedAgreementBeforeUpdate.agreement_segments,
       title: `Second Updated Title ${genRandomString(8)}`
     }
-    const blacklistedMetadataCid = await LibsUtils.fileHasher.generateNonImageCid(Buffer.from(JSON.stringify(blacklistedTrackMetadata)))
+    const blacklistedMetadataCid = await LibsUtils.fileHasher.generateNonImageCid(Buffer.from(JSON.stringify(blacklistedAgreementMetadata)))
 
     // Send tx to add the blacklisted metadata CID to the ipld blacklist
-    const trackMultihashDecoded = Utils.decodeMultihash(blacklistedMetadataCid)
+    const agreementMultihashDecoded = Utils.decodeMultihash(blacklistedMetadataCid)
     logger.info(`Adding CID ${blacklistedMetadataCid} to the IPLD Blacklist!`)
     const ipldTxReceipt = await executeOne(BLACKLISTER_INDEX, libsWrapper => {
-      return addIPLDToBlacklist(libsWrapper, trackMultihashDecoded.digest)
+      return addIPLDToBlacklist(libsWrapper, agreementMultihashDecoded.digest)
     })
     await executeOne(BLACKLISTER_INDEX, libs => libs.waitForLatestIPLDBlock())
 
-    // Attempt to update the track to metadata that's blacklisted
+    // Attempt to update the agreement to metadata that's blacklisted
     await executeOne(CREATOR_INDEX, libsWrapper => {
-      return updateTrackOnChainAndCnode(libsWrapper, blacklistedTrackMetadata)
+      return updateAgreementOnChainAndCnode(libsWrapper, blacklistedAgreementMetadata)
     })
     await executeOne(CREATOR_INDEX, libs => libs.waitForLatestBlock())
 
-    // Ensure that the update was unsuccessful (track has original metadata cid)
-    const uploadedTrackAfterUpdate = await executeOne(CREATOR_INDEX, libsWrapper => {
-      return getTrackMetadata(libsWrapper, trackId)
+    // Ensure that the update was unsuccessful (agreement has original metadata cid)
+    const uploadedAgreementAfterUpdate = await executeOne(CREATOR_INDEX, libsWrapper => {
+      return getAgreementMetadata(libsWrapper, agreementId)
     })
-    if (acceptableMetadataCid !== uploadedTrackAfterUpdate.metadata_multihash) {
+    if (acceptableMetadataCid !== uploadedAgreementAfterUpdate.metadata_multihash) {
       return {
-        error: 'Update track with blacklisted metadata CID should not have been indexed.'
+        error: 'Update agreement with blacklisted metadata CID should not have been indexed.'
       }
     }
   } catch (e) {
@@ -224,21 +224,21 @@ IpldBlacklistTest.updateTrackMetadata = async ({
     }
 
     return {
-      error: `Error with IPLD Blacklist test for update track with blacklisted metadata CID: ${error}`
+      error: `Error with IPLD Blacklist test for update agreement with blacklisted metadata CID: ${error}`
     }
   } finally {
     await fs.remove(TEMP_STORAGE_PATH)
   }
 }
 
-// TEST NEW TRACK FLOW -- BLACKLISTED COVER PHOTO CID
-IpldBlacklistTest.newTrackCoverPhoto = async ({
+// TEST NEW AGREEMENT FLOW -- BLACKLISTED COVER PHOTO CID
+IpldBlacklistTest.newAgreementCoverPhoto = async ({
   numUsers,
   executeAll,
   executeOne,
   numCreatorNodes
 }) => {
-  let trackTxReceipt
+  let agreementTxReceipt
   try {
     const userId = await getCreatorId({
       numUsers,
@@ -251,33 +251,33 @@ IpldBlacklistTest.newTrackCoverPhoto = async ({
     const acceptableCoverArtFilePath = await getRandomImageFilePath(TEMP_STORAGE_PATH)
     const acceptableCID = await executeOne(
       CREATOR_INDEX,
-      libsWrapper => uploadTrackCoverArt(libsWrapper, acceptableCoverArtFilePath)
+      libsWrapper => uploadAgreementCoverArt(libsWrapper, acceptableCoverArtFilePath)
     )
 
-    // Make track metadata containing acceptable cover art CID
-    const acceptableTrackToUpload = {
-      ...getRandomTrackMetadata(userId),
+    // Make agreement metadata containing acceptable cover art CID
+    const acceptableAgreementToUpload = {
+      ...getRandomAgreementMetadata(userId),
       cover_art: acceptableCID,
       cover_art_sizes: acceptableCID
     }
 
-    // Verify that the track with non-blacklisted cover art can upload successfully
-    const randomAcceptableTrackFilePath = await getRandomTrackFilePath(TEMP_STORAGE_PATH)
-    const acceptableTrackId = await executeOne(
+    // Verify that the agreement with non-blacklisted cover art can upload successfully
+    const randomAcceptableAgreementFilePath = await getRandomAgreementFilePath(TEMP_STORAGE_PATH)
+    const acceptableAgreementId = await executeOne(
       CREATOR_INDEX,
-      libsWrapper => uploadTrack(libsWrapper, acceptableTrackToUpload, randomAcceptableTrackFilePath)
+      libsWrapper => uploadAgreement(libsWrapper, acceptableAgreementToUpload, randomAcceptableAgreementFilePath)
     )
     await executeOne(CREATOR_INDEX, libs => libs.waitForLatestBlock())
-    const fetchedTrackWithAcceptableCoverArt = await executeOne(
+    const fetchedAgreementWithAcceptableCoverArt = await executeOne(
       CREATOR_INDEX,
-      libsWrapper => getTrackMetadata(libsWrapper, acceptableTrackId)
+      libsWrapper => getAgreementMetadata(libsWrapper, acceptableAgreementId)
     )
     if (
-      fetchedTrackWithAcceptableCoverArt.cover_art_sizes !== acceptableCID
+      fetchedAgreementWithAcceptableCoverArt.cover_art_sizes !== acceptableCID
     ) {
       return {
         error:
-          "Track metadata should've included cover art. The rest of the test will produce a false positive."
+          "Agreement metadata should've included cover art. The rest of the test will produce a false positive."
       }
     }
 
@@ -285,47 +285,47 @@ IpldBlacklistTest.newTrackCoverPhoto = async ({
     const blacklistedCoverArtFilePath = await getRandomImageFilePath(TEMP_STORAGE_PATH)
     const blacklistedCID = await executeOne(
       CREATOR_INDEX,
-      libsWrapper => uploadTrackCoverArt(libsWrapper, blacklistedCoverArtFilePath)
+      libsWrapper => uploadAgreementCoverArt(libsWrapper, blacklistedCoverArtFilePath)
     )
-    const trackMultihashDecoded = Utils.decodeMultihash(blacklistedCID)
+    const agreementMultihashDecoded = Utils.decodeMultihash(blacklistedCID)
     logger.info(`Adding CID ${blacklistedCID} to the IPLD Blacklist!`)
     const ipldTxReceipt = await executeOne(BLACKLISTER_INDEX, libsWrapper => {
-      return addIPLDToBlacklist(libsWrapper, trackMultihashDecoded.digest)
+      return addIPLDToBlacklist(libsWrapper, agreementMultihashDecoded.digest)
     })
     await executeOne(BLACKLISTER_INDEX, libs => libs.waitForLatestIPLDBlock())
 
-    // Make track metadata containing blacklisted cover art CID
-    const trackToUploadWithBlacklistedCoverArt = {
-      ...getRandomTrackMetadata(userId),
+    // Make agreement metadata containing blacklisted cover art CID
+    const agreementToUploadWithBlacklistedCoverArt = {
+      ...getRandomAgreementMetadata(userId),
       cover_art: blacklistedCID,
       cover_art_sizes: blacklistedCID
     }
-    const randomTrackFilePath = await getRandomTrackFilePath(TEMP_STORAGE_PATH)
+    const randomAgreementFilePath = await getRandomAgreementFilePath(TEMP_STORAGE_PATH)
 
-    // Verify that attempting to upload the track with blacklisted cover art fails
+    // Verify that attempting to upload the agreement with blacklisted cover art fails
     try {
       await executeOne(CREATOR_INDEX, libsWrapper => {
-        return uploadTrack(libsWrapper, trackToUploadWithBlacklistedCoverArt, randomTrackFilePath)
+        return uploadAgreement(libsWrapper, agreementToUploadWithBlacklistedCoverArt, randomAgreementFilePath)
       })
-      throw new Error(`Upload succeeded but should have failed with error 'No tracks returned.'`)
+      throw new Error(`Upload succeeded but should have failed with error 'No agreements returned.'`)
     } catch (e) {
-      if (e.message !== 'No tracks returned.') {
+      if (e.message !== 'No agreements returned.') {
         return {
-          error: `Error with IPLD Blacklist test for new track with blacklisted cover photo: ${e.message}`
+          error: `Error with IPLD Blacklist test for new agreement with blacklisted cover photo: ${e.message}`
         }
       }
     }
   } catch (e) {
     return {
-      error: `Error with IPLD Blacklist test for new track with blacklisted cover photo: ${e.message}`
+      error: `Error with IPLD Blacklist test for new agreement with blacklisted cover photo: ${e.message}`
     }
   }  finally {
     await fs.remove(TEMP_STORAGE_PATH)
   }
 }
 
-// TEST UPDATE TRACK FLOW -- BLACKLISTED COVER PHOTO CID
-IpldBlacklistTest.updateTrackCoverPhoto = async ({
+// TEST UPDATE AGREEMENT FLOW -- BLACKLISTED COVER PHOTO CID
+IpldBlacklistTest.updateAgreementCoverPhoto = async ({
   numUsers,
   executeAll,
   executeOne,
@@ -338,59 +338,59 @@ IpldBlacklistTest.updateTrackCoverPhoto = async ({
     numCreatorNodes
   })
 
-  const trackToUpload = getRandomTrackMetadata(userId)
+  const agreementToUpload = getRandomAgreementMetadata(userId)
 
-  const _createAndUploadTrack = async () => {
-    const randomTrackFilePath = await getRandomTrackFilePath(TEMP_STORAGE_PATH)
-    const trackId = await executeOne(CREATOR_INDEX, libsWrapper => {
-      return uploadTrack(libsWrapper, trackToUpload, randomTrackFilePath)
+  const _createAndUploadAgreement = async () => {
+    const randomAgreementFilePath = await getRandomAgreementFilePath(TEMP_STORAGE_PATH)
+    const agreementId = await executeOne(CREATOR_INDEX, libsWrapper => {
+      return uploadAgreement(libsWrapper, agreementToUpload, randomAgreementFilePath)
     })
-    return trackId
+    return agreementId
   }
 
   const _createAndUploadCoverArt = async (libs) =>
-    uploadTrackCoverArt(libs, await getRandomImageFilePath(TEMP_STORAGE_PATH))
+    uploadAgreementCoverArt(libs, await getRandomImageFilePath(TEMP_STORAGE_PATH))
 
-  const _setCoverArt = async (libs, uploadedTrack, cid) => {
-    const trackUpdatedWithAcceptableCoverArt = {
-      ...trackToUpload,
-      track_id: uploadedTrack.track_id,
-      track_segments: uploadedTrack.track_segments,
+  const _setCoverArt = async (libs, uploadedAgreement, cid) => {
+    const agreementUpdatedWithAcceptableCoverArt = {
+      ...agreementToUpload,
+      agreement_id: uploadedAgreement.agreement_id,
+      agreement_segments: uploadedAgreement.agreement_segments,
       cover_art: cid,
       cover_art_sizes: cid
     }
-    return updateTrackOnChainAndCnode(libs, trackUpdatedWithAcceptableCoverArt)
+    return updateAgreementOnChainAndCnode(libs, agreementUpdatedWithAcceptableCoverArt)
   }
 
-  const _verifyNonBlacklistedCidUpdated = (trackBeforeUpdate, trackAfterUpdate, nonBlacklistedCid) => {
-    const previousPicCid = trackBeforeUpdate.cover_art_sizes
-    const updatedPicCid = trackAfterUpdate.cover_art_sizes
+  const _verifyNonBlacklistedCidUpdated = (agreementBeforeUpdate, agreementAfterUpdate, nonBlacklistedCid) => {
+    const previousPicCid = agreementBeforeUpdate.cover_art_sizes
+    const updatedPicCid = agreementAfterUpdate.cover_art_sizes
     if (previousPicCid === updatedPicCid) {
       throw new Error(
-        "Track cover art CID should've updated. The rest of the test will produce a false positive."
+        "Agreement cover art CID should've updated. The rest of the test will produce a false positive."
       )
     }
     if (updatedPicCid !== nonBlacklistedCid) {
       throw new Error(
-        'Track cover art CID does not match the expected CID. The rest of this test relies on the hashing logic to be consistent, so it will fail.'
+        'Agreement cover art CID does not match the expected CID. The rest of this test relies on the hashing logic to be consistent, so it will fail.'
       )
     }
   }
 
-  const _verifyBlacklistedCidDidNotUpdate = (track, blacklistedCid) => {
+  const _verifyBlacklistedCidDidNotUpdate = (agreement, blacklistedCid) => {
     if (
-      track.cover_art === blacklistedCid ||
-      track.cover_art_sizes === blacklistedCid
+      agreement.cover_art === blacklistedCid ||
+      agreement.cover_art_sizes === blacklistedCid
     ) {
-      throw new Error('Update track with blacklisted cover photo should not have been indexed.')
+      throw new Error('Update agreement with blacklisted cover photo should not have been indexed.')
     }
   }
 
   await testUpdateFlow(
-    'track cover photo',
+    'agreement cover photo',
     executeOne,
-    _createAndUploadTrack,
-    getTrackMetadata,
+    _createAndUploadAgreement,
+    getAgreementMetadata,
     _createAndUploadCoverArt,
     _setCoverArt,
     _verifyNonBlacklistedCidUpdated,
@@ -413,7 +413,7 @@ IpldBlacklistTest.updateUserMetadata = async ({
       numCreatorNodes
     })
 
-    // Keep track of original metadata CID
+    // Keep agreement of original metadata CID
     const userBeforeUpdate = await executeOne(CREATOR_INDEX, libsWrapper => {
       return getUser(libsWrapper, userId)
     })
@@ -464,10 +464,10 @@ IpldBlacklistTest.updateUserMetadata = async ({
     const blacklistedMetadataCid = await LibsUtils.fileHasher.generateNonImageCid(Buffer.from(JSON.stringify(blacklistedUserMetadata)))
 
     // Send tx to add the blacklisted metadata CID to the ipld blacklist
-    const trackMultihashDecoded = Utils.decodeMultihash(blacklistedMetadataCid)
+    const agreementMultihashDecoded = Utils.decodeMultihash(blacklistedMetadataCid)
     logger.info(`Adding CID ${blacklistedMetadataCid} to the IPLD Blacklist!`)
     const ipldTxReceipt = await executeOne(BLACKLISTER_INDEX, libsWrapper => {
-      return addIPLDToBlacklist(libsWrapper, trackMultihashDecoded.digest)
+      return addIPLDToBlacklist(libsWrapper, agreementMultihashDecoded.digest)
     })
     await executeOne(BLACKLISTER_INDEX, libs => libs.waitForLatestIPLDBlock())
 
@@ -736,8 +736,8 @@ async function getCreatorId ({
 
 /**
 * Tests blacklist functionality for updating an object with a property.
-* An object is metadata (user, track, or playlist), and property is the field
-* on the metadata that's being updated (track cover art, playlist cover photo,
+* An object is metadata (user, agreement, or playlist), and property is the field
+* on the metadata that's being updated (agreement cover art, playlist cover photo,
 * user cover photo, etc...) by:
 * 1. Retrieving the object
 * 2. Verifying that the object can successfully be modified when its CID is NOT blacklisted

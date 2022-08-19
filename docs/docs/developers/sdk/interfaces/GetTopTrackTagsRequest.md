@@ -1,7 +1,7 @@
 ---
-id: "GetTopTrackTagsRequest"
-title: "Interface: GetTopTrackTagsRequest"
-sidebar_label: "GetTopTrackTagsRequest"
+id: "GetTopAgreementTagsRequest"
+title: "Interface: GetTopAgreementTagsRequest"
+sidebar_label: "GetTopAgreementTagsRequest"
 sidebar_position: 0
 custom_edit_url: null
 ---

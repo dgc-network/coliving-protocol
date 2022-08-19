@@ -5,27 +5,27 @@ from typing import Any, Optional, TypedDict
 import redis
 from sqlalchemy import func
 from sqlalchemy.orm.session import Session
-from src.api.v1.helpers import extend_track, format_limit, format_offset, to_dict
+from src.api.v1.helpers import extend_agreement, format_limit, format_offset, to_dict
 from src.models.social.aggregate_plays import AggregatePlay
 from src.models.social.follow import Follow
 from src.models.social.repost import RepostType
 from src.models.social.save import SaveType
-from src.models.tracks.track import Track
+from src.models.agreements.agreement import Agreement
 from src.models.users.aggregate_user import AggregateUser
 from src.models.users.user import User
-from src.queries.get_trending_tracks import (
+from src.queries.get_trending_agreements import (
     TRENDING_LIMIT,
     TRENDING_TTL_SEC,
     make_trending_cache_key,
 )
-from src.queries.get_unpopulated_tracks import get_unpopulated_tracks
+from src.queries.get_unpopulated_agreements import get_unpopulated_agreements
 from src.queries.query_helpers import (
     get_karma,
     get_repost_counts,
     get_save_counts,
     get_users_by_id,
     get_users_ids,
-    populate_track_metadata,
+    populate_agreement_metadata,
 )
 from src.trending_strategies.trending_strategy_factory import DEFAULT_TRENDING_VERSIONS
 from src.trending_strategies.trending_type_and_version import TrendingType
@@ -43,14 +43,14 @@ redis_conn = redis.Redis.from_url(url=redis_url)
 
 logger = logging.getLogger(__name__)
 
-UNDERGROUND_TRENDING_CACHE_KEY = "generated-trending-tracks-underground"
+UNDERGROUND_TRENDING_CACHE_KEY = "generated-trending-agreements-underground"
 UNDERGROUND_TRENDING_LENGTH = 50
 
 
-def get_scorable_track_data(session, redis_instance, strategy):
+def get_scorable_agreement_data(session, redis_instance, strategy):
     """
     Returns a map: {
-        "track_id": string
+        "agreement_id": string
         "created_at": string
         "owner_id": number
         "windowed_save_count": number
@@ -74,11 +74,11 @@ def get_scorable_track_data(session, redis_instance, strategy):
     xf = score_params["xf"]
     pt = score_params["pt"]
     trending_key = make_trending_cache_key("week", None, strategy.version)
-    track_ids = []
+    agreement_ids = []
     old_trending = get_json_cached_key(redis_instance, trending_key)
     if old_trending:
-        track_ids = old_trending[1]
-    exclude_track_ids = track_ids[:qr]
+        agreement_ids = old_trending[1]
+    exclude_agreement_ids = agreement_ids[:qr]
 
     # Get followers
     follower_query = (
@@ -99,23 +99,23 @@ def get_scorable_track_data(session, redis_instance, strategy):
 
     base_query = (
         session.query(
-            AggregatePlay.play_item_id.label("track_id"),
+            AggregatePlay.play_item_id.label("agreement_id"),
             follower_query.c.user_id,
             follower_query.c.follower_count,
             AggregatePlay.count,
-            Track.created_at,
+            Agreement.created_at,
             follower_query.c.is_verified,
         )
-        .join(Track, Track.track_id == AggregatePlay.play_item_id)
-        .join(follower_query, follower_query.c.user_id == Track.owner_id)
-        .join(AggregateUser, AggregateUser.user_id == Track.owner_id)
+        .join(Agreement, Agreement.agreement_id == AggregatePlay.play_item_id)
+        .join(follower_query, follower_query.c.user_id == Agreement.owner_id)
+        .join(AggregateUser, AggregateUser.user_id == Agreement.owner_id)
         .filter(
-            Track.is_current == True,
-            Track.is_delete == False,
-            Track.is_unlisted == False,
-            Track.stem_of == None,
-            Track.track_id.notin_(exclude_track_ids),
-            Track.created_at >= (datetime.now() - timedelta(days=o)),
+            Agreement.is_current == True,
+            Agreement.is_delete == False,
+            Agreement.is_unlisted == False,
+            Agreement.stem_of == None,
+            Agreement.agreement_id.notin_(exclude_agreement_ids),
+            Agreement.created_at >= (datetime.now() - timedelta(days=o)),
             follower_query.c.follower_count < S,
             follower_query.c.follower_count >= pt,
             AggregateUser.following_count < r,
@@ -123,9 +123,9 @@ def get_scorable_track_data(session, redis_instance, strategy):
         )
     ).all()
 
-    tracks_map = {
+    agreements_map = {
         record[0]: {
-            "track_id": record[0],
+            "agreement_id": record[0],
             "created_at": record[4].isoformat(timespec="seconds"),
             "owner_id": record[1],
             "windowed_save_count": 0,
@@ -140,70 +140,70 @@ def get_scorable_track_data(session, redis_instance, strategy):
         for record in base_query
     }
 
-    track_ids = [record[0] for record in base_query]
+    agreement_ids = [record[0] for record in base_query]
 
     # Get all the extra values
     repost_counts = get_repost_counts(
-        session, False, False, track_ids, [RepostType.track]
+        session, False, False, agreement_ids, [RepostType.agreement]
     )
 
     windowed_repost_counts = get_repost_counts(
-        session, False, False, track_ids, [RepostType.track], None, "week"
+        session, False, False, agreement_ids, [RepostType.agreement], None, "week"
     )
 
-    save_counts = get_save_counts(session, False, False, track_ids, [SaveType.track])
+    save_counts = get_save_counts(session, False, False, agreement_ids, [SaveType.agreement])
 
     windowed_save_counts = get_save_counts(
-        session, False, False, track_ids, [SaveType.track], None, "week"
+        session, False, False, agreement_ids, [SaveType.agreement], None, "week"
     )
 
-    karma_scores = get_karma(session, tuple(track_ids), strategy, None, False, xf)
+    karma_scores = get_karma(session, tuple(agreement_ids), strategy, None, False, xf)
 
     # Associate all the extra data
-    for (track_id, repost_count) in repost_counts:
-        tracks_map[track_id]["repost_count"] = repost_count
-    for (track_id, repost_count) in windowed_repost_counts:
-        tracks_map[track_id]["windowed_repost_count"] = repost_count
-    for (track_id, save_count) in save_counts:
-        tracks_map[track_id]["save_count"] = save_count
-    for (track_id, save_count) in windowed_save_counts:
-        tracks_map[track_id]["windowed_save_count"] = save_count
-    for (track_id, karma) in karma_scores:
-        tracks_map[track_id]["karma"] = karma
+    for (agreement_id, repost_count) in repost_counts:
+        agreements_map[agreement_id]["repost_count"] = repost_count
+    for (agreement_id, repost_count) in windowed_repost_counts:
+        agreements_map[agreement_id]["windowed_repost_count"] = repost_count
+    for (agreement_id, save_count) in save_counts:
+        agreements_map[agreement_id]["save_count"] = save_count
+    for (agreement_id, save_count) in windowed_save_counts:
+        agreements_map[agreement_id]["windowed_save_count"] = save_count
+    for (agreement_id, karma) in karma_scores:
+        agreements_map[agreement_id]["karma"] = karma
 
-    return list(tracks_map.values())
+    return list(agreements_map.values())
 
 
 def make_underground_trending_cache_key(
-    version=DEFAULT_TRENDING_VERSIONS[TrendingType.UNDERGROUND_TRACKS],
+    version=DEFAULT_TRENDING_VERSIONS[TrendingType.UNDERGROUND_AGREEMENTS],
 ):
     version_name = (
         f":{version.name}"
-        if version != DEFAULT_TRENDING_VERSIONS[TrendingType.UNDERGROUND_TRACKS]
+        if version != DEFAULT_TRENDING_VERSIONS[TrendingType.UNDERGROUND_AGREEMENTS]
         else ""
     )
     return f"{UNDERGROUND_TRENDING_CACHE_KEY}{version_name}"
 
 
-def make_get_unpopulated_tracks(session, redis_instance, strategy):
+def make_get_unpopulated_agreements(session, redis_instance, strategy):
     def wrapped():
         # Score and sort
-        track_scoring_data = get_scorable_track_data(session, redis_instance, strategy)
-        scored_tracks = [
-            strategy.get_track_score("week", track) for track in track_scoring_data
+        agreement_scoring_data = get_scorable_agreement_data(session, redis_instance, strategy)
+        scored_agreements = [
+            strategy.get_agreement_score("week", agreement) for agreement in agreement_scoring_data
         ]
-        sorted_tracks = sorted(scored_tracks, key=lambda k: k["score"], reverse=True)
-        sorted_tracks = sorted_tracks[:UNDERGROUND_TRENDING_LENGTH]
+        sorted_agreements = sorted(scored_agreements, key=lambda k: k["score"], reverse=True)
+        sorted_agreements = sorted_agreements[:UNDERGROUND_TRENDING_LENGTH]
 
         # Get unpopulated metadata
-        track_ids = [track["track_id"] for track in sorted_tracks]
-        tracks = get_unpopulated_tracks(session, track_ids)
-        return (tracks, track_ids)
+        agreement_ids = [agreement["agreement_id"] for agreement in sorted_agreements]
+        agreements = get_unpopulated_agreements(session, agreement_ids)
+        return (agreements, agreement_ids)
 
     return wrapped
 
 
-class GetUndergroundTrendingTrackcArgs(TypedDict, total=False):
+class GetUndergroundTrendingAgreementcArgs(TypedDict, total=False):
     current_user_id: Optional[Any]
     offset: int
     limit: int
@@ -211,7 +211,7 @@ class GetUndergroundTrendingTrackcArgs(TypedDict, total=False):
 
 def _get_underground_trending_with_session(
     session: Session,
-    args: GetUndergroundTrendingTrackcArgs,
+    args: GetUndergroundTrendingAgreementcArgs,
     strategy,
     use_request_context=True,
 ):
@@ -219,32 +219,32 @@ def _get_underground_trending_with_session(
     limit, offset = args.get("limit"), args.get("offset")
     key = make_underground_trending_cache_key(strategy.version)
 
-    (tracks, track_ids) = use_redis_cache(
-        key, None, make_get_unpopulated_tracks(session, redis_conn, strategy)
+    (agreements, agreement_ids) = use_redis_cache(
+        key, None, make_get_unpopulated_agreements(session, redis_conn, strategy)
     )
 
     # Apply limit + offset early to reduce the amount of
     # population work we have to do
     if limit is not None and offset is not None:
-        track_ids = track_ids[offset : limit + offset]
+        agreement_ids = agreement_ids[offset : limit + offset]
 
-    tracks = populate_track_metadata(session, track_ids, tracks, current_user_id)
+    agreements = populate_agreement_metadata(session, agreement_ids, agreements, current_user_id)
 
-    tracks_map = {track["track_id"]: track for track in tracks}
+    agreements_map = {agreement["agreement_id"]: agreement for agreement in agreements}
 
-    # Re-sort the populated tracks b/c it loses sort order in sql query
-    sorted_tracks = [tracks_map[track_id] for track_id in track_ids]
-    user_id_list = get_users_ids(sorted_tracks)
+    # Re-sort the populated agreements b/c it loses sort order in sql query
+    sorted_agreements = [agreements_map[agreement_id] for agreement_id in agreement_ids]
+    user_id_list = get_users_ids(sorted_agreements)
     users = get_users_by_id(session, user_id_list, current_user_id, use_request_context)
-    for track in sorted_tracks:
-        user = users[track["owner_id"]]
+    for agreement in sorted_agreements:
+        user = users[agreement["owner_id"]]
         if user:
-            track["user"] = user
-    sorted_tracks = list(map(extend_track, sorted_tracks))
-    return sorted_tracks
+            agreement["user"] = user
+    sorted_agreements = list(map(extend_agreement, sorted_agreements))
+    return sorted_agreements
 
 
-def _get_underground_trending(args: GetUndergroundTrendingTrackcArgs, strategy):
+def _get_underground_trending(args: GetUndergroundTrendingAgreementcArgs, strategy):
     db = get_db_read_replica()
     with db.scoped_session() as session:
         return _get_underground_trending_with_session(session, args, strategy)
@@ -262,9 +262,9 @@ def get_underground_trending(request, args, strategy):
         args["current_user_id"] = decoded
         trending = _get_underground_trending(args, strategy)
     else:
-        # If no user ID, fetch all cached tracks
+        # If no user ID, fetch all cached agreements
         # and perform pagination here, passing
-        # no args so we get the full list of tracks.
+        # no args so we get the full list of agreements.
         key = get_trending_cache_key(to_dict(request.args), request.path)
         trending = use_redis_cache(
             key, TRENDING_TTL_SEC, lambda: _get_underground_trending({}, strategy)

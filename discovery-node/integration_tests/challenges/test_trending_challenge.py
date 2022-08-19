@@ -8,12 +8,12 @@ from src.challenges.challenge_event_bus import ChallengeEvent, ChallengeEventBus
 from src.challenges.trending_challenge import (
     should_trending_challenge_update,
     trending_playlist_challenge_manager,
-    trending_track_challenge_manager,
-    trending_underground_track_challenge_manager,
+    trending_agreement_challenge_manager,
+    trending_underground_agreement_challenge_manager,
 )
 from src.models.rewards.challenge import Challenge
 from src.models.rewards.user_challenge import UserChallenge
-from src.models.tracks.trending_result import TrendingResult
+from src.models.agreements.trending_result import TrendingResult
 from src.tasks.calculate_trending_challenges import enqueue_trending_challenges
 from src.trending_strategies.trending_strategy_factory import TrendingStrategyFactory
 from src.trending_strategies.trending_type_and_version import TrendingType
@@ -62,7 +62,7 @@ def test_trending_challenge_should_update(app):
                 user_id=1,
                 rank=1,
                 id="1",
-                type="tracks",
+                type="agreements",
                 version="EJ57D",
                 week="2021-08-20",
             )
@@ -86,21 +86,21 @@ def test_trending_challenge_job(app):
     redis_conn = redis.Redis.from_url(url=REDIS_URL)
 
     test_entities = {
-        "tracks": [
-            {"track_id": 1, "owner_id": 1},
-            {"track_id": 2, "owner_id": 2},
-            {"track_id": 3, "owner_id": 3},
-            {"track_id": 4, "owner_id": 4},
-            {"track_id": 5, "owner_id": 5},
-            {"track_id": 6, "owner_id": 2},
-            {"track_id": 7, "owner_id": 3},
-            {"track_id": 8, "owner_id": 3},
-            {"track_id": 9, "is_unlisted": True, "owner_id": 3},
-            {"track_id": 11, "owner_id": 1},
-            {"track_id": 12, "owner_id": 2},
-            {"track_id": 13, "owner_id": 3},
-            {"track_id": 14, "owner_id": 4},
-            {"track_id": 15, "owner_id": 5},
+        "agreements": [
+            {"agreement_id": 1, "owner_id": 1},
+            {"agreement_id": 2, "owner_id": 2},
+            {"agreement_id": 3, "owner_id": 3},
+            {"agreement_id": 4, "owner_id": 4},
+            {"agreement_id": 5, "owner_id": 5},
+            {"agreement_id": 6, "owner_id": 2},
+            {"agreement_id": 7, "owner_id": 3},
+            {"agreement_id": 8, "owner_id": 3},
+            {"agreement_id": 9, "is_unlisted": True, "owner_id": 3},
+            {"agreement_id": 11, "owner_id": 1},
+            {"agreement_id": 12, "owner_id": 2},
+            {"agreement_id": 13, "owner_id": 3},
+            {"agreement_id": 14, "owner_id": 4},
+            {"agreement_id": 15, "owner_id": 5},
         ],
         "playlists": [
             {
@@ -109,10 +109,10 @@ def test_trending_challenge_job(app):
                 "playlist_name": "name",
                 "description": "description",
                 "playlist_contents": {
-                    "track_ids": [
-                        {"track": 1, "time": 1},
-                        {"track": 2, "time": 2},
-                        {"track": 3, "time": 3},
+                    "agreement_ids": [
+                        {"agreement": 1, "time": 1},
+                        {"agreement": 2, "time": 2},
+                        {"agreement": 3, "time": 3},
                     ]
                 },
             },
@@ -122,10 +122,10 @@ def test_trending_challenge_job(app):
                 "playlist_name": "name",
                 "description": "description",
                 "playlist_contents": {
-                    "track_ids": [
-                        {"track": 1, "time": 1},
-                        {"track": 2, "time": 2},
-                        {"track": 3, "time": 3},
+                    "agreement_ids": [
+                        {"agreement": 1, "time": 1},
+                        {"agreement": 2, "time": 2},
+                        {"agreement": 3, "time": 3},
                     ]
                 },
             },
@@ -136,10 +136,10 @@ def test_trending_challenge_job(app):
                 "playlist_name": "name",
                 "description": "description",
                 "playlist_contents": {
-                    "track_ids": [
-                        {"track": 1, "time": 1},
-                        {"track": 2, "time": 2},
-                        {"track": 3, "time": 3},
+                    "agreement_ids": [
+                        {"agreement": 1, "time": 1},
+                        {"agreement": 2, "time": 2},
+                        {"agreement": 3, "time": 3},
                     ]
                 },
             },
@@ -149,10 +149,10 @@ def test_trending_challenge_job(app):
                 "playlist_name": "name",
                 "description": "description",
                 "playlist_contents": {
-                    "track_ids": [
-                        {"track": 1, "time": 1},
-                        {"track": 2, "time": 2},
-                        {"track": 3, "time": 3},
+                    "agreement_ids": [
+                        {"agreement": 1, "time": 1},
+                        {"agreement": 2, "time": 2},
+                        {"agreement": 3, "time": 3},
                     ]
                 },
             },
@@ -162,10 +162,10 @@ def test_trending_challenge_job(app):
                 "playlist_name": "name",
                 "description": "description",
                 "playlist_contents": {
-                    "track_ids": [
-                        {"track": 1, "time": 1},
-                        {"track": 2, "time": 2},
-                        {"track": 3, "time": 3},
+                    "agreement_ids": [
+                        {"agreement": 1, "time": 1},
+                        {"agreement": 2, "time": 2},
+                        {"agreement": 3, "time": 3},
                     ]
                 },
             },
@@ -220,20 +220,20 @@ def test_trending_challenge_job(app):
             },
         ],
         "reposts": [
-            {"repost_item_id": 1, "repost_type": "track", "user_id": 2},
+            {"repost_item_id": 1, "repost_type": "agreement", "user_id": 2},
             {"repost_item_id": 1, "repost_type": "playlist", "user_id": 2},
-            {"repost_item_id": 3, "repost_type": "track", "user_id": 3},
+            {"repost_item_id": 3, "repost_type": "agreement", "user_id": 3},
             {"repost_item_id": 1, "repost_type": "playlist", "user_id": 3},
-            {"repost_item_id": 4, "repost_type": "track", "user_id": 1},
-            {"repost_item_id": 5, "repost_type": "track", "user_id": 1},
-            {"repost_item_id": 6, "repost_type": "track", "user_id": 1},
+            {"repost_item_id": 4, "repost_type": "agreement", "user_id": 1},
+            {"repost_item_id": 5, "repost_type": "agreement", "user_id": 1},
+            {"repost_item_id": 6, "repost_type": "agreement", "user_id": 1},
         ],
         "saves": [
-            {"save_item_id": 1, "save_type": "track", "user_id": 2},
-            {"save_item_id": 1, "save_type": "track", "user_id": 3},
-            {"save_item_id": 4, "save_type": "track", "user_id": 1},
-            {"save_item_id": 5, "save_type": "track", "user_id": 1},
-            {"save_item_id": 6, "save_type": "track", "user_id": 1},
+            {"save_item_id": 1, "save_type": "agreement", "user_id": 2},
+            {"save_item_id": 1, "save_type": "agreement", "user_id": 3},
+            {"save_item_id": 4, "save_type": "agreement", "user_id": 1},
+            {"save_item_id": 5, "save_type": "agreement", "user_id": 1},
+            {"save_item_id": 6, "save_type": "agreement", "user_id": 1},
             {"save_item_id": 1, "save_type": "playlist", "user_id": 4},
             {"save_item_id": 2, "save_type": "playlist", "user_id": 3},
             {"save_item_id": 3, "save_type": "playlist", "user_id": 2},
@@ -259,10 +259,10 @@ def test_trending_challenge_job(app):
     # Register events with the bus
     bus.register_listener(
         ChallengeEvent.trending_underground,
-        trending_underground_track_challenge_manager,
+        trending_underground_agreement_challenge_manager,
     )
     bus.register_listener(
-        ChallengeEvent.trending_track, trending_track_challenge_manager
+        ChallengeEvent.trending_agreement, trending_agreement_challenge_manager
     )
     bus.register_listener(
         ChallengeEvent.trending_playlist, trending_playlist_challenge_manager
@@ -273,16 +273,16 @@ def test_trending_challenge_job(app):
     with db.scoped_session() as session:
         session.execute("REFRESH MATERIALIZED VIEW aggregate_interval_plays")
         session.execute("REFRESH MATERIALIZED VIEW trending_params")
-        trending_track_versions = trending_strategy_factory.get_versions_for_type(
-            TrendingType.TRACKS
+        trending_agreement_versions = trending_strategy_factory.get_versions_for_type(
+            TrendingType.AGREEMENTS
         ).keys()
 
-        for version in trending_track_versions:
+        for version in trending_agreement_versions:
             strategy = trending_strategy_factory.get_strategy(
-                TrendingType.TRACKS, version
+                TrendingType.AGREEMENTS, version
             )
             if strategy.use_mat_view:
-                strategy.update_track_score_query(session)
+                strategy.update_agreement_score_query(session)
 
         session.commit()
 
@@ -298,19 +298,19 @@ def test_trending_challenge_job(app):
         ).update({"active": True, "starting_block": BLOCK_NUMBER})
         bus.process_events(session)
         session.flush()
-        trending_tracks = (
+        trending_agreements = (
             session.query(TrendingResult)
-            .filter(TrendingResult.type == str(TrendingType.TRACKS))
+            .filter(TrendingResult.type == str(TrendingType.AGREEMENTS))
             .all()
         )
-        assert len(trending_tracks) == 5
+        assert len(trending_agreements) == 5
 
-        user_trending_tracks_challenges = (
+        user_trending_agreements_challenges = (
             session.query(UserChallenge)
             .filter(UserChallenge.challenge_id == "tt")
             .all()
         )
-        assert len(user_trending_tracks_challenges) == 5
+        assert len(user_trending_agreements_challenges) == 5
         ranks = {
             "2021-08-20:1",
             "2021-08-20:2",
@@ -318,7 +318,7 @@ def test_trending_challenge_job(app):
             "2021-08-20:4",
             "2021-08-20:5",
         }
-        for challenge in user_trending_tracks_challenges:
+        for challenge in user_trending_agreements_challenges:
             assert challenge.specifier in ranks
             ranks.remove(challenge.specifier)
 

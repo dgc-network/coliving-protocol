@@ -3,13 +3,13 @@ const models = require('../../models')
 
 const types = models.ContentBlacklist.Types
 
-const getAllTrackIds = async () => {
-  const resp = await BlacklistManager.getAllTrackIds()
-  return resp.map((trackId) => parseInt(trackId))
+const getAllAgreementIds = async () => {
+  const resp = await BlacklistManager.getAllAgreementIds()
+  return resp.map((agreementId) => parseInt(agreementId))
 }
 
 const getAllContentBlacklist = async () => {
-  // Segments stored in the ContentBlacklist may not be associated with a track
+  // Segments stored in the ContentBlacklist may not be associated with a agreement
   const segmentsFromCBL = await models.ContentBlacklist.findAll({
     attributes: ['value'],
     where: {
@@ -22,7 +22,7 @@ const getAllContentBlacklist = async () => {
   )
   const allSegments = await BlacklistManager.getAllCIDs()
   const blacklistedContent = {
-    trackIds: await BlacklistManager.getAllTrackIds(),
+    agreementIds: await BlacklistManager.getAllAgreementIds(),
     userIds: await BlacklistManager.getAllUserIds(),
     individualSegments: individuallyBlacklistedSegments,
     numberOfSegments: allSegments.length,
@@ -44,5 +44,5 @@ module.exports = {
   getAllContentBlacklist,
   addToContentBlacklist,
   removeFromContentBlacklist,
-  getAllTrackIds
+  getAllAgreementIds
 }

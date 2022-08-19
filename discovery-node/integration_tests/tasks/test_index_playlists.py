@@ -35,7 +35,7 @@ def get_playlist_created_event():
             "_playlistOwnerId": 1,
             "_isPrivate": True,
             "_isAlbum": False,
-            "_trackIds": [],  # This is a list of numbers (track ids)
+            "_agreementIds": [],  # This is a list of numbers (agreement ids)
         }
     )
     return event_type, AttrDict(
@@ -80,40 +80,40 @@ def get_playlist_description_updated_event():
     )
 
 
-# event_type: PlaylistTrackAdded
-def get_playlist_track_added_event(playlistId, addedTrackId):
-    event_type = playlist_event_types_lookup["playlist_track_added"]
-    playlist_track_added_event = AttrDict(
-        {"_playlistId": playlistId, "_addedTrackId": addedTrackId}
+# event_type: PlaylistAgreementAdded
+def get_playlist_agreement_added_event(playlistId, addedAgreementId):
+    event_type = playlist_event_types_lookup["playlist_agreement_added"]
+    playlist_agreement_added_event = AttrDict(
+        {"_playlistId": playlistId, "_addedAgreementId": addedAgreementId}
     )
     return event_type, AttrDict(
-        {"blockHash": block_hash, "args": playlist_track_added_event}
+        {"blockHash": block_hash, "args": playlist_agreement_added_event}
     )
 
 
-# event_type: PlaylistTracksOrdered
-def get_playlist_tracks_ordered_event():
-    event_type = playlist_event_types_lookup["playlist_tracks_ordered"]
-    playlist_tracks_ordered_event = AttrDict(
-        {"_playlistId": 1, "_orderedTrackIds": [2, 1]}
+# event_type: PlaylistAgreementsOrdered
+def get_playlist_agreements_ordered_event():
+    event_type = playlist_event_types_lookup["playlist_agreements_ordered"]
+    playlist_agreements_ordered_event = AttrDict(
+        {"_playlistId": 1, "_orderedAgreementIds": [2, 1]}
     )
     return event_type, AttrDict(
-        {"blockHash": block_hash, "args": playlist_tracks_ordered_event}
+        {"blockHash": block_hash, "args": playlist_agreements_ordered_event}
     )
 
 
-# event_type: PlaylistTrackDeleted
-def get_playlist_track_delete_event(playlistId, deletedTrackId, deletedTrackTimestamp):
-    event_type = playlist_event_types_lookup["playlist_track_deleted"]
-    playlist_track_delete_event = AttrDict(
+# event_type: PlaylistAgreementDeleted
+def get_playlist_agreement_delete_event(playlistId, deletedAgreementId, deletedAgreementTimestamp):
+    event_type = playlist_event_types_lookup["playlist_agreement_deleted"]
+    playlist_agreement_delete_event = AttrDict(
         {
             "_playlistId": playlistId,
-            "_deletedTrackId": deletedTrackId,
-            "_deletedTrackTimestamp": deletedTrackTimestamp,
+            "_deletedAgreementId": deletedAgreementId,
+            "_deletedAgreementTimestamp": deletedAgreementTimestamp,
         }
     )
     return event_type, AttrDict(
-        {"blockHash": block_hash, "args": playlist_track_delete_event}
+        {"blockHash": block_hash, "args": playlist_agreement_delete_event}
     )
 
     # event_type: PlaylistPrivacyUpdated
@@ -176,13 +176,13 @@ def test_index_playlist(app):
         block_integer_time = int(block_timestamp)
 
         playlist_content_array = []
-        for track_id in entry.args._trackIds:
+        for agreement_id in entry.args._agreementIds:
             playlist_content_array.append(
-                {"track": track_id, "time": block_integer_time}
+                {"agreement": agreement_id, "time": block_integer_time}
             )
 
         assert playlist_record.playlist_contents == {
-            "track_ids": playlist_content_array
+            "agreement_ids": playlist_content_array
         }
         assert playlist_record.created_at == block_datetime
 
@@ -245,8 +245,8 @@ def test_index_playlist(app):
         )
         assert playlist_record.is_private == entry.args._updatedIsPrivate
 
-        # ================= Test playlist_track_added Event =================
-        event_type, entry = get_playlist_track_added_event(1, 1)
+        # ================= Test playlist_agreement_added Event =================
+        event_type, entry = get_playlist_agreement_added_event(1, 1)
 
         parse_playlist_event(
             None,  # self - not used
@@ -258,12 +258,12 @@ def test_index_playlist(app):
             session,
         )
 
-        assert len(playlist_record.playlist_contents["track_ids"]) == 1
-        last_playlist_content = playlist_record.playlist_contents["track_ids"][-1]
-        assert last_playlist_content == {"track": entry.args._addedTrackId, "time": 12}
+        assert len(playlist_record.playlist_contents["agreement_ids"]) == 1
+        last_playlist_content = playlist_record.playlist_contents["agreement_ids"][-1]
+        assert last_playlist_content == {"agreement": entry.args._addedAgreementId, "time": 12}
 
-        # ================= Test playlist_track_added with second track Event =================
-        event_type, entry = get_playlist_track_added_event(1, 2)
+        # ================= Test playlist_agreement_added with second agreement Event =================
+        event_type, entry = get_playlist_agreement_added_event(1, 2)
 
         parse_playlist_event(
             None,  # self - not used
@@ -275,12 +275,12 @@ def test_index_playlist(app):
             session,
         )
 
-        assert len(playlist_record.playlist_contents["track_ids"]) == 2
-        last_playlist_content = playlist_record.playlist_contents["track_ids"][-1]
-        assert last_playlist_content == {"track": entry.args._addedTrackId, "time": 13}
+        assert len(playlist_record.playlist_contents["agreement_ids"]) == 2
+        last_playlist_content = playlist_record.playlist_contents["agreement_ids"][-1]
+        assert last_playlist_content == {"agreement": entry.args._addedAgreementId, "time": 13}
 
-        # ================= Test playlist_tracks_ordered Event =================
-        event_type, entry = get_playlist_tracks_ordered_event()
+        # ================= Test playlist_agreements_ordered Event =================
+        event_type, entry = get_playlist_agreements_ordered_event()
         parse_playlist_event(
             None,  # self - not used
             None,  # update_task - not used
@@ -291,13 +291,13 @@ def test_index_playlist(app):
             session,
         )
 
-        assert playlist_record.playlist_contents["track_ids"] == [
-            {"track": 2, "time": 13},
-            {"track": 1, "time": 12},
+        assert playlist_record.playlist_contents["agreement_ids"] == [
+            {"agreement": 2, "time": 13},
+            {"agreement": 1, "time": 12},
         ]
 
-        # ================= Test playlist_track_delete_event Event =================
-        event_type, entry = get_playlist_track_delete_event(1, 1, 12)
+        # ================= Test playlist_agreement_delete_event Event =================
+        event_type, entry = get_playlist_agreement_delete_event(1, 1, 12)
 
         parse_playlist_event(
             None,  # self - not used
@@ -309,15 +309,15 @@ def test_index_playlist(app):
             session,
         )
 
-        assert len(playlist_record.playlist_contents["track_ids"]) == 1
-        last_playlist_content = playlist_record.playlist_contents["track_ids"][-1]
-        assert playlist_record.playlist_contents["track_ids"] == [
-            {"track": 2, "time": 13}
+        assert len(playlist_record.playlist_contents["agreement_ids"]) == 1
+        last_playlist_content = playlist_record.playlist_contents["agreement_ids"][-1]
+        assert playlist_record.playlist_contents["agreement_ids"] == [
+            {"agreement": 2, "time": 13}
         ]
 
-        # ================= Test playlist_track_delete_event Event =================
+        # ================= Test playlist_agreement_delete_event Event =================
         # This should be a no-op
-        event_type, entry = get_playlist_track_delete_event(1, 1, 12)
+        event_type, entry = get_playlist_agreement_delete_event(1, 1, 12)
 
         parse_playlist_event(
             None,  # self - not used
@@ -329,9 +329,9 @@ def test_index_playlist(app):
             session,
         )
 
-        assert len(playlist_record.playlist_contents["track_ids"]) == 1
-        assert playlist_record.playlist_contents["track_ids"] == [
-            {"track": 2, "time": 13}
+        assert len(playlist_record.playlist_contents["agreement_ids"]) == 1
+        assert playlist_record.playlist_contents["agreement_ids"] == [
+            {"agreement": 2, "time": 13}
         ]
 
         # ================= Test playlist_deleted Event =================

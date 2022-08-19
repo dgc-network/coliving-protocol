@@ -4,69 +4,69 @@ from flake8_plugins.flask_decorator_plugin.flask_decorator_plugin import Plugin
 from flake8_plugins.flask_decorator_plugin.visitor import Visitor
 
 non_route_param_example = """
-@full_ns.route("/<string:track_id>/remixes")
+@full_ns.route("/<string:agreement_id>/remixes")
 class FullRemixesRoute(Resource):
     @record_metrics
     @full_ns.doc(
-        id="Get Track Remixes",
-        description="Get all tracks that remix the given track",
-        params={"track_id": "A Track ID", "some_param": "Not in the route"},
+        id="Get Agreement Remixes",
+        description="Get all agreements that remix the given agreement",
+        params={"agreement_id": "A Agreement ID", "some_param": "Not in the route"},
     )
     @full_ns.expect(pagination_with_current_user_parser)
     @full_ns.marshal_with(remixes_response)
     @cache(ttl_sec=10)
-    def get(self, track_id):
+    def get(self, agreement_id):
         pass
 """
 
 variable_route_param_example = """
-@ns.route(TRACK_ROUTE)
-class Track(Resource):
+@ns.route(AGREEMENT_ROUTE)
+class Agreement(Resource):
     @record_metrics
     @ns.doc(
-        id=\"Get Track\",
-        description=\"Gets a track by ID\",
-        params={\"track_id\": \"A Track ID\"},
+        id=\"Get Agreement\",
+        description=\"Gets a agreement by ID\",
+        params={\"agreement_id\": \"A Agreement ID\"},
         responses={200: \"Success\", 400: \"Bad request\", 500: \"Server error\"},
     )
-    @ns.marshal_with(track_response)
+    @ns.marshal_with(agreement_response)
     @cache(ttl_sec=5)
-    def get(self, track_id):
-        decoded_id = decode_with_abort(track_id, ns)
-        return get_single_track(decoded_id, None, ns)
+    def get(self, agreement_id):
+        decoded_id = decode_with_abort(agreement_id, ns)
+        return get_single_agreement(decoded_id, None, ns)
 """
 
 attribute_order_example = """
-@full_ns.route(\"/<string:track_id>/remixes\")
+@full_ns.route(\"/<string:agreement_id>/remixes\")
 class FullRemixesRoute(Resource):
     @full_ns.doc(
-        id=\"Get Track Remixes\",
-        description=\"Get all tracks that remix the given track\",
-        params={\"track_id\": \"A Track ID\"},
+        id=\"Get Agreement Remixes\",
+        description=\"Get all agreements that remix the given agreement\",
+        params={\"agreement_id\": \"A Agreement ID\"},
     )
     @record_metrics
     @full_ns.expect(pagination_with_current_user_parser)
     @full_ns.marshal_with(remixes_response)
     @cache(ttl_sec=10)
-    def get(self, track_id):
+    def get(self, agreement_id):
         pass
 """
 
 keyword_order_example = """
-@ns.route("/<string:track_id>")
-class Track(Resource):
+@ns.route("/<string:agreement_id>")
+class Agreement(Resource):
     @record_metrics
     @ns.doc(
-        id=\"Get Track\",
-        description=\"Gets a track by ID\",
+        id=\"Get Agreement\",
+        description=\"Gets a agreement by ID\",
         responses={200: \"Success\", 400: \"Bad request\", 500: \"Server error\"},
-        params={\"track_id\": \"A Track ID\"},
+        params={\"agreement_id\": \"A Agreement ID\"},
     )
-    @ns.marshal_with(track_response)
+    @ns.marshal_with(agreement_response)
     @cache(ttl_sec=5)
-    def get(self, track_id):
-        decoded_id = decode_with_abort(track_id, ns)
-        return get_single_track(decoded_id, None, ns)
+    def get(self, agreement_id):
+        decoded_id = decode_with_abort(agreement_id, ns)
+        return get_single_agreement(decoded_id, None, ns)
 """
 
 
@@ -137,8 +137,8 @@ route_doc_get_params_example = """
     \"/trending\",
     doc={
         \"get\": {
-            "id": \"Get Trending Tracks\",
-            "description": \"Gets the top 100 trending (most popular) tracks on Coliving\",
+            "id": \"Get Trending Agreements\",
+            "description": \"Gets the top 100 trending (most popular) agreements on Coliving\",
         }
     },
 )
@@ -146,8 +146,8 @@ route_doc_get_params_example = """
     \"/trending/<string:version>\",
     doc={
         \"get\": {
-            \"id\": \"Get Trending Tracks With Version\",
-            \"description\": \"Gets the top 100 trending (most popular) tracks on Coliving using a given trending strategy version\",
+            \"id\": \"Get Trending Agreements With Version\",
+            \"description\": \"Gets the top 100 trending (most popular) agreements on Coliving using a given trending strategy version\",
             \"params\": {\"version\": \"The strategy version of trending to use\"},
         }
     },
@@ -155,7 +155,7 @@ route_doc_get_params_example = """
 class Trending(Resource):
     @record_metrics
     @ns.expect(trending_parser)
-    @ns.marshal_with(tracks_response)
+    @ns.marshal_with(agreements_response)
     @cache(ttl_sec=TRENDING_TTL_SEC)
     def get(self, version):
         pass
@@ -191,12 +191,12 @@ class FullTopGenreUsers(Resource):
 doc_false_with_route_param_example = """
 @ns.route(
     \"/trending\",
-    defaults={\"version\": DEFAULT_TRENDING_VERSIONS[TrendingType.TRACKS].name},
+    defaults={\"version\": DEFAULT_TRENDING_VERSIONS[TrendingType.AGREEMENTS].name},
     strict_slashes=False,
     doc={
         "get": {
-            "id": \"Get Trending Tracks\",
-            "description": \"Gets the top 100 trending (most popular) tracks on Coliving\",
+            "id": \"Get Trending Agreements\",
+            "description": \"Gets the top 100 trending (most popular) agreements on Coliving\",
         }
     },
 )

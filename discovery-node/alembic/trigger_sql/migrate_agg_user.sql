@@ -1,10 +1,10 @@
-alter table aggregate_user alter column track_count set default 0;
+alter table aggregate_user alter column agreement_count set default 0;
 alter table aggregate_user alter column playlist_count set default 0;
 alter table aggregate_user alter column album_count set default 0;
 alter table aggregate_user alter column follower_count set default 0;
 alter table aggregate_user alter column following_count set default 0;
 alter table aggregate_user alter column repost_count set default 0;
-alter table aggregate_user alter column track_save_count set default 0;
+alter table aggregate_user alter column agreement_save_count set default 0;
 
 
 WITH aggregate_user_latest_blocknumber AS (
@@ -30,7 +30,7 @@ changed_users AS (
     SELECT
         t.owner_id AS owner_id
     FROM
-        tracks t
+        agreements t
     WHERE
         t.is_current IS TRUE
         AND t.blocknumber > (
@@ -116,7 +116,7 @@ changed_users AS (
             saves s
         WHERE
             s.is_current IS TRUE
-            AND s.save_type = 'track'
+            AND s.save_type = 'agreement'
             AND s.blocknumber > (
                 SELECT
                     blocknumber
@@ -130,31 +130,31 @@ changed_users AS (
 INSERT INTO
     aggregate_user (
         user_id,
-        track_count,
+        agreement_count,
         playlist_count,
         album_count,
         follower_count,
         following_count,
         repost_count,
-        track_save_count
+        agreement_save_count
     )
 SELECT
     DISTINCT(u.user_id),
-    COALESCE (user_track.track_count, 0) AS track_count,
+    COALESCE (user_agreement.agreement_count, 0) AS agreement_count,
     COALESCE (user_playlist.playlist_count, 0) AS playlist_count,
     COALESCE (user_album.album_count, 0) AS album_count,
     COALESCE (user_follower.follower_count, 0) AS follower_count,
     COALESCE (user_followee.followee_count, 0) AS following_count,
     COALESCE (user_repost.repost_count, 0) AS repost_count,
-    COALESCE (user_track_save.save_count, 0) AS track_save_count
+    COALESCE (user_agreement_save.save_count, 0) AS agreement_save_count
 FROM
     users u
     LEFT OUTER JOIN (
         SELECT
             t.owner_id AS owner_id,
-            count(t.owner_id) AS track_count
+            count(t.owner_id) AS agreement_count
         FROM
-            tracks t
+            agreements t
         WHERE
             t.is_current IS TRUE
             AND t.is_delete IS FALSE
@@ -168,7 +168,7 @@ FROM
             )
         GROUP BY
             t.owner_id
-    ) as user_track ON user_track.owner_id = u.user_id
+    ) as user_agreement ON user_agreement.owner_id = u.user_id
     LEFT OUTER JOIN (
         SELECT
             p.playlist_owner_id AS owner_id,
@@ -271,7 +271,7 @@ FROM
             saves s
         WHERE
             s.is_current IS TRUE
-            AND s.save_type = 'track'
+            AND s.save_type = 'agreement'
             AND s.is_delete IS FALSE
             AND s.user_id IN (
                 select
@@ -281,7 +281,7 @@ FROM
             )
         GROUP BY
             s.user_id
-    ) user_track_save ON user_track_save.user_id = u.user_id
+    ) user_agreement_save ON user_agreement_save.user_id = u.user_id
 WHERE
     u.is_current IS TRUE
     AND u.user_id in (
@@ -292,11 +292,11 @@ WHERE
     ) ON CONFLICT (user_id) DO
 UPDATE
 SET
-    track_count = EXCLUDED.track_count,
+    agreement_count = EXCLUDED.agreement_count,
     playlist_count = EXCLUDED.playlist_count,
     album_count = EXCLUDED.album_count,
     follower_count = EXCLUDED.follower_count,
     following_count = EXCLUDED.following_count,
     repost_count = EXCLUDED.repost_count,
-    track_save_count = EXCLUDED.track_save_count
+    agreement_save_count = EXCLUDED.agreement_save_count
 ;

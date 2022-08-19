@@ -84,13 +84,13 @@ const userReqLimiter = rateLimit({
   }
 })
 
-const trackReqLimiter = rateLimit({
+const agreementReqLimiter = rateLimit({
   store: new RedisStore({
     client: client,
-    prefix: 'trackReqLimiter',
+    prefix: 'agreementReqLimiter',
     expiry: 60 * 60 // one hour in seconds
   }),
-  max: config.get('rateLimitingTrackReqLimit'), // max requests per hour
+  max: config.get('rateLimitingAgreementReqLimit'), // max requests per hour
   keyGenerator: ipKeyGenerator
 })
 
@@ -246,7 +246,7 @@ const getRateLimiterMiddleware = () => {
 
 module.exports = {
   userReqLimiter,
-  trackReqLimiter,
+  agreementReqLimiter,
   colivingUserReqLimiter,
   metadataReqLimiter,
   imageReqLimiter,

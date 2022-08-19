@@ -14,12 +14,12 @@ const getPublishNotifBaseType = (notification) => {
   switch (notification.type) {
     case notificationTypes.Follow:
       return notificationTypes.Follow
-    case notificationTypes.Repost.track:
+    case notificationTypes.Repost.agreement:
     case notificationTypes.Repost.playlist:
     case notificationTypes.Repost.album:
     case notificationTypes.Repost.base:
       return notificationTypes.Repost.base
-    case notificationTypes.Favorite.track:
+    case notificationTypes.Favorite.agreement:
     case notificationTypes.Favorite.playlist:
     case notificationTypes.Favorite.album:
     case notificationTypes.Favorite.base:
@@ -28,7 +28,7 @@ const getPublishNotifBaseType = (notification) => {
       return notificationTypes.RemixCreate
     case notificationTypes.RemixCosign:
       return notificationTypes.RemixCosign
-    case notificationTypes.Create.track:
+    case notificationTypes.Create.agreement:
     case notificationTypes.Create.playlist:
     case notificationTypes.Create.album:
     case notificationTypes.Create.base:
@@ -42,8 +42,8 @@ const getPublishNotifBaseType = (notification) => {
       return notificationTypes.Milestone
     case notificationTypes.TierChange:
       return notificationTypes.TierChange
-    case notificationTypes.AddTrackToPlaylist:
-      return notificationTypes.AddTrackToPlaylist
+    case notificationTypes.AddAgreementToPlaylist:
+      return notificationTypes.AddAgreementToPlaylist
     case notificationTypes.Reaction:
       return notificationTypes.Reaction
     case notificationTypes.TipReceive:
@@ -69,13 +69,13 @@ const getPublishUserId = (notif, baseType) => {
   if (baseType === notificationTypes.Follow) return notif.metadata.followee_user_id
   else if (baseType === notificationTypes.Repost.base) return notif.metadata.entity_owner_id
   else if (baseType === notificationTypes.Favorite.base) return notif.metadata.entity_owner_id
-  else if (baseType === notificationTypes.RemixCreate) return notif.metadata.remix_parent_track_user_id
+  else if (baseType === notificationTypes.RemixCreate) return notif.metadata.remix_parent_agreement_user_id
   else if (baseType === notificationTypes.RemixCosign) return notif.metadata.entity_owner_id
   else if (baseType === notificationTypes.Create.base) return notif.subscriberId
   else if (baseType === notificationTypes.ChallengeReward) return notif.initiator
   else if (baseType === notificationTypes.Milestone) return notif.initiator
   else if (baseType === notificationTypes.TierChange) return notif.initiator
-  else if (baseType === notificationTypes.AddTrackToPlaylist) return notif.metadata.trackOwnerId
+  else if (baseType === notificationTypes.AddAgreementToPlaylist) return notif.metadata.agreementOwnerId
   else if (baseType === notificationTypes.Reaction) return notif.metadata.reacted_to_entity.tip_sender_id
   else if (baseType === notificationTypes.SupporterRankUp) return notif.initiator
   else if (baseType === notificationTypes.SupportingRankUp) return notif.metadata.entity_id
@@ -86,11 +86,11 @@ const getPublishUserId = (notif, baseType) => {
 const alwaysSendNotifications = [
   notificationTypes.RemixCosign,
   notificationTypes.Create.base,
-  notificationTypes.Create.track,
+  notificationTypes.Create.agreement,
   notificationTypes.Create.playlist,
   notificationTypes.Create.album,
   notificationTypes.ChallengeReward,
-  notificationTypes.AddTrackToPlaylist,
+  notificationTypes.AddAgreementToPlaylist,
   notificationTypes.Reaction,
   notificationTypes.TipReceive,
   notificationTypes.SupporterRankUp,
@@ -146,7 +146,7 @@ const shouldFilterOutNotification = (notificationType, optimizelyClient) => {
  * Takes a list of notifications, populates them with extra metadata, checks their notification settings
  * and publishes it to the notification queue to be sent out.
  * @param {Array<Object>} notifications
- * @param {Object} metadata Metadata of all the users/tracks/collections needed for populating the notifications
+ * @param {Object} metadata Metadata of all the users/agreements/collections needed for populating the notifications
  * @param {Object} userNotificationSettings A map of userID to their mobile & browser notification settings
  * @param {*} tx Transction for DB queries
  */
