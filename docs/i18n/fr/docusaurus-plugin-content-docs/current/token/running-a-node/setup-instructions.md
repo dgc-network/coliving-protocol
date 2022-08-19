@@ -119,7 +119,7 @@ Voir ci-dessous un guide de déploiement du [Creator Node](https://github.com/dg
 
 Un Creator Node Coliving maintient la disponibilité du contenu des créateurs sur IPFS.
 
-Les informations stockées comprennent les métadonnées des utilisateurs d'Coliving, les images et le contenu audio. Le contenu est soutenu par un répertoire local.
+Les informations stockées comprennent les métadonnées des utilisateurs d'Coliving, les images et le contenu live. Le contenu est soutenu par un répertoire local.
 
 **Remarque**à l'avenir, le service sera étendu pour traiter les demandes de ré encryptage par proxy des clients utilisateurs et prendre en charge d'autres backends de stockage.
 

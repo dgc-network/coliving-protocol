@@ -49,8 +49,8 @@ function segmentFile(fileDir, fileName, { logContext }) {
       '-hls_segment_filename',
       path.resolve(fileDir, 'segments', 'segment%05d.ts'),
       // "-vn" flag required to allow track uploading with album art
-      // https://stackoverflow.com/questions/20193065/how-to-remove-id3-audio-tag-image-or-metadata-from-mp3-with-ffmpeg
-      '-vn', // skip inclusion of video, process only the audio file without "video"
+      // https://stackoverflow.com/questions/20193065/how-to-remove-id3-live-tag-image-or-metadata-from-mp3-with-ffmpeg
+      '-vn', // skip inclusion of video, process only the live file without "video"
       m3u8FilePath
     ]
     logger.info(`Spawning: ffmpeg ${args}`)
@@ -116,8 +116,8 @@ function transcodeFileTo320(fileDir, fileName, { logContext }) {
       '-b:a',
       '320k',
       // "-vn" flag required to allow track uploading with album art
-      // https://stackoverflow.com/questions/20193065/how-to-remove-id3-audio-tag-image-or-metadata-from-mp3-with-ffmpeg
-      '-vn', // skip inclusion of video, process only the audio file without "video"
+      // https://stackoverflow.com/questions/20193065/how-to-remove-id3-live-tag-image-or-metadata-from-mp3-with-ffmpeg
+      '-vn', // skip inclusion of video, process only the live file without "video"
       targetPath
     ]
     logger.info(`Spawning: ffmpeg ${args}`)

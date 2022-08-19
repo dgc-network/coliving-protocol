@@ -823,7 +823,7 @@ router.get(
 
     req.params.CID = fileRecord.multihash
     req.params.streamable = true
-    res.set('Content-Type', 'audio/mpeg')
+    res.set('Content-Type', 'live/mpeg')
     next()
   },
   getCID

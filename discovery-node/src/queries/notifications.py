@@ -34,7 +34,7 @@ from src.utils.redis_constants import (
     latest_sol_plays_slot_key,
     latest_sol_rewards_manager_slot_key,
 )
-from src.utils.spl_audio import to_wei_string
+from src.utils.spl_live import to_wei_string
 
 logger = logging.getLogger(__name__)
 bp = Blueprint("notifications", __name__)

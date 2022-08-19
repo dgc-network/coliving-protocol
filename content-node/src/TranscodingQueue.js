@@ -144,7 +144,7 @@ class TranscodingQueue {
   }
 
   /**
-   * Adds a task to the queue that segments up an audio file
+   * Adds a task to the queue that segments up an live file
    * @param {string} fileDir
    * @param {string} fileName
    * @param {Object} logContext to create a logger.child(logContext) from
@@ -181,7 +181,7 @@ class TranscodingQueue {
   }
 
   /**
-   * Adds a task to the queue that transcodes an audio file to 320kpbs mp3
+   * Adds a task to the queue that transcodes an live file to 320kpbs mp3
    * @param {string} fileDir
    * @param {string} fileName
    * @param {Object} logContext to create a logger.child(logContext) from

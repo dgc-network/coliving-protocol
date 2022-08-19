@@ -8,7 +8,7 @@ sidebar_position: 3
 ## Overview
 
 An Coliving Content Node maintains the availability of all content in the network.  
-Content types include user and track metadata, user and track images, and audio content.
+Content types include user and track metadata, user and track images, and live content.
 
 *NOTE - Previously, there was a concept of a ”creator node” that was separate from a content node. These have been combined into a single node type rather than being separate, with ”content node” referring to the merged type. Some references to ”creator node” still exist in Coliving code and in other documentation; those can safely be assumed to be referring to the content nodes outlined here.*
 

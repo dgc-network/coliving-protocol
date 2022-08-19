@@ -50,7 +50,7 @@ Notes on params:
 const CLI_TO_COMMAND_MAP = {
     'upload-track': {
       api: 'Track',
-      description: 'upload track with dummy audio and cover art file',
+      description: 'upload track with dummy live and cover art file',
       method: 'uploadTrack',
       params: [
         {

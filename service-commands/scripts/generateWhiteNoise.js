@@ -49,10 +49,10 @@ function parseArgs() {
 function generateWhiteNoise(size, outFile) {
   return new Promise((resolve, reject) => {
     const process = spawn(ffmpeg, [
-      '-f', // audio/video filtering framework
-      'lavfi', // provides generic audio filtering for audio/video signals
+      '-f', // live/video filtering framework
+      'lavfi', // provides generic live filtering for live/video signals
       '-i', // input flag
-      `anoisesrc=d=${(1024 * size) / 8064}`, // generate a noise audio signal for the duration (d) of <size> KiB
+      `anoisesrc=d=${(1024 * size) / 8064}`, // generate a noise live signal for the duration (d) of <size> KiB
       outFile, // output filepath
       '-y' // overwrite existing file
     ])

@@ -11,7 +11,7 @@ const SOLANA_ENDPOINT = 'coliving_solana_endpoint'
 const SOLANA_SIGNER_GROUP_ADDRESS = 'coliving_solana_signer_group_address'
 
 const SOLANA_USER_BANK_ADDRESS = 'coliving_solana_user_bank_program_address'
-const SOLANA_WLIVE_MINT = 'coliving_solana_waudio_mint'
+const SOLANA_WLIVE_MINT = 'coliving_solana_wlive_mint'
 
 const SOLANA_REWARDS_MANAGER_ADDRESS = 'coliving_solana_rewards_manager_program_address'
 const SOLANA_REWARDS_MANAGER_ACCOUNT = 'coliving_solana_rewards_manager_account'
@@ -26,13 +26,13 @@ const configureLocalDiscProv = async () => {
   const solanaTrackListenCountAddress = solanaConfig.trackListenCountAddress
   const signerGroup = solanaConfig.signerGroup
   const solanaEndpoint = solanaConfig.endpoint
-  const waudioMint = solanaConfig.splToken
+  const wliveMint = solanaConfig.splToken
   const claimableTokenAddress = solanaConfig.claimableTokenAddress
   const rewardsManagerAddress = solanaConfig.rewardsManagerAddress
   const rewardsManagerAccount = solanaConfig.rewardsManagerAccount
   const anchorProgramId = solanaConfig.anchorProgramId
   const anchorAdminStoragePublicKey = solanaConfig.anchorAdminStoragePublicKey
-  console.log(`waudioAddress: ${waudioMint}, claimableTokenAddress: ${claimableTokenAddress}, waudioMint=${waudioMint}`)
+  console.log(`wliveAddress: ${wliveMint}, claimableTokenAddress: ${claimableTokenAddress}, wliveMint=${wliveMint}`)
   const envPath = path.join(process.cwd(), '../../', 'discovery-node/compose/.env')
 
   await _updateDiscoveryProviderEnvFile(
@@ -42,7 +42,7 @@ const configureLocalDiscProv = async () => {
     solanaTrackListenCountAddress,
     solanaEndpoint,
     signerGroup,
-    waudioMint,
+    wliveMint,
     claimableTokenAddress,
     rewardsManagerAddress,
     rewardsManagerAccount,
@@ -59,7 +59,7 @@ const _updateDiscoveryProviderEnvFile = async (
   solanaTrackListenCountAddress,
   solanaEndpoint,
   signerGroup,
-  waudioMint,
+  wliveMint,
   claimableTokenAddress,
   rewardsManagerAddress,
   rewardsManagerAccount,
@@ -77,7 +77,7 @@ const _updateDiscoveryProviderEnvFile = async (
   let solanaEndpointFound = false
   let signerGroupFound = false
 
-  let waudioMintFound = false
+  let wliveMintFound = false
   let claimableTokenAddressFound = false
   let rewardsAddressFound = false
   let rewardsAccountFound = false
@@ -88,7 +88,7 @@ const _updateDiscoveryProviderEnvFile = async (
   const solanaTrackListenCountAddressLine = `${SOLANA_TRACK_LISTEN_COUNT_ADDRESS}=${solanaTrackListenCountAddress}`
   const solanaEndpointLine = `${SOLANA_ENDPOINT}=${solanaEndpoint}`
   const signerGroupLine = `${SOLANA_SIGNER_GROUP_ADDRESS}=${signerGroup}`
-  const waudioMintLine = `${SOLANA_WLIVE_MINT}=${waudioMint}`
+  const wliveMintLine = `${SOLANA_WLIVE_MINT}=${wliveMint}`
   const claimableTokenAddressLine = `${SOLANA_USER_BANK_ADDRESS}=${claimableTokenAddress}`
   const rewardsManagerAddressLine = `${SOLANA_REWARDS_MANAGER_ADDRESS}=${rewardsManagerAddress}`
   const rewardsManagerAccountLine = `${SOLANA_REWARDS_MANAGER_ACCOUNT}=${rewardsManagerAccount}`
@@ -112,8 +112,8 @@ const _updateDiscoveryProviderEnvFile = async (
       output.push(claimableTokenAddressLine)
       claimableTokenAddressFound = true
     } else if (line.includes(SOLANA_WLIVE_MINT)) {
-      output.push(waudioMintLine)
-      waudioMintFound = true
+      output.push(wliveMintLine)
+      wliveMintFound = true
     } else if (line.includes(SOLANA_REWARDS_MANAGER_ADDRESS)) {
       output.push(rewardsManagerAddressLine)
       rewardsAddressFound = true
@@ -142,8 +142,8 @@ const _updateDiscoveryProviderEnvFile = async (
   if (!signerGroupFound) {
     output.push(signerGroupLine)
   }
-  if (!waudioMintFound) {
-    output.push(waudioMintLine)
+  if (!wliveMintFound) {
+    output.push(wliveMintLine)
   }
   if (!claimableTokenAddressFound) {
     output.push(claimableTokenAddressLine)

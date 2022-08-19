@@ -52,7 +52,7 @@ logger = logging.getLogger(__name__)
 
 # Populate values used in UserBank indexing from config
 USER_BANK_ADDRESS = shared_config["solana"]["user_bank_program_address"]
-WLIVE_MINT = shared_config["solana"]["waudio_mint"]
+WLIVE_MINT = shared_config["solana"]["wlive_mint"]
 USER_BANK_KEY = PublicKey(USER_BANK_ADDRESS) if USER_BANK_ADDRESS else None
 WLIVE_MINT_PUBKEY = PublicKey(WLIVE_MINT) if WLIVE_MINT else None
 

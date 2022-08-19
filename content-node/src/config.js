@@ -205,13 +205,13 @@ const config = convict({
   },
 
   maxAudioFileSizeBytes: {
-    doc: 'Maximum file size for audio file uploads in bytes',
+    doc: 'Maximum file size for live file uploads in bytes',
     format: 'nat',
     env: 'maxAudioFileSizeBytes',
     default: null
   },
   maxMemoryFileSizeBytes: {
-    doc: 'Maximum memory usage for audio file uploads in bytes',
+    doc: 'Maximum memory usage for live file uploads in bytes',
     format: 'nat',
     env: 'maxMemoryFileSizeBytes',
     default: null

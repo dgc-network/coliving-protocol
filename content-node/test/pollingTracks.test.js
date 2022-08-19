@@ -157,7 +157,7 @@ describe('test Polling Tracks with mocked IPFS', function () {
     server = appInfo.server
     session = await createStarterCNodeUser(userId)
 
-    // Confirm max audio file size is respected by multer
+    // Confirm max live file size is respected by multer
     const file = fs.readFileSync(testAudioFilePath)
     await request(app)
       .post(TRACK_CONTENT_POLLING_ROUTE)
@@ -182,7 +182,7 @@ describe('test Polling Tracks with mocked IPFS', function () {
     server = appInfo.server
     session = await createStarterCNodeUser(userId)
 
-    // Confirm max audio file size is respected by multer
+    // Confirm max live file size is respected by multer
     const file = fs.readFileSync(testAudioFileWrongFormatPath)
     await request(app)
       .post('/image_upload')

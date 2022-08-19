@@ -17,5 +17,5 @@ Le protocole Coliving est alimenté par deux services hors chaîne, le Discovery
 
 **Discovery Node**
 
-* Héberge les contenus audio et image
+* Héberge les contenus live et image
 * Synchronise le contenu entre les nœuds pour garantir la cohérence et la haute disponibilité des données (en utilisant IPFS et le protocole de stockage Coliving sous le capot)

@@ -9,13 +9,13 @@ const streamPipeline = util.promisify(require('stream').pipeline)
 const { logger } = require('./logger.js')
 
 const TRACK_URLS = [
-  'https://royalty-free-content.s3-us-west-2.amazonaws.com/audio/Gipsy.mp3',
-  'https://royalty-free-content.s3-us-west-2.amazonaws.com/audio/First+Rain.mp3',
-  'https://royalty-free-content.s3-us-west-2.amazonaws.com/audio/Miracle.mp3',
-  'https://royalty-free-content.s3-us-west-2.amazonaws.com/audio/Ice+Cream.mp3',
-  'https://royalty-free-content.s3-us-west-2.amazonaws.com/audio/Street+Tables+Cafe.mp3',
-  'https://royalty-free-content.s3-us-west-2.amazonaws.com/audio/Cowboy+Tears.mp3',
-  'https://royalty-free-content.s3-us-west-2.amazonaws.com/audio/Happy.mp3'
+  'https://royalty-free-content.s3-us-west-2.amazonaws.com/live/Gipsy.mp3',
+  'https://royalty-free-content.s3-us-west-2.amazonaws.com/live/First+Rain.mp3',
+  'https://royalty-free-content.s3-us-west-2.amazonaws.com/live/Miracle.mp3',
+  'https://royalty-free-content.s3-us-west-2.amazonaws.com/live/Ice+Cream.mp3',
+  'https://royalty-free-content.s3-us-west-2.amazonaws.com/live/Street+Tables+Cafe.mp3',
+  'https://royalty-free-content.s3-us-west-2.amazonaws.com/live/Cowboy+Tears.mp3',
+  'https://royalty-free-content.s3-us-west-2.amazonaws.com/live/Happy.mp3'
 ]
 
 /**

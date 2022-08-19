@@ -2,7 +2,7 @@ import copy
 import os
 
 from elasticsearch import Elasticsearch
-from src.utils.spl_audio import to_wei
+from src.utils.spl_live import to_wei
 
 es_url = os.getenv("coliving_elasticsearch_url")
 esclient = None
@@ -54,7 +54,7 @@ def populate_user_metadata_es(user, current_user):
         int(user.get("balance", "0") or "0")
         + int(user.get("associated_wallets_balance", "0") or "0")
         + to_wei(user.get("associated_sol_wallets_balance", "0") or 0)
-        + to_wei(user.get("waudio", "0") or 0)
+        + to_wei(user.get("wlive", "0") or 0)
     )
 
     # Mutual box on profile page will fetch the data to compute this number

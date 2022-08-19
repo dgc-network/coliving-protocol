@@ -6,7 +6,7 @@ const FEATURE_FLAGS = Object.freeze({
   SOLANA_SEND_RAW_TRANSACTION: 'solana_send_raw_transaction',
   REWARDS_ATTESTATION_ENABLED: 'rewards_attestation_enabled',
   REWARDS_NOTIFICATIONS_ENABLED: 'rewards_notifications_enabled',
-  SOCIAL_PROOF_TO_SEND_LIVE_ENABLED: 'social_proof_to_send_audio_enabled',
+  SOCIAL_PROOF_TO_SEND_LIVE_ENABLED: 'social_proof_to_send_live_enabled',
   DETECT_ABUSE_ON_RELAY: 'detect_abuse_on_relay',
   TIPPING_ENABLED: 'tipping_enabled'
 })

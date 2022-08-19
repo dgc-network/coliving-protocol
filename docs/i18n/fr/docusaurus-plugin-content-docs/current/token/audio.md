@@ -8,7 +8,7 @@ description: '$LIVE - le jeton de la plate-forme Coliving qui sous-tend les acti
 
 #### Comment ça marche
 
-Les jetons de plateforme audio \\(LIVE\\) ont trois pôles de fonctionnalités dans l'écosystème du protocole Coliving :
+Les jetons de plateforme live \\(LIVE\\) ont trois pôles de fonctionnalités dans l'écosystème du protocole Coliving :
 
 * Sécurité
 * Accès aux fonctionnalités

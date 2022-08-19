@@ -7,7 +7,7 @@ sidebar_position: 1
 
 Coliving est un protocole de partage de musique décentralisé, détenu par la communauté et contrôlé par les artistes. Coliving offre une alternative basée sur la blockchain aux plateformes de streaming existantes pour aider les artistes à publier et monétiser leur travail et à le distribuer directement aux fans.
 
-La mission du projet est de donner à chacun la liberté de partager, de monétiser et d'écouter n'importe quel fichier audio.
+La mission du projet est de donner à chacun la liberté de partager, de monétiser et d'écouter n'importe quel fichier live.
 
 Le dépôt [Coliving Protocol](https://github.com/dgc.network/-protocol) est un dépôt mono-référentiel qui a toutes les pièces qui font et supportent le protocole, y compris les contrats intelligents, , et d'autres bibliothèques de support.
 
@@ -34,7 +34,7 @@ Pour plus de détails sur l'architecture Coliving, voir le [ White Paper sur le 
 
 | Service                                                                                               | Description                                                                                                                                 |
 |:----------------------------------------------------------------------------------------------------- |:------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`Nœud de contenu`](https://github.com/dgc.network/-protocol/tree/master/content-node)        | Maintenir la disponibilité du contenu des utilisateurs sur IPFS, y compris les métadonnées des utilisateurs, les images et le contenu audio |
+| [`Nœud de contenu`](https://github.com/dgc.network/-protocol/tree/master/content-node)        | Maintenir la disponibilité du contenu des utilisateurs sur IPFS, y compris les métadonnées des utilisateurs, les images et le contenu live |
 | [`Noeud-Découverte`](https://github.com/dgc.network/-protocol/tree/master/discovery-node) | Indexe et stocke le contenu des contrats Coliving sur la blockchain Ethereum pour que les clients puissent les interroger via une API         |
 | [`Identité-Service`](https://github.com/dgc.network/-protocol/tree/master/identity-service)   | Stocke les cryptogrammes d'authentification, effectue Twitter OAuth et relaie les transactions (paie le gas) au nom des utilisateurs        |
 

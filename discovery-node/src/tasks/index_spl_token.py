@@ -39,7 +39,7 @@ from src.utils.redis_constants import (
 from src.utils.session_manager import SessionManager
 from src.utils.solana_indexing_logger import SolanaIndexingLogger
 
-SPL_TOKEN_PROGRAM = shared_config["solana"]["waudio_mint"]
+SPL_TOKEN_PROGRAM = shared_config["solana"]["wlive_mint"]
 SPL_TOKEN_PUBKEY = PublicKey(SPL_TOKEN_PROGRAM) if SPL_TOKEN_PROGRAM else None
 USER_BANK_ADDRESS = shared_config["solana"]["user_bank_program_address"]
 USER_BANK_PUBKEY = PublicKey(USER_BANK_ADDRESS) if USER_BANK_ADDRESS else None
@@ -100,7 +100,7 @@ def get_token_balance_change_owners(
 
 # Cache the latest value committed to DB in redis
 # Used for quick retrieval in health check
-def cache_latest_spl_audio_db_tx(redis: Redis, latest_tx: CachedProgramTxInfo):
+def cache_latest_spl_live_db_tx(redis: Redis, latest_tx: CachedProgramTxInfo):
     cache_latest_sol_db_tx(redis, latest_sol_spl_token_db_key, latest_tx)
 
 
@@ -233,7 +233,7 @@ def parse_sol_tx_batch(
             solana_logger.add_log(
                 f"Updating last_scanned_slot to {last_scanned_slot} and signature to {last_scanned_signature}"
             )
-            cache_latest_spl_audio_db_tx(
+            cache_latest_spl_live_db_tx(
                 redis,
                 {
                     "signature": last_scanned_signature,

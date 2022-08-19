@@ -21,7 +21,7 @@ Ceux qui misent plus d' $LIVE ont la possibilité de gagner une plus grande part
 
 Sur Coliving, le contenu est acheminé vers deux types de nœuds différents :
 
-* _Content Nodes_ - Pour stocker et relayer le contenu audio (pistes, mixages, etc.) diffusé sur Coliving
+* _Content Nodes_ - Pour stocker et relayer le contenu live (pistes, mixages, etc.) diffusé sur Coliving
 * _Discovery Nodes_ - Pour indexer et trier les données telles que les profils d'utilisateurs, les listes de lecture et les abonnés.
 
 En tant qu'artiste, le téléchargement sur Coliving n'est pas différent du téléchargement sur une plateforme comme Soundcloud. Mais ce qui se passe dans les coulisses, c'est ce qui rend l'Coliving si unique.

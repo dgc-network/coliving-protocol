@@ -5,7 +5,7 @@ from typing import Dict, Optional
 from redis import Redis
 from src.models.indexing.spl_token_transaction import SPLTokenTransaction
 from src.queries.get_sol_user_bank import SolTxHealthInfo
-from src.tasks.index_spl_token import cache_latest_spl_audio_db_tx
+from src.tasks.index_spl_token import cache_latest_spl_live_db_tx
 from src.utils import helpers
 from src.utils.cache_solana_program import (
     CachedProgramTxInfo,
@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 
 # Get last user_bank sol tx
-def get_latest_spl_audio() -> Optional[Dict]:
+def get_latest_spl_live() -> Optional[Dict]:
     db = get_db_read_replica()
     with db.scoped_session() as session:
         token_tx = session.query(SPLTokenTransaction).first()
@@ -31,43 +31,43 @@ def get_latest_spl_audio() -> Optional[Dict]:
     return None
 
 
-# Retrieve the latest stored value in database for spl audio indexing
+# Retrieve the latest stored value in database for spl live indexing
 # Cached during processing
-def get_latest_cached_spl_audio_db(redis: Redis) -> Optional[CachedProgramTxInfo]:
-    latest_spl_audio_db = get_cache_latest_sol_program_tx(
+def get_latest_cached_spl_live_db(redis: Redis) -> Optional[CachedProgramTxInfo]:
+    latest_spl_live_db = get_cache_latest_sol_program_tx(
         redis, latest_sol_spl_token_db_key
     )
-    if not latest_spl_audio_db:
+    if not latest_spl_live_db:
         # If nothing found in cache, pull from db
-        token_tx = get_latest_spl_audio()
+        token_tx = get_latest_spl_live()
         if token_tx:
-            latest_spl_audio_db = {
+            latest_spl_live_db = {
                 "signature": token_tx["signature"],
                 "slot": token_tx["last_scanned_slot"],
                 "timestamp": int(token_tx["created_at"].timestamp()),
             }
             # If found, re-cache value to avoid repeated DB hits
-            if latest_spl_audio_db:
-                cache_latest_spl_audio_db_tx(redis, latest_spl_audio_db)
+            if latest_spl_live_db:
+                cache_latest_spl_live_db_tx(redis, latest_spl_live_db)
 
-    return latest_spl_audio_db
+    return latest_spl_live_db
 
 
-def get_latest_cached_spl_audio_program_tx(redis) -> CachedProgramTxInfo:
-    # Latest spl audio tx from chain
-    latest_spl_audio_program_tx = get_latest_sol_db_tx(
+def get_latest_cached_spl_live_program_tx(redis) -> CachedProgramTxInfo:
+    # Latest spl live tx from chain
+    latest_spl_live_program_tx = get_latest_sol_db_tx(
         redis, latest_sol_spl_token_program_tx_key
     )
-    return latest_spl_audio_program_tx
+    return latest_spl_live_program_tx
 
 
-def get_spl_audio_health_info(redis: Redis, current_time_utc: datetime):
-    db_cache = get_latest_cached_spl_audio_db(redis)
-    tx_cache = get_latest_cached_spl_audio_program_tx(redis)
+def get_spl_live_health_info(redis: Redis, current_time_utc: datetime):
+    db_cache = get_latest_cached_spl_live_db(redis)
+    tx_cache = get_latest_cached_spl_live_program_tx(redis)
     return get_sol_tx_health_info(current_time_utc, db_cache, tx_cache)
 
 
-# Retrieve spl audio health object
+# Retrieve spl live health object
 def get_sol_tx_health_info(
     current_time_utc: datetime,
     db_cache: Optional[CachedProgramTxInfo],

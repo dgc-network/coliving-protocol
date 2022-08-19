@@ -524,7 +524,7 @@ export interface UserBalanceRow {
   'created_at': Date;
   'updated_at': Date;
   'user_id'?: number;
-  'waudio'?: string | null;
+  'wlive'?: string | null;
 }
 export interface UserBankAccountRow {
   'bank_account': string;

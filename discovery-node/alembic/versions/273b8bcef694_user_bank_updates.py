@@ -40,7 +40,7 @@ def upgrade():
 
     op.add_column(
         "user_balances",
-        sa.Column("waudio", sa.String(), server_default="0", nullable=True),
+        sa.Column("wlive", sa.String(), server_default="0", nullable=True),
     )
 
     # ix_users_wallet exists on users table
@@ -64,4 +64,4 @@ def downgrade():
     op.drop_index(op.f("idx_user_bank_eth_address"), table_name="user_bank_accounts")
     op.drop_table("user_bank_txs")
     op.drop_table("user_bank_accounts")
-    op.drop_column("user_balances", "waudio")
+    op.drop_column("user_balances", "wlive")

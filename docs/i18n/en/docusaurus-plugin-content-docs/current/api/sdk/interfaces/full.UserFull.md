@@ -335,8 +335,8 @@ ___
 
 ___
 
-### waudio\_balance
+### wlive\_balance
 
- **waudio\_balance**: `string`
+ **wlive\_balance**: `string`
 
 **`memberof`** UserFull

@@ -17,7 +17,7 @@ const MAX_LIVE_FILE_SIZE = parseInt(config.get('maxAudioFileSizeBytes')) // Defa
 const MAX_MEMORY_FILE_SIZE = parseInt(config.get('maxMemoryFileSizeBytes')) // Default = 50,000,000 bytes = 50MB
 
 const ALLOWED_UPLOAD_FILE_EXTENSIONS = config.get('allowedUploadFileExtensions') // default set in config.json
-const LIVE_MIME_TYPE_REGEX = /audio\/(.*)/
+const LIVE_MIME_TYPE_REGEX = /live\/(.*)/
 
 const EMPTY_FILE_CID = 'QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH' // deterministic CID for a 0 byte, completely empty file
 

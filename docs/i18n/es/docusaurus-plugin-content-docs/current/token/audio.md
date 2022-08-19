@@ -8,7 +8,7 @@ description: '$LIVE— el token de la plataforma de Coliving que sustenta las ac
 
 #### Cómo funciona
 
-Los tokens de la plataforma de audio \(LIVE\) tienen tres funcionalidades dentro del ecosistema del protocolo de Coliving:
+Los tokens de la plataforma de live \(LIVE\) tienen tres funcionalidades dentro del ecosistema del protocolo de Coliving:
 
 * Seguridad
 * Acceso a Funciones

@@ -11,7 +11,7 @@ from src.queries.get_undisbursed_challenges import UndisbursedChallengeResponse
 from src.queries.reactions import ReactionResponse
 from src.utils.config import shared_config
 from src.utils.helpers import decode_string_id, encode_int_id
-from src.utils.spl_audio import to_wei_string
+from src.utils.spl_live import to_wei_string
 
 from .models.common import full_response
 

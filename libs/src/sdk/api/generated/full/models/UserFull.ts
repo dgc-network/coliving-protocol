@@ -181,7 +181,7 @@ export interface UserFull {
      * @type {string}
      * @memberof UserFull
      */
-    waudio_balance: string;
+    wlive_balance: string;
     /**
      * 
      * @type {string}

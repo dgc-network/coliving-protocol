@@ -320,7 +320,7 @@ export class SolanaWeb3Manager {
   }
 
   /**
-   * Gets the SPL waudio balance for a solana address in wei with 18 decimals
+   * Gets the SPL wlive balance for a solana address in wei with 18 decimals
    */
   async getWAudioBalance(solanaAddress: string) {
     try {
@@ -349,7 +349,7 @@ export class SolanaWeb3Manager {
   }
 
   /**
-   * Transfers audio from the web3 provider's eth address
+   * Transfers live from the web3 provider's eth address
    * @param {string} recipientSolanaAddress
    *  Recipient solana address which is either a user bank, wAudio token account,
    *  or a solana account. In the last case, an associated token account is created

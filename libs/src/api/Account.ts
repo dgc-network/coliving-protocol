@@ -581,7 +581,7 @@ export class Account extends Base {
    * 1.) Creates a solana root wallet
    * 2.) Sends the tokens from the user bank account to the solana wallet
    * 3.) Permits the solana wallet to approve transfer to wormhole
-   * 4.) Transfers to the wrapped audio to the sol wormhole contract
+   * 4.) Transfers to the wrapped live to the sol wormhole contract
    * 5.) Gathers attestations from wormhole oracles and realizes the tokens on eth
    */
   async sendTokensFromSolToEth(amount: BN, ethAccount: string) {

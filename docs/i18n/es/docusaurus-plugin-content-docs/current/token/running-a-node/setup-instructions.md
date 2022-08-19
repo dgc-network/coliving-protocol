@@ -7,9 +7,9 @@ sidebar_position: 3
 
 Esta guía describe cómo ejecutar los servicios de Coliving en un clúster Kubernetes de un solo nodo. Las notas sobre clusters multi nodos son proporcionadas como relevantes.
 
-Únete al canal de discord de operadores de nodo en el [servidor de discord de audio](https://discord.com/invite/)
+Únete al canal de discord de operadores de nodo en el [servidor de discord de live](https://discord.com/invite/)
 
-## 0. Clonar el repositorio audio-k8 manifests
+## 0. Clonar el repositorio live-k8 manifests
 [**https://github.com/dgc.network/-k8s-manifests**](https://github.com/dgc.network/-k8s-manifests)\*\*\*\*
 
 ```text
@@ -82,7 +82,7 @@ Mira abajo una guía para desplegar [Nodo de creador](https://github.com/dgc.net
 
 Un Nodo de Creador de Coliving mantiene la disponibilidad del contenido de los creadores en IPFS.
 
-La información almacenada incluye metadatos de usuario de Coliving, imágenes y contenido de audio. El contenido está respaldado por un directorio local.
+La información almacenada incluye metadatos de usuario de Coliving, imágenes y contenido de live. El contenido está respaldado por un directorio local.
 
 **Nota:** En el futuro, el servicio se extenderá para manejar peticiones de recifrado de proxy de clientes de usuario final y soportar otros backends.
 
@@ -264,7 +264,7 @@ Primero, obtenga los secretos del proveedor de servicios de su contacto en Coliv
 kubectl aplicar -f <secret_from_coliving>.yaml
 ```
 
-A continuación, actualice las etiquetas logger en el daemonset fluentd con su nombre, para que podamos identificarle a usted y a su servicio de forma única aquí: [https://github. om/dgc.network/audio k8s-manifests/blob/master//logger/logger.yaml\#L207](https://github.com/dgc.network/-k8s-manifests/blob/master//logger/logger.yaml#L207). Esto permite que nuestro servicio de registro filtre los registros por el proveedor de servicios y por el proveedor de servicios y el servicio. `SP_NAME` se refiere al nombre de su organización y `SP_NAME_TYPE_ID` se refiere al nombre de su organización más el tipo de servicio que está ejecutando, más un id para distinguir varios servicios del mismo tipo.
+A continuación, actualice las etiquetas logger en el daemonset fluentd con su nombre, para que podamos identificarle a usted y a su servicio de forma única aquí: [https://github. om/dgc.network/live k8s-manifests/blob/master//logger/logger.yaml\#L207](https://github.com/dgc.network/-k8s-manifests/blob/master//logger/logger.yaml#L207). Esto permite que nuestro servicio de registro filtre los registros por el proveedor de servicios y por el proveedor de servicios y el servicio. `SP_NAME` se refiere al nombre de su organización y `SP_NAME_TYPE_ID` se refiere al nombre de su organización más el tipo de servicio que está ejecutando, más un id para distinguir varios servicios del mismo tipo.
 
 Por ejemplo, si tu nombre es `Awesome Operator` y estás ejecutando un nodo de contenido, establece las etiquetas como:
 
@@ -287,7 +287,7 @@ env:
 Una vez que haya actualizado las etiquetas, aplique la pila fluentd logger con el comando:
 
 ```text
-kubectl aplicar -f audio/logger/logger.yaml
+kubectl aplicar -f live/logger/logger.yaml
 ```
 
 **Actualizar**

@@ -21,7 +21,7 @@ Those who stake more $LIVE stand to earn a larger portion of issuance in exchang
 
 On Coliving, content is routed to two different types of nodes:
 
-* _Content Nodes_ - To store and relay audio content \(tracks, mixes, etc.\) streamed on Coliving
+* _Content Nodes_ - To store and relay live content \(tracks, mixes, etc.\) streamed on Coliving
 * _Discovery Nodes_ - To index and hash data like user profiles, playlists and followers.
 
 As an artist, uploading to Coliving feels no different than uploading to a platform like Soundcloud. But, what happens behind the scenes is what makes Coliving so unique.

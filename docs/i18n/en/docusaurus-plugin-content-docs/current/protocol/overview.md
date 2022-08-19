@@ -7,7 +7,7 @@ sidebar_position: 1
 
 Coliving is a decentralized, community-owned and artist-controlled music-sharing protocol. Coliving provides a blockchain-based alternative to existing streaming platforms to help artists publish and monetize their work and distribute it directly to fans.
 
-The mission of the project is to give everyone the freedom to share, monetize, and listen to any audio.
+The mission of the project is to give everyone the freedom to share, monetize, and listen to any live.
 
 The Coliving Protocol [repository](https://github.com/dgc.network/-protocol) is a mono-repository that has all the pieces that make and support the protocol including smart contracts, services, and other supporting libraries.
 
@@ -34,7 +34,7 @@ For more details on the Coliving architecture, see the [Coliving protocol whitep
 
 | Service          | Description                                                                                                        | GitHub                                                                                  |
 | :--------------- | :----------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------- |
-| Content Node     | Maintains the availability of users' content on IPFS including user metadata, images, and audio content            | [Link](https://github.com/dgc.network/-protocol/tree/master/content-node)       |
+| Content Node     | Maintains the availability of users' content on IPFS including user metadata, images, and live content            | [Link](https://github.com/dgc.network/-protocol/tree/master/content-node)       |
 | Discovery Node   | Indexes and stores the contents of the Coliving contracts on the Ethereum blockchain for clients to query via an API | [Link](https://github.com/dgc.network/-protocol/tree/master/discovery-node) |
 | Identity Service | Stores encrypted auth ciphertexts, does Twitter OAuth and relays transactions (pays gas) on behalf of users        | [Link](https://github.com/dgc.network/-protocol/tree/master/identity-service)   |
 

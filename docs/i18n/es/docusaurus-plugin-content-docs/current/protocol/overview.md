@@ -7,7 +7,7 @@ sidebar_position: 1
 
 Coliving es un protocolo descentralizado, propiedad de la comunidad y controlado por artistas para compartir música. Coliving proporciona una alternativa basada en blockchain a las plataformas de streaming existentes para ayudar a los artistas a publicar y monetizar su trabajo y distribuirlo directamente a los fans.
 
-La misión del proyecto es dar a todos la libertad de compartir, monetizar y escuchar cualquier audio.
+La misión del proyecto es dar a todos la libertad de compartir, monetizar y escuchar cualquier live.
 
 El [repositorio](https://github.com/dgc.network/-protocol) del Protocolo Coliving es un mono-repositorio que tiene todas las piezas que hacen y soportan el protocolo incluyendo contratos inteligentes, servicios y otras bibliotecas de soporte.
 
@@ -34,7 +34,7 @@ Para obtener más información sobre la arquitectura de Coliving, consulte el [W
 
 | Servicio                                                                                                      | Descripción                                                                                                                                   |
 |:------------------------------------------------------------------------------------------------------------- |:--------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`Nodo de contenido`](https://github.com/dgc.network/-protocol/tree/master/content-node)              | Mantiene la disponibilidad del contenido de los usuarios en IPFS incluyendo metadatos de usuario, imágenes y contenido de audio               |
+| [`Nodo de contenido`](https://github.com/dgc.network/-protocol/tree/master/content-node)              | Mantiene la disponibilidad del contenido de los usuarios en IPFS incluyendo metadatos de usuario, imágenes y contenido de live               |
 | [`Nodo de descubrimiento`](https://github.com/dgc.network/-protocol/tree/master/discovery-node)   | Indexa y almacena el contenido de los contratos de Coliving en el blockchain de Ethereum para que los clientes lo consulten a través de una API |
 | [`Servicio de identificación`](https://github.com/dgc.network/-protocol/tree/master/identity-service) | Guarda cifrados de cifrado de autor, hace Twitter OAuth y transmite transacciones (paga gas) en nombre de los usuarios                        |
 
@@ -42,7 +42,7 @@ Para obtener más información sobre la arquitectura de Coliving, consulte el [W
 
 | Lib                                                                                           | Descripción                                                                                                                                                                                 |
 |:--------------------------------------------------------------------------------------------- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`librerías`](https://github.com/dgc.network/-protocol/tree/master/libs)              | Una interfaz fácil para los servicios distribuidos de web y audio: Servicio de identidad, Nodo de descubrimiento \(proveedor de descubrimiento\), Nodo de contenido \(nodo de creador\) |
+| [`librerías`](https://github.com/dgc.network/-protocol/tree/master/libs)              | Una interfaz fácil para los servicios distribuidos de web y live: Servicio de identidad, Nodo de descubrimiento \(proveedor de descubrimiento\), Nodo de contenido \(nodo de creador\) |
 | [`contratos`](https://github.com/dgc.network/-protocol/tree/master/contracts)         | Los contratos inteligentes que se están desarrollando para el protocolo de streaming de Coliving                                                                                              |
 | [`contratos eth`](https://github.com/dgc.network/-protocol/tree/master/eth-contracts) | Los contratos inteligentes de Ethereum que se están desarrollando para el protocolo de streaming de Coliving                                                                                  |
 

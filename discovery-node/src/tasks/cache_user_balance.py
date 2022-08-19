@@ -26,7 +26,7 @@ from src.utils.config import shared_config
 from src.utils.prometheus_metric import save_duration_metric
 from src.utils.redis_constants import user_balances_refresh_last_completion_redis_key
 from src.utils.session_manager import SessionManager
-from src.utils.spl_audio import to_wei
+from src.utils.spl_live import to_wei
 
 logger = logging.getLogger(__name__)
 coliving_token_registry_key = bytes("Token", "utf-8")
@@ -35,7 +35,7 @@ coliving_delegate_manager_registry_key = bytes("DelegateManager", "utf-8")
 
 REDIS_ETH_BALANCE_COUNTER_KEY = "USER_BALANCE_REFRESH_COUNT"
 
-WLIVE_MINT = shared_config["solana"]["waudio_mint"]
+WLIVE_MINT = shared_config["solana"]["wlive_mint"]
 WLIVE_MINT_PUBKEY = PublicKey(WLIVE_MINT) if WLIVE_MINT else None
 
 MAX_LAZY_REFRESH_USER_IDS = 100
@@ -107,7 +107,7 @@ def refresh_user_ids(
     delegate_manager_contract,
     staking_contract,
     eth_web3,
-    waudio_token,
+    wlive_token,
 ):
     with db.scoped_session() as session:
         lazy_refresh_user_ids = get_lazy_refresh_user_ids(redis, session)[
@@ -222,7 +222,7 @@ def refresh_user_ids(
                     owner_wallet
                 ).call()
                 associated_balance = 0
-                waudio_balance: str = "0"
+                wlive_balance: str = "0"
                 associated_sol_balance = 0
 
                 if "associated_wallets" in wallets:
@@ -240,7 +240,7 @@ def refresh_user_ids(
                         associated_balance += (
                             balance + delegation_balance + stake_balance
                         )
-                    if waudio_token is not None:
+                    if wlive_token is not None:
                         for wallet in wallets["associated_wallets"]["sol"]:
                             try:
                                 root_sol_account = PublicKey(wallet)
@@ -253,11 +253,11 @@ def refresh_user_ids(
                                     ASSOCIATED_TOKEN_PROGRAM_ID_PK,
                                 )
 
-                                bal_info = waudio_token.get_balance(derived_account)
-                                associated_waudio_balance: str = bal_info["result"][
+                                bal_info = wlive_token.get_balance(derived_account)
+                                associated_wlive_balance: str = bal_info["result"][
                                     "value"
                                 ]["amount"]
-                                associated_sol_balance += int(associated_waudio_balance)
+                                associated_sol_balance += int(associated_wlive_balance)
                             except Exception as e:
                                 logger.error(
                                     " ".join(
@@ -272,24 +272,24 @@ def refresh_user_ids(
                                 )
 
                 if wallets["bank_account"] is not None:
-                    if waudio_token is None:
+                    if wlive_token is None:
                         logger.error(
                             "cache_user_balance.py | Missing Required SPL Confirguration"
                         )
                     else:
-                        bal_info = waudio_token.get_balance(
+                        bal_info = wlive_token.get_balance(
                             PublicKey(wallets["bank_account"])
                         )
-                        waudio_balance = bal_info["result"]["value"]["amount"]
+                        wlive_balance = bal_info["result"]["value"]["amount"]
 
                 # update the balance on the user model
                 user_balance = user_balances[user_id]
 
                 # Convert Sol balances to wei
-                waudio_in_wei = to_wei(waudio_balance)
+                wlive_in_wei = to_wei(wlive_balance)
                 assoc_sol_balance_in_wei = to_wei(associated_sol_balance)
-                user_waudio_in_wei = (
-                    to_wei(user_balance.waudio) if user_balance.waudio else 0
+                user_wlive_in_wei = (
+                    to_wei(user_balance.wlive) if user_balance.wlive else 0
                 )
                 user_assoc_sol_balance_in_wei = to_wei(
                     user_balance.associated_sol_wallets_balance
@@ -299,13 +299,13 @@ def refresh_user_ids(
                 current_total_balance = (
                     owner_wallet_balance
                     + associated_balance
-                    + waudio_in_wei
+                    + wlive_in_wei
                     + assoc_sol_balance_in_wei
                 )
                 prev_total_balance = (
                     int(user_balance.balance)
                     + int(user_balance.associated_wallets_balance)
-                    + user_waudio_in_wei
+                    + user_wlive_in_wei
                     + user_assoc_sol_balance_in_wei
                 )
 
@@ -319,7 +319,7 @@ def refresh_user_ids(
 
                 user_balance.balance = str(owner_wallet_balance)
                 user_balance.associated_wallets_balance = str(associated_balance)
-                user_balance.waudio = waudio_balance
+                user_balance.wlive = wlive_balance
                 user_balance.associated_sol_wallets_balance = str(
                     associated_sol_balance
                 )
@@ -450,17 +450,17 @@ def get_staking_contract(eth_web3):
 SPL_TOKEN_PROGRAM_ID_PUBKEY = PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")
 
 
-def get_audio_token(solana_client: Client):
+def get_live_token(solana_client: Client):
     if WLIVE_MINT_PUBKEY is None:
         logger.error("cache_user_balance.py | Missing Required SPL Confirguration")
         return None
-    waudio_token = Token(
+    wlive_token = Token(
         conn=solana_client,
         pubkey=WLIVE_MINT_PUBKEY,
         program_id=SPL_TOKEN_PROGRAM_ID_PUBKEY,
         payer=Keypair.generate(),  # not making any txs so payer is not required
     )
-    return waudio_token
+    return wlive_token
 
 
 @celery.task(name="update_user_balances", bind=True)
@@ -487,7 +487,7 @@ def update_user_balances_task(self):
             token_inst = get_token_contract(
                 eth_web3, update_user_balances_task.shared_config
             )
-            waudio_token = get_audio_token(solana_client_manager.get_client())
+            wlive_token = get_live_token(solana_client_manager.get_client())
             refresh_user_ids(
                 redis,
                 db,
@@ -495,7 +495,7 @@ def update_user_balances_task(self):
                 delegate_manager_inst,
                 staking_inst,
                 eth_web3,
-                waudio_token,
+                wlive_token,
             )
 
             end_time = time.time()

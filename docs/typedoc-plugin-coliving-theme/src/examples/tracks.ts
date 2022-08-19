@@ -22,6 +22,6 @@ export const streamTrack = `
 const url = await colivingSdk.tracks.streamTrack({
     trackId: "PjdWN",
 });
-const audio = new Audio(url);
-audio.play();
+const live = new Audio(url);
+live.play();
 `;

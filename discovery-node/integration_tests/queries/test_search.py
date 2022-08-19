@@ -216,7 +216,7 @@ def setup_search(app_module):
             balance=0,
             associated_wallets_balance=0,
             associated_sol_wallets_balance=0,
-            waudio=0,
+            wlive=0,
         )
     ]
 

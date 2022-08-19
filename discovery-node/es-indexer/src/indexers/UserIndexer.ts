@@ -75,8 +75,8 @@ export class UserIndexer extends BaseIndexer<UserDoc> {
       users.*,
       coalesce(user_balances.balance, '0') as balance,
       coalesce(user_balances.associated_wallets_balance, '0') as associated_wallets_balance,
-      coalesce(user_balances.waudio, '0') as waudio,
-      coalesce(user_balances.waudio, '0') as waudio_balance, -- do we need both waudio and waudio_balance
+      coalesce(user_balances.wlive, '0') as wlive,
+      coalesce(user_balances.wlive, '0') as wlive_balance, -- do we need both wlive and wlive_balance
       user_balances.associated_sol_wallets_balance,
       user_bank_accounts.bank_account as spl_wallet,
       coalesce(track_count, 0) as track_count,

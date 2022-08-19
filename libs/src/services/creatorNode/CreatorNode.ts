@@ -301,8 +301,8 @@ export class CreatorNode {
   }
 
   /**
-   * Uploads a track (including audio and image content) to a creator node
-   * @param trackFile the audio content
+   * Uploads a track (including live and image content) to a creator node
+   * @param trackFile the live content
    * @param coverArtFile the image content
    * @param metadata the metadata for the track
    * @param onProgress an optional on progress callback

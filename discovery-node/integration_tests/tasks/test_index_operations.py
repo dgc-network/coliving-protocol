@@ -20,7 +20,7 @@ INDEXING_ERROR_KEY = "indexing:error"
 
 redis = get_redis()
 
-test_file = "integration_tests/res/test_audio_file.mp3"
+test_file = "integration_tests/res/test_live_file.mp3"
 track_metadata_json_file = "integration_tests/res/test_track_metadata.json"
 
 
@@ -79,17 +79,17 @@ def seed_contract_data(task, contracts, web3):
     new_user_args = tx_new_user_info[0].args
     user_id_from_event = int(new_user_args._userId)
 
-    # Add audio file to ipfs node
+    # Add live file to ipfs node
     res = ipfs.add(test_file)
-    test_audio_file_hash = res["Hash"]
-    test_track_segments = [{"multihash": test_audio_file_hash, "duration": 28060}]
+    test_live_file_hash = res["Hash"]
+    test_track_segments = [{"multihash": test_live_file_hash, "duration": 28060}]
 
     # Create track metadata object
     track_metadata = {
         "owner_id": user_id_from_event,
         "title": chance.name(),
         "length": 0.4,
-        "cover_art": test_audio_file_hash,
+        "cover_art": test_live_file_hash,
         "description": "putin sucks",
         "is_unlisted": False,
         "field_visibility": "",

@@ -23,7 +23,7 @@ class UserBalance(Base, RepresentableMixin):
         String, nullable=False, server_default=text("'0'::character varying")
     )
     # wAudio balance
-    waudio = Column(String, server_default=text("'0'::character varying"))
+    wlive = Column(String, server_default=text("'0'::character varying"))
 
     associated_sol_wallets_balance = Column(
         String, nullable=False, server_default=text("'0'::character varying")
