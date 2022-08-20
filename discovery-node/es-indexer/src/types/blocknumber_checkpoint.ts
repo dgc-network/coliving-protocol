@@ -1,7 +1,7 @@
 export type BlocknumberCheckpoint = {
   users: number
   agreements: number
-  content lists: number
+  contentLists: number
   follows: number
   reposts: number
   saves: number

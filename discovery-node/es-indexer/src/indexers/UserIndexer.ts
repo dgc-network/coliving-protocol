@@ -80,7 +80,7 @@ export class UserIndexer extends BaseIndexer<UserDoc> {
       user_balances.associated_sol_wallets_balance,
       user_bank_accounts.bank_account as spl_wallet,
       coalesce(agreement_count, 0) as agreement_count,
-      coalesce(content list_count, 0) as content list_count,
+      coalesce(contentList_count, 0) as contentList_count,
       coalesce(album_count, 0) as album_count,
       coalesce(follower_count, 0) as follower_count,
       coalesce(following_count, 0) as following_count,

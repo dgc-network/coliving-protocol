@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: false
     },
-    content listUpdates: {
+    contentListUpdates: {
       type: DataTypes.JSONB,
       allowNull: true
     }

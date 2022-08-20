@@ -118,9 +118,9 @@ ___
 
 ___
 
-### content list\_count
+### contentList\_count
 
- **content list\_count**: `number`
+ **contentList\_count**: `number`
 
 **`memberof`** User
 

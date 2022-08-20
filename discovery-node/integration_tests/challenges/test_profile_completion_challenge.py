@@ -223,7 +223,7 @@ def test_profile_completion_challenge_with_agreements(app):
         assert state.current_step_count == 7 and state.is_complete == True
 
 
-def test_profile_completion_challenge_with_content lists(app):
+def test_profile_completion_challenge_with_contentLists(app):
 
     redis_conn = redis.Redis.from_url(url=REDIS_URL)
 
@@ -280,7 +280,7 @@ def test_profile_completion_challenge_with_content lists(app):
             blocknumber=BLOCK_NUMBER,
             user_id=1,
             repost_item_id=1,
-            repost_type=RepostType.content list,
+            repost_type=RepostType.contentList,
             is_current=True,
             is_delete=False,
             created_at=datetime.now(),
@@ -299,7 +299,7 @@ def test_profile_completion_challenge_with_content lists(app):
             blocknumber=BLOCK_NUMBER,
             user_id=1,
             save_item_id=1,
-            save_type=SaveType.content list,
+            save_type=SaveType.contentList,
             is_current=True,
             is_delete=False,
             created_at=datetime.now(),

@@ -1,5 +1,5 @@
 alter table aggregate_user alter column agreement_count set default 0;
-alter table aggregate_user alter column content list_count set default 0;
+alter table aggregate_user alter column contentList_count set default 0;
 alter table aggregate_user alter column album_count set default 0;
 alter table aggregate_user alter column follower_count set default 0;
 alter table aggregate_user alter column following_count set default 0;
@@ -44,9 +44,9 @@ changed_users AS (
     UNION
     ALL
     SELECT
-        p.content list_owner_id AS owner_id
+        p.contentList_owner_id AS owner_id
     FROM
-        content lists p
+        contentLists p
     WHERE
         p.is_current IS TRUE
         AND p.blocknumber > (
@@ -56,7 +56,7 @@ changed_users AS (
                 aggregate_user_latest_blocknumber
         )
     GROUP BY
-        p.content list_owner_id
+        p.contentList_owner_id
     UNION
     ALL (
         SELECT
@@ -131,7 +131,7 @@ INSERT INTO
     aggregate_user (
         user_id,
         agreement_count,
-        content list_count,
+        contentList_count,
         album_count,
         follower_count,
         following_count,
@@ -141,7 +141,7 @@ INSERT INTO
 SELECT
     DISTINCT(u.user_id),
     COALESCE (user_agreement.agreement_count, 0) AS agreement_count,
-    COALESCE (user_content list.content list_count, 0) AS content list_count,
+    COALESCE (user_contentList.contentList_count, 0) AS contentList_count,
     COALESCE (user_album.album_count, 0) AS album_count,
     COALESCE (user_follower.follower_count, 0) AS follower_count,
     COALESCE (user_followee.followee_count, 0) AS following_count,
@@ -171,43 +171,43 @@ FROM
     ) as user_agreement ON user_agreement.owner_id = u.user_id
     LEFT OUTER JOIN (
         SELECT
-            p.content list_owner_id AS owner_id,
-            count(p.content list_owner_id) AS content list_count
+            p.contentList_owner_id AS owner_id,
+            count(p.contentList_owner_id) AS contentList_count
         FROM
-            content lists p
+            contentLists p
         WHERE
             p.is_album IS FALSE
             AND p.is_current IS TRUE
             AND p.is_delete IS FALSE
             AND p.is_private IS FALSE
-            AND p.content list_owner_id IN (
+            AND p.contentList_owner_id IN (
                 select
                     user_id
                 from
                     changed_users
             )
         GROUP BY
-            p.content list_owner_id
-    ) AS user_content list ON user_content list.owner_id = u.user_id
+            p.contentList_owner_id
+    ) AS user_contentList ON user_contentList.owner_id = u.user_id
     LEFT OUTER JOIN (
         SELECT
-            p.content list_owner_id AS owner_id,
-            count(p.content list_owner_id) AS album_count
+            p.contentList_owner_id AS owner_id,
+            count(p.contentList_owner_id) AS album_count
         FROM
-            content lists p
+            contentLists p
         WHERE
             p.is_album IS TRUE
             AND p.is_current IS TRUE
             AND p.is_delete IS FALSE
             AND p.is_private IS FALSE
-            AND p.content list_owner_id IN (
+            AND p.contentList_owner_id IN (
                 SELECT
                     user_id
                 FROM
                     changed_users
             )
         GROUP BY
-            p.content list_owner_id
+            p.contentList_owner_id
     ) user_album ON user_album.owner_id = u.user_id
     LEFT OUTER JOIN (
         SELECT
@@ -293,7 +293,7 @@ WHERE
 UPDATE
 SET
     agreement_count = EXCLUDED.agreement_count,
-    content list_count = EXCLUDED.content list_count,
+    contentList_count = EXCLUDED.contentList_count,
     album_count = EXCLUDED.album_count,
     follower_count = EXCLUDED.follower_count,
     following_count = EXCLUDED.following_count,

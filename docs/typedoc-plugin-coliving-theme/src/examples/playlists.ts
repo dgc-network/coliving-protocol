@@ -1,21 +1,21 @@
 export const getContentList = `
-const content list = await colivingSdk.content lists.getContentList({
-    content listId: "AxRP0",
+const contentList = await colivingSdk.contentLists.getContentList({
+    contentListId: "AxRP0",
 });
 `;
 
 export const getContentListAgreements = `
-const agreements = await colivingSdk.content lists.getContentListAgreements({
-    content listId: "AxRP0",
+const agreements = await colivingSdk.contentLists.getContentListAgreements({
+    contentListId: "AxRP0",
 });
 `;
 
 export const getTrendingContentLists = `
-const content lists = await colivingSdk.content lists.getTrendingContentLists();
+const contentLists = await colivingSdk.contentLists.getTrendingContentLists();
 `;
 
 export const searchContentLists = `
-const content lists = await colivingSdk.content lists.searchContentLists({
+const contentLists = await colivingSdk.contentLists.searchContentLists({
     query: 'lo-fi',
 });
 `;

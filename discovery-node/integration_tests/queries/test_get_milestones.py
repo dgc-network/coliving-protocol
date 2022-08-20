@@ -24,11 +24,11 @@ def test_get_milestones(app):
                 "owner_id": 3,
             },
         ],
-        "content lists": [
-            {"content list_id": 1, "content list_owner_id": 1, "is_album": False},
-            {"content list_id": 2, "content list_owner_id": 2, "is_album": False},
-            {"content list_id": 3, "content list_owner_id": 1, "is_album": True},
-            {"content list_id": 4, "content list_owner_id": 3, "is_album": True},
+        "contentLists": [
+            {"contentList_id": 1, "contentList_owner_id": 1, "is_album": False},
+            {"contentList_id": 2, "contentList_owner_id": 2, "is_album": False},
+            {"contentList_id": 3, "contentList_owner_id": 1, "is_album": True},
+            {"contentList_id": 4, "contentList_owner_id": 3, "is_album": True},
         ],
     }
 
@@ -96,11 +96,11 @@ def test_get_milestones(app):
             "repost_counts": {
                 "agreements": {1: 1000},
                 "albums": {},
-                "content lists": {1: 10, 2: 25},
+                "contentLists": {1: 10, 2: 25},
             },
             "favorite_counts": {
                 "agreements": {2: 100},
                 "albums": {3: 500},
-                "content lists": {},
+                "contentLists": {},
             },
         }

@@ -85,7 +85,7 @@ async function sendNotifications (colivingLibs, notifications, tx, optimizelyCli
   // Format the notifications, so that the extra information needed to build the notification is in a standard format
   const { notifications: formattedNotifications, users } = await formatNotifications(notifications, userNotificationSettings, tx)
 
-  // Get the metadata for the notifications - users/agreements/content lists from DP that are in the notification
+  // Get the metadata for the notifications - users/agreements/contentLists from DP that are in the notification
   const metadata = await fetchNotificationMetadata(colivingLibs, users, formattedNotifications)
 
   // using the metadata, populate the notifications, and push them to the publish queue

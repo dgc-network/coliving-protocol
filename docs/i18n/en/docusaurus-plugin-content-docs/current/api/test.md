@@ -516,7 +516,7 @@ func main() {
       "is_verified": true,
       "location": "Los Angeles, CA",
       "name": "Brownies & Lemonade",
-      "content list_count": 2,
+      "contentList_count": 2,
       "profile_picture": {
         "150x150": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/150x150.jpg",
         "480x480": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/480x480.jpg",
@@ -703,7 +703,7 @@ func main() {
     "is_verified": true,
     "location": "Los Angeles, CA",
     "name": "Brownies & Lemonade",
-    "content list_count": 2,
+    "contentList_count": 2,
     "profile_picture": {
       "150x150": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/150x150.jpg",
       "480x480": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/480x480.jpg",
@@ -1612,7 +1612,7 @@ func main() {
         "is_verified": true,
         "location": "Los Angeles, CA",
         "name": "Brownies & Lemonade",
-        "content list_count": 2,
+        "contentList_count": 2,
         "profile_picture": {
           "150x150": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/150x150.jpg",
           "480x480": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/480x480.jpg",
@@ -1634,7 +1634,7 @@ func main() {
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request|None|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Server error|None|
 
-<h1 id="api-content lists">content lists</h1>
+<h1 id="api-contentLists">contentLists</h1>
 
 ## Search ContentLists
 
@@ -1643,13 +1643,13 @@ func main() {
 > Code Sample
 
 ```shell
-curl COLIVING_API_HOST/v1/content lists/search?query=Hot & New 
+curl COLIVING_API_HOST/v1/contentLists/search?query=Hot & New 
  
 
 ```
 
 ```http
-GET COLIVING_API_HOST/v1/content lists/search?query=Hot & New HTTP/1.1
+GET COLIVING_API_HOST/v1/contentLists/search?query=Hot & New HTTP/1.1
 
 ```
 
@@ -1659,7 +1659,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('COLIVING_API_HOST/v1/content lists/search?query=Hot & New',
+fetch('COLIVING_API_HOST/v1/contentLists/search?query=Hot & New',
 {
   method: 'GET',
 
@@ -1681,7 +1681,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'COLIVING_API_HOST/v1/content lists/search',
+result = RestClient.get 'COLIVING_API_HOST/v1/contentLists/search',
   params: {
   'query' => 'string'
 }, headers: headers
@@ -1696,7 +1696,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('COLIVING_API_HOST/v1/content lists/search', params={
+r = requests.get('COLIVING_API_HOST/v1/contentLists/search', params={
   'query': 'Hot & New'
 }, headers = headers)
 
@@ -1719,7 +1719,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','COLIVING_API_HOST/v1/content lists/search', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/contentLists/search', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -1736,7 +1736,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("COLIVING_API_HOST/v1/content lists/search?query=Hot & New");
+URL obj = new URL("COLIVING_API_HOST/v1/contentLists/search?query=Hot & New");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -1767,7 +1767,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/content lists/search", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/contentLists/search", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -1777,11 +1777,11 @@ func main() {
 
 ```
 
-`GET /content lists/search`
+`GET /contentLists/search`
 
-*Search for a content list*
+*Search for a contentList*
 
-<h3 id="search-content lists-parameters">Query Parameters</h3>
+<h3 id="search-contentLists-parameters">Query Parameters</h3>
 
 |Name|Type|Required|Description|
 |---|---|---|---|---|
@@ -1802,7 +1802,7 @@ func main() {
       "description": "All the latest hot new agreements on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
       "id": "DOPRl",
       "is_album": true,
-      "content list_name": "Hot & New on Coliving 🔥",
+      "contentList_name": "Hot & New on Coliving 🔥",
       "repost_count": 46,
       "favorite_count": 88,
       "user": {
@@ -1819,7 +1819,7 @@ func main() {
         "is_verified": true,
         "location": "SF & LA",
         "name": "Coliving",
-        "content list_count": 9,
+        "contentList_count": 9,
         "profile_picture": {
           "150x150": "https://usermetadata..co/ipfs/QmNjJv1wQf2DJq3GNXjXzSL8UXFUGXfchg4NhL7UpbnF1f",
           "480x480": "https://usermetadata..co/ipfs/QmNjJv1wQf2DJq3GNXjXzSL8UXFUGXfchg4NhL7UpbnF1f",
@@ -1833,11 +1833,11 @@ func main() {
 }
 ```
 
-<h3 id="search-content lists-responses">Responses</h3>
+<h3 id="search-contentLists-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|[content list_search_result](#schemacontent list_search_result)|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|[contentList_search_result](#schemacontentList_search_result)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request|None|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Server error|None|
 
@@ -1848,13 +1848,13 @@ func main() {
 > Code Sample
 
 ```shell
-curl COLIVING_API_HOST/v1/content lists/trending/string 
+curl COLIVING_API_HOST/v1/contentLists/trending/string 
  
 
 ```
 
 ```http
-GET COLIVING_API_HOST/v1/content lists/trending/string HTTP/1.1
+GET COLIVING_API_HOST/v1/contentLists/trending/string HTTP/1.1
 
 ```
 
@@ -1864,7 +1864,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('COLIVING_API_HOST/v1/content lists/trending/string',
+fetch('COLIVING_API_HOST/v1/contentLists/trending/string',
 {
   method: 'GET',
 
@@ -1886,7 +1886,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'COLIVING_API_HOST/v1/content lists/trending/string',
+result = RestClient.get 'COLIVING_API_HOST/v1/contentLists/trending/string',
   params: {
   }, headers: headers
 
@@ -1900,7 +1900,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('COLIVING_API_HOST/v1/content lists/trending/string', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/contentLists/trending/string', headers = headers)
 
 print(r.json())
 
@@ -1921,7 +1921,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','COLIVING_API_HOST/v1/content lists/trending/string', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/contentLists/trending/string', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -1938,7 +1938,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("COLIVING_API_HOST/v1/content lists/trending/string");
+URL obj = new URL("COLIVING_API_HOST/v1/contentLists/trending/string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -1969,7 +1969,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/content lists/trending/string", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/contentLists/trending/string", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -1979,11 +1979,11 @@ func main() {
 
 ```
 
-`GET /content lists/trending/{version}`
+`GET /contentLists/trending/{version}`
 
-*Gets top trending content lists for time period on Coliving*
+*Gets top trending contentLists for time period on Coliving*
 
-<h3 id="trending-content lists-parameters">Query Parameters</h3>
+<h3 id="trending-contentLists-parameters">Query Parameters</h3>
 
 |Name|Type|Required|Description|
 |---|---|---|---|---|
@@ -2006,7 +2006,7 @@ func main() {
       "description": "string",
       "id": "string",
       "is_album": true,
-      "content list_name": "string",
+      "contentList_name": "string",
       "repost_count": 0,
       "favorite_count": 0,
       "total_play_count": 0,
@@ -2024,7 +2024,7 @@ func main() {
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "content list_count": 0,
+        "contentList_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",
@@ -2038,11 +2038,11 @@ func main() {
 }
 ```
 
-<h3 id="trending-content lists-responses">Responses</h3>
+<h3 id="trending-contentLists-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Success|[trending_content lists_response](#schematrending_content lists_response)|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Success|[trending_contentLists_response](#schematrending_contentLists_response)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request|None|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Server error|None|
 
@@ -2053,13 +2053,13 @@ func main() {
 > Code Sample
 
 ```shell
-curl COLIVING_API_HOST/v1/content lists/DOPRl 
+curl COLIVING_API_HOST/v1/contentLists/DOPRl 
  
 
 ```
 
 ```http
-GET COLIVING_API_HOST/v1/content lists/DOPRl HTTP/1.1
+GET COLIVING_API_HOST/v1/contentLists/DOPRl HTTP/1.1
 
 ```
 
@@ -2069,7 +2069,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('COLIVING_API_HOST/v1/content lists/DOPRl',
+fetch('COLIVING_API_HOST/v1/contentLists/DOPRl',
 {
   method: 'GET',
 
@@ -2091,7 +2091,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'COLIVING_API_HOST/v1/content lists/DOPRl',
+result = RestClient.get 'COLIVING_API_HOST/v1/contentLists/DOPRl',
   params: {
   }, headers: headers
 
@@ -2105,7 +2105,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('COLIVING_API_HOST/v1/content lists/DOPRl', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/contentLists/DOPRl', headers = headers)
 
 print(r.json())
 
@@ -2126,7 +2126,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','COLIVING_API_HOST/v1/content lists/DOPRl', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/contentLists/DOPRl', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -2143,7 +2143,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("COLIVING_API_HOST/v1/content lists/DOPRl");
+URL obj = new URL("COLIVING_API_HOST/v1/contentLists/DOPRl");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -2174,7 +2174,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/content lists/DOPRl", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/contentLists/DOPRl", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -2184,15 +2184,15 @@ func main() {
 
 ```
 
-`GET /content lists/{content list_id}`
+`GET /contentLists/{contentList_id}`
 
-*Fetch a content list*
+*Fetch a contentList*
 
-<h3 id="get-content list-parameters">Query Parameters</h3>
+<h3 id="get-contentList-parameters">Query Parameters</h3>
 
 |Name|Type|Required|Description|
 |---|---|---|---|---|
-|content list_id|string|true|A ContentList ID|
+|contentList_id|string|true|A ContentList ID|
 
 > Example Response
 
@@ -2207,7 +2207,7 @@ func main() {
     "description": "All the latest hot new agreements on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
     "id": "DOPRl",
     "is_album": true,
-    "content list_name": "Hot & New on Coliving 🔥",
+    "contentList_name": "Hot & New on Coliving 🔥",
     "repost_count": 46,
     "favorite_count": 88,
     "user": {
@@ -2224,7 +2224,7 @@ func main() {
       "is_verified": true,
       "location": "SF & LA",
       "name": "Coliving",
-      "content list_count": 9,
+      "contentList_count": 9,
       "profile_picture": {
         "150x150": "https://usermetadata..co/ipfs/QmNjJv1wQf2DJq3GNXjXzSL8UXFUGXfchg4NhL7UpbnF1f",
         "480x480": "https://usermetadata..co/ipfs/QmNjJv1wQf2DJq3GNXjXzSL8UXFUGXfchg4NhL7UpbnF1f",
@@ -2237,11 +2237,11 @@ func main() {
 }
 ```
 
-<h3 id="get-content list-responses">Responses</h3>
+<h3 id="get-contentList-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|[content list_response](#schemacontent list_response)|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|[contentList_response](#schemacontentList_response)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request|None|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Server error|None|
 
@@ -2252,13 +2252,13 @@ func main() {
 > Code Sample
 
 ```shell
-curl COLIVING_API_HOST/v1/content lists/DOPRl/agreements 
+curl COLIVING_API_HOST/v1/contentLists/DOPRl/agreements 
  
 
 ```
 
 ```http
-GET COLIVING_API_HOST/v1/content lists/DOPRl/agreements HTTP/1.1
+GET COLIVING_API_HOST/v1/contentLists/DOPRl/agreements HTTP/1.1
 
 ```
 
@@ -2268,7 +2268,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('COLIVING_API_HOST/v1/content lists/DOPRl/agreements',
+fetch('COLIVING_API_HOST/v1/contentLists/DOPRl/agreements',
 {
   method: 'GET',
 
@@ -2290,7 +2290,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'COLIVING_API_HOST/v1/content lists/DOPRl/agreements',
+result = RestClient.get 'COLIVING_API_HOST/v1/contentLists/DOPRl/agreements',
   params: {
   }, headers: headers
 
@@ -2304,7 +2304,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('COLIVING_API_HOST/v1/content lists/DOPRl/agreements', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/contentLists/DOPRl/agreements', headers = headers)
 
 print(r.json())
 
@@ -2325,7 +2325,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','COLIVING_API_HOST/v1/content lists/DOPRl/agreements', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/contentLists/DOPRl/agreements', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -2342,7 +2342,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("COLIVING_API_HOST/v1/content lists/DOPRl/agreements");
+URL obj = new URL("COLIVING_API_HOST/v1/contentLists/DOPRl/agreements");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -2373,7 +2373,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/content lists/DOPRl/agreements", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/contentLists/DOPRl/agreements", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -2383,15 +2383,15 @@ func main() {
 
 ```
 
-`GET /content lists/{content list_id}/agreements`
+`GET /contentLists/{contentList_id}/agreements`
 
-*Fetch agreements within a content list*
+*Fetch agreements within a contentList*
 
-<h3 id="get-content list-agreements-parameters">Query Parameters</h3>
+<h3 id="get-contentList-agreements-parameters">Query Parameters</h3>
 
 |Name|Type|Required|Description|
 |---|---|---|---|---|
-|content list_id|string|true|A ContentList ID|
+|contentList_id|string|true|A ContentList ID|
 
 > Example Response
 
@@ -2428,7 +2428,7 @@ func main() {
         "is_verified": true,
         "location": "Los Angeles, CA",
         "name": "Brownies & Lemonade",
-        "content list_count": 2,
+        "contentList_count": 2,
         "profile_picture": {
           "150x150": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/150x150.jpg",
           "480x480": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/480x480.jpg",
@@ -2442,11 +2442,11 @@ func main() {
 }
 ```
 
-<h3 id="get-content list-agreements-responses">Responses</h3>
+<h3 id="get-contentList-agreements-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|[content list_agreements_response](#schemacontent list_agreements_response)|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|[contentList_agreements_response](#schemacontentList_agreements_response)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request|None|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Server error|None|
 
@@ -2641,7 +2641,7 @@ func main() {
       "is_verified": true,
       "location": "string",
       "name": "string",
-      "content list_count": 0,
+      "contentList_count": 0,
       "profile_picture": {
         "150x150": "string",
         "480x480": "string",
@@ -2859,7 +2859,7 @@ func main() {
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "content list_count": 0,
+        "contentList_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",
@@ -3072,7 +3072,7 @@ func main() {
         "is_verified": true,
         "location": "Los Angeles, CA",
         "name": "Brownies & Lemonade",
-        "content list_count": 2,
+        "contentList_count": 2,
         "profile_picture": {
           "150x150": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/150x150.jpg",
           "480x480": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/480x480.jpg",
@@ -3287,7 +3287,7 @@ func main() {
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "content list_count": 0,
+        "contentList_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",
@@ -3495,7 +3495,7 @@ func main() {
       "is_verified": true,
       "location": "Los Angeles, CA",
       "name": "Brownies & Lemonade",
-      "content list_count": 2,
+      "contentList_count": 2,
       "profile_picture": {
         "150x150": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/150x150.jpg",
         "480x480": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/480x480.jpg",
@@ -4375,7 +4375,7 @@ The following are examples of response formats you can expect to receive from th
     "is_verified": true,
     "location": "string",
     "name": "string",
-    "content list_count": 0,
+    "contentList_count": 0,
     "profile_picture": {
       "150x150": "string",
       "480x480": "string",
@@ -4415,7 +4415,7 @@ The following are examples of response formats you can expect to receive from th
   "is_verified": true,
   "location": "string",
   "name": "string",
-  "content list_count": 0,
+  "contentList_count": 0,
   "profile_picture": {
     "150x150": "string",
     "480x480": "string",
@@ -4441,7 +4441,7 @@ The following are examples of response formats you can expect to receive from th
 |is_verified|boolean|true|none|none|
 |location|string|false|none|none|
 |name|string|true|none|none|
-|content list_count|integer|true|none|none|
+|contentList_count|integer|true|none|none|
 |profile_picture|[profile_picture](#schemaprofile_picture)|false|none|none|
 |repost_count|integer|true|none|none|
 |agreement_count|integer|true|none|none|
@@ -4535,7 +4535,7 @@ The following are examples of response formats you can expect to receive from th
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "content list_count": 0,
+        "contentList_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",
@@ -4603,7 +4603,7 @@ The following are examples of response formats you can expect to receive from th
     "is_verified": true,
     "location": "string",
     "name": "string",
-    "content list_count": 0,
+    "contentList_count": 0,
     "profile_picture": {
       "150x150": "string",
       "480x480": "string",
@@ -4846,7 +4846,7 @@ The following are examples of response formats you can expect to receive from th
       "is_verified": true,
       "location": "string",
       "name": "string",
-      "content list_count": 0,
+      "contentList_count": 0,
       "profile_picture": {
         "150x150": "string",
         "480x480": "string",
@@ -5026,11 +5026,11 @@ The following are examples of response formats you can expect to receive from th
 |challenge_type|string|true|none|none|
 |metadata|object|true|none|none|
 
-<a id="schemacontent list_response"></a>
-<a id="schema_content list_response"></a>
-<a id="tocScontent list_response"></a>
-<a id="tocscontent list_response"></a>
-<h2 id="tocS_content list_response">content list_response</h2>
+<a id="schemacontentList_response"></a>
+<a id="schema_contentList_response"></a>
+<a id="tocScontentList_response"></a>
+<a id="tocscontentList_response"></a>
+<h2 id="tocS_contentList_response">contentList_response</h2>
 
 ```json
 {
@@ -5044,7 +5044,7 @@ The following are examples of response formats you can expect to receive from th
       "description": "string",
       "id": "string",
       "is_album": true,
-      "content list_name": "string",
+      "contentList_name": "string",
       "repost_count": 0,
       "favorite_count": 0,
       "total_play_count": 0,
@@ -5062,7 +5062,7 @@ The following are examples of response formats you can expect to receive from th
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "content list_count": 0,
+        "contentList_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",
@@ -5081,13 +5081,13 @@ The following are examples of response formats you can expect to receive from th
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|data|[[content list](#schemacontent list)]|false|none|none|
+|data|[[contentList](#schemacontentList)]|false|none|none|
 
-<a id="schemacontent list"></a>
-<a id="schema_content list"></a>
-<a id="tocScontent list"></a>
-<a id="tocscontent list"></a>
-<h2 id="tocS_content list">content list</h2>
+<a id="schemacontentList"></a>
+<a id="schema_contentList"></a>
+<a id="tocScontentList"></a>
+<a id="tocscontentList"></a>
+<h2 id="tocS_contentList">contentList</h2>
 
 ```json
 {
@@ -5099,7 +5099,7 @@ The following are examples of response formats you can expect to receive from th
   "description": "string",
   "id": "string",
   "is_album": true,
-  "content list_name": "string",
+  "contentList_name": "string",
   "repost_count": 0,
   "favorite_count": 0,
   "total_play_count": 0,
@@ -5117,7 +5117,7 @@ The following are examples of response formats you can expect to receive from th
     "is_verified": true,
     "location": "string",
     "name": "string",
-    "content list_count": 0,
+    "contentList_count": 0,
     "profile_picture": {
       "150x150": "string",
       "480x480": "string",
@@ -5134,21 +5134,21 @@ The following are examples of response formats you can expect to receive from th
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|artwork|[content list_artwork](#schemacontent list_artwork)|false|none|none|
+|artwork|[contentList_artwork](#schemacontentList_artwork)|false|none|none|
 |description|string|false|none|none|
 |id|string|true|none|none|
 |is_album|boolean|true|none|none|
-|content list_name|string|true|none|none|
+|contentList_name|string|true|none|none|
 |repost_count|integer|true|none|none|
 |favorite_count|integer|true|none|none|
 |total_play_count|integer|true|none|none|
 |user|[user](#schemauser)|true|none|none|
 
-<a id="schemacontent list_artwork"></a>
-<a id="schema_content list_artwork"></a>
-<a id="tocScontent list_artwork"></a>
-<a id="tocscontent list_artwork"></a>
-<h2 id="tocS_content list_artwork">content list_artwork</h2>
+<a id="schemacontentList_artwork"></a>
+<a id="schema_contentList_artwork"></a>
+<a id="tocScontentList_artwork"></a>
+<a id="tocscontentList_artwork"></a>
+<h2 id="tocS_contentList_artwork">contentList_artwork</h2>
 
 ```json
 {
@@ -5167,11 +5167,11 @@ The following are examples of response formats you can expect to receive from th
 |480x480|string|false|none|none|
 |1000x1000|string|false|none|none|
 
-<a id="schemacontent list_agreements_response"></a>
-<a id="schema_content list_agreements_response"></a>
-<a id="tocScontent list_agreements_response"></a>
-<a id="tocscontent list_agreements_response"></a>
-<h2 id="tocS_content list_agreements_response">content list_agreements_response</h2>
+<a id="schemacontentList_agreements_response"></a>
+<a id="schema_contentList_agreements_response"></a>
+<a id="tocScontentList_agreements_response"></a>
+<a id="tocscontentList_agreements_response"></a>
+<h2 id="tocS_contentList_agreements_response">contentList_agreements_response</h2>
 
 ```json
 {
@@ -5212,7 +5212,7 @@ The following are examples of response formats you can expect to receive from th
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "content list_count": 0,
+        "contentList_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",
@@ -5237,11 +5237,11 @@ The following are examples of response formats you can expect to receive from th
 |---|---|---|---|---|
 |data|[[Agreement](#schemaagreement)]|false|none|none|
 
-<a id="schemacontent list_search_result"></a>
-<a id="schema_content list_search_result"></a>
-<a id="tocScontent list_search_result"></a>
-<a id="tocscontent list_search_result"></a>
-<h2 id="tocS_content list_search_result">content list_search_result</h2>
+<a id="schemacontentList_search_result"></a>
+<a id="schema_contentList_search_result"></a>
+<a id="tocScontentList_search_result"></a>
+<a id="tocscontentList_search_result"></a>
+<h2 id="tocS_contentList_search_result">contentList_search_result</h2>
 
 ```json
 {
@@ -5255,7 +5255,7 @@ The following are examples of response formats you can expect to receive from th
       "description": "string",
       "id": "string",
       "is_album": true,
-      "content list_name": "string",
+      "contentList_name": "string",
       "repost_count": 0,
       "favorite_count": 0,
       "total_play_count": 0,
@@ -5273,7 +5273,7 @@ The following are examples of response formats you can expect to receive from th
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "content list_count": 0,
+        "contentList_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",
@@ -5292,13 +5292,13 @@ The following are examples of response formats you can expect to receive from th
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|data|[[content list](#schemacontent list)]|false|none|none|
+|data|[[contentList](#schemacontentList)]|false|none|none|
 
-<a id="schematrending_content lists_response"></a>
-<a id="schema_trending_content lists_response"></a>
-<a id="tocStrending_content lists_response"></a>
-<a id="tocstrending_content lists_response"></a>
-<h2 id="tocS_trending_content lists_response">trending_content lists_response</h2>
+<a id="schematrending_contentLists_response"></a>
+<a id="schema_trending_contentLists_response"></a>
+<a id="tocStrending_contentLists_response"></a>
+<a id="tocstrending_contentLists_response"></a>
+<h2 id="tocS_trending_contentLists_response">trending_contentLists_response</h2>
 
 ```json
 {
@@ -5312,7 +5312,7 @@ The following are examples of response formats you can expect to receive from th
       "description": "string",
       "id": "string",
       "is_album": true,
-      "content list_name": "string",
+      "contentList_name": "string",
       "repost_count": 0,
       "favorite_count": 0,
       "total_play_count": 0,
@@ -5330,7 +5330,7 @@ The following are examples of response formats you can expect to receive from th
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "content list_count": 0,
+        "contentList_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",
@@ -5349,7 +5349,7 @@ The following are examples of response formats you can expect to receive from th
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|data|[[content list](#schemacontent list)]|false|none|none|
+|data|[[contentList](#schemacontentList)]|false|none|none|
 
 <a id="schemaagreement_response"></a>
 <a id="schema_agreement_response"></a>
@@ -5395,7 +5395,7 @@ The following are examples of response formats you can expect to receive from th
       "is_verified": true,
       "location": "string",
       "name": "string",
-      "content list_count": 0,
+      "contentList_count": 0,
       "profile_picture": {
         "150x150": "string",
         "480x480": "string",
@@ -5464,7 +5464,7 @@ The following are examples of response formats you can expect to receive from th
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "content list_count": 0,
+        "contentList_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",

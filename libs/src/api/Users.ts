@@ -25,7 +25,7 @@ const USER_PROPS = [
   'associated_wallets',
   'associated_sol_wallets',
   'collectibles',
-  'content list_library',
+  'contentList_library',
   'events'
 ] as Array<keyof UserMetadata>
 // User metadata fields that are required on the metadata object and only can have
@@ -89,7 +89,7 @@ export class Users extends Base {
    * @returns Array of User metadata Objects
    * additional metadata fields on user objects:
    *  {Integer} agreement_count - agreement count for given user
-   *  {Integer} content list_count - content list count for given user
+   *  {Integer} contentList_count - contentList count for given user
    *  {Integer} album_count - album count for given user
    *  {Integer} follower_count - follower count for given user
    *  {Integer} followee_count - followee count for given user
@@ -169,14 +169,14 @@ export class Users extends Base {
    * @param userId - requested user id
    * @param limit - max # of items to return (for pagination)
    * @param offset - offset into list to return from (for pagination)
-   * @returns Array of agreement and content list metadata objects
-   * additional metadata fields on agreement and content list objects:
-   *  {String} activity_timestamp - timestamp of requested user's repost for given agreement or content list,
+   * @returns Array of agreement and contentList metadata objects
+   * additional metadata fields on agreement and contentList objects:
+   *  {String} activity_timestamp - timestamp of requested user's repost for given agreement or contentList,
    *    used for sorting feed
-   *  {Integer} repost_count - repost count of given agreement/content list
-   *  {Integer} save_count - save count of given agreement/content list
-   *  {Boolean} has_current_user_reposted - has current user reposted given agreement/content list
-   *  {Array} followee_reposts - followees of current user that have reposted given agreement/content list
+   *  {Integer} repost_count - repost count of given agreement/contentList
+   *  {Integer} save_count - save count of given agreement/contentList
+   *  {Boolean} has_current_user_reposted - has current user reposted given agreement/contentList
+   *  {Array} followee_reposts - followees of current user that have reposted given agreement/contentList
    */
   async getUserRepostFeed(
     userId: number,
@@ -198,14 +198,14 @@ export class Users extends Base {
    * @param limit - max # of items to return
    * @param filter - filter by "all", "original", or "repost"
    * @param offset - offset into list to return from (for pagination)
-   * @returns Array of agreement and content list metadata objects
-   * additional metadata fields on agreement and content list objects:
-   *  {String} activity_timestamp - timestamp of requested user's repost for given agreement or content list,
+   * @returns Array of agreement and contentList metadata objects
+   * additional metadata fields on agreement and contentList objects:
+   *  {String} activity_timestamp - timestamp of requested user's repost for given agreement or contentList,
    *    used for sorting feed
-   *  {Integer} repost_count - repost count of given agreement/content list
-   *  {Integer} save_count - save count of given agreement/content list
-   *  {Boolean} has_current_user_reposted - has current user reposted given agreement/content list
-   *  {Array} followee_reposts - followees of current user that have reposted given agreement/content list
+   *  {Integer} repost_count - repost count of given agreement/contentList
+   *  {Integer} save_count - save count of given agreement/contentList
+   *  {Boolean} has_current_user_reposted - has current user reposted given agreement/contentList
+   *  {Array} followee_reposts - followees of current user that have reposted given agreement/contentList
    */
   async getSocialFeed(
     filter: string,

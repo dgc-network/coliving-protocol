@@ -93,8 +93,8 @@ const mockColivingLibs = {
   ContentList: {
     getContentLists: (limit, offset, ids) => {
       return ids.map((id) => ({
-        content list_id: id,
-        content list_owner_id: id
+        contentList_id: id,
+        contentList_owner_id: id
       }))
     }
   },

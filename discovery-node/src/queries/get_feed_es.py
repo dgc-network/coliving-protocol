@@ -9,7 +9,7 @@ from src.utils.elasticdsl import (
     ES_USERS,
     esclient,
     pluck_hits,
-    populate_agreement_or_content list_metadata_es,
+    populate_agreement_or_contentList_metadata_es,
     populate_user_metadata_es,
 )
 
@@ -75,7 +75,7 @@ def get_feed_es(args, limit=10):
                         "bool": {
                             "must": [
                                 following_ids_terms_lookup(
-                                    current_user_id, "content list_owner_id"
+                                    current_user_id, "contentList_owner_id"
                                 ),
                                 {"term": {"is_private": False}},
                                 {"term": {"is_delete": False}},
@@ -90,7 +90,7 @@ def get_feed_es(args, limit=10):
 
     repost_agg = []
     agreements = []
-    content lists = []
+    contentLists = []
 
     founds = esclient.msearch(searches=mdsl)
 
@@ -104,20 +104,20 @@ def get_feed_es(args, limit=10):
 
     if load_orig:
         agreements = pluck_hits(founds["responses"].pop(0))
-        content lists = pluck_hits(founds["responses"].pop(0))
+        contentLists = pluck_hits(founds["responses"].pop(0))
 
     # agreement timestamps and duplicates
     seen = set()
     unsorted_feed = []
 
-    for content list in content lists:
-        # Q: should es-indexer set item_key on agreement / content list too?
+    for contentList in contentLists:
+        # Q: should es-indexer set item_key on agreement / contentList too?
         #    instead of doing it dynamically here?
-        content list["item_key"] = item_key(content list)
-        seen.add(content list["item_key"])
-        # Q: should we add content list agreements to seen?
-        #    get_feed will "debounce" agreements in content list
-        unsorted_feed.append(content list)
+        contentList["item_key"] = item_key(contentList)
+        seen.add(contentList["item_key"])
+        # Q: should we add contentList agreements to seen?
+        #    get_feed will "debounce" agreements in contentList
+        unsorted_feed.append(contentList)
 
     for agreement in agreements:
         agreement["item_key"] = item_key(agreement)
@@ -134,7 +134,7 @@ def get_feed_es(args, limit=10):
 
     # sorted feed with repost records
     # the repost records are stubs that we'll now "hydrate"
-    # with the related agreement / content list
+    # with the related agreement / contentList
     sorted_with_reposts = sorted(
         unsorted_feed,
         key=lambda entry: entry["created_at"],
@@ -163,8 +163,8 @@ def get_feed_es(args, limit=10):
         reposted_docs = esclient.mget(docs=mget_reposts)
         for doc in reposted_docs["docs"]:
             if not doc["found"]:
-                # MISSING: a repost for a agreement or content list not in the index?
-                # this should only happen if repost indexing is running ahead of agreement / content list
+                # MISSING: a repost for a agreement or contentList not in the index?
+                # this should only happen if repost indexing is running ahead of agreement / contentList
                 # should be transient... but should maybe still be agreemented?
                 continue
             s = doc["_source"]
@@ -208,7 +208,7 @@ def get_feed_es(args, limit=10):
 
     for item in sorted_feed:
         # GOTCHA: es ids must be strings, but our ids are ints...
-        uid = str(item.get("content list_owner_id", item.get("owner_id")))
+        uid = str(item.get("contentList_owner_id", item.get("owner_id")))
         item["user"] = user_by_id[uid]
 
     # add context: followee_reposts, followee_saves
@@ -227,7 +227,7 @@ def get_feed_es(args, limit=10):
 
     # populate metadata + remove extra fields from items
     sorted_feed = [
-        populate_agreement_or_content list_metadata_es(item, current_user)
+        populate_agreement_or_contentList_metadata_es(item, current_user)
         for item in sorted_feed
     ]
 
@@ -288,10 +288,10 @@ def fetch_followed_saves_and_reposts(current_user_id, item_keys, limit):
 def item_key(item):
     if "agreement_id" in item:
         return "agreement:" + str(item["agreement_id"])
-    elif "content list_id" in item:
+    elif "contentList_id" in item:
         if item["is_album"]:
-            return "album:" + str(item["content list_id"])
-        return "content list:" + str(item["content list_id"])
+            return "album:" + str(item["contentList_id"])
+        return "contentList:" + str(item["contentList_id"])
     elif "user_id" in item:
         return "user:" + str(item["user_id"])
     else:

@@ -1,4 +1,4 @@
-"""content list search
+"""contentList search
 
 Revision ID: 9c0398b19b4e
 Revises: 9e9acd8a115a
@@ -19,7 +19,7 @@ depends_on = None
 def upgrade():
     connection = op.get_bind()
 
-    # content list search index
+    # contentList search index
     connection.execute(
         """
       -- since search fields are spread across multiple tables, denormalize data via materialized view
@@ -30,19 +30,19 @@ def upgrade():
       --  - view row consists of unique user id + word pairs (accomplished via unnest())
       --  - all future searches can then do comparisons against any word present in documents,
       --  -   and retrieve associated user id
-      CREATE MATERIALIZED VIEW content list_lexeme_dict as
+      CREATE MATERIALIZED VIEW contentList_lexeme_dict as
       SELECT * FROM (
         SELECT
-          p.content list_id,
-          unnest(tsvector_to_array(to_tsvector('coliving_ts_config', replace(COALESCE(p."content list_name", ''), '&', 'and')))) as word
+          p.contentList_id,
+          unnest(tsvector_to_array(to_tsvector('coliving_ts_config', replace(COALESCE(p."contentList_name", ''), '&', 'and')))) as word
         FROM
-            "content lists" p
+            "contentLists" p
         WHERE p."is_current" = true and p."is_album" = false and p."is_private" = false
-        GROUP BY p."content list_id", p."content list_name"
+        GROUP BY p."contentList_id", p."contentList_name"
       ) AS words;
 
       -- add index on above materialized view
-      CREATE INDEX content list_words_idx ON content list_lexeme_dict USING gin(word gin_trgm_ops);
+      CREATE INDEX contentList_words_idx ON contentList_lexeme_dict USING gin(word gin_trgm_ops);
     """
     )
 
@@ -59,12 +59,12 @@ def upgrade():
       CREATE MATERIALIZED VIEW album_lexeme_dict as
       SELECT * FROM (
         SELECT
-          p.content list_id,
-          unnest(tsvector_to_array(to_tsvector('coliving_ts_config', replace(COALESCE(p."content list_name", ''), '&', 'and')))) as word
+          p.contentList_id,
+          unnest(tsvector_to_array(to_tsvector('coliving_ts_config', replace(COALESCE(p."contentList_name", ''), '&', 'and')))) as word
         FROM
-            "content lists" p
+            "contentLists" p
         WHERE p."is_current" = true and p."is_album" = true and p."is_private" = false
-        GROUP BY p."content list_id", p."content list_name"
+        GROUP BY p."contentList_id", p."contentList_name"
       ) AS words;
 
       -- add index on above materialized view

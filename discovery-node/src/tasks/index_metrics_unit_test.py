@@ -17,7 +17,7 @@ def test_process_route_keys(redis_mock, db_mock):
     routes = {
         "/v1/users/search?query=ray": "3",
         "/v1/agreements/trending?genre=rap&timeRange=week": "2",
-        "/v1/content lists/hash": "1",
+        "/v1/contentLists/hash": "1",
         "/agreements": "1",
     }
 
@@ -65,11 +65,11 @@ def test_process_route_keys(redis_mock, db_mock):
         )
         assert len(trending_agreements) == 1
 
-        content list_route = (
+        contentList_route = (
             session.query(RouteMetric)
             .filter(
                 RouteMetric.version == "1",
-                RouteMetric.route_path == "content lists/hash",
+                RouteMetric.route_path == "contentLists/hash",
                 RouteMetric.ip == "192.168.0.1",
                 RouteMetric.count == 1,
                 RouteMetric.timestamp == date,
@@ -77,7 +77,7 @@ def test_process_route_keys(redis_mock, db_mock):
             .all()
         )
 
-        assert len(content list_route) == 1
+        assert len(contentList_route) == 1
 
         no_version_agreements = (
             session.query(RouteMetric)

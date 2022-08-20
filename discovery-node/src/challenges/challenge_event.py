@@ -17,6 +17,6 @@ class ChallengeEvent(str, enum.Enum):
     mobile_install = "mobile_install"
     trending_agreement = "trending_agreement"
     trending_underground = "trending_underground"
-    trending_content list = "trending_content list"
+    trending_contentList = "trending_contentList"
     send_tip = "send_tip"  # Fired for sender
-    first_content list = "first_content list"
+    first_contentList = "first_contentList"

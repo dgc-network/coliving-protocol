@@ -65,8 +65,8 @@ export class SocialFeatureFactoryClient extends ContractClient {
     )
   }
 
-  async addContentListRepost(userId: number, content listId: number) {
-    // generate new content list repost request
+  async addContentListRepost(userId: number, contentListId: number) {
+    // generate new contentList repost request
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
@@ -75,16 +75,16 @@ export class SocialFeatureFactoryClient extends ContractClient {
         chainId,
         contractAddress,
         userId,
-        content listId,
+        contentListId,
         nonce
       )
     const sig = await this.web3Manager.signTypedData(signatureData)
 
-    // add new content listRepost to chain
+    // add new contentListRepost to chain
     const method = await this.getMethod(
       'addContentListRepost',
       userId,
-      content listId,
+      contentListId,
       nonce,
       sig
     )
@@ -95,8 +95,8 @@ export class SocialFeatureFactoryClient extends ContractClient {
     )
   }
 
-  async deleteContentListRepost(userId: number, content listId: number) {
-    // generate new delete content list repost request
+  async deleteContentListRepost(userId: number, contentListId: number) {
+    // generate new delete contentList repost request
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
@@ -105,16 +105,16 @@ export class SocialFeatureFactoryClient extends ContractClient {
         chainId,
         contractAddress,
         userId,
-        content listId,
+        contentListId,
         nonce
       )
     const sig = await this.web3Manager.signTypedData(signatureData)
 
-    // delete content listRepost from chain
+    // delete contentListRepost from chain
     const method = await this.getMethod(
       'deleteContentListRepost',
       userId,
-      content listId,
+      contentListId,
       nonce,
       sig
     )

@@ -16,9 +16,9 @@ const getNotifType = (entityType) => {
         createType: notificationTypes.Create.album,
         actionEntityType: actionEntityTypes.User
       }
-    case 'content list':
+    case 'contentList':
       return {
-        createType: notificationTypes.Create.content list,
+        createType: notificationTypes.Create.contentList,
         actionEntityType: actionEntityTypes.User
       }
     default:
@@ -56,7 +56,7 @@ async function processCreateNotifications (notifications, tx) {
 
     // The notification entity id is the uploader id for agreements
     // Each agreement will added to the notification actions table
-    // For content list/albums, the notification entity id is the collection id itself
+    // For contentList/albums, the notification entity id is the collection id itself
     let notificationEntityId =
       actionEntityType === actionEntityTypes.Agreement
         ? notification.initiator
@@ -100,7 +100,7 @@ async function processCreateNotifications (notifications, tx) {
     }
 
     await Promise.all(notificationIds.map(async (notificationId) => {
-      // Action entity id can be one of album/content list/agreement
+      // Action entity id can be one of album/contentList/agreement
       let notifActionCreateTx = await models.NotificationAction.findOrCreate({
         where: {
           notificationId,
@@ -125,9 +125,9 @@ async function processCreateNotifications (notifications, tx) {
       }
     }))
 
-    // Dedupe album /content list notification
+    // Dedupe album /contentList notification
     if (createType === notificationTypes.Create.album ||
-        createType === notificationTypes.Create.content list) {
+        createType === notificationTypes.Create.contentList) {
       let agreementIdObjectList = notification.metadata.collection_content.agreement_ids
       if (agreementIdObjectList.length > 0) {
         // Clear duplicate notifications from identity database

@@ -18,11 +18,11 @@ basic_entities = {
     "agreements": [
         {"agreement_id": 1, "owner_id": 1},
     ],
-    "content lists": [
+    "contentLists": [
         {
-            "content list_id": 1,
-            "content list_owner_id": 1,
-            "content list_contents": {
+            "contentList_id": 1,
+            "contentList_owner_id": 1,
+            "contentList_contents": {
                 "agreement_ids": [
                     {"agreement": 1, "time": 1},
                 ]

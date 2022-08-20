@@ -20,7 +20,7 @@ const { SystemProgram } = anchor.web3;
 
 chai.use(chaiAsPromised);
 
-describe("content list-actions", function () {
+describe("contentList-actions", function () {
   const provider = anchor.AnchorProvider.local("http://localhost:8899", {
     preflightCommitment: "confirmed",
     commitment: "confirmed",
@@ -36,7 +36,7 @@ describe("content list-actions", function () {
   const verifierKeypair = anchor.web3.Keypair.generate();
   const contentNodes = {};
 
-  it("content list actions - Initializing admin account!", async function () {
+  it("contentList actions - Initializing admin account!", async function () {
     const tx = initAdmin({
       payer: provider.wallet.publicKey,
       program,
@@ -97,7 +97,7 @@ describe("content list-actions", function () {
     contentNodes["3"] = cn3;
   });
 
-  it("Delete save for a content list", async function () {
+  it("Delete save for a contentList", async function () {
     const user = await createSolanaUser(program, provider, adminAccountKeypair);
 
     const tx = deleteContentListSave({
@@ -128,11 +128,11 @@ describe("content list-actions", function () {
       EntitySocialActionEnumValues.deleteSave
     );
     expect(decodedInstruction.data.entityType).to.deep.equal(
-      EntityTypesEnumValues.content list
+      EntityTypesEnumValues.contentList
     );
   });
 
-  it("Save a newly created content list", async function () {
+  it("Save a newly created contentList", async function () {
     const user = await createSolanaUser(program, provider, adminAccountKeypair);
 
     const tx = addContentListSave({
@@ -162,11 +162,11 @@ describe("content list-actions", function () {
       EntitySocialActionEnumValues.addSave
     );
     expect(decodedInstruction.data.entityType).to.deep.equal(
-      EntityTypesEnumValues.content list
+      EntityTypesEnumValues.contentList
     );
   });
 
-  it("Repost a content list", async function () {
+  it("Repost a contentList", async function () {
     const user = await createSolanaUser(program, provider, adminAccountKeypair);
 
     const tx = addContentListRepost({
@@ -196,11 +196,11 @@ describe("content list-actions", function () {
       EntitySocialActionEnumValues.addRepost
     );
     expect(decodedInstruction.data.entityType).to.deep.equal(
-      EntityTypesEnumValues.content list
+      EntityTypesEnumValues.contentList
     );
   });
 
-  it("Delete repost for a content list", async function () {
+  it("Delete repost for a contentList", async function () {
     const user = await createSolanaUser(program, provider, adminAccountKeypair);
 
     const tx = deleteContentListRepost({
@@ -229,7 +229,7 @@ describe("content list-actions", function () {
       EntitySocialActionEnumValues.deleteRepost
     );
     expect(decodedInstruction.data.entityType).to.deep.equal(
-      EntityTypesEnumValues.content list
+      EntityTypesEnumValues.contentList
     );
   });
 });

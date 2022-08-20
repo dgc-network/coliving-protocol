@@ -1,15 +1,15 @@
 from sqlalchemy import func
 from src import exceptions
-from src.models.content lists.content list import ContentList
+from src.models.contentLists.contentList import ContentList
 from src.models.agreements.agreement import Agreement
 from src.models.users.user import User
 from src.utils.db_session import get_db_read_replica
 
 
 def get_max_id(type):
-    if type not in ["agreement", "content list", "user"]:
+    if type not in ["agreement", "contentList", "user"]:
         raise exceptions.ArgumentError(
-            "Invalid type provided, must be one of 'agreement', 'content list', 'user'"
+            "Invalid type provided, must be one of 'agreement', 'contentList', 'user'"
         )
 
     db = get_db_read_replica()
@@ -23,9 +23,9 @@ def get_max_id(type):
             )
             return latest
 
-        if type == "content list":
+        if type == "contentList":
             latest = (
-                session.query(func.max(ContentList.content list_id))
+                session.query(func.max(ContentList.contentList_id))
                 .filter(ContentList.is_private == False)
                 .filter(ContentList.is_current == True)
                 .scalar()

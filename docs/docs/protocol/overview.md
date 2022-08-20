@@ -18,7 +18,7 @@ If you are interested in operating a service, see the [`running a node`](../toke
 Coliving consists of three demographics of users: Artists (content creators), Fans (content consumers), and Service Providers. Some users check fall into all three demographics!
 
 - **Artists** upload agreements, create albums, and share content to their following
-- **Fans** stream agreements, create content lists, subscribe to & follow artists, and re-share content to their following
+- **Fans** stream agreements, create contentLists, subscribe to & follow artists, and re-share content to their following
 - **Service Providers** serve app traffic, stream songs, and help secure the network
 
 Service providers can provide one or more of the following services by staking $LIVE tokens and registering their service:

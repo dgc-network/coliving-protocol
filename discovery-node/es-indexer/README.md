@@ -24,8 +24,8 @@ If you are adding a new denormalization (attaching data from a related model), t
 When working on mapping changes, I might put code like this at top of `main.ts main()` function:
 
 ```ts
-await indexer.content lists.createIndex({ drop: true })
-await indexer.content lists.catchup()
+await indexer.contentLists.createIndex({ drop: true })
+await indexer.contentLists.catchup()
 process.exit(0)
 ```
 

@@ -540,16 +540,16 @@ function LibsWrapper(walletIndex = 0) {
   }
 
   /**
-   * Add a create content list txn to chain
+   * Add a create contentList txn to chain
    * @param {int} userId
-   * @param {string} content listName
+   * @param {string} contentListName
    * @param {boolean} isPrivate
    * @param {boolean} isAlbum
    * @param {array} agreementIds
    */
   this.createContentList = async (
     userId,
-    content listName,
+    contentListName,
     isPrivate,
     isAlbum,
     agreementIds
@@ -557,7 +557,7 @@ function LibsWrapper(walletIndex = 0) {
     assertLibsDidInit()
     const createContentListTxReceipt = await this.libsInstance.contracts.ContentListFactoryClient.createContentList(
       userId,
-      content listName,
+      contentListName,
       isPrivate,
       isAlbum,
       agreementIds
@@ -566,14 +566,14 @@ function LibsWrapper(walletIndex = 0) {
   }
 
   /**
-   * Add a content list agreement addition txn to chain
-   * @param {number} content listId
+   * Add a contentList agreement addition txn to chain
+   * @param {number} contentListId
    * @param {number} agreementId
    */
-  this.addContentListAgreement = async (content listId, agreementId) => {
+  this.addContentListAgreement = async (contentListId, agreementId) => {
     assertLibsDidInit()
     const addContentListAgreementTxReceipt = await this.libsInstance.contracts.ContentListFactoryClient.addContentListAgreement(
-      content listId,
+      contentListId,
       agreementId
     )
     return addContentListAgreementTxReceipt
@@ -588,23 +588,23 @@ function LibsWrapper(walletIndex = 0) {
   }
 
   /**
-   * Add an update content list txn to chain
-   * @param {*} content listId
+   * Add an update contentList txn to chain
+   * @param {*} contentListId
    * @param {*} updatedContentListImageMultihashDigest
    */
   this.updateContentListCoverPhoto = async (
-    content listId,
+    contentListId,
     updatedContentListImageMultihashDigest
   ) => {
     assertLibsDidInit()
     const updateContentListCoverPhotoTxReceipt = await this.libsInstance.contracts.ContentListFactoryClient.updateContentListCoverPhoto(
-      content listId,
+      contentListId,
       updatedContentListImageMultihashDigest
     )
     return updateContentListCoverPhotoTxReceipt
   }
 
-  // returns array of content list objs
+  // returns array of contentList objs
   this.getContentLists = async (
     limit = 100,
     offset = 0,
@@ -613,7 +613,7 @@ function LibsWrapper(walletIndex = 0) {
     withUsers = false
   ) => {
     assertLibsDidInit()
-    const content lists = await this.libsInstance.ContentList.getContentLists(
+    const contentLists = await this.libsInstance.ContentList.getContentLists(
       limit,
       offset,
       idsArray,
@@ -621,11 +621,11 @@ function LibsWrapper(walletIndex = 0) {
       withUsers
     )
 
-    if (!content lists || content lists.length === 0) {
-      throw new Error('No content lists found!')
+    if (!contentLists || contentLists.length === 0) {
+      throw new Error('No contentLists found!')
     }
 
-    return content lists
+    return contentLists
   }
 
   this.getWalletAddress = () => {

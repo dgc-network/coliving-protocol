@@ -131,15 +131,15 @@ The Coliving SDK
 
 | Name | Type |
 | :------ | :------ |
-| `full` | { `content lists`: [`ContentLists`](classes/full.ContentListsApi.md) ; `reactions`: [`Reactions`](classes/full.ReactionsApi.md) ; `search`: [`Search`](classes/full.SearchApi.md) ; `tips`: [`Tips`](classes/full.TipsApi.md) ; `agreements`: [`Agreements`](classes/full.AgreementsApi.md) ; `users`: [`Users`](classes/full.UsersApi.md)  } |
-| `full.content lists` | [`ContentLists`](classes/full.ContentListsApi.md) |
+| `full` | { `contentLists`: [`ContentLists`](classes/full.ContentListsApi.md) ; `reactions`: [`Reactions`](classes/full.ReactionsApi.md) ; `search`: [`Search`](classes/full.SearchApi.md) ; `tips`: [`Tips`](classes/full.TipsApi.md) ; `agreements`: [`Agreements`](classes/full.AgreementsApi.md) ; `users`: [`Users`](classes/full.UsersApi.md)  } |
+| `full.contentLists` | [`ContentLists`](classes/full.ContentListsApi.md) |
 | `full.reactions` | [`Reactions`](classes/full.ReactionsApi.md) |
 | `full.search` | [`Search`](classes/full.SearchApi.md) |
 | `full.tips` | [`Tips`](classes/full.TipsApi.md) |
 | `full.agreements` | [`Agreements`](classes/full.AgreementsApi.md) |
 | `full.users` | [`Users`](classes/full.UsersApi.md) |
 | `oauth` | `undefined` \| `Oauth` |
-| `content lists` | [`ContentLists`](classes/ContentListsApi.md) |
+| `contentLists` | [`ContentLists`](classes/ContentListsApi.md) |
 | `resolve` | <T\>(`requestParameters`: [`ResolveRequest`](interfaces/ResolveRequest.md)) => `Promise`<`T`\> |
 | `tips` | [`Tips`](classes/TipsApi.md) |
 | `agreements` | [`Agreements`](classes/AgreementsApi.md) |

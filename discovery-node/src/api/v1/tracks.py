@@ -967,7 +967,7 @@ class BestNewReleases(Resource):
     @record_metrics
     @full_ns.doc(
         id="Best New Releases",
-        description='Gets the agreements found on the "Best New Releases" smart content list',
+        description='Gets the agreements found on the "Best New Releases" smart contentList',
     )
     @full_ns.marshal_with(full_agreements_response)
     @cache(ttl_sec=10)
@@ -989,12 +989,12 @@ Discovery Node Social Feed Overview
 For a given user, current_user, we provide a feed of relevant content from around the coliving network.
 This is generated in the following manner:
   - Generate list of users followed by current_user, known as 'followees'
-  - Query all agreement and public content list reposts from followees
-    - Generate list of reposted agreement ids and reposted content list ids
-  - Query all agreement and public content lists reposted OR created by followees, ordered by timestamp
-    - At this point, 2 separate arrays one for content lists / one for agreements
+  - Query all agreement and public contentList reposts from followees
+    - Generate list of reposted agreement ids and reposted contentList ids
+  - Query all agreement and public contentLists reposted OR created by followees, ordered by timestamp
+    - At this point, 2 separate arrays one for contentLists / one for agreements
   - Query additional metadata around feed entries in each array, repost + save counts, user repost boolean
-  - Combine unsorted content list and agreement arrays
+  - Combine unsorted contentList and agreement arrays
   - Sort combined results by 'timestamp' field and return
 """
 
@@ -1026,7 +1026,7 @@ class UnderTheRadar(Resource):
     @record_metrics
     @full_ns.doc(
         id="""Get Under the Radar Agreements""",
-        description="""Gets the agreements found on the \"Under the Radar\" smart content list""",
+        description="""Gets the agreements found on the \"Under the Radar\" smart contentList""",
     )
     @full_ns.expect(under_the_radar_parser)
     @full_ns.marshal_with(full_agreements_response)
@@ -1067,7 +1067,7 @@ class MostLoved(Resource):
     @record_metrics
     @full_ns.doc(
         id="""Get Most Loved Agreements""",
-        description="""Gets the agreements found on the \"Most Loved\" smart content list""",
+        description="""Gets the agreements found on the \"Most Loved\" smart contentList""",
     )
     @full_ns.expect(most_loved_parser)
     @full_ns.marshal_with(full_agreements_response)

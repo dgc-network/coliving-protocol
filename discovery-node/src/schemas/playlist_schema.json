@@ -6,7 +6,7 @@
           "type": "object",
           "additionalProperties": true,
           "properties": {
-              "content list_name": {
+              "contentList_name": {
                   "type": ["string", "null"],
                   "default": null
               },

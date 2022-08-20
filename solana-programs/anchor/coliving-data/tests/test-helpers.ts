@@ -350,9 +350,9 @@ export const testCreateContentList = async ({
   userId,
   bumpSeed,
   adminAccount,
-  content listMetadata,
+  contentListMetadata,
   userAuthorityKeypair,
-  content listOwner,
+  contentListOwner,
   userAuthorityDelegateAccount,
   authorityDelegationStatusAccount,
 }) => {
@@ -360,10 +360,10 @@ export const testCreateContentList = async ({
     id,
     program,
     userAuthorityPublicKey: userAuthorityKeypair.publicKey,
-    userAccount: content listOwner,
+    userAccount: contentListOwner,
     userAuthorityDelegateAccount,
     authorityDelegationStatusAccount,
-    metadata: content listMetadata,
+    metadata: contentListMetadata,
     baseAuthorityAccount,
     userId,
     adminAccount,
@@ -377,14 +377,14 @@ export const testCreateContentList = async ({
   // Validate instruction data
   expect(decodedInstruction.name).to.equal("manageEntity");
   expect(decodedData.id.toString()).to.equal(id.toString());
-  expect(decodedData.metadata).to.equal(content listMetadata);
-  expect(decodedData.entityType).to.deep.equal(EntityTypesEnumValues.content list);
+  expect(decodedData.metadata).to.equal(contentListMetadata);
+  expect(decodedData.entityType).to.deep.equal(EntityTypesEnumValues.contentList);
   expect(decodedData.managementAction).to.deep.equal(ManagementActions.create);
   // Assert on instruction struct
-  // 1st index = content list owner user storage account
+  // 1st index = contentList owner user storage account
   // 2nd index = user authority keypair
-  // Indexing code must check that the content list owner PDA is known before processing
-  expect(accountPubKeys[1]).to.equal(content listOwner.toString());
+  // Indexing code must check that the contentList owner PDA is known before processing
+  expect(accountPubKeys[1]).to.equal(contentListOwner.toString());
   expect(accountPubKeys[2]).to.equal(userAuthorityKeypair.publicKey.toString());
 };
 
@@ -392,7 +392,7 @@ export const testDeleteContentList = async ({
   provider,
   program,
   id,
-  content listOwner,
+  contentListOwner,
   userAuthorityDelegateAccount,
   authorityDelegationStatusAccount,
   userAuthorityKeypair,
@@ -404,7 +404,7 @@ export const testDeleteContentList = async ({
   const tx = await deleteContentList({
     id,
     program,
-    userAccount: content listOwner,
+    userAccount: contentListOwner,
     userAuthorityDelegateAccount,
     authorityDelegationStatusAccount,
     userAuthorityPublicKey: userAuthorityKeypair.publicKey,
@@ -418,13 +418,13 @@ export const testDeleteContentList = async ({
     await getTransactionWithData(program, provider, txSignature, 0);
   expect(decodedInstruction.name).to.equal("manageEntity");
   expect(decodedData.id.toString()).to.equal(id.toString());
-  expect(decodedData.entityType).to.deep.equal(EntityTypesEnumValues.content list);
+  expect(decodedData.entityType).to.deep.equal(EntityTypesEnumValues.contentList);
   expect(decodedData.managementAction).to.deep.equal(ManagementActions.delete);
   // Assert on instruction struct
-  // 0th index = content list owner user storage account
+  // 0th index = contentList owner user storage account
   // 1st index = user authority keypair
-  // Indexing code must check that the content list owner PDA is known before processing
-  expect(accountPubKeys[1]).to.equal(content listOwner.toString());
+  // Indexing code must check that the contentList owner PDA is known before processing
+  expect(accountPubKeys[1]).to.equal(contentListOwner.toString());
   expect(accountPubKeys[2]).to.equal(userAuthorityKeypair.publicKey.toString());
 };
 
@@ -463,12 +463,12 @@ export const testUpdateContentList = async ({
   expect(decodedInstruction.name).to.equal("manageEntity");
   expect(decodedData.id.toString()).to.equal(id.toString());
   expect(decodedData.metadata).to.equal(metadata);
-  expect(decodedData.entityType).to.deep.equal(EntityTypesEnumValues.content list);
+  expect(decodedData.entityType).to.deep.equal(EntityTypesEnumValues.contentList);
   expect(decodedData.managementAction).to.deep.equal(ManagementActions.update);
   // Assert on instruction struct
-  // 0th index = content list owner user storage account
+  // 0th index = contentList owner user storage account
   // 1st index = user authority keypair
-  // Indexing code must check that the content list owner PDA is known before processing
+  // Indexing code must check that the contentList owner PDA is known before processing
   expect(accountPubKeys[1]).to.equal(userAccount.toString());
   expect(accountPubKeys[2]).to.equal(userAuthorityKeypair.publicKey.toString());
 };
@@ -745,7 +745,7 @@ export const createSolanaContentNode = async (props: {
   );
 
   if (!contentNode) {
-    throw new Error("unable to create content list account");
+    throw new Error("unable to create contentList account");
   }
 
   return {

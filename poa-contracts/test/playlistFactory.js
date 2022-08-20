@@ -17,18 +17,18 @@ contract('ContentListFactory', async (accounts) => {
   const testAgreementId2 = 2
   const testAgreementId3 = 3
 
-  let content listName = 'ContentListFactory Test ContentList'
-  let content listAgreements = [1, 2]
+  let contentListName = 'ContentListFactory Test ContentList'
+  let contentListAgreements = [1, 2]
   let expectedContentListId = 1
-  let content listOwnerId = testUserId1
+  let contentListOwnerId = testUserId1
 
   let registry
   let userStorage
   let userFactory
   let agreementStorage
   let agreementFactory
-  let content listStorage
-  let content listFactory
+  let contentListStorage
+  let contentListFactory
 
   beforeEach(async () => {
     registry = await Registry.new()
@@ -42,17 +42,17 @@ contract('ContentListFactory', async (accounts) => {
     agreementFactory = await AgreementFactory.new(registry.address, _constants.agreementStorageKey, _constants.userFactoryKey, networkId)
     await registry.addContract(_constants.agreementFactoryKey, agreementFactory.address)
 
-    // Deploy content list related contracts
-    content listStorage = await ContentListStorage.new(registry.address)
-    await registry.addContract(_constants.content listStorageKey, content listStorage.address)
-    content listFactory = await ContentListFactory.new(
+    // Deploy contentList related contracts
+    contentListStorage = await ContentListStorage.new(registry.address)
+    await registry.addContract(_constants.contentListStorageKey, contentListStorage.address)
+    contentListFactory = await ContentListFactory.new(
       registry.address,
-      _constants.content listStorageKey,
+      _constants.contentListStorageKey,
       _constants.userFactoryKey,
       _constants.agreementFactoryKey,
       networkId)
 
-    await registry.addContract(_constants.content listFactoryKey, content listFactory.address)
+    await registry.addContract(_constants.contentListFactoryKey, contentListFactory.address)
 
     // add two users
     await _lib.addUserAndValidate(
@@ -90,20 +90,20 @@ contract('ContentListFactory', async (accounts) => {
       _constants.testMultihash.size)
   })
 
-  it('Should create a content list', async () => {
+  it('Should create a contentList', async () => {
     await _lib.addContentListAndValidate(
-      content listFactory,
+      contentListFactory,
       expectedContentListId,
       accounts[0],
-      content listOwnerId,
-      content listName,
+      contentListOwnerId,
+      contentListName,
       false,
       false,
-      content listAgreements)
+      contentListAgreements)
   })
 
-  it('Should create a content list and add a separate agreement', async () => {
-    // Add a 3rd agreement that is not in the initial content list agreements list
+  it('Should create a contentList and add a separate agreement', async () => {
+    // Add a 3rd agreement that is not in the initial contentList agreements list
     await _lib.addAgreementAndValidate(
       agreementFactory,
       testAgreementId3,
@@ -113,91 +113,91 @@ contract('ContentListFactory', async (accounts) => {
       _constants.testMultihash.hashFn,
       _constants.testMultihash.size)
 
-    // Create content list
+    // Create contentList
     await _lib.addContentListAndValidate(
-      content listFactory,
+      contentListFactory,
       expectedContentListId,
       accounts[0],
-      content listOwnerId,
-      content listName,
+      contentListOwnerId,
+      contentListName,
       false,
       false,
-      content listAgreements)
+      contentListAgreements)
 
     await _lib.addContentListAgreement(
-      content listFactory,
+      contentListFactory,
       accounts[0],
       expectedContentListId,
       testAgreementId3)
   })
 
-  it('Should create a content list and delete a agreement', async () => {
-    // Create content list
+  it('Should create a contentList and delete a agreement', async () => {
+    // Create contentList
     await _lib.addContentListAndValidate(
-      content listFactory,
+      contentListFactory,
       expectedContentListId,
       accounts[0],
-      content listOwnerId,
-      content listName,
+      contentListOwnerId,
+      contentListName,
       false,
       false,
-      content listAgreements)
+      contentListAgreements)
 
     await _lib.deleteContentListAgreement(
-      content listFactory,
+      contentListFactory,
       accounts[0],
       expectedContentListId,
       testAgreementId2,
       1551912253)
   })
 
-  it('Should create a content list and perform update operations', async () => {
+  it('Should create a contentList and perform update operations', async () => {
     // Test following update operations:
     // 1 - Reorder agreements
-    // 2 - Update content list name
-    // 3 - Update content list privacy
-    // 4 - Update content list cover photo
-    // 5 - Update content list UPC
-    // Create content list
+    // 2 - Update contentList name
+    // 3 - Update contentList privacy
+    // 4 - Update contentList cover photo
+    // 5 - Update contentList UPC
+    // Create contentList
     await _lib.addContentListAndValidate(
-      content listFactory,
+      contentListFactory,
       expectedContentListId,
       accounts[0],
-      content listOwnerId,
-      content listName,
+      contentListOwnerId,
+      contentListName,
       false,
       false,
-      content listAgreements)
+      contentListAgreements)
 
-    let content listAgreementsNewOrder = [2, 1]
+    let contentListAgreementsNewOrder = [2, 1]
 
-    // 1 - Update content list order
+    // 1 - Update contentList order
     await _lib.orderContentListAgreementsAndValidate(
-      content listFactory,
+      contentListFactory,
       accounts[0],
       expectedContentListId,
-      content listAgreementsNewOrder)
+      contentListAgreementsNewOrder)
 
-    // 2 - Update content list name
+    // 2 - Update contentList name
     await _lib.updateContentListNameAndValidate(
-      content listFactory,
+      contentListFactory,
       accounts[0],
       expectedContentListId,
-      'Updated test content list name')
+      'Updated test contentList name')
 
-    // 3 - Update content list privacy
+    // 3 - Update contentList privacy
     await _lib.updateContentListPrivacyAndValidate(
-      content listFactory,
+      contentListFactory,
       accounts[0],
       expectedContentListId,
       true)
 
-    // Attempt updating a content list order with an invalid agreement
+    // Attempt updating a contentList order with an invalid agreement
     let invalidContentListAgreementsOrder = [2, 3, 1]
     let updatedAgreementOrder = null
     try {
       await _lib.orderContentListAgreementsAndValidate(
-        content listFactory,
+        contentListFactory,
         accounts[0],
         expectedContentListId,
         invalidContentListAgreementsOrder)
@@ -205,7 +205,7 @@ contract('ContentListFactory', async (accounts) => {
       updatedAgreementOrder = true
     } catch (err) {
       // Update flag to indicate that invalid update cannot be performed
-      if (err.message.indexOf('Expected valid content list agreement id') >= 0) {
+      if (err.message.indexOf('Expected valid contentList agreement id') >= 0) {
         updatedAgreementOrder = false
       }
     }
@@ -214,24 +214,24 @@ contract('ContentListFactory', async (accounts) => {
       updatedAgreementOrder,
       'Expect failure with invalid agreement ID in reorder operation')
 
-    // 4 - Update content list cover photo
+    // 4 - Update contentList cover photo
     await _lib.updateContentListCoverPhotoAndValidate(
-      content listFactory,
+      contentListFactory,
       accounts[0],
       expectedContentListId,
       _constants.userMetadata.coverPhotoDigest)
 
-    // 5 - Update content list description
+    // 5 - Update contentList description
     await _lib.updateContentListDescriptionAndValidate(
-      content listFactory,
+      contentListFactory,
       accounts[0],
       expectedContentListId,
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis')
 
-    // 6 - Update content list UPC
+    // 6 - Update contentList UPC
     // TODO: Fix these numbas yo
     await _lib.updateContentListUPCAndValidate(
-      content listFactory,
+      contentListFactory,
       accounts[0],
       expectedContentListId,
       web3.utils.utf8ToHex('123456789abc'))
@@ -241,12 +241,12 @@ contract('ContentListFactory', async (accounts) => {
     let caughtError = false
     try {
       await _lib.updateContentListPrivacyAndValidate(
-        content listFactory,
+        contentListFactory,
         accounts[0],
         invalidContentListId,
         true)
     } catch (e) {
-      if (e.message.indexOf('Must provide valid content list ID')) {
+      if (e.message.indexOf('Must provide valid contentList ID')) {
         caughtError = true
       }
     }
@@ -255,7 +255,7 @@ contract('ContentListFactory', async (accounts) => {
     caughtError = false
     try {
       await _lib.updateContentListPrivacyAndValidate(
-        content listFactory,
+        contentListFactory,
         accounts[1], // Incorrect account
         expectedContentListId,
         true)
@@ -267,36 +267,36 @@ contract('ContentListFactory', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
   })
 
-  it('Should create then delete a content list', async () => {
+  it('Should create then delete a contentList', async () => {
     await _lib.addContentListAndValidate(
-      content listFactory,
+      contentListFactory,
       expectedContentListId,
       accounts[0],
-      content listOwnerId,
-      content listName,
+      contentListOwnerId,
+      contentListName,
       false,
       false,
-      content listAgreements
+      contentListAgreements
     )
     await _lib.deleteContentListAndValidate(
-      content listFactory,
+      contentListFactory,
       accounts[0],
       expectedContentListId
     )
   })
 
-  it('Should fail to create content list with non-existent user', async () => {
+  it('Should fail to create contentList with non-existent user', async () => {
     let caughtError = false
     try {
       await _lib.addContentListAndValidate(
-        content listFactory,
+        contentListFactory,
         expectedContentListId,
         accounts[0],
         10,
-        content listName,
+        contentListName,
         false,
         false,
-        content listAgreements
+        contentListAgreements
       )
     } catch (e) {
       // expected error
@@ -309,22 +309,22 @@ contract('ContentListFactory', async (accounts) => {
     }
     assert.isTrue(
       caughtError,
-      'Failed to handle case where caller tries to create content list with non-existent user'
+      'Failed to handle case where caller tries to create contentList with non-existent user'
     )
   })
 
-  it('Should fail to create content list with user that caller does not own', async () => {
+  it('Should fail to create contentList with user that caller does not own', async () => {
     let caughtError = false
     try {
       await _lib.addContentListAndValidate(
-        content listFactory,
+        contentListFactory,
         expectedContentListId,
         accounts[1],
-        content listOwnerId,
-        content listName,
+        contentListOwnerId,
+        contentListName,
         false,
         false,
-        content listAgreements
+        contentListAgreements
       )
     } catch (e) {
       // expected error
@@ -337,18 +337,18 @@ contract('ContentListFactory', async (accounts) => {
     }
     assert.isTrue(
       caughtError,
-      'Failed to handle case where caller tries to create content list user that it does not own'
+      'Failed to handle case where caller tries to create contentList user that it does not own'
     )
   })
 
-  it('Should fail to update non-existent content list', async () => {
+  it('Should fail to update non-existent contentList', async () => {
     let caughtError = false
     try {
       await _lib.updateContentListNameAndValidate(
-        content listFactory,
+        contentListFactory,
         accounts[0],
         expectedContentListId,
-        'Updated test content list name'
+        'Updated test contentList name'
       )
     } catch (e) {
       // expected error
@@ -361,29 +361,29 @@ contract('ContentListFactory', async (accounts) => {
     }
     assert.isTrue(
       caughtError,
-      'Failed to handle case where caller tries to update non-existent content list'
+      'Failed to handle case where caller tries to update non-existent contentList'
     )
   })
 
-  it('Should fail to update content list that caller does not own', async () => {
+  it('Should fail to update contentList that caller does not own', async () => {
     await _lib.addContentListAndValidate(
-      content listFactory,
+      contentListFactory,
       expectedContentListId,
       accounts[0],
-      content listOwnerId,
-      content listName,
+      contentListOwnerId,
+      contentListName,
       false,
       false,
-      content listAgreements
+      contentListAgreements
     )
 
     let caughtError = false
     try {
       await _lib.updateContentListNameAndValidate(
-        content listFactory,
+        contentListFactory,
         accounts[1],
         expectedContentListId,
-        'Updated test content list name'
+        'Updated test contentList name'
       )
     } catch (e) {
       // expected error
@@ -396,15 +396,15 @@ contract('ContentListFactory', async (accounts) => {
     }
     assert.isTrue(
       caughtError,
-      'Failed to handle case where caller tries to update content list that caller does not own'
+      'Failed to handle case where caller tries to update contentList that caller does not own'
     )
   })
 
-  it('Should fail to delete non-existent content list', async () => {
+  it('Should fail to delete non-existent contentList', async () => {
     let caughtError = false
     try {
       await _lib.deleteContentListAndValidate(
-        content listFactory,
+        contentListFactory,
         accounts[0],
         expectedContentListId
       )
@@ -419,26 +419,26 @@ contract('ContentListFactory', async (accounts) => {
     }
     assert.isTrue(
       caughtError,
-      'Failed to handle case where caller tries to delete non-existent content list'
+      'Failed to handle case where caller tries to delete non-existent contentList'
     )
   })
 
-  it('Should fail to delete content list that caller does not own', async () => {
+  it('Should fail to delete contentList that caller does not own', async () => {
     await _lib.addContentListAndValidate(
-      content listFactory,
+      contentListFactory,
       expectedContentListId,
       accounts[0],
-      content listOwnerId,
-      content listName,
+      contentListOwnerId,
+      contentListName,
       false,
       false,
-      content listAgreements
+      contentListAgreements
     )
 
     let caughtError = false
     try {
       await _lib.deleteContentListAndValidate(
-        content listFactory,
+        contentListFactory,
         accounts[1],
         expectedContentListId
       )
@@ -453,7 +453,7 @@ contract('ContentListFactory', async (accounts) => {
     }
     assert.isTrue(
       caughtError,
-      'Failed to handle case where caller tries to delete content list that caller does not own'
+      'Failed to handle case where caller tries to delete contentList that caller does not own'
     )
   })
 })

@@ -5,14 +5,14 @@ const ContentList = {}
 ContentList.createContentList = async (
   libs,
   userId,
-  content listName,
+  contentListName,
   isPrivate,
   isAlbum,
   agreementIds
 ) => {
   const createContentListTxReceipt = await libs.createContentList(
     userId,
-    content listName,
+    contentListName,
     isPrivate,
     isAlbum,
     agreementIds
@@ -31,11 +31,11 @@ ContentList.uploadContentListCoverPhoto = async (
 
 ContentList.updateContentListCoverPhoto = async (
   libs,
-  content listId,
+  contentListId,
   updatedContentListImageMultihashDigest
 ) => {
   const updateContentListCoverPhotoTxReceipt = await libs.updateContentListCoverPhoto(
-    content listId,
+    contentListId,
     updatedContentListImageMultihashDigest
   )
   return updateContentListCoverPhotoTxReceipt
@@ -54,10 +54,10 @@ ContentList.getContentLists = async (
 
 ContentList.addContentListAgreement = async (
   libs,
-  content listId,
+  contentListId,
   agreementId
 ) => {
-  return await libs.addContentListAgreement(content listId, agreementId)
+  return await libs.addContentListAgreement(contentListId, agreementId)
 }
 
 module.exports = ContentList

@@ -97,9 +97,9 @@ yarn run ts-node cli/main.ts -f createAgreement \
 --user-id 1
 ```
 
-## 4. Creating a content list
+## 4. Creating a contentList
 
-Similar to content list information. The metadata (currently randomly generated) points to a CID which contains content list related information.
+Similar to contentList information. The metadata (currently randomly generated) points to a CID which contains contentList related information.
 
 ```
 yarn run ts-node cli/main.ts -f createContentList \
@@ -110,10 +110,10 @@ yarn run ts-node cli/main.ts -f createContentList \
 --user-id 1
 ```
 
-Export the created content list ID in logs as $CONTENT_LIST_ID.
+Export the created contentList ID in logs as $CONTENT_LIST_ID.
 
-## 4. Updating a content list
-Update a given content list denoted by its id.
+## 4. Updating a contentList
+Update a given contentList denoted by its id.
 
 ```
 yarn run ts-node cli/main.ts -f updateContentList \
@@ -125,8 +125,8 @@ yarn run ts-node cli/main.ts -f updateContentList \
 --user-id 1
 ```
 
-## 4. Delete a content list
-Delete a given content list denoted by its id.
+## 4. Delete a contentList
+Delete a given contentList denoted by its id.
 
 ```
 yarn run ts-node cli/main.ts -f deleteContentList \

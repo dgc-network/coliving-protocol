@@ -1,4 +1,4 @@
-"""solana slot content lists
+"""solana slot contentLists
 
 Revision ID: a9215207bb7c
 Revises: 3a3f2c9f5320

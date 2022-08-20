@@ -123,7 +123,7 @@ class AnchorProgramIndexer(SolanaProgramIndexer):
                 for agreement in existing_agreements:
                     db_models["agreements"][agreement.agreement_id] = [agreement]
 
-            # TODO: Find all other agreement/content list/etc. models
+            # TODO: Find all other agreement/contentList/etc. models
 
             self.process_transactions(
                 session, parsed_transactions, db_models, metadata_dictionary

@@ -5,7 +5,7 @@ from src.models.model_utils import RepresentableMixin
 
 class TrendingResult(Base, RepresentableMixin):
     """
-    Trending Results agreement the top trending agreements/content lists each week to keep a record of the winners
+    Trending Results agreement the top trending agreements/contentLists each week to keep a record of the winners
     for reference in the trending challenges
     """
 

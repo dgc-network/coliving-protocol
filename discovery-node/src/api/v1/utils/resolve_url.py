@@ -3,15 +3,15 @@ from urllib.parse import urlparse
 
 from flask.helpers import url_for
 from src.api.v1 import api as api_v1
-from src.api.v1.content lists import ns as content lists_ns
+from src.api.v1.contentLists import ns as contentLists_ns
 from src.api.v1.agreements import ns as agreements_ns
 from src.api.v1.users import ns as users_ns
 from src.models.users.user import User
 from src.utils.helpers import encode_int_id
 
 agreement_url_regex = re.compile(r"^/(?P<handle>[^/]*)/(?P<slug>[^/]*)$")
-content list_url_regex = re.compile(
-    r"/(?P<handle>[^/]*)/(content list|album)/(?P<agreement>[^/]*)(?=-)-(?P<id>[0-9]*)$"
+contentList_url_regex = re.compile(
+    r"/(?P<handle>[^/]*)/(contentList|album)/(?P<agreement>[^/]*)(?=-)-(?P<id>[0-9]*)$"
 )
 user_url_regex = re.compile(r"^/(?P<handle>[^/]*)$")
 
@@ -35,11 +35,11 @@ def resolve_url(session, url):
         handle = match.group("handle")
         return ns_url_for(agreements_ns, "bulk_agreements", slug=slug, handle=handle)
 
-    match = content list_url_regex.match(path)
+    match = contentList_url_regex.match(path)
     if match:
-        content list_id = match.group("id")
-        hashed_id = encode_int_id(int(content list_id))
-        return ns_url_for(content lists_ns, "content list", content list_id=hashed_id)
+        contentList_id = match.group("id")
+        hashed_id = encode_int_id(int(contentList_id))
+        return ns_url_for(contentLists_ns, "contentList", contentList_id=hashed_id)
 
     match = user_url_regex.match(path)
     if match:

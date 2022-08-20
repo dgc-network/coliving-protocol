@@ -162,7 +162,7 @@ You can verify your upgrade with the `\health_check` endpoint.
 
 An Coliving Discovery Node indexes the contents of the Coliving contracts on the Ethereum blockchain for clients to query.
 
-The indexed content includes user, agreement, and album/content list information along with social features. The data is stored for quick access, updated on a regular interval, and made available for clients via a RESTful API.
+The indexed content includes user, agreement, and album/contentList information along with social features. The data is stored for quick access, updated on a regular interval, and made available for clients via a RESTful API.
 
 #### Run
 

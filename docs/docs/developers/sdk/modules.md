@@ -129,15 +129,15 @@ The Coliving SDK
 
 | Name | Type |
 | :------ | :------ |
-| `full` | { `content lists`: `ContentListsApi` ; `reactions`: `ReactionsApi` ; `search`: `SearchApi` ; `tips`: `TipsApi` ; `agreements`: `AgreementsApi` ; `users`: `UsersApi`  } |
-| `full.content lists` | `ContentListsApi` |
+| `full` | { `contentLists`: `ContentListsApi` ; `reactions`: `ReactionsApi` ; `search`: `SearchApi` ; `tips`: `TipsApi` ; `agreements`: `AgreementsApi` ; `users`: `UsersApi`  } |
+| `full.contentLists` | `ContentListsApi` |
 | `full.reactions` | `ReactionsApi` |
 | `full.search` | `SearchApi` |
 | `full.tips` | `TipsApi` |
 | `full.agreements` | `AgreementsApi` |
 | `full.users` | `UsersApi` |
 | `oauth` | `undefined` \| `Oauth` |
-| `content lists` | [`ContentLists`](classes/ContentListsApi.md) |
+| `contentLists` | [`ContentLists`](classes/ContentListsApi.md) |
 | `resolve` | <T\>(`requestParameters`: [`ResolveRequest`](interfaces/ResolveRequest.md)) => `Promise`<`T`\> |
 | `tips` | [`Tips`](classes/TipsApi.md) |
 | `agreements` | [`Agreements`](classes/AgreementsApi.md) |

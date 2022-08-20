@@ -54,9 +54,9 @@ ___
 
 ___
 
-### content list\_name
+### contentList\_name
 
- **content list\_name**: `string`
+ **contentList\_name**: `string`
 
 **`memberof`** ContentList
 

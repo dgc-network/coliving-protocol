@@ -43,7 +43,7 @@ const agreementTemplate = (id) => ({
   'updated_at': '2019-04-30T00:02:50 Z'
 })
 
-const content listTemplate = (id) => ({
+const contentListTemplate = (id) => ({
   'blockhash': '0x2aaaf97be15302f844ca2c3780767e73fcecc980d12331d637d09cccf2eb0419',
   'blocknumber': 17900160,
   'created_at': '2020-10-29T17:54:35 Z',
@@ -56,7 +56,7 @@ const content listTemplate = (id) => ({
   'is_current': true,
   'is_delete': false,
   'is_private': false,
-  'content list_contents': {
+  'contentList_contents': {
     'agreement_ids': [
       {
         'time': 1603994075,
@@ -68,11 +68,11 @@ const content listTemplate = (id) => ({
       }
     ]
   },
-  'content list_id': id,
-  'content list_image_multihash': null,
-  'content list_image_sizes_multihash': 'QmQTz4HHRxiyueyJDbK799KCo3ZypB8mDEJWWR9jWcFbMr',
-  'content list_name': `PLaylist id: ${id}`,
-  'content list_owner_id': 69054,
+  'contentList_id': id,
+  'contentList_image_multihash': null,
+  'contentList_image_sizes_multihash': 'QmQTz4HHRxiyueyJDbK799KCo3ZypB8mDEJWWR9jWcFbMr',
+  'contentList_name': `PLaylist id: ${id}`,
+  'contentList_owner_id': 69054,
   'repost_count': 0,
   'save_count': 0,
   'total_play_count': 2,
@@ -100,7 +100,7 @@ const userTemplate = (id) => ({
   'location': 'chik fil yay!',
   'metadata_multihash': 'QmXR4Geg4NKtYtp596GenPxsN3NVyGnb1a6ipHmqSkaEHs',
   'name': `user ${id}`,
-  'content list_count': 5,
+  'contentList_count': 5,
   'profile_picture': 'QmXBLfsD6G8ALVeTr9A5XXKLCoiFRfoTGqXZmBbz9MoQrd',
   'profile_picture_sizes': null,
   'repost_count': 1183,
@@ -116,7 +116,7 @@ const mockColivingLibs = {
     getAgreements: (limit, offset, ids) => ids.map(id => agreementTemplate(id))
   },
   ContentList: {
-    getContentLists: (limit, offset, ids) => ids.map(id => content listTemplate(id))
+    getContentLists: (limit, offset, ids) => ids.map(id => contentListTemplate(id))
   },
   User: {
     getUsers: (limit, offset, ids) => ids.map(id => userTemplate(id))

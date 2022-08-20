@@ -13,14 +13,14 @@ pagination_next: null
 
 **getContentList**(`requestParameters`): `Promise`<[`ContentList`](../interfaces/ContentList.md)[]\>
 
-Get a content list by ID
+Get a contentList by ID
 
 Example:
 
 ```typescript
 
-const content list = await colivingSdk.content lists.getContentList({
-    content listId: "AxRP0",
+const contentList = await colivingSdk.contentLists.getContentList({
+    contentListId: "AxRP0",
 });
 
 ```
@@ -41,14 +41,14 @@ ___
 
 **getContentListAgreements**(`requestParameters`): `Promise`<[`Agreement`](../interfaces/Agreement.md)[]\>
 
-Fetch agreements within a content list.
+Fetch agreements within a contentList.
 
 Example:
 
 ```typescript
 
-const agreements = await colivingSdk.content lists.getContentListAgreements({
-    content listId: "AxRP0",
+const agreements = await colivingSdk.contentLists.getContentListAgreements({
+    contentListId: "AxRP0",
 });
 
 ```
@@ -69,13 +69,13 @@ ___
 
 **getTrendingContentLists**(`requestParameters?`): `Promise`<[`ContentList`](../interfaces/ContentList.md)[]\>
 
-Gets trending content lists for a time period
+Gets trending contentLists for a time period
 
 Example:
 
 ```typescript
 
-const content lists = await colivingSdk.content lists.getTrendingContentLists();
+const contentLists = await colivingSdk.contentLists.getTrendingContentLists();
 
 ```
 
@@ -95,13 +95,13 @@ ___
 
 **searchContentLists**(`requestParameters`): `Promise`<[`ContentList`](../interfaces/ContentList.md)[]\>
 
-Search for a content list
+Search for a contentList
 
 Example:
 
 ```typescript
 
-const content lists = await colivingSdk.content lists.searchContentLists({
+const contentLists = await colivingSdk.contentLists.searchContentLists({
     query: 'lo-fi',
 });
 

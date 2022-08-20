@@ -23,8 +23,8 @@ module.exports = {
   },
 
   /*
-    In the down migration we remove compose unique constraint and content list table but do not remove the altered enum.
-    This is in the case that there are existing values in the ClockRecords table pointing to the content list enum that would have to be either
+    In the down migration we remove compose unique constraint and contentList table but do not remove the altered enum.
+    This is in the case that there are existing values in the ClockRecords table pointing to the contentList enum that would have to be either
     modified (removes context) or dropped (adds gaps to ClockRecord history)
   */
   down: async (queryInterface) => {
@@ -128,14 +128,14 @@ async function createContentListTable(queryInterface, Sequelize, transaction) {
         unique: 'compositeIndex',
         onDelete: 'RESTRICT'
       },
-      content listImageFileUUID: {
+      contentListImageFileUUID: {
         type: Sequelize.UUID,
         allowNull: true,
         onDelete: 'RESTRICT',
         references: {
           model: 'Files',
           key: 'fileUUID',
-          as: 'content listImageFileUUID'
+          as: 'contentListImageFileUUID'
         }
       },
       createdAt: {

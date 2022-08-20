@@ -6,7 +6,7 @@ const {
 } = require('../constants')
 
 /**
- * Process agreement added to content list notification
+ * Process agreement added to contentList notification
  * @param {Array<Object>} notifications
  * @param {*} tx The DB transaction to attach to DB requests
  */
@@ -15,7 +15,7 @@ async function processAddAgreementToContentListNotification (notifications, tx) 
 
   for (const notification of notifications) {
     const {
-      content list_id: content listId,
+      contentList_id: contentListId,
       agreement_id: agreementId,
       agreement_owner_id: agreementOwnerId
     } = notification.metadata
@@ -29,8 +29,8 @@ async function processAddAgreementToContentListNotification (notifications, tx) 
         userId: agreementOwnerId,
         entityId: agreementId,
         metadata: {
-          content listOwnerId: notification.initiator,
-          content listId,
+          contentListOwnerId: notification.initiator,
+          contentListId,
           agreementId
         },
         blocknumber: notification.blocknumber,

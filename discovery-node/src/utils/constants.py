@@ -1031,7 +1031,7 @@ class CONTRACT_TYPES(Enum):
     USER_FACTORY = "user_factory"
     AGREEMENT_FACTORY = "agreement_factory"
     SOCIAL_FEATURE_FACTORY = "social_feature_factory"
-    CONTENT_LIST_FACTORY = "content list_factory"
+    CONTENT_LIST_FACTORY = "contentList_factory"
     USER_LIBRARY_FACTORY = "user_library_factory"
     USER_REPLICA_SET_MANAGER = "user_replica_set_manager"
 

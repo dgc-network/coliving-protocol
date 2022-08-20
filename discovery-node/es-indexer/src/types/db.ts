@@ -62,7 +62,7 @@ export interface AggregateMonthlyUniqueUsersMetricRow {
 }
 export interface AggregateContentListRow {
   'is_album'?: boolean | null;
-  'content list_id'?: number | null;
+  'contentList_id'?: number | null;
   'repost_count'?: string | null;
   'save_count'?: string | null;
 }
@@ -79,7 +79,7 @@ export interface AggregateUserRow {
   'album_count'?: string | null;
   'follower_count'?: string | null;
   'following_count'?: string | null;
-  'content list_count'?: string | null;
+  'contentList_count'?: string | null;
   'repost_count'?: string | null;
   'supporter_count'?: number;
   'supporting_count'?: number;
@@ -95,8 +95,8 @@ export interface AggregateUserTipRow {
 export interface AlbumLexemeDictRow {
   'handle'?: string | null;
   'owner_id'?: number | null;
-  'content list_id'?: number | null;
-  'content list_name'?: string | null;
+  'contentList_id'?: number | null;
+  'contentList_name'?: string | null;
   'repost_count'?: string | null;
   'row_number'?: string | null;
   'user_name'?: string | null;
@@ -243,8 +243,8 @@ export interface PgStatStatementRow {
 export interface ContentListLexemeDictRow {
   'handle'?: string | null;
   'owner_id'?: number | null;
-  'content list_id'?: number | null;
-  'content list_name'?: string | null;
+  'contentList_id'?: number | null;
+  'contentList_name'?: string | null;
   'repost_count'?: string | null;
   'row_number'?: string | null;
   'user_name'?: string | null;
@@ -260,12 +260,12 @@ export interface ContentListRow {
   'is_delete': boolean;
   'is_private': boolean;
   'last_added_to'?: Date | null;
-  'content list_contents': any;
-  'content list_id': number;
-  'content list_image_multihash'?: string | null;
-  'content list_image_sizes_multihash'?: string | null;
-  'content list_name'?: string | null;
-  'content list_owner_id': number;
+  'contentList_contents': any;
+  'contentList_id': number;
+  'contentList_image_multihash'?: string | null;
+  'contentList_image_sizes_multihash'?: string | null;
+  'contentList_name'?: string | null;
+  'contentList_owner_id': number;
   'slot'?: number | null;
   'txhash'?: string;
   'upc'?: string | null;
@@ -593,7 +593,7 @@ export interface UserRow {
   'location'?: string | null;
   'metadata_multihash'?: string | null;
   'name'?: string | null;
-  'content list_library'?: any | null;
+  'contentList_library'?: any | null;
   'primary_id'?: number | null;
   'profile_picture'?: string | null;
   'profile_picture_sizes'?: string | null;
@@ -617,12 +617,12 @@ export enum skippedtransactionlevel {
 }
 export enum savetype {
   'agreement' = 'agreement',
-  'content list' = 'content list',
+  'contentList' = 'contentList',
   'album' = 'album',
 }
 export enum reposttype {
   'agreement' = 'agreement',
-  'content list' = 'content list',
+  'contentList' = 'contentList',
   'album' = 'album',
 }
 export enum challengetype {

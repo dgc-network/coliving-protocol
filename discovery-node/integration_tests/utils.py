@@ -3,7 +3,7 @@ from datetime import datetime
 from src.models.indexing.block import Block
 from src.models.indexing.indexing_checkpoints import IndexingCheckpoint
 from src.models.indexing.ursm_content_node import UrsmContentNode
-from src.models.content lists.content list import ContentList
+from src.models.contentLists.contentList import ContentList
 from src.models.rewards.challenge import Challenge
 from src.models.rewards.user_challenge import UserChallenge
 from src.models.social.aggregate_monthly_plays import AggregateMonthlyPlay
@@ -94,7 +94,7 @@ def populate_mock_db(db, entities, block_offset=None):
                 block_offset = 0
 
         agreements = entities.get("agreements", [])
-        content lists = entities.get("content lists", [])
+        contentLists = entities.get("contentLists", [])
         users = entities.get("users", [])
         follows = entities.get("follows", [])
         reposts = entities.get("reposts", [])
@@ -161,33 +161,33 @@ def populate_mock_db(db, entities, block_offset=None):
                 is_unlisted=agreement_meta.get("is_unlisted", False),
             )
             session.add(agreement)
-        for i, content list_meta in enumerate(content lists):
-            content list = ContentList(
+        for i, contentList_meta in enumerate(contentLists):
+            contentList = ContentList(
                 blockhash=hex(i + block_offset),
                 blocknumber=i + block_offset,
-                txhash=content list_meta.get("txhash", str(i + block_offset)),
-                content list_id=content list_meta.get("content list_id", i),
-                is_current=content list_meta.get("is_current", True),
-                is_delete=content list_meta.get("is_delete", False),
-                content list_owner_id=content list_meta.get("content list_owner_id", 1),
-                is_album=content list_meta.get("is_album", False),
-                is_private=content list_meta.get("is_private", False),
-                content list_name=content list_meta.get("content list_name", f"content list_{i}"),
-                content list_contents=content list_meta.get(
-                    "content list_contents", {"agreement_ids": []}
+                txhash=contentList_meta.get("txhash", str(i + block_offset)),
+                contentList_id=contentList_meta.get("contentList_id", i),
+                is_current=contentList_meta.get("is_current", True),
+                is_delete=contentList_meta.get("is_delete", False),
+                contentList_owner_id=contentList_meta.get("contentList_owner_id", 1),
+                is_album=contentList_meta.get("is_album", False),
+                is_private=contentList_meta.get("is_private", False),
+                contentList_name=contentList_meta.get("contentList_name", f"contentList_{i}"),
+                contentList_contents=contentList_meta.get(
+                    "contentList_contents", {"agreement_ids": []}
                 ),
-                content list_image_multihash=content list_meta.get(
-                    "content list_image_multihash", ""
+                contentList_image_multihash=contentList_meta.get(
+                    "contentList_image_multihash", ""
                 ),
-                content list_image_sizes_multihash=content list_meta.get(
-                    "content list_image_sizes_multihash", ""
+                contentList_image_sizes_multihash=contentList_meta.get(
+                    "contentList_image_sizes_multihash", ""
                 ),
-                description=content list_meta.get("description", f"description_{i}"),
-                upc=content list_meta.get("upc", f"upc_{i}"),
-                updated_at=content list_meta.get("updated_at", datetime.now()),
-                created_at=content list_meta.get("created_at", datetime.now()),
+                description=contentList_meta.get("description", f"description_{i}"),
+                upc=contentList_meta.get("upc", f"upc_{i}"),
+                updated_at=contentList_meta.get("updated_at", datetime.now()),
+                created_at=contentList_meta.get("created_at", datetime.now()),
             )
-            session.add(content list)
+            session.add(contentList)
 
         for i, user_meta in enumerate(users):
             user = User(
@@ -297,7 +297,7 @@ def populate_mock_db(db, entities, block_offset=None):
             user = AggregateUser(
                 user_id=aggregate_user_meta.get("user_id", i),
                 agreement_count=aggregate_user_meta.get("agreement_count", 0),
-                content list_count=aggregate_user_meta.get("content list_count", 0),
+                contentList_count=aggregate_user_meta.get("contentList_count", 0),
                 album_count=aggregate_user_meta.get("album_count", 0),
                 follower_count=aggregate_user_meta.get("follower_count", 0),
                 following_count=aggregate_user_meta.get("following_count", 0),

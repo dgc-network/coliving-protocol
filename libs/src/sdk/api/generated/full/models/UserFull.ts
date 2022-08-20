@@ -109,7 +109,7 @@ export interface UserFull {
      * @type {number}
      * @memberof UserFull
      */
-    content list_count: number;
+    contentList_count: number;
     /**
      * 
      * @type {ProfilePicture}
@@ -277,6 +277,6 @@ export interface UserFull {
      * @type {ContentListLibrary}
      * @memberof UserFull
      */
-    content list_library?: ContentListLibrary;
+    contentList_library?: ContentListLibrary;
 }
 

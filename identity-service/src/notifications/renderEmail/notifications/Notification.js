@@ -137,7 +137,7 @@ var getEntity = function getEntity(entity) {
     }), " ");
   } else if (entity.type === EntityType.ContentList) {
     return /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, null, " ", /*#__PURE__*/_react["default"].createElement(BodyText, {
-      text: 'content list '
+      text: 'contentList '
     }), /*#__PURE__*/_react["default"].createElement(HighlightText, {
       text: entity.name
     }), " ");
@@ -286,15 +286,15 @@ var notificationMap = (_notificationMap = {}, _defineProperty(_notificationMap, 
   return /*#__PURE__*/_react["default"].createElement("span", {
     className: 'notificationText'
   }, /*#__PURE__*/_react["default"].createElement(HighlightText, {
-    text: notification.content listOwner.name
+    text: notification.contentListOwner.name
   }), /*#__PURE__*/_react["default"].createElement(BodyText, {
     text: " added your agreement "
   }), /*#__PURE__*/_react["default"].createElement(HighlightText, {
     text: notification.agreement.title
   }), /*#__PURE__*/_react["default"].createElement(BodyText, {
-    text: " to their content list "
+    text: " to their contentList "
   }), /*#__PURE__*/_react["default"].createElement(HighlightText, {
-    text: notification.content list.content list_name
+    text: notification.contentList.contentList_name
   }));
 }), _defineProperty(_notificationMap, _constants.notificationTypes.Reaction, function (notification) {
   return /*#__PURE__*/_react["default"].createElement("span", {

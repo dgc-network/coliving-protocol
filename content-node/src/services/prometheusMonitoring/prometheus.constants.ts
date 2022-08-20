@@ -151,11 +151,11 @@ export const METRIC_LABELS = Object.freeze({
       // Routes that use write quorum but don't enforce it (ignoreWriteQuorum should be true):
       '/image_upload',
       '/coliving_users',
-      '/content lists',
+      '/contentLists',
       '/agreements',
       // Routes that strictly enforce write quorum (ignoreWriteQuorum should be false)
       '/coliving_users/metadata',
-      '/content lists/metadata',
+      '/contentLists/metadata',
       '/agreements/metadata'
     ],
     result: [

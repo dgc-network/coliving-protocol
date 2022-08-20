@@ -7,9 +7,9 @@ from redis import Redis
 from sqlalchemy.orm.session import Session
 from src.challenges.challenge_event import ChallengeEvent
 from src.challenges.challenge_event_bus import ChallengeEventBus
-from src.queries.get_trending_content lists import (
+from src.queries.get_trending_contentLists import (
     GetTrendingContentListsArgs,
-    _get_trending_content lists_with_session,
+    _get_trending_contentLists_with_session,
 )
 from src.queries.get_trending_agreements import _get_trending_agreements_with_session
 from src.queries.get_underground_trending import (
@@ -136,29 +136,29 @@ def enqueue_trending_challenges(
                 TrendingType.UNDERGROUND_AGREEMENTS,
             )
 
-        trending_content list_versions = trending_strategy_factory.get_versions_for_type(
+        trending_contentList_versions = trending_strategy_factory.get_versions_for_type(
             TrendingType.CONTENT_LISTS
         ).keys()
-        for version in trending_content list_versions:
+        for version in trending_contentList_versions:
             strategy = trending_strategy_factory.get_strategy(
                 TrendingType.CONTENT_LISTS, version
             )
-            content lists_args: GetTrendingContentListsArgs = {
+            contentLists_args: GetTrendingContentListsArgs = {
                 "limit": TRENDING_LIMIT,
                 "offset": 0,
                 "time": time_range,
             }
-            trending_content lists = _get_trending_content lists_with_session(
-                session, content lists_args, strategy, False
+            trending_contentLists = _get_trending_contentLists_with_session(
+                session, contentLists_args, strategy, False
             )
-            for idx, content list in enumerate(trending_content lists):
+            for idx, contentList in enumerate(trending_contentLists):
                 challenge_bus.dispatch(
-                    ChallengeEvent.trending_content list,
+                    ChallengeEvent.trending_contentList,
                     latest_blocknumber,
-                    content list["content list_owner_id"],
+                    contentList["contentList_owner_id"],
                     {
-                        "id": content list["content list_id"],
-                        "user_id": content list["content list_owner_id"],
+                        "id": contentList["contentList_id"],
+                        "user_id": contentList["contentList_owner_id"],
                         "rank": idx + 1,
                         "type": str(TrendingType.CONTENT_LISTS),
                         "version": str(version),

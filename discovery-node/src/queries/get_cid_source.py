@@ -61,16 +61,16 @@ def get_cid_source(cid):
                         UNION ALL
                         (
                                 SELECT
-                                "content list_id" as "id",
-                                'content lists' as "table_name",
-                                'content list_image_multihash' as "type",
+                                "contentList_id" as "id",
+                                'contentLists' as "table_name",
+                                'contentList_image_multihash' as "type",
                                 "is_current"
                                 FROM
-                                    "content lists"
+                                    "contentLists"
                                 WHERE
                                     (table cid_const) in (
-                                        "content list_image_sizes_multihash",
-                                        "content list_image_multihash"
+                                        "contentList_image_sizes_multihash",
+                                        "contentList_image_multihash"
                                     )
                         )
                         UNION ALL

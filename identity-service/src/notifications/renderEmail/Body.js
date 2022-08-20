@@ -125,7 +125,7 @@ var snippetMap = (_snippetMap = {}, _defineProperty(_snippetMap, _constants.noti
 }), _defineProperty(_snippetMap, _constants.notificationTypes.ChallengeReward, function (notification) {
   return "You've earned $LIVE for completing challenges";
 }), _defineProperty(_snippetMap, _constants.notificationTypes.AddAgreementToContentList, function (notification) {
-  return "".concat(notification.content listOwner.name, " added ").concat(notification.agreement.title, " to ").concat(notification.content list.content list_name);
+  return "".concat(notification.contentListOwner.name, " added ").concat(notification.agreement.title, " to ").concat(notification.contentList.contentList_name);
 }), _defineProperty(_snippetMap, _constants.notificationTypes.TipReceive, function (notification) {
   return "".concat(notification.sendingUser.name, " sent you a tip of ").concat(notification.amount, " $LIVE");
 }), _defineProperty(_snippetMap, _constants.notificationTypes.Reaction, function (notification) {

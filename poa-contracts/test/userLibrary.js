@@ -20,18 +20,18 @@ contract('UserLibrary', async (accounts) => {
   const invalidAgreementId = 3
   const invalidContentListId = 2
 
-  let content listName = 'UserLibrary Test ContentList'
-  let content listAgreements = [1, 2]
+  let contentListName = 'UserLibrary Test ContentList'
+  let contentListAgreements = [1, 2]
   let expectedContentListId = 1
-  let content listOwnerId = testUserId1
+  let contentListOwnerId = testUserId1
 
   let registry
   let userStorage
   let userFactory
   let agreementStorage
   let agreementFactory
-  let content listStorage
-  let content listFactory
+  let contentListStorage
+  let contentListFactory
   let userLibraryFactory
 
   beforeEach(async () => {
@@ -47,23 +47,23 @@ contract('UserLibrary', async (accounts) => {
     agreementFactory = await AgreementFactory.new(registry.address, _constants.agreementStorageKey, _constants.userFactoryKey, networkId)
     await registry.addContract(_constants.agreementFactoryKey, agreementFactory.address)
 
-    // Deploy content list related contracts
-    content listStorage = await ContentListStorage.new(registry.address)
-    await registry.addContract(_constants.content listStorageKey, content listStorage.address)
-    content listFactory = await ContentListFactory.new(
+    // Deploy contentList related contracts
+    contentListStorage = await ContentListStorage.new(registry.address)
+    await registry.addContract(_constants.contentListStorageKey, contentListStorage.address)
+    contentListFactory = await ContentListFactory.new(
       registry.address,
-      _constants.content listStorageKey,
+      _constants.contentListStorageKey,
       _constants.userFactoryKey,
       _constants.agreementFactoryKey,
       networkId)
 
-    await registry.addContract(_constants.content listFactoryKey, content listFactory.address)
+    await registry.addContract(_constants.contentListFactoryKey, contentListFactory.address)
 
     userLibraryFactory = await UserLibraryFactory.new(
       registry.address,
       _constants.userFactoryKey,
       _constants.agreementFactoryKey,
-      _constants.content listFactoryKey,
+      _constants.contentListFactoryKey,
       networkId)
 
     await registry.addContract(_constants.userLibraryFactoryKey, userLibraryFactory.address)
@@ -102,16 +102,16 @@ contract('UserLibrary', async (accounts) => {
       _constants.testMultihash.hashFn,
       _constants.testMultihash.size)
 
-    // Add a content list
+    // Add a contentList
     await _lib.addContentListAndValidate(
-      content listFactory,
+      contentListFactory,
       expectedContentListId,
       accounts[0],
-      content listOwnerId,
-      content listName,
+      contentListOwnerId,
+      contentListName,
       false,
       false,
-      content listAgreements)
+      contentListAgreements)
   })
 
   it('Should add one agreement save', async () => {
@@ -139,8 +139,8 @@ contract('UserLibrary', async (accounts) => {
       testAgreementId1)
   })
 
-  it('Should add one content list save', async () => {
-    // add content list save and validate
+  it('Should add one contentList save', async () => {
+    // add contentList save and validate
     await _lib.addContentListSaveAndValidate(
       userLibraryFactory,
       accounts[0],
@@ -148,8 +148,8 @@ contract('UserLibrary', async (accounts) => {
       expectedContentListId)
   })
 
-  it('Should delete one content list save', async () => {
-    // add content list save and validate
+  it('Should delete one contentList save', async () => {
+    // add contentList save and validate
     await _lib.addContentListSaveAndValidate(
       userLibraryFactory,
       accounts[0],
@@ -157,7 +157,7 @@ contract('UserLibrary', async (accounts) => {
       expectedContentListId
     )
 
-    // delete content list save and validate
+    // delete contentList save and validate
     await _lib.deleteContentListSaveAndValidate(
       userLibraryFactory,
       accounts[0],
@@ -166,10 +166,10 @@ contract('UserLibrary', async (accounts) => {
     )
   })
 
-  it('Should fail to add content list save with non-existent user and non-existent content list', async () => {
+  it('Should fail to add contentList save with non-existent user and non-existent contentList', async () => {
     let caughtError = false
     try {
-      // add content list save with invalid user
+      // add contentList save with invalid user
       await _lib.addContentListSaveAndValidate(
         userLibraryFactory,
         accounts[0],
@@ -188,7 +188,7 @@ contract('UserLibrary', async (accounts) => {
 
     caughtError = false
     try {
-      // add content list save with invalid content list
+      // add contentList save with invalid contentList
       await _lib.addContentListSaveAndValidate(
         userLibraryFactory,
         accounts[0],
@@ -196,7 +196,7 @@ contract('UserLibrary', async (accounts) => {
         invalidContentListId)
     } catch (e) {
       // handle expected error
-      if (e.message.indexOf('valid content list ID') >= 0) {
+      if (e.message.indexOf('valid contentList ID') >= 0) {
         caughtError = true
       } else {
         // unexpected error - throw normally
@@ -207,10 +207,10 @@ contract('UserLibrary', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
   })
 
-  it('Should fail to delete content list save with non-existent user and non-existent content list', async () => {
+  it('Should fail to delete contentList save with non-existent user and non-existent contentList', async () => {
     let caughtError = false
     try {
-      // add content list save with invalid user
+      // add contentList save with invalid user
       await _lib.deleteContentListSaveAndValidate(
         userLibraryFactory,
         accounts[0],
@@ -228,7 +228,7 @@ contract('UserLibrary', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
     caughtError = false
     try {
-      // add content list save with invalid content list
+      // add contentList save with invalid contentList
       await _lib.deleteContentListSaveAndValidate(
         userLibraryFactory,
         accounts[0],
@@ -236,7 +236,7 @@ contract('UserLibrary', async (accounts) => {
         invalidContentListId)
     } catch (e) {
       // handle expected error
-      if (e.message.indexOf('valid content list ID') >= 0) {
+      if (e.message.indexOf('valid contentList ID') >= 0) {
         caughtError = true
       } else {
         // unexpected error - throw normally
@@ -342,7 +342,7 @@ contract('UserLibrary', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
   })
 
-  it('Should fail to add content list save due to lack of ownership of user', async () => {
+  it('Should fail to add contentList save due to lack of ownership of user', async () => {
     let caughtError = false
     try {
       await _lib.addContentListSaveAndValidate(
@@ -391,8 +391,8 @@ contract('UserLibrary', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
   })
 
-  it('Should fail to delete content list save due to lack of ownership of user', async () => {
-    // add content list save and validate
+  it('Should fail to delete contentList save due to lack of ownership of user', async () => {
+    // add contentList save and validate
     await _lib.addContentListSaveAndValidate(
       userLibraryFactory,
       accounts[0],

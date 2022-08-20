@@ -47,7 +47,7 @@
                 "collectibles": {
                     "$ref": "#/definitions/Collectibles"
                 },
-                "content list_library": {
+                "contentList_library": {
                     "$ref": "#/definitions/ContentListLibrary"
                 },
                 "events": {
@@ -138,9 +138,9 @@
             "properties": {
                 "type": {
                     "type": "string",
-                    "const": "content list"
+                    "const": "contentList"
                 },
-                "content list_id": {
+                "contentList_id": {
                     "type": "integer"
                 }
             }
@@ -150,9 +150,9 @@
             "properties": {
                 "type": {
                     "type": "string",
-                    "const": "explore_content list"
+                    "const": "explore_contentList"
                 },
-                "content list_id": {
+                "contentList_id": {
                     "type": "string",
                     "pattern": "^[a-zA-Z \/-?]+$"
                 }

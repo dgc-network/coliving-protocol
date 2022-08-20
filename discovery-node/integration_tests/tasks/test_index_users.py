@@ -169,23 +169,23 @@ cid_metadata_client = CIDMetadataClient(
                 "73:::0x417cf58dc18edd17025689d13af2b85f403e130c": {},
                 "order": ["73:::0x417cf58dc18edd17025689d13af2b85f403e130c"],
             },
-            "content list_library": {
+            "contentList_library": {
                 "contents": [
                     {
                         "type": "folder",
-                        "name": "my favorite content lists",
+                        "name": "my favorite contentLists",
                         "contents": [
-                            {"type": "content list", "content list_id": 500},
+                            {"type": "contentList", "contentList_id": 500},
                             {
-                                "type": "explore_content list",
-                                "content list_id": "heavy-rotation",
+                                "type": "explore_contentList",
+                                "contentList_id": "heavy-rotation",
                             },
                         ],
                     },
-                    {"type": "content list", "content list_id": 501},
-                    {"type": "content list", "content list_id": 502},
-                    {"type": "explore_content list", "content list_id": "feeling-lucky"},
-                    {"type": "content list", "content list_id": 503},
+                    {"type": "contentList", "contentList_id": 501},
+                    {"type": "contentList", "contentList_id": 502},
+                    {"type": "explore_contentList", "contentList_id": "feeling-lucky"},
+                    {"type": "contentList", "contentList_id": 503},
                 ]
             },
             "events": {
@@ -461,7 +461,7 @@ def test_index_users(bus_mock: mock.MagicMock, app):
         )
         assert user_record.cover_photo_sizes == ipfs_metadata["cover_photo_sizes"]
         assert user_record.has_collectibles == True
-        assert user_record.content list_library == ipfs_metadata["content list_library"]
+        assert user_record.contentList_library == ipfs_metadata["contentList_library"]
 
         assert user_record.is_deactivated == True
 

@@ -13,7 +13,7 @@ begin
   if new.repost_type = 'agreement' then
     insert into aggregate_agreement (agreement_id) values (new.repost_item_id) on conflict do nothing;
   else
-    insert into aggregate_content list (content list_id) values (new.repost_item_id) on conflict do nothing;
+    insert into aggregate_contentList (contentList_id) values (new.repost_item_id) on conflict do nothing;
   end if;
 
   -- increment or decrement?
@@ -28,7 +28,7 @@ begin
   set repost_count = repost_count + delta
   where user_id = new.user_id;
 
-  -- update agg agreement or content list
+  -- update agg agreement or contentList
   if new.repost_type = 'agreement' then
     milestone_name := 'AGREEMENT_REPOST_COUNT';
     update aggregate_agreement 
@@ -37,9 +37,9 @@ begin
     returning repost_count into new_val;
   else
     milestone_name := 'CONTENT_LIST_REPOST_COUNT';
-    update aggregate_content list
+    update aggregate_contentList
     set repost_count = repost_count + delta
-    where content list_id = new.repost_item_id
+    where contentList_id = new.repost_item_id
     returning repost_count into new_val;
   end if;
 

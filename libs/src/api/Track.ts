@@ -185,7 +185,7 @@ export class Agreement extends Base {
 
   /**
    * Return saved agreements for current user
-   * NOTE in returned JSON, SaveType string one of agreement, content list, album
+   * NOTE in returned JSON, SaveType string one of agreement, contentList, album
    */
   async getSavedAgreements(limit = 100, offset = 0, withUsers = false) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
@@ -304,7 +304,7 @@ export class Agreement extends Base {
 
   /**
    * Return saved agreements for current user
-   * NOTE in returned JSON, SaveType string one of agreement, content list, album
+   * NOTE in returned JSON, SaveType string one of agreement, contentList, album
    */
   async getListenHistoryAgreements(limit = 100, offset = 0) {
     this.REQUIRES(Services.IDENTITY_SERVICE)

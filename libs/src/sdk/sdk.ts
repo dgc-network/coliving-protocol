@@ -173,7 +173,7 @@ const initializeApis = ({
 
   const agreements = new AgreementsApi(generatedApiClientConfig, discoveryProvider)
   const users = new UsersApi(generatedApiClientConfig)
-  const content lists = new ContentListsApi(generatedApiClientConfig)
+  const contentLists = new ContentListsApi(generatedApiClientConfig)
   const tips = new TipsApi(generatedApiClientConfig)
   const { resolve } = new ResolveApi(generatedApiClientConfig)
 
@@ -181,7 +181,7 @@ const initializeApis = ({
     agreements: new AgreementsApiFull(generatedApiClientConfig as any),
     users: new UsersApiFull(generatedApiClientConfig as any),
     search: new SearchApiFull(generatedApiClientConfig as any),
-    content lists: new ContentListsApiFull(generatedApiClientConfig as any),
+    contentLists: new ContentListsApiFull(generatedApiClientConfig as any),
     reactions: new ReactionsApiFull(generatedApiClientConfig as any),
     tips: new TipsApiFull(generatedApiClientConfig as any)
   }
@@ -189,7 +189,7 @@ const initializeApis = ({
   return {
     agreements,
     users,
-    content lists,
+    contentLists,
     tips,
     resolve,
     full

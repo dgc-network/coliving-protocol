@@ -89,7 +89,7 @@
 		"starting_block": 0
 	},
 	{
-		"id": "first-content list",
+		"id": "first-contentList",
 		"type": "boolean",
 		"amount": 2,
 		"active": true,

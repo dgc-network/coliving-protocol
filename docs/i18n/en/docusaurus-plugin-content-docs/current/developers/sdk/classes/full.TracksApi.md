@@ -11,7 +11,7 @@ custom_edit_url: null
 
 **bestNewReleases**(): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
 
-Gets the agreements found on the \"Best New Releases\" smart content list
+Gets the agreements found on the \"Best New Releases\" smart contentList
 
 #### Returns
 
@@ -49,7 +49,7 @@ ___
 
 **getMostLovedAgreements**(`requestParameters?`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
 
-Gets the agreements found on the \"Most Loved\" smart content list
+Gets the agreements found on the \"Most Loved\" smart contentList
 
 #### Parameters
 
@@ -283,7 +283,7 @@ ___
 
 **getUnderTheRadarAgreements**(`requestParameters?`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
 
-Gets the agreements found on the \"Under the Radar\" smart content list
+Gets the agreements found on the \"Under the Radar\" smart contentList
 
 #### Parameters
 

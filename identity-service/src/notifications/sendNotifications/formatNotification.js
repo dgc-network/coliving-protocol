@@ -24,8 +24,8 @@ const getRepostType = (type) => {
       return notificationTypes.Repost.agreement
     case 'album':
       return notificationTypes.Repost.album
-    case 'content list':
-      return notificationTypes.Repost.content list
+    case 'contentList':
+      return notificationTypes.Repost.contentList
     default:
       return ''
   }
@@ -37,8 +37,8 @@ const getFavoriteType = (type) => {
       return notificationTypes.Favorite.agreement
     case 'album':
       return notificationTypes.Favorite.album
-    case 'content list':
-      return notificationTypes.Favorite.content list
+    case 'contentList':
+      return notificationTypes.Favorite.contentList
     default:
       return ''
   }
@@ -72,7 +72,7 @@ async function formatNotifications (notifications, notificationSettings, tx) {
     }
 
     // Handle the 'repost' notification type
-    // agreement/album/content list
+    // agreement/album/contentList
     if (notif.type === notificationTypes.Repost.base) {
       let notificationTarget = notif.metadata.entity_owner_id
       const shouldNotify = shouldNotifyUser(notificationTarget, 'reposts', notificationSettings)
@@ -92,7 +92,7 @@ async function formatNotifications (notifications, notificationSettings, tx) {
       }
     }
 
-    // Handle the 'favorite' notification type, agreement/album/content list
+    // Handle the 'favorite' notification type, agreement/album/contentList
     if (notif.type === notificationTypes.Favorite.base) {
       let notificationTarget = notif.metadata.entity_owner_id
       const shouldNotify = shouldNotifyUser(notificationTarget, 'favorites', notificationSettings)
@@ -206,12 +206,12 @@ async function formatNotifications (notifications, notificationSettings, tx) {
       formattedNotifications.push(formattedTierChangeNotification)
     }
 
-    // Handle the 'create' notification type, agreement/album/content list
+    // Handle the 'create' notification type, agreement/album/contentList
     if (notif.type === notificationTypes.Create.base) {
       await _processCreateNotifications(notif, tx)
     }
 
-    // Handle the 'agreement added to content list' notification type
+    // Handle the 'agreement added to contentList' notification type
     if (notif.type === notificationTypes.AddAgreementToContentList) {
       const formattedAddAgreementToContentListNotification = {
         ...notif,
@@ -222,8 +222,8 @@ async function formatNotifications (notifications, notificationSettings, tx) {
         }],
         metadata: {
           agreementOwnerId: notif.metadata.agreement_owner_id,
-          content listOwnerId: notif.initiator,
-          content listId: notif.metadata.content list_id
+          contentListOwnerId: notif.initiator,
+          contentListId: notif.metadata.contentList_id
         },
         entityId: notif.metadata.agreement_id,
         type: notificationTypes.AddAgreementToContentList
@@ -298,8 +298,8 @@ async function _processCreateNotifications (notif, tx) {
       createType = notificationTypes.Create.album
       actionEntityType = actionEntityTypes.User
       break
-    case 'content list':
-      createType = notificationTypes.Create.content list
+    case 'contentList':
+      createType = notificationTypes.Create.contentList
       actionEntityType = actionEntityTypes.User
       break
     default:
@@ -320,7 +320,7 @@ async function _processCreateNotifications (notif, tx) {
 
   // The notification entity id is the uploader id for agreements
   // Each agreement will added to the notification actions table
-  // For content list/albums, the notification entity id is the collection id itself
+  // For contentList/albums, the notification entity id is the collection id itself
   let notificationEntityId =
     actionEntityType === actionEntityTypes.Agreement
       ? notif.initiator
@@ -355,9 +355,9 @@ async function _processCreateNotifications (notif, tx) {
   })
   subscriberPushNotifications.push(...formattedNotifications)
 
-  // Dedupe album /content list notification
+  // Dedupe album /contentList notification
   if (createType === notificationTypes.Create.album ||
-      createType === notificationTypes.Create.content list) {
+      createType === notificationTypes.Create.contentList) {
     let agreementIdObjectList = notif.metadata.collection_content.agreement_ids
     let agreementIdsArray = agreementIdObjectList.map(x => x.agreement)
 

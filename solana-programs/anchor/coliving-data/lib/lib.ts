@@ -796,12 +796,12 @@ export const createAgreement = ({
 /**
  * Manage entity
  * actions: create, update, delete
- * entities: agreement, content list
+ * entities: agreement, contentList
  */
 
 export const EntityTypesEnumValues = {
   agreement: { agreement: {} },
-  content list: { content list: {} },
+  contentList: { contentList: {} },
 };
 
 export const ManagementActions = {
@@ -897,7 +897,7 @@ export const deleteAgreement = ({
   return tx;
 };
 
-/// Create a content list
+/// Create a contentList
 
 export const createContentList = ({
   id,
@@ -917,7 +917,7 @@ export const createContentList = ({
     program.instruction.manageEntity(
       baseAuthorityAccount,
       { userId: userId.toNumber(), bump: bumpSeed },
-      EntityTypesEnumValues.content list,
+      EntityTypesEnumValues.contentList,
       ManagementActions.create,
       id,
       metadata,
@@ -935,7 +935,7 @@ export const createContentList = ({
   return tx;
 };
 
-/// Update a content list
+/// Update a contentList
 
 export const updateContentList = ({
   id,
@@ -955,7 +955,7 @@ export const updateContentList = ({
     program.instruction.manageEntity(
       baseAuthorityAccount,
       { userId: userId.toNumber(), bump: bumpSeed },
-      EntityTypesEnumValues.content list,
+      EntityTypesEnumValues.contentList,
       ManagementActions.update,
       id,
       metadata,
@@ -973,7 +973,7 @@ export const updateContentList = ({
   return tx;
 };
 
-/// Delete a content list
+/// Delete a contentList
 export const deleteContentList = ({
   program,
   id,
@@ -991,7 +991,7 @@ export const deleteContentList = ({
     program.instruction.manageEntity(
       baseAuthorityAccount,
       { userId: userId.toNumber(), bump: bumpSeed },
-      EntityTypesEnumValues.content list,
+      EntityTypesEnumValues.contentList,
       ManagementActions.delete,
       id,
       "",
@@ -1012,7 +1012,7 @@ export const deleteContentList = ({
 /**
  * Write entity social actions
  * actions: save, repost
- * entities: agreement, content list
+ * entities: agreement, contentList
  */
 
 export const EntitySocialActionEnumValues = {
@@ -1197,7 +1197,7 @@ export const addContentListSave = ({
       baseAuthorityAccount,
       { userId: userId.toNumber(), bump: bumpSeed },
       EntitySocialActions.addSave,
-      EntityTypesEnumValues.content list,
+      EntityTypesEnumValues.contentList,
       id,
       {
         accounts: {
@@ -1231,7 +1231,7 @@ export const deleteContentListSave = ({
       baseAuthorityAccount,
       { userId: userId.toNumber(), bump: bumpSeed },
       EntitySocialActions.deleteSave,
-      EntityTypesEnumValues.content list,
+      EntityTypesEnumValues.contentList,
       id,
       {
         accounts: {
@@ -1265,7 +1265,7 @@ export const addContentListRepost = ({
       baseAuthorityAccount,
       { userId: userId.toNumber(), bump: bumpSeed },
       EntitySocialActions.addRepost,
-      EntityTypesEnumValues.content list,
+      EntityTypesEnumValues.contentList,
       id,
       {
         accounts: {
@@ -1299,7 +1299,7 @@ export const deleteContentListRepost = ({
       baseAuthorityAccount,
       { userId: userId.toNumber(), bump: bumpSeed },
       EntitySocialActions.deleteRepost,
-      EntityTypesEnumValues.content list,
+      EntityTypesEnumValues.contentList,
       id,
       {
         accounts: {

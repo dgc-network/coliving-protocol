@@ -5,10 +5,10 @@ const authMiddleware = require('../authMiddleware')
 
 module.exports = function (app) {
   /**
-   * Returns the content listUpdates dictionary for given user
+   * Returns the contentListUpdates dictionary for given user
    * @param {string} walletAddress   user wallet address
    */
-  app.get('/user_content list_updates', handleResponse(async (req) => {
+  app.get('/user_contentList_updates', handleResponse(async (req) => {
     const { walletAddress } = req.query
     if (!walletAddress) {
       return errorResponseBadRequest('Please provide a wallet address')
@@ -16,62 +16,62 @@ module.exports = function (app) {
 
     try {
       const userEvents = await models.UserEvents.findOne({
-        attributes: ['content listUpdates'],
+        attributes: ['contentListUpdates'],
         where: { walletAddress }
       })
       if (!userEvents) throw new Error(`UserEvents for ${walletAddress} not found`)
 
-      return successResponse({ content listUpdates: userEvents.content listUpdates })
+      return successResponse({ contentListUpdates: userEvents.contentListUpdates })
     } catch (e) {
       req.logger.error(e)
       // no-op. No user events.
       return errorResponseServerError(
-        `Unable to get user last content list views for ${walletAddress}`
+        `Unable to get user last contentList views for ${walletAddress}`
       )
     }
   }))
 
   /**
    * Updates the lastContentListViews field for the user in the UserEvents table
-   * @param {boolean} content listId   id of content list or folder to update
+   * @param {boolean} contentListId   id of contentList or folder to update
    */
-  app.post('/user_content list_updates', authMiddleware, handleResponse(async (req) => {
-    const { content listId } = req.query
+  app.post('/user_contentList_updates', authMiddleware, handleResponse(async (req) => {
+    const { contentListId } = req.query
     const { walletAddress } = req.user
-    if (!walletAddress || !content listId) {
+    if (!walletAddress || !contentListId) {
       return errorResponseBadRequest(
-        'Please provide a wallet address and a content list library item id'
+        'Please provide a wallet address and a contentList library item id'
       )
     }
 
     try {
       const result = await models.UserEvents.findOne({
-        attributes: ['content listUpdates'],
+        attributes: ['contentListUpdates'],
         where: { walletAddress }
       })
       if (!result) throw new Error(`ContentList updates for ${walletAddress} not found`)
 
-      const content listUpdatesResult = result.content listUpdates
+      const contentListUpdatesResult = result.contentListUpdates
       const now = moment().utc().valueOf()
-      let content listUpdates = {}
-      if (!content listUpdatesResult) {
-        content listUpdates[content listId] = {
+      let contentListUpdates = {}
+      if (!contentListUpdatesResult) {
+        contentListUpdates[contentListId] = {
           lastUpdated: now,
           userLastViewed: now
         }
       } else {
-        content listUpdates = {
-          ...content listUpdatesResult,
-          [content listId]: {
+        contentListUpdates = {
+          ...contentListUpdatesResult,
+          [contentListId]: {
             lastUpdated: now,
-            ...content listUpdatesResult[content listId],
+            ...contentListUpdatesResult[contentListId],
             userLastViewed: now
           }
         }
       }
 
       await models.UserEvents.update(
-        { content listUpdates },
+        { contentListUpdates },
         { where: { walletAddress } }
       )
       return successResponse({})
@@ -79,7 +79,7 @@ module.exports = function (app) {
       req.logger.error(e)
       console.log(e)
       return errorResponseServerError(
-        `Unable to update user last content list views for ${walletAddress} for content list library item id ${content listId}`
+        `Unable to update user last contentList views for ${walletAddress} for contentList library item id ${contentListId}`
       )
     }
   }))

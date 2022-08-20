@@ -29,9 +29,9 @@ ___
 
 ___
 
-### content lists
+### contentLists
 
- **content lists**: [`ContentListFull`](full.ContentListFull.md)[]
+ **contentLists**: [`ContentListFull`](full.ContentListFull.md)[]
 
 **`memberof`** SearchModel
 
@@ -45,9 +45,9 @@ ___
 
 ___
 
-### saved\_content lists
+### saved\_contentLists
 
- `Optional` **saved\_content lists**: [`ContentListFull`](full.ContentListFull.md)[]
+ `Optional` **saved\_contentLists**: [`ContentListFull`](full.ContentListFull.md)[]
 
 **`memberof`** SearchModel
 

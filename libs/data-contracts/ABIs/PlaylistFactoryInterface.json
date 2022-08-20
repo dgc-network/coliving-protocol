@@ -9,7 +9,7 @@
           "type": "address"
         },
         {
-          "name": "_content listId",
+          "name": "_contentListId",
           "type": "uint256"
         }
       ],
@@ -23,11 +23,11 @@
       "constant": true,
       "inputs": [
         {
-          "name": "_content listId",
+          "name": "_contentListId",
           "type": "uint256"
         }
       ],
-      "name": "content listExists",
+      "name": "contentListExists",
       "outputs": [
         {
           "name": "exists",

@@ -230,11 +230,11 @@ export const getContentLists = (
     }
   }
   return {
-    endpoint: 'content lists',
+    endpoint: 'contentLists',
     queryParams: {
       limit,
       offset,
-      ...(idsArray != null ? { content list_id: idsArray } : {}),
+      ...(idsArray != null ? { contentList_id: idsArray } : {}),
       ...(targetUserId ? { user_id: targetUserId } : {}),
       ...(withUsers ? { with_users: true } : {})
     }
@@ -309,7 +309,7 @@ export const getContentListRepostIntersectionUsers = (
   return {
     endpoint: 'users',
     urlParams:
-      '/intersection/repost/content list/' +
+      '/intersection/repost/contentList/' +
       repostContentListId +
       '/' +
       followerUserId,
@@ -360,7 +360,7 @@ export const getRepostersForContentList = (
 ) => {
   return {
     endpoint: 'users',
-    urlParams: '/reposts/content list/' + repostContentListId,
+    urlParams: '/reposts/contentList/' + repostContentListId,
     queryParams: { limit: limit, offset: offset }
   }
 }
@@ -384,7 +384,7 @@ export const getSaversForContentList = (
 ) => {
   return {
     endpoint: 'users',
-    urlParams: '/saves/content list/' + saveContentListId,
+    urlParams: '/saves/contentList/' + saveContentListId,
     queryParams: { limit: limit, offset: offset }
   }
 }
@@ -433,7 +433,7 @@ export const getSavedContentLists = (
   withUsers = false
 ) => {
   return {
-    endpoint: 'saves/content lists',
+    endpoint: 'saves/contentLists',
     queryParams: { limit: limit, offset: offset, with_users: withUsers }
   }
 }
@@ -469,7 +469,7 @@ export const getUserAccount = (wallet: string) => {
  * @deprecated Migrate to using getTopFullContentLists
  */
 export const getTopContentLists = (
-  type: 'content list' | 'album',
+  type: 'contentList' | 'album',
   limit: number,
   mood: string,
   filter: string,
@@ -487,7 +487,7 @@ export const getTopContentLists = (
 }
 
 export type GetTopFullContentListsParams = {
-  type: 'content list' | 'album'
+  type: 'contentList' | 'album'
   limit?: number
   mood?: string
   filter?: string
@@ -502,7 +502,7 @@ export const getTopFullContentLists = ({
   withUsers = false
 }: GetTopFullContentListsParams) => {
   return {
-    endpoint: `/v1/full/content lists/top`,
+    endpoint: `/v1/full/contentLists/top`,
     queryParams: {
       type,
       limit,

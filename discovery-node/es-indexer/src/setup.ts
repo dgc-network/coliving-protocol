@@ -5,7 +5,7 @@ export const LISTEN_TABLES = [
   'aggregate_plays',
   'aggregate_user',
   'follows',
-  'content lists',
+  'contentLists',
   'reposts',
   'saves',
   'agreements',
@@ -22,8 +22,8 @@ begin
       PERFORM pg_notify(TG_TABLE_NAME, json_build_object('agreement_id', new.agreement_id)::text);
     when 'users' then
       PERFORM pg_notify(TG_TABLE_NAME, json_build_object('user_id', new.user_id)::text);
-    when 'content lists' then
-      PERFORM pg_notify(TG_TABLE_NAME, json_build_object('content list_id', new.content list_id)::text);
+    when 'contentLists' then
+      PERFORM pg_notify(TG_TABLE_NAME, json_build_object('contentList_id', new.contentList_id)::text);
     else
       PERFORM pg_notify(TG_TABLE_NAME, to_json(new)::text);
   end case;

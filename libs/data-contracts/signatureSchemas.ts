@@ -142,7 +142,7 @@ const deleteAgreementRepostRequest = addAgreementRepostRequest
 
 const addContentListRepostRequest = [
   { name: 'userId', type: 'uint' },
-  { name: 'content listId', type: 'uint' },
+  { name: 'contentListId', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
@@ -157,8 +157,8 @@ const userFollowRequest = [
 const deleteUserFollowRequest = userFollowRequest
 
 const createContentListRequest = [
-  { name: 'content listOwnerId', type: 'uint' },
-  { name: 'content listName', type: 'string' },
+  { name: 'contentListOwnerId', type: 'uint' },
+  { name: 'contentListName', type: 'string' },
   { name: 'isPrivate', type: 'bool' },
   { name: 'isAlbum', type: 'bool' },
   { name: 'agreementIdsHash', type: 'bytes32' },
@@ -166,56 +166,56 @@ const createContentListRequest = [
 ]
 
 const deleteContentListRequest = [
-  { name: 'content listId', type: 'uint' },
+  { name: 'contentListId', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
 const addContentListAgreementRequest = [
-  { name: 'content listId', type: 'uint' },
+  { name: 'contentListId', type: 'uint' },
   { name: 'addedAgreementId', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
 const deleteContentListAgreementRequest = [
-  { name: 'content listId', type: 'uint' },
+  { name: 'contentListId', type: 'uint' },
   { name: 'deletedAgreementId', type: 'uint' },
   { name: 'deletedAgreementTimestamp', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
 const orderContentListAgreementsRequest = [
-  { name: 'content listId', type: 'uint' },
+  { name: 'contentListId', type: 'uint' },
   { name: 'agreementIdsHash', type: 'bytes32' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
 const updateContentListPrivacyRequest = [
-  { name: 'content listId', type: 'uint' },
+  { name: 'contentListId', type: 'uint' },
   { name: 'updatedContentListPrivacy', type: 'bool' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
 const updateContentListNameRequest = [
-  { name: 'content listId', type: 'uint' },
+  { name: 'contentListId', type: 'uint' },
   { name: 'updatedContentListName', type: 'string' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
 const updateContentListCoverPhotoRequest = [
-  { name: 'content listId', type: 'uint' },
-  { name: 'content listImageMultihashDigest', type: 'bytes32' },
+  { name: 'contentListId', type: 'uint' },
+  { name: 'contentListImageMultihashDigest', type: 'bytes32' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
 const updateContentListDescriptionRequest = [
-  { name: 'content listId', type: 'uint' },
-  { name: 'content listDescription', type: 'string' },
+  { name: 'contentListId', type: 'uint' },
+  { name: 'contentListDescription', type: 'string' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
 const updateContentListUPCRequest = [
-  { name: 'content listId', type: 'uint' },
-  { name: 'content listUPC', type: 'bytes32' },
+  { name: 'contentListId', type: 'uint' },
+  { name: 'contentListUPC', type: 'bytes32' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
@@ -227,13 +227,13 @@ const agreementSaveRequest = [
 
 const deleteAgreementSaveRequest = agreementSaveRequest
 
-const content listSaveRequest = [
+const contentListSaveRequest = [
   { name: 'userId', type: 'uint' },
-  { name: 'content listId', type: 'uint' },
+  { name: 'contentListId', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-const deleteContentListSaveRequest = content listSaveRequest
+const deleteContentListSaveRequest = contentListSaveRequest
 
 const addIPLDBlacklist = [
   { name: 'multihashDigest', type: 'bytes32' },
@@ -285,7 +285,7 @@ export const schemas = {
   updateContentListUPCRequest,
   agreementSaveRequest,
   deleteAgreementSaveRequest,
-  content listSaveRequest,
+  contentListSaveRequest,
   deleteContentListSaveRequest,
   addIPLDBlacklist,
   proposeAddOrUpdateContentNode,
@@ -654,12 +654,12 @@ const getAddContentListRepostRequestData = (
   chainId: number,
   contractAddress: string,
   userId: number,
-  content listId: number,
+  contentListId: number,
   nonce: string
 ) => {
   const message = {
     userId: userId,
-    content listId: content listId,
+    contentListId: contentListId,
     nonce: nonce
   }
   return getRequestData(
@@ -676,12 +676,12 @@ const getDeleteContentListRepostRequestData = (
   chainId: number,
   contractAddress: string,
   userId: number,
-  content listId: number,
+  contentListId: number,
   nonce: string
 ) => {
   const message = {
     userId: userId,
-    content listId: content listId,
+    contentListId: contentListId,
     nonce: nonce
   }
   return getRequestData(
@@ -788,12 +788,12 @@ const getContentListSaveRequestData = (
   chainId: number,
   contractAddress: string,
   userId: number,
-  content listId: number,
+  contentListId: number,
   nonce: string
 ) => {
   const message = {
     userId: userId,
-    content listId: content listId,
+    contentListId: contentListId,
     nonce: nonce
   }
 
@@ -802,7 +802,7 @@ const getContentListSaveRequestData = (
     chainId,
     contractAddress,
     'ContentListSaveRequest',
-    schemas.content listSaveRequest,
+    schemas.contentListSaveRequest,
     message
   )
 }
@@ -811,12 +811,12 @@ const getDeleteContentListSaveRequestData = (
   chainId: number,
   contractAddress: string,
   userId: number,
-  content listId: number,
+  contentListId: number,
   nonce: string
 ) => {
   const message = {
     userId: userId,
-    content listId: content listId,
+    contentListId: contentListId,
     nonce: nonce
   }
 
@@ -838,16 +838,16 @@ const getDeleteContentListSaveRequestData = (
 const getCreateContentListRequestData = (
   chainId: number,
   contractAddress: string,
-  content listOwnerId: number,
-  content listName: string,
+  contentListOwnerId: number,
+  contentListName: string,
   isPrivate: boolean,
   isAlbum: boolean,
   agreementIdsHash: string | null,
   nonce: string
 ) => {
   const message = {
-    content listOwnerId: content listOwnerId,
-    content listName: content listName,
+    contentListOwnerId: contentListOwnerId,
+    contentListName: contentListName,
     isPrivate: isPrivate,
     isAlbum: isAlbum,
     agreementIdsHash: agreementIdsHash,
@@ -867,11 +867,11 @@ const getCreateContentListRequestData = (
 const getDeleteContentListRequestData = (
   chainId: number,
   contractAddress: string,
-  content listId: number,
+  contentListId: number,
   nonce: string
 ) => {
   const message = {
-    content listId: content listId,
+    contentListId: contentListId,
     nonce: nonce
   }
   return getRequestData(
@@ -887,12 +887,12 @@ const getDeleteContentListRequestData = (
 const getAddContentListAgreementRequestData = (
   chainId: number,
   contractAddress: string,
-  content listId: number,
+  contentListId: number,
   addedAgreementId: number,
   nonce: string
 ) => {
   const message = {
-    content listId: content listId,
+    contentListId: contentListId,
     addedAgreementId: addedAgreementId,
     nonce: nonce
   }
@@ -910,13 +910,13 @@ const getAddContentListAgreementRequestData = (
 const getDeleteContentListAgreementRequestData = (
   chainId: number,
   contractAddress: string,
-  content listId: number,
+  contentListId: number,
   deletedAgreementId: number,
   deletedAgreementTimestamp: number,
   nonce: string
 ) => {
   const message = {
-    content listId: content listId,
+    contentListId: contentListId,
     deletedAgreementId: deletedAgreementId,
     deletedAgreementTimestamp: deletedAgreementTimestamp,
     nonce: nonce
@@ -935,12 +935,12 @@ const getDeleteContentListAgreementRequestData = (
 const getOrderContentListAgreementsRequestData = (
   chainId: number,
   contractAddress: string,
-  content listId: number,
+  contentListId: number,
   agreementIdsHash: string | null,
   nonce: string
 ) => {
   const message = {
-    content listId: content listId,
+    contentListId: contentListId,
     agreementIdsHash: agreementIdsHash,
     nonce: nonce
   }
@@ -958,12 +958,12 @@ const getOrderContentListAgreementsRequestData = (
 const getUpdateContentListNameRequestData = (
   chainId: number,
   contractAddress: string,
-  content listId: number,
+  contentListId: number,
   updatedContentListName: string,
   nonce: string
 ) => {
   const message = {
-    content listId: content listId,
+    contentListId: contentListId,
     updatedContentListName: updatedContentListName,
     nonce: nonce
   }
@@ -981,12 +981,12 @@ const getUpdateContentListNameRequestData = (
 const getUpdateContentListPrivacyRequestData = (
   chainId: number,
   contractAddress: string,
-  content listId: number,
+  contentListId: number,
   updatedContentListPrivacy: boolean,
   nonce: string
 ) => {
   const message = {
-    content listId: content listId,
+    contentListId: contentListId,
     updatedContentListPrivacy: updatedContentListPrivacy,
     nonce: nonce
   }
@@ -1004,13 +1004,13 @@ const getUpdateContentListPrivacyRequestData = (
 const getUpdateContentListCoverPhotoRequestData = (
   chainId: number,
   contractAddress: string,
-  content listId: number,
-  content listImageMultihashDigest: string,
+  contentListId: number,
+  contentListImageMultihashDigest: string,
   nonce: string
 ) => {
   const message = {
-    content listId: content listId,
-    content listImageMultihashDigest: content listImageMultihashDigest,
+    contentListId: contentListId,
+    contentListImageMultihashDigest: contentListImageMultihashDigest,
     nonce: nonce
   }
 
@@ -1027,13 +1027,13 @@ const getUpdateContentListCoverPhotoRequestData = (
 const getUpdateContentListUPCRequestData = (
   chainId: number,
   contractAddress: string,
-  content listId: number,
-  content listUPC: string,
+  contentListId: number,
+  contentListUPC: string,
   nonce: string
 ) => {
   const message = {
-    content listId: content listId,
-    content listUPC: content listUPC,
+    contentListId: contentListId,
+    contentListUPC: contentListUPC,
     nonce: nonce
   }
 
@@ -1050,13 +1050,13 @@ const getUpdateContentListUPCRequestData = (
 const getUpdateContentListDescriptionRequestData = (
   chainId: number,
   contractAddress: string,
-  content listId: number,
-  content listDescription: string,
+  contentListId: number,
+  contentListDescription: string,
   nonce: string
 ) => {
   const message = {
-    content listId: content listId,
-    content listDescription: content listDescription,
+    contentListId: contentListId,
+    contentListDescription: contentListDescription,
     nonce: nonce
   }
 

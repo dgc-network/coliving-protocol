@@ -396,10 +396,10 @@ def parse_user_event(
                 )
 
             if (
-                "content list_library" in ipfs_metadata
-                and ipfs_metadata["content list_library"]
+                "contentList_library" in ipfs_metadata
+                and ipfs_metadata["contentList_library"]
             ):
-                user_record.content list_library = ipfs_metadata["content list_library"]
+                user_record.contentList_library = ipfs_metadata["contentList_library"]
 
             if "is_deactivated" in ipfs_metadata:
                 user_record.is_deactivated = ipfs_metadata["is_deactivated"]

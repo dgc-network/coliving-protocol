@@ -1,6 +1,6 @@
 from sqlalchemy import desc, func
 from src import exceptions
-from src.models.content lists.content list import ContentList
+from src.models.contentLists.contentList import ContentList
 from src.models.social.save import Save, SaveType
 from src.models.users.aggregate_user import AggregateUser
 from src.models.users.user import User
@@ -10,26 +10,26 @@ from src.utils import helpers
 from src.utils.db_session import get_db_read_replica
 
 
-def get_savers_for_content list(args):
+def get_savers_for_contentList(args):
     user_results = []
     current_user_id = args.get("current_user_id")
-    save_content list_id = args.get("save_content list_id")
+    save_contentList_id = args.get("save_contentList_id")
     limit = args.get("limit")
     offset = args.get("offset")
 
     db = get_db_read_replica()
     with db.scoped_session() as session:
-        # Ensure ContentList exists for provided save_content list_id.
-        content list_entry = (
+        # Ensure ContentList exists for provided save_contentList_id.
+        contentList_entry = (
             session.query(ContentList)
             .filter(
-                ContentList.content list_id == save_content list_id, ContentList.is_current == True
+                ContentList.contentList_id == save_contentList_id, ContentList.is_current == True
             )
             .first()
         )
-        if content list_entry is None:
+        if contentList_entry is None:
             raise exceptions.NotFoundError(
-                "Resource not found for provided content list id"
+                "Resource not found for provided contentList id"
             )
 
         # Get all Users that saved ContentList, ordered by follower_count desc & paginated.
@@ -45,10 +45,10 @@ def get_savers_for_content list(args):
             .outerjoin(AggregateUser, AggregateUser.user_id == User.user_id)
             .filter(
                 User.is_current == True,
-                # Only select users that saved given content list.
+                # Only select users that saved given contentList.
                 User.user_id.in_(
                     session.query(Save.user_id).filter(
-                        Save.save_item_id == save_content list_id,
+                        Save.save_item_id == save_contentList_id,
                         # Select Saves for ContentLists and Albums (i.e. not Agreements).
                         Save.save_type != SaveType.agreement,
                         Save.is_current == True,

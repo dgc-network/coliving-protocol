@@ -61,7 +61,7 @@ export interface ContentList {
      * @type {string}
      * @memberof ContentList
      */
-    content list_name: string;
+    contentList_name: string;
     /**
      * 
      * @type {number}

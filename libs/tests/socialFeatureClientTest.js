@@ -36,27 +36,27 @@ it('Should add + delete agreement repost', async function () {
   assert.ok('AgreementRepostDeleted' in deleteAgreementRepostTx.events, 'Did not find AgreementRepostDeleted event in transaction')
 })
 
-it('Should add + delete content list repost', async function () {
+it('Should add + delete contentList repost', async function () {
   // add creator
   const handle = 'sid' + Math.floor(Math.random() * 10000000)
   const creatorId = (await colivingInstance.contracts.UserFactoryClient.addUser(handle)).userId
   assert.ok(creatorId && Number.isInteger(creatorId), 'invalid creatorId')
 
-  // add content list
-  const { content listId } = await colivingInstance.contracts.ContentListFactoryClient.createContentList(
+  // add contentList
+  const { contentListId } = await colivingInstance.contracts.ContentListFactoryClient.createContentList(
     creatorId,
     'initialContentListName',
     false,
     false,
     [])
-  assert.ok(content listId && Number.isInteger(content listId), 'invalid content listId')
+  assert.ok(contentListId && Number.isInteger(contentListId), 'invalid contentListId')
 
-  // add content list repost
-  const addContentListRepostTx = await colivingInstance.contracts.SocialFeatureFactoryClient.addContentListRepost(creatorId, content listId)
+  // add contentList repost
+  const addContentListRepostTx = await colivingInstance.contracts.SocialFeatureFactoryClient.addContentListRepost(creatorId, contentListId)
   assert.ok('ContentListRepostAdded' in addContentListRepostTx.events, 'Did not find ContentListRepostAdded event in transaction')
 
-  // delete content list repost
-  const deleteContentListRepostTx = await colivingInstance.contracts.SocialFeatureFactoryClient.deleteContentListRepost(creatorId, content listId)
+  // delete contentList repost
+  const deleteContentListRepostTx = await colivingInstance.contracts.SocialFeatureFactoryClient.deleteContentListRepost(creatorId, contentListId)
   assert.ok('ContentListRepostDeleted' in deleteContentListRepostTx.events, 'Did not find ContentListRepostDeleted event in transaction')
 })
 

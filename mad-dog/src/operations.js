@@ -90,7 +90,7 @@ function CreateContentListRequest (walletIndex, userId) {
 
 function CreateContentListResponse (
   walletIndex,
-  content list,
+  contentList,
   userId,
   success = true,
   error = null
@@ -98,7 +98,7 @@ function CreateContentListResponse (
   return {
     type: OPERATION_TYPE.CREATE_CONTENT_LIST,
     walletIndex,
-    content list,
+    contentList,
     userId,
     success,
     error

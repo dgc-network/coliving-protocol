@@ -37,7 +37,7 @@ from src.utils.redis_constants import (
     most_recent_indexed_block_hash_redis_key,
     most_recent_indexed_block_redis_key,
     oldest_unarchived_play_key,
-    trending_content lists_last_completion_redis_key,
+    trending_contentLists_last_completion_redis_key,
     trending_agreements_last_completion_redis_key,
     user_balances_refresh_last_completion_redis_key,
 )
@@ -202,8 +202,8 @@ def get_health(args: GetHealthArgs, use_redis_cache: bool = True) -> Tuple[Dict,
     trending_agreements_age_sec = get_elapsed_time_redis(
         redis, trending_agreements_last_completion_redis_key
     )
-    trending_content lists_age_sec = get_elapsed_time_redis(
-        redis, trending_content lists_last_completion_redis_key
+    trending_contentLists_age_sec = get_elapsed_time_redis(
+        redis, trending_contentLists_last_completion_redis_key
     )
     challenge_events_age_sec = get_elapsed_time_redis(
         redis, challenges_last_processed_event_redis_key
@@ -275,7 +275,7 @@ def get_health(args: GetHealthArgs, use_redis_cache: bool = True) -> Tuple[Dict,
         },
         "git": os.getenv("GIT_SHA"),
         "trending_agreements_age_sec": trending_agreements_age_sec,
-        "trending_content lists_age_sec": trending_content lists_age_sec,
+        "trending_contentLists_age_sec": trending_contentLists_age_sec,
         "challenge_last_event_age_sec": challenge_events_age_sec,
         "user_balances_age_sec": user_balances_age_sec,
         "num_users_in_lazy_balance_refresh_queue": num_users_in_lazy_balance_refresh_queue,

@@ -101,7 +101,7 @@
           "type": "address"
         },
         {
-          "name": "_content listStorageRegistryKey",
+          "name": "_contentListStorageRegistryKey",
           "type": "bytes32"
         },
         {
@@ -126,12 +126,12 @@
       "inputs": [
         {
           "indexed": false,
-          "name": "_content listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
           "indexed": false,
-          "name": "_content listOwnerId",
+          "name": "_contentListOwnerId",
           "type": "uint256"
         },
         {
@@ -158,7 +158,7 @@
       "inputs": [
         {
           "indexed": false,
-          "name": "_content listId",
+          "name": "_contentListId",
           "type": "uint256"
         }
       ],
@@ -170,7 +170,7 @@
       "inputs": [
         {
           "indexed": false,
-          "name": "_content listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
@@ -187,7 +187,7 @@
       "inputs": [
         {
           "indexed": false,
-          "name": "_content listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
@@ -209,7 +209,7 @@
       "inputs": [
         {
           "indexed": false,
-          "name": "_content listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
@@ -226,7 +226,7 @@
       "inputs": [
         {
           "indexed": false,
-          "name": "_content listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
@@ -243,7 +243,7 @@
       "inputs": [
         {
           "indexed": false,
-          "name": "_content listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
@@ -260,12 +260,12 @@
       "inputs": [
         {
           "indexed": false,
-          "name": "_content listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
           "indexed": false,
-          "name": "_content listImageMultihashDigest",
+          "name": "_contentListImageMultihashDigest",
           "type": "bytes32"
         }
       ],
@@ -277,12 +277,12 @@
       "inputs": [
         {
           "indexed": false,
-          "name": "_content listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
           "indexed": false,
-          "name": "_content listDescription",
+          "name": "_contentListDescription",
           "type": "string"
         }
       ],
@@ -294,12 +294,12 @@
       "inputs": [
         {
           "indexed": false,
-          "name": "_content listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
           "indexed": false,
-          "name": "_content listUPC",
+          "name": "_contentListUPC",
           "type": "bytes32"
         }
       ],
@@ -327,11 +327,11 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_content listOwnerId",
+          "name": "_contentListOwnerId",
           "type": "uint256"
         },
         {
-          "name": "_content listName",
+          "name": "_contentListName",
           "type": "string"
         },
         {
@@ -370,7 +370,7 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_content listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
@@ -397,7 +397,7 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_content listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
@@ -423,7 +423,7 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_content listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
@@ -453,7 +453,7 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_content listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
@@ -479,7 +479,7 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_content listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
@@ -505,7 +505,7 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_content listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
@@ -531,11 +531,11 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_content listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
-          "name": "_content listImageMultihashDigest",
+          "name": "_contentListImageMultihashDigest",
           "type": "bytes32"
         },
         {
@@ -557,11 +557,11 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_content listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
-          "name": "_content listDescription",
+          "name": "_contentListDescription",
           "type": "string"
         },
         {
@@ -583,7 +583,7 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_content listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
@@ -609,11 +609,11 @@
       "constant": true,
       "inputs": [
         {
-          "name": "_content listId",
+          "name": "_contentListId",
           "type": "uint256"
         }
       ],
-      "name": "content listExists",
+      "name": "contentListExists",
       "outputs": [
         {
           "name": "exists",
@@ -628,7 +628,7 @@
       "constant": true,
       "inputs": [
         {
-          "name": "_content listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
@@ -655,7 +655,7 @@
           "type": "address"
         },
         {
-          "name": "_content listId",
+          "name": "_contentListId",
           "type": "uint256"
         }
       ],

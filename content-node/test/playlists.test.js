@@ -37,7 +37,7 @@ describe('Test ContentLists', function () {
 
   it('should fail if metadata is not found in request body', async function () {
     const resp = await request(app)
-      .post('/content lists/metadata')
+      .post('/contentLists/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .set('Enforce-Write-Quorum', false)
@@ -51,7 +51,7 @@ describe('Test ContentLists', function () {
   it('should throw 400 bad request response if metadata validation fails', async function () {
     const metadata = { metadata: 'spaghetti' }
     const resp = await request(app)
-      .post('/content lists/metadata')
+      .post('/contentLists/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .set('Enforce-Write-Quorum', false)
@@ -61,10 +61,10 @@ describe('Test ContentLists', function () {
     assert.deepStrictEqual(resp.body.error, 'Invalid ContentList Metadata')
   })
 
-  it('successfully creates Coliving content list (POST /content lists/metadata)', async function () {
+  it('successfully creates Coliving contentList (POST /contentLists/metadata)', async function () {
     const metadata = { test: 'field1' }
     const resp = await request(app)
-      .post('/content lists/metadata')
+      .post('/contentLists/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .set('Enforce-Write-Quorum', false)
@@ -101,10 +101,10 @@ describe('Test ContentLists', function () {
     assert.ok(file)
   })
 
-  it('successfully completes Coliving content list creation (POST /content lists/metadata -> POST /content lists)', async function () {
+  it('successfully completes Coliving contentList creation (POST /contentLists/metadata -> POST /contentLists)', async function () {
     const metadata = { test: 'field1' }
     const resp = await request(app)
-      .post('/content lists/metadata')
+      .post('/contentLists/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .set('Enforce-Write-Quorum', false)
@@ -133,7 +133,7 @@ describe('Test ContentLists', function () {
     assert.ok(file)
 
     await request(app)
-      .post('/content lists')
+      .post('/contentLists')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .send({
@@ -144,7 +144,7 @@ describe('Test ContentLists', function () {
       .expect(200)
   })
 
-  it('successfully completes Coliving content list creation with imageDirCID', async function () {
+  it('successfully completes Coliving contentList creation with imageDirCID', async function () {
     const testPicture = path.resolve(__dirname, 'testAgreementWrongFormat.jpg')
     const file = fs.readFileSync(testPicture)
     // Upload test cover image
@@ -157,24 +157,24 @@ describe('Test ContentLists', function () {
       .set('User-Id', session.userId)
 
     const imageDirCID = resp.body.data.dirCID
-    const content listImagePath = DiskManager.computeFilePath(imageDirCID)
-    assert.ok(fs.existsSync(content listImagePath))
+    const contentListImagePath = DiskManager.computeFilePath(imageDirCID)
+    assert.ok(fs.existsSync(contentListImagePath))
     const fileRecord = await models.File.findOne({
       where: {
         multihash: imageDirCID,
-        storagePath: content listImagePath,
+        storagePath: contentListImagePath,
         type: 'dir'
       }
     })
     assert.ok(fileRecord)
     const metadata = {
       test: 'field1',
-      content list_image_sizes_multihash: imageDirCID
+      contentList_image_sizes_multihash: imageDirCID
     }
 
-    // Upload content list metadata with valid image dirCID
+    // Upload contentList metadata with valid image dirCID
     const resp2 = await request(app)
-      .post('/content lists/metadata')
+      .post('/contentLists/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .set('Enforce-Write-Quorum', false)
@@ -200,9 +200,9 @@ describe('Test ContentLists', function () {
     })
     assert.ok(metadataFileRecord)
 
-    // Associate content list object with blockchain ID
+    // Associate contentList object with blockchain ID
     await request(app)
-      .post('/content lists')
+      .post('/contentLists')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .send({
@@ -213,13 +213,13 @@ describe('Test ContentLists', function () {
       .expect(200)
   })
 
-  it('successfully completes Coliving content list creation when retrying an existing block number and original metadata', async function () {
+  it('successfully completes Coliving contentList creation when retrying an existing block number and original metadata', async function () {
     const metadata = { test: 'field1' }
 
     libsMock.ContentList.getContentLists.exactly(2)
 
     const resp = await request(app)
-      .post('/content lists/metadata')
+      .post('/contentLists/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .set('Enforce-Write-Quorum', false)
@@ -234,7 +234,7 @@ describe('Test ContentLists', function () {
     }
 
     await request(app)
-      .post('/content lists')
+      .post('/contentLists')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .send({
@@ -245,13 +245,13 @@ describe('Test ContentLists', function () {
       .expect(200)
   })
 
-  it('successfully completes Coliving content list creation when retrying an existing block number and new metadata', async function () {
+  it('successfully completes Coliving contentList creation when retrying an existing block number and new metadata', async function () {
     const metadata1 = { test: 'field1' }
 
     libsMock.ContentList.getContentLists.exactly(2)
 
     const resp1 = await request(app)
-      .post('/content lists/metadata')
+      .post('/contentLists/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .set('Enforce-Write-Quorum', false)
@@ -270,7 +270,7 @@ describe('Test ContentLists', function () {
     libsMock.ContentList.getContentLists.exactly(2)
 
     const resp2 = await request(app)
-      .post('/content lists/metadata')
+      .post('/contentLists/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .set('Enforce-Write-Quorum', false)
@@ -285,7 +285,7 @@ describe('Test ContentLists', function () {
     }
 
     await request(app)
-      .post('/content lists')
+      .post('/contentLists')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .send({
@@ -296,13 +296,13 @@ describe('Test ContentLists', function () {
       .expect(200)
   })
 
-  it('fails Coliving content list creation when too low of a block number is supplied', async function () {
+  it('fails Coliving contentList creation when too low of a block number is supplied', async function () {
     const metadata = { test: 'field1' }
 
     libsMock.ContentList.getContentLists.exactly(2)
 
     const resp = await request(app)
-      .post('/content lists/metadata')
+      .post('/contentLists/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .set('Enforce-Write-Quorum', false)
@@ -323,7 +323,7 @@ describe('Test ContentLists', function () {
     await cnodeUser.update({ latestBlockNumber: 100 })
 
     await request(app)
-      .post('/content lists')
+      .post('/contentLists')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .send({

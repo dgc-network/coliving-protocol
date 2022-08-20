@@ -156,7 +156,7 @@ class CIDMetadataClient:
 
                     cid, metadata_json = future_result
 
-                    # TODO add content list type
+                    # TODO add contentList type
                     metadata_format = (
                         agreement_metadata_format
                         if cid_type[cid] == "agreement"

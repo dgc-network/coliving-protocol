@@ -145,7 +145,7 @@ node setup.js run content-node down -i 1
 - In general you can have two types of errors here - errors with user input (e.g. you're trying to reference something not in cache, or providing values in the wrong format), and errors with the network requests (e.g. )
 - Ensure that your local environment is set up correctly.
 - If relying on random user/agreement ID selection from cache, ensure that you have enough unique values in your seed cache file located in your ~/.coliving folder. For actions involving multiple users, ensure that your users are unique.
-- If passing in user/agreement/content list ID(s) ensure that the IDs exist in current seed cache (for user) / in the DB (for agreements/content lists).
+- If passing in user/agreement/contentList ID(s) ensure that the IDs exist in current seed cache (for user) / in the DB (for agreements/contentLists).
 - Slack @christine for help and ideas for improvement.
 
 #### Contributing
@@ -158,6 +158,6 @@ node setup.js run content-node down -i 1
 - Uploading images for users/agreements at creation time
 - Batch seed for actions beyond `create-user`
 - `A seed update-user`
-- `A seed remove-content list-agreement`
+- `A seed remove-contentList-agreement`
 - `--reset-state` flag to clear DB for `A seed clear`
 - (maybe?) Read actions e.g. `A seed get-users`

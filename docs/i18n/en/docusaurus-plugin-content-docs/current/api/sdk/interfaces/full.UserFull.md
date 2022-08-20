@@ -231,17 +231,17 @@ ___
 
 ___
 
-### content list\_count
+### contentList\_count
 
- **content list\_count**: `number`
+ **contentList\_count**: `number`
 
 **`memberof`** UserFull
 
 ___
 
-### content list\_library
+### contentList\_library
 
- `Optional` **content list\_library**: [`ContentListLibrary`](full.ContentListLibrary.md)
+ `Optional` **contentList\_library**: [`ContentListLibrary`](full.ContentListLibrary.md)
 
 **`memberof`** UserFull
 

@@ -11,19 +11,19 @@ contract ContentListStorage is RegistryContract {
 
     RegistryInterface registry = RegistryInterface(0);
 
-    /** @dev - Uniquely assigned content listId, incremented for each new content list/album */
-    uint content listId = 1;
+    /** @dev - Uniquely assigned contentListId, incremented for each new contentList/album */
+    uint contentListId = 1;
 
     /** @dev - Owner indication */
-    mapping(uint => uint) public content listOwner;
+    mapping(uint => uint) public contentListOwner;
 
-    /** @dev - Album/content list distinction */
+    /** @dev - Album/contentList distinction */
     mapping(uint => bool) private isAlbum;
 
-    /** @dev - Mapping of content list contents
-    *   content listId -> <agreementId -> agreementCountInContentList>
+    /** @dev - Mapping of contentList contents
+    *   contentListId -> <agreementId -> agreementCountInContentList>
     */
-    mapping(uint => mapping(uint => uint)) private content listContents;
+    mapping(uint => mapping(uint => uint)) private contentListContents;
 
     constructor(address _registryAddress) public {
         require(
@@ -33,74 +33,74 @@ contract ContentListStorage is RegistryContract {
     }
 
     function createContentList(
-        uint _content listOwnerId,
+        uint _contentListOwnerId,
         bool _isAlbum,
         uint[] calldata _agreementIds
     ) external onlyRegistrant(CALLER_REGISTRY_KEY) returns (uint newContentListId)
     {
-        newContentListId = content listId;
-        content listId += 1;
+        newContentListId = contentListId;
+        contentListId += 1;
 
-        // Number of agreements in content list
-        uint content listLength = _agreementIds.length;
+        // Number of agreements in contentList
+        uint contentListLength = _agreementIds.length;
 
-        require(content listId != newContentListId, "expected incremented content listId");
+        require(contentListId != newContentListId, "expected incremented contentListId");
 
-        // Update content list owner
-        content listOwner[newContentListId] = _content listOwnerId;
+        // Update contentList owner
+        contentListOwner[newContentListId] = _contentListOwnerId;
 
         // Update additional on-chain fields
         isAlbum[newContentListId] = _isAlbum;
 
-        // Populate the content list content mapping
-        for (uint i = 0; i < content listLength; i++) {
+        // Populate the contentList content mapping
+        for (uint i = 0; i < contentListLength; i++) {
             uint currentAgreementId = _agreementIds[i];
-            content listContents[newContentListId][currentAgreementId] += 1;
+            contentListContents[newContentListId][currentAgreementId] += 1;
         }
 
         return newContentListId;
     }
 
     function addContentListAgreement(
-        uint _content listId,
+        uint _contentListId,
         uint _addedAgreementId
     ) external onlyRegistrant(CALLER_REGISTRY_KEY)
     {
-        content listContents[_content listId][_addedAgreementId] += 1;
+        contentListContents[_contentListId][_addedAgreementId] += 1;
     }
 
     function deleteContentListAgreement(
-        uint _content listId,
+        uint _contentListId,
         uint _deletedAgreementId
     ) external onlyRegistrant(CALLER_REGISTRY_KEY)
     {
         require(
-            content listContents[_content listId][_deletedAgreementId] > 0,
-            "Valid agreement in content list required for delete"
+            contentListContents[_contentListId][_deletedAgreementId] > 0,
+            "Valid agreement in contentList required for delete"
         );
-        content listContents[_content listId][_deletedAgreementId] -= 1;
+        contentListContents[_contentListId][_deletedAgreementId] -= 1;
     }
 
-    function getContentListOwner(uint _content listId)
+    function getContentListOwner(uint _contentListId)
     external view onlyRegistrant(CALLER_REGISTRY_KEY) returns (uint)
     {
-        return content listOwner[_content listId];
+        return contentListOwner[_contentListId];
     }
 
     function isAgreementInContentList(
-        uint _content listId,
+        uint _contentListId,
         uint _agreementId
     ) external view onlyRegistrant(CALLER_REGISTRY_KEY) returns (bool)
     {
-        return content listContents[_content listId][_agreementId] > 0;
+        return contentListContents[_contentListId][_agreementId] > 0;
     }
 
-    function content listExists(uint _content listId)
+    function contentListExists(uint _contentListId)
     external view onlyRegistrant(CALLER_REGISTRY_KEY) returns (bool exists)
     {
-        require(_content listId > 0, "Invalid content list id");
-        // If the incremented content list ID is less than the argument,
-        // the content list ID has not yet been assigned
-        return _content listId < content listId;
+        require(_contentListId > 0, "Invalid contentList id");
+        // If the incremented contentList ID is less than the argument,
+        // the contentList ID has not yet been assigned
+        return _contentListId < contentListId;
     }
 }

@@ -12,7 +12,7 @@ from src.challenges.challenge_event_bus import ChallengeEventBus
 from src.challenges.trending_challenge import should_trending_challenge_update
 from src.models.indexing.block import Block
 from src.models.indexing.ursm_content_node import UrsmContentNode
-from src.models.content lists.content list import ContentList
+from src.models.contentLists.contentList import ContentList
 from src.models.social.follow import Follow
 from src.models.social.repost import Repost
 from src.models.social.save import Save
@@ -31,7 +31,7 @@ from src.queries.get_skipped_transactions import (
 )
 from src.queries.skipped_transactions import add_network_level_skipped_transaction
 from src.tasks.celery_app import celery
-from src.tasks.content lists import content list_state_update
+from src.tasks.contentLists import contentList_state_update
 from src.tasks.social_features import social_feature_state_update
 from src.tasks.sort_block_transactions import sort_block_transactions
 from src.tasks.agreements import agreement_event_types_lookup, agreement_state_update
@@ -55,7 +55,7 @@ from src.utils.prometheus_metric import (
     save_duration_metric,
 )
 from src.utils.redis_cache import (
-    remove_cached_content list_ids,
+    remove_cached_contentList_ids,
     remove_cached_agreement_ids,
     remove_cached_user_ids,
 )
@@ -93,7 +93,7 @@ TX_TYPE_TO_HANDLER_MAP = {
     USER_FACTORY: user_state_update,
     AGREEMENT_FACTORY: agreement_state_update,
     SOCIAL_FEATURE_FACTORY: social_feature_state_update,
-    CONTENT_LIST_FACTORY: content list_state_update,
+    CONTENT_LIST_FACTORY: contentList_state_update,
     USER_LIBRARY_FACTORY: user_library_state_update,
     USER_REPLICA_SET_MANAGER: user_replica_set_state_update,
 }
@@ -518,7 +518,7 @@ def remove_updated_entities_from_cache(redis, changed_entity_type_to_updated_ids
         USER_FACTORY: remove_cached_user_ids,
         USER_REPLICA_SET_MANAGER: remove_cached_user_ids,
         AGREEMENT_FACTORY: remove_cached_agreement_ids,
-        CONTENT_LIST_FACTORY: remove_cached_content list_ids,
+        CONTENT_LIST_FACTORY: remove_cached_contentList_ids,
     }
     for (
         contract_type,
@@ -778,7 +778,7 @@ def index_blocks(self, db, blocks_list):
         logger.info(f"index.py | index_blocks | Indexed {num_blocks} blocks")
 
 
-# transactions are reverted in reverse dependency order (social features --> content lists --> agreements --> users)
+# transactions are reverted in reverse dependency order (social features --> contentLists --> agreements --> users)
 def revert_blocks(self, db, revert_blocks_list):
     # TODO: Remove this exception once the unexpected revert scenario has been diagnosed
     num_revert_blocks = len(revert_blocks_list)
@@ -803,7 +803,7 @@ def revert_blocks(self, db, revert_blocks_list):
 
     with db.scoped_session() as session:
 
-        rebuild_content list_index = False
+        rebuild_contentList_index = False
         rebuild_agreement_index = False
         rebuild_user_index = False
 
@@ -836,7 +836,7 @@ def revert_blocks(self, db, revert_blocks_list):
             revert_follow_entries = (
                 session.query(Follow).filter(Follow.blockhash == revert_hash).all()
             )
-            revert_content list_entries = (
+            revert_contentList_entries = (
                 session.query(ContentList).filter(ContentList.blockhash == revert_hash).all()
             )
             revert_agreement_entries = (
@@ -922,19 +922,19 @@ def revert_blocks(self, db, revert_blocks_list):
                 logger.info(f"Reverting follow: {follow_to_revert}")
                 session.delete(follow_to_revert)
 
-            for content list_to_revert in revert_content list_entries:
-                content list_id = content list_to_revert.content list_id
-                previous_content list_entry = (
+            for contentList_to_revert in revert_contentList_entries:
+                contentList_id = contentList_to_revert.contentList_id
+                previous_contentList_entry = (
                     session.query(ContentList)
-                    .filter(ContentList.content list_id == content list_id)
+                    .filter(ContentList.contentList_id == contentList_id)
                     .filter(ContentList.blocknumber < revert_block_number)
                     .order_by(ContentList.blocknumber.desc())
                     .first()
                 )
-                if previous_content list_entry:
-                    previous_content list_entry.is_current = True
-                # Remove outdated content list entry
-                session.delete(content list_to_revert)
+                if previous_contentList_entry:
+                    previous_contentList_entry.is_current = True
+                # Remove outdated contentList entry
+                session.delete(contentList_to_revert)
 
             for agreement_to_revert in revert_agreement_entries:
                 agreement_id = agreement_to_revert.agreement_id
@@ -1034,8 +1034,8 @@ def revert_blocks(self, db, revert_blocks_list):
             # Remove outdated block entry
             session.query(Block).filter(Block.blockhash == revert_hash).delete()
 
-            rebuild_content list_index = rebuild_content list_index or bool(
-                revert_content list_entries
+            rebuild_contentList_index = rebuild_contentList_index or bool(
+                revert_contentList_entries
             )
             rebuild_agreement_index = rebuild_agreement_index or bool(revert_agreement_entries)
             rebuild_user_index = rebuild_user_index or bool(revert_user_entries)
@@ -1082,9 +1082,9 @@ def update_task(self):
         address=get_contract_addresses()[USER_FACTORY], abi=user_abi
     )
 
-    content list_abi = update_task.abi_values[CONTENT_LIST_FACTORY_CONTRACT_NAME]["abi"]
-    content list_contract = update_task.web3.eth.contract(
-        address=get_contract_addresses()[CONTENT_LIST_FACTORY], abi=content list_abi
+    contentList_abi = update_task.abi_values[CONTENT_LIST_FACTORY_CONTRACT_NAME]["abi"]
+    contentList_contract = update_task.web3.eth.contract(
+        address=get_contract_addresses()[CONTENT_LIST_FACTORY], abi=contentList_abi
     )
 
     social_feature_abi = update_task.abi_values[SOCIAL_FEATURE_FACTORY_CONTRACT_NAME][
@@ -1110,7 +1110,7 @@ def update_task(self):
 
     update_task.agreement_contract = agreement_contract
     update_task.user_contract = user_contract
-    update_task.content list_contract = content list_contract
+    update_task.contentList_contract = contentList_contract
     update_task.social_feature_contract = social_feature_contract
     update_task.user_library_contract = user_library_contract
     update_task.user_replica_set_manager_contract = user_replica_set_manager_contract

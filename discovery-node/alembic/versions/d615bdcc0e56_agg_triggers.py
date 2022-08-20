@@ -24,21 +24,21 @@ def load_sql(name):
 
 
 up_files = [
-    "migrate_agg_content list.sql",
+    "migrate_agg_contentList.sql",
     "migrate_agg_agreement.sql",
     "migrate_agg_user.sql",
     "handle_follow.sql",
-    "handle_content list.sql",
+    "handle_contentList.sql",
     "handle_repost.sql",
     "handle_save.sql",
     "handle_agreement.sql",
     "handle_user.sql",
-    "migrate_album_content list_lexeme_dict.sql",
+    "migrate_album_contentList_lexeme_dict.sql",
 ]
 
 down_files = [
-    "migrate_agg_content list_down.sql",
-    "migrate_album_content list_lexeme_dict.sql",
+    "migrate_agg_contentList_down.sql",
+    "migrate_album_contentList_lexeme_dict.sql",
 ]
 
 

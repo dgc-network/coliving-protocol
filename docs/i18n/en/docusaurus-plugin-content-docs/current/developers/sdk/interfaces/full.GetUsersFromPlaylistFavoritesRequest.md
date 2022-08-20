@@ -25,9 +25,9 @@ The number of items to skip. Useful for pagination (page number * limit)
 
 ___
 
-### content listId
+### contentListId
 
- **content listId**: `string`
+ **contentListId**: `string`
 
 A ContentList ID
 

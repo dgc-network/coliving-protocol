@@ -8,8 +8,8 @@ custom_edit_url: null
 
 ## Properties
 
-### content listId
+### contentListId
 
- **content listId**: `string`
+ **contentListId**: `string`
 
 A ContentList ID

@@ -3,18 +3,18 @@ const moment = require('moment-timezone')
 const models = require('../../models')
 const { sequelize, Sequelize } = require('../../models')
 
-const logPrefix = 'notifications content list updates -'
+const logPrefix = 'notifications contentList updates -'
 
 /**
- * Process content list update notifications
- * upsert lastUpdated and userLastViewed in the DB for each subscriber of a content list
+ * Process contentList update notifications
+ * upsert lastUpdated and userLastViewed in the DB for each subscriber of a contentList
  * @param {Array<Object>} notifications
  * @param {*} tx The DB transaction to attach to DB requests
  */
 async function processContentListUpdateNotifications (notifications, tx) {
   /**
-     * keep agreement of last content list updates for each user that favorited content lists
-     * e.g. { user1: { content list1: <timestamp1>, content list2: <timestamp2>, ... }, ... }
+     * keep agreement of last contentList updates for each user that favorited contentLists
+     * e.g. { user1: { contentList1: <timestamp1>, contentList2: <timestamp2>, ... }, ... }
      */
   const startTime = Date.now()
   logger.info(`${logPrefix} num notifications: ${notifications.length}, start: ${startTime}`)
@@ -22,15 +22,15 @@ async function processContentListUpdateNotifications (notifications, tx) {
   notifications.forEach(notification => {
     const { metadata } = notification
     const {
-      entity_id: content listId,
-      content list_update_timestamp: content listUpdatedAt,
-      content list_update_users: userIds
+      entity_id: contentListId,
+      contentList_update_timestamp: contentListUpdatedAt,
+      contentList_update_users: userIds
     } = metadata
     userIds.forEach(userId => {
       if (userContentListUpdatesMap[userId]) {
-        userContentListUpdatesMap[userId][content listId] = content listUpdatedAt
+        userContentListUpdatesMap[userId][contentListId] = contentListUpdatedAt
       } else {
-        userContentListUpdatesMap[userId] = { [content listId]: content listUpdatedAt }
+        userContentListUpdatesMap[userId] = { [contentListId]: contentListUpdatedAt }
       }
     })
   })
@@ -56,9 +56,9 @@ async function processContentListUpdateNotifications (notifications, tx) {
 
   logger.info(`${logPrefix} made wallet map, time: ${Date.now() - startTime}ms`)
 
-  // get content list updates for all wallets and map each wallet to its content list updates
+  // get contentList updates for all wallets and map each wallet to its contentList updates
   const userWalletsAndContentListUpdates = await models.UserEvents.findAll({
-    attributes: ['walletAddress', 'content listUpdates'],
+    attributes: ['walletAddress', 'contentListUpdates'],
     where: {
       walletAddress: Object.values(userIdToWalletsMap)
     },
@@ -68,8 +68,8 @@ async function processContentListUpdateNotifications (notifications, tx) {
   logger.info(`${logPrefix} found updates, time: ${Date.now() - startTime}ms`)
 
   const userWalletToContentListUpdatesMap = {}
-  for (const { walletAddress, content listUpdates } of userWalletsAndContentListUpdates) {
-    userWalletToContentListUpdatesMap[walletAddress] = content listUpdates
+  for (const { walletAddress, contentListUpdates } of userWalletsAndContentListUpdates) {
+    userWalletToContentListUpdatesMap[walletAddress] = contentListUpdates
   }
 
   logger.info(`${logPrefix} mapped updates, num updates: ${userWalletsAndContentListUpdates.length}, time: ${Date.now() - startTime}ms`)
@@ -81,12 +81,12 @@ async function processContentListUpdateNotifications (notifications, tx) {
 
       const dbContentListUpdates = userWalletToContentListUpdatesMap[walletAddress] || {}
       const fetchedContentListUpdates = userContentListUpdatesMap[userId]
-      Object.keys(fetchedContentListUpdates).forEach(content listId => {
-        const fetchedLastUpdated = moment(fetchedContentListUpdates[content listId]).utc()
-        dbContentListUpdates[content listId] = {
+      Object.keys(fetchedContentListUpdates).forEach(contentListId => {
+        const fetchedLastUpdated = moment(fetchedContentListUpdates[contentListId]).utc()
+        dbContentListUpdates[contentListId] = {
           // in case user favorited this agreement before and has no UserEvent record of it
           userLastViewed: fetchedLastUpdated.subtract(1, 'seconds').valueOf(),
-          ...dbContentListUpdates[content listId],
+          ...dbContentListUpdates[contentListId],
           lastUpdated: fetchedLastUpdated.valueOf()
         }
       })
@@ -98,10 +98,10 @@ async function processContentListUpdateNotifications (notifications, tx) {
   logger.info(`${logPrefix} mapped events, time: ${Date.now() - startTime}ms`)
 
   const results = await sequelize.query(`
-    INSERT INTO "UserEvents" ("walletAddress", "content listUpdates", "createdAt", "updatedAt")
+    INSERT INTO "UserEvents" ("walletAddress", "contentListUpdates", "createdAt", "updatedAt")
     VALUES ${newUserEvents.map(_ => '(?,now(),now())').join(',')}
     ON CONFLICT ("walletAddress") DO UPDATE
-      SET "content listUpdates" = "excluded"."content listUpdates"
+      SET "contentListUpdates" = "excluded"."contentListUpdates"
   `, {
     replacements: newUserEvents,
     type: Sequelize.QueryTypes.INSERT

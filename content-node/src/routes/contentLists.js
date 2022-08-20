@@ -28,7 +28,7 @@ const router = express.Router()
  * Create ContentList from provided metadata, and make metadata available to network
  */
 router.post(
-  '/content lists/metadata',
+  '/contentLists/metadata',
   authMiddleware,
   ensurePrimaryMiddleware,
   ensureStorageMiddleware,
@@ -74,7 +74,7 @@ router.post(
     } catch (e) {
       await transaction.rollback()
       return errorResponseServerError(
-        `Could not save content list metadata to db: ${e}`
+        `Could not save contentList metadata to db: ${e}`
       )
     }
 
@@ -89,11 +89,11 @@ router.post(
 )
 
 /**
- * Given content list blockchainId, blockNumber, and metadataFileUUID, creates/updates ContentList DB entry
- * and associates image file entries with content list. Ends content list creation/update process.
+ * Given contentList blockchainId, blockNumber, and metadataFileUUID, creates/updates ContentList DB entry
+ * and associates image file entries with contentList. Ends contentList creation/update process.
  */
 router.post(
-  '/content lists',
+  '/contentLists',
   authMiddleware,
   ensurePrimaryMiddleware,
   ensureStorageMiddleware,
@@ -134,7 +134,7 @@ router.post(
       )
     }
 
-    // Get content listImageFileUUID for multihashes in metadata object, if present.
+    // Get contentListImageFileUUID for multihashes in metadata object, if present.
     let contentListImageFileUUID
     try {
       contentListImageFileUUID =

@@ -19,9 +19,9 @@ const {
 // Each type can be configured as needed
 const baseMilestoneList = [10, 25, 50, 100, 250, 500, 1000, 5000, 10000, 20000, 50000, 100000, 1000000]
 const followerMilestoneList = baseMilestoneList
-// Repost milestone list shared across agreements/albums/content lists
+// Repost milestone list shared across agreements/albums/contentLists
 const repostMilestoneList = baseMilestoneList
-// Favorite milestone list shared across agreements/albums/content lists
+// Favorite milestone list shared across agreements/albums/contentLists
 const favoriteMilestoneList = baseMilestoneList
 // Agreement listen milestone list
 const agreementListenMilestoneList = baseMilestoneList
@@ -87,7 +87,7 @@ async function updateFollowerMilestones (followerCounts, blocknumber, timestamp,
 async function updateRepostMilestones (repostCounts, owners, blocknumber, timestamp, colivingLibs, tx) {
   let agreementsReposted = Object.keys(repostCounts.agreements)
   let albumsReposted = Object.keys(repostCounts.albums)
-  let content listsReposted = Object.keys(repostCounts.content lists)
+  let contentListsReposted = Object.keys(repostCounts.contentLists)
   const repostMilestoneNotificationType = notificationTypes.MilestoneRepost
 
   for (var repostedAgreementId of agreementsReposted) {
@@ -134,15 +134,15 @@ async function updateRepostMilestones (repostCounts, owners, blocknumber, timest
     }
   }
 
-  for (var repostedContentListId of content listsReposted) {
-    let content listOwnerId = owners.content lists[repostedContentListId]
-    let content listRepostCount = repostCounts.content lists[repostedContentListId]
+  for (var repostedContentListId of contentListsReposted) {
+    let contentListOwnerId = owners.contentLists[repostedContentListId]
+    let contentListRepostCount = repostCounts.contentLists[repostedContentListId]
     for (var k = repostMilestoneList.length; k >= 0; k--) {
       let milestoneValue = repostMilestoneList[k]
-      if (content listRepostCount === milestoneValue) {
+      if (contentListRepostCount === milestoneValue) {
         await _processMilestone(
           repostMilestoneNotificationType,
-          content listOwnerId,
+          contentListOwnerId,
           repostedContentListId,
           actionEntityTypes.ContentList,
           milestoneValue,
@@ -165,7 +165,7 @@ async function updateRepostMilestones (repostCounts, owners, blocknumber, timest
 async function updateFavoriteMilestones (favoriteCounts, owners, blocknumber, timestamp, colivingLibs, tx) {
   let agreementsFavorited = Object.keys(favoriteCounts.agreements)
   let albumsFavorited = Object.keys(favoriteCounts.albums)
-  let content listsFavorited = Object.keys(favoriteCounts.content lists)
+  let contentListsFavorited = Object.keys(favoriteCounts.contentLists)
   const favoriteMilestoneNotificationType = notificationTypes.MilestoneFavorite
 
   for (var favoritedAgreementId of agreementsFavorited) {
@@ -212,15 +212,15 @@ async function updateFavoriteMilestones (favoriteCounts, owners, blocknumber, ti
     }
   }
 
-  for (var favoritedContentListId of content listsFavorited) {
-    let content listOwnerId = owners.content lists[favoritedContentListId]
-    let content listFavoriteCount = favoriteCounts.content lists[favoritedContentListId]
+  for (var favoritedContentListId of contentListsFavorited) {
+    let contentListOwnerId = owners.contentLists[favoritedContentListId]
+    let contentListFavoriteCount = favoriteCounts.contentLists[favoritedContentListId]
     for (var k = favoriteMilestoneList.length; k >= 0; k--) {
       let milestoneValue = favoriteMilestoneList[k]
-      if (content listFavoriteCount === milestoneValue) {
+      if (contentListFavoriteCount === milestoneValue) {
         await _processMilestone(
           favoriteMilestoneNotificationType,
-          content listOwnerId,
+          contentListOwnerId,
           favoritedContentListId,
           actionEntityTypes.ContentList,
           milestoneValue,

@@ -78,16 +78,16 @@ decorator_order_example = """
 )
 @full_ns.route(\"/trending/<string:version>\")
 class FullTrendingContentLists(Resource):
-    @full_ns.expect(full_trending_content list_parser)
+    @full_ns.expect(full_trending_contentList_parser)
     @record_metrics
     @full_ns.doc(
         id=\"Get Trending ContentLists With Version\",
-        description=\"Returns trending content lists for a time period based on the given trending version\",
+        description=\"Returns trending contentLists for a time period based on the given trending version\",
         responses={200: \"Success\", 400: \"Bad request\", 500: \"Server error\"},
     )
-    @full_ns.marshal_with(full_trending_content lists_response)
+    @full_ns.marshal_with(full_trending_contentLists_response)
     def get(self, version):
-        \"Get trending content lists\"
+        \"Get trending contentLists\"
         pass
 """
 

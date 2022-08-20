@@ -4,20 +4,20 @@ from flask_restx.marshalling import marshal
 
 from .common import ns
 
-content list_identifier = ns.model(
-    "content list_identifier",
+contentList_identifier = ns.model(
+    "contentList_identifier",
     {
-        # Use `FormattedString`s in these models to act as a constant via the source string arg ("content list" here)
-        "type": fields.FormattedString("content list"),
-        "content list_id": fields.Integer(required=True),
+        # Use `FormattedString`s in these models to act as a constant via the source string arg ("contentList" here)
+        "type": fields.FormattedString("contentList"),
+        "contentList_id": fields.Integer(required=True),
     },
 )
 
-explore_content list_identifier = ns.model(
-    "explore_content list_identifier",
+explore_contentList_identifier = ns.model(
+    "explore_contentList_identifier",
     {
-        "type": fields.FormattedString("explore_content list"),
-        "content list_id": fields.String(required=True),
+        "type": fields.FormattedString("explore_contentList"),
+        "contentList_id": fields.String(required=True),
     },
 )
 
@@ -25,23 +25,23 @@ explore_content list_identifier = ns.model(
 class ContentListLibraryIdentifier(fields.Raw):
     def format(self, value):
         try:
-            if value.get("type") == "content list":
-                return marshal(value, content list_identifier)
-            if value.get("type") == "explore_content list":
-                return marshal(value, explore_content list_identifier)
+            if value.get("type") == "contentList":
+                return marshal(value, contentList_identifier)
+            if value.get("type") == "explore_contentList":
+                return marshal(value, explore_contentList_identifier)
             if value.get("type") == "folder":
-                return marshal(value, content list_library_folder)
+                return marshal(value, contentList_library_folder)
         except Exception as e:
             raise MarshallingError(
-                f"Unable to marshal as content list library identifier: {str(value)}"
+                f"Unable to marshal as contentList library identifier: {str(value)}"
             ) from e
 
     def output(self, key, obj, **kwargs):
         return self.format(obj)
 
 
-content list_library_folder = ns.model(
-    "content list_library_folder",
+contentList_library_folder = ns.model(
+    "contentList_library_folder",
     {
         "type": fields.FormattedString("folder"),
         "id": fields.String(required=True),
@@ -50,6 +50,6 @@ content list_library_folder = ns.model(
     },
 )
 
-content list_library = ns.model(
-    "content list_library", {"contents": fields.List(ContentListLibraryIdentifier)}
+contentList_library = ns.model(
+    "contentList_library", {"contents": fields.List(ContentListLibraryIdentifier)}
 )

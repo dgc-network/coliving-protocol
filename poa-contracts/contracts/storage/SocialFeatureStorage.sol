@@ -23,8 +23,8 @@ contract SocialFeatureStorage is RegistryContract {
     mapping(uint => mapping(uint => bool)) private userAgreementReposts;
 
     /**
-     * @dev - Mapping of content list repost contents
-     * userId -> <content listId -> repostedContentList>
+     * @dev - Mapping of contentList repost contents
+     * userId -> <contentListId -> repostedContentList>
      */
     mapping(uint => mapping(uint => bool)) private userContentListReposts;
 
@@ -59,23 +59,23 @@ contract SocialFeatureStorage is RegistryContract {
 
     function addContentListRepost(
         uint _userId,
-        uint _content listId
+        uint _contentListId
     ) external onlyRegistrant(CALLER_REGISTRY_KEY)
     {
-        userContentListReposts[_userId][_content listId] = true; 
+        userContentListReposts[_userId][_contentListId] = true; 
     }
 
     function deleteContentListRepost(
         uint _userId,
-        uint _content listId
+        uint _contentListId
     ) external onlyRegistrant(CALLER_REGISTRY_KEY)
     {
-        userContentListReposts[_userId][_content listId] = false;
+        userContentListReposts[_userId][_contentListId] = false;
     }
 
-    function userRepostedContentList(uint _userId, uint _content listId)
+    function userRepostedContentList(uint _userId, uint _contentListId)
     external view onlyRegistrant(CALLER_REGISTRY_KEY) returns (bool)
     {
-        return userContentListReposts[_userId][_content listId];
+        return userContentListReposts[_userId][_contentListId];
     }
 }

@@ -15,7 +15,7 @@ import {
 import { program } from 'commander'
 
 export const indexer = {
-  content lists: new ContentListIndexer(),
+  contentLists: new ContentListIndexer(),
   reposts: new RepostIndexer(),
   saves: new SaveIndexer(),
   agreements: new AgreementIndexer(),
@@ -24,7 +24,7 @@ export const indexer = {
 
 async function processPending(pending: PendingUpdates) {
   return Promise.all([
-    indexer.content lists.indexIds(Array.from(pending.content listIds)),
+    indexer.contentLists.indexIds(Array.from(pending.contentListIds)),
     indexer.agreements.indexIds(Array.from(pending.agreementIds)),
     indexer.users.indexIds(Array.from(pending.userIds)),
 

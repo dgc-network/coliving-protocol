@@ -10,14 +10,14 @@ export class ContentListFactoryClient extends ContractClient {
 
   async createContentList(
     userId: number,
-    content listName: string,
+    contentListName: string,
     isPrivate: boolean,
     isAlbum: boolean,
     agreementIds: number[]
   ) {
     if (!Array.isArray(agreementIds) || agreementIds.length > MAX_CONTENT_LIST_LENGTH) {
       throw new Error(
-        `Cannot create content list - agreementIds must be array with length <= ${MAX_CONTENT_LIST_LENGTH}`
+        `Cannot create contentList - agreementIds must be array with length <= ${MAX_CONTENT_LIST_LENGTH}`
       )
     }
 
@@ -34,7 +34,7 @@ export class ContentListFactoryClient extends ContractClient {
         chainId,
         contractAddress,
         userId,
-        content listName,
+        contentListName,
         isPrivate,
         isAlbum,
         agreementIdsHash,
@@ -45,7 +45,7 @@ export class ContentListFactoryClient extends ContractClient {
     const method = await this.getMethod(
       'createContentList',
       userId,
-      content listName,
+      contentListName,
       isPrivate,
       isAlbum,
       agreementIds,
@@ -59,15 +59,15 @@ export class ContentListFactoryClient extends ContractClient {
       contractAddress
     )
     return {
-      content listId: parseInt(
-        tx.events?.['ContentListCreated']?.returnValues._content listId,
+      contentListId: parseInt(
+        tx.events?.['ContentListCreated']?.returnValues._contentListId,
         10
       ),
       txReceipt: tx
     }
   }
 
-  async deleteContentList(content listId: number) {
+  async deleteContentList(contentListId: number) {
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
@@ -75,14 +75,14 @@ export class ContentListFactoryClient extends ContractClient {
       signatureSchemas.generators.getDeleteContentListRequestData(
         chainId,
         contractAddress,
-        content listId,
+        contentListId,
         nonce
       )
 
     const sig = await this.web3Manager.signTypedData(signatureData)
     const method = await this.getMethod(
       'deleteContentList',
-      content listId,
+      contentListId,
       nonce,
       sig
     )
@@ -93,15 +93,15 @@ export class ContentListFactoryClient extends ContractClient {
       contractAddress
     )
     return {
-      content listId: parseInt(
-        tx.events?.['ContentListDeleted']?.returnValues._content listId,
+      contentListId: parseInt(
+        tx.events?.['ContentListDeleted']?.returnValues._contentListId,
         10
       ),
       txReceipt: tx
     }
   }
 
-  async addContentListAgreement(content listId: number, addedAgreementId: number) {
+  async addContentListAgreement(contentListId: number, addedAgreementId: number) {
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
@@ -109,7 +109,7 @@ export class ContentListFactoryClient extends ContractClient {
       signatureSchemas.generators.getAddContentListAgreementRequestData(
         chainId,
         contractAddress,
-        content listId,
+        contentListId,
         addedAgreementId,
         nonce
       )
@@ -117,7 +117,7 @@ export class ContentListFactoryClient extends ContractClient {
 
     const method = await this.getMethod(
       'addContentListAgreement',
-      content listId,
+      contentListId,
       addedAgreementId,
       nonce,
       sig
@@ -131,7 +131,7 @@ export class ContentListFactoryClient extends ContractClient {
   }
 
   async deleteContentListAgreement(
-    content listId: number,
+    contentListId: number,
     deletedAgreementId: number,
     deletedContentListTimestamp: number,
     retries?: number
@@ -143,7 +143,7 @@ export class ContentListFactoryClient extends ContractClient {
       signatureSchemas.generators.getDeleteContentListAgreementRequestData(
         chainId,
         contractAddress,
-        content listId,
+        contentListId,
         deletedAgreementId,
         deletedContentListTimestamp,
         nonce
@@ -152,7 +152,7 @@ export class ContentListFactoryClient extends ContractClient {
     const sig = await this.web3Manager.signTypedData(signatureData)
     const method = await this.getMethod(
       'deleteContentListAgreement',
-      content listId,
+      contentListId,
       deletedAgreementId,
       deletedContentListTimestamp,
       nonce,
@@ -168,7 +168,7 @@ export class ContentListFactoryClient extends ContractClient {
   }
 
   async orderContentListAgreements(
-    content listId: number,
+    contentListId: number,
     agreementIds: number[],
     retries?: number
   ) {
@@ -184,7 +184,7 @@ export class ContentListFactoryClient extends ContractClient {
       signatureSchemas.generators.getOrderContentListAgreementsRequestData(
         chainId,
         contractAddress,
-        content listId,
+        contentListId,
         agreementIdsHash,
         nonce
       )
@@ -192,7 +192,7 @@ export class ContentListFactoryClient extends ContractClient {
 
     const method = await this.getMethod(
       'orderContentListAgreements',
-      content listId,
+      contentListId,
       agreementIds,
       nonce,
       sig
@@ -207,7 +207,7 @@ export class ContentListFactoryClient extends ContractClient {
   }
 
   async updateContentListPrivacy(
-    content listId: number,
+    contentListId: number,
     updatedContentListPrivacy: boolean
   ) {
     const nonce = signatureSchemas.getNonce()
@@ -217,7 +217,7 @@ export class ContentListFactoryClient extends ContractClient {
       signatureSchemas.generators.getUpdateContentListPrivacyRequestData(
         chainId,
         contractAddress,
-        content listId,
+        contentListId,
         updatedContentListPrivacy,
         nonce
       )
@@ -225,7 +225,7 @@ export class ContentListFactoryClient extends ContractClient {
 
     const method = await this.getMethod(
       'updateContentListPrivacy',
-      content listId,
+      contentListId,
       updatedContentListPrivacy,
       nonce,
       sig
@@ -238,7 +238,7 @@ export class ContentListFactoryClient extends ContractClient {
     )
   }
 
-  async updateContentListName(content listId: number, updatedContentListName: string) {
+  async updateContentListName(contentListId: number, updatedContentListName: string) {
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
@@ -246,7 +246,7 @@ export class ContentListFactoryClient extends ContractClient {
       signatureSchemas.generators.getUpdateContentListNameRequestData(
         chainId,
         contractAddress,
-        content listId,
+        contentListId,
         updatedContentListName,
         nonce
       )
@@ -254,7 +254,7 @@ export class ContentListFactoryClient extends ContractClient {
 
     const method = await this.getMethod(
       'updateContentListName',
-      content listId,
+      contentListId,
       updatedContentListName,
       nonce,
       sig
@@ -268,7 +268,7 @@ export class ContentListFactoryClient extends ContractClient {
   }
 
   async updateContentListCoverPhoto(
-    content listId: number,
+    contentListId: number,
     updatedContentListImageMultihashDigest: string
   ) {
     const nonce = signatureSchemas.getNonce()
@@ -278,7 +278,7 @@ export class ContentListFactoryClient extends ContractClient {
       signatureSchemas.generators.getUpdateContentListCoverPhotoRequestData(
         chainId,
         contractAddress,
-        content listId,
+        contentListId,
         updatedContentListImageMultihashDigest,
         nonce
       )
@@ -286,7 +286,7 @@ export class ContentListFactoryClient extends ContractClient {
 
     const method = await this.getMethod(
       'updateContentListCoverPhoto',
-      content listId,
+      contentListId,
       updatedContentListImageMultihashDigest,
       nonce,
       sig
@@ -300,7 +300,7 @@ export class ContentListFactoryClient extends ContractClient {
   }
 
   async updateContentListDescription(
-    content listId: number,
+    contentListId: number,
     updatedContentListDescription: string
   ) {
     const nonce = signatureSchemas.getNonce()
@@ -310,14 +310,14 @@ export class ContentListFactoryClient extends ContractClient {
       signatureSchemas.generators.getUpdateContentListDescriptionRequestData(
         chainId,
         contractAddress,
-        content listId,
+        contentListId,
         updatedContentListDescription,
         nonce
       )
     const sig = await this.web3Manager.signTypedData(signatureData)
     const method = await this.getMethod(
       'updateContentListDescription',
-      content listId,
+      contentListId,
       updatedContentListDescription,
       nonce,
       sig
@@ -330,7 +330,7 @@ export class ContentListFactoryClient extends ContractClient {
     )
   }
 
-  async updateContentListUPC(content listId: number, updatedContentListUPC: string) {
+  async updateContentListUPC(contentListId: number, updatedContentListUPC: string) {
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
@@ -338,14 +338,14 @@ export class ContentListFactoryClient extends ContractClient {
       signatureSchemas.generators.getUpdateContentListUPCRequestData(
         chainId,
         contractAddress,
-        content listId,
+        contentListId,
         this.web3Manager.getWeb3().utils.utf8ToHex(updatedContentListUPC),
         nonce
       )
     const sig = await this.web3Manager.signTypedData(signatureData)
     const method = await this.getMethod(
       'updateContentListUPC',
-      content listId,
+      contentListId,
       this.web3Manager.getWeb3().utils.utf8ToHex(updatedContentListUPC),
       nonce,
       sig
@@ -358,10 +358,10 @@ export class ContentListFactoryClient extends ContractClient {
     )
   }
 
-  async isAgreementInContentList(content listId: number, agreementId: number) {
+  async isAgreementInContentList(contentListId: number, agreementId: number) {
     const method = await this.getMethod(
       'isAgreementInContentList',
-      content listId,
+      contentListId,
       agreementId
     )
     const result = await method.call()

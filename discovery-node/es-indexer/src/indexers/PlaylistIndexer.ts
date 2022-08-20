@@ -14,11 +14,11 @@ import {
 
 export class ContentListIndexer extends BaseIndexer<ContentListDoc> {
   constructor() {
-    super('content lists', 'content list_id')
+    super('contentLists', 'contentList_id')
   }
 
   mapping: IndicesCreateRequest = {
-    index: indexNames.content lists,
+    index: indexNames.contentLists,
     settings: merge(sharedIndexSettings, {
       index: {
         number_of_shards: 1,
@@ -30,20 +30,20 @@ export class ContentListIndexer extends BaseIndexer<ContentListDoc> {
       dynamic: false,
       properties: {
         blocknumber: { type: 'integer' },
-        content list_owner_id: { type: 'keyword' },
+        contentList_owner_id: { type: 'keyword' },
         created_at: { type: 'date' },
         updated_at: { type: 'date' },
         is_album: { type: 'boolean' },
         is_private: { type: 'boolean' },
         is_delete: { type: 'boolean' },
         suggest: standardSuggest,
-        content list_name: {
+        contentList_name: {
           type: 'keyword',
           fields: {
             searchable: standardText,
           },
         },
-        'content list_contents.agreement_ids.agreement': { type: 'keyword' },
+        'contentList_contents.agreement_ids.agreement': { type: 'keyword' },
 
         user: {
           properties: {
@@ -93,9 +93,9 @@ export class ContentListIndexer extends BaseIndexer<ContentListDoc> {
 
   baseSelect(): string {
     return `
-      -- etl content lists
+      -- etl contentLists
       select 
-        content lists.*,
+        contentLists.*,
 
         json_build_object(
           'handle', users.handle,
@@ -113,8 +113,8 @@ export class ContentListIndexer extends BaseIndexer<ContentListDoc> {
           where
             is_current = true
             and is_delete = false
-            and repost_type = (case when is_album then 'album' else 'content list' end)::reposttype
-            and repost_item_id = content list_id
+            and repost_type = (case when is_album then 'album' else 'contentList' end)::reposttype
+            and repost_item_id = contentList_id
             order by created_at desc
         ) as reposted_by,
       
@@ -124,35 +124,35 @@ export class ContentListIndexer extends BaseIndexer<ContentListDoc> {
           where
             is_current = true
             and is_delete = false
-            and save_type = (case when is_album then 'album' else 'content list' end)::savetype
-            and save_item_id = content list_id
+            and save_type = (case when is_album then 'album' else 'contentList' end)::savetype
+            and save_item_id = contentList_id
             order by created_at desc
         ) as saved_by
 
-      from content lists 
-      join users on content list_owner_id = user_id
+      from contentLists 
+      join users on contentList_owner_id = user_id
       left join aggregate_user on users.user_id = aggregate_user.user_id
       where 
-        content lists.is_current
+        contentLists.is_current
         AND users.is_current
     `
   }
 
   checkpointSql(checkpoint: BlocknumberCheckpoint): string {
-    // really we should mark content list stale if any of the content list agreements changes
-    // but don't know how to do the sql for that... so the low tech solution would be to re-do content lists from scratch
+    // really we should mark contentList stale if any of the contentList agreements changes
+    // but don't know how to do the sql for that... so the low tech solution would be to re-do contentLists from scratch
     // which might actually be faster, since it's a very small collection
     // in which case we could just delete this function
 
     // agreement play_count will also go stale (same problem as above)
 
     return `
-      and content list_id in (
-        select content list_id from content lists where is_current and blocknumber >= ${checkpoint.content lists}
+      and contentList_id in (
+        select contentList_id from contentLists where is_current and blocknumber >= ${checkpoint.contentLists}
         union
-        select save_item_id from saves where is_current and save_type in ('content list', 'album') and blocknumber >= ${checkpoint.saves}
+        select save_item_id from saves where is_current and save_type in ('contentList', 'album') and blocknumber >= ${checkpoint.saves}
         union
-        select repost_item_id from reposts where is_current and repost_type in ('content list', 'album') and blocknumber >= ${checkpoint.reposts}
+        select repost_item_id from reposts where is_current and repost_type in ('contentList', 'album') and blocknumber >= ${checkpoint.reposts}
       )`
   }
 
@@ -160,7 +160,7 @@ export class ContentListIndexer extends BaseIndexer<ContentListDoc> {
     // collect all the agreement IDs
     const agreementIds = new Set<number>()
     for (let row of rows) {
-      row.content list_contents.agreement_ids
+      row.contentList_contents.agreement_ids
         .map((t: any) => t.agreement)
         .filter(Boolean)
         .forEach((t: any) => agreementIds.add(t))
@@ -169,13 +169,13 @@ export class ContentListIndexer extends BaseIndexer<ContentListDoc> {
     // fetch the agreements...
     const agreementsById = await this.getAgreements(Array.from(agreementIds))
 
-    // pull agreement data onto content list
-    for (let content list of rows) {
-      content list.agreements = content list.content list_contents.agreement_ids
+    // pull agreement data onto contentList
+    for (let contentList of rows) {
+      contentList.agreements = contentList.contentList_contents.agreement_ids
         .map((t: any) => agreementsById[t.agreement])
         .filter(Boolean)
 
-      content list.total_play_count = content list.agreements.reduce(
+      contentList.total_play_count = contentList.agreements.reduce(
         (acc, s) => acc + parseInt(s.play_count),
         0
       )
@@ -183,7 +183,7 @@ export class ContentListIndexer extends BaseIndexer<ContentListDoc> {
   }
 
   withRow(row: ContentListDoc) {
-    row.suggest = [row.content list_name, row.user.handle, row.user.name]
+    row.suggest = [row.contentList_name, row.user.handle, row.user.name]
       .filter((x) => x)
       .join(' ')
     row.repost_count = row.reposted_by.length

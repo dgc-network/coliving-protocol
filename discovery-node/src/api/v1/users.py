@@ -46,7 +46,7 @@ from src.api.v1.models.users import (
     user_model_full,
     user_replica_set,
 )
-from src.api.v1.content lists import get_agreements_for_content list
+from src.api.v1.contentLists import get_agreements_for_contentList
 from src.challenges.challenge_event_bus import setup_challenge_bus
 from src.queries.get_associated_user_id import get_associated_user_id
 from src.queries.get_associated_user_wallet import get_associated_user_wallet
@@ -432,9 +432,9 @@ class FullRepostList(Resource):
         }
         reposts = get_repost_feed_for_user(decoded_id, args)
         for repost in reposts:
-            if "content list_id" in repost:
-                repost["agreements"] = get_agreements_for_content list(
-                    repost["content list_id"], current_user_id
+            if "contentList_id" in repost:
+                repost["agreements"] = get_agreements_for_contentList(
+                    repost["contentList_id"], current_user_id
                 )
         activities = list(map(extend_activity, reposts))
 
@@ -465,9 +465,9 @@ class HandleFullRepostList(Resource):
         }
         reposts = get_repost_feed_for_user(None, args)
         for repost in reposts:
-            if "content list_id" in repost:
-                repost["agreements"] = get_agreements_for_content list(
-                    repost["content list_id"], current_user_id
+            if "contentList_id" in repost:
+                repost["agreements"] = get_agreements_for_contentList(
+                    repost["contentList_id"], current_user_id
                 )
         activities = list(map(extend_activity, reposts))
 

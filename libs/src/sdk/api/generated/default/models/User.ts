@@ -103,7 +103,7 @@ export interface User {
      * @type {number}
      * @memberof User
      */
-    content list_count: number;
+    contentList_count: number;
     /**
      * 
      * @type {ProfilePicture}

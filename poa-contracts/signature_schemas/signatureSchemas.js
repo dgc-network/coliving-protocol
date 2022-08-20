@@ -120,7 +120,7 @@ schemas.deleteAgreementRepostRequest = schemas.addAgreementRepostRequest
 
 schemas.addContentListRepostRequest = [
   { name: 'userId', type: 'uint' },
-  { name: 'content listId', type: 'uint' },
+  { name: 'contentListId', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
@@ -135,8 +135,8 @@ schemas.userFollowRequest = [
 schemas.deleteUserFollowRequest = schemas.userFollowRequest
 
 schemas.createContentListRequest = [
-  { name: 'content listOwnerId', type: 'uint' },
-  { name: 'content listName', type: 'string' },
+  { name: 'contentListOwnerId', type: 'uint' },
+  { name: 'contentListName', type: 'string' },
   { name: 'isPrivate', type: 'bool' },
   { name: 'isAlbum', type: 'bool' },
   { name: 'agreementIdsHash', type: 'bytes32' },
@@ -144,56 +144,56 @@ schemas.createContentListRequest = [
 ]
 
 schemas.deleteContentListRequest = [
-  { name: 'content listId', type: 'uint' },
+  { name: 'contentListId', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
 schemas.addContentListAgreementRequest = [
-  { name: 'content listId', type: 'uint' },
+  { name: 'contentListId', type: 'uint' },
   { name: 'addedAgreementId', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
 schemas.deleteContentListAgreementRequest = [
-  { name: 'content listId', type: 'uint' },
+  { name: 'contentListId', type: 'uint' },
   { name: 'deletedAgreementId', type: 'uint' },
   { name: 'deletedAgreementTimestamp', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
 schemas.orderContentListAgreementsRequest = [
-  { name: 'content listId', type: 'uint' },
+  { name: 'contentListId', type: 'uint' },
   { name: 'agreementIdsHash', type: 'bytes32' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
 schemas.updateContentListPrivacyRequest = [
-  { name: 'content listId', type: 'uint' },
+  { name: 'contentListId', type: 'uint' },
   { name: 'updatedContentListPrivacy', type: 'bool' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
 schemas.updateContentListNameRequest = [
-  { name: 'content listId', type: 'uint' },
+  { name: 'contentListId', type: 'uint' },
   { name: 'updatedContentListName', type: 'string' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
 schemas.updateContentListCoverPhotoRequest = [
-  { name: 'content listId', type: 'uint' },
-  { name: 'content listImageMultihashDigest', type: 'bytes32' },
+  { name: 'contentListId', type: 'uint' },
+  { name: 'contentListImageMultihashDigest', type: 'bytes32' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
 schemas.updateContentListDescriptionRequest = [
-  { name: 'content listId', type: 'uint' },
-  { name: 'content listDescription', type: 'string' },
+  { name: 'contentListId', type: 'uint' },
+  { name: 'contentListDescription', type: 'string' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
 schemas.updateContentListUPCRequest = [
-  { name: 'content listId', type: 'uint' },
-  { name: 'content listUPC', type: 'bytes32' },
+  { name: 'contentListId', type: 'uint' },
+  { name: 'contentListUPC', type: 'bytes32' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
@@ -205,13 +205,13 @@ schemas.agreementSaveRequest = [
 
 schemas.deleteAgreementSaveRequest = schemas.agreementSaveRequest
 
-schemas.content listSaveRequest = [
+schemas.contentListSaveRequest = [
   { name: 'userId', type: 'uint' },
-  { name: 'content listId', type: 'uint' },
+  { name: 'contentListId', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-schemas.deleteContentListSaveRequest = schemas.content listSaveRequest
+schemas.deleteContentListSaveRequest = schemas.contentListSaveRequest
 
 schemas.addIPLDBlacklist = [
   { name: 'multihashDigest', type: 'bytes32' },
@@ -494,10 +494,10 @@ generators.getDeleteAgreementRepostRequestData = function (chainId, contractAddr
   )
 }
 
-generators.getAddContentListRepostRequestData = function (chainId, contractAddress, userId, content listId, nonce) {
+generators.getAddContentListRepostRequestData = function (chainId, contractAddress, userId, contentListId, nonce) {
   const message = {
     userId: userId,
-    content listId: content listId,
+    contentListId: contentListId,
     nonce: nonce
   }
   return getRequestData(
@@ -510,10 +510,10 @@ generators.getAddContentListRepostRequestData = function (chainId, contractAddre
   )
 }
 
-generators.getDeleteContentListRepostRequestData = function (chainId, contractAddress, userId, content listId, nonce) {
+generators.getDeleteContentListRepostRequestData = function (chainId, contractAddress, userId, contentListId, nonce) {
   const message = {
     userId: userId,
-    content listId: content listId,
+    contentListId: contentListId,
     nonce: nonce
   }
   return getRequestData(
@@ -592,10 +592,10 @@ generators.getDeleteAgreementSaveRequestData = function (chainId, contractAddres
   )
 }
 
-generators.getContentListSaveRequestData = function (chainId, contractAddress, userId, content listId, nonce) {
+generators.getContentListSaveRequestData = function (chainId, contractAddress, userId, contentListId, nonce) {
   const message = {
     userId: userId,
-    content listId: content listId,
+    contentListId: contentListId,
     nonce: nonce
   }
 
@@ -604,15 +604,15 @@ generators.getContentListSaveRequestData = function (chainId, contractAddress, u
     chainId,
     contractAddress,
     'ContentListSaveRequest',
-    schemas.content listSaveRequest,
+    schemas.contentListSaveRequest,
     message
   )
 }
 
-generators.getDeleteContentListSaveRequestData = function (chainId, contractAddress, userId, content listId, nonce) {
+generators.getDeleteContentListSaveRequestData = function (chainId, contractAddress, userId, contentListId, nonce) {
   const message = {
     userId: userId,
-    content listId: content listId,
+    contentListId: contentListId,
     nonce: nonce
   }
 
@@ -631,10 +631,10 @@ generators.getDeleteContentListSaveRequestData = function (chainId, contractAddr
 /* NOTE: Ensure the value for agreementIds hash is generated using the following snippet prior to calling this generator function:
  * web3New.utils.soliditySha3(web3New.eth.abi.encodeParameter('uint[]', agreementIds))
  */
-generators.getCreateContentListRequestData = function (chainId, contractAddress, content listOwnerId, content listName, isPrivate, isAlbum, agreementIdsHash, nonce) {
+generators.getCreateContentListRequestData = function (chainId, contractAddress, contentListOwnerId, contentListName, isPrivate, isAlbum, agreementIdsHash, nonce) {
   const message = {
-    content listOwnerId: content listOwnerId,
-    content listName: content listName,
+    contentListOwnerId: contentListOwnerId,
+    contentListName: contentListName,
     isPrivate: isPrivate,
     isAlbum: isAlbum,
     agreementIdsHash: agreementIdsHash,
@@ -651,9 +651,9 @@ generators.getCreateContentListRequestData = function (chainId, contractAddress,
   )
 }
 
-generators.getDeleteContentListRequestData = function (chainId, contractAddress, content listId, nonce) {
+generators.getDeleteContentListRequestData = function (chainId, contractAddress, contentListId, nonce) {
   const message = {
-    content listId: content listId,
+    contentListId: contentListId,
     nonce: nonce
   }
   return getRequestData(
@@ -666,9 +666,9 @@ generators.getDeleteContentListRequestData = function (chainId, contractAddress,
   )
 }
 
-generators.getAddContentListAgreementRequestData = function (chainId, contractAddress, content listId, addedAgreementId, nonce) {
+generators.getAddContentListAgreementRequestData = function (chainId, contractAddress, contentListId, addedAgreementId, nonce) {
   const message = {
-    content listId: content listId,
+    contentListId: contentListId,
     addedAgreementId: addedAgreementId,
     nonce: nonce
   }
@@ -683,9 +683,9 @@ generators.getAddContentListAgreementRequestData = function (chainId, contractAd
   )
 }
 
-generators.getDeleteContentListAgreementRequestData = function (chainId, contractAddress, content listId, deletedAgreementId, deletedAgreementTimestamp, nonce) {
+generators.getDeleteContentListAgreementRequestData = function (chainId, contractAddress, contentListId, deletedAgreementId, deletedAgreementTimestamp, nonce) {
   const message = {
-    content listId: content listId,
+    contentListId: contentListId,
     deletedAgreementId: deletedAgreementId,
     deletedAgreementTimestamp: deletedAgreementTimestamp,
     nonce: nonce
@@ -701,9 +701,9 @@ generators.getDeleteContentListAgreementRequestData = function (chainId, contrac
   )
 }
 
-generators.getOrderContentListAgreementsRequestData = function (chainId, contractAddress, content listId, agreementIdsHash, nonce) {
+generators.getOrderContentListAgreementsRequestData = function (chainId, contractAddress, contentListId, agreementIdsHash, nonce) {
   const message = {
-    content listId: content listId,
+    contentListId: contentListId,
     agreementIdsHash: agreementIdsHash,
     nonce: nonce
   }
@@ -718,9 +718,9 @@ generators.getOrderContentListAgreementsRequestData = function (chainId, contrac
   )
 }
 
-generators.getUpdateContentListNameRequestData = function (chainId, contractAddress, content listId, updatedContentListName, nonce) {
+generators.getUpdateContentListNameRequestData = function (chainId, contractAddress, contentListId, updatedContentListName, nonce) {
   const message = {
-    content listId: content listId,
+    contentListId: contentListId,
     updatedContentListName: updatedContentListName,
     nonce: nonce
   }
@@ -735,9 +735,9 @@ generators.getUpdateContentListNameRequestData = function (chainId, contractAddr
   )
 }
 
-generators.getUpdateContentListPrivacyRequestData = function (chainId, contractAddress, content listId, updatedContentListPrivacy, nonce) {
+generators.getUpdateContentListPrivacyRequestData = function (chainId, contractAddress, contentListId, updatedContentListPrivacy, nonce) {
   const message = {
-    content listId: content listId,
+    contentListId: contentListId,
     updatedContentListPrivacy: updatedContentListPrivacy,
     nonce: nonce
   }
@@ -752,10 +752,10 @@ generators.getUpdateContentListPrivacyRequestData = function (chainId, contractA
   )
 }
 
-generators.getUpdateContentListCoverPhotoRequestData = function (chainId, contractAddress, content listId, content listImageMultihashDigest, nonce) {
+generators.getUpdateContentListCoverPhotoRequestData = function (chainId, contractAddress, contentListId, contentListImageMultihashDigest, nonce) {
   const message = {
-    content listId: content listId,
-    content listImageMultihashDigest: content listImageMultihashDigest,
+    contentListId: contentListId,
+    contentListImageMultihashDigest: contentListImageMultihashDigest,
     nonce: nonce
   }
 
@@ -768,10 +768,10 @@ generators.getUpdateContentListCoverPhotoRequestData = function (chainId, contra
     message)
 }
 
-generators.getUpdateContentListUPCRequestData = function (chainId, contractAddress, content listId, content listUPC, nonce) {
+generators.getUpdateContentListUPCRequestData = function (chainId, contractAddress, contentListId, contentListUPC, nonce) {
   const message = {
-    content listId: content listId,
-    content listUPC: content listUPC,
+    contentListId: contentListId,
+    contentListUPC: contentListUPC,
     nonce: nonce
   }
 
@@ -784,10 +784,10 @@ generators.getUpdateContentListUPCRequestData = function (chainId, contractAddre
     message)
 }
 
-generators.getUpdateContentListDescriptionRequestData = function (chainId, contractAddress, content listId, content listDescription, nonce) {
+generators.getUpdateContentListDescriptionRequestData = function (chainId, contractAddress, contentListId, contentListDescription, nonce) {
   const message = {
-    content listId: content listId,
-    content listDescription: content listDescription,
+    contentListId: contentListId,
+    contentListDescription: contentListDescription,
     nonce: nonce
   }
 

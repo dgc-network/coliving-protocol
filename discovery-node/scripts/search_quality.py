@@ -16,7 +16,7 @@ def test_search(args):
                 [
                     entity["user"]["handle"],
                     entity["user"]["name"],
-                    entity.get("title") or entity.get("content list_name"),
+                    entity.get("title") or entity.get("contentList_name"),
                     f"{entity['repost_count']} reposts",
                     f"{entity['user']['follower_count']} followers",
                     f"{entity.get('_score')} score",
@@ -45,9 +45,9 @@ def test_search(args):
     if search_type == "users" or search_type == "all":
         print_users("users", found["users"])
         print_users("followed_users", found["followed_users"])
-    if search_type == "content lists" or search_type == "all":
-        print_entity("content lists", found["content lists"])
-        print_entity("saved_content lists", found["saved_content lists"])
+    if search_type == "contentLists" or search_type == "all":
+        print_entity("contentLists", found["contentLists"])
+        print_entity("saved_contentLists", found["saved_contentLists"])
     if search_type == "albums" or search_type == "all":
         print_entity("albums", found["albums"])
         print_entity("saved_albums", found["saved_albums"])

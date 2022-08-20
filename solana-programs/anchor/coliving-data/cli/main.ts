@@ -256,7 +256,7 @@ async function timeManageEntity(
         tx = await provider.sendAndConfirm(transaction, [userAuthorityKeypair]);
       } else if (
         manageAction == ManagementActions.create &&
-        entityType == EntityTypesEnumValues.content list
+        entityType == EntityTypesEnumValues.contentList
       ) {
         const transaction = createContentList({
           id: args.id,
@@ -275,7 +275,7 @@ async function timeManageEntity(
         tx = await provider.sendAndConfirm(transaction, [userAuthorityKeypair]);
       } else if (
         manageAction == ManagementActions.update &&
-        entityType == EntityTypesEnumValues.content list
+        entityType == EntityTypesEnumValues.contentList
       ) {
         const transaction = updateContentList({
           id: args.id,
@@ -294,7 +294,7 @@ async function timeManageEntity(
         tx = await provider.sendAndConfirm(transaction, [userAuthorityKeypair]);
       } else if (
         manageAction == ManagementActions.delete &&
-        entityType == EntityTypesEnumValues.content list
+        entityType == EntityTypesEnumValues.contentList
       ) {
         const transaction = deleteContentList({
           id: args.id,
@@ -364,7 +364,7 @@ program
   )
   .option("--metadata <string>", "metadata CID")
   .option("--num-agreements <integer>", "number of agreements to generate")
-  .option("--num-content lists <integer>", "number of content lists to generate")
+  .option("--num-contentLists <integer>", "number of contentLists to generate")
   .option("--id <integer>", "ID of entity targeted by transaction")
   .option("-sp-id, --cn-sp-id <string>", "ID of incoming content node")
   .option(
@@ -710,7 +710,7 @@ const main = async () => {
     case functionTypes.createContentList: {
       const numContentLists = options.numContentLists ?? 1;
       console.log(
-        `Number of content lists = ${numContentLists}, Target User = ${options.userAccount}`
+        `Number of contentLists = ${numContentLists}, Target User = ${options.userAccount}`
       );
 
       const promises = [];
@@ -740,7 +740,7 @@ const main = async () => {
             },
             cliVars.provider,
             ManagementActions.create,
-            EntityTypesEnumValues.content list,
+            EntityTypesEnumValues.contentList,
             userSolKeypair
           )
         );
@@ -748,15 +748,15 @@ const main = async () => {
       const start = Date.now();
       await Promise.all(promises);
       console.log(
-        `Processed ${numContentLists} content lists in ${Date.now() - start}ms`
+        `Processed ${numContentLists} contentLists in ${Date.now() - start}ms`
       );
       break;
     }
     case functionTypes.updateContentList: {
-      const content listId = new anchor.BN(options.id);
-      if (!content listId) break;
+      const contentListId = new anchor.BN(options.id);
+      if (!contentListId) break;
       console.log(
-        `ContentList id = ${content listId} Target User = ${options.userAccount}`
+        `ContentList id = ${contentListId} Target User = ${options.userAccount}`
       );
 
       const { baseAuthorityAccount, bumpSeed, derivedAddress } =
@@ -768,7 +768,7 @@ const main = async () => {
       const start = Date.now();
       await timeManageEntity(
         {
-          id: content listId,
+          id: contentListId,
           baseAuthorityAccount,
           adminAccount: adminAccountKeypair.publicKey,
           userId: userId,
@@ -782,17 +782,17 @@ const main = async () => {
         },
         cliVars.provider,
         ManagementActions.update,
-        EntityTypesEnumValues.content list,
+        EntityTypesEnumValues.contentList,
         userSolKeypair
       );
-      console.log(`Updated content list ${content listId} in ${Date.now() - start}ms`);
+      console.log(`Updated contentList ${contentListId} in ${Date.now() - start}ms`);
       break;
     }
     case functionTypes.deleteContentList: {
-      const content listId = new anchor.BN(options.id);
-      if (!content listId) break;
+      const contentListId = new anchor.BN(options.id);
+      if (!contentListId) break;
       console.log(
-        `ContentList id = ${content listId} Target User = ${options.userAccount}`
+        `ContentList id = ${contentListId} Target User = ${options.userAccount}`
       );
 
       const { baseAuthorityAccount, bumpSeed, derivedAddress } =
@@ -804,7 +804,7 @@ const main = async () => {
       const start = Date.now();
       await timeManageEntity(
         {
-          id: content listId,
+          id: contentListId,
           baseAuthorityAccount,
           adminAccount: adminAccountKeypair.publicKey,
           userId: userId,
@@ -818,10 +818,10 @@ const main = async () => {
         },
         cliVars.provider,
         ManagementActions.update,
-        EntityTypesEnumValues.content list,
+        EntityTypesEnumValues.contentList,
         userSolKeypair
       );
-      console.log(`Deleted content list ${content listId} in ${Date.now() - start}ms`);
+      console.log(`Deleted contentList ${contentListId} in ${Date.now() - start}ms`);
       break;
     }
   }

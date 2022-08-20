@@ -3,7 +3,7 @@ from typing import Any, Dict, Optional
 
 from src.api.v1.helpers import (
     extend_favorite,
-    extend_content list,
+    extend_contentList,
     extend_repost,
     extend_agreement,
     extend_user,
@@ -15,7 +15,7 @@ from src.utils.elasticdsl import (
     ES_USERS,
     esclient,
     pluck_hits,
-    populate_agreement_or_content list_metadata_es,
+    populate_agreement_or_contentList_metadata_es,
     populate_user_metadata_es,
 )
 
@@ -35,7 +35,7 @@ def search_es_full(args: dict):
     is_auto_complete = args.get("is_auto_complete")
     do_agreements = search_type == "all" or search_type == "agreements"
     do_users = search_type == "all" or search_type == "users"
-    do_content lists = search_type == "all" or search_type == "content lists"
+    do_contentLists = search_type == "all" or search_type == "contentLists"
     do_albums = search_type == "all" or search_type == "albums"
 
     mdsl: Any = []
@@ -89,21 +89,21 @@ def search_es_full(args: dict):
                 ]
             )
 
-    # content lists
-    if do_content lists:
+    # contentLists
+    if do_contentLists:
         mdsl.extend(
             [
                 {"index": ES_CONTENT_LISTS},
-                content list_dsl(search_str, current_user_id),
+                contentList_dsl(search_str, current_user_id),
             ]
         )
 
-        # saved content lists
+        # saved contentLists
         if current_user_id:
             mdsl.extend(
                 [
                     {"index": ES_CONTENT_LISTS},
-                    content list_dsl(search_str, current_user_id, True),
+                    contentList_dsl(search_str, current_user_id, True),
                 ]
             )
 
@@ -132,8 +132,8 @@ def search_es_full(args: dict):
         "saved_agreements": [],
         "users": [],
         "followed_users": [],
-        "content lists": [],
-        "saved_content lists": [],
+        "contentLists": [],
+        "saved_contentLists": [],
         "albums": [],
         "saved_albums": [],
     }
@@ -148,10 +148,10 @@ def search_es_full(args: dict):
         if current_user_id:
             response["followed_users"] = pluck_hits(mfound["responses"].pop(0))
 
-    if do_content lists:
-        response["content lists"] = pluck_hits(mfound["responses"].pop(0))
+    if do_contentLists:
+        response["contentLists"] = pluck_hits(mfound["responses"].pop(0))
         if current_user_id:
-            response["saved_content lists"] = pluck_hits(mfound["responses"].pop(0))
+            response["saved_contentLists"] = pluck_hits(mfound["responses"].pop(0))
 
     if do_albums:
         response["albums"] = pluck_hits(mfound["responses"].pop(0))
@@ -264,7 +264,7 @@ def finalize_response(
     for items in response.values():
         for item in items:
             item_keys.append(item_key(item))
-            user_ids.add(item.get("owner_id", item.get("content list_owner_id")))
+            user_ids.add(item.get("owner_id", item.get("contentList_owner_id")))
 
     # fetch users
     users_by_id = {}
@@ -300,16 +300,16 @@ def finalize_response(
         users = users[:limit]
         response[k] = [map_user(user, current_user, legacy_mode) for user in users]
 
-    # content lists: finalize
-    for k in ["content lists", "saved_content lists", "albums", "saved_albums"]:
+    # contentLists: finalize
+    for k in ["contentLists", "saved_contentLists", "albums", "saved_albums"]:
         if k not in response:
             continue
-        content lists = response[k]
+        contentLists = response[k]
         if not is_auto_complete:
-            hydrate_saves_reposts(content lists, follow_saves, follow_reposts, legacy_mode)
-        hydrate_user(content lists, users_by_id)
+            hydrate_saves_reposts(contentLists, follow_saves, follow_reposts, legacy_mode)
+        hydrate_user(contentLists, users_by_id)
         response[k] = [
-            map_content list(content list, current_user, legacy_mode) for content list in content lists
+            map_contentList(contentList, current_user, legacy_mode) for contentList in contentLists
         ]
 
     return response
@@ -419,7 +419,7 @@ def user_dsl(search_str, current_user_id, must_saved=False):
     return default_function_score(dsl, "follower_count")
 
 
-def base_content list_dsl(search_str, is_album):
+def base_contentList_dsl(search_str, is_album):
     return {
         "must": [
             *base_match(search_str),
@@ -434,14 +434,14 @@ def base_content list_dsl(search_str, is_album):
     }
 
 
-def content list_dsl(search_str, current_user_id, must_saved=False):
-    dsl = base_content list_dsl(search_str, False)
+def contentList_dsl(search_str, current_user_id, must_saved=False):
+    dsl = base_contentList_dsl(search_str, False)
     personalize_dsl(dsl, current_user_id, must_saved)
     return default_function_score(dsl, "repost_count")
 
 
 def album_dsl(search_str, current_user_id, must_saved=False):
-    dsl = base_content list_dsl(search_str, True)
+    dsl = base_contentList_dsl(search_str, True)
     personalize_dsl(dsl, current_user_id, must_saved)
     return default_function_score(dsl, "repost_count")
 
@@ -474,7 +474,7 @@ def lower_ascii_name(name):
 
 def hydrate_user(items, users_by_id):
     for item in items:
-        uid = str(item.get("owner_id", item.get("content list_owner_id")))
+        uid = str(item.get("owner_id", item.get("contentList_owner_id")))
         user = users_by_id.get(uid)
         if user:
             item["user"] = user
@@ -499,14 +499,14 @@ def map_user(user, current_user, legacy_mode):
 
 
 def map_agreement(agreement, current_user, legacy_mode):
-    agreement = populate_agreement_or_content list_metadata_es(agreement, current_user)
+    agreement = populate_agreement_or_contentList_metadata_es(agreement, current_user)
     if not legacy_mode:
         agreement = extend_agreement(agreement)
     return agreement
 
 
-def map_content list(content list, current_user, legacy_mode):
-    content list = populate_agreement_or_content list_metadata_es(content list, current_user)
+def map_contentList(contentList, current_user, legacy_mode):
+    contentList = populate_agreement_or_contentList_metadata_es(contentList, current_user)
     if not legacy_mode:
-        content list = extend_content list(content list)
-    return content list
+        contentList = extend_contentList(contentList)
+    return contentList

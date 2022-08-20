@@ -27,7 +27,7 @@ def upgrade():
     drop index if exists fix_follows_followee_user_id;
     drop index if exists fix_follows_follower_user_id;
     drop index if exists fix_agreement_owner_id_idx;
-    drop index if exists fix_content list_owner_id_idx;
+    drop index if exists fix_contentList_owner_id_idx;
     drop index if exists fix_save_user_id_idx;
     drop index if exists follows_inbound_idx;
     drop index if exists follows_outbound_idx;
@@ -45,12 +45,12 @@ def upgrade():
     CREATE INDEX IF NOT EXISTS agreement_created_at_idx ON agreements (created_at);
 
 
-    drop index if exists content list_owner_id_idx;
-    CREATE INDEX IF NOT EXISTS content list_owner_id_idx ON content lists (content list_owner_id);
+    drop index if exists contentList_owner_id_idx;
+    CREATE INDEX IF NOT EXISTS contentList_owner_id_idx ON contentLists (contentList_owner_id);
 
 
-    drop index if exists content list_created_at_idx;
-    CREATE INDEX IF NOT EXISTS content list_created_at_idx ON content lists (created_at);
+    drop index if exists contentList_created_at_idx;
+    CREATE INDEX IF NOT EXISTS contentList_created_at_idx ON contentLists (created_at);
 
 
     DROP INDEX IF EXISTS repost_user_id_idx;
@@ -88,7 +88,7 @@ def upgrade():
     create index if not exists reposts_blocknumber_idx on reposts(blocknumber);
     create index if not exists agreements_blocknumber_idx on agreements(blocknumber);
     create index if not exists users_blocknumber_idx on users(blocknumber);
-    create index if not exists content lists_blocknumber_idx on content lists(blocknumber);
+    create index if not exists contentLists_blocknumber_idx on contentLists(blocknumber);
 
     COMMIT;
     """

@@ -20,15 +20,15 @@ def test_resolve_agreement_url(app):
             )
 
 
-def test_resolve_content list_url(app):
-    """Tests that it resolves a content list url"""
+def test_resolve_contentList_url(app):
+    """Tests that it resolves a contentList url"""
     with app.test_request_context():
         db = get_db()
         with db.scoped_session() as session:
-            url = "https://coliving.lol/urbanbankai/content list/up-next-atl-august-2020-9801"
+            url = "https://coliving.lol/urbanbankai/contentList/up-next-atl-august-2020-9801"
             resolved_url = resolve_url(session, url)
 
-            assert resolved_url == "/v1/content lists/ePkW0"
+            assert resolved_url == "/v1/contentLists/ePkW0"
 
 
 def test_resolve_non_fully_qualified_url(app):

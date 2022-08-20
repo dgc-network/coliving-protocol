@@ -42,7 +42,7 @@ export interface SearchRequest {
      */
     userId?: string;
     /**
-     * The type of response, one of: all, users, agreements, content lists, or albums
+     * The type of response, one of: all, users, agreements, contentLists, or albums
      */
     kind?: SearchKindEnum;
 }
@@ -65,7 +65,7 @@ export interface SearchAutocompleteRequest {
      */
     userId?: string;
     /**
-     * The type of response, one of: all, users, agreements, content lists, or albums
+     * The type of response, one of: all, users, agreements, contentLists, or albums
      */
     kind?: SearchAutocompleteKindEnum;
 }
@@ -166,7 +166,7 @@ export enum SearchKindEnum {
     All = 'all',
     Users = 'users',
     Agreements = 'agreements',
-    ContentLists = 'content lists',
+    ContentLists = 'contentLists',
     Albums = 'albums'
 }
 /**
@@ -177,6 +177,6 @@ export enum SearchAutocompleteKindEnum {
     All = 'all',
     Users = 'users',
     Agreements = 'agreements',
-    ContentLists = 'content lists',
+    ContentLists = 'contentLists',
     Albums = 'albums'
 }

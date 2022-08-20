@@ -25,7 +25,7 @@ const { SystemProgram } = anchor.web3;
 
 chai.use(chaiAsPromised);
 
-describe("content lists", function () {
+describe("contentLists", function () {
   const provider = anchor.AnchorProvider.local("http://localhost:8899", {
     preflightCommitment: "confirmed",
     commitment: "confirmed",
@@ -104,7 +104,7 @@ describe("content lists", function () {
     contentNodes["3"] = cn3;
   });
 
-  it("Initializing + claiming user, creating + updating content list", async function () {
+  it("Initializing + claiming user, creating + updating contentList", async function () {
     const { ethAccount, userId, metadata } = initTestConstants();
 
     const {
@@ -147,8 +147,8 @@ describe("content lists", function () {
       userAccount: userAccountAddress,
     });
 
-    const content listMetadata = randomCID();
-    const content listID = randomId();
+    const contentListMetadata = randomCID();
+    const contentListID = randomId();
 
     await testCreateContentList({
       provider,
@@ -156,10 +156,10 @@ describe("content lists", function () {
       baseAuthorityAccount,
       userId,
       bumpSeed,
-      id: content listID,
-      content listMetadata,
+      id: contentListID,
+      contentListMetadata,
       userAuthorityKeypair: newUserKeypair,
-      content listOwner: userAccountAddress,
+      contentListOwner: userAccountAddress,
       userAuthorityDelegateAccount: SystemProgram.programId,
       authorityDelegationStatusAccount: SystemProgram.programId,
       adminAccount: adminAccountKeypair.publicKey,
@@ -178,9 +178,9 @@ describe("content lists", function () {
         userId,
         bumpSeed,
         id: randomId(),
-        content listMetadata,
+        contentListMetadata,
         userAuthorityKeypair: wrongUserKeypair,
-        content listOwner: userAccountAddress,
+        contentListOwner: userAccountAddress,
         userAuthorityDelegateAccount: SystemProgram.programId,
         authorityDelegationStatusAccount: SystemProgram.programId,
         adminAccount: adminAccountKeypair.publicKey,
@@ -196,7 +196,7 @@ describe("content lists", function () {
       userId,
       bumpSeed,
       adminAccount: adminAccountKeypair.publicKey,
-      id: content listID,
+      id: contentListID,
       userAccount: userAccountAddress,
       userAuthorityDelegateAccount: SystemProgram.programId,
       authorityDelegationStatusAccount: SystemProgram.programId,
@@ -205,7 +205,7 @@ describe("content lists", function () {
     });
   });
 
-  it("creating + deleting a content list", async function () {
+  it("creating + deleting a contentList", async function () {
     const { ethAccount, metadata, userId } = initTestConstants();
 
     const {
@@ -250,20 +250,20 @@ describe("content lists", function () {
       ...getURSMParams(),
     });
 
-    const content listMetadata = randomCID();
-    const content listID = randomId();
+    const contentListMetadata = randomCID();
+    const contentListID = randomId();
 
     await testCreateContentList({
       provider,
       program,
-      id: content listID,
+      id: contentListID,
       baseAuthorityAccount,
       userId,
       adminAccount: adminAccountKeypair.publicKey,
       bumpSeed,
-      content listMetadata,
+      contentListMetadata,
       userAuthorityKeypair: newUserKeypair,
-      content listOwner: userAccountAddress,
+      contentListOwner: userAccountAddress,
       userAuthorityDelegateAccount: SystemProgram.programId,
       authorityDelegationStatusAccount: SystemProgram.programId,
     });
@@ -271,8 +271,8 @@ describe("content lists", function () {
     await testDeleteContentList({
       provider,
       program,
-      id: content listID,
-      content listOwner: userAccountAddress,
+      id: contentListID,
+      contentListOwner: userAccountAddress,
       userAuthorityDelegateAccount: SystemProgram.programId,
       authorityDelegationStatusAccount: SystemProgram.programId,
       userAuthorityKeypair: newUserKeypair,
@@ -283,7 +283,7 @@ describe("content lists", function () {
     });
   });
 
-  it("create multiple content lists in parallel", async function () {
+  it("create multiple contentLists in parallel", async function () {
     const { ethAccount, metadata, userId } = initTestConstants();
 
     const {
@@ -328,9 +328,9 @@ describe("content lists", function () {
       ...getURSMParams(),
     });
 
-    const content listMetadata = randomCID();
-    const content listMetadata2 = randomCID();
-    const content listMetadata3 = randomCID();
+    const contentListMetadata = randomCID();
+    const contentListMetadata2 = randomCID();
+    const contentListMetadata3 = randomCID();
     const start = Date.now();
     await Promise.all([
       testCreateContentList({
@@ -341,9 +341,9 @@ describe("content lists", function () {
         bumpSeed,
         adminAccount: adminAccountKeypair.publicKey,
         id: randomId(),
-        content listMetadata,
+        contentListMetadata,
         userAuthorityKeypair: newUserKeypair,
-        content listOwner: userAccountAddress,
+        contentListOwner: userAccountAddress,
         userAuthorityDelegateAccount: SystemProgram.programId,
         authorityDelegationStatusAccount: SystemProgram.programId,
       }),
@@ -355,9 +355,9 @@ describe("content lists", function () {
         bumpSeed,
         adminAccount: adminAccountKeypair.publicKey,
         id: randomId(),
-        content listMetadata: content listMetadata2,
+        contentListMetadata: contentListMetadata2,
         userAuthorityKeypair: newUserKeypair,
-        content listOwner: userAccountAddress,
+        contentListOwner: userAccountAddress,
         userAuthorityDelegateAccount: SystemProgram.programId,
         authorityDelegationStatusAccount: SystemProgram.programId,
       }),
@@ -369,13 +369,13 @@ describe("content lists", function () {
         bumpSeed,
         adminAccount: adminAccountKeypair.publicKey,
         id: randomId(),
-        content listMetadata: content listMetadata3,
+        contentListMetadata: contentListMetadata3,
         userAuthorityKeypair: newUserKeypair,
-        content listOwner: userAccountAddress,
+        contentListOwner: userAccountAddress,
         userAuthorityDelegateAccount: SystemProgram.programId,
         authorityDelegationStatusAccount: SystemProgram.programId,
       }),
     ]);
-    console.log(`Created 3 content lists in ${Date.now() - start}ms`);
+    console.log(`Created 3 contentLists in ${Date.now() - start}ms`);
   });
 });

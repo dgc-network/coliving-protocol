@@ -232,25 +232,25 @@ module.exports = coreIntegration = async ({
       }
       case OPERATION_TYPE.CREATE_CONTENT_LIST: {
         try {
-          // create content list
+          // create contentList
           const randomContentListName = genRandomString(8)
-          const content list = await executeOne(walletIndex, l =>
+          const contentList = await executeOne(walletIndex, l =>
             createContentList(l, userId, randomContentListName, false, false, [])
           )
-          logger.info(`User [${userId}] created content list [${content list.content listId}].`)
+          logger.info(`User [${userId}] created contentList [${contentList.contentListId}].`)
           await executeOne(walletIndex, l => l.waitForLatestBlock())
           await retry(async () => {
-            // verify content list
+            // verify contentList
             const verifiedContentList = await executeOne(walletIndex, l =>
-              getContentLists(l, 100, 0, [content list.content listId], userId)
+              getContentLists(l, 100, 0, [contentList.contentListId], userId)
             )
-            if (verifiedContentList[0].content list_id !== content list.content listId) {
-              throw new Error(`Error verifying content list [${content list.content listId}]`)
+            if (verifiedContentList[0].contentList_id !== contentList.contentListId) {
+              throw new Error(`Error verifying contentList [${contentList.contentListId}]`)
             }
           }, {})
-          res = new CreateContentListResponse(walletIndex, content list.content listId, userId)
+          res = new CreateContentListResponse(walletIndex, contentList.contentListId, userId)
         } catch (e) {
-          logger.error(`Caught error [${e.message}] creating content list.\n${e.stack}`)
+          logger.error(`Caught error [${e.message}] creating contentList.\n${e.stack}`)
           res = new CreateContentListResponse(walletIndex, null, userId)
         }
         emit(Event.RESPONSE, res)
@@ -262,27 +262,27 @@ module.exports = coreIntegration = async ({
             walletIndex,
             null,
             false,
-            new Error('Adding a agreement to a content list requires a agreement to be uploaded.')
+            new Error('Adding a agreement to a contentList requires a agreement to be uploaded.')
           )
         } else {
           const agreementId = uploadedAgreements[_.random(uploadedAgreements.length - 1)].agreementId
           try {
-            // add agreement to content list
-            const content listId = createdContentLists[userId][_.random(createdContentLists[userId].length - 1)]
+            // add agreement to contentList
+            const contentListId = createdContentLists[userId][_.random(createdContentLists[userId].length - 1)]
             await executeOne(walletIndex, l =>
-              addContentListAgreement(l, content listId, agreementId)
+              addContentListAgreement(l, contentListId, agreementId)
             )
-            logger.info(`Agreement [${agreementId}] added to content list [${content listId}].`)
+            logger.info(`Agreement [${agreementId}] added to contentList [${contentListId}].`)
             await executeOne(walletIndex, l => l.waitForLatestBlock())
 
-            // verify content list agreement add
+            // verify contentList agreement add
             await retry(async () => {
-              const content lists = await executeOne(walletIndex, l =>
-                getContentLists(l, 100, 0, [content listId], userId)
+              const contentLists = await executeOne(walletIndex, l =>
+                getContentLists(l, 100, 0, [contentListId], userId)
               )
-              const content listAgreements = content lists[0].content list_contents.agreement_ids.map(obj => obj.agreement)
-              if (!content listAgreements.includes(agreementId)) {
-                throw new Error(`Agreement [${agreementId}] not found in content list [${content listId}]`)
+              const contentListAgreements = contentLists[0].contentList_contents.agreement_ids.map(obj => obj.agreement)
+              if (!contentListAgreements.includes(agreementId)) {
+                throw new Error(`Agreement [${agreementId}] not found in contentList [${contentListId}]`)
               }
             }, {
               retries: 20,
@@ -290,7 +290,7 @@ module.exports = coreIntegration = async ({
             })
             res = new AddContentListAgreementResponse(walletIndex, agreementId)
           } catch (e) {
-            logger.error(`Caught error [${e.message}] adding agreement: [${agreementId}] to content list \n${e.stack}`)
+            logger.error(`Caught error [${e.message}] adding agreement: [${agreementId}] to contentList \n${e.stack}`)
             res = new AddContentListAgreementResponse(
               walletIndex,
               null,
@@ -343,12 +343,12 @@ module.exports = coreIntegration = async ({
         break
       }
       case OPERATION_TYPE.CREATE_CONTENT_LIST: {
-        const { walletIndex, content list, userId, success } = res
+        const { walletIndex, contentList, userId, success } = res
         if (success) {
           if (!createdContentLists[userId]) {
             createdContentLists[userId] = []
           }
-          createdContentLists[userId].push(content list)
+          createdContentLists[userId].push(contentList)
         }
         break
       }
@@ -749,6 +749,6 @@ const printTestSummary = () => {
   logger.info('\n------------------------ COLIVING CORE INTEGRATION TEST Summary ------------------------')
   logger.info(`uploadedAgreements: ${uploadedAgreements.length}                | Total uploaded agreements`)
   logger.info(`repostedAgreements: ${repostedAgreements.length}                | Total reposted agreements`)
-  logger.info(`createdContentLists: ${Object.values(createdContentLists).flat().length}                | Total created content lists`)
-  logger.info(`addedContentListAgreements: ${addedContentListAgreements.length}                | Total added content list agreements`)
+  logger.info(`createdContentLists: ${Object.values(createdContentLists).flat().length}                | Total created contentLists`)
+  logger.info(`addedContentListAgreements: ${addedContentListAgreements.length}                | Total added contentList agreements`)
 }

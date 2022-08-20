@@ -82,7 +82,7 @@ export class File extends Base {
           }
           return response
         } catch (e) {
-          // TODO: Remove this fallback logic when no more users/agreements/content lists
+          // TODO: Remove this fallback logic when no more users/agreements/contentLists
           // contain "legacy" image formats (no dir cid)
           if (cid.includes('/')) {
             // dirCID -- an image

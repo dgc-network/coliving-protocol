@@ -195,16 +195,16 @@ async function fetchNotificationMetadata (
         agreementIdsToFetch.push(notification.entityId)
         break
       }
-      case NotificationType.Favorite.content list:
+      case NotificationType.Favorite.contentList:
       case NotificationType.Favorite.album:
-      case NotificationType.Repost.content list:
+      case NotificationType.Repost.contentList:
       case NotificationType.Repost.album: {
         userIdsToFetch.push(...notification.actions.map(({ actionEntityId }) => actionEntityId).slice(0, USER_FETCH_LIMIT))
         collectionIdsToFetch.push(notification.entityId)
         break
       }
       case NotificationType.Create.album:
-      case NotificationType.Create.content list: {
+      case NotificationType.Create.contentList: {
         collectionIdsToFetch.push(notification.entityId)
         break
       }
@@ -251,8 +251,8 @@ async function fetchNotificationMetadata (
       }
       case NotificationType.AddAgreementToContentList: {
         agreementIdsToFetch.push(notification.entityId)
-        userIdsToFetch.push(notification.metadata.content listOwnerId)
-        collectionIdsToFetch.push(notification.metadata.content listId)
+        userIdsToFetch.push(notification.metadata.contentListOwnerId)
+        collectionIdsToFetch.push(notification.metadata.contentListId)
         break
       }
       case NotificationType.Reaction: {
@@ -355,7 +355,7 @@ async function fetchNotificationMetadata (
 
   userIdsToFetch.push(
     ...agreements.map(({ owner_id: id }) => id),
-    ...collections.map(({ content list_owner_id: id }) => id)
+    ...collections.map(({ contentList_owner_id: id }) => id)
   )
   const uniqueUserIds = [...new Set(userIdsToFetch)]
 
@@ -391,7 +391,7 @@ async function fetchNotificationMetadata (
   }))
 
   const collectionMap = collections.reduce((cm, collection) => {
-    cm[collection.content list_id] = collection
+    cm[collection.contentList_id] = collection
     return cm
   }, {})
 

@@ -105,7 +105,7 @@ export const getEntity = (entity) => {
     )
   } else if (entity.type === EntityType.ContentList) {
     return (
-      <> <BodyText text={'content list '} /><HighlightText text={entity.name} /> </>
+      <> <BodyText text={'contentList '} /><HighlightText text={entity.name} /> </>
     )
   }
 }
@@ -236,11 +236,11 @@ const notificationMap = {
   [NotificationType.AddAgreementToContentList] (notification) {
     return (
       <span className={'notificationText'}>
-        <HighlightText text={notification.content listOwner.name} />
+        <HighlightText text={notification.contentListOwner.name} />
         <BodyText text={` added your agreement `} />
         <HighlightText text={notification.agreement.title} />
-        <BodyText text={` to their content list `} />
-        <HighlightText text={notification.content list.content list_name} />
+        <BodyText text={` to their contentList `} />
+        <HighlightText text={notification.contentList.contentList_name} />
       </span>
     )
   },

@@ -81,7 +81,7 @@ WITH recent_tips AS (
 INSERT INTO aggregate_user (
     user_id,
     agreement_count,
-    content list_count,
+    contentList_count,
     album_count,
     follower_count,
     following_count,
@@ -93,7 +93,7 @@ INSERT INTO aggregate_user (
 SELECT
     user_ids.user_id,
     0 AS agreement_count,
-    0 AS content list_count,
+    0 AS contentList_count,
     0 AS album_count, 0 AS follower_count,
     0 AS following_count,
     0 AS repost_count,

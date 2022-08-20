@@ -642,7 +642,7 @@ IpldBlacklistTest.updateContentListCoverPhoto = async ({
 
   const _createAndUploadContentList = async () => {
     const randomContentListName = genRandomString(8)
-    const { content listId } = await executeOne(CREATOR_INDEX, libsWrapper => {
+    const { contentListId } = await executeOne(CREATOR_INDEX, libsWrapper => {
       return createContentList(
         libsWrapper,
         userId,
@@ -652,7 +652,7 @@ IpldBlacklistTest.updateContentListCoverPhoto = async ({
         []
       )
     })
-    return content listId
+    return contentListId
   }
 
   const _createAndUploadCoverPhoto = async (libs) => {
@@ -664,8 +664,8 @@ IpldBlacklistTest.updateContentListCoverPhoto = async ({
     return cid
   }
 
-  const _getContentLists = async (libs, content listId) =>
-    getContentLists(libs, 1, 0, [content listId], userId, false)
+  const _getContentLists = async (libs, contentListId) =>
+    getContentLists(libs, 1, 0, [contentListId], userId, false)
 
   const _setCoverPhoto = async (libs, uploadedContentLists, cid) => {
     const { digest } = Utils.decodeMultihash(cid)
@@ -674,16 +674,16 @@ IpldBlacklistTest.updateContentListCoverPhoto = async ({
       libsWrapper => {
         return updateContentListCoverPhoto(
           libsWrapper,
-          uploadedContentLists[0].content list_id,
+          uploadedContentLists[0].contentList_id,
           digest
         )
       }
     )
   }
 
-  const _verifyNonBlacklistedCidUpdated = (content listsBeforeUpdate, content listsAfterUpdate, nonBlacklistedCid) => {
-    const previousPicCid = content listsBeforeUpdate[0].content list_image_sizes_multihash
-    const updatedPicCid = content listsAfterUpdate[0].content list_image_sizes_multihash
+  const _verifyNonBlacklistedCidUpdated = (contentListsBeforeUpdate, contentListsAfterUpdate, nonBlacklistedCid) => {
+    const previousPicCid = contentListsBeforeUpdate[0].contentList_image_sizes_multihash
+    const updatedPicCid = contentListsAfterUpdate[0].contentList_image_sizes_multihash
     if (previousPicCid === updatedPicCid) {
       throw new Error(
         "ContentList cover photo CID should've updated. The rest of the test will produce a false positive."
@@ -696,18 +696,18 @@ IpldBlacklistTest.updateContentListCoverPhoto = async ({
     }
   }
 
-  const _verifyBlacklistedCidDidNotUpdate = (content lists, blacklistedCid) => {
-    const content list = content lists[0]
+  const _verifyBlacklistedCidDidNotUpdate = (contentLists, blacklistedCid) => {
+    const contentList = contentLists[0]
     if (
-      content list.content list_image_multihash === blacklistedCid ||
-      content list.content list_image_sizes_multihash === blacklistedCid
+      contentList.contentList_image_multihash === blacklistedCid ||
+      contentList.contentList_image_sizes_multihash === blacklistedCid
     ) {
-      throw new Error('Update content list with blacklisted cover photo should not have been indexed.')
+      throw new Error('Update contentList with blacklisted cover photo should not have been indexed.')
     }
   }
 
   await testUpdateFlow(
-    'content list cover photo',
+    'contentList cover photo',
     executeOne,
     _createAndUploadContentList,
     _getContentLists,
@@ -736,8 +736,8 @@ async function getCreatorId ({
 
 /**
 * Tests blacklist functionality for updating an object with a property.
-* An object is metadata (user, agreement, or content list), and property is the field
-* on the metadata that's being updated (agreement cover art, content list cover photo,
+* An object is metadata (user, agreement, or contentList), and property is the field
+* on the metadata that's being updated (agreement cover art, contentList cover photo,
 * user cover photo, etc...) by:
 * 1. Retrieving the object
 * 2. Verifying that the object can successfully be modified when its CID is NOT blacklisted

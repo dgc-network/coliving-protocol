@@ -53,61 +53,61 @@ def upgrade():
       CREATE INDEX agreement_words_idx ON agreement_lexeme_dict USING gin(word gin_trgm_ops);
 
 
-      --- Filter deletes from content list_lexeme_dict and album_lexeme_dict.
+      --- Filter deletes from contentList_lexeme_dict and album_lexeme_dict.
 
-      DROP MATERIALIZED VIEW content list_lexeme_dict;
+      DROP MATERIALIZED VIEW contentList_lexeme_dict;
       DROP MATERIALIZED VIEW album_lexeme_dict;
-      DROP INDEX IF EXISTS content list_words_idx;
+      DROP INDEX IF EXISTS contentList_words_idx;
       DROP INDEX IF EXISTS album_words_idx;
-      CREATE MATERIALIZED VIEW content list_lexeme_dict as
+      CREATE MATERIALIZED VIEW contentList_lexeme_dict as
       SELECT * FROM (
         SELECT
-          p.content list_id,
-          p.content list_name,
+          p.contentList_id,
+          p.contentList_name,
           unnest(
             tsvector_to_array(
               to_tsvector(
                 'coliving_ts_config',
-                replace(COALESCE(p.content list_name, ''), '&', 'and')
+                replace(COALESCE(p.contentList_name, ''), '&', 'and')
               )
             )
           ) as word
         FROM
-            content lists p
-        INNER JOIN users u ON p.content list_owner_id = u.user_id
+            contentLists p
+        INNER JOIN users u ON p.contentList_owner_id = u.user_id
         WHERE
             p.is_current = true and
             p.is_album = false and
             p.is_private = false and
             p.is_delete = false and
             u.is_current = true
-        GROUP BY p.content list_id, p.content list_name
+        GROUP BY p.contentList_id, p.contentList_name
       ) AS words;
       CREATE MATERIALIZED VIEW album_lexeme_dict as
       SELECT * FROM (
         SELECT
-          p.content list_id,
-          p.content list_name,
+          p.contentList_id,
+          p.contentList_name,
           unnest(
             tsvector_to_array(
               to_tsvector(
                 'coliving_ts_config',
-                replace(COALESCE(p.content list_name, ''), '&', 'and')
+                replace(COALESCE(p.contentList_name, ''), '&', 'and')
               )
             )
           ) as word
         FROM
-            content lists p
-        INNER JOIN users u ON p.content list_owner_id = u.user_id
+            contentLists p
+        INNER JOIN users u ON p.contentList_owner_id = u.user_id
         WHERE
             p.is_current = true and
             p.is_album = true and
             p.is_private = false and
             p.is_delete = false and
             u.is_current = true
-        GROUP BY p.content list_id, p.content list_name
+        GROUP BY p.contentList_id, p.contentList_name
       ) AS words;
-      CREATE INDEX content list_words_idx ON content list_lexeme_dict USING gin(word gin_trgm_ops);
+      CREATE INDEX contentList_words_idx ON contentList_lexeme_dict USING gin(word gin_trgm_ops);
       CREATE INDEX album_words_idx ON album_lexeme_dict USING gin(word gin_trgm_ops);
     """
     )

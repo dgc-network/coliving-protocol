@@ -56,7 +56,7 @@ class User(Base, RepresentableMixin):
         nullable=False,
         server_default=text("''::character varying"),
     )
-    content list_library = Column(JSONB())
+    contentList_library = Column(JSONB())
     is_deactivated = Column(
         Boolean, nullable=False, index=True, server_default=text("false")
     )

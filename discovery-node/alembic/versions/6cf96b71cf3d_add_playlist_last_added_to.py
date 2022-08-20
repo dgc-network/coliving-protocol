@@ -1,4 +1,4 @@
-"""add-content list-last-added-to
+"""add-contentList-last-added-to
 
 Revision ID: 6cf96b71cf3d
 Revises: c8d2be7dcccc
@@ -17,8 +17,8 @@ depends_on = None
 
 
 def upgrade():
-    op.add_column("content lists", sa.Column("last_added_to", sa.DateTime(), nullable=True))
+    op.add_column("contentLists", sa.Column("last_added_to", sa.DateTime(), nullable=True))
 
 
 def downgrade():
-    op.drop_column("content lists", "last_added_to")
+    op.drop_column("contentLists", "last_added_to")

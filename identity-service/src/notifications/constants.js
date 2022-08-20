@@ -4,19 +4,19 @@ const notificationTypes = Object.freeze({
     base: 'Repost',
     agreement: 'RepostAgreement',
     album: 'RepostAlbum',
-    content list: 'RepostContentList'
+    contentList: 'RepostContentList'
   },
   Favorite: {
     base: 'Favorite',
     agreement: 'FavoriteAgreement',
     album: 'FavoriteAlbum',
-    content list: 'FavoriteContentList'
+    contentList: 'FavoriteContentList'
   },
   Create: {
     base: 'Create',
     agreement: 'CreateAgreement',
     album: 'CreateAlbum',
-    content list: 'CreateContentList'
+    contentList: 'CreateContentList'
   },
   RemixCreate: 'RemixCreate',
   RemixCosign: 'RemixCosign',

@@ -30,20 +30,20 @@ export class ContentLists extends Base {
   /* ------- GETTERS ------- */
 
   /**
-   * get full content list objects, including agreements, for passed in array of content listId
+   * get full contentList objects, including agreements, for passed in array of contentListId
    * @param limit max # of items to return
    * @param offset offset into list to return from (for pagination)
-   * @param idsArray list of content list ids
-   * @param targetUserId the user whose content lists we're trying to get
+   * @param idsArray list of contentList ids
+   * @param targetUserId the user whose contentLists we're trying to get
    * @param withUsers whether to return users nested within the collection objects
-   * @returns array of content list objects
-   * additional metadata fields on content list objects:
-   *  {Integer} repost_count - repost count for given content list
-   *  {Integer} save_count - save count for given content list
-   *  {Boolean} has_current_user_reposted - has current user reposted given content list
-   *  {Array} followee_reposts - followees of current user that have reposted given content list
-   *  {Boolean} has_current_user_reposted - has current user reposted given content list
-   *  {Boolean} has_current_user_saved - has current user saved given content list
+   * @returns array of contentList objects
+   * additional metadata fields on contentList objects:
+   *  {Integer} repost_count - repost count for given contentList
+   *  {Integer} save_count - save count for given contentList
+   *  {Boolean} has_current_user_reposted - has current user reposted given contentList
+   *  {Array} followee_reposts - followees of current user that have reposted given contentList
+   *  {Boolean} has_current_user_reposted - has current user reposted given contentList
+   *  {Boolean} has_current_user_saved - has current user saved given contentList
    */
   async getContentLists(
     limit = 100,
@@ -63,8 +63,8 @@ export class ContentLists extends Base {
   }
 
   /**
-   * Return saved content lists for current user
-   * NOTE in returned JSON, SaveType string one of agreement, content list, album
+   * Return saved contentLists for current user
+   * NOTE in returned JSON, SaveType string one of agreement, contentList, album
    * @param limit - max # of items to return
    * @param offset - offset into list to return from (for pagination)
    */
@@ -79,7 +79,7 @@ export class ContentLists extends Base {
 
   /**
    * Return saved albums for current user
-   * NOTE in returned JSON, SaveType string one of agreement, content list, album
+   * NOTE in returned JSON, SaveType string one of agreement, contentList, album
    * @param limit - max # of items to return
    * @param offset - offset into list to return from (for pagination)
    */
@@ -91,11 +91,11 @@ export class ContentLists extends Base {
   /* ------- SETTERS ------- */
 
   /**
-   * Creates a new content list
+   * Creates a new contentList
    */
   async createContentList(
     userId: number,
-    content listName: string,
+    contentListName: string,
     isPrivate: boolean,
     isAlbum: boolean,
     agreementIds: number[]
@@ -103,25 +103,25 @@ export class ContentLists extends Base {
     const maxInitialAgreements = 50
     const createInitialIdsArray = agreementIds.slice(0, maxInitialAgreements)
     const postInitialIdsArray = agreementIds.slice(maxInitialAgreements)
-    let content listId: number
+    let contentListId: number
     let receipt: Partial<TransactionReceipt> = {}
     try {
       const response =
         await this.contracts.ContentListFactoryClient.createContentList(
           userId,
-          content listName,
+          contentListName,
           isPrivate,
           isAlbum,
           createInitialIdsArray
         )
-      content listId = response.content listId
+      contentListId = response.contentListId
       receipt = response.txReceipt
 
       // Add remaining agreements
       await Promise.all(
         postInitialIdsArray.map(async (agreementId) => {
           return await this.contracts.ContentListFactoryClient.addContentListAgreement(
-            content listId,
+            contentListId,
             agreementId
           )
         })
@@ -131,152 +131,152 @@ export class ContentLists extends Base {
       if (postInitialIdsArray.length > 0) {
         receipt =
           await this.contracts.ContentListFactoryClient.orderContentListAgreements(
-            content listId,
+            contentListId,
             agreementIds
           )
       }
     } catch (e) {
       console.debug(
-        `Reached libs createContentList catch block with content list id ${content listId!}`
+        `Reached libs createContentList catch block with contentList id ${contentListId!}`
       )
       console.error(e)
-      return { content listId: content listId!, error: true }
+      return { contentListId: contentListId!, error: true }
     }
     return {
       blockHash: receipt.blockHash,
       blockNumber: receipt.blockNumber,
-      content listId,
+      contentListId,
       error: false
     }
   }
 
   /**
-   * Adds a agreement to a given content list
+   * Adds a agreement to a given contentList
    */
-  async addContentListAgreement(content listId: number, agreementId: number) {
+  async addContentListAgreement(contentListId: number, agreementId: number) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
 
     const userId = this.userStateManager.getCurrentUserId()
-    const content list = await this.discoveryProvider.getContentLists(
+    const contentList = await this.discoveryProvider.getContentLists(
       100,
       0,
-      [content listId],
+      [contentListId],
       userId
     )
 
-    // error if content list does not exist or hasn't been indexed by discovery node
-    if (!Array.isArray(content list) || !content list.length) {
+    // error if contentList does not exist or hasn't been indexed by discovery node
+    if (!Array.isArray(contentList) || !contentList.length) {
       throw new Error(
         'Cannot add agreement - ContentList does not exist or has not yet been indexed by discovery node'
       )
     }
-    // error if content list already at max length
+    // error if contentList already at max length
     if (
-      content list[0]!.content list_contents.agreement_ids.length >= MAX_CONTENT_LIST_LENGTH
+      contentList[0]!.contentList_contents.agreement_ids.length >= MAX_CONTENT_LIST_LENGTH
     ) {
       throw new Error(
-        `Cannot add agreement - content list is already at max length of ${MAX_CONTENT_LIST_LENGTH}`
+        `Cannot add agreement - contentList is already at max length of ${MAX_CONTENT_LIST_LENGTH}`
       )
     }
     return await this.contracts.ContentListFactoryClient.addContentListAgreement(
-      content listId,
+      contentListId,
       agreementId
     )
   }
 
   /**
-   * Reorders the agreements in a content list
+   * Reorders the agreements in a contentList
    */
   async orderContentListAgreements(
-    content listId: number,
+    contentListId: number,
     agreementIds: number[],
     retriesOverride?: number
   ) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
     if (!Array.isArray(agreementIds)) {
-      throw new Error('Cannot order content list - agreementIds must be array')
+      throw new Error('Cannot order contentList - agreementIds must be array')
     }
 
     const userId = this.userStateManager.getCurrentUserId()
-    const content list = await this.discoveryProvider.getContentLists(
+    const contentList = await this.discoveryProvider.getContentLists(
       100,
       0,
-      [content listId],
+      [contentListId],
       userId
     )
 
-    // error if content list does not exist or hasn't been indexed by discovery node
-    if (!Array.isArray(content list) || !content list.length) {
+    // error if contentList does not exist or hasn't been indexed by discovery node
+    if (!Array.isArray(contentList) || !contentList.length) {
       throw new Error(
-        'Cannot order content list - ContentList does not exist or has not yet been indexed by discovery node'
+        'Cannot order contentList - ContentList does not exist or has not yet been indexed by discovery node'
       )
     }
 
-    const content listAgreementIds = content list[0]!.content list_contents.agreement_ids.map(
+    const contentListAgreementIds = contentList[0]!.contentList_contents.agreement_ids.map(
       (a) => a.agreement
     )
-    // error if agreementIds arg array length does not match content list length
-    if (agreementIds.length !== content listAgreementIds.length) {
+    // error if agreementIds arg array length does not match contentList length
+    if (agreementIds.length !== contentListAgreementIds.length) {
       throw new Error(
-        'Cannot order content list - agreementIds length must match content list length'
+        'Cannot order contentList - agreementIds length must match contentList length'
       )
     }
 
-    // ensure existing content list agreements and agreementIds have same content, regardless of order
+    // ensure existing contentList agreements and agreementIds have same content, regardless of order
     const agreementIdsSorted = [...agreementIds].sort()
-    const content listAgreementIdsSorted = content listAgreementIds.sort()
+    const contentListAgreementIdsSorted = contentListAgreementIds.sort()
     for (let i = 0; i < agreementIdsSorted.length; i++) {
-      if (agreementIdsSorted[i] !== content listAgreementIdsSorted[i]) {
+      if (agreementIdsSorted[i] !== contentListAgreementIdsSorted[i]) {
         throw new Error(
-          'Cannot order content list - agreementIds must have same content as content list agreements'
+          'Cannot order contentList - agreementIds must have same content as contentList agreements'
         )
       }
     }
 
     return await this.contracts.ContentListFactoryClient.orderContentListAgreements(
-      content listId,
+      contentListId,
       agreementIds,
       retriesOverride
     )
   }
 
   /**
-   * Checks if a content list has entered a corrupted state
-   * Check that each of the agreements within a content list retrieved from discprov are in the onchain content list
-   * Note: the onchain content lists stores the agreements as a mapping of agreement ID to agreement count and the
+   * Checks if a contentList has entered a corrupted state
+   * Check that each of the agreements within a contentList retrieved from discprov are in the onchain contentList
+   * Note: the onchain contentLists stores the agreements as a mapping of agreement ID to agreement count and the
    * agreement order is an event that is indexed by discprov. The agreement order event does not validate that the
    * updated order of agreements has the correct agreement count, so a agreement order event w/ duplicate agreements can
-   * lead the content list entering a corrupted state.
+   * lead the contentList entering a corrupted state.
    */
-  async validateAgreementsInContentList(content listId: number) {
+  async validateAgreementsInContentList(contentListId: number) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER, Services.CONTENT_NODE)
 
     const userId = this.userStateManager.getCurrentUserId()
-    const content listsReponse = await this.discoveryProvider.getContentLists(
+    const contentListsReponse = await this.discoveryProvider.getContentLists(
       1,
       0,
-      [content listId],
+      [contentListId],
       userId
     )
 
-    // error if content list does not exist or hasn't been indexed by discovery node
-    if (!Array.isArray(content listsReponse) || !content listsReponse.length) {
+    // error if contentList does not exist or hasn't been indexed by discovery node
+    if (!Array.isArray(contentListsReponse) || !contentListsReponse.length) {
       throw new Error(
-        'Cannot validate content list - ContentList does not exist, is private and not owned by current user or has not yet been indexed by discovery node'
+        'Cannot validate contentList - ContentList does not exist, is private and not owned by current user or has not yet been indexed by discovery node'
       )
     }
 
-    const content list = content listsReponse[0]!
-    const content listAgreementIds = content list.content list_contents.agreement_ids.map(
+    const contentList = contentListsReponse[0]!
+    const contentListAgreementIds = contentList.contentList_contents.agreement_ids.map(
       (a) => a.agreement
     )
 
-    // Check if each agreement is in the content list
+    // Check if each agreement is in the contentList
     const invalidAgreementIds = []
-    for (const agreementId of content listAgreementIds) {
+    for (const agreementId of contentListAgreementIds) {
       const agreementInContentList =
         await this.contracts.ContentListFactoryClient.isAgreementInContentList(
-          content listId,
+          contentListId,
           agreementId
         )
       if (!agreementInContentList) invalidAgreementIds.push(agreementId)
@@ -289,7 +289,7 @@ export class ContentLists extends Base {
   }
 
   /**
-   * Uploads a cover photo for a content list without updating the actual content list
+   * Uploads a cover photo for a contentList without updating the actual contentList
    * @param coverPhotoFile the file to upload as the cover photo
    * @return CID of the uploaded cover photo
    */
@@ -304,96 +304,96 @@ export class ContentLists extends Base {
   }
 
   /**
-   * Updates the cover photo for a content list
+   * Updates the cover photo for a contentList
    */
-  async updateContentListCoverPhoto(content listId: number, coverPhoto: File) {
+  async updateContentListCoverPhoto(contentListId: number, coverPhoto: File) {
     this.REQUIRES(Services.CONTENT_NODE)
 
     const updatedContentListImageDirCid = await this.uploadContentListCoverPhoto(
       coverPhoto
     )
     return await this.contracts.ContentListFactoryClient.updateContentListCoverPhoto(
-      content listId,
+      contentListId,
       Utils.formatOptionalMultihash(updatedContentListImageDirCid)
     )
   }
 
   /**
-   * Updates a content list name
+   * Updates a contentList name
    */
-  async updateContentListName(content listId: number, content listName: string) {
+  async updateContentListName(contentListId: number, contentListName: string) {
     return await this.contracts.ContentListFactoryClient.updateContentListName(
-      content listId,
-      content listName
+      contentListId,
+      contentListName
     )
   }
 
   /**
-   * Updates a content list description
-   * @param content listId
+   * Updates a contentList description
+   * @param contentListId
    * @param updatedContentListDescription
    */
   async updateContentListDescription(
-    content listId: number,
+    contentListId: number,
     updatedContentListDescription: string
   ) {
     return await this.contracts.ContentListFactoryClient.updateContentListDescription(
-      content listId,
+      contentListId,
       updatedContentListDescription
     )
   }
 
   /**
-   * Updates whether a content list is public or private
+   * Updates whether a contentList is public or private
    */
   async updateContentListPrivacy(
-    content listId: number,
+    contentListId: number,
     updatedContentListPrivacy: boolean
   ) {
     return await this.contracts.ContentListFactoryClient.updateContentListPrivacy(
-      content listId,
+      contentListId,
       updatedContentListPrivacy
     )
   }
 
   /**
-   * Reposts a content list for a user
+   * Reposts a contentList for a user
    */
-  async addContentListRepost(content listId: number) {
+  async addContentListRepost(contentListId: number) {
     const userId = this.userStateManager.getCurrentUserId()
     return await this.contracts.SocialFeatureFactoryClient.addContentListRepost(
       userId!,
-      content listId
+      contentListId
     )
   }
 
   /**
-   * Undoes a repost on a content list for a user
+   * Undoes a repost on a contentList for a user
    */
-  async deleteContentListRepost(content listId: number) {
+  async deleteContentListRepost(contentListId: number) {
     const userId = this.userStateManager.getCurrentUserId()
     return await this.contracts.SocialFeatureFactoryClient.deleteContentListRepost(
       userId!,
-      content listId
+      contentListId
     )
   }
 
   /**
-   * Marks a agreement to be deleted from a content list. The content list entry matching
+   * Marks a agreement to be deleted from a contentList. The contentList entry matching
    * the provided timestamp is deleted in the case of duplicates.
-   * @param content listId
+   * @param contentListId
    * @param deletedAgreementId
-   * @param deletedContentListTimestamp parseable timestamp (to be copied from content list metadata)
+   * @param deletedContentListTimestamp parseable timestamp (to be copied from contentList metadata)
    * @param {number?} retriesOverride [Optional, defaults to web3Manager.sendTransaction retries default]
    */
   async deleteContentListAgreement(
-    content listId: number,
+    contentListId: number,
     deletedAgreementId: number,
     deletedContentListTimestamp: number,
     retriesOverride?: number
   ) {
     return await this.contracts.ContentListFactoryClient.deleteContentListAgreement(
-      content listId,
+      contentListId,
       deletedAgreementId,
       deletedContentListTimestamp,
       retriesOverride
@@ -401,31 +401,31 @@ export class ContentLists extends Base {
   }
 
   /**
-   * Saves a content list on behalf of a user
+   * Saves a contentList on behalf of a user
    */
-  async addContentListSave(content listId: number) {
+  async addContentListSave(contentListId: number) {
     const userId = this.userStateManager.getCurrentUserId()
     return await this.contracts.UserLibraryFactoryClient.addContentListSave(
       userId!,
-      content listId
+      contentListId
     )
   }
 
   /**
-   * Unsaves a content list on behalf of a user
+   * Unsaves a contentList on behalf of a user
    */
-  async deleteContentListSave(content listId: number) {
+  async deleteContentListSave(contentListId: number) {
     const userId = this.userStateManager.getCurrentUserId()
     return await this.contracts.UserLibraryFactoryClient.deleteContentListSave(
       userId!,
-      content listId
+      contentListId
     )
   }
 
   /**
-   * Marks a content list as deleted
+   * Marks a contentList as deleted
    */
-  async deleteContentList(content listId: number) {
-    return await this.contracts.ContentListFactoryClient.deleteContentList(content listId)
+  async deleteContentList(contentListId: number) {
+    return await this.contracts.ContentListFactoryClient.deleteContentList(contentListId)
   }
 }

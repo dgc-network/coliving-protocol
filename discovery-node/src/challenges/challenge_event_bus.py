@@ -8,7 +8,7 @@ from sqlalchemy.orm.session import Session
 from src.challenges.challenge import ChallengeManager, EventMetadata
 from src.challenges.challenge_event import ChallengeEvent
 from src.challenges.connect_verified_challenge import connect_verified_challenge_manager
-from src.challenges.first_content list_challenge import first_content list_challenge_manager
+from src.challenges.first_contentList_challenge import first_contentList_challenge_manager
 from src.challenges.listen_streak_challenge import listen_streak_challenge_manager
 from src.challenges.mobile_install_challenge import mobile_install_challenge_manager
 from src.challenges.profile_challenge import profile_challenge_manager
@@ -20,7 +20,7 @@ from src.challenges.referral_challenge import (
 from src.challenges.send_first_tip_challenge import send_first_tip_challenge_manager
 from src.challenges.agreement_upload_challenge import agreement_upload_challenge_manager
 from src.challenges.trending_challenge import (
-    trending_content list_challenge_manager,
+    trending_contentList_challenge_manager,
     trending_agreement_challenge_manager,
     trending_underground_agreement_challenge_manager,
 )
@@ -233,11 +233,11 @@ def setup_challenge_bus():
         trending_underground_agreement_challenge_manager,
     )
     bus.register_listener(
-        ChallengeEvent.trending_content list, trending_content list_challenge_manager
+        ChallengeEvent.trending_contentList, trending_contentList_challenge_manager
     )
     bus.register_listener(ChallengeEvent.send_tip, send_first_tip_challenge_manager)
     bus.register_listener(
-        ChallengeEvent.first_content list, first_content list_challenge_manager
+        ChallengeEvent.first_contentList, first_contentList_challenge_manager
     )
 
     return bus

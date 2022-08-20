@@ -32,7 +32,7 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_content listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
@@ -50,7 +50,7 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_content listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
@@ -68,14 +68,14 @@
       "constant": true,
       "inputs": [
         {
-          "name": "_content listId",
+          "name": "_contentListId",
           "type": "uint256"
         }
       ],
       "name": "getContentListOwner",
       "outputs": [
         {
-          "name": "content listOwnerId",
+          "name": "contentListOwnerId",
           "type": "uint256"
         }
       ],
@@ -87,7 +87,7 @@
       "constant": true,
       "inputs": [
         {
-          "name": "_content listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
@@ -110,11 +110,11 @@
       "constant": true,
       "inputs": [
         {
-          "name": "_content listId",
+          "name": "_contentListId",
           "type": "uint256"
         }
       ],
-      "name": "content listExists",
+      "name": "contentListExists",
       "outputs": [
         {
           "name": "exists",

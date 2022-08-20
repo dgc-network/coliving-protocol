@@ -85,7 +85,7 @@ export interface ContentListFull {
      * @type {string}
      * @memberof ContentListFull
      */
-    content list_name: string;
+    contentList_name: string;
     /**
      * 
      * @type {number}

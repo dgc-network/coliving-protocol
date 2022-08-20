@@ -9,18 +9,18 @@ import "./SigningLogic.sol";
 
 
 /** @title Logic contract for Coliving user library features including
-* agreement saves and content list/album saves */
+* agreement saves and contentList/album saves */
 contract UserLibraryFactory is RegistryContract, SigningLogic {
 
     RegistryInterface registry = RegistryInterface(0);
     bytes32 userFactoryRegistryKey;
     bytes32 agreementFactoryRegistryKey;
-    bytes32 content listFactoryRegistryKey;
+    bytes32 contentListFactoryRegistryKey;
 
     event AgreementSaveAdded(uint _userId, uint _agreementId);
     event AgreementSaveDeleted(uint _userId, uint _agreementId);
-    event ContentListSaveAdded(uint _userId, uint _content listId);
-    event ContentListSaveDeleted(uint _userId, uint _content listId);
+    event ContentListSaveAdded(uint _userId, uint _contentListId);
+    event ContentListSaveDeleted(uint _userId, uint _contentListId);
 
     /* EIP-712 saved signature generation / verification */
     bytes32 constant AGREEMENT_SAVE_REQUEST_TYPEHASH = keccak256(
@@ -30,16 +30,16 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
         "DeleteAgreementSaveRequest(uint userId,uint agreementId,bytes32 nonce)"
     );
     bytes32 constant CONTENT_LIST_SAVE_REQUEST_TYPEHASH = keccak256(
-        "ContentListSaveRequest(uint userId,uint content listId,bytes32 nonce)"
+        "ContentListSaveRequest(uint userId,uint contentListId,bytes32 nonce)"
     );
     bytes32 constant DELETE_CONTENT_LIST_SAVE_REQUEST_TYPEHASH = keccak256(
-        "DeleteContentListSaveRequest(uint userId,uint content listId,bytes32 nonce)"
+        "DeleteContentListSaveRequest(uint userId,uint contentListId,bytes32 nonce)"
     );
 
     constructor(address _registryAddress,
         bytes32 _userFactoryRegistryKey,
         bytes32 _agreementFactoryRegistryKey,
-        bytes32 _content listFactoryRegistryKey,
+        bytes32 _contentListFactoryRegistryKey,
         uint _networkId
     ) SigningLogic("User Library Factory", "1", _networkId) public
     {
@@ -47,14 +47,14 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
             _registryAddress != address(0x00) &&
             _userFactoryRegistryKey.length != 0 &&
             _agreementFactoryRegistryKey.length != 0 &&
-            _content listFactoryRegistryKey.length != 0,
+            _contentListFactoryRegistryKey.length != 0,
             "requires non-zero _registryAddress"
         );
 
         registry = RegistryInterface(_registryAddress);
         userFactoryRegistryKey = _userFactoryRegistryKey;
         agreementFactoryRegistryKey = _agreementFactoryRegistryKey;
-        content listFactoryRegistryKey = _content listFactoryRegistryKey;
+        contentListFactoryRegistryKey = _contentListFactoryRegistryKey;
     }
 
     function addAgreementSave(
@@ -109,13 +109,13 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
 
     function addContentListSave(
         uint _userId,
-        uint _content listId,
+        uint _contentListId,
         bytes32 _requestNonce,
         bytes calldata _subjectSig
     ) external returns (bool status)
     {
         bytes32 signatureDigest = generateContentListSaveRequestSchemaHash(
-            _userId, _content listId, _requestNonce
+            _userId, _contentListId, _requestNonce
         );
         address signer = recoverSigner(signatureDigest, _subjectSig);
         burnSignatureDigest(signatureDigest, signer);
@@ -123,24 +123,24 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
             registry.getContract(userFactoryRegistryKey)
         ).callerOwnsUser(signer, _userId);  // will revert if false
 
-        bool content listExists = ContentListFactoryInterface(
-            registry.getContract(content listFactoryRegistryKey)
-        ).content listExists(_content listId);
-        require(content listExists == true, "must provide valid content list ID");
+        bool contentListExists = ContentListFactoryInterface(
+            registry.getContract(contentListFactoryRegistryKey)
+        ).contentListExists(_contentListId);
+        require(contentListExists == true, "must provide valid contentList ID");
 
-        emit ContentListSaveAdded(_userId, _content listId);
+        emit ContentListSaveAdded(_userId, _contentListId);
         return true;
     }
 
     function deleteContentListSave(
         uint _userId,
-        uint _content listId,
+        uint _contentListId,
         bytes32 _requestNonce,
         bytes calldata _subjectSig
     ) external returns (bool status)
     {
         bytes32 signatureDigest = generateDeleteContentListSaveRequestSchemaHash(
-            _userId, _content listId, _requestNonce
+            _userId, _contentListId, _requestNonce
         );
         address signer = recoverSigner(signatureDigest, _subjectSig);
         burnSignatureDigest(signatureDigest, signer);
@@ -148,18 +148,18 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
             registry.getContract(userFactoryRegistryKey)
         ).callerOwnsUser(signer, _userId);  // will revert if false
 
-        bool content listExists = ContentListFactoryInterface(
-            registry.getContract(content listFactoryRegistryKey)
-        ).content listExists(_content listId);
-        require(content listExists == true, "must provide valid content list ID");
+        bool contentListExists = ContentListFactoryInterface(
+            registry.getContract(contentListFactoryRegistryKey)
+        ).contentListExists(_contentListId);
+        require(contentListExists == true, "must provide valid contentList ID");
 
-        emit ContentListSaveDeleted(_userId, _content listId);
+        emit ContentListSaveDeleted(_userId, _contentListId);
         return true;
     }
 
     function generateDeleteContentListSaveRequestSchemaHash(
         uint _userId,
-        uint _content listId,
+        uint _contentListId,
         bytes32 _nonce
     ) internal view returns (bytes32)
     {
@@ -168,7 +168,7 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
                 abi.encode(
                     DELETE_CONTENT_LIST_SAVE_REQUEST_TYPEHASH,
                     _userId,
-                    _content listId,
+                    _contentListId,
                     _nonce
                 )
             )
@@ -177,7 +177,7 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
 
     function generateContentListSaveRequestSchemaHash(
         uint _userId,
-        uint _content listId,
+        uint _contentListId,
         bytes32 _nonce
     ) internal view returns (bytes32)
     {
@@ -186,7 +186,7 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
                 abi.encode(
                     CONTENT_LIST_SAVE_REQUEST_TYPEHASH,
                     _userId,
-                    _content listId,
+                    _contentListId,
                     _nonce
                 )
             )

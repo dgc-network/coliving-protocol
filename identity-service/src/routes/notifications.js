@@ -229,8 +229,8 @@ const formatReaction = (notification) => ({
 const formatAddAgreementToContentList = (notification) => ({
   ...getCommonNotificationsFields(notification),
   type: notification.type,
-  content listId: notification.metadata.content listId,
-  content listOwnerId: notification.metadata.content listOwnerId,
+  contentListId: notification.metadata.contentListId,
+  contentListOwnerId: notification.metadata.contentListOwnerId,
   agreementId: notification.metadata.agreementId
 })
 
@@ -245,14 +245,14 @@ const getCommonNotificationsFields = (notification) => ({
 const notificationResponseMap = {
   [NotificationType.Follow]: formatFollow,
   [NotificationType.Favorite.agreement]: formatFavorite(Entity.Agreement),
-  [NotificationType.Favorite.content list]: formatFavorite(Entity.ContentList),
+  [NotificationType.Favorite.contentList]: formatFavorite(Entity.ContentList),
   [NotificationType.Favorite.album]: formatFavorite(Entity.Album),
   [NotificationType.Repost.agreement]: formatRepost(Entity.Agreement),
-  [NotificationType.Repost.content list]: formatRepost(Entity.ContentList),
+  [NotificationType.Repost.contentList]: formatRepost(Entity.ContentList),
   [NotificationType.Repost.album]: formatRepost(Entity.Album),
   [NotificationType.Create.agreement]: formatUserSubscriptionAgreement,
   [NotificationType.Create.album]: formatUserSubscriptionCollection(Entity.Album),
-  [NotificationType.Create.content list]: formatUserSubscriptionCollection(Entity.ContentList),
+  [NotificationType.Create.contentList]: formatUserSubscriptionCollection(Entity.ContentList),
   [NotificationType.Announcement]: formatAnnouncement,
   [NotificationType.MilestoneRepost]: formatMilestone,
   [NotificationType.MilestoneFavorite]: formatMilestone,
@@ -480,20 +480,20 @@ module.exports = function (app) {
         announcementsAfterFilter
       )
 
-      let content listUpdates = []
+      let contentListUpdates = []
       if (walletAddress) {
         const result = await models.UserEvents.findOne({
-          attributes: ['content listUpdates'],
+          attributes: ['contentListUpdates'],
           where: { walletAddress }
         })
-        const content listUpdatesResult = result && result.content listUpdates
-        if (content listUpdatesResult) {
+        const contentListUpdatesResult = result && result.contentListUpdates
+        if (contentListUpdatesResult) {
           const thirtyDaysAgo = moment().utc().subtract(30, 'days').valueOf()
-          content listUpdates = Object.keys(content listUpdatesResult)
-            .filter(content listId =>
-              content listUpdatesResult[content listId].userLastViewed >= thirtyDaysAgo &&
-              content listUpdatesResult[content listId].lastUpdated >= thirtyDaysAgo &&
-              content listUpdatesResult[content listId].userLastViewed < content listUpdatesResult[content listId].lastUpdated
+          contentListUpdates = Object.keys(contentListUpdatesResult)
+            .filter(contentListId =>
+              contentListUpdatesResult[contentListId].userLastViewed >= thirtyDaysAgo &&
+              contentListUpdatesResult[contentListId].lastUpdated >= thirtyDaysAgo &&
+              contentListUpdatesResult[contentListId].userLastViewed < contentListUpdatesResult[contentListId].lastUpdated
             )
             .map(id => parseInt(id))
             .filter(Boolean)
@@ -504,7 +504,7 @@ module.exports = function (app) {
         message: 'success',
         notifications: userNotifications.slice(0, limit),
         totalUnread: unreadAnnouncementCount + unViewedCount,
-        content listUpdates
+        contentListUpdates
       })
     } catch (err) {
       req.logger.error(`[Error] Unable to retrieve notifications for user: ${userId}`, err)

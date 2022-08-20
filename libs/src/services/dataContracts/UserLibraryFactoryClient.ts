@@ -59,7 +59,7 @@ export class UserLibraryFactoryClient extends ContractClient {
     )
   }
 
-  async addContentListSave(userId: number, content listId: number) {
+  async addContentListSave(userId: number, contentListId: number) {
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
@@ -68,14 +68,14 @@ export class UserLibraryFactoryClient extends ContractClient {
         chainId,
         contractAddress,
         userId,
-        content listId,
+        contentListId,
         nonce
       )
     const sig = await this.web3Manager.signTypedData(signatureData)
     const contractMethod = await this.getMethod(
       'addContentListSave',
       userId,
-      content listId,
+      contentListId,
       nonce,
       sig
     )
@@ -86,7 +86,7 @@ export class UserLibraryFactoryClient extends ContractClient {
     )
   }
 
-  async deleteContentListSave(userId: number, content listId: number) {
+  async deleteContentListSave(userId: number, contentListId: number) {
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
@@ -95,14 +95,14 @@ export class UserLibraryFactoryClient extends ContractClient {
         chainId,
         contractAddress,
         userId,
-        content listId,
+        contentListId,
         nonce
       )
     const sig = await this.web3Manager.signTypedData(signatureData)
     const contractMethod = await this.getMethod(
       'deleteContentListSave',
       userId,
-      content listId,
+      contentListId,
       nonce,
       sig
     )

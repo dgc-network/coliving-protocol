@@ -8,31 +8,31 @@ import { validateObj } from '../utils/validator'
 import { web3New } from '../utils/web3New'
 
 const signatureSchemas = require('../../signature_schemas/signatureSchemas')
-export const addContentListAndValidate = async (content listFactory, expectedContentListId, walletAddress, content listOwnerId, content listName, isPrivate, isAlbum, agreementIds) => {
+export const addContentListAndValidate = async (contentListFactory, expectedContentListId, walletAddress, contentListOwnerId, contentListName, isPrivate, isAlbum, agreementIds) => {
   const nonce = signatureSchemas.getNonce()
-  const chainId = getNetworkIdForContractInstance(content listFactory)
+  const chainId = getNetworkIdForContractInstance(contentListFactory)
 
   // agreementIdsHash calculated by hashing encoded agreementIds[]
 
   // required to generate signed/typed signature below
   let agreementIdsHash = web3New.utils.soliditySha3(web3New.eth.abi.encodeParameter('uint[]', agreementIds))
-  const signatureData = signatureSchemas.generators.getCreateContentListRequestData(chainId, content listFactory.address, content listOwnerId, content listName, isPrivate, isAlbum, agreementIdsHash, nonce)
+  const signatureData = signatureSchemas.generators.getCreateContentListRequestData(chainId, contentListFactory.address, contentListOwnerId, contentListName, isPrivate, isAlbum, agreementIdsHash, nonce)
 
   const signature = await eth_signTypedData(walletAddress, signatureData)
-  let tx = await content listFactory.createContentList(content listOwnerId, content listName, isPrivate, isAlbum, agreementIds, nonce, signature)
+  let tx = await contentListFactory.createContentList(contentListOwnerId, contentListName, isPrivate, isAlbum, agreementIds, nonce, signature)
 
   let parsedCreateContentList = parseTx(tx)
   let parsedCreateContentListName = tx.logs[1].args._updatedContentListName
   let eventInfo = parsedCreateContentList.event.args
-  let returnedContentListId = eventInfo._content listId
-  assert.equal(returnedContentListId, expectedContentListId, 'Expected content list id does not match')
-  let emittedContentListId = eventInfo._content listId.toNumber()
+  let returnedContentListId = eventInfo._contentListId
+  assert.equal(returnedContentListId, expectedContentListId, 'Expected contentList id does not match')
+  let emittedContentListId = eventInfo._contentListId.toNumber()
 
-  assert.equal(emittedContentListId, expectedContentListId, 'Expected update event content listId array to match expected')
+  assert.equal(emittedContentListId, expectedContentListId, 'Expected update event contentListId array to match expected')
   let emittedEventPrivacy = eventInfo._isPrivate
-  assert.equal(emittedEventPrivacy, isPrivate, 'Expected emitted content list privacy to equal input')
+  assert.equal(emittedEventPrivacy, isPrivate, 'Expected emitted contentList privacy to equal input')
   let emittedEventContentListName = parsedCreateContentListName
-  assert.equal(content listName, emittedEventContentListName, 'Expected emitted content list name to equal input')
+  assert.equal(contentListName, emittedEventContentListName, 'Expected emitted contentList name to equal input')
   let emittedEventIsAlbum = eventInfo._isAlbum
   assert.equal(isAlbum, emittedEventIsAlbum, 'Expected emitted album status to equal input')
 
@@ -44,54 +44,54 @@ export const addContentListAndValidate = async (content listFactory, expectedCon
     assert.equal(emittedAgreementId, agreementIds[i], 'Expected ordered event agreementId to match input')
   }
 
-  // Validate storage content list contents
+  // Validate storage contentList contents
   for (let i = 0; i < agreementIds; i++) {
-    let isAgreementInContentList = await content listFactory.isAgreementInContentList.call(expectedContentListId, agreementIds[i])
-    assert.equal(isAgreementInContentList, true, 'Expected all agreements to be added to content list')
+    let isAgreementInContentList = await contentListFactory.isAgreementInContentList.call(expectedContentListId, agreementIds[i])
+    assert.equal(isAgreementInContentList, true, 'Expected all agreements to be added to contentList')
   }
 }
 
-export const deleteContentListAndValidate = async (content listFactory, walletAddress, content listId) => {
+export const deleteContentListAndValidate = async (contentListFactory, walletAddress, contentListId) => {
   const nonce = signatureSchemas.getNonce()
-  const chainId = getNetworkIdForContractInstance(content listFactory)
-  const signatureData = signatureSchemas.generators.getDeleteContentListRequestData(chainId, content listFactory.address, content listId, nonce)
+  const chainId = getNetworkIdForContractInstance(contentListFactory)
+  const signatureData = signatureSchemas.generators.getDeleteContentListRequestData(chainId, contentListFactory.address, contentListId, nonce)
 
   const sig = await eth_signTypedData(walletAddress, signatureData)
 
-  // call delete content list from chain
-  let tx = await content listFactory.deleteContentList(content listId, nonce, sig)
+  // call delete contentList from chain
+  let tx = await contentListFactory.deleteContentList(contentListId, nonce, sig)
 
   // validate event output = transaction input
-  let event = parseTxWithResp(tx, { _content listId: true })
-  validateObj(event, { eventName: 'ContentListDeleted', content listId })
+  let event = parseTxWithResp(tx, { _contentListId: true })
+  validateObj(event, { eventName: 'ContentListDeleted', contentListId })
 
-  // TODO - after storage implemented - attempt to retrieve content list from chain
+  // TODO - after storage implemented - attempt to retrieve contentList from chain
 
-  // TODO - after storage implemented - validate content list does not exist
+  // TODO - after storage implemented - validate contentList does not exist
 
   return {
     event: event
   }
 }
 
-export const orderContentListAgreementsAndValidate = async (content listFactory, walletAddress, content listId, agreementIds) => {
+export const orderContentListAgreementsAndValidate = async (contentListFactory, walletAddress, contentListId, agreementIds) => {
   const nonce = signatureSchemas.getNonce()
-  const chainId = getNetworkIdForContractInstance(content listFactory)
+  const chainId = getNetworkIdForContractInstance(contentListFactory)
 
   // agreementIdsHash calculated by hashing encoded agreementIds[]
 
   // required to generate signed/typed signature below
   let agreementIdsHash = web3New.utils.soliditySha3(web3New.eth.abi.encodeParameter('uint[]', agreementIds))
-  const signatureData = signatureSchemas.generators.getOrderContentListAgreementsRequestData(chainId, content listFactory.address, content listId, agreementIdsHash, nonce)
+  const signatureData = signatureSchemas.generators.getOrderContentListAgreementsRequestData(chainId, contentListFactory.address, contentListId, agreementIdsHash, nonce)
 
   const signature = await eth_signTypedData(walletAddress, signatureData)
-  let tx = await content listFactory.orderContentListAgreements(content listId, agreementIds, nonce, signature)
+  let tx = await contentListFactory.orderContentListAgreements(contentListId, agreementIds, nonce, signature)
 
   let parsedOrderContentListAgreements = parseTx(tx)
   let eventInfo = parsedOrderContentListAgreements.event.args
-  let emittedContentListId = eventInfo._content listId.toNumber()
+  let emittedContentListId = eventInfo._contentListId.toNumber()
 
-  assert.equal(emittedContentListId, content listId, 'Expected update event content listId array to match input')
+  assert.equal(emittedContentListId, contentListId, 'Expected update event contentListId array to match input')
   let emittedAgreementIds = eventInfo._orderedAgreementIds
   assert.equal(emittedAgreementIds.length, agreementIds.length, 'Expected ordered event agreementId array to match input')
   for (let i = 0; i < emittedAgreementIds.length; i++) {
@@ -103,214 +103,214 @@ export const orderContentListAgreementsAndValidate = async (content listFactory,
   return parsedOrderContentListAgreements
 }
 
-export const updateContentListPrivacyAndValidate = async (content listFactory, walletAddress, content listId, updatedContentListPrivacy) => {
+export const updateContentListPrivacyAndValidate = async (contentListFactory, walletAddress, contentListId, updatedContentListPrivacy) => {
   const nonce = signatureSchemas.getNonce()
-  const chainId = getNetworkIdForContractInstance(content listFactory)
-  const signatureData = signatureSchemas.generators.getUpdateContentListPrivacyRequestData(chainId, content listFactory.address, content listId, updatedContentListPrivacy, nonce)
+  const chainId = getNetworkIdForContractInstance(contentListFactory)
+  const signatureData = signatureSchemas.generators.getUpdateContentListPrivacyRequestData(chainId, contentListFactory.address, contentListId, updatedContentListPrivacy, nonce)
 
   const signature = await eth_signTypedData(walletAddress, signatureData)
-  let tx = await content listFactory.updateContentListPrivacy(content listId, updatedContentListPrivacy, nonce, signature)
+  let tx = await contentListFactory.updateContentListPrivacy(contentListId, updatedContentListPrivacy, nonce, signature)
 
   let parsedUpdateContentListPrivacy = parseTx(tx)
   let eventInfo = parsedUpdateContentListPrivacy.event.args
-  let emittedContentListId = eventInfo._content listId.toNumber()
+  let emittedContentListId = eventInfo._contentListId.toNumber()
 
-  assert.equal(emittedContentListId, content listId, 'Expected update event content listId array to match input')
+  assert.equal(emittedContentListId, contentListId, 'Expected update event contentListId array to match input')
   let emittedEventPrivacy = eventInfo._updatedIsPrivate
-  assert.equal(emittedEventPrivacy, updatedContentListPrivacy, 'Expected emitted content list privacy to equal input')
+  assert.equal(emittedEventPrivacy, updatedContentListPrivacy, 'Expected emitted contentList privacy to equal input')
 
   return parsedUpdateContentListPrivacy
 }
 
-export const updateContentListNameAndValidate = async (content listFactory, walletAddress, content listId, updatedContentListName) => {
+export const updateContentListNameAndValidate = async (contentListFactory, walletAddress, contentListId, updatedContentListName) => {
   const nonce = signatureSchemas.getNonce()
-  const chainId = getNetworkIdForContractInstance(content listFactory)
-  const signatureData = signatureSchemas.generators.getUpdateContentListNameRequestData(chainId, content listFactory.address, content listId, updatedContentListName, nonce)
+  const chainId = getNetworkIdForContractInstance(contentListFactory)
+  const signatureData = signatureSchemas.generators.getUpdateContentListNameRequestData(chainId, contentListFactory.address, contentListId, updatedContentListName, nonce)
 
   const signature = await eth_signTypedData(walletAddress, signatureData)
-  let tx = await content listFactory.updateContentListName(content listId, updatedContentListName, nonce, signature)
+  let tx = await contentListFactory.updateContentListName(contentListId, updatedContentListName, nonce, signature)
 
   let parsedUpdateContentListName = parseTx(tx)
   let eventInfo = parsedUpdateContentListName.event.args
-  let emittedContentListId = eventInfo._content listId.toNumber()
+  let emittedContentListId = eventInfo._contentListId.toNumber()
 
-  assert.equal(emittedContentListId, content listId, 'Expected update event content listId array to match input')
+  assert.equal(emittedContentListId, contentListId, 'Expected update event contentListId array to match input')
   let emittedEventContentListName = eventInfo._updatedContentListName
-  assert.equal(updatedContentListName, emittedEventContentListName, 'Expected emitted content list name to equal input')
+  assert.equal(updatedContentListName, emittedEventContentListName, 'Expected emitted contentList name to equal input')
 }
 
-export const updateContentListCoverPhotoAndValidate = async (content listFactory, walletAddress, content listId, updatedContentListImageMultihashDigest) => {
+export const updateContentListCoverPhotoAndValidate = async (contentListFactory, walletAddress, contentListId, updatedContentListImageMultihashDigest) => {
   const nonce = signatureSchemas.getNonce()
-  const chainId = getNetworkIdForContractInstance(content listFactory)
-  const signatureData = signatureSchemas.generators.getUpdateContentListCoverPhotoRequestData(chainId, content listFactory.address, content listId, updatedContentListImageMultihashDigest, nonce)
+  const chainId = getNetworkIdForContractInstance(contentListFactory)
+  const signatureData = signatureSchemas.generators.getUpdateContentListCoverPhotoRequestData(chainId, contentListFactory.address, contentListId, updatedContentListImageMultihashDigest, nonce)
 
   const signature = await eth_signTypedData(walletAddress, signatureData)
-  let tx = await content listFactory.updateContentListCoverPhoto(content listId, updatedContentListImageMultihashDigest, nonce, signature)
+  let tx = await contentListFactory.updateContentListCoverPhoto(contentListId, updatedContentListImageMultihashDigest, nonce, signature)
 
   let parsedUpdateContentListCoverPhoto = parseTx(tx)
   let eventInfo = parsedUpdateContentListCoverPhoto.event.args
-  let emittedImageMultihash = eventInfo._content listImageMultihashDigest
+  let emittedImageMultihash = eventInfo._contentListImageMultihashDigest
   assert.equal(emittedImageMultihash, updatedContentListImageMultihashDigest, 'Expect emitted image multihash to equal input')
 }
 
-export const updateContentListUPCAndValidate = async (content listFactory, walletAddress, content listId, updatedContentListUPC) => {
+export const updateContentListUPCAndValidate = async (contentListFactory, walletAddress, contentListId, updatedContentListUPC) => {
   const nonce = signatureSchemas.getNonce()
-  const chainId = getNetworkIdForContractInstance(content listFactory)
-  const signatureData = signatureSchemas.generators.getUpdateContentListUPCRequestData(chainId, content listFactory.address, content listId, updatedContentListUPC, nonce)
+  const chainId = getNetworkIdForContractInstance(contentListFactory)
+  const signatureData = signatureSchemas.generators.getUpdateContentListUPCRequestData(chainId, contentListFactory.address, contentListId, updatedContentListUPC, nonce)
 
   const signature = await eth_signTypedData(walletAddress, signatureData)
-  let tx = await content listFactory.updateContentListUPC(content listId, updatedContentListUPC, nonce, signature)
+  let tx = await contentListFactory.updateContentListUPC(contentListId, updatedContentListUPC, nonce, signature)
 
   let parseUpdateContentListUPC = parseTx(tx)
-  let emittedContentListUPC = (parseUpdateContentListUPC.event.args._content listUPC)
+  let emittedContentListUPC = (parseUpdateContentListUPC.event.args._contentListUPC)
   let paddedInputUPC = web3New.utils.padRight(updatedContentListUPC, 64)
   assert.equal(emittedContentListUPC, paddedInputUPC, 'Expect emitted UPC to equal input')
 }
 
-export const updateContentListDescriptionAndValidate = async (content listFactory, walletAddress, content listId, updatedContentListDescription) => {
+export const updateContentListDescriptionAndValidate = async (contentListFactory, walletAddress, contentListId, updatedContentListDescription) => {
   const nonce = signatureSchemas.getNonce()
-  const chainId = getNetworkIdForContractInstance(content listFactory)
-  const signatureData = signatureSchemas.generators.getUpdateContentListDescriptionRequestData(chainId, content listFactory.address, content listId, updatedContentListDescription, nonce)
+  const chainId = getNetworkIdForContractInstance(contentListFactory)
+  const signatureData = signatureSchemas.generators.getUpdateContentListDescriptionRequestData(chainId, contentListFactory.address, contentListId, updatedContentListDescription, nonce)
 
   const signature = await eth_signTypedData(walletAddress, signatureData)
-  let tx = await content listFactory.updateContentListDescription(content listId, updatedContentListDescription, nonce, signature)
+  let tx = await contentListFactory.updateContentListDescription(contentListId, updatedContentListDescription, nonce, signature)
 
   let parsedUpdateContentListDescription = parseTx(tx)
   let eventInfo = parsedUpdateContentListDescription.event.args
-  let emittedContentListDescription = eventInfo._content listDescription
+  let emittedContentListDescription = eventInfo._contentListDescription
 
-  assert.equal(emittedContentListDescription, updatedContentListDescription, 'Expect emitted content list description to equal input')
+  assert.equal(emittedContentListDescription, updatedContentListDescription, 'Expect emitted contentList description to equal input')
 }
 
-/** Adds content listRepost to blockchain using function input fields, validates emitted event
+/** Adds contentListRepost to blockchain using function input fields, validates emitted event
   * @returns {object} with event data
   */
-export const addContentListRepostAndValidate = async (socialFeatureFactory, userAddress, userId, content listId) => {
-  // generate new add content list repost request
+export const addContentListRepostAndValidate = async (socialFeatureFactory, userAddress, userId, contentListId) => {
+  // generate new add contentList repost request
   const nonce = signatureSchemas.getNonce()
   const chainId = getNetworkIdForContractInstance(socialFeatureFactory)
   // in testing use the network id as chain ID because chain ID is unavailable
-  const signatureData = signatureSchemas.generators.getAddContentListRepostRequestData(chainId, socialFeatureFactory.address, userId, content listId, nonce)
+  const signatureData = signatureSchemas.generators.getAddContentListRepostRequestData(chainId, socialFeatureFactory.address, userId, contentListId, nonce)
 
   const sig = await eth_signTypedData(userAddress, signatureData)
 
-  // add new content listRepost to chain
-  let tx = await socialFeatureFactory.addContentListRepost(userId, content listId, nonce, sig)
+  // add new contentListRepost to chain
+  let tx = await socialFeatureFactory.addContentListRepost(userId, contentListId, nonce, sig)
 
   // validate event output = transaction input
-  let event = parseTxWithResp(tx, { _userId: true, _content listId: true })
-  validateObj(event, { eventName: 'ContentListRepostAdded', userId, content listId })
+  let event = parseTxWithResp(tx, { _userId: true, _contentListId: true })
+  validateObj(event, { eventName: 'ContentListRepostAdded', userId, contentListId })
 
   // validate storage
-  let isContentListReposted = await socialFeatureFactory.userRepostedContentList.call(userId, content listId)
-  assert.isTrue(isContentListReposted, 'Expect storage to confirm added content list repost')
+  let isContentListReposted = await socialFeatureFactory.userRepostedContentList.call(userId, contentListId)
+  assert.isTrue(isContentListReposted, 'Expect storage to confirm added contentList repost')
 
   return {
     event: event
   }
 }
 
-/** deletes content listRepost from blockchain using function input fields, validates emitted event
+/** deletes contentListRepost from blockchain using function input fields, validates emitted event
   * @returns {object} with event data
   */
-export const deleteContentListRepostAndValidate = async (socialFeatureFactory, userAddress, userId, content listId) => {
-  // generate delete content list repost request
+export const deleteContentListRepostAndValidate = async (socialFeatureFactory, userAddress, userId, contentListId) => {
+  // generate delete contentList repost request
   const nonce = signatureSchemas.getNonce()
   const chainId = getNetworkIdForContractInstance(socialFeatureFactory) // in testing use the network id as chain ID because chain ID is unavailable
-  const signatureData = signatureSchemas.generators.getDeleteContentListRepostRequestData(chainId, socialFeatureFactory.address, userId, content listId, nonce)
+  const signatureData = signatureSchemas.generators.getDeleteContentListRepostRequestData(chainId, socialFeatureFactory.address, userId, contentListId, nonce)
 
   const sig = await eth_signTypedData(userAddress, signatureData)
 
-  // delete content listRepost from chain
-  let tx = await socialFeatureFactory.deleteContentListRepost(userId, content listId, nonce, sig)
+  // delete contentListRepost from chain
+  let tx = await socialFeatureFactory.deleteContentListRepost(userId, contentListId, nonce, sig)
 
   // validate event output = transaction input
-  let event = parseTxWithResp(tx, { _userId: true, _content listId: true })
-  validateObj(event, { eventName: 'ContentListRepostDeleted', userId, content listId })
+  let event = parseTxWithResp(tx, { _userId: true, _contentListId: true })
+  validateObj(event, { eventName: 'ContentListRepostDeleted', userId, contentListId })
 
   // validate storage
-  let isContentListReposted = await socialFeatureFactory.userRepostedContentList.call(userId, content listId)
-  assert.isFalse(isContentListReposted, 'Expect storage to confirm deleted content list repost')
+  let isContentListReposted = await socialFeatureFactory.userRepostedContentList.call(userId, contentListId)
+  assert.isFalse(isContentListReposted, 'Expect storage to confirm deleted contentList repost')
 
   return {
     event: event
   }
 }
 
-export const addContentListAgreement = async (content listFactory, walletAddress, content listId, addedAgreementId) => {
+export const addContentListAgreement = async (contentListFactory, walletAddress, contentListId, addedAgreementId) => {
   const nonce = signatureSchemas.getNonce()
-  const chainId = getNetworkIdForContractInstance(content listFactory)
-  const signatureData = signatureSchemas.generators.getAddContentListAgreementRequestData(chainId, content listFactory.address, content listId, addedAgreementId, nonce)
+  const chainId = getNetworkIdForContractInstance(contentListFactory)
+  const signatureData = signatureSchemas.generators.getAddContentListAgreementRequestData(chainId, contentListFactory.address, contentListId, addedAgreementId, nonce)
 
   const signature = await eth_signTypedData(walletAddress, signatureData)
-  let tx = await content listFactory.addContentListAgreement(content listId, addedAgreementId, nonce, signature)
+  let tx = await contentListFactory.addContentListAgreement(contentListId, addedAgreementId, nonce, signature)
 
   // TODO:  asserts
   let parsedAddContentListAgreement = parseTx(tx)
   let eventInfo = parsedAddContentListAgreement.event.args
-  let emittedContentListId = eventInfo._content listId.toNumber()
+  let emittedContentListId = eventInfo._contentListId.toNumber()
 
-  assert.equal(emittedContentListId, content listId, 'Expected update event content listId to match input')
+  assert.equal(emittedContentListId, contentListId, 'Expected update event contentListId to match input')
   let emittedAddedAgreementId = eventInfo._addedAgreementId.toNumber()
 
   assert.equal(emittedAddedAgreementId, addedAgreementId, 'Expected update event added agreement id to match input')
 
-  // Validate storage content list value
-  let isAgreementInContentList = await content listFactory.isAgreementInContentList.call(content listId, addedAgreementId)
-  assert.isTrue(isAgreementInContentList, 'Expected newly added agreements to be in content list')
+  // Validate storage contentList value
+  let isAgreementInContentList = await contentListFactory.isAgreementInContentList.call(contentListId, addedAgreementId)
+  assert.isTrue(isAgreementInContentList, 'Expected newly added agreements to be in contentList')
   return parsedAddContentListAgreement
 }
 
-export const deleteContentListAgreement = async (content listFactory, walletAddress, content listId, deletedAgreementId, deletedTimestamp) => {
+export const deleteContentListAgreement = async (contentListFactory, walletAddress, contentListId, deletedAgreementId, deletedTimestamp) => {
   const nonce = signatureSchemas.getNonce()
-  const chainId = getNetworkIdForContractInstance(content listFactory)
-  const signatureData = signatureSchemas.generators.getDeleteContentListAgreementRequestData(chainId, content listFactory.address, content listId, deletedAgreementId, deletedTimestamp, nonce)
+  const chainId = getNetworkIdForContractInstance(contentListFactory)
+  const signatureData = signatureSchemas.generators.getDeleteContentListAgreementRequestData(chainId, contentListFactory.address, contentListId, deletedAgreementId, deletedTimestamp, nonce)
 
   const signature = await eth_signTypedData(walletAddress, signatureData)
-  let tx = await content listFactory.deleteContentListAgreement(content listId, deletedAgreementId, deletedTimestamp, nonce, signature)
+  let tx = await contentListFactory.deleteContentListAgreement(contentListId, deletedAgreementId, deletedTimestamp, nonce, signature)
 
   let parsedDeleteContentListAgreement = parseTx(tx)
   let eventInfo = parsedDeleteContentListAgreement.event.args
-  let emittedContentListId = eventInfo._content listId.toNumber()
+  let emittedContentListId = eventInfo._contentListId.toNumber()
 
-  assert.equal(emittedContentListId, content listId, 'Expected update event content listId to match input')
+  assert.equal(emittedContentListId, contentListId, 'Expected update event contentListId to match input')
   let emittedDeletedAgreementId = eventInfo._deletedAgreementId.toNumber()
 
   assert.equal(emittedDeletedAgreementId, deletedAgreementId, 'Expected update event added agreement id to match input')
 
-  // Validate storage content list agreement value
-  let isAgreementInContentList = await content listFactory.isAgreementInContentList.call(content listId, deletedAgreementId)
-  assert.isFalse(isAgreementInContentList, 'Expected newly deleted agreements to not be in content list')
+  // Validate storage contentList agreement value
+  let isAgreementInContentList = await contentListFactory.isAgreementInContentList.call(contentListId, deletedAgreementId)
+  assert.isFalse(isAgreementInContentList, 'Expected newly deleted agreements to not be in contentList')
 
   return parsedDeleteContentListAgreement
 }
 
-export const addContentListSaveAndValidate = async (userLibraryFactory, userAddress, userId, content listId) => {
+export const addContentListSaveAndValidate = async (userLibraryFactory, userAddress, userId, contentListId) => {
   const nonce = signatureSchemas.getNonce()
 
   // in testing use the network id as chain ID because chain ID is unavailable
   const chainId = getNetworkIdForContractInstance(userLibraryFactory)
-  const signatureData = signatureSchemas.generators.getContentListSaveRequestData(chainId, userLibraryFactory.address, userId, content listId, nonce)
+  const signatureData = signatureSchemas.generators.getContentListSaveRequestData(chainId, userLibraryFactory.address, userId, contentListId, nonce)
 
   const sig = await eth_signTypedData(userAddress, signatureData)
-  let tx = await userLibraryFactory.addContentListSave(userId, content listId, nonce, sig)
+  let tx = await userLibraryFactory.addContentListSave(userId, contentListId, nonce, sig)
   let parsedContentListSave = parseTx(tx)
   let eventInfo = parsedContentListSave.event.args
 
-  assertEqualValues(parsedContentListSave, undefined, { _userId: eventInfo._userId, _content listId: eventInfo._content listId })
+  assertEqualValues(parsedContentListSave, undefined, { _userId: eventInfo._userId, _contentListId: eventInfo._contentListId })
 }
 
-export const deleteContentListSaveAndValidate = async (userLibraryFactory, userAddress, userId, content listId) => {
+export const deleteContentListSaveAndValidate = async (userLibraryFactory, userAddress, userId, contentListId) => {
   const nonce = signatureSchemas.getNonce()
 
   // in testing use the network id as chain ID because chain ID is unavailable
   const chainId = getNetworkIdForContractInstance(userLibraryFactory)
-  const signatureData = signatureSchemas.generators.getDeleteContentListSaveRequestData(chainId, userLibraryFactory.address, userId, content listId, nonce)
+  const signatureData = signatureSchemas.generators.getDeleteContentListSaveRequestData(chainId, userLibraryFactory.address, userId, contentListId, nonce)
 
   const sig = await eth_signTypedData(userAddress, signatureData)
-  let tx = await userLibraryFactory.deleteContentListSave(userId, content listId, nonce, sig)
+  let tx = await userLibraryFactory.deleteContentListSave(userId, contentListId, nonce, sig)
   let parsedContentListSave = parseTx(tx)
   let eventInfo = parsedContentListSave.event.args
 
-  assertEqualValues(parsedContentListSave, undefined, { _userId: eventInfo._userId, _content listId: eventInfo._content listId })
+  assertEqualValues(parsedContentListSave, undefined, { _userId: eventInfo._userId, _contentListId: eventInfo._contentListId })
 }

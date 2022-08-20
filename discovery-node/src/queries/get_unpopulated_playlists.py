@@ -2,99 +2,99 @@ import logging  # pylint: disable=C0302
 from datetime import datetime
 
 from dateutil import parser
-from src.models.content lists.content list import ContentList
+from src.models.contentLists.contentList import ContentList
 from src.utils import helpers, redis_connection
 from src.utils.redis_cache import (
     get_all_json_cached_key,
-    get_content list_id_cache_key,
+    get_contentList_id_cache_key,
     set_json_cached_key,
 )
 
 logger = logging.getLogger(__name__)
 
-# Cache unpopulated content lists for 5 min
+# Cache unpopulated contentLists for 5 min
 ttl_sec = 5 * 60
 
-content list_datetime_fields = []
+contentList_datetime_fields = []
 for column in ContentList.__table__.c:
     if column.type.python_type == datetime:
-        content list_datetime_fields.append(column.name)
+        contentList_datetime_fields.append(column.name)
 
 
-def get_cached_content lists(content list_ids):
-    redis_content list_id_keys = list(map(get_content list_id_cache_key, content list_ids))
+def get_cached_contentLists(contentList_ids):
+    redis_contentList_id_keys = list(map(get_contentList_id_cache_key, contentList_ids))
     redis = redis_connection.get_redis()
-    content lists = get_all_json_cached_key(redis, redis_content list_id_keys)
-    for content list in content lists:
-        if content list:
-            for field in content list_datetime_fields:
-                if content list[field]:
-                    content list[field] = parser.parse(content list[field])
-    return content lists
+    contentLists = get_all_json_cached_key(redis, redis_contentList_id_keys)
+    for contentList in contentLists:
+        if contentList:
+            for field in contentList_datetime_fields:
+                if contentList[field]:
+                    contentList[field] = parser.parse(contentList[field])
+    return contentLists
 
 
-def set_content lists_in_cache(content lists):
+def set_contentLists_in_cache(contentLists):
     redis = redis_connection.get_redis()
-    for content list in content lists:
-        key = get_content list_id_cache_key(content list["content list_id"])
-        set_json_cached_key(redis, key, content list, ttl_sec)
+    for contentList in contentLists:
+        key = get_contentList_id_cache_key(contentList["contentList_id"])
+        set_json_cached_key(redis, key, contentList, ttl_sec)
 
 
-def get_unpopulated_content lists(session, content list_ids, filter_deleted=False):
+def get_unpopulated_contentLists(session, contentList_ids, filter_deleted=False):
     """
-    Fetches content lists by checking the redis cache first then
+    Fetches contentLists by checking the redis cache first then
     going to DB and writes to cache if not present
 
     Args:
         session: DB session
-        content list_ids: array A list of content list ids
+        contentList_ids: array A list of contentList ids
 
     Returns:
-        Array of content lists
+        Array of contentLists
     """
-    # Check the cached content lists
-    cached_content lists_results = get_cached_content lists(content list_ids)
-    has_all_content lists_cached = cached_content lists_results.count(None) == 0
-    if has_all_content lists_cached:
+    # Check the cached contentLists
+    cached_contentLists_results = get_cached_contentLists(contentList_ids)
+    has_all_contentLists_cached = cached_contentLists_results.count(None) == 0
+    if has_all_contentLists_cached:
         if filter_deleted:
             return list(
                 filter(
-                    lambda content list: not content list["is_delete"], cached_content lists_results
+                    lambda contentList: not contentList["is_delete"], cached_contentLists_results
                 )
             )
-        return cached_content lists_results
+        return cached_contentLists_results
 
-    # Create a dict of cached content lists
-    cached_content lists = {}
-    for cached_content list in cached_content lists_results:
-        if cached_content list:
-            cached_content lists[cached_content list["content list_id"]] = cached_content list
+    # Create a dict of cached contentLists
+    cached_contentLists = {}
+    for cached_contentList in cached_contentLists_results:
+        if cached_contentList:
+            cached_contentLists[cached_contentList["contentList_id"]] = cached_contentList
 
-    content list_ids_to_fetch = filter(
-        lambda content list_id: content list_id not in cached_content lists, content list_ids
+    contentList_ids_to_fetch = filter(
+        lambda contentList_id: contentList_id not in cached_contentLists, contentList_ids
     )
 
-    content lists_query = (
+    contentLists_query = (
         session.query(ContentList)
         .filter(ContentList.is_current == True)
-        .filter(ContentList.content list_id.in_(content list_ids_to_fetch))
+        .filter(ContentList.contentList_id.in_(contentList_ids_to_fetch))
     )
     if filter_deleted:
-        content lists_query = content lists_query.filter(ContentList.is_delete == False)
+        contentLists_query = contentLists_query.filter(ContentList.is_delete == False)
 
-    content lists = content lists_query.all()
-    content lists = helpers.query_result_to_list(content lists)
-    queried_content lists = {content list["content list_id"]: content list for content list in content lists}
+    contentLists = contentLists_query.all()
+    contentLists = helpers.query_result_to_list(contentLists)
+    queried_contentLists = {contentList["contentList_id"]: contentList for contentList in contentLists}
 
-    # cache content lists for future use
-    set_content lists_in_cache(content lists)
+    # cache contentLists for future use
+    set_contentLists_in_cache(contentLists)
 
-    content lists_response = []
-    for content list_id in content list_ids:
-        if content list_id in cached_content lists:
-            if not filter_deleted or not cached_content lists[content list_id]["is_delete"]:
-                content lists_response.append(cached_content lists[content list_id])
-        elif content list_id in queried_content lists:
-            content lists_response.append(queried_content lists[content list_id])
+    contentLists_response = []
+    for contentList_id in contentList_ids:
+        if contentList_id in cached_contentLists:
+            if not filter_deleted or not cached_contentLists[contentList_id]["is_delete"]:
+                contentLists_response.append(cached_contentLists[contentList_id])
+        elif contentList_id in queried_contentLists:
+            contentLists_response.append(queried_contentLists[contentList_id])
 
-    return content lists_response
+    return contentLists_response

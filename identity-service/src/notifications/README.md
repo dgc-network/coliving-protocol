@@ -98,7 +98,7 @@ DB Entries
 Note: if user U3 checks the notification after U1 reposts and before U3 reposts, then 
 two notification db entries will be created w/ the new U2 repost referencing the new 
 notification.  
-Note: The pattern is the same for agreements/content lists/album with the only difference being 
+Note: The pattern is the same for agreements/contentLists/album with the only difference being 
 the notification type field being 'RepostAgreement', 'RepostContentList', 'RepostAlbum'
 
 **Favorite (Agreement/ContentList/Album)**  
@@ -111,7 +111,7 @@ DB Entries
 Note if user U3 checks the notification after U1 favorites and before U2 favorites, then 
 two notification db entries will be created w/ the new U2 favorite referencing the new 
 notification.  
-Note: The pattern is the same for agreements/content lists/album with the only difference being 
+Note: The pattern is the same for agreements/contentLists/album with the only difference being 
 the notification type field being 'FavoriteAgreement', 'FavoriteContentList', 'FavoriteAlbum'
 
 **Create (Agreement/ContentList/Album)**  
@@ -125,12 +125,12 @@ DB Entries
 Scenario: User U1 subscribes to user U3 and U3 uploads a public ContentList P1  
 DB Entries
 * Notification - userId: U1, entityId: P1, type: 'CreateContentList'
-  * NotificationAction - actionEntityType: 'content list', entityId: U3  
+  * NotificationAction - actionEntityType: 'contentList', entityId: U3  
 
-Note: The pattern for create content list and album are the same for with the only difference being 
+Note: The pattern for create contentList and album are the same for with the only difference being 
 the notification type field 'CreateContentList', 'CreateAlbum'  
-Note: The reason agreement creation notifications are different from content list/album notifications 
-is because agreements can be grouped together, but content list/album creation cannot be.  
+Note: The reason agreement creation notifications are different from contentList/album notifications 
+is because agreements can be grouped together, but contentList/album creation cannot be.  
 
 **Announcement**  
 Scenario: New product feature notification to be sent to all users.  

@@ -1,4 +1,4 @@
-"""user_content list_library
+"""user_contentList_library
 
 Revision ID: 05e2eeb2bd03
 Revises: 6cf96b71cf3d
@@ -18,12 +18,12 @@ depends_on = None
 
 
 def upgrade():
-    # Add the user content list library column as JSONB, which stores the folder structure
-    # for a user's favorite content lists
+    # Add the user contentList library column as JSONB, which stores the folder structure
+    # for a user's favorite contentLists
     op.add_column(
-        "users", sa.Column("content list_library", postgresql.JSONB(), nullable=True)
+        "users", sa.Column("contentList_library", postgresql.JSONB(), nullable=True)
     )
 
 
 def downgrade():
-    op.drop_column("users", "content list_library")
+    op.drop_column("users", "contentList_library")

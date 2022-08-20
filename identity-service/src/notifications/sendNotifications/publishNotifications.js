@@ -15,12 +15,12 @@ const getPublishNotifBaseType = (notification) => {
     case notificationTypes.Follow:
       return notificationTypes.Follow
     case notificationTypes.Repost.agreement:
-    case notificationTypes.Repost.content list:
+    case notificationTypes.Repost.contentList:
     case notificationTypes.Repost.album:
     case notificationTypes.Repost.base:
       return notificationTypes.Repost.base
     case notificationTypes.Favorite.agreement:
-    case notificationTypes.Favorite.content list:
+    case notificationTypes.Favorite.contentList:
     case notificationTypes.Favorite.album:
     case notificationTypes.Favorite.base:
       return notificationTypes.Favorite.base
@@ -29,7 +29,7 @@ const getPublishNotifBaseType = (notification) => {
     case notificationTypes.RemixCosign:
       return notificationTypes.RemixCosign
     case notificationTypes.Create.agreement:
-    case notificationTypes.Create.content list:
+    case notificationTypes.Create.contentList:
     case notificationTypes.Create.album:
     case notificationTypes.Create.base:
       return notificationTypes.Create.base
@@ -87,7 +87,7 @@ const alwaysSendNotifications = [
   notificationTypes.RemixCosign,
   notificationTypes.Create.base,
   notificationTypes.Create.agreement,
-  notificationTypes.Create.content list,
+  notificationTypes.Create.contentList,
   notificationTypes.Create.album,
   notificationTypes.ChallengeReward,
   notificationTypes.AddAgreementToContentList,

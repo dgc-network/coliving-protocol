@@ -54,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'RESTRICT'
     })
     ContentList.belongsTo(models.File, {
-      foreignKey: 'content listImageFileUUID',
+      foreignKey: 'contentListImageFileUUID',
       targetKey: 'fileUUID',
       onDelete: 'RESTRICT'
     })

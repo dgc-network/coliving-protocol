@@ -63,7 +63,7 @@
         },
         "entity_id": 1,
         "entity_owner_id": 1,
-        "entity_type": "content list"
+        "entity_type": "contentList"
     },
     "timestamp": "2020-10-27T15:10:20 Z",
     "type": "Create"

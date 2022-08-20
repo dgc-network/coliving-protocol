@@ -34,14 +34,14 @@ export interface GetContentListRequest {
     /**
      * A ContentList ID
      */
-    content listId: string;
+    contentListId: string;
 }
 
 export interface GetContentListAgreementsRequest {
     /**
      * A ContentList ID
      */
-    content listId: string;
+    contentListId: string;
 }
 
 export interface GetTrendingContentListsRequest {
@@ -64,11 +64,11 @@ export interface SearchContentListsRequest {
 export class ContentListsApi extends runtime.BaseAPI {
 
     /**
-     * Get a content list by ID
+     * Get a contentList by ID
      */
     async getContentList(requestParameters: GetContentListRequest): Promise<NonNullable<ContentListResponse["data"]>> {
-        if (requestParameters.content listId === null || requestParameters.content listId === undefined) {
-            throw new runtime.RequiredError('content listId','Required parameter requestParameters.content listId was null or undefined when calling getContentList.');
+        if (requestParameters.contentListId === null || requestParameters.contentListId === undefined) {
+            throw new runtime.RequiredError('contentListId','Required parameter requestParameters.contentListId was null or undefined when calling getContentList.');
         }
 
         const queryParameters: any = {};
@@ -76,7 +76,7 @@ export class ContentListsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/content lists/{content list_id}`.replace(`{${"content list_id"}}`, encodeURIComponent(String(requestParameters.content listId))),
+            path: `/contentLists/{contentList_id}`.replace(`{${"contentList_id"}}`, encodeURIComponent(String(requestParameters.contentListId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -84,11 +84,11 @@ export class ContentListsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Fetch agreements within a content list.
+     * Fetch agreements within a contentList.
      */
     async getContentListAgreements(requestParameters: GetContentListAgreementsRequest): Promise<NonNullable<ContentListAgreementsResponse["data"]>> {
-        if (requestParameters.content listId === null || requestParameters.content listId === undefined) {
-            throw new runtime.RequiredError('content listId','Required parameter requestParameters.content listId was null or undefined when calling getContentListAgreements.');
+        if (requestParameters.contentListId === null || requestParameters.contentListId === undefined) {
+            throw new runtime.RequiredError('contentListId','Required parameter requestParameters.contentListId was null or undefined when calling getContentListAgreements.');
         }
 
         const queryParameters: any = {};
@@ -96,7 +96,7 @@ export class ContentListsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/content lists/{content list_id}/agreements`.replace(`{${"content list_id"}}`, encodeURIComponent(String(requestParameters.content listId))),
+            path: `/contentLists/{contentList_id}/agreements`.replace(`{${"contentList_id"}}`, encodeURIComponent(String(requestParameters.contentListId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -104,7 +104,7 @@ export class ContentListsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Gets trending content lists for a time period
+     * Gets trending contentLists for a time period
      */
     async getTrendingContentLists(requestParameters: GetTrendingContentListsRequest = {}): Promise<NonNullable<TrendingContentListsResponse["data"]>> {
         const queryParameters: any = {};
@@ -116,7 +116,7 @@ export class ContentListsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/content lists/trending`,
+            path: `/contentLists/trending`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -124,7 +124,7 @@ export class ContentListsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Search for a content list
+     * Search for a contentList
      */
     async searchContentLists(requestParameters: SearchContentListsRequest): Promise<NonNullable<ContentListSearchResult["data"]>> {
         if (requestParameters.query === null || requestParameters.query === undefined) {
@@ -140,7 +140,7 @@ export class ContentListsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/content lists/search`,
+            path: `/contentLists/search`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

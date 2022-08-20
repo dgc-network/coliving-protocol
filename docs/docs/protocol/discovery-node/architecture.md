@@ -11,7 +11,7 @@ The discovery node uses PostgreSQL. Our Postgres database is managed through [SQ
 
 ## Flask
 
-The discovery node web server serves as the entrypoint for reading data through the coliving protocol. All queries are returned as JSON objects parsed from SQLAlchemy query resultsn, and can be found in [src/queries](https://github.com/dgc-network/coliving-protocol/tree/master/discovery-node/src/queries). Some examples of queries include user-specific feeds, agreement data, content list data, etc.
+The discovery node web server serves as the entrypoint for reading data through the coliving protocol. All queries are returned as JSON objects parsed from SQLAlchemy query resultsn, and can be found in [src/queries](https://github.com/dgc-network/coliving-protocol/tree/master/discovery-node/src/queries). Some examples of queries include user-specific feeds, agreement data, contentList data, etc.
 
 ## Celery
 

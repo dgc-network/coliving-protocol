@@ -15,7 +15,7 @@ import { LISTEN_TABLES } from './setup'
 export class PendingUpdates {
   userIds: Set<number> = new Set()
   agreementIds: Set<number> = new Set()
-  content listIds: Set<number> = new Set()
+  contentListIds: Set<number> = new Set()
 
   reposts: Array<RepostRow> = []
   saves: Array<SaveRow> = []
@@ -28,7 +28,7 @@ export class PendingUpdates {
         this.follows.length +
         this.userIds.size +
         this.agreementIds.size +
-        this.content listIds.size ==
+        this.contentListIds.size ==
       0
     )
   }
@@ -51,13 +51,13 @@ const handlers = {
     if (!row.play_item_id) return // when could this happen?
     pending.agreementIds.add(row.play_item_id)
   },
-  // TODO: can we do trigger on agg content list matview?
+  // TODO: can we do trigger on agg contentList matview?
   saves: (save: SaveRow) => {
     pending.saves.push(save)
     if (save.save_type == 'agreement') {
       pending.agreementIds.add(save.save_item_id)
     } else {
-      pending.content listIds.add(save.save_item_id)
+      pending.contentListIds.add(save.save_item_id)
     }
   },
   reposts: (repost: RepostRow) => {
@@ -65,7 +65,7 @@ const handlers = {
     if (repost.repost_type == 'agreement') {
       pending.agreementIds.add(repost.repost_item_id)
     } else {
-      pending.content listIds.add(repost.repost_item_id)
+      pending.contentListIds.add(repost.repost_item_id)
     }
   },
   follows: (follow: FollowRow) => {
@@ -84,8 +84,8 @@ const handlers = {
   agreements: (agreement: AgreementRow) => {
     pending.agreementIds.add(agreement.agreement_id)
   },
-  content lists: (content list: ContentListRow) => {
-    pending.content listIds.add(content list.content list_id)
+  contentLists: (contentList: ContentListRow) => {
+    pending.contentListIds.add(contentList.contentList_id)
   },
 }
 

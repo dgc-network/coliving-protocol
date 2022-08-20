@@ -150,49 +150,49 @@ const CLI_TO_COMMAND_MAP = {
         }
       ]
     },
-    'create-content list': {
+    'create-contentList': {
       api: 'ContentList',
-      description: 'create content list',
+      description: 'create contentList',
       method: 'createContentList',
       params: [
         {
           name: 'userId',
-          description: 'ID of user creating the content list',
+          description: 'ID of user creating the contentList',
           userInputHandler: Number,
           defaultHandler: getActiveUserFromSeedSessionCache
         },
         {
-          name: 'content listName',
-          description: 'name of content list',
+          name: 'contentListName',
+          description: 'name of contentList',
           defaultHandler: getRandomString
         },
         {
           name: 'isPrivate',
-          description: 'set to true to create content list as private',
+          description: 'set to true to create contentList as private',
           userInputHandler: Boolean,
           defaultHandler: () => false
         },
         {
           name: 'isAlbum',
-          description: 'set to true to create content list as album',
+          description: 'set to true to create contentList as album',
           userInputHandler: Boolean,
           defaultHandler: () => false
         },
         {
           name: 'agreementIds',
-          description: 'comma-separated list of agreement IDs to associate with the content list - example: 5,6',
+          description: 'comma-separated list of agreement IDs to associate with the contentList - example: 5,6',
           userInputHandler: userInput => userInput.split(',').map(Number)
         }
       ]
     },
-    'add-content list-agreement': {
+    'add-contentList-agreement': {
       api: 'ContentList',
-      description: 'add agreement to content list (must be owned by user ID passed in as active user)',
+      description: 'add agreement to contentList (must be owned by user ID passed in as active user)',
       method: 'addContentListAgreement',
       params: [
         {
-          name: 'content listId',
-          description: 'ID of content list to add agreement to (must already exist)',
+          name: 'contentListId',
+          description: 'ID of contentList to add agreement to (must already exist)',
           userInputHandler: Number
         },
         {
@@ -202,26 +202,26 @@ const CLI_TO_COMMAND_MAP = {
         }
       ]
     },
-    'repost-content list': {
+    'repost-contentList': {
       api: 'ContentList',
-      description: 'repost content list',
+      description: 'repost contentList',
       method: 'addContentListRepost',
       params: [
         {
-          name: 'content listId',
-          description: 'ID of content list to repost',
+          name: 'contentListId',
+          description: 'ID of contentList to repost',
           userInputHandler: Number
         }
       ]
     },
-    'favorite-content list': {
+    'favorite-contentList': {
       api: 'ContentList',
-      description: 'favorite content list',
+      description: 'favorite contentList',
       method: 'addContentListSave',
       params: [
         {
-          name: 'content listId',
-          description: 'ID of content list to favorite',
+          name: 'contentListId',
+          description: 'ID of contentList to favorite',
           userInputHandler: Number
         }
       ]

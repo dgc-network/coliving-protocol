@@ -13,14 +13,14 @@ pagination_next: null
 
 **getContentList**(`requestParameters`): `Promise`<[`ContentListFull`](../interfaces/full.ContentListFull.md)[]\>
 
-Get a content list by ID
+Get a contentList by ID
 
 Example:
 
 ```typescript
 
-const content list = await colivingSdk.content lists.getContentList({
-    content listId: "AxRP0",
+const contentList = await colivingSdk.contentLists.getContentList({
+    contentListId: "AxRP0",
 });
 
 ```
@@ -41,13 +41,13 @@ ___
 
 **getTrendingContentLists**(`requestParameters?`): `Promise`<[`ContentListFull`](../interfaces/full.ContentListFull.md)[]\>
 
-Returns trending content lists for a time period
+Returns trending contentLists for a time period
 
 Example:
 
 ```typescript
 
-const content lists = await colivingSdk.content lists.getTrendingContentLists();
+const contentLists = await colivingSdk.contentLists.getTrendingContentLists();
 
 ```
 
@@ -67,7 +67,7 @@ ___
 
 **getTrendingContentListsWithVersion**(`requestParameters`): `Promise`<[`ContentListFull`](../interfaces/full.ContentListFull.md)[]\>
 
-Returns trending content lists for a time period based on the given trending version
+Returns trending contentLists for a time period based on the given trending version
 
 #### Parameters
 
@@ -85,7 +85,7 @@ ___
 
 **getUsersFromContentListFavorites**(`requestParameters`): `Promise`<[`UserFull`](../interfaces/full.UserFull.md)[]\>
 
-Get users that favorited a content list
+Get users that favorited a contentList
 
 #### Parameters
 
@@ -103,7 +103,7 @@ ___
 
 **getUsersFromContentListReposts**(`requestParameters`): `Promise`<[`UserFull`](../interfaces/full.UserFull.md)[]\>
 
-Get users that reposted a content list
+Get users that reposted a contentList
 
 #### Parameters
 

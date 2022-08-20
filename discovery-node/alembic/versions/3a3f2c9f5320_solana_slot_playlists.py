@@ -21,18 +21,18 @@ def upgrade():
         """
         begin;
 
-            ALTER TABLE content lists DROP CONSTRAINT IF EXISTS content lists_pkey;
-            UPDATE content lists
+            ALTER TABLE contentLists DROP CONSTRAINT IF EXISTS contentLists_pkey;
+            UPDATE contentLists
                 SET txhash = ('unset_' || substr(md5(random()::text), 0, 10) || substr(blockhash, 3, 13))
                 WHERE txhash='';
 
-            ALTER TABLE content lists ADD PRIMARY KEY (is_current, content list_id, txhash);
+            ALTER TABLE contentLists ADD PRIMARY KEY (is_current, contentList_id, txhash);
 
-            ALTER TABLE content lists ADD COLUMN IF NOT EXISTS slot INTEGER;
+            ALTER TABLE contentLists ADD COLUMN IF NOT EXISTS slot INTEGER;
 
             -- Drop NOT NULL Constraint on POA blockhash and tx hash columns
-            ALTER TABLE content lists ALTER COLUMN blockhash DROP NOT NULL;
-            ALTER TABLE content lists ALTER COLUMN blocknumber DROP NOT NULL;
+            ALTER TABLE contentLists ALTER COLUMN blockhash DROP NOT NULL;
+            ALTER TABLE contentLists ALTER COLUMN blocknumber DROP NOT NULL;
 
         commit;
     """
@@ -45,17 +45,17 @@ def downgrade():
         """
         begin;
 
-            ALTER TABLE content lists DROP CONSTRAINT IF EXISTS content lists_pkey;
-            ALTER TABLE content lists ADD PRIMARY KEY (is_current, content list_id, content list_owner_id, blockhash, txhash);
+            ALTER TABLE contentLists DROP CONSTRAINT IF EXISTS contentLists_pkey;
+            ALTER TABLE contentLists ADD PRIMARY KEY (is_current, contentList_id, contentList_owner_id, blockhash, txhash);
 
-            ALTER TABLE content lists DROP COLUMN IF EXISTS slot;
+            ALTER TABLE contentLists DROP COLUMN IF EXISTS slot;
 
             -- Add NOT NULL Constraint on POA blockhash and tx hash columns
-            DELETE FROM content lists where blockhash IS NULL or blocknumber IS NULL;
-            ALTER TABLE content lists ALTER COLUMN blockhash SET NOT NULL;
-            ALTER TABLE content lists ALTER COLUMN blocknumber SET NOT NULL;
+            DELETE FROM contentLists where blockhash IS NULL or blocknumber IS NULL;
+            ALTER TABLE contentLists ALTER COLUMN blockhash SET NOT NULL;
+            ALTER TABLE contentLists ALTER COLUMN blocknumber SET NOT NULL;
 
-            UPDATE content lists SET txhash = '' WHERE txhash LIKE 'unset_%%';
+            UPDATE contentLists SET txhash = '' WHERE txhash LIKE 'unset_%%';
 
         commit;
     """
