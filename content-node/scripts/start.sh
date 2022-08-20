@@ -49,14 +49,14 @@ if [ -z "$dbUrl" ]; then
         echo "host all all 0.0.0.0/0 md5" >>/db/pg_hba.conf
         echo "listen_addresses = '*'" >>/db/postgresql.conf
         sudo -u postgres pg_ctl start -D /db
-        sudo -u postgres createdb coliving_creator_node
+        sudo -u postgres createdb coliving_content_node
     else
         sudo -u postgres pg_ctl start -D /db
     fi
 
     sudo -u postgres psql -c "ALTER USER postgres PASSWORD '${postgres_password:-postgres}';"
 
-    export dbUrl="postgres://postgres:${postgres_password:-postgres}@localhost:5432/coliving_creator_node"
+    export dbUrl="postgres://postgres:${postgres_password:-postgres}@localhost:5432/coliving_content_node"
     export WAIT_HOSTS="localhost:5432"
     /usr/bin/wait
 fi

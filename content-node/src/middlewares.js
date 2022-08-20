@@ -632,13 +632,13 @@ async function getCreatorNodeEndpoints({
         if (
           !fetchedUser ||
           fetchedUser.length === 0 ||
-          !fetchedUser[0].hasOwnProperty('creator_node_endpoint')
+          !fetchedUser[0].hasOwnProperty('content_node_endpoint')
         ) {
           throw new Error('Missing or malformatted user fetched from discprov.')
         }
 
         user = fetchedUser
-        returnedPrimaryEndpoint = user[0].creator_node_endpoint.split(',')[0]
+        returnedPrimaryEndpoint = user[0].content_node_endpoint.split(',')[0]
 
         if (returnedPrimaryEndpoint === myCnodeEndpoint) {
           break
@@ -682,14 +682,14 @@ async function getCreatorNodeEndpoints({
   if (
     !user ||
     user.length === 0 ||
-    !user[0].hasOwnProperty('creator_node_endpoint')
+    !user[0].hasOwnProperty('content_node_endpoint')
   ) {
     throw new Error(
       `Invalid return data from discovery node for user with wallet ${wallet}.`
     )
   }
 
-  const endpoint = user[0].creator_node_endpoint
+  const endpoint = user[0].content_node_endpoint
   const userReplicaSet = endpoint ? endpoint.split(',') : []
 
   logger.info(`getCreatorNodeEndpoints route time ${Date.now() - start}`)

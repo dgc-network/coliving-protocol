@@ -3,7 +3,7 @@ from datetime import datetime
 from src.models.indexing.block import Block
 from src.models.indexing.indexing_checkpoints import IndexingCheckpoint
 from src.models.indexing.ursm_content_node import UrsmContentNode
-from src.models.playlists.playlist import Playlist
+from src.models.content lists.content list import ContentList
 from src.models.rewards.challenge import Challenge
 from src.models.rewards.user_challenge import UserChallenge
 from src.models.social.aggregate_monthly_plays import AggregateMonthlyPlay
@@ -94,7 +94,7 @@ def populate_mock_db(db, entities, block_offset=None):
                 block_offset = 0
 
         agreements = entities.get("agreements", [])
-        playlists = entities.get("playlists", [])
+        content lists = entities.get("content lists", [])
         users = entities.get("users", [])
         follows = entities.get("follows", [])
         reposts = entities.get("reposts", [])
@@ -161,33 +161,33 @@ def populate_mock_db(db, entities, block_offset=None):
                 is_unlisted=agreement_meta.get("is_unlisted", False),
             )
             session.add(agreement)
-        for i, playlist_meta in enumerate(playlists):
-            playlist = Playlist(
+        for i, content list_meta in enumerate(content lists):
+            content list = ContentList(
                 blockhash=hex(i + block_offset),
                 blocknumber=i + block_offset,
-                txhash=playlist_meta.get("txhash", str(i + block_offset)),
-                playlist_id=playlist_meta.get("playlist_id", i),
-                is_current=playlist_meta.get("is_current", True),
-                is_delete=playlist_meta.get("is_delete", False),
-                playlist_owner_id=playlist_meta.get("playlist_owner_id", 1),
-                is_album=playlist_meta.get("is_album", False),
-                is_private=playlist_meta.get("is_private", False),
-                playlist_name=playlist_meta.get("playlist_name", f"playlist_{i}"),
-                playlist_contents=playlist_meta.get(
-                    "playlist_contents", {"agreement_ids": []}
+                txhash=content list_meta.get("txhash", str(i + block_offset)),
+                content list_id=content list_meta.get("content list_id", i),
+                is_current=content list_meta.get("is_current", True),
+                is_delete=content list_meta.get("is_delete", False),
+                content list_owner_id=content list_meta.get("content list_owner_id", 1),
+                is_album=content list_meta.get("is_album", False),
+                is_private=content list_meta.get("is_private", False),
+                content list_name=content list_meta.get("content list_name", f"content list_{i}"),
+                content list_contents=content list_meta.get(
+                    "content list_contents", {"agreement_ids": []}
                 ),
-                playlist_image_multihash=playlist_meta.get(
-                    "playlist_image_multihash", ""
+                content list_image_multihash=content list_meta.get(
+                    "content list_image_multihash", ""
                 ),
-                playlist_image_sizes_multihash=playlist_meta.get(
-                    "playlist_image_sizes_multihash", ""
+                content list_image_sizes_multihash=content list_meta.get(
+                    "content list_image_sizes_multihash", ""
                 ),
-                description=playlist_meta.get("description", f"description_{i}"),
-                upc=playlist_meta.get("upc", f"upc_{i}"),
-                updated_at=playlist_meta.get("updated_at", datetime.now()),
-                created_at=playlist_meta.get("created_at", datetime.now()),
+                description=content list_meta.get("description", f"description_{i}"),
+                upc=content list_meta.get("upc", f"upc_{i}"),
+                updated_at=content list_meta.get("updated_at", datetime.now()),
+                created_at=content list_meta.get("created_at", datetime.now()),
             )
-            session.add(playlist)
+            session.add(content list)
 
         for i, user_meta in enumerate(users):
             user = User(
@@ -297,7 +297,7 @@ def populate_mock_db(db, entities, block_offset=None):
             user = AggregateUser(
                 user_id=aggregate_user_meta.get("user_id", i),
                 agreement_count=aggregate_user_meta.get("agreement_count", 0),
-                playlist_count=aggregate_user_meta.get("playlist_count", 0),
+                content list_count=aggregate_user_meta.get("content list_count", 0),
                 album_count=aggregate_user_meta.get("album_count", 0),
                 follower_count=aggregate_user_meta.get("follower_count", 0),
                 following_count=aggregate_user_meta.get("following_count", 0),

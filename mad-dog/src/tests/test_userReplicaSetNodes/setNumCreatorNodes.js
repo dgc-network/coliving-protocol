@@ -33,7 +33,7 @@ const getContentNodeMaping = async (executeOne) => {
 
   contentNodeList.forEach((info)=>{
     const cnId = getIDfromEndpoint(info.endpoint)
-    // Get the creator node number
+    // Get the content node number
     contentNodeIDToInfoMapping[cnId] = info
   })
   return contentNodeIDToInfoMapping
@@ -57,7 +57,7 @@ const setNumCreatorNodes = async (numCN, executeOne) => {
       }
     }
 
-    // Update the mapping again w/ all creator nodes
+    // Update the mapping again w/ all content nodes
     contentNodeIDToInfoMapping = await getContentNodeMaping(executeOne)
   }
   return contentNodeIDToInfoMapping

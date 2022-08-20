@@ -5,8 +5,8 @@ import {
   UserFactory,
   AgreementStorage,
   AgreementFactory,
-  PlaylistStorage,
-  PlaylistFactory,
+  ContentListStorage,
+  ContentListFactory,
   SocialFeatureStorage,
   SocialFeatureFactory
 } from './_lib/artifacts.js'
@@ -20,19 +20,19 @@ contract('SocialFeatureFactory', async (accounts) => {
   const testAgreementId2 = 2
   const testAgreementId3 = 3
 
-  let playlistName1 = 'playlistName1'
-  let playlistAgreements1 = [1, 2]
-  let playlistId1 = 1
-  let playlistId2 = 2
-  let playlistIsAlbum1 = false
+  let content listName1 = 'content listName1'
+  let content listAgreements1 = [1, 2]
+  let content listId1 = 1
+  let content listId2 = 2
+  let content listIsAlbum1 = false
 
   let registry
   let userStorage
   let userFactory
   let agreementStorage
   let agreementFactory
-  let playlistStorage
-  let playlistFactory
+  let content listStorage
+  let content listFactory
   let socialFeatureStorage
   let socialFeatureFactory
 
@@ -49,13 +49,13 @@ contract('SocialFeatureFactory', async (accounts) => {
     await registry.addContract(_constants.agreementStorageKey, agreementStorage.address)
     agreementFactory = await AgreementFactory.new(registry.address, _constants.agreementStorageKey, _constants.userFactoryKey, networkId)
     await registry.addContract(_constants.agreementFactoryKey, agreementFactory.address)
-    playlistStorage = await PlaylistStorage.new(registry.address)
-    await registry.addContract(_constants.playlistStorageKey, playlistStorage.address)
-    playlistFactory = await PlaylistFactory.new(registry.address, _constants.playlistStorageKey, _constants.userFactoryKey, _constants.agreementFactoryKey, networkId)
-    await registry.addContract(_constants.playlistFactoryKey, playlistFactory.address)
+    content listStorage = await ContentListStorage.new(registry.address)
+    await registry.addContract(_constants.content listStorageKey, content listStorage.address)
+    content listFactory = await ContentListFactory.new(registry.address, _constants.content listStorageKey, _constants.userFactoryKey, _constants.agreementFactoryKey, networkId)
+    await registry.addContract(_constants.content listFactoryKey, content listFactory.address)
     socialFeatureStorage = await SocialFeatureStorage.new(registry.address)
     await registry.addContract(_constants.socialFeatureStorageKey, socialFeatureStorage.address)
-    socialFeatureFactory = await SocialFeatureFactory.new(registry.address, _constants.socialFeatureStorageKey, _constants.userFactoryKey, _constants.agreementFactoryKey, _constants.playlistFactoryKey, networkId)
+    socialFeatureFactory = await SocialFeatureFactory.new(registry.address, _constants.socialFeatureStorageKey, _constants.userFactoryKey, _constants.agreementFactoryKey, _constants.content listFactoryKey, networkId)
     await registry.addContract(_constants.socialFeatureFactoryKey, socialFeatureFactory.address)
 
     // add users and agreements
@@ -91,15 +91,15 @@ contract('SocialFeatureFactory', async (accounts) => {
       _constants.testMultihash.hashFn,
       _constants.testMultihash.size)
 
-    await _lib.addPlaylistAndValidate(
-      playlistFactory,
-      playlistId1,
+    await _lib.addContentListAndValidate(
+      content listFactory,
+      content listId1,
       accounts[0],
       testUserId1,
-      playlistName1,
+      content listName1,
       false,
-      playlistIsAlbum1,
-      playlistAgreements1
+      content listIsAlbum1,
+      content listAgreements1
     )
   })
 
@@ -219,28 +219,28 @@ contract('SocialFeatureFactory', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
   })
 
-  /******************** PlaylistRepost ********************/
+  /******************** ContentListRepost ********************/
   /********************************************************/
 
-  it('Should add one PlaylistRepost', async () => {
-    await _lib.addPlaylistRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, playlistId1)
+  it('Should add one ContentListRepost', async () => {
+    await _lib.addContentListRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, content listId1)
   })
 
-  it('Should add and delete one PlaylistRepost', async () => {
-    await _lib.addPlaylistRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, playlistId1)
-    await _lib.deletePlaylistRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, playlistId1)
+  it('Should add and delete one ContentListRepost', async () => {
+    await _lib.addContentListRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, content listId1)
+    await _lib.deleteContentListRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, content listId1)
   })
 
-  it('Should confirm duplicate add/delete PlaylistRepost throws', async () => {
-    // add playlist repost
-    await _lib.addPlaylistRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, playlistId1)
+  it('Should confirm duplicate add/delete ContentListRepost throws', async () => {
+    // add content list repost
+    await _lib.addContentListRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, content listId1)
 
-    // confirm duplicate playlist repost throws
+    // confirm duplicate content list repost throws
     let caughtError = false
     try {
-      await _lib.addPlaylistRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, playlistId1)
+      await _lib.addContentListRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, content listId1)
     } catch (e) {
-      if (e.message.indexOf('playlist repost already exists') >= 0) {
+      if (e.message.indexOf('content list repost already exists') >= 0) {
         caughtError = true
       } else {
         // unexpected error - throw normally
@@ -249,15 +249,15 @@ contract('SocialFeatureFactory', async (accounts) => {
     }
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
 
-    // delete playlist repost
-    await _lib.deletePlaylistRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, playlistId1)
+    // delete content list repost
+    await _lib.deleteContentListRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, content listId1)
 
-    // confirm duplicate playlist repost delete throws
+    // confirm duplicate content list repost delete throws
     caughtError = false
     try {
-      await _lib.deletePlaylistRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, playlistId1)
+      await _lib.deleteContentListRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, content listId1)
     } catch (e) {
-      if (e.message.indexOf('playlist repost does not exist') >= 0) {
+      if (e.message.indexOf('content list repost does not exist') >= 0) {
         caughtError = true
       } else {
         // unexpected error - throw normally
@@ -267,42 +267,10 @@ contract('SocialFeatureFactory', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
   })
 
-  it('Should fail to add PlaylistRepost with non-existent user', async () => {
+  it('Should fail to add ContentListRepost with non-existent user', async () => {
     let caughtError = false
     try {
-      await _lib.addPlaylistRepostAndValidate(socialFeatureFactory, accounts[0], testUserId3, playlistId1)
-    } catch (e) {
-      // handle expected error
-      if (e.message.indexOf('Caller does not own userId ') >= 0) {
-        caughtError = true
-      } else {
-        // unexpected error - throw normally
-        throw e
-      }
-    }
-    assert.isTrue(caughtError, 'Call succeeded unexpectedly')
-  })
-
-  it('Should fail to add PlaylistRepost with non-existent playlist', async () => {
-    let caughtError = false
-    try {
-      await _lib.addPlaylistRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, playlistId2)
-    } catch (e) {
-      // handle expected error
-      if (e.message.indexOf('must provide valid playlist ID') >= 0) {
-        caughtError = true
-      } else {
-        // unexpected error - throw normally
-        throw e
-      }
-    }
-    assert.isTrue(caughtError, 'Call succeeded unexpectedly')
-  })
-
-  it('Should fail to add PlaylistRepost due to lack of ownership of reposter user', async () => {
-    let caughtError = false
-    try {
-      await _lib.addPlaylistRepostAndValidate(socialFeatureFactory, accounts[1], testUserId1, playlistId1)
+      await _lib.addContentListRepostAndValidate(socialFeatureFactory, accounts[0], testUserId3, content listId1)
     } catch (e) {
       // handle expected error
       if (e.message.indexOf('Caller does not own userId ') >= 0) {
@@ -315,10 +283,42 @@ contract('SocialFeatureFactory', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
   })
 
-  it('Should fail to delete PlaylistRepost due to lack of ownership of reposter user', async () => {
+  it('Should fail to add ContentListRepost with non-existent content list', async () => {
     let caughtError = false
     try {
-      await _lib.deletePlaylistRepostAndValidate(socialFeatureFactory, accounts[1], testUserId1, playlistId1)
+      await _lib.addContentListRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, content listId2)
+    } catch (e) {
+      // handle expected error
+      if (e.message.indexOf('must provide valid content list ID') >= 0) {
+        caughtError = true
+      } else {
+        // unexpected error - throw normally
+        throw e
+      }
+    }
+    assert.isTrue(caughtError, 'Call succeeded unexpectedly')
+  })
+
+  it('Should fail to add ContentListRepost due to lack of ownership of reposter user', async () => {
+    let caughtError = false
+    try {
+      await _lib.addContentListRepostAndValidate(socialFeatureFactory, accounts[1], testUserId1, content listId1)
+    } catch (e) {
+      // handle expected error
+      if (e.message.indexOf('Caller does not own userId ') >= 0) {
+        caughtError = true
+      } else {
+        // unexpected error - throw normally
+        throw e
+      }
+    }
+    assert.isTrue(caughtError, 'Call succeeded unexpectedly')
+  })
+
+  it('Should fail to delete ContentListRepost due to lack of ownership of reposter user', async () => {
+    let caughtError = false
+    try {
+      await _lib.deleteContentListRepostAndValidate(socialFeatureFactory, accounts[1], testUserId1, content listId1)
     } catch (e) {
       // handle expected error
       if (e.message.indexOf('Caller does not own userId ') >= 0) {

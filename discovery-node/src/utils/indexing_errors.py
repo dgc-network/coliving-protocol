@@ -2,7 +2,7 @@ class IndexingError(Exception):
     """Exception raised for errors in the indexing flow.
 
     Attributes:
-        type -- One of 'session.commit', 'tx', 'user', 'user_replica_set', 'user_library', 'agreements', 'social_features', 'playlists'
+        type -- One of 'session.commit', 'tx', 'user', 'user_replica_set', 'user_library', 'agreements', 'social_features', 'content lists'
         blocknumber -- block number of error
         blockhash -- block hash of error
         txhash -- transaction hash of error
@@ -21,7 +21,7 @@ class IndexingError(Exception):
 class EntityMissingRequiredFieldError(Exception):
     """Exception raised for errors when processing transactions and a non-nullable field on a created entity is set to null.
     Attributes:
-        type -- One of 'user', 'user_replica_set', 'user_library', 'agreements', 'social_features', 'playlists'
+        type -- One of 'user', 'user_replica_set', 'user_library', 'agreements', 'social_features', 'content lists'
         cursed_record -- record number of error
         blockhash -- block hash of error
         txhash -- transaction hash of error

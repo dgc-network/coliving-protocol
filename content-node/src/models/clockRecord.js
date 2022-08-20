@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     ColivingUser: 'ColivingUser',
     Agreement: 'Agreement',
     File: 'File',
-    Playlist: 'Playlist'
+    ContentList: 'ContentList'
   }
 
   const ClockRecord = sequelize.define(

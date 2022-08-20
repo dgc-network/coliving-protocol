@@ -156,7 +156,7 @@ const Service = Object.freeze({
   INIT_CONTRACTS_INFO: 'init-contracts-info',
   INIT_TOKEN_VERSIONS: 'init-token-versions',
   DISCOVERY_PROVIDER: 'discovery-node',
-  CREATOR_NODE: 'content-node',
+  CONTENT_NODE: 'content-node',
   IDENTITY_SERVICE: 'identity-service',
   DISTRIBUTE: 'distribute',
   ACCOUNT: 'account',
@@ -287,7 +287,7 @@ const getServiceURL = (service, serviceNumber) => {
     port,
     health_check_endpoint: healthCheckEndpoint
   } = commands
-  if (service === Service.CREATOR_NODE) {
+  if (service === Service.CONTENT_NODE) {
     if (!serviceNumber) {
       throw new Error('Missing serviceNumber')
     }
@@ -496,7 +496,7 @@ const discoveryNodeWebServerUp = async (options = { verbose: false }) => {
   console.log(`Services brought up in ${durationSeconds}s`.info)
 }
 /**
- * Brings up all services relevant to the creator node
+ * Brings up all services relevant to the content node
  * @returns {Promise<void>}
  */
 const creatorNodeUp = async (serviceNumber, options = { verbose: false }) => {
@@ -507,21 +507,21 @@ const creatorNodeUp = async (serviceNumber, options = { verbose: false }) => {
 
   const sequential = [
     [
-      Service.CREATOR_NODE,
+      Service.CONTENT_NODE,
       SetupCommand.UPDATE_DELEGATE_WALLET,
       { serviceNumber, ...options }
     ],
     [
-      Service.CREATOR_NODE,
+      Service.CONTENT_NODE,
       SetupCommand.UP,
       { serviceNumber, ...options, waitSec: 10 }
     ],
     [
-      Service.CREATOR_NODE,
+      Service.CONTENT_NODE,
       SetupCommand.HEALTH_CHECK_RETRY,
       { serviceNumber, ...options }
     ],
-    [Service.CREATOR_NODE, SetupCommand.REGISTER, { serviceNumber, ...options }]
+    [Service.CONTENT_NODE, SetupCommand.REGISTER, { serviceNumber, ...options }]
   ]
 
   const start = Date.now()
@@ -538,7 +538,7 @@ const creatorNodeUp = async (serviceNumber, options = { verbose: false }) => {
 }
 
 /**
- * Deregisters a creator node
+ * Deregisters a content node
  * @returns {Promise<void>}
  */
 const deregisterCreatorNode = async (
@@ -552,7 +552,7 @@ const deregisterCreatorNode = async (
 
   const sequential = [
     [
-      Service.CREATOR_NODE,
+      Service.CONTENT_NODE,
       SetupCommand.DEREGISTER,
       { ...options, serviceNumber: serviceNumber }
     ]
@@ -733,7 +733,7 @@ const allUp = async ({
   const nodeUpCommands = []
   const nodeHealthCheckCommands = []
   const nodeRegisterCommands = []
-  // Add creator node commands
+  // Add content node commands
   for (
     let serviceNumber = 1;
     serviceNumber < numCreatorNodes + 1;
@@ -741,22 +741,22 @@ const allUp = async ({
   ) {
     nodeUpCommands.push([
       [
-        Service.CREATOR_NODE,
+        Service.CONTENT_NODE,
         SetupCommand.UPDATE_DELEGATE_WALLET,
         { serviceNumber, ...options }
       ],
-      [Service.CREATOR_NODE, SetupCommand.UP, { serviceNumber, ...options }]
+      [Service.CONTENT_NODE, SetupCommand.UP, { serviceNumber, ...options }]
     ])
     nodeHealthCheckCommands.push([
       [
-        Service.CREATOR_NODE,
+        Service.CONTENT_NODE,
         SetupCommand.HEALTH_CHECK_RETRY,
         { serviceNumber, ...options }
       ]
     ])
     nodeRegisterCommands.push([
       [
-        Service.CREATOR_NODE,
+        Service.CONTENT_NODE,
         SetupCommand.REGISTER,
         { serviceNumber, ...options }
       ]

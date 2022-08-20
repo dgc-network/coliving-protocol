@@ -52,7 +52,7 @@ const BATCH_CID_EXISTS_CONCURRENCY_LIMIT = 50
 const router = express.Router()
 
 /**
- * Helper method to stream file from file system on creator node
+ * Helper method to stream file from file system on content node
  * Serves partial content if specified using range requests
  * By default, checks path for file existence before proceeding
  * If not provided, checks fs stats for path
@@ -510,7 +510,7 @@ const getDirCID = async (req, res) => {
     )
   }
 
-  // Do not act as a public gateway. Only serve files that are agreemented by this creator node.
+  // Do not act as a public gateway. Only serve files that are agreemented by this content node.
   const dirCID = req.params.dirCID
   const filename = req.params.filename
   const path = `${dirCID}/${filename}`
@@ -747,7 +747,7 @@ router.post(
 )
 
 /**
- * Serve data hosted by creator node and create download route using query string pattern
+ * Serve data hosted by content node and create download route using query string pattern
  * `...?filename=<file_name.mp3>`.
  * IPFS is not used anymore -- this route only exists with this name because the client uses it in prod
  * @param req

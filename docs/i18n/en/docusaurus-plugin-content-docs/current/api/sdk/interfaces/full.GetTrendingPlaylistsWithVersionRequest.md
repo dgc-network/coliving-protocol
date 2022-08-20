@@ -1,13 +1,13 @@
 ---
-id: "full.GetTrendingPlaylistsWithVersionRequest"
-title: "Interface: GetTrendingPlaylistsWithVersionRequest"
-sidebar_label: "GetTrendingPlaylistsWithVersionRequest"
+id: "full.GetTrendingContentListsWithVersionRequest"
+title: "Interface: GetTrendingContentListsWithVersionRequest"
+sidebar_label: "GetTrendingContentListsWithVersionRequest"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).GetTrendingPlaylistsWithVersionRequest
+[full](../namespaces/full.md).GetTrendingContentListsWithVersionRequest
 
 ## Properties
 
@@ -29,7 +29,7 @@ ___
 
 ### time
 
- `Optional` **time**: [`GetTrendingPlaylistsWithVersionTimeEnum`](../enums/full.GetTrendingPlaylistsWithVersionTimeEnum.md)
+ `Optional` **time**: [`GetTrendingContentListsWithVersionTimeEnum`](../enums/full.GetTrendingContentListsWithVersionTimeEnum.md)
 
 Calculate trending over a specified time range
 

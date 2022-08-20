@@ -1,6 +1,6 @@
 const { CreatorNode } = require('../services/creatorNode')
 /**
- * Syncs a creator node if its blocknubmer is behind the passed
+ * Syncs a content node if its blocknubmer is behind the passed
  * in blocknumber.
  */
 const syncNodeIfBehind = async (libs, endpoint) => {
@@ -21,7 +21,7 @@ const syncNodes = async (libs) => {
 
   if (!user) return
 
-  const secondaries = CreatorNode.getSecondaries(user.creator_node_endpoint)
+  const secondaries = CreatorNode.getSecondaries(user.content_node_endpoint)
   await Promise.all(secondaries.map(secondary => syncNodeIfBehind(libs, secondary)))
 }
 

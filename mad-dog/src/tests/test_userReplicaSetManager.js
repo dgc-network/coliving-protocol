@@ -47,7 +47,7 @@ const verifyUserReplicaSetStatus = async (
     }
 
     // Deconstruct the comma separated value of enpdoint1,endoint2,endpoint3
-    let replicaEndpointArray = usrQueryInfo.creator_node_endpoint.split(",")
+    let replicaEndpointArray = usrQueryInfo.content_node_endpoint.split(",")
     let primaryEndpointString = replicaEndpointArray[0]
     let secondaryEndpointStrings = replicaEndpointArray.slice(1)
     let primaryInfo = contentNodeEndpointToInfoMapping[primaryEndpointString]
@@ -65,7 +65,7 @@ const verifyUserReplicaSetStatus = async (
     }
 
     logger.info(`userId: ${userId} Replica Set Info: ${primaryID}, ${usrQueryInfo.secondary_ids}`)
-    logger.info(`userId: ${userId} Replica Set String: ${usrQueryInfo.creator_node_endpoint}`)
+    logger.info(`userId: ${userId} Replica Set String: ${usrQueryInfo.content_node_endpoint}`)
     logger.info(`userId: ${userId} primaryID: ${primaryID} primaryIdFromEndointStr: ${primaryInfo.spID}`)
 
     // Throw if array lengths do not match for secondary_ids
@@ -81,7 +81,7 @@ const verifyUserReplicaSetStatus = async (
       let secondaryIdFromStr = secondaryInfoFromStr.spID
       logger.info(`userId: ${userId} secondaryId: ${secondaryId} secondaryIdFromEndpointStr: ${secondaryIdFromStr}`)
       // Throw if the ID array does not match the ID mapped to the 
-      // endpoint in the legacy creator_node_endpoint 
+      // endpoint in the legacy content_node_endpoint 
       if (secondaryId !== secondaryIdFromStr) {
         throw new Error("Invalid write operation")
       }
@@ -106,7 +106,7 @@ const getLatestIndexedBlock = async (endpoint) => {
 }
 
 const getAllSigners = async (user) => {
-  const cnEndpoints = user.creator_node_endpoint.split(',').filter(Boolean)
+  const cnEndpoints = user.content_node_endpoint.split(',').filter(Boolean)
   return Promise.all(cnEndpoints.map(getCreatorNodeSigner))
 }
 

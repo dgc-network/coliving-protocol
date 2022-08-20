@@ -113,7 +113,7 @@
           "type": "bytes32"
         },
         {
-          "name": "_playlistFactoryRegistryKey",
+          "name": "_content listFactoryRegistryKey",
           "type": "bytes32"
         },
         {
@@ -169,11 +169,11 @@
         },
         {
           "indexed": false,
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         }
       ],
-      "name": "PlaylistRepostAdded",
+      "name": "ContentListRepostAdded",
       "type": "event"
     },
     {
@@ -186,11 +186,11 @@
         },
         {
           "indexed": false,
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         }
       ],
-      "name": "PlaylistRepostDeleted",
+      "name": "ContentListRepostDeleted",
       "type": "event"
     },
     {
@@ -278,7 +278,7 @@
           "type": "uint256"
         },
         {
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         },
         {
@@ -290,7 +290,7 @@
           "type": "bytes"
         }
       ],
-      "name": "addPlaylistRepost",
+      "name": "addContentListRepost",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -330,7 +330,7 @@
           "type": "uint256"
         },
         {
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         },
         {
@@ -342,7 +342,7 @@
           "type": "bytes"
         }
       ],
-      "name": "deletePlaylistRepost",
+      "name": "deleteContentListRepost",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -441,11 +441,11 @@
           "type": "uint256"
         },
         {
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         }
       ],
-      "name": "userRepostedPlaylist",
+      "name": "userRepostedContentList",
       "outputs": [
         {
           "name": "",

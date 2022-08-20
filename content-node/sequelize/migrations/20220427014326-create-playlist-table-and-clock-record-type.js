@@ -1,36 +1,36 @@
 'use strict'
 
 /**
- * New table - Playlist
- * New enum value for clock records sourceTable, Playlist
+ * New table - ContentList
+ * New enum value for clock records sourceTable, ContentList
  * CNodeUsers Table considered a Reference Table only
  */
 
-const tableName = 'Playlists'
+const tableName = 'ContentLists'
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     const transaction = await queryInterface.sequelize.transaction()
 
-    // Create Playlist table
-    await createPlaylistTable(queryInterface, Sequelize, transaction)
-    await addPlaylistToClockRecordSourceTables(queryInterface, transaction)
+    // Create ContentList table
+    await createContentListTable(queryInterface, Sequelize, transaction)
+    await addContentListToClockRecordSourceTables(queryInterface, transaction)
 
-    // Add composite unique constraint on (blockchainId, clock) to Playlist
+    // Add composite unique constraint on (blockchainId, clock) to ContentList
     await addCompositeUniqueConstraints(queryInterface, transaction)
 
     await transaction.commit()
   },
 
   /*
-    In the down migration we remove compose unique constraint and playlist table but do not remove the altered enum.
-    This is in the case that there are existing values in the ClockRecords table pointing to the playlist enum that would have to be either
+    In the down migration we remove compose unique constraint and content list table but do not remove the altered enum.
+    This is in the case that there are existing values in the ClockRecords table pointing to the content list enum that would have to be either
     modified (removes context) or dropped (adds gaps to ClockRecord history)
   */
   down: async (queryInterface) => {
     const transaction = await queryInterface.sequelize.transaction()
     await removeCompositeUniqueConstraints(queryInterface, transaction)
-    await dropPlaylistTable(queryInterface, transaction)
+    await dropContentListTable(queryInterface, transaction)
     await transaction.commit()
   }
 }
@@ -41,7 +41,7 @@ It is not possible to use the ALTER TYPE on enum type within a transaction in po
 
 The name of the enum type (generated in sequelize) was determined with the following query:
 
-coliving_creator_node=# SELECT pg_type.typname AS enum_type, pg_enum.enumlabel AS enum_label FROM pg_type JOIN pg_enum ON pg_enum.enumtypid = pg_type.oid;
+coliving_content_node=# SELECT pg_type.typname AS enum_type, pg_enum.enumlabel AS enum_label FROM pg_type JOIN pg_enum ON pg_enum.enumtypid = pg_type.oid;
            enum_type           | enum_label
 -------------------------------+------------
  enum_ContentBlacklists_type   | AGREEMENT
@@ -50,17 +50,17 @@ coliving_creator_node=# SELECT pg_type.typname AS enum_type, pg_enum.enumlabel A
  enum_ClockRecords_sourceTable | ColivingUser
  enum_ClockRecords_sourceTable | Agreement
  enum_ClockRecords_sourceTable | File
- enum_ClockRecords_sourceTable | Playlist
+ enum_ClockRecords_sourceTable | ContentList
 (7 rows)
 */
-async function addPlaylistToClockRecordSourceTables(
+async function addContentListToClockRecordSourceTables(
   queryInterface,
   transaction
 ) {
   await queryInterface.sequelize.query(
     `
   ALTER TYPE "enum_ClockRecords_sourceTable" RENAME TO "enum_ClockRecords_sourceTable_old";
-  CREATE TYPE "enum_ClockRecords_sourceTable" AS ENUM('ColivingUser', 'Agreement', 'File', 'Playlist');
+  CREATE TYPE "enum_ClockRecords_sourceTable" AS ENUM('ColivingUser', 'Agreement', 'File', 'ContentList');
   ALTER TABLE "ClockRecords" ALTER COLUMN "sourceTable" TYPE "enum_ClockRecords_sourceTable" USING "sourceTable"::text::"enum_ClockRecords_sourceTable";
   DROP TYPE "enum_ClockRecords_sourceTable_old";
   `,
@@ -72,7 +72,7 @@ async function addCompositeUniqueConstraints(queryInterface, transaction) {
   await queryInterface.addConstraint(tableName, {
     type: 'UNIQUE',
     fields: ['blockchainId', 'clock'],
-    name: 'Playlist_unique_(blockchainId,clock)',
+    name: 'ContentList_unique_(blockchainId,clock)',
     transaction
   })
 }
@@ -80,12 +80,12 @@ async function addCompositeUniqueConstraints(queryInterface, transaction) {
 async function removeCompositeUniqueConstraints(queryInterface, transaction) {
   await queryInterface.removeConstraint(
     tableName,
-    'Playlist_unique_(blockchainId,clock)',
+    'ContentList_unique_(blockchainId,clock)',
     { transaction }
   )
 }
 
-async function createPlaylistTable(queryInterface, Sequelize, transaction) {
+async function createContentListTable(queryInterface, Sequelize, transaction) {
   await queryInterface.createTable(
     tableName,
     {
@@ -128,14 +128,14 @@ async function createPlaylistTable(queryInterface, Sequelize, transaction) {
         unique: 'compositeIndex',
         onDelete: 'RESTRICT'
       },
-      playlistImageFileUUID: {
+      content listImageFileUUID: {
         type: Sequelize.UUID,
         allowNull: true,
         onDelete: 'RESTRICT',
         references: {
           model: 'Files',
           key: 'fileUUID',
-          as: 'playlistImageFileUUID'
+          as: 'content listImageFileUUID'
         }
       },
       createdAt: {
@@ -153,7 +153,7 @@ async function createPlaylistTable(queryInterface, Sequelize, transaction) {
   )
 }
 
-async function dropPlaylistTable(queryInterface, transaction) {
+async function dropContentListTable(queryInterface, transaction) {
   await queryInterface.dropTable(tableName, {
     transaction
   })

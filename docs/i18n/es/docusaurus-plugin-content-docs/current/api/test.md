@@ -516,7 +516,7 @@ func main() {
       "is_verified": true,
       "location": "Los Angeles, CA",
       "name": "Brownies & Lemonade",
-      "playlist_count": 2,
+      "content list_count": 2,
       "profile_picture": {
         "150x150": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/150x150.jpg",
         "480x480": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/480x480.jpg",
@@ -703,7 +703,7 @@ func main() {
     "is_verified": true,
     "location": "Los Angeles, CA",
     "name": "Brownies & Lemonade",
-    "playlist_count": 2,
+    "content list_count": 2,
     "profile_picture": {
       "150x150": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/150x150.jpg",
       "480x480": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/480x480.jpg",
@@ -1612,7 +1612,7 @@ func main() {
         "is_verified": true,
         "location": "Los Angeles, CA",
         "name": "Brownies & Lemonade",
-        "playlist_count": 2,
+        "content list_count": 2,
         "profile_picture": {
           "150x150": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/150x150.jpg",
           "480x480": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/480x480.jpg",
@@ -1634,22 +1634,22 @@ func main() {
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                   |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                   |
 
-<h1 id="api-playlists">lista de reproducción</h1>
+<h1 id="api-content lists">lista de reproducción</h1>
 
 ## Buscar listas de reproducción
 
-<a id="opIdSearch Playlists"></a>
+<a id="opIdSearch ContentLists"></a>
 
 > Muestra de código
 
 ```shell
-curl COLIVING_API_HOST/v1/playlists/search?query=Hot & New 
+curl COLIVING_API_HOST/v1/content lists/search?query=Hot & New 
 
 
 ```
 
 ```http
-GET COLIVING_API_HOST/v1/playlists/search?query=Hot & New HTTP/1.1
+GET COLIVING_API_HOST/v1/content lists/search?query=Hot & New HTTP/1.1
 
 ```
 
@@ -1659,7 +1659,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('COLIVING_API_HOST/v1/playlists/search?query=Hot & New',
+fetch('COLIVING_API_HOST/v1/content lists/search?query=Hot & New',
 {
   method: 'GET',
 
@@ -1681,7 +1681,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'COLIVING_API_HOST/v1/playlists/search',
+result = RestClient.get 'COLIVING_API_HOST/v1/content lists/search',
   params: {
   'query' => 'string'
 }, headers: headers
@@ -1696,7 +1696,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('COLIVING_API_HOST/v1/playlists/search', params={
+r = requests.get('COLIVING_API_HOST/v1/content lists/search', params={
   'query': 'Hot & New'
 }, headers = headers)
 
@@ -1719,7 +1719,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','COLIVING_API_HOST/v1/playlists/search', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/content lists/search', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -1736,7 +1736,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("COLIVING_API_HOST/v1/playlists/search?query=Hot & New");
+URL obj = new URL("COLIVING_API_HOST/v1/content lists/search?query=Hot & New");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -1767,7 +1767,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/playlists/search", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/content lists/search", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -1781,7 +1781,7 @@ func main() {
 
 *Buscar una lista de reproducción*
 
-<h3 id="search-playlists-parameters">Parámetros de consulta</h3>
+<h3 id="search-content lists-parameters">Parámetros de consulta</h3>
 
 | Nombre           | Tipo   | Requerido | Descripción |
 | ---------------- | ------ | --------- | ----------- |
@@ -1802,7 +1802,7 @@ func main() {
       "description": "All the latest hot new agreements on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
       "id": "DOPRl",
       "is_album": true,
-      "playlist_name": "Hot & New on Coliving 🔥",
+      "content list_name": "Hot & New on Coliving 🔥",
       "repost_count": 46,
       "favorite_count": 88,
       "user": {
@@ -1819,7 +1819,7 @@ func main() {
         "is_verified": true,
         "location": "SF & LA",
         "name": "Coliving",
-        "playlist_count": 9,
+        "content list_count": 9,
         "profile_picture": {
           "150x150": "https://usermetadata..co/ipfs/QmNjJv1wQf2DJq3GNXjXzSL8UXFUGXfchg4NhL7UpbnF1f",
           "480x480": "https://usermetadata..co/ipfs/QmNjJv1wQf2DJq3GNXjXzSL8UXFUGXfchg4NhL7UpbnF1f",
@@ -1833,28 +1833,28 @@ func main() {
 }
 ```
 
-<h3 id="search-playlists-responses">Respuestas</h3>
+<h3 id="search-content lists-responses">Respuestas</h3>
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                        |
 | ------ | ------------------------------------------------------------------------------- | -------------------- | -------------------------------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [playlist_resultado_búsqueda](#schemaplaylist_search_result) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [content list_resultado_búsqueda](#schemacontent list_search_result) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                                        |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                                        |
 
 ## Listas de reproducción populares
 
-<a id="opIdTrending Playlists"></a>
+<a id="opIdTrending ContentLists"></a>
 
 > Muestra de código
 
 ```shell
-curl COLIVING_API_HOST/v1/playlists/trending/string 
+curl COLIVING_API_HOST/v1/content lists/trending/string 
 
 
 ```
 
 ```http
-GET COLIVING_API_HOST/v1/playlists/trending/string HTTP/1.1
+GET COLIVING_API_HOST/v1/content lists/trending/string HTTP/1.1
 
 ```
 
@@ -1864,7 +1864,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('COLIVING_API_HOST/v1/playlists/trending/string',
+fetch('COLIVING_API_HOST/v1/content lists/trending/string',
 {
   method: 'GET',
 
@@ -1886,7 +1886,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'COLIVING_API_HOST/v1/playlists/trending/string',
+result = RestClient.get 'COLIVING_API_HOST/v1/content lists/trending/string',
   params: {
   }, headers: headers
 
@@ -1900,7 +1900,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('COLIVING_API_HOST/v1/playlists/trending/string', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/content lists/trending/string', headers = headers)
 
 print(r.json())
 
@@ -1921,7 +1921,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','COLIVING_API_HOST/v1/playlists/trending/string', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/content lists/trending/string', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -1938,7 +1938,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("COLIVING_API_HOST/v1/playlists/trending/string");
+URL obj = new URL("COLIVING_API_HOST/v1/content lists/trending/string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -1969,7 +1969,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/playlists/trending/string", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/content lists/trending/string", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -1979,11 +1979,11 @@ func main() {
 
 ```
 
-`GET /playlists/trending/{version}`
+`GET /content lists/trending/{version}`
 
 *Obtiene las listas de reproducción que más tienden a aparecer en el período de tiempo en Coliving*
 
-<h3 id="trending-playlists-parameters">Parámetros de consulta</h3>
+<h3 id="trending-content lists-parameters">Parámetros de consulta</h3>
 
 | Nombre    | Tipo   | Requerido | Descripción                     |
 | --------- | ------ | --------- | ------------------------------- |
@@ -2006,7 +2006,7 @@ func main() {
       "description": "string",
       "id": "string",
       "is_album": true,
-      "playlist_name": "string",
+      "content list_name": "string",
       "repost_count": 0,
       "favorite_count": 0,
       "total_play_count": 0,
@@ -2024,7 +2024,7 @@ func main() {
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "playlist_count": 0,
+        "content list_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",
@@ -2038,28 +2038,28 @@ func main() {
 }
 ```
 
-<h3 id="trending-playlists-responses">Respuestas</h3>
+<h3 id="trending-content lists-responses">Respuestas</h3>
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                                       |
 | ------ | ------------------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | Exitoso              | [respuesta de las listas de reproducción](#schematrending_playlists_response) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | Exitoso              | [respuesta de las listas de reproducción](#schematrending_content lists_response) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                                                       |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                                                       |
 
-## Obtener playlist
+## Obtener content list
 
-<a id="opIdGet Playlist"></a>
+<a id="opIdGet ContentList"></a>
 
 > Muestra de código
 
 ```shell
-curl COLIVING_API_HOST/v1/playlists/DOPRl 
+curl COLIVING_API_HOST/v1/content lists/DOPRl 
 
 
 ```
 
 ```http
-GET COLIVING_API_HOST/v1/playlists/DOPRl HTTP/1.1
+GET COLIVING_API_HOST/v1/content lists/DOPRl HTTP/1.1
 
 ```
 
@@ -2069,7 +2069,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('COLIVING_API_HOST/v1/playlists/DOPRl',
+fetch('COLIVING_API_HOST/v1/content lists/DOPRl',
 {
   method: 'GET',
 
@@ -2091,7 +2091,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'COLIVING_API_HOST/v1/playlists/DOPRl',
+result = RestClient.get 'COLIVING_API_HOST/v1/content lists/DOPRl',
   params: {
   }, headers: headers
 
@@ -2105,7 +2105,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('COLIVING_API_HOST/v1/playlists/DOPRl', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/content lists/DOPRl', headers = headers)
 
 print(r.json())
 
@@ -2126,7 +2126,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','COLIVING_API_HOST/v1/playlists/DOPRl', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/content lists/DOPRl', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -2143,7 +2143,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("COLIVING_API_HOST/v1/playlists/DOPRl");
+URL obj = new URL("COLIVING_API_HOST/v1/content lists/DOPRl");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -2174,7 +2174,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/playlists/DOPRl", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/content lists/DOPRl", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -2184,15 +2184,15 @@ func main() {
 
 ```
 
-`OBTENER /playlists/{playlist_id}`
+`OBTENER /content lists/{content list_id}`
 
 *Buscar una lista*
 
-<h3 id="get-playlist-parameters">Parámetros de consulta</h3>
+<h3 id="get-content list-parameters">Parámetros de consulta</h3>
 
 | Nombre      | Tipo   | Requerido | Descripción                    |
 | ----------- | ------ | --------- | ------------------------------ |
-| playlist_id | cadena | verdad    | Un ID de lista de reproducción |
+| content list_id | cadena | verdad    | Un ID de lista de reproducción |
 
 > Ejemplo de respuesta
 
@@ -2207,7 +2207,7 @@ func main() {
     "description": "All the latest hot new agreements on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
     "id": "DOPRl",
     "is_album": true,
-    "playlist_name": "Hot & New on Coliving 🔥",
+    "content list_name": "Hot & New on Coliving 🔥",
     "repost_count": 46,
     "favorite_count": 88,
     "user": {
@@ -2224,7 +2224,7 @@ func main() {
       "is_verified": true,
       "location": "SF & LA",
       "name": "Coliving",
-      "playlist_count": 9,
+      "content list_count": 9,
       "profile_picture": {
         "150x150": "https://usermetadata..co/ipfs/QmNjJv1wQf2DJq3GNXjXzSL8UXFUGXfchg4NhL7UpbnF1f",
         "480x480": "https://usermetadata..co/ipfs/QmNjJv1wQf2DJq3GNXjXzSL8UXFUGXfchg4NhL7UpbnF1f",
@@ -2237,28 +2237,28 @@ func main() {
 }
 ```
 
-<h3 id="get-playlist-responses">Respuestas</h3>
+<h3 id="get-content list-responses">Respuestas</h3>
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                        |
 | ------ | ------------------------------------------------------------------------------- | -------------------- | ---------------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [playlist_respuesta](#schemaplaylist_response) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [content list_respuesta](#schemacontent list_response) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                        |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                        |
 
 ## Obtener pistas de lista de reproducción
 
-<a id="opIdGet Playlist Agreements"></a>
+<a id="opIdGet ContentList Agreements"></a>
 
 > Muestra de código
 
 ```shell
-curl COLIVING_API_HOST/v1/playlists/DOPRl/agreements 
+curl COLIVING_API_HOST/v1/content lists/DOPRl/agreements 
 
 
 ```
 
 ```http
-GET COLIVING_API_HOST/v1/playlists/DOPRl/agreements HTTP/1.1
+GET COLIVING_API_HOST/v1/content lists/DOPRl/agreements HTTP/1.1
 
 ```
 
@@ -2268,7 +2268,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('COLIVING_API_HOST/v1/playlists/DOPRl/agreements',
+fetch('COLIVING_API_HOST/v1/content lists/DOPRl/agreements',
 {
   method: 'GET',
 
@@ -2290,7 +2290,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'COLIVING_API_HOST/v1/playlists/DOPRl/agreements',
+result = RestClient.get 'COLIVING_API_HOST/v1/content lists/DOPRl/agreements',
   params: {
   }, headers: headers
 
@@ -2304,7 +2304,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('COLIVING_API_HOST/v1/playlists/DOPRl/agreements', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/content lists/DOPRl/agreements', headers = headers)
 
 print(r.json())
 
@@ -2325,7 +2325,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','COLIVING_API_HOST/v1/playlists/DOPRl/agreements', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/content lists/DOPRl/agreements', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -2342,7 +2342,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("COLIVING_API_HOST/v1/playlists/DOPRl/agreements");
+URL obj = new URL("COLIVING_API_HOST/v1/content lists/DOPRl/agreements");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -2373,7 +2373,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/playlists/DOPRl/agreements", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/content lists/DOPRl/agreements", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -2383,15 +2383,15 @@ func main() {
 
 ```
 
-`OBTENER /listas de reproducción/{playlist_id}/pistas`
+`OBTENER /listas de reproducción/{content list_id}/pistas`
 
 *Obtener pistas dentro de una lista de reproducción*
 
-<h3 id="get-playlist-agreements-parameters">Parámetros de consulta</h3>
+<h3 id="get-content list-agreements-parameters">Parámetros de consulta</h3>
 
 | Nombre      | Tipo   | Requerido | Descripción                    |
 | ----------- | ------ | --------- | ------------------------------ |
-| playlist_id | cadena | verdad    | Un ID de lista de reproducción |
+| content list_id | cadena | verdad    | Un ID de lista de reproducción |
 
 > Ejemplo de respuesta
 
@@ -2428,7 +2428,7 @@ func main() {
         "is_verified": true,
         "location": "Los Angeles, CA",
         "name": "Brownies & Lemonade",
-        "playlist_count": 2,
+        "content list_count": 2,
         "profile_picture": {
           "150x150": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/150x150.jpg",
           "480x480": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/480x480.jpg",
@@ -2442,11 +2442,11 @@ func main() {
 }
 ```
 
-<h3 id="get-playlist-agreements-responses">Respuestas</h3>
+<h3 id="get-content list-agreements-responses">Respuestas</h3>
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                         |
 | ------ | ------------------------------------------------------------------------------- | -------------------- | --------------------------------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [playlist_pistas_respuesta_](#schemaplaylist_agreements_response) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [content list_pistas_respuesta_](#schemacontent list_agreements_response) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                                         |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                                         |
 
@@ -2641,7 +2641,7 @@ func main() {
       "is_verified": true,
       "location": "string",
       "name": "string",
-      "playlist_count": 0,
+      "content list_count": 0,
       "profile_picture": {
         "150x150": "string",
         "480x480": "string",
@@ -2859,7 +2859,7 @@ func main() {
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "playlist_count": 0,
+        "content list_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",
@@ -3072,7 +3072,7 @@ func main() {
         "is_verified": true,
         "location": "Los Angeles, CA",
         "name": "Brownies & Lemonade",
-        "playlist_count": 2,
+        "content list_count": 2,
         "profile_picture": {
           "150x150": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/150x150.jpg",
           "480x480": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/480x480.jpg",
@@ -3287,7 +3287,7 @@ func main() {
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "playlist_count": 0,
+        "content list_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",
@@ -3495,7 +3495,7 @@ func main() {
       "is_verified": true,
       "location": "Los Angeles, CA",
       "name": "Brownies & Lemonade",
-      "playlist_count": 2,
+      "content list_count": 2,
       "profile_picture": {
         "150x150": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/150x150.jpg",
         "480x480": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/480x480.jpg",
@@ -4372,7 +4372,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
     "is_verified": true,
     "location": "string",
     "name": "string",
-    "playlist_count": 0,
+    "content list_count": 0,
     "profile_picture": {
       "150x150": "string",
       "480x480": "string",
@@ -4412,7 +4412,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
   "is_verified": true,
   "location": "string",
   "name": "string",
-  "playlist_count": 0,
+  "content list_count": 0,
   "profile_picture": {
     "150x150": "string",
     "480x480": "string",
@@ -4532,7 +4532,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "playlist_count": 0,
+        "content list_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",
@@ -4600,7 +4600,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
     "is_verified": true,
     "location": "string",
     "name": "string",
-    "playlist_count": 0,
+    "content list_count": 0,
     "profile_picture": {
       "150x150": "string",
       "480x480": "string",
@@ -4843,7 +4843,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
       "is_verified": true,
       "location": "string",
       "name": "string",
-      "playlist_count": 0,
+      "content list_count": 0,
       "profile_picture": {
         "150x150": "string",
         "480x480": "string",
@@ -5023,11 +5023,11 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 | reto_tipo              | cadena  | verdad    | ninguna       | ninguna     |
 | metadatos              | objeto  | verdad    | ninguna       | ninguna     |
 
-<a id="schemaplaylist_response"></a>
-<a id="schema_playlist_response"></a>
-<a id="tocSplaylist_response"></a>
-<a id="tocsplaylist_response"></a>
-<h2 id="tocS_playlist_response">playlist_respuesta</h2>
+<a id="schemacontent list_response"></a>
+<a id="schema_content list_response"></a>
+<a id="tocScontent list_response"></a>
+<a id="tocscontent list_response"></a>
+<h2 id="tocS_content list_response">content list_respuesta</h2>
 
 ```json
 {
@@ -5041,7 +5041,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
       "description": "string",
       "id": "string",
       "is_album": true,
-      "playlist_name": "string",
+      "content list_name": "string",
       "repost_count": 0,
       "favorite_count": 0,
       "total_play_count": 0,
@@ -5059,7 +5059,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "playlist_count": 0,
+        "content list_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",
@@ -5078,13 +5078,13 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre | Tipo                                       | Requerido | Restricciones | Descripción |
 | ------ | ------------------------------------------ | --------- | ------------- | ----------- |
-| datos  | [[lista de reproducción](#schemaplaylist)] | falso     | ninguna       | ninguna     |
+| datos  | [[lista de reproducción](#schemacontent list)] | falso     | ninguna       | ninguna     |
 
-<a id="schemaplaylist"></a>
-<a id="schema_playlist"></a>
-<a id="tocSplaylist"></a>
-<a id="tocsplaylist"></a>
-<h2 id="tocS_playlist">lista de reproducción</h2>
+<a id="schemacontent list"></a>
+<a id="schema_content list"></a>
+<a id="tocScontent list"></a>
+<a id="tocscontent list"></a>
+<h2 id="tocS_content list">lista de reproducción</h2>
 
 ```json
 {
@@ -5096,7 +5096,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
   "description": "string",
   "id": "string",
   "is_album": true,
-  "playlist_name": "string",
+  "content list_name": "string",
   "repost_count": 0,
   "favorite_count": 0,
   "total_play_count": 0,
@@ -5114,7 +5114,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
     "is_verified": true,
     "location": "string",
     "name": "string",
-    "playlist_count": 0,
+    "content list_count": 0,
     "profile_picture": {
       "150x150": "string",
       "480x480": "string",
@@ -5131,21 +5131,21 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre                  | Tipo                                        | Requerido | Restricciones | Descripción |
 | ----------------------- | ------------------------------------------- | --------- | ------------- | ----------- |
-| obra de arte            | [playlist_artwork](#schemaplaylist_artwork) | falso     | ninguna       | ninguna     |
+| obra de arte            | [content list_artwork](#schemacontent list_artwork) | falso     | ninguna       | ninguna     |
 | descripción             | cadena                                      | falso     | ninguna       | ninguna     |
 | id                      | cadena                                      | verdad    | ninguna       | ninguna     |
 | es_álbum                | boolean                                     | verdad    | ninguna       | ninguna     |
-| playlist_name           | cadena                                      | verdad    | ninguna       | ninguna     |
+| content list_name           | cadena                                      | verdad    | ninguna       | ninguna     |
 | contador_repost_count | entero                                      | verdad    | ninguna       | ninguna     |
 | contador_favoritos      | entero                                      | verdad    | ninguna       | ninguna     |
 | contador_total_jugar  | entero                                      | verdad    | ninguna       | ninguna     |
 | usuario                 | [usuario](#schemauser)                      | verdad    | ninguna       | ninguna     |
 
-<a id="schemaplaylist_artwork"></a>
-<a id="schema_playlist_artwork"></a>
-<a id="tocSplaylist_artwork"></a>
-<a id="tocsplaylist_artwork"></a>
-<h2 id="tocS_playlist_artwork">playlist_artwork</h2>
+<a id="schemacontent list_artwork"></a>
+<a id="schema_content list_artwork"></a>
+<a id="tocScontent list_artwork"></a>
+<a id="tocscontent list_artwork"></a>
+<h2 id="tocS_content list_artwork">content list_artwork</h2>
 
 ```json
 {
@@ -5164,11 +5164,11 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 | 480 x 480 | cadena | falso     | ninguna       | ninguna     |
 | 1000x1000 | cadena | falso     | ninguna       | ninguna     |
 
-<a id="schemaplaylist_agreements_response"></a>
-<a id="schema_playlist_agreements_response"></a>
-<a id="tocSplaylist_agreements_response"></a>
-<a id="tocsplaylist_agreements_response"></a>
-<h2 id="tocS_playlist_agreements_response">playlist_pistas_respuesta_</h2>
+<a id="schemacontent list_agreements_response"></a>
+<a id="schema_content list_agreements_response"></a>
+<a id="tocScontent list_agreements_response"></a>
+<a id="tocscontent list_agreements_response"></a>
+<h2 id="tocS_content list_agreements_response">content list_pistas_respuesta_</h2>
 
 ```json
 {
@@ -5209,7 +5209,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "playlist_count": 0,
+        "content list_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",
@@ -5234,11 +5234,11 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 | ------ | ----------------------- | --------- | ------------- | ----------- |
 | datos  | [[Pista](#schemaagreement)] | falso     | ninguna       | ninguna     |
 
-<a id="schemaplaylist_search_result"></a>
-<a id="schema_playlist_search_result"></a>
-<a id="tocSplaylist_search_result"></a>
-<a id="tocsplaylist_search_result"></a>
-<h2 id="tocS_playlist_search_result">playlist_resultado_búsqueda</h2>
+<a id="schemacontent list_search_result"></a>
+<a id="schema_content list_search_result"></a>
+<a id="tocScontent list_search_result"></a>
+<a id="tocscontent list_search_result"></a>
+<h2 id="tocS_content list_search_result">content list_resultado_búsqueda</h2>
 
 ```json
 {
@@ -5252,7 +5252,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
       "description": "string",
       "id": "string",
       "is_album": true,
-      "playlist_name": "string",
+      "content list_name": "string",
       "repost_count": 0,
       "favorite_count": 0,
       "total_play_count": 0,
@@ -5270,7 +5270,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "playlist_count": 0,
+        "content list_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",
@@ -5289,13 +5289,13 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre | Tipo                                       | Requerido | Restricciones | Descripción |
 | ------ | ------------------------------------------ | --------- | ------------- | ----------- |
-| datos  | [[lista de reproducción](#schemaplaylist)] | falso     | ninguna       | ninguna     |
+| datos  | [[lista de reproducción](#schemacontent list)] | falso     | ninguna       | ninguna     |
 
-<a id="schematrending_playlists_response"></a>
-<a id="schema_trending_playlists_response"></a>
-<a id="tocStrending_playlists_response"></a>
-<a id="tocstrending_playlists_response"></a>
-<h2 id="tocS_trending_playlists_response">respuesta de las listas de reproducción</h2>
+<a id="schematrending_content lists_response"></a>
+<a id="schema_trending_content lists_response"></a>
+<a id="tocStrending_content lists_response"></a>
+<a id="tocstrending_content lists_response"></a>
+<h2 id="tocS_trending_content lists_response">respuesta de las listas de reproducción</h2>
 
 ```json
 {
@@ -5309,7 +5309,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
       "description": "string",
       "id": "string",
       "is_album": true,
-      "playlist_name": "string",
+      "content list_name": "string",
       "repost_count": 0,
       "favorite_count": 0,
       "total_play_count": 0,
@@ -5327,7 +5327,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "playlist_count": 0,
+        "content list_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",
@@ -5346,7 +5346,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre | Tipo                                       | Requerido | Restricciones | Descripción |
 | ------ | ------------------------------------------ | --------- | ------------- | ----------- |
-| datos  | [[lista de reproducción](#schemaplaylist)] | falso     | ninguna       | ninguna     |
+| datos  | [[lista de reproducción](#schemacontent list)] | falso     | ninguna       | ninguna     |
 
 <a id="schemaagreement_response"></a>
 <a id="schema_agreement_response"></a>
@@ -5392,7 +5392,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
       "is_verified": true,
       "location": "string",
       "name": "string",
-      "playlist_count": 0,
+      "content list_count": 0,
       "profile_picture": {
         "150x150": "string",
         "480x480": "string",
@@ -5461,7 +5461,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "playlist_count": 0,
+        "content list_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",

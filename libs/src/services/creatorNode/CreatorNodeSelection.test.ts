@@ -2,7 +2,7 @@ import nock from 'nock'
 import assert from 'assert'
 import semver from 'semver'
 
-import { CREATOR_NODE_SERVICE_NAME } from './constants'
+import { CONTENT_NODE_SERVICE_NAME } from './constants'
 import { CreatorNodeSelection } from './CreatorNodeSelection'
 import type { EthContracts } from '../ethContracts'
 
@@ -46,7 +46,7 @@ const mockCreatorNode = {
 
 // Add fields as necessary
 const defaultHealthCheckData = {
-  service: CREATOR_NODE_SERVICE_NAME,
+  service: CONTENT_NODE_SERVICE_NAME,
   version: '1.2.3',
   healthy: true,
   country: 'US',

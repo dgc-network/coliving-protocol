@@ -2,99 +2,99 @@ import logging  # pylint: disable=C0302
 from datetime import datetime
 
 from dateutil import parser
-from src.models.playlists.playlist import Playlist
+from src.models.content lists.content list import ContentList
 from src.utils import helpers, redis_connection
 from src.utils.redis_cache import (
     get_all_json_cached_key,
-    get_playlist_id_cache_key,
+    get_content list_id_cache_key,
     set_json_cached_key,
 )
 
 logger = logging.getLogger(__name__)
 
-# Cache unpopulated playlists for 5 min
+# Cache unpopulated content lists for 5 min
 ttl_sec = 5 * 60
 
-playlist_datetime_fields = []
-for column in Playlist.__table__.c:
+content list_datetime_fields = []
+for column in ContentList.__table__.c:
     if column.type.python_type == datetime:
-        playlist_datetime_fields.append(column.name)
+        content list_datetime_fields.append(column.name)
 
 
-def get_cached_playlists(playlist_ids):
-    redis_playlist_id_keys = list(map(get_playlist_id_cache_key, playlist_ids))
+def get_cached_content lists(content list_ids):
+    redis_content list_id_keys = list(map(get_content list_id_cache_key, content list_ids))
     redis = redis_connection.get_redis()
-    playlists = get_all_json_cached_key(redis, redis_playlist_id_keys)
-    for playlist in playlists:
-        if playlist:
-            for field in playlist_datetime_fields:
-                if playlist[field]:
-                    playlist[field] = parser.parse(playlist[field])
-    return playlists
+    content lists = get_all_json_cached_key(redis, redis_content list_id_keys)
+    for content list in content lists:
+        if content list:
+            for field in content list_datetime_fields:
+                if content list[field]:
+                    content list[field] = parser.parse(content list[field])
+    return content lists
 
 
-def set_playlists_in_cache(playlists):
+def set_content lists_in_cache(content lists):
     redis = redis_connection.get_redis()
-    for playlist in playlists:
-        key = get_playlist_id_cache_key(playlist["playlist_id"])
-        set_json_cached_key(redis, key, playlist, ttl_sec)
+    for content list in content lists:
+        key = get_content list_id_cache_key(content list["content list_id"])
+        set_json_cached_key(redis, key, content list, ttl_sec)
 
 
-def get_unpopulated_playlists(session, playlist_ids, filter_deleted=False):
+def get_unpopulated_content lists(session, content list_ids, filter_deleted=False):
     """
-    Fetches playlists by checking the redis cache first then
+    Fetches content lists by checking the redis cache first then
     going to DB and writes to cache if not present
 
     Args:
         session: DB session
-        playlist_ids: array A list of playlist ids
+        content list_ids: array A list of content list ids
 
     Returns:
-        Array of playlists
+        Array of content lists
     """
-    # Check the cached playlists
-    cached_playlists_results = get_cached_playlists(playlist_ids)
-    has_all_playlists_cached = cached_playlists_results.count(None) == 0
-    if has_all_playlists_cached:
+    # Check the cached content lists
+    cached_content lists_results = get_cached_content lists(content list_ids)
+    has_all_content lists_cached = cached_content lists_results.count(None) == 0
+    if has_all_content lists_cached:
         if filter_deleted:
             return list(
                 filter(
-                    lambda playlist: not playlist["is_delete"], cached_playlists_results
+                    lambda content list: not content list["is_delete"], cached_content lists_results
                 )
             )
-        return cached_playlists_results
+        return cached_content lists_results
 
-    # Create a dict of cached playlists
-    cached_playlists = {}
-    for cached_playlist in cached_playlists_results:
-        if cached_playlist:
-            cached_playlists[cached_playlist["playlist_id"]] = cached_playlist
+    # Create a dict of cached content lists
+    cached_content lists = {}
+    for cached_content list in cached_content lists_results:
+        if cached_content list:
+            cached_content lists[cached_content list["content list_id"]] = cached_content list
 
-    playlist_ids_to_fetch = filter(
-        lambda playlist_id: playlist_id not in cached_playlists, playlist_ids
+    content list_ids_to_fetch = filter(
+        lambda content list_id: content list_id not in cached_content lists, content list_ids
     )
 
-    playlists_query = (
-        session.query(Playlist)
-        .filter(Playlist.is_current == True)
-        .filter(Playlist.playlist_id.in_(playlist_ids_to_fetch))
+    content lists_query = (
+        session.query(ContentList)
+        .filter(ContentList.is_current == True)
+        .filter(ContentList.content list_id.in_(content list_ids_to_fetch))
     )
     if filter_deleted:
-        playlists_query = playlists_query.filter(Playlist.is_delete == False)
+        content lists_query = content lists_query.filter(ContentList.is_delete == False)
 
-    playlists = playlists_query.all()
-    playlists = helpers.query_result_to_list(playlists)
-    queried_playlists = {playlist["playlist_id"]: playlist for playlist in playlists}
+    content lists = content lists_query.all()
+    content lists = helpers.query_result_to_list(content lists)
+    queried_content lists = {content list["content list_id"]: content list for content list in content lists}
 
-    # cache playlists for future use
-    set_playlists_in_cache(playlists)
+    # cache content lists for future use
+    set_content lists_in_cache(content lists)
 
-    playlists_response = []
-    for playlist_id in playlist_ids:
-        if playlist_id in cached_playlists:
-            if not filter_deleted or not cached_playlists[playlist_id]["is_delete"]:
-                playlists_response.append(cached_playlists[playlist_id])
-        elif playlist_id in queried_playlists:
-            playlists_response.append(queried_playlists[playlist_id])
+    content lists_response = []
+    for content list_id in content list_ids:
+        if content list_id in cached_content lists:
+            if not filter_deleted or not cached_content lists[content list_id]["is_delete"]:
+                content lists_response.append(cached_content lists[content list_id])
+        elif content list_id in queried_content lists:
+            content lists_response.append(queried_content lists[content list_id])
 
-    return playlists_response
+    return content lists_response

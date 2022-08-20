@@ -13,7 +13,7 @@ custom_edit_url: null
 The Coliving JavaScript (TypeScript) SDK allows you to easily build on and interact with the Coliving protocol.
 - ✍️ Log In with Coliving
 - 🎵 Fetch and stream agreements
-- 🔍 Search and display users, agreements, and playlists
+- 🔍 Search and display users, agreements, and content lists
 
 👷‍♀️ We're actively working on building out more SDK features and functionality - stay tuned!
 

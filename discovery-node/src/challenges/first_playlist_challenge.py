@@ -9,7 +9,7 @@ from src.challenges.challenge import (
 from src.models.rewards.user_challenge import UserChallenge
 
 
-class FirstPlaylistChallengeUpdater(ChallengeUpdater):
+class FirstContentListChallengeUpdater(ChallengeUpdater):
     def update_user_challenges(
         self,
         session: Session,
@@ -23,6 +23,6 @@ class FirstPlaylistChallengeUpdater(ChallengeUpdater):
             user_challenge.is_complete = True
 
 
-first_playlist_challenge_manager = ChallengeManager(
-    "first-playlist", FirstPlaylistChallengeUpdater()
+first_content list_challenge_manager = ChallengeManager(
+    "first-content list", FirstContentListChallengeUpdater()
 )

@@ -10,7 +10,7 @@ const { clearDatabase, runMigrations } = require('../lib/app')
  * User id 1 creates agreement id 2
  * User id 1 creates agreement id 3
  * User id 2 creates agreement id 4
- * User id 1 creates playlist id 1 with agreement 2
+ * User id 1 creates content list id 1 with agreement 2
  */
 const initialNotifications = [
   {
@@ -67,7 +67,7 @@ const initialNotifications = [
       },
       'entity_id': 1,
       'entity_owner_id': 1,
-      'entity_type': 'playlist'
+      'entity_type': 'content list'
     },
     'timestamp': '2020-10-27T15:10:20 Z',
     'type': 'Create'
@@ -155,31 +155,31 @@ describe('Test Favorite Notification', function () {
     await tx1.commit()
 
     // ======================================= Run checks against the Notifications =======================================
-    // User 11 subscribes to user 1 and gets the notification when user 1 creates agreements 1, 2, 3, and playlist 1 which contains agreement 2
+    // User 11 subscribes to user 1 and gets the notification when user 1 creates agreements 1, 2, 3, and content list 1 which contains agreement 2
     const user11Notifs = await models.Notification.findAll({ where: { userId: 11 } })
     assert.deepStrictEqual(user11Notifs.length, 2)
     const user11AgreementNotifs = user11Notifs.find(notif => notif.type === notificationTypes.Create.agreement)
-    const user11PlaylistNotif = user11Notifs.find(notif => notif.type === notificationTypes.Create.playlist)
+    const user11ContentListNotif = user11Notifs.find(notif => notif.type === notificationTypes.Create.content list)
     assert.deepStrictEqual(user11AgreementNotifs.entityId, 1) // For agreements the entity id is the creator of the agreements
-    assert.deepStrictEqual(user11PlaylistNotif.entityId, 1) // For agreements the entity id is the creator of the agreements
+    assert.deepStrictEqual(user11ContentListNotif.entityId, 1) // For agreements the entity id is the creator of the agreements
 
-    // Check the notification actions of the agreement uploads - note there were 3 agreement uploads but one was a part of a playlist & removed
+    // Check the notification actions of the agreement uploads - note there were 3 agreement uploads but one was a part of a content list & removed
     const user11AgreementNotifActions = await models.NotificationAction.findAll({ where: { notificationId: user11AgreementNotifs.id } })
     const userAgreementActionAgreements = user11AgreementNotifActions.map(na => na.actionEntityId)
     userAgreementActionAgreements.sort()
     assert.deepStrictEqual(userAgreementActionAgreements, [1, 3])
 
-    // Check the notification actions of the agreement uploads - note there were 3 agreement uploads but one was a part of a playlist & removed
-    const user11PlaylistNotifActions = await models.NotificationAction.findAll({ where: { notificationId: user11PlaylistNotif.id } })
-    assert.deepStrictEqual(user11PlaylistNotifActions.length, 1)
-    assert.deepStrictEqual(user11PlaylistNotifActions[0].actionEntityId, 1)
+    // Check the notification actions of the agreement uploads - note there were 3 agreement uploads but one was a part of a content list & removed
+    const user11ContentListNotifActions = await models.NotificationAction.findAll({ where: { notificationId: user11ContentListNotif.id } })
+    assert.deepStrictEqual(user11ContentListNotifActions.length, 1)
+    assert.deepStrictEqual(user11ContentListNotifActions[0].actionEntityId, 1)
 
     // User 10 subscriber to user 1 and user 2
     const user10Notifs = await models.Notification.findAll({ where: { userId: 10 } })
     assert.deepStrictEqual(user10Notifs.length, 3)
     const user10AgreementNotifs = user10Notifs.find(notif => notif.type === notificationTypes.Create.agreement && notif.entityId === 2)
 
-    // Check the notification actions of the agreement uploads - note there were 3 agreement uploads but one was a part of a playlist & removed
+    // Check the notification actions of the agreement uploads - note there were 3 agreement uploads but one was a part of a content list & removed
     const user10AgreementNotifActions = await models.NotificationAction.findAll({ where: { notificationId: user10AgreementNotifs.id } })
     assert.deepStrictEqual(user10AgreementNotifActions.length, 1)
     assert.deepStrictEqual(user10AgreementNotifActions[0].actionEntityId, 4) // Agreement ID 4 was created
@@ -224,12 +224,12 @@ describe('Test Favorite Notification', function () {
 
     // User 10 subscribes to user 1 & 2 but did not view any notifications, so the only new notification should be user 12 album upload
     const updatedUser10Notifs = await models.Notification.findAll({ where: { userId: 10 } })
-    assert.deepStrictEqual(updatedUser10Notifs.length, 4) // user 1 agreement & playlist upload & user 2 agreement & album upload
+    assert.deepStrictEqual(updatedUser10Notifs.length, 4) // user 1 agreement & content list upload & user 2 agreement & album upload
     const user10AgreementNotifs2 = updatedUser10Notifs.find(notif => notif.type === notificationTypes.Create.agreement && notif.entityId === 2)
     const user10AlbumNotif = updatedUser10Notifs.find(notif => notif.type === notificationTypes.Create.album)
     assert.deepStrictEqual(user10AlbumNotif.entityId, 2)
 
-    // Check the notification actions of the agreement uploads - note there were 3 agreement uploads but one was a part of a playlist & removed
+    // Check the notification actions of the agreement uploads - note there were 3 agreement uploads but one was a part of a content list & removed
     const user10AgreementNotif2Actions = await models.NotificationAction.findAll({ where: { notificationId: user10AgreementNotifs2.id } })
     const user10Sub2Agreements = user10AgreementNotif2Actions.map(na => na.actionEntityId)
     user10Sub2Agreements.sort()

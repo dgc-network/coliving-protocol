@@ -6,25 +6,25 @@ from src.models.base import Base
 from src.models.model_utils import RepresentableMixin, validate_field_helper
 
 
-class Playlist(Base, RepresentableMixin):
-    __tablename__ = "playlists"
+class ContentList(Base, RepresentableMixin):
+    __tablename__ = "content lists"
 
     blockhash = Column(ForeignKey("blocks.blockhash"))  # type: ignore
     blocknumber = Column(ForeignKey("blocks.number"), index=True)  # type: ignore
-    playlist_id = Column(Integer, primary_key=True, nullable=False)
-    playlist_owner_id = Column(Integer, nullable=False, index=True)
+    content list_id = Column(Integer, primary_key=True, nullable=False)
+    content list_owner_id = Column(Integer, nullable=False, index=True)
     is_album = Column(Boolean, nullable=False)
     is_private = Column(Boolean, nullable=False)
-    playlist_name = Column(String)
-    playlist_contents = Column(JSONB(), nullable=False)
-    playlist_image_multihash = Column(String)
+    content list_name = Column(String)
+    content list_contents = Column(JSONB(), nullable=False)
+    content list_image_multihash = Column(String)
     is_current = Column(Boolean, primary_key=True, nullable=False)
     is_delete = Column(Boolean, nullable=False)
     description = Column(String)
     created_at = Column(DateTime, nullable=False, index=True)
     upc = Column(String)
     updated_at = Column(DateTime, nullable=False)
-    playlist_image_sizes_multihash = Column(String)
+    content list_image_sizes_multihash = Column(String)
     txhash = Column(
         String,
         primary_key=True,
@@ -35,18 +35,18 @@ class Playlist(Base, RepresentableMixin):
     slot = Column(Integer)
 
     block = relationship(  # type: ignore
-        "Block", primaryjoin="Playlist.blockhash == Block.blockhash"
+        "Block", primaryjoin="ContentList.blockhash == Block.blockhash"
     )
     block1 = relationship(  # type: ignore
-        "Block", primaryjoin="Playlist.blocknumber == Block.number"
+        "Block", primaryjoin="ContentList.blocknumber == Block.number"
     )
 
-    ModelValidator.init_model_schemas("Playlist")
-    fields = ["playlist_name", "description"]
+    ModelValidator.init_model_schemas("ContentList")
+    fields = ["content list_name", "description"]
 
     # unpacking args into @validates
     @validates(*fields)
     def validate_field(self, field, value):
         return validate_field_helper(
-            field, value, "Playlist", getattr(Playlist, field).type
+            field, value, "ContentList", getattr(ContentList, field).type
         )

@@ -1,11 +1,11 @@
 ---
-id: "full.GetUsersFromPlaylistFavoritesRequest"
-title: "Interface: GetUsersFromPlaylistFavoritesRequest"
-sidebar_label: "GetUsersFromPlaylistFavoritesRequest"
+id: "full.GetUsersFromContentListFavoritesRequest"
+title: "Interface: GetUsersFromContentListFavoritesRequest"
+sidebar_label: "GetUsersFromContentListFavoritesRequest"
 custom_edit_url: null
 ---
 
-[full](../namespaces/full.md).GetUsersFromPlaylistFavoritesRequest
+[full](../namespaces/full.md).GetUsersFromContentListFavoritesRequest
 
 ## Properties
 
@@ -25,11 +25,11 @@ The number of items to skip. Useful for pagination (page number * limit)
 
 ___
 
-### playlistId
+### content listId
 
- **playlistId**: `string`
+ **content listId**: `string`
 
-A Playlist ID
+A ContentList ID
 
 ___
 

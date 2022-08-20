@@ -203,7 +203,7 @@ def get_user_replica_set_mgr_tx(update_task, event_type, tx_receipt):
 # If unavailable, then a fallback to ethereum mainnet contracts will occur
 # Note that in the case of an invalid spID - one that is not yet registered on
 # the ethereum mainnet contracts, there will be an empty value in the returned
-# creator_node_endpoint
+# content_node_endpoint
 # If this discrepancy occurs, a client replica set health check sweep will
 # result in a client-initiated failover operation to a valid set of replicas
 def get_endpoint_string_from_sp_ids(update_task, primary, secondaries):
@@ -351,10 +351,10 @@ def parse_user_record(update_task, entry, user_record, block_timestamp):
     user_record.replica_set_update_signer = signer
 
     # Update cnode endpoint string reconstructed from sp ID
-    creator_node_endpoint_str = get_endpoint_string_from_sp_ids(
+    content_node_endpoint_str = get_endpoint_string_from_sp_ids(
         update_task, primary, secondaries
     )
-    user_record.creator_node_endpoint = creator_node_endpoint_str
+    user_record.content_node_endpoint = content_node_endpoint_str
 
     if not all_required_fields_present(User, user_record):
         raise EntityMissingRequiredFieldError(

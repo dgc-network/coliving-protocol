@@ -133,7 +133,7 @@ GROUP BY subquery.content_node;
 SELECT wallet 
 FROM network_monitoring_users
 WHERE run_id = 1
-AND primarySpID = 'https://creatornode7.staging.coliving.co';
+AND primarySpID = 'https://creatornode7.staging.coliving.lol';
 
 SELECT primary_group.spid as spid, primary_count, secondary1_count, secondary2_count
 FROM (

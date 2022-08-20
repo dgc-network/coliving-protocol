@@ -65,26 +65,26 @@ export class SocialFeatureFactoryClient extends ContractClient {
     )
   }
 
-  async addPlaylistRepost(userId: number, playlistId: number) {
-    // generate new playlist repost request
+  async addContentListRepost(userId: number, content listId: number) {
+    // generate new content list repost request
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
     const signatureData =
-      signatureSchemas.generators.getAddPlaylistRepostRequestData(
+      signatureSchemas.generators.getAddContentListRepostRequestData(
         chainId,
         contractAddress,
         userId,
-        playlistId,
+        content listId,
         nonce
       )
     const sig = await this.web3Manager.signTypedData(signatureData)
 
-    // add new playlistRepost to chain
+    // add new content listRepost to chain
     const method = await this.getMethod(
-      'addPlaylistRepost',
+      'addContentListRepost',
       userId,
-      playlistId,
+      content listId,
       nonce,
       sig
     )
@@ -95,26 +95,26 @@ export class SocialFeatureFactoryClient extends ContractClient {
     )
   }
 
-  async deletePlaylistRepost(userId: number, playlistId: number) {
-    // generate new delete playlist repost request
+  async deleteContentListRepost(userId: number, content listId: number) {
+    // generate new delete content list repost request
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
     const signatureData =
-      signatureSchemas.generators.getDeletePlaylistRepostRequestData(
+      signatureSchemas.generators.getDeleteContentListRepostRequestData(
         chainId,
         contractAddress,
         userId,
-        playlistId,
+        content listId,
         nonce
       )
     const sig = await this.web3Manager.signTypedData(signatureData)
 
-    // delete playlistRepost from chain
+    // delete content listRepost from chain
     const method = await this.getMethod(
-      'deletePlaylistRepost',
+      'deleteContentListRepost',
       userId,
-      playlistId,
+      content listId,
       nonce,
       sig
     )

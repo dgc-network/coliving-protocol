@@ -2,50 +2,50 @@ import { Base, BaseConstructorArgs, Services } from './base'
 import { Utils } from '../utils'
 import type { TransactionReceipt } from 'web3-core'
 
-const MAX_PLAYLIST_LENGTH = 200
+const MAX_CONTENT_LIST_LENGTH = 200
 
-export class Playlists extends Base {
+export class ContentLists extends Base {
   constructor(...args: BaseConstructorArgs) {
     super(...args)
-    this.getPlaylists = this.getPlaylists.bind(this)
-    this.getSavedPlaylists = this.getSavedPlaylists.bind(this)
+    this.getContentLists = this.getContentLists.bind(this)
+    this.getSavedContentLists = this.getSavedContentLists.bind(this)
     this.getSavedAlbums = this.getSavedAlbums.bind(this)
-    this.createPlaylist = this.createPlaylist.bind(this)
-    this.addPlaylistAgreement = this.addPlaylistAgreement.bind(this)
-    this.orderPlaylistAgreements = this.orderPlaylistAgreements.bind(this)
-    this.validateAgreementsInPlaylist = this.validateAgreementsInPlaylist.bind(this)
-    this.uploadPlaylistCoverPhoto = this.uploadPlaylistCoverPhoto.bind(this)
-    this.updatePlaylistCoverPhoto = this.updatePlaylistCoverPhoto.bind(this)
-    this.updatePlaylistName = this.updatePlaylistName.bind(this)
-    this.updatePlaylistDescription = this.updatePlaylistDescription.bind(this)
-    this.updatePlaylistPrivacy = this.updatePlaylistPrivacy.bind(this)
-    this.addPlaylistRepost = this.addPlaylistRepost.bind(this)
-    this.deletePlaylistRepost = this.deletePlaylistRepost.bind(this)
-    this.deletePlaylistAgreement = this.deletePlaylistAgreement.bind(this)
-    this.addPlaylistSave = this.addPlaylistSave.bind(this)
-    this.deletePlaylistSave = this.deletePlaylistSave.bind(this)
-    this.deletePlaylist = this.deletePlaylist.bind(this)
+    this.createContentList = this.createContentList.bind(this)
+    this.addContentListAgreement = this.addContentListAgreement.bind(this)
+    this.orderContentListAgreements = this.orderContentListAgreements.bind(this)
+    this.validateAgreementsInContentList = this.validateAgreementsInContentList.bind(this)
+    this.uploadContentListCoverPhoto = this.uploadContentListCoverPhoto.bind(this)
+    this.updateContentListCoverPhoto = this.updateContentListCoverPhoto.bind(this)
+    this.updateContentListName = this.updateContentListName.bind(this)
+    this.updateContentListDescription = this.updateContentListDescription.bind(this)
+    this.updateContentListPrivacy = this.updateContentListPrivacy.bind(this)
+    this.addContentListRepost = this.addContentListRepost.bind(this)
+    this.deleteContentListRepost = this.deleteContentListRepost.bind(this)
+    this.deleteContentListAgreement = this.deleteContentListAgreement.bind(this)
+    this.addContentListSave = this.addContentListSave.bind(this)
+    this.deleteContentListSave = this.deleteContentListSave.bind(this)
+    this.deleteContentList = this.deleteContentList.bind(this)
   }
 
   /* ------- GETTERS ------- */
 
   /**
-   * get full playlist objects, including agreements, for passed in array of playlistId
+   * get full content list objects, including agreements, for passed in array of content listId
    * @param limit max # of items to return
    * @param offset offset into list to return from (for pagination)
-   * @param idsArray list of playlist ids
-   * @param targetUserId the user whose playlists we're trying to get
+   * @param idsArray list of content list ids
+   * @param targetUserId the user whose content lists we're trying to get
    * @param withUsers whether to return users nested within the collection objects
-   * @returns array of playlist objects
-   * additional metadata fields on playlist objects:
-   *  {Integer} repost_count - repost count for given playlist
-   *  {Integer} save_count - save count for given playlist
-   *  {Boolean} has_current_user_reposted - has current user reposted given playlist
-   *  {Array} followee_reposts - followees of current user that have reposted given playlist
-   *  {Boolean} has_current_user_reposted - has current user reposted given playlist
-   *  {Boolean} has_current_user_saved - has current user saved given playlist
+   * @returns array of content list objects
+   * additional metadata fields on content list objects:
+   *  {Integer} repost_count - repost count for given content list
+   *  {Integer} save_count - save count for given content list
+   *  {Boolean} has_current_user_reposted - has current user reposted given content list
+   *  {Array} followee_reposts - followees of current user that have reposted given content list
+   *  {Boolean} has_current_user_reposted - has current user reposted given content list
+   *  {Boolean} has_current_user_saved - has current user saved given content list
    */
-  async getPlaylists(
+  async getContentLists(
     limit = 100,
     offset = 0,
     idsArray = null,
@@ -53,7 +53,7 @@ export class Playlists extends Base {
     withUsers = false
   ) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getPlaylists(
+    return await this.discoveryProvider.getContentLists(
       limit,
       offset,
       idsArray,
@@ -63,14 +63,14 @@ export class Playlists extends Base {
   }
 
   /**
-   * Return saved playlists for current user
-   * NOTE in returned JSON, SaveType string one of agreement, playlist, album
+   * Return saved content lists for current user
+   * NOTE in returned JSON, SaveType string one of agreement, content list, album
    * @param limit - max # of items to return
    * @param offset - offset into list to return from (for pagination)
    */
-  async getSavedPlaylists(limit = 100, offset = 0, withUsers = false) {
+  async getSavedContentLists(limit = 100, offset = 0, withUsers = false) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getSavedPlaylists(
+    return await this.discoveryProvider.getSavedContentLists(
       limit,
       offset,
       withUsers
@@ -79,7 +79,7 @@ export class Playlists extends Base {
 
   /**
    * Return saved albums for current user
-   * NOTE in returned JSON, SaveType string one of agreement, playlist, album
+   * NOTE in returned JSON, SaveType string one of agreement, content list, album
    * @param limit - max # of items to return
    * @param offset - offset into list to return from (for pagination)
    */
@@ -91,11 +91,11 @@ export class Playlists extends Base {
   /* ------- SETTERS ------- */
 
   /**
-   * Creates a new playlist
+   * Creates a new content list
    */
-  async createPlaylist(
+  async createContentList(
     userId: number,
-    playlistName: string,
+    content listName: string,
     isPrivate: boolean,
     isAlbum: boolean,
     agreementIds: number[]
@@ -103,25 +103,25 @@ export class Playlists extends Base {
     const maxInitialAgreements = 50
     const createInitialIdsArray = agreementIds.slice(0, maxInitialAgreements)
     const postInitialIdsArray = agreementIds.slice(maxInitialAgreements)
-    let playlistId: number
+    let content listId: number
     let receipt: Partial<TransactionReceipt> = {}
     try {
       const response =
-        await this.contracts.PlaylistFactoryClient.createPlaylist(
+        await this.contracts.ContentListFactoryClient.createContentList(
           userId,
-          playlistName,
+          content listName,
           isPrivate,
           isAlbum,
           createInitialIdsArray
         )
-      playlistId = response.playlistId
+      content listId = response.content listId
       receipt = response.txReceipt
 
       // Add remaining agreements
       await Promise.all(
         postInitialIdsArray.map(async (agreementId) => {
-          return await this.contracts.PlaylistFactoryClient.addPlaylistAgreement(
-            playlistId,
+          return await this.contracts.ContentListFactoryClient.addContentListAgreement(
+            content listId,
             agreementId
           )
         })
@@ -130,156 +130,156 @@ export class Playlists extends Base {
       // Order agreements
       if (postInitialIdsArray.length > 0) {
         receipt =
-          await this.contracts.PlaylistFactoryClient.orderPlaylistAgreements(
-            playlistId,
+          await this.contracts.ContentListFactoryClient.orderContentListAgreements(
+            content listId,
             agreementIds
           )
       }
     } catch (e) {
       console.debug(
-        `Reached libs createPlaylist catch block with playlist id ${playlistId!}`
+        `Reached libs createContentList catch block with content list id ${content listId!}`
       )
       console.error(e)
-      return { playlistId: playlistId!, error: true }
+      return { content listId: content listId!, error: true }
     }
     return {
       blockHash: receipt.blockHash,
       blockNumber: receipt.blockNumber,
-      playlistId,
+      content listId,
       error: false
     }
   }
 
   /**
-   * Adds a agreement to a given playlist
+   * Adds a agreement to a given content list
    */
-  async addPlaylistAgreement(playlistId: number, agreementId: number) {
+  async addContentListAgreement(content listId: number, agreementId: number) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
 
     const userId = this.userStateManager.getCurrentUserId()
-    const playlist = await this.discoveryProvider.getPlaylists(
+    const content list = await this.discoveryProvider.getContentLists(
       100,
       0,
-      [playlistId],
+      [content listId],
       userId
     )
 
-    // error if playlist does not exist or hasn't been indexed by discovery node
-    if (!Array.isArray(playlist) || !playlist.length) {
+    // error if content list does not exist or hasn't been indexed by discovery node
+    if (!Array.isArray(content list) || !content list.length) {
       throw new Error(
-        'Cannot add agreement - Playlist does not exist or has not yet been indexed by discovery node'
+        'Cannot add agreement - ContentList does not exist or has not yet been indexed by discovery node'
       )
     }
-    // error if playlist already at max length
+    // error if content list already at max length
     if (
-      playlist[0]!.playlist_contents.agreement_ids.length >= MAX_PLAYLIST_LENGTH
+      content list[0]!.content list_contents.agreement_ids.length >= MAX_CONTENT_LIST_LENGTH
     ) {
       throw new Error(
-        `Cannot add agreement - playlist is already at max length of ${MAX_PLAYLIST_LENGTH}`
+        `Cannot add agreement - content list is already at max length of ${MAX_CONTENT_LIST_LENGTH}`
       )
     }
-    return await this.contracts.PlaylistFactoryClient.addPlaylistAgreement(
-      playlistId,
+    return await this.contracts.ContentListFactoryClient.addContentListAgreement(
+      content listId,
       agreementId
     )
   }
 
   /**
-   * Reorders the agreements in a playlist
+   * Reorders the agreements in a content list
    */
-  async orderPlaylistAgreements(
-    playlistId: number,
+  async orderContentListAgreements(
+    content listId: number,
     agreementIds: number[],
     retriesOverride?: number
   ) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
     if (!Array.isArray(agreementIds)) {
-      throw new Error('Cannot order playlist - agreementIds must be array')
+      throw new Error('Cannot order content list - agreementIds must be array')
     }
 
     const userId = this.userStateManager.getCurrentUserId()
-    const playlist = await this.discoveryProvider.getPlaylists(
+    const content list = await this.discoveryProvider.getContentLists(
       100,
       0,
-      [playlistId],
+      [content listId],
       userId
     )
 
-    // error if playlist does not exist or hasn't been indexed by discovery node
-    if (!Array.isArray(playlist) || !playlist.length) {
+    // error if content list does not exist or hasn't been indexed by discovery node
+    if (!Array.isArray(content list) || !content list.length) {
       throw new Error(
-        'Cannot order playlist - Playlist does not exist or has not yet been indexed by discovery node'
+        'Cannot order content list - ContentList does not exist or has not yet been indexed by discovery node'
       )
     }
 
-    const playlistAgreementIds = playlist[0]!.playlist_contents.agreement_ids.map(
+    const content listAgreementIds = content list[0]!.content list_contents.agreement_ids.map(
       (a) => a.agreement
     )
-    // error if agreementIds arg array length does not match playlist length
-    if (agreementIds.length !== playlistAgreementIds.length) {
+    // error if agreementIds arg array length does not match content list length
+    if (agreementIds.length !== content listAgreementIds.length) {
       throw new Error(
-        'Cannot order playlist - agreementIds length must match playlist length'
+        'Cannot order content list - agreementIds length must match content list length'
       )
     }
 
-    // ensure existing playlist agreements and agreementIds have same content, regardless of order
+    // ensure existing content list agreements and agreementIds have same content, regardless of order
     const agreementIdsSorted = [...agreementIds].sort()
-    const playlistAgreementIdsSorted = playlistAgreementIds.sort()
+    const content listAgreementIdsSorted = content listAgreementIds.sort()
     for (let i = 0; i < agreementIdsSorted.length; i++) {
-      if (agreementIdsSorted[i] !== playlistAgreementIdsSorted[i]) {
+      if (agreementIdsSorted[i] !== content listAgreementIdsSorted[i]) {
         throw new Error(
-          'Cannot order playlist - agreementIds must have same content as playlist agreements'
+          'Cannot order content list - agreementIds must have same content as content list agreements'
         )
       }
     }
 
-    return await this.contracts.PlaylistFactoryClient.orderPlaylistAgreements(
-      playlistId,
+    return await this.contracts.ContentListFactoryClient.orderContentListAgreements(
+      content listId,
       agreementIds,
       retriesOverride
     )
   }
 
   /**
-   * Checks if a playlist has entered a corrupted state
-   * Check that each of the agreements within a playlist retrieved from discprov are in the onchain playlist
-   * Note: the onchain playlists stores the agreements as a mapping of agreement ID to agreement count and the
+   * Checks if a content list has entered a corrupted state
+   * Check that each of the agreements within a content list retrieved from discprov are in the onchain content list
+   * Note: the onchain content lists stores the agreements as a mapping of agreement ID to agreement count and the
    * agreement order is an event that is indexed by discprov. The agreement order event does not validate that the
    * updated order of agreements has the correct agreement count, so a agreement order event w/ duplicate agreements can
-   * lead the playlist entering a corrupted state.
+   * lead the content list entering a corrupted state.
    */
-  async validateAgreementsInPlaylist(playlistId: number) {
-    this.REQUIRES(Services.DISCOVERY_PROVIDER, Services.CREATOR_NODE)
+  async validateAgreementsInContentList(content listId: number) {
+    this.REQUIRES(Services.DISCOVERY_PROVIDER, Services.CONTENT_NODE)
 
     const userId = this.userStateManager.getCurrentUserId()
-    const playlistsReponse = await this.discoveryProvider.getPlaylists(
+    const content listsReponse = await this.discoveryProvider.getContentLists(
       1,
       0,
-      [playlistId],
+      [content listId],
       userId
     )
 
-    // error if playlist does not exist or hasn't been indexed by discovery node
-    if (!Array.isArray(playlistsReponse) || !playlistsReponse.length) {
+    // error if content list does not exist or hasn't been indexed by discovery node
+    if (!Array.isArray(content listsReponse) || !content listsReponse.length) {
       throw new Error(
-        'Cannot validate playlist - Playlist does not exist, is private and not owned by current user or has not yet been indexed by discovery node'
+        'Cannot validate content list - ContentList does not exist, is private and not owned by current user or has not yet been indexed by discovery node'
       )
     }
 
-    const playlist = playlistsReponse[0]!
-    const playlistAgreementIds = playlist.playlist_contents.agreement_ids.map(
+    const content list = content listsReponse[0]!
+    const content listAgreementIds = content list.content list_contents.agreement_ids.map(
       (a) => a.agreement
     )
 
-    // Check if each agreement is in the playlist
+    // Check if each agreement is in the content list
     const invalidAgreementIds = []
-    for (const agreementId of playlistAgreementIds) {
-      const agreementInPlaylist =
-        await this.contracts.PlaylistFactoryClient.isAgreementInPlaylist(
-          playlistId,
+    for (const agreementId of content listAgreementIds) {
+      const agreementInContentList =
+        await this.contracts.ContentListFactoryClient.isAgreementInContentList(
+          content listId,
           agreementId
         )
-      if (!agreementInPlaylist) invalidAgreementIds.push(agreementId)
+      if (!agreementInContentList) invalidAgreementIds.push(agreementId)
     }
 
     return {
@@ -289,143 +289,143 @@ export class Playlists extends Base {
   }
 
   /**
-   * Uploads a cover photo for a playlist without updating the actual playlist
+   * Uploads a cover photo for a content list without updating the actual content list
    * @param coverPhotoFile the file to upload as the cover photo
    * @return CID of the uploaded cover photo
    */
-  async uploadPlaylistCoverPhoto(coverPhotoFile: File) {
-    this.REQUIRES(Services.CREATOR_NODE)
+  async uploadContentListCoverPhoto(coverPhotoFile: File) {
+    this.REQUIRES(Services.CONTENT_NODE)
 
-    const updatedPlaylistImage = await this.creatorNode.uploadImage(
+    const updatedContentListImage = await this.creatorNode.uploadImage(
       coverPhotoFile,
       true // square
     )
-    return updatedPlaylistImage.dirCID
+    return updatedContentListImage.dirCID
   }
 
   /**
-   * Updates the cover photo for a playlist
+   * Updates the cover photo for a content list
    */
-  async updatePlaylistCoverPhoto(playlistId: number, coverPhoto: File) {
-    this.REQUIRES(Services.CREATOR_NODE)
+  async updateContentListCoverPhoto(content listId: number, coverPhoto: File) {
+    this.REQUIRES(Services.CONTENT_NODE)
 
-    const updatedPlaylistImageDirCid = await this.uploadPlaylistCoverPhoto(
+    const updatedContentListImageDirCid = await this.uploadContentListCoverPhoto(
       coverPhoto
     )
-    return await this.contracts.PlaylistFactoryClient.updatePlaylistCoverPhoto(
-      playlistId,
-      Utils.formatOptionalMultihash(updatedPlaylistImageDirCid)
+    return await this.contracts.ContentListFactoryClient.updateContentListCoverPhoto(
+      content listId,
+      Utils.formatOptionalMultihash(updatedContentListImageDirCid)
     )
   }
 
   /**
-   * Updates a playlist name
+   * Updates a content list name
    */
-  async updatePlaylistName(playlistId: number, playlistName: string) {
-    return await this.contracts.PlaylistFactoryClient.updatePlaylistName(
-      playlistId,
-      playlistName
+  async updateContentListName(content listId: number, content listName: string) {
+    return await this.contracts.ContentListFactoryClient.updateContentListName(
+      content listId,
+      content listName
     )
   }
 
   /**
-   * Updates a playlist description
-   * @param playlistId
-   * @param updatedPlaylistDescription
+   * Updates a content list description
+   * @param content listId
+   * @param updatedContentListDescription
    */
-  async updatePlaylistDescription(
-    playlistId: number,
-    updatedPlaylistDescription: string
+  async updateContentListDescription(
+    content listId: number,
+    updatedContentListDescription: string
   ) {
-    return await this.contracts.PlaylistFactoryClient.updatePlaylistDescription(
-      playlistId,
-      updatedPlaylistDescription
+    return await this.contracts.ContentListFactoryClient.updateContentListDescription(
+      content listId,
+      updatedContentListDescription
     )
   }
 
   /**
-   * Updates whether a playlist is public or private
+   * Updates whether a content list is public or private
    */
-  async updatePlaylistPrivacy(
-    playlistId: number,
-    updatedPlaylistPrivacy: boolean
+  async updateContentListPrivacy(
+    content listId: number,
+    updatedContentListPrivacy: boolean
   ) {
-    return await this.contracts.PlaylistFactoryClient.updatePlaylistPrivacy(
-      playlistId,
-      updatedPlaylistPrivacy
+    return await this.contracts.ContentListFactoryClient.updateContentListPrivacy(
+      content listId,
+      updatedContentListPrivacy
     )
   }
 
   /**
-   * Reposts a playlist for a user
+   * Reposts a content list for a user
    */
-  async addPlaylistRepost(playlistId: number) {
+  async addContentListRepost(content listId: number) {
     const userId = this.userStateManager.getCurrentUserId()
-    return await this.contracts.SocialFeatureFactoryClient.addPlaylistRepost(
+    return await this.contracts.SocialFeatureFactoryClient.addContentListRepost(
       userId!,
-      playlistId
+      content listId
     )
   }
 
   /**
-   * Undoes a repost on a playlist for a user
+   * Undoes a repost on a content list for a user
    */
-  async deletePlaylistRepost(playlistId: number) {
+  async deleteContentListRepost(content listId: number) {
     const userId = this.userStateManager.getCurrentUserId()
-    return await this.contracts.SocialFeatureFactoryClient.deletePlaylistRepost(
+    return await this.contracts.SocialFeatureFactoryClient.deleteContentListRepost(
       userId!,
-      playlistId
+      content listId
     )
   }
 
   /**
-   * Marks a agreement to be deleted from a playlist. The playlist entry matching
+   * Marks a agreement to be deleted from a content list. The content list entry matching
    * the provided timestamp is deleted in the case of duplicates.
-   * @param playlistId
+   * @param content listId
    * @param deletedAgreementId
-   * @param deletedPlaylistTimestamp parseable timestamp (to be copied from playlist metadata)
+   * @param deletedContentListTimestamp parseable timestamp (to be copied from content list metadata)
    * @param {number?} retriesOverride [Optional, defaults to web3Manager.sendTransaction retries default]
    */
-  async deletePlaylistAgreement(
-    playlistId: number,
+  async deleteContentListAgreement(
+    content listId: number,
     deletedAgreementId: number,
-    deletedPlaylistTimestamp: number,
+    deletedContentListTimestamp: number,
     retriesOverride?: number
   ) {
-    return await this.contracts.PlaylistFactoryClient.deletePlaylistAgreement(
-      playlistId,
+    return await this.contracts.ContentListFactoryClient.deleteContentListAgreement(
+      content listId,
       deletedAgreementId,
-      deletedPlaylistTimestamp,
+      deletedContentListTimestamp,
       retriesOverride
     )
   }
 
   /**
-   * Saves a playlist on behalf of a user
+   * Saves a content list on behalf of a user
    */
-  async addPlaylistSave(playlistId: number) {
+  async addContentListSave(content listId: number) {
     const userId = this.userStateManager.getCurrentUserId()
-    return await this.contracts.UserLibraryFactoryClient.addPlaylistSave(
+    return await this.contracts.UserLibraryFactoryClient.addContentListSave(
       userId!,
-      playlistId
+      content listId
     )
   }
 
   /**
-   * Unsaves a playlist on behalf of a user
+   * Unsaves a content list on behalf of a user
    */
-  async deletePlaylistSave(playlistId: number) {
+  async deleteContentListSave(content listId: number) {
     const userId = this.userStateManager.getCurrentUserId()
-    return await this.contracts.UserLibraryFactoryClient.deletePlaylistSave(
+    return await this.contracts.UserLibraryFactoryClient.deleteContentListSave(
       userId!,
-      playlistId
+      content listId
     )
   }
 
   /**
-   * Marks a playlist as deleted
+   * Marks a content list as deleted
    */
-  async deletePlaylist(playlistId: number) {
-    return await this.contracts.PlaylistFactoryClient.deletePlaylist(playlistId)
+  async deleteContentList(content listId: number) {
+    return await this.contracts.ContentListFactoryClient.deleteContentList(content listId)
   }
 }

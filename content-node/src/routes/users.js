@@ -77,7 +77,7 @@ router.get(
     const redisClient = req.app.get('redisClient')
     const challengeBuffer = await randomBytes(CHALLENGE_VALUE_LENGTH)
     const challengeBytes = base64url.encode(challengeBuffer)
-    const challenge = `Click sign to authenticate with creator node: ${challengeBytes}`
+    const challenge = `Click sign to authenticate with content node: ${challengeBytes}`
 
     // Set challenge ttl to 2 minutes ('EX' option = sets expire time in seconds)
     // https://redis.io/commands/set

@@ -1,11 +1,11 @@
 ---
-id: "full.GetTrendingPlaylistsWithVersionTimeEnum"
-title: "Enumeration: GetTrendingPlaylistsWithVersionTimeEnum"
-sidebar_label: "GetTrendingPlaylistsWithVersionTimeEnum"
+id: "full.GetTrendingContentListsWithVersionTimeEnum"
+title: "Enumeration: GetTrendingContentListsWithVersionTimeEnum"
+sidebar_label: "GetTrendingContentListsWithVersionTimeEnum"
 custom_edit_url: null
 ---
 
-[full](../namespaces/full.md).GetTrendingPlaylistsWithVersionTimeEnum
+[full](../namespaces/full.md).GetTrendingContentListsWithVersionTimeEnum
 
 **`export`**
 

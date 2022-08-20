@@ -78,7 +78,7 @@ function getMilestoneEntity (notification, metadata) {
   const entityId = notification.entityId
   const name = (type === Entity.Agreement)
     ? metadata.agreements[entityId].title
-    : metadata.collections[entityId].playlist_name
+    : metadata.collections[entityId].content list_name
   return { type, name }
 }
 
@@ -147,12 +147,12 @@ function formatChallengeReward (notification) {
   }
 }
 
-function formatAddAgreementToPlaylist (notification, metadata) {
+function formatAddAgreementToContentList (notification, metadata) {
   return {
-    type: NotificationType.AddAgreementToPlaylist,
+    type: NotificationType.AddAgreementToContentList,
     agreement: metadata.agreements[notification.entityId],
-    playlist: metadata.collections[notification.metadata.playlistId],
-    playlistOwner: metadata.users[notification.metadata.playlistOwnerId]
+    content list: metadata.collections[notification.metadata.content listId],
+    content listOwner: metadata.users[notification.metadata.content listOwnerId]
   }
 }
 
@@ -250,25 +250,25 @@ const notificationResponseMap = {
     const agreement = metadata.agreements[notification.entityId]
     return formatFavorite(notification, metadata, { type: Entity.Agreement, name: agreement.title })
   },
-  [NotificationType.Favorite.playlist]: (notification, metadata) => {
+  [NotificationType.Favorite.content list]: (notification, metadata) => {
     const collection = metadata.collections[notification.entityId]
-    return formatFavorite(notification, metadata, { type: Entity.Playlist, name: collection.playlist_name })
+    return formatFavorite(notification, metadata, { type: Entity.ContentList, name: collection.content list_name })
   },
   [NotificationType.Favorite.album]: (notification, metadata) => {
     const collection = metadata.collections[notification.entityId]
-    return formatFavorite(notification, metadata, { type: Entity.Album, name: collection.playlist_name })
+    return formatFavorite(notification, metadata, { type: Entity.Album, name: collection.content list_name })
   },
   [NotificationType.Repost.agreement]: (notification, metadata) => {
     const agreement = metadata.agreements[notification.entityId]
     return formatRepost(notification, metadata, { type: Entity.Agreement, name: agreement.title })
   },
-  [NotificationType.Repost.playlist]: (notification, metadata) => {
+  [NotificationType.Repost.content list]: (notification, metadata) => {
     const collection = metadata.collections[notification.entityId]
-    return formatRepost(notification, metadata, { type: Entity.Playlist, name: collection.playlist_name })
+    return formatRepost(notification, metadata, { type: Entity.ContentList, name: collection.content list_name })
   },
   [NotificationType.Repost.album]: (notification, metadata) => {
     const collection = metadata.collections[notification.entityId]
-    return formatRepost(notification, metadata, { type: Entity.Album, name: collection.playlist_name })
+    return formatRepost(notification, metadata, { type: Entity.Album, name: collection.content list_name })
   },
   [NotificationType.Create.agreement]: (notification, metadata) => {
     const agreementId = notification.actions[0].actionEntityId
@@ -285,16 +285,16 @@ const notificationResponseMap = {
       const user = metadata.users[userId]
       return { name: user.name, image: user.thumbnail }
     })
-    return formatUserSubscription(notification, metadata, { type: Entity.Album, count: 1, name: collection.playlist_name }, users)
+    return formatUserSubscription(notification, metadata, { type: Entity.Album, count: 1, name: collection.content list_name }, users)
   },
-  [NotificationType.Create.playlist]: (notification, metadata) => {
+  [NotificationType.Create.content list]: (notification, metadata) => {
     const collection = metadata.collections[notification.entityId]
     let users = notification.actions.map(action => {
       const userId = action.actionEntityId
       const user = metadata.users[userId]
       return { name: user.name, image: user.thumbnail }
     })
-    return formatUserSubscription(notification, metadata, { type: Entity.Playlist, count: 1, name: collection.playlist_name }, users)
+    return formatUserSubscription(notification, metadata, { type: Entity.ContentList, count: 1, name: collection.content list_name }, users)
   },
   [NotificationType.RemixCreate]: formatRemixCreate,
   [NotificationType.RemixCosign]: formatRemixCosign,
@@ -309,8 +309,8 @@ const notificationResponseMap = {
   [NotificationType.MilestoneFavorite]: formatMilestone('favorite'),
   [NotificationType.MilestoneListen]: formatMilestone('listen'),
   [NotificationType.MilestoneFollow]: formatMilestone('follow'),
-  [NotificationType.AddAgreementToPlaylist]: (notification, metadata) => {
-    return formatAddAgreementToPlaylist(notification, metadata)
+  [NotificationType.AddAgreementToContentList]: (notification, metadata) => {
+    return formatAddAgreementToContentList(notification, metadata)
   }
 }
 
@@ -331,7 +331,7 @@ const NewSubscriptionUpdateTitle = 'New Artist Update'
 const TrendingAgreementTitle = 'Congrats - You’re Trending! 📈'
 const RemixCreateTitle = 'New Remix Of Your Agreement ♻️'
 const RemixCosignTitle = 'New Agreement Co-Sign! 🔥'
-const AddAgreementToPlaylistTitle = 'Your agreement got on a playlist! 💿'
+const AddAgreementToContentListTitle = 'Your agreement got on a content list! 💿'
 const TipReceiveTitle = 'You Received a Tip!'
 
 const challengeInfoMap = {
@@ -375,21 +375,21 @@ const makeSupportingOrSupporterTitle = (notification) => `#${notification.rank} 
 const notificationResponseTitleMap = {
   [NotificationType.Follow]: () => NewFollowerTitle,
   [NotificationType.Favorite.agreement]: () => NewFavoriteTitle,
-  [NotificationType.Favorite.playlist]: () => NewFavoriteTitle,
+  [NotificationType.Favorite.content list]: () => NewFavoriteTitle,
   [NotificationType.Favorite.album]: () => NewFavoriteTitle,
   [NotificationType.Repost.agreement]: () => NewRepostTitle,
-  [NotificationType.Repost.playlist]: () => NewRepostTitle,
+  [NotificationType.Repost.content list]: () => NewRepostTitle,
   [NotificationType.Repost.album]: () => NewRepostTitle,
   [NotificationType.Create.agreement]: () => NewSubscriptionUpdateTitle,
   [NotificationType.Create.album]: () => NewSubscriptionUpdateTitle,
-  [NotificationType.Create.playlist]: () => NewSubscriptionUpdateTitle,
+  [NotificationType.Create.content list]: () => NewSubscriptionUpdateTitle,
   [NotificationType.MilestoneListen]: () => NewMilestoneTitle,
   [NotificationType.Milestone]: () => NewMilestoneTitle,
   [NotificationType.TrendingAgreement]: () => TrendingAgreementTitle,
   [NotificationType.RemixCreate]: () => RemixCreateTitle,
   [NotificationType.RemixCosign]: () => RemixCosignTitle,
   [NotificationType.ChallengeReward]: (notification) => challengeInfoMap[notification.challengeId].title,
-  [NotificationType.AddAgreementToPlaylist]: () => AddAgreementToPlaylistTitle,
+  [NotificationType.AddAgreementToContentList]: () => AddAgreementToContentListTitle,
   [NotificationType.Reaction]: makeReactionTitle,
   [NotificationType.TipReceive]: () => TipReceiveTitle,
   [NotificationType.SupporterRankUp]: makeSupportingOrSupporterTitle,
@@ -454,8 +454,8 @@ const pushNotificationMessagesMap = {
       ? `You’ve received ${challengeInfoMap[notification.challengeId].amount} $LIVE for being referred! Invite your friends to join to earn more!`
       : `You’ve earned ${challengeInfoMap[notification.challengeId].amount} $LIVE for completing this challenge!`
   },
-  [notificationTypes.AddAgreementToPlaylist] (notification) {
-    return `${notification.playlistOwner.name} added ${notification.agreement.title} to their playlist ${notification.playlist.playlist_name}`
+  [notificationTypes.AddAgreementToContentList] (notification) {
+    return `${notification.content listOwner.name} added ${notification.agreement.title} to their content list ${notification.content list.content list_name}`
   },
   [notificationTypes.Reaction] (notification) {
     return `${capitalize(notification.reactingUser.name)} reacted to your tip of ${notification.amount} $LIVE`

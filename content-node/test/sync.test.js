@@ -828,21 +828,21 @@ describe('test nodesync', async function () {
 
       // This text 'coliving is cool' is mapped to the hash in the dummy json data
       // If changes are made to the response body, make the corresponding changes to the hash too
-      nock('http://mock-cn1.coliving.co')
+      nock('http://mock-cn1.coliving.lol')
         .persist()
         .get((uri) =>
           uri.includes('/ipfs/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE')
         )
         .reply(200, 'coliving is cool')
 
-      nock('http://mock-cn2.coliving.co')
+      nock('http://mock-cn2.coliving.lol')
         .persist()
         .get((uri) =>
           uri.includes('/ipfs/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE')
         )
         .reply(200, 'coliving is cool')
 
-      nock('http://mock-cn3.coliving.co')
+      nock('http://mock-cn3.coliving.lol')
         .persist()
         .get((uri) =>
           uri.includes('/ipfs/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE')
@@ -1139,9 +1139,9 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
   let server, app, serviceRegistryMock, primarySyncFromSecondaryStub
 
   const NODES = {
-    CN1: 'http://mock-cn1.coliving.co',
-    CN2: 'http://mock-cn2.coliving.co',
-    CN3: 'http://mock-cn3.coliving.co'
+    CN1: 'http://mock-cn1.coliving.lol',
+    CN2: 'http://mock-cn2.coliving.lol',
+    CN3: 'http://mock-cn3.coliving.lol'
   }
   const NODES_LIST = Object.values(NODES)
   const SELF = NODES.CN1

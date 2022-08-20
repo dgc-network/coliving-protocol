@@ -21,11 +21,11 @@ const USER_PROPS = [
   'cover_photo_sizes',
   'bio',
   'location',
-  'creator_node_endpoint',
+  'content_node_endpoint',
   'associated_wallets',
   'associated_sol_wallets',
   'collectibles',
-  'playlist_library',
+  'content list_library',
   'events'
 ] as Array<keyof UserMetadata>
 // User metadata fields that are required on the metadata object and only can have
@@ -76,7 +76,7 @@ export class Users extends Base {
     this._validateUserMetadata = this._validateUserMetadata.bind(this)
     this.cleanUserMetadata = this.cleanUserMetadata.bind(this)
 
-    // For adding a creator_node_endpoint for a user if null
+    // For adding a content_node_endpoint for a user if null
     this.assignReplicaSetIfNecessary =
       this.assignReplicaSetIfNecessary.bind(this)
   }
@@ -89,7 +89,7 @@ export class Users extends Base {
    * @returns Array of User metadata Objects
    * additional metadata fields on user objects:
    *  {Integer} agreement_count - agreement count for given user
-   *  {Integer} playlist_count - playlist count for given user
+   *  {Integer} content list_count - content list count for given user
    *  {Integer} album_count - album count for given user
    *  {Integer} follower_count - follower count for given user
    *  {Integer} followee_count - followee count for given user
@@ -169,14 +169,14 @@ export class Users extends Base {
    * @param userId - requested user id
    * @param limit - max # of items to return (for pagination)
    * @param offset - offset into list to return from (for pagination)
-   * @returns Array of agreement and playlist metadata objects
-   * additional metadata fields on agreement and playlist objects:
-   *  {String} activity_timestamp - timestamp of requested user's repost for given agreement or playlist,
+   * @returns Array of agreement and content list metadata objects
+   * additional metadata fields on agreement and content list objects:
+   *  {String} activity_timestamp - timestamp of requested user's repost for given agreement or content list,
    *    used for sorting feed
-   *  {Integer} repost_count - repost count of given agreement/playlist
-   *  {Integer} save_count - save count of given agreement/playlist
-   *  {Boolean} has_current_user_reposted - has current user reposted given agreement/playlist
-   *  {Array} followee_reposts - followees of current user that have reposted given agreement/playlist
+   *  {Integer} repost_count - repost count of given agreement/content list
+   *  {Integer} save_count - save count of given agreement/content list
+   *  {Boolean} has_current_user_reposted - has current user reposted given agreement/content list
+   *  {Array} followee_reposts - followees of current user that have reposted given agreement/content list
    */
   async getUserRepostFeed(
     userId: number,
@@ -198,14 +198,14 @@ export class Users extends Base {
    * @param limit - max # of items to return
    * @param filter - filter by "all", "original", or "repost"
    * @param offset - offset into list to return from (for pagination)
-   * @returns Array of agreement and playlist metadata objects
-   * additional metadata fields on agreement and playlist objects:
-   *  {String} activity_timestamp - timestamp of requested user's repost for given agreement or playlist,
+   * @returns Array of agreement and content list metadata objects
+   * additional metadata fields on agreement and content list objects:
+   *  {String} activity_timestamp - timestamp of requested user's repost for given agreement or content list,
    *    used for sorting feed
-   *  {Integer} repost_count - repost count of given agreement/playlist
-   *  {Integer} save_count - save count of given agreement/playlist
-   *  {Boolean} has_current_user_reposted - has current user reposted given agreement/playlist
-   *  {Array} followee_reposts - followees of current user that have reposted given agreement/playlist
+   *  {Integer} repost_count - repost count of given agreement/content list
+   *  {Integer} save_count - save count of given agreement/content list
+   *  {Boolean} has_current_user_reposted - has current user reposted given agreement/content list
+   *  {Array} followee_reposts - followees of current user that have reposted given agreement/content list
    */
   async getSocialFeed(
     filter: string,
@@ -256,10 +256,10 @@ export class Users extends Base {
 
   /**
    * Assigns a replica set to the user's metadata and adds new metadata to chain.
-   * This creates a record for that user on the connected creator node.
+   * This creates a record for that user on the connected content node.
    */
   async assignReplicaSet({ userId }: { userId: number }) {
-    this.REQUIRES(Services.CREATOR_NODE)
+    this.REQUIRES(Services.CONTENT_NODE)
     const phases = {
       CLEAN_AND_VALIDATE_METADATA: 'CLEAN_AND_VALIDATE_METADATA',
       AUTOSELECT_CONTENT_NODES: 'AUTOSELECT_CONTENT_NODES',
@@ -278,8 +278,8 @@ export class Users extends Base {
     if (!user) {
       throw new Error('No current user')
     }
-    // No-op if the user already has a replica set assigned under creator_node_endpoint
-    if (user.creator_node_endpoint && user.creator_node_endpoint.length > 0)
+    // No-op if the user already has a replica set assigned under content_node_endpoint
+    if (user.content_node_endpoint && user.content_node_endpoint.length > 0)
       return
 
     // The new metadata object that will contain the replica set
@@ -314,7 +314,7 @@ export class Users extends Base {
         primary,
         secondaries
       )
-      newMetadata.creator_node_endpoint = newContentNodeEndpoints
+      newMetadata.content_node_endpoint = newContentNodeEndpoints
 
       // Update the new primary to the auto-selected primary
       phase = phases.SET_PRIMARY
@@ -381,7 +381,7 @@ export class Users extends Base {
 
   /**
    * Create an on-chain non-creator user. Some fields are restricted (ex.
-   * creator_node_endpoint); this should error if the metadata given attempts to set them.
+   * content_node_endpoint); this should error if the metadata given attempts to set them.
    * @param {Object} metadata metadata to associate with the user
    */
   async addUser(metadata: UserMetadata) {
@@ -447,10 +447,10 @@ export class Users extends Base {
   }
 
   /**
-   * Updates a creator (updates their data on the creator node)
+   * Updates a creator (updates their data on the content node)
    */
   async updateCreator(userId: number, metadata: UserMetadata) {
-    this.REQUIRES(Services.CREATOR_NODE, Services.DISCOVERY_PROVIDER)
+    this.REQUIRES(Services.CONTENT_NODE, Services.DISCOVERY_PROVIDER)
     this.IS_OBJECT(metadata)
     const newMetadata = this.cleanUserMetadata(metadata)
     this._validateUserMetadata(newMetadata)
@@ -468,11 +468,11 @@ export class Users extends Base {
     // Ensure libs is connected to correct CN
     if (
       this.creatorNode.getEndpoint() !==
-      CreatorNode.getPrimary(newMetadata.creator_node_endpoint!)
+      CreatorNode.getPrimary(newMetadata.content_node_endpoint!)
     ) {
       throw new Error(
         `Not connected to correct content node. Expected ${CreatorNode.getPrimary(
-          newMetadata.creator_node_endpoint!
+          newMetadata.content_node_endpoint!
         )}, got ${this.creatorNode.getEndpoint()}`
       )
     }
@@ -480,17 +480,17 @@ export class Users extends Base {
     // Preserve old metadata object
     const oldMetadata = { ...user }
 
-    // Update user creator_node_endpoint on chain if applicable
+    // Update user content_node_endpoint on chain if applicable
     let updateEndpointTxBlockNumber = null
     if (
-      newMetadata.creator_node_endpoint !== oldMetadata.creator_node_endpoint
+      newMetadata.content_node_endpoint !== oldMetadata.content_node_endpoint
     ) {
       // Perform update to new contract
       startMs = Date.now()
       const { txReceipt: updateEndpointTxReceipt, replicaSetSPIDs } =
         await this._updateReplicaSetOnChain(
           userId,
-          newMetadata.creator_node_endpoint!
+          newMetadata.content_node_endpoint!
         )
       updateEndpointTxBlockNumber = updateEndpointTxReceipt?.blockNumber
       console.log(
@@ -610,7 +610,7 @@ export class Users extends Base {
     newMetadata: UserMetadata
     userId: number
   }) {
-    this.REQUIRES(Services.CREATOR_NODE, Services.DISCOVERY_PROVIDER)
+    this.REQUIRES(Services.CONTENT_NODE, Services.DISCOVERY_PROVIDER)
     this.IS_OBJECT(newMetadata)
     const phases = {
       UPDATE_CONTENT_NODE_ENDPOINT_ON_CHAIN:
@@ -635,14 +635,14 @@ export class Users extends Base {
     let startMs = fnStartMs
 
     try {
-      // Update user creator_node_endpoint on chain if applicable
+      // Update user content_node_endpoint on chain if applicable
       if (
-        newMetadata.creator_node_endpoint !== oldMetadata.creator_node_endpoint
+        newMetadata.content_node_endpoint !== oldMetadata.content_node_endpoint
       ) {
         phase = phases.UPDATE_CONTENT_NODE_ENDPOINT_ON_CHAIN
         const { replicaSetSPIDs } = await this._updateReplicaSetOnChain(
           userId,
-          newMetadata.creator_node_endpoint!
+          newMetadata.content_node_endpoint!
         )
         console.log(
           `${logPrefix} [phase: ${phase}] _updateReplicaSetOnChain() completed in ${
@@ -695,7 +695,7 @@ export class Users extends Base {
         newMetadata,
         oldMetadata,
         userId,
-        ['creator_node_endpoint']
+        ['content_node_endpoint']
       )
       console.log(
         `${logPrefix} [phase: ${phase}] _updateUserOperations() completed in ${
@@ -733,15 +733,15 @@ export class Users extends Base {
   }
 
   /**
-   * If a user's creator_node_endpoint is null, assign a replica set.
+   * If a user's content_node_endpoint is null, assign a replica set.
    * Used during the sanity check and in uploadImage() in files.js
    */
   async assignReplicaSetIfNecessary() {
     const user = this.userStateManager.getCurrentUser()
 
-    // If no user is logged in, or a creator node endpoint is already assigned,
+    // If no user is logged in, or a content node endpoint is already assigned,
     // skip this call
-    if (!user || user.creator_node_endpoint) return
+    if (!user || user.content_node_endpoint) return
 
     // Generate a replica set and assign to user
     try {
@@ -753,7 +753,7 @@ export class Users extends Base {
     }
   }
 
-  /** Waits for a discovery node to confirm that a creator node endpoint is updated. */
+  /** Waits for a discovery node to confirm that a content node endpoint is updated. */
   async _waitForCreatorNodeEndpointIndexing(
     userId: number,
     contentNodeEndpoint: string
@@ -762,7 +762,7 @@ export class Users extends Base {
       const userList = await this.discoveryProvider.getUsers(1, 0, [userId])
       if (userList) {
         const user = userList[0]
-        if (user && user.creator_node_endpoint === contentNodeEndpoint) {
+        if (user && user.content_node_endpoint === contentNodeEndpoint) {
           break
         }
       }

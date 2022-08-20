@@ -29,7 +29,7 @@ const agreement = await colivingSdk.resolve<Agreement>({
 
 | Name | Type |
 | :------ | :------ |
-| `T` | extends [`Agreement`](../interfaces/Agreement.md) \| [`Playlist`](../interfaces/Playlist.md) \| [`User`](../interfaces/User.md) |
+| `T` | extends [`Agreement`](../interfaces/Agreement.md) \| [`ContentList`](../interfaces/ContentList.md) \| [`User`](../interfaces/User.md) |
 
 #### Parameters
 

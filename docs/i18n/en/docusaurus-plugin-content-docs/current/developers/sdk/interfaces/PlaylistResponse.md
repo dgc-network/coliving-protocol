@@ -1,19 +1,19 @@
 ---
-id: "PlaylistResponse"
-title: "Interface: PlaylistResponse"
-sidebar_label: "PlaylistResponse"
+id: "ContentListResponse"
+title: "Interface: ContentListResponse"
+sidebar_label: "ContentListResponse"
 sidebar_position: 0
 custom_edit_url: null
 ---
 
 **`export`**
 
-**`interface`** PlaylistResponse
+**`interface`** ContentListResponse
 
 ## Properties
 
 ### data
 
- `Optional` **data**: [`Playlist`](Playlist.md)[]
+ `Optional` **data**: [`ContentList`](ContentList.md)[]
 
-**`memberof`** PlaylistResponse
+**`memberof`** ContentListResponse

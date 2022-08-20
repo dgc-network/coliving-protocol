@@ -53,61 +53,61 @@ def upgrade():
       CREATE INDEX agreement_words_idx ON agreement_lexeme_dict USING gin(word gin_trgm_ops);
 
 
-      --- Filter deletes from playlist_lexeme_dict and album_lexeme_dict.
+      --- Filter deletes from content list_lexeme_dict and album_lexeme_dict.
 
-      DROP MATERIALIZED VIEW playlist_lexeme_dict;
+      DROP MATERIALIZED VIEW content list_lexeme_dict;
       DROP MATERIALIZED VIEW album_lexeme_dict;
-      DROP INDEX IF EXISTS playlist_words_idx;
+      DROP INDEX IF EXISTS content list_words_idx;
       DROP INDEX IF EXISTS album_words_idx;
-      CREATE MATERIALIZED VIEW playlist_lexeme_dict as
+      CREATE MATERIALIZED VIEW content list_lexeme_dict as
       SELECT * FROM (
         SELECT
-          p.playlist_id,
-          p.playlist_name,
+          p.content list_id,
+          p.content list_name,
           unnest(
             tsvector_to_array(
               to_tsvector(
                 'coliving_ts_config',
-                replace(COALESCE(p.playlist_name, ''), '&', 'and')
+                replace(COALESCE(p.content list_name, ''), '&', 'and')
               )
             )
           ) as word
         FROM
-            playlists p
-        INNER JOIN users u ON p.playlist_owner_id = u.user_id
+            content lists p
+        INNER JOIN users u ON p.content list_owner_id = u.user_id
         WHERE
             p.is_current = true and
             p.is_album = false and
             p.is_private = false and
             p.is_delete = false and
             u.is_current = true
-        GROUP BY p.playlist_id, p.playlist_name
+        GROUP BY p.content list_id, p.content list_name
       ) AS words;
       CREATE MATERIALIZED VIEW album_lexeme_dict as
       SELECT * FROM (
         SELECT
-          p.playlist_id,
-          p.playlist_name,
+          p.content list_id,
+          p.content list_name,
           unnest(
             tsvector_to_array(
               to_tsvector(
                 'coliving_ts_config',
-                replace(COALESCE(p.playlist_name, ''), '&', 'and')
+                replace(COALESCE(p.content list_name, ''), '&', 'and')
               )
             )
           ) as word
         FROM
-            playlists p
-        INNER JOIN users u ON p.playlist_owner_id = u.user_id
+            content lists p
+        INNER JOIN users u ON p.content list_owner_id = u.user_id
         WHERE
             p.is_current = true and
             p.is_album = true and
             p.is_private = false and
             p.is_delete = false and
             u.is_current = true
-        GROUP BY p.playlist_id, p.playlist_name
+        GROUP BY p.content list_id, p.content list_name
       ) AS words;
-      CREATE INDEX playlist_words_idx ON playlist_lexeme_dict USING gin(word gin_trgm_ops);
+      CREATE INDEX content list_words_idx ON content list_lexeme_dict USING gin(word gin_trgm_ops);
       CREATE INDEX album_words_idx ON album_lexeme_dict USING gin(word gin_trgm_ops);
     """
     )

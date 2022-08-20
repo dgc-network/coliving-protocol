@@ -4,13 +4,13 @@ import chai, { assert, expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import {
   initAdmin,
-  addPlaylistRepost,
-  addPlaylistSave,
+  addContentListRepost,
+  addContentListSave,
   updateAdmin,
-  deletePlaylistSave,
+  deleteContentListSave,
   EntitySocialActionEnumValues,
   EntityTypesEnumValues,
-  deletePlaylistRepost,
+  deleteContentListRepost,
 } from "../lib/lib";
 import { getTransaction, randomString } from "../lib/utils";
 import { ColivingData } from "../target/types/coliving_data";
@@ -20,7 +20,7 @@ const { SystemProgram } = anchor.web3;
 
 chai.use(chaiAsPromised);
 
-describe("playlist-actions", function () {
+describe("content list-actions", function () {
   const provider = anchor.AnchorProvider.local("http://localhost:8899", {
     preflightCommitment: "confirmed",
     commitment: "confirmed",
@@ -36,7 +36,7 @@ describe("playlist-actions", function () {
   const verifierKeypair = anchor.web3.Keypair.generate();
   const contentNodes = {};
 
-  it("playlist actions - Initializing admin account!", async function () {
+  it("content list actions - Initializing admin account!", async function () {
     const tx = initAdmin({
       payer: provider.wallet.publicKey,
       program,
@@ -97,10 +97,10 @@ describe("playlist-actions", function () {
     contentNodes["3"] = cn3;
   });
 
-  it("Delete save for a playlist", async function () {
+  it("Delete save for a content list", async function () {
     const user = await createSolanaUser(program, provider, adminAccountKeypair);
 
-    const tx = deletePlaylistSave({
+    const tx = deleteContentListSave({
       program,
       baseAuthorityAccount: user.authority,
       adminAccount: adminAccountKeypair.publicKey,
@@ -128,14 +128,14 @@ describe("playlist-actions", function () {
       EntitySocialActionEnumValues.deleteSave
     );
     expect(decodedInstruction.data.entityType).to.deep.equal(
-      EntityTypesEnumValues.playlist
+      EntityTypesEnumValues.content list
     );
   });
 
-  it("Save a newly created playlist", async function () {
+  it("Save a newly created content list", async function () {
     const user = await createSolanaUser(program, provider, adminAccountKeypair);
 
-    const tx = addPlaylistSave({
+    const tx = addContentListSave({
       program,
       baseAuthorityAccount: user.authority,
       adminAccount: adminAccountKeypair.publicKey,
@@ -162,14 +162,14 @@ describe("playlist-actions", function () {
       EntitySocialActionEnumValues.addSave
     );
     expect(decodedInstruction.data.entityType).to.deep.equal(
-      EntityTypesEnumValues.playlist
+      EntityTypesEnumValues.content list
     );
   });
 
-  it("Repost a playlist", async function () {
+  it("Repost a content list", async function () {
     const user = await createSolanaUser(program, provider, adminAccountKeypair);
 
-    const tx = addPlaylistRepost({
+    const tx = addContentListRepost({
       program,
       baseAuthorityAccount: user.authority,
       adminAccount: adminAccountKeypair.publicKey,
@@ -196,14 +196,14 @@ describe("playlist-actions", function () {
       EntitySocialActionEnumValues.addRepost
     );
     expect(decodedInstruction.data.entityType).to.deep.equal(
-      EntityTypesEnumValues.playlist
+      EntityTypesEnumValues.content list
     );
   });
 
-  it("Delete repost for a playlist", async function () {
+  it("Delete repost for a content list", async function () {
     const user = await createSolanaUser(program, provider, adminAccountKeypair);
 
-    const tx = deletePlaylistRepost({
+    const tx = deleteContentListRepost({
       program,
       baseAuthorityAccount: user.authority,
       adminAccount: adminAccountKeypair.publicKey,
@@ -229,7 +229,7 @@ describe("playlist-actions", function () {
       EntitySocialActionEnumValues.deleteRepost
     );
     expect(decodedInstruction.data.entityType).to.deep.equal(
-      EntityTypesEnumValues.playlist
+      EntityTypesEnumValues.content list
     );
   });
 });

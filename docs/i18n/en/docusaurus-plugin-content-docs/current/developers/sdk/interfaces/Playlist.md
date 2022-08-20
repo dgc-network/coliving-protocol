@@ -1,22 +1,22 @@
 ---
-id: "Playlist"
-title: "Interface: Playlist"
-sidebar_label: "Playlist"
+id: "ContentList"
+title: "Interface: ContentList"
+sidebar_label: "ContentList"
 sidebar_position: 0
 custom_edit_url: null
 ---
 
 **`export`**
 
-**`interface`** Playlist
+**`interface`** ContentList
 
 ## Properties
 
 ### artwork
 
- `Optional` **artwork**: [`PlaylistArtwork`](PlaylistArtwork.md)
+ `Optional` **artwork**: [`ContentListArtwork`](ContentListArtwork.md)
 
-**`memberof`** Playlist
+**`memberof`** ContentList
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
  `Optional` **description**: `string`
 
-**`memberof`** Playlist
+**`memberof`** ContentList
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
  **favorite\_count**: `number`
 
-**`memberof`** Playlist
+**`memberof`** ContentList
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
  **id**: `string`
 
-**`memberof`** Playlist
+**`memberof`** ContentList
 
 ___
 
@@ -48,15 +48,15 @@ ___
 
  **is\_album**: `boolean`
 
-**`memberof`** Playlist
+**`memberof`** ContentList
 
 ___
 
-### playlist\_name
+### content list\_name
 
- **playlist\_name**: `string`
+ **content list\_name**: `string`
 
-**`memberof`** Playlist
+**`memberof`** ContentList
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
  **repost\_count**: `number`
 
-**`memberof`** Playlist
+**`memberof`** ContentList
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
  **total\_play\_count**: `number`
 
-**`memberof`** Playlist
+**`memberof`** ContentList
 
 ___
 
@@ -80,4 +80,4 @@ ___
 
  **user**: [`User`](User.md)
 
-**`memberof`** Playlist
+**`memberof`** ContentList

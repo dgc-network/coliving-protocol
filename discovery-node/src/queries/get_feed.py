@@ -2,7 +2,7 @@ import datetime
 
 from flask import request
 from sqlalchemy import and_, desc, func, or_
-from src.models.playlists.playlist import Playlist
+from src.models.content lists.content list import ContentList
 from src.models.social.follow import Follow
 from src.models.social.repost import Repost, RepostType
 from src.models.social.save import SaveType
@@ -15,7 +15,7 @@ from src.queries.query_helpers import (
     get_users_by_id,
     get_users_ids,
     paginate_query,
-    populate_playlist_metadata,
+    populate_content list_metadata,
     populate_agreement_metadata,
 )
 from src.utils import helpers
@@ -67,59 +67,59 @@ def get_feed_sql(args):
         # Fetch followee creations if requested
         if feed_filter in ["original", "all"]:
             if not agreements_only:
-                # Query playlists posted by followees, sorted and paginated by created_at desc
-                created_playlists_query = (
-                    session.query(Playlist)
+                # Query content lists posted by followees, sorted and paginated by created_at desc
+                created_content lists_query = (
+                    session.query(ContentList)
                     .filter(
-                        Playlist.is_current == True,
-                        Playlist.is_delete == False,
-                        Playlist.is_private == False,
-                        Playlist.playlist_owner_id.in_(followee_user_ids),
+                        ContentList.is_current == True,
+                        ContentList.is_delete == False,
+                        ContentList.is_private == False,
+                        ContentList.content list_owner_id.in_(followee_user_ids),
                     )
-                    .order_by(desc(Playlist.created_at))
+                    .order_by(desc(ContentList.created_at))
                 )
-                created_playlists = paginate_query(created_playlists_query, False).all()
+                created_content lists = paginate_query(created_content lists_query, False).all()
 
-                # get agreement ids for all agreements in playlists
-                playlist_agreement_ids = set()
-                for playlist in created_playlists:
-                    for agreement in playlist.playlist_contents["agreement_ids"]:
-                        playlist_agreement_ids.add(agreement["agreement"])
+                # get agreement ids for all agreements in content lists
+                content list_agreement_ids = set()
+                for content list in created_content lists:
+                    for agreement in content list.content list_contents["agreement_ids"]:
+                        content list_agreement_ids.add(agreement["agreement"])
 
                 # get all agreement objects for agreement ids
-                playlist_agreements = get_unpopulated_agreements(session, playlist_agreement_ids)
-                playlist_agreements_dict = {
-                    agreement["agreement_id"]: agreement for agreement in playlist_agreements
+                content list_agreements = get_unpopulated_agreements(session, content list_agreement_ids)
+                content list_agreements_dict = {
+                    agreement["agreement_id"]: agreement for agreement in content list_agreements
                 }
 
-                # get all agreement ids that have same owner as playlist and created in "same action"
-                # "same action": agreement created within [x time] before playlist creation
+                # get all agreement ids that have same owner as content list and created in "same action"
+                # "same action": agreement created within [x time] before content list creation
                 agreements_to_dedupe = set()
-                for playlist in created_playlists:
-                    for agreement_entry in playlist.playlist_contents["agreement_ids"]:
-                        agreement = playlist_agreements_dict.get(agreement_entry["agreement"])
+                for content list in created_content lists:
+                    for agreement_entry in content list.content list_contents["agreement_ids"]:
+                        agreement = content list_agreements_dict.get(agreement_entry["agreement"])
                         if not agreement:
                             continue
                         max_timedelta = datetime.timedelta(
                             minutes=agreementDedupeMaxMinutes
                         )
                         if (
-                            (agreement["owner_id"] == playlist.playlist_owner_id)
-                            and (agreement["created_at"] <= playlist.created_at)
+                            (agreement["owner_id"] == content list.content list_owner_id)
+                            and (agreement["created_at"] <= content list.created_at)
                             and (
-                                playlist.created_at - agreement["created_at"]
+                                content list.created_at - agreement["created_at"]
                                 <= max_timedelta
                             )
                         ):
                             agreements_to_dedupe.add(agreement["agreement_id"])
                 agreements_to_dedupe = list(agreements_to_dedupe)
             else:
-                # No playlists to consider
+                # No content lists to consider
                 agreements_to_dedupe = []
-                created_playlists = []
+                created_content lists = []
 
             # Query agreements posted by followees, sorted & paginated by created_at desc
-            # exclude agreements that were posted in "same action" as playlist
+            # exclude agreements that were posted in "same action" as content list
             created_agreements_query = (
                 session.query(Agreement)
                 .filter(
@@ -134,10 +134,10 @@ def get_feed_sql(args):
             )
             created_agreements = paginate_query(created_agreements_query, False).all()
 
-            # extract created_agreement_ids and created_playlist_ids
+            # extract created_agreement_ids and created_content list_ids
             created_agreement_ids = [agreement.agreement_id for agreement in created_agreements]
-            created_playlist_ids = [
-                playlist.playlist_id for playlist in created_playlists
+            created_content list_ids = [
+                content list.content list_id for content list in created_content lists
             ]
 
         # Fetch followee reposts if requested
@@ -159,7 +159,7 @@ def get_feed_sql(args):
                         ),
                         and_(
                             Repost.repost_type != RepostType.agreement,
-                            Repost.repost_item_id.notin_(created_playlist_ids),
+                            Repost.repost_item_id.notin_(created_content list_ids),
                         ),
                     )
                 )
@@ -178,9 +178,9 @@ def get_feed_sql(args):
             )
             followee_reposts = paginate_query(repost_query, False).all()
 
-            # build dict of agreement_id / playlist_id -> oldest followee repost timestamp from followee_reposts above
+            # build dict of agreement_id / content list_id -> oldest followee repost timestamp from followee_reposts above
             agreement_repost_timestamp_dict = {}
-            playlist_repost_timestamp_dict = {}
+            content list_repost_timestamp_dict = {}
             for (
                 repost_item_id,
                 repost_type,
@@ -190,14 +190,14 @@ def get_feed_sql(args):
                     agreement_repost_timestamp_dict[
                         repost_item_id
                     ] = oldest_followee_repost_timestamp
-                elif repost_type in (RepostType.playlist, RepostType.album):
-                    playlist_repost_timestamp_dict[
+                elif repost_type in (RepostType.content list, RepostType.album):
+                    content list_repost_timestamp_dict[
                         repost_item_id
                     ] = oldest_followee_repost_timestamp
 
-            # extract reposted_agreement_ids and reposted_playlist_ids
+            # extract reposted_agreement_ids and reposted_content list_ids
             reposted_agreement_ids = list(agreement_repost_timestamp_dict.keys())
-            reposted_playlist_ids = list(playlist_repost_timestamp_dict.keys())
+            reposted_content list_ids = list(content list_repost_timestamp_dict.keys())
 
             # Query agreements reposted by followees
             reposted_agreements = session.query(Agreement).filter(
@@ -215,36 +215,36 @@ def get_feed_sql(args):
             reposted_agreements = reposted_agreements.order_by(desc(Agreement.created_at)).all()
 
             if not agreements_only:
-                # Query playlists reposted by followees, excluding playlists already fetched from above
-                reposted_playlists = session.query(Playlist).filter(
-                    Playlist.is_current == True,
-                    Playlist.is_delete == False,
-                    Playlist.is_private == False,
-                    Playlist.playlist_id.in_(reposted_playlist_ids),
+                # Query content lists reposted by followees, excluding content lists already fetched from above
+                reposted_content lists = session.query(ContentList).filter(
+                    ContentList.is_current == True,
+                    ContentList.is_delete == False,
+                    ContentList.is_private == False,
+                    ContentList.content list_id.in_(reposted_content list_ids),
                 )
-                # exclude playlists already fetched from above, in case of "all" filter
+                # exclude content lists already fetched from above, in case of "all" filter
                 if feed_filter == "all":
-                    reposted_playlists = reposted_playlists.filter(
-                        Playlist.playlist_id.notin_(created_playlist_ids)
+                    reposted_content lists = reposted_content lists.filter(
+                        ContentList.content list_id.notin_(created_content list_ids)
                     )
-                reposted_playlists = reposted_playlists.order_by(
-                    desc(Playlist.created_at)
+                reposted_content lists = reposted_content lists.order_by(
+                    desc(ContentList.created_at)
                 ).all()
             else:
-                reposted_playlists = []
+                reposted_content lists = []
 
         if feed_filter == "original":
             agreements_to_process = created_agreements
-            playlists_to_process = created_playlists
+            content lists_to_process = created_content lists
         elif feed_filter == "repost":
             agreements_to_process = reposted_agreements
-            playlists_to_process = reposted_playlists
+            content lists_to_process = reposted_content lists
         else:
             agreements_to_process = created_agreements + reposted_agreements
-            playlists_to_process = created_playlists + reposted_playlists
+            content lists_to_process = created_content lists + reposted_content lists
 
         agreements = helpers.query_result_to_list(agreements_to_process)
-        playlists = helpers.query_result_to_list(playlists_to_process)
+        content lists = helpers.query_result_to_list(content lists_to_process)
 
         # define top level feed activity_timestamp to enable sorting
         # activity_timestamp: created_at if item created by followee, else reposted_at
@@ -255,31 +255,31 @@ def get_feed_sql(args):
                 agreement[
                     response_name_constants.activity_timestamp
                 ] = agreement_repost_timestamp_dict[agreement["agreement_id"]]
-        for playlist in playlists:
-            if playlist["playlist_owner_id"] in followee_user_ids:
-                playlist[response_name_constants.activity_timestamp] = playlist[
+        for content list in content lists:
+            if content list["content list_owner_id"] in followee_user_ids:
+                content list[response_name_constants.activity_timestamp] = content list[
                     "created_at"
                 ]
             else:
-                playlist[
+                content list[
                     response_name_constants.activity_timestamp
-                ] = playlist_repost_timestamp_dict[playlist["playlist_id"]]
+                ] = content list_repost_timestamp_dict[content list["content list_id"]]
 
-        # bundle peripheral info into agreement and playlist objects
+        # bundle peripheral info into agreement and content list objects
         agreement_ids = list(map(lambda agreement: agreement["agreement_id"], agreements))
-        playlist_ids = list(map(lambda playlist: playlist["playlist_id"], playlists))
+        content list_ids = list(map(lambda content list: content list["content list_id"], content lists))
         agreements = populate_agreement_metadata(session, agreement_ids, agreements, current_user_id)
-        playlists = populate_playlist_metadata(
+        content lists = populate_content list_metadata(
             session,
-            playlist_ids,
-            playlists,
-            [RepostType.playlist, RepostType.album],
-            [SaveType.playlist, SaveType.album],
+            content list_ids,
+            content lists,
+            [RepostType.content list, RepostType.album],
+            [SaveType.content list, SaveType.album],
             current_user_id,
         )
 
-        # build combined feed of agreements and playlists
-        unsorted_feed = agreements + playlists
+        # build combined feed of agreements and content lists
+        unsorted_feed = agreements + content lists
 
         # sort feed based on activity_timestamp
         sorted_feed = sorted(
@@ -295,8 +295,8 @@ def get_feed_sql(args):
             user_id_list = get_users_ids(feed_results)
             users = get_users_by_id(session, user_id_list)
             for result in feed_results:
-                if "playlist_owner_id" in result:
-                    user = users[result["playlist_owner_id"]]
+                if "content list_owner_id" in result:
+                    user = users[result["content list_owner_id"]]
                     if user:
                         result["user"] = user
                 elif "owner_id" in result:

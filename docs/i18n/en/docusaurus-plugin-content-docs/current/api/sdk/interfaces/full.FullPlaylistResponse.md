@@ -1,25 +1,25 @@
 ---
-id: "full.FullPlaylistResponse"
-title: "Interface: FullPlaylistResponse"
-sidebar_label: "FullPlaylistResponse"
+id: "full.FullContentListResponse"
+title: "Interface: FullContentListResponse"
+sidebar_label: "FullContentListResponse"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).FullPlaylistResponse
+[full](../namespaces/full.md).FullContentListResponse
 
 **`export`**
 
-**`interface`** FullPlaylistResponse
+**`interface`** FullContentListResponse
 
 ## Properties
 
 ### data
 
- `Optional` **data**: [`PlaylistFull`](full.PlaylistFull.md)[]
+ `Optional` **data**: [`ContentListFull`](full.ContentListFull.md)[]
 
-**`memberof`** FullPlaylistResponse
+**`memberof`** FullContentListResponse
 
 ___
 
@@ -27,7 +27,7 @@ ___
 
  **latest\_chain\_block**: `number`
 
-**`memberof`** FullPlaylistResponse
+**`memberof`** FullContentListResponse
 
 ___
 
@@ -35,7 +35,7 @@ ___
 
  **latest\_chain\_slot\_plays**: `number`
 
-**`memberof`** FullPlaylistResponse
+**`memberof`** FullContentListResponse
 
 ___
 
@@ -43,7 +43,7 @@ ___
 
  **latest\_indexed\_block**: `number`
 
-**`memberof`** FullPlaylistResponse
+**`memberof`** FullContentListResponse
 
 ___
 
@@ -51,7 +51,7 @@ ___
 
  **latest\_indexed\_slot\_plays**: `number`
 
-**`memberof`** FullPlaylistResponse
+**`memberof`** FullContentListResponse
 
 ___
 
@@ -59,7 +59,7 @@ ___
 
  **signature**: `string`
 
-**`memberof`** FullPlaylistResponse
+**`memberof`** FullContentListResponse
 
 ___
 
@@ -67,7 +67,7 @@ ___
 
  **timestamp**: `string`
 
-**`memberof`** FullPlaylistResponse
+**`memberof`** FullContentListResponse
 
 ___
 
@@ -75,4 +75,4 @@ ___
 
  **version**: [`VersionMetadata`](full.VersionMetadata.md)
 
-**`memberof`** FullPlaylistResponse
+**`memberof`** FullContentListResponse

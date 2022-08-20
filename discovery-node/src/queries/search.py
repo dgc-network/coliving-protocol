@@ -49,7 +49,7 @@ def search_full():
 
 # Returns records that match a search term. usage is ```/search/autocomplete?query=<search term> ```
 # lightweight search used for autocomplete - does not populate object metadata,
-#   and appends user data for every agreement/playlist
+#   and appends user data for every agreement/content list
 @bp.route("/search/autocomplete", methods=("GET",))
 @record_metrics
 def search_autocomplete():

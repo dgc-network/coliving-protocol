@@ -125,11 +125,11 @@ async function findCIDInNetwork(
   const attemptedStateFix = await getIfAttemptedStateFix(filePath)
   if (attemptedStateFix) return
 
-  // get list of creator nodes
+  // get list of content nodes
   const creatorNodes = await getAllRegisteredCNodes(libs)
   if (!creatorNodes.length) return
 
-  // Remove excluded nodes from list of creator nodes, no-op if empty list or nothing passed in
+  // Remove excluded nodes from list of content nodes, no-op if empty list or nothing passed in
   const creatorNodesFiltered = creatorNodes.filter(
     (c) => !excludeList.includes(c.endpoint)
   )

@@ -1,13 +1,13 @@
 ---
-id: "full.GetTrendingPlaylistsRequest"
-title: "Interface: GetTrendingPlaylistsRequest"
-sidebar_label: "GetTrendingPlaylistsRequest"
+id: "full.GetTrendingContentListsRequest"
+title: "Interface: GetTrendingContentListsRequest"
+sidebar_label: "GetTrendingContentListsRequest"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).GetTrendingPlaylistsRequest
+[full](../namespaces/full.md).GetTrendingContentListsRequest
 
 ## Properties
 
@@ -29,7 +29,7 @@ ___
 
 ### time
 
- `Optional` **time**: [`GetTrendingPlaylistsTimeEnum`](../enums/full.GetTrendingPlaylistsTimeEnum.md)
+ `Optional` **time**: [`GetTrendingContentListsTimeEnum`](../enums/full.GetTrendingContentListsTimeEnum.md)
 
 Calculate trending over a specified time range
 

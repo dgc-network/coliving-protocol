@@ -150,49 +150,49 @@ const CLI_TO_COMMAND_MAP = {
         }
       ]
     },
-    'create-playlist': {
-      api: 'Playlist',
-      description: 'create playlist',
-      method: 'createPlaylist',
+    'create-content list': {
+      api: 'ContentList',
+      description: 'create content list',
+      method: 'createContentList',
       params: [
         {
           name: 'userId',
-          description: 'ID of user creating the playlist',
+          description: 'ID of user creating the content list',
           userInputHandler: Number,
           defaultHandler: getActiveUserFromSeedSessionCache
         },
         {
-          name: 'playlistName',
-          description: 'name of playlist',
+          name: 'content listName',
+          description: 'name of content list',
           defaultHandler: getRandomString
         },
         {
           name: 'isPrivate',
-          description: 'set to true to create playlist as private',
+          description: 'set to true to create content list as private',
           userInputHandler: Boolean,
           defaultHandler: () => false
         },
         {
           name: 'isAlbum',
-          description: 'set to true to create playlist as album',
+          description: 'set to true to create content list as album',
           userInputHandler: Boolean,
           defaultHandler: () => false
         },
         {
           name: 'agreementIds',
-          description: 'comma-separated list of agreement IDs to associate with the playlist - example: 5,6',
+          description: 'comma-separated list of agreement IDs to associate with the content list - example: 5,6',
           userInputHandler: userInput => userInput.split(',').map(Number)
         }
       ]
     },
-    'add-playlist-agreement': {
-      api: 'Playlist',
-      description: 'add agreement to playlist (must be owned by user ID passed in as active user)',
-      method: 'addPlaylistAgreement',
+    'add-content list-agreement': {
+      api: 'ContentList',
+      description: 'add agreement to content list (must be owned by user ID passed in as active user)',
+      method: 'addContentListAgreement',
       params: [
         {
-          name: 'playlistId',
-          description: 'ID of playlist to add agreement to (must already exist)',
+          name: 'content listId',
+          description: 'ID of content list to add agreement to (must already exist)',
           userInputHandler: Number
         },
         {
@@ -202,26 +202,26 @@ const CLI_TO_COMMAND_MAP = {
         }
       ]
     },
-    'repost-playlist': {
-      api: 'Playlist',
-      description: 'repost playlist',
-      method: 'addPlaylistRepost',
+    'repost-content list': {
+      api: 'ContentList',
+      description: 'repost content list',
+      method: 'addContentListRepost',
       params: [
         {
-          name: 'playlistId',
-          description: 'ID of playlist to repost',
+          name: 'content listId',
+          description: 'ID of content list to repost',
           userInputHandler: Number
         }
       ]
     },
-    'favorite-playlist': {
-      api: 'Playlist',
-      description: 'favorite playlist',
-      method: 'addPlaylistSave',
+    'favorite-content list': {
+      api: 'ContentList',
+      description: 'favorite content list',
+      method: 'addContentListSave',
       params: [
         {
-          name: 'playlistId',
-          description: 'ID of playlist to favorite',
+          name: 'content listId',
+          description: 'ID of content list to favorite',
           userInputHandler: Number
         }
       ]

@@ -59,23 +59,23 @@ export class UserLibraryFactoryClient extends ContractClient {
     )
   }
 
-  async addPlaylistSave(userId: number, playlistId: number) {
+  async addContentListSave(userId: number, content listId: number) {
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
     const signatureData =
-      signatureSchemas.generators.getPlaylistSaveRequestData(
+      signatureSchemas.generators.getContentListSaveRequestData(
         chainId,
         contractAddress,
         userId,
-        playlistId,
+        content listId,
         nonce
       )
     const sig = await this.web3Manager.signTypedData(signatureData)
     const contractMethod = await this.getMethod(
-      'addPlaylistSave',
+      'addContentListSave',
       userId,
-      playlistId,
+      content listId,
       nonce,
       sig
     )
@@ -86,23 +86,23 @@ export class UserLibraryFactoryClient extends ContractClient {
     )
   }
 
-  async deletePlaylistSave(userId: number, playlistId: number) {
+  async deleteContentListSave(userId: number, content listId: number) {
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
     const signatureData =
-      signatureSchemas.generators.getDeletePlaylistSaveRequestData(
+      signatureSchemas.generators.getDeleteContentListSaveRequestData(
         chainId,
         contractAddress,
         userId,
-        playlistId,
+        content listId,
         nonce
       )
     const sig = await this.web3Manager.signTypedData(signatureData)
     const contractMethod = await this.getMethod(
-      'deletePlaylistSave',
+      'deleteContentListSave',
       userId,
-      playlistId,
+      content listId,
       nonce,
       sig
     )

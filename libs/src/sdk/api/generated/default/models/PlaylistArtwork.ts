@@ -16,25 +16,25 @@
 /**
  * 
  * @export
- * @interface PlaylistArtwork
+ * @interface ContentListArtwork
  */
-export interface PlaylistArtwork {
+export interface ContentListArtwork {
     /**
      * 
      * @type {string}
-     * @memberof PlaylistArtwork
+     * @memberof ContentListArtwork
      */
     _150x150?: string;
     /**
      * 
      * @type {string}
-     * @memberof PlaylistArtwork
+     * @memberof ContentListArtwork
      */
     _480x480?: string;
     /**
      * 
      * @type {string}
-     * @memberof PlaylistArtwork
+     * @memberof ContentListArtwork
      */
     _1000x1000?: string;
 }

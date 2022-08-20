@@ -14,23 +14,23 @@
  */
 
 import {
-    Playlist,
-    PlaylistFromJSON,
-    PlaylistFromJSONTyped,
-    PlaylistToJSON,
-} from './Playlist';
+    ContentList,
+    ContentListFromJSON,
+    ContentListFromJSONTyped,
+    ContentListToJSON,
+} from './ContentList';
 
 /**
  * 
  * @export
- * @interface TrendingPlaylistsResponse
+ * @interface TrendingContentListsResponse
  */
-export interface TrendingPlaylistsResponse {
+export interface TrendingContentListsResponse {
     /**
      * 
-     * @type {Array<Playlist>}
-     * @memberof TrendingPlaylistsResponse
+     * @type {Array<ContentList>}
+     * @memberof TrendingContentListsResponse
      */
-    data?: Array<Playlist>;
+    data?: Array<ContentList>;
 }
 

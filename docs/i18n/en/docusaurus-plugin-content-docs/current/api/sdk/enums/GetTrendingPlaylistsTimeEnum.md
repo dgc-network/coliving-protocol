@@ -1,7 +1,7 @@
 ---
-id: "GetTrendingPlaylistsTimeEnum"
-title: "Enumeration: GetTrendingPlaylistsTimeEnum"
-sidebar_label: "GetTrendingPlaylistsTimeEnum"
+id: "GetTrendingContentListsTimeEnum"
+title: "Enumeration: GetTrendingContentListsTimeEnum"
+sidebar_label: "GetTrendingContentListsTimeEnum"
 sidebar_position: 0
 custom_edit_url: null
 pagination_prev: null

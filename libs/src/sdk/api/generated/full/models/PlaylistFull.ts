@@ -20,17 +20,17 @@ import {
     FavoriteToJSON,
 } from './Favorite';
 import {
-    PlaylistAddedTimestamp,
-    PlaylistAddedTimestampFromJSON,
-    PlaylistAddedTimestampFromJSONTyped,
-    PlaylistAddedTimestampToJSON,
-} from './PlaylistAddedTimestamp';
+    ContentListAddedTimestamp,
+    ContentListAddedTimestampFromJSON,
+    ContentListAddedTimestampFromJSONTyped,
+    ContentListAddedTimestampToJSON,
+} from './ContentListAddedTimestamp';
 import {
-    PlaylistArtwork,
-    PlaylistArtworkFromJSON,
-    PlaylistArtworkFromJSONTyped,
-    PlaylistArtworkToJSON,
-} from './PlaylistArtwork';
+    ContentListArtwork,
+    ContentListArtworkFromJSON,
+    ContentListArtworkFromJSONTyped,
+    ContentListArtworkToJSON,
+} from './ContentListArtwork';
 import {
     Repost,
     RepostFromJSON,
@@ -53,151 +53,151 @@ import {
 /**
  * 
  * @export
- * @interface PlaylistFull
+ * @interface ContentListFull
  */
-export interface PlaylistFull {
+export interface ContentListFull {
     /**
      * 
-     * @type {PlaylistArtwork}
-     * @memberof PlaylistFull
+     * @type {ContentListArtwork}
+     * @memberof ContentListFull
      */
-    artwork?: PlaylistArtwork;
+    artwork?: ContentListArtwork;
     /**
      * 
      * @type {string}
-     * @memberof PlaylistFull
+     * @memberof ContentListFull
      */
     description?: string;
     /**
      * 
      * @type {string}
-     * @memberof PlaylistFull
+     * @memberof ContentListFull
      */
     id: string;
     /**
      * 
      * @type {boolean}
-     * @memberof PlaylistFull
+     * @memberof ContentListFull
      */
     is_album: boolean;
     /**
      * 
      * @type {string}
-     * @memberof PlaylistFull
+     * @memberof ContentListFull
      */
-    playlist_name: string;
+    content list_name: string;
     /**
      * 
      * @type {number}
-     * @memberof PlaylistFull
+     * @memberof ContentListFull
      */
     repost_count: number;
     /**
      * 
      * @type {number}
-     * @memberof PlaylistFull
+     * @memberof ContentListFull
      */
     favorite_count: number;
     /**
      * 
      * @type {number}
-     * @memberof PlaylistFull
+     * @memberof ContentListFull
      */
     total_play_count: number;
     /**
      * 
      * @type {UserFull}
-     * @memberof PlaylistFull
+     * @memberof ContentListFull
      */
     user: UserFull;
     /**
      * 
      * @type {number}
-     * @memberof PlaylistFull
+     * @memberof ContentListFull
      */
     blocknumber: number;
     /**
      * 
      * @type {string}
-     * @memberof PlaylistFull
+     * @memberof ContentListFull
      */
     created_at?: string;
     /**
      * 
      * @type {Array<Repost>}
-     * @memberof PlaylistFull
+     * @memberof ContentListFull
      */
     followee_reposts: Array<Repost>;
     /**
      * 
      * @type {Array<Favorite>}
-     * @memberof PlaylistFull
+     * @memberof ContentListFull
      */
     followee_favorites: Array<Favorite>;
     /**
      * 
      * @type {boolean}
-     * @memberof PlaylistFull
+     * @memberof ContentListFull
      */
     has_current_user_reposted: boolean;
     /**
      * 
      * @type {boolean}
-     * @memberof PlaylistFull
+     * @memberof ContentListFull
      */
     has_current_user_saved: boolean;
     /**
      * 
      * @type {boolean}
-     * @memberof PlaylistFull
+     * @memberof ContentListFull
      */
     is_delete: boolean;
     /**
      * 
      * @type {boolean}
-     * @memberof PlaylistFull
+     * @memberof ContentListFull
      */
     is_private: boolean;
     /**
      * 
      * @type {string}
-     * @memberof PlaylistFull
+     * @memberof ContentListFull
      */
     updated_at?: string;
     /**
      * 
-     * @type {Array<PlaylistAddedTimestamp>}
-     * @memberof PlaylistFull
+     * @type {Array<ContentListAddedTimestamp>}
+     * @memberof ContentListFull
      */
-    added_timestamps: Array<PlaylistAddedTimestamp>;
+    added_timestamps: Array<ContentListAddedTimestamp>;
     /**
      * 
      * @type {string}
-     * @memberof PlaylistFull
+     * @memberof ContentListFull
      */
     user_id: string;
     /**
      * 
      * @type {Array<AgreementFull>}
-     * @memberof PlaylistFull
+     * @memberof ContentListFull
      */
     agreements: Array<AgreementFull>;
     /**
      * 
      * @type {string}
-     * @memberof PlaylistFull
+     * @memberof ContentListFull
      */
     cover_art?: string;
     /**
      * 
      * @type {string}
-     * @memberof PlaylistFull
+     * @memberof ContentListFull
      */
     cover_art_sizes?: string;
     /**
      * 
      * @type {number}
-     * @memberof PlaylistFull
+     * @memberof ContentListFull
      */
     agreement_count: number;
 }

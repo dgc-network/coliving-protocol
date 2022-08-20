@@ -21,7 +21,7 @@ coliving-cli set-config --required discovery-node
 ```
 
 #### Creator Node
-There are four required creator node environment variables, available in the creator node section [here](setup.md#content-node).
+There are four required content node environment variables, available in the content node section [here](setup.md#content-node).
 
 The full list of variables and explanations can be found [here](https://github.com/dgc-network/coliving-protocol/blob/master/content-node/src/config.js). Generally node operators will not need to modify any other environment variables.
 

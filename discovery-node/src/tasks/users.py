@@ -318,16 +318,16 @@ def parse_user_event(
                 user_record.user_id,
             )
 
-    elif event_type == user_event_types_lookup["update_creator_node_endpoint"]:
+    elif event_type == user_event_types_lookup["update_content_node_endpoint"]:
         # Ensure any user consuming the new UserReplicaSetManager contract does not process
-        # legacy `creator_node_endpoint` changes
+        # legacy `content_node_endpoint` changes
         # Reference user_replica_set.py for the updated indexing flow around this field
         replica_set_upgraded = user_replica_set_upgraded(user_record)
         logger.info(
             f"index.py | users.py | {user_record.handle} Replica set upgraded: {replica_set_upgraded}"
         )
         if not replica_set_upgraded:
-            user_record.creator_node_endpoint = helpers.get_tx_arg(
+            user_record.content_node_endpoint = helpers.get_tx_arg(
                 entry, "_contentNodeEndpoint"
             )
 
@@ -396,10 +396,10 @@ def parse_user_event(
                 )
 
             if (
-                "playlist_library" in ipfs_metadata
-                and ipfs_metadata["playlist_library"]
+                "content list_library" in ipfs_metadata
+                and ipfs_metadata["content list_library"]
             ):
-                user_record.playlist_library = ipfs_metadata["playlist_library"]
+                user_record.content list_library = ipfs_metadata["content list_library"]
 
             if "is_deactivated" in ipfs_metadata:
                 user_record.is_deactivated = ipfs_metadata["is_deactivated"]

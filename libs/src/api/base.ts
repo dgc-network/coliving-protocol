@@ -18,7 +18,7 @@ export const Services = Object.freeze({
   IDENTITY_SERVICE: 'Identity Service',
   HEDGEHOG: 'Hedgehog',
   DISCOVERY_PROVIDER: 'Discovery Node',
-  CREATOR_NODE: 'Creator Node',
+  CONTENT_NODE: 'Creator Node',
   COMSTOCK: 'Comstock',
   SOLANA_WEB3_MANAGER: 'Solana Web3 Manager'
 })
@@ -101,7 +101,7 @@ export class Base {
       [Services.IDENTITY_SERVICE]: this.identityService,
       [Services.HEDGEHOG]: this.hedgehog,
       [Services.DISCOVERY_PROVIDER]: this.discoveryProvider,
-      [Services.CREATOR_NODE]: this.creatorNode,
+      [Services.CONTENT_NODE]: this.creatorNode,
       [Services.COMSTOCK]: this.comstock,
       [Services.SOLANA_WEB3_MANAGER]: this.solanaWeb3Manager
     }

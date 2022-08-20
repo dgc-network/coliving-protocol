@@ -16,7 +16,7 @@ loadABI('UserFactory.json')
 loadABI('AgreementFactory.json')
 loadABI('DiscoveryProviderFactory.json')
 loadABI('SocialFeatureFactory.json')
-loadABI('PlaylistFactory.json')
+loadABI('ContentListFactory.json')
 loadABI('UserLibraryFactory.json')
 loadABI('UserReplicaSetManager.json')
 

@@ -1,8 +1,8 @@
 'use strict'
 
 module.exports = (sequelize, DataTypes) => {
-  const Playlist = sequelize.define(
-    'Playlist',
+  const ContentList = sequelize.define(
+    'ContentList',
     {
       cnodeUserUUID: {
         type: DataTypes.UUID,
@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.JSONB,
         allowNull: false
       },
-      playlistImageFileUUID: {
+      contentListImageFileUUID: {
         type: DataTypes.UUID,
         allowNull: true
       }
@@ -42,25 +42,25 @@ module.exports = (sequelize, DataTypes) => {
     }
   )
 
-  Playlist.associate = function (models) {
-    Playlist.belongsTo(models.CNodeUser, {
+  ContentList.associate = function (models) {
+    ContentList.belongsTo(models.CNodeUser, {
       foreignKey: 'cnodeUserUUID',
       targetKey: 'cnodeUserUUID',
       onDelete: 'RESTRICT'
     })
-    Playlist.belongsTo(models.File, {
+    ContentList.belongsTo(models.File, {
       foreignKey: 'metadataFileUUID',
       targetKey: 'fileUUID',
       onDelete: 'RESTRICT'
     })
-    Playlist.belongsTo(models.File, {
-      foreignKey: 'playlistImageFileUUID',
+    ContentList.belongsTo(models.File, {
+      foreignKey: 'content listImageFileUUID',
       targetKey: 'fileUUID',
       onDelete: 'RESTRICT'
     })
-    // Playlist also has a composite foreign key on ClockRecords (cnodeUserUUID, clock)
+    // ContentList also has a composite foreign key on ClockRecords (cnodeUserUUID, clock)
     // sequelize does not support composite foreign keys
   }
 
-  return Playlist
+  return ContentList
 }

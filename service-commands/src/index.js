@@ -8,7 +8,7 @@ const User = require('./commands/users')
 const Agreement = require('./commands/agreements')
 const File = require('./commands/files')
 const IpldBlacklist = require('./commands/ipldBlacklist')
-const Playlist = require('./commands/playlists')
+const ContentList = require('./commands/content lists')
 const DataContracts = require('./commands/dataContracts')
 const SeedSession = require('./commands/seed')
 const {
@@ -25,7 +25,7 @@ module.exports = {
   ...Agreement,
   ...File,
   ...IpldBlacklist,
-  ...Playlist,
+  ...ContentList,
   ...DataContracts,
   SeedSession,
   RandomUtils,

@@ -18,7 +18,7 @@ def test_get_repost_feed_for_user(app):
             {"user_id": 1, "repost_item_id": 3, "repost_type": "agreement"},
             {"user_id": 1, "repost_item_id": 1, "repost_type": "agreement"},
             {"user_id": 1, "repost_item_id": 4, "repost_type": "agreement"},
-            {"user_id": 1, "repost_item_id": 4, "repost_type": "playlist"},
+            {"user_id": 1, "repost_item_id": 4, "repost_type": "content list"},
             {"user_id": 1, "repost_item_id": 8, "repost_type": "album"},
             {"user_id": 1, "repost_item_id": 6, "repost_type": "agreement"},
         ],
@@ -32,15 +32,15 @@ def test_get_repost_feed_for_user(app):
             {"agreement_id": 7, "title": "agreement 7"},
             {"agreement_id": 8, "title": "agreement 8"},
         ],
-        "playlists": [
-            {"playlist_id": 1, "playlist_name": "playlist 1"},
-            {"playlist_id": 2, "playlist_name": "playlist 2"},
-            {"playlist_id": 3, "playlist_name": "playlist 3"},
-            {"playlist_id": 4, "playlist_name": "playlist 4"},
-            {"playlist_id": 5, "playlist_name": "playlist 5"},
-            {"playlist_id": 6, "playlist_name": "playlist 6"},
-            {"playlist_id": 7, "playlist_name": "playlist 7"},
-            {"playlist_id": 8, "playlist_name": "album 8"},
+        "content lists": [
+            {"content list_id": 1, "content list_name": "content list 1"},
+            {"content list_id": 2, "content list_name": "content list 2"},
+            {"content list_id": 3, "content list_name": "content list 3"},
+            {"content list_id": 4, "content list_name": "content list 4"},
+            {"content list_id": 5, "content list_name": "content list 5"},
+            {"content list_id": 6, "content list_name": "content list 6"},
+            {"content list_id": 7, "content list_name": "content list 7"},
+            {"content list_id": 8, "content list_name": "album 8"},
         ],
     }
 
@@ -50,8 +50,8 @@ def test_get_repost_feed_for_user(app):
         repost_feed = _get_repost_feed_for_user(session, 1, {"limit": 10, "offset": 0})
 
     assert repost_feed[0]["title"] == "agreement 6"
-    assert repost_feed[1]["playlist_name"] == "album 8"
-    assert repost_feed[2]["playlist_name"] == "playlist 4"
+    assert repost_feed[1]["content list_name"] == "album 8"
+    assert repost_feed[2]["content list_name"] == "content list 4"
     assert repost_feed[3]["title"] == "agreement 4"
     assert repost_feed[4]["title"] == "agreement 1"
     assert repost_feed[5]["title"] == "agreement 3"
@@ -77,7 +77,7 @@ def test_get_repost_feed_for_user_limit_bounds(app):
             {"user_id": 1, "repost_item_id": 3, "repost_type": "agreement"},
             {"user_id": 1, "repost_item_id": 1, "repost_type": "agreement"},
             {"user_id": 1, "repost_item_id": 4, "repost_type": "agreement"},
-            {"user_id": 1, "repost_item_id": 4, "repost_type": "playlist"},
+            {"user_id": 1, "repost_item_id": 4, "repost_type": "content list"},
             {"user_id": 1, "repost_item_id": 8, "repost_type": "album"},
             {"user_id": 1, "repost_item_id": 6, "repost_type": "agreement"},
         ],
@@ -91,15 +91,15 @@ def test_get_repost_feed_for_user_limit_bounds(app):
             {"agreement_id": 7, "title": "agreement 7"},
             {"agreement_id": 8, "title": "agreement 8"},
         ],
-        "playlists": [
-            {"playlist_id": 1, "playlist_name": "playlist 1"},
-            {"playlist_id": 2, "playlist_name": "playlist 2"},
-            {"playlist_id": 3, "playlist_name": "playlist 3"},
-            {"playlist_id": 4, "playlist_name": "playlist 4"},
-            {"playlist_id": 5, "playlist_name": "playlist 5"},
-            {"playlist_id": 6, "playlist_name": "playlist 6"},
-            {"playlist_id": 7, "playlist_name": "playlist 7"},
-            {"playlist_id": 8, "playlist_name": "album 8"},
+        "content lists": [
+            {"content list_id": 1, "content list_name": "content list 1"},
+            {"content list_id": 2, "content list_name": "content list 2"},
+            {"content list_id": 3, "content list_name": "content list 3"},
+            {"content list_id": 4, "content list_name": "content list 4"},
+            {"content list_id": 5, "content list_name": "content list 5"},
+            {"content list_id": 6, "content list_name": "content list 6"},
+            {"content list_id": 7, "content list_name": "content list 7"},
+            {"content list_id": 8, "content list_name": "album 8"},
         ],
     }
 
@@ -112,8 +112,8 @@ def test_get_repost_feed_for_user_limit_bounds(app):
     # we only return 4 here. This is broken.
     # TODO fix me.
     assert repost_feed[0]["title"] == "agreement 6"
-    assert repost_feed[1]["playlist_name"] == "album 8"
-    assert repost_feed[2]["playlist_name"] == "playlist 4"
+    assert repost_feed[1]["content list_name"] == "album 8"
+    assert repost_feed[2]["content list_name"] == "content list 4"
     assert repost_feed[3]["title"] == "agreement 4"
     # Should skip agreement 1 because it is deleted
     assert repost_feed[4]["title"] == "agreement 3"

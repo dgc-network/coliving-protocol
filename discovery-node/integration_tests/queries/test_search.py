@@ -4,7 +4,7 @@ from datetime import datetime
 
 import pytest
 from src.models.indexing.block import Block
-from src.models.playlists.playlist import Playlist
+from src.models.content lists.content list import ContentList
 from src.models.social.follow import Follow
 from src.models.social.save import Save, SaveType
 from src.models.agreements.agreement import Agreement
@@ -12,7 +12,7 @@ from src.models.users.user import User
 from src.models.users.user_balance import UserBalance
 from src.queries.search_es import search_es_full
 from src.queries.search_queries import (
-    playlist_search_query,
+    content list_search_query,
     agreement_search_query,
     user_search_query,
 )
@@ -146,30 +146,30 @@ def setup_search(app_module):
         )
     ]
 
-    playlists = [
-        Playlist(
+    content lists = [
+        ContentList(
             blockhash=hex(1),
             blocknumber=1,
-            playlist_id=1,
-            playlist_owner_id=1,
+            content list_id=1,
+            content list_owner_id=1,
             is_album=False,
             is_private=False,
-            playlist_name="playlist 1",
-            playlist_contents={"agreement_ids": [{"agreement": 1, "time": 1}]},
+            content list_name="content list 1",
+            content list_contents={"agreement_ids": [{"agreement": 1, "time": 1}]},
             is_current=True,
             is_delete=False,
             updated_at=now,
             created_at=now,
         ),
-        Playlist(
+        ContentList(
             blockhash=hex(2),
             blocknumber=2,
-            playlist_id=2,
-            playlist_owner_id=2,
+            content list_id=2,
+            content list_owner_id=2,
             is_album=True,
             is_private=False,
-            playlist_name="album 1",
-            playlist_contents={"agreement_ids": [{"agreement": 2, "time": 2}]},
+            content list_name="album 1",
+            content list_contents={"agreement_ids": [{"agreement": 2, "time": 2}]},
             is_current=True,
             is_delete=False,
             updated_at=now,
@@ -193,7 +193,7 @@ def setup_search(app_module):
             blocknumber=1,
             user_id=1,
             save_item_id=1,
-            save_type=SaveType.playlist,
+            save_type=SaveType.content list,
             created_at=now,
             is_current=True,
             is_delete=False,
@@ -232,8 +232,8 @@ def setup_search(app_module):
         for follow in follows:
             session.add(follow)
             session.flush()
-        for playlist in playlists:
-            session.add(playlist)
+        for content list in content lists:
+            session.add(content list)
             session.flush()
         for save in saves:
             session.add(save)
@@ -246,7 +246,7 @@ def setup_search(app_module):
         session.execute("REFRESH MATERIALIZED VIEW agreement_lexeme_dict;")
         session.execute("REFRESH MATERIALIZED VIEW user_lexeme_dict;")
 
-        session.execute("REFRESH MATERIALIZED VIEW playlist_lexeme_dict;")
+        session.execute("REFRESH MATERIALIZED VIEW content list_lexeme_dict;")
         session.execute("REFRESH MATERIALIZED VIEW album_lexeme_dict;")
 
     subprocess.run(
@@ -464,20 +464,20 @@ def test_get_internal_users_no_following(app_module):
     assert len(es_res["followed_users"]) == 0
 
 
-def test_get_external_playlists(app_module):
-    """Tests we get all playlists"""
+def test_get_external_content lists(app_module):
+    """Tests we get all content lists"""
     with app_module.app_context():
         db = get_db()
 
     with db.scoped_session() as session:
-        res = playlist_search_query(session, "playlist", 10, 0, False, False, None)
+        res = content list_search_query(session, "content list", 10, 0, False, False, None)
         assert len(res["all"]) == 1
         assert len(res["saved"]) == 0
 
     search_args = {
         "is_auto_complete": False,
-        "kind": "playlists",
-        "query": "playlist",
+        "kind": "content lists",
+        "query": "content list",
         "current_user_id": None,
         "with_users": True,
         "limit": 10,
@@ -485,24 +485,24 @@ def test_get_external_playlists(app_module):
         "only_downloadable": False,
     }
     es_res = search_es_full(search_args)
-    assert len(es_res["playlists"]) == 1
-    assert len(es_res["saved_playlists"]) == 0
+    assert len(es_res["content lists"]) == 1
+    assert len(es_res["saved_content lists"]) == 0
 
 
-def test_get_autocomplete_playlists(app_module):
+def test_get_autocomplete_content lists(app_module):
     """Tests we get all agreements with autocomplete"""
     with app_module.app_context():
         db = get_db()
 
     with db.scoped_session() as session:
-        res = playlist_search_query(session, "playlist", 10, 0, False, True, None)
+        res = content list_search_query(session, "content list", 10, 0, False, True, None)
         assert len(res["all"]) == 1
         assert len(res["saved"]) == 0
 
     search_args = {
         "is_auto_complete": True,
-        "kind": "playlists",
-        "query": "playlist",
+        "kind": "content lists",
+        "query": "content list",
         "current_user_id": None,
         "with_users": True,
         "limit": 10,
@@ -510,24 +510,24 @@ def test_get_autocomplete_playlists(app_module):
         "only_downloadable": False,
     }
     es_res = search_es_full(search_args)
-    assert len(es_res["playlists"]) == 1
-    assert len(es_res["saved_playlists"]) == 0
+    assert len(es_res["content lists"]) == 1
+    assert len(es_res["saved_content lists"]) == 0
 
 
-def test_get_internal_playlists(app_module):
-    """Tests we get playlists when a user is logged in"""
+def test_get_internal_content lists(app_module):
+    """Tests we get content lists when a user is logged in"""
     with app_module.app_context():
         db = get_db()
 
     with db.scoped_session() as session:
-        res = playlist_search_query(session, "playlist", 10, 0, False, False, 1)
+        res = content list_search_query(session, "content list", 10, 0, False, False, 1)
         assert len(res["all"]) == 1
         assert len(res["saved"]) == 1
 
     search_args = {
         "is_auto_complete": False,
-        "kind": "playlists",
-        "query": "playlist",
+        "kind": "content lists",
+        "query": "content list",
         "current_user_id": 1,
         "with_users": True,
         "limit": 10,
@@ -535,8 +535,8 @@ def test_get_internal_playlists(app_module):
         "only_downloadable": False,
     }
     es_res = search_es_full(search_args)
-    assert len(es_res["playlists"]) == 1
-    assert len(es_res["saved_playlists"]) == 1
+    assert len(es_res["content lists"]) == 1
+    assert len(es_res["saved_content lists"]) == 1
 
 
 def test_get_external_albums(app_module):
@@ -545,7 +545,7 @@ def test_get_external_albums(app_module):
         db = get_db()
 
     with db.scoped_session() as session:
-        res = playlist_search_query(session, "album", 10, 0, True, False, None)
+        res = content list_search_query(session, "album", 10, 0, True, False, None)
         assert len(res["all"]) == 1
         assert len(res["saved"]) == 0
 
@@ -570,7 +570,7 @@ def test_get_autocomplete_albums(app_module):
         db = get_db()
 
     with db.scoped_session() as session:
-        res = playlist_search_query(session, "album", 10, 0, True, True, None)
+        res = content list_search_query(session, "album", 10, 0, True, True, None)
         assert len(res["all"]) == 1
         assert len(res["saved"]) == 0
 
@@ -595,7 +595,7 @@ def test_get_internal_albums(app_module):
         db = get_db()
 
     with db.scoped_session() as session:
-        res = playlist_search_query(session, "album", 10, 0, True, False, 1)
+        res = content list_search_query(session, "album", 10, 0, True, False, 1)
         assert len(res["all"]) == 1
         assert len(res["saved"]) == 1
 

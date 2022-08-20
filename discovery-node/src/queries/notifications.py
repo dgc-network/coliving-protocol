@@ -10,7 +10,7 @@ from sqlalchemy.orm.session import Session
 from src import api_helpers
 from src.models.indexing.block import Block
 from src.models.notifications.milestone import Milestone, MilestoneName
-from src.models.playlists.playlist import Playlist
+from src.models.content lists.content list import ContentList
 from src.models.rewards.challenge_disbursement import ChallengeDisbursement
 from src.models.social.follow import Follow
 from src.models.social.reaction import Reaction
@@ -50,7 +50,7 @@ def get_owner_id(session, entity_type, entity_id):
 
     Args:
         session: (obj) The start block number for querying for notifications
-        entity_type: (string) Must be either 'agreement' | 'album' | 'playlist
+        entity_type: (string) Must be either 'agreement' | 'album' | 'content list
         entity_id: (int) The id of the 'entity_type'
 
     Returns:
@@ -73,12 +73,12 @@ def get_owner_id(session, entity_type, entity_id):
 
     if entity_type == "album":
         owner_id_query = (
-            session.query(Playlist.playlist_owner_id)
+            session.query(ContentList.content list_owner_id)
             .filter(
-                Playlist.playlist_id == entity_id,
-                Playlist.is_delete == False,
-                Playlist.is_current == True,
-                Playlist.is_album == True,
+                ContentList.content list_id == entity_id,
+                ContentList.is_delete == False,
+                ContentList.is_current == True,
+                ContentList.is_album == True,
             )
             .all()
         )
@@ -87,14 +87,14 @@ def get_owner_id(session, entity_type, entity_id):
         owner_id = owner_id_query[0][0]
         return owner_id
 
-    if entity_type == "playlist":
+    if entity_type == "content list":
         owner_id_query = (
-            session.query(Playlist.playlist_owner_id)
+            session.query(ContentList.content list_owner_id)
             .filter(
-                Playlist.playlist_id == entity_id,
-                Playlist.is_delete == False,
-                Playlist.is_current == True,
-                Playlist.is_album == False,
+                ContentList.content list_id == entity_id,
+                ContentList.is_delete == False,
+                ContentList.is_current == True,
+                ContentList.is_album == False,
             )
             .all()
         )
@@ -196,7 +196,7 @@ def get_cosign_remix_notifications(session, max_block_number, remix_agreements):
 class GroupMilestones(TypedDict):
     agreements: Dict[int, int]
     albums: Dict[int, int]
-    playlists: Dict[int, int]
+    content lists: Dict[int, int]
 
 
 class MilestoneInfo(TypedDict):
@@ -219,54 +219,54 @@ def get_milestone_info(
     for milestone_name, *id_threshold in milestones_in_block:
         milestones[milestone_name].append(id_threshold)
 
-    milestone_playlist_ids = [
-        playlist_id
-        for name, playlist_id, _ in milestones_in_block
+    milestone_content list_ids = [
+        content list_id
+        for name, content list_id, _ in milestones_in_block
         if name
         in (
-            MilestoneName.PLAYLIST_REPOST_COUNT,
-            MilestoneName.PLAYLIST_SAVE_COUNT,
+            MilestoneName.CONTENT_LIST_REPOST_COUNT,
+            MilestoneName.CONTENT_LIST_SAVE_COUNT,
         )
     ]
 
-    playlist_id_albums: Dict[int, bool] = {}
-    if milestone_playlist_ids:
-        playlist_id_albums_response = (
-            session.query(Playlist.playlist_id, Playlist.is_album)
+    content list_id_albums: Dict[int, bool] = {}
+    if milestone_content list_ids:
+        content list_id_albums_response = (
+            session.query(ContentList.content list_id, ContentList.is_album)
             .filter(
-                Playlist.is_current == True,
-                Playlist.playlist_id.in_(milestone_playlist_ids),
+                ContentList.is_current == True,
+                ContentList.content list_id.in_(milestone_content list_ids),
             )
             .all()
         )
-        playlist_id_albums = dict(playlist_id_albums_response)
+        content list_id_albums = dict(content list_id_albums_response)
 
     album_favorites: List[Tuple[int, int]] = []
-    playlist_favorites: List[Tuple[int, int]] = []
-    for id, threshold in milestones.get(MilestoneName.PLAYLIST_SAVE_COUNT, []):
-        if id in playlist_id_albums and playlist_id_albums[id]:
+    content list_favorites: List[Tuple[int, int]] = []
+    for id, threshold in milestones.get(MilestoneName.CONTENT_LIST_SAVE_COUNT, []):
+        if id in content list_id_albums and content list_id_albums[id]:
             album_favorites.append((id, threshold))
         else:
-            playlist_favorites.append((id, threshold))
+            content list_favorites.append((id, threshold))
 
     album_reposts: List[Tuple[int, int]] = []
-    playlist_reposts: List[Tuple[int, int]] = []
-    for id, threshold in milestones.get(MilestoneName.PLAYLIST_REPOST_COUNT, []):
-        if id in playlist_id_albums and playlist_id_albums[id]:
+    content list_reposts: List[Tuple[int, int]] = []
+    for id, threshold in milestones.get(MilestoneName.CONTENT_LIST_REPOST_COUNT, []):
+        if id in content list_id_albums and content list_id_albums[id]:
             album_reposts.append((id, threshold))
         else:
-            playlist_reposts.append((id, threshold))
+            content list_reposts.append((id, threshold))
 
     favorite_milestones: GroupMilestones = {
         "agreements": dict(milestones.get(MilestoneName.AGREEMENT_SAVE_COUNT, [])),
         "albums": dict(album_favorites),
-        "playlists": dict(playlist_favorites),
+        "content lists": dict(content list_favorites),
     }
 
     repost_milestones: GroupMilestones = {
         "agreements": dict(milestones.get(MilestoneName.AGREEMENT_REPOST_COUNT, [])),
         "albums": dict(album_reposts),
-        "playlists": dict(playlist_reposts),
+        "content lists": dict(content list_reposts),
     }
 
     milestone_info: MilestoneInfo = {
@@ -292,27 +292,27 @@ def notifications():
 
     Response - Json object w/ the following fields
         notifications: Array of notifications of shape:
-            type: 'Follow' | 'Favorite' | 'Repost' | 'Create' | 'RemixCreate' | 'RemixCosign' | 'PlaylistUpdate'
+            type: 'Follow' | 'Favorite' | 'Repost' | 'Create' | 'RemixCreate' | 'RemixCosign' | 'ContentListUpdate'
             blocknumber: (int) blocknumber of notification
             timestamp: (string) timestamp of notification
             initiator: (int) the user id that caused this notification
             metadata?: (any) additional information about the notification
-                entity_id?: (int) the id of the target entity (ie. playlist id of a playlist that is reposted)
+                entity_id?: (int) the id of the target entity (ie. content list id of a content list that is reposted)
                 entity_type?: (string) the type of the target entity
                 entity_owner_id?: (int) the id of the target entity's owner (if applicable)
-                playlist_update_timestamp?: (string) timestamp of last update of a given playlist
-                playlist_update_users?: (array<int>) user ids which favorited a given playlist
+                content list_update_timestamp?: (string) timestamp of last update of a given content list
+                content list_update_users?: (array<int>) user ids which favorited a given content list
 
         info: Dictionary of metadata w/ min_block_number & max_block_number fields
 
         milestones: Dictionary mapping of follows/reposts/favorites (processed within the blocks params)
             Root fields:
                 follower_counts: Contains a dictionary of user id => follower count (up to the max_block_number)
-                repost_counts: Contains a dictionary agreements/albums/playlists of id to repost count
-                favorite_counts: Contains a dictionary agreements/albums/playlists of id to favorite count
+                repost_counts: Contains a dictionary agreements/albums/content lists of id to repost count
+                favorite_counts: Contains a dictionary agreements/albums/content lists of id to favorite count
 
-        owners: Dictionary containing the mapping for agreement id / playlist id / album -> owner user id
-            The root keys are 'agreements', 'playlists', 'albums' and each contains the id to owner id mapping
+        owners: Dictionary containing the mapping for agreement id / content list id / album -> owner user id
+            The root keys are 'agreements', 'content lists', 'albums' and each contains the id to owner id mapping
     """
 
     db = get_db_read_replica()
@@ -353,7 +353,7 @@ def notifications():
     milestone_info = {}
 
     # Cache owner info for network entities and pass in w/results
-    owner_info = {const.agreements: {}, const.albums: {}, const.playlists: {}}
+    owner_info = {const.agreements: {}, const.albums: {}, const.content lists: {}}
 
     start_time = datetime.now()
     logger.info(f"notifications.py | start_time ${start_time}")
@@ -409,7 +409,7 @@ def notifications():
         # ID lists to query count aggregates
         favorited_agreement_ids = []
         favorited_album_ids = []
-        favorited_playlist_ids = []
+        favorited_content list_ids = []
 
         # List of favorite notifications
         favorite_notifications = []
@@ -457,13 +457,13 @@ def notifications():
                 favorited_album_ids.append(save_item_id)
                 owner_info[const.albums][save_item_id] = owner_id
 
-            elif save_type == SaveType.playlist:
-                owner_id = get_owner_id(session, "playlist", save_item_id)
+            elif save_type == SaveType.content list:
+                owner_id = get_owner_id(session, "content list", save_item_id)
                 if not owner_id:
                     continue
                 metadata[const.notification_entity_owner_id] = owner_id
-                favorited_playlist_ids.append(save_item_id)
-                owner_info[const.playlists][save_item_id] = owner_id
+                favorited_content list_ids.append(save_item_id)
+                owner_info[const.content lists][save_item_id] = owner_id
 
             favorite_notif[const.notification_metadata] = metadata
             favorite_notifications.append(favorite_notif)
@@ -538,7 +538,7 @@ def notifications():
         # ID lists to query counts
         reposted_agreement_ids = []
         reposted_album_ids = []
-        reposted_playlist_ids = []
+        reposted_content list_ids = []
 
         # List of repost notifications
         repost_notifications = []
@@ -585,13 +585,13 @@ def notifications():
                 reposted_album_ids.append(repost_item_id)
                 owner_info[const.albums][repost_item_id] = owner_id
 
-            elif repost_type == RepostType.playlist:
-                owner_id = get_owner_id(session, "playlist", repost_item_id)
+            elif repost_type == RepostType.content list:
+                owner_id = get_owner_id(session, "content list", repost_item_id)
                 if not owner_id:
                     continue
                 metadata[const.notification_entity_owner_id] = owner_id
-                reposted_playlist_ids.append(repost_item_id)
-                owner_info[const.playlists][repost_item_id] = owner_id
+                reposted_content list_ids.append(repost_item_id)
+                owner_info[const.content lists][repost_item_id] = owner_id
 
             repost_notif[const.notification_metadata] = metadata
             repost_notifications.append(repost_notif)
@@ -607,7 +607,7 @@ def notifications():
             )
             notifications_unsorted.extend(repost_remix_notifications)
 
-        # Query relevant created entity notification - agreements/albums/playlists
+        # Query relevant created entity notification - agreements/albums/content lists
         created_notifications = []
 
         logger.info(f"notifications.py | reposts at {datetime.now() - start_time}")
@@ -767,17 +767,17 @@ def notifications():
             f"notifications.py | agreement updates at {datetime.now() - start_time}"
         )
 
-        # Aggregate playlist/album notifs
-        collection_query = session.query(Playlist)
+        # Aggregate content list/album notifs
+        collection_query = session.query(ContentList)
         # TODO: Is it valid to use is_current here? Might not be the right info...
         collection_query = collection_query.filter(
-            Playlist.is_delete == False,
-            Playlist.is_private == False,
-            Playlist.blocknumber > min_block_number,
-            Playlist.blocknumber <= max_block_number,
+            ContentList.is_delete == False,
+            ContentList.is_private == False,
+            ContentList.blocknumber > min_block_number,
+            ContentList.blocknumber <= max_block_number,
         )
         collection_query = collection_query.filter(
-            Playlist.created_at == Playlist.updated_at
+            ContentList.created_at == ContentList.updated_at
         )
         collection_results = collection_query.all()
 
@@ -786,105 +786,105 @@ def notifications():
                 const.notification_type: const.notification_type_create,
                 const.notification_blocknumber: entry.blocknumber,
                 const.notification_timestamp: entry.created_at,
-                const.notification_initiator: entry.playlist_owner_id,
+                const.notification_initiator: entry.content list_owner_id,
             }
             metadata = {
-                const.notification_entity_id: entry.playlist_id,
-                const.notification_entity_owner_id: entry.playlist_owner_id,
-                const.notification_collection_content: entry.playlist_contents,
+                const.notification_entity_id: entry.content list_id,
+                const.notification_entity_owner_id: entry.content list_owner_id,
+                const.notification_collection_content: entry.content list_contents,
             }
 
             if entry.is_album:
                 metadata[const.notification_entity_type] = "album"
             else:
-                metadata[const.notification_entity_type] = "playlist"
+                metadata[const.notification_entity_type] = "content list"
             collection_notif[const.notification_metadata] = metadata
             created_notifications.append(collection_notif)
 
-        # Playlists that were private and turned to public aka 'published'
+        # ContentLists that were private and turned to public aka 'published'
         # TODO: Consider switching blocknumber for updated at?
-        publish_playlists_query = session.query(Playlist)
-        publish_playlists_query = publish_playlists_query.filter(
-            Playlist.is_private == False,
-            Playlist.created_at != Playlist.updated_at,
-            Playlist.blocknumber > min_block_number,
-            Playlist.blocknumber <= max_block_number,
+        publish_content lists_query = session.query(ContentList)
+        publish_content lists_query = publish_content lists_query.filter(
+            ContentList.is_private == False,
+            ContentList.created_at != ContentList.updated_at,
+            ContentList.blocknumber > min_block_number,
+            ContentList.blocknumber <= max_block_number,
         )
-        publish_playlist_results = publish_playlists_query.all()
-        for entry in publish_playlist_results:
+        publish_content list_results = publish_content lists_query.all()
+        for entry in publish_content list_results:
             prev_entry_query = (
-                session.query(Playlist)
+                session.query(ContentList)
                 .filter(
-                    Playlist.playlist_id == entry.playlist_id,
-                    Playlist.blocknumber < entry.blocknumber,
+                    ContentList.content list_id == entry.content list_id,
+                    ContentList.blocknumber < entry.blocknumber,
                 )
-                .order_by(desc(Playlist.blocknumber))
+                .order_by(desc(ContentList.blocknumber))
             )
             # Previous private entry indicates transition to public, triggering a notification
             prev_entry = prev_entry_query.first()
             if prev_entry.is_private == True:
-                publish_playlist_notif = {
+                publish_content list_notif = {
                     const.notification_type: const.notification_type_create,
                     const.notification_blocknumber: entry.blocknumber,
                     const.notification_timestamp: entry.created_at,
-                    const.notification_initiator: entry.playlist_owner_id,
+                    const.notification_initiator: entry.content list_owner_id,
                 }
                 metadata = {
-                    const.notification_entity_id: entry.playlist_id,
-                    const.notification_entity_owner_id: entry.playlist_owner_id,
-                    const.notification_collection_content: entry.playlist_contents,
-                    const.notification_entity_type: "playlist",
+                    const.notification_entity_id: entry.content list_id,
+                    const.notification_entity_owner_id: entry.content list_owner_id,
+                    const.notification_collection_content: entry.content list_contents,
+                    const.notification_entity_type: "content list",
                 }
-                publish_playlist_notif[const.notification_metadata] = metadata
-                created_notifications.append(publish_playlist_notif)
+                publish_content list_notif[const.notification_metadata] = metadata
+                created_notifications.append(publish_content list_notif)
 
-        # Playlists that had agreements added to them
-        # Get all playlists that were modified over this range
-        playlist_agreement_added_query = session.query(Playlist).filter(
-            Playlist.is_current == True,
-            Playlist.is_delete == False,
-            Playlist.is_private == False,
-            Playlist.blocknumber > min_block_number,
-            Playlist.blocknumber <= max_block_number,
+        # ContentLists that had agreements added to them
+        # Get all content lists that were modified over this range
+        content list_agreement_added_query = session.query(ContentList).filter(
+            ContentList.is_current == True,
+            ContentList.is_delete == False,
+            ContentList.is_private == False,
+            ContentList.blocknumber > min_block_number,
+            ContentList.blocknumber <= max_block_number,
         )
-        playlist_agreement_added_results = playlist_agreement_added_query.all()
-        # Loop over all playlist updates and determine if there were agreements added
-        # at the block that the playlist update is at
-        agreement_added_to_playlist_notifications = []
+        content list_agreement_added_results = content list_agreement_added_query.all()
+        # Loop over all content list updates and determine if there were agreements added
+        # at the block that the content list update is at
+        agreement_added_to_content list_notifications = []
         agreement_ids = []
-        for entry in playlist_agreement_added_results:
-            # Get the agreement_ids from entry["playlist_contents"]
-            if not entry.playlist_contents["agreement_ids"]:
-                # skip empty playlists
+        for entry in content list_agreement_added_results:
+            # Get the agreement_ids from entry["content list_contents"]
+            if not entry.content list_contents["agreement_ids"]:
+                # skip empty content lists
                 continue
-            playlist_contents = entry.playlist_contents
+            content list_contents = entry.content list_contents
             min_block = web3.eth.get_block(min_block_number)
             max_block = web3.eth.get_block(max_block_number)
 
-            for agreement in playlist_contents["agreement_ids"]:
+            for agreement in content list_contents["agreement_ids"]:
                 agreement_id = agreement["agreement"]
                 agreement_timestamp = agreement["time"]
-                # We know that this agreement was added to the playlist at this specific update
+                # We know that this agreement was added to the content list at this specific update
                 if (
                     min_block.timestamp < agreement_timestamp
                     and agreement_timestamp <= max_block.timestamp
                 ):
                     agreement_ids.append(agreement_id)
-                    agreement_added_to_playlist_notification = {
-                        const.notification_type: const.notification_type_add_agreement_to_playlist,
+                    agreement_added_to_content list_notification = {
+                        const.notification_type: const.notification_type_add_agreement_to_content list,
                         const.notification_blocknumber: entry.blocknumber,
                         const.notification_timestamp: entry.created_at,
-                        const.notification_initiator: entry.playlist_owner_id,
+                        const.notification_initiator: entry.content list_owner_id,
                     }
                     metadata = {
-                        const.playlist_id: entry.playlist_id,
+                        const.content list_id: entry.content list_id,
                         const.agreement_id: agreement_id,
                     }
-                    agreement_added_to_playlist_notification[
+                    agreement_added_to_content list_notification[
                         const.notification_metadata
                     ] = metadata
-                    agreement_added_to_playlist_notifications.append(
-                        agreement_added_to_playlist_notification
+                    agreement_added_to_content list_notifications.append(
+                        agreement_added_to_content list_notification
                     )
 
         agreements = (
@@ -903,7 +903,7 @@ def notifications():
             agreement_owner_map[agreement_id] = owner_id
 
         # Loop over notifications and populate their metadata
-        for notification in agreement_added_to_playlist_notifications:
+        for notification in agreement_added_to_content list_notifications:
             agreement_id = notification[const.notification_metadata][const.agreement_id]
             if agreement_id not in agreement_owner_map:
                 # Note: if agreement_id not in agreement_owner_map, it's because the agreement is either deleted, unlisted, or doesn't exist
@@ -912,7 +912,7 @@ def notifications():
             else:
                 agreement_owner_id = agreement_owner_map[agreement_id]
                 if agreement_owner_id != notification[const.notification_initiator]:
-                    # add agreements that don't belong to the playlist owner
+                    # add agreements that don't belong to the content list owner
                     notification[const.notification_metadata][
                         const.agreement_owner_id
                     ] = agreement_owner_id
@@ -920,7 +920,7 @@ def notifications():
 
         notifications_unsorted.extend(created_notifications)
 
-        logger.info(f"notifications.py | playlists at {datetime.now() - start_time}")
+        logger.info(f"notifications.py | content lists at {datetime.now() - start_time}")
 
         # Get additional owner info as requested for listen counts
         agreements_owner_query = session.query(Agreement).filter(
@@ -936,70 +936,70 @@ def notifications():
             f"notifications.py | owner info at {datetime.now() - start_time}, owners {len(agreement_owner_results)}"
         )
 
-        # Get playlist updates
+        # Get content list updates
         today = date.today()
         thirty_days_ago = today - timedelta(days=30)
         thirty_days_ago_time = datetime(
             thirty_days_ago.year, thirty_days_ago.month, thirty_days_ago.day, 0, 0, 0
         )
-        playlist_update_query = session.query(Playlist)
-        playlist_update_query = playlist_update_query.filter(
-            Playlist.is_current == True,
-            Playlist.is_delete == False,
-            Playlist.last_added_to >= thirty_days_ago_time,
-            Playlist.blocknumber > min_block_number,
-            Playlist.blocknumber <= max_block_number,
+        content list_update_query = session.query(ContentList)
+        content list_update_query = content list_update_query.filter(
+            ContentList.is_current == True,
+            ContentList.is_delete == False,
+            ContentList.last_added_to >= thirty_days_ago_time,
+            ContentList.blocknumber > min_block_number,
+            ContentList.blocknumber <= max_block_number,
         )
 
-        playlist_update_results = playlist_update_query.all()
+        content list_update_results = content list_update_query.all()
 
         logger.info(
-            f"notifications.py | get playlist updates at {datetime.now() - start_time}, playlist updates {len(playlist_update_results)}"
+            f"notifications.py | get content list updates at {datetime.now() - start_time}, content list updates {len(content list_update_results)}"
         )
 
-        # Represents all playlist update notifications
-        playlist_update_notifications = []
-        playlist_update_notifs_by_playlist_id = {}
-        for entry in playlist_update_results:
-            playlist_update_notifs_by_playlist_id[entry.playlist_id] = {
-                const.notification_type: const.notification_type_playlist_update,
+        # Represents all content list update notifications
+        content list_update_notifications = []
+        content list_update_notifs_by_content list_id = {}
+        for entry in content list_update_results:
+            content list_update_notifs_by_content list_id[entry.content list_id] = {
+                const.notification_type: const.notification_type_content list_update,
                 const.notification_blocknumber: entry.blocknumber,
                 const.notification_timestamp: entry.created_at,
-                const.notification_initiator: entry.playlist_owner_id,
+                const.notification_initiator: entry.content list_owner_id,
                 const.notification_metadata: {
-                    const.notification_entity_id: entry.playlist_id,
-                    const.notification_entity_type: "playlist",
-                    const.notification_playlist_update_timestamp: entry.last_added_to,
+                    const.notification_entity_id: entry.content list_id,
+                    const.notification_entity_type: "content list",
+                    const.notification_content list_update_timestamp: entry.last_added_to,
                 },
             }
 
-        # get all favorited playlists
-        # playlists may have been favorited outside the blocknumber bounds
+        # get all favorited content lists
+        # content lists may have been favorited outside the blocknumber bounds
         # e.g. before the min_block_number
-        playlist_favorites_query = session.query(Save)
-        playlist_favorites_query = playlist_favorites_query.filter(
+        content list_favorites_query = session.query(Save)
+        content list_favorites_query = content list_favorites_query.filter(
             Save.is_current == True,
             Save.is_delete == False,
-            Save.save_type == SaveType.playlist,
-            Save.save_item_id.in_(playlist_update_notifs_by_playlist_id.keys()),
+            Save.save_type == SaveType.content list,
+            Save.save_item_id.in_(content list_update_notifs_by_content list_id.keys()),
         )
-        playlist_favorites_results = playlist_favorites_query.all()
+        content list_favorites_results = content list_favorites_query.all()
 
         logger.info(
-            f"notifications.py | get playlist favorites {datetime.now() - start_time}, playlist favorites {len(playlist_favorites_results)}"
+            f"notifications.py | get content list favorites {datetime.now() - start_time}, content list favorites {len(content list_favorites_results)}"
         )
 
-        # dictionary of playlist id => users that favorited said playlist
-        # e.g. { playlist1: [user1, user2, ...], ... }
-        # we need this dictionary to know which users need to be notified of a playlist update
-        users_that_favorited_playlists_dict = {}
-        for result in playlist_favorites_results:
-            if result.save_item_id in users_that_favorited_playlists_dict:
-                users_that_favorited_playlists_dict[result.save_item_id].append(
+        # dictionary of content list id => users that favorited said content list
+        # e.g. { content list1: [user1, user2, ...], ... }
+        # we need this dictionary to know which users need to be notified of a content list update
+        users_that_favorited_content lists_dict = {}
+        for result in content list_favorites_results:
+            if result.save_item_id in users_that_favorited_content lists_dict:
+                users_that_favorited_content lists_dict[result.save_item_id].append(
                     result.user_id
                 )
             else:
-                users_that_favorited_playlists_dict[result.save_item_id] = [
+                users_that_favorited_content lists_dict[result.save_item_id] = [
                     result.user_id
                 ]
 
@@ -1007,25 +1007,25 @@ def notifications():
             f"notifications.py | computed users that favorited dict {datetime.now() - start_time}"
         )
 
-        for playlist_id in users_that_favorited_playlists_dict:
+        for content list_id in users_that_favorited_content lists_dict:
             # TODO: We probably do not need this check because we are filtering
-            # playlist_favorites_query to only matching ids
-            if playlist_id not in playlist_update_notifs_by_playlist_id:
+            # content list_favorites_query to only matching ids
+            if content list_id not in content list_update_notifs_by_content list_id:
                 continue
-            playlist_update_notif = playlist_update_notifs_by_playlist_id[playlist_id]
-            playlist_update_notif[const.notification_metadata].update(
+            content list_update_notif = content list_update_notifs_by_content list_id[content list_id]
+            content list_update_notif[const.notification_metadata].update(
                 {
-                    const.notification_playlist_update_users: users_that_favorited_playlists_dict[
-                        playlist_id
+                    const.notification_content list_update_users: users_that_favorited_content lists_dict[
+                        content list_id
                     ]
                 }
             )
-            playlist_update_notifications.append(playlist_update_notif)
+            content list_update_notifications.append(content list_update_notif)
 
-        notifications_unsorted.extend(playlist_update_notifications)
+        notifications_unsorted.extend(content list_update_notifications)
 
         logger.info(
-            f"notifications.py | all playlist updates at {datetime.now() - start_time}"
+            f"notifications.py | all content list updates at {datetime.now() - start_time}"
         )
 
         milestone_info = get_milestone_info(session, min_block_number, max_block_number)

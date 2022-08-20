@@ -14,11 +14,11 @@
  */
 
 import {
-    PlaylistFull,
-    PlaylistFullFromJSON,
-    PlaylistFullFromJSONTyped,
-    PlaylistFullToJSON,
-} from './PlaylistFull';
+    ContentListFull,
+    ContentListFullFromJSON,
+    ContentListFullFromJSONTyped,
+    ContentListFullToJSON,
+} from './ContentListFull';
 import {
     AgreementFull,
     AgreementFullFromJSON,
@@ -64,27 +64,27 @@ export interface SearchModel {
     saved_agreements?: Array<AgreementFull>;
     /**
      * 
-     * @type {Array<PlaylistFull>}
+     * @type {Array<ContentListFull>}
      * @memberof SearchModel
      */
-    playlists: Array<PlaylistFull>;
+    content lists: Array<ContentListFull>;
     /**
      * 
-     * @type {Array<PlaylistFull>}
+     * @type {Array<ContentListFull>}
      * @memberof SearchModel
      */
-    saved_playlists?: Array<PlaylistFull>;
+    saved_content lists?: Array<ContentListFull>;
     /**
      * 
-     * @type {Array<PlaylistFull>}
+     * @type {Array<ContentListFull>}
      * @memberof SearchModel
      */
-    albums: Array<PlaylistFull>;
+    albums: Array<ContentListFull>;
     /**
      * 
-     * @type {Array<PlaylistFull>}
+     * @type {Array<ContentListFull>}
      * @memberof SearchModel
      */
-    saved_albums?: Array<PlaylistFull>;
+    saved_albums?: Array<ContentListFull>;
 }
 

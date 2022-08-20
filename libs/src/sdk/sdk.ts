@@ -11,13 +11,13 @@ import { AgreementsApi } from './api/AgreementsApi'
 import { ResolveApi } from './api/ResolveApi'
 import {
   Configuration,
-  PlaylistsApi,
+  ContentListsApi,
   UsersApi,
   TipsApi,
   querystring
 } from './api/generated/default'
 import {
-  PlaylistsApi as PlaylistsApiFull,
+  ContentListsApi as ContentListsApiFull,
   ReactionsApi as ReactionsApiFull,
   SearchApi as SearchApiFull,
   AgreementsApi as AgreementsApiFull,
@@ -173,7 +173,7 @@ const initializeApis = ({
 
   const agreements = new AgreementsApi(generatedApiClientConfig, discoveryProvider)
   const users = new UsersApi(generatedApiClientConfig)
-  const playlists = new PlaylistsApi(generatedApiClientConfig)
+  const content lists = new ContentListsApi(generatedApiClientConfig)
   const tips = new TipsApi(generatedApiClientConfig)
   const { resolve } = new ResolveApi(generatedApiClientConfig)
 
@@ -181,7 +181,7 @@ const initializeApis = ({
     agreements: new AgreementsApiFull(generatedApiClientConfig as any),
     users: new UsersApiFull(generatedApiClientConfig as any),
     search: new SearchApiFull(generatedApiClientConfig as any),
-    playlists: new PlaylistsApiFull(generatedApiClientConfig as any),
+    content lists: new ContentListsApiFull(generatedApiClientConfig as any),
     reactions: new ReactionsApiFull(generatedApiClientConfig as any),
     tips: new TipsApiFull(generatedApiClientConfig as any)
   }
@@ -189,7 +189,7 @@ const initializeApis = ({
   return {
     agreements,
     users,
-    playlists,
+    content lists,
     tips,
     resolve,
     full

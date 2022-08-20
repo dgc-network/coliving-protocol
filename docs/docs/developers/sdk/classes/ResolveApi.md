@@ -18,7 +18,7 @@ Example:
 ```typescript
 
 const agreement = await colivingSdk.resolve<Agreement>({
-  url: "https://coliving.co/camouflybeats/hypermantra-86216",
+  url: "https://coliving.lol/camouflybeats/hypermantra-86216",
 });
 
 ```
@@ -27,7 +27,7 @@ const agreement = await colivingSdk.resolve<Agreement>({
 
 | Name | Type |
 | :------ | :------ |
-| `T` | extends [`Agreement`](../interfaces/Agreement.md) \| [`Playlist`](../interfaces/Playlist.md) \| [`User`](../interfaces/User.md) |
+| `T` | extends [`Agreement`](../interfaces/Agreement.md) \| [`ContentList`](../interfaces/ContentList.md) \| [`User`](../interfaces/User.md) |
 
 #### Parameters
 

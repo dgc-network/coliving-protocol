@@ -1,19 +1,19 @@
 ---
-id: "PlaylistSearchResult"
-title: "Interface: PlaylistSearchResult"
-sidebar_label: "PlaylistSearchResult"
+id: "ContentListSearchResult"
+title: "Interface: ContentListSearchResult"
+sidebar_label: "ContentListSearchResult"
 sidebar_position: 0
 custom_edit_url: null
 ---
 
 **`export`**
 
-**`interface`** PlaylistSearchResult
+**`interface`** ContentListSearchResult
 
 ## Properties
 
 ### data
 
- `Optional` **data**: [`Playlist`](Playlist.md)[]
+ `Optional` **data**: [`ContentList`](ContentList.md)[]
 
-**`memberof`** PlaylistSearchResult
+**`memberof`** ContentListSearchResult

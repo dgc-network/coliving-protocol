@@ -217,7 +217,7 @@ export const getTrendingAgreements = (
   return req
 }
 
-export const getPlaylists = (
+export const getContentLists = (
   limit = 100,
   offset = 0,
   idsArray: Nullable<number[]> = null,
@@ -230,11 +230,11 @@ export const getPlaylists = (
     }
   }
   return {
-    endpoint: 'playlists',
+    endpoint: 'content lists',
     queryParams: {
       limit,
       offset,
-      ...(idsArray != null ? { playlist_id: idsArray } : {}),
+      ...(idsArray != null ? { content list_id: idsArray } : {}),
       ...(targetUserId ? { user_id: targetUserId } : {}),
       ...(withUsers ? { with_users: true } : {})
     }
@@ -300,17 +300,17 @@ export const getAgreementRepostIntersectionUsers = (
   }
 }
 
-export const getPlaylistRepostIntersectionUsers = (
+export const getContentListRepostIntersectionUsers = (
   limit = 100,
   offset = 0,
-  repostPlaylistId: number,
+  repostContentListId: number,
   followerUserId: number
 ) => {
   return {
     endpoint: 'users',
     urlParams:
-      '/intersection/repost/playlist/' +
-      repostPlaylistId +
+      '/intersection/repost/content list/' +
+      repostContentListId +
       '/' +
       followerUserId,
     queryParams: { limit: limit, offset: offset }
@@ -353,14 +353,14 @@ export const getRepostersForAgreement = (
   }
 }
 
-export const getRepostersForPlaylist = (
+export const getRepostersForContentList = (
   limit = 100,
   offset = 0,
-  repostPlaylistId: number
+  repostContentListId: number
 ) => {
   return {
     endpoint: 'users',
-    urlParams: '/reposts/playlist/' + repostPlaylistId,
+    urlParams: '/reposts/content list/' + repostContentListId,
     queryParams: { limit: limit, offset: offset }
   }
 }
@@ -377,14 +377,14 @@ export const getSaversForAgreement = (
   }
 }
 
-export const getSaversForPlaylist = (
+export const getSaversForContentList = (
   limit = 100,
   offset = 0,
-  savePlaylistId: number
+  saveContentListId: number
 ) => {
   return {
     endpoint: 'users',
-    urlParams: '/saves/playlist/' + savePlaylistId,
+    urlParams: '/saves/content list/' + saveContentListId,
     queryParams: { limit: limit, offset: offset }
   }
 }
@@ -427,13 +427,13 @@ export const searchTags = (
   }
 }
 
-export const getSavedPlaylists = (
+export const getSavedContentLists = (
   limit = 100,
   offset = 0,
   withUsers = false
 ) => {
   return {
-    endpoint: 'saves/playlists',
+    endpoint: 'saves/content lists',
     queryParams: { limit: limit, offset: offset, with_users: withUsers }
   }
 }
@@ -466,10 +466,10 @@ export const getUserAccount = (wallet: string) => {
 }
 
 /**
- * @deprecated Migrate to using getTopFullPlaylists
+ * @deprecated Migrate to using getTopFullContentLists
  */
-export const getTopPlaylists = (
-  type: 'playlist' | 'album',
+export const getTopContentLists = (
+  type: 'content list' | 'album',
   limit: number,
   mood: string,
   filter: string,
@@ -486,23 +486,23 @@ export const getTopPlaylists = (
   }
 }
 
-export type GetTopFullPlaylistsParams = {
-  type: 'playlist' | 'album'
+export type GetTopFullContentListsParams = {
+  type: 'content list' | 'album'
   limit?: number
   mood?: string
   filter?: string
   withUsers?: boolean
 }
 
-export const getTopFullPlaylists = ({
+export const getTopFullContentLists = ({
   type,
   limit,
   mood,
   filter,
   withUsers = false
-}: GetTopFullPlaylistsParams) => {
+}: GetTopFullContentListsParams) => {
   return {
-    endpoint: `/v1/full/playlists/top`,
+    endpoint: `/v1/full/content lists/top`,
     queryParams: {
       type,
       limit,

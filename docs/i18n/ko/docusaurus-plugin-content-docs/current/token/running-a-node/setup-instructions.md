@@ -162,7 +162,7 @@ You can verify your upgrade with the `\health_check` endpoint.
 
 An Coliving Discovery Node indexes the contents of the Coliving contracts on the Ethereum blockchain for clients to query.
 
-The indexed content includes user, agreement, and album/playlist information along with social features. The data is stored for quick access, updated on a regular interval, and made available for clients via a RESTful API.
+The indexed content includes user, agreement, and album/content list information along with social features. The data is stored for quick access, updated on a regular interval, and made available for clients via a RESTful API.
 
 #### Run
 
@@ -303,7 +303,7 @@ kubectl -n kube-system delete pod $(kubectl -n kube-system get pods | grep "flue
 
 ## 6. Security & Infrastructure configuration
 
-1.\) In order for clients to talk to your service, you'll need to expose two ports: the web server port and the IPFS swarm port. In order to find these ports, run `kubectl get svc`. The web server port is mapped to 4000 for creator node and 5000 for discovery node. The IPFS swarm port is mapped to 4001
+1.\) In order for clients to talk to your service, you'll need to expose two ports: the web server port and the IPFS swarm port. In order to find these ports, run `kubectl get svc`. The web server port is mapped to 4000 for content node and 5000 for discovery node. The IPFS swarm port is mapped to 4001
 
 ```text
 kubectl get svc

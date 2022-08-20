@@ -1,5 +1,5 @@
 /**
- * Find the creator nodes associated with a user and their respective clock values.
+ * Find the content nodes associated with a user and their respective clock values.
  *
  * Script usage:
  * export DISCOVERY_PROVIDER_ENDPOINT=<discovery node endpoint>
@@ -42,7 +42,7 @@ async function getUserByHandle(handle, discoveryProviderEndpoint, timeout) {
     ).data.data[0]
   } catch (err) {
     console.log(
-      `Failed to get creator node endpoint and wallet from endpoint: ${discoveryProviderEndpoint} and handle: ${handle} with ${err}`
+      `Failed to get content node endpoint and wallet from endpoint: ${discoveryProviderEndpoint} and handle: ${handle} with ${err}`
     )
   }
 }
@@ -65,13 +65,13 @@ async function getUserById(userId, discoveryProviderEndpoint, timeout) {
     return resp
   } catch (err) {
     console.log(
-      `Failed to get creator node endpoint and wallet from endpoint: ${discoveryProviderEndpoint} and user id: ${userId} with ${err}`
+      `Failed to get content node endpoint and wallet from endpoint: ${discoveryProviderEndpoint} and user id: ${userId} with ${err}`
     )
   }
 }
 
 async function getClockValues(
-  { wallet, creator_node_endpoint: contentNodeEndpoint, handle },
+  { wallet, content_node_endpoint: contentNodeEndpoint, handle },
   timeout
 ) {
   const primaryCreatorNode = CreatorNode.getPrimary(contentNodeEndpoint)

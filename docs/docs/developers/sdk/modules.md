@@ -15,13 +15,13 @@ custom_edit_url: null
 - [GetTipsCurrentUserFollowsEnum](enums/GetTipsCurrentUserFollowsEnum.md)
 - [GetTipsUniqueByEnum](enums/GetTipsUniqueByEnum.md)
 - [GetAgreementsByUserSortEnum](enums/GetAgreementsByUserSortEnum.md)
-- [GetTrendingPlaylistsTimeEnum](enums/GetTrendingPlaylistsTimeEnum.md)
+- [GetTrendingContentListsTimeEnum](enums/GetTrendingContentListsTimeEnum.md)
 - [GetTrendingAgreementsTimeEnum](enums/GetTrendingAgreementsTimeEnum.md)
 
 ## Classes
 
 - [Configuration](classes/Configuration.md)
-- [Playlists](classes/PlaylistsApi.md)
+- [ContentLists](classes/ContentListsApi.md)
 - [Resolve](classes/ResolveApi.md)
 - [Tips](classes/TipsApi.md)
 - [Agreements](classes/AgreementsApi.md)
@@ -41,8 +41,8 @@ custom_edit_url: null
 - [GetBulkAgreementsRequest](interfaces/GetBulkAgreementsRequest.md)
 - [GetConnectedWalletsRequest](interfaces/GetConnectedWalletsRequest.md)
 - [GetFavoritesRequest](interfaces/GetFavoritesRequest.md)
-- [GetPlaylistRequest](interfaces/GetPlaylistRequest.md)
-- [GetPlaylistAgreementsRequest](interfaces/GetPlaylistAgreementsRequest.md)
+- [GetContentListRequest](interfaces/GetContentListRequest.md)
+- [GetContentListAgreementsRequest](interfaces/GetContentListAgreementsRequest.md)
 - [GetRepostsRequest](interfaces/GetRepostsRequest.md)
 - [GetSupporters](interfaces/GetSupporters.md)
 - [GetSupportersRequest](interfaces/GetSupportersRequest.md)
@@ -53,20 +53,20 @@ custom_edit_url: null
 - [GetTopAgreementTagsRequest](interfaces/GetTopAgreementTagsRequest.md)
 - [GetAgreementRequest](interfaces/GetAgreementRequest.md)
 - [GetAgreementsByUserRequest](interfaces/GetAgreementsByUserRequest.md)
-- [GetTrendingPlaylistsRequest](interfaces/GetTrendingPlaylistsRequest.md)
+- [GetTrendingContentListsRequest](interfaces/GetTrendingContentListsRequest.md)
 - [GetTrendingAgreementsRequest](interfaces/GetTrendingAgreementsRequest.md)
 - [GetUserIDFromWalletRequest](interfaces/GetUserIDFromWalletRequest.md)
 - [GetUserRequest](interfaces/GetUserRequest.md)
-- [Playlist](interfaces/Playlist.md)
-- [PlaylistArtwork](interfaces/PlaylistArtwork.md)
-- [PlaylistResponse](interfaces/PlaylistResponse.md)
-- [PlaylistSearchResult](interfaces/PlaylistSearchResult.md)
-- [PlaylistAgreementsResponse](interfaces/PlaylistAgreementsResponse.md)
+- [ContentList](interfaces/ContentList.md)
+- [ContentListArtwork](interfaces/ContentListArtwork.md)
+- [ContentListResponse](interfaces/ContentListResponse.md)
+- [ContentListSearchResult](interfaces/ContentListSearchResult.md)
+- [ContentListAgreementsResponse](interfaces/ContentListAgreementsResponse.md)
 - [ProfilePicture](interfaces/ProfilePicture.md)
 - [RemixParent](interfaces/RemixParent.md)
 - [Reposts](interfaces/Reposts.md)
 - [ResolveRequest](interfaces/ResolveRequest.md)
-- [SearchPlaylistsRequest](interfaces/SearchPlaylistsRequest.md)
+- [SearchContentListsRequest](interfaces/SearchContentListsRequest.md)
 - [SearchAgreementsRequest](interfaces/SearchAgreementsRequest.md)
 - [SearchUsersRequest](interfaces/SearchUsersRequest.md)
 - [StreamAgreementRequest](interfaces/StreamAgreementRequest.md)
@@ -80,7 +80,7 @@ custom_edit_url: null
 - [AgreementResponse](interfaces/AgreementResponse.md)
 - [AgreementSearch](interfaces/AgreementSearch.md)
 - [AgreementsResponse](interfaces/AgreementsResponse.md)
-- [TrendingPlaylistsResponse](interfaces/TrendingPlaylistsResponse.md)
+- [TrendingContentListsResponse](interfaces/TrendingContentListsResponse.md)
 - [User](interfaces/User.md)
 - [UserAssociatedWalletResponse](interfaces/UserAssociatedWalletResponse.md)
 - [UserResponse](interfaces/UserResponse.md)
@@ -129,15 +129,15 @@ The Coliving SDK
 
 | Name | Type |
 | :------ | :------ |
-| `full` | { `playlists`: `PlaylistsApi` ; `reactions`: `ReactionsApi` ; `search`: `SearchApi` ; `tips`: `TipsApi` ; `agreements`: `AgreementsApi` ; `users`: `UsersApi`  } |
-| `full.playlists` | `PlaylistsApi` |
+| `full` | { `content lists`: `ContentListsApi` ; `reactions`: `ReactionsApi` ; `search`: `SearchApi` ; `tips`: `TipsApi` ; `agreements`: `AgreementsApi` ; `users`: `UsersApi`  } |
+| `full.content lists` | `ContentListsApi` |
 | `full.reactions` | `ReactionsApi` |
 | `full.search` | `SearchApi` |
 | `full.tips` | `TipsApi` |
 | `full.agreements` | `AgreementsApi` |
 | `full.users` | `UsersApi` |
 | `oauth` | `undefined` \| `Oauth` |
-| `playlists` | [`Playlists`](classes/PlaylistsApi.md) |
+| `content lists` | [`ContentLists`](classes/ContentListsApi.md) |
 | `resolve` | <T\>(`requestParameters`: [`ResolveRequest`](interfaces/ResolveRequest.md)) => `Promise`<`T`\> |
 | `tips` | [`Tips`](classes/TipsApi.md) |
 | `agreements` | [`Agreements`](classes/AgreementsApi.md) |

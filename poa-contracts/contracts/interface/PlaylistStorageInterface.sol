@@ -1,27 +1,27 @@
 pragma solidity ^0.5.0;
 
 
-/// @title The interface for contracts to interact with the Coliving PlaylistStorage contract
-interface PlaylistStorageInterface {
-  function createPlaylist(
+/// @title The interface for contracts to interact with the Coliving ContentListStorage contract
+interface ContentListStorageInterface {
+  function createContentList(
     uint _userId,
     bool _isAlbum,
-    uint[] calldata _agreementIds) external returns (uint newPlaylistId);
+    uint[] calldata _agreementIds) external returns (uint newContentListId);
 
-  function addPlaylistAgreement(
-    uint _playlistId,
+  function addContentListAgreement(
+    uint _content listId,
     uint _addedAgreementId) external;
 
-  function deletePlaylistAgreement(
-    uint _playlistId,
+  function deleteContentListAgreement(
+    uint _content listId,
     uint _deletedAgreementId) external;
 
-  function getPlaylistOwner(uint _playlistId) external view returns (uint playlistOwnerId);
+  function getContentListOwner(uint _content listId) external view returns (uint content listOwnerId);
 
-  function isAgreementInPlaylist(
-    uint _playlistId,
-    uint _agreementId) external view returns (bool agreementInPlaylist);
+  function isAgreementInContentList(
+    uint _content listId,
+    uint _agreementId) external view returns (bool agreementInContentList);
 
-  function playlistExists(uint _playlistId) external view returns (bool exists);
+  function content listExists(uint _content listId) external view returns (bool exists);
 }
 

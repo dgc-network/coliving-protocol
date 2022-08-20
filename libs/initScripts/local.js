@@ -577,12 +577,12 @@ const _configureDiscProv = async (ethAccounts, serviceNumber, templatePath, writ
   writeEnvConfigFromTemplate({ templatePath, writePath, replaceMap })
 }
 
-// Write an update to shell env file for creator nodes or docker env file
+// Write an update to shell env file for content nodes or docker env file
 const _updateCreatorNodeConfigFile = async ({ templatePath, writePath, ownerWallet, ownerWalletPkey, delegateWallet, delegateWalletPrivKey, endpoint, isShell, envPath }) => {
   const replaceMap = {
     DELEGATE_OWNER_WALLET: delegateWallet,
     DELEGATE_PRIVATE_KEY: delegateWalletPrivKey,
-    CREATOR_NODE_ENDPOINT: endpoint,
+    CONTENT_NODE_ENDPOINT: endpoint,
     SP_OWNER_WALLET: ownerWallet
   }
   writeEnvConfigFromTemplate({ templatePath, writePath, replaceMap, envPath })

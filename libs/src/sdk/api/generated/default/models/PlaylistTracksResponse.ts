@@ -23,13 +23,13 @@ import {
 /**
  * 
  * @export
- * @interface PlaylistAgreementsResponse
+ * @interface ContentListAgreementsResponse
  */
-export interface PlaylistAgreementsResponse {
+export interface ContentListAgreementsResponse {
     /**
      * 
      * @type {Array<Agreement>}
-     * @memberof PlaylistAgreementsResponse
+     * @memberof ContentListAgreementsResponse
      */
     data?: Array<Agreement>;
 }

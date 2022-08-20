@@ -12,7 +12,7 @@ from src.models.social.follow import Follow
 from src.models.social.repost import RepostType
 from src.models.social.save import Save, SaveType
 from src.queries import response_name_constants
-from src.queries.get_unpopulated_playlists import get_unpopulated_playlists
+from src.queries.get_unpopulated_content lists import get_unpopulated_content lists
 from src.queries.get_unpopulated_agreements import get_unpopulated_agreements
 from src.queries.get_unpopulated_users import get_unpopulated_users
 from src.queries.query_helpers import (
@@ -20,7 +20,7 @@ from src.queries.query_helpers import (
     get_pagination_vars,
     get_users_by_id,
     get_users_ids,
-    populate_playlist_metadata,
+    populate_content list_metadata,
     populate_agreement_metadata,
     populate_user_metadata,
 )
@@ -53,7 +53,7 @@ class SearchKind(Enum):
     all = 1
     agreements = 2
     users = 3
-    playlists = 4
+    content lists = 4
     albums = 5
 
 
@@ -184,8 +184,8 @@ def add_users(session, results):
     users = get_users_by_id(session, user_id_list)
     for result in results:
         user_id = None
-        if "playlist_owner_id" in result:
-            user_id = result["playlist_owner_id"]
+        if "content list_owner_id" in result:
+            user_id = result["content list_owner_id"]
         elif "owner_id" in result:
             user_id = result["owner_id"]
 
@@ -225,8 +225,8 @@ def perform_search_query(db, search_type, args):
                 is_auto_complete,
                 current_user_id,
             )
-        elif search_type == "playlists":
-            results = playlist_search_query(
+        elif search_type == "content lists":
+            results = content list_search_query(
                 session,
                 search_str,
                 limit,
@@ -236,7 +236,7 @@ def perform_search_query(db, search_type, args):
                 current_user_id,
             )
         elif search_type == "albums":
-            results = playlist_search_query(
+            results = content list_search_query(
                 session,
                 search_str,
                 limit,
@@ -263,7 +263,7 @@ def perform_search_query(db, search_type, args):
 # - de-duplicates object_ids with multiple hits, returning highest match
 #
 # queries can be called for public data, or personalized data
-# - personalized data will return only saved agreements, saved playlists, or followed users given current_user_id
+# - personalized data will return only saved agreements, saved content lists, or followed users given current_user_id
 #
 # @devnote - agreement_ids argument should match agreements argument
 
@@ -334,8 +334,8 @@ def search(args):
 
             if searchKind in [SearchKind.all, SearchKind.users]:
                 submit_and_add("users")
-            if searchKind in [SearchKind.all, SearchKind.playlists]:
-                submit_and_add("playlists")
+            if searchKind in [SearchKind.all, SearchKind.content lists]:
+                submit_and_add("content lists")
 
             if searchKind in [SearchKind.all, SearchKind.albums]:
                 submit_and_add("albums")
@@ -352,9 +352,9 @@ def search(args):
                 elif future_type == "users":
                     results["users"] = search_result["all"]
                     results["followed_users"] = search_result["followed"]
-                elif future_type == "playlists":
-                    results["playlists"] = search_result["all"]
-                    results["saved_playlists"] = search_result["saved"]
+                elif future_type == "content lists":
+                    results["content lists"] = search_result["all"]
+                    results["saved_content lists"] = search_result["saved"]
                 elif future_type == "albums":
                     results["albums"] = search_result["all"]
                     results["saved_albums"] = search_result["saved"]
@@ -367,8 +367,8 @@ def search(args):
                 for (_, result_list) in results.items():
                     for result in result_list:
                         user_id = None
-                        if "playlist_owner_id" in result:
-                            user_id = result["playlist_owner_id"]
+                        if "content list_owner_id" in result:
+                            user_id = result["content list_owner_id"]
                         elif "owner_id" in result:
                             user_id = result["owner_id"]
 
@@ -627,7 +627,7 @@ def user_search_query(
     return users_response
 
 
-def playlist_search_query(
+def content list_search_query(
     session,
     search_str,
     limit,
@@ -637,9 +637,9 @@ def playlist_search_query(
     current_user_id,
 ):
 
-    table_name = "album_lexeme_dict" if is_album else "playlist_lexeme_dict"
-    repost_type = RepostType.album if is_album else RepostType.playlist
-    save_type = SaveType.album if is_album else SaveType.playlist
+    table_name = "album_lexeme_dict" if is_album else "content list_lexeme_dict"
+    repost_type = RepostType.album if is_album else RepostType.content list
+    save_type = SaveType.album if is_album else SaveType.content list
 
     # SQLAlchemy doesn't expose a way to escape a string with double-quotes instead of
     # single-quotes, so we have to use traditional string substitution. This is safe
@@ -647,14 +647,14 @@ def playlist_search_query(
     res = sqlalchemy.text(
         # pylint: disable=C0301
         f"""
-        select p.playlist_id, b.balance, b.associated_wallets_balance, is_saved from (
-            select distinct on (owner_id) playlist_id, owner_id, is_saved, total_score from (
-                select playlist_id, owner_id, is_saved, (
+        select p.content list_id, b.balance, b.associated_wallets_balance, is_saved from (
+            select distinct on (owner_id) content list_id, owner_id, is_saved, total_score from (
+                select content list_id, owner_id, is_saved, (
                     (:similarity_weight * sum(score)) +
-                    (:title_weight * similarity(coalesce(playlist_name, ''), query)) +
+                    (:title_weight * similarity(coalesce(content list_name, ''), query)) +
                     (:user_name_weight * similarity(coalesce(user_name, ''), query)) +
                     (:repost_weight * log(case when (repost_count = 0) then 1 else repost_count end)) +
-                    (case when (lower(query) = coalesce(playlist_name, '')) then :title_match_boost else 0 end) +
+                    (case when (lower(query) = coalesce(content list_name, '')) then :title_match_boost else 0 end) +
                     (case when (lower(query) = handle) then :handle_match_boost else 0 end) +
                     (case when (lower(query) = user_name) then :user_name_match_boost else 0 end)
                     {
@@ -666,8 +666,8 @@ def playlist_search_query(
                 ) as total_score
                 from (
                     select
-                        d."playlist_id" as playlist_id, d."word" as word, similarity(d."word", :query) as score,
-                        d."playlist_name" as playlist_name, :query as query, d."repost_count" as repost_count,
+                        d."content list_id" as content list_id, d."word" as word, similarity(d."word", :query) as score,
+                        d."content list_name" as content list_name, :query as query, d."repost_count" as repost_count,
                         d."handle" as handle, d."user_name" as user_name, d."owner_id" as owner_id
                         {
                             ', s."user_id" is not null as is_saved'
@@ -679,13 +679,13 @@ def playlist_search_query(
                         "left outer join (select save_item_id, user_id from saves where saves.save_type = '"
                         + save_type + "' and saves.is_current = true and " +
                         "saves.is_delete = false and saves.user_id = :current_user_id ) " +
-                        "s on s.save_item_id = d.playlist_id"
+                        "s on s.save_item_id = d.content list_id"
                         if current_user_id
                         else ""
                     }
                     where (d."word" % lower(:query) or d."handle" = lower(:query) or d."user_name" % lower(:query))
                 ) as results
-                group by playlist_id, playlist_name, query, repost_count, user_name, handle, owner_id, is_saved
+                group by content list_id, content list_name, query, repost_count, user_name, handle, owner_id, is_saved
             ) as results2
             order by owner_id, total_score desc
         ) as p left join user_balances b on p.owner_id = b.user_id
@@ -695,7 +695,7 @@ def playlist_search_query(
         """
     )
 
-    playlist_result_proxy = session.execute(
+    content list_result_proxy = session.execute(
         res,
         {
             "query": search_str,
@@ -712,67 +712,67 @@ def playlist_search_query(
             "current_user_saved_match_boost": current_user_saved_match_boost,
         },
     )
-    playlist_data = playlist_result_proxy.fetchall()
-    playlist_cols = playlist_result_proxy.keys()
+    content list_data = content list_result_proxy.fetchall()
+    content list_cols = content list_result_proxy.keys()
 
-    # playlist_ids is list of tuples - simplify to 1-D list
-    playlist_ids = [
-        playlist[playlist_cols.index("playlist_id")] for playlist in playlist_data
+    # content list_ids is list of tuples - simplify to 1-D list
+    content list_ids = [
+        content list[content list_cols.index("content list_id")] for content list in content list_data
     ]
-    saved_playlists = {
-        playlist[0]
-        for playlist in playlist_data
-        if playlist[playlist_cols.index("is_saved")]
+    saved_content lists = {
+        content list[0]
+        for content list in content list_data
+        if content list[content list_cols.index("is_saved")]
     }
 
-    playlists = get_unpopulated_playlists(session, playlist_ids, True)
+    content lists = get_unpopulated_content lists(session, content list_ids, True)
 
-    # TODO: Populate playlist metadata should be sped up to be able to be
+    # TODO: Populate content list metadata should be sped up to be able to be
     # used in search autocomplete as that'll give us better results.
     if is_auto_complete:
-        # fetch users for playlists
-        playlist_owner_ids = list(
-            map(lambda playlist: playlist["playlist_owner_id"], playlists)
+        # fetch users for content lists
+        content list_owner_ids = list(
+            map(lambda content list: content list["content list_owner_id"], content lists)
         )
-        users = get_unpopulated_users(session, playlist_owner_ids)
+        users = get_unpopulated_users(session, content list_owner_ids)
         users_dict = {user["user_id"]: user for user in users}
 
-        # attach user objects to playlist objects
-        for i, playlist in enumerate(playlists):
-            user = users_dict[playlist["playlist_owner_id"]]
+        # attach user objects to content list objects
+        for i, content list in enumerate(content lists):
+            user = users_dict[content list["content list_owner_id"]]
             # Add user balance
-            balance = playlist_data[i][1]
-            associated_balance = playlist_data[i][2]
+            balance = content list_data[i][1]
+            associated_balance = content list_data[i][2]
             user[response_name_constants.balance] = balance
             user[
                 response_name_constants.associated_wallets_balance
             ] = associated_balance
-            playlist["user"] = user
+            content list["user"] = user
 
     else:
-        # bundle peripheral info into playlist results
-        playlists = populate_playlist_metadata(
+        # bundle peripheral info into content list results
+        content lists = populate_content list_metadata(
             session,
-            playlist_ids,
-            playlists,
+            content list_ids,
+            content lists,
             [repost_type],
             [save_type],
             current_user_id,
         )
 
-    # Preserve order from playlist_ids above
-    playlists_map = {}
-    for p in playlists:
-        playlists_map[p["playlist_id"]] = p
-    playlists = [playlists_map[playlist_id] for playlist_id in playlist_ids]
+    # Preserve order from content list_ids above
+    content lists_map = {}
+    for p in content lists:
+        content lists_map[p["content list_id"]] = p
+    content lists = [content lists_map[content list_id] for content list_id in content list_ids]
 
-    playlists_resp = {
-        "all": playlists,
+    content lists_resp = {
+        "all": content lists,
         "saved": list(
             filter(
-                lambda playlist: playlist["playlist_id"] in saved_playlists, playlists
+                lambda content list: content list["content list_id"] in saved_content lists, content lists
             )
         ),
     }
 
-    return playlists_resp
+    return content lists_resp

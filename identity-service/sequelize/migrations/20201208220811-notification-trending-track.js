@@ -17,8 +17,8 @@ module.exports = {
     const columnName = 'type'
     const enumName = 'enum_Notifications_type'
     const newEnumName = `enum_Notifications_type_new`
-    const prevValues = [ 'Follow', 'RepostAgreement', 'RepostPlaylist', 'RepostAlbum', 'FavoriteAgreement',
-      'FavoritePlaylist', 'FavoriteAlbum', 'CreateAgreement', 'CreatePlaylist', 'CreateAlbum',
+    const prevValues = [ 'Follow', 'RepostAgreement', 'RepostContentList', 'RepostAlbum', 'FavoriteAgreement',
+      'FavoriteContentList', 'FavoriteAlbum', 'CreateAgreement', 'CreateContentList', 'CreateAlbum',
       'Announcement', 'MilestoneListen', 'MilestoneRepost', 'MilestoneFavorite', 'MilestoneFollow',
       'RemixCreate', 'RemixCosign']
 

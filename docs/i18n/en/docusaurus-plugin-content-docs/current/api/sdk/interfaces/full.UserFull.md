@@ -231,17 +231,17 @@ ___
 
 ___
 
-### playlist\_count
+### content list\_count
 
- **playlist\_count**: `number`
+ **content list\_count**: `number`
 
 **`memberof`** UserFull
 
 ___
 
-### playlist\_library
+### content list\_library
 
- `Optional` **playlist\_library**: [`PlaylistLibrary`](full.PlaylistLibrary.md)
+ `Optional` **content list\_library**: [`ContentListLibrary`](full.ContentListLibrary.md)
 
 **`memberof`** UserFull
 

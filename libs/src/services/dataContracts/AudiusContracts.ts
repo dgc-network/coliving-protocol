@@ -5,7 +5,7 @@ import { RegistryClient } from './RegistryClient'
 import { UserFactoryClient } from './UserFactoryClient'
 import { AgreementFactoryClient } from './AgreementFactoryClient'
 import { SocialFeatureFactoryClient } from './SocialFeatureFactoryClient'
-import { PlaylistFactoryClient } from './PlaylistFactoryClient'
+import { ContentListFactoryClient } from './ContentListFactoryClient'
 import { UserLibraryFactoryClient } from './UserLibraryFactoryClient'
 import { IPLDBlacklistFactoryClient } from './IPLDBlacklistFactoryClient'
 import { UserReplicaSetManagerClient } from './UserReplicaSetManagerClient'
@@ -20,8 +20,8 @@ const AgreementFactoryABI = Utils.importDataContractABI('AgreementFactory.json')
 const SocialFeatureFactoryABI = Utils.importDataContractABI(
   'SocialFeatureFactory.json'
 ).abi
-const PlaylistFactoryABI = Utils.importDataContractABI(
-  'PlaylistFactory.json'
+const ContentListFactoryABI = Utils.importDataContractABI(
+  'ContentListFactory.json'
 ).abi
 const UserLibraryFactoryABI = Utils.importDataContractABI(
   'UserLibraryFactory.json'
@@ -37,7 +37,7 @@ const UserReplicaSetManagerABI = Utils.importDataContractABI(
 const UserFactoryRegistryKey = 'UserFactory'
 const AgreementFactoryRegistryKey = 'AgreementFactory'
 const SocialFeatureFactoryRegistryKey = 'SocialFeatureFactory'
-const PlaylistFactoryRegistryKey = 'PlaylistFactory'
+const ContentListFactoryRegistryKey = 'ContentListFactory'
 const UserLibraryFactoryRegistryKey = 'UserLibraryFactory'
 const IPLDBlacklistFactoryRegistryKey = 'IPLDBlacklistFactory'
 const UserReplicaSetManagerRegistryKey = 'UserReplicaSetManager'
@@ -51,7 +51,7 @@ export class ColivingContracts {
   UserFactoryClient: UserFactoryClient
   AgreementFactoryClient: AgreementFactoryClient
   SocialFeatureFactoryClient: SocialFeatureFactoryClient
-  PlaylistFactoryClient: PlaylistFactoryClient
+  ContentListFactoryClient: ContentListFactoryClient
   UserLibraryFactoryClient: UserLibraryFactoryClient
   IPLDBlacklistFactoryClient: IPLDBlacklistFactoryClient
   contractClients: ContractClient[]
@@ -102,10 +102,10 @@ export class ColivingContracts {
       this.logger
     )
 
-    this.PlaylistFactoryClient = new PlaylistFactoryClient(
+    this.ContentListFactoryClient = new ContentListFactoryClient(
       this.web3Manager,
-      PlaylistFactoryABI,
-      PlaylistFactoryRegistryKey,
+      ContentListFactoryABI,
+      ContentListFactoryRegistryKey,
       this.getRegistryAddressForContract,
       this.logger
     )
@@ -130,7 +130,7 @@ export class ColivingContracts {
       this.UserFactoryClient,
       this.AgreementFactoryClient,
       this.SocialFeatureFactoryClient,
-      this.PlaylistFactoryClient,
+      this.ContentListFactoryClient,
       this.UserLibraryFactoryClient,
       this.IPLDBlacklistFactoryClient
     ]

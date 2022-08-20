@@ -12,13 +12,13 @@ module.exports = (sequelize, DataTypes) => {
         values: [
           'Follow',
           'RepostAgreement',
-          'RepostPlaylist',
+          'RepostContentList',
           'RepostAlbum',
           'FavoriteAgreement',
-          'FavoritePlaylist',
+          'FavoriteContentList',
           'FavoriteAlbum',
           'CreateAgreement',
-          'CreatePlaylist',
+          'CreateContentList',
           'CreateAlbum',
           'Announcement',
           'MilestoneListen',
@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
           'RemixCosign',
           'TrendingAgreement',
           'ChallengeReward',
-          'AddAgreementToPlaylist'
+          'AddAgreementToContentList'
         ]
       }),
       allowNull: false
@@ -54,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     entityId: {
-      // Can be agreement/album/playlist/user id
+      // Can be agreement/album/content list/user id
       type: DataTypes.INTEGER,
       allowNull: true
     },

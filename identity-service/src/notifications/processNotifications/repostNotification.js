@@ -10,21 +10,21 @@ const getNotifType = (entityType) => {
       return notificationTypes.Repost.agreement
     case 'album':
       return notificationTypes.Repost.album
-    case 'playlist':
-      return notificationTypes.Repost.playlist
+    case 'content list':
+      return notificationTypes.Repost.content list
     default:
       return ''
   }
 }
 
 // A repost notification is unique by it's
-// userId (owner of the content resposted), type (agreement/album/playlist), and entityId (agreementId, ect)
+// userId (owner of the content resposted), type (agreement/album/content list), and entityId (agreementId, ect)
 const getUniqueNotificationModel = notif => `${notif.userId}:${notif.type}:${notif.entityId}`
 const getUniqueNotification = notif => `${notif.metadata.entity_owner_id}:${getNotifType(notif.metadata.entity_type)}:${notif.metadata.entity_id}`
 
 /**
  * Batch process repost notifications, creating a notification (if prev unread) and notification action
- * for the owner of the reposted agreement/playlist/album
+ * for the owner of the reposted agreement/content list/album
  * @param {Array<Object>} notifications
  * @param {*} tx The DB transaction to attach to DB requests
  */

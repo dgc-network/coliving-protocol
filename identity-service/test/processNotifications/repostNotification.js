@@ -12,7 +12,7 @@ const { clearDatabase, runMigrations } = require('../lib/app')
  * User id 1 reposts agreement 10 owned by user id 20
  * User id 2 reposts agreement 10 owned by user id 20
  * User id 2 reposts agreement 11 owned by user id 20
- * User id 3 reposts playlist 14 owned by user id 23
+ * User id 3 reposts content list 14 owned by user id 23
  * User id 4 reposts album 10 owned by user id 25
  */
 const initialNotifications = [
@@ -52,7 +52,7 @@ const initialNotifications = [
     'metadata': {
       'entity_id': 14,
       'entity_owner_id': 23,
-      'entity_type': 'playlist'
+      'entity_type': 'content list'
     },
     'timestamp': '2020-10-24T19:39:45 Z',
     'type': 'Repost'
@@ -124,10 +124,10 @@ describe('Test Repost Notification', function () {
     assert.deepStrictEqual(userIdsThatFavoirtedAgreement10, [1, 2])
 
     // User 23 Should have 1 notifications
-    // 1.) users 3 liked playlist 14 (owned by user 23)
+    // 1.) users 3 liked content list 14 (owned by user 23)
     const user23Notifs = await models.Notification.findAll({ where: { userId: 23 } })
     assert.deepStrictEqual(user23Notifs.length, 1)
-    assert.deepStrictEqual(user23Notifs[0].type, notificationTypes.Repost.playlist)
+    assert.deepStrictEqual(user23Notifs[0].type, notificationTypes.Repost.content list)
 
     const user23NotifAction = await models.NotificationAction.findAll({ where: { notificationId: user23Notifs[0].id } })
     assert.deepStrictEqual(user23NotifAction.length, 1)

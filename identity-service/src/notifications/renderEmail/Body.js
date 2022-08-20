@@ -124,8 +124,8 @@ var snippetMap = (_snippetMap = {}, _defineProperty(_snippetMap, _constants.noti
   return "".concat(parentAgreementUser.name, " Co-signed your Remix of ").concat(parentAgreement.title);
 }), _defineProperty(_snippetMap, _constants.notificationTypes.ChallengeReward, function (notification) {
   return "You've earned $LIVE for completing challenges";
-}), _defineProperty(_snippetMap, _constants.notificationTypes.AddAgreementToPlaylist, function (notification) {
-  return "".concat(notification.playlistOwner.name, " added ").concat(notification.agreement.title, " to ").concat(notification.playlist.playlist_name);
+}), _defineProperty(_snippetMap, _constants.notificationTypes.AddAgreementToContentList, function (notification) {
+  return "".concat(notification.content listOwner.name, " added ").concat(notification.agreement.title, " to ").concat(notification.content list.content list_name);
 }), _defineProperty(_snippetMap, _constants.notificationTypes.TipReceive, function (notification) {
   return "".concat(notification.sendingUser.name, " sent you a tip of ").concat(notification.amount, " $LIVE");
 }), _defineProperty(_snippetMap, _constants.notificationTypes.Reaction, function (notification) {

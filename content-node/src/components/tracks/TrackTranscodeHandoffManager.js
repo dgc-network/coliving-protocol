@@ -12,7 +12,7 @@ const {
 } = require('../../apiSigning')
 const { removeAgreementFolder } = require('../../fileManager')
 
-const CREATOR_NODE_ENDPOINT = config.get('contentNodeEndpoint')
+const CONTENT_NODE_ENDPOINT = config.get('contentNodeEndpoint')
 const DELEGATE_PRIVATE_KEY = config.get('delegatePrivateKey')
 
 const NUMBER_OF_SPS_FOR_HANDOFF_AGREEMENT = 3
@@ -155,7 +155,7 @@ class AgreementTranscodeHandoffManager {
       const index = Utils.getRandomInt(allSPs.length)
       const currentSP = allSPs[index]
 
-      if (currentSP === CREATOR_NODE_ENDPOINT || validSPs.has(currentSP)) {
+      if (currentSP === CONTENT_NODE_ENDPOINT || validSPs.has(currentSP)) {
         continue
       }
       validSPs.add(currentSP)

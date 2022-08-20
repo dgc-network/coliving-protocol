@@ -1,7 +1,7 @@
 ---
-id: "SearchPlaylistsRequest"
-title: "Interface: SearchPlaylistsRequest"
-sidebar_label: "SearchPlaylistsRequest"
+id: "SearchContentListsRequest"
+title: "Interface: SearchContentListsRequest"
+sidebar_label: "SearchContentListsRequest"
 sidebar_position: 0
 custom_edit_url: null
 pagination_prev: null

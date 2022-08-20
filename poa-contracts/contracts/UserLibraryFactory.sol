@@ -4,23 +4,23 @@ import "./interface/RegistryInterface.sol";
 import "./registry/RegistryContract.sol";
 import "./interface/UserFactoryInterface.sol";
 import "./interface/AgreementFactoryInterface.sol";
-import "./interface/PlaylistFactoryInterface.sol";
+import "./interface/ContentListFactoryInterface.sol";
 import "./SigningLogic.sol";
 
 
 /** @title Logic contract for Coliving user library features including
-* agreement saves and playlist/album saves */
+* agreement saves and content list/album saves */
 contract UserLibraryFactory is RegistryContract, SigningLogic {
 
     RegistryInterface registry = RegistryInterface(0);
     bytes32 userFactoryRegistryKey;
     bytes32 agreementFactoryRegistryKey;
-    bytes32 playlistFactoryRegistryKey;
+    bytes32 content listFactoryRegistryKey;
 
     event AgreementSaveAdded(uint _userId, uint _agreementId);
     event AgreementSaveDeleted(uint _userId, uint _agreementId);
-    event PlaylistSaveAdded(uint _userId, uint _playlistId);
-    event PlaylistSaveDeleted(uint _userId, uint _playlistId);
+    event ContentListSaveAdded(uint _userId, uint _content listId);
+    event ContentListSaveDeleted(uint _userId, uint _content listId);
 
     /* EIP-712 saved signature generation / verification */
     bytes32 constant AGREEMENT_SAVE_REQUEST_TYPEHASH = keccak256(
@@ -29,17 +29,17 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
     bytes32 constant DELETE_AGREEMENT_SAVE_REQUEST_TYPEHASH = keccak256(
         "DeleteAgreementSaveRequest(uint userId,uint agreementId,bytes32 nonce)"
     );
-    bytes32 constant PLAYLIST_SAVE_REQUEST_TYPEHASH = keccak256(
-        "PlaylistSaveRequest(uint userId,uint playlistId,bytes32 nonce)"
+    bytes32 constant CONTENT_LIST_SAVE_REQUEST_TYPEHASH = keccak256(
+        "ContentListSaveRequest(uint userId,uint content listId,bytes32 nonce)"
     );
-    bytes32 constant DELETE_PLAYLIST_SAVE_REQUEST_TYPEHASH = keccak256(
-        "DeletePlaylistSaveRequest(uint userId,uint playlistId,bytes32 nonce)"
+    bytes32 constant DELETE_CONTENT_LIST_SAVE_REQUEST_TYPEHASH = keccak256(
+        "DeleteContentListSaveRequest(uint userId,uint content listId,bytes32 nonce)"
     );
 
     constructor(address _registryAddress,
         bytes32 _userFactoryRegistryKey,
         bytes32 _agreementFactoryRegistryKey,
-        bytes32 _playlistFactoryRegistryKey,
+        bytes32 _content listFactoryRegistryKey,
         uint _networkId
     ) SigningLogic("User Library Factory", "1", _networkId) public
     {
@@ -47,14 +47,14 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
             _registryAddress != address(0x00) &&
             _userFactoryRegistryKey.length != 0 &&
             _agreementFactoryRegistryKey.length != 0 &&
-            _playlistFactoryRegistryKey.length != 0,
+            _content listFactoryRegistryKey.length != 0,
             "requires non-zero _registryAddress"
         );
 
         registry = RegistryInterface(_registryAddress);
         userFactoryRegistryKey = _userFactoryRegistryKey;
         agreementFactoryRegistryKey = _agreementFactoryRegistryKey;
-        playlistFactoryRegistryKey = _playlistFactoryRegistryKey;
+        content listFactoryRegistryKey = _content listFactoryRegistryKey;
     }
 
     function addAgreementSave(
@@ -107,15 +107,15 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
         return true;
     }
 
-    function addPlaylistSave(
+    function addContentListSave(
         uint _userId,
-        uint _playlistId,
+        uint _content listId,
         bytes32 _requestNonce,
         bytes calldata _subjectSig
     ) external returns (bool status)
     {
-        bytes32 signatureDigest = generatePlaylistSaveRequestSchemaHash(
-            _userId, _playlistId, _requestNonce
+        bytes32 signatureDigest = generateContentListSaveRequestSchemaHash(
+            _userId, _content listId, _requestNonce
         );
         address signer = recoverSigner(signatureDigest, _subjectSig);
         burnSignatureDigest(signatureDigest, signer);
@@ -123,24 +123,24 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
             registry.getContract(userFactoryRegistryKey)
         ).callerOwnsUser(signer, _userId);  // will revert if false
 
-        bool playlistExists = PlaylistFactoryInterface(
-            registry.getContract(playlistFactoryRegistryKey)
-        ).playlistExists(_playlistId);
-        require(playlistExists == true, "must provide valid playlist ID");
+        bool content listExists = ContentListFactoryInterface(
+            registry.getContract(content listFactoryRegistryKey)
+        ).content listExists(_content listId);
+        require(content listExists == true, "must provide valid content list ID");
 
-        emit PlaylistSaveAdded(_userId, _playlistId);
+        emit ContentListSaveAdded(_userId, _content listId);
         return true;
     }
 
-    function deletePlaylistSave(
+    function deleteContentListSave(
         uint _userId,
-        uint _playlistId,
+        uint _content listId,
         bytes32 _requestNonce,
         bytes calldata _subjectSig
     ) external returns (bool status)
     {
-        bytes32 signatureDigest = generateDeletePlaylistSaveRequestSchemaHash(
-            _userId, _playlistId, _requestNonce
+        bytes32 signatureDigest = generateDeleteContentListSaveRequestSchemaHash(
+            _userId, _content listId, _requestNonce
         );
         address signer = recoverSigner(signatureDigest, _subjectSig);
         burnSignatureDigest(signatureDigest, signer);
@@ -148,45 +148,45 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
             registry.getContract(userFactoryRegistryKey)
         ).callerOwnsUser(signer, _userId);  // will revert if false
 
-        bool playlistExists = PlaylistFactoryInterface(
-            registry.getContract(playlistFactoryRegistryKey)
-        ).playlistExists(_playlistId);
-        require(playlistExists == true, "must provide valid playlist ID");
+        bool content listExists = ContentListFactoryInterface(
+            registry.getContract(content listFactoryRegistryKey)
+        ).content listExists(_content listId);
+        require(content listExists == true, "must provide valid content list ID");
 
-        emit PlaylistSaveDeleted(_userId, _playlistId);
+        emit ContentListSaveDeleted(_userId, _content listId);
         return true;
     }
 
-    function generateDeletePlaylistSaveRequestSchemaHash(
+    function generateDeleteContentListSaveRequestSchemaHash(
         uint _userId,
-        uint _playlistId,
+        uint _content listId,
         bytes32 _nonce
     ) internal view returns (bytes32)
     {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    DELETE_PLAYLIST_SAVE_REQUEST_TYPEHASH,
+                    DELETE_CONTENT_LIST_SAVE_REQUEST_TYPEHASH,
                     _userId,
-                    _playlistId,
+                    _content listId,
                     _nonce
                 )
             )
         );
     }
 
-    function generatePlaylistSaveRequestSchemaHash(
+    function generateContentListSaveRequestSchemaHash(
         uint _userId,
-        uint _playlistId,
+        uint _content listId,
         bytes32 _nonce
     ) internal view returns (bytes32)
     {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    PLAYLIST_SAVE_REQUEST_TYPEHASH,
+                    CONTENT_LIST_SAVE_REQUEST_TYPEHASH,
                     _userId,
-                    _playlistId,
+                    _content listId,
                     _nonce
                 )
             )

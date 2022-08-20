@@ -47,8 +47,8 @@
                 "collectibles": {
                     "$ref": "#/definitions/Collectibles"
                 },
-                "playlist_library": {
-                    "$ref": "#/definitions/PlaylistLibrary"
+                "content list_library": {
+                    "$ref": "#/definitions/ContentListLibrary"
                 },
                 "events": {
                     "$ref": "#/definitions/Events"
@@ -134,41 +134,41 @@
                 "order"
             ]
         },
-        "PlaylistIdentifier": {
+        "ContentListIdentifier": {
             "properties": {
                 "type": {
                     "type": "string",
-                    "const": "playlist"
+                    "const": "content list"
                 },
-                "playlist_id": {
+                "content list_id": {
                     "type": "integer"
                 }
             }
 
         },
-        "ExplorePlaylistIdentifier": {
+        "ExploreContentListIdentifier": {
             "properties": {
                 "type": {
                     "type": "string",
-                    "const": "explore_playlist"
+                    "const": "explore_content list"
                 },
-                "playlist_id": {
+                "content list_id": {
                     "type": "string",
                     "pattern": "^[a-zA-Z \/-?]+$"
                 }
             }
         },
-        "PlaylistLibraryIdentifier": {
+        "ContentListLibraryIdentifier": {
             "oneOf": [
                 {
-                    "$ref": "#/definitions/PlaylistIdentifier"
+                    "$ref": "#/definitions/ContentListIdentifier"
                 },
                 {
-                    "$ref": "#/definitions/ExplorePlaylistIdentifier"
+                    "$ref": "#/definitions/ExploreContentListIdentifier"
                 }
             ]
         },
-        "PlaylistLibraryFolder": {
+        "ContentListLibraryFolder": {
             "properties": {
                 "type": {
                     "type": "string",
@@ -185,17 +185,17 @@
                     "items": {
                         "oneOf": [
                             {
-                                "$ref": "#/definitions/PlaylistLibraryFolder"
+                                "$ref": "#/definitions/ContentListLibraryFolder"
                             },
                             {
-                                "$ref": "#/definitions/PlaylistLibraryIdentifier"
+                                "$ref": "#/definitions/ContentListLibraryIdentifier"
                             }
                         ]
                     }
                 }
             }
         },
-        "PlaylistLibrary": {
+        "ContentListLibrary": {
             "type": ["object", "null"],
             "default": null,
             "properties": {
@@ -204,10 +204,10 @@
                     "items": {
                         "oneOf": [
                             {
-                                "$ref": "#/definitions/PlaylistLibraryFolder"
+                                "$ref": "#/definitions/ContentListLibraryFolder"
                             },
                             {
-                                "$ref": "#/definitions/PlaylistLibraryIdentifier"
+                                "$ref": "#/definitions/ContentListLibraryIdentifier"
                             }
                         ]
                     }

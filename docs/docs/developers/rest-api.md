@@ -8,7 +8,7 @@ description: >-
 
 # REST API
 
-The Coliving REST API lets you query, stream, and search for agreements, users & playlists across the network.
+The Coliving REST API lets you query, stream, and search for agreements, users & content lists across the network.
 
 Try it out!
 

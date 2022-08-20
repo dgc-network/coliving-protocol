@@ -2,7 +2,7 @@
 FROM coliving/contracts:1.0.0 AS contracts
 
 FROM alpine:3.14
-LABEL maintainer="Hareesh Nagaraj <hareesh@coliving.co>"
+LABEL maintainer="Hareesh Nagaraj <hareesh@coliving.lol>"
 
 ENV INSTALL_PATH /coliving-discovery-node
 WORKDIR $INSTALL_PATH

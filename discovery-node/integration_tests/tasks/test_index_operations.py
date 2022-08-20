@@ -214,7 +214,7 @@ def test_index_operations(celery_app, celery_app_contracts, mocker):
 
     mocker.patch(
         "src.utils.cid_metadata_client.CIDMetadataClient._get_gateway_endpoints",
-        return_value=["https://test-content-node.coliving.co"],
+        return_value=["https://test-content-node.coliving.lol"],
         autospec=True,
     )
 
@@ -383,7 +383,7 @@ def test_index_operations_tx_parse_error(celery_app, celery_app_contracts, mocke
     seed_data = seed_contract_data(task, celery_app_contracts, web3)
     mocker.patch(
         "src.utils.cid_metadata_client.CIDMetadataClient._get_gateway_endpoints",
-        return_value=["https://test-content-node.coliving.co"],
+        return_value=["https://test-content-node.coliving.lol"],
         autospec=True,
     )
 
@@ -439,7 +439,7 @@ def test_index_operations_indexing_error_on_commit(
     seed_data = seed_contract_data(task, celery_app_contracts, web3)
     mocker.patch(
         "src.utils.cid_metadata_client.CIDMetadataClient._get_gateway_endpoints",
-        return_value=["https://test-content-node.coliving.co"],
+        return_value=["https://test-content-node.coliving.lol"],
         autospec=True,
     )
 
@@ -511,7 +511,7 @@ def test_index_operations_skip_block(celery_app, celery_app_contracts, mocker):
     seed_data = seed_contract_data(task, celery_app_contracts, web3)
     mocker.patch(
         "src.utils.cid_metadata_client.CIDMetadataClient._get_gateway_endpoints",
-        return_value=["https://test-content-node.coliving.co"],
+        return_value=["https://test-content-node.coliving.lol"],
         autospec=True,
     )
 

@@ -226,7 +226,7 @@ function LibsWrapper(walletIndex = 0) {
 
   /**
    * Updates an existing agreement given metadata. This function expects that all associated files
-   * such as agreement content, cover art are already on creator node.
+   * such as agreement content, cover art are already on content node.
    * @param {Object} metadata json of the agreement metadata with all fields, missing fields will error
    */
   this.updateAgreementOnChainAndCnode = async metadata => {
@@ -355,7 +355,7 @@ function LibsWrapper(walletIndex = 0) {
   this.setCurrentUserAndUpdateLibs = async userAccount => {
     assertLibsDidInit()
     this.setCurrentUser(userAccount)
-    const contentNodeEndpointField = userAccount.creator_node_endpoint
+    const contentNodeEndpointField = userAccount.content_node_endpoint
     if (contentNodeEndpointField) {
       this.getPrimaryAndSetLibs(contentNodeEndpointField)
     }
@@ -373,7 +373,7 @@ function LibsWrapper(walletIndex = 0) {
   /**
    * Gets the primary off the user metadata and then sets the primary
    * on the CreatorNode instance in libs
-   * @param {string} contentNodeEndpointField creator_node_endpoint field in user metadata
+   * @param {string} contentNodeEndpointField content_node_endpoint field in user metadata
    */
   this.getPrimaryAndSetLibs = contentNodeEndpointField => {
     assertLibsDidInit()
@@ -383,7 +383,7 @@ function LibsWrapper(walletIndex = 0) {
 
   /**
    * Wrapper for libsInstance.creatorNode.getEndpoints()
-   * @param {string} contentNodesEndpointField creator_node_endpoint field from user's metadata
+   * @param {string} contentNodesEndpointField content_node_endpoint field from user's metadata
    */
   this.getContentNodeEndpoints = contentNodesEndpointField => {
     assertLibsDidInit()
@@ -540,72 +540,72 @@ function LibsWrapper(walletIndex = 0) {
   }
 
   /**
-   * Add a create playlist txn to chain
+   * Add a create content list txn to chain
    * @param {int} userId
-   * @param {string} playlistName
+   * @param {string} content listName
    * @param {boolean} isPrivate
    * @param {boolean} isAlbum
    * @param {array} agreementIds
    */
-  this.createPlaylist = async (
+  this.createContentList = async (
     userId,
-    playlistName,
+    content listName,
     isPrivate,
     isAlbum,
     agreementIds
   ) => {
     assertLibsDidInit()
-    const createPlaylistTxReceipt = await this.libsInstance.contracts.PlaylistFactoryClient.createPlaylist(
+    const createContentListTxReceipt = await this.libsInstance.contracts.ContentListFactoryClient.createContentList(
       userId,
-      playlistName,
+      content listName,
       isPrivate,
       isAlbum,
       agreementIds
     )
-    return createPlaylistTxReceipt
+    return createContentListTxReceipt
   }
 
   /**
-   * Add a playlist agreement addition txn to chain
-   * @param {number} playlistId
+   * Add a content list agreement addition txn to chain
+   * @param {number} content listId
    * @param {number} agreementId
    */
-  this.addPlaylistAgreement = async (playlistId, agreementId) => {
+  this.addContentListAgreement = async (content listId, agreementId) => {
     assertLibsDidInit()
-    const addPlaylistAgreementTxReceipt = await this.libsInstance.contracts.PlaylistFactoryClient.addPlaylistAgreement(
-      playlistId,
+    const addContentListAgreementTxReceipt = await this.libsInstance.contracts.ContentListFactoryClient.addContentListAgreement(
+      content listId,
       agreementId
     )
-    return addPlaylistAgreementTxReceipt
+    return addContentListAgreementTxReceipt
   }
 
-  this.uploadPlaylistCoverPhoto = async coverPhotoFile => {
+  this.uploadContentListCoverPhoto = async coverPhotoFile => {
     assertLibsDidInit()
-    const dirCid = await this.libsInstance.Playlist.uploadPlaylistCoverPhoto(
+    const dirCid = await this.libsInstance.ContentList.uploadContentListCoverPhoto(
       coverPhotoFile
     )
     return dirCid
   }
 
   /**
-   * Add an update playlist txn to chain
-   * @param {*} playlistId
-   * @param {*} updatedPlaylistImageMultihashDigest
+   * Add an update content list txn to chain
+   * @param {*} content listId
+   * @param {*} updatedContentListImageMultihashDigest
    */
-  this.updatePlaylistCoverPhoto = async (
-    playlistId,
-    updatedPlaylistImageMultihashDigest
+  this.updateContentListCoverPhoto = async (
+    content listId,
+    updatedContentListImageMultihashDigest
   ) => {
     assertLibsDidInit()
-    const updatePlaylistCoverPhotoTxReceipt = await this.libsInstance.contracts.PlaylistFactoryClient.updatePlaylistCoverPhoto(
-      playlistId,
-      updatedPlaylistImageMultihashDigest
+    const updateContentListCoverPhotoTxReceipt = await this.libsInstance.contracts.ContentListFactoryClient.updateContentListCoverPhoto(
+      content listId,
+      updatedContentListImageMultihashDigest
     )
-    return updatePlaylistCoverPhotoTxReceipt
+    return updateContentListCoverPhotoTxReceipt
   }
 
-  // returns array of playlist objs
-  this.getPlaylists = async (
+  // returns array of content list objs
+  this.getContentLists = async (
     limit = 100,
     offset = 0,
     idsArray = null,
@@ -613,7 +613,7 @@ function LibsWrapper(walletIndex = 0) {
     withUsers = false
   ) => {
     assertLibsDidInit()
-    const playlists = await this.libsInstance.Playlist.getPlaylists(
+    const content lists = await this.libsInstance.ContentList.getContentLists(
       limit,
       offset,
       idsArray,
@@ -621,11 +621,11 @@ function LibsWrapper(walletIndex = 0) {
       withUsers
     )
 
-    if (!playlists || playlists.length === 0) {
-      throw new Error('No playlists found!')
+    if (!content lists || content lists.length === 0) {
+      throw new Error('No content lists found!')
     }
 
-    return playlists
+    return content lists
   }
 
   this.getWalletAddress = () => {

@@ -4,26 +4,26 @@ import "../registry/RegistryContract.sol";
 import "../interface/RegistryInterface.sol";
 
 
-/// @title The persistent storage for Coliving Playlists + Albums
-contract PlaylistStorage is RegistryContract {
+/// @title The persistent storage for Coliving ContentLists + Albums
+contract ContentListStorage is RegistryContract {
 
-    bytes32 constant CALLER_REGISTRY_KEY = "PlaylistFactory";
+    bytes32 constant CALLER_REGISTRY_KEY = "ContentListFactory";
 
     RegistryInterface registry = RegistryInterface(0);
 
-    /** @dev - Uniquely assigned playlistId, incremented for each new playlist/album */
-    uint playlistId = 1;
+    /** @dev - Uniquely assigned content listId, incremented for each new content list/album */
+    uint content listId = 1;
 
     /** @dev - Owner indication */
-    mapping(uint => uint) public playlistOwner;
+    mapping(uint => uint) public content listOwner;
 
-    /** @dev - Album/playlist distinction */
+    /** @dev - Album/content list distinction */
     mapping(uint => bool) private isAlbum;
 
-    /** @dev - Mapping of playlist contents
-    *   playlistId -> <agreementId -> agreementCountInPlaylist>
+    /** @dev - Mapping of content list contents
+    *   content listId -> <agreementId -> agreementCountInContentList>
     */
-    mapping(uint => mapping(uint => uint)) private playlistContents;
+    mapping(uint => mapping(uint => uint)) private content listContents;
 
     constructor(address _registryAddress) public {
         require(
@@ -32,75 +32,75 @@ contract PlaylistStorage is RegistryContract {
         registry = RegistryInterface(_registryAddress);
     }
 
-    function createPlaylist(
-        uint _playlistOwnerId,
+    function createContentList(
+        uint _content listOwnerId,
         bool _isAlbum,
         uint[] calldata _agreementIds
-    ) external onlyRegistrant(CALLER_REGISTRY_KEY) returns (uint newPlaylistId)
+    ) external onlyRegistrant(CALLER_REGISTRY_KEY) returns (uint newContentListId)
     {
-        newPlaylistId = playlistId;
-        playlistId += 1;
+        newContentListId = content listId;
+        content listId += 1;
 
-        // Number of agreements in playlist
-        uint playlistLength = _agreementIds.length;
+        // Number of agreements in content list
+        uint content listLength = _agreementIds.length;
 
-        require(playlistId != newPlaylistId, "expected incremented playlistId");
+        require(content listId != newContentListId, "expected incremented content listId");
 
-        // Update playlist owner
-        playlistOwner[newPlaylistId] = _playlistOwnerId;
+        // Update content list owner
+        content listOwner[newContentListId] = _content listOwnerId;
 
         // Update additional on-chain fields
-        isAlbum[newPlaylistId] = _isAlbum;
+        isAlbum[newContentListId] = _isAlbum;
 
-        // Populate the playlist content mapping
-        for (uint i = 0; i < playlistLength; i++) {
+        // Populate the content list content mapping
+        for (uint i = 0; i < content listLength; i++) {
             uint currentAgreementId = _agreementIds[i];
-            playlistContents[newPlaylistId][currentAgreementId] += 1;
+            content listContents[newContentListId][currentAgreementId] += 1;
         }
 
-        return newPlaylistId;
+        return newContentListId;
     }
 
-    function addPlaylistAgreement(
-        uint _playlistId,
+    function addContentListAgreement(
+        uint _content listId,
         uint _addedAgreementId
     ) external onlyRegistrant(CALLER_REGISTRY_KEY)
     {
-        playlistContents[_playlistId][_addedAgreementId] += 1;
+        content listContents[_content listId][_addedAgreementId] += 1;
     }
 
-    function deletePlaylistAgreement(
-        uint _playlistId,
+    function deleteContentListAgreement(
+        uint _content listId,
         uint _deletedAgreementId
     ) external onlyRegistrant(CALLER_REGISTRY_KEY)
     {
         require(
-            playlistContents[_playlistId][_deletedAgreementId] > 0,
-            "Valid agreement in playlist required for delete"
+            content listContents[_content listId][_deletedAgreementId] > 0,
+            "Valid agreement in content list required for delete"
         );
-        playlistContents[_playlistId][_deletedAgreementId] -= 1;
+        content listContents[_content listId][_deletedAgreementId] -= 1;
     }
 
-    function getPlaylistOwner(uint _playlistId)
+    function getContentListOwner(uint _content listId)
     external view onlyRegistrant(CALLER_REGISTRY_KEY) returns (uint)
     {
-        return playlistOwner[_playlistId];
+        return content listOwner[_content listId];
     }
 
-    function isAgreementInPlaylist(
-        uint _playlistId,
+    function isAgreementInContentList(
+        uint _content listId,
         uint _agreementId
     ) external view onlyRegistrant(CALLER_REGISTRY_KEY) returns (bool)
     {
-        return playlistContents[_playlistId][_agreementId] > 0;
+        return content listContents[_content listId][_agreementId] > 0;
     }
 
-    function playlistExists(uint _playlistId)
+    function content listExists(uint _content listId)
     external view onlyRegistrant(CALLER_REGISTRY_KEY) returns (bool exists)
     {
-        require(_playlistId > 0, "Invalid playlist id");
-        // If the incremented playlist ID is less than the argument,
-        // the playlist ID has not yet been assigned
-        return _playlistId < playlistId;
+        require(_content listId > 0, "Invalid content list id");
+        // If the incremented content list ID is less than the argument,
+        // the content list ID has not yet been assigned
+        return _content listId < content listId;
     }
 }

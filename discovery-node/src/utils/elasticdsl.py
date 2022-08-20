@@ -10,13 +10,13 @@ if es_url and not esclient:
     esclient = Elasticsearch(es_url)
 
 # uses aliases
-ES_PLAYLISTS = "playlists"
+ES_CONTENT_LISTS = "content lists"
 ES_REPOSTS = "reposts"
 ES_SAVES = "saves"
 ES_AGREEMENTS = "agreements"
 ES_USERS = "users"
 
-ES_INDEXES = [ES_PLAYLISTS, ES_REPOSTS, ES_SAVES, ES_AGREEMENTS, ES_USERS]
+ES_INDEXES = [ES_CONTENT_LISTS, ES_REPOSTS, ES_SAVES, ES_AGREEMENTS, ES_USERS]
 
 
 def listify(things):
@@ -73,7 +73,7 @@ def populate_user_metadata_es(user, current_user):
     return omit_indexed_fields(user)
 
 
-def populate_agreement_or_playlist_metadata_es(item, current_user):
+def populate_agreement_or_content list_metadata_es(item, current_user):
     if current_user:
         my_id = current_user["user_id"]
         item["has_current_user_reposted"] = my_id in item["reposted_by"]

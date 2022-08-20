@@ -12,7 +12,7 @@ from src.challenges.challenge_event_bus import ChallengeEventBus
 from src.challenges.trending_challenge import should_trending_challenge_update
 from src.models.indexing.block import Block
 from src.models.indexing.ursm_content_node import UrsmContentNode
-from src.models.playlists.playlist import Playlist
+from src.models.content lists.content list import ContentList
 from src.models.social.follow import Follow
 from src.models.social.repost import Repost
 from src.models.social.save import Save
@@ -31,7 +31,7 @@ from src.queries.get_skipped_transactions import (
 )
 from src.queries.skipped_transactions import add_network_level_skipped_transaction
 from src.tasks.celery_app import celery
-from src.tasks.playlists import playlist_state_update
+from src.tasks.content lists import content list_state_update
 from src.tasks.social_features import social_feature_state_update
 from src.tasks.sort_block_transactions import sort_block_transactions
 from src.tasks.agreements import agreement_event_types_lookup, agreement_state_update
@@ -55,7 +55,7 @@ from src.utils.prometheus_metric import (
     save_duration_metric,
 )
 from src.utils.redis_cache import (
-    remove_cached_playlist_ids,
+    remove_cached_content list_ids,
     remove_cached_agreement_ids,
     remove_cached_user_ids,
 )
@@ -70,7 +70,7 @@ from src.utils.session_manager import SessionManager
 USER_FACTORY = CONTRACT_TYPES.USER_FACTORY.value
 AGREEMENT_FACTORY = CONTRACT_TYPES.AGREEMENT_FACTORY.value
 SOCIAL_FEATURE_FACTORY = CONTRACT_TYPES.SOCIAL_FEATURE_FACTORY.value
-PLAYLIST_FACTORY = CONTRACT_TYPES.PLAYLIST_FACTORY.value
+CONTENT_LIST_FACTORY = CONTRACT_TYPES.CONTENT_LIST_FACTORY.value
 USER_LIBRARY_FACTORY = CONTRACT_TYPES.USER_LIBRARY_FACTORY.value
 USER_REPLICA_SET_MANAGER = CONTRACT_TYPES.USER_REPLICA_SET_MANAGER.value
 
@@ -79,8 +79,8 @@ AGREEMENT_FACTORY_CONTRACT_NAME = CONTRACT_NAMES_ON_CHAIN[CONTRACT_TYPES.AGREEME
 SOCIAL_FEATURE_FACTORY_CONTRACT_NAME = CONTRACT_NAMES_ON_CHAIN[
     CONTRACT_TYPES.SOCIAL_FEATURE_FACTORY
 ]
-PLAYLIST_FACTORY_CONTRACT_NAME = CONTRACT_NAMES_ON_CHAIN[
-    CONTRACT_TYPES.PLAYLIST_FACTORY
+CONTENT_LIST_FACTORY_CONTRACT_NAME = CONTRACT_NAMES_ON_CHAIN[
+    CONTRACT_TYPES.CONTENT_LIST_FACTORY
 ]
 USER_LIBRARY_FACTORY_CONTRACT_NAME = CONTRACT_NAMES_ON_CHAIN[
     CONTRACT_TYPES.USER_LIBRARY_FACTORY
@@ -93,7 +93,7 @@ TX_TYPE_TO_HANDLER_MAP = {
     USER_FACTORY: user_state_update,
     AGREEMENT_FACTORY: agreement_state_update,
     SOCIAL_FEATURE_FACTORY: social_feature_state_update,
-    PLAYLIST_FACTORY: playlist_state_update,
+    CONTENT_LIST_FACTORY: content list_state_update,
     USER_LIBRARY_FACTORY: user_library_state_update,
     USER_REPLICA_SET_MANAGER: user_replica_set_state_update,
 }
@@ -317,12 +317,12 @@ def fetch_cid_metadata(
 
         # user -> replica set string lookup, used to make user and agreement cid get_metadata fetches faster
         user_to_replica_set = dict(
-            session.query(User.user_id, User.creator_node_endpoint)
+            session.query(User.user_id, User.content_node_endpoint)
             .filter(
                 User.is_current == True,
                 User.user_id.in_(cid_to_user_id.values()),
             )
-            .group_by(User.user_id, User.creator_node_endpoint)
+            .group_by(User.user_id, User.content_node_endpoint)
             .all()
         )
 
@@ -479,7 +479,7 @@ def process_state_changes(
     changed_entity_ids_map = {
         USER_FACTORY: [],
         AGREEMENT_FACTORY: [],
-        PLAYLIST_FACTORY: [],
+        CONTENT_LIST_FACTORY: [],
         USER_REPLICA_SET_MANAGER: [],
     }
 
@@ -518,7 +518,7 @@ def remove_updated_entities_from_cache(redis, changed_entity_type_to_updated_ids
         USER_FACTORY: remove_cached_user_ids,
         USER_REPLICA_SET_MANAGER: remove_cached_user_ids,
         AGREEMENT_FACTORY: remove_cached_agreement_ids,
-        PLAYLIST_FACTORY: remove_cached_playlist_ids,
+        CONTENT_LIST_FACTORY: remove_cached_content list_ids,
     }
     for (
         contract_type,
@@ -584,7 +584,7 @@ def index_blocks(self, db, blocks_list):
                     USER_FACTORY: [],
                     AGREEMENT_FACTORY: [],
                     SOCIAL_FEATURE_FACTORY: [],
-                    PLAYLIST_FACTORY: [],
+                    CONTENT_LIST_FACTORY: [],
                     USER_LIBRARY_FACTORY: [],
                     USER_REPLICA_SET_MANAGER: [],
                 }
@@ -778,7 +778,7 @@ def index_blocks(self, db, blocks_list):
         logger.info(f"index.py | index_blocks | Indexed {num_blocks} blocks")
 
 
-# transactions are reverted in reverse dependency order (social features --> playlists --> agreements --> users)
+# transactions are reverted in reverse dependency order (social features --> content lists --> agreements --> users)
 def revert_blocks(self, db, revert_blocks_list):
     # TODO: Remove this exception once the unexpected revert scenario has been diagnosed
     num_revert_blocks = len(revert_blocks_list)
@@ -803,7 +803,7 @@ def revert_blocks(self, db, revert_blocks_list):
 
     with db.scoped_session() as session:
 
-        rebuild_playlist_index = False
+        rebuild_content list_index = False
         rebuild_agreement_index = False
         rebuild_user_index = False
 
@@ -836,8 +836,8 @@ def revert_blocks(self, db, revert_blocks_list):
             revert_follow_entries = (
                 session.query(Follow).filter(Follow.blockhash == revert_hash).all()
             )
-            revert_playlist_entries = (
-                session.query(Playlist).filter(Playlist.blockhash == revert_hash).all()
+            revert_content list_entries = (
+                session.query(ContentList).filter(ContentList.blockhash == revert_hash).all()
             )
             revert_agreement_entries = (
                 session.query(Agreement).filter(Agreement.blockhash == revert_hash).all()
@@ -922,19 +922,19 @@ def revert_blocks(self, db, revert_blocks_list):
                 logger.info(f"Reverting follow: {follow_to_revert}")
                 session.delete(follow_to_revert)
 
-            for playlist_to_revert in revert_playlist_entries:
-                playlist_id = playlist_to_revert.playlist_id
-                previous_playlist_entry = (
-                    session.query(Playlist)
-                    .filter(Playlist.playlist_id == playlist_id)
-                    .filter(Playlist.blocknumber < revert_block_number)
-                    .order_by(Playlist.blocknumber.desc())
+            for content list_to_revert in revert_content list_entries:
+                content list_id = content list_to_revert.content list_id
+                previous_content list_entry = (
+                    session.query(ContentList)
+                    .filter(ContentList.content list_id == content list_id)
+                    .filter(ContentList.blocknumber < revert_block_number)
+                    .order_by(ContentList.blocknumber.desc())
                     .first()
                 )
-                if previous_playlist_entry:
-                    previous_playlist_entry.is_current = True
-                # Remove outdated playlist entry
-                session.delete(playlist_to_revert)
+                if previous_content list_entry:
+                    previous_content list_entry.is_current = True
+                # Remove outdated content list entry
+                session.delete(content list_to_revert)
 
             for agreement_to_revert in revert_agreement_entries:
                 agreement_id = agreement_to_revert.agreement_id
@@ -1034,8 +1034,8 @@ def revert_blocks(self, db, revert_blocks_list):
             # Remove outdated block entry
             session.query(Block).filter(Block.blockhash == revert_hash).delete()
 
-            rebuild_playlist_index = rebuild_playlist_index or bool(
-                revert_playlist_entries
+            rebuild_content list_index = rebuild_content list_index or bool(
+                revert_content list_entries
             )
             rebuild_agreement_index = rebuild_agreement_index or bool(revert_agreement_entries)
             rebuild_user_index = rebuild_user_index or bool(revert_user_entries)
@@ -1082,9 +1082,9 @@ def update_task(self):
         address=get_contract_addresses()[USER_FACTORY], abi=user_abi
     )
 
-    playlist_abi = update_task.abi_values[PLAYLIST_FACTORY_CONTRACT_NAME]["abi"]
-    playlist_contract = update_task.web3.eth.contract(
-        address=get_contract_addresses()[PLAYLIST_FACTORY], abi=playlist_abi
+    content list_abi = update_task.abi_values[CONTENT_LIST_FACTORY_CONTRACT_NAME]["abi"]
+    content list_contract = update_task.web3.eth.contract(
+        address=get_contract_addresses()[CONTENT_LIST_FACTORY], abi=content list_abi
     )
 
     social_feature_abi = update_task.abi_values[SOCIAL_FEATURE_FACTORY_CONTRACT_NAME][
@@ -1110,7 +1110,7 @@ def update_task(self):
 
     update_task.agreement_contract = agreement_contract
     update_task.user_contract = user_contract
-    update_task.playlist_contract = playlist_contract
+    update_task.content list_contract = content list_contract
     update_task.social_feature_contract = social_feature_contract
     update_task.user_library_contract = user_library_contract
     update_task.user_replica_set_manager_contract = user_replica_set_manager_contract

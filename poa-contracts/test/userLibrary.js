@@ -5,8 +5,8 @@ import {
   UserFactory,
   AgreementStorage,
   AgreementFactory,
-  PlaylistStorage,
-  PlaylistFactory,
+  ContentListStorage,
+  ContentListFactory,
   UserLibraryFactory
 } from './_lib/artifacts.js'
 import * as _constants from './utils/constants'
@@ -18,20 +18,20 @@ contract('UserLibrary', async (accounts) => {
   const testAgreementId2 = 2
   const invalidUserId = 3
   const invalidAgreementId = 3
-  const invalidPlaylistId = 2
+  const invalidContentListId = 2
 
-  let playlistName = 'UserLibrary Test Playlist'
-  let playlistAgreements = [1, 2]
-  let expectedPlaylistId = 1
-  let playlistOwnerId = testUserId1
+  let content listName = 'UserLibrary Test ContentList'
+  let content listAgreements = [1, 2]
+  let expectedContentListId = 1
+  let content listOwnerId = testUserId1
 
   let registry
   let userStorage
   let userFactory
   let agreementStorage
   let agreementFactory
-  let playlistStorage
-  let playlistFactory
+  let content listStorage
+  let content listFactory
   let userLibraryFactory
 
   beforeEach(async () => {
@@ -47,23 +47,23 @@ contract('UserLibrary', async (accounts) => {
     agreementFactory = await AgreementFactory.new(registry.address, _constants.agreementStorageKey, _constants.userFactoryKey, networkId)
     await registry.addContract(_constants.agreementFactoryKey, agreementFactory.address)
 
-    // Deploy playlist related contracts
-    playlistStorage = await PlaylistStorage.new(registry.address)
-    await registry.addContract(_constants.playlistStorageKey, playlistStorage.address)
-    playlistFactory = await PlaylistFactory.new(
+    // Deploy content list related contracts
+    content listStorage = await ContentListStorage.new(registry.address)
+    await registry.addContract(_constants.content listStorageKey, content listStorage.address)
+    content listFactory = await ContentListFactory.new(
       registry.address,
-      _constants.playlistStorageKey,
+      _constants.content listStorageKey,
       _constants.userFactoryKey,
       _constants.agreementFactoryKey,
       networkId)
 
-    await registry.addContract(_constants.playlistFactoryKey, playlistFactory.address)
+    await registry.addContract(_constants.content listFactoryKey, content listFactory.address)
 
     userLibraryFactory = await UserLibraryFactory.new(
       registry.address,
       _constants.userFactoryKey,
       _constants.agreementFactoryKey,
-      _constants.playlistFactoryKey,
+      _constants.content listFactoryKey,
       networkId)
 
     await registry.addContract(_constants.userLibraryFactoryKey, userLibraryFactory.address)
@@ -102,16 +102,16 @@ contract('UserLibrary', async (accounts) => {
       _constants.testMultihash.hashFn,
       _constants.testMultihash.size)
 
-    // Add a playlist
-    await _lib.addPlaylistAndValidate(
-      playlistFactory,
-      expectedPlaylistId,
+    // Add a content list
+    await _lib.addContentListAndValidate(
+      content listFactory,
+      expectedContentListId,
       accounts[0],
-      playlistOwnerId,
-      playlistName,
+      content listOwnerId,
+      content listName,
       false,
       false,
-      playlistAgreements)
+      content listAgreements)
   })
 
   it('Should add one agreement save', async () => {
@@ -139,42 +139,42 @@ contract('UserLibrary', async (accounts) => {
       testAgreementId1)
   })
 
-  it('Should add one playlist save', async () => {
-    // add playlist save and validate
-    await _lib.addPlaylistSaveAndValidate(
+  it('Should add one content list save', async () => {
+    // add content list save and validate
+    await _lib.addContentListSaveAndValidate(
       userLibraryFactory,
       accounts[0],
       testUserId1,
-      expectedPlaylistId)
+      expectedContentListId)
   })
 
-  it('Should delete one playlist save', async () => {
-    // add playlist save and validate
-    await _lib.addPlaylistSaveAndValidate(
+  it('Should delete one content list save', async () => {
+    // add content list save and validate
+    await _lib.addContentListSaveAndValidate(
       userLibraryFactory,
       accounts[0],
       testUserId1,
-      expectedPlaylistId
+      expectedContentListId
     )
 
-    // delete playlist save and validate
-    await _lib.deletePlaylistSaveAndValidate(
+    // delete content list save and validate
+    await _lib.deleteContentListSaveAndValidate(
       userLibraryFactory,
       accounts[0],
       testUserId1,
-      expectedPlaylistId
+      expectedContentListId
     )
   })
 
-  it('Should fail to add playlist save with non-existent user and non-existent playlist', async () => {
+  it('Should fail to add content list save with non-existent user and non-existent content list', async () => {
     let caughtError = false
     try {
-      // add playlist save with invalid user
-      await _lib.addPlaylistSaveAndValidate(
+      // add content list save with invalid user
+      await _lib.addContentListSaveAndValidate(
         userLibraryFactory,
         accounts[0],
         invalidUserId,
-        expectedPlaylistId)
+        expectedContentListId)
     } catch (e) {
       // handle expected error
       if (e.message.indexOf('Caller does not own userId') >= 0) {
@@ -188,15 +188,15 @@ contract('UserLibrary', async (accounts) => {
 
     caughtError = false
     try {
-      // add playlist save with invalid playlist
-      await _lib.addPlaylistSaveAndValidate(
+      // add content list save with invalid content list
+      await _lib.addContentListSaveAndValidate(
         userLibraryFactory,
         accounts[0],
         testUserId1,
-        invalidPlaylistId)
+        invalidContentListId)
     } catch (e) {
       // handle expected error
-      if (e.message.indexOf('valid playlist ID') >= 0) {
+      if (e.message.indexOf('valid content list ID') >= 0) {
         caughtError = true
       } else {
         // unexpected error - throw normally
@@ -207,15 +207,15 @@ contract('UserLibrary', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
   })
 
-  it('Should fail to delete playlist save with non-existent user and non-existent playlist', async () => {
+  it('Should fail to delete content list save with non-existent user and non-existent content list', async () => {
     let caughtError = false
     try {
-      // add playlist save with invalid user
-      await _lib.deletePlaylistSaveAndValidate(
+      // add content list save with invalid user
+      await _lib.deleteContentListSaveAndValidate(
         userLibraryFactory,
         accounts[0],
         invalidUserId,
-        expectedPlaylistId)
+        expectedContentListId)
     } catch (e) {
       // handle expected error
       if (e.message.indexOf('Caller does not own userId') >= 0) {
@@ -228,15 +228,15 @@ contract('UserLibrary', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
     caughtError = false
     try {
-      // add playlist save with invalid playlist
-      await _lib.deletePlaylistSaveAndValidate(
+      // add content list save with invalid content list
+      await _lib.deleteContentListSaveAndValidate(
         userLibraryFactory,
         accounts[0],
         testUserId1,
-        invalidPlaylistId)
+        invalidContentListId)
     } catch (e) {
       // handle expected error
-      if (e.message.indexOf('valid playlist ID') >= 0) {
+      if (e.message.indexOf('valid content list ID') >= 0) {
         caughtError = true
       } else {
         // unexpected error - throw normally
@@ -342,14 +342,14 @@ contract('UserLibrary', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
   })
 
-  it('Should fail to add playlist save due to lack of ownership of user', async () => {
+  it('Should fail to add content list save due to lack of ownership of user', async () => {
     let caughtError = false
     try {
-      await _lib.addPlaylistSaveAndValidate(
+      await _lib.addContentListSaveAndValidate(
         userLibraryFactory,
         accounts[8],
         testUserId1,
-        expectedPlaylistId
+        expectedContentListId
       )
     } catch (e) {
       // handle expected error
@@ -391,22 +391,22 @@ contract('UserLibrary', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
   })
 
-  it('Should fail to delete playlist save due to lack of ownership of user', async () => {
-    // add playlist save and validate
-    await _lib.addPlaylistSaveAndValidate(
+  it('Should fail to delete content list save due to lack of ownership of user', async () => {
+    // add content list save and validate
+    await _lib.addContentListSaveAndValidate(
       userLibraryFactory,
       accounts[0],
       testUserId1,
-      expectedPlaylistId
+      expectedContentListId
     )
 
     let caughtError = false
     try {
-      await _lib.deletePlaylistSaveAndValidate(
+      await _lib.deleteContentListSaveAndValidate(
         userLibraryFactory,
         accounts[8],
         testUserId1,
-        expectedPlaylistId
+        expectedContentListId
       )
     } catch (e) {
       // handle expected error

@@ -14,11 +14,11 @@
  */
 
 import {
-    PlaylistArtwork,
-    PlaylistArtworkFromJSON,
-    PlaylistArtworkFromJSONTyped,
-    PlaylistArtworkToJSON,
-} from './PlaylistArtwork';
+    ContentListArtwork,
+    ContentListArtworkFromJSON,
+    ContentListArtworkFromJSONTyped,
+    ContentListArtworkToJSON,
+} from './ContentListArtwork';
 import {
     User,
     UserFromJSON,
@@ -29,61 +29,61 @@ import {
 /**
  * 
  * @export
- * @interface Playlist
+ * @interface ContentList
  */
-export interface Playlist {
+export interface ContentList {
     /**
      * 
-     * @type {PlaylistArtwork}
-     * @memberof Playlist
+     * @type {ContentListArtwork}
+     * @memberof ContentList
      */
-    artwork?: PlaylistArtwork;
+    artwork?: ContentListArtwork;
     /**
      * 
      * @type {string}
-     * @memberof Playlist
+     * @memberof ContentList
      */
     description?: string;
     /**
      * 
      * @type {string}
-     * @memberof Playlist
+     * @memberof ContentList
      */
     id: string;
     /**
      * 
      * @type {boolean}
-     * @memberof Playlist
+     * @memberof ContentList
      */
     is_album: boolean;
     /**
      * 
      * @type {string}
-     * @memberof Playlist
+     * @memberof ContentList
      */
-    playlist_name: string;
+    content list_name: string;
     /**
      * 
      * @type {number}
-     * @memberof Playlist
+     * @memberof ContentList
      */
     repost_count: number;
     /**
      * 
      * @type {number}
-     * @memberof Playlist
+     * @memberof ContentList
      */
     favorite_count: number;
     /**
      * 
      * @type {number}
-     * @memberof Playlist
+     * @memberof ContentList
      */
     total_play_count: number;
     /**
      * 
      * @type {User}
-     * @memberof Playlist
+     * @memberof ContentList
      */
     user: User;
 }

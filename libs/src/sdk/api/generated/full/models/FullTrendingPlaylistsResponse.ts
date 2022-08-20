@@ -14,11 +14,11 @@
  */
 
 import {
-    PlaylistFull,
-    PlaylistFullFromJSON,
-    PlaylistFullFromJSONTyped,
-    PlaylistFullToJSON,
-} from './PlaylistFull';
+    ContentListFull,
+    ContentListFullFromJSON,
+    ContentListFullFromJSONTyped,
+    ContentListFullToJSON,
+} from './ContentListFull';
 import {
     VersionMetadata,
     VersionMetadataFromJSON,
@@ -29,56 +29,56 @@ import {
 /**
  * 
  * @export
- * @interface FullTrendingPlaylistsResponse
+ * @interface FullTrendingContentListsResponse
  */
-export interface FullTrendingPlaylistsResponse {
+export interface FullTrendingContentListsResponse {
     /**
      * 
      * @type {number}
-     * @memberof FullTrendingPlaylistsResponse
+     * @memberof FullTrendingContentListsResponse
      */
     latest_chain_block: number;
     /**
      * 
      * @type {number}
-     * @memberof FullTrendingPlaylistsResponse
+     * @memberof FullTrendingContentListsResponse
      */
     latest_indexed_block: number;
     /**
      * 
      * @type {number}
-     * @memberof FullTrendingPlaylistsResponse
+     * @memberof FullTrendingContentListsResponse
      */
     latest_chain_slot_plays: number;
     /**
      * 
      * @type {number}
-     * @memberof FullTrendingPlaylistsResponse
+     * @memberof FullTrendingContentListsResponse
      */
     latest_indexed_slot_plays: number;
     /**
      * 
      * @type {string}
-     * @memberof FullTrendingPlaylistsResponse
+     * @memberof FullTrendingContentListsResponse
      */
     signature: string;
     /**
      * 
      * @type {string}
-     * @memberof FullTrendingPlaylistsResponse
+     * @memberof FullTrendingContentListsResponse
      */
     timestamp: string;
     /**
      * 
      * @type {VersionMetadata}
-     * @memberof FullTrendingPlaylistsResponse
+     * @memberof FullTrendingContentListsResponse
      */
     version: VersionMetadata;
     /**
      * 
-     * @type {Array<PlaylistFull>}
-     * @memberof FullTrendingPlaylistsResponse
+     * @type {Array<ContentListFull>}
+     * @memberof FullTrendingContentListsResponse
      */
-    data?: Array<PlaylistFull>;
+    data?: Array<ContentListFull>;
 }
 

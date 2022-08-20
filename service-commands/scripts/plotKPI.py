@@ -13,37 +13,37 @@ def add_labels(rects):
 with open("output.json", "r") as f:
     users = json.load(f)
 
-creator_nodes_set = set()
+content_nodes_set = set()
 for user in users:
-    creator_nodes_set |= set(
-        creator_node["endpoint"] for creator_node in user["creatorNodes"]
+    content_nodes_set |= set(
+        content_node["endpoint"] for content_node in user["creatorNodes"]
     )
-creator_nodes = sorted(creator_nodes_set)
+content_nodes = sorted(content_nodes_set)
 
 # Plot synced and reamining
 synced: defaultdict[str, set] = defaultdict(set)
 remaining: defaultdict[str, set] = defaultdict(set)
 for user in users:
     user_cids = set(user["cids"])
-    for creator_node in user["creatorNodes"]:
-        creator_node_cids = set(creator_node["cids"])
-        synced[creator_node["endpoint"]] |= creator_node_cids
-        remaining[creator_node["endpoint"]] |= user_cids - creator_node_cids
+    for content_node in user["creatorNodes"]:
+        content_node_cids = set(content_node["cids"])
+        synced[content_node["endpoint"]] |= content_node_cids
+        remaining[content_node["endpoint"]] |= user_cids - content_node_cids
 
-fig, ax = plt.subplots(figsize=(len(creator_nodes), len(creator_nodes) * 0.8))
+fig, ax = plt.subplots(figsize=(len(content_nodes), len(content_nodes) * 0.8))
 
-y, width = np.arange(len(creator_nodes)), 0.3
+y, width = np.arange(len(content_nodes)), 0.3
 synced_rects = ax.barh(
-    y + width / 2, [len(synced[i]) for i in creator_nodes], width, label="Synced"
+    y + width / 2, [len(synced[i]) for i in content_nodes], width, label="Synced"
 )
 remaining_rects = ax.barh(
-    y - width / 2, [len(remaining[i]) for i in creator_nodes], width, label="Remaining"
+    y - width / 2, [len(remaining[i]) for i in content_nodes], width, label="Remaining"
 )
 
 ax.set_xlabel("# of cids")
-ax.set_ylabel("creator node")
+ax.set_ylabel("content node")
 ax.set_yticks(y)
-ax.set_yticklabels(creator_nodes)
+ax.set_yticklabels(content_nodes)
 ax.legend()
 
 add_labels(synced_rects)
@@ -54,29 +54,29 @@ fig.tight_layout()
 plt.savefig("synced_remaining.png")
 # ---
 
-# Plot number of users managed by each creator node
+# Plot number of users managed by each content node
 total: defaultdict[str, int] = defaultdict(int)
 as_primary: defaultdict[str, int] = defaultdict(int)
 for user in users:
-    for creator_node in user["creatorNodes"]:
-        if creator_node["primary"]:
-            as_primary[creator_node["endpoint"]] += 1
-        total[creator_node["endpoint"]] += 1
+    for content_node in user["creatorNodes"]:
+        if content_node["primary"]:
+            as_primary[content_node["endpoint"]] += 1
+        total[content_node["endpoint"]] += 1
 
-fig, ax = plt.subplots(figsize=(len(creator_nodes), len(creator_nodes) * 0.8))
+fig, ax = plt.subplots(figsize=(len(content_nodes), len(content_nodes) * 0.8))
 
-y, width = np.arange(len(creator_nodes)), 0.3
+y, width = np.arange(len(content_nodes)), 0.3
 total_rects = ax.barh(
-    y + width / 2, [total[i] for i in creator_nodes], width, label="Total"
+    y + width / 2, [total[i] for i in content_nodes], width, label="Total"
 )
 as_primary_rects = ax.barh(
-    y - width / 2, [as_primary[i] for i in creator_nodes], width, label="As primary"
+    y - width / 2, [as_primary[i] for i in content_nodes], width, label="As primary"
 )
 
 ax.set_xlabel("# of users")
-ax.set_ylabel("creator node")
+ax.set_ylabel("content node")
 ax.set_yticks(y)
-ax.set_yticklabels(creator_nodes)
+ax.set_yticklabels(content_nodes)
 ax.legend()
 
 add_labels(total_rects)
@@ -88,14 +88,14 @@ plt.savefig("num_users_managed.png")
 # ---
 
 # Plot frequnecy of number of time a cids was replicated
-cid_to_creator_nodes = defaultdict(set)
+cid_to_content_nodes = defaultdict(set)
 for user in users:
-    for creator_node in user["creatorNodes"]:
-        for cid in creator_node["cids"]:
-            cid_to_creator_nodes[cid].add(creator_node["endpoint"])
+    for content_node in user["creatorNodes"]:
+        for cid in content_node["cids"]:
+            cid_to_content_nodes[cid].add(content_node["endpoint"])
 
-frequency = [0] * (max(len(i) for i in cid_to_creator_nodes.values()) + 1)
-for i in cid_to_creator_nodes.values():
+frequency = [0] * (max(len(i) for i in cid_to_content_nodes.values()) + 1)
+for i in cid_to_content_nodes.values():
     frequency[len(i)] += 1
 
 fig, ax = plt.subplots()
@@ -118,8 +118,8 @@ full_sync_count_frequency = defaultdict(list)
 for user in users:
     num_cids = len(user["cids"])
     full_synced = 0
-    for creator_node in user["creatorNodes"]:
-        if len(creator_node["cids"]) == num_cids:
+    for content_node in user["creatorNodes"]:
+        if len(content_node["cids"]) == num_cids:
             full_synced += 1
 
     full_sync_count_frequency[full_synced].append(

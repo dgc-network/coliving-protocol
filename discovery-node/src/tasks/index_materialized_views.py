@@ -19,7 +19,7 @@ def update_views(self, db):
         logger.info("index_materialized_views.py | Updating materialized views")
         session.execute("REFRESH MATERIALIZED VIEW CONCURRENTLY user_lexeme_dict")
         session.execute("REFRESH MATERIALIZED VIEW CONCURRENTLY agreement_lexeme_dict")
-        session.execute("REFRESH MATERIALIZED VIEW CONCURRENTLY playlist_lexeme_dict")
+        session.execute("REFRESH MATERIALIZED VIEW CONCURRENTLY content list_lexeme_dict")
         session.execute("REFRESH MATERIALIZED VIEW CONCURRENTLY album_lexeme_dict")
 
     logger.info(

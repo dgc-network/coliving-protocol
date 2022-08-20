@@ -45,7 +45,7 @@ from src.queries.get_savers_for_agreement import get_savers_for_agreement
 from src.queries.get_stems_of import get_stems_of
 from src.queries.get_top_followee_saves import get_top_followee_saves
 from src.queries.get_top_followee_windowed import get_top_followee_windowed
-from src.queries.get_agreement_user_creator_node import get_agreement_user_creator_node
+from src.queries.get_agreement_user_content_node import get_agreement_user_content_node
 from src.queries.get_agreements import RouteArgs, get_agreements
 from src.queries.get_agreements_including_unlisted import get_agreements_including_unlisted
 from src.queries.get_trending import get_full_trending, get_trending
@@ -366,11 +366,11 @@ class AgreementStream(Resource):
         """
         decoded_id = decode_with_abort(agreement_id, ns)
         args = {"agreement_id": decoded_id}
-        creator_nodes = get_agreement_user_creator_node(args)
-        if creator_nodes is None:
+        content_nodes = get_agreement_user_content_node(args)
+        if content_nodes is None:
             abort_not_found(agreement_id, ns)
-        creator_nodes = creator_nodes.split(",")
-        if not creator_nodes:
+        content_nodes = content_nodes.split(",")
+        if not content_nodes:
             abort_not_found(agreement_id, ns)
 
         # before redirecting to content node,
@@ -384,7 +384,7 @@ class AgreementStream(Resource):
         if agreement["is_delete"] or agreement["user"]["is_deactivated"]:
             abort_not_found(agreement_id, ns)
 
-        primary_node = creator_nodes[0]
+        primary_node = content_nodes[0]
         stream_url = urljoin(primary_node, f"agreements/stream/{agreement_id}")
 
         return stream_url
@@ -967,7 +967,7 @@ class BestNewReleases(Resource):
     @record_metrics
     @full_ns.doc(
         id="Best New Releases",
-        description='Gets the agreements found on the "Best New Releases" smart playlist',
+        description='Gets the agreements found on the "Best New Releases" smart content list',
     )
     @full_ns.marshal_with(full_agreements_response)
     @cache(ttl_sec=10)
@@ -989,12 +989,12 @@ Discovery Node Social Feed Overview
 For a given user, current_user, we provide a feed of relevant content from around the coliving network.
 This is generated in the following manner:
   - Generate list of users followed by current_user, known as 'followees'
-  - Query all agreement and public playlist reposts from followees
-    - Generate list of reposted agreement ids and reposted playlist ids
-  - Query all agreement and public playlists reposted OR created by followees, ordered by timestamp
-    - At this point, 2 separate arrays one for playlists / one for agreements
+  - Query all agreement and public content list reposts from followees
+    - Generate list of reposted agreement ids and reposted content list ids
+  - Query all agreement and public content lists reposted OR created by followees, ordered by timestamp
+    - At this point, 2 separate arrays one for content lists / one for agreements
   - Query additional metadata around feed entries in each array, repost + save counts, user repost boolean
-  - Combine unsorted playlist and agreement arrays
+  - Combine unsorted content list and agreement arrays
   - Sort combined results by 'timestamp' field and return
 """
 
@@ -1026,7 +1026,7 @@ class UnderTheRadar(Resource):
     @record_metrics
     @full_ns.doc(
         id="""Get Under the Radar Agreements""",
-        description="""Gets the agreements found on the \"Under the Radar\" smart playlist""",
+        description="""Gets the agreements found on the \"Under the Radar\" smart content list""",
     )
     @full_ns.expect(under_the_radar_parser)
     @full_ns.marshal_with(full_agreements_response)
@@ -1067,7 +1067,7 @@ class MostLoved(Resource):
     @record_metrics
     @full_ns.doc(
         id="""Get Most Loved Agreements""",
-        description="""Gets the agreements found on the \"Most Loved\" smart playlist""",
+        description="""Gets the agreements found on the \"Most Loved\" smart content list""",
     )
     @full_ns.expect(most_loved_parser)
     @full_ns.marshal_with(full_agreements_response)

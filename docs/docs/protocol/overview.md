@@ -18,7 +18,7 @@ If you are interested in operating a service, see the [`running a node`](../toke
 Coliving consists of three demographics of users: Artists (content creators), Fans (content consumers), and Service Providers. Some users check fall into all three demographics!
 
 - **Artists** upload agreements, create albums, and share content to their following
-- **Fans** stream agreements, create playlists, subscribe to & follow artists, and re-share content to their following
+- **Fans** stream agreements, create content lists, subscribe to & follow artists, and re-share content to their following
 - **Service Providers** serve app traffic, stream songs, and help secure the network
 
 Service providers can provide one or more of the following services by staking $LIVE tokens and registering their service:
@@ -42,7 +42,7 @@ For more details on the Coliving architecture, see the [Coliving protocol whitep
 
 | Lib                                                                                           | Description                                                                                                                                          |
 | :-------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`libs`](https://github.com/dgc-network/coliving-protocol/tree/master/libs)                   | An easy interface to the distributed web and Coliving services: Identity Service, Discovery Node \(discovery node\), Content Node \(creator node\) |
+| [`libs`](https://github.com/dgc-network/coliving-protocol/tree/master/libs)                   | An easy interface to the distributed web and Coliving services: Identity Service, Discovery Node \(discovery node\), Content Node \(content node\) |
 | [`contracts`](https://github.com/dgc-network/coliving-protocol/tree/master/contracts)         | The smart contracts being developed for the Coliving streaming protocol                                                                                |
 | [`eth-contracts`](https://github.com/dgc-network/coliving-protocol/tree/master/eth-contracts) | The Ethereum smart contracts being developed for the Coliving streaming protocol                                                                       |
 

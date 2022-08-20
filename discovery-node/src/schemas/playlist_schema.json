@@ -1,12 +1,12 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$ref": "#/definitions/Playlist",
+  "$ref": "#/definitions/ContentList",
   "definitions": {
-      "Playlist": {
+      "ContentList": {
           "type": "object",
           "additionalProperties": true,
           "properties": {
-              "playlist_name": {
+              "content list_name": {
                   "type": ["string", "null"],
                   "default": null
               },
@@ -17,7 +17,7 @@
           },
           "required": [
           ],
-          "title": "Playlist"
+          "title": "ContentList"
       }
   }
 }

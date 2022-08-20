@@ -32,8 +32,8 @@ A [Redis client](https://redis.io/) is used for for resource locking, request ra
 
 ## Agreement Segmenting
 
-As defined by the [Coliving protocol](https://whitepaper.coliving.co), the content node uses [FFMPEG](https://ffmpeg.org/ffmpeg.html) to segment & transcode all uploaded agreement files before storing/serving.
+As defined by the [Coliving protocol](https://whitepaper.coliving.lol), the content node uses [FFMPEG](https://ffmpeg.org/ffmpeg.html) to segment & transcode all uploaded agreement files before storing/serving.
 
 ## Data Redundancy**
 
-As defined by the [Coliving protocol](https://whitepaper.coliving.co), all content is stored redundantly across multiple nodes to maximize availability. This is all done automatically - every node monitors every other node in the network to ensure minimum redundancy of all data, transfering files as required.
+As defined by the [Coliving protocol](https://whitepaper.coliving.lol), all content is stored redundantly across multiple nodes to maximize availability. This is all done automatically - every node monitors every other node in the network to ensure minimum redundancy of all data, transfering files as required.

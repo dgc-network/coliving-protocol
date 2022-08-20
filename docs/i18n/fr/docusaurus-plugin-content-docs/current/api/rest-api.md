@@ -7,7 +7,7 @@ description: >-
 
 # REST API
 
-L'API REST Coliving vous permet de lancer des requêtes, diffuser de la musique, et rechercher des utilisateurs et playlists a travers le réseau.
+L'API REST Coliving vous permet de lancer des requêtes, diffuser de la musique, et rechercher des utilisateurs et content lists a travers le réseau.
 
 Veuillez l'essayer!
 

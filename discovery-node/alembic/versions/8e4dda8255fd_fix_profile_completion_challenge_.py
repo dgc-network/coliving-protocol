@@ -1,4 +1,4 @@
-"""fix_profile_completion_challenge_playlist_favorite
+"""fix_profile_completion_challenge_content list_favorite
 
 Revision ID: 8e4dda8255fd
 Revises: a6d2e50a8efa
@@ -23,14 +23,14 @@ def upgrade():
         begin;
 
         -- This migration serves to repair missing state in
-        -- challenge_profile_completion where previously playlist favorites (saves)
+        -- challenge_profile_completion where previously content list favorites (saves)
         -- did not update the challenge.
         --
         -- First, update challenge_profile_completion rows to account
-        -- for playlist saves.
-        -- By joining against the saves table for all playlist saves,
+        -- for content list saves.
+        -- By joining against the saves table for all content list saves,
         -- we can achieve this and only modify rows where users have done
-        -- a playlist save.
+        -- a content list save.
         --
         -- Second, use that result to update (recalculate) user_challenges
         -- for users that were updated in the first step.
@@ -42,7 +42,7 @@ def upgrade():
             where
                 challenge_profile_completion.user_id = saves.user_id and
                 saves.is_current = true and
-                (saves.save_type = 'playlist' or saves.save_type = 'album') and
+                (saves.save_type = 'content list' or saves.save_type = 'album') and
                 challenge_profile_completion.favorites = false
             returning challenge_profile_completion.*
         )

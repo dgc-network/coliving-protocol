@@ -39,31 +39,31 @@ export class CreatorNode {
   /* Static Utils */
 
   /**
-   * Pulls off the primary creator node from a creator node endpoint string.
-   * @param endpoints user.creator_node_endpoint
+   * Pulls off the primary content node from a content node endpoint string.
+   * @param endpoints user.content_node_endpoint
    */
   static getPrimary(endpoints: string) {
     return endpoints ? endpoints.split(',')[0] : ''
   }
 
   /**
-   * Pulls off the secondary creator nodes from a creator node endpoint string.
-   * @param endpoints user.creator_node_endpoint
+   * Pulls off the secondary content nodes from a content node endpoint string.
+   * @param endpoints user.content_node_endpoint
    */
   static getSecondaries(endpoints: string) {
     return endpoints ? endpoints.split(',').slice(1) : []
   }
 
   /**
-   * Pulls the user's creator nodes out of the list
-   * @param endpoints user.creator_node_endpoint
+   * Pulls the user's content nodes out of the list
+   * @param endpoints user.content_node_endpoint
    */
   static getEndpoints(endpoints: string) {
     return endpoints ? endpoints.split(',') : []
   }
 
   /**
-   * Builds the creator_node_endpoint value off of a primary and secondaries list
+   * Builds the content_node_endpoint value off of a primary and secondaries list
    * @param primary the primary endpoint
    * @param secondaries a list of secondary endpoints
    */
@@ -72,7 +72,7 @@ export class CreatorNode {
   }
 
   /**
-   * Pulls off the user's clock value from a creator node endpoint and the user's wallet address.
+   * Pulls off the user's clock value from a content node endpoint and the user's wallet address.
    * @param endpoint content node endpoint
    * @param wallet user wallet address
    * @param timeout max time alloted for clock request
@@ -109,8 +109,8 @@ export class CreatorNode {
   }
 
   /**
-   * Checks if a download is available from provided creator node endpoints
-   * @param endpoints creator node endpoints
+   * Checks if a download is available from provided content node endpoints
+   * @param endpoints content node endpoints
    * @param agreementId
    */
   static async checkIfDownloadAvailable(endpoints: string, agreementId: number) {
@@ -146,9 +146,9 @@ export class CreatorNode {
   maxBlockNumber: number
 
   /**
-   * Constructs a service class for a creator node
+   * Constructs a service class for a content node
    * @param web3Manager
-   * @param contentNodeEndpoint fallback creator node endpoint (to be deprecated)
+   * @param contentNodeEndpoint fallback content node endpoint (to be deprecated)
    * @param isServer
    * @param userStateManager  singleton UserStateManager instance
    * @param lazyConnect whether or not to lazy connect (sign in) on load
@@ -171,7 +171,7 @@ export class CreatorNode {
     writeQuorumEnabled = false
   ) {
     this.web3Manager = web3Manager
-    // This is just 1 endpoint (primary), unlike the creator_node_endpoint field in user metadata
+    // This is just 1 endpoint (primary), unlike the content_node_endpoint field in user metadata
     this.contentNodeEndpoint = contentNodeEndpoint
     this.isServer = isServer
     this.userStateManager = userStateManager
@@ -252,11 +252,11 @@ export class CreatorNode {
   }
 
   /**
-   * Uploads creator content to a creator node
+   * Uploads creator content to a content node
    * @param metadata the creator metadata
    */
   async uploadCreatorContent(metadata: AgreementMetadata, blockNumber = null) {
-    // this does the actual validation before sending to the creator node
+    // this does the actual validation before sending to the content node
     // if validation fails, validate() will throw an error
     try {
       this.schemas[userSchemaType].validate?.(metadata)
@@ -278,7 +278,7 @@ export class CreatorNode {
   }
 
   /**
-   * Creates a creator on the creator node, associating user id with file content
+   * Creates a creator on the content node, associating user id with file content
    * @param colivingUserId returned by user creation on-blockchain
    * @param metadataFileUUID unique ID for metadata file
    * @param blockNumber
@@ -301,7 +301,7 @@ export class CreatorNode {
   }
 
   /**
-   * Uploads a agreement (including live and image content) to a creator node
+   * Uploads a agreement (including live and image content) to a content node
    * @param agreementFile the live content
    * @param coverArtFile the image content
    * @param metadata the metadata for the agreement
@@ -361,21 +361,21 @@ export class CreatorNode {
     if (coverArtResp) {
       metadata.cover_art_sizes = coverArtResp.dirCID
     }
-    // Creates new agreement entity on creator node, making agreement's metadata available
+    // Creates new agreement entity on content node, making agreement's metadata available
     // @returns {Object} {cid: CID of agreement metadata, id: id of agreement to be used with associate function}
     const metadataResp = await this.uploadAgreementMetadata(metadata, sourceFile)
     return { ...metadataResp, ...agreementContentResp }
   }
 
   /**
-   * Uploads agreement metadata to a creator node
+   * Uploads agreement metadata to a content node
    * The metadata object must include a `agreement_id` field or a
    * source file must be provided (returned from uploading agreement content).
    * @param metadata
    * @param sourceFile
    */
   async uploadAgreementMetadata(metadata: AgreementMetadata, sourceFile?: string) {
-    // this does the actual validation before sending to the creator node
+    // this does the actual validation before sending to the content node
     // if validation fails, validate() will throw an error
     try {
       this.schemas[agreementSchemaType].validate?.(metadata)
@@ -521,7 +521,7 @@ export class CreatorNode {
   }
 
   /**
-   * Given a particular endpoint to a creator node, check whether
+   * Given a particular endpoint to a content node, check whether
    * this user has a sync in progress on that node.
    * @param endpoint
    * @param timeout ms
@@ -552,7 +552,7 @@ export class CreatorNode {
   }
 
   /**
-   * Syncs a secondary creator node for a given user
+   * Syncs a secondary content node for a given user
    * @param secondary
    * @param primary specific primary to use
    * @param immediate whether or not this is a blocking request and handled right away
@@ -568,10 +568,10 @@ export class CreatorNode {
     if (!user) return
 
     if (!primary) {
-      primary = CreatorNode.getPrimary(user.creator_node_endpoint!)
+      primary = CreatorNode.getPrimary(user.content_node_endpoint!)
     }
     const secondaries = new Set(
-      CreatorNode.getSecondaries(user.creator_node_endpoint!)
+      CreatorNode.getSecondaries(user.content_node_endpoint!)
     )
     if (primary && secondary && (!validate || secondaries.has(secondary))) {
       const req: AxiosRequestConfig = {
@@ -580,7 +580,7 @@ export class CreatorNode {
         method: 'post',
         data: {
           wallet: [user.wallet],
-          creator_node_endpoint: primary,
+          content_node_endpoint: primary,
           immediate
         }
       }
@@ -592,7 +592,7 @@ export class CreatorNode {
   /* ------- INTERNAL FUNCTIONS ------- */
 
   /**
-   * Signs up a creator node user with a wallet address
+   * Signs up a content node user with a wallet address
    * @param walletAddress
    */
   async _signupNodeUser(walletAddress: string) {
@@ -690,12 +690,12 @@ export class CreatorNode {
    */
   async getClockValuesFromReplicaSet() {
     const user = this.userStateManager.getCurrentUser()
-    if (!user || !user.creator_node_endpoint) {
+    if (!user || !user.content_node_endpoint) {
       console.error('No user or Content Node endpoint found')
       return
     }
 
-    const replicaSet = CreatorNode.getEndpoints(user.creator_node_endpoint)
+    const replicaSet = CreatorNode.getEndpoints(user.content_node_endpoint)
     const clockValueResponses = await Promise.all(
       replicaSet.map(
         async (endpoint) => await this._clockValueRequest({ user, endpoint })
@@ -717,7 +717,7 @@ export class CreatorNode {
     endpoint,
     timeout = 1000
   }: ClockValueRequestConfig) {
-    const primary = CreatorNode.getPrimary(user.creator_node_endpoint!)
+    const primary = CreatorNode.getPrimary(user.content_node_endpoint!)
     const type = primary === endpoint ? 'primary' : 'secondary'
 
     try {
@@ -744,8 +744,8 @@ export class CreatorNode {
   }
 
   /**
-   * Makes an axios request to the connected creator node.
-   * @param requiresConnection if set, the currently configured creator node
+   * Makes an axios request to the connected content node.
+   * @param requiresConnection if set, the currently configured content node
    * is connected to before the request is made.
    * @return response body
    */
@@ -893,7 +893,7 @@ export class CreatorNode {
   }
 
   /**
-   * Uploads a file to the connected creator node.
+   * Uploads a file to the connected content node.
    * @param file
    * @param route route to handle upload (image_upload, agreement_upload, etc.)
    * @param onProgress called with loaded bytes and total bytes

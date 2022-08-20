@@ -16,19 +16,19 @@
 /**
  * 
  * @export
- * @interface PlaylistAddedTimestamp
+ * @interface ContentListAddedTimestamp
  */
-export interface PlaylistAddedTimestamp {
+export interface ContentListAddedTimestamp {
     /**
      * 
      * @type {number}
-     * @memberof PlaylistAddedTimestamp
+     * @memberof ContentListAddedTimestamp
      */
     timestamp: number;
     /**
      * 
      * @type {string}
-     * @memberof PlaylistAddedTimestamp
+     * @memberof ContentListAddedTimestamp
      */
     agreement_id: string;
 }

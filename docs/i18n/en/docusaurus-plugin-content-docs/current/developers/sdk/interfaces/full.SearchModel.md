@@ -15,7 +15,7 @@ custom_edit_url: null
 
 ### albums
 
- **albums**: [`PlaylistFull`](full.PlaylistFull.md)[]
+ **albums**: [`ContentListFull`](full.ContentListFull.md)[]
 
 **`memberof`** SearchModel
 
@@ -29,9 +29,9 @@ ___
 
 ___
 
-### playlists
+### content lists
 
- **playlists**: [`PlaylistFull`](full.PlaylistFull.md)[]
+ **content lists**: [`ContentListFull`](full.ContentListFull.md)[]
 
 **`memberof`** SearchModel
 
@@ -39,15 +39,15 @@ ___
 
 ### saved\_albums
 
- `Optional` **saved\_albums**: [`PlaylistFull`](full.PlaylistFull.md)[]
+ `Optional` **saved\_albums**: [`ContentListFull`](full.ContentListFull.md)[]
 
 **`memberof`** SearchModel
 
 ___
 
-### saved\_playlists
+### saved\_content lists
 
- `Optional` **saved\_playlists**: [`PlaylistFull`](full.PlaylistFull.md)[]
+ `Optional` **saved\_content lists**: [`ContentListFull`](full.ContentListFull.md)[]
 
 **`memberof`** SearchModel
 

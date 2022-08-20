@@ -13,10 +13,10 @@ const {
   updateCreator,
   updateCoverPhoto,
   updateProfilePhoto,
-  createPlaylist,
-  updatePlaylistCoverPhoto,
-  uploadPlaylistCoverPhoto,
-  getPlaylists,
+  createContentList,
+  updateContentListCoverPhoto,
+  uploadContentListCoverPhoto,
+  getContentLists,
   getUser,
   cleanUserMetadata,
   Utils,
@@ -626,8 +626,8 @@ IpldBlacklistTest.updateUserCoverPhoto = async ({
   )
 }
 
-// TEST UPDATE PLAYLIST FLOW -- BLACKLISTED COVER PHOTO CID
-IpldBlacklistTest.updatePlaylistCoverPhoto = async ({
+// TEST UPDATE CONTENT_LIST FLOW -- BLACKLISTED COVER PHOTO CID
+IpldBlacklistTest.updateContentListCoverPhoto = async ({
   numUsers,
   executeAll,
   executeOne,
@@ -640,77 +640,77 @@ IpldBlacklistTest.updatePlaylistCoverPhoto = async ({
     numCreatorNodes
   })
 
-  const _createAndUploadPlaylist = async () => {
-    const randomPlaylistName = genRandomString(8)
-    const { playlistId } = await executeOne(CREATOR_INDEX, libsWrapper => {
-      return createPlaylist(
+  const _createAndUploadContentList = async () => {
+    const randomContentListName = genRandomString(8)
+    const { content listId } = await executeOne(CREATOR_INDEX, libsWrapper => {
+      return createContentList(
         libsWrapper,
         userId,
-        randomPlaylistName,
+        randomContentListName,
         false,
         false,
         []
       )
     })
-    return playlistId
+    return content listId
   }
 
   const _createAndUploadCoverPhoto = async (libs) => {
     const randomCoverPhotoFilePath = await getRandomImageFilePath(TEMP_STORAGE_PATH)
     const cid = await executeOne(
       CREATOR_INDEX,
-      libsWrapper => uploadPlaylistCoverPhoto(libsWrapper, randomCoverPhotoFilePath)
+      libsWrapper => uploadContentListCoverPhoto(libsWrapper, randomCoverPhotoFilePath)
     )
     return cid
   }
 
-  const _getPlaylists = async (libs, playlistId) =>
-    getPlaylists(libs, 1, 0, [playlistId], userId, false)
+  const _getContentLists = async (libs, content listId) =>
+    getContentLists(libs, 1, 0, [content listId], userId, false)
 
-  const _setCoverPhoto = async (libs, uploadedPlaylists, cid) => {
+  const _setCoverPhoto = async (libs, uploadedContentLists, cid) => {
     const { digest } = Utils.decodeMultihash(cid)
     await executeOne(
       CREATOR_INDEX,
       libsWrapper => {
-        return updatePlaylistCoverPhoto(
+        return updateContentListCoverPhoto(
           libsWrapper,
-          uploadedPlaylists[0].playlist_id,
+          uploadedContentLists[0].content list_id,
           digest
         )
       }
     )
   }
 
-  const _verifyNonBlacklistedCidUpdated = (playlistsBeforeUpdate, playlistsAfterUpdate, nonBlacklistedCid) => {
-    const previousPicCid = playlistsBeforeUpdate[0].playlist_image_sizes_multihash
-    const updatedPicCid = playlistsAfterUpdate[0].playlist_image_sizes_multihash
+  const _verifyNonBlacklistedCidUpdated = (content listsBeforeUpdate, content listsAfterUpdate, nonBlacklistedCid) => {
+    const previousPicCid = content listsBeforeUpdate[0].content list_image_sizes_multihash
+    const updatedPicCid = content listsAfterUpdate[0].content list_image_sizes_multihash
     if (previousPicCid === updatedPicCid) {
       throw new Error(
-        "Playlist cover photo CID should've updated. The rest of the test will produce a false positive."
+        "ContentList cover photo CID should've updated. The rest of the test will produce a false positive."
       )
     }
     if (updatedPicCid !== nonBlacklistedCid) {
       throw new Error(
-        'Playlist cover photo CID does not match the expected CID. The rest of this test relies on the hashing logic to be consistent, so it will fail.'
+        'ContentList cover photo CID does not match the expected CID. The rest of this test relies on the hashing logic to be consistent, so it will fail.'
       )
     }
   }
 
-  const _verifyBlacklistedCidDidNotUpdate = (playlists, blacklistedCid) => {
-    const playlist = playlists[0]
+  const _verifyBlacklistedCidDidNotUpdate = (content lists, blacklistedCid) => {
+    const content list = content lists[0]
     if (
-      playlist.playlist_image_multihash === blacklistedCid ||
-      playlist.playlist_image_sizes_multihash === blacklistedCid
+      content list.content list_image_multihash === blacklistedCid ||
+      content list.content list_image_sizes_multihash === blacklistedCid
     ) {
-      throw new Error('Update playlist with blacklisted cover photo should not have been indexed.')
+      throw new Error('Update content list with blacklisted cover photo should not have been indexed.')
     }
   }
 
   await testUpdateFlow(
-    'playlist cover photo',
+    'content list cover photo',
     executeOne,
-    _createAndUploadPlaylist,
-    _getPlaylists,
+    _createAndUploadContentList,
+    _getContentLists,
     _createAndUploadCoverPhoto,
     _setCoverPhoto,
     _verifyNonBlacklistedCidUpdated,
@@ -736,8 +736,8 @@ async function getCreatorId ({
 
 /**
 * Tests blacklist functionality for updating an object with a property.
-* An object is metadata (user, agreement, or playlist), and property is the field
-* on the metadata that's being updated (agreement cover art, playlist cover photo,
+* An object is metadata (user, agreement, or content list), and property is the field
+* on the metadata that's being updated (agreement cover art, content list cover photo,
 * user cover photo, etc...) by:
 * 1. Retrieving the object
 * 2. Verifying that the object can successfully be modified when its CID is NOT blacklisted

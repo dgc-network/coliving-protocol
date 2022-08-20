@@ -54,7 +54,7 @@ const TWO_MINUTES = 2 * 60 * 1000
 
 export const serviceType = Object.freeze({
   DISCOVERY_PROVIDER: 'discovery-node',
-  CREATOR_NODE: 'content-node'
+  CONTENT_NODE: 'content-node'
 })
 const serviceTypeList = Object.values(serviceType)
 

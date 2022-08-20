@@ -195,16 +195,16 @@ async function fetchNotificationMetadata (
         agreementIdsToFetch.push(notification.entityId)
         break
       }
-      case NotificationType.Favorite.playlist:
+      case NotificationType.Favorite.content list:
       case NotificationType.Favorite.album:
-      case NotificationType.Repost.playlist:
+      case NotificationType.Repost.content list:
       case NotificationType.Repost.album: {
         userIdsToFetch.push(...notification.actions.map(({ actionEntityId }) => actionEntityId).slice(0, USER_FETCH_LIMIT))
         collectionIdsToFetch.push(notification.entityId)
         break
       }
       case NotificationType.Create.album:
-      case NotificationType.Create.playlist: {
+      case NotificationType.Create.content list: {
         collectionIdsToFetch.push(notification.entityId)
         break
       }
@@ -249,10 +249,10 @@ async function fetchNotificationMetadata (
         agreementIdsToFetch.push(notification.entityId)
         break
       }
-      case NotificationType.AddAgreementToPlaylist: {
+      case NotificationType.AddAgreementToContentList: {
         agreementIdsToFetch.push(notification.entityId)
-        userIdsToFetch.push(notification.metadata.playlistOwnerId)
-        collectionIdsToFetch.push(notification.metadata.playlistId)
+        userIdsToFetch.push(notification.metadata.content listOwnerId)
+        collectionIdsToFetch.push(notification.metadata.content listId)
         break
       }
       case NotificationType.Reaction: {
@@ -343,7 +343,7 @@ async function fetchNotificationMetadata (
   }
 
   const uniqueCollectionIds = [...new Set(collectionIdsToFetch)]
-  const collections = await coliving.Playlist.getPlaylists(
+  const collections = await coliving.ContentList.getContentLists(
     /** limit */ uniqueCollectionIds.length,
     /** offset */ 0,
     /** idsArray */ uniqueCollectionIds
@@ -355,7 +355,7 @@ async function fetchNotificationMetadata (
 
   userIdsToFetch.push(
     ...agreements.map(({ owner_id: id }) => id),
-    ...collections.map(({ playlist_owner_id: id }) => id)
+    ...collections.map(({ content list_owner_id: id }) => id)
   )
   const uniqueUserIds = [...new Set(userIdsToFetch)]
 
@@ -391,7 +391,7 @@ async function fetchNotificationMetadata (
   }))
 
   const collectionMap = collections.reduce((cm, collection) => {
-    cm[collection.playlist_id] = collection
+    cm[collection.content list_id] = collection
     return cm
   }, {})
 
@@ -425,7 +425,7 @@ const getImageUrl = (cid, gateway, defaultImg) =>
     : defaultImg
 
 async function getUserImage (user) {
-  const gateway = formatGateway(user.creator_node_endpoint)
+  const gateway = formatGateway(user.content_node_endpoint)
   const profilePicture = user.profile_picture_sizes
     ? `${user.profile_picture_sizes}/1000x1000.jpg`
     : user.profile_picture
@@ -448,7 +448,7 @@ async function getUserImage (user) {
 async function getAgreementImage (agreement, usersMap) {
   const agreementOwnerId = agreement.owner_id
   const agreementOwner = usersMap[agreementOwnerId]
-  const gateway = formatGateway(agreementOwner.creator_node_endpoint)
+  const gateway = formatGateway(agreementOwner.content_node_endpoint)
   const agreementCoverArt = agreement.cover_art_sizes
     ? `${agreement.cover_art_sizes}/480x480.jpg`
     : agreement.cover_art

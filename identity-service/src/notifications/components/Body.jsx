@@ -96,8 +96,8 @@ const snippetMap = {
   [NotificationType.ChallengeReward] (notification) {
     return `You've earned $LIVE for completing challenges`
   },
-  [NotificationType.AddAgreementToPlaylist] (notification) {
-    return `${notification.playlistOwner.name} added ${notification.agreement.title} to ${notification.playlist.playlist_name}`
+  [NotificationType.AddAgreementToContentList] (notification) {
+    return `${notification.content listOwner.name} added ${notification.agreement.title} to ${notification.content list.content list_name}`
   },
   [NotificationType.TipReceive] (notification) {
     return `${notification.sendingUser.name} sent you a tip of ${notification.amount} $LIVE`

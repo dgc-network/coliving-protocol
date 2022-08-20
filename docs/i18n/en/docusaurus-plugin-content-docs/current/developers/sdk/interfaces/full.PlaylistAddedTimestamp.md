@@ -1,15 +1,15 @@
 ---
-id: "full.PlaylistAddedTimestamp"
-title: "Interface: PlaylistAddedTimestamp"
-sidebar_label: "PlaylistAddedTimestamp"
+id: "full.ContentListAddedTimestamp"
+title: "Interface: ContentListAddedTimestamp"
+sidebar_label: "ContentListAddedTimestamp"
 custom_edit_url: null
 ---
 
-[full](../namespaces/full.md).PlaylistAddedTimestamp
+[full](../namespaces/full.md).ContentListAddedTimestamp
 
 **`export`**
 
-**`interface`** PlaylistAddedTimestamp
+**`interface`** ContentListAddedTimestamp
 
 ## Properties
 
@@ -17,7 +17,7 @@ custom_edit_url: null
 
  **timestamp**: `number`
 
-**`memberof`** PlaylistAddedTimestamp
+**`memberof`** ContentListAddedTimestamp
 
 ___
 
@@ -25,4 +25,4 @@ ___
 
  **agreement\_id**: `string`
 
-**`memberof`** PlaylistAddedTimestamp
+**`memberof`** ContentListAddedTimestamp

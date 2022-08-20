@@ -52,7 +52,7 @@ contract UserFactory is RegistryContract, SigningLogic {
     bytes32 constant UPDATE_USER_VERIFIED_REQUEST_TYPEHASH = keccak256(
         "UpdateUserVerifiedRequest(uint userId,bool newValue,bytes32 nonce)"
     );
-    bytes32 constant UPDATE_USER_CREATOR_NODE_REQUEST_TYPEHASH = keccak256(
+    bytes32 constant UPDATE_USER_CONTENT_NODE_REQUEST_TYPEHASH = keccak256(
         "UpdateUserCreatorNodeRequest(uint userId,string newValue,bytes32 nonce)"
     );
 
@@ -288,7 +288,7 @@ contract UserFactory is RegistryContract, SigningLogic {
     ) external
     {
         bytes32 _signatureDigest = generateUpdateUserStringRequestSchemaHash(
-            UPDATE_USER_CREATOR_NODE_REQUEST_TYPEHASH,
+            UPDATE_USER_CONTENT_NODE_REQUEST_TYPEHASH,
             _userId,
             _contentNodeEndpoint,
             _nonce

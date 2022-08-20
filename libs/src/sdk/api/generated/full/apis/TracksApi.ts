@@ -378,7 +378,7 @@ export interface GetUsersFromRepostsRequest {
 export class AgreementsApi extends runtime.BaseAPI {
 
     /**
-     * Gets the agreements found on the \"Best New Releases\" smart playlist
+     * Gets the agreements found on the \"Best New Releases\" smart content list
      */
     async bestNewReleases(): Promise<NonNullable<FullAgreementsResponse["data"]>> {
         const queryParameters: any = {};
@@ -422,7 +422,7 @@ export class AgreementsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Gets the agreements found on the \"Most Loved\" smart playlist
+     * Gets the agreements found on the \"Most Loved\" smart content list
      */
     async getMostLovedAgreements(requestParameters: GetMostLovedAgreementsRequest = {}): Promise<NonNullable<FullAgreementsResponse["data"]>> {
         const queryParameters: any = {};
@@ -794,7 +794,7 @@ export class AgreementsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Gets the agreements found on the \"Under the Radar\" smart playlist
+     * Gets the agreements found on the \"Under the Radar\" smart content list
      */
     async getUnderTheRadarAgreements(requestParameters: GetUnderTheRadarAgreementsRequest = {}): Promise<NonNullable<FullAgreementsResponse["data"]>> {
         const queryParameters: any = {};

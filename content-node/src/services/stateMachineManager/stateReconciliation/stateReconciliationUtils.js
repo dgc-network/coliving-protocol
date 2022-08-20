@@ -58,7 +58,7 @@ const getNewOrExistingSyncReq = ({
     method: 'post',
     data: {
       wallet: [userWallet],
-      creator_node_endpoint: primaryEndpoint,
+      content_node_endpoint: primaryEndpoint,
       // Note - `sync_type` param is only used for logging by nodeSync.js
       sync_type: syncType,
       // immediate = true will ensure secondary skips debounce and evaluates sync immediately

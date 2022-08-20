@@ -10,7 +10,7 @@ const {
   runSetupCommand
 } = ServiceCommands
 
-const NUM_CREATOR_NODES = 4
+const NUM_CONTENT_NODES = 4
 const NUM_DISCOVERY_NODES = 1
 const SERVICE_INSTANCE_NUMBER = 1
 
@@ -74,8 +74,8 @@ program
   )
   .option(
     '-nc, --num-cnodes <number>',
-    'number of creator nodes',
-    NUM_CREATOR_NODES.toString()
+    'number of content nodes',
+    NUM_CONTENT_NODES.toString()
   )
   .option(
     '-nd, --num-dn <number>',
@@ -144,8 +144,8 @@ program
   )
   .option(
     '-nc, --num-cnodes <number>',
-    'number of creator nodes',
-    NUM_CREATOR_NODES.toString()
+    'number of content nodes',
+    NUM_CONTENT_NODES.toString()
   )
   .option(
     '-nd, --num-dn <number>',
@@ -176,8 +176,8 @@ program
   )
   .option(
     '-nc, --num-cnodes <number>',
-    'number of creator nodes',
-    NUM_CREATOR_NODES.toString()
+    'number of content nodes',
+    NUM_CONTENT_NODES.toString()
   )
   .option(
     '-nd, --num-dn <number>',
@@ -205,7 +205,7 @@ program
       }
 
       if (
-        serviceName === Service.CREATOR_NODE ||
+        serviceName === Service.CONTENT_NODE ||
         serviceName === Service.DISCOVERY_PROVIDER
       ) {
         const serviceNumber = parseInt(opts.instanceNum)

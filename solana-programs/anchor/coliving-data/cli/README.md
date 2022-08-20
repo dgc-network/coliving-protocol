@@ -97,12 +97,12 @@ yarn run ts-node cli/main.ts -f createAgreement \
 --user-id 1
 ```
 
-## 4. Creating a playlist
+## 4. Creating a content list
 
-Similar to playlist information. The metadata (currently randomly generated) points to a CID which contains playlist related information.
+Similar to content list information. The metadata (currently randomly generated) points to a CID which contains content list related information.
 
 ```
-yarn run ts-node cli/main.ts -f createPlaylist \
+yarn run ts-node cli/main.ts -f createContentList \
 -k ~/.config/solana/id.json \
 --user-solana-keypair $PWD/userKeypair.json \
 --user-storage-pubkey $USER_STORAGE_PUBKEY \
@@ -110,29 +110,29 @@ yarn run ts-node cli/main.ts -f createPlaylist \
 --user-id 1
 ```
 
-Export the created playlist ID in logs as $PLAYLIST_ID.
+Export the created content list ID in logs as $CONTENT_LIST_ID.
 
-## 4. Updating a playlist
-Update a given playlist denoted by its id.
+## 4. Updating a content list
+Update a given content list denoted by its id.
 
 ```
-yarn run ts-node cli/main.ts -f updatePlaylist \
+yarn run ts-node cli/main.ts -f updateContentList \
 -k ~/.config/solana/id.json \
 --user-solana-keypair $PWD/userKeypair.json \
 --user-storage-pubkey $USER_STORAGE_PUBKEY \
 --admin-storage-keypair $PWD/adminStorageKeypair.json \
---id "$PLAYLIST_ID" \
+--id "$CONTENT_LIST_ID" \
 --user-id 1
 ```
 
-## 4. Delete a playlist
-Delete a given playlist denoted by its id.
+## 4. Delete a content list
+Delete a given content list denoted by its id.
 
 ```
-yarn run ts-node cli/main.ts -f deletePlaylist \
+yarn run ts-node cli/main.ts -f deleteContentList \
 -k ~/.config/solana/id.json \
 --user-solana-keypair $PWD/userKeypair.json \
 --user-storage-pubkey $USER_STORAGE_PUBKEY \
---id "$PLAYLIST_ID" \
+--id "$CONTENT_LIST_ID" \
 --user-id 1
 ```

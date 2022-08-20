@@ -41,12 +41,12 @@ class Commander {
   /**
  * Parses the environment variables and command line args
  */
-  parseEnvVarsAndArgs ({ CREATOR_NODE_ENDPOINT, PRIVATE_KEY, DISCOVERY_PROVIDER_ENDPOINT, hashIds }) {
+  parseEnvVarsAndArgs ({ CONTENT_NODE_ENDPOINT, PRIVATE_KEY, DISCOVERY_PROVIDER_ENDPOINT, hashIds }) {
     this.program.parse(process.argv)
 
     // Parse env vars
-    if (!CREATOR_NODE_ENDPOINT || !PRIVATE_KEY || !DISCOVERY_PROVIDER_ENDPOINT) {
-      let errorMsg = `Creator node endpoint [${CREATOR_NODE_ENDPOINT}], private key [${PRIVATE_KEY}]`
+    if (!CONTENT_NODE_ENDPOINT || !PRIVATE_KEY || !DISCOVERY_PROVIDER_ENDPOINT) {
+      let errorMsg = `Creator node endpoint [${CONTENT_NODE_ENDPOINT}], private key [${PRIVATE_KEY}]`
       errorMsg += ` or discovery node endpoint [${DISCOVERY_PROVIDER_ENDPOINT}] have not been exported.`
       throw new Error(errorMsg)
     }
@@ -97,9 +97,9 @@ class Commander {
     return { action, values, type, verbose: this.program.verbose }
   }
 
-  runParser ({ CREATOR_NODE_ENDPOINT, PRIVATE_KEY, DISCOVERY_PROVIDER_ENDPOINT, hashIds }) {
+  runParser ({ CONTENT_NODE_ENDPOINT, PRIVATE_KEY, DISCOVERY_PROVIDER_ENDPOINT, hashIds }) {
     try {
-      return this.parseEnvVarsAndArgs({ CREATOR_NODE_ENDPOINT, PRIVATE_KEY, DISCOVERY_PROVIDER_ENDPOINT, hashIds })
+      return this.parseEnvVarsAndArgs({ CONTENT_NODE_ENDPOINT, PRIVATE_KEY, DISCOVERY_PROVIDER_ENDPOINT, hashIds })
     } catch (e) {
       throw new Error(`
         Incorrect script usage: ${e.message}

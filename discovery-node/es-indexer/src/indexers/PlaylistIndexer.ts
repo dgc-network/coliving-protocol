@@ -4,7 +4,7 @@ import { dialPg } from '../conn'
 import { splitTags } from '../helpers/splitTags'
 import { indexNames } from '../indexNames'
 import { BlocknumberCheckpoint } from '../types/blocknumber_checkpoint'
-import { PlaylistDoc } from '../types/docs'
+import { ContentListDoc } from '../types/docs'
 import { BaseIndexer } from './BaseIndexer'
 import {
   sharedIndexSettings,
@@ -12,13 +12,13 @@ import {
   standardText,
 } from './sharedIndexSettings'
 
-export class PlaylistIndexer extends BaseIndexer<PlaylistDoc> {
+export class ContentListIndexer extends BaseIndexer<ContentListDoc> {
   constructor() {
-    super('playlists', 'playlist_id')
+    super('content lists', 'content list_id')
   }
 
   mapping: IndicesCreateRequest = {
-    index: indexNames.playlists,
+    index: indexNames.content lists,
     settings: merge(sharedIndexSettings, {
       index: {
         number_of_shards: 1,
@@ -30,20 +30,20 @@ export class PlaylistIndexer extends BaseIndexer<PlaylistDoc> {
       dynamic: false,
       properties: {
         blocknumber: { type: 'integer' },
-        playlist_owner_id: { type: 'keyword' },
+        content list_owner_id: { type: 'keyword' },
         created_at: { type: 'date' },
         updated_at: { type: 'date' },
         is_album: { type: 'boolean' },
         is_private: { type: 'boolean' },
         is_delete: { type: 'boolean' },
         suggest: standardSuggest,
-        playlist_name: {
+        content list_name: {
           type: 'keyword',
           fields: {
             searchable: standardText,
           },
         },
-        'playlist_contents.agreement_ids.agreement': { type: 'keyword' },
+        'content list_contents.agreement_ids.agreement': { type: 'keyword' },
 
         user: {
           properties: {
@@ -93,9 +93,9 @@ export class PlaylistIndexer extends BaseIndexer<PlaylistDoc> {
 
   baseSelect(): string {
     return `
-      -- etl playlists
+      -- etl content lists
       select 
-        playlists.*,
+        content lists.*,
 
         json_build_object(
           'handle', users.handle,
@@ -113,8 +113,8 @@ export class PlaylistIndexer extends BaseIndexer<PlaylistDoc> {
           where
             is_current = true
             and is_delete = false
-            and repost_type = (case when is_album then 'album' else 'playlist' end)::reposttype
-            and repost_item_id = playlist_id
+            and repost_type = (case when is_album then 'album' else 'content list' end)::reposttype
+            and repost_item_id = content list_id
             order by created_at desc
         ) as reposted_by,
       
@@ -124,43 +124,43 @@ export class PlaylistIndexer extends BaseIndexer<PlaylistDoc> {
           where
             is_current = true
             and is_delete = false
-            and save_type = (case when is_album then 'album' else 'playlist' end)::savetype
-            and save_item_id = playlist_id
+            and save_type = (case when is_album then 'album' else 'content list' end)::savetype
+            and save_item_id = content list_id
             order by created_at desc
         ) as saved_by
 
-      from playlists 
-      join users on playlist_owner_id = user_id
+      from content lists 
+      join users on content list_owner_id = user_id
       left join aggregate_user on users.user_id = aggregate_user.user_id
       where 
-        playlists.is_current
+        content lists.is_current
         AND users.is_current
     `
   }
 
   checkpointSql(checkpoint: BlocknumberCheckpoint): string {
-    // really we should mark playlist stale if any of the playlist agreements changes
-    // but don't know how to do the sql for that... so the low tech solution would be to re-do playlists from scratch
+    // really we should mark content list stale if any of the content list agreements changes
+    // but don't know how to do the sql for that... so the low tech solution would be to re-do content lists from scratch
     // which might actually be faster, since it's a very small collection
     // in which case we could just delete this function
 
     // agreement play_count will also go stale (same problem as above)
 
     return `
-      and playlist_id in (
-        select playlist_id from playlists where is_current and blocknumber >= ${checkpoint.playlists}
+      and content list_id in (
+        select content list_id from content lists where is_current and blocknumber >= ${checkpoint.content lists}
         union
-        select save_item_id from saves where is_current and save_type in ('playlist', 'album') and blocknumber >= ${checkpoint.saves}
+        select save_item_id from saves where is_current and save_type in ('content list', 'album') and blocknumber >= ${checkpoint.saves}
         union
-        select repost_item_id from reposts where is_current and repost_type in ('playlist', 'album') and blocknumber >= ${checkpoint.reposts}
+        select repost_item_id from reposts where is_current and repost_type in ('content list', 'album') and blocknumber >= ${checkpoint.reposts}
       )`
   }
 
-  async withBatch(rows: PlaylistDoc[]) {
+  async withBatch(rows: ContentListDoc[]) {
     // collect all the agreement IDs
     const agreementIds = new Set<number>()
     for (let row of rows) {
-      row.playlist_contents.agreement_ids
+      row.content list_contents.agreement_ids
         .map((t: any) => t.agreement)
         .filter(Boolean)
         .forEach((t: any) => agreementIds.add(t))
@@ -169,21 +169,21 @@ export class PlaylistIndexer extends BaseIndexer<PlaylistDoc> {
     // fetch the agreements...
     const agreementsById = await this.getAgreements(Array.from(agreementIds))
 
-    // pull agreement data onto playlist
-    for (let playlist of rows) {
-      playlist.agreements = playlist.playlist_contents.agreement_ids
+    // pull agreement data onto content list
+    for (let content list of rows) {
+      content list.agreements = content list.content list_contents.agreement_ids
         .map((t: any) => agreementsById[t.agreement])
         .filter(Boolean)
 
-      playlist.total_play_count = playlist.agreements.reduce(
+      content list.total_play_count = content list.agreements.reduce(
         (acc, s) => acc + parseInt(s.play_count),
         0
       )
     }
   }
 
-  withRow(row: PlaylistDoc) {
-    row.suggest = [row.playlist_name, row.user.handle, row.user.name]
+  withRow(row: ContentListDoc) {
+    row.suggest = [row.content list_name, row.user.handle, row.user.name]
       .filter((x) => x)
       .join(' ')
     row.repost_count = row.reposted_by.length

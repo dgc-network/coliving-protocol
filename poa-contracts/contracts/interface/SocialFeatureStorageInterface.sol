@@ -15,15 +15,15 @@ interface SocialFeatureStorageInterface {
     uint _userId,
     uint _agreementId) external view returns (bool reposted);
 
-  function addPlaylistRepost(
+  function addContentListRepost(
     uint _userId,
-    uint _playlistId) external;
+    uint _content listId) external;
 
-  function deletePlaylistRepost(
+  function deleteContentListRepost(
     uint _userId,
-    uint _playlistId) external;
+    uint _content listId) external;
 
-  function userRepostedPlaylist(
+  function userRepostedContentList(
     uint _userId,
-    uint _playlistId) external view returns (bool reposted);
+    uint _content listId) external view returns (bool reposted);
 }

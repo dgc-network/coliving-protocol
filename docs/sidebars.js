@@ -65,7 +65,7 @@ module.exports = {
             },
             {
               type: "doc",
-              id: "developers/sdk/classes/PlaylistsApi",
+              id: "developers/sdk/classes/ContentListsApi",
             },
             {
               type: "doc",

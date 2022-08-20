@@ -7,9 +7,9 @@ from redis import Redis
 from sqlalchemy.orm.session import Session
 from src.challenges.challenge_event import ChallengeEvent
 from src.challenges.challenge_event_bus import ChallengeEventBus
-from src.queries.get_trending_playlists import (
-    GetTrendingPlaylistsArgs,
-    _get_trending_playlists_with_session,
+from src.queries.get_trending_content lists import (
+    GetTrendingContentListsArgs,
+    _get_trending_content lists_with_session,
 )
 from src.queries.get_trending_agreements import _get_trending_agreements_with_session
 from src.queries.get_underground_trending import (
@@ -136,31 +136,31 @@ def enqueue_trending_challenges(
                 TrendingType.UNDERGROUND_AGREEMENTS,
             )
 
-        trending_playlist_versions = trending_strategy_factory.get_versions_for_type(
-            TrendingType.PLAYLISTS
+        trending_content list_versions = trending_strategy_factory.get_versions_for_type(
+            TrendingType.CONTENT_LISTS
         ).keys()
-        for version in trending_playlist_versions:
+        for version in trending_content list_versions:
             strategy = trending_strategy_factory.get_strategy(
-                TrendingType.PLAYLISTS, version
+                TrendingType.CONTENT_LISTS, version
             )
-            playlists_args: GetTrendingPlaylistsArgs = {
+            content lists_args: GetTrendingContentListsArgs = {
                 "limit": TRENDING_LIMIT,
                 "offset": 0,
                 "time": time_range,
             }
-            trending_playlists = _get_trending_playlists_with_session(
-                session, playlists_args, strategy, False
+            trending_content lists = _get_trending_content lists_with_session(
+                session, content lists_args, strategy, False
             )
-            for idx, playlist in enumerate(trending_playlists):
+            for idx, content list in enumerate(trending_content lists):
                 challenge_bus.dispatch(
-                    ChallengeEvent.trending_playlist,
+                    ChallengeEvent.trending_content list,
                     latest_blocknumber,
-                    playlist["playlist_owner_id"],
+                    content list["content list_owner_id"],
                     {
-                        "id": playlist["playlist_id"],
-                        "user_id": playlist["playlist_owner_id"],
+                        "id": content list["content list_id"],
+                        "user_id": content list["content list_owner_id"],
                         "rank": idx + 1,
-                        "type": str(TrendingType.PLAYLISTS),
+                        "type": str(TrendingType.CONTENT_LISTS),
                         "version": str(version),
                         "week": date_to_week(date),
                     },

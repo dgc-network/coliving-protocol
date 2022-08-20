@@ -26,7 +26,7 @@ function RawStdOutWithLevelName() {
 
 const logLevel = config.get('logLevel') || 'info'
 const logger = bunyan.createLogger({
-  name: 'coliving_creator_node',
+  name: 'coliving_content_node',
   streams: [
     {
       level: logLevel,

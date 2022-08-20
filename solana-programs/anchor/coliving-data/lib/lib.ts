@@ -796,12 +796,12 @@ export const createAgreement = ({
 /**
  * Manage entity
  * actions: create, update, delete
- * entities: agreement, playlist
+ * entities: agreement, content list
  */
 
 export const EntityTypesEnumValues = {
   agreement: { agreement: {} },
-  playlist: { playlist: {} },
+  content list: { content list: {} },
 };
 
 export const ManagementActions = {
@@ -897,9 +897,9 @@ export const deleteAgreement = ({
   return tx;
 };
 
-/// Create a playlist
+/// Create a content list
 
-export const createPlaylist = ({
+export const createContentList = ({
   id,
   program,
   baseAuthorityAccount,
@@ -917,7 +917,7 @@ export const createPlaylist = ({
     program.instruction.manageEntity(
       baseAuthorityAccount,
       { userId: userId.toNumber(), bump: bumpSeed },
-      EntityTypesEnumValues.playlist,
+      EntityTypesEnumValues.content list,
       ManagementActions.create,
       id,
       metadata,
@@ -935,9 +935,9 @@ export const createPlaylist = ({
   return tx;
 };
 
-/// Update a playlist
+/// Update a content list
 
-export const updatePlaylist = ({
+export const updateContentList = ({
   id,
   program,
   baseAuthorityAccount,
@@ -955,7 +955,7 @@ export const updatePlaylist = ({
     program.instruction.manageEntity(
       baseAuthorityAccount,
       { userId: userId.toNumber(), bump: bumpSeed },
-      EntityTypesEnumValues.playlist,
+      EntityTypesEnumValues.content list,
       ManagementActions.update,
       id,
       metadata,
@@ -973,8 +973,8 @@ export const updatePlaylist = ({
   return tx;
 };
 
-/// Delete a playlist
-export const deletePlaylist = ({
+/// Delete a content list
+export const deleteContentList = ({
   program,
   id,
   userAccount,
@@ -991,7 +991,7 @@ export const deletePlaylist = ({
     program.instruction.manageEntity(
       baseAuthorityAccount,
       { userId: userId.toNumber(), bump: bumpSeed },
-      EntityTypesEnumValues.playlist,
+      EntityTypesEnumValues.content list,
       ManagementActions.delete,
       id,
       "",
@@ -1012,7 +1012,7 @@ export const deletePlaylist = ({
 /**
  * Write entity social actions
  * actions: save, repost
- * entities: agreement, playlist
+ * entities: agreement, content list
  */
 
 export const EntitySocialActionEnumValues = {
@@ -1179,7 +1179,7 @@ export const deleteAgreementRepost = ({
   return tx;
 };
 
-export const addPlaylistSave = ({
+export const addContentListSave = ({
   program,
   baseAuthorityAccount,
   userAccount,
@@ -1197,7 +1197,7 @@ export const addPlaylistSave = ({
       baseAuthorityAccount,
       { userId: userId.toNumber(), bump: bumpSeed },
       EntitySocialActions.addSave,
-      EntityTypesEnumValues.playlist,
+      EntityTypesEnumValues.content list,
       id,
       {
         accounts: {
@@ -1213,7 +1213,7 @@ export const addPlaylistSave = ({
   return tx;
 };
 
-export const deletePlaylistSave = ({
+export const deleteContentListSave = ({
   program,
   baseAuthorityAccount,
   userAccount,
@@ -1231,7 +1231,7 @@ export const deletePlaylistSave = ({
       baseAuthorityAccount,
       { userId: userId.toNumber(), bump: bumpSeed },
       EntitySocialActions.deleteSave,
-      EntityTypesEnumValues.playlist,
+      EntityTypesEnumValues.content list,
       id,
       {
         accounts: {
@@ -1247,7 +1247,7 @@ export const deletePlaylistSave = ({
   return tx;
 };
 
-export const addPlaylistRepost = ({
+export const addContentListRepost = ({
   program,
   baseAuthorityAccount,
   userAccount,
@@ -1265,7 +1265,7 @@ export const addPlaylistRepost = ({
       baseAuthorityAccount,
       { userId: userId.toNumber(), bump: bumpSeed },
       EntitySocialActions.addRepost,
-      EntityTypesEnumValues.playlist,
+      EntityTypesEnumValues.content list,
       id,
       {
         accounts: {
@@ -1281,7 +1281,7 @@ export const addPlaylistRepost = ({
   return tx;
 };
 
-export const deletePlaylistRepost = ({
+export const deleteContentListRepost = ({
   program,
   baseAuthorityAccount,
   userAccount,
@@ -1299,7 +1299,7 @@ export const deletePlaylistRepost = ({
       baseAuthorityAccount,
       { userId: userId.toNumber(), bump: bumpSeed },
       EntitySocialActions.deleteRepost,
-      EntityTypesEnumValues.playlist,
+      EntityTypesEnumValues.content list,
       id,
       {
         accounts: {

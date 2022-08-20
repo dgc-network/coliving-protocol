@@ -43,8 +43,8 @@ const getAgreementFactoryDomain: DomainFn = (chainId, contractAddress) => {
   return getDomainData('Agreement Factory', '1', chainId, contractAddress)
 }
 
-const getPlaylistFactoryDomain: DomainFn = (chainId, contractAddress) => {
-  return getDomainData('Playlist Factory', '1', chainId, contractAddress)
+const getContentListFactoryDomain: DomainFn = (chainId, contractAddress) => {
+  return getDomainData('ContentList Factory', '1', chainId, contractAddress)
 }
 
 const getUserLibraryFactoryDomain: DomainFn = (chainId, contractAddress) => {
@@ -68,7 +68,7 @@ export const domains = {
   getSocialFeatureFactoryDomain,
   getUserFactoryDomain,
   getAgreementFactoryDomain,
-  getPlaylistFactoryDomain,
+  getContentListFactoryDomain,
   getUserLibraryFactoryDomain,
   getIPLDBlacklistFactoryDomain,
   getUserReplicaSetManagerDomain
@@ -140,13 +140,13 @@ const addAgreementRepostRequest = [
 
 const deleteAgreementRepostRequest = addAgreementRepostRequest
 
-const addPlaylistRepostRequest = [
+const addContentListRepostRequest = [
   { name: 'userId', type: 'uint' },
-  { name: 'playlistId', type: 'uint' },
+  { name: 'content listId', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-const deletePlaylistRepostRequest = addPlaylistRepostRequest
+const deleteContentListRepostRequest = addContentListRepostRequest
 
 const userFollowRequest = [
   { name: 'followerUserId', type: 'uint' },
@@ -156,66 +156,66 @@ const userFollowRequest = [
 
 const deleteUserFollowRequest = userFollowRequest
 
-const createPlaylistRequest = [
-  { name: 'playlistOwnerId', type: 'uint' },
-  { name: 'playlistName', type: 'string' },
+const createContentListRequest = [
+  { name: 'content listOwnerId', type: 'uint' },
+  { name: 'content listName', type: 'string' },
   { name: 'isPrivate', type: 'bool' },
   { name: 'isAlbum', type: 'bool' },
   { name: 'agreementIdsHash', type: 'bytes32' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-const deletePlaylistRequest = [
-  { name: 'playlistId', type: 'uint' },
+const deleteContentListRequest = [
+  { name: 'content listId', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-const addPlaylistAgreementRequest = [
-  { name: 'playlistId', type: 'uint' },
+const addContentListAgreementRequest = [
+  { name: 'content listId', type: 'uint' },
   { name: 'addedAgreementId', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-const deletePlaylistAgreementRequest = [
-  { name: 'playlistId', type: 'uint' },
+const deleteContentListAgreementRequest = [
+  { name: 'content listId', type: 'uint' },
   { name: 'deletedAgreementId', type: 'uint' },
   { name: 'deletedAgreementTimestamp', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-const orderPlaylistAgreementsRequest = [
-  { name: 'playlistId', type: 'uint' },
+const orderContentListAgreementsRequest = [
+  { name: 'content listId', type: 'uint' },
   { name: 'agreementIdsHash', type: 'bytes32' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-const updatePlaylistPrivacyRequest = [
-  { name: 'playlistId', type: 'uint' },
-  { name: 'updatedPlaylistPrivacy', type: 'bool' },
+const updateContentListPrivacyRequest = [
+  { name: 'content listId', type: 'uint' },
+  { name: 'updatedContentListPrivacy', type: 'bool' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-const updatePlaylistNameRequest = [
-  { name: 'playlistId', type: 'uint' },
-  { name: 'updatedPlaylistName', type: 'string' },
+const updateContentListNameRequest = [
+  { name: 'content listId', type: 'uint' },
+  { name: 'updatedContentListName', type: 'string' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-const updatePlaylistCoverPhotoRequest = [
-  { name: 'playlistId', type: 'uint' },
-  { name: 'playlistImageMultihashDigest', type: 'bytes32' },
+const updateContentListCoverPhotoRequest = [
+  { name: 'content listId', type: 'uint' },
+  { name: 'content listImageMultihashDigest', type: 'bytes32' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-const updatePlaylistDescriptionRequest = [
-  { name: 'playlistId', type: 'uint' },
-  { name: 'playlistDescription', type: 'string' },
+const updateContentListDescriptionRequest = [
+  { name: 'content listId', type: 'uint' },
+  { name: 'content listDescription', type: 'string' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-const updatePlaylistUPCRequest = [
-  { name: 'playlistId', type: 'uint' },
-  { name: 'playlistUPC', type: 'bytes32' },
+const updateContentListUPCRequest = [
+  { name: 'content listId', type: 'uint' },
+  { name: 'content listUPC', type: 'bytes32' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
@@ -227,13 +227,13 @@ const agreementSaveRequest = [
 
 const deleteAgreementSaveRequest = agreementSaveRequest
 
-const playlistSaveRequest = [
+const content listSaveRequest = [
   { name: 'userId', type: 'uint' },
-  { name: 'playlistId', type: 'uint' },
+  { name: 'content listId', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-const deletePlaylistSaveRequest = playlistSaveRequest
+const deleteContentListSaveRequest = content listSaveRequest
 
 const addIPLDBlacklist = [
   { name: 'multihashDigest', type: 'bytes32' },
@@ -269,24 +269,24 @@ export const schemas = {
   deleteAgreementRequest,
   addAgreementRepostRequest,
   deleteAgreementRepostRequest,
-  addPlaylistRepostRequest,
-  deletePlaylistRepostRequest,
+  addContentListRepostRequest,
+  deleteContentListRepostRequest,
   userFollowRequest,
   deleteUserFollowRequest,
-  createPlaylistRequest,
-  deletePlaylistRequest,
-  addPlaylistAgreementRequest,
-  deletePlaylistAgreementRequest,
-  orderPlaylistAgreementsRequest,
-  updatePlaylistPrivacyRequest,
-  updatePlaylistNameRequest,
-  updatePlaylistCoverPhotoRequest,
-  updatePlaylistDescriptionRequest,
-  updatePlaylistUPCRequest,
+  createContentListRequest,
+  deleteContentListRequest,
+  addContentListAgreementRequest,
+  deleteContentListAgreementRequest,
+  orderContentListAgreementsRequest,
+  updateContentListPrivacyRequest,
+  updateContentListNameRequest,
+  updateContentListCoverPhotoRequest,
+  updateContentListDescriptionRequest,
+  updateContentListUPCRequest,
   agreementSaveRequest,
   deleteAgreementSaveRequest,
-  playlistSaveRequest,
-  deletePlaylistSaveRequest,
+  content listSaveRequest,
+  deleteContentListSaveRequest,
   addIPLDBlacklist,
   proposeAddOrUpdateContentNode,
   updateReplicaSet
@@ -650,46 +650,46 @@ const getDeleteAgreementRepostRequestData = (
   )
 }
 
-const getAddPlaylistRepostRequestData = (
+const getAddContentListRepostRequestData = (
   chainId: number,
   contractAddress: string,
   userId: number,
-  playlistId: number,
+  content listId: number,
   nonce: string
 ) => {
   const message = {
     userId: userId,
-    playlistId: playlistId,
+    content listId: content listId,
     nonce: nonce
   }
   return getRequestData(
     domains.getSocialFeatureFactoryDomain,
     chainId,
     contractAddress,
-    'AddPlaylistRepostRequest',
-    schemas.addPlaylistRepostRequest,
+    'AddContentListRepostRequest',
+    schemas.addContentListRepostRequest,
     message
   )
 }
 
-const getDeletePlaylistRepostRequestData = (
+const getDeleteContentListRepostRequestData = (
   chainId: number,
   contractAddress: string,
   userId: number,
-  playlistId: number,
+  content listId: number,
   nonce: string
 ) => {
   const message = {
     userId: userId,
-    playlistId: playlistId,
+    content listId: content listId,
     nonce: nonce
   }
   return getRequestData(
     domains.getSocialFeatureFactoryDomain,
     chainId,
     contractAddress,
-    'DeletePlaylistRepostRequest',
-    schemas.deletePlaylistRepostRequest,
+    'DeleteContentListRepostRequest',
+    schemas.deleteContentListRepostRequest,
     message
   )
 }
@@ -784,16 +784,16 @@ const getDeleteAgreementSaveRequestData = (
   )
 }
 
-const getPlaylistSaveRequestData = (
+const getContentListSaveRequestData = (
   chainId: number,
   contractAddress: string,
   userId: number,
-  playlistId: number,
+  content listId: number,
   nonce: string
 ) => {
   const message = {
     userId: userId,
-    playlistId: playlistId,
+    content listId: content listId,
     nonce: nonce
   }
 
@@ -801,22 +801,22 @@ const getPlaylistSaveRequestData = (
     domains.getUserLibraryFactoryDomain,
     chainId,
     contractAddress,
-    'PlaylistSaveRequest',
-    schemas.playlistSaveRequest,
+    'ContentListSaveRequest',
+    schemas.content listSaveRequest,
     message
   )
 }
 
-const getDeletePlaylistSaveRequestData = (
+const getDeleteContentListSaveRequestData = (
   chainId: number,
   contractAddress: string,
   userId: number,
-  playlistId: number,
+  content listId: number,
   nonce: string
 ) => {
   const message = {
     userId: userId,
-    playlistId: playlistId,
+    content listId: content listId,
     nonce: nonce
   }
 
@@ -824,30 +824,30 @@ const getDeletePlaylistSaveRequestData = (
     domains.getUserLibraryFactoryDomain,
     chainId,
     contractAddress,
-    'DeletePlaylistSaveRequest',
-    schemas.deletePlaylistSaveRequest,
+    'DeleteContentListSaveRequest',
+    schemas.deleteContentListSaveRequest,
     message
   )
 }
 
-/* Playlist Factory Generators */
+/* ContentList Factory Generators */
 
 /* NOTE: Ensure the value for agreementIds hash is generated using the following snippet prior to calling this generator function:
  * web3New.utils.soliditySha3(web3New.eth.abi.encodeParameter('uint[]', agreementIds))
  */
-const getCreatePlaylistRequestData = (
+const getCreateContentListRequestData = (
   chainId: number,
   contractAddress: string,
-  playlistOwnerId: number,
-  playlistName: string,
+  content listOwnerId: number,
+  content listName: string,
   isPrivate: boolean,
   isAlbum: boolean,
   agreementIdsHash: string | null,
   nonce: string
 ) => {
   const message = {
-    playlistOwnerId: playlistOwnerId,
-    playlistName: playlistName,
+    content listOwnerId: content listOwnerId,
+    content listName: content listName,
     isPrivate: isPrivate,
     isAlbum: isAlbum,
     agreementIdsHash: agreementIdsHash,
@@ -855,217 +855,217 @@ const getCreatePlaylistRequestData = (
   }
 
   return getRequestData(
-    domains.getPlaylistFactoryDomain,
+    domains.getContentListFactoryDomain,
     chainId,
     contractAddress,
-    'CreatePlaylistRequest',
-    schemas.createPlaylistRequest,
+    'CreateContentListRequest',
+    schemas.createContentListRequest,
     message
   )
 }
 
-const getDeletePlaylistRequestData = (
+const getDeleteContentListRequestData = (
   chainId: number,
   contractAddress: string,
-  playlistId: number,
+  content listId: number,
   nonce: string
 ) => {
   const message = {
-    playlistId: playlistId,
+    content listId: content listId,
     nonce: nonce
   }
   return getRequestData(
-    domains.getPlaylistFactoryDomain,
+    domains.getContentListFactoryDomain,
     chainId,
     contractAddress,
-    'DeletePlaylistRequest',
-    schemas.deletePlaylistRequest,
+    'DeleteContentListRequest',
+    schemas.deleteContentListRequest,
     message
   )
 }
 
-const getAddPlaylistAgreementRequestData = (
+const getAddContentListAgreementRequestData = (
   chainId: number,
   contractAddress: string,
-  playlistId: number,
+  content listId: number,
   addedAgreementId: number,
   nonce: string
 ) => {
   const message = {
-    playlistId: playlistId,
+    content listId: content listId,
     addedAgreementId: addedAgreementId,
     nonce: nonce
   }
 
   return getRequestData(
-    domains.getPlaylistFactoryDomain,
+    domains.getContentListFactoryDomain,
     chainId,
     contractAddress,
-    'AddPlaylistAgreementRequest',
-    schemas.addPlaylistAgreementRequest,
+    'AddContentListAgreementRequest',
+    schemas.addContentListAgreementRequest,
     message
   )
 }
 
-const getDeletePlaylistAgreementRequestData = (
+const getDeleteContentListAgreementRequestData = (
   chainId: number,
   contractAddress: string,
-  playlistId: number,
+  content listId: number,
   deletedAgreementId: number,
   deletedAgreementTimestamp: number,
   nonce: string
 ) => {
   const message = {
-    playlistId: playlistId,
+    content listId: content listId,
     deletedAgreementId: deletedAgreementId,
     deletedAgreementTimestamp: deletedAgreementTimestamp,
     nonce: nonce
   }
 
   return getRequestData(
-    domains.getPlaylistFactoryDomain,
+    domains.getContentListFactoryDomain,
     chainId,
     contractAddress,
-    'DeletePlaylistAgreementRequest',
-    schemas.deletePlaylistAgreementRequest,
+    'DeleteContentListAgreementRequest',
+    schemas.deleteContentListAgreementRequest,
     message
   )
 }
 
-const getOrderPlaylistAgreementsRequestData = (
+const getOrderContentListAgreementsRequestData = (
   chainId: number,
   contractAddress: string,
-  playlistId: number,
+  content listId: number,
   agreementIdsHash: string | null,
   nonce: string
 ) => {
   const message = {
-    playlistId: playlistId,
+    content listId: content listId,
     agreementIdsHash: agreementIdsHash,
     nonce: nonce
   }
 
   return getRequestData(
-    domains.getPlaylistFactoryDomain,
+    domains.getContentListFactoryDomain,
     chainId,
     contractAddress,
-    'OrderPlaylistAgreementsRequest',
-    schemas.orderPlaylistAgreementsRequest,
+    'OrderContentListAgreementsRequest',
+    schemas.orderContentListAgreementsRequest,
     message
   )
 }
 
-const getUpdatePlaylistNameRequestData = (
+const getUpdateContentListNameRequestData = (
   chainId: number,
   contractAddress: string,
-  playlistId: number,
-  updatedPlaylistName: string,
+  content listId: number,
+  updatedContentListName: string,
   nonce: string
 ) => {
   const message = {
-    playlistId: playlistId,
-    updatedPlaylistName: updatedPlaylistName,
+    content listId: content listId,
+    updatedContentListName: updatedContentListName,
     nonce: nonce
   }
 
   return getRequestData(
-    domains.getPlaylistFactoryDomain,
+    domains.getContentListFactoryDomain,
     chainId,
     contractAddress,
-    'UpdatePlaylistNameRequest',
-    schemas.updatePlaylistNameRequest,
+    'UpdateContentListNameRequest',
+    schemas.updateContentListNameRequest,
     message
   )
 }
 
-const getUpdatePlaylistPrivacyRequestData = (
+const getUpdateContentListPrivacyRequestData = (
   chainId: number,
   contractAddress: string,
-  playlistId: number,
-  updatedPlaylistPrivacy: boolean,
+  content listId: number,
+  updatedContentListPrivacy: boolean,
   nonce: string
 ) => {
   const message = {
-    playlistId: playlistId,
-    updatedPlaylistPrivacy: updatedPlaylistPrivacy,
+    content listId: content listId,
+    updatedContentListPrivacy: updatedContentListPrivacy,
     nonce: nonce
   }
 
   return getRequestData(
-    domains.getPlaylistFactoryDomain,
+    domains.getContentListFactoryDomain,
     chainId,
     contractAddress,
-    'UpdatePlaylistPrivacyRequest',
-    schemas.updatePlaylistPrivacyRequest,
+    'UpdateContentListPrivacyRequest',
+    schemas.updateContentListPrivacyRequest,
     message
   )
 }
 
-const getUpdatePlaylistCoverPhotoRequestData = (
+const getUpdateContentListCoverPhotoRequestData = (
   chainId: number,
   contractAddress: string,
-  playlistId: number,
-  playlistImageMultihashDigest: string,
+  content listId: number,
+  content listImageMultihashDigest: string,
   nonce: string
 ) => {
   const message = {
-    playlistId: playlistId,
-    playlistImageMultihashDigest: playlistImageMultihashDigest,
+    content listId: content listId,
+    content listImageMultihashDigest: content listImageMultihashDigest,
     nonce: nonce
   }
 
   return getRequestData(
-    domains.getPlaylistFactoryDomain,
+    domains.getContentListFactoryDomain,
     chainId,
     contractAddress,
-    'UpdatePlaylistCoverPhotoRequest',
-    schemas.updatePlaylistCoverPhotoRequest,
+    'UpdateContentListCoverPhotoRequest',
+    schemas.updateContentListCoverPhotoRequest,
     message
   )
 }
 
-const getUpdatePlaylistUPCRequestData = (
+const getUpdateContentListUPCRequestData = (
   chainId: number,
   contractAddress: string,
-  playlistId: number,
-  playlistUPC: string,
+  content listId: number,
+  content listUPC: string,
   nonce: string
 ) => {
   const message = {
-    playlistId: playlistId,
-    playlistUPC: playlistUPC,
+    content listId: content listId,
+    content listUPC: content listUPC,
     nonce: nonce
   }
 
   return getRequestData(
-    domains.getPlaylistFactoryDomain,
+    domains.getContentListFactoryDomain,
     chainId,
     contractAddress,
-    'UpdatePlaylistUPCRequest',
-    schemas.updatePlaylistUPCRequest,
+    'UpdateContentListUPCRequest',
+    schemas.updateContentListUPCRequest,
     message
   )
 }
 
-const getUpdatePlaylistDescriptionRequestData = (
+const getUpdateContentListDescriptionRequestData = (
   chainId: number,
   contractAddress: string,
-  playlistId: number,
-  playlistDescription: string,
+  content listId: number,
+  content listDescription: string,
   nonce: string
 ) => {
   const message = {
-    playlistId: playlistId,
-    playlistDescription: playlistDescription,
+    content listId: content listId,
+    content listDescription: content listDescription,
     nonce: nonce
   }
 
   return getRequestData(
-    domains.getPlaylistFactoryDomain,
+    domains.getContentListFactoryDomain,
     chainId,
     contractAddress,
-    'UpdatePlaylistDescriptionRequest',
-    schemas.updatePlaylistDescriptionRequest,
+    'UpdateContentListDescriptionRequest',
+    schemas.updateContentListDescriptionRequest,
     message
   )
 }
@@ -1161,24 +1161,24 @@ export const generators = {
   getDeleteAgreementRequestData,
   getAddAgreementRepostRequestData,
   getDeleteAgreementRepostRequestData,
-  getAddPlaylistRepostRequestData,
-  getDeletePlaylistRepostRequestData,
+  getAddContentListRepostRequestData,
+  getDeleteContentListRepostRequestData,
   getUserFollowRequestData,
   getDeleteUserFollowRequestData,
   getAgreementSaveRequestData,
   getDeleteAgreementSaveRequestData,
-  getPlaylistSaveRequestData,
-  getDeletePlaylistSaveRequestData,
-  getCreatePlaylistRequestData,
-  getDeletePlaylistRequestData,
-  getAddPlaylistAgreementRequestData,
-  getDeletePlaylistAgreementRequestData,
-  getOrderPlaylistAgreementsRequestData,
-  getUpdatePlaylistNameRequestData,
-  getUpdatePlaylistPrivacyRequestData,
-  getUpdatePlaylistCoverPhotoRequestData,
-  getUpdatePlaylistUPCRequestData,
-  getUpdatePlaylistDescriptionRequestData,
+  getContentListSaveRequestData,
+  getDeleteContentListSaveRequestData,
+  getCreateContentListRequestData,
+  getDeleteContentListRequestData,
+  getAddContentListAgreementRequestData,
+  getDeleteContentListAgreementRequestData,
+  getOrderContentListAgreementsRequestData,
+  getUpdateContentListNameRequestData,
+  getUpdateContentListPrivacyRequestData,
+  getUpdateContentListCoverPhotoRequestData,
+  getUpdateContentListUPCRequestData,
+  getUpdateContentListDescriptionRequestData,
   addIPLDToBlacklistRequestData,
   getProposeAddOrUpdateContentNodeRequestData,
   getUpdateReplicaSetRequestData

@@ -60,7 +60,7 @@ def upgrade():
         sa.Column("bio", sa.String(), nullable=True),
         sa.Column("location", sa.String(), nullable=True),
         sa.Column("metadata_multihash", sa.String(), nullable=True),
-        sa.Column("creator_node_endpoint", sa.String(), nullable=True),
+        sa.Column("content_node_endpoint", sa.String(), nullable=True),
         sa.ForeignKeyConstraint(
             ["blockhash"],
             ["blocks.blockhash"],

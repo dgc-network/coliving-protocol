@@ -1,15 +1,15 @@
 ---
-id: "GetPlaylistRequest"
-title: "Interface: GetPlaylistRequest"
-sidebar_label: "GetPlaylistRequest"
+id: "GetContentListRequest"
+title: "Interface: GetContentListRequest"
+sidebar_label: "GetContentListRequest"
 sidebar_position: 0
 custom_edit_url: null
 ---
 
 ## Properties
 
-### playlistId
+### content listId
 
- **playlistId**: `string`
+ **content listId**: `string`
 
-A Playlist ID
+A ContentList ID

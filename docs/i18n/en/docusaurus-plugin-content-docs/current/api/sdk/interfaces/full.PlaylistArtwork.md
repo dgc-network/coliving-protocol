@@ -1,17 +1,17 @@
 ---
-id: "full.PlaylistArtwork"
-title: "Interface: PlaylistArtwork"
-sidebar_label: "PlaylistArtwork"
+id: "full.ContentListArtwork"
+title: "Interface: ContentListArtwork"
+sidebar_label: "ContentListArtwork"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).PlaylistArtwork
+[full](../namespaces/full.md).ContentListArtwork
 
 **`export`**
 
-**`interface`** PlaylistArtwork
+**`interface`** ContentListArtwork
 
 ## Properties
 
@@ -19,7 +19,7 @@ pagination_next: null
 
  `Optional` **\_1000x1000**: `string`
 
-**`memberof`** PlaylistArtwork
+**`memberof`** ContentListArtwork
 
 ___
 
@@ -27,7 +27,7 @@ ___
 
  `Optional` **\_150x150**: `string`
 
-**`memberof`** PlaylistArtwork
+**`memberof`** ContentListArtwork
 
 ___
 
@@ -35,4 +35,4 @@ ___
 
  `Optional` **\_480x480**: `string`
 
-**`memberof`** PlaylistArtwork
+**`memberof`** ContentListArtwork

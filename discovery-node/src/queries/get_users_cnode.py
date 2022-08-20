@@ -40,9 +40,9 @@ def get_users_cnode(
                 SELECT
                 "user_id",
                 "wallet",
-                ("creator_node_endpoints") [1] as "primary",
-                ("creator_node_endpoints") [2] as "secondary1",
-                ("creator_node_endpoints") [3] as "secondary2",
+                ("content_node_endpoints") [1] as "primary",
+                ("content_node_endpoints") [2] as "secondary1",
+                ("content_node_endpoints") [3] as "secondary2",
                 "primary_id" as "primarySpID",
                 ("secondary_ids") [1] as "secondary1SpID",
                 ("secondary_ids") [2] as "secondary2SpID"
@@ -51,13 +51,13 @@ def get_users_cnode(
                     SELECT
                     "user_id",
                     "wallet",
-                    string_to_array("creator_node_endpoint", ',') as "creator_node_endpoints",
+                    string_to_array("content_node_endpoint", ',') as "content_node_endpoints",
                     "primary_id",
                     "secondary_ids"
                     FROM
                     "users"
                     WHERE
-                    "creator_node_endpoint" IS NOT NULL
+                    "content_node_endpoint" IS NOT NULL
                     AND "is_current" IS TRUE
                     ORDER BY
                     "user_id" ASC

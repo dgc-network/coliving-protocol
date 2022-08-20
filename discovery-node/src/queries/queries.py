@@ -8,20 +8,20 @@ from src.queries.get_follow_intersection_users import get_follow_intersection_us
 from src.queries.get_followees_for_user import get_followees_for_user
 from src.queries.get_followers_for_user import get_followers_for_user
 from src.queries.get_max_id import get_max_id
-from src.queries.get_playlist_repost_intersection_users import (
-    get_playlist_repost_intersection_users,
+from src.queries.get_content list_repost_intersection_users import (
+    get_content list_repost_intersection_users,
 )
-from src.queries.get_playlists import get_playlists
-from src.queries.get_previously_private_playlists import (
-    get_previously_private_playlists,
+from src.queries.get_content lists import get_content lists
+from src.queries.get_previously_private_content lists import (
+    get_previously_private_content lists,
 )
 from src.queries.get_previously_unlisted_agreements import get_previously_unlisted_agreements
 from src.queries.get_remix_agreement_parents import get_remix_agreement_parents
 from src.queries.get_remixes_of import get_remixes_of
 from src.queries.get_repost_feed_for_user import get_repost_feed_for_user
-from src.queries.get_reposters_for_playlist import get_reposters_for_playlist
+from src.queries.get_reposters_for_content list import get_reposters_for_content list
 from src.queries.get_reposters_for_agreement import get_reposters_for_agreement
-from src.queries.get_savers_for_playlist import get_savers_for_playlist
+from src.queries.get_savers_for_content list import get_savers_for_content list
 from src.queries.get_savers_for_agreement import get_savers_for_agreement
 from src.queries.get_saves import get_saves
 from src.queries.get_sol_plays import (
@@ -33,7 +33,7 @@ from src.queries.get_stems_of import get_stems_of
 from src.queries.get_top_followee_saves import get_top_followee_saves
 from src.queries.get_top_followee_windowed import get_top_followee_windowed
 from src.queries.get_top_genre_users import get_top_genre_users
-from src.queries.get_top_playlists import get_top_playlists
+from src.queries.get_top_content lists import get_top_content lists
 from src.queries.get_agreement_repost_intersection_users import (
     get_agreement_repost_intersection_users,
 )
@@ -134,34 +134,34 @@ def get_stems_of_route(agreement_id):
     return api_helpers.success_response(stems)
 
 
-# Return playlist content in json form
-# optional parameters playlist owner's user_id, playlist_id = []
-@bp.route("/playlists", methods=("GET",))
+# Return content list content in json form
+# optional parameters content list owner's user_id, content list_id = []
+@bp.route("/content lists", methods=("GET",))
 @record_metrics
-def get_playlists_route():
+def get_content lists_route():
     args = to_dict(request.args)
-    if "playlist_id" in request.args:
-        args["playlist_id"] = [int(y) for y in request.args.getlist("playlist_id")]
+    if "content list_id" in request.args:
+        args["content list_id"] = [int(y) for y in request.args.getlist("content list_id")]
     if "user_id" in request.args:
         args["user_id"] = request.args.get("user_id", type=int)
     if "with_users" in request.args:
         args["with_users"] = parse_bool_param(request.args.get("with_users"))
     current_user_id = get_current_user_id(required=False)
     args["current_user_id"] = current_user_id
-    playlists = get_playlists(args)
-    return api_helpers.success_response(playlists)
+    content lists = get_content lists(args)
+    return api_helpers.success_response(content lists)
 
 
 # Discovery Node Social Feed Overview
 # For a given user, current_user, we provide a feed of relevant content from around the coliving network.
 # This is generated in the following manner:
 #   - Generate list of users followed by current_user, known as 'followees'
-#   - Query all agreement and public playlist reposts from followees
-#     - Generate list of reposted agreement ids and reposted playlist ids
-#   - Query all agreement and public playlists reposted OR created by followees, ordered by timestamp
-#     - At this point, 2 separate arrays one for playlists / one for agreements
+#   - Query all agreement and public content list reposts from followees
+#     - Generate list of reposted agreement ids and reposted content list ids
+#   - Query all agreement and public content lists reposted OR created by followees, ordered by timestamp
+#     - At this point, 2 separate arrays one for content lists / one for agreements
 #   - Query additional metadata around feed entries in each array, repost + save counts, user repost boolean
-#   - Combine unsorted playlist and agreement arrays
+#   - Combine unsorted content list and agreement arrays
 #   - Sort combined results by 'timestamp' field and return
 @bp.route("/feed", methods=("GET",))
 @record_metrics
@@ -193,10 +193,10 @@ def get_feed_route():
 
 # user repost feed steps
 # - get all reposts by user
-# - get all agreement and public playlist reposts by user, ordered by timestamp
-# - get additional metadata for each agreement/playlist: save count, repost count, current_user_reposted, followee_reposts
+# - get all agreement and public content list reposts by user, ordered by timestamp
+# - get additional metadata for each agreement/content list: save count, repost count, current_user_reposted, followee_reposts
 # -   (if current_user == user, skip current_user_reposted check and set all to true)
-# - combine unsorted playlist and agreement arrays
+# - combine unsorted content list and agreement arrays
 # - sort combined results by activity_timestamp field and return
 @bp.route("/feed/reposts/<int:user_id>", methods=("GET",))
 @record_metrics
@@ -239,19 +239,19 @@ def get_agreement_repost_intersection_users_route(repost_agreement_id, follower_
         return api_helpers.error_response(str(e), 404)
 
 
-# Get intersection of users that have reposted provided repost_playlist_id and users that
+# Get intersection of users that have reposted provided repost_content list_id and users that
 # are followed by provided follower_user_id.
 # - Followee = user that is followed. Follower = user that follows.
-# - repost_playlist_id = playlist that is reposted. repost_user_id = user that reposted playlist.
+# - repost_content list_id = content list that is reposted. repost_user_id = user that reposted content list.
 @bp.route(
-    "/users/intersection/repost/playlist/<int:repost_playlist_id>/<int:follower_user_id>",
+    "/users/intersection/repost/content list/<int:repost_content list_id>/<int:follower_user_id>",
     methods=("GET",),
 )
 @record_metrics
-def get_playlist_repost_intersection_users_route(repost_playlist_id, follower_user_id):
+def get_content list_repost_intersection_users_route(repost_content list_id, follower_user_id):
     try:
-        users = get_playlist_repost_intersection_users(
-            repost_playlist_id, follower_user_id
+        users = get_content list_repost_intersection_users(
+            repost_content list_id, follower_user_id
         )
         return api_helpers.success_response(users)
     except exceptions.NotFoundError as e:
@@ -309,20 +309,20 @@ def get_reposters_for_agreement_route(repost_agreement_id):
         return api_helpers.error_response(str(e), 404)
 
 
-# Get paginated users that reposted provided repost_playlist_id, sorted by their follower count descending.
-@bp.route("/users/reposts/playlist/<int:repost_playlist_id>", methods=("GET",))
+# Get paginated users that reposted provided repost_content list_id, sorted by their follower count descending.
+@bp.route("/users/reposts/content list/<int:repost_content list_id>", methods=("GET",))
 @record_metrics
-def get_reposters_for_playlist_route(repost_playlist_id):
+def get_reposters_for_content list_route(repost_content list_id):
     try:
         current_user_id = get_current_user_id(required=False)
         (limit, offset) = get_pagination_vars()
         args = {
-            "repost_playlist_id": repost_playlist_id,
+            "repost_content list_id": repost_content list_id,
             "current_user_id": current_user_id,
             "limit": limit,
             "offset": offset,
         }
-        user_results = get_reposters_for_playlist(args)
+        user_results = get_reposters_for_content list(args)
         return api_helpers.success_response(user_results)
     except exceptions.NotFoundError as e:
         return api_helpers.error_response(str(e), 404)
@@ -347,20 +347,20 @@ def get_savers_for_agreement_route(save_agreement_id):
         return api_helpers.error_response(str(e), 404)
 
 
-# Get paginated users that saved provided save_playlist_id, sorted by their follower count descending.
-@bp.route("/users/saves/playlist/<int:save_playlist_id>", methods=("GET",))
+# Get paginated users that saved provided save_content list_id, sorted by their follower count descending.
+@bp.route("/users/saves/content list/<int:save_content list_id>", methods=("GET",))
 @record_metrics
-def get_savers_for_playlist_route(save_playlist_id):
+def get_savers_for_content list_route(save_content list_id):
     try:
         current_user_id = get_current_user_id(required=False)
         (limit, offset) = get_pagination_vars()
         args = {
-            "save_playlist_id": save_playlist_id,
+            "save_content list_id": save_content list_id,
             "current_user_id": current_user_id,
             "limit": limit,
             "offset": offset,
         }
-        user_results = get_savers_for_playlist(args)
+        user_results = get_savers_for_content list(args)
         return api_helpers.success_response(user_results)
     except exceptions.NotFoundError as e:
         return api_helpers.error_response(str(e), 404)
@@ -391,7 +391,7 @@ def get_users_account_route():
         return api_helpers.error_response(str(e), 400)
 
 
-# Gets the max id for agreements, playlists, or users.
+# Gets the max id for agreements, content lists, or users.
 @bp.route("/latest/<type>", methods=("GET",))
 @record_metrics
 def get_max_id_route(type):
@@ -404,14 +404,14 @@ def get_max_id_route(type):
 
 @bp.route("/top/<type>", methods=("GET",))
 @record_metrics
-def get_top_playlists_route(type):
+def get_top_content lists_route(type):
     """
-    An endpoint to retrieve the "top" of a certain demographic of playlists or albums.
+    An endpoint to retrieve the "top" of a certain demographic of content lists or albums.
     This endpoint is useful in generating views like:
-        - Top playlists
+        - Top content lists
         - Top Albums
-        - Top playlists of a certain mood
-        - Top playlists of a certain mood from people you follow
+        - Top content lists of a certain mood
+        - Top content lists of a certain mood from people you follow
 
     Args:
         type: (string) The `type` (same as repost/save type) to query from.
@@ -432,8 +432,8 @@ def get_top_playlists_route(type):
     if "with_users" in request.args:
         args["with_users"] = parse_bool_param(request.args.get("with_users"))
     try:
-        playlists = get_top_playlists(type, args)
-        return api_helpers.success_response(playlists)
+        content lists = get_top_content lists(type, args)
+        return api_helpers.success_response(content lists)
     except exceptions.ArgumentError as e:
         return api_helpers.error_response(str(e), 400)
 
@@ -565,13 +565,13 @@ def get_previously_unlisted_agreements_route():
         return api_helpers.error_response(str(e), 400)
 
 
-# Get the playlists that were previously private and became public after the date provided
-@bp.route("/previously_private/playlist", methods=("GET",))
+# Get the content lists that were previously private and became public after the date provided
+@bp.route("/previously_private/content list", methods=("GET",))
 @record_metrics
-def get_previously_private_playlists_route():
+def get_previously_private_content lists_route():
     try:
-        playlists = get_previously_private_playlists(to_dict(request.args))
-        return api_helpers.success_response(playlists)
+        content lists = get_previously_private_content lists(to_dict(request.args))
+        return api_helpers.success_response(content lists)
     except exceptions.ArgumentError as e:
         return api_helpers.error_response(str(e), 400)
 

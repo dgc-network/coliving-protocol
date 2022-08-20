@@ -1,5 +1,5 @@
 {
-  "contractName": "PlaylistFactoryInterface",
+  "contractName": "ContentListFactoryInterface",
   "abi": [
     {
       "constant": true,
@@ -9,11 +9,11 @@
           "type": "address"
         },
         {
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         }
       ],
-      "name": "callerOwnsPlaylist",
+      "name": "callerOwnsContentList",
       "outputs": [],
       "payable": false,
       "stateMutability": "view",
@@ -23,11 +23,11 @@
       "constant": true,
       "inputs": [
         {
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         }
       ],
-      "name": "playlistExists",
+      "name": "content listExists",
       "outputs": [
         {
           "name": "exists",

@@ -2,158 +2,158 @@ pragma solidity ^0.5.0;
 
 import "./registry/RegistryContract.sol";
 import "./interface/RegistryInterface.sol";
-import "./interface/PlaylistStorageInterface.sol";
+import "./interface/ContentListStorageInterface.sol";
 import "./interface/UserFactoryInterface.sol";
 import "./interface/AgreementFactoryInterface.sol";
 import "./SigningLogic.sol";
 
 
-/** @title Contract responsible for managing playlist business logic */
-contract PlaylistFactory is RegistryContract, SigningLogic {
+/** @title Contract responsible for managing content list business logic */
+contract ContentListFactory is RegistryContract, SigningLogic {
 
     uint constant AGREEMENT_LIMIT = 200;
 
     RegistryInterface registry = RegistryInterface(0);
-    bytes32 playlistStorageRegistryKey;
+    bytes32 content listStorageRegistryKey;
     bytes32 userFactoryRegistryKey;
     bytes32 agreementFactoryRegistryKey;
 
-    event PlaylistCreated(
-        uint _playlistId,
-        uint _playlistOwnerId,
+    event ContentListCreated(
+        uint _content listId,
+        uint _content listOwnerId,
         bool _isPrivate,
         bool _isAlbum,
         uint[] _agreementIds
     );
 
-    event PlaylistDeleted(uint _playlistId);
+    event ContentListDeleted(uint _content listId);
 
-    event PlaylistAgreementAdded(
-        uint _playlistId,
+    event ContentListAgreementAdded(
+        uint _content listId,
         uint _addedAgreementId
     );
 
-    event PlaylistAgreementDeleted(
-        uint _playlistId,
+    event ContentListAgreementDeleted(
+        uint _content listId,
         uint _deletedAgreementId,
         uint _deletedAgreementTimestamp
     );
 
-    event PlaylistAgreementsOrdered(
-        uint _playlistId,
+    event ContentListAgreementsOrdered(
+        uint _content listId,
         uint[] _orderedAgreementIds
     );
 
-    event PlaylistNameUpdated(
-        uint _playlistId,
-        string _updatedPlaylistName
+    event ContentListNameUpdated(
+        uint _content listId,
+        string _updatedContentListName
     );
 
-    event PlaylistPrivacyUpdated(
-        uint _playlistId,
+    event ContentListPrivacyUpdated(
+        uint _content listId,
         bool _updatedIsPrivate
     );
 
-    event PlaylistCoverPhotoUpdated(
-        uint _playlistId,
-        bytes32 _playlistImageMultihashDigest
+    event ContentListCoverPhotoUpdated(
+        uint _content listId,
+        bytes32 _content listImageMultihashDigest
     );
 
-    event PlaylistDescriptionUpdated(
-        uint _playlistId,
-        string _playlistDescription
+    event ContentListDescriptionUpdated(
+        uint _content listId,
+        string _content listDescription
     );
 
-    event PlaylistUPCUpdated(
-        uint _playlistId,
-        bytes32 _playlistUPC
+    event ContentListUPCUpdated(
+        uint _content listId,
+        bytes32 _content listUPC
     );
 
-    bytes32 constant CREATE_PLAYLIST_TYPEHASH = keccak256(
-        "CreatePlaylistRequest(uint playlistOwnerId,string playlistName,bool isPrivate,bool isAlbum,bytes32 agreementIdsHash,bytes32 nonce)"
+    bytes32 constant CREATE_CONTENT_LIST_TYPEHASH = keccak256(
+        "CreateContentListRequest(uint content listOwnerId,string content listName,bool isPrivate,bool isAlbum,bytes32 agreementIdsHash,bytes32 nonce)"
     );
 
-    bytes32 constant DELETE_PLAYLIST_TYPEHASH = keccak256(
-        "DeletePlaylistRequest(uint playlistId,bytes32 nonce)"
+    bytes32 constant DELETE_CONTENT_LIST_TYPEHASH = keccak256(
+        "DeleteContentListRequest(uint content listId,bytes32 nonce)"
     );
 
-    bytes32 constant ADD_PLAYLIST_AGREEMENT_TYPEHASH = keccak256(
-        "AddPlaylistAgreementRequest(uint playlistId,uint addedAgreementId,bytes32 nonce)"
+    bytes32 constant ADD_CONTENT_LIST_AGREEMENT_TYPEHASH = keccak256(
+        "AddContentListAgreementRequest(uint content listId,uint addedAgreementId,bytes32 nonce)"
     );
 
-    bytes32 constant DELETE_PLAYLIST_AGREEMENT_TYPEHASH = keccak256(
-        "DeletePlaylistAgreementRequest(uint playlistId,uint deletedAgreementId,uint deletedAgreementTimestamp,bytes32 nonce)"
+    bytes32 constant DELETE_CONTENT_LIST_AGREEMENT_TYPEHASH = keccak256(
+        "DeleteContentListAgreementRequest(uint content listId,uint deletedAgreementId,uint deletedAgreementTimestamp,bytes32 nonce)"
     );
 
-    bytes32 constant ORDER_PLAYLIST_AGREEMENTS_TYPEHASH = keccak256(
-        "OrderPlaylistAgreementsRequest(uint playlistId,bytes32 agreementIdsHash,bytes32 nonce)"
+    bytes32 constant ORDER_CONTENT_LIST_AGREEMENTS_TYPEHASH = keccak256(
+        "OrderContentListAgreementsRequest(uint content listId,bytes32 agreementIdsHash,bytes32 nonce)"
     );
 
-    bytes32 constant UPDATE_PLAYLIST_NAME_TYPEHASH = keccak256(
-        "UpdatePlaylistNameRequest(uint playlistId,string updatedPlaylistName,bytes32 nonce)"
+    bytes32 constant UPDATE_CONTENT_LIST_NAME_TYPEHASH = keccak256(
+        "UpdateContentListNameRequest(uint content listId,string updatedContentListName,bytes32 nonce)"
     );
 
-    bytes32 constant UPDATE_PLAYLIST_PRIVACY_TYPEHASH = keccak256(
-        "UpdatePlaylistPrivacyRequest(uint playlistId,bool updatedPlaylistPrivacy,bytes32 nonce)"
+    bytes32 constant UPDATE_CONTENT_LIST_PRIVACY_TYPEHASH = keccak256(
+        "UpdateContentListPrivacyRequest(uint content listId,bool updatedContentListPrivacy,bytes32 nonce)"
     );
 
-    bytes32 constant UPDATE_PLAYLIST_COVER_PHOTO_TYPEHASH = keccak256(
-        "UpdatePlaylistCoverPhotoRequest(uint playlistId,bytes32 playlistImageMultihashDigest,bytes32 nonce)"
+    bytes32 constant UPDATE_CONTENT_LIST_COVER_PHOTO_TYPEHASH = keccak256(
+        "UpdateContentListCoverPhotoRequest(uint content listId,bytes32 content listImageMultihashDigest,bytes32 nonce)"
     );
 
-    bytes32 constant UPDATE_PLAYLIST_DESCRIPTION_TYPEHASH = keccak256(
-        "UpdatePlaylistDescriptionRequest(uint playlistId,string playlistDescription,bytes32 nonce)"
+    bytes32 constant UPDATE_CONTENT_LIST_DESCRIPTION_TYPEHASH = keccak256(
+        "UpdateContentListDescriptionRequest(uint content listId,string content listDescription,bytes32 nonce)"
     );
 
-    bytes32 constant UPDATE_PLAYLIST_UPC_TYPEHASH = keccak256(
-        "UpdatePlaylistUPCRequest(uint playlistId,bytes32 playlistUPC,bytes32 nonce)"
+    bytes32 constant UPDATE_CONTENT_LIST_UPC_TYPEHASH = keccak256(
+        "UpdateContentListUPCRequest(uint content listId,bytes32 content listUPC,bytes32 nonce)"
     );
 
-    /** @notice Sets registry address and user factory and playlist storage keys */
+    /** @notice Sets registry address and user factory and content list storage keys */
     constructor(address _registryAddress,
-        bytes32 _playlistStorageRegistryKey,
+        bytes32 _content listStorageRegistryKey,
         bytes32 _userFactoryRegistryKey,
         bytes32 _agreementFactoryRegistryKey,
         uint _networkId
-    ) SigningLogic("Playlist Factory", "1", _networkId)
+    ) SigningLogic("ContentList Factory", "1", _networkId)
     public {
         require(
             _registryAddress != address(0x00) &&
-            _playlistStorageRegistryKey.length != 0 &&
+            _content listStorageRegistryKey.length != 0 &&
             _userFactoryRegistryKey.length != 0 &&
             _agreementFactoryRegistryKey != 0,
-            "requires non-zero registryAddress, non-empty _playlistStorageRegistryKey, non-empty _agreementFactoryRegistryKey"
+            "requires non-zero registryAddress, non-empty _content listStorageRegistryKey, non-empty _agreementFactoryRegistryKey"
         );
         registry = RegistryInterface(_registryAddress);
-        playlistStorageRegistryKey = _playlistStorageRegistryKey;
+        content listStorageRegistryKey = _content listStorageRegistryKey;
         userFactoryRegistryKey = _userFactoryRegistryKey;
         agreementFactoryRegistryKey = _agreementFactoryRegistryKey;
     }
 
     /*
-    Create a new playlist, storing the contents / owner / isAlbum fields in storage.
+    Create a new content list, storing the contents / owner / isAlbum fields in storage.
     These fields are stored since they will be used to determine payments for reposts and
-    other playlist/album related actions.
-    Every other field, ie. isPrivate, playlist name, etc. are indexed through events only
+    other content list/album related actions.
+    Every other field, ie. isPrivate, content list name, etc. are indexed through events only
     */
-    function createPlaylist(
-        uint _playlistOwnerId,
-        string calldata _playlistName,
+    function createContentList(
+        uint _content listOwnerId,
+        string calldata _content listName,
         bool _isPrivate,
         bool _isAlbum,
         uint[] calldata _agreementIds,
         bytes32 _nonce,
         bytes calldata _subjectSig
-    ) external returns (uint newPlaylistId)
+    ) external returns (uint newContentListId)
     {
         require(
             _agreementIds.length < AGREEMENT_LIMIT,
-            "Maximum of 200 agreements in a playlist currently supported"
+            "Maximum of 200 agreements in a content list currently supported"
         );
 
-        bytes32 signatureDigest = generateCreatePlaylistRequestSchemaHash(
-            _playlistOwnerId,
-            _playlistName,
+        bytes32 signatureDigest = generateCreateContentListRequestSchemaHash(
+            _content listOwnerId,
+            _content listName,
             _isPrivate,
             _isAlbum,
             _agreementIds,
@@ -163,9 +163,9 @@ contract PlaylistFactory is RegistryContract, SigningLogic {
         burnSignatureDigest(signatureDigest, signer);
         UserFactoryInterface(
             registry.getContract(userFactoryRegistryKey)
-        ).callerOwnsUser(signer, _playlistOwnerId); // will revert if false
+        ).callerOwnsUser(signer, _content listOwnerId); // will revert if false
 
-        /* Validate that each agreement exists before creating the playlist */
+        /* Validate that each agreement exists before creating the content list */
         for (uint i = 0; i < _agreementIds.length; i++) {
             bool agreementExists = AgreementFactoryInterface(
                 registry.getContract(agreementFactoryRegistryKey)
@@ -173,104 +173,104 @@ contract PlaylistFactory is RegistryContract, SigningLogic {
             require(agreementExists, "Expected valid agreement id");
         }
 
-        uint playlistId = PlaylistStorageInterface(
-            registry.getContract(playlistStorageRegistryKey)
-        ).createPlaylist(_playlistOwnerId, _isAlbum, _agreementIds);
+        uint content listId = ContentListStorageInterface(
+            registry.getContract(content listStorageRegistryKey)
+        ).createContentList(_content listOwnerId, _isAlbum, _agreementIds);
 
-        emit PlaylistCreated(
-            playlistId,
-            _playlistOwnerId,
+        emit ContentListCreated(
+            content listId,
+            _content listOwnerId,
             _isPrivate,
             _isAlbum,
             _agreementIds
         );
 
-        // Emit second event with playlist name
-        emit PlaylistNameUpdated(playlistId, _playlistName);
+        // Emit second event with content list name
+        emit ContentListNameUpdated(content listId, _content listName);
 
-        return playlistId;
+        return content listId;
     }
 
     /**
-    * @notice deletes existing playlist given its ID
-    * @notice does not delete playlist from storage by design
-    * @param _playlistId - id of playlist to delete
+    * @notice deletes existing content list given its ID
+    * @notice does not delete content list from storage by design
+    * @param _content listId - id of content list to delete
     */
-    function deletePlaylist(
-        uint _playlistId,
+    function deleteContentList(
+        uint _content listId,
         bytes32 _nonce,
         bytes calldata _subjectSig
     ) external returns (bool status)
     {
-        bytes32 signatureDigest = generateDeletePlaylistSchemaHash(_playlistId, _nonce);
+        bytes32 signatureDigest = generateDeleteContentListSchemaHash(_content listId, _nonce);
         address signer = recoverSigner(signatureDigest, _subjectSig);
         burnSignatureDigest(signatureDigest, signer);
-        this.callerOwnsPlaylist(signer, _playlistId);   // will revert if false
+        this.callerOwnsContentList(signer, _content listId);   // will revert if false
 
-        emit PlaylistDeleted(_playlistId);
+        emit ContentListDeleted(_content listId);
         return true;
     }
 
-    function addPlaylistAgreement(
-        uint _playlistId,
+    function addContentListAgreement(
+        uint _content listId,
         uint _addedAgreementId,
         bytes32 _nonce,
         bytes calldata _subjectSig
     ) external
     {
-        bytes32 signatureDigest = generateAddPlaylistAgreementSchemaHash(
-            _playlistId,
+        bytes32 signatureDigest = generateAddContentListAgreementSchemaHash(
+            _content listId,
             _addedAgreementId,
             _nonce
         );
         address signer = recoverSigner(signatureDigest, _subjectSig);
         burnSignatureDigest(signatureDigest, signer);
-        this.callerOwnsPlaylist(signer, _playlistId);   // will revert if false
+        this.callerOwnsContentList(signer, _content listId);   // will revert if false
 
         bool agreementExists = AgreementFactoryInterface(
             registry.getContract(agreementFactoryRegistryKey)
         ).agreementExists(_addedAgreementId);
         require(agreementExists, "Expected valid agreement id");
 
-        PlaylistStorageInterface(
-            registry.getContract(playlistStorageRegistryKey)
-        ).addPlaylistAgreement(_playlistId, _addedAgreementId);
+        ContentListStorageInterface(
+            registry.getContract(content listStorageRegistryKey)
+        ).addContentListAgreement(_content listId, _addedAgreementId);
 
-        emit PlaylistAgreementAdded(_playlistId, _addedAgreementId);
+        emit ContentListAgreementAdded(_content listId, _addedAgreementId);
     }
 
-    /* delete agreement from playlist */
-    function deletePlaylistAgreement(
-        uint _playlistId,
+    /* delete agreement from content list */
+    function deleteContentListAgreement(
+        uint _content listId,
         uint _deletedAgreementId,
         uint _deletedAgreementTimestamp,
         bytes32 _nonce,
         bytes calldata _subjectSig
     ) external
     {
-        bytes32 signatureDigest = generateDeletePlaylistAgreementSchemaHash(
-            _playlistId,
+        bytes32 signatureDigest = generateDeleteContentListAgreementSchemaHash(
+            _content listId,
             _deletedAgreementId,
             _deletedAgreementTimestamp,
             _nonce
         );
         address signer = recoverSigner(signatureDigest, _subjectSig);
         burnSignatureDigest(signatureDigest, signer);
-        this.callerOwnsPlaylist(signer, _playlistId);   // will revert if false
+        this.callerOwnsContentList(signer, _content listId);   // will revert if false
 
-        bool isValidAgreement = this.isAgreementInPlaylist(_playlistId, _deletedAgreementId);
+        bool isValidAgreement = this.isAgreementInContentList(_content listId, _deletedAgreementId);
         require(isValidAgreement == true, "Expect valid agreement for delete operation");
 
-        PlaylistStorageInterface(
-            registry.getContract(playlistStorageRegistryKey)
-        ).deletePlaylistAgreement(_playlistId, _deletedAgreementId);
+        ContentListStorageInterface(
+            registry.getContract(content listStorageRegistryKey)
+        ).deleteContentListAgreement(_content listId, _deletedAgreementId);
 
-        emit PlaylistAgreementDeleted(_playlistId, _deletedAgreementId, _deletedAgreementTimestamp);
+        emit ContentListAgreementDeleted(_content listId, _deletedAgreementId, _deletedAgreementTimestamp);
     }
 
-    /* order playlist agreements */
-    function orderPlaylistAgreements(
-        uint _playlistId,
+    /* order content list agreements */
+    function orderContentListAgreements(
+        uint _content listId,
         uint[] calldata _agreementIds,
         bytes32 _nonce,
         bytes calldata _subjectSig
@@ -278,162 +278,162 @@ contract PlaylistFactory is RegistryContract, SigningLogic {
     {
         require(
             _agreementIds.length < AGREEMENT_LIMIT,
-            "Maximum of 200 agreements in a playlist currently supported"
+            "Maximum of 200 agreements in a content list currently supported"
         );
 
-        bytes32 signatureDigest = generateOrderPlaylistAgreementsRequestSchemaHash(
-            _playlistId,
+        bytes32 signatureDigest = generateOrderContentListAgreementsRequestSchemaHash(
+            _content listId,
             _agreementIds,
             _nonce
         );
         address signer = recoverSigner(signatureDigest, _subjectSig);
         burnSignatureDigest(signatureDigest, signer);
-        this.callerOwnsPlaylist(signer, _playlistId);   // will revert if false
+        this.callerOwnsContentList(signer, _content listId);   // will revert if false
 
-        /* Validate that each agreement exists in the playlist */
+        /* Validate that each agreement exists in the content list */
         for (uint i = 0; i < _agreementIds.length; i++) {
-            bool isValidAgreement = this.isAgreementInPlaylist(_playlistId, _agreementIds[i]);
-            require(isValidAgreement, "Expected valid playlist agreement id");
+            bool isValidAgreement = this.isAgreementInContentList(_content listId, _agreementIds[i]);
+            require(isValidAgreement, "Expected valid content list agreement id");
         }
 
-        emit PlaylistAgreementsOrdered(_playlistId, _agreementIds);
+        emit ContentListAgreementsOrdered(_content listId, _agreementIds);
     }
 
-    function updatePlaylistName(
-        uint _playlistId,
-        string calldata _updatedPlaylistName,
+    function updateContentListName(
+        uint _content listId,
+        string calldata _updatedContentListName,
         bytes32 _nonce,
         bytes calldata _subjectSig
     ) external
     {
-        bytes32 _signatureDigest = generateUpdatePlaylistNameRequestSchemaHash(
-            _playlistId,
-            _updatedPlaylistName,
+        bytes32 _signatureDigest = generateUpdateContentListNameRequestSchemaHash(
+            _content listId,
+            _updatedContentListName,
             _nonce
         );
         address signer = recoverSigner(_signatureDigest, _subjectSig);
         burnSignatureDigest(_signatureDigest, signer);
-        this.callerOwnsPlaylist(signer, _playlistId);   // will revert if false
+        this.callerOwnsContentList(signer, _content listId);   // will revert if false
 
-        emit PlaylistNameUpdated(_playlistId, _updatedPlaylistName);
+        emit ContentListNameUpdated(_content listId, _updatedContentListName);
     }
 
-    function updatePlaylistPrivacy(
-        uint _playlistId,
-        bool _updatedPlaylistPrivacy,
+    function updateContentListPrivacy(
+        uint _content listId,
+        bool _updatedContentListPrivacy,
         bytes32 _nonce,
         bytes calldata _subjectSig
     ) external
     {
-        bytes32 signatureDigest = generateUpdatePlaylistPrivacyRequestSchemaHash(
-            _playlistId,
-            _updatedPlaylistPrivacy,
+        bytes32 signatureDigest = generateUpdateContentListPrivacyRequestSchemaHash(
+            _content listId,
+            _updatedContentListPrivacy,
             _nonce
         );
         address signer = recoverSigner(signatureDigest, _subjectSig);
         burnSignatureDigest(signatureDigest, signer);
-        this.callerOwnsPlaylist(signer, _playlistId);   // will revert if false
+        this.callerOwnsContentList(signer, _content listId);   // will revert if false
 
-        emit PlaylistPrivacyUpdated(_playlistId, _updatedPlaylistPrivacy);
+        emit ContentListPrivacyUpdated(_content listId, _updatedContentListPrivacy);
     }
 
-    /* update playlist cover photo */
-    function updatePlaylistCoverPhoto(
-        uint _playlistId,
-        bytes32 _playlistImageMultihashDigest,
+    /* update content list cover photo */
+    function updateContentListCoverPhoto(
+        uint _content listId,
+        bytes32 _content listImageMultihashDigest,
         bytes32 _nonce,
         bytes calldata _subjectSig
     ) external
     {
-        bytes32 signatureDigest = generateUpdatePlaylistCoverPhotoSchemaHash(
-            _playlistId,
-            _playlistImageMultihashDigest,
+        bytes32 signatureDigest = generateUpdateContentListCoverPhotoSchemaHash(
+            _content listId,
+            _content listImageMultihashDigest,
             _nonce
         );
         address signer = recoverSigner(signatureDigest, _subjectSig);
         burnSignatureDigest(signatureDigest, signer);
-        this.callerOwnsPlaylist(signer, _playlistId);   // will revert if false
+        this.callerOwnsContentList(signer, _content listId);   // will revert if false
 
-        emit PlaylistCoverPhotoUpdated(_playlistId, _playlistImageMultihashDigest);
+        emit ContentListCoverPhotoUpdated(_content listId, _content listImageMultihashDigest);
     }
 
-    function updatePlaylistDescription(
-        uint _playlistId,
-        string calldata _playlistDescription,
+    function updateContentListDescription(
+        uint _content listId,
+        string calldata _content listDescription,
         bytes32 _nonce,
         bytes calldata _subjectSig
     ) external
     {
-        bytes32 signatureDigest = generateUpdatePlaylistDescriptionSchemaHash(
-            _playlistId,
-            _playlistDescription,
+        bytes32 signatureDigest = generateUpdateContentListDescriptionSchemaHash(
+            _content listId,
+            _content listDescription,
             _nonce
         );
         address signer = recoverSigner(signatureDigest, _subjectSig);
         burnSignatureDigest(signatureDigest, signer);
-        this.callerOwnsPlaylist(signer, _playlistId);   // will revert if false
+        this.callerOwnsContentList(signer, _content listId);   // will revert if false
 
-        emit PlaylistDescriptionUpdated(_playlistId, _playlistDescription);
+        emit ContentListDescriptionUpdated(_content listId, _content listDescription);
     }
 
-    function updatePlaylistUPC(
-        uint _playlistId,
-        bytes32 _updatedPlaylistUPC,
+    function updateContentListUPC(
+        uint _content listId,
+        bytes32 _updatedContentListUPC,
         bytes32 _nonce,
         bytes calldata _subjectSig
     ) external
     {
-        bytes32 signatureDigest = generateUpdatePlaylistUPCSchemaHash(
-            _playlistId,
-            _updatedPlaylistUPC,
+        bytes32 signatureDigest = generateUpdateContentListUPCSchemaHash(
+            _content listId,
+            _updatedContentListUPC,
             _nonce
         );
         address signer = recoverSigner(signatureDigest, _subjectSig);
         burnSignatureDigest(signatureDigest, signer);
-        this.callerOwnsPlaylist(signer, _playlistId);   // will revert if false
+        this.callerOwnsContentList(signer, _content listId);   // will revert if false
 
-        emit PlaylistUPCUpdated(_playlistId, _updatedPlaylistUPC);
+        emit ContentListUPCUpdated(_content listId, _updatedContentListUPC);
     }
 
-    function playlistExists(uint _playlistId)
+    function content listExists(uint _content listId)
     external view returns (bool exists)
     {
-        return PlaylistStorageInterface(
-            registry.getContract(playlistStorageRegistryKey)
-        ).playlistExists(_playlistId);
+        return ContentListStorageInterface(
+            registry.getContract(content listStorageRegistryKey)
+        ).content listExists(_content listId);
     }
 
-    function isAgreementInPlaylist(
-        uint _playlistId,
+    function isAgreementInContentList(
+        uint _content listId,
         uint _agreementId
     ) external view returns (bool)
     {
-        return PlaylistStorageInterface(
-            registry.getContract(playlistStorageRegistryKey)
-        ).isAgreementInPlaylist(_playlistId, _agreementId);
+        return ContentListStorageInterface(
+            registry.getContract(content listStorageRegistryKey)
+        ).isAgreementInContentList(_content listId, _agreementId);
     }
 
-    /** @notice ensures that calling address owns playlist; reverts if not */
-    function callerOwnsPlaylist(
+    /** @notice ensures that calling address owns content list; reverts if not */
+    function callerOwnsContentList(
         address _caller,
-        uint _playlistId
+        uint _content listId
     ) external view
     {
-        // get user id of playlist owner
-        uint playlistOwnerId = PlaylistStorageInterface(
-            registry.getContract(playlistStorageRegistryKey)
-        ).getPlaylistOwner(_playlistId);
+        // get user id of content list owner
+        uint content listOwnerId = ContentListStorageInterface(
+            registry.getContract(content listStorageRegistryKey)
+        ).getContentListOwner(_content listId);
 
-        // confirm caller owns playlist owner
+        // confirm caller owns content list owner
         UserFactoryInterface(
             registry.getContract(userFactoryRegistryKey)
-        ).callerOwnsUser(_caller, playlistOwnerId);
+        ).callerOwnsUser(_caller, content listOwnerId);
     }
 
     /** REQUEST SCHEMA HASH GENERATORS */
-    function generateCreatePlaylistRequestSchemaHash(
-        uint _playlistOwnerId,
-        string memory _playlistName,
+    function generateCreateContentListRequestSchemaHash(
+        uint _content listOwnerId,
+        string memory _content listName,
         bool _isPrivate,
         bool _isAlbum,
         uint[] memory _agreementIds,
@@ -443,9 +443,9 @@ contract PlaylistFactory is RegistryContract, SigningLogic {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    CREATE_PLAYLIST_TYPEHASH,
-                    _playlistOwnerId,
-                    keccak256(bytes(_playlistName)),
+                    CREATE_CONTENT_LIST_TYPEHASH,
+                    _content listOwnerId,
+                    keccak256(bytes(_content listName)),
                     _isPrivate,
                     _isAlbum,
                     keccak256(abi.encode(_agreementIds)),
@@ -455,24 +455,24 @@ contract PlaylistFactory is RegistryContract, SigningLogic {
         );
     }
 
-    function generateDeletePlaylistSchemaHash(
-        uint _playlistId,
+    function generateDeleteContentListSchemaHash(
+        uint _content listId,
         bytes32 _nonce
     ) internal view returns (bytes32)
     {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    DELETE_PLAYLIST_TYPEHASH,
-                    _playlistId,
+                    DELETE_CONTENT_LIST_TYPEHASH,
+                    _content listId,
                     _nonce
                 )
             )
         );
     }
 
-    function generateAddPlaylistAgreementSchemaHash(
-        uint _playlistId,
+    function generateAddContentListAgreementSchemaHash(
+        uint _content listId,
         uint _addedAgreementId,
         bytes32 _nonce
     ) internal view returns(bytes32)
@@ -480,8 +480,8 @@ contract PlaylistFactory is RegistryContract, SigningLogic {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    ADD_PLAYLIST_AGREEMENT_TYPEHASH,
-                    _playlistId,
+                    ADD_CONTENT_LIST_AGREEMENT_TYPEHASH,
+                    _content listId,
                     _addedAgreementId,
                     _nonce
                 )
@@ -489,8 +489,8 @@ contract PlaylistFactory is RegistryContract, SigningLogic {
         );
     }
 
-    function generateDeletePlaylistAgreementSchemaHash(
-        uint _playlistId,
+    function generateDeleteContentListAgreementSchemaHash(
+        uint _content listId,
         uint _deletedAgreementId,
         uint _deletedAgreementTimestamp,
         bytes32 _nonce
@@ -499,8 +499,8 @@ contract PlaylistFactory is RegistryContract, SigningLogic {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    DELETE_PLAYLIST_AGREEMENT_TYPEHASH,
-                    _playlistId,
+                    DELETE_CONTENT_LIST_AGREEMENT_TYPEHASH,
+                    _content listId,
                     _deletedAgreementId,
                     _deletedAgreementTimestamp,
                     _nonce
@@ -509,8 +509,8 @@ contract PlaylistFactory is RegistryContract, SigningLogic {
         );
     }
 
-    function generateOrderPlaylistAgreementsRequestSchemaHash(
-        uint _playlistId,
+    function generateOrderContentListAgreementsRequestSchemaHash(
+        uint _content listId,
         uint[] memory _agreementIds,
         bytes32 _nonce
     ) internal view returns (bytes32)
@@ -518,8 +518,8 @@ contract PlaylistFactory is RegistryContract, SigningLogic {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    ORDER_PLAYLIST_AGREEMENTS_TYPEHASH,
-                    _playlistId,
+                    ORDER_CONTENT_LIST_AGREEMENTS_TYPEHASH,
+                    _content listId,
                     keccak256(abi.encode(_agreementIds)),
                     _nonce
                 )
@@ -527,90 +527,90 @@ contract PlaylistFactory is RegistryContract, SigningLogic {
         );
     }
 
-    function generateUpdatePlaylistNameRequestSchemaHash(
-        uint _playlistId,
-        string memory _updatedPlaylistName,
+    function generateUpdateContentListNameRequestSchemaHash(
+        uint _content listId,
+        string memory _updatedContentListName,
         bytes32 _nonce
     ) internal view returns (bytes32)
     {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    UPDATE_PLAYLIST_NAME_TYPEHASH,
-                    _playlistId,
-                    keccak256(bytes(_updatedPlaylistName)),
+                    UPDATE_CONTENT_LIST_NAME_TYPEHASH,
+                    _content listId,
+                    keccak256(bytes(_updatedContentListName)),
                     _nonce
                 )
             )
         );
     }
 
-    function generateUpdatePlaylistPrivacyRequestSchemaHash(
-        uint _playlistId,
-        bool _updatedPlaylistPrivacy,
+    function generateUpdateContentListPrivacyRequestSchemaHash(
+        uint _content listId,
+        bool _updatedContentListPrivacy,
         bytes32 _nonce
     ) internal view returns (bytes32)
     {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    UPDATE_PLAYLIST_PRIVACY_TYPEHASH,
-                    _playlistId,
-                    _updatedPlaylistPrivacy,
+                    UPDATE_CONTENT_LIST_PRIVACY_TYPEHASH,
+                    _content listId,
+                    _updatedContentListPrivacy,
                     _nonce
                 )
             )
         );
     }
 
-    function generateUpdatePlaylistCoverPhotoSchemaHash(
-        uint _playlistId,
-        bytes32 _playlistImageMultihashDigest,
+    function generateUpdateContentListCoverPhotoSchemaHash(
+        uint _content listId,
+        bytes32 _content listImageMultihashDigest,
         bytes32 _nonce
     ) internal view returns (bytes32)
     {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    UPDATE_PLAYLIST_COVER_PHOTO_TYPEHASH,
-                    _playlistId,
-                    _playlistImageMultihashDigest,
+                    UPDATE_CONTENT_LIST_COVER_PHOTO_TYPEHASH,
+                    _content listId,
+                    _content listImageMultihashDigest,
                     _nonce
                 )
             )
         );
     }
 
-    function generateUpdatePlaylistDescriptionSchemaHash(
-        uint _playlistId,
-        string memory _playlistDescription,
+    function generateUpdateContentListDescriptionSchemaHash(
+        uint _content listId,
+        string memory _content listDescription,
         bytes32 _nonce
     ) internal view returns (bytes32)
     {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    UPDATE_PLAYLIST_DESCRIPTION_TYPEHASH,
-                    _playlistId,
-                    keccak256(bytes(_playlistDescription)),
+                    UPDATE_CONTENT_LIST_DESCRIPTION_TYPEHASH,
+                    _content listId,
+                    keccak256(bytes(_content listDescription)),
                     _nonce
                 )
             )
         );
     }
 
-    function generateUpdatePlaylistUPCSchemaHash(
-        uint _playlistId,
-        bytes32 _playlistUPC,
+    function generateUpdateContentListUPCSchemaHash(
+        uint _content listId,
+        bytes32 _content listUPC,
         bytes32 _nonce
     ) internal view returns (bytes32)
     {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    UPDATE_PLAYLIST_UPC_TYPEHASH,
-                    _playlistId,
-                    _playlistUPC,
+                    UPDATE_CONTENT_LIST_UPC_TYPEHASH,
+                    _content listId,
+                    _content listUPC,
                     _nonce
                 )
             )

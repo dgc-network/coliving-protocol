@@ -1,6 +1,6 @@
 import {
   FollowRow,
-  PlaylistRow,
+  ContentListRow,
   RepostRow,
   SaveRow,
   AgreementRow,
@@ -16,7 +16,7 @@ export type EntityUserDoc = {
   updated_at: Date
 }
 
-export type PlaylistDoc = PlaylistRow & {
+export type ContentListDoc = ContentListRow & {
   suggest: string
   agreements: AgreementDoc[]
   save_count: number

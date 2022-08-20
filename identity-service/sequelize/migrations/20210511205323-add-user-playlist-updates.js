@@ -3,7 +3,7 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.sequelize.transaction(async (transaction) => {
-      await queryInterface.addColumn('UserEvents', 'playlistUpdates', {
+      await queryInterface.addColumn('UserEvents', 'content listUpdates', {
         type: Sequelize.JSONB,
         allowNull: true
       }, { transaction })
@@ -12,7 +12,7 @@ module.exports = {
 
   down: (queryInterface) => {
     return queryInterface.sequelize.transaction(async () => {
-      queryInterface.removeColumn('UserEvents', 'playlistUpdates')
+      queryInterface.removeColumn('UserEvents', 'content listUpdates')
     })
   }
 }

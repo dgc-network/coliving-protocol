@@ -1,5 +1,5 @@
 {
-  "contractName": "PlaylistFactory",
+  "contractName": "ContentListFactory",
   "abi": [
     {
       "constant": false,
@@ -101,7 +101,7 @@
           "type": "address"
         },
         {
-          "name": "_playlistStorageRegistryKey",
+          "name": "_content listStorageRegistryKey",
           "type": "bytes32"
         },
         {
@@ -126,12 +126,12 @@
       "inputs": [
         {
           "indexed": false,
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         },
         {
           "indexed": false,
-          "name": "_playlistOwnerId",
+          "name": "_content listOwnerId",
           "type": "uint256"
         },
         {
@@ -150,7 +150,7 @@
           "type": "uint256[]"
         }
       ],
-      "name": "PlaylistCreated",
+      "name": "ContentListCreated",
       "type": "event"
     },
     {
@@ -158,11 +158,11 @@
       "inputs": [
         {
           "indexed": false,
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         }
       ],
-      "name": "PlaylistDeleted",
+      "name": "ContentListDeleted",
       "type": "event"
     },
     {
@@ -170,7 +170,7 @@
       "inputs": [
         {
           "indexed": false,
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         },
         {
@@ -179,7 +179,7 @@
           "type": "uint256"
         }
       ],
-      "name": "PlaylistAgreementAdded",
+      "name": "ContentListAgreementAdded",
       "type": "event"
     },
     {
@@ -187,7 +187,7 @@
       "inputs": [
         {
           "indexed": false,
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         },
         {
@@ -201,7 +201,7 @@
           "type": "uint256"
         }
       ],
-      "name": "PlaylistAgreementDeleted",
+      "name": "ContentListAgreementDeleted",
       "type": "event"
     },
     {
@@ -209,7 +209,7 @@
       "inputs": [
         {
           "indexed": false,
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         },
         {
@@ -218,7 +218,7 @@
           "type": "uint256[]"
         }
       ],
-      "name": "PlaylistAgreementsOrdered",
+      "name": "ContentListAgreementsOrdered",
       "type": "event"
     },
     {
@@ -226,16 +226,16 @@
       "inputs": [
         {
           "indexed": false,
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         },
         {
           "indexed": false,
-          "name": "_updatedPlaylistName",
+          "name": "_updatedContentListName",
           "type": "string"
         }
       ],
-      "name": "PlaylistNameUpdated",
+      "name": "ContentListNameUpdated",
       "type": "event"
     },
     {
@@ -243,7 +243,7 @@
       "inputs": [
         {
           "indexed": false,
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         },
         {
@@ -252,7 +252,7 @@
           "type": "bool"
         }
       ],
-      "name": "PlaylistPrivacyUpdated",
+      "name": "ContentListPrivacyUpdated",
       "type": "event"
     },
     {
@@ -260,16 +260,16 @@
       "inputs": [
         {
           "indexed": false,
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         },
         {
           "indexed": false,
-          "name": "_playlistImageMultihashDigest",
+          "name": "_content listImageMultihashDigest",
           "type": "bytes32"
         }
       ],
-      "name": "PlaylistCoverPhotoUpdated",
+      "name": "ContentListCoverPhotoUpdated",
       "type": "event"
     },
     {
@@ -277,16 +277,16 @@
       "inputs": [
         {
           "indexed": false,
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         },
         {
           "indexed": false,
-          "name": "_playlistDescription",
+          "name": "_content listDescription",
           "type": "string"
         }
       ],
-      "name": "PlaylistDescriptionUpdated",
+      "name": "ContentListDescriptionUpdated",
       "type": "event"
     },
     {
@@ -294,16 +294,16 @@
       "inputs": [
         {
           "indexed": false,
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         },
         {
           "indexed": false,
-          "name": "_playlistUPC",
+          "name": "_content listUPC",
           "type": "bytes32"
         }
       ],
-      "name": "PlaylistUPCUpdated",
+      "name": "ContentListUPCUpdated",
       "type": "event"
     },
     {
@@ -327,11 +327,11 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_playlistOwnerId",
+          "name": "_content listOwnerId",
           "type": "uint256"
         },
         {
-          "name": "_playlistName",
+          "name": "_content listName",
           "type": "string"
         },
         {
@@ -355,10 +355,10 @@
           "type": "bytes"
         }
       ],
-      "name": "createPlaylist",
+      "name": "createContentList",
       "outputs": [
         {
-          "name": "newPlaylistId",
+          "name": "newContentListId",
           "type": "uint256"
         }
       ],
@@ -370,7 +370,7 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         },
         {
@@ -382,7 +382,7 @@
           "type": "bytes"
         }
       ],
-      "name": "deletePlaylist",
+      "name": "deleteContentList",
       "outputs": [
         {
           "name": "status",
@@ -397,7 +397,7 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         },
         {
@@ -413,7 +413,7 @@
           "type": "bytes"
         }
       ],
-      "name": "addPlaylistAgreement",
+      "name": "addContentListAgreement",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -423,7 +423,7 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         },
         {
@@ -443,7 +443,7 @@
           "type": "bytes"
         }
       ],
-      "name": "deletePlaylistAgreement",
+      "name": "deleteContentListAgreement",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -453,7 +453,7 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         },
         {
@@ -469,7 +469,7 @@
           "type": "bytes"
         }
       ],
-      "name": "orderPlaylistAgreements",
+      "name": "orderContentListAgreements",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -479,11 +479,11 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         },
         {
-          "name": "_updatedPlaylistName",
+          "name": "_updatedContentListName",
           "type": "string"
         },
         {
@@ -495,7 +495,7 @@
           "type": "bytes"
         }
       ],
-      "name": "updatePlaylistName",
+      "name": "updateContentListName",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -505,11 +505,11 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         },
         {
-          "name": "_updatedPlaylistPrivacy",
+          "name": "_updatedContentListPrivacy",
           "type": "bool"
         },
         {
@@ -521,7 +521,7 @@
           "type": "bytes"
         }
       ],
-      "name": "updatePlaylistPrivacy",
+      "name": "updateContentListPrivacy",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -531,11 +531,11 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         },
         {
-          "name": "_playlistImageMultihashDigest",
+          "name": "_content listImageMultihashDigest",
           "type": "bytes32"
         },
         {
@@ -547,7 +547,7 @@
           "type": "bytes"
         }
       ],
-      "name": "updatePlaylistCoverPhoto",
+      "name": "updateContentListCoverPhoto",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -557,11 +557,11 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         },
         {
-          "name": "_playlistDescription",
+          "name": "_content listDescription",
           "type": "string"
         },
         {
@@ -573,7 +573,7 @@
           "type": "bytes"
         }
       ],
-      "name": "updatePlaylistDescription",
+      "name": "updateContentListDescription",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -583,11 +583,11 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         },
         {
-          "name": "_updatedPlaylistUPC",
+          "name": "_updatedContentListUPC",
           "type": "bytes32"
         },
         {
@@ -599,7 +599,7 @@
           "type": "bytes"
         }
       ],
-      "name": "updatePlaylistUPC",
+      "name": "updateContentListUPC",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -609,11 +609,11 @@
       "constant": true,
       "inputs": [
         {
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         }
       ],
-      "name": "playlistExists",
+      "name": "content listExists",
       "outputs": [
         {
           "name": "exists",
@@ -628,7 +628,7 @@
       "constant": true,
       "inputs": [
         {
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         },
         {
@@ -636,7 +636,7 @@
           "type": "uint256"
         }
       ],
-      "name": "isAgreementInPlaylist",
+      "name": "isAgreementInContentList",
       "outputs": [
         {
           "name": "",
@@ -655,11 +655,11 @@
           "type": "address"
         },
         {
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         }
       ],
-      "name": "callerOwnsPlaylist",
+      "name": "callerOwnsContentList",
       "outputs": [],
       "payable": false,
       "stateMutability": "view",

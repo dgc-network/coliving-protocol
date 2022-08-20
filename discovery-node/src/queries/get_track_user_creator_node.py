@@ -8,12 +8,12 @@ from src.utils.db_session import get_db_read_replica
 logger = logging.getLogger(__name__)
 
 
-def get_agreement_user_creator_node(args):
+def get_agreement_user_content_node(args):
     db = get_db_read_replica()
     with db.scoped_session() as session:
-        # Get the agreement's owner creator node
+        # Get the agreement's owner content node
         user = (
-            session.query(User.creator_node_endpoint)
+            session.query(User.content_node_endpoint)
             .join(
                 Agreement,
                 and_(
@@ -30,5 +30,5 @@ def get_agreement_user_creator_node(args):
 
         if not user:
             return None
-        creator_nodes = user[0]
-        return creator_nodes
+        content_nodes = user[0]
+        return content_nodes

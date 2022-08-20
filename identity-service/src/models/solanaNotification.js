@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     entityId: {
-      // Can be agreement/album/playlist/user id
+      // Can be agreement/album/content list/user id
       type: DataTypes.INTEGER,
       allowNull: true
     },

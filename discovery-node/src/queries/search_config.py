@@ -7,7 +7,7 @@ import logging
 # but may exclude viable candidates.
 min_search_similarity = 0.4
 
-# Playlist and Agreement Search Weights
+# ContentList and Agreement Search Weights
 
 # Weight for query similarity against title
 search_title_weight = 12

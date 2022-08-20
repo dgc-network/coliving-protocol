@@ -40,8 +40,8 @@ async function getUsersBatch (discoveryProvider, offset, limit) {
       )
     ).data.data.map(user => ({
       ...user,
-      creator_node_endpoint: user.creator_node_endpoint
-        ? user.creator_node_endpoint.split(',').filter(endpoint => endpoint)
+      content_node_endpoint: user.content_node_endpoint
+        ? user.content_node_endpoint.split(',').filter(endpoint => endpoint)
         : []
     }))
   } catch (err) {
@@ -140,7 +140,7 @@ async function getCidsExist (creatorNode, cids, batchSize = 500) {
     }
 
     if (!cidsExistsSupported[creatorNode]) {
-      throw new Error('creator node out of date')
+      throw new Error('content node out of date')
     }
 
     const cidsExist = []
@@ -193,7 +193,7 @@ async function getImageCidsExist (creatorNode, cids, batchSize = 500) {
     }
 
     if (!imageCidsExistsSupported[creatorNode]) {
-      throw new Error('creator node out of date')
+      throw new Error('content node out of date')
     }
 
     const cidsExist = []
@@ -252,13 +252,13 @@ async function run () {
     )
 
     const creatorNodes = new Set()
-    const creatorNodeWalletMap = {} // map of creator node to wallets
-    const creatorNodeCidMap = {} // map of creator node to cids
-    const creatorNodeImageCidMap = {} // map of creator node to image cids
+    const creatorNodeWalletMap = {} // map of content node to wallets
+    const creatorNodeCidMap = {} // map of content node to cids
+    const creatorNodeImageCidMap = {} // map of content node to image cids
     const cids = {} // map of user id to cids
     usersBatch.forEach(
       ({
-        creator_node_endpoint,
+        content_node_endpoint,
         user_id,
         wallet,
         cover_photo_sizes,
@@ -270,7 +270,7 @@ async function run () {
           cids[user_id].push(metadata_multihash)
         }
 
-        creator_node_endpoint.forEach(endpoint => {
+        content_node_endpoint.forEach(endpoint => {
           creatorNodes.add(endpoint)
           creatorNodeWalletMap[endpoint] = creatorNodeWalletMap[endpoint] || []
           creatorNodeWalletMap[endpoint].push(wallet)
@@ -289,9 +289,9 @@ async function run () {
       }
     )
 
-    const clockValues = {} // creator node -> wallet -> clock value
-    const cidExists = {} // creator node -> cid -> exists
-    const imageCidExists = {} // creator node -> image cid -> exists
+    const clockValues = {} // content node -> wallet -> clock value
+    const cidExists = {} // content node -> cid -> exists
+    const imageCidExists = {} // content node -> image cid -> exists
     await Promise.all(
       Array.from(creatorNodes).map(async creatorNode => {
         const [
@@ -326,7 +326,7 @@ async function run () {
         user_id,
         handle,
         wallet,
-        creator_node_endpoint,
+        content_node_endpoint,
         cover_photo_sizes,
         profile_picture_sizes,
         metadata_multihash
@@ -338,7 +338,7 @@ async function run () {
         cover_photo: cover_photo_sizes,
         profile_picture: profile_picture_sizes,
         cids: cids[user_id],
-        creatorNodes: creator_node_endpoint.map((endpoint, idx) => ({
+        creatorNodes: content_node_endpoint.map((endpoint, idx) => ({
           endpoint,
           metadata_multihash: metadata_multihash
             ? cidExists[endpoint][metadata_multihash]

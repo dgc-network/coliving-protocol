@@ -298,7 +298,7 @@ def downgrade():
         SELECT
             distinct(u.user_id),
             COALESCE (user_agreement.agreement_count, 0) as agreement_count,
-            COALESCE (user_playlist.playlist_count, 0) as playlist_count,
+            COALESCE (user_content list.content list_count, 0) as content list_count,
             COALESCE (user_album.album_count, 0) as album_count,
             COALESCE (user_follower.follower_count, 0) as follower_count,
             COALESCE (user_followee.followee_count, 0) as following_count,
@@ -320,33 +320,33 @@ def downgrade():
                 t.stem_of is Null
             GROUP BY t.owner_id
         ) as user_agreement ON user_agreement.owner_id = u.user_id
-        -- join on subquery for playlists created
+        -- join on subquery for content lists created
         LEFT OUTER JOIN (
             SELECT
-                p.playlist_owner_id as owner_id,
-                count(p.playlist_owner_id) as playlist_count
+                p.content list_owner_id as owner_id,
+                count(p.content list_owner_id) as content list_count
             FROM
-                playlists p
+                content lists p
             WHERE
                 p.is_album is False AND
                 p.is_current is True AND
                 p.is_delete is False AND
                 p.is_private is False
-            GROUP BY p.playlist_owner_id
-        ) as user_playlist ON user_playlist.owner_id = u.user_id
+            GROUP BY p.content list_owner_id
+        ) as user_content list ON user_content list.owner_id = u.user_id
         -- join on subquery for albums created
         LEFT OUTER JOIN (
             SELECT
-                p.playlist_owner_id as owner_id,
-                count(p.playlist_owner_id) as album_count
+                p.content list_owner_id as owner_id,
+                count(p.content list_owner_id) as album_count
             FROM
-                playlists p
+                content lists p
             WHERE
                 p.is_album is True AND
                 p.is_current is True AND
                 p.is_delete is False AND
                 p.is_private is False
-            GROUP BY p.playlist_owner_id
+            GROUP BY p.content list_owner_id
         ) user_album ON user_album.owner_id = u.user_id
         -- join on subquery for followers
         LEFT OUTER JOIN (

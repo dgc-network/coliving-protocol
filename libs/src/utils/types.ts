@@ -32,7 +32,7 @@ export type UserMetadata = {
   album_count: number
   bio: string | null
   cover_photo: Nullable<CID>
-  creator_node_endpoint: Nullable<string>
+  content_node_endpoint: Nullable<string>
   current_user_followee_follow_count: number
   does_current_user_follow: boolean
   followee_count: number
@@ -47,7 +47,7 @@ export type UserMetadata = {
   // this should be removed
   is_creator: boolean
   name: string
-  playlist_count: number
+  content list_count: number
   profile_picture: Nullable<CID>
   repost_count: number
   agreement_count: number
@@ -132,16 +132,16 @@ export type CollectionMetadata = {
   is_album: boolean
   is_delete: boolean
   is_private: boolean
-  playlist_contents: {
+  content list_contents: {
     agreement_ids: Array<{ time: number; agreement: ID; uid?: UID }>
   }
   agreements?: AgreementMetadata[]
   agreement_count: number
-  playlist_id: ID
+  content list_id: ID
   cover_art: CID | null
   cover_art_sizes: Nullable<CID>
-  playlist_name: string
-  playlist_owner_id: ID
+  content list_name: string
+  content list_owner_id: ID
   repost_count: number
   save_count: number
   upc?: string | null

@@ -13,7 +13,7 @@ import {
   Timing,
   Logger
 } from '../../utils'
-import { CREATOR_NODE_SERVICE_NAME, DECISION_TREE_STATE } from './constants'
+import { CONTENT_NODE_SERVICE_NAME, DECISION_TREE_STATE } from './constants'
 import type { MonitoringCallbacks } from './CreatorNode'
 
 type Timeout = number | null
@@ -94,10 +94,10 @@ export class CreatorNodeSelection extends ServiceSelection {
     super({
       getServices: async () => {
         this.currentVersion = await ethContracts.getCurrentVersion(
-          CREATOR_NODE_SERVICE_NAME
+          CONTENT_NODE_SERVICE_NAME
         )
         const services = await this.ethContracts.getServiceProviderList(
-          CREATOR_NODE_SERVICE_NAME
+          CONTENT_NODE_SERVICE_NAME
         )
         return services.map((e) => {
           setSpIDForEndpoint(e.endpoint, e.spID)

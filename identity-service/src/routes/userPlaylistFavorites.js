@@ -3,14 +3,14 @@ const models = require('../models')
 const authMiddleware = require('../authMiddleware')
 
 module.exports = function (app) {
-  app.post('/user_playlist_favorites', authMiddleware, handleResponse(async (req, res, next) => {
+  app.post('/user_content list_favorites', authMiddleware, handleResponse(async (req, res, next) => {
     const { blockchainUserId: userId } = req.user
     const { favorites } = req.body
 
     if (!favorites) return errorResponseBadRequest('Please provide a string array of favorites')
 
     try {
-      await models.UserPlaylistFavorites.upsert({
+      await models.UserContentListFavorites.upsert({
         userId,
         favorites
       })
@@ -22,17 +22,17 @@ module.exports = function (app) {
     }
   }))
 
-  app.get('/user_playlist_favorites', authMiddleware, handleResponse(async (req, res, next) => {
+  app.get('/user_content list_favorites', authMiddleware, handleResponse(async (req, res, next) => {
     const { blockchainUserId: userId } = req.user
 
-    const userPlaylistFavorites = await models.UserPlaylistFavorites.findOne({
+    const userContentListFavorites = await models.UserContentListFavorites.findOne({
       where: {
         userId
       }
     })
 
     return successResponse({
-      userPlaylistFavorites
+      userContentListFavorites
     })
   }))
 }

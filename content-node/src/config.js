@@ -308,7 +308,7 @@ const config = convict({
   },
 
   spID: {
-    doc: 'ID of creator node in ethContracts ServiceProviderFactory',
+    doc: 'ID of content node in ethContracts ServiceProviderFactory',
     format: Number,
     env: 'spID',
     default: 0

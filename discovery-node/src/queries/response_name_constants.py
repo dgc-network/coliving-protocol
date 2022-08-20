@@ -1,15 +1,15 @@
-# agreement/playlist metadata
-repost_count = "repost_count"  # integer - total repost count of given agreement/playlist
-save_count = "save_count"  # integer - total save count of given agreement/playlist
+# agreement/content list metadata
+repost_count = "repost_count"  # integer - total repost count of given agreement/content list
+save_count = "save_count"  # integer - total save count of given agreement/content list
 play_count = "play_count"  # integer - total play count of given agreement
-total_play_count = "total_play_count"  # integer - total play count of a given playlist
-# boolean - has current user reposted given agreement/playlist
+total_play_count = "total_play_count"  # integer - total play count of a given content list
+# boolean - has current user reposted given agreement/content list
 has_current_user_reposted = "has_current_user_reposted"
-# boolean - has current user saved given agreement/playlist
+# boolean - has current user saved given agreement/content list
 has_current_user_saved = "has_current_user_saved"
-# array - followees of current user that have reposted given agreement/playlist
+# array - followees of current user that have reposted given agreement/content list
 followee_reposts = "followee_reposts"
-# array - followees of current user that have saved given agreement/playlist
+# array - followees of current user that have saved given agreement/content list
 followee_saves = "followee_saves"
 
 # remix agreement specific
@@ -23,8 +23,8 @@ has_remix_author_saved = "has_remix_author_saved"
 user_id = "user_id"  # integer - unique id of a user
 follower_count = "follower_count"  # integer - total follower count of given user
 followee_count = "followee_count"  # integer - total followee count of given user
-# integer - total count of playlists created by given user
-playlist_count = "playlist_count"
+# integer - total count of content lists created by given user
+content list_count = "content list_count"
 # integer - total count of albums created by given user (0 for all non-creators)
 album_count = "album_count"
 agreement_count = "agreement_count"  # integer - total count of agreements created by given user
@@ -65,13 +65,13 @@ activity_timestamp = "activity_timestamp"
 agreement_owner_follower_count = "agreement_owner_follower_count"
 agreement_owner_id = "agreement_owner_id"
 agreement_id = "agreement_id"
-playlist_id = "playlist_id"
+content list_id = "content list_id"
 owner_id = "owner_id"
 listen_counts = "listen_counts"
 
 agreements = "agreements"
 albums = "albums"
-playlists = "playlists"
+content lists = "content lists"
 user = "user"
 
 # notifications metadata
@@ -82,9 +82,9 @@ notification_type_repost = "Repost"
 notification_type_create = "Create"
 notification_type_remix_create = "RemixCreate"
 notification_type_remix_cosign = "RemixCosign"
-notification_type_playlist_update = "PlaylistUpdate"
+notification_type_content list_update = "ContentListUpdate"
 notification_type_tier_change = "TierChange"
-notification_type_add_agreement_to_playlist = "AddAgreementToPlaylist"
+notification_type_add_agreement_to_content list = "AddAgreementToContentList"
 
 notification_blocknumber = "blocknumber"
 notification_initiator = "initiator"
@@ -104,8 +104,8 @@ notification_followee_id = "followee_user_id"
 notification_repost_counts = "repost_counts"
 notification_favorite_counts = "favorite_counts"
 
-notification_playlist_update_timestamp = "playlist_update_timestamp"
-notification_playlist_update_users = "playlist_update_users"
+notification_content list_update_timestamp = "content list_update_timestamp"
+notification_content list_update_users = "content list_update_users"
 
 notification_tier = "tier"
 

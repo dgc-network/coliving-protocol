@@ -1,19 +1,19 @@
 ---
-id: "TrendingPlaylistsResponse"
-title: "Interface: TrendingPlaylistsResponse"
-sidebar_label: "TrendingPlaylistsResponse"
+id: "TrendingContentListsResponse"
+title: "Interface: TrendingContentListsResponse"
+sidebar_label: "TrendingContentListsResponse"
 sidebar_position: 0
 custom_edit_url: null
 ---
 
 **`export`**
 
-**`interface`** TrendingPlaylistsResponse
+**`interface`** TrendingContentListsResponse
 
 ## Properties
 
 ### data
 
- `Optional` **data**: [`Playlist`](Playlist.md)[]
+ `Optional` **data**: [`ContentList`](ContentList.md)[]
 
-**`memberof`** TrendingPlaylistsResponse
+**`memberof`** TrendingContentListsResponse

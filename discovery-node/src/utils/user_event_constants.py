@@ -10,7 +10,7 @@ user_event_types_lookup = {
     "update_profile_photo": "UpdateProfilePhoto",
     "update_cover_photo": "UpdateCoverPhoto",
     "update_is_verified": "UpdateIsVerified",
-    "update_creator_node_endpoint": "UpdateCreatorNodeEndpoint",
+    "update_content_node_endpoint": "UpdateCreatorNodeEndpoint",
 }
 
 # Array version of lookup with event names from the User contract
@@ -23,7 +23,7 @@ user_event_types_arr = [
     user_event_types_lookup["update_profile_photo"],
     user_event_types_lookup["update_cover_photo"],
     user_event_types_lookup["update_is_verified"],
-    user_event_types_lookup["update_creator_node_endpoint"],
+    user_event_types_lookup["update_content_node_endpoint"],
 ]
 
 user_replica_set_manager_event_types_lookup = {

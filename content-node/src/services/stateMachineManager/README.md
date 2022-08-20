@@ -23,7 +23,7 @@ Fixes state anomalies by executing the monitoring queue's requested jobs:
 2. `issue-replica-set-update` job: replaces one or more of the unhealthy nodes in the user's replica set with healthy nodes and enqueues jobs to sync data to these new nodes
 
 ### Manual Sync Queue
-Has a single one-off (not recurring) job that works same way as recurring sync jobs in the Reconciliation Queue, but this queue is like a fast lane that only takes syncs triggered by a write (user uploading agreement, playlist, etc...).
+Has a single one-off (not recurring) job that works same way as recurring sync jobs in the Reconciliation Queue, but this queue is like a fast lane that only takes syncs triggered by a write (user uploading agreement, content list, etc...).
 
 ### Update Content Node Endpoint -> SP ID Mapping Queue
 Has a single recurring job that runs infrequently to check if any Service Provider IDs have changed on-chain (this rarely happens -- only when a Service Provider joins or leaves the network). Builds a mapping of content_node_endpoint (string) -> service_provider_id (number) that other jobs use.

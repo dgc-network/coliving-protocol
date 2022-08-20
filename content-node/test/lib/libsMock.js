@@ -55,8 +55,8 @@ function getLibsMock() {
     User: {
       getUsers: sinon.mock().atLeast(1)
     },
-    Playlist: {
-      getPlaylists: sinon.mock().atLeast(1)
+    ContentList: {
+      getContentLists: sinon.mock().atLeast(1)
     },
     discoveryProvider: {
       discoveryProviderEndpoint: 'http://docker.for.mac.localhost:5000'
@@ -81,7 +81,7 @@ function getLibsMock() {
       switch (spID) {
         case 2:
           return {
-            endpoint: 'http://mock-cn2.coliving.co',
+            endpoint: 'http://mock-cn2.coliving.lol',
             owner: '0xBdb47ebFF0eAe1A7647D029450C05666e22864Fb',
             spID: '2',
             type: 'content-node',
@@ -91,7 +91,7 @@ function getLibsMock() {
 
         case 3:
           return {
-            endpoint: 'http://mock-cn3.coliving.co',
+            endpoint: 'http://mock-cn3.coliving.lol',
             owner: '0x1Fffaa556B42f4506cdb01D7BbE6a9bDbb0E5f36',
             spID: '3',
             type: 'content-node',
@@ -101,7 +101,7 @@ function getLibsMock() {
 
         case 1:
           return {
-            endpoint: 'http://mock-cn1.coliving.co',
+            endpoint: 'http://mock-cn1.coliving.lol',
             owner: '0x1eC723075E67a1a2B6969dC5CfF0C6793cb36D25',
             spID: '1',
             type: 'content-node',
@@ -123,8 +123,8 @@ function getLibsMock() {
     libsMock.ethContracts.getServiceProviderList
   libsMock.User.getUsers.returns([
     {
-      creator_node_endpoint:
-        'http://mock-cn1.coliving.co,http://mock-cn2.coliving.co,http://mock-cn3.coliving.co',
+      content_node_endpoint:
+        'http://mock-cn1.coliving.lol,http://mock-cn2.coliving.lol,http://mock-cn3.coliving.lol',
       blocknumber: 10,
       agreement_blocknumber: 10
     }

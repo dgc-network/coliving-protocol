@@ -141,7 +141,7 @@ describe('Test Send Notifications', function () {
     assert.deepStrictEqual(user2Notifs.length, 3)
     assert.deepStrictEqual(user2Notifs[0].notificationParams.message, 'user 1 reposted your agreement Title, Agreement id: 100')
     assert.deepStrictEqual(user2Notifs[1].notificationParams.message, 'user 2 reposted your agreement Title, Agreement id: 101')
-    assert.deepStrictEqual(user2Notifs[2].notificationParams.message, 'user 3 reposted your playlist PLaylist id: 100')
+    assert.deepStrictEqual(user2Notifs[2].notificationParams.message, 'user 3 reposted your content list PLaylist id: 100')
 
     const user7Notifs = pushNotifications.filter(n => n.userId === 7)
     assert.deepStrictEqual(user7Notifs.length, 1)
@@ -171,7 +171,7 @@ describe('Test Send Notifications', function () {
     assert.deepStrictEqual(user2Notifs.length, 3)
     assert.deepStrictEqual(user2Notifs[0].notificationParams.message, 'user 1 favorited your agreement Title, Agreement id: 100')
     assert.deepStrictEqual(user2Notifs[1].notificationParams.message, 'user 2 favorited your agreement Title, Agreement id: 101')
-    assert.deepStrictEqual(user2Notifs[2].notificationParams.message, 'user 3 favorited your playlist PLaylist id: 100')
+    assert.deepStrictEqual(user2Notifs[2].notificationParams.message, 'user 3 favorited your content list PLaylist id: 100')
 
     const user7Notifs = pushNotifications.filter(n => n.userId === 7)
     assert.deepStrictEqual(user7Notifs.length, 1)
@@ -213,7 +213,7 @@ describe('Test Send Notifications', function () {
   it('should have the correct create notifications', async function () {
     // User 1 creates agreements 1, 2, 3, 4
     // User 2 creates agreement 5
-    // User 1 creates playlist 1 w/ agreements 1
+    // User 1 creates content list 1 w/ agreements 1
     // User 1 creates album 2 w/ agreements 2
 
     // ======================================= Set subscribers for create notifications =======================================
@@ -249,7 +249,7 @@ describe('Test Send Notifications', function () {
     const user3Messages = [
       'user 1 released a new agreement Title, Agreement id: 3',
       'user 1 released a new agreement Title, Agreement id: 4',
-      'user 1 released a new playlist PLaylist id: 1',
+      'user 1 released a new content list PLaylist id: 1',
       'user 1 released a new album PLaylist id: 2'
     ]
 

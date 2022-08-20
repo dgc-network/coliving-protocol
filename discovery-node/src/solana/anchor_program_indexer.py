@@ -123,7 +123,7 @@ class AnchorProgramIndexer(SolanaProgramIndexer):
                 for agreement in existing_agreements:
                     db_models["agreements"][agreement.agreement_id] = [agreement]
 
-            # TODO: Find all other agreement/playlist/etc. models
+            # TODO: Find all other agreement/content list/etc. models
 
             self.process_transactions(
                 session, parsed_transactions, db_models, metadata_dictionary
@@ -357,12 +357,12 @@ class AnchorProgramIndexer(SolanaProgramIndexer):
             # TODO use existing user records instead of querying here
             user_replica_set.update(
                 dict(
-                    session.query(User.user_id, User.creator_node_endpoint)
+                    session.query(User.user_id, User.content_node_endpoint)
                     .filter(
                         User.is_current == True,
                         User.user_id.in_(cid_to_user_id.values()),
                     )
-                    .group_by(User.user_id, User.creator_node_endpoint)
+                    .group_by(User.user_id, User.content_node_endpoint)
                     .all()
                 )
             )
@@ -378,7 +378,7 @@ class AnchorProgramIndexer(SolanaProgramIndexer):
 
         for cid in metadata_dict:
             user_id = cid_to_user_id[cid]
-            metadata_dict[cid]["creator_node_endpoint"] = user_replica_set[user_id]
+            metadata_dict[cid]["content_node_endpoint"] = user_replica_set[user_id]
 
         # TODO maybe add some more validation
         # check if agreement metadata's owner and instruction's user ID matches up?

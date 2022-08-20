@@ -19,9 +19,9 @@ const {
 // Each type can be configured as needed
 const baseMilestoneList = [10, 25, 50, 100, 250, 500, 1000, 5000, 10000, 20000, 50000, 100000, 1000000]
 const followerMilestoneList = baseMilestoneList
-// Repost milestone list shared across agreements/albums/playlists
+// Repost milestone list shared across agreements/albums/content lists
 const repostMilestoneList = baseMilestoneList
-// Favorite milestone list shared across agreements/albums/playlists
+// Favorite milestone list shared across agreements/albums/content lists
 const favoriteMilestoneList = baseMilestoneList
 // Agreement listen milestone list
 const agreementListenMilestoneList = baseMilestoneList
@@ -87,7 +87,7 @@ async function updateFollowerMilestones (followerCounts, blocknumber, timestamp,
 async function updateRepostMilestones (repostCounts, owners, blocknumber, timestamp, colivingLibs, tx) {
   let agreementsReposted = Object.keys(repostCounts.agreements)
   let albumsReposted = Object.keys(repostCounts.albums)
-  let playlistsReposted = Object.keys(repostCounts.playlists)
+  let content listsReposted = Object.keys(repostCounts.content lists)
   const repostMilestoneNotificationType = notificationTypes.MilestoneRepost
 
   for (var repostedAgreementId of agreementsReposted) {
@@ -134,17 +134,17 @@ async function updateRepostMilestones (repostCounts, owners, blocknumber, timest
     }
   }
 
-  for (var repostedPlaylistId of playlistsReposted) {
-    let playlistOwnerId = owners.playlists[repostedPlaylistId]
-    let playlistRepostCount = repostCounts.playlists[repostedPlaylistId]
+  for (var repostedContentListId of content listsReposted) {
+    let content listOwnerId = owners.content lists[repostedContentListId]
+    let content listRepostCount = repostCounts.content lists[repostedContentListId]
     for (var k = repostMilestoneList.length; k >= 0; k--) {
       let milestoneValue = repostMilestoneList[k]
-      if (playlistRepostCount === milestoneValue) {
+      if (content listRepostCount === milestoneValue) {
         await _processMilestone(
           repostMilestoneNotificationType,
-          playlistOwnerId,
-          repostedPlaylistId,
-          actionEntityTypes.Playlist,
+          content listOwnerId,
+          repostedContentListId,
+          actionEntityTypes.ContentList,
           milestoneValue,
           blocknumber,
           timestamp,
@@ -165,7 +165,7 @@ async function updateRepostMilestones (repostCounts, owners, blocknumber, timest
 async function updateFavoriteMilestones (favoriteCounts, owners, blocknumber, timestamp, colivingLibs, tx) {
   let agreementsFavorited = Object.keys(favoriteCounts.agreements)
   let albumsFavorited = Object.keys(favoriteCounts.albums)
-  let playlistsFavorited = Object.keys(favoriteCounts.playlists)
+  let content listsFavorited = Object.keys(favoriteCounts.content lists)
   const favoriteMilestoneNotificationType = notificationTypes.MilestoneFavorite
 
   for (var favoritedAgreementId of agreementsFavorited) {
@@ -212,17 +212,17 @@ async function updateFavoriteMilestones (favoriteCounts, owners, blocknumber, ti
     }
   }
 
-  for (var favoritedPlaylistId of playlistsFavorited) {
-    let playlistOwnerId = owners.playlists[favoritedPlaylistId]
-    let playlistFavoriteCount = favoriteCounts.playlists[favoritedPlaylistId]
+  for (var favoritedContentListId of content listsFavorited) {
+    let content listOwnerId = owners.content lists[favoritedContentListId]
+    let content listFavoriteCount = favoriteCounts.content lists[favoritedContentListId]
     for (var k = favoriteMilestoneList.length; k >= 0; k--) {
       let milestoneValue = favoriteMilestoneList[k]
-      if (playlistFavoriteCount === milestoneValue) {
+      if (content listFavoriteCount === milestoneValue) {
         await _processMilestone(
           favoriteMilestoneNotificationType,
-          playlistOwnerId,
-          favoritedPlaylistId,
-          actionEntityTypes.Playlist,
+          content listOwnerId,
+          favoritedContentListId,
+          actionEntityTypes.ContentList,
           milestoneValue,
           blocknumber,
           timestamp,

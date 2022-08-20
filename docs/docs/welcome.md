@@ -12,7 +12,7 @@ Welcome to the Coliving technical documentation!
 
 ## What is Coliving?
 
-[Coliving](https://coliving.co) is a digital streaming service that connects fans directly with artists and exclusive new music.
+[Coliving](https://coliving.lol) is a digital streaming service that connects fans directly with artists and exclusive new music.
 
 It does this by being fully decentralized: Coliving is owned and run by a vibrant, open-source community of artists, fans, and developers all around the world. Coliving gives artists the power to share never-before-heard music and monetize streams directly. Developers can build their own apps on top of Coliving, giving them access to one of the most unique live catalogs in existence.
 
@@ -32,4 +32,4 @@ Coliving is the most direct to consumer alternative to existing digital streamin
 
 This documentation site guides you through how to familiarize yourself with Coliving concepts, how to participate in the protocol & community from a technical perspective, and how to interact with and use the $LIVE token.
 
-If you've found yourself here and are confused, check out the reference music player implementation at [coliving.co](https://coliving.co) and join our [Discord](https://discord.com/invite/coliving).
+If you've found yourself here and are confused, check out the reference music player implementation at [coliving.lol](https://coliving.lol) and join our [Discord](https://discord.com/invite/coliving).

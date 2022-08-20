@@ -1,13 +1,13 @@
 ---
-id: "full.GetUsersFromPlaylistRepostsRequest"
-title: "Interface: GetUsersFromPlaylistRepostsRequest"
-sidebar_label: "GetUsersFromPlaylistRepostsRequest"
+id: "full.GetUsersFromContentListRepostsRequest"
+title: "Interface: GetUsersFromContentListRepostsRequest"
+sidebar_label: "GetUsersFromContentListRepostsRequest"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).GetUsersFromPlaylistRepostsRequest
+[full](../namespaces/full.md).GetUsersFromContentListRepostsRequest
 
 ## Properties
 
@@ -27,11 +27,11 @@ The number of items to skip. Useful for pagination (page number * limit)
 
 ___
 
-### playlistId
+### content listId
 
- **playlistId**: `string`
+ **content listId**: `string`
 
-A Playlist ID
+A ContentList ID
 
 ___
 

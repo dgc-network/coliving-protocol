@@ -107,17 +107,17 @@ def upgrade():
     CREATE INDEX agreements_user_handle_idx ON agreement_lexeme_dict(handle);
     CREATE UNIQUE INDEX agreement_row_number_idx ON agreement_lexeme_dict(row_number);
 
-    DROP MATERIALIZED VIEW IF EXISTS playlist_lexeme_dict;
+    DROP MATERIALIZED VIEW IF EXISTS content list_lexeme_dict;
     DROP MATERIALIZED VIEW IF EXISTS album_lexeme_dict;
-    DROP INDEX IF EXISTS playlist_words_idx;
+    DROP INDEX IF EXISTS content list_words_idx;
     DROP INDEX IF EXISTS album_words_idx;
 
-    CREATE MATERIALIZED VIEW playlist_lexeme_dict as
+    CREATE MATERIALIZED VIEW content list_lexeme_dict as
     SELECT row_number() OVER (PARTITION BY true), * FROM (
         SELECT
-            p.playlist_id,
-            lower(p.playlist_name) as playlist_name,
-            p.playlist_owner_id as owner_id,
+            p.content list_id,
+            lower(p.content list_name) as content list_name,
+            p.content list_owner_id as owner_id,
             lower(u.handle) as handle,
             lower(u.name) as user_name,
             a.repost_count as repost_count,
@@ -125,14 +125,14 @@ def upgrade():
                 tsvector_to_array(
                     to_tsvector(
                         'coliving_ts_config',
-                        replace(COALESCE(p.playlist_name, ''), '&', 'and')
+                        replace(COALESCE(p.content list_name, ''), '&', 'and')
                     )
-                ) || lower(COALESCE(p.playlist_name, ''))
+                ) || lower(COALESCE(p.content list_name, ''))
             ) as word
         FROM
-                playlists p
-        INNER JOIN users u ON p.playlist_owner_id = u.user_id
-        INNER JOIN aggregate_playlist a on a.playlist_id = p.playlist_id
+                content lists p
+        INNER JOIN users u ON p.content list_owner_id = u.user_id
+        INNER JOIN aggregate_content list a on a.content list_id = p.content list_id
         WHERE
                 p.is_current = true and p.is_album = false and p.is_private = false and p.is_delete = false
                 and u.is_current = true and 
@@ -146,15 +146,15 @@ def upgrade():
                     on lower(u.name) = sq.handle and u.user_id != sq.user_id
                     where u.is_current = true
                 )
-        GROUP BY p.playlist_id, p.playlist_name, p.playlist_owner_id, u.handle, u.name, a.repost_count
+        GROUP BY p.content list_id, p.content list_name, p.content list_owner_id, u.handle, u.name, a.repost_count
     ) AS words;
 
     CREATE MATERIALIZED VIEW album_lexeme_dict as
     SELECT row_number() OVER (PARTITION BY true), * FROM (
         SELECT
-            p.playlist_id,
-            lower(p.playlist_name) as playlist_name,
-            p.playlist_owner_id as owner_id,
+            p.content list_id,
+            lower(p.content list_name) as content list_name,
+            p.content list_owner_id as owner_id,
             lower(u.handle) as handle,
             lower(u.name) as user_name,
             a.repost_count as repost_count,
@@ -162,14 +162,14 @@ def upgrade():
                 tsvector_to_array(
                     to_tsvector(
                         'coliving_ts_config',
-                        replace(COALESCE(p.playlist_name, ''), '&', 'and')
+                        replace(COALESCE(p.content list_name, ''), '&', 'and')
                     )
-                ) || lower(COALESCE(p.playlist_name, ''))
+                ) || lower(COALESCE(p.content list_name, ''))
             ) as word
         FROM
-                playlists p
-        INNER JOIN users u ON p.playlist_owner_id = u.user_id
-        INNER JOIN aggregate_playlist a on a.playlist_id = p.playlist_id
+                content lists p
+        INNER JOIN users u ON p.content list_owner_id = u.user_id
+        INNER JOIN aggregate_content list a on a.content list_id = p.content list_id
         WHERE
                 p.is_current = true and p.is_album = true and p.is_private = false and p.is_delete = false
                 and u.is_current = true and
@@ -183,13 +183,13 @@ def upgrade():
                     on lower(u.name) = sq.handle and u.user_id != sq.user_id
                     where u.is_current = true
                 )
-        GROUP BY p.playlist_id, p.playlist_name, p.playlist_owner_id, u.handle, u.name, a.repost_count
+        GROUP BY p.content list_id, p.content list_name, p.content list_owner_id, u.handle, u.name, a.repost_count
     ) AS words;
 
-    CREATE INDEX playlist_words_idx ON playlist_lexeme_dict USING gin(word gin_trgm_ops);
-    CREATE INDEX playlist_user_name_idx ON playlist_lexeme_dict USING gin(user_name gin_trgm_ops);
-    CREATE INDEX playlist_user_handle_idx ON playlist_lexeme_dict(handle);
-    CREATE UNIQUE INDEX playlist_row_number_idx ON playlist_lexeme_dict(row_number);
+    CREATE INDEX content list_words_idx ON content list_lexeme_dict USING gin(word gin_trgm_ops);
+    CREATE INDEX content list_user_name_idx ON content list_lexeme_dict USING gin(user_name gin_trgm_ops);
+    CREATE INDEX content list_user_handle_idx ON content list_lexeme_dict(handle);
+    CREATE UNIQUE INDEX content list_row_number_idx ON content list_lexeme_dict(row_number);
 
     CREATE INDEX album_words_idx ON album_lexeme_dict USING gin(word gin_trgm_ops);
     CREATE INDEX album_user_name_idx ON album_lexeme_dict USING gin(user_name gin_trgm_ops);

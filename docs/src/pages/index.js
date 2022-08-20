@@ -69,7 +69,7 @@ const Main = () => {
                   <div className="card__body">
                     <p>
                       <Translate description="rest-api">
-                        Query, stream, and search Artists, Agreements, and Playlists
+                        Query, stream, and search Artists, Agreements, and ContentLists
                         from your own app, game, or project
                       </Translate>
                     </p>

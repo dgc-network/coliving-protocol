@@ -116,9 +116,9 @@ ___
 
 ___
 
-### playlist\_count
+### content list\_count
 
- **playlist\_count**: `number`
+ **content list\_count**: `number`
 
 **`memberof`** User
 

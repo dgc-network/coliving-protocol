@@ -117,7 +117,7 @@ describe('test apiSigning', function () {
         resp.delegateOwnerWalletFromSPFactory ===
           '0x1ec723075e67a1a2b6969dc5cff0c6793cb36d25'
       )
-      assert.ok(resp.nodeEndpointFromSPFactory === 'http://mock-cn1.coliving.co')
+      assert.ok(resp.nodeEndpointFromSPFactory === 'http://mock-cn1.coliving.lol')
     } catch (e) {
       console.log(e)
       assert.fail('verifyRequesterIsValidSP should not have failed')

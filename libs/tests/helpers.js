@@ -22,7 +22,7 @@ const constants = {
   '0x0': '0x0000000000000000000000000000000000000000000000000000000000000000',
   creatorNodeURL1: 'http://localhost:8000/',
   creatorNodeURL2: 'http://localhost:8001/',
-  signatureData: 'Click sign to authenticate with creator node:1543885912',
+  signatureData: 'Click sign to authenticate with content node:1543885912',
   signatureAddress: '0x7d267e2f8dc64c53267c56dab55bf7050566baec',
   signature: '0xbb3ffe5f32950ace5c0a8ecb9c43ab836b7b7146a56e2519ac1c662e9b00bdcd7de9a3f3265206c54f0b8094f8ac8832d32d5852492c1aa3e9493e28ae3a31b91b',
   wallet: '0xdfdbe819b5710b750b3a00eb2fae8a59b85c66af',

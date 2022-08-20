@@ -7,8 +7,8 @@ from sqlalchemy import Integer, and_, bindparam, cast, desc, func, text
 from sqlalchemy.orm.session import Session
 from sqlalchemy.sql.expression import or_
 from src import exceptions
-from src.models.playlists.aggregate_playlist import AggregatePlaylist
-from src.models.playlists.playlist import Playlist
+from src.models.content lists.aggregate_content list import AggregateContentList
+from src.models.content lists.content list import ContentList
 from src.models.social.aggregate_plays import AggregatePlay
 from src.models.social.follow import Follow
 from src.models.social.repost import Repost, RepostType
@@ -106,7 +106,7 @@ def parse_sort_param(base_query, model, whitelist_sort_params):
 
 
 # given list of user ids and corresponding users, populates each user object with:
-#   agreement_count, playlist_count, album_count, follower_count, followee_count, repost_count, supporter_count, supporting_count
+#   agreement_count, content list_count, album_count, follower_count, followee_count, repost_count, supporter_count, supporting_count
 #   if current_user_id available, populates does_current_user_follow, followee_follows
 def populate_user_metadata(
     session, user_ids, users, current_user_id, with_agreement_save_count=False
@@ -115,7 +115,7 @@ def populate_user_metadata(
         session.query(
             AggregateUser.user_id,
             AggregateUser.agreement_count,
-            AggregateUser.playlist_count,
+            AggregateUser.content list_count,
             AggregateUser.album_count,
             AggregateUser.follower_count,
             AggregateUser.following_count,
@@ -134,11 +134,11 @@ def populate_user_metadata(
     ).filter(UserBankAccount.ethereum_address.in_(user["wallet"] for user in users))
     user_banks_dict = dict(user_banks)
 
-    # build dict of user id --> agreement/playlist/album/follower/followee/repost/agreement save/supporting/supporter counts
+    # build dict of user id --> agreement/content list/album/follower/followee/repost/agreement save/supporting/supporter counts
     count_dict = {
         user_id: {
             response_name_constants.agreement_count: agreement_count,
-            response_name_constants.playlist_count: playlist_count,
+            response_name_constants.content list_count: content list_count,
             response_name_constants.album_count: album_count,
             response_name_constants.follower_count: follower_count,
             response_name_constants.followee_count: following_count,
@@ -150,7 +150,7 @@ def populate_user_metadata(
         for (
             user_id,
             agreement_count,
-            playlist_count,
+            content list_count,
             album_count,
             follower_count,
             following_count,
@@ -237,8 +237,8 @@ def populate_user_metadata(
         user[response_name_constants.agreement_count] = count_dict.get(user_id, {}).get(
             response_name_constants.agreement_count, 0
         )
-        user[response_name_constants.playlist_count] = count_dict.get(user_id, {}).get(
-            response_name_constants.playlist_count, 0
+        user[response_name_constants.content list_count] = count_dict.get(user_id, {}).get(
+            response_name_constants.content list_count, 0
         )
         user[response_name_constants.album_count] = count_dict.get(user_id, {}).get(
             response_name_constants.album_count, 0
@@ -589,70 +589,70 @@ def get_agreement_remix_metadata(session, agreements, current_user_id):
     return remixes
 
 
-# given list of playlist ids and corresponding playlists, populates each playlist object with:
+# given list of content list ids and corresponding content lists, populates each content list object with:
 #   repost_count, save_count
 #   if current_user_id available, populates followee_reposts, has_current_user_reposted, has_current_user_saved
 
 
-def populate_playlist_metadata(
-    session, playlist_ids, playlists, repost_types, save_types, current_user_id
+def populate_content list_metadata(
+    session, content list_ids, content lists, repost_types, save_types, current_user_id
 ):
-    # build dict of playlist id --> repost & save count
+    # build dict of content list id --> repost & save count
     counts = (
         session.query(
-            AggregatePlaylist.playlist_id,
-            AggregatePlaylist.repost_count,
-            AggregatePlaylist.save_count,
+            AggregateContentList.content list_id,
+            AggregateContentList.repost_count,
+            AggregateContentList.save_count,
         )
         .filter(
-            AggregatePlaylist.playlist_id.in_(playlist_ids),
+            AggregateContentList.content list_id.in_(content list_ids),
         )
         .all()
     )
 
     count_dict = {
-        playlist_id: {
+        content list_id: {
             response_name_constants.repost_count: repost_count,
             response_name_constants.save_count: save_count,
         }
-        for (playlist_id, repost_count, save_count) in counts
+        for (content list_id, repost_count, save_count) in counts
     }
 
-    user_reposted_playlist_dict = {}
-    user_saved_playlist_dict = {}
-    followee_playlist_repost_dict = {}
-    followee_playlist_save_dict = {}
+    user_reposted_content list_dict = {}
+    user_saved_content list_dict = {}
+    followee_content list_repost_dict = {}
+    followee_content list_save_dict = {}
     if current_user_id:
-        # has current user reposted any of requested playlist ids
-        current_user_playlist_reposts = (
+        # has current user reposted any of requested content list ids
+        current_user_content list_reposts = (
             session.query(Repost.repost_item_id)
             .filter(
                 Repost.is_current == True,
                 Repost.is_delete == False,
-                Repost.repost_item_id.in_(playlist_ids),
+                Repost.repost_item_id.in_(content list_ids),
                 Repost.repost_type.in_(repost_types),
                 Repost.user_id == current_user_id,
             )
             .all()
         )
-        user_reposted_playlist_dict = {
-            r[0]: True for r in current_user_playlist_reposts
+        user_reposted_content list_dict = {
+            r[0]: True for r in current_user_content list_reposts
         }
 
-        # has current user saved any of requested playlist ids
-        user_saved_playlists_query = (
+        # has current user saved any of requested content list ids
+        user_saved_content lists_query = (
             session.query(Save.save_item_id)
             .filter(
                 Save.is_current == True,
                 Save.is_delete == False,
                 Save.user_id == current_user_id,
-                Save.save_item_id.in_(playlist_ids),
+                Save.save_item_id.in_(content list_ids),
                 Save.save_type.in_(save_types),
             )
             .all()
         )
-        user_saved_playlist_dict = {
-            save[0]: True for save in user_saved_playlists_query
+        user_saved_content list_dict = {
+            save[0]: True for save in user_saved_content lists_query
         }
 
         # Get current user's followees.
@@ -666,83 +666,83 @@ def populate_playlist_metadata(
             .all()
         )
 
-        # Build dict of playlist id --> followee reposts.
-        followee_playlist_reposts = (
+        # Build dict of content list id --> followee reposts.
+        followee_content list_reposts = (
             session.query(Repost)
             .filter(
                 Repost.is_current == True,
                 Repost.is_delete == False,
-                Repost.repost_item_id.in_(playlist_ids),
+                Repost.repost_item_id.in_(content list_ids),
                 Repost.repost_type.in_(repost_types),
                 Repost.user_id.in_(followee_user_ids),
             )
             .all()
         )
-        followee_playlist_reposts = helpers.query_result_to_list(
-            followee_playlist_reposts
+        followee_content list_reposts = helpers.query_result_to_list(
+            followee_content list_reposts
         )
-        for playlist_repost in followee_playlist_reposts:
-            if playlist_repost["repost_item_id"] not in followee_playlist_repost_dict:
-                followee_playlist_repost_dict[playlist_repost["repost_item_id"]] = []
-            followee_playlist_repost_dict[playlist_repost["repost_item_id"]].append(
-                playlist_repost
+        for content list_repost in followee_content list_reposts:
+            if content list_repost["repost_item_id"] not in followee_content list_repost_dict:
+                followee_content list_repost_dict[content list_repost["repost_item_id"]] = []
+            followee_content list_repost_dict[content list_repost["repost_item_id"]].append(
+                content list_repost
             )
 
-        # Build dict of playlist id --> followee saves.
-        followee_playlist_saves = (
+        # Build dict of content list id --> followee saves.
+        followee_content list_saves = (
             session.query(Save)
             .filter(
                 Save.is_current == True,
                 Save.is_delete == False,
-                Save.save_item_id.in_(playlist_ids),
+                Save.save_item_id.in_(content list_ids),
                 Save.save_type.in_(save_types),
                 Save.user_id.in_(followee_user_ids),
             )
             .all()
         )
-        followee_playlist_saves = helpers.query_result_to_list(followee_playlist_saves)
-        for playlist_save in followee_playlist_saves:
-            if playlist_save["save_item_id"] not in followee_playlist_save_dict:
-                followee_playlist_save_dict[playlist_save["save_item_id"]] = []
-            followee_playlist_save_dict[playlist_save["save_item_id"]].append(
-                playlist_save
+        followee_content list_saves = helpers.query_result_to_list(followee_content list_saves)
+        for content list_save in followee_content list_saves:
+            if content list_save["save_item_id"] not in followee_content list_save_dict:
+                followee_content list_save_dict[content list_save["save_item_id"]] = []
+            followee_content list_save_dict[content list_save["save_item_id"]].append(
+                content list_save
             )
 
     agreement_ids = []
-    for playlist in playlists:
-        for agreement in playlist["playlist_contents"]["agreement_ids"]:
+    for content list in content lists:
+        for agreement in content list["content list_contents"]["agreement_ids"]:
             agreement_ids.append(agreement["agreement"])
     play_count_dict = get_agreement_play_count_dict(session, agreement_ids)
 
-    for playlist in playlists:
-        playlist_id = playlist["playlist_id"]
-        playlist[response_name_constants.repost_count] = count_dict.get(
-            playlist_id, {}
+    for content list in content lists:
+        content list_id = content list["content list_id"]
+        content list[response_name_constants.repost_count] = count_dict.get(
+            content list_id, {}
         ).get(response_name_constants.repost_count, 0)
-        playlist[response_name_constants.save_count] = count_dict.get(
-            playlist_id, {}
+        content list[response_name_constants.save_count] = count_dict.get(
+            content list_id, {}
         ).get(response_name_constants.save_count, 0)
 
         total_play_count = 0
-        for agreement in playlist["playlist_contents"]["agreement_ids"]:
+        for agreement in content list["content list_contents"]["agreement_ids"]:
             total_play_count += play_count_dict.get(agreement["agreement"], 0)
-        playlist[response_name_constants.total_play_count] = total_play_count
+        content list[response_name_constants.total_play_count] = total_play_count
 
         # current user specific
-        playlist[
+        content list[
             response_name_constants.followee_reposts
-        ] = followee_playlist_repost_dict.get(playlist_id, [])
-        playlist[
+        ] = followee_content list_repost_dict.get(content list_id, [])
+        content list[
             response_name_constants.followee_saves
-        ] = followee_playlist_save_dict.get(playlist_id, [])
-        playlist[
+        ] = followee_content list_save_dict.get(content list_id, [])
+        content list[
             response_name_constants.has_current_user_reposted
-        ] = user_reposted_playlist_dict.get(playlist_id, False)
-        playlist[
+        ] = user_reposted_content list_dict.get(content list_id, False)
+        content list[
             response_name_constants.has_current_user_saved
-        ] = user_saved_playlist_dict.get(playlist_id, False)
+        ] = user_saved_content list_dict.get(content list_id, False)
 
-    return playlists
+    return content lists
 
 
 def get_repost_counts_query(
@@ -827,13 +827,13 @@ def get_karma(
     ids: Tuple[int],
     strategy: TrendingVersion,
     time: str = None,
-    is_playlist: bool = False,
+    is_content list: bool = False,
     xf: bool = False,
 ):
-    """Gets the total karma for provided ids (agreement or playlist)"""
+    """Gets the total karma for provided ids (agreement or content list)"""
 
-    repost_type = RepostType.playlist if is_playlist else RepostType.agreement
-    save_type = SaveType.playlist if is_playlist else SaveType.agreement
+    repost_type = RepostType.content list if is_content list else RepostType.agreement
+    save_type = SaveType.content list if is_content list else SaveType.agreement
 
     reposters = session.query(
         Repost.user_id.label("user_id"), Repost.repost_item_id.label("item_id")
@@ -1067,14 +1067,14 @@ def get_users_by_id(session, user_ids, current_user_id=None, use_request_context
     return user_map
 
 
-# Given an array of agreements and/or playlists, return an array of unique user ids
+# Given an array of agreements and/or content lists, return an array of unique user ids
 
 
 def get_users_ids(results):
     user_ids = []
     for result in results:
-        if "playlist_owner_id" in result:
-            user_ids.append(int(result["playlist_owner_id"]))
+        if "content list_owner_id" in result:
+            user_ids.append(int(result["content list_owner_id"]))
         elif "owner_id" in result:
             user_ids.append(int(result["owner_id"]))
     # Remove duplicate user ids
@@ -1082,9 +1082,9 @@ def get_users_ids(results):
     return user_ids
 
 
-def create_followee_playlists_subquery(session, current_user_id):
+def create_followee_content lists_subquery(session, current_user_id):
     """
-    Creates a subquery that returns playlists created by users that
+    Creates a subquery that returns content lists created by users that
     `current_user_id` follows.
 
     Args:
@@ -1101,16 +1101,16 @@ def create_followee_playlists_subquery(session, current_user_id):
         )
         .subquery()
     )
-    followee_playlists_subquery = (
-        session.query(Playlist)
-        .select_from(Playlist)
+    followee_content lists_subquery = (
+        session.query(ContentList)
+        .select_from(ContentList)
         .join(
             followee_user_ids_subquery,
-            Playlist.playlist_owner_id == followee_user_ids_subquery.c.followee_user_id,
+            ContentList.content list_owner_id == followee_user_ids_subquery.c.followee_user_id,
         )
         .subquery()
     )
-    return followee_playlists_subquery
+    return followee_content lists_subquery
 
 
 def seconds_ago(timestamp):
@@ -1140,14 +1140,14 @@ def decayed_score(score, created_at, peak=1000, nominal_timestamp=60 * 24 * 60 *
     return score * decay_value
 
 
-def filter_to_playlist_mood(session, mood, query, correlation):
+def filter_to_content list_mood(session, mood, query, correlation):
     """
-    Takes a session that is querying for playlists and filters the playlists
+    Takes a session that is querying for content lists and filters the content lists
     to only those with the dominant mood provided.
     Dominant mood means that *most* of its agreements are of the specified mood.
 
     This method takes a query inserts a filter clause on it and returns the same query.
-    We filter down those playlists to dominant mood by running an "exists" clause
+    We filter down those content lists to dominant mood by running an "exists" clause
     on a dominant mood subquery.
 
     Args:
@@ -1162,7 +1162,7 @@ def filter_to_playlist_mood(session, mood, query, correlation):
         return query
 
     agreements_subquery = session.query(
-        func.jsonb_array_elements(correlation.c.playlist_contents["agreement_ids"])
+        func.jsonb_array_elements(correlation.c.content list_contents["agreement_ids"])
         .op("->>")("agreement")
         .cast(Integer)
     )
@@ -1170,10 +1170,10 @@ def filter_to_playlist_mood(session, mood, query, correlation):
     if correlation is not None:
         # If this query runs against a nested subquery, it might need to
         # be manually correlated to that subquery so it doesn't pull in all
-        # playlists here.
+        # content lists here.
         agreements_subquery = agreements_subquery.correlate(correlation)
 
-    # Query for the most common mood in a playlist
+    # Query for the most common mood in a content list
     dominant_mood_subquery = (
         session.query(
             Agreement.mood.label("mood"),
@@ -1191,13 +1191,13 @@ def filter_to_playlist_mood(session, mood, query, correlation):
         .subquery()
     )
 
-    # Match the provided mood against the dominant mood for playlists
+    # Match the provided mood against the dominant mood for content lists
     mood_exists_query = session.query(dominant_mood_subquery.c.mood).filter(
         func.lower(dominant_mood_subquery.c.mood) == func.lower(mood)
     )
 
-    # Filter playlist query to those that have the most common mood checking that
-    # there `exists` such a playlist with the dominant mood
+    # Filter content list query to those that have the most common mood checking that
+    # there `exists` such a content list with the dominant mood
     return query.filter(mood_exists_query.exists())
 
 

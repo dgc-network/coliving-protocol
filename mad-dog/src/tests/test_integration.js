@@ -11,10 +11,10 @@ const {
   AgreementUploadResponse,
   AgreementRepostRequest,
   AgreementRepostResponse,
-  AddPlaylistAgreementRequest,
-  AddPlaylistAgreementResponse,
-  CreatePlaylistRequest,
-  CreatePlaylistResponse
+  AddContentListAgreementRequest,
+  AddContentListAgreementResponse,
+  CreateContentListRequest,
+  CreateContentListResponse
 } = require('../operations.js')
 const { logger } = require('../logger.js')
 const MadDog = require('../madDog.js')
@@ -27,8 +27,8 @@ const {
 const {
   getContentNodeEndpoints,
   getRepostersForAgreement,
-  createPlaylist,
-  getPlaylists,
+  createContentList,
+  getContentLists,
   RandomUtils,
   uploadAgreement,
   repostAgreement,
@@ -40,7 +40,7 @@ const {
   setCreatorNodeEndpoint,
   updateCreator,
   getURSMContentNodes,
-  addPlaylistAgreement
+  addContentListAgreement
 } = ServiceCommands
 const {
   getRandomAgreementMetadata,
@@ -59,8 +59,8 @@ const THIRD_USER_PIC_PATH = path.resolve('assets/images/sid.png')
 const repostedAgreements = []
 const uploadedAgreements = []
 const userRepostedMap = {}
-const createdPlaylists = []
-const addedPlaylistAgreements = []
+const createdContentLists = []
+const addedContentListAgreements = []
 
 /**
  * Randomly uploads agreements over the duration of the test,
@@ -230,68 +230,68 @@ module.exports = coreIntegration = async ({
         }
         break
       }
-      case OPERATION_TYPE.CREATE_PLAYLIST: {
+      case OPERATION_TYPE.CREATE_CONTENT_LIST: {
         try {
-          // create playlist
-          const randomPlaylistName = genRandomString(8)
-          const playlist = await executeOne(walletIndex, l =>
-            createPlaylist(l, userId, randomPlaylistName, false, false, [])
+          // create content list
+          const randomContentListName = genRandomString(8)
+          const content list = await executeOne(walletIndex, l =>
+            createContentList(l, userId, randomContentListName, false, false, [])
           )
-          logger.info(`User [${userId}] created playlist [${playlist.playlistId}].`)
+          logger.info(`User [${userId}] created content list [${content list.content listId}].`)
           await executeOne(walletIndex, l => l.waitForLatestBlock())
           await retry(async () => {
-            // verify playlist
-            const verifiedPlaylist = await executeOne(walletIndex, l =>
-              getPlaylists(l, 100, 0, [playlist.playlistId], userId)
+            // verify content list
+            const verifiedContentList = await executeOne(walletIndex, l =>
+              getContentLists(l, 100, 0, [content list.content listId], userId)
             )
-            if (verifiedPlaylist[0].playlist_id !== playlist.playlistId) {
-              throw new Error(`Error verifying playlist [${playlist.playlistId}]`)
+            if (verifiedContentList[0].content list_id !== content list.content listId) {
+              throw new Error(`Error verifying content list [${content list.content listId}]`)
             }
           }, {})
-          res = new CreatePlaylistResponse(walletIndex, playlist.playlistId, userId)
+          res = new CreateContentListResponse(walletIndex, content list.content listId, userId)
         } catch (e) {
-          logger.error(`Caught error [${e.message}] creating playlist.\n${e.stack}`)
-          res = new CreatePlaylistResponse(walletIndex, null, userId)
+          logger.error(`Caught error [${e.message}] creating content list.\n${e.stack}`)
+          res = new CreateContentListResponse(walletIndex, null, userId)
         }
         emit(Event.RESPONSE, res)
         break
       }
-      case OPERATION_TYPE.ADD_PLAYLIST_AGREEMENT: {
-        if (uploadedAgreements.length === 0 || !createdPlaylists[userId]) {
-          res = new AddPlaylistAgreementResponse(
+      case OPERATION_TYPE.ADD_CONTENT_LIST_AGREEMENT: {
+        if (uploadedAgreements.length === 0 || !createdContentLists[userId]) {
+          res = new AddContentListAgreementResponse(
             walletIndex,
             null,
             false,
-            new Error('Adding a agreement to a playlist requires a agreement to be uploaded.')
+            new Error('Adding a agreement to a content list requires a agreement to be uploaded.')
           )
         } else {
           const agreementId = uploadedAgreements[_.random(uploadedAgreements.length - 1)].agreementId
           try {
-            // add agreement to playlist
-            const playlistId = createdPlaylists[userId][_.random(createdPlaylists[userId].length - 1)]
+            // add agreement to content list
+            const content listId = createdContentLists[userId][_.random(createdContentLists[userId].length - 1)]
             await executeOne(walletIndex, l =>
-              addPlaylistAgreement(l, playlistId, agreementId)
+              addContentListAgreement(l, content listId, agreementId)
             )
-            logger.info(`Agreement [${agreementId}] added to playlist [${playlistId}].`)
+            logger.info(`Agreement [${agreementId}] added to content list [${content listId}].`)
             await executeOne(walletIndex, l => l.waitForLatestBlock())
 
-            // verify playlist agreement add
+            // verify content list agreement add
             await retry(async () => {
-              const playlists = await executeOne(walletIndex, l =>
-                getPlaylists(l, 100, 0, [playlistId], userId)
+              const content lists = await executeOne(walletIndex, l =>
+                getContentLists(l, 100, 0, [content listId], userId)
               )
-              const playlistAgreements = playlists[0].playlist_contents.agreement_ids.map(obj => obj.agreement)
-              if (!playlistAgreements.includes(agreementId)) {
-                throw new Error(`Agreement [${agreementId}] not found in playlist [${playlistId}]`)
+              const content listAgreements = content lists[0].content list_contents.agreement_ids.map(obj => obj.agreement)
+              if (!content listAgreements.includes(agreementId)) {
+                throw new Error(`Agreement [${agreementId}] not found in content list [${content listId}]`)
               }
             }, {
               retries: 20,
               factor: 2
             })
-            res = new AddPlaylistAgreementResponse(walletIndex, agreementId)
+            res = new AddContentListAgreementResponse(walletIndex, agreementId)
           } catch (e) {
-            logger.error(`Caught error [${e.message}] adding agreement: [${agreementId}] to playlist \n${e.stack}`)
-            res = new AddPlaylistAgreementResponse(
+            logger.error(`Caught error [${e.message}] adding agreement: [${agreementId}] to content list \n${e.stack}`)
+            res = new AddContentListAgreementResponse(
               walletIndex,
               null,
               false,
@@ -342,20 +342,20 @@ module.exports = coreIntegration = async ({
         }
         break
       }
-      case OPERATION_TYPE.CREATE_PLAYLIST: {
-        const { walletIndex, playlist, userId, success } = res
+      case OPERATION_TYPE.CREATE_CONTENT_LIST: {
+        const { walletIndex, content list, userId, success } = res
         if (success) {
-          if (!createdPlaylists[userId]) {
-            createdPlaylists[userId] = []
+          if (!createdContentLists[userId]) {
+            createdContentLists[userId] = []
           }
-          createdPlaylists[userId].push(playlist)
+          createdContentLists[userId].push(content list)
         }
         break
       }
-      case OPERATION_TYPE.ADD_PLAYLIST_AGREEMENT: {
+      case OPERATION_TYPE.ADD_CONTENT_LIST_AGREEMENT: {
         const { walletIndex, agreementId, success } = res
         if (success) {
-          addedPlaylistAgreements.push(agreementId)
+          addedContentListAgreements.push(agreementId)
         }
         break
       }
@@ -377,15 +377,15 @@ module.exports = coreIntegration = async ({
       requesterIdx,
       walletIdMap[requesterIdx]
     )
-    const createPlaylistRequest = new CreatePlaylistRequest(
+    const createContentListRequest = new CreateContentListRequest(
       requesterIdx,
       walletIdMap[requesterIdx]
     )
-    const addPlaylistAgreementRequest = new AddPlaylistAgreementRequest(
+    const addContentListAgreementRequest = new AddContentListAgreementRequest(
       requesterIdx,
       walletIdMap[requesterIdx]
     )
-    const requests = [agreementUploadRequest, agreementRepostRequest, createPlaylistRequest, addPlaylistAgreementRequest]
+    const requests = [agreementUploadRequest, agreementRepostRequest, createContentListRequest, addContentListAgreementRequest]
     for (const request of requests) {
       const randomEmit = _.random(1)
       if (randomEmit) {
@@ -419,7 +419,7 @@ module.exports = coreIntegration = async ({
     logger.info(`Checking initial metadata on signup for user=${user.user_id}...`)
 
     // make this if case stronger -- like query cn1-3 to make sure that data is there
-    if (!user.creator_node_endpoint) {
+    if (!user.content_node_endpoint) {
       return {
         error: `New user ${user.user_id} should have been assigned a replica set.`
       }
@@ -488,7 +488,7 @@ module.exports = coreIntegration = async ({
   // Ensure all CIDs exist on all replicas
   const allCIDsExistOnCNodes = await verifyAllCIDsExistOnCNodes(agreementUploadInfo, executeOne)
   if (!allCIDsExistOnCNodes) {
-    return { error: 'Not all CIDs exist on creator nodes.' }
+    return { error: 'Not all CIDs exist on content nodes.' }
   }
 
   const failedWallets = Object.values(failedUploads)
@@ -502,9 +502,9 @@ module.exports = coreIntegration = async ({
     const userId = walletIdMap[walletIndex]
     const userMetadata = await executeOne(walletIndex, l => getUser(l, userId))
     const wallet = userMetadata.wallet
-    const [primary, ...secondaries] = userMetadata.creator_node_endpoint.split(',')
+    const [primary, ...secondaries] = userMetadata.content_node_endpoint.split(',')
 
-    logger.info(`userId=${userId} wallet=${wallet} rset=${userMetadata.creator_node_endpoint}`)
+    logger.info(`userId=${userId} wallet=${wallet} rset=${userMetadata.content_node_endpoint}`)
 
     // Define new rset by swapping primary and first secondary
     const newRSet = (secondaries.length) ? [secondaries[0], primary].concat(secondaries.slice(1)) : [primary]
@@ -514,7 +514,7 @@ module.exports = coreIntegration = async ({
 
     // Update user metadata obj
     const newMetadata = { ...userMetadata }
-    newMetadata.creator_node_endpoint = newRSet.join(',')
+    newMetadata.content_node_endpoint = newRSet.join(',')
 
     // Update creator state on CN and chain
     await executeOne(walletIndex, libs => updateCreator(libs, userId, newMetadata))
@@ -543,7 +543,7 @@ module.exports = coreIntegration = async ({
   userMetadatas.forEach(user => {
     logger.info(`Checking post agreement upload metadata for user=${user.user_id}...`)
 
-    if (!user.creator_node_endpoint) {
+    if (!user.content_node_endpoint) {
       return {
         error: `User ${user.user_id} should have kept their replica set.`
       }
@@ -600,7 +600,7 @@ const verifyAllCIDsExistOnCNodes = async (agreementUploads, executeOne) => {
   const userIds = agreementUploads.map(u => u.userId)
   for (const userId of userIds) {
     const user = await executeOne(0, l => getUser(l, userId))
-    userIdRSetMap[userId] = user.creator_node_endpoint.split(',')
+    userIdRSetMap[userId] = user.content_node_endpoint.split(',')
   }
 
   // Now, confirm each of these CIDs are on each user replica
@@ -647,7 +647,7 @@ async function checkUserMetadataAndClockValues({
 
       // Check that the metadata object in CN across replica set is what we expect it to be
       const replicaSetEndpoints = await executeOne(i, libs =>
-        getContentNodeEndpoints(libs, userMetadatas[i].creator_node_endpoint)
+        getContentNodeEndpoints(libs, userMetadatas[i].content_node_endpoint)
       )
 
       await checkMetadataEquality({
@@ -714,7 +714,7 @@ async function checkMetadataEquality({ endpoints, metadataMultihash, userId }) {
   logger.info(`Completed metadata check for user ${userId} in ${Date.now() - start}ms`)
 
   const fieldsToCheck = [
-    'creator_node_endpoint',
+    'content_node_endpoint',
     'profile_picture_sizes',
     'bio'
   ]
@@ -741,14 +741,14 @@ const verifyThresholds = (emitterTest) => {
   const numberOfTicks = (emitterTest.testDurationSeconds / emitterTest.tickIntervalSeconds) - 1
   assert.ok(uploadedAgreements.length > (numberOfTicks / 5))
   assert.ok(repostedAgreements.length > (numberOfTicks / 10))
-  assert.ok(Object.values(createdPlaylists).flat().length > (numberOfTicks / 10))
-  assert.ok(addedPlaylistAgreements.length > (numberOfTicks / 10))
+  assert.ok(Object.values(createdContentLists).flat().length > (numberOfTicks / 10))
+  assert.ok(addedContentListAgreements.length > (numberOfTicks / 10))
 }
 
 const printTestSummary = () => {
   logger.info('\n------------------------ COLIVING CORE INTEGRATION TEST Summary ------------------------')
   logger.info(`uploadedAgreements: ${uploadedAgreements.length}                | Total uploaded agreements`)
   logger.info(`repostedAgreements: ${repostedAgreements.length}                | Total reposted agreements`)
-  logger.info(`createdPlaylists: ${Object.values(createdPlaylists).flat().length}                | Total created playlists`)
-  logger.info(`addedPlaylistAgreements: ${addedPlaylistAgreements.length}                | Total added playlist agreements`)
+  logger.info(`createdContentLists: ${Object.values(createdContentLists).flat().length}                | Total created content lists`)
+  logger.info(`addedContentListAgreements: ${addedContentListAgreements.length}                | Total added content list agreements`)
 }

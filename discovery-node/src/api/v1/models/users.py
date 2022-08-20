@@ -1,7 +1,7 @@
 from flask_restx import fields
 
 from .common import ns
-from .playlist_library import playlist_library
+from .content list_library import content list_library
 
 # DEPRECATED
 # See connected_wallets
@@ -38,7 +38,7 @@ user_model = ns.model(
         "is_verified": fields.Boolean(required=True),
         "location": fields.String,
         "name": fields.String(required=True),
-        "playlist_count": fields.Integer(required=True),
+        "content list_count": fields.Integer(required=True),
         "profile_picture": fields.Nested(profile_picture, allow_null=True),
         "repost_count": fields.Integer(required=True),
         "agreement_count": fields.Integer(required=True),
@@ -62,7 +62,7 @@ user_model_full = ns.clone(
         "blocknumber": fields.Integer(required=True),
         "wallet": fields.String(required=True),
         "created_at": fields.String(required=True),
-        "creator_node_endpoint": fields.String,
+        "content_node_endpoint": fields.String,
         "current_user_followee_follow_count": fields.Integer(required=True),
         "does_current_user_follow": fields.Boolean(required=True),
         "handle_lc": fields.String(required=True),
@@ -73,7 +73,7 @@ user_model_full = ns.clone(
         "profile_picture_legacy": fields.String,
         "metadata_multihash": fields.String,
         "has_collectibles": fields.Boolean(required=True),
-        "playlist_library": fields.Nested(playlist_library, allow_null=True),
+        "content list_library": fields.Nested(content list_library, allow_null=True),
     },
 )
 

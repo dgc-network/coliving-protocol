@@ -4,11 +4,11 @@ services:
     image: postgres:11.1
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_DB: coliving_creator_node
+      POSTGRES_DB: coliving_content_node
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     ports:
-      - '${CREATOR_NODE_DB_HOST_PORT}:5432'
+      - '${CONTENT_NODE_DB_HOST_PORT}:5432'
     networks:
       - coliving_dev
   content-node:
@@ -18,10 +18,10 @@ services:
       - content-node-redis
     environment:
       - redisHost=${COMPOSE_PROJECT_NAME}_content-node-redis_1
-      - dbUrl=postgres://postgres:postgres@${COMPOSE_PROJECT_NAME}_content-node-db_1:5432/coliving_creator_node
+      - dbUrl=postgres://postgres:postgres@${COMPOSE_PROJECT_NAME}_content-node-db_1:5432/coliving_content_node
       - WAIT_HOSTS=${COMPOSE_PROJECT_NAME}_content-node-db_1:5432, ${COMPOSE_PROJECT_NAME}_content-node-redis_1:6379
-      - port=${CREATOR_NODE_HOST_PORT}
-      - debuggerPort=${CREATOR_NODE_DEBUGGER_PORT}
+      - port=${CONTENT_NODE_HOST_PORT}
+      - debuggerPort=${CONTENT_NODE_DEBUGGER_PORT}
       - spOwnerWalletIndex=${SP_OWNER_WALLET_INDEX}
       - delegateOwnerWallet=${delegateOwnerWallet}
       - delegatePrivateKey=${delegatePrivateKey}
@@ -33,8 +33,8 @@ services:
     env_file:
       - ./env/base.env
     ports:
-      - '${CREATOR_NODE_HOST_PORT}:${CREATOR_NODE_HOST_PORT}'
-      - '${CREATOR_NODE_DEBUGGER_PORT}:${CREATOR_NODE_DEBUGGER_PORT}'
+      - '${CONTENT_NODE_HOST_PORT}:${CONTENT_NODE_HOST_PORT}'
+      - '${CONTENT_NODE_DEBUGGER_PORT}:${CONTENT_NODE_DEBUGGER_PORT}'
     volumes:
       - ./env/tmp/file-storage-${SP_OWNER_WALLET_INDEX}:/file_storage
       - ..:/usr/src/app
@@ -50,7 +50,7 @@ services:
   content-node-redis:
     image: redis:5.0.4
     ports:
-      - '${CREATOR_NODE_REDIS_HOST_PORT}:6379'
+      - '${CONTENT_NODE_REDIS_HOST_PORT}:6379'
     networks:
       - coliving_dev
 

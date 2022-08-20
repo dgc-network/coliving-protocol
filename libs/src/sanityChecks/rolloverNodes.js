@@ -4,7 +4,7 @@ const { CreatorNode } = require('../services/creatorNode')
 const THREE_SECONDS = 3000
 const MAX_TRIES = 3
 
-/** Check if the user's primary creator node is healthy */
+/** Check if the user's primary content node is healthy */
 const checkPrimaryHealthy = async (libs, primary, tries) => {
   const healthy = await Utils.isHealthy(primary)
   if (healthy) return healthy
@@ -34,11 +34,11 @@ const rolloverNodes = async (libs, creatorNodeWhitelist) => {
 
   if (!user) return
 
-  const primary = CreatorNode.getPrimary(user.creator_node_endpoint)
+  const primary = CreatorNode.getPrimary(user.content_node_endpoint)
   const healthy = await checkPrimaryHealthy(libs, primary, MAX_TRIES)
   if (healthy) return
 
-  const secondaries = CreatorNode.getSecondaries(user.creator_node_endpoint)
+  const secondaries = CreatorNode.getSecondaries(user.content_node_endpoint)
 
   try {
     // Get a new primary
@@ -63,8 +63,8 @@ const rolloverNodes = async (libs, creatorNodeWhitelist) => {
 
     // Update the user
     const newMetadata = { ...user }
-    newMetadata.creator_node_endpoint = newEndpoints.join(',')
-    console.debug(`Sanity Check - rolloverNodes - new nodes ${newMetadata.creator_node_endpoint}`)
+    newMetadata.content_node_endpoint = newEndpoints.join(',')
+    console.debug(`Sanity Check - rolloverNodes - new nodes ${newMetadata.content_node_endpoint}`)
     await libs.User.updateCreator(user.user_id, newMetadata)
   } catch (e) {
     console.error(e)

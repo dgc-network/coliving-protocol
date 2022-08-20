@@ -3,8 +3,8 @@
 const OPERATION_TYPE = Object.freeze({
   AGREEMENT_UPLOAD: 'AGREEMENT_UPLOAD',
   AGREEMENT_REPOST: 'AGREEMENT_REPOST',
-  ADD_PLAYLIST_AGREEMENT: 'ADD_PLAYLIST_AGREEMENT',
-  CREATE_PLAYLIST: 'CREATE_PLAYLIST'
+  ADD_CONTENT_LIST_AGREEMENT: 'ADD_CONTENT_LIST_AGREEMENT',
+  CREATE_CONTENT_LIST: 'CREATE_CONTENT_LIST'
 })
 
 function AgreementUploadRequest (walletIndex, userId) {
@@ -57,22 +57,22 @@ function AgreementRepostResponse (
   }
 }
 
-function AddPlaylistAgreementRequest (walletIndex, userId) {
+function AddContentListAgreementRequest (walletIndex, userId) {
   return {
-    type: OPERATION_TYPE.ADD_PLAYLIST_AGREEMENT,
+    type: OPERATION_TYPE.ADD_CONTENT_LIST_AGREEMENT,
     walletIndex,
     userId
   }
 }
 
-function AddPlaylistAgreementResponse (
+function AddContentListAgreementResponse (
   walletIndex,
   agreementId,
   success = true,
   error = null
 ) {
   return {
-    type: OPERATION_TYPE.ADD_PLAYLIST_AGREEMENT,
+    type: OPERATION_TYPE.ADD_CONTENT_LIST_AGREEMENT,
     walletIndex,
     agreementId,
     success,
@@ -80,25 +80,25 @@ function AddPlaylistAgreementResponse (
   }
 }
 
-function CreatePlaylistRequest (walletIndex, userId) {
+function CreateContentListRequest (walletIndex, userId) {
   return {
-    type: OPERATION_TYPE.CREATE_PLAYLIST,
+    type: OPERATION_TYPE.CREATE_CONTENT_LIST,
     walletIndex,
     userId
   }
 }
 
-function CreatePlaylistResponse (
+function CreateContentListResponse (
   walletIndex,
-  playlist,
+  content list,
   userId,
   success = true,
   error = null
 ) {
   return {
-    type: OPERATION_TYPE.CREATE_PLAYLIST,
+    type: OPERATION_TYPE.CREATE_CONTENT_LIST,
     walletIndex,
-    playlist,
+    content list,
     userId,
     success,
     error
@@ -111,8 +111,8 @@ module.exports = {
   AgreementUploadResponse,
   AgreementRepostRequest,
   AgreementRepostResponse,
-  AddPlaylistAgreementRequest,
-  AddPlaylistAgreementResponse,
-  CreatePlaylistRequest,
-  CreatePlaylistResponse
+  AddContentListAgreementRequest,
+  AddContentListAgreementResponse,
+  CreateContentListRequest,
+  CreateContentListResponse
 }

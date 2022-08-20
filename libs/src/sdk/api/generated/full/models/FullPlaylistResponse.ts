@@ -14,11 +14,11 @@
  */
 
 import {
-    PlaylistFull,
-    PlaylistFullFromJSON,
-    PlaylistFullFromJSONTyped,
-    PlaylistFullToJSON,
-} from './PlaylistFull';
+    ContentListFull,
+    ContentListFullFromJSON,
+    ContentListFullFromJSONTyped,
+    ContentListFullToJSON,
+} from './ContentListFull';
 import {
     VersionMetadata,
     VersionMetadataFromJSON,
@@ -29,56 +29,56 @@ import {
 /**
  * 
  * @export
- * @interface FullPlaylistResponse
+ * @interface FullContentListResponse
  */
-export interface FullPlaylistResponse {
+export interface FullContentListResponse {
     /**
      * 
      * @type {number}
-     * @memberof FullPlaylistResponse
+     * @memberof FullContentListResponse
      */
     latest_chain_block: number;
     /**
      * 
      * @type {number}
-     * @memberof FullPlaylistResponse
+     * @memberof FullContentListResponse
      */
     latest_indexed_block: number;
     /**
      * 
      * @type {number}
-     * @memberof FullPlaylistResponse
+     * @memberof FullContentListResponse
      */
     latest_chain_slot_plays: number;
     /**
      * 
      * @type {number}
-     * @memberof FullPlaylistResponse
+     * @memberof FullContentListResponse
      */
     latest_indexed_slot_plays: number;
     /**
      * 
      * @type {string}
-     * @memberof FullPlaylistResponse
+     * @memberof FullContentListResponse
      */
     signature: string;
     /**
      * 
      * @type {string}
-     * @memberof FullPlaylistResponse
+     * @memberof FullContentListResponse
      */
     timestamp: string;
     /**
      * 
      * @type {VersionMetadata}
-     * @memberof FullPlaylistResponse
+     * @memberof FullContentListResponse
      */
     version: VersionMetadata;
     /**
      * 
-     * @type {Array<PlaylistFull>}
-     * @memberof FullPlaylistResponse
+     * @type {Array<ContentListFull>}
+     * @memberof FullContentListResponse
      */
-    data?: Array<PlaylistFull>;
+    data?: Array<ContentListFull>;
 }
 

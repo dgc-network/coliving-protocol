@@ -1,33 +1,33 @@
 ---
-id: "full.PlaylistFull"
-title: "Interface: PlaylistFull"
-sidebar_label: "PlaylistFull"
+id: "full.ContentListFull"
+title: "Interface: ContentListFull"
+sidebar_label: "ContentListFull"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).PlaylistFull
+[full](../namespaces/full.md).ContentListFull
 
 **`export`**
 
-**`interface`** PlaylistFull
+**`interface`** ContentListFull
 
 ## Properties
 
 ### added\_timestamps
 
- **added\_timestamps**: [`PlaylistAddedTimestamp`](full.PlaylistAddedTimestamp.md)[]
+ **added\_timestamps**: [`ContentListAddedTimestamp`](full.ContentListAddedTimestamp.md)[]
 
-**`memberof`** PlaylistFull
+**`memberof`** ContentListFull
 
 ___
 
 ### artwork
 
- `Optional` **artwork**: [`PlaylistArtwork`](full.PlaylistArtwork.md)
+ `Optional` **artwork**: [`ContentListArtwork`](full.ContentListArtwork.md)
 
-**`memberof`** PlaylistFull
+**`memberof`** ContentListFull
 
 ___
 
@@ -35,7 +35,7 @@ ___
 
  **blocknumber**: `number`
 
-**`memberof`** PlaylistFull
+**`memberof`** ContentListFull
 
 ___
 
@@ -43,7 +43,7 @@ ___
 
  `Optional` **cover\_art**: `string`
 
-**`memberof`** PlaylistFull
+**`memberof`** ContentListFull
 
 ___
 
@@ -51,7 +51,7 @@ ___
 
  `Optional` **cover\_art\_sizes**: `string`
 
-**`memberof`** PlaylistFull
+**`memberof`** ContentListFull
 
 ___
 
@@ -59,7 +59,7 @@ ___
 
  `Optional` **created\_at**: `string`
 
-**`memberof`** PlaylistFull
+**`memberof`** ContentListFull
 
 ___
 
@@ -67,7 +67,7 @@ ___
 
  `Optional` **description**: `string`
 
-**`memberof`** PlaylistFull
+**`memberof`** ContentListFull
 
 ___
 
@@ -75,7 +75,7 @@ ___
 
  **favorite\_count**: `number`
 
-**`memberof`** PlaylistFull
+**`memberof`** ContentListFull
 
 ___
 
@@ -83,7 +83,7 @@ ___
 
  **followee\_favorites**: [`Favorite`](full.Favorite.md)[]
 
-**`memberof`** PlaylistFull
+**`memberof`** ContentListFull
 
 ___
 
@@ -91,7 +91,7 @@ ___
 
  **followee\_reposts**: [`Repost`](full.Repost.md)[]
 
-**`memberof`** PlaylistFull
+**`memberof`** ContentListFull
 
 ___
 
@@ -99,7 +99,7 @@ ___
 
  **has\_current\_user\_reposted**: `boolean`
 
-**`memberof`** PlaylistFull
+**`memberof`** ContentListFull
 
 ___
 
@@ -107,7 +107,7 @@ ___
 
  **has\_current\_user\_saved**: `boolean`
 
-**`memberof`** PlaylistFull
+**`memberof`** ContentListFull
 
 ___
 
@@ -115,7 +115,7 @@ ___
 
  **id**: `string`
 
-**`memberof`** PlaylistFull
+**`memberof`** ContentListFull
 
 ___
 
@@ -123,7 +123,7 @@ ___
 
  **is\_album**: `boolean`
 
-**`memberof`** PlaylistFull
+**`memberof`** ContentListFull
 
 ___
 
@@ -131,7 +131,7 @@ ___
 
  **is\_delete**: `boolean`
 
-**`memberof`** PlaylistFull
+**`memberof`** ContentListFull
 
 ___
 
@@ -139,15 +139,15 @@ ___
 
  **is\_private**: `boolean`
 
-**`memberof`** PlaylistFull
+**`memberof`** ContentListFull
 
 ___
 
-### playlist\_name
+### content list\_name
 
- **playlist\_name**: `string`
+ **content list\_name**: `string`
 
-**`memberof`** PlaylistFull
+**`memberof`** ContentListFull
 
 ___
 
@@ -155,7 +155,7 @@ ___
 
  **repost\_count**: `number`
 
-**`memberof`** PlaylistFull
+**`memberof`** ContentListFull
 
 ___
 
@@ -163,7 +163,7 @@ ___
 
  **total\_play\_count**: `number`
 
-**`memberof`** PlaylistFull
+**`memberof`** ContentListFull
 
 ___
 
@@ -171,7 +171,7 @@ ___
 
  **agreement\_count**: `number`
 
-**`memberof`** PlaylistFull
+**`memberof`** ContentListFull
 
 ___
 
@@ -179,7 +179,7 @@ ___
 
  **agreements**: [`AgreementFull`](full.AgreementFull.md)[]
 
-**`memberof`** PlaylistFull
+**`memberof`** ContentListFull
 
 ___
 
@@ -187,7 +187,7 @@ ___
 
  `Optional` **updated\_at**: `string`
 
-**`memberof`** PlaylistFull
+**`memberof`** ContentListFull
 
 ___
 
@@ -195,7 +195,7 @@ ___
 
  **user**: [`UserFull`](full.UserFull.md)
 
-**`memberof`** PlaylistFull
+**`memberof`** ContentListFull
 
 ___
 
@@ -203,4 +203,4 @@ ___
 
  **user\_id**: `string`
 
-**`memberof`** PlaylistFull
+**`memberof`** ContentListFull

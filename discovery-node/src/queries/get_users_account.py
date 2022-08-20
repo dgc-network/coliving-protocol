@@ -1,6 +1,6 @@
 from sqlalchemy import and_, asc, desc, or_
 from src import exceptions
-from src.models.playlists.playlist import Playlist
+from src.models.content lists.content list import ContentList
 from src.models.social.save import Save, SaveType
 from src.models.users.user import User
 from src.queries.get_unpopulated_users import get_unpopulated_users
@@ -42,66 +42,66 @@ def get_users_account(args):
         users = populate_user_metadata(session, [user_id], [user], user_id, True)
         user = users[0]
 
-        # Get saved playlists / albums ids
+        # Get saved content lists / albums ids
         saved_query = session.query(Save.save_item_id).filter(
             Save.user_id == user_id,
             Save.is_current == True,
             Save.is_delete == False,
-            or_(Save.save_type == SaveType.playlist, Save.save_type == SaveType.album),
+            or_(Save.save_type == SaveType.content list, Save.save_type == SaveType.album),
         )
 
         saved_query_results = saved_query.all()
         save_collection_ids = [item[0] for item in saved_query_results]
 
-        # Get Playlist/Albums saved or owned by the user
-        playlist_query = (
-            session.query(Playlist)
+        # Get ContentList/Albums saved or owned by the user
+        content list_query = (
+            session.query(ContentList)
             .filter(
                 or_(
                     and_(
-                        Playlist.is_current == True,
-                        Playlist.is_delete == False,
-                        Playlist.playlist_owner_id == user_id,
+                        ContentList.is_current == True,
+                        ContentList.is_delete == False,
+                        ContentList.content list_owner_id == user_id,
                     ),
                     and_(
-                        Playlist.is_current == True,
-                        Playlist.is_delete == False,
-                        Playlist.playlist_id.in_(save_collection_ids),
+                        ContentList.is_current == True,
+                        ContentList.is_delete == False,
+                        ContentList.content list_id.in_(save_collection_ids),
                     ),
                 )
             )
-            .order_by(desc(Playlist.created_at))
+            .order_by(desc(ContentList.created_at))
         )
-        playlists = playlist_query.all()
-        playlists = helpers.query_result_to_list(playlists)
+        content lists = content list_query.all()
+        content lists = helpers.query_result_to_list(content lists)
 
-        playlist_owner_ids = list(
-            {playlist["playlist_owner_id"] for playlist in playlists}
+        content list_owner_ids = list(
+            {content list["content list_owner_id"] for content list in content lists}
         )
 
-        # Get Users for the Playlist/Albums
-        users = get_unpopulated_users(session, playlist_owner_ids)
+        # Get Users for the ContentList/Albums
+        users = get_unpopulated_users(session, content list_owner_ids)
 
         user_map = {}
 
-        stripped_playlists = []
-        # Map the users to the playlists/albums
-        for playlist_owner in users:
-            user_map[playlist_owner["user_id"]] = playlist_owner
-        for playlist in playlists:
-            playlist_owner = user_map[playlist["playlist_owner_id"]]
-            stripped_playlist = {
-                "id": playlist["playlist_id"],
-                "name": playlist["playlist_name"],
-                "is_album": playlist["is_album"],
+        stripped_content lists = []
+        # Map the users to the content lists/albums
+        for content list_owner in users:
+            user_map[content list_owner["user_id"]] = content list_owner
+        for content list in content lists:
+            content list_owner = user_map[content list["content list_owner_id"]]
+            stripped_content list = {
+                "id": content list["content list_id"],
+                "name": content list["content list_name"],
+                "is_album": content list["is_album"],
                 "user": {
-                    "id": playlist_owner["user_id"],
-                    "handle": playlist_owner["handle"],
+                    "id": content list_owner["user_id"],
+                    "handle": content list_owner["handle"],
                 },
             }
-            if playlist_owner["is_deactivated"]:
-                stripped_playlist["user"]["is_deactivated"] = True
-            stripped_playlists.append(stripped_playlist)
-        user["playlists"] = stripped_playlists
+            if content list_owner["is_deactivated"]:
+                stripped_content list["user"]["is_deactivated"] = True
+            stripped_content lists.append(stripped_content list)
+        user["content lists"] = stripped_content lists
 
     return user

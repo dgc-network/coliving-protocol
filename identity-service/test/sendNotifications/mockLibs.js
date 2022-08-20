@@ -43,7 +43,7 @@ const agreementTemplate = (id) => ({
   'updated_at': '2019-04-30T00:02:50 Z'
 })
 
-const playlistTemplate = (id) => ({
+const content listTemplate = (id) => ({
   'blockhash': '0x2aaaf97be15302f844ca2c3780767e73fcecc980d12331d637d09cccf2eb0419',
   'blocknumber': 17900160,
   'created_at': '2020-10-29T17:54:35 Z',
@@ -56,7 +56,7 @@ const playlistTemplate = (id) => ({
   'is_current': true,
   'is_delete': false,
   'is_private': false,
-  'playlist_contents': {
+  'content list_contents': {
     'agreement_ids': [
       {
         'time': 1603994075,
@@ -68,11 +68,11 @@ const playlistTemplate = (id) => ({
       }
     ]
   },
-  'playlist_id': id,
-  'playlist_image_multihash': null,
-  'playlist_image_sizes_multihash': 'QmQTz4HHRxiyueyJDbK799KCo3ZypB8mDEJWWR9jWcFbMr',
-  'playlist_name': `PLaylist id: ${id}`,
-  'playlist_owner_id': 69054,
+  'content list_id': id,
+  'content list_image_multihash': null,
+  'content list_image_sizes_multihash': 'QmQTz4HHRxiyueyJDbK799KCo3ZypB8mDEJWWR9jWcFbMr',
+  'content list_name': `PLaylist id: ${id}`,
+  'content list_owner_id': 69054,
   'repost_count': 0,
   'save_count': 0,
   'total_play_count': 2,
@@ -88,7 +88,7 @@ const userTemplate = (id) => ({
   'cover_photo': null,
   'cover_photo_sizes': 'QmQnJ8uXf886crAticzPGgrfqxq68kAxBXXcK73geFakUo',
   'created_at': '2019-04-29T23:52:55 Z',
-  'creator_node_endpoint': 'https://creatornode3.coliving.lol,,',
+  'content_node_endpoint': 'https://creatornode3.coliving.lol,,',
   'current_user_followee_follow_count': 0,
   'does_current_user_follow': false,
   'followee_count': 559,
@@ -100,7 +100,7 @@ const userTemplate = (id) => ({
   'location': 'chik fil yay!',
   'metadata_multihash': 'QmXR4Geg4NKtYtp596GenPxsN3NVyGnb1a6ipHmqSkaEHs',
   'name': `user ${id}`,
-  'playlist_count': 5,
+  'content list_count': 5,
   'profile_picture': 'QmXBLfsD6G8ALVeTr9A5XXKLCoiFRfoTGqXZmBbz9MoQrd',
   'profile_picture_sizes': null,
   'repost_count': 1183,
@@ -115,8 +115,8 @@ const mockColivingLibs = {
   Agreement: {
     getAgreements: (limit, offset, ids) => ids.map(id => agreementTemplate(id))
   },
-  Playlist: {
-    getPlaylists: (limit, offset, ids) => ids.map(id => playlistTemplate(id))
+  ContentList: {
+    getContentLists: (limit, offset, ids) => ids.map(id => content listTemplate(id))
   },
   User: {
     getUsers: (limit, offset, ids) => ids.map(id => userTemplate(id))

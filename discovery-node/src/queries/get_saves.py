@@ -1,5 +1,5 @@
 from src import exceptions
-from src.models.playlists.playlist import Playlist
+from src.models.content lists.content list import ContentList
 from src.models.social.save import Save, SaveType
 from src.models.agreements.agreement import Agreement
 from src.queries.query_helpers import paginate_query
@@ -11,8 +11,8 @@ def get_saves(save_type, user_id):
     save_query_type = None
     if save_type == "albums":
         save_query_type = SaveType.album
-    elif save_type == "playlists":
-        save_query_type = SaveType.playlist
+    elif save_type == "content lists":
+        save_query_type = SaveType.content list
     elif save_type == "agreements":
         save_query_type = SaveType.agreement
     else:
@@ -31,16 +31,16 @@ def get_saves(save_type, user_id):
         if save_type == "albums":
             query = query.filter(
                 Save.save_item_id.in_(
-                    session.query(Playlist.playlist_id).filter(
-                        Playlist.is_album == True, Playlist.is_current == True
+                    session.query(ContentList.content list_id).filter(
+                        ContentList.is_album == True, ContentList.is_current == True
                     )
                 )
             )
-        elif save_type == "playlists":
+        elif save_type == "content lists":
             query = query.filter(
                 Save.save_item_id.in_(
-                    session.query(Playlist.playlist_id).filter(
-                        Playlist.is_album == False, Playlist.is_current == True
+                    session.query(ContentList.content list_id).filter(
+                        ContentList.is_album == False, ContentList.is_current == True
                     )
                 )
             )

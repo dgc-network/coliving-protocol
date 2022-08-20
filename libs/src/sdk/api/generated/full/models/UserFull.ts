@@ -20,11 +20,11 @@ import {
     CoverPhotoToJSON,
 } from './CoverPhoto';
 import {
-    PlaylistLibrary,
-    PlaylistLibraryFromJSON,
-    PlaylistLibraryFromJSONTyped,
-    PlaylistLibraryToJSON,
-} from './PlaylistLibrary';
+    ContentListLibrary,
+    ContentListLibraryFromJSON,
+    ContentListLibraryFromJSONTyped,
+    ContentListLibraryToJSON,
+} from './ContentListLibrary';
 import {
     ProfilePicture,
     ProfilePictureFromJSON,
@@ -109,7 +109,7 @@ export interface UserFull {
      * @type {number}
      * @memberof UserFull
      */
-    playlist_count: number;
+    content list_count: number;
     /**
      * 
      * @type {ProfilePicture}
@@ -211,7 +211,7 @@ export interface UserFull {
      * @type {string}
      * @memberof UserFull
      */
-    creator_node_endpoint?: string;
+    content_node_endpoint?: string;
     /**
      * 
      * @type {number}
@@ -274,9 +274,9 @@ export interface UserFull {
     has_collectibles: boolean;
     /**
      * 
-     * @type {PlaylistLibrary}
+     * @type {ContentListLibrary}
      * @memberof UserFull
      */
-    playlist_library?: PlaylistLibrary;
+    content list_library?: ContentListLibrary;
 }
 

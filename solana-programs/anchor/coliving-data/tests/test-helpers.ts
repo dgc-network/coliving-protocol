@@ -17,15 +17,15 @@ import {
   createContentNode,
   createUser,
   createAgreement,
-  createPlaylist,
+  createContentList,
   initUser,
   initUserSolPubkey,
   deleteAgreement,
   updateAgreement,
   EntityTypesEnumValues,
   ManagementActions,
-  deletePlaylist,
-  updatePlaylist,
+  deleteContentList,
+  updateContentList,
   updateAdmin,
   initAuthorityDelegationStatus,
   addUserAuthorityDelegate,
@@ -342,7 +342,7 @@ export const testUpdateAgreement = async ({
   expect(accountPubKeys[2]).to.equal(userAuthorityKeypair.publicKey.toString());
 };
 
-export const testCreatePlaylist = async ({
+export const testCreateContentList = async ({
   provider,
   program,
   id,
@@ -350,20 +350,20 @@ export const testCreatePlaylist = async ({
   userId,
   bumpSeed,
   adminAccount,
-  playlistMetadata,
+  content listMetadata,
   userAuthorityKeypair,
-  playlistOwner,
+  content listOwner,
   userAuthorityDelegateAccount,
   authorityDelegationStatusAccount,
 }) => {
-  const tx = await createPlaylist({
+  const tx = await createContentList({
     id,
     program,
     userAuthorityPublicKey: userAuthorityKeypair.publicKey,
-    userAccount: playlistOwner,
+    userAccount: content listOwner,
     userAuthorityDelegateAccount,
     authorityDelegationStatusAccount,
-    metadata: playlistMetadata,
+    metadata: content listMetadata,
     baseAuthorityAccount,
     userId,
     adminAccount,
@@ -377,22 +377,22 @@ export const testCreatePlaylist = async ({
   // Validate instruction data
   expect(decodedInstruction.name).to.equal("manageEntity");
   expect(decodedData.id.toString()).to.equal(id.toString());
-  expect(decodedData.metadata).to.equal(playlistMetadata);
-  expect(decodedData.entityType).to.deep.equal(EntityTypesEnumValues.playlist);
+  expect(decodedData.metadata).to.equal(content listMetadata);
+  expect(decodedData.entityType).to.deep.equal(EntityTypesEnumValues.content list);
   expect(decodedData.managementAction).to.deep.equal(ManagementActions.create);
   // Assert on instruction struct
-  // 1st index = playlist owner user storage account
+  // 1st index = content list owner user storage account
   // 2nd index = user authority keypair
-  // Indexing code must check that the playlist owner PDA is known before processing
-  expect(accountPubKeys[1]).to.equal(playlistOwner.toString());
+  // Indexing code must check that the content list owner PDA is known before processing
+  expect(accountPubKeys[1]).to.equal(content listOwner.toString());
   expect(accountPubKeys[2]).to.equal(userAuthorityKeypair.publicKey.toString());
 };
 
-export const testDeletePlaylist = async ({
+export const testDeleteContentList = async ({
   provider,
   program,
   id,
-  playlistOwner,
+  content listOwner,
   userAuthorityDelegateAccount,
   authorityDelegationStatusAccount,
   userAuthorityKeypair,
@@ -401,10 +401,10 @@ export const testDeletePlaylist = async ({
   bumpSeed,
   adminAccount,
 }) => {
-  const tx = await deletePlaylist({
+  const tx = await deleteContentList({
     id,
     program,
-    userAccount: playlistOwner,
+    userAccount: content listOwner,
     userAuthorityDelegateAccount,
     authorityDelegationStatusAccount,
     userAuthorityPublicKey: userAuthorityKeypair.publicKey,
@@ -418,17 +418,17 @@ export const testDeletePlaylist = async ({
     await getTransactionWithData(program, provider, txSignature, 0);
   expect(decodedInstruction.name).to.equal("manageEntity");
   expect(decodedData.id.toString()).to.equal(id.toString());
-  expect(decodedData.entityType).to.deep.equal(EntityTypesEnumValues.playlist);
+  expect(decodedData.entityType).to.deep.equal(EntityTypesEnumValues.content list);
   expect(decodedData.managementAction).to.deep.equal(ManagementActions.delete);
   // Assert on instruction struct
-  // 0th index = playlist owner user storage account
+  // 0th index = content list owner user storage account
   // 1st index = user authority keypair
-  // Indexing code must check that the playlist owner PDA is known before processing
-  expect(accountPubKeys[1]).to.equal(playlistOwner.toString());
+  // Indexing code must check that the content list owner PDA is known before processing
+  expect(accountPubKeys[1]).to.equal(content listOwner.toString());
   expect(accountPubKeys[2]).to.equal(userAuthorityKeypair.publicKey.toString());
 };
 
-export const testUpdatePlaylist = async ({
+export const testUpdateContentList = async ({
   provider,
   program,
   id,
@@ -442,7 +442,7 @@ export const testUpdatePlaylist = async ({
   bumpSeed,
   adminAccount,
 }) => {
-  const tx = await updatePlaylist({
+  const tx = await updateContentList({
     program,
     baseAuthorityAccount,
     userId,
@@ -463,12 +463,12 @@ export const testUpdatePlaylist = async ({
   expect(decodedInstruction.name).to.equal("manageEntity");
   expect(decodedData.id.toString()).to.equal(id.toString());
   expect(decodedData.metadata).to.equal(metadata);
-  expect(decodedData.entityType).to.deep.equal(EntityTypesEnumValues.playlist);
+  expect(decodedData.entityType).to.deep.equal(EntityTypesEnumValues.content list);
   expect(decodedData.managementAction).to.deep.equal(ManagementActions.update);
   // Assert on instruction struct
-  // 0th index = playlist owner user storage account
+  // 0th index = content list owner user storage account
   // 1st index = user authority keypair
-  // Indexing code must check that the playlist owner PDA is known before processing
+  // Indexing code must check that the content list owner PDA is known before processing
   expect(accountPubKeys[1]).to.equal(userAccount.toString());
   expect(accountPubKeys[2]).to.equal(userAuthorityKeypair.publicKey.toString());
 };
@@ -745,7 +745,7 @@ export const createSolanaContentNode = async (props: {
   );
 
   if (!contentNode) {
-    throw new Error("unable to create playlist account");
+    throw new Error("unable to create content list account");
   }
 
   return {

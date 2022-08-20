@@ -1,8 +1,8 @@
-from src.trending_strategies.BDNxn_trending_playlists_strategy import (
-    TrendingPlaylistsStrategyBDNxn,
+from src.trending_strategies.BDNxn_trending_content lists_strategy import (
+    TrendingContentListsStrategyBDNxn,
 )
-from src.trending_strategies.EJ57D_trending_playlists_strategy import (
-    TrendingPlaylistsStrategyEJ57D,
+from src.trending_strategies.EJ57D_trending_content lists_strategy import (
+    TrendingContentListsStrategyEJ57D,
 )
 from src.trending_strategies.EJ57D_trending_agreements_strategy import (
     TrendingAgreementsStrategyEJ57D,
@@ -18,7 +18,7 @@ from src.trending_strategies.trending_type_and_version import (
 DEFAULT_TRENDING_VERSIONS = {
     TrendingType.AGREEMENTS: TrendingVersion.EJ57D,
     TrendingType.UNDERGROUND_AGREEMENTS: TrendingVersion.EJ57D,
-    TrendingType.PLAYLISTS: TrendingVersion.EJ57D,
+    TrendingType.CONTENT_LISTS: TrendingVersion.EJ57D,
 }
 
 
@@ -31,9 +31,9 @@ class TrendingStrategyFactory:
             TrendingType.UNDERGROUND_AGREEMENTS: {
                 TrendingVersion.EJ57D: UndergroundTrendingAgreementsStrategyEJ57D(),
             },
-            TrendingType.PLAYLISTS: {
-                TrendingVersion.EJ57D: TrendingPlaylistsStrategyEJ57D(),
-                TrendingVersion.BDNxn: TrendingPlaylistsStrategyBDNxn(),
+            TrendingType.CONTENT_LISTS: {
+                TrendingVersion.EJ57D: TrendingContentListsStrategyEJ57D(),
+                TrendingVersion.BDNxn: TrendingContentListsStrategyBDNxn(),
             },
         }
 

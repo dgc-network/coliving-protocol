@@ -1,23 +1,23 @@
 ---
-id: "full.FullTrendingPlaylistsResponse"
-title: "Interface: FullTrendingPlaylistsResponse"
-sidebar_label: "FullTrendingPlaylistsResponse"
+id: "full.FullTrendingContentListsResponse"
+title: "Interface: FullTrendingContentListsResponse"
+sidebar_label: "FullTrendingContentListsResponse"
 custom_edit_url: null
 ---
 
-[full](../namespaces/full.md).FullTrendingPlaylistsResponse
+[full](../namespaces/full.md).FullTrendingContentListsResponse
 
 **`export`**
 
-**`interface`** FullTrendingPlaylistsResponse
+**`interface`** FullTrendingContentListsResponse
 
 ## Properties
 
 ### data
 
- `Optional` **data**: [`PlaylistFull`](full.PlaylistFull.md)[]
+ `Optional` **data**: [`ContentListFull`](full.ContentListFull.md)[]
 
-**`memberof`** FullTrendingPlaylistsResponse
+**`memberof`** FullTrendingContentListsResponse
 
 ___
 
@@ -25,7 +25,7 @@ ___
 
  **latest\_chain\_block**: `number`
 
-**`memberof`** FullTrendingPlaylistsResponse
+**`memberof`** FullTrendingContentListsResponse
 
 ___
 
@@ -33,7 +33,7 @@ ___
 
  **latest\_chain\_slot\_plays**: `number`
 
-**`memberof`** FullTrendingPlaylistsResponse
+**`memberof`** FullTrendingContentListsResponse
 
 ___
 
@@ -41,7 +41,7 @@ ___
 
  **latest\_indexed\_block**: `number`
 
-**`memberof`** FullTrendingPlaylistsResponse
+**`memberof`** FullTrendingContentListsResponse
 
 ___
 
@@ -49,7 +49,7 @@ ___
 
  **latest\_indexed\_slot\_plays**: `number`
 
-**`memberof`** FullTrendingPlaylistsResponse
+**`memberof`** FullTrendingContentListsResponse
 
 ___
 
@@ -57,7 +57,7 @@ ___
 
  **signature**: `string`
 
-**`memberof`** FullTrendingPlaylistsResponse
+**`memberof`** FullTrendingContentListsResponse
 
 ___
 
@@ -65,7 +65,7 @@ ___
 
  **timestamp**: `string`
 
-**`memberof`** FullTrendingPlaylistsResponse
+**`memberof`** FullTrendingContentListsResponse
 
 ___
 
@@ -73,4 +73,4 @@ ___
 
  **version**: [`VersionMetadata`](full.VersionMetadata.md)
 
-**`memberof`** FullTrendingPlaylistsResponse
+**`memberof`** FullTrendingContentListsResponse

@@ -56,17 +56,17 @@ ___
 
 ___
 
-### GetTrendingPlaylistsTimeEnum
+### GetTrendingContentListsTimeEnum
 
- **GetTrendingPlaylistsTimeEnum**: `Object`
+ **GetTrendingContentListsTimeEnum**: `Object`
 
 **`export`**
 
 ___
 
-### GetTrendingPlaylistsWithVersionTimeEnum
+### GetTrendingContentListsWithVersionTimeEnum
 
- **GetTrendingPlaylistsWithVersionTimeEnum**: `Object`
+ **GetTrendingContentListsWithVersionTimeEnum**: `Object`
 
 **`export`**
 
@@ -118,9 +118,9 @@ ___
 
 ___
 
-### PlaylistsApi
+### ContentListsApi
 
- **PlaylistsApi**: `Object`
+ **ContentListsApi**: `Object`
 
 ___
 
@@ -276,13 +276,13 @@ ___
 
 ___
 
-### FullPlaylistResponse
+### FullContentListResponse
 
- **FullPlaylistResponse**: `Object`
+ **FullContentListResponse**: `Object`
 
 **`export`**
 
-**`interface`** FullPlaylistResponse
+**`interface`** FullContentListResponse
 
 ___
 
@@ -376,13 +376,13 @@ ___
 
 ___
 
-### FullTrendingPlaylistsResponse
+### FullTrendingContentListsResponse
 
- **FullTrendingPlaylistsResponse**: `Object`
+ **FullTrendingContentListsResponse**: `Object`
 
 **`export`**
 
-**`interface`** FullTrendingPlaylistsResponse
+**`interface`** FullTrendingContentListsResponse
 
 ___
 
@@ -426,9 +426,9 @@ ___
 
 ___
 
-### GetPlaylistRequest
+### GetContentListRequest
 
- **GetPlaylistRequest**: `Object`
+ **GetContentListRequest**: `Object`
 
 ___
 
@@ -556,15 +556,15 @@ ___
 
 ___
 
-### GetTrendingPlaylistsRequest
+### GetTrendingContentListsRequest
 
- **GetTrendingPlaylistsRequest**: `Object`
+ **GetTrendingContentListsRequest**: `Object`
 
 ___
 
-### GetTrendingPlaylistsWithVersionRequest
+### GetTrendingContentListsWithVersionRequest
 
- **GetTrendingPlaylistsWithVersionRequest**: `Object`
+ **GetTrendingContentListsWithVersionRequest**: `Object`
 
 ___
 
@@ -628,15 +628,15 @@ ___
 
 ___
 
-### GetUsersFromPlaylistFavoritesRequest
+### GetUsersFromContentListFavoritesRequest
 
- **GetUsersFromPlaylistFavoritesRequest**: `Object`
+ **GetUsersFromContentListFavoritesRequest**: `Object`
 
 ___
 
-### GetUsersFromPlaylistRepostsRequest
+### GetUsersFromContentListRepostsRequest
 
- **GetUsersFromPlaylistRepostsRequest**: `Object`
+ **GetUsersFromContentListRepostsRequest**: `Object`
 
 ___
 
@@ -662,43 +662,43 @@ ___
 
 ___
 
-### PlaylistAddedTimestamp
+### ContentListAddedTimestamp
 
- **PlaylistAddedTimestamp**: `Object`
+ **ContentListAddedTimestamp**: `Object`
 
 **`export`**
 
-**`interface`** PlaylistAddedTimestamp
+**`interface`** ContentListAddedTimestamp
 
 ___
 
-### PlaylistArtwork
+### ContentListArtwork
 
- **PlaylistArtwork**: `Object`
+ **ContentListArtwork**: `Object`
 
 **`export`**
 
-**`interface`** PlaylistArtwork
+**`interface`** ContentListArtwork
 
 ___
 
-### PlaylistFull
+### ContentListFull
 
- **PlaylistFull**: `Object`
+ **ContentListFull**: `Object`
 
 **`export`**
 
-**`interface`** PlaylistFull
+**`interface`** ContentListFull
 
 ___
 
-### PlaylistLibrary
+### ContentListLibrary
 
- **PlaylistLibrary**: `Object`
+ **ContentListLibrary**: `Object`
 
 **`export`**
 
-**`interface`** PlaylistLibrary
+**`interface`** ContentListLibrary
 
 ___
 

@@ -7,14 +7,14 @@ const processFavoriteNotifications = require('./favoriteNotification')
 const processRemixCreateNotifications = require('./remixCreateNotification')
 const processRemixCosignNotifications = require('./remixCosignNotification')
 const processCreateNotifications = require('./createNotification')
-const processPlaylistUpdateNotifications = require('./playlistUpdateNotification')
+const processContentListUpdateNotifications = require('./content listUpdateNotification')
 const processChallengeRewardNotifications = require('./challengeRewardNotification')
 const processMilestoneListenNotifications = require('./milestoneListenNotification')
 const processTierChangeNotifications = require('./tierChangeNotification')
 const processTipNotification = require('./tipNotification')
 const processReactionNotification = require('./reactionNotification')
 const processSupporterRankChangeNotification = require('./supporterRankChangeNotification')
-const processAddAgreementToPlaylistNotification = require('./addAgreementToPlaylistNotification')
+const processAddAgreementToContentListNotification = require('./addAgreementToContentListNotification')
 
 // Mapping of Notification type to processing function.
 const notificationMapping = {
@@ -24,14 +24,14 @@ const notificationMapping = {
   [notificationTypes.RemixCreate]: processRemixCreateNotifications,
   [notificationTypes.RemixCosign]: processRemixCosignNotifications,
   [notificationTypes.Create.base]: processCreateNotifications,
-  [notificationTypes.PlaylistUpdate]: processPlaylistUpdateNotifications,
+  [notificationTypes.ContentListUpdate]: processContentListUpdateNotifications,
   [notificationTypes.ChallengeReward]: processChallengeRewardNotifications,
   [notificationTypes.MilestoneListen]: processMilestoneListenNotifications,
   [notificationTypes.TierChange]: processTierChangeNotifications,
   [notificationTypes.Tip]: processTipNotification,
   [notificationTypes.Reaction]: processReactionNotification,
   [notificationTypes.SupporterRankUp]: processSupporterRankChangeNotification,
-  [notificationTypes.AddAgreementToPlaylist]: processAddAgreementToPlaylistNotification
+  [notificationTypes.AddAgreementToContentList]: processAddAgreementToContentListNotification
 
 }
 

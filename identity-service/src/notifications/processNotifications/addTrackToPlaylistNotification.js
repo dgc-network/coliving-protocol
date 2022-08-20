@@ -6,16 +6,16 @@ const {
 } = require('../constants')
 
 /**
- * Process agreement added to playlist notification
+ * Process agreement added to content list notification
  * @param {Array<Object>} notifications
  * @param {*} tx The DB transaction to attach to DB requests
  */
-async function processAddAgreementToPlaylistNotification (notifications, tx) {
+async function processAddAgreementToContentListNotification (notifications, tx) {
   const validNotifications = []
 
   for (const notification of notifications) {
     const {
-      playlist_id: playlistId,
+      content list_id: content listId,
       agreement_id: agreementId,
       agreement_owner_id: agreementOwnerId
     } = notification.metadata
@@ -23,14 +23,14 @@ async function processAddAgreementToPlaylistNotification (notifications, tx) {
     const momentTimestamp = moment(timestamp)
     const updatedTimestamp = momentTimestamp.add(1, 's').format('YYYY-MM-DD HH:mm:ss')
 
-    const [addAgreementToPlaylistNotification] = await models.Notification.findOrCreate({
+    const [addAgreementToContentListNotification] = await models.Notification.findOrCreate({
       where: {
-        type: notificationTypes.AddAgreementToPlaylist,
+        type: notificationTypes.AddAgreementToContentList,
         userId: agreementOwnerId,
         entityId: agreementId,
         metadata: {
-          playlistOwnerId: notification.initiator,
-          playlistId,
+          content listOwnerId: notification.initiator,
+          content listId,
           agreementId
         },
         blocknumber: notification.blocknumber,
@@ -41,7 +41,7 @@ async function processAddAgreementToPlaylistNotification (notifications, tx) {
 
     await models.NotificationAction.findOrCreate({
       where: {
-        notificationId: addAgreementToPlaylistNotification.id,
+        notificationId: addAgreementToContentListNotification.id,
         actionEntityType: actionEntityTypes.Agreement,
         actionEntityId: agreementId,
         blocknumber: notification.blocknumber
@@ -49,10 +49,10 @@ async function processAddAgreementToPlaylistNotification (notifications, tx) {
       transaction: tx
     })
 
-    validNotifications.push(addAgreementToPlaylistNotification)
+    validNotifications.push(addAgreementToContentListNotification)
   }
 
   return validNotifications
 }
 
-module.exports = processAddAgreementToPlaylistNotification
+module.exports = processAddAgreementToContentListNotification

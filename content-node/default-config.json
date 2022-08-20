@@ -3,7 +3,7 @@
   "awsBucket": "",
   "awsAccessKeyId": "",
   "awsSecretAccessKey": "",
-  "dbUrl": "postgres://postgres:postgres@localhost:4432/coliving_creator_node",
+  "dbUrl": "postgres://postgres:postgres@localhost:4432/coliving_content_node",
   "port": 4000,
   "logLevel": "debug",
   "redisHost": "localhost",

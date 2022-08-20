@@ -74,7 +74,7 @@ var challengeRewardsConfig = {
 var EntityType = Object.freeze({
   Agreement: 'Agreement',
   Album: 'Album',
-  Playlist: 'Playlist'
+  ContentList: 'ContentList'
 });
 
 var HighlightText = function HighlightText(_ref) {
@@ -135,9 +135,9 @@ var getEntity = function getEntity(entity) {
     }), /*#__PURE__*/_react["default"].createElement(HighlightText, {
       text: entity.name
     }), " ");
-  } else if (entity.type === EntityType.Playlist) {
+  } else if (entity.type === EntityType.ContentList) {
     return /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, null, " ", /*#__PURE__*/_react["default"].createElement(BodyText, {
-      text: 'playlist '
+      text: 'content list '
     }), /*#__PURE__*/_react["default"].createElement(HighlightText, {
       text: entity.name
     }), " ");
@@ -282,19 +282,19 @@ var notificationMap = (_notificationMap = {}, _defineProperty(_notificationMap, 
   })))), /*#__PURE__*/_react["default"].createElement(BodyText, {
     text: bodyText
   }));
-}), _defineProperty(_notificationMap, _constants.notificationTypes.AddAgreementToPlaylist, function (notification) {
+}), _defineProperty(_notificationMap, _constants.notificationTypes.AddAgreementToContentList, function (notification) {
   return /*#__PURE__*/_react["default"].createElement("span", {
     className: 'notificationText'
   }, /*#__PURE__*/_react["default"].createElement(HighlightText, {
-    text: notification.playlistOwner.name
+    text: notification.content listOwner.name
   }), /*#__PURE__*/_react["default"].createElement(BodyText, {
     text: " added your agreement "
   }), /*#__PURE__*/_react["default"].createElement(HighlightText, {
     text: notification.agreement.title
   }), /*#__PURE__*/_react["default"].createElement(BodyText, {
-    text: " to their playlist "
+    text: " to their content list "
   }), /*#__PURE__*/_react["default"].createElement(HighlightText, {
-    text: notification.playlist.playlist_name
+    text: notification.content list.content list_name
   }));
 }), _defineProperty(_notificationMap, _constants.notificationTypes.Reaction, function (notification) {
   return /*#__PURE__*/_react["default"].createElement("span", {

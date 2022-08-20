@@ -1,47 +1,47 @@
 const fs = require('fs')
 
-const Playlist = {}
+const ContentList = {}
 
-Playlist.createPlaylist = async (
+ContentList.createContentList = async (
   libs,
   userId,
-  playlistName,
+  content listName,
   isPrivate,
   isAlbum,
   agreementIds
 ) => {
-  const createPlaylistTxReceipt = await libs.createPlaylist(
+  const createContentListTxReceipt = await libs.createContentList(
     userId,
-    playlistName,
+    content listName,
     isPrivate,
     isAlbum,
     agreementIds
   )
-  return createPlaylistTxReceipt
+  return createContentListTxReceipt
 }
 
-Playlist.uploadPlaylistCoverPhoto = async (
+ContentList.uploadContentListCoverPhoto = async (
   libs,
   coverPhotoFilePath
 ) => {
   const coverPhotoFile = fs.createReadStream(coverPhotoFilePath)
-  const dirCid = await libs.uploadPlaylistCoverPhoto(coverPhotoFile)
+  const dirCid = await libs.uploadContentListCoverPhoto(coverPhotoFile)
   return dirCid
 }
 
-Playlist.updatePlaylistCoverPhoto = async (
+ContentList.updateContentListCoverPhoto = async (
   libs,
-  playlistId,
-  updatedPlaylistImageMultihashDigest
+  content listId,
+  updatedContentListImageMultihashDigest
 ) => {
-  const updatePlaylistCoverPhotoTxReceipt = await libs.updatePlaylistCoverPhoto(
-    playlistId,
-    updatedPlaylistImageMultihashDigest
+  const updateContentListCoverPhotoTxReceipt = await libs.updateContentListCoverPhoto(
+    content listId,
+    updatedContentListImageMultihashDigest
   )
-  return updatePlaylistCoverPhotoTxReceipt
+  return updateContentListCoverPhotoTxReceipt
 }
 
-Playlist.getPlaylists = async (
+ContentList.getContentLists = async (
   libs,
   limit = 100,
   offset = 0,
@@ -49,15 +49,15 @@ Playlist.getPlaylists = async (
   targetUserId = null,
   withUsers = false
 ) => {
-  return await libs.getPlaylists(limit, offset, idsArray, targetUserId, withUsers)
+  return await libs.getContentLists(limit, offset, idsArray, targetUserId, withUsers)
 }
 
-Playlist.addPlaylistAgreement = async (
+ContentList.addContentListAgreement = async (
   libs,
-  playlistId,
+  content listId,
   agreementId
 ) => {
-  return await libs.addPlaylistAgreement(playlistId, agreementId)
+  return await libs.addContentListAgreement(content listId, agreementId)
 }
 
-module.exports = Playlist
+module.exports = ContentList

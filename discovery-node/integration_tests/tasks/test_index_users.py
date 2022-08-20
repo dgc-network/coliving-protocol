@@ -147,8 +147,8 @@ cid_metadata_client = CIDMetadataClient(
             "cover_photo_sizes": "QmQnJ8uXf886crAticzPGgrfqxq68kAxBXXcK73geFakUo",
             "bio": "ðŸŒ\n;",
             "location": "chik fil yay!",
-            "content_node_endpoint": "https://creatornode2.coliving.co,https://creatornode.coliving.co,"
-            + "https://content-node.coliving.co",
+            "content_node_endpoint": "https://creatornode2.coliving.lol,https://creatornode.coliving.lol,"
+            + "https://content-node.coliving.lol",
             "associated_wallets": {
                 "0xEfFe2E2Dfc7945ED6Fd4C07c0B668589C52819BF": {
                     "signature": "0xdde72a90dad4a0027ca87630a2b5615240d9ad545f2fc50e24952a2b4f2c5a"
@@ -169,23 +169,23 @@ cid_metadata_client = CIDMetadataClient(
                 "73:::0x417cf58dc18edd17025689d13af2b85f403e130c": {},
                 "order": ["73:::0x417cf58dc18edd17025689d13af2b85f403e130c"],
             },
-            "playlist_library": {
+            "content list_library": {
                 "contents": [
                     {
                         "type": "folder",
-                        "name": "my favorite playlists",
+                        "name": "my favorite content lists",
                         "contents": [
-                            {"type": "playlist", "playlist_id": 500},
+                            {"type": "content list", "content list_id": 500},
                             {
-                                "type": "explore_playlist",
-                                "playlist_id": "heavy-rotation",
+                                "type": "explore_content list",
+                                "content list_id": "heavy-rotation",
                             },
                         ],
                     },
-                    {"type": "playlist", "playlist_id": 501},
-                    {"type": "playlist", "playlist_id": 502},
-                    {"type": "explore_playlist", "playlist_id": "feeling-lucky"},
-                    {"type": "playlist", "playlist_id": 503},
+                    {"type": "content list", "content list_id": 501},
+                    {"type": "content list", "content list_id": 502},
+                    {"type": "explore_content list", "content list_id": "feeling-lucky"},
+                    {"type": "content list", "content list_id": 503},
                 ]
             },
             "events": {
@@ -328,7 +328,7 @@ def test_index_users(bus_mock: mock.MagicMock, app):
         # `content_node_endpoint` field is none by default
         assert user_record.content_node_endpoint == None
 
-        # Set primary id so that creator node endpoints is not set
+        # Set primary id so that content node endpoints is not set
         assert user_record.primary_id == None
         user_record.primary_id = 1
 
@@ -461,7 +461,7 @@ def test_index_users(bus_mock: mock.MagicMock, app):
         )
         assert user_record.cover_photo_sizes == ipfs_metadata["cover_photo_sizes"]
         assert user_record.has_collectibles == True
-        assert user_record.playlist_library == ipfs_metadata["playlist_library"]
+        assert user_record.content list_library == ipfs_metadata["content list_library"]
 
         assert user_record.is_deactivated == True
 

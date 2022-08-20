@@ -312,7 +312,7 @@ basic_entities = {
         {
             "user_id": 1,
             "is_current": True,
-            "creator_node_endpoint": "https://creatornode2.coliving.co,https://creatornode3.coliving.co,https://content-node.coliving.co",
+            "content_node_endpoint": "https://creatornode2.coliving.lol,https://creatornode3.coliving.lol,https://content-node.coliving.lol",
         }
     ],
 }
@@ -387,11 +387,11 @@ mock_cid_metadata = {
         "cover_photo_sizes": None,
         "bio": None,
         "location": None,
-        "creator_node_endpoint": "https://creatornode3.coliving.co,https://creatornode2.coliving.co,https://content-node.coliving.co",
+        "content_node_endpoint": "https://creatornode3.coliving.lol,https://creatornode2.coliving.lol,https://content-node.coliving.lol",
         "associated_wallets": None,
         "associated_sol_wallets": None,
         "collectibles": None,
-        "playlist_library": None,
+        "content list_library": None,
         "events": None,
         "user_id": 1,
     }

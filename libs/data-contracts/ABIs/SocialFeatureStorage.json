@@ -170,11 +170,11 @@
           "type": "uint256"
         },
         {
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         }
       ],
-      "name": "addPlaylistRepost",
+      "name": "addContentListRepost",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -188,11 +188,11 @@
           "type": "uint256"
         },
         {
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         }
       ],
-      "name": "deletePlaylistRepost",
+      "name": "deleteContentListRepost",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -206,11 +206,11 @@
           "type": "uint256"
         },
         {
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         }
       ],
-      "name": "userRepostedPlaylist",
+      "name": "userRepostedContentList",
       "outputs": [
         {
           "name": "",

@@ -3,39 +3,39 @@ const moment = require('moment-timezone')
 const models = require('../../models')
 const { sequelize, Sequelize } = require('../../models')
 
-const logPrefix = 'notifications playlist updates -'
+const logPrefix = 'notifications content list updates -'
 
 /**
- * Process playlist update notifications
- * upsert lastUpdated and userLastViewed in the DB for each subscriber of a playlist
+ * Process content list update notifications
+ * upsert lastUpdated and userLastViewed in the DB for each subscriber of a content list
  * @param {Array<Object>} notifications
  * @param {*} tx The DB transaction to attach to DB requests
  */
-async function processPlaylistUpdateNotifications (notifications, tx) {
+async function processContentListUpdateNotifications (notifications, tx) {
   /**
-     * keep agreement of last playlist updates for each user that favorited playlists
-     * e.g. { user1: { playlist1: <timestamp1>, playlist2: <timestamp2>, ... }, ... }
+     * keep agreement of last content list updates for each user that favorited content lists
+     * e.g. { user1: { content list1: <timestamp1>, content list2: <timestamp2>, ... }, ... }
      */
   const startTime = Date.now()
   logger.info(`${logPrefix} num notifications: ${notifications.length}, start: ${startTime}`)
-  const userPlaylistUpdatesMap = {}
+  const userContentListUpdatesMap = {}
   notifications.forEach(notification => {
     const { metadata } = notification
     const {
-      entity_id: playlistId,
-      playlist_update_timestamp: playlistUpdatedAt,
-      playlist_update_users: userIds
+      entity_id: content listId,
+      content list_update_timestamp: content listUpdatedAt,
+      content list_update_users: userIds
     } = metadata
     userIds.forEach(userId => {
-      if (userPlaylistUpdatesMap[userId]) {
-        userPlaylistUpdatesMap[userId][playlistId] = playlistUpdatedAt
+      if (userContentListUpdatesMap[userId]) {
+        userContentListUpdatesMap[userId][content listId] = content listUpdatedAt
       } else {
-        userPlaylistUpdatesMap[userId] = { [playlistId]: playlistUpdatedAt }
+        userContentListUpdatesMap[userId] = { [content listId]: content listUpdatedAt }
       }
     })
   })
 
-  const userIds = Object.keys(userPlaylistUpdatesMap)
+  const userIds = Object.keys(userContentListUpdatesMap)
   logger.info(`${logPrefix} parsed notifications, num user ids: ${userIds.length}, time: ${Date.now() - startTime}ms`)
 
   // get wallets for all user ids and map each blockchain user id to their wallet
@@ -56,9 +56,9 @@ async function processPlaylistUpdateNotifications (notifications, tx) {
 
   logger.info(`${logPrefix} made wallet map, time: ${Date.now() - startTime}ms`)
 
-  // get playlist updates for all wallets and map each wallet to its playlist updates
-  const userWalletsAndPlaylistUpdates = await models.UserEvents.findAll({
-    attributes: ['walletAddress', 'playlistUpdates'],
+  // get content list updates for all wallets and map each wallet to its content list updates
+  const userWalletsAndContentListUpdates = await models.UserEvents.findAll({
+    attributes: ['walletAddress', 'content listUpdates'],
     where: {
       walletAddress: Object.values(userIdToWalletsMap)
     },
@@ -67,41 +67,41 @@ async function processPlaylistUpdateNotifications (notifications, tx) {
 
   logger.info(`${logPrefix} found updates, time: ${Date.now() - startTime}ms`)
 
-  const userWalletToPlaylistUpdatesMap = {}
-  for (const { walletAddress, playlistUpdates } of userWalletsAndPlaylistUpdates) {
-    userWalletToPlaylistUpdatesMap[walletAddress] = playlistUpdates
+  const userWalletToContentListUpdatesMap = {}
+  for (const { walletAddress, content listUpdates } of userWalletsAndContentListUpdates) {
+    userWalletToContentListUpdatesMap[walletAddress] = content listUpdates
   }
 
-  logger.info(`${logPrefix} mapped updates, num updates: ${userWalletsAndPlaylistUpdates.length}, time: ${Date.now() - startTime}ms`)
+  logger.info(`${logPrefix} mapped updates, num updates: ${userWalletsAndContentListUpdates.length}, time: ${Date.now() - startTime}ms`)
 
   const newUserEvents = userIds
     .map(userId => {
       const walletAddress = userIdToWalletsMap[userId]
       if (!walletAddress) return null
 
-      const dbPlaylistUpdates = userWalletToPlaylistUpdatesMap[walletAddress] || {}
-      const fetchedPlaylistUpdates = userPlaylistUpdatesMap[userId]
-      Object.keys(fetchedPlaylistUpdates).forEach(playlistId => {
-        const fetchedLastUpdated = moment(fetchedPlaylistUpdates[playlistId]).utc()
-        dbPlaylistUpdates[playlistId] = {
+      const dbContentListUpdates = userWalletToContentListUpdatesMap[walletAddress] || {}
+      const fetchedContentListUpdates = userContentListUpdatesMap[userId]
+      Object.keys(fetchedContentListUpdates).forEach(content listId => {
+        const fetchedLastUpdated = moment(fetchedContentListUpdates[content listId]).utc()
+        dbContentListUpdates[content listId] = {
           // in case user favorited this agreement before and has no UserEvent record of it
           userLastViewed: fetchedLastUpdated.subtract(1, 'seconds').valueOf(),
-          ...dbPlaylistUpdates[playlistId],
+          ...dbContentListUpdates[content listId],
           lastUpdated: fetchedLastUpdated.valueOf()
         }
       })
 
-      return [walletAddress, JSON.stringify(dbPlaylistUpdates)]
+      return [walletAddress, JSON.stringify(dbContentListUpdates)]
     })
     .filter(Boolean)
 
   logger.info(`${logPrefix} mapped events, time: ${Date.now() - startTime}ms`)
 
   const results = await sequelize.query(`
-    INSERT INTO "UserEvents" ("walletAddress", "playlistUpdates", "createdAt", "updatedAt")
+    INSERT INTO "UserEvents" ("walletAddress", "content listUpdates", "createdAt", "updatedAt")
     VALUES ${newUserEvents.map(_ => '(?,now(),now())').join(',')}
     ON CONFLICT ("walletAddress") DO UPDATE
-      SET "playlistUpdates" = "excluded"."playlistUpdates"
+      SET "content listUpdates" = "excluded"."content listUpdates"
   `, {
     replacements: newUserEvents,
     type: Sequelize.QueryTypes.INSERT
@@ -111,4 +111,4 @@ async function processPlaylistUpdateNotifications (notifications, tx) {
   return notifications
 }
 
-module.exports = processPlaylistUpdateNotifications
+module.exports = processContentListUpdateNotifications

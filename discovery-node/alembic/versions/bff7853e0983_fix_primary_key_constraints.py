@@ -34,9 +34,9 @@ def upgrade():
             ALTER TABLE agreements ADD COLUMN IF NOT EXISTS txhash VARCHAR DEFAULT('') NOT NULL;
             ALTER TABLE agreements ADD CONSTRAINT agreements_pkey PRIMARY KEY (is_current, agreement_id, blockhash, txhash);
 
-            ALTER TABLE playlists DROP CONSTRAINT playlists_pkey;
-            ALTER TABLE playlists ADD COLUMN IF NOT EXISTS txhash VARCHAR DEFAULT('') NOT NULL;
-            ALTER TABLE playlists ADD CONSTRAINT playlists_pkey PRIMARY KEY (is_current, playlist_id, playlist_owner_id, blockhash, txhash);
+            ALTER TABLE content lists DROP CONSTRAINT content lists_pkey;
+            ALTER TABLE content lists ADD COLUMN IF NOT EXISTS txhash VARCHAR DEFAULT('') NOT NULL;
+            ALTER TABLE content lists ADD CONSTRAINT content lists_pkey PRIMARY KEY (is_current, content list_id, content list_owner_id, blockhash, txhash);
 
             ALTER TABLE reposts DROP CONSTRAINT reposts_pkey;
             ALTER TABLE reposts ADD COLUMN IF NOT EXISTS txhash VARCHAR DEFAULT('') NOT NULL;
@@ -72,9 +72,9 @@ def downgrade():
             ALTER TABLE agreements DROP COLUMN txhash;
             ALTER TABLE agreements ADD CONSTRAINT agreements_pkey PRIMARY KEY (is_current, agreement_id, blockhash);
 
-            ALTER TABLE playlists DROP CONSTRAINT playlists_pkey;
-            ALTER TABLE playlists DROP COLUMN txhash;
-            ALTER TABLE playlists ADD CONSTRAINT playlists_pkey PRIMARY KEY (is_current, playlist_id, playlist_owner_id, blockhash);
+            ALTER TABLE content lists DROP CONSTRAINT content lists_pkey;
+            ALTER TABLE content lists DROP COLUMN txhash;
+            ALTER TABLE content lists ADD CONSTRAINT content lists_pkey PRIMARY KEY (is_current, content list_id, content list_owner_id, blockhash);
 
             ALTER TABLE reposts DROP CONSTRAINT reposts_pkey;
             ALTER TABLE reposts DROP COLUMN txhash;

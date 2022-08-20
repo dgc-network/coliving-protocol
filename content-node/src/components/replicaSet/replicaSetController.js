@@ -74,7 +74,7 @@ const syncRouteController = async (req, res) => {
   const nodeConfig = serviceRegistry.nodeConfig
 
   const walletPublicKeys = req.body.wallet // array
-  const contentNodeEndpoint = req.body.creator_node_endpoint // string
+  const contentNodeEndpoint = req.body.content_node_endpoint // string
   const immediate = req.body.immediate === true || req.body.immediate === 'true' // boolean - default false
   const blockNumber = req.body.blockNumber // integer
   const forceResync =

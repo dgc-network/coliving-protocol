@@ -36,13 +36,13 @@ last block number parsed.
 type enum values = 
   | 'Follow'
   | 'RepostAgreement'
-  | 'RepostPlaylist'
+  | 'RepostContentList'
   | 'RepostAlbum'
   | 'FavoriteAgreement'
-  | 'FavoritePlaylist'
+  | 'FavoriteContentList'
   | 'FavoriteAlbum'
   | 'CreateAgreement'
-  | 'CreatePlaylist'
+  | 'CreateContentList'
   | 'CreateAlbum'
   | 'Announcement'
   | 'MilestoneListen'
@@ -88,7 +88,7 @@ Note if user U3 checks the notification after U1 follows and before U2 follows, 
 two notification db entries will be created w/ the new U2 follow referencing the new 
 notification. 
 
-**Repost (Agreement/Playlist/Album)**  
+**Repost (Agreement/ContentList/Album)**  
 Scenario: User U1 and U2 repost Agreement T1 owned by U3
 DB Entries
 * Notification - userId: U3, entityId: T1, type: 'RepostAgreement'
@@ -98,23 +98,23 @@ DB Entries
 Note: if user U3 checks the notification after U1 reposts and before U3 reposts, then 
 two notification db entries will be created w/ the new U2 repost referencing the new 
 notification.  
-Note: The pattern is the same for agreements/playlists/album with the only difference being 
-the notification type field being 'RepostAgreement', 'RepostPlaylist', 'RepostAlbum'
+Note: The pattern is the same for agreements/content lists/album with the only difference being 
+the notification type field being 'RepostAgreement', 'RepostContentList', 'RepostAlbum'
 
-**Favorite (Agreement/Playlist/Album)**  
-Scenario: User U1 and U2 favorite Playlist P1 owned by U3  
+**Favorite (Agreement/ContentList/Album)**  
+Scenario: User U1 and U2 favorite ContentList P1 owned by U3  
 DB Entries
-* Notification - userId: U3, entityId: P1, type: 'FavoritePlaylist'
+* Notification - userId: U3, entityId: P1, type: 'FavoriteContentList'
   * NotificationAction - actionEntityType: 'user', entityId: U1  
   * NotificationAction - actionEntityType: 'user', entityId: U2  
 
 Note if user U3 checks the notification after U1 favorites and before U2 favorites, then 
 two notification db entries will be created w/ the new U2 favorite referencing the new 
 notification.  
-Note: The pattern is the same for agreements/playlists/album with the only difference being 
-the notification type field being 'FavoriteAgreement', 'FavoritePlaylist', 'FavoriteAlbum'
+Note: The pattern is the same for agreements/content lists/album with the only difference being 
+the notification type field being 'FavoriteAgreement', 'FavoriteContentList', 'FavoriteAlbum'
 
-**Create (Agreement/Playlist/Album)**  
+**Create (Agreement/ContentList/Album)**  
 Scenario: User U1 and U2 subscribe to user U3 and U3 uploads a public Agreement T1  
 DB Entries
 * Notification - userId: U1, entityId: U3, type: 'CreateAgreement'
@@ -122,15 +122,15 @@ DB Entries
 * Notification - userId: U2, entityId: P1, type: 'CreateAgreement'
   * NotificationAction - actionEntityType: 'agreement', entityId: T1  
 
-Scenario: User U1 subscribes to user U3 and U3 uploads a public Playlist P1  
+Scenario: User U1 subscribes to user U3 and U3 uploads a public ContentList P1  
 DB Entries
-* Notification - userId: U1, entityId: P1, type: 'CreatePlaylist'
-  * NotificationAction - actionEntityType: 'playlist', entityId: U3  
+* Notification - userId: U1, entityId: P1, type: 'CreateContentList'
+  * NotificationAction - actionEntityType: 'content list', entityId: U3  
 
-Note: The pattern for create playlist and album are the same for with the only difference being 
-the notification type field 'CreatePlaylist', 'CreateAlbum'  
-Note: The reason agreement creation notifications are different from playlist/album notifications 
-is because agreements can be grouped together, but playlist/album creation cannot be.  
+Note: The pattern for create content list and album are the same for with the only difference being 
+the notification type field 'CreateContentList', 'CreateAlbum'  
+Note: The reason agreement creation notifications are different from content list/album notifications 
+is because agreements can be grouped together, but content list/album creation cannot be.  
 
 **Announcement**  
 Scenario: New product feature notification to be sent to all users.  

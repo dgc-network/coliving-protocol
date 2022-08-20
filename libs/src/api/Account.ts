@@ -80,7 +80,7 @@ export class Account extends Base {
     )
     if (userAccount) {
       this.userStateManager.setCurrentUser(userAccount)
-      const contentNodeEndpoint = userAccount.creator_node_endpoint
+      const contentNodeEndpoint = userAccount.content_node_endpoint
       if (contentNodeEndpoint) {
         this.creatorNode.setEndpoint(
           CreatorNode.getPrimary(contentNodeEndpoint)!
@@ -144,7 +144,7 @@ export class Account extends Base {
     let userId, blockHash, blockNumber
 
     try {
-      this.REQUIRES(Services.CREATOR_NODE, Services.IDENTITY_SERVICE)
+      this.REQUIRES(Services.CONTENT_NODE, Services.IDENTITY_SERVICE)
 
       if (this.web3Manager.web3IsExternal()) {
         phase = phases.CREATE_USER_RECORD
@@ -205,7 +205,7 @@ export class Account extends Base {
       blockHash = response.blockHash
       blockNumber = response.blockNumber
 
-      // Assign replica set to user, updates creator_node_endpoint on chain, and then update metadata object on content node + chain (in this order)
+      // Assign replica set to user, updates content_node_endpoint on chain, and then update metadata object on content node + chain (in this order)
       phase = phases.ADD_REPLICA_SET
       metadata = (await this.User.assignReplicaSet({ userId }))!
 
@@ -327,24 +327,24 @@ export class Account extends Base {
   }
 
   /**
-   * Updates a user's creator node endpoint. Sets the connected creator node in the libs instance
+   * Updates a user's content node endpoint. Sets the connected content node in the libs instance
    * and updates the user's metadata blob.
    */
   async updateCreatorNodeEndpoint(url: string) {
-    this.REQUIRES(Services.CREATOR_NODE)
+    this.REQUIRES(Services.CONTENT_NODE)
 
     const user = this.userStateManager.getCurrentUser() as User
     await this.creatorNode.setEndpoint(url)
-    user.creator_node_endpoint = url
+    user.content_node_endpoint = url
     await this.User.updateCreator(user.user_id, user)
   }
 
   /**
-   * Perform a full-text search. Returns agreements, users, playlists, albums
+   * Perform a full-text search. Returns agreements, users, content lists, albums
    *    with optional user-specific results for each
-   *  - user, agreement, and playlist objects have all same data as returned from standalone endpoints
+   *  - user, agreement, and content list objects have all same data as returned from standalone endpoints
    * @param text search query
-   * @param kind 'agreements', 'users', 'playlists', 'albums', 'all'
+   * @param kind 'agreements', 'users', 'content lists', 'albums', 'all'
    * @param limit max # of items to return per list (for pagination)
    * @param offset offset into list to return from (for pagination)
    */
@@ -354,9 +354,9 @@ export class Account extends Base {
   }
 
   /**
-   * Perform a lighter-weight full-text search. Returns agreements, users, playlists, albums
+   * Perform a lighter-weight full-text search. Returns agreements, users, content lists, albums
    *    with optional user-specific results for each
-   *  - user, agreement, and playlist objects have core data, and agreement & playlist objects
+   *  - user, agreement, and content list objects have core data, and agreement & content list objects
    *    also return user object
    * @param text search query
    * @param limit max # of items to return per list (for pagination)
@@ -372,7 +372,7 @@ export class Account extends Base {
    * that have used a tag greater than a specified number of times
    * @param text search query
    * @param userTagCount min # of times a user must have used a tag to be returned
-   * @param kind 'agreements', 'users', 'playlists', 'albums', 'all'
+   * @param kind 'agreements', 'users', 'content lists', 'albums', 'all'
    * @param limit max # of items to return per list (for pagination)
    * @param offset offset into list to return from (for pagination)
    */

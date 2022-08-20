@@ -25,10 +25,10 @@ const readFile = promisify(fs.readFile)
 const router = express.Router()
 
 /**
- * Create Playlist from provided metadata, and make metadata available to network
+ * Create ContentList from provided metadata, and make metadata available to network
  */
 router.post(
-  '/playlists/metadata',
+  '/content lists/metadata',
   authMiddleware,
   ensurePrimaryMiddleware,
   ensureStorageMiddleware,
@@ -38,7 +38,7 @@ router.post(
     const cnodeUserUUID = req.session.cnodeUserUUID
     const isValidMetadata = validateMetadata(req, metadataJSON)
     if (!isValidMetadata) {
-      return errorResponseBadRequest('Invalid Playlist Metadata')
+      return errorResponseBadRequest('Invalid ContentList Metadata')
     }
 
     // Save file from buffer to disk
@@ -74,7 +74,7 @@ router.post(
     } catch (e) {
       await transaction.rollback()
       return errorResponseServerError(
-        `Could not save playlist metadata to db: ${e}`
+        `Could not save content list metadata to db: ${e}`
       )
     }
 
@@ -89,11 +89,11 @@ router.post(
 )
 
 /**
- * Given playlist blockchainId, blockNumber, and metadataFileUUID, creates/updates Playlist DB entry
- * and associates image file entries with playlist. Ends playlist creation/update process.
+ * Given content list blockchainId, blockNumber, and metadataFileUUID, creates/updates ContentList DB entry
+ * and associates image file entries with content list. Ends content list creation/update process.
  */
 router.post(
-  '/playlists',
+  '/content lists',
   authMiddleware,
   ensurePrimaryMiddleware,
   ensureStorageMiddleware,
@@ -134,31 +134,31 @@ router.post(
       )
     }
 
-    // Get playlistImageFileUUID for multihashes in metadata object, if present.
-    let playlistImageFileUUID
+    // Get content listImageFileUUID for multihashes in metadata object, if present.
+    let contentListImageFileUUID
     try {
-      playlistImageFileUUID =
+      contentListImageFileUUID =
         await validateStateForImageDirCIDAndReturnFileUUID(
           req,
-          metadataJSON.playlist_image_sizes_multihash
+          metadataJSON.content_list_image_sizes_multihash
         )
     } catch (e) {
       return errorResponseBadRequest(e.message)
     }
 
-    // Record Playlist entry + update CNodeUser entry in DB
+    // Record ContentList entry + update CNodeUser entry in DB
     const transaction = await models.sequelize.transaction()
     try {
-      const createPlaylistQueryObj = {
+      const createContentListQueryObj = {
         metadataFileUUID,
         metadataJSON,
         blockchainId,
-        playlistImageFileUUID
+        contentListImageFileUUID
       }
       await DBManager.createNewDataRecord(
-        createPlaylistQueryObj,
+        createContentListQueryObj,
         cnodeUserUUID,
-        models.Playlist,
+        models.ContentList,
         transaction
       )
 

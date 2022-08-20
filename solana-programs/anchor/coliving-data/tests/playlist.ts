@@ -11,21 +11,21 @@ import {
 } from "../lib/utils";
 import { ColivingData } from "../target/types/coliving_data";
 import {
-  testCreatePlaylist,
+  testCreateContentList,
   createSolanaContentNode,
   initTestConstants,
   testCreateUser,
   testInitUser,
   testInitUserSolPubkey,
-  testDeletePlaylist,
-  testUpdatePlaylist,
+  testDeleteContentList,
+  testUpdateContentList,
 } from "./test-helpers";
 
 const { SystemProgram } = anchor.web3;
 
 chai.use(chaiAsPromised);
 
-describe("playlists", function () {
+describe("content lists", function () {
   const provider = anchor.AnchorProvider.local("http://localhost:8899", {
     preflightCommitment: "confirmed",
     commitment: "confirmed",
@@ -104,7 +104,7 @@ describe("playlists", function () {
     contentNodes["3"] = cn3;
   });
 
-  it("Initializing + claiming user, creating + updating playlist", async function () {
+  it("Initializing + claiming user, creating + updating content list", async function () {
     const { ethAccount, userId, metadata } = initTestConstants();
 
     const {
@@ -147,19 +147,19 @@ describe("playlists", function () {
       userAccount: userAccountAddress,
     });
 
-    const playlistMetadata = randomCID();
-    const playlistID = randomId();
+    const content listMetadata = randomCID();
+    const content listID = randomId();
 
-    await testCreatePlaylist({
+    await testCreateContentList({
       provider,
       program,
       baseAuthorityAccount,
       userId,
       bumpSeed,
-      id: playlistID,
-      playlistMetadata,
+      id: content listID,
+      content listMetadata,
       userAuthorityKeypair: newUserKeypair,
-      playlistOwner: userAccountAddress,
+      content listOwner: userAccountAddress,
       userAuthorityDelegateAccount: SystemProgram.programId,
       authorityDelegationStatusAccount: SystemProgram.programId,
       adminAccount: adminAccountKeypair.publicKey,
@@ -171,16 +171,16 @@ describe("playlists", function () {
       `Expecting error with public key ${wrongUserKeypair.publicKey}`
     );
     try {
-      await testCreatePlaylist({
+      await testCreateContentList({
         provider,
         program,
         baseAuthorityAccount,
         userId,
         bumpSeed,
         id: randomId(),
-        playlistMetadata,
+        content listMetadata,
         userAuthorityKeypair: wrongUserKeypair,
-        playlistOwner: userAccountAddress,
+        content listOwner: userAccountAddress,
         userAuthorityDelegateAccount: SystemProgram.programId,
         authorityDelegationStatusAccount: SystemProgram.programId,
         adminAccount: adminAccountKeypair.publicKey,
@@ -188,24 +188,24 @@ describe("playlists", function () {
     } catch (e) {
       console.log(`Error found as expected ${e}`);
     }
-    const updatedPlaylistMetadata = randomCID();
-    await testUpdatePlaylist({
+    const updatedContentListMetadata = randomCID();
+    await testUpdateContentList({
       provider,
       program,
       baseAuthorityAccount,
       userId,
       bumpSeed,
       adminAccount: adminAccountKeypair.publicKey,
-      id: playlistID,
+      id: content listID,
       userAccount: userAccountAddress,
       userAuthorityDelegateAccount: SystemProgram.programId,
       authorityDelegationStatusAccount: SystemProgram.programId,
       userAuthorityKeypair: newUserKeypair,
-      metadata: updatedPlaylistMetadata,
+      metadata: updatedContentListMetadata,
     });
   });
 
-  it("creating + deleting a playlist", async function () {
+  it("creating + deleting a content list", async function () {
     const { ethAccount, metadata, userId } = initTestConstants();
 
     const {
@@ -250,29 +250,29 @@ describe("playlists", function () {
       ...getURSMParams(),
     });
 
-    const playlistMetadata = randomCID();
-    const playlistID = randomId();
+    const content listMetadata = randomCID();
+    const content listID = randomId();
 
-    await testCreatePlaylist({
+    await testCreateContentList({
       provider,
       program,
-      id: playlistID,
+      id: content listID,
       baseAuthorityAccount,
       userId,
       adminAccount: adminAccountKeypair.publicKey,
       bumpSeed,
-      playlistMetadata,
+      content listMetadata,
       userAuthorityKeypair: newUserKeypair,
-      playlistOwner: userAccountAddress,
+      content listOwner: userAccountAddress,
       userAuthorityDelegateAccount: SystemProgram.programId,
       authorityDelegationStatusAccount: SystemProgram.programId,
     });
 
-    await testDeletePlaylist({
+    await testDeleteContentList({
       provider,
       program,
-      id: playlistID,
-      playlistOwner: userAccountAddress,
+      id: content listID,
+      content listOwner: userAccountAddress,
       userAuthorityDelegateAccount: SystemProgram.programId,
       authorityDelegationStatusAccount: SystemProgram.programId,
       userAuthorityKeypair: newUserKeypair,
@@ -283,7 +283,7 @@ describe("playlists", function () {
     });
   });
 
-  it("create multiple playlists in parallel", async function () {
+  it("create multiple content lists in parallel", async function () {
     const { ethAccount, metadata, userId } = initTestConstants();
 
     const {
@@ -328,12 +328,12 @@ describe("playlists", function () {
       ...getURSMParams(),
     });
 
-    const playlistMetadata = randomCID();
-    const playlistMetadata2 = randomCID();
-    const playlistMetadata3 = randomCID();
+    const content listMetadata = randomCID();
+    const content listMetadata2 = randomCID();
+    const content listMetadata3 = randomCID();
     const start = Date.now();
     await Promise.all([
-      testCreatePlaylist({
+      testCreateContentList({
         provider,
         program,
         baseAuthorityAccount,
@@ -341,13 +341,13 @@ describe("playlists", function () {
         bumpSeed,
         adminAccount: adminAccountKeypair.publicKey,
         id: randomId(),
-        playlistMetadata,
+        content listMetadata,
         userAuthorityKeypair: newUserKeypair,
-        playlistOwner: userAccountAddress,
+        content listOwner: userAccountAddress,
         userAuthorityDelegateAccount: SystemProgram.programId,
         authorityDelegationStatusAccount: SystemProgram.programId,
       }),
-      testCreatePlaylist({
+      testCreateContentList({
         provider,
         program,
         baseAuthorityAccount,
@@ -355,13 +355,13 @@ describe("playlists", function () {
         bumpSeed,
         adminAccount: adminAccountKeypair.publicKey,
         id: randomId(),
-        playlistMetadata: playlistMetadata2,
+        content listMetadata: content listMetadata2,
         userAuthorityKeypair: newUserKeypair,
-        playlistOwner: userAccountAddress,
+        content listOwner: userAccountAddress,
         userAuthorityDelegateAccount: SystemProgram.programId,
         authorityDelegationStatusAccount: SystemProgram.programId,
       }),
-      testCreatePlaylist({
+      testCreateContentList({
         provider,
         program,
         baseAuthorityAccount,
@@ -369,13 +369,13 @@ describe("playlists", function () {
         bumpSeed,
         adminAccount: adminAccountKeypair.publicKey,
         id: randomId(),
-        playlistMetadata: playlistMetadata3,
+        content listMetadata: content listMetadata3,
         userAuthorityKeypair: newUserKeypair,
-        playlistOwner: userAccountAddress,
+        content listOwner: userAccountAddress,
         userAuthorityDelegateAccount: SystemProgram.programId,
         authorityDelegationStatusAccount: SystemProgram.programId,
       }),
     ]);
-    console.log(`Created 3 playlists in ${Date.now() - start}ms`);
+    console.log(`Created 3 content lists in ${Date.now() - start}ms`);
   });
 });

@@ -23,7 +23,7 @@ def make_image(endpoint, cid, width="", height=""):
 
 
 def get_primary_endpoint(user):
-    raw_endpoint = user["creator_node_endpoint"]
+    raw_endpoint = user["content_node_endpoint"]
     if not raw_endpoint:
         return shared_config["discprov"]["user_metadata_service_url"]
     return raw_endpoint.split(",")[0]
@@ -45,27 +45,27 @@ def add_agreement_artwork(agreement):
     return agreement
 
 
-def add_playlist_artwork(playlist):
-    if "user" not in playlist:
-        return playlist
-    endpoint = get_primary_endpoint(playlist["user"])
-    cid = playlist["playlist_image_sizes_multihash"]
+def add_content list_artwork(content list):
+    if "user" not in content list:
+        return content list
+    endpoint = get_primary_endpoint(content list["user"])
+    cid = content list["content list_image_sizes_multihash"]
     if not endpoint or not cid:
-        return playlist
+        return content list
     artwork = {
         "150x150": make_image(endpoint, cid, 150, 150),
         "480x480": make_image(endpoint, cid, 480, 480),
         "1000x1000": make_image(endpoint, cid, 1000, 1000),
     }
-    playlist["artwork"] = artwork
-    return playlist
+    content list["artwork"] = artwork
+    return content list
 
 
-def add_playlist_added_timestamps(playlist):
-    if "playlist_contents" not in playlist:
-        return playlist
+def add_content list_added_timestamps(content list):
+    if "content list_contents" not in content list:
+        return content list
     added_timestamps = []
-    for agreement in playlist["playlist_contents"]["agreement_ids"]:
+    for agreement in content list["content list_contents"]["agreement_ids"]:
         added_timestamps.append(
             {"agreement_id": encode_int_id(agreement["agreement"]), "timestamp": agreement["time"]}
         )
@@ -108,14 +108,14 @@ def extend_search(resp):
         resp["agreements"] = list(map(extend_agreement, resp["agreements"]))
     if "saved_agreements" in resp:
         resp["saved_agreements"] = list(map(extend_agreement, resp["saved_agreements"]))
-    if "playlists" in resp:
-        resp["playlists"] = list(map(extend_playlist, resp["playlists"]))
-    if "saved_playlists" in resp:
-        resp["saved_playlists"] = list(map(extend_playlist, resp["saved_playlists"]))
+    if "content lists" in resp:
+        resp["content lists"] = list(map(extend_content list, resp["content lists"]))
+    if "saved_content lists" in resp:
+        resp["saved_content lists"] = list(map(extend_content list, resp["saved_content lists"]))
     if "albums" in resp:
-        resp["albums"] = list(map(extend_playlist, resp["albums"]))
+        resp["albums"] = list(map(extend_content list, resp["albums"]))
     if "saved_albums" in resp:
-        resp["saved_albums"] = list(map(extend_playlist, resp["saved_albums"]))
+        resp["saved_albums"] = list(map(extend_content list, resp["saved_albums"]))
     return resp
 
 
@@ -123,12 +123,12 @@ def extend_user(user, current_user_id=None):
     user_id = encode_int_id(user["user_id"])
     user["id"] = user_id
     user = add_user_artwork(user)
-    # Do not surface playlist library in user response unless we are
+    # Do not surface content list library in user response unless we are
     # that user specifically
-    if "playlist_library" in user and (
+    if "content list_library" in user and (
         not current_user_id or current_user_id != user["user_id"]
     ):
-        del user["playlist_library"]
+        del user["content list_library"]
     # Marshal wallets into clear names
     user["erc_wallet"] = user["wallet"]
 
@@ -240,36 +240,36 @@ def stem_from_agreement(agreement):
     }
 
 
-def extend_playlist(playlist):
-    playlist_id = encode_int_id(playlist["playlist_id"])
-    owner_id = encode_int_id(playlist["playlist_owner_id"])
-    playlist["id"] = playlist_id
-    playlist["user_id"] = owner_id
-    playlist = add_playlist_artwork(playlist)
-    if "user" in playlist:
-        playlist["user"] = extend_user(playlist["user"])
-    if "followee_saves" in playlist:
-        playlist["followee_favorites"] = list(
-            map(extend_favorite, playlist["followee_saves"])
+def extend_content list(content list):
+    content list_id = encode_int_id(content list["content list_id"])
+    owner_id = encode_int_id(content list["content list_owner_id"])
+    content list["id"] = content list_id
+    content list["user_id"] = owner_id
+    content list = add_content list_artwork(content list)
+    if "user" in content list:
+        content list["user"] = extend_user(content list["user"])
+    if "followee_saves" in content list:
+        content list["followee_favorites"] = list(
+            map(extend_favorite, content list["followee_saves"])
         )
-    if "followee_reposts" in playlist:
-        playlist["followee_reposts"] = list(
-            map(extend_repost, playlist["followee_reposts"])
+    if "followee_reposts" in content list:
+        content list["followee_reposts"] = list(
+            map(extend_repost, content list["followee_reposts"])
         )
-    if "save_count" in playlist:
-        playlist["favorite_count"] = playlist["save_count"]
+    if "save_count" in content list:
+        content list["favorite_count"] = content list["save_count"]
 
-    playlist["added_timestamps"] = add_playlist_added_timestamps(playlist)
-    playlist["cover_art"] = playlist["playlist_image_multihash"]
-    playlist["cover_art_sizes"] = playlist["playlist_image_sizes_multihash"]
-    # If a trending playlist, we have 'agreement_count'
+    content list["added_timestamps"] = add_content list_added_timestamps(content list)
+    content list["cover_art"] = content list["content list_image_multihash"]
+    content list["cover_art_sizes"] = content list["content list_image_sizes_multihash"]
+    # If a trending content list, we have 'agreement_count'
     # already to preserve the original, non-abbreviated agreement count
-    playlist["agreement_count"] = (
-        playlist["agreement_count"]
-        if "agreement_count" in playlist
-        else len(playlist["playlist_contents"]["agreement_ids"])
+    content list["agreement_count"] = (
+        content list["agreement_count"]
+        if "agreement_count" in content list
+        else len(content list["content list_contents"]["agreement_ids"])
     )
-    return playlist
+    return content list
 
 
 def extend_activity(item):
@@ -279,11 +279,11 @@ def extend_activity(item):
             "timestamp": item["activity_timestamp"],
             "item": extend_agreement(item),
         }
-    if item.get("playlist_id"):
+    if item.get("content list_id"):
         return {
-            "item_type": "playlist",
+            "item_type": "content list",
             "timestamp": item["activity_timestamp"],
-            "item": extend_playlist(item),
+            "item": extend_content list(item),
         }
     return None
 
@@ -494,8 +494,8 @@ full_search_parser.add_argument(
     required=False,
     type=str,
     default="all",
-    choices=("all", "users", "agreements", "playlists", "albums"),
-    description="The type of response, one of: all, users, agreements, playlists, or albums",
+    choices=("all", "users", "agreements", "content lists", "albums"),
+    description="The type of response, one of: all, users, agreements, content lists, or albums",
 )
 
 verify_token_parser = reqparse.RequestParser(argument_class=DescriptiveArgument)

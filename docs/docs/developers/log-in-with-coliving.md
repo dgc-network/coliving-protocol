@@ -218,7 +218,7 @@ On a native app, the log in button should open a secure web browser within the a
 
 The Log In with Coliving prompt page is located at the following URL:
 
-`https://coliving.co/oauth/auth?scope=read&app_name={YourAppName}&redirect_uri={YourRedirectURI}&origin={YourAppOrigin}&state={YourStateValue}&response_mode={query|fragment}`
+`https://coliving.lol/oauth/auth?scope=read&app_name={YourAppName}&redirect_uri={YourRedirectURI}&origin={YourAppOrigin}&state={YourStateValue}&response_mode={query|fragment}`
 
 You must open this page with the required URL parameters, described below.
 
@@ -242,7 +242,7 @@ You must open this page with the required URL parameters, described below.
 
 ```html noInline
 <a
-  href="https://coliving.co/oauth/auth?scope=read&app_name=My%20Demo%20App&redirect_uri=https://mydemoapp.com/oauth/receive-token&state=a4e0761e-8c21-4e20-819d-5a4daeab4ea9"
+  href="https://coliving.lol/oauth/auth?scope=read&app_name=My%20Demo%20App&redirect_uri=https://mydemoapp.com/oauth/receive-token&state=a4e0761e-8c21-4e20-819d-5a4daeab4ea9"
   >Click me to log in with Coliving!</a
 >
 ```
@@ -261,7 +261,7 @@ If the user exits the authentication flow before completing it--e.g. by closing 
 When the user has successfully authenticated, the Log In with Coliving page will redirect to the redirect URI that you specified, **with 1) the JWT containing the user profile, and 2) the original state value you provided (if any) included in the URI fragment** (or query string, if `response_mode` was set to `query`). To illustrate, going off the example above where we opened the login page with the following URL:
 
 ```noInline
-https://coliving.co/oauth/auth?scope=read&app_name=My%20Demo%20App&redirect_uri=https://mydemoapp.com/oauth/receive-token&state=a4e0761e-8c21-4e20-819d-5a4daeab4ea9
+https://coliving.lol/oauth/auth?scope=read&app_name=My%20Demo%20App&redirect_uri=https://mydemoapp.com/oauth/receive-token&state=a4e0761e-8c21-4e20-819d-5a4daeab4ea9
 ```
 
 when the user successsfully authenticates, the login page would redirect to:
@@ -285,7 +285,7 @@ When the user has successfully authenticated, the Log In with Coliving page will
 For instance, if your app opened the login page using the following URL:
 
 ```noInline
-https://coliving.co/oauth/auth?scope=read&app_name=My%20Demo%20App&redirect_uri=https://mydemoapp.com/oauth/receive-token&state=a4e0761e-8c21-4e20-819d-5a4daeab4ea9
+https://coliving.lol/oauth/auth?scope=read&app_name=My%20Demo%20App&redirect_uri=https://mydemoapp.com/oauth/receive-token&state=a4e0761e-8c21-4e20-819d-5a4daeab4ea9
 ```
 
 the message would look like this:
@@ -300,7 +300,7 @@ the message would look like this:
 where `<JWT>` is a [JSON web token](https://jwt.io/introduction) containing the user's encoded profile information and a signature.
 
 :::caution
-Make sure that your `postMessage` event listener validates that the origin of the incoming event is `https://coliving.co`!
+Make sure that your `postMessage` event listener validates that the origin of the incoming event is `https://coliving.lol`!
 :::
 
 ### 3. Verify the response
@@ -324,7 +324,7 @@ Upon verifying the validity of the JWT, the endpoint will return the authenticat
 
 To use the API, you first select an API endpoint from the list of endpoints returned by:
 
-`GET https://api.coliving.co`
+`GET https://api.coliving.lol`
 
 Once you've selected a host, all API requests can be sent directly to it. For instance, if you picked the host at
 `https://coliving-dp.singapore.creatorseed.com`, you would send the GET request to `https://coliving-dp.singapore.creatorseed.com/v1/users/verify_token?token=<JWT>`, where `<JWT>` is replaced with the JWT you retrieved in the auth flow.

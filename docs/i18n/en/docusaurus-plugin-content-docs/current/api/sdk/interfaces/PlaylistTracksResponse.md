@@ -1,7 +1,7 @@
 ---
-id: "PlaylistAgreementsResponse"
-title: "Interface: PlaylistAgreementsResponse"
-sidebar_label: "PlaylistAgreementsResponse"
+id: "ContentListAgreementsResponse"
+title: "Interface: ContentListAgreementsResponse"
+sidebar_label: "ContentListAgreementsResponse"
 sidebar_position: 0
 custom_edit_url: null
 pagination_prev: null
@@ -10,7 +10,7 @@ pagination_next: null
 
 **`export`**
 
-**`interface`** PlaylistAgreementsResponse
+**`interface`** ContentListAgreementsResponse
 
 ## Properties
 
@@ -18,4 +18,4 @@ pagination_next: null
 
  `Optional` **data**: [`Agreement`](Agreement.md)[]
 
-**`memberof`** PlaylistAgreementsResponse
+**`memberof`** ContentListAgreementsResponse

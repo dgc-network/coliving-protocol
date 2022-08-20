@@ -2,14 +2,14 @@ from collections import defaultdict
 
 from src.queries.query_helpers import get_users_ids
 from src.utils.elasticdsl import (
-    ES_PLAYLISTS,
+    ES_CONTENT_LISTS,
     ES_REPOSTS,
     ES_SAVES,
     ES_AGREEMENTS,
     ES_USERS,
     esclient,
     pluck_hits,
-    populate_agreement_or_playlist_metadata_es,
+    populate_agreement_or_content list_metadata_es,
     populate_user_metadata_es,
 )
 
@@ -69,13 +69,13 @@ def get_feed_es(args, limit=10):
                     "size": limit,
                     "sort": {"created_at": "desc"},
                 },
-                {"index": ES_PLAYLISTS},
+                {"index": ES_CONTENT_LISTS},
                 {
                     "query": {
                         "bool": {
                             "must": [
                                 following_ids_terms_lookup(
-                                    current_user_id, "playlist_owner_id"
+                                    current_user_id, "content list_owner_id"
                                 ),
                                 {"term": {"is_private": False}},
                                 {"term": {"is_delete": False}},
@@ -90,7 +90,7 @@ def get_feed_es(args, limit=10):
 
     repost_agg = []
     agreements = []
-    playlists = []
+    content lists = []
 
     founds = esclient.msearch(searches=mdsl)
 
@@ -104,20 +104,20 @@ def get_feed_es(args, limit=10):
 
     if load_orig:
         agreements = pluck_hits(founds["responses"].pop(0))
-        playlists = pluck_hits(founds["responses"].pop(0))
+        content lists = pluck_hits(founds["responses"].pop(0))
 
     # agreement timestamps and duplicates
     seen = set()
     unsorted_feed = []
 
-    for playlist in playlists:
-        # Q: should es-indexer set item_key on agreement / playlist too?
+    for content list in content lists:
+        # Q: should es-indexer set item_key on agreement / content list too?
         #    instead of doing it dynamically here?
-        playlist["item_key"] = item_key(playlist)
-        seen.add(playlist["item_key"])
-        # Q: should we add playlist agreements to seen?
-        #    get_feed will "debounce" agreements in playlist
-        unsorted_feed.append(playlist)
+        content list["item_key"] = item_key(content list)
+        seen.add(content list["item_key"])
+        # Q: should we add content list agreements to seen?
+        #    get_feed will "debounce" agreements in content list
+        unsorted_feed.append(content list)
 
     for agreement in agreements:
         agreement["item_key"] = item_key(agreement)
@@ -134,7 +134,7 @@ def get_feed_es(args, limit=10):
 
     # sorted feed with repost records
     # the repost records are stubs that we'll now "hydrate"
-    # with the related agreement / playlist
+    # with the related agreement / content list
     sorted_with_reposts = sorted(
         unsorted_feed,
         key=lambda entry: entry["created_at"],
@@ -157,14 +157,14 @@ def get_feed_es(args, limit=10):
         if kind == "agreement":
             mget_reposts.append({"_index": ES_AGREEMENTS, "_id": id})
         else:
-            mget_reposts.append({"_index": ES_PLAYLISTS, "_id": id})
+            mget_reposts.append({"_index": ES_CONTENT_LISTS, "_id": id})
 
     if mget_reposts:
         reposted_docs = esclient.mget(docs=mget_reposts)
         for doc in reposted_docs["docs"]:
             if not doc["found"]:
-                # MISSING: a repost for a agreement or playlist not in the index?
-                # this should only happen if repost indexing is running ahead of agreement / playlist
+                # MISSING: a repost for a agreement or content list not in the index?
+                # this should only happen if repost indexing is running ahead of agreement / content list
                 # should be transient... but should maybe still be agreemented?
                 continue
             s = doc["_source"]
@@ -208,7 +208,7 @@ def get_feed_es(args, limit=10):
 
     for item in sorted_feed:
         # GOTCHA: es ids must be strings, but our ids are ints...
-        uid = str(item.get("playlist_owner_id", item.get("owner_id")))
+        uid = str(item.get("content list_owner_id", item.get("owner_id")))
         item["user"] = user_by_id[uid]
 
     # add context: followee_reposts, followee_saves
@@ -227,7 +227,7 @@ def get_feed_es(args, limit=10):
 
     # populate metadata + remove extra fields from items
     sorted_feed = [
-        populate_agreement_or_playlist_metadata_es(item, current_user)
+        populate_agreement_or_content list_metadata_es(item, current_user)
         for item in sorted_feed
     ]
 
@@ -288,10 +288,10 @@ def fetch_followed_saves_and_reposts(current_user_id, item_keys, limit):
 def item_key(item):
     if "agreement_id" in item:
         return "agreement:" + str(item["agreement_id"])
-    elif "playlist_id" in item:
+    elif "content list_id" in item:
         if item["is_album"]:
-            return "album:" + str(item["playlist_id"])
-        return "playlist:" + str(item["playlist_id"])
+            return "album:" + str(item["content list_id"])
+        return "content list:" + str(item["content list_id"])
     elif "user_id" in item:
         return "user:" + str(item["user_id"])
     else:

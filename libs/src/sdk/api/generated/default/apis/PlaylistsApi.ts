@@ -16,42 +16,42 @@
 
 import * as runtime from '../runtime';
 import {
-    PlaylistResponse,
-    PlaylistResponseFromJSON,
-    PlaylistResponseToJSON,
-    PlaylistSearchResult,
-    PlaylistSearchResultFromJSON,
-    PlaylistSearchResultToJSON,
-    PlaylistAgreementsResponse,
-    PlaylistAgreementsResponseFromJSON,
-    PlaylistAgreementsResponseToJSON,
-    TrendingPlaylistsResponse,
-    TrendingPlaylistsResponseFromJSON,
-    TrendingPlaylistsResponseToJSON,
+    ContentListResponse,
+    ContentListResponseFromJSON,
+    ContentListResponseToJSON,
+    ContentListSearchResult,
+    ContentListSearchResultFromJSON,
+    ContentListSearchResultToJSON,
+    ContentListAgreementsResponse,
+    ContentListAgreementsResponseFromJSON,
+    ContentListAgreementsResponseToJSON,
+    TrendingContentListsResponse,
+    TrendingContentListsResponseFromJSON,
+    TrendingContentListsResponseToJSON,
 } from '../models';
 
-export interface GetPlaylistRequest {
+export interface GetContentListRequest {
     /**
-     * A Playlist ID
+     * A ContentList ID
      */
-    playlistId: string;
+    content listId: string;
 }
 
-export interface GetPlaylistAgreementsRequest {
+export interface GetContentListAgreementsRequest {
     /**
-     * A Playlist ID
+     * A ContentList ID
      */
-    playlistId: string;
+    content listId: string;
 }
 
-export interface GetTrendingPlaylistsRequest {
+export interface GetTrendingContentListsRequest {
     /**
      * Calculate trending over a specified time range
      */
-    time?: GetTrendingPlaylistsTimeEnum;
+    time?: GetTrendingContentListsTimeEnum;
 }
 
-export interface SearchPlaylistsRequest {
+export interface SearchContentListsRequest {
     /**
      * The search query
      */
@@ -61,14 +61,14 @@ export interface SearchPlaylistsRequest {
 /**
  * 
  */
-export class PlaylistsApi extends runtime.BaseAPI {
+export class ContentListsApi extends runtime.BaseAPI {
 
     /**
-     * Get a playlist by ID
+     * Get a content list by ID
      */
-    async getPlaylist(requestParameters: GetPlaylistRequest): Promise<NonNullable<PlaylistResponse["data"]>> {
-        if (requestParameters.playlistId === null || requestParameters.playlistId === undefined) {
-            throw new runtime.RequiredError('playlistId','Required parameter requestParameters.playlistId was null or undefined when calling getPlaylist.');
+    async getContentList(requestParameters: GetContentListRequest): Promise<NonNullable<ContentListResponse["data"]>> {
+        if (requestParameters.content listId === null || requestParameters.content listId === undefined) {
+            throw new runtime.RequiredError('content listId','Required parameter requestParameters.content listId was null or undefined when calling getContentList.');
         }
 
         const queryParameters: any = {};
@@ -76,19 +76,19 @@ export class PlaylistsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/playlists/{playlist_id}`.replace(`{${"playlist_id"}}`, encodeURIComponent(String(requestParameters.playlistId))),
+            path: `/content lists/{content list_id}`.replace(`{${"content list_id"}}`, encodeURIComponent(String(requestParameters.content listId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }) as Promise<NonNullable<PlaylistResponse["data"]>>;
+        }) as Promise<NonNullable<ContentListResponse["data"]>>;
     }
 
     /**
-     * Fetch agreements within a playlist.
+     * Fetch agreements within a content list.
      */
-    async getPlaylistAgreements(requestParameters: GetPlaylistAgreementsRequest): Promise<NonNullable<PlaylistAgreementsResponse["data"]>> {
-        if (requestParameters.playlistId === null || requestParameters.playlistId === undefined) {
-            throw new runtime.RequiredError('playlistId','Required parameter requestParameters.playlistId was null or undefined when calling getPlaylistAgreements.');
+    async getContentListAgreements(requestParameters: GetContentListAgreementsRequest): Promise<NonNullable<ContentListAgreementsResponse["data"]>> {
+        if (requestParameters.content listId === null || requestParameters.content listId === undefined) {
+            throw new runtime.RequiredError('content listId','Required parameter requestParameters.content listId was null or undefined when calling getContentListAgreements.');
         }
 
         const queryParameters: any = {};
@@ -96,17 +96,17 @@ export class PlaylistsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/playlists/{playlist_id}/agreements`.replace(`{${"playlist_id"}}`, encodeURIComponent(String(requestParameters.playlistId))),
+            path: `/content lists/{content list_id}/agreements`.replace(`{${"content list_id"}}`, encodeURIComponent(String(requestParameters.content listId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }) as Promise<NonNullable<PlaylistAgreementsResponse["data"]>>;
+        }) as Promise<NonNullable<ContentListAgreementsResponse["data"]>>;
     }
 
     /**
-     * Gets trending playlists for a time period
+     * Gets trending content lists for a time period
      */
-    async getTrendingPlaylists(requestParameters: GetTrendingPlaylistsRequest = {}): Promise<NonNullable<TrendingPlaylistsResponse["data"]>> {
+    async getTrendingContentLists(requestParameters: GetTrendingContentListsRequest = {}): Promise<NonNullable<TrendingContentListsResponse["data"]>> {
         const queryParameters: any = {};
 
         if (requestParameters.time !== undefined) {
@@ -116,19 +116,19 @@ export class PlaylistsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/playlists/trending`,
+            path: `/content lists/trending`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }) as Promise<NonNullable<TrendingPlaylistsResponse["data"]>>;
+        }) as Promise<NonNullable<TrendingContentListsResponse["data"]>>;
     }
 
     /**
-     * Search for a playlist
+     * Search for a content list
      */
-    async searchPlaylists(requestParameters: SearchPlaylistsRequest): Promise<NonNullable<PlaylistSearchResult["data"]>> {
+    async searchContentLists(requestParameters: SearchContentListsRequest): Promise<NonNullable<ContentListSearchResult["data"]>> {
         if (requestParameters.query === null || requestParameters.query === undefined) {
-            throw new runtime.RequiredError('query','Required parameter requestParameters.query was null or undefined when calling searchPlaylists.');
+            throw new runtime.RequiredError('query','Required parameter requestParameters.query was null or undefined when calling searchContentLists.');
         }
 
         const queryParameters: any = {};
@@ -140,11 +140,11 @@ export class PlaylistsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/playlists/search`,
+            path: `/content lists/search`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }) as Promise<NonNullable<PlaylistSearchResult["data"]>>;
+        }) as Promise<NonNullable<ContentListSearchResult["data"]>>;
     }
 
 }
@@ -153,7 +153,7 @@ export class PlaylistsApi extends runtime.BaseAPI {
     * @export
     * @enum {string}
     */
-export enum GetTrendingPlaylistsTimeEnum {
+export enum GetTrendingContentListsTimeEnum {
     Week = 'week',
     Month = 'month',
     Year = 'year',

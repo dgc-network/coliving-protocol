@@ -1,7 +1,7 @@
 'use strict'
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('UserPlaylistFavorites', {
+    return queryInterface.createTable('UserContentListFavorites', {
       userId: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -22,6 +22,6 @@ module.exports = {
     })
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('UserPlaylistFavorites')
+    return queryInterface.dropTable('UserContentListFavorites')
   }
 }

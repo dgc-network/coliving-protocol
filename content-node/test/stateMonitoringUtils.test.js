@@ -28,7 +28,7 @@ const {
 const SecondarySyncHealthAgreementer = require('../src/services/stateMachineManager/stateReconciliation/SecondarySyncHealthAgreementer')
 
 describe('test getLatestUserIdFromDiscovery()', function () {
-  const DISCOVERY_NODE_ENDPOINT = 'https://discovery_endpoint.coliving.co'
+  const DISCOVERY_NODE_ENDPOINT = 'https://discovery_endpoint.coliving.lol'
 
   beforeEach(() => {
     nock.disableNetConnect()
@@ -64,8 +64,8 @@ describe('test getLatestUserIdFromDiscovery()', function () {
 })
 
 describe('test getNodeUsers()', function () {
-  const DISCOVERY_NODE_ENDPOINT = 'https://discovery_endpoint.coliving.co'
-  const CONTENT_NODE_ENDPOINT = 'https://content_node_endpoint.coliving.co'
+  const DISCOVERY_NODE_ENDPOINT = 'https://discovery_endpoint.coliving.lol'
+  const CONTENT_NODE_ENDPOINT = 'https://content_node_endpoint.coliving.lol'
   const DEFAULT_GET_NODE_USERS_TIMEOUT_MS = 100
   const DEFAULT_GET_NODE_USERS_CANCEL_TOKEN_MS = 5_000
   const DEFAULT_GET_NODE_USERS_DEFAULT_PAGE_SIZE = 10
@@ -137,7 +137,7 @@ describe('test getNodeUsers()', function () {
     expect(baseURL).to.equal(DISCOVERY_NODE_ENDPOINT)
     expect(url).to.equal('v1/full/users/content_node/all')
     expect(params).to.deep.equal({
-      creator_node_endpoint: CONTENT_NODE_ENDPOINT,
+      content_node_endpoint: CONTENT_NODE_ENDPOINT,
       prev_user_id: 0,
       max_users: DEFAULT_GET_NODE_USERS_DEFAULT_PAGE_SIZE
     })
@@ -176,7 +176,7 @@ describe('test getNodeUsers()', function () {
     expect(baseURL).to.equal(DISCOVERY_NODE_ENDPOINT)
     expect(url).to.equal('v1/full/users/content_node/all')
     expect(params).to.deep.equal({
-      creator_node_endpoint: CONTENT_NODE_ENDPOINT,
+      content_node_endpoint: CONTENT_NODE_ENDPOINT,
       prev_user_id: prevUserId,
       max_users: maxUsers
     })
@@ -257,7 +257,7 @@ describe('test getNodeUsers()', function () {
     nock(DISCOVERY_NODE_ENDPOINT)
       .get('/v1/full/users/content_node/all')
       .query({
-        creator_node_endpoint: CONTENT_NODE_ENDPOINT,
+        content_node_endpoint: CONTENT_NODE_ENDPOINT,
         prev_user_id: 0,
         max_users: DEFAULT_GET_NODE_USERS_DEFAULT_PAGE_SIZE
       })
@@ -284,7 +284,7 @@ describe('test getNodeUsers()', function () {
     nock(DISCOVERY_NODE_ENDPOINT)
       .get('/v1/full/users/content_node/all')
       .query({
-        creator_node_endpoint: CONTENT_NODE_ENDPOINT,
+        content_node_endpoint: CONTENT_NODE_ENDPOINT,
         prev_user_id: 0,
         max_users: DEFAULT_GET_NODE_USERS_DEFAULT_PAGE_SIZE
       })
@@ -306,38 +306,38 @@ describe('test buildReplicaSetNodesToUserWalletsMap()', function () {
       {
         user_id: '1',
         wallet: 'wallet1',
-        primary: 'http://cn1.coliving.co',
-        secondary1: 'http://cn2.coliving.co',
-        secondary2: 'http://cn3.coliving.co'
+        primary: 'http://cn1.coliving.lol',
+        secondary1: 'http://cn2.coliving.lol',
+        secondary2: 'http://cn3.coliving.lol'
       },
       {
         user_id: '2',
         wallet: 'wallet2',
-        primary: 'http://cn2.coliving.co',
-        secondary1: 'http://cn3.coliving.co',
-        secondary2: 'http://cn4.coliving.co'
+        primary: 'http://cn2.coliving.lol',
+        secondary1: 'http://cn3.coliving.lol',
+        secondary2: 'http://cn4.coliving.lol'
       },
       {
         user_id: '3',
         wallet: 'wallet3',
-        primary: 'http://cn3.coliving.co',
-        secondary1: 'http://cn4.coliving.co',
-        secondary2: 'http://cn5.coliving.co'
+        primary: 'http://cn3.coliving.lol',
+        secondary1: 'http://cn4.coliving.lol',
+        secondary2: 'http://cn5.coliving.lol'
       },
       {
         user_id: '4',
         wallet: 'wallet4',
-        primary: 'http://cn3.coliving.co',
-        secondary1: 'http://cn2.coliving.co',
-        secondary2: 'http://cn1.coliving.co'
+        primary: 'http://cn3.coliving.lol',
+        secondary1: 'http://cn2.coliving.lol',
+        secondary2: 'http://cn1.coliving.lol'
       }
     ]
     const expectedReplicaSetNodesToUserWalletsMapOutput = {
-      'http://cn1.coliving.co': ['wallet1', 'wallet4'],
-      'http://cn2.coliving.co': ['wallet1', 'wallet2', 'wallet4'],
-      'http://cn3.coliving.co': ['wallet1', 'wallet2', 'wallet3', 'wallet4'],
-      'http://cn4.coliving.co': ['wallet2', 'wallet3'],
-      'http://cn5.coliving.co': ['wallet3']
+      'http://cn1.coliving.lol': ['wallet1', 'wallet4'],
+      'http://cn2.coliving.lol': ['wallet1', 'wallet2', 'wallet4'],
+      'http://cn3.coliving.lol': ['wallet1', 'wallet2', 'wallet3', 'wallet4'],
+      'http://cn4.coliving.lol': ['wallet2', 'wallet3'],
+      'http://cn5.coliving.lol': ['wallet3']
     }
     expect(buildReplicaSetNodesToUserWalletsMap(nodeUsersInput)).to.deep.equal(
       expectedReplicaSetNodesToUserWalletsMapOutput

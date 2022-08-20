@@ -16,13 +16,13 @@
 /**
  * 
  * @export
- * @interface PlaylistLibrary
+ * @interface ContentListLibrary
  */
-export interface PlaylistLibrary {
+export interface ContentListLibrary {
     /**
      * 
      * @type {Array<object>}
-     * @memberof PlaylistLibrary
+     * @memberof ContentListLibrary
      */
     contents?: Array<object>;
 }

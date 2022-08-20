@@ -19,26 +19,26 @@ import {
     FollowingResponse,
     FollowingResponseFromJSON,
     FollowingResponseToJSON,
-    FullPlaylistResponse,
-    FullPlaylistResponseFromJSON,
-    FullPlaylistResponseToJSON,
-    FullTrendingPlaylistsResponse,
-    FullTrendingPlaylistsResponseFromJSON,
-    FullTrendingPlaylistsResponseToJSON,
+    FullContentListResponse,
+    FullContentListResponseFromJSON,
+    FullContentListResponseToJSON,
+    FullTrendingContentListsResponse,
+    FullTrendingContentListsResponseFromJSON,
+    FullTrendingContentListsResponseToJSON,
 } from '../models';
 
-export interface GetPlaylistRequest {
+export interface GetContentListRequest {
     /**
-     * A Playlist ID
+     * A ContentList ID
      */
-    playlistId: string;
+    content listId: string;
     /**
      * The user ID of the user making the request
      */
     userId?: string;
 }
 
-export interface GetTrendingPlaylistsRequest {
+export interface GetTrendingContentListsRequest {
     /**
      * The number of items to skip. Useful for pagination (page number * limit)
      */
@@ -54,10 +54,10 @@ export interface GetTrendingPlaylistsRequest {
     /**
      * Calculate trending over a specified time range
      */
-    time?: GetTrendingPlaylistsTimeEnum;
+    time?: GetTrendingContentListsTimeEnum;
 }
 
-export interface GetTrendingPlaylistsWithVersionRequest {
+export interface GetTrendingContentListsWithVersionRequest {
     /**
      * The strategy version of trending to use
      */
@@ -77,14 +77,14 @@ export interface GetTrendingPlaylistsWithVersionRequest {
     /**
      * Calculate trending over a specified time range
      */
-    time?: GetTrendingPlaylistsWithVersionTimeEnum;
+    time?: GetTrendingContentListsWithVersionTimeEnum;
 }
 
-export interface GetUsersFromPlaylistFavoritesRequest {
+export interface GetUsersFromContentListFavoritesRequest {
     /**
-     * A Playlist ID
+     * A ContentList ID
      */
-    playlistId: string;
+    content listId: string;
     /**
      * The number of items to skip. Useful for pagination (page number * limit)
      */
@@ -99,11 +99,11 @@ export interface GetUsersFromPlaylistFavoritesRequest {
     userId?: string;
 }
 
-export interface GetUsersFromPlaylistRepostsRequest {
+export interface GetUsersFromContentListRepostsRequest {
     /**
-     * A Playlist ID
+     * A ContentList ID
      */
-    playlistId: string;
+    content listId: string;
     /**
      * The number of items to skip. Useful for pagination (page number * limit)
      */
@@ -121,14 +121,14 @@ export interface GetUsersFromPlaylistRepostsRequest {
 /**
  * 
  */
-export class PlaylistsApi extends runtime.BaseAPI {
+export class ContentListsApi extends runtime.BaseAPI {
 
     /**
-     * Get a playlist by ID
+     * Get a content list by ID
      */
-    async getPlaylist(requestParameters: GetPlaylistRequest): Promise<NonNullable<FullPlaylistResponse["data"]>> {
-        if (requestParameters.playlistId === null || requestParameters.playlistId === undefined) {
-            throw new runtime.RequiredError('playlistId','Required parameter requestParameters.playlistId was null or undefined when calling getPlaylist.');
+    async getContentList(requestParameters: GetContentListRequest): Promise<NonNullable<FullContentListResponse["data"]>> {
+        if (requestParameters.content listId === null || requestParameters.content listId === undefined) {
+            throw new runtime.RequiredError('content listId','Required parameter requestParameters.content listId was null or undefined when calling getContentList.');
         }
 
         const queryParameters: any = {};
@@ -140,17 +140,17 @@ export class PlaylistsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/playlists/{playlist_id}`.replace(`{${"playlist_id"}}`, encodeURIComponent(String(requestParameters.playlistId))),
+            path: `/content lists/{content list_id}`.replace(`{${"content list_id"}}`, encodeURIComponent(String(requestParameters.content listId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }) as Promise<NonNullable<FullPlaylistResponse["data"]>>;
+        }) as Promise<NonNullable<FullContentListResponse["data"]>>;
     }
 
     /**
-     * Returns trending playlists for a time period
+     * Returns trending content lists for a time period
      */
-    async getTrendingPlaylists(requestParameters: GetTrendingPlaylistsRequest = {}): Promise<NonNullable<FullTrendingPlaylistsResponse["data"]>> {
+    async getTrendingContentLists(requestParameters: GetTrendingContentListsRequest = {}): Promise<NonNullable<FullTrendingContentListsResponse["data"]>> {
         const queryParameters: any = {};
 
         if (requestParameters.offset !== undefined) {
@@ -172,19 +172,19 @@ export class PlaylistsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/playlists/trending`,
+            path: `/content lists/trending`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }) as Promise<NonNullable<FullTrendingPlaylistsResponse["data"]>>;
+        }) as Promise<NonNullable<FullTrendingContentListsResponse["data"]>>;
     }
 
     /**
-     * Returns trending playlists for a time period based on the given trending version
+     * Returns trending content lists for a time period based on the given trending version
      */
-    async getTrendingPlaylistsWithVersion(requestParameters: GetTrendingPlaylistsWithVersionRequest): Promise<NonNullable<FullTrendingPlaylistsResponse["data"]>> {
+    async getTrendingContentListsWithVersion(requestParameters: GetTrendingContentListsWithVersionRequest): Promise<NonNullable<FullTrendingContentListsResponse["data"]>> {
         if (requestParameters.version === null || requestParameters.version === undefined) {
-            throw new runtime.RequiredError('version','Required parameter requestParameters.version was null or undefined when calling getTrendingPlaylistsWithVersion.');
+            throw new runtime.RequiredError('version','Required parameter requestParameters.version was null or undefined when calling getTrendingContentListsWithVersion.');
         }
 
         const queryParameters: any = {};
@@ -208,19 +208,19 @@ export class PlaylistsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/playlists/trending/{version}`.replace(`{${"version"}}`, encodeURIComponent(String(requestParameters.version))),
+            path: `/content lists/trending/{version}`.replace(`{${"version"}}`, encodeURIComponent(String(requestParameters.version))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }) as Promise<NonNullable<FullTrendingPlaylistsResponse["data"]>>;
+        }) as Promise<NonNullable<FullTrendingContentListsResponse["data"]>>;
     }
 
     /**
-     * Get users that favorited a playlist
+     * Get users that favorited a content list
      */
-    async getUsersFromPlaylistFavorites(requestParameters: GetUsersFromPlaylistFavoritesRequest): Promise<NonNullable<FollowingResponse["data"]>> {
-        if (requestParameters.playlistId === null || requestParameters.playlistId === undefined) {
-            throw new runtime.RequiredError('playlistId','Required parameter requestParameters.playlistId was null or undefined when calling getUsersFromPlaylistFavorites.');
+    async getUsersFromContentListFavorites(requestParameters: GetUsersFromContentListFavoritesRequest): Promise<NonNullable<FollowingResponse["data"]>> {
+        if (requestParameters.content listId === null || requestParameters.content listId === undefined) {
+            throw new runtime.RequiredError('content listId','Required parameter requestParameters.content listId was null or undefined when calling getUsersFromContentListFavorites.');
         }
 
         const queryParameters: any = {};
@@ -240,7 +240,7 @@ export class PlaylistsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/playlists/{playlist_id}/favorites`.replace(`{${"playlist_id"}}`, encodeURIComponent(String(requestParameters.playlistId))),
+            path: `/content lists/{content list_id}/favorites`.replace(`{${"content list_id"}}`, encodeURIComponent(String(requestParameters.content listId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -248,11 +248,11 @@ export class PlaylistsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get users that reposted a playlist
+     * Get users that reposted a content list
      */
-    async getUsersFromPlaylistReposts(requestParameters: GetUsersFromPlaylistRepostsRequest): Promise<NonNullable<FollowingResponse["data"]>> {
-        if (requestParameters.playlistId === null || requestParameters.playlistId === undefined) {
-            throw new runtime.RequiredError('playlistId','Required parameter requestParameters.playlistId was null or undefined when calling getUsersFromPlaylistReposts.');
+    async getUsersFromContentListReposts(requestParameters: GetUsersFromContentListRepostsRequest): Promise<NonNullable<FollowingResponse["data"]>> {
+        if (requestParameters.content listId === null || requestParameters.content listId === undefined) {
+            throw new runtime.RequiredError('content listId','Required parameter requestParameters.content listId was null or undefined when calling getUsersFromContentListReposts.');
         }
 
         const queryParameters: any = {};
@@ -272,7 +272,7 @@ export class PlaylistsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/playlists/{playlist_id}/reposts`.replace(`{${"playlist_id"}}`, encodeURIComponent(String(requestParameters.playlistId))),
+            path: `/content lists/{content list_id}/reposts`.replace(`{${"content list_id"}}`, encodeURIComponent(String(requestParameters.content listId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -285,7 +285,7 @@ export class PlaylistsApi extends runtime.BaseAPI {
     * @export
     * @enum {string}
     */
-export enum GetTrendingPlaylistsTimeEnum {
+export enum GetTrendingContentListsTimeEnum {
     Week = 'week',
     Month = 'month',
     Year = 'year',
@@ -295,7 +295,7 @@ export enum GetTrendingPlaylistsTimeEnum {
     * @export
     * @enum {string}
     */
-export enum GetTrendingPlaylistsWithVersionTimeEnum {
+export enum GetTrendingContentListsWithVersionTimeEnum {
     Week = 'week',
     Month = 'month',
     Year = 'year',

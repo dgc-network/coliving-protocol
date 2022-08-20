@@ -10,7 +10,7 @@ index_aggregate_user_last_refresh_completion_redis_key = (
 )
 
 trending_agreements_last_completion_redis_key = "trending:agreements:last-completion"
-trending_playlists_last_completion_redis_key = "trending-playlists:last-completion"
+trending_content lists_last_completion_redis_key = "trending-content lists:last-completion"
 challenges_last_processed_event_redis_key = "challenges:last-processed-event"
 user_balances_refresh_last_completion_redis_key = "user_balances:last-completion"
 latest_legacy_play_db_key = "latest_legacy_play_db_key"

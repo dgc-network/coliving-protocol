@@ -144,7 +144,7 @@ const addCommandsToCli = (CLI_TO_COMMAND_MAP, program) => {
       /*
         Avoid declaring --user-id twice. We add it as a parameter by default
         for all seed actions in order to set the owner of the libs instance used
-        to call APIs, but some libs API methods (such as Playlist.createPlaylist
+        to call APIs, but some libs API methods (such as ContentList.createContentList
         require userId to be passed in explicitly.
       */
       if (!userIdInLibsApiMethodParams) {

@@ -13,7 +13,7 @@ custom_edit_url: null
 
  `Optional` **kind**: [`SearchAutocompleteKindEnum`](../enums/full.SearchAutocompleteKindEnum.md)
 
-The type of response, one of: all, users, agreements, playlists, or albums
+The type of response, one of: all, users, agreements, content lists, or albums
 
 ___
 

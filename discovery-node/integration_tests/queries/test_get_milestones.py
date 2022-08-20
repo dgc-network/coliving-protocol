@@ -24,11 +24,11 @@ def test_get_milestones(app):
                 "owner_id": 3,
             },
         ],
-        "playlists": [
-            {"playlist_id": 1, "playlist_owner_id": 1, "is_album": False},
-            {"playlist_id": 2, "playlist_owner_id": 2, "is_album": False},
-            {"playlist_id": 3, "playlist_owner_id": 1, "is_album": True},
-            {"playlist_id": 4, "playlist_owner_id": 3, "is_album": True},
+        "content lists": [
+            {"content list_id": 1, "content list_owner_id": 1, "is_album": False},
+            {"content list_id": 2, "content list_owner_id": 2, "is_album": False},
+            {"content list_id": 3, "content list_owner_id": 1, "is_album": True},
+            {"content list_id": 4, "content list_owner_id": 3, "is_album": True},
         ],
     }
 
@@ -53,21 +53,21 @@ def test_get_milestones(app):
                 ),
                 Milestone(
                     id=1,
-                    name=MilestoneName.PLAYLIST_REPOST_COUNT,
+                    name=MilestoneName.CONTENT_LIST_REPOST_COUNT,
                     threshold=10,
                     blocknumber=1,
                     timestamp=date,
                 ),
                 Milestone(
                     id=2,
-                    name=MilestoneName.PLAYLIST_REPOST_COUNT,
+                    name=MilestoneName.CONTENT_LIST_REPOST_COUNT,
                     threshold=25,
                     blocknumber=1,
                     timestamp=date,
                 ),
                 Milestone(
                     id=3,
-                    name=MilestoneName.PLAYLIST_SAVE_COUNT,
+                    name=MilestoneName.CONTENT_LIST_SAVE_COUNT,
                     threshold=500,
                     blocknumber=1,
                     timestamp=date,
@@ -96,11 +96,11 @@ def test_get_milestones(app):
             "repost_counts": {
                 "agreements": {1: 1000},
                 "albums": {},
-                "playlists": {1: 10, 2: 25},
+                "content lists": {1: 10, 2: 25},
             },
             "favorite_counts": {
                 "agreements": {2: 100},
                 "albums": {3: 500},
-                "playlists": {},
+                "content lists": {},
             },
         }

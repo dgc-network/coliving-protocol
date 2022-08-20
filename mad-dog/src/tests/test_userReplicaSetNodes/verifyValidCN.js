@@ -12,7 +12,7 @@ const verifyCreatorNodeRemoved = async (executeAll, removedCnId, walletIndexToUs
     const userId = walletIndexToUserIdMap[i]
     const usrQueryInfo = await getUser(libs, userId)
     // Deconstruct the comma separated value of enpdoint1,endoint2,endpoint3
-    const replicaCNIDs = usrQueryInfo.creator_node_endpoint
+    const replicaCNIDs = usrQueryInfo.content_node_endpoint
       .split(',')
       .map(getIDfromEndpoint)
     return { userId: replicaCNIDs }
@@ -43,14 +43,14 @@ const verifyUserReplicaSets = async (executeAll, walletIndexToUserIdMap, content
 }
 
 /**
- * Checks that the removed creator node id is not present in any user's replica set
+ * Checks that the removed content node id is not present in any user's replica set
  * Checks that the user's metadata replica set matches their replica set on chain
- * Checks that the user's creator nodes are all synced w/ the user's data
+ * Checks that the user's content nodes are all synced w/ the user's data
  * @param {Function} executeOne Wrapper lib fn
  * @param {Function} executeAll Wrapper libs fn
- * @param {number} removedCNId ID of the removed creator node
+ * @param {number} removedCNId ID of the removed content node
  * @param {Object} walletIndexToUserIdMap wallet index to user id mapping
- * @param {Object} contentNodeIDToInfoMapping creator node id to serice provider info
+ * @param {Object} contentNodeIDToInfoMapping content node id to serice provider info
  */
 const verifyValidCNs = async (executeOne, executeAll, removedCNId, walletIndexToUserIdMap, contentNodeIDToInfoMapping) => {
   // Check Discovery for all user's replica set to ensure the cn is removed

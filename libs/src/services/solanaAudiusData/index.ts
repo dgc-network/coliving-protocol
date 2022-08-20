@@ -640,12 +640,12 @@ export class SolanaColivingData {
   }
 
   /**
-   * Creates a solana transaction for createPlaylist
+   * Creates a solana transaction for createContentList
    *
    * @return {Promise<any>}
    * @memberof SolanaWeb3Manager
    */
-  async createPlaylist(
+  async createContentList(
     params: OmitAndRequire<
       ColivingData.CreateEntityParams,
       'program',
@@ -658,7 +658,7 @@ export class SolanaColivingData {
       await this.getUserIdSeed(params.userId)
 
     const userSolKeypair = this.getUserKeyPair()
-    const tx = ColivingData.createPlaylist({
+    const tx = ColivingData.createContentList({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,
@@ -676,12 +676,12 @@ export class SolanaColivingData {
   }
 
   /**
-   * Creates a solana transaction for updatePlaylist
+   * Creates a solana transaction for updateContentList
    *
    * @return {Promise<any>}
    * @memberof SolanaWeb3Manager
    */
-  async updatePlaylist(
+  async updateContentList(
     params: OmitAndRequire<
       ColivingData.UpdateEntityParams,
       'program',
@@ -694,7 +694,7 @@ export class SolanaColivingData {
       await this.getUserIdSeed(params.userId)
 
     const userSolKeypair = this.getUserKeyPair()
-    const tx = ColivingData.updatePlaylist({
+    const tx = ColivingData.updateContentList({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,
@@ -712,12 +712,12 @@ export class SolanaColivingData {
   }
 
   /**
-   * Creates a solana transaction for deletePlaylist
+   * Creates a solana transaction for deleteContentList
    *
    * @return {Promise<any>}
    * @memberof SolanaWeb3Manager
    */
-  async deletePlaylist(
+  async deleteContentList(
     params: OmitAndRequire<
       ColivingData.DeleteEntityParams,
       'program',
@@ -730,7 +730,7 @@ export class SolanaColivingData {
       await this.getUserIdSeed(params.userId)
 
     const userSolKeypair = this.getUserKeyPair()
-    const tx = ColivingData.deletePlaylist({
+    const tx = ColivingData.deleteContentList({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,
@@ -884,12 +884,12 @@ export class SolanaColivingData {
   }
 
   /**
-   * Creates a solana transaction for addPlaylistSave
+   * Creates a solana transaction for addContentListSave
    *
    * @return {Promise<any>}
    * @memberof SolanaWeb3Manager
    */
-  async addPlaylistSave(
+  async addContentListSave(
     params: OmitAndRequire<
       ColivingData.EntitySocialActionParams,
       'program',
@@ -902,7 +902,7 @@ export class SolanaColivingData {
       await this.getUserIdSeed(params.userId)
 
     const userSolKeypair = this.getUserKeyPair()
-    const tx = ColivingData.addPlaylistSave({
+    const tx = ColivingData.addContentListSave({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,
@@ -918,12 +918,12 @@ export class SolanaColivingData {
   }
 
   /**
-   * Creates a solana transaction for deletePlaylistSave
+   * Creates a solana transaction for deleteContentListSave
    *
    * @return {Promise<any>}
    * @memberof SolanaWeb3Manager
    */
-  async deletePlaylistSave(
+  async deleteContentListSave(
     params: OmitAndRequire<
       ColivingData.EntitySocialActionParams,
       'program',
@@ -936,7 +936,7 @@ export class SolanaColivingData {
       await this.getUserIdSeed(params.userId)
 
     const userSolKeypair = this.getUserKeyPair()
-    const tx = ColivingData.deletePlaylistSave({
+    const tx = ColivingData.deleteContentListSave({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,
@@ -952,12 +952,12 @@ export class SolanaColivingData {
   }
 
   /**
-   * Creates a solana transaction for addPlaylistRepost
+   * Creates a solana transaction for addContentListRepost
    *
    * @return {Promise<any>}
    * @memberof SolanaWeb3Manager
    */
-  async addPlaylistRepost(
+  async addContentListRepost(
     params: OmitAndRequire<
       ColivingData.EntitySocialActionParams,
       'program',
@@ -970,7 +970,7 @@ export class SolanaColivingData {
       await this.getUserIdSeed(params.userId)
 
     const userSolKeypair = this.getUserKeyPair()
-    const tx = ColivingData.addPlaylistRepost({
+    const tx = ColivingData.addContentListRepost({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,
@@ -986,12 +986,12 @@ export class SolanaColivingData {
   }
 
   /**
-   * Creates a solana transaction for deletePlaylistRepost
+   * Creates a solana transaction for deleteContentListRepost
    *
    * @return {Promise<any>}
    * @memberof SolanaWeb3Manager
    */
-  async deletePlaylistRepost(
+  async deleteContentListRepost(
     params: OmitAndRequire<
       ColivingData.EntitySocialActionParams,
       'program',
@@ -1004,7 +1004,7 @@ export class SolanaColivingData {
       await this.getUserIdSeed(params.userId)
 
     const userSolKeypair = this.getUserKeyPair()
-    const tx = ColivingData.deletePlaylistRepost({
+    const tx = ColivingData.deleteContentListRepost({
       program: this.program,
       adminAccount: this.adminAccount,
       baseAuthorityAccount,

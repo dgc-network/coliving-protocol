@@ -23,10 +23,10 @@ contract SocialFeatureStorage is RegistryContract {
     mapping(uint => mapping(uint => bool)) private userAgreementReposts;
 
     /**
-     * @dev - Mapping of playlist repost contents
-     * userId -> <playlistId -> repostedPlaylist>
+     * @dev - Mapping of content list repost contents
+     * userId -> <content listId -> repostedContentList>
      */
-    mapping(uint => mapping(uint => bool)) private userPlaylistReposts;
+    mapping(uint => mapping(uint => bool)) private userContentListReposts;
 
     constructor(address _registryAddress) public {
         require(
@@ -57,25 +57,25 @@ contract SocialFeatureStorage is RegistryContract {
         return userAgreementReposts[_userId][_agreementId];
     }
 
-    function addPlaylistRepost(
+    function addContentListRepost(
         uint _userId,
-        uint _playlistId
+        uint _content listId
     ) external onlyRegistrant(CALLER_REGISTRY_KEY)
     {
-        userPlaylistReposts[_userId][_playlistId] = true; 
+        userContentListReposts[_userId][_content listId] = true; 
     }
 
-    function deletePlaylistRepost(
+    function deleteContentListRepost(
         uint _userId,
-        uint _playlistId
+        uint _content listId
     ) external onlyRegistrant(CALLER_REGISTRY_KEY)
     {
-        userPlaylistReposts[_userId][_playlistId] = false;
+        userContentListReposts[_userId][_content listId] = false;
     }
 
-    function userRepostedPlaylist(uint _userId, uint _playlistId)
+    function userRepostedContentList(uint _userId, uint _content listId)
     external view onlyRegistrant(CALLER_REGISTRY_KEY) returns (bool)
     {
-        return userPlaylistReposts[_userId][_playlistId];
+        return userContentListReposts[_userId][_content listId];
     }
 }

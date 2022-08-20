@@ -43,7 +43,7 @@ const getRandomUser = () => {
     profile_picture_sizes: null,
     cover_photo: null,
     cover_photo_sizes: null,
-    creator_node_endpoint: ''
+    content_node_endpoint: ''
   }
 }
 
@@ -199,7 +199,7 @@ const getRandomUserMetadata = (email, password) => {
     profile_picture_sizes: null,
     cover_photo: null,
     cover_photo_sizes: null,
-    creator_node_endpoint: ''
+    content_node_endpoint: ''
   }
 }
 

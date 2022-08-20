@@ -1,14 +1,14 @@
 ---
-id: "PlaylistAgreementsResponse"
-title: "Interface: PlaylistAgreementsResponse"
-sidebar_label: "PlaylistAgreementsResponse"
+id: "ContentListAgreementsResponse"
+title: "Interface: ContentListAgreementsResponse"
+sidebar_label: "ContentListAgreementsResponse"
 sidebar_position: 0
 custom_edit_url: null
 ---
 
 **`export`**
 
-**`interface`** PlaylistAgreementsResponse
+**`interface`** ContentListAgreementsResponse
 
 ## Properties
 
@@ -16,4 +16,4 @@ custom_edit_url: null
 
  `Optional` **data**: [`Agreement`](Agreement.md)[]
 
-**`memberof`** PlaylistAgreementsResponse
+**`memberof`** ContentListAgreementsResponse

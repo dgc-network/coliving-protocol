@@ -73,21 +73,21 @@ class Agreement(Resource):
 decorator_order_example = """
 @full_ns.route(
     \"/trending\",
-    defaults={\"version\": DEFAULT_TRENDING_VERSIONS[TrendingType.PLAYLISTS].name},
+    defaults={\"version\": DEFAULT_TRENDING_VERSIONS[TrendingType.CONTENT_LISTS].name},
     strict_slashes=False,
 )
 @full_ns.route(\"/trending/<string:version>\")
-class FullTrendingPlaylists(Resource):
-    @full_ns.expect(full_trending_playlist_parser)
+class FullTrendingContentLists(Resource):
+    @full_ns.expect(full_trending_content list_parser)
     @record_metrics
     @full_ns.doc(
-        id=\"Get Trending Playlists With Version\",
-        description=\"Returns trending playlists for a time period based on the given trending version\",
+        id=\"Get Trending ContentLists With Version\",
+        description=\"Returns trending content lists for a time period based on the given trending version\",
         responses={200: \"Success\", 400: \"Bad request\", 500: \"Server error\"},
     )
-    @full_ns.marshal_with(full_trending_playlists_response)
+    @full_ns.marshal_with(full_trending_content lists_response)
     def get(self, version):
-        \"Get trending playlists\"
+        \"Get trending content lists\"
         pass
 """
 

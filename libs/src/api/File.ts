@@ -82,7 +82,7 @@ export class File extends Base {
           }
           return response
         } catch (e) {
-          // TODO: Remove this fallback logic when no more users/agreements/playlists
+          // TODO: Remove this fallback logic when no more users/agreements/content lists
           // contain "legacy" image formats (no dir cid)
           if (cid.includes('/')) {
             // dirCID -- an image
@@ -192,10 +192,10 @@ export class File extends Base {
    * @param file
    */
   async uploadImage(file: globalThis.File, square: boolean, timeoutMs = null) {
-    this.REQUIRES(Services.CREATOR_NODE)
+    this.REQUIRES(Services.CONTENT_NODE)
     this.FILE_IS_VALID(file)
 
-    // Assign a creator_node_endpoint to the user if necessary
+    // Assign a content_node_endpoint to the user if necessary
     await this.User.assignReplicaSetIfNecessary()
 
     const resp = await this.creatorNode.uploadImage(

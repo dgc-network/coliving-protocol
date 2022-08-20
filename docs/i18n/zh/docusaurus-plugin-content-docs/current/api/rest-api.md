@@ -100,7 +100,7 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/users/
       "is_verified": true,
       "location": "Los Angeles, CA",
       "name": "Brownies & Lemonade",
-      "playlist_count": 2,
+      "content list_count": 2,
       "profile_picture": {
         "150x150": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/150x150.jpg",
         "480x480": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/480x480.jpg",
@@ -174,7 +174,7 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/users/
     "is_verified": true,
     "location": "Los Angeles, CA",
     "name": "Brownies & Lemonade",
-    "playlist_count": 2,
+    "content list_count": 2,
     "profile_picture": {
       "150x150": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/150x150.jpg",
       "480x480": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/480x480.jpg",
@@ -451,7 +451,7 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/users/
         "is_verified": true,
         "location": "Los Angeles, CA",
         "name": "Brownies & Lemonade",
-        "playlist_count": 2,
+        "content list_count": 2,
         "profile_picture": {
           "150x150": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/150x150.jpg",
           "480x480": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/480x480.jpg",
@@ -465,15 +465,15 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/users/
 }
 ```
 
-## Playlists <a id="api-playlists"></a>
+## ContentLists <a id="api-content lists"></a>
 
-### Search Playlists <a id="search-playlists"></a>
+### Search ContentLists <a id="search-content lists"></a>
 
-`GET /playlists/search`
+`GET /content lists/search`
 
-_Search for a playlist_
+_Search for a content list_
 
-#### Query Parameters <a id="search-playlists-parameters"></a>
+#### Query Parameters <a id="search-content lists-parameters"></a>
 
 | Name                 | Type   | Required | Description   |
 |:-------------------- |:------ |:-------- |:------------- |
@@ -481,11 +481,11 @@ _Search for a playlist_
 | only\_downloadable | string | false    | none          |
 | app\_name          | string | true     | Your app name |
 
-#### Responses <a id="search-playlists-responses"></a>
+#### Responses <a id="search-content lists-responses"></a>
 
 | Status | Meaning                                                                    | Description  | Schema                                                                                                            |
 |:------ |:-------------------------------------------------------------------------- |:------------ |:----------------------------------------------------------------------------------------------------------------- |
-| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [playlist\_search\_result](https://colivingproject.github.io/api-docs/?javascript#schemaplaylist_search_result) |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [content list\_search\_result](https://colivingproject.github.io/api-docs/?javascript#schemacontent list_search_result) |
 | 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | Bad request  | None                                                                                                              |
 | 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Server error | None                                                                                                              |
 
@@ -497,7 +497,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/playlists/search?query=Hot & New&app_name=EXAMPLEAPP',
+fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/content lists/search?query=Hot & New&app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -525,7 +525,7 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/playli
       "description": "All the latest hot new agreements on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
       "id": "DOPRl",
       "is_album": true,
-      "playlist_name": "Hot & New on Coliving 🔥",
+      "content list_name": "Hot & New on Coliving 🔥",
       "repost_count": 46,
       "favorite_count": 88,
       "user": {
@@ -542,7 +542,7 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/playli
         "is_verified": true,
         "location": "SF & LA",
         "name": "Coliving",
-        "playlist_count": 9,
+        "content list_count": 9,
         "profile_picture": {
           "150x150": "https://usermetadata..co/ipfs/QmNjJv1wQf2DJq3GNXjXzSL8UXFUGXfchg4NhL7UpbnF1f",
           "480x480": "https://usermetadata..co/ipfs/QmNjJv1wQf2DJq3GNXjXzSL8UXFUGXfchg4NhL7UpbnF1f",
@@ -556,24 +556,24 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/playli
 }
 ```
 
-### Get Playlist <a id="get-playlist"></a>
+### Get ContentList <a id="get-content list"></a>
 
-`GET /playlists/{playlist_id}`
+`GET /content lists/{content list_id}`
 
-_Fetch a playlist_
+_Fetch a content list_
 
-#### Query Parameters <a id="get-playlist-parameters"></a>
+#### Query Parameters <a id="get-content list-parameters"></a>
 
 | Name           | Type   | Required | Description   |
 |:-------------- |:------ |:-------- |:------------- |
-| playlist\_id | string | true     | A Playlist ID |
+| content list\_id | string | true     | A ContentList ID |
 | app\_name    | string | true     | Your app name |
 
-#### Responses <a id="get-playlist-responses"></a>
+#### Responses <a id="get-content list-responses"></a>
 
 | Status | Meaning                                                                    | Description  | Schema                                                                                               |
 |:------ |:-------------------------------------------------------------------------- |:------------ |:---------------------------------------------------------------------------------------------------- |
-| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [playlist\_response](https://colivingproject.github.io/api-docs/?javascript#schemaplaylist_response) |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [content list\_response](https://colivingproject.github.io/api-docs/?javascript#schemacontent list_response) |
 | 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | Bad request  | None                                                                                                 |
 | 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Server error | None                                                                                                 |
 
@@ -586,7 +586,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/playlists/DOPRl?app_name=EXAMPLEAPP',
+fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/content lists/DOPRl?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -613,7 +613,7 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/playli
     "description": "All the latest hot new agreements on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
     "id": "DOPRl",
     "is_album": true,
-    "playlist_name": "Hot & New on Coliving 🔥",
+    "content list_name": "Hot & New on Coliving 🔥",
     "repost_count": 46,
     "favorite_count": 88,
     "user": {
@@ -630,7 +630,7 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/playli
       "is_verified": true,
       "location": "SF & LA",
       "name": "Coliving",
-      "playlist_count": 9,
+      "content list_count": 9,
       "profile_picture": {
         "150x150": "https://usermetadata..co/ipfs/QmNjJv1wQf2DJq3GNXjXzSL8UXFUGXfchg4NhL7UpbnF1f",
         "480x480": "https://usermetadata..co/ipfs/QmNjJv1wQf2DJq3GNXjXzSL8UXFUGXfchg4NhL7UpbnF1f",
@@ -643,24 +643,24 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/playli
 }
 ```
 
-### Get Playlist Agreements <a id="get-playlist-agreements"></a>
+### Get ContentList Agreements <a id="get-content list-agreements"></a>
 
-`GET /playlists/{playlist_id}/agreements`
+`GET /content lists/{content list_id}/agreements`
 
-_Fetch agreements within a playlist_
+_Fetch agreements within a content list_
 
-#### Query Parameters <a id="get-playlist-agreements-parameters"></a>
+#### Query Parameters <a id="get-content list-agreements-parameters"></a>
 
 | Name           | Type   | Required | Description   |
 |:-------------- |:------ |:-------- |:------------- |
-| playlist\_id | string | true     | A Playlist ID |
+| content list\_id | string | true     | A ContentList ID |
 | app\_name    | string | true     | Your app name |
 
-#### Responses <a id="get-playlist-agreements-responses"></a>
+#### Responses <a id="get-content list-agreements-responses"></a>
 
 | Status | Meaning                                                                    | Description  | Schema                                                                                                                |
 |:------ |:-------------------------------------------------------------------------- |:------------ |:--------------------------------------------------------------------------------------------------------------------- |
-| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [playlist\_agreements\_response](https://colivingproject.github.io/api-docs/?javascript#schemaplaylist_agreements_response) |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [content list\_agreements\_response](https://colivingproject.github.io/api-docs/?javascript#schemacontent list_agreements_response) |
 | 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | Bad request  | None                                                                                                                  |
 | 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Server error | None                                                                                                                  |
 
@@ -673,7 +673,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/playlists/DOPRl/agreements?app_name=EXAMPLEAPP',
+fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/content lists/DOPRl/agreements?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -722,7 +722,7 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/playli
         "is_verified": true,
         "location": "Los Angeles, CA",
         "name": "Brownies & Lemonade",
-        "playlist_count": 2,
+        "content list_count": 2,
         "profile_picture": {
           "150x150": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/150x150.jpg",
           "480x480": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/480x480.jpg",
@@ -819,7 +819,7 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/agreem
         "is_verified": true,
         "location": "Los Angeles, CA",
         "name": "Brownies & Lemonade",
-        "playlist_count": 2,
+        "content list_count": 2,
         "profile_picture": {
           "150x150": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/150x150.jpg",
           "480x480": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/480x480.jpg",
@@ -912,7 +912,7 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/agreem
         "is_verified": true,
         "location": "Los Angeles, CA",
         "name": "Brownies & Lemonade",
-        "playlist_count": 2,
+        "content list_count": 2,
         "profile_picture": {
           "150x150": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/150x150.jpg",
           "480x480": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/480x480.jpg",
@@ -1003,7 +1003,7 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/agreem
       "is_verified": true,
       "location": "Los Angeles, CA",
       "name": "Brownies & Lemonade",
-      "playlist_count": 2,
+      "content list_count": 2,
       "profile_picture": {
         "150x150": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/150x150.jpg",
         "480x480": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/480x480.jpg",
@@ -1126,7 +1126,7 @@ fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/metric
 
 _Resolves and redirects a provided Coliving app URL to the API resource URL it represents_
 
-This endpoint allows you to lookup and access API resources when you only know the .co URL. Agreements, Playlists, and Users are supported.
+This endpoint allows you to lookup and access API resources when you only know the .co URL. Agreements, ContentLists, and Users are supported.
 
 #### Query Parameters <a id="resolve-parameters"></a>
 
@@ -1194,7 +1194,7 @@ The following are examples of response formats you can expect to receive from th
     "is_verified": true,
     "location": "string",
     "name": "string",
-    "playlist_count": 0,
+    "content list_count": 0,
     "profile_picture": {
       "150x150": "string",
       "480x480": "string",
@@ -1230,7 +1230,7 @@ The following are examples of response formats you can expect to receive from th
   "is_verified": true,
   "location": "string",
   "name": "string",
-  "playlist_count": 0,
+  "content list_count": 0,
   "profile_picture": {
     "150x150": "string",
     "480x480": "string",
@@ -1256,7 +1256,7 @@ The following are examples of response formats you can expect to receive from th
 | is\_verified     | boolean                                                                                          | true     | none         | none        |
 | location           | string                                                                                           | false    | none         | none        |
 | name               | string                                                                                           | true     | none         | none        |
-| playlist\_count  | integer                                                                                          | true     | none         | none        |
+| content list\_count  | integer                                                                                          | true     | none         | none        |
 | profile\_picture | [profile\_picture](https://colivingproject.github.io/api-docs/?javascript#schemaprofile_picture) | false    | none         | none        |
 | repost\_count    | integer                                                                                          | true     | none         | none        |
 | agreement\_count     | integer                                                                                          | true     | none         | none        |
@@ -1338,7 +1338,7 @@ The following are examples of response formats you can expect to receive from th
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "playlist_count": 0,
+        "content list_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",
@@ -1401,7 +1401,7 @@ The following are examples of response formats you can expect to receive from th
     "is_verified": true,
     "location": "string",
     "name": "string",
-    "playlist_count": 0,
+    "content list_count": 0,
     "profile_picture": {
       "150x150": "string",
       "480x480": "string",
@@ -1606,7 +1606,7 @@ The following are examples of response formats you can expect to receive from th
       "is_verified": true,
       "location": "string",
       "name": "string",
-      "playlist_count": 0,
+      "content list_count": 0,
       "profile_picture": {
         "150x150": "string",
         "480x480": "string",
@@ -1626,7 +1626,7 @@ The following are examples of response formats you can expect to receive from th
 |:---- |:----------------------------------------------------------------------------- |:-------- |:------------ |:----------- |
 | data | \[[user](https://colivingproject.github.io/api-docs/?javascript#schemauser)\] | false    | none         | none        |
 
-### playlist\_response <a id="tocS_playlist_response"></a>
+### content list\_response <a id="tocS_content list_response"></a>
 
 ```json
 {
@@ -1640,7 +1640,7 @@ The following are examples of response formats you can expect to receive from th
       "description": "string",
       "id": "string",
       "is_album": true,
-      "playlist_name": "string",
+      "content list_name": "string",
       "repost_count": 0,
       "favorite_count": 0,
       "total_play_count": 0,
@@ -1658,7 +1658,7 @@ The following are examples of response formats you can expect to receive from th
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "playlist_count": 0,
+        "content list_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",
@@ -1677,9 +1677,9 @@ The following are examples of response formats you can expect to receive from th
 
 | Name | Type                                                                                  | Required | Restrictions | Description |
 |:---- |:------------------------------------------------------------------------------------- |:-------- |:------------ |:----------- |
-| data | \[[playlist](https://colivingproject.github.io/api-docs/?javascript#schemaplaylist)\] | false    | none         | none        |
+| data | \[[content list](https://colivingproject.github.io/api-docs/?javascript#schemacontent list)\] | false    | none         | none        |
 
-### playlist <a id="tocS_playlist"></a>
+### content list <a id="tocS_content list"></a>
 
 ```json
 {
@@ -1691,7 +1691,7 @@ The following are examples of response formats you can expect to receive from th
   "description": "string",
   "id": "string",
   "is_album": true,
-  "playlist_name": "string",
+  "content list_name": "string",
   "repost_count": 0,
   "favorite_count": 0,
   "total_play_count": 0,
@@ -1709,7 +1709,7 @@ The following are examples of response formats you can expect to receive from th
     "is_verified": true,
     "location": "string",
     "name": "string",
-    "playlist_count": 0,
+    "content list_count": 0,
     "profile_picture": {
       "150x150": "string",
       "480x480": "string",
@@ -1726,17 +1726,17 @@ The following are examples of response formats you can expect to receive from th
 
 | Name                   | Type                                                                                               | Required | Restrictions | Description |
 |:---------------------- |:-------------------------------------------------------------------------------------------------- |:-------- |:------------ |:----------- |
-| artwork                | [playlist\_artwork](https://colivingproject.github.io/api-docs/?javascript#schemaplaylist_artwork) | false    | none         | none        |
+| artwork                | [content list\_artwork](https://colivingproject.github.io/api-docs/?javascript#schemacontent list_artwork) | false    | none         | none        |
 | description            | string                                                                                             | false    | none         | none        |
 | id                     | string                                                                                             | true     | none         | none        |
 | is\_album            | boolean                                                                                            | true     | none         | none        |
-| playlist\_name       | string                                                                                             | true     | none         | none        |
+| content list\_name       | string                                                                                             | true     | none         | none        |
 | repost\_count        | integer                                                                                            | true     | none         | none        |
 | favorite\_count      | integer                                                                                            | true     | none         | none        |
 | total\_play\_count | integer                                                                                            | true     | none         | none        |
 | user                   | [user](https://colivingproject.github.io/api-docs/?javascript#schemauser)                            | true     | none         | none        |
 
-### playlist\_artwork <a id="tocS_playlist_artwork"></a>
+### content list\_artwork <a id="tocS_content list_artwork"></a>
 
 ```json
 {
@@ -1755,7 +1755,7 @@ The following are examples of response formats you can expect to receive from th
 | 480x480   | string | false    | none         | none        |
 | 1000x1000 | string | false    | none         | none        |
 
-### playlist\_agreements\_response <a id="tocS_playlist_agreements_response"></a>
+### content list\_agreements\_response <a id="tocS_content list_agreements_response"></a>
 
 ```json
 {
@@ -1796,7 +1796,7 @@ The following are examples of response formats you can expect to receive from th
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "playlist_count": 0,
+        "content list_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",
@@ -1820,7 +1820,7 @@ The following are examples of response formats you can expect to receive from th
 |:---- |:------------------------------------------------------------------------------- |:-------- |:------------ |:----------- |
 | data | \[[Agreement](https://colivingproject.github.io/api-docs/?javascript#schemaagreement)\] | false    | none         | none        |
 
-### playlist\_search\_result <a id="tocS_playlist_search_result"></a>
+### content list\_search\_result <a id="tocS_content list_search_result"></a>
 
 ```json
 {
@@ -1834,7 +1834,7 @@ The following are examples of response formats you can expect to receive from th
       "description": "string",
       "id": "string",
       "is_album": true,
-      "playlist_name": "string",
+      "content list_name": "string",
       "repost_count": 0,
       "favorite_count": 0,
       "total_play_count": 0,
@@ -1852,7 +1852,7 @@ The following are examples of response formats you can expect to receive from th
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "playlist_count": 0,
+        "content list_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",
@@ -1871,7 +1871,7 @@ The following are examples of response formats you can expect to receive from th
 
 | Name | Type                                                                                  | Required | Restrictions | Description |
 |:---- |:------------------------------------------------------------------------------------- |:-------- |:------------ |:----------- |
-| data | \[[playlist](https://colivingproject.github.io/api-docs/?javascript#schemaplaylist)\] | false    | none         | none        |
+| data | \[[content list](https://colivingproject.github.io/api-docs/?javascript#schemacontent list)\] | false    | none         | none        |
 
 ### agreement\_response <a id="tocS_agreement_response"></a>
 
@@ -1913,7 +1913,7 @@ The following are examples of response formats you can expect to receive from th
       "is_verified": true,
       "location": "string",
       "name": "string",
-      "playlist_count": 0,
+      "content list_count": 0,
       "profile_picture": {
         "150x150": "string",
         "480x480": "string",
@@ -1977,7 +1977,7 @@ The following are examples of response formats you can expect to receive from th
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "playlist_count": 0,
+        "content list_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",

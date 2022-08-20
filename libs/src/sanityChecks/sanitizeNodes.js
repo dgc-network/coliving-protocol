@@ -1,6 +1,6 @@
 /**
- * Sanitize user.creator_node_endpoint
- * Goal: Make it so we never end up in a state like creator_node_endpoint = "https://cn1.co,,"
+ * Sanitize user.content_node_endpoint
+ * Goal: Make it so we never end up in a state like content_node_endpoint = "https://cn1.co,,"
  */
 const sanitizeNodes = async (libs, secondaries) => {
   console.debug('Sanity Check - sanitizeNodes')
@@ -8,15 +8,15 @@ const sanitizeNodes = async (libs, secondaries) => {
 
   if (!user) return
 
-  const sanitizedEndpoint = user.creator_node_endpoint
+  const sanitizedEndpoint = user.content_node_endpoint
     .split(',')
     .filter(Boolean)
     .join(',')
 
-  if (sanitizedEndpoint !== user.creator_node_endpoint) {
-    console.debug(`Sanity Check - sanitizingNodes - ${user.creator_node_endpoint} -> ${sanitizedEndpoint}`)
+  if (sanitizedEndpoint !== user.content_node_endpoint) {
+    console.debug(`Sanity Check - sanitizingNodes - ${user.content_node_endpoint} -> ${sanitizedEndpoint}`)
     const newMetadata = { ...user }
-    newMetadata.creator_node_endpoint = sanitizedEndpoint
+    newMetadata.content_node_endpoint = sanitizedEndpoint
     await libs.User.updateCreator(user.user_id, newMetadata)
   }
 }

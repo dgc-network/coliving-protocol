@@ -12,7 +12,7 @@ const { promisify } = require('util')
 const crypto = require('crypto')
 
 const PRIVATE_KEY = process.env.delegatePrivateKey
-const CREATOR_NODE_ENDPOINT = process.env.contentNodeEndpoint
+const CONTENT_NODE_ENDPOINT = process.env.contentNodeEndpoint
 const randomBytes = promisify(crypto.randomBytes)
 
 /**
@@ -38,7 +38,7 @@ async function run () {
     let sampleAgreement = new FormData()
     sampleAgreement.append('file', (await axios({
       method: 'get',
-      url: 'https://s3-us-west-1.amazonaws.com/download.coliving.co/sp-health-check-files/97mb_music.mp3', // 97 MB
+      url: 'https://s3-us-west-1.amazonaws.com/download.coliving.lol/sp-health-check-files/97mb_music.mp3', // 97 MB
       responseType: 'stream'
     })).data)
 
@@ -46,7 +46,7 @@ async function run () {
       headers: {
         ...sampleAgreement.getHeaders()
       },
-      url: `${CREATOR_NODE_ENDPOINT}/health_check/fileupload`,
+      url: `${CONTENT_NODE_ENDPOINT}/health_check/fileupload`,
       method: 'post',
       params: reqParam,
       responseType: 'json',
@@ -69,8 +69,8 @@ async function run () {
  * NOTE: DO NOT PREFIX PRIVATE KEY WITH 0x
  */
 function parseEnvVarsAndArgs () {
-  if (!CREATOR_NODE_ENDPOINT || !PRIVATE_KEY) {
-    let errorMsg = `contentNodeEndpoint [${CREATOR_NODE_ENDPOINT}] or delegatePrivateKey [${PRIVATE_KEY}] have not been exported. `
+  if (!CONTENT_NODE_ENDPOINT || !PRIVATE_KEY) {
+    let errorMsg = `contentNodeEndpoint [${CONTENT_NODE_ENDPOINT}] or delegatePrivateKey [${PRIVATE_KEY}] have not been exported. `
     errorMsg += "Please export environment variables 'delegatePrivateKey' and 'contentNodeEndpoint'."
     throw new Error(errorMsg)
   }

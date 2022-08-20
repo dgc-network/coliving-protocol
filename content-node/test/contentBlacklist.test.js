@@ -623,7 +623,7 @@ describe('test ContentBlacklist', function () {
     assert.deepStrictEqual(await BlacklistManager.CIDIsInBlacklist(cids[0]), 0)
   })
 
-  it("should throw an error if delegate private key does not match that of the creator node's", async () => {
+  it("should throw an error if delegate private key does not match that of the content node's", async () => {
     const ids = [Utils.getRandomInt(MAX_ID)]
     const type = BlacklistManager.getTypes().user
     const BAD_KEY =
@@ -1119,7 +1119,7 @@ const setupLibsMock = (libsMock) => {
     if (!ids) ids = [0]
     const resp = ids.map((id) => {
       return {
-        creator_node_endpoint: 'http://localhost:5000',
+        content_node_endpoint: 'http://localhost:5000',
         blocknumber: 10,
         agreement_blocknumber: 10,
         user_id: id

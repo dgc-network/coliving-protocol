@@ -73,35 +73,35 @@ yarn run ts-node cli/main.ts -f createAgreement \
     --admin-account-keypair "$ADMIN_ACCOUNT_KEYPAIR_PATH" \
     --user-id 1 # metadata CID that would point off-chain is randomly generated here
 
-echo "Creating playlist"
+echo "Creating content list"
 
-yarn run ts-node cli/main.ts -f createPlaylist \
+yarn run ts-node cli/main.ts -f createContentList \
     -k "$OWNER_KEYPAIR_PATH" \
     --user-solana-keypair "$USER_KEYPAIR_PATH" \
     --user-account "$USER_ACCOUNT" \
     --admin-account-keypair "$ADMIN_ACCOUNT_KEYPAIR_PATH" \
-    --user-id 1 | tee /tmp/createPlaylistOutput.txt # metadata CID that would point off-chain is randomly generated here 
+    --user-id 1 | tee /tmp/createContentListOutput.txt # metadata CID that would point off-chain is randomly generated here 
 
-PLAYLIST_ID=$(cut -d '=' -f 3 <<< $(cat /tmp/createPlaylistOutput.txt | grep "Transacting on entity"))
+CONTENT_LIST_ID=$(cut -d '=' -f 3 <<< $(cat /tmp/createContentListOutput.txt | grep "Transacting on entity"))
 
-echo "Updating playlist"
+echo "Updating content list"
 
-yarn run ts-node cli/main.ts -f updatePlaylist \
+yarn run ts-node cli/main.ts -f updateContentList \
     -k "$OWNER_KEYPAIR_PATH" \
     --user-solana-keypair "$USER_KEYPAIR_PATH" \
     --user-account "$USER_ACCOUNT" \
     --admin-account-keypair "$ADMIN_ACCOUNT_KEYPAIR_PATH" \
-    --id "$PLAYLIST_ID" \
+    --id "$CONTENT_LIST_ID" \
     --user-id 1 # metadata CID that would point off-chain is randomly generated here 
 
-echo "Deleting playlist"
+echo "Deleting content list"
 
-yarn run ts-node cli/main.ts -f deletePlaylist \
+yarn run ts-node cli/main.ts -f deleteContentList \
     -k "$OWNER_KEYPAIR_PATH" \
     --user-solana-keypair "$USER_KEYPAIR_PATH" \
     --user-account "$USER_ACCOUNT" \
     --admin-account-keypair "$ADMIN_ACCOUNT_KEYPAIR_PATH" \
-    --id "$PLAYLIST_ID" \
+    --id "$CONTENT_LIST_ID" \
     --user-id 1
 
 echo "Successfully seeded tx:"

@@ -6,12 +6,12 @@ from src.trending_strategies.trending_type_and_version import (
 )
 
 
-class TrendingPlaylistsStrategyBDNxn(BaseTrendingStrategy):
+class TrendingContentListsStrategyBDNxn(BaseTrendingStrategy):
     def __init__(self):
-        super().__init__(TrendingType.PLAYLISTS, TrendingVersion.BDNxn)
+        super().__init__(TrendingType.CONTENT_LISTS, TrendingVersion.BDNxn)
 
-    def get_agreement_score(self, time_range, playlist):
-        return z(time_range, playlist)
+    def get_agreement_score(self, time_range, content list):
+        return z(time_range, content list)
 
     def get_score_params(self):
         return {"zq": 1000, "xf": True, "pt": 0, "mt": 3}

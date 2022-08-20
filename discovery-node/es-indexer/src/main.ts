@@ -1,5 +1,5 @@
 import { RepostDoc, SaveDoc } from './types/docs'
-import { PlaylistIndexer } from './indexers/PlaylistIndexer'
+import { ContentListIndexer } from './indexers/ContentListIndexer'
 import { RepostIndexer } from './indexers/RepostIndexer'
 import { SaveIndexer } from './indexers/SaveIndexer'
 import { AgreementIndexer } from './indexers/AgreementIndexer'
@@ -15,7 +15,7 @@ import {
 import { program } from 'commander'
 
 export const indexer = {
-  playlists: new PlaylistIndexer(),
+  content lists: new ContentListIndexer(),
   reposts: new RepostIndexer(),
   saves: new SaveIndexer(),
   agreements: new AgreementIndexer(),
@@ -24,7 +24,7 @@ export const indexer = {
 
 async function processPending(pending: PendingUpdates) {
   return Promise.all([
-    indexer.playlists.indexIds(Array.from(pending.playlistIds)),
+    indexer.content lists.indexIds(Array.from(pending.content listIds)),
     indexer.agreements.indexIds(Array.from(pending.agreementIds)),
     indexer.users.indexIds(Array.from(pending.userIds)),
 

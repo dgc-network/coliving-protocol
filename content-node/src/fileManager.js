@@ -282,12 +282,12 @@ async function saveFileForMultihashToFS(
 
         if (!response || !response.data) {
           decisionTree.push({
-            stage: `Couldn't find files on other creator nodes, after trying URLs`,
+            stage: `Couldn't find files on other content nodes, after trying URLs`,
             vals: null,
             time: Date.now()
           })
           throw new Error(
-            `Couldn't find files on other creator nodes, after trying URLs: ${gatewayUrlsMapped.toString()}`
+            `Couldn't find files on other content nodes, after trying URLs: ${gatewayUrlsMapped.toString()}`
           )
         }
 
@@ -302,7 +302,7 @@ async function saveFileForMultihashToFS(
         })
         logger.info(`wrote file to ${expectedStoragePath}`)
       } catch (e) {
-        const errorMsg = `Failed to retrieve file for multihash ${multihash} from other creator node gateways`
+        const errorMsg = `Failed to retrieve file for multihash ${multihash} from other content node gateways`
         decisionTree.push({
           stage: errorMsg,
           vals: e.message,
@@ -349,12 +349,12 @@ async function saveFileForMultihashToFS(
     // error if file was not found on any gateway
     if (!fileFound) {
       decisionTree.push({
-        stage: `Failed to retrieve file for multihash after trying creator node gateways`,
+        stage: `Failed to retrieve file for multihash after trying content node gateways`,
         vals: multihash,
         time: Date.now()
       })
       throw new Error(
-        `Failed to retrieve file for multihash ${multihash} after trying creator node gateways`
+        `Failed to retrieve file for multihash ${multihash} after trying content node gateways`
       )
     }
 

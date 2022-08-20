@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-export * from './PlaylistsApi';
+export * from './ContentListsApi';
 export * from './ReactionsApi';
 export * from './SearchApi';
 export * from './TipsApi';

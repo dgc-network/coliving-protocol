@@ -11,7 +11,7 @@ const { promisify } = require('util')
 const crypto = require('crypto')
 
 const PRIVATE_KEY = process.env.delegatePrivateKey
-const CREATOR_NODE_ENDPOINT = process.env.contentNodeEndpoint
+const CONTENT_NODE_ENDPOINT = process.env.contentNodeEndpoint
 const randomBytes = promisify(crypto.randomBytes)
 
 /**
@@ -34,7 +34,7 @@ async function run () {
     const reqParam = signedLocalData
     reqParam.randomBytes = randomBytesToSign
     let requestConfig = {
-      url: `${CREATOR_NODE_ENDPOINT}/health_check/duration`,
+      url: `${CONTENT_NODE_ENDPOINT}/health_check/duration`,
       method: 'get',
       params: reqParam,
       responseType: 'json'
@@ -54,8 +54,8 @@ async function run () {
  * NOTE: DO NOT PREFIX PRIVATE KEY WITH 0x
  */
 function parseEnvVarsAndArgs () {
-  if (!CREATOR_NODE_ENDPOINT || !PRIVATE_KEY) {
-    let errorMsg = `contentNodeEndpoint [${CREATOR_NODE_ENDPOINT}] or delegatePrivateKey [${PRIVATE_KEY}] have not been exported. `
+  if (!CONTENT_NODE_ENDPOINT || !PRIVATE_KEY) {
+    let errorMsg = `contentNodeEndpoint [${CONTENT_NODE_ENDPOINT}] or delegatePrivateKey [${PRIVATE_KEY}] have not been exported. `
     errorMsg += "Please export environment variables 'delegatePrivateKey' and 'contentNodeEndpoint'."
     throw new Error(errorMsg)
   }

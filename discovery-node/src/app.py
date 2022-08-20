@@ -60,7 +60,7 @@ registry = None
 user_factory = None
 agreement_factory = None
 social_feature_factory = None
-playlist_factory = None
+content list_factory = None
 user_library_factory = None
 user_replica_set_manager = None
 contract_addresses: Dict[str, Any] = defaultdict()
@@ -103,11 +103,11 @@ def init_contracts():
         abi=abi_values["SocialFeatureFactory"]["abi"],
     )
 
-    playlist_factory_address = registry_instance.functions.getContract(
-        bytes("PlaylistFactory", "utf-8")
+    content list_factory_address = registry_instance.functions.getContract(
+        bytes("ContentListFactory", "utf-8")
     ).call()
-    playlist_factory_inst = web3.eth.contract(
-        address=playlist_factory_address, abi=abi_values["PlaylistFactory"]["abi"]
+    content list_factory_inst = web3.eth.contract(
+        address=content list_factory_address, abi=abi_values["ContentListFactory"]["abi"]
     )
 
     user_library_factory_address = registry_instance.functions.getContract(
@@ -131,7 +131,7 @@ def init_contracts():
         "user_factory": user_factory_address,
         "agreement_factory": agreement_factory_address,
         "social_feature_factory": social_feature_factory_address,
-        "playlist_factory": playlist_factory_address,
+        "content list_factory": content list_factory_address,
         "user_library_factory": user_library_factory_address,
         "user_replica_set_manager": user_replica_set_manager_address,
     }
@@ -141,7 +141,7 @@ def init_contracts():
         user_factory_instance,
         agreement_factory_instance,
         social_feature_factory_inst,
-        playlist_factory_inst,
+        content list_factory_inst,
         user_library_factory_inst,
         user_replica_set_manager_inst,
         contract_address_dict,
@@ -173,7 +173,7 @@ def create_celery(test_config=None):
     global user_factory
     global agreement_factory
     global social_feature_factory
-    global playlist_factory
+    global content list_factory
     global user_library_factory
     global user_replica_set_manager
     global contract_addresses
@@ -184,7 +184,7 @@ def create_celery(test_config=None):
         user_factory,
         agreement_factory,
         social_feature_factory,
-        playlist_factory,
+        content list_factory,
         user_library_factory,
         user_replica_set_manager,
         contract_addresses,
@@ -366,7 +366,7 @@ def configure_celery(celery, test_config=None):
             "src.tasks.index_trending",
             "src.tasks.cache_user_balance",
             "src.monitors.monitoring_queue",
-            "src.tasks.cache_trending_playlists",
+            "src.tasks.cache_trending_content lists",
             "src.tasks.index_solana_plays",
             "src.tasks.index_challenges",
             "src.tasks.index_user_bank",
@@ -428,8 +428,8 @@ def configure_celery(celery, test_config=None):
                 "task": "monitoring_queue",
                 "schedule": timedelta(seconds=60),
             },
-            "cache_trending_playlists": {
-                "task": "cache_trending_playlists",
+            "cache_trending_content lists": {
+                "task": "cache_trending_content lists",
                 "schedule": timedelta(minutes=30),
             },
             "index_solana_plays": {

@@ -13,7 +13,7 @@ begin
   if new.save_type = 'agreement' then
     insert into aggregate_agreement (agreement_id) values (new.save_item_id) on conflict do nothing;
   else
-    insert into aggregate_playlist (playlist_id) values (new.save_item_id) on conflict do nothing;
+    insert into aggregate_content list (content list_id) values (new.save_item_id) on conflict do nothing;
   end if;
 
   -- increment or decrement?
@@ -23,7 +23,7 @@ begin
     delta := 1;
   end if;
 
-  -- update agg agreement or playlist
+  -- update agg agreement or content list
   if new.save_type = 'agreement' then
     milestone_name := 'AGREEMENT_SAVE_COUNT';
     update aggregate_agreement 
@@ -37,10 +37,10 @@ begin
     where user_id = new.user_id;
 
   else
-    milestone_name := 'PLAYLIST_SAVE_COUNT';
-    update aggregate_playlist
+    milestone_name := 'CONTENT_LIST_SAVE_COUNT';
+    update aggregate_content list
     set save_count = save_count + delta
-    where playlist_id = new.save_item_id
+    where content list_id = new.save_item_id
     returning save_count into new_val;
   end if;
 

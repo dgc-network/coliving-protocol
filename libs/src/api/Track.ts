@@ -39,9 +39,9 @@ export class Agreement extends Base {
     this.getTrendingAgreements = this.getTrendingAgreements.bind(this)
     this.getAgreementListens = this.getAgreementListens.bind(this)
     this.getSaversForAgreement = this.getSaversForAgreement.bind(this)
-    this.getSaversForPlaylist = this.getSaversForPlaylist.bind(this)
+    this.getSaversForContentList = this.getSaversForContentList.bind(this)
     this.getRepostersForAgreement = this.getRepostersForAgreement.bind(this)
-    this.getRepostersForPlaylist = this.getRepostersForPlaylist.bind(this)
+    this.getRepostersForContentList = this.getRepostersForContentList.bind(this)
     this.getListenHistoryAgreements = this.getListenHistoryAgreements.bind(this)
     this.checkIfDownloadAvailable = this.checkIfDownloadAvailable.bind(this)
     this.uploadAgreement = this.uploadAgreement.bind(this)
@@ -185,7 +185,7 @@ export class Agreement extends Base {
 
   /**
    * Return saved agreements for current user
-   * NOTE in returned JSON, SaveType string one of agreement, playlist, album
+   * NOTE in returned JSON, SaveType string one of agreement, content list, album
    */
   async getSavedAgreements(limit = 100, offset = 0, withUsers = false) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
@@ -251,18 +251,18 @@ export class Agreement extends Base {
   }
 
   /**
-   * get users that saved savePlaylistId, sorted by follower count descending
+   * get users that saved saveContentListId, sorted by follower count descending
    * additional metadata fields on user objects:
    *  {Integer} follower_count - follower count of given user
    * @example
-   * getSaversForPlaylist(100, 0, 1) - ID must be valid
+   * getSaversForContentList(100, 0, 1) - ID must be valid
    */
-  async getSaversForPlaylist(limit = 100, offset = 0, savePlaylistId: number) {
+  async getSaversForContentList(limit = 100, offset = 0, saveContentListId: number) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getSaversForPlaylist(
+    return await this.discoveryProvider.getSaversForContentList(
       limit,
       offset,
-      savePlaylistId
+      saveContentListId
     )
   }
 
@@ -283,28 +283,28 @@ export class Agreement extends Base {
   }
 
   /**
-   * get users that reposted repostPlaylistId, sorted by follower count descending
+   * get users that reposted repostContentListId, sorted by follower count descending
    * additional metadata fields on user objects:
    *  {Integer} follower_count - follower count of given user
    * @example
-   * getRepostersForPlaylist(100, 0, 1) - ID must be valid
+   * getRepostersForContentList(100, 0, 1) - ID must be valid
    */
-  async getRepostersForPlaylist(
+  async getRepostersForContentList(
     limit = 100,
     offset = 0,
-    repostPlaylistId: number
+    repostContentListId: number
   ) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getRepostersForPlaylist(
+    return await this.discoveryProvider.getRepostersForContentList(
       limit,
       offset,
-      repostPlaylistId
+      repostContentListId
     )
   }
 
   /**
    * Return saved agreements for current user
-   * NOTE in returned JSON, SaveType string one of agreement, playlist, album
+   * NOTE in returned JSON, SaveType string one of agreement, content list, album
    */
   async getListenHistoryAgreements(limit = 100, offset = 0) {
     this.REQUIRES(Services.IDENTITY_SERVICE)
@@ -317,7 +317,7 @@ export class Agreement extends Base {
   }
 
   /**
-   * Checks if a download is available from provided creator node endpoints
+   * Checks if a download is available from provided content node endpoints
    */
   async checkIfDownloadAvailable(
     contentNodeEndpoints: string,
@@ -349,7 +349,7 @@ export class Agreement extends Base {
     metadata: AgreementMetadata,
     onProgress: () => void
   ) {
-    this.REQUIRES(Services.CREATOR_NODE)
+    this.REQUIRES(Services.CONTENT_NODE)
     this.FILE_IS_VALID(agreementFile)
 
     const phases = {
@@ -447,7 +447,7 @@ export class Agreement extends Base {
   /**
    * Takes in a readable stream if isServer is true, or a file reference if isServer is
    * false.
-   * WARNING: Uploads file to creator node, but does not call contracts
+   * WARNING: Uploads file to content node, but does not call contracts
    * Please pair this with the addAgreementsToChainAndCnode
    */
   async uploadAgreementContentToCreatorNode(
@@ -456,7 +456,7 @@ export class Agreement extends Base {
     metadata: AgreementMetadata,
     onProgress: () => void
   ) {
-    this.REQUIRES(Services.CREATOR_NODE)
+    this.REQUIRES(Services.CONTENT_NODE)
     this.FILE_IS_VALID(agreementFile)
 
     if (coverArtFile) this.FILE_IS_VALID(coverArtFile)
@@ -514,7 +514,7 @@ export class Agreement extends Base {
    * Associates agreements with user on creatorNode
    */
   async addAgreementsToChainAndCnode(agreementMultihashAndUUIDList: ChainInfo[]) {
-    this.REQUIRES(Services.CREATOR_NODE)
+    this.REQUIRES(Services.CONTENT_NODE)
     const ownerId = this.userStateManager.getCurrentUserId()
     if (!ownerId) {
       throw new Error('No users loaded for this wallet')
@@ -595,11 +595,11 @@ export class Agreement extends Base {
 
   /**
    * Updates an existing agreement given metadata. This function expects that all associated files
-   * such as agreement content, cover art are already on creator node.
+   * such as agreement content, cover art are already on content node.
    * @param metadata json of the agreement metadata with all fields, missing fields will error
    */
   async updateAgreement(metadata: AgreementMetadata) {
-    this.REQUIRES(Services.CREATOR_NODE)
+    this.REQUIRES(Services.CONTENT_NODE)
     this.IS_OBJECT(metadata)
 
     const ownerId = this.userStateManager.getCurrentUserId()

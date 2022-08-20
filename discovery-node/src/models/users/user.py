@@ -34,7 +34,7 @@ class User(Base, RepresentableMixin):
     bio = Column(String)
     location = Column(String)
     metadata_multihash = Column(String)
-    creator_node_endpoint = Column(String)
+    content_node_endpoint = Column(String)
     blocknumber = Column(ForeignKey("blocks.number"), index=True)  # type: ignore
     is_verified = Column(Boolean, nullable=False, server_default=text("false"))
     created_at = Column(
@@ -56,7 +56,7 @@ class User(Base, RepresentableMixin):
         nullable=False,
         server_default=text("''::character varying"),
     )
-    playlist_library = Column(JSONB())
+    content list_library = Column(JSONB())
     is_deactivated = Column(
         Boolean, nullable=False, index=True, server_default=text("false")
     )

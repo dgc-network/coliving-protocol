@@ -24,8 +24,8 @@ const getRepostType = (type) => {
       return notificationTypes.Repost.agreement
     case 'album':
       return notificationTypes.Repost.album
-    case 'playlist':
-      return notificationTypes.Repost.playlist
+    case 'content list':
+      return notificationTypes.Repost.content list
     default:
       return ''
   }
@@ -37,8 +37,8 @@ const getFavoriteType = (type) => {
       return notificationTypes.Favorite.agreement
     case 'album':
       return notificationTypes.Favorite.album
-    case 'playlist':
-      return notificationTypes.Favorite.playlist
+    case 'content list':
+      return notificationTypes.Favorite.content list
     default:
       return ''
   }
@@ -72,7 +72,7 @@ async function formatNotifications (notifications, notificationSettings, tx) {
     }
 
     // Handle the 'repost' notification type
-    // agreement/album/playlist
+    // agreement/album/content list
     if (notif.type === notificationTypes.Repost.base) {
       let notificationTarget = notif.metadata.entity_owner_id
       const shouldNotify = shouldNotifyUser(notificationTarget, 'reposts', notificationSettings)
@@ -92,7 +92,7 @@ async function formatNotifications (notifications, notificationSettings, tx) {
       }
     }
 
-    // Handle the 'favorite' notification type, agreement/album/playlist
+    // Handle the 'favorite' notification type, agreement/album/content list
     if (notif.type === notificationTypes.Favorite.base) {
       let notificationTarget = notif.metadata.entity_owner_id
       const shouldNotify = shouldNotifyUser(notificationTarget, 'favorites', notificationSettings)
@@ -206,14 +206,14 @@ async function formatNotifications (notifications, notificationSettings, tx) {
       formattedNotifications.push(formattedTierChangeNotification)
     }
 
-    // Handle the 'create' notification type, agreement/album/playlist
+    // Handle the 'create' notification type, agreement/album/content list
     if (notif.type === notificationTypes.Create.base) {
       await _processCreateNotifications(notif, tx)
     }
 
-    // Handle the 'agreement added to playlist' notification type
-    if (notif.type === notificationTypes.AddAgreementToPlaylist) {
-      const formattedAddAgreementToPlaylistNotification = {
+    // Handle the 'agreement added to content list' notification type
+    if (notif.type === notificationTypes.AddAgreementToContentList) {
+      const formattedAddAgreementToContentListNotification = {
         ...notif,
         actions: [{
           actionEntityType: actionEntityTypes.Agreement,
@@ -222,13 +222,13 @@ async function formatNotifications (notifications, notificationSettings, tx) {
         }],
         metadata: {
           agreementOwnerId: notif.metadata.agreement_owner_id,
-          playlistOwnerId: notif.initiator,
-          playlistId: notif.metadata.playlist_id
+          content listOwnerId: notif.initiator,
+          content listId: notif.metadata.content list_id
         },
         entityId: notif.metadata.agreement_id,
-        type: notificationTypes.AddAgreementToPlaylist
+        type: notificationTypes.AddAgreementToContentList
       }
-      formattedNotifications.push(formattedAddAgreementToPlaylistNotification)
+      formattedNotifications.push(formattedAddAgreementToContentListNotification)
     }
 
     if (notif.type === notificationTypes.Reaction) {
@@ -298,8 +298,8 @@ async function _processCreateNotifications (notif, tx) {
       createType = notificationTypes.Create.album
       actionEntityType = actionEntityTypes.User
       break
-    case 'playlist':
-      createType = notificationTypes.Create.playlist
+    case 'content list':
+      createType = notificationTypes.Create.content list
       actionEntityType = actionEntityTypes.User
       break
     default:
@@ -320,7 +320,7 @@ async function _processCreateNotifications (notif, tx) {
 
   // The notification entity id is the uploader id for agreements
   // Each agreement will added to the notification actions table
-  // For playlist/albums, the notification entity id is the collection id itself
+  // For content list/albums, the notification entity id is the collection id itself
   let notificationEntityId =
     actionEntityType === actionEntityTypes.Agreement
       ? notif.initiator
@@ -355,9 +355,9 @@ async function _processCreateNotifications (notif, tx) {
   })
   subscriberPushNotifications.push(...formattedNotifications)
 
-  // Dedupe album /playlist notification
+  // Dedupe album /content list notification
   if (createType === notificationTypes.Create.album ||
-      createType === notificationTypes.Create.playlist) {
+      createType === notificationTypes.Create.content list) {
     let agreementIdObjectList = notif.metadata.collection_content.agreement_ids
     let agreementIdsArray = agreementIdObjectList.map(x => x.agreement)
 

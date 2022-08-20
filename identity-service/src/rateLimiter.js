@@ -35,8 +35,8 @@ const getIP = (req) => {
   // If > 1 headers:
   //   This assumes two proxies (some outer proxy like cloudflare and then some proxy like a load balancer)
   //   Rightmost header is the outer proxy
-  //   Rightmost - 1 header is either a creator node OR the actual user
-  //    If creator node, use Rightmost - 2 (since creator node will pass this along)
+  //   Rightmost - 1 header is either a content node OR the actual user
+  //    If content node, use Rightmost - 2 (since content node will pass this along)
   //    Else, use Rightmost - 1 since it's the actual user
 
   let ip = req.ip

@@ -5,7 +5,7 @@ const { generateTimestampAndSignature } = require('./apiSigning')
 
 // required env variables
 const PRIVATE_KEY = process.env.delegatePrivateKey
-const CREATOR_NODE_ENDPOINT = process.env.contentNodeEndpoint
+const CONTENT_NODE_ENDPOINT = process.env.contentNodeEndpoint
 const DISCOVERY_PROVIDER_ENDPOINT = process.env.discoveryProviderEndpoint
 
 const REQUEST_CONCURRENCY_LIMIT = 20
@@ -31,11 +31,11 @@ const Logger = {
 async function run () {
   let args
   const commander = new Commander()
-  args = commander.runParser({ CREATOR_NODE_ENDPOINT, PRIVATE_KEY, DISCOVERY_PROVIDER_ENDPOINT, hashIds })
+  args = commander.runParser({ CONTENT_NODE_ENDPOINT, PRIVATE_KEY, DISCOVERY_PROVIDER_ENDPOINT, hashIds })
 
   const { action, type, values, verbose } = args
   if (verbose) VERBOSE_MODE = true
-  Logger.info(`Updating set of delisted content for ${CREATOR_NODE_ENDPOINT} for values: [${values}]...`)
+  Logger.info(`Updating set of delisted content for ${CONTENT_NODE_ENDPOINT} for values: [${values}]...`)
 
   let errors = []
   for (let i = 0; i < values.length; i += VALUES_BATCH_SIZE) {
@@ -59,7 +59,7 @@ async function run () {
       return
     }
 
-    Logger.debug(`Verifying content against set of delisted content for ${CREATOR_NODE_ENDPOINT}...\n`)
+    Logger.debug(`Verifying content against set of delisted content for ${CONTENT_NODE_ENDPOINT}...\n`)
     try {
       const CIDs = await verifyDelistedContent({ type, values: valuesSliced, action })
 
@@ -89,7 +89,7 @@ async function delistContent (type, values) {
   let resp
   try {
     const reqObj = {
-      url: `${CREATOR_NODE_ENDPOINT}/blacklist/add`,
+      url: `${CONTENT_NODE_ENDPOINT}/blacklist/add`,
       method: 'post',
       params: { type, values, timestamp, signature },
       responseType: 'json'
@@ -97,7 +97,7 @@ async function delistContent (type, values) {
     Logger.debug(`About to send axios request to ${reqObj.url} for values`, values)
     resp = await axios(reqObj)
   } catch (e) {
-    throw new Error(`Error with adding type [${type}] and values [${values}] to url: ${CREATOR_NODE_ENDPOINT}: ${e}`)
+    throw new Error(`Error with adding type [${type}] and values [${values}] to url: ${CONTENT_NODE_ENDPOINT}: ${e}`)
   }
 
   return resp.data
@@ -115,13 +115,13 @@ async function undelistContent (type, values) {
   let resp
   try {
     resp = await axios({
-      url: `${CREATOR_NODE_ENDPOINT}/blacklist/remove`,
+      url: `${CONTENT_NODE_ENDPOINT}/blacklist/remove`,
       method: 'post',
       params: { type, values, timestamp, signature },
       responseType: 'json'
     })
   } catch (e) {
-    throw new Error(`Error with removing type [${type}] and values [${values}] to url: ${CREATOR_NODE_ENDPOINT}: ${e}`)
+    throw new Error(`Error with removing type [${type}] and values [${values}] to url: ${CONTENT_NODE_ENDPOINT}: ${e}`)
   }
 
   return resp.data
@@ -137,7 +137,7 @@ async function undelistContent (type, values) {
 async function verifyDelistedContent ({ type, values, action }) {
   let allCIDs = await getCIDs(type, values)
 
-  // Hit creator node /ipfs/:CID route to see if cid is delisted
+  // Hit content node /ipfs/:CID route to see if cid is delisted
   let checkFn, filterFn
   switch (action) {
     case 'ADD':
@@ -304,7 +304,7 @@ async function fetchUserToNumAgreementsMap (userIds) {
  */
 async function checkIsCIDDelisted (cid) {
   try {
-    await axios.head(`${CREATOR_NODE_ENDPOINT}/ipfs/${cid}`)
+    await axios.head(`${CONTENT_NODE_ENDPOINT}/ipfs/${cid}`)
   } catch (e) {
     if (e.response && e.response.status && e.response.status === 403) {
       return { cid, delisted: true }
@@ -321,7 +321,7 @@ async function checkIsCIDDelisted (cid) {
 async function checkIsAgreementDelisted (id) {
   try {
     const encodedId = hashIds.encode(id)
-    await axios.head(`${CREATOR_NODE_ENDPOINT}/agreements/stream/${encodedId}`)
+    await axios.head(`${CONTENT_NODE_ENDPOINT}/agreements/stream/${encodedId}`)
   } catch (e) {
     if (e.response && e.response.status && e.response.status === 403) {
       return { value: id, delisted: true }
@@ -341,7 +341,7 @@ async function checkIsAgreementDelisted (id) {
  */
 async function checkIsCIDNotDelisted (cid) {
   try {
-    await axios.head(`${CREATOR_NODE_ENDPOINT}/ipfs/${cid}`)
+    await axios.head(`${CONTENT_NODE_ENDPOINT}/ipfs/${cid}`)
   } catch (e) {
     Logger.error(`Failed to check for cid [${cid}]: ${e}`)
     return { cid, delisted: true }

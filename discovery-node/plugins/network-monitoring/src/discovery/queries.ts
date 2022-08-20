@@ -108,7 +108,7 @@ export const importUsers = async (run_id: number) => {
         SELECT 
             user_id, 
             wallet, 
-            creator_node_endpoint as replica_set, 
+            content_node_endpoint as replica_set, 
             :run_id,
             primary_id as primarySpID, 
             secondary_ids[1] as secondary1SpID,

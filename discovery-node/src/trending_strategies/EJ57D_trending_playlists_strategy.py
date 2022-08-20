@@ -6,9 +6,9 @@ from src.trending_strategies.trending_type_and_version import (
 )
 
 
-class TrendingPlaylistsStrategyEJ57D(BaseTrendingStrategy):
+class TrendingContentListsStrategyEJ57D(BaseTrendingStrategy):
     def __init__(self):
-        super().__init__(TrendingType.PLAYLISTS, TrendingVersion.EJ57D)
+        super().__init__(TrendingType.CONTENT_LISTS, TrendingVersion.EJ57D)
 
     def get_agreement_score(self, time_range, agreement):
         return z(time_range, agreement)

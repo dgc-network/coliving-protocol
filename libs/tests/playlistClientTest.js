@@ -3,32 +3,32 @@ let helpers = require('./helpers')
 let {Utils} = require('../src/utils')
 
 let colivingInstance = helpers.colivingInstance
-let playlistOwnerId
+let content listOwnerId
 
-// First created playlist
-let playlistId = 1
+// First created content list
+let content listId = 1
 
 // Initial agreements
-let playlistAgreements = []
+let content listAgreements = []
 
-// Initial playlist configuration
-let initialPlaylistName = 'Test playlist name'
+// Initial content list configuration
+let initialContentListName = 'Test content list name'
 let initialIsPrivate = false
 
 before(async function () {
   await colivingInstance.init()
-  playlistOwnerId = (await colivingInstance.contracts.UserFactoryClient.addUser('playlistH')).userId
+  content listOwnerId = (await colivingInstance.contracts.UserFactoryClient.addUser('content listH')).userId
 
   const cid = helpers.constants.agreementMetadataCID // test metadata stored in DHT
   const agreementMultihashDecoded = Utils.decodeMultihash(cid)
-  playlistAgreements.push((await colivingInstance.contracts.AgreementFactoryClient.addAgreement(
-    playlistOwnerId,
+  content listAgreements.push((await colivingInstance.contracts.AgreementFactoryClient.addAgreement(
+    content listOwnerId,
     agreementMultihashDecoded.digest,
     agreementMultihashDecoded.hashFn,
     agreementMultihashDecoded.size
   )).agreementId)
-  playlistAgreements.push((await colivingInstance.contracts.AgreementFactoryClient.addAgreement(
-    playlistOwnerId,
+  content listAgreements.push((await colivingInstance.contracts.AgreementFactoryClient.addAgreement(
+    content listOwnerId,
     agreementMultihashDecoded.digest,
     agreementMultihashDecoded.hashFn,
     agreementMultihashDecoded.size
@@ -37,45 +37,45 @@ before(async function () {
 
 // TODO: Add validation to the below test cases, currently they just perform chain operations.
 
-it('should create playlist', async function () {
-  const playlistId = await colivingInstance.contracts.PlaylistFactoryClient.createPlaylist(
-    playlistOwnerId,
-    initialPlaylistName,
+it('should create content list', async function () {
+  const content listId = await colivingInstance.contracts.ContentListFactoryClient.createContentList(
+    content listOwnerId,
+    initialContentListName,
     initialIsPrivate,
     false,
-    playlistAgreements)
+    content listAgreements)
 })
 
 it('should create album', async function () {
-  const playlistId = await colivingInstance.contracts.PlaylistFactoryClient.createPlaylist(
-    playlistOwnerId,
-    initialPlaylistName,
+  const content listId = await colivingInstance.contracts.ContentListFactoryClient.createContentList(
+    content listOwnerId,
+    initialContentListName,
     initialIsPrivate,
     true,
-    playlistAgreements)
+    content listAgreements)
 })
 
-it('should create and delete playlist', async function () {
-  // create playlist
-  const { playlistId } = await colivingInstance.contracts.PlaylistFactoryClient.createPlaylist(
-    playlistOwnerId,
-    initialPlaylistName,
+it('should create and delete content list', async function () {
+  // create content list
+  const { content listId } = await colivingInstance.contracts.ContentListFactoryClient.createContentList(
+    content listOwnerId,
+    initialContentListName,
     initialIsPrivate,
     false,
-    playlistAgreements)
+    content listAgreements)
 
-  // delete playlist + validate
-  const { playlistId: deletedPlaylistId } = await colivingInstance.contracts.PlaylistFactoryClient.deletePlaylist(playlistId)
-  assert.strictEqual(playlistId, deletedPlaylistId)
+  // delete content list + validate
+  const { content listId: deletedContentListId } = await colivingInstance.contracts.ContentListFactoryClient.deleteContentList(content listId)
+  assert.strictEqual(content listId, deletedContentListId)
 })
 
-it('should add agreements to an existing playlist', async function () {
+it('should add agreements to an existing content list', async function () {
   const cid = helpers.constants.agreementMetadataCID // test metadata stored in DHT
   const agreementMultihashDecoded = Utils.decodeMultihash(cid)
 
   // Add a new agreement
   const { agreementId } = await colivingInstance.contracts.AgreementFactoryClient.addAgreement(
-    playlistOwnerId,
+    content listOwnerId,
     agreementMultihashDecoded.digest,
     agreementMultihashDecoded.hashFn,
     agreementMultihashDecoded.size
@@ -83,18 +83,18 @@ it('should add agreements to an existing playlist', async function () {
   const agreement = await colivingInstance.contracts.AgreementFactoryClient.getAgreement(agreementId)
   assert.strictEqual(agreement.multihashDigest, agreementMultihashDecoded.digest)
 
-  const addPlaylistAgreementTx = await colivingInstance.contracts.PlaylistFactoryClient.addPlaylistAgreement(
-    playlistId,
+  const addContentListAgreementTx = await colivingInstance.contracts.ContentListFactoryClient.addContentListAgreement(
+    content listId,
     agreementId)
 })
 
-it('should delete agreement from an existing playlist', async function () {
+it('should delete agreement from an existing content list', async function () {
   const cid = helpers.constants.agreementMetadataCID // test metadata stored in DHT
   const agreementMultihashDecoded = Utils.decodeMultihash(cid)
 
   // Add a new agreement
   const { agreementId } = await colivingInstance.contracts.AgreementFactoryClient.addAgreement(
-    playlistOwnerId,
+    content listOwnerId,
     agreementMultihashDecoded.digest,
     agreementMultihashDecoded.hashFn,
     agreementMultihashDecoded.size
@@ -102,56 +102,56 @@ it('should delete agreement from an existing playlist', async function () {
   const agreement = await colivingInstance.contracts.AgreementFactoryClient.getAgreement(agreementId)
   assert.strictEqual(agreement.multihashDigest, agreementMultihashDecoded.digest)
 
-  const addPlaylistAgreementTx = await colivingInstance.contracts.PlaylistFactoryClient.addPlaylistAgreement(
-    playlistId,
+  const addContentListAgreementTx = await colivingInstance.contracts.ContentListFactoryClient.addContentListAgreement(
+    content listId,
     agreementId)
 
   const deletedTimestamp = 1552008725
-  // Delete the newly added agreement from the playlist
-  const deletedPlaylistAgreementTx = await colivingInstance.contracts.PlaylistFactoryClient.deletePlaylistAgreement(
-    playlistId,
+  // Delete the newly added agreement from the content list
+  const deletedContentListAgreementTx = await colivingInstance.contracts.ContentListFactoryClient.deleteContentListAgreement(
+    content listId,
     agreementId,
     deletedTimestamp)
 })
 
-it('should reorder agreements in an existing playlist', async function () {
-  playlistAgreements.push(playlistAgreements.shift()) // put first element at end
-  const orderAgreementsTx = await colivingInstance.contracts.PlaylistFactoryClient.orderPlaylistAgreements(
-    playlistId,
-    playlistAgreements)
+it('should reorder agreements in an existing content list', async function () {
+  content listAgreements.push(content listAgreements.shift()) // put first element at end
+  const orderAgreementsTx = await colivingInstance.contracts.ContentListFactoryClient.orderContentListAgreements(
+    content listId,
+    content listAgreements)
 })
 
-it('should update playlist privacy', async function () {
+it('should update content list privacy', async function () {
   const updatedPrivacy = false
-  const updatePlaylistPrivacyTx = await colivingInstance.contracts.PlaylistFactoryClient.updatePlaylistPrivacy(
-    playlistId,
+  const updateContentListPrivacyTx = await colivingInstance.contracts.ContentListFactoryClient.updateContentListPrivacy(
+    content listId,
     updatedPrivacy)
 })
 
-it('should update playlist name', async function () {
-  const updatedPlaylistName = 'Here is my updated playlist name'
-  const updatePlaylistNameTx = await colivingInstance.contracts.PlaylistFactoryClient.updatePlaylistName(
-    playlistId,
-    updatedPlaylistName)
+it('should update content list name', async function () {
+  const updatedContentListName = 'Here is my updated content list name'
+  const updateContentListNameTx = await colivingInstance.contracts.ContentListFactoryClient.updateContentListName(
+    content listId,
+    updatedContentListName)
 })
 
-it('should update playlist cover photo', async function () {
+it('should update content list cover photo', async function () {
   const cid = helpers.constants.agreementMetadataCID // test metadata stored in DHT
   const agreementMultihashDecoded = Utils.decodeMultihash(cid)
   const testPhotoDigest = agreementMultihashDecoded.digest
-  const updatePlaylistCoverPhotoTx = await colivingInstance.contracts.PlaylistFactoryClient.updatePlaylistCoverPhoto(
-    playlistId,
+  const updateContentListCoverPhotoTx = await colivingInstance.contracts.ContentListFactoryClient.updateContentListCoverPhoto(
+    content listId,
     testPhotoDigest)
 })
 
-it('should update playlist description', async function () {
+it('should update content list description', async function () {
   const description = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis'
-  const updatePlaylistDescriptionTx = await colivingInstance.contracts.PlaylistFactoryClient.updatePlaylistDescription(
-    playlistId,
+  const updateContentListDescriptionTx = await colivingInstance.contracts.ContentListFactoryClient.updateContentListDescription(
+    content listId,
     description)
 })
 
-it('should update playlist UPC', async function () {
+it('should update content list UPC', async function () {
   const newUPC = '928152343234'
-  const updatePlaylistUPC = await colivingInstance.contracts.PlaylistFactoryClient.updatePlaylistUPC(playlistId, newUPC)
+  const updateContentListUPC = await colivingInstance.contracts.ContentListFactoryClient.updateContentListUPC(content listId, newUPC)
 })

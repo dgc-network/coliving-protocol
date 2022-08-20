@@ -1,6 +1,6 @@
 from sqlalchemy import desc, func
 from src import exceptions
-from src.models.playlists.playlist import Playlist
+from src.models.content lists.content list import ContentList
 from src.models.social.repost import Repost, RepostType
 from src.models.users.aggregate_user import AggregateUser
 from src.models.users.user import User
@@ -10,29 +10,29 @@ from src.utils import helpers
 from src.utils.db_session import get_db_read_replica
 
 
-def get_reposters_for_playlist(args):
+def get_reposters_for_content list(args):
     user_results = []
     current_user_id = args.get("current_user_id")
-    repost_playlist_id = args.get("repost_playlist_id")
+    repost_content list_id = args.get("repost_content list_id")
     limit = args.get("limit")
     offset = args.get("offset")
 
     db = get_db_read_replica()
     with db.scoped_session() as session:
-        # Ensure Playlist exists for provided repost_playlist_id.
-        playlist_entry = (
-            session.query(Playlist)
+        # Ensure ContentList exists for provided repost_content list_id.
+        content list_entry = (
+            session.query(ContentList)
             .filter(
-                Playlist.playlist_id == repost_playlist_id, Playlist.is_current == True
+                ContentList.content list_id == repost_content list_id, ContentList.is_current == True
             )
             .first()
         )
-        if playlist_entry is None:
+        if content list_entry is None:
             raise exceptions.NotFoundError(
-                "Resource not found for provided playlist id"
+                "Resource not found for provided content list id"
             )
 
-        # Get all Users that reposted Playlist, ordered by follower_count desc & paginated.
+        # Get all Users that reposted ContentList, ordered by follower_count desc & paginated.
         query = (
             session.query(
                 User,
@@ -45,11 +45,11 @@ def get_reposters_for_playlist(args):
             .outerjoin(AggregateUser, AggregateUser.user_id == User.user_id)
             .filter(
                 User.is_current == True,
-                # Only select users that reposted given playlist.
+                # Only select users that reposted given content list.
                 User.user_id.in_(
                     session.query(Repost.user_id).filter(
-                        Repost.repost_item_id == repost_playlist_id,
-                        # Select Reposts for Playlists and Albums (i.e. not Agreements).
+                        Repost.repost_item_id == repost_content list_id,
+                        # Select Reposts for ContentLists and Albums (i.e. not Agreements).
                         Repost.repost_type != RepostType.agreement,
                         Repost.is_current == True,
                         Repost.is_delete == False,

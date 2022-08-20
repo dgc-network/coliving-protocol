@@ -1,6 +1,6 @@
 ---
-id: "PlaylistsApi"
-title: "Playlists"
+id: "ContentListsApi"
+title: "ContentLists"
 sidebar_position: 0
 custom_edit_url: null
 pagination_prev: null
@@ -9,18 +9,18 @@ pagination_next: null
 
 ## Methods
 
-### getPlaylist
+### getContentList
 
-**getPlaylist**(`requestParameters`): `Promise`<[`Playlist`](../interfaces/Playlist.md)[]\>
+**getContentList**(`requestParameters`): `Promise`<[`ContentList`](../interfaces/ContentList.md)[]\>
 
-Get a playlist by ID
+Get a content list by ID
 
 Example:
 
 ```typescript
 
-const playlist = await colivingSdk.playlists.getPlaylist({
-    playlistId: "AxRP0",
+const content list = await colivingSdk.content lists.getContentList({
+    content listId: "AxRP0",
 });
 
 ```
@@ -29,26 +29,26 @@ const playlist = await colivingSdk.playlists.getPlaylist({
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetPlaylistRequest`](../interfaces/GetPlaylistRequest.md) |
+| `requestParameters` | [`GetContentListRequest`](../interfaces/GetContentListRequest.md) |
 
 #### Returns
 
-`Promise`<[`Playlist`](../interfaces/Playlist.md)[]\>
+`Promise`<[`ContentList`](../interfaces/ContentList.md)[]\>
 
 ___
 
-### getPlaylistAgreements
+### getContentListAgreements
 
-**getPlaylistAgreements**(`requestParameters`): `Promise`<[`Agreement`](../interfaces/Agreement.md)[]\>
+**getContentListAgreements**(`requestParameters`): `Promise`<[`Agreement`](../interfaces/Agreement.md)[]\>
 
-Fetch agreements within a playlist.
+Fetch agreements within a content list.
 
 Example:
 
 ```typescript
 
-const agreements = await colivingSdk.playlists.getPlaylistAgreements({
-    playlistId: "AxRP0",
+const agreements = await colivingSdk.content lists.getContentListAgreements({
+    content listId: "AxRP0",
 });
 
 ```
@@ -57,7 +57,7 @@ const agreements = await colivingSdk.playlists.getPlaylistAgreements({
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetPlaylistAgreementsRequest`](../interfaces/GetPlaylistAgreementsRequest.md) |
+| `requestParameters` | [`GetContentListAgreementsRequest`](../interfaces/GetContentListAgreementsRequest.md) |
 
 #### Returns
 
@@ -65,17 +65,17 @@ const agreements = await colivingSdk.playlists.getPlaylistAgreements({
 
 ___
 
-### getTrendingPlaylists
+### getTrendingContentLists
 
-**getTrendingPlaylists**(`requestParameters?`): `Promise`<[`Playlist`](../interfaces/Playlist.md)[]\>
+**getTrendingContentLists**(`requestParameters?`): `Promise`<[`ContentList`](../interfaces/ContentList.md)[]\>
 
-Gets trending playlists for a time period
+Gets trending content lists for a time period
 
 Example:
 
 ```typescript
 
-const playlists = await colivingSdk.playlists.getTrendingPlaylists();
+const content lists = await colivingSdk.content lists.getTrendingContentLists();
 
 ```
 
@@ -83,25 +83,25 @@ const playlists = await colivingSdk.playlists.getTrendingPlaylists();
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetTrendingPlaylistsRequest`](../interfaces/GetTrendingPlaylistsRequest.md) |
+| `requestParameters` | [`GetTrendingContentListsRequest`](../interfaces/GetTrendingContentListsRequest.md) |
 
 #### Returns
 
-`Promise`<[`Playlist`](../interfaces/Playlist.md)[]\>
+`Promise`<[`ContentList`](../interfaces/ContentList.md)[]\>
 
 ___
 
-### searchPlaylists
+### searchContentLists
 
-**searchPlaylists**(`requestParameters`): `Promise`<[`Playlist`](../interfaces/Playlist.md)[]\>
+**searchContentLists**(`requestParameters`): `Promise`<[`ContentList`](../interfaces/ContentList.md)[]\>
 
-Search for a playlist
+Search for a content list
 
 Example:
 
 ```typescript
 
-const playlists = await colivingSdk.playlists.searchPlaylists({
+const content lists = await colivingSdk.content lists.searchContentLists({
     query: 'lo-fi',
 });
 
@@ -111,8 +111,8 @@ const playlists = await colivingSdk.playlists.searchPlaylists({
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`SearchPlaylistsRequest`](../interfaces/SearchPlaylistsRequest.md) |
+| `requestParameters` | [`SearchContentListsRequest`](../interfaces/SearchContentListsRequest.md) |
 
 #### Returns
 
-`Promise`<[`Playlist`](../interfaces/Playlist.md)[]\>
+`Promise`<[`ContentList`](../interfaces/ContentList.md)[]\>

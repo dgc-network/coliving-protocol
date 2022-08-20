@@ -30,8 +30,8 @@ domains.getAgreementFactoryDomain = function (chainId, contractAddress) {
   return getDomainData('Agreement Factory', '1', chainId, contractAddress)
 }
 
-domains.getPlaylistFactoryDomain = function (chainId, contractAddress) {
-  return getDomainData('Playlist Factory', '1', chainId, contractAddress)
+domains.getContentListFactoryDomain = function (chainId, contractAddress) {
+  return getDomainData('ContentList Factory', '1', chainId, contractAddress)
 }
 
 domains.getUserLibraryFactoryDomain = function (chainId, contractAddress) {
@@ -118,13 +118,13 @@ schemas.addAgreementRepostRequest = [
 
 schemas.deleteAgreementRepostRequest = schemas.addAgreementRepostRequest
 
-schemas.addPlaylistRepostRequest = [
+schemas.addContentListRepostRequest = [
   { name: 'userId', type: 'uint' },
-  { name: 'playlistId', type: 'uint' },
+  { name: 'content listId', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-schemas.deletePlaylistRepostRequest = schemas.addPlaylistRepostRequest
+schemas.deleteContentListRepostRequest = schemas.addContentListRepostRequest
 
 schemas.userFollowRequest = [
   { name: 'followerUserId', type: 'uint' },
@@ -134,66 +134,66 @@ schemas.userFollowRequest = [
 
 schemas.deleteUserFollowRequest = schemas.userFollowRequest
 
-schemas.createPlaylistRequest = [
-  { name: 'playlistOwnerId', type: 'uint' },
-  { name: 'playlistName', type: 'string' },
+schemas.createContentListRequest = [
+  { name: 'content listOwnerId', type: 'uint' },
+  { name: 'content listName', type: 'string' },
   { name: 'isPrivate', type: 'bool' },
   { name: 'isAlbum', type: 'bool' },
   { name: 'agreementIdsHash', type: 'bytes32' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-schemas.deletePlaylistRequest = [
-  { name: 'playlistId', type: 'uint' },
+schemas.deleteContentListRequest = [
+  { name: 'content listId', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-schemas.addPlaylistAgreementRequest = [
-  { name: 'playlistId', type: 'uint' },
+schemas.addContentListAgreementRequest = [
+  { name: 'content listId', type: 'uint' },
   { name: 'addedAgreementId', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-schemas.deletePlaylistAgreementRequest = [
-  { name: 'playlistId', type: 'uint' },
+schemas.deleteContentListAgreementRequest = [
+  { name: 'content listId', type: 'uint' },
   { name: 'deletedAgreementId', type: 'uint' },
   { name: 'deletedAgreementTimestamp', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-schemas.orderPlaylistAgreementsRequest = [
-  { name: 'playlistId', type: 'uint' },
+schemas.orderContentListAgreementsRequest = [
+  { name: 'content listId', type: 'uint' },
   { name: 'agreementIdsHash', type: 'bytes32' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-schemas.updatePlaylistPrivacyRequest = [
-  { name: 'playlistId', type: 'uint' },
-  { name: 'updatedPlaylistPrivacy', type: 'bool' },
+schemas.updateContentListPrivacyRequest = [
+  { name: 'content listId', type: 'uint' },
+  { name: 'updatedContentListPrivacy', type: 'bool' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-schemas.updatePlaylistNameRequest = [
-  { name: 'playlistId', type: 'uint' },
-  { name: 'updatedPlaylistName', type: 'string' },
+schemas.updateContentListNameRequest = [
+  { name: 'content listId', type: 'uint' },
+  { name: 'updatedContentListName', type: 'string' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-schemas.updatePlaylistCoverPhotoRequest = [
-  { name: 'playlistId', type: 'uint' },
-  { name: 'playlistImageMultihashDigest', type: 'bytes32' },
+schemas.updateContentListCoverPhotoRequest = [
+  { name: 'content listId', type: 'uint' },
+  { name: 'content listImageMultihashDigest', type: 'bytes32' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-schemas.updatePlaylistDescriptionRequest = [
-  { name: 'playlistId', type: 'uint' },
-  { name: 'playlistDescription', type: 'string' },
+schemas.updateContentListDescriptionRequest = [
+  { name: 'content listId', type: 'uint' },
+  { name: 'content listDescription', type: 'string' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-schemas.updatePlaylistUPCRequest = [
-  { name: 'playlistId', type: 'uint' },
-  { name: 'playlistUPC', type: 'bytes32' },
+schemas.updateContentListUPCRequest = [
+  { name: 'content listId', type: 'uint' },
+  { name: 'content listUPC', type: 'bytes32' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
@@ -205,13 +205,13 @@ schemas.agreementSaveRequest = [
 
 schemas.deleteAgreementSaveRequest = schemas.agreementSaveRequest
 
-schemas.playlistSaveRequest = [
+schemas.content listSaveRequest = [
   { name: 'userId', type: 'uint' },
-  { name: 'playlistId', type: 'uint' },
+  { name: 'content listId', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-schemas.deletePlaylistSaveRequest = schemas.playlistSaveRequest
+schemas.deleteContentListSaveRequest = schemas.content listSaveRequest
 
 schemas.addIPLDBlacklist = [
   { name: 'multihashDigest', type: 'bytes32' },
@@ -494,34 +494,34 @@ generators.getDeleteAgreementRepostRequestData = function (chainId, contractAddr
   )
 }
 
-generators.getAddPlaylistRepostRequestData = function (chainId, contractAddress, userId, playlistId, nonce) {
+generators.getAddContentListRepostRequestData = function (chainId, contractAddress, userId, content listId, nonce) {
   const message = {
     userId: userId,
-    playlistId: playlistId,
+    content listId: content listId,
     nonce: nonce
   }
   return getRequestData(
     domains.getSocialFeatureFactoryDomain,
     chainId,
     contractAddress,
-    'AddPlaylistRepostRequest',
-    schemas.addPlaylistRepostRequest,
+    'AddContentListRepostRequest',
+    schemas.addContentListRepostRequest,
     message
   )
 }
 
-generators.getDeletePlaylistRepostRequestData = function (chainId, contractAddress, userId, playlistId, nonce) {
+generators.getDeleteContentListRepostRequestData = function (chainId, contractAddress, userId, content listId, nonce) {
   const message = {
     userId: userId,
-    playlistId: playlistId,
+    content listId: content listId,
     nonce: nonce
   }
   return getRequestData(
     domains.getSocialFeatureFactoryDomain,
     chainId,
     contractAddress,
-    'DeletePlaylistRepostRequest',
-    schemas.deletePlaylistRepostRequest,
+    'DeleteContentListRepostRequest',
+    schemas.deleteContentListRepostRequest,
     message
   )
 }
@@ -592,10 +592,10 @@ generators.getDeleteAgreementSaveRequestData = function (chainId, contractAddres
   )
 }
 
-generators.getPlaylistSaveRequestData = function (chainId, contractAddress, userId, playlistId, nonce) {
+generators.getContentListSaveRequestData = function (chainId, contractAddress, userId, content listId, nonce) {
   const message = {
     userId: userId,
-    playlistId: playlistId,
+    content listId: content listId,
     nonce: nonce
   }
 
@@ -603,16 +603,16 @@ generators.getPlaylistSaveRequestData = function (chainId, contractAddress, user
     domains.getUserLibraryFactoryDomain,
     chainId,
     contractAddress,
-    'PlaylistSaveRequest',
-    schemas.playlistSaveRequest,
+    'ContentListSaveRequest',
+    schemas.content listSaveRequest,
     message
   )
 }
 
-generators.getDeletePlaylistSaveRequestData = function (chainId, contractAddress, userId, playlistId, nonce) {
+generators.getDeleteContentListSaveRequestData = function (chainId, contractAddress, userId, content listId, nonce) {
   const message = {
     userId: userId,
-    playlistId: playlistId,
+    content listId: content listId,
     nonce: nonce
   }
 
@@ -620,21 +620,21 @@ generators.getDeletePlaylistSaveRequestData = function (chainId, contractAddress
     domains.getUserLibraryFactoryDomain,
     chainId,
     contractAddress,
-    'DeletePlaylistSaveRequest',
-    schemas.deletePlaylistSaveRequest,
+    'DeleteContentListSaveRequest',
+    schemas.deleteContentListSaveRequest,
     message
   )
 }
 
-/* Playlist Factory Generators */
+/* ContentList Factory Generators */
 
 /* NOTE: Ensure the value for agreementIds hash is generated using the following snippet prior to calling this generator function:
  * web3New.utils.soliditySha3(web3New.eth.abi.encodeParameter('uint[]', agreementIds))
  */
-generators.getCreatePlaylistRequestData = function (chainId, contractAddress, playlistOwnerId, playlistName, isPrivate, isAlbum, agreementIdsHash, nonce) {
+generators.getCreateContentListRequestData = function (chainId, contractAddress, content listOwnerId, content listName, isPrivate, isAlbum, agreementIdsHash, nonce) {
   const message = {
-    playlistOwnerId: playlistOwnerId,
-    playlistName: playlistName,
+    content listOwnerId: content listOwnerId,
+    content listName: content listName,
     isPrivate: isPrivate,
     isAlbum: isAlbum,
     agreementIdsHash: agreementIdsHash,
@@ -642,161 +642,161 @@ generators.getCreatePlaylistRequestData = function (chainId, contractAddress, pl
   }
 
   return getRequestData(
-    domains.getPlaylistFactoryDomain,
+    domains.getContentListFactoryDomain,
     chainId,
     contractAddress,
-    'CreatePlaylistRequest',
-    schemas.createPlaylistRequest,
+    'CreateContentListRequest',
+    schemas.createContentListRequest,
     message
   )
 }
 
-generators.getDeletePlaylistRequestData = function (chainId, contractAddress, playlistId, nonce) {
+generators.getDeleteContentListRequestData = function (chainId, contractAddress, content listId, nonce) {
   const message = {
-    playlistId: playlistId,
+    content listId: content listId,
     nonce: nonce
   }
   return getRequestData(
-    domains.getPlaylistFactoryDomain,
+    domains.getContentListFactoryDomain,
     chainId,
     contractAddress,
-    'DeletePlaylistRequest',
-    schemas.deletePlaylistRequest,
+    'DeleteContentListRequest',
+    schemas.deleteContentListRequest,
     message
   )
 }
 
-generators.getAddPlaylistAgreementRequestData = function (chainId, contractAddress, playlistId, addedAgreementId, nonce) {
+generators.getAddContentListAgreementRequestData = function (chainId, contractAddress, content listId, addedAgreementId, nonce) {
   const message = {
-    playlistId: playlistId,
+    content listId: content listId,
     addedAgreementId: addedAgreementId,
     nonce: nonce
   }
 
   return getRequestData(
-    domains.getPlaylistFactoryDomain,
+    domains.getContentListFactoryDomain,
     chainId,
     contractAddress,
-    'AddPlaylistAgreementRequest',
-    schemas.addPlaylistAgreementRequest,
+    'AddContentListAgreementRequest',
+    schemas.addContentListAgreementRequest,
     message
   )
 }
 
-generators.getDeletePlaylistAgreementRequestData = function (chainId, contractAddress, playlistId, deletedAgreementId, deletedAgreementTimestamp, nonce) {
+generators.getDeleteContentListAgreementRequestData = function (chainId, contractAddress, content listId, deletedAgreementId, deletedAgreementTimestamp, nonce) {
   const message = {
-    playlistId: playlistId,
+    content listId: content listId,
     deletedAgreementId: deletedAgreementId,
     deletedAgreementTimestamp: deletedAgreementTimestamp,
     nonce: nonce
   }
 
   return getRequestData(
-    domains.getPlaylistFactoryDomain,
+    domains.getContentListFactoryDomain,
     chainId,
     contractAddress,
-    'DeletePlaylistAgreementRequest',
-    schemas.deletePlaylistAgreementRequest,
+    'DeleteContentListAgreementRequest',
+    schemas.deleteContentListAgreementRequest,
     message
   )
 }
 
-generators.getOrderPlaylistAgreementsRequestData = function (chainId, contractAddress, playlistId, agreementIdsHash, nonce) {
+generators.getOrderContentListAgreementsRequestData = function (chainId, contractAddress, content listId, agreementIdsHash, nonce) {
   const message = {
-    playlistId: playlistId,
+    content listId: content listId,
     agreementIdsHash: agreementIdsHash,
     nonce: nonce
   }
 
   return getRequestData(
-    domains.getPlaylistFactoryDomain,
+    domains.getContentListFactoryDomain,
     chainId,
     contractAddress,
-    'OrderPlaylistAgreementsRequest',
-    schemas.orderPlaylistAgreementsRequest,
+    'OrderContentListAgreementsRequest',
+    schemas.orderContentListAgreementsRequest,
     message
   )
 }
 
-generators.getUpdatePlaylistNameRequestData = function (chainId, contractAddress, playlistId, updatedPlaylistName, nonce) {
+generators.getUpdateContentListNameRequestData = function (chainId, contractAddress, content listId, updatedContentListName, nonce) {
   const message = {
-    playlistId: playlistId,
-    updatedPlaylistName: updatedPlaylistName,
+    content listId: content listId,
+    updatedContentListName: updatedContentListName,
     nonce: nonce
   }
 
   return getRequestData(
-    domains.getPlaylistFactoryDomain,
+    domains.getContentListFactoryDomain,
     chainId,
     contractAddress,
-    'UpdatePlaylistNameRequest',
-    schemas.updatePlaylistNameRequest,
+    'UpdateContentListNameRequest',
+    schemas.updateContentListNameRequest,
     message
   )
 }
 
-generators.getUpdatePlaylistPrivacyRequestData = function (chainId, contractAddress, playlistId, updatedPlaylistPrivacy, nonce) {
+generators.getUpdateContentListPrivacyRequestData = function (chainId, contractAddress, content listId, updatedContentListPrivacy, nonce) {
   const message = {
-    playlistId: playlistId,
-    updatedPlaylistPrivacy: updatedPlaylistPrivacy,
+    content listId: content listId,
+    updatedContentListPrivacy: updatedContentListPrivacy,
     nonce: nonce
   }
 
   return getRequestData(
-    domains.getPlaylistFactoryDomain,
+    domains.getContentListFactoryDomain,
     chainId,
     contractAddress,
-    'UpdatePlaylistPrivacyRequest',
-    schemas.updatePlaylistPrivacyRequest,
+    'UpdateContentListPrivacyRequest',
+    schemas.updateContentListPrivacyRequest,
     message
   )
 }
 
-generators.getUpdatePlaylistCoverPhotoRequestData = function (chainId, contractAddress, playlistId, playlistImageMultihashDigest, nonce) {
+generators.getUpdateContentListCoverPhotoRequestData = function (chainId, contractAddress, content listId, content listImageMultihashDigest, nonce) {
   const message = {
-    playlistId: playlistId,
-    playlistImageMultihashDigest: playlistImageMultihashDigest,
+    content listId: content listId,
+    content listImageMultihashDigest: content listImageMultihashDigest,
     nonce: nonce
   }
 
   return getRequestData(
-    domains.getPlaylistFactoryDomain,
+    domains.getContentListFactoryDomain,
     chainId,
     contractAddress,
-    'UpdatePlaylistCoverPhotoRequest',
-    schemas.updatePlaylistCoverPhotoRequest,
+    'UpdateContentListCoverPhotoRequest',
+    schemas.updateContentListCoverPhotoRequest,
     message)
 }
 
-generators.getUpdatePlaylistUPCRequestData = function (chainId, contractAddress, playlistId, playlistUPC, nonce) {
+generators.getUpdateContentListUPCRequestData = function (chainId, contractAddress, content listId, content listUPC, nonce) {
   const message = {
-    playlistId: playlistId,
-    playlistUPC: playlistUPC,
+    content listId: content listId,
+    content listUPC: content listUPC,
     nonce: nonce
   }
 
   return getRequestData(
-    domains.getPlaylistFactoryDomain,
+    domains.getContentListFactoryDomain,
     chainId,
     contractAddress,
-    'UpdatePlaylistUPCRequest',
-    schemas.updatePlaylistUPCRequest,
+    'UpdateContentListUPCRequest',
+    schemas.updateContentListUPCRequest,
     message)
 }
 
-generators.getUpdatePlaylistDescriptionRequestData = function (chainId, contractAddress, playlistId, playlistDescription, nonce) {
+generators.getUpdateContentListDescriptionRequestData = function (chainId, contractAddress, content listId, content listDescription, nonce) {
   const message = {
-    playlistId: playlistId,
-    playlistDescription: playlistDescription,
+    content listId: content listId,
+    content listDescription: content listDescription,
     nonce: nonce
   }
 
   return getRequestData(
-    domains.getPlaylistFactoryDomain,
+    domains.getContentListFactoryDomain,
     chainId,
     contractAddress,
-    'UpdatePlaylistDescriptionRequest',
-    schemas.updatePlaylistDescriptionRequest,
+    'UpdateContentListDescriptionRequest',
+    schemas.updateContentListDescriptionRequest,
     message)
 }
 

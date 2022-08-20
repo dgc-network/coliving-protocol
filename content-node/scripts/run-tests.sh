@@ -81,22 +81,22 @@ elif [ "${ARG1}" == "unit_test" ]; then
 fi
 
 
-export dbUrl="postgres://postgres:postgres@localhost:$PG_PORT/coliving_creator_node_test"
+export dbUrl="postgres://postgres:postgres@localhost:$PG_PORT/coliving_content_node_test"
 
-# Locally, the docker-compose files set up a database named coliving_creator_node. For
-# tests, we use coliving_creator_node_test. The below block checks if
-# coliving_creator_node_test exists in creator node 1, and if not, creates it (the tests will fail if this
+# Locally, the docker-compose files set up a database named coliving_content_node. For
+# tests, we use coliving_content_node_test. The below block checks if
+# coliving_content_node_test exists in content node 1, and if not, creates it (the tests will fail if this
 # database does not exist). If psql is not installed (ex. in CircleCI), this command will
 # fail, so we check if it is installed first.
-# In CircleCI, the docker environment variables set up coliving_creator_node_test instead of
-# coliving_creator_node.
+# In CircleCI, the docker environment variables set up coliving_content_node_test instead of
+# coliving_content_node.
 
 # CircleCI job and docker run in separate environments and cannot directly communicate with each other.
 # Therefore the 'docker exec' command will not work when running the CI build.
 # https://circleci.com/docs/2.0/building-docker-images/#separation-of-environments
 # So, if tests are run locally, run docker exec command. Else, run the psql command in the job.
 if [ -z "${isCIBuild}" ]; then
-  docker exec -i $DB_CONTAINER /bin/sh -c "psql -U postgres -tc \"SELECT 1 FROM pg_database WHERE datname = 'coliving_creator_node_test'\" | grep -q 1 || psql -U postgres -c \"CREATE DATABASE coliving_creator_node_test\""
+  docker exec -i $DB_CONTAINER /bin/sh -c "psql -U postgres -tc \"SELECT 1 FROM pg_database WHERE datname = 'coliving_content_node_test'\" | grep -q 1 || psql -U postgres -c \"CREATE DATABASE coliving_content_node_test\""
 fi
 
 # delete and recreate the storage path for the test so it doesn't reuse assets from previous runs
@@ -111,7 +111,7 @@ export devMode=true
 # setting delegate keys for app to start
 export delegateOwnerWallet="0x1eC723075E67a1a2B6969dC5CfF0C6793cb36D25"
 export delegatePrivateKey="0xdb527e4d4a2412a443c17e1666764d3bba43e89e61129a35f9abc337ec170a5d"
-export contentNodeEndpoint="http://mock-cn1.coliving.co"
+export contentNodeEndpoint="http://mock-cn1.coliving.lol"
 export spOwnerWallet="0x1eC723075E67a1a2B6969dC5CfF0C6793cb36D25"
 
 # Setting peerSetManager env vars

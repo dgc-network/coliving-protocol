@@ -55,8 +55,8 @@ describe('test peerSetManager -- determinePeerHealth', () => {
   beforeEach(() => {
     nock.disableNetConnect()
     peerSetManager = new PeerSetManager({
-      discoveryProviderEndpoint: 'https://discovery_endpoint.coliving.co',
-      contentNodeEndpoint: 'https://content_node_endpoint.coliving.co'
+      discoveryProviderEndpoint: 'https://discovery_endpoint.coliving.lol',
+      contentNodeEndpoint: 'https://content_node_endpoint.coliving.lol'
     })
   })
 
@@ -218,12 +218,12 @@ describe('test peerSetManager -- determinePeerHealth', () => {
 describe('test peerSetManager -- isPrimaryHealthy', () => {
   let peerSetManager
 
-  const primaryEndpoint = 'http://primary.coliving.co'
+  const primaryEndpoint = 'http://primary.coliving.lol'
 
   beforeEach(() => {
     peerSetManager = new PeerSetManager({
-      discoveryProviderEndpoint: 'https://discovery_endpoint.coliving.co',
-      contentNodeEndpoint: 'https://content_node_endpoint.coliving.co'
+      discoveryProviderEndpoint: 'https://discovery_endpoint.coliving.lol',
+      contentNodeEndpoint: 'https://content_node_endpoint.coliving.lol'
     })
   })
 
@@ -249,8 +249,8 @@ describe('test peerSetManager -- isPrimaryHealthy', () => {
   it('should mark primary as unhealthy if responds with 500 from health check and the primary has surpassed the allowed threshold time to be unhealthy', async () => {
     // Set `maxNumberSecondsPrimaryRemainsUnhealthy` to 0 to mock threshold going over
     peerSetManager = new PeerSetManager({
-      discoveryProviderEndpoint: 'https://discovery_endpoint.coliving.co',
-      contentNodeEndpoint: 'https://content_node_endpoint.coliving.co',
+      discoveryProviderEndpoint: 'https://discovery_endpoint.coliving.lol',
+      contentNodeEndpoint: 'https://content_node_endpoint.coliving.lol',
       maxNumberSecondsPrimaryRemainsUnhealthy: 0
     })
     peerSetManager.isNodeHealthy = async () => { return false }
@@ -285,8 +285,8 @@ describe('test peerSetManager -- isPrimaryHealthy', () => {
 })
 
 describe('test peerSetManager -- getNodeUsers', () => {
-  const DISCOVERY_NODE_ENDPOINT = 'https://discovery_endpoint.coliving.co'
-  const CREATOR_NODE_ENDPOINT = 'https://content_node_endpoint.coliving.co'
+  const DISCOVERY_NODE_ENDPOINT = 'https://discovery_endpoint.coliving.lol'
+  const CONTENT_NODE_ENDPOINT = 'https://content_node_endpoint.coliving.lol'
   const users = []
   _.range(1, 20).forEach((userId) => {
     users.push({
@@ -347,7 +347,7 @@ describe('test peerSetManager -- getNodeUsers', () => {
     )
     const peerSetManager = new MockedPeerSetManager({
       discoveryProviderEndpoint: DISCOVERY_NODE_ENDPOINT,
-      contentNodeEndpoint: CREATOR_NODE_ENDPOINT
+      contentNodeEndpoint: CONTENT_NODE_ENDPOINT
     })
 
     await peerSetManager.getNodeUsers()
@@ -356,7 +356,7 @@ describe('test peerSetManager -- getNodeUsers', () => {
     expect(baseURL).to.equal(DISCOVERY_NODE_ENDPOINT)
     expect(url).to.equal('v1/full/users/content_node/all')
     expect(params).to.deep.equal({
-      creator_node_endpoint: CREATOR_NODE_ENDPOINT,
+      content_node_endpoint: CONTENT_NODE_ENDPOINT,
       prev_user_id: 0,
       max_users: GET_NODE_USERS_DEFAULT_PAGE_SIZE
     })
@@ -406,7 +406,7 @@ describe('test peerSetManager -- getNodeUsers', () => {
     )
     const peerSetManager = new MockedPeerSetManager({
       discoveryProviderEndpoint: DISCOVERY_NODE_ENDPOINT,
-      contentNodeEndpoint: CREATOR_NODE_ENDPOINT
+      contentNodeEndpoint: CONTENT_NODE_ENDPOINT
     })
 
     await peerSetManager.getNodeUsers(prevUserId, maxUsers)
@@ -415,7 +415,7 @@ describe('test peerSetManager -- getNodeUsers', () => {
     expect(baseURL).to.equal(DISCOVERY_NODE_ENDPOINT)
     expect(url).to.equal('v1/full/users/content_node/all')
     expect(params).to.deep.equal({
-      creator_node_endpoint: CREATOR_NODE_ENDPOINT,
+      content_node_endpoint: CONTENT_NODE_ENDPOINT,
       prev_user_id: prevUserId,
       max_users: maxUsers
     })
@@ -454,7 +454,7 @@ describe('test peerSetManager -- getNodeUsers', () => {
     )
     const peerSetManager = new MockedPeerSetManager({
       discoveryProviderEndpoint: DISCOVERY_NODE_ENDPOINT,
-      contentNodeEndpoint: CREATOR_NODE_ENDPOINT
+      contentNodeEndpoint: CONTENT_NODE_ENDPOINT
     })
 
     return expect(peerSetManager.getNodeUsers()).to.eventually
@@ -497,7 +497,7 @@ describe('test peerSetManager -- getNodeUsers', () => {
     )
     const peerSetManager = new MockedPeerSetManager({
       discoveryProviderEndpoint: DISCOVERY_NODE_ENDPOINT,
-      contentNodeEndpoint: CREATOR_NODE_ENDPOINT
+      contentNodeEndpoint: CONTENT_NODE_ENDPOINT
     })
 
     await peerSetManager.getNodeUsers()
@@ -526,13 +526,13 @@ describe('test peerSetManager -- getNodeUsers', () => {
     )
     const peerSetManager = new MockedPeerSetManager({
       discoveryProviderEndpoint: DISCOVERY_NODE_ENDPOINT,
-      contentNodeEndpoint: CREATOR_NODE_ENDPOINT
+      contentNodeEndpoint: CONTENT_NODE_ENDPOINT
     })
 
     nock(DISCOVERY_NODE_ENDPOINT)
       .get('/v1/full/users/content_node/all')
       .query({
-        creator_node_endpoint: CREATOR_NODE_ENDPOINT,
+        content_node_endpoint: CONTENT_NODE_ENDPOINT,
         prev_user_id: 0,
         max_users: GET_NODE_USERS_DEFAULT_PAGE_SIZE
       })
@@ -563,13 +563,13 @@ describe('test peerSetManager -- getNodeUsers', () => {
     )
     const peerSetManager = new MockedPeerSetManager({
       discoveryProviderEndpoint: DISCOVERY_NODE_ENDPOINT,
-      contentNodeEndpoint: CREATOR_NODE_ENDPOINT
+      contentNodeEndpoint: CONTENT_NODE_ENDPOINT
     })
 
     nock(DISCOVERY_NODE_ENDPOINT)
       .get('/v1/full/users/content_node/all')
       .query({
-        creator_node_endpoint: CREATOR_NODE_ENDPOINT,
+        content_node_endpoint: CONTENT_NODE_ENDPOINT,
         prev_user_id: 0,
         max_users: GET_NODE_USERS_DEFAULT_PAGE_SIZE
       })

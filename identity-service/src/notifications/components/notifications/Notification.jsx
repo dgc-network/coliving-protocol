@@ -51,7 +51,7 @@ const challengeRewardsConfig = {
 const EntityType = Object.freeze({
   Agreement: 'Agreement',
   Album: 'Album',
-  Playlist: 'Playlist'
+  ContentList: 'ContentList'
 })
 
 const HighlightText = ({ text }) => (
@@ -103,9 +103,9 @@ export const getEntity = (entity) => {
     return (
       <> <BodyText text={'album '} /><HighlightText text={entity.name} /> </>
     )
-  } else if (entity.type === EntityType.Playlist) {
+  } else if (entity.type === EntityType.ContentList) {
     return (
-      <> <BodyText text={'playlist '} /><HighlightText text={entity.name} /> </>
+      <> <BodyText text={'content list '} /><HighlightText text={entity.name} /> </>
     )
   }
 }
@@ -233,14 +233,14 @@ const notificationMap = {
       </span>
     )
   },
-  [NotificationType.AddAgreementToPlaylist] (notification) {
+  [NotificationType.AddAgreementToContentList] (notification) {
     return (
       <span className={'notificationText'}>
-        <HighlightText text={notification.playlistOwner.name} />
+        <HighlightText text={notification.content listOwner.name} />
         <BodyText text={` added your agreement `} />
         <HighlightText text={notification.agreement.title} />
-        <BodyText text={` to their playlist `} />
-        <HighlightText text={notification.playlist.playlist_name} />
+        <BodyText text={` to their content list `} />
+        <HighlightText text={notification.content list.content list_name} />
       </span>
     )
   },

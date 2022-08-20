@@ -16,7 +16,7 @@ const {
  
 // Configuration.
 // Should be CLI configurable in the future.
-const DEFAULT_NUM_CREATOR_NODES = 4
+const DEFAULT_NUM_CONTENT_NODES = 4
 const DEFAULT_NUM_USERS = 2
 const SNAPBACK_NUM_USERS = 10
 const USER_REPLICA_SET_NUM_USERS = 4
@@ -34,12 +34,12 @@ const {
  allUp
 } = ServiceCommands
  
-const contentNodeHealthChecks = _.range(1, DEFAULT_NUM_CREATOR_NODES + 1).reduce(
+const contentNodeHealthChecks = _.range(1, DEFAULT_NUM_CONTENT_NODES + 1).reduce(
  (acc, cur) => {
    return [
      ...acc,
      [
-       Service.CREATOR_NODE,
+       Service.CONTENT_NODE,
        SetupCommand.HEALTH_CHECK,
        { verbose: true, serviceNumber: cur }
      ]
@@ -174,7 +174,7 @@ async function main () {
    switch (cmd) {
      case 'test': {
        const test = makeTest('consistency', coreIntegration, {
-         numCreatorNodes: DEFAULT_NUM_CREATOR_NODES,
+         numCreatorNodes: DEFAULT_NUM_CONTENT_NODES,
          numUsers: DEFAULT_NUM_USERS
        })
        await testRunner([test])
@@ -262,7 +262,7 @@ async function main () {
      }
      case 'test-nightly': {
        const coreIntegrationTests = makeTest('consistency', coreIntegration, {
-         numCreatorNodes: DEFAULT_NUM_CREATOR_NODES,
+         numCreatorNodes: DEFAULT_NUM_CONTENT_NODES,
          numUsers: DEFAULT_NUM_USERS,
          testDurationSeconds: MAD_DOG_NIGHTLY_DURATION_SECONDS
        })

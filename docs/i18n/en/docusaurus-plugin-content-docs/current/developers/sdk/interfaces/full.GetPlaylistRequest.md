@@ -1,19 +1,19 @@
 ---
-id: "full.GetPlaylistRequest"
-title: "Interface: GetPlaylistRequest"
-sidebar_label: "GetPlaylistRequest"
+id: "full.GetContentListRequest"
+title: "Interface: GetContentListRequest"
+sidebar_label: "GetContentListRequest"
 custom_edit_url: null
 ---
 
-[full](../namespaces/full.md).GetPlaylistRequest
+[full](../namespaces/full.md).GetContentListRequest
 
 ## Properties
 
-### playlistId
+### content listId
 
- **playlistId**: `string`
+ **content listId**: `string`
 
-A Playlist ID
+A ContentList ID
 
 ___
 

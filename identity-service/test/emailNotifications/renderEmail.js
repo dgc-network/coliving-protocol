@@ -90,11 +90,11 @@ const mockColivingLibs = {
       }))
     }
   },
-  Playlist: {
-    getPlaylists: (limit, offset, ids) => {
+  ContentList: {
+    getContentLists: (limit, offset, ids) => {
       return ids.map((id) => ({
-        playlist_id: id,
-        playlist_owner_id: id
+        content list_id: id,
+        content list_owner_id: id
       }))
     }
   },
@@ -105,7 +105,7 @@ const mockColivingLibs = {
         handle: `user_handle_${id}`,
         user_id: id,
         profile_picture_sizes: 'SOME_CID',
-        creator_node_endpoint: 'https://creator_node_endpoint.com'
+        content_node_endpoint: 'https://content_node_endpoint.com'
       }))
     }
   }

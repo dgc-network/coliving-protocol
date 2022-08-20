@@ -1,7 +1,7 @@
 const { CreatorNode } = require('../services/creatorNode')
 
 /**
- * Add secondary creator nodes for a user if they don't have any
+ * Add secondary content nodes for a user if they don't have any
  * Goal: Make it so users always have a replica set
  */
 const addSecondaries = async (libs) => {
@@ -10,15 +10,15 @@ const addSecondaries = async (libs) => {
 
   if (!user) return
 
-  const primary = CreatorNode.getPrimary(user.creator_node_endpoint)
-  const secondaries = CreatorNode.getSecondaries(user.creator_node_endpoint)
+  const primary = CreatorNode.getPrimary(user.content_node_endpoint)
+  const secondaries = CreatorNode.getSecondaries(user.content_node_endpoint)
 
   // Get current endpoints and check if we don't have enough secondaries
   if (secondaries.length < 2) {
     console.debug(`Sanity Check - addSecondaries - User has only ${secondaries.length}`)
 
     // Find new healthy secondaries
-    const currentEndpoints = CreatorNode.getEndpoints(user.creator_node_endpoint)
+    const currentEndpoints = CreatorNode.getEndpoints(user.content_node_endpoint)
     const services = await libs.ServiceProvider.getSelectableCreatorNodes(
       /* whitelist */ null,
       /* blacklist */ new Set(currentEndpoints)
@@ -31,8 +31,8 @@ const addSecondaries = async (libs) => {
     const newEndpoints = [primary, ...secondaries, ...newSecondaries]
 
     const newMetadata = { ...user }
-    newMetadata.creator_node_endpoint = newEndpoints.join(',')
-    console.debug(`Sanity Check - addSecondaries - new nodes ${newMetadata.creator_node_endpoint}`)
+    newMetadata.content_node_endpoint = newEndpoints.join(',')
+    console.debug(`Sanity Check - addSecondaries - new nodes ${newMetadata.content_node_endpoint}`)
     await libs.User.updateCreator(user.user_id, newMetadata)
   }
 }

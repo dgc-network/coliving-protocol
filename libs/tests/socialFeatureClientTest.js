@@ -36,28 +36,28 @@ it('Should add + delete agreement repost', async function () {
   assert.ok('AgreementRepostDeleted' in deleteAgreementRepostTx.events, 'Did not find AgreementRepostDeleted event in transaction')
 })
 
-it('Should add + delete playlist repost', async function () {
+it('Should add + delete content list repost', async function () {
   // add creator
   const handle = 'sid' + Math.floor(Math.random() * 10000000)
   const creatorId = (await colivingInstance.contracts.UserFactoryClient.addUser(handle)).userId
   assert.ok(creatorId && Number.isInteger(creatorId), 'invalid creatorId')
 
-  // add playlist
-  const { playlistId } = await colivingInstance.contracts.PlaylistFactoryClient.createPlaylist(
+  // add content list
+  const { content listId } = await colivingInstance.contracts.ContentListFactoryClient.createContentList(
     creatorId,
-    'initialPlaylistName',
+    'initialContentListName',
     false,
     false,
     [])
-  assert.ok(playlistId && Number.isInteger(playlistId), 'invalid playlistId')
+  assert.ok(content listId && Number.isInteger(content listId), 'invalid content listId')
 
-  // add playlist repost
-  const addPlaylistRepostTx = await colivingInstance.contracts.SocialFeatureFactoryClient.addPlaylistRepost(creatorId, playlistId)
-  assert.ok('PlaylistRepostAdded' in addPlaylistRepostTx.events, 'Did not find PlaylistRepostAdded event in transaction')
+  // add content list repost
+  const addContentListRepostTx = await colivingInstance.contracts.SocialFeatureFactoryClient.addContentListRepost(creatorId, content listId)
+  assert.ok('ContentListRepostAdded' in addContentListRepostTx.events, 'Did not find ContentListRepostAdded event in transaction')
 
-  // delete playlist repost
-  const deletePlaylistRepostTx = await colivingInstance.contracts.SocialFeatureFactoryClient.deletePlaylistRepost(creatorId, playlistId)
-  assert.ok('PlaylistRepostDeleted' in deletePlaylistRepostTx.events, 'Did not find PlaylistRepostDeleted event in transaction')
+  // delete content list repost
+  const deleteContentListRepostTx = await colivingInstance.contracts.SocialFeatureFactoryClient.deleteContentListRepost(creatorId, content listId)
+  assert.ok('ContentListRepostDeleted' in deleteContentListRepostTx.events, 'Did not find ContentListRepostDeleted event in transaction')
 })
 
 it('Should add + delete user follow', async function () {

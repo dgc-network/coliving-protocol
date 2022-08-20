@@ -96,7 +96,7 @@ const getNodeUsers = async (
           baseURL: discoveryNodeEndpoint,
           url: `v1/full/users/content_node/all`,
           params: {
-            creator_node_endpoint: contentNodeEndpoint,
+            content_node_endpoint: contentNodeEndpoint,
             prev_user_id: prevUserId,
             max_users: maxUsers
           },

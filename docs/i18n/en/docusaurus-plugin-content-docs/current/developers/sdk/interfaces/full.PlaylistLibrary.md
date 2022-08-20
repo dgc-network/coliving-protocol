@@ -1,15 +1,15 @@
 ---
-id: "full.PlaylistLibrary"
-title: "Interface: PlaylistLibrary"
-sidebar_label: "PlaylistLibrary"
+id: "full.ContentListLibrary"
+title: "Interface: ContentListLibrary"
+sidebar_label: "ContentListLibrary"
 custom_edit_url: null
 ---
 
-[full](../namespaces/full.md).PlaylistLibrary
+[full](../namespaces/full.md).ContentListLibrary
 
 **`export`**
 
-**`interface`** PlaylistLibrary
+**`interface`** ContentListLibrary
 
 ## Properties
 
@@ -17,4 +17,4 @@ custom_edit_url: null
 
  `Optional` **contents**: `object`[]
 
-**`memberof`** PlaylistLibrary
+**`memberof`** ContentListLibrary

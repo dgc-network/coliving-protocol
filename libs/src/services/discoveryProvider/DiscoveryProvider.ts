@@ -185,7 +185,7 @@ export class DiscoveryProvider {
    * @returns Array of User metadata Objects
    * additional metadata fields on user objects:
    *  {Integer} agreement_count - agreement count for given user
-   *  {Integer} playlist_count - playlist count for given user
+   *  {Integer} content list_count - content list count for given user
    *  {Integer} album_count - album count for given user
    *  {Integer} follower_count - follower count for given user
    *  {Integer} followee_count - followee count for given user
@@ -364,24 +364,24 @@ export class DiscoveryProvider {
   }
 
   /**
-   * get full playlist objects, including agreements, for passed in array of playlistId
-   * @returns array of playlist objects
-   * additional metadata fields on playlist objects:
-   *  {Integer} repost_count - repost count for given playlist
-   *  {Integer} save_count - save count for given playlist
-   *  {Boolean} has_current_user_reposted - has current user reposted given playlist
-   *  {Array} followee_reposts - followees of current user that have reposted given playlist
-   *  {Boolean} has_current_user_reposted - has current user reposted given playlist
-   *  {Boolean} has_current_user_saved - has current user saved given playlist
+   * get full content list objects, including agreements, for passed in array of content listId
+   * @returns array of content list objects
+   * additional metadata fields on content list objects:
+   *  {Integer} repost_count - repost count for given content list
+   *  {Integer} save_count - save count for given content list
+   *  {Boolean} has_current_user_reposted - has current user reposted given content list
+   *  {Array} followee_reposts - followees of current user that have reposted given content list
+   *  {Boolean} has_current_user_reposted - has current user reposted given content list
+   *  {Boolean} has_current_user_saved - has current user saved given content list
    */
-  async getPlaylists(
+  async getContentLists(
     limit = 100,
     offset = 0,
     idsArray: Nullable<number[]> = null,
     targetUserId: Nullable<number> = null,
     withUsers = false
   ) {
-    const req = Requests.getPlaylists(
+    const req = Requests.getContentLists(
       limit,
       offset,
       idsArray,
@@ -396,14 +396,14 @@ export class DiscoveryProvider {
    * @param filter - filter by "all", "original", or "repost"
    * @param limit - max # of items to return
    * @param offset - offset into list to return from (for pagination)
-   * @returns Array of agreement and playlist metadata objects
-   * additional metadata fields on agreement and playlist objects:
-   *  {String} activity_timestamp - timestamp of requested user's repost for given agreement or playlist,
+   * @returns Array of agreement and content list metadata objects
+   * additional metadata fields on agreement and content list objects:
+   *  {String} activity_timestamp - timestamp of requested user's repost for given agreement or content list,
    *    used for sorting feed
-   *  {Integer} repost_count - repost count of given agreement/playlist
-   *  {Integer} save_count - save count of given agreement/playlist
-   *  {Boolean} has_current_user_reposted - has current user reposted given agreement/playlist
-   *  {Array} followee_reposts - followees of current user that have reposted given agreement/playlist
+   *  {Integer} repost_count - repost count of given agreement/content list
+   *  {Integer} save_count - save count of given agreement/content list
+   *  {Boolean} has_current_user_reposted - has current user reposted given agreement/content list
+   *  {Array} followee_reposts - followees of current user that have reposted given agreement/content list
    */
   async getSocialFeed(
     filter: string,
@@ -427,14 +427,14 @@ export class DiscoveryProvider {
    * @param userId - requested user id
    * @param limit - max # of items to return (for pagination)
    * @param offset - offset into list to return from (for pagination)
-   * @returns Array of agreement and playlist metadata objects}
-   * additional metadata fields on agreement and playlist objects:
-   *  {String} activity_timestamp - timestamp of requested user's repost for given agreement or playlist,
+   * @returns Array of agreement and content list metadata objects}
+   * additional metadata fields on agreement and content list objects:
+   *  {String} activity_timestamp - timestamp of requested user's repost for given agreement or content list,
    *    used for sorting feed
-   *  {Integer} repost_count - repost count of given agreement/playlist
-   *  {Integer} save_count - save count of given agreement/playlist
-   *  {Boolean} has_current_user_reposted - has current user reposted given agreement/playlist
-   *  {Array} followee_reposts - followees of current user that have reposted given agreement/playlist
+   *  {Integer} repost_count - repost count of given agreement/content list
+   *  {Integer} save_count - save count of given agreement/content list
+   *  {Boolean} has_current_user_reposted - has current user reposted given agreement/content list
+   *  {Array} followee_reposts - followees of current user that have reposted given agreement/content list
    */
   async getUserRepostFeed(
     userId: number,
@@ -492,23 +492,23 @@ export class DiscoveryProvider {
   }
 
   /**
-   * get intersection of users that have reposted repostPlaylistId and users that are followed by followerUserId
+   * get intersection of users that have reposted repostContentListId and users that are followed by followerUserId
    * followee = user that is followed; follower = user that follows
-   * @param repostPlaylistId playlist that is reposted
+   * @param repostContentListId content list that is reposted
    * @param followerUserId user that reposted agreement
    * @example
-   * getPlaylistRepostIntersectionUsers(100, 0, 1, 1) - IDs must be valid
+   * getContentListRepostIntersectionUsers(100, 0, 1, 1) - IDs must be valid
    */
-  async getPlaylistRepostIntersectionUsers(
+  async getContentListRepostIntersectionUsers(
     limit = 100,
     offset = 0,
-    repostPlaylistId: number,
+    repostContentListId: number,
     followerUserId: number
   ) {
-    const req = Requests.getPlaylistRepostIntersectionUsers(
+    const req = Requests.getContentListRepostIntersectionUsers(
       limit,
       offset,
-      repostPlaylistId,
+      repostContentListId,
       followerUserId
     )
     return await this._makeRequest(req)
@@ -549,23 +549,23 @@ export class DiscoveryProvider {
   }
 
   /**
-   * get users that reposted repostPlaylistId, sorted by follower count descending
-   * @param repostPlaylistId
+   * get users that reposted repostContentListId, sorted by follower count descending
+   * @param repostContentListId
    * @return array of user objects
    * additional metadata fields on user objects:
    *  {Integer} follower_count - follower count of given user
    * @example
-   * getRepostersForPlaylist(100, 0, 1) - ID must be valid
+   * getRepostersForContentList(100, 0, 1) - ID must be valid
    */
-  async getRepostersForPlaylist(
+  async getRepostersForContentList(
     limit = 100,
     offset = 0,
-    repostPlaylistId: number
+    repostContentListId: number
   ) {
-    const req = Requests.getRepostersForPlaylist(
+    const req = Requests.getRepostersForContentList(
       limit,
       offset,
-      repostPlaylistId
+      repostContentListId
     )
     return await this._makeRequest(req)
   }
@@ -585,16 +585,16 @@ export class DiscoveryProvider {
   }
 
   /**
-   * get users that saved savePlaylistId, sorted by follower count descending
-   * @param savePlaylistId
+   * get users that saved saveContentListId, sorted by follower count descending
+   * @param saveContentListId
    * @return array of user objects
    * additional metadata fields on user objects:
    *  {Integer} follower_count - follower count of given user
    * @example
-   * getSaversForPlaylist(100, 0, 1) - ID must be valid
+   * getSaversForContentList(100, 0, 1) - ID must be valid
    */
-  async getSaversForPlaylist(limit = 100, offset = 0, savePlaylistId: number) {
-    const req = Requests.getSaversForPlaylist(limit, offset, savePlaylistId)
+  async getSaversForContentList(limit = 100, offset = 0, saveContentListId: number) {
+    const req = Requests.getSaversForContentList(limit, offset, saveContentListId)
     return await this._makeRequest(req)
   }
 
@@ -614,11 +614,11 @@ export class DiscoveryProvider {
   }
 
   /**
-   * Perform a full-text search. Returns agreements, users, playlists, albums
+   * Perform a full-text search. Returns agreements, users, content lists, albums
    *    with optional user-specific results for each
-   *  - user, agreement, and playlist objects have all same data as returned from standalone endpoints
+   *  - user, agreement, and content list objects have all same data as returned from standalone endpoints
    * @param text search query
-   * @param kind 'agreements', 'users', 'playlists', 'albums', 'all'
+   * @param kind 'agreements', 'users', 'content lists', 'albums', 'all'
    * @param limit max # of items to return per list (for pagination)
    * @param offset offset into list to return from (for pagination)
    */
@@ -628,9 +628,9 @@ export class DiscoveryProvider {
   }
 
   /**
-   * Perform a lighter-weight full-text search. Returns agreements, users, playlists, albums
+   * Perform a lighter-weight full-text search. Returns agreements, users, content lists, albums
    *    with optional user-specific results for each
-   *  - user, agreement, and playlist objects have core data, and agreement & playlist objects
+   *  - user, agreement, and content list objects have core data, and agreement & content list objects
    *    also return user object
    * @param text search query
    * @param limit max # of items to return per list (for pagination)
@@ -646,7 +646,7 @@ export class DiscoveryProvider {
    * that have used a tag greater than a specified number of times
    * @param text search query
    * @param userTagCount min # of times a user must have used a tag to be returned
-   * @param kind 'agreements', 'users', 'playlists', 'albums', 'all'
+   * @param kind 'agreements', 'users', 'content lists', 'albums', 'all'
    * @param limit max # of items to return per list (for pagination)
    * @param offset offset into list to return from (for pagination)
    */
@@ -662,19 +662,19 @@ export class DiscoveryProvider {
   }
 
   /**
-   * Return saved playlists for current user
-   * NOTE in returned JSON, SaveType string one of agreement, playlist, album
+   * Return saved content lists for current user
+   * NOTE in returned JSON, SaveType string one of agreement, content list, album
    * @param limit - max # of items to return
    * @param offset - offset into list to return from (for pagination)
    */
-  async getSavedPlaylists(limit = 100, offset = 0, withUsers = false) {
-    const req = Requests.getSavedPlaylists(limit, offset, withUsers)
+  async getSavedContentLists(limit = 100, offset = 0, withUsers = false) {
+    const req = Requests.getSavedContentLists(limit, offset, withUsers)
     return await this._makeRequest(req)
   }
 
   /**
    * Return saved albums for current user
-   * NOTE in returned JSON, SaveType string one of agreement, playlist, album
+   * NOTE in returned JSON, SaveType string one of agreement, content list, album
    * @param limit - max # of items to return
    * @param offset - offset into list to return from (for pagination)
    */
@@ -685,7 +685,7 @@ export class DiscoveryProvider {
 
   /**
    * Return saved agreements for current user
-   * NOTE in returned JSON, SaveType string one of agreement, playlist, album
+   * NOTE in returned JSON, SaveType string one of agreement, content list, album
    * @param limit - max # of items to return
    * @param offset - offset into list to return from (for pagination)
    */
@@ -703,27 +703,27 @@ export class DiscoveryProvider {
   }
 
   /**
-   * @deprecated Migrate to using getTrendingPlaylists
+   * @deprecated Migrate to using getTrendingContentLists
    */
-  async getTopPlaylists(
-    type: 'playlist' | 'album',
+  async getTopContentLists(
+    type: 'content list' | 'album',
     limit: number,
     mood: string,
     filter: string,
     withUsers = false
   ) {
-    const req = Requests.getTopPlaylists(type, limit, mood, filter, withUsers)
+    const req = Requests.getTopContentLists(type, limit, mood, filter, withUsers)
     return await this._makeRequest(req)
   }
 
-  async getTopFullPlaylists({
+  async getTopFullContentLists({
     type,
     limit,
     mood,
     filter,
     withUsers = false
-  }: Requests.GetTopFullPlaylistsParams) {
-    const req = Requests.getTopFullPlaylists({
+  }: Requests.GetTopFullContentListsParams) {
+    const req = Requests.getTopFullContentLists({
       type,
       limit,
       mood,

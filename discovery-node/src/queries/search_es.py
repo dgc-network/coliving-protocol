@@ -3,19 +3,19 @@ from typing import Any, Dict, Optional
 
 from src.api.v1.helpers import (
     extend_favorite,
-    extend_playlist,
+    extend_content list,
     extend_repost,
     extend_agreement,
     extend_user,
 )
 from src.queries.get_feed_es import fetch_followed_saves_and_reposts, item_key
 from src.utils.elasticdsl import (
-    ES_PLAYLISTS,
+    ES_CONTENT_LISTS,
     ES_AGREEMENTS,
     ES_USERS,
     esclient,
     pluck_hits,
-    populate_agreement_or_playlist_metadata_es,
+    populate_agreement_or_content list_metadata_es,
     populate_user_metadata_es,
 )
 
@@ -35,7 +35,7 @@ def search_es_full(args: dict):
     is_auto_complete = args.get("is_auto_complete")
     do_agreements = search_type == "all" or search_type == "agreements"
     do_users = search_type == "all" or search_type == "users"
-    do_playlists = search_type == "all" or search_type == "playlists"
+    do_content lists = search_type == "all" or search_type == "content lists"
     do_albums = search_type == "all" or search_type == "albums"
 
     mdsl: Any = []
@@ -89,21 +89,21 @@ def search_es_full(args: dict):
                 ]
             )
 
-    # playlists
-    if do_playlists:
+    # content lists
+    if do_content lists:
         mdsl.extend(
             [
-                {"index": ES_PLAYLISTS},
-                playlist_dsl(search_str, current_user_id),
+                {"index": ES_CONTENT_LISTS},
+                content list_dsl(search_str, current_user_id),
             ]
         )
 
-        # saved playlists
+        # saved content lists
         if current_user_id:
             mdsl.extend(
                 [
-                    {"index": ES_PLAYLISTS},
-                    playlist_dsl(search_str, current_user_id, True),
+                    {"index": ES_CONTENT_LISTS},
+                    content list_dsl(search_str, current_user_id, True),
                 ]
             )
 
@@ -111,7 +111,7 @@ def search_es_full(args: dict):
     if do_albums:
         mdsl.extend(
             [
-                {"index": ES_PLAYLISTS},
+                {"index": ES_CONTENT_LISTS},
                 album_dsl(search_str, current_user_id),
             ]
         )
@@ -119,7 +119,7 @@ def search_es_full(args: dict):
         if current_user_id:
             mdsl.extend(
                 [
-                    {"index": ES_PLAYLISTS},
+                    {"index": ES_CONTENT_LISTS},
                     album_dsl(search_str, current_user_id, True),
                 ]
             )
@@ -132,8 +132,8 @@ def search_es_full(args: dict):
         "saved_agreements": [],
         "users": [],
         "followed_users": [],
-        "playlists": [],
-        "saved_playlists": [],
+        "content lists": [],
+        "saved_content lists": [],
         "albums": [],
         "saved_albums": [],
     }
@@ -148,10 +148,10 @@ def search_es_full(args: dict):
         if current_user_id:
             response["followed_users"] = pluck_hits(mfound["responses"].pop(0))
 
-    if do_playlists:
-        response["playlists"] = pluck_hits(mfound["responses"].pop(0))
+    if do_content lists:
+        response["content lists"] = pluck_hits(mfound["responses"].pop(0))
         if current_user_id:
-            response["saved_playlists"] = pluck_hits(mfound["responses"].pop(0))
+            response["saved_content lists"] = pluck_hits(mfound["responses"].pop(0))
 
     if do_albums:
         response["albums"] = pluck_hits(mfound["responses"].pop(0))
@@ -264,7 +264,7 @@ def finalize_response(
     for items in response.values():
         for item in items:
             item_keys.append(item_key(item))
-            user_ids.add(item.get("owner_id", item.get("playlist_owner_id")))
+            user_ids.add(item.get("owner_id", item.get("content list_owner_id")))
 
     # fetch users
     users_by_id = {}
@@ -300,16 +300,16 @@ def finalize_response(
         users = users[:limit]
         response[k] = [map_user(user, current_user, legacy_mode) for user in users]
 
-    # playlists: finalize
-    for k in ["playlists", "saved_playlists", "albums", "saved_albums"]:
+    # content lists: finalize
+    for k in ["content lists", "saved_content lists", "albums", "saved_albums"]:
         if k not in response:
             continue
-        playlists = response[k]
+        content lists = response[k]
         if not is_auto_complete:
-            hydrate_saves_reposts(playlists, follow_saves, follow_reposts, legacy_mode)
-        hydrate_user(playlists, users_by_id)
+            hydrate_saves_reposts(content lists, follow_saves, follow_reposts, legacy_mode)
+        hydrate_user(content lists, users_by_id)
         response[k] = [
-            map_playlist(playlist, current_user, legacy_mode) for playlist in playlists
+            map_content list(content list, current_user, legacy_mode) for content list in content lists
         ]
 
     return response
@@ -419,7 +419,7 @@ def user_dsl(search_str, current_user_id, must_saved=False):
     return default_function_score(dsl, "follower_count")
 
 
-def base_playlist_dsl(search_str, is_album):
+def base_content list_dsl(search_str, is_album):
     return {
         "must": [
             *base_match(search_str),
@@ -434,14 +434,14 @@ def base_playlist_dsl(search_str, is_album):
     }
 
 
-def playlist_dsl(search_str, current_user_id, must_saved=False):
-    dsl = base_playlist_dsl(search_str, False)
+def content list_dsl(search_str, current_user_id, must_saved=False):
+    dsl = base_content list_dsl(search_str, False)
     personalize_dsl(dsl, current_user_id, must_saved)
     return default_function_score(dsl, "repost_count")
 
 
 def album_dsl(search_str, current_user_id, must_saved=False):
-    dsl = base_playlist_dsl(search_str, True)
+    dsl = base_content list_dsl(search_str, True)
     personalize_dsl(dsl, current_user_id, must_saved)
     return default_function_score(dsl, "repost_count")
 
@@ -474,7 +474,7 @@ def lower_ascii_name(name):
 
 def hydrate_user(items, users_by_id):
     for item in items:
-        uid = str(item.get("owner_id", item.get("playlist_owner_id")))
+        uid = str(item.get("owner_id", item.get("content list_owner_id")))
         user = users_by_id.get(uid)
         if user:
             item["user"] = user
@@ -499,14 +499,14 @@ def map_user(user, current_user, legacy_mode):
 
 
 def map_agreement(agreement, current_user, legacy_mode):
-    agreement = populate_agreement_or_playlist_metadata_es(agreement, current_user)
+    agreement = populate_agreement_or_content list_metadata_es(agreement, current_user)
     if not legacy_mode:
         agreement = extend_agreement(agreement)
     return agreement
 
 
-def map_playlist(playlist, current_user, legacy_mode):
-    playlist = populate_agreement_or_playlist_metadata_es(playlist, current_user)
+def map_content list(content list, current_user, legacy_mode):
+    content list = populate_agreement_or_content list_metadata_es(content list, current_user)
     if not legacy_mode:
-        playlist = extend_playlist(playlist)
-    return playlist
+        content list = extend_content list(content list)
+    return content list

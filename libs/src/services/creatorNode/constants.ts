@@ -1,4 +1,4 @@
-export const CREATOR_NODE_SERVICE_NAME = 'content-node'
+export const CONTENT_NODE_SERVICE_NAME = 'content-node'
 
 export enum DECISION_TREE_STATE {
   GET_ALL_SERVICES = 'Get All Services',

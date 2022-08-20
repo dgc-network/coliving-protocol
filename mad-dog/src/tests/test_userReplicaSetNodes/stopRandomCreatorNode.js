@@ -3,7 +3,7 @@ const _ = require('lodash')
 const MadDog = require('../../madDog.js')
 
 /**
- * Stops a random creator node with maddog
+ * Stops a random content node with maddog
  * @param {Object} creatorNodeIDToInfoMapping Mapping of creator ndoe ids to info
  * @returns 
  */

@@ -46,7 +46,7 @@ from src.api.v1.models.users import (
     user_model_full,
     user_replica_set,
 )
-from src.api.v1.playlists import get_agreements_for_playlist
+from src.api.v1.content lists import get_agreements_for_content list
 from src.challenges.challenge_event_bus import setup_challenge_bus
 from src.queries.get_associated_user_id import get_associated_user_id
 from src.queries.get_associated_user_wallet import get_associated_user_wallet
@@ -432,9 +432,9 @@ class FullRepostList(Resource):
         }
         reposts = get_repost_feed_for_user(decoded_id, args)
         for repost in reposts:
-            if "playlist_id" in repost:
-                repost["agreements"] = get_agreements_for_playlist(
-                    repost["playlist_id"], current_user_id
+            if "content list_id" in repost:
+                repost["agreements"] = get_agreements_for_content list(
+                    repost["content list_id"], current_user_id
                 )
         activities = list(map(extend_activity, reposts))
 
@@ -465,9 +465,9 @@ class HandleFullRepostList(Resource):
         }
         reposts = get_repost_feed_for_user(None, args)
         for repost in reposts:
-            if "playlist_id" in repost:
-                repost["agreements"] = get_agreements_for_playlist(
-                    repost["playlist_id"], current_user_id
+            if "content list_id" in repost:
+                repost["agreements"] = get_agreements_for_content list(
+                    repost["content list_id"], current_user_id
                 )
         activities = list(map(extend_activity, reposts))
 
@@ -1042,7 +1042,7 @@ users_by_content_node_route_parser = reqparse.RequestParser(
     argument_class=DescriptiveArgument
 )
 users_by_content_node_route_parser.add_argument(
-    "creator_node_endpoint",
+    "content_node_endpoint",
     required=True,
     type=str,
     description="Get users who have this Content Node endpoint as their primary/secondary",
@@ -1083,7 +1083,7 @@ class UsersByContentNode(Resource):
         args = users_by_content_node_route_parser.parse_args()
 
         # Endpoint that a user's primary/secondary/either must be set to for them to be included in the results
-        cnode_url = args.get("creator_node_endpoint")
+        cnode_url = args.get("content_node_endpoint")
         # Used for pagination with ">" comparison in SQL query. See https://ivopereira.net/efficient-pagination-dont-use-offset-limit
         prev_user_id = args.get("prev_user_id")
         # LIMIT used in SQL query

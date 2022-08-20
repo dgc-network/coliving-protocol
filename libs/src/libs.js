@@ -26,7 +26,7 @@ const { ServiceProvider } = require('./api/ServiceProvider')
 const { Account } = require('./api/Account')
 const { Users } = require('./api/Users')
 const { Agreement } = require('./api/Agreement')
-const { Playlists } = require('./api/Playlist')
+const { ContentLists } = require('./api/ContentList')
 const { File } = require('./api/File')
 const { Rewards } = require('./api/Rewards')
 const { Reactions } = require('./api/Reactions')
@@ -55,8 +55,8 @@ class ColivingLibs {
   }
 
   /**
-   * Configures a creator node wrapper
-   * @param {string} fallbackUrl creator node endpoint to fall back to on requests
+   * Configures a content node wrapper
+   * @param {string} fallbackUrl content node endpoint to fall back to on requests
    * @param {boolean} lazyConnect whether to delay connection to the node until the first
    * request that requires a connection is made.
    * @param {Set<string>?} passList whether or not to include only specified nodes (default null)
@@ -362,7 +362,7 @@ class ColivingLibs {
     this.Account = null
     this.User = null
     this.Agreement = null
-    this.Playlist = null
+    this.ContentList = null
     this.File = null
     this.Rewards = null
     this.Reactions = null
@@ -516,7 +516,7 @@ class ColivingLibs {
     if (this.creatorNodeConfig) {
       const currentUser = this.userStateManager.getCurrentUser()
       const contentNodeEndpoint = currentUser
-        ? CreatorNode.getPrimary(currentUser.creator_node_endpoint) ||
+        ? CreatorNode.getPrimary(currentUser.content_node_endpoint) ||
           this.creatorNodeConfig.fallbackUrl
         : this.creatorNodeConfig.fallbackUrl
 
@@ -568,7 +568,7 @@ class ColivingLibs {
     )
     this.Account = new Account(this.User, ...services)
     this.Agreement = new Agreement(...services)
-    this.Playlist = new Playlists(...services)
+    this.ContentList = new ContentLists(...services)
     this.File = new File(this.User, ...services)
     this.Rewards = new Rewards(this.ServiceProvider, ...services)
     this.Reactions = new Reactions(...services)

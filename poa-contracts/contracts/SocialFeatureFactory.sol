@@ -4,7 +4,7 @@ import "./interface/RegistryInterface.sol";
 import "./registry/RegistryContract.sol";
 import "./interface/UserFactoryInterface.sol";
 import "./interface/AgreementFactoryInterface.sol";
-import "./interface/PlaylistFactoryInterface.sol";
+import "./interface/ContentListFactoryInterface.sol";
 import "./interface/SocialFeatureStorageInterface.sol";
 import "./SigningLogic.sol";
 
@@ -17,12 +17,12 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
     bytes32 socialFeatureStorageRegistryKey;
     bytes32 userFactoryRegistryKey;
     bytes32 agreementFactoryRegistryKey;
-    bytes32 playlistFactoryRegistryKey;
+    bytes32 content listFactoryRegistryKey;
 
     event AgreementRepostAdded(uint _userId, uint _agreementId);
     event AgreementRepostDeleted(uint _userId, uint _agreementId);
-    event PlaylistRepostAdded(uint _userId, uint _playlistId);
-    event PlaylistRepostDeleted(uint _userId, uint _playlistId);
+    event ContentListRepostAdded(uint _userId, uint _content listId);
+    event ContentListRepostDeleted(uint _userId, uint _content listId);
     event UserFollowAdded(uint _followerUserId, uint _followeeUserId);
     event UserFollowDeleted(uint _followerUserId, uint _followeeUserId);
 
@@ -30,8 +30,8 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
     bytes32 constant AGREEMENT_REPOST_REQUEST_TYPEHASH = keccak256(
         "AddAgreementRepostRequest(uint userId,uint agreementId,bytes32 nonce)"
     );
-    bytes32 constant PLAYLIST_REPOST_REQUEST_TYPEHASH = keccak256(
-        "AddPlaylistRepostRequest(uint userId,uint playlistId,bytes32 nonce)"
+    bytes32 constant CONTENT_LIST_REPOST_REQUEST_TYPEHASH = keccak256(
+        "AddContentListRepostRequest(uint userId,uint content listId,bytes32 nonce)"
     );
     bytes32 constant DELETE_AGREEMENT_REPOST_REQUEST_TYPEHASH = keccak256(
         "DeleteAgreementRepostRequest(uint userId,uint agreementId,bytes32 nonce)"
@@ -42,8 +42,8 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
     bytes32 constant DELETE_USER_FOLLOW_REQUEST_TYPEHASH = keccak256(
         "DeleteUserFollowRequest(uint followerUserId,uint followeeUserId,bytes32 nonce)"
     );
-    bytes32 constant DELETE_PLAYLIST_REPOST_REQUEST_TYPEHASH = keccak256(
-        "DeletePlaylistRepostRequest(uint userId,uint playlistId,bytes32 nonce)"
+    bytes32 constant DELETE_CONTENT_LIST_REPOST_REQUEST_TYPEHASH = keccak256(
+        "DeleteContentListRepostRequest(uint userId,uint content listId,bytes32 nonce)"
     );
 
     /** @notice Sets registry address, and registryKeys for userFactory and agreementFactory */
@@ -52,7 +52,7 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
         bytes32 _socialFeatureStorageRegistryKey,
         bytes32 _userFactoryRegistryKey,
         bytes32 _agreementFactoryRegistryKey,
-        bytes32 _playlistFactoryRegistryKey,
+        bytes32 _content listFactoryRegistryKey,
         uint _networkId
     ) SigningLogic("Social Feature Factory", "1", _networkId) public
     {
@@ -61,14 +61,14 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
             _socialFeatureStorageRegistryKey.length != 0 &&
             _userFactoryRegistryKey.length != 0 &&
             _agreementFactoryRegistryKey.length != 0 &&
-            _playlistFactoryRegistryKey.length != 0,
+            _content listFactoryRegistryKey.length != 0,
             "requires non-zero _registryAddress and non-empty registry key strings"
         );
         registry = RegistryInterface(_registryAddress);
         socialFeatureStorageRegistryKey = _socialFeatureStorageRegistryKey;
         userFactoryRegistryKey = _userFactoryRegistryKey;
         agreementFactoryRegistryKey = _agreementFactoryRegistryKey;
-        playlistFactoryRegistryKey = _playlistFactoryRegistryKey;
+        content listFactoryRegistryKey = _content listFactoryRegistryKey;
     }
 
     /**
@@ -108,15 +108,15 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
         emit AgreementRepostAdded(_userId, _agreementId);
     }
 
-    function addPlaylistRepost(
+    function addContentListRepost(
         uint _userId,
-        uint _playlistId,
+        uint _content listId,
         bytes32 _requestNonce,
         bytes calldata _subjectSig
     ) external 
     {
-        bytes32 signatureDigest = generatePlaylistRepostRequestSchemaHash(
-            _userId, _playlistId, _requestNonce
+        bytes32 signatureDigest = generateContentListRepostRequestSchemaHash(
+            _userId, _content listId, _requestNonce
         );
         address signer = recoverSigner(signatureDigest, _subjectSig);
         burnSignatureDigest(signatureDigest, signer);
@@ -124,21 +124,21 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
             registry.getContract(userFactoryRegistryKey)
         ).callerOwnsUser(signer, _userId);  // will revert if false
 
-        bool playlistExists = PlaylistFactoryInterface(
-            registry.getContract(playlistFactoryRegistryKey)
-        ).playlistExists(_playlistId);
-        require(playlistExists == true, "must provide valid playlist ID");
+        bool content listExists = ContentListFactoryInterface(
+            registry.getContract(content listFactoryRegistryKey)
+        ).content listExists(_content listId);
+        require(content listExists == true, "must provide valid content list ID");
 
-        bool playlistRepostExists = SocialFeatureStorageInterface(
+        bool content listRepostExists = SocialFeatureStorageInterface(
             registry.getContract(socialFeatureStorageRegistryKey)
-        ).userRepostedPlaylist(_userId, _playlistId);
-        require(playlistRepostExists == false, "playlist repost already exists");
+        ).userRepostedContentList(_userId, _content listId);
+        require(content listRepostExists == false, "content list repost already exists");
 
         SocialFeatureStorageInterface(
             registry.getContract(socialFeatureStorageRegistryKey)
-        ).addPlaylistRepost(_userId, _playlistId);
+        ).addContentListRepost(_userId, _content listId);
 
-        emit PlaylistRepostAdded(_userId, _playlistId);
+        emit ContentListRepostAdded(_userId, _content listId);
     }
 
     function deleteAgreementRepost(
@@ -174,15 +174,15 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
         emit AgreementRepostDeleted(_userId, _agreementId);
     }
 
-    function deletePlaylistRepost(
+    function deleteContentListRepost(
         uint _userId,
-        uint _playlistId,
+        uint _content listId,
         bytes32 _requestNonce,
         bytes calldata _subjectSig
     ) external
     {
-        bytes32 signatureDigest = generateDeletePlaylistRepostReqeustSchemaHash(
-            _userId, _playlistId, _requestNonce
+        bytes32 signatureDigest = generateDeleteContentListRepostReqeustSchemaHash(
+            _userId, _content listId, _requestNonce
         );
         address signer = recoverSigner(signatureDigest, _subjectSig);
         burnSignatureDigest(signatureDigest, signer);
@@ -190,21 +190,21 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
             registry.getContract(userFactoryRegistryKey)
         ).callerOwnsUser(signer, _userId);  // will revert if false
 
-        bool playlistExists = PlaylistFactoryInterface(
-            registry.getContract(playlistFactoryRegistryKey)
-        ).playlistExists(_playlistId);
-        require(playlistExists == true, "must provide valid playlist ID");
+        bool content listExists = ContentListFactoryInterface(
+            registry.getContract(content listFactoryRegistryKey)
+        ).content listExists(_content listId);
+        require(content listExists == true, "must provide valid content list ID");
 
-        bool playlistRepostExists = SocialFeatureStorageInterface(
+        bool content listRepostExists = SocialFeatureStorageInterface(
             registry.getContract(socialFeatureStorageRegistryKey)
-        ).userRepostedPlaylist(_userId, _playlistId);
-        require(playlistRepostExists == true, "playlist repost does not exist"); 
+        ).userRepostedContentList(_userId, _content listId);
+        require(content listRepostExists == true, "content list repost does not exist"); 
 
         SocialFeatureStorageInterface(
             registry.getContract(socialFeatureStorageRegistryKey)
-        ).deletePlaylistRepost(_userId, _playlistId);
+        ).deleteContentListRepost(_userId, _content listId);
 
-        emit PlaylistRepostDeleted(_userId, _playlistId);
+        emit ContentListRepostDeleted(_userId, _content listId);
     }
 
     function addUserFollow(
@@ -275,14 +275,14 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
         ).userRepostedAgreement(_userId, _agreementId);
     }
 
-    function userRepostedPlaylist(
+    function userRepostedContentList(
         uint _userId,
-        uint _playlistId
+        uint _content listId
     ) external view returns (bool)
     {
         return SocialFeatureStorageInterface(
             registry.getContract(socialFeatureStorageRegistryKey)
-        ).userRepostedPlaylist(_userId, _playlistId);
+        ).userRepostedContentList(_userId, _content listId);
     }
 
     function generateAgreementRepostRequestSchemaHash(
@@ -303,18 +303,18 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
         );
     }
 
-    function generatePlaylistRepostRequestSchemaHash(
+    function generateContentListRepostRequestSchemaHash(
         uint _userId,
-        uint _playlistId,
+        uint _content listId,
         bytes32 _nonce
     ) internal view returns (bytes32)
     {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    PLAYLIST_REPOST_REQUEST_TYPEHASH,
+                    CONTENT_LIST_REPOST_REQUEST_TYPEHASH,
                     _userId,
-                    _playlistId,
+                    _content listId,
                     _nonce
                 )
             )
@@ -339,18 +339,18 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
         );
     }
 
-    function generateDeletePlaylistRepostReqeustSchemaHash(
+    function generateDeleteContentListRepostReqeustSchemaHash(
         uint _userId,
-        uint _playlistId,
+        uint _content listId,
         bytes32 _nonce
     ) internal view returns (bytes32)
     {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    DELETE_PLAYLIST_REPOST_REQUEST_TYPEHASH,
+                    DELETE_CONTENT_LIST_REPOST_REQUEST_TYPEHASH,
                     _userId,
-                    _playlistId,
+                    _content listId,
                     _nonce
                 )
             )

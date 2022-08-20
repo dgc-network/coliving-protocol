@@ -4,14 +4,14 @@ import sqlalchemy
 from flask.globals import request
 from sqlalchemy import desc
 from src import exceptions
-from src.models.playlists.playlist import Playlist
+from src.models.content lists.content list import ContentList
 from src.models.social.repost import RepostType
 from src.models.social.save import SaveType
 from src.queries.query_helpers import (
     get_users_by_id,
     get_users_ids,
     paginate_query,
-    populate_playlist_metadata,
+    populate_content list_metadata,
 )
 from src.utils import helpers
 from src.utils.db_session import get_db_read_replica
@@ -19,108 +19,108 @@ from src.utils.redis_cache import extract_key, use_redis_cache
 
 logger = logging.getLogger(__name__)
 
-UNPOPULATED_PLAYLIST_CACHE_DURATION_SEC = 10
+UNPOPULATED_CONTENT_LIST_CACHE_DURATION_SEC = 10
 
 
 def make_cache_key(args):
     cache_keys = {"user_id": args.get("user_id"), "with_users": args.get("with_users")}
 
-    if args.get("playlist_id"):
-        ids = args.get("playlist_id")
+    if args.get("content list_id"):
+        ids = args.get("content list_id")
         ids = map(str, ids)
         ids = ",".join(ids)
-        cache_keys["playlist_id"] = ids
+        cache_keys["content list_id"] = ids
 
-    key = extract_key(f"unpopulated-playlist:{request.path}", cache_keys.items())
+    key = extract_key(f"unpopulated-content list:{request.path}", cache_keys.items())
     return key
 
 
-def get_playlists(args):
-    playlists = []
+def get_content lists(args):
+    content lists = []
     current_user_id = args.get("current_user_id")
 
     db = get_db_read_replica()
     with db.scoped_session() as session:
 
-        def get_unpopulated_playlists():
-            playlist_query = session.query(Playlist).filter(Playlist.is_current == True)
+        def get_unpopulated_content lists():
+            content list_query = session.query(ContentList).filter(ContentList.is_current == True)
 
-            # playlist ids filter if the optional query param is passed in
-            if "playlist_id" in args:
-                playlist_id_list = args.get("playlist_id")
+            # content list ids filter if the optional query param is passed in
+            if "content list_id" in args:
+                content list_id_list = args.get("content list_id")
                 try:
-                    playlist_query = playlist_query.filter(
-                        Playlist.playlist_id.in_(playlist_id_list)
+                    content list_query = content list_query.filter(
+                        ContentList.content list_id.in_(content list_id_list)
                     )
                 except ValueError as e:
                     raise exceptions.ArgumentError(
-                        "Invalid value found in playlist id list", e
+                        "Invalid value found in content list id list", e
                     )
 
             if "user_id" in args:
                 user_id = args.get("user_id")
                 # user id filter if the optional query param is passed in
-                playlist_query = playlist_query.filter(
-                    Playlist.playlist_owner_id == user_id
+                content list_query = content list_query.filter(
+                    ContentList.content list_owner_id == user_id
                 )
 
-            # If no current_user_id, never show hidden playlists
+            # If no current_user_id, never show hidden content lists
             if not current_user_id:
-                playlist_query = playlist_query.filter(Playlist.is_private == False)
+                content list_query = content list_query.filter(ContentList.is_private == False)
 
             # Filter out deletes unless we're fetching explicitly by id
-            if "playlist_id" not in args:
-                playlist_query = playlist_query.filter(Playlist.is_delete == False)
+            if "content list_id" not in args:
+                content list_query = content list_query.filter(ContentList.is_delete == False)
 
-            playlist_query = playlist_query.order_by(desc(Playlist.created_at))
-            playlists = paginate_query(playlist_query).all()
-            playlists = helpers.query_result_to_list(playlists)
+            content list_query = content list_query.order_by(desc(ContentList.created_at))
+            content lists = paginate_query(content list_query).all()
+            content lists = helpers.query_result_to_list(content lists)
 
-            # if we passed in a current_user_id, filter out all privte playlists where
+            # if we passed in a current_user_id, filter out all privte content lists where
             # the owner_id doesn't match the current_user_id
             if current_user_id:
-                playlists = list(
+                content lists = list(
                     filter(
-                        lambda playlist: (not playlist["is_private"])
-                        or playlist["playlist_owner_id"] == current_user_id,
-                        playlists,
+                        lambda content list: (not content list["is_private"])
+                        or content list["content list_owner_id"] == current_user_id,
+                        content lists,
                     )
                 )
 
-            # retrieve playlist ids list
-            playlist_ids = list(
-                map(lambda playlist: playlist["playlist_id"], playlists)
+            # retrieve content list ids list
+            content list_ids = list(
+                map(lambda content list: content list["content list_id"], content lists)
             )
 
-            return (playlists, playlist_ids)
+            return (content lists, content list_ids)
 
         try:
-            # Get unpopulated playlists, either via
-            # redis cache or via get_unpopulated_playlists
+            # Get unpopulated content lists, either via
+            # redis cache or via get_unpopulated_content lists
             key = make_cache_key(args)
 
-            (playlists, playlist_ids) = use_redis_cache(
-                key, UNPOPULATED_PLAYLIST_CACHE_DURATION_SEC, get_unpopulated_playlists
+            (content lists, content list_ids) = use_redis_cache(
+                key, UNPOPULATED_CONTENT_LIST_CACHE_DURATION_SEC, get_unpopulated_content lists
             )
 
-            # bundle peripheral info into playlist results
-            playlists = populate_playlist_metadata(
+            # bundle peripheral info into content list results
+            content lists = populate_content list_metadata(
                 session,
-                playlist_ids,
-                playlists,
-                [RepostType.playlist, RepostType.album],
-                [SaveType.playlist, SaveType.album],
+                content list_ids,
+                content lists,
+                [RepostType.content list, RepostType.album],
+                [SaveType.content list, SaveType.album],
                 current_user_id,
             )
 
             if args.get("with_users", False):
-                user_id_list = get_users_ids(playlists)
+                user_id_list = get_users_ids(content lists)
                 users = get_users_by_id(session, user_id_list, current_user_id)
-                for playlist in playlists:
-                    user = users[playlist["playlist_owner_id"]]
+                for content list in content lists:
+                    user = users[content list["content list_owner_id"]]
                     if user:
-                        playlist["user"] = user
+                        content list["user"] = user
 
         except sqlalchemy.orm.exc.NoResultFound:
             pass
-    return playlists
+    return content lists

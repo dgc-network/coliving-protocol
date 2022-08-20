@@ -1,6 +1,6 @@
 ---
-id: "full.PlaylistsApi"
-title: "Playlists"
+id: "full.ContentListsApi"
+title: "ContentLists"
 sidebar_position: 0
 custom_edit_url: null
 pagination_prev: null
@@ -9,18 +9,18 @@ pagination_next: null
 
 ## Methods
 
-### getPlaylist
+### getContentList
 
-**getPlaylist**(`requestParameters`): `Promise`<[`PlaylistFull`](../interfaces/full.PlaylistFull.md)[]\>
+**getContentList**(`requestParameters`): `Promise`<[`ContentListFull`](../interfaces/full.ContentListFull.md)[]\>
 
-Get a playlist by ID
+Get a content list by ID
 
 Example:
 
 ```typescript
 
-const playlist = await colivingSdk.playlists.getPlaylist({
-    playlistId: "AxRP0",
+const content list = await colivingSdk.content lists.getContentList({
+    content listId: "AxRP0",
 });
 
 ```
@@ -29,25 +29,25 @@ const playlist = await colivingSdk.playlists.getPlaylist({
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetPlaylistRequest`](../interfaces/full.GetPlaylistRequest.md) |
+| `requestParameters` | [`GetContentListRequest`](../interfaces/full.GetContentListRequest.md) |
 
 #### Returns
 
-`Promise`<[`PlaylistFull`](../interfaces/full.PlaylistFull.md)[]\>
+`Promise`<[`ContentListFull`](../interfaces/full.ContentListFull.md)[]\>
 
 ___
 
-### getTrendingPlaylists
+### getTrendingContentLists
 
-**getTrendingPlaylists**(`requestParameters?`): `Promise`<[`PlaylistFull`](../interfaces/full.PlaylistFull.md)[]\>
+**getTrendingContentLists**(`requestParameters?`): `Promise`<[`ContentListFull`](../interfaces/full.ContentListFull.md)[]\>
 
-Returns trending playlists for a time period
+Returns trending content lists for a time period
 
 Example:
 
 ```typescript
 
-const playlists = await colivingSdk.playlists.getTrendingPlaylists();
+const content lists = await colivingSdk.content lists.getTrendingContentLists();
 
 ```
 
@@ -55,43 +55,43 @@ const playlists = await colivingSdk.playlists.getTrendingPlaylists();
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetTrendingPlaylistsRequest`](../interfaces/full.GetTrendingPlaylistsRequest.md) |
+| `requestParameters` | [`GetTrendingContentListsRequest`](../interfaces/full.GetTrendingContentListsRequest.md) |
 
 #### Returns
 
-`Promise`<[`PlaylistFull`](../interfaces/full.PlaylistFull.md)[]\>
+`Promise`<[`ContentListFull`](../interfaces/full.ContentListFull.md)[]\>
 
 ___
 
-### getTrendingPlaylistsWithVersion
+### getTrendingContentListsWithVersion
 
-**getTrendingPlaylistsWithVersion**(`requestParameters`): `Promise`<[`PlaylistFull`](../interfaces/full.PlaylistFull.md)[]\>
+**getTrendingContentListsWithVersion**(`requestParameters`): `Promise`<[`ContentListFull`](../interfaces/full.ContentListFull.md)[]\>
 
-Returns trending playlists for a time period based on the given trending version
+Returns trending content lists for a time period based on the given trending version
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetTrendingPlaylistsWithVersionRequest`](../interfaces/full.GetTrendingPlaylistsWithVersionRequest.md) |
+| `requestParameters` | [`GetTrendingContentListsWithVersionRequest`](../interfaces/full.GetTrendingContentListsWithVersionRequest.md) |
 
 #### Returns
 
-`Promise`<[`PlaylistFull`](../interfaces/full.PlaylistFull.md)[]\>
+`Promise`<[`ContentListFull`](../interfaces/full.ContentListFull.md)[]\>
 
 ___
 
-### getUsersFromPlaylistFavorites
+### getUsersFromContentListFavorites
 
-**getUsersFromPlaylistFavorites**(`requestParameters`): `Promise`<[`UserFull`](../interfaces/full.UserFull.md)[]\>
+**getUsersFromContentListFavorites**(`requestParameters`): `Promise`<[`UserFull`](../interfaces/full.UserFull.md)[]\>
 
-Get users that favorited a playlist
+Get users that favorited a content list
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetUsersFromPlaylistFavoritesRequest`](../interfaces/full.GetUsersFromPlaylistFavoritesRequest.md) |
+| `requestParameters` | [`GetUsersFromContentListFavoritesRequest`](../interfaces/full.GetUsersFromContentListFavoritesRequest.md) |
 
 #### Returns
 
@@ -99,17 +99,17 @@ Get users that favorited a playlist
 
 ___
 
-### getUsersFromPlaylistReposts
+### getUsersFromContentListReposts
 
-**getUsersFromPlaylistReposts**(`requestParameters`): `Promise`<[`UserFull`](../interfaces/full.UserFull.md)[]\>
+**getUsersFromContentListReposts**(`requestParameters`): `Promise`<[`UserFull`](../interfaces/full.UserFull.md)[]\>
 
-Get users that reposted a playlist
+Get users that reposted a content list
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetUsersFromPlaylistRepostsRequest`](../interfaces/full.GetUsersFromPlaylistRepostsRequest.md) |
+| `requestParameters` | [`GetUsersFromContentListRepostsRequest`](../interfaces/full.GetUsersFromContentListRepostsRequest.md) |
 
 #### Returns
 

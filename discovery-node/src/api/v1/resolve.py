@@ -18,7 +18,7 @@ resolve_route_parser = reqparse.RequestParser(argument_class=DescriptiveArgument
 resolve_route_parser.add_argument(
     "url",
     required=True,
-    description="URL to resolve. Either fully formed URL (https://coliving.co) or just the absolute path",
+    description="URL to resolve. Either fully formed URL (https://coliving.lol) or just the absolute path",
 )
 
 
@@ -34,8 +34,8 @@ class Resolve(Resource):
         Resolves and redirects a provided Coliving app URL to the API resource URL it represents.
 
         This endpoint allows you to lookup and access API resources when you only know the
-        coliving.co URL.
-        Agreements, Playlists, and Users are supported.
+        coliving.lol URL.
+        Agreements, ContentLists, and Users are supported.
         """
         args = resolve_route_parser.parse_args()
         url = args.get("url")

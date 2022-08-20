@@ -7,7 +7,7 @@ from src.api.v1.helpers import (
     abort_bad_request_param,
     current_user_parser,
     decode_with_abort,
-    extend_playlist,
+    extend_content list,
     extend_agreement,
     extend_user,
     full_trending_parser,
@@ -21,18 +21,18 @@ from src.api.v1.helpers import (
     success_response,
     trending_parser,
 )
-from src.api.v1.models.playlists import full_playlist_model, playlist_model
+from src.api.v1.models.content lists import full_content list_model, content list_model
 from src.api.v1.models.users import user_model_full
-from src.queries.get_playlist_agreements import get_playlist_agreements
-from src.queries.get_playlists import get_playlists
-from src.queries.get_reposters_for_playlist import get_reposters_for_playlist
-from src.queries.get_savers_for_playlist import get_savers_for_playlist
-from src.queries.get_top_playlists import get_top_playlists  # pylint: disable=C0302
-from src.queries.get_trending_playlists import (
+from src.queries.get_content list_agreements import get_content list_agreements
+from src.queries.get_content lists import get_content lists
+from src.queries.get_reposters_for_content list import get_reposters_for_content list
+from src.queries.get_savers_for_content list import get_savers_for_content list
+from src.queries.get_top_content lists import get_top_content lists  # pylint: disable=C0302
+from src.queries.get_trending_content lists import (
     TRENDING_LIMIT,
     TRENDING_TTL_SEC,
-    get_full_trending_playlists,
-    get_trending_playlists,
+    get_full_trending_content lists,
+    get_trending_content lists,
 )
 from src.queries.search_queries import SearchKind, search
 from src.trending_strategies.trending_strategy_factory import (
@@ -50,137 +50,137 @@ logger = logging.getLogger(__name__)
 
 trending_strategy_factory = TrendingStrategyFactory()
 
-ns = Namespace("playlists", description="Playlist related operations")
-full_ns = Namespace("playlists", description="Full playlist related operations")
+ns = Namespace("content lists", description="ContentList related operations")
+full_ns = Namespace("content lists", description="Full content list related operations")
 
-playlists_response = make_response(
-    "playlist_response", ns, fields.List(fields.Nested(playlist_model))
+content lists_response = make_response(
+    "content list_response", ns, fields.List(fields.Nested(content list_model))
 )
-full_playlists_response = make_full_response(
-    "full_playlist_response", full_ns, fields.List(fields.Nested(full_playlist_model))
+full_content lists_response = make_full_response(
+    "full_content list_response", full_ns, fields.List(fields.Nested(full_content list_model))
 )
 
-playlists_with_score = ns.clone(
-    "playlist_full",
-    full_playlist_model,
+content lists_with_score = ns.clone(
+    "content list_full",
+    full_content list_model,
     {"score": fields.Float},
 )
 
-full_playlists_with_score_response = make_full_response(
-    "full_playlist_with_score_response",
+full_content lists_with_score_response = make_full_response(
+    "full_content list_with_score_response",
     full_ns,
-    fields.List(fields.Nested(playlists_with_score)),
+    fields.List(fields.Nested(content lists_with_score)),
 )
 
 
-def get_playlist(playlist_id, current_user_id):
-    """Returns a single playlist, or None"""
+def get_content list(content list_id, current_user_id):
+    """Returns a single content list, or None"""
     args = {
-        "playlist_id": [playlist_id],
+        "content list_id": [content list_id],
         "with_users": True,
         "current_user_id": current_user_id,
     }
-    playlists = get_playlists(args)
-    if playlists:
-        return extend_playlist(playlists[0])
+    content lists = get_content lists(args)
+    if content lists:
+        return extend_content list(content lists[0])
     return None
 
 
-def get_agreements_for_playlist(playlist_id, current_user_id=None):
+def get_agreements_for_content list(content list_id, current_user_id=None):
     db = get_db_read_replica()
     with db.scoped_session() as session:
         args = {
-            "playlist_ids": [playlist_id],
+            "content list_ids": [content list_id],
             "populate_agreements": True,
             "current_user_id": current_user_id,
         }
-        playlist_agreements_map = get_playlist_agreements(session, args)
-        playlist_agreements = playlist_agreements_map[playlist_id]
-        agreements = list(map(extend_agreement, playlist_agreements))
+        content list_agreements_map = get_content list_agreements(session, args)
+        content list_agreements = content list_agreements_map[content list_id]
+        agreements = list(map(extend_agreement, content list_agreements))
         return agreements
 
 
-PLAYLIST_ROUTE = "/<string:playlist_id>"
+CONTENT_LIST_ROUTE = "/<string:content list_id>"
 
 
-@ns.route(PLAYLIST_ROUTE)
-class Playlist(Resource):
+@ns.route(CONTENT_LIST_ROUTE)
+class ContentList(Resource):
     @record_metrics
     @ns.doc(
-        id="""Get Playlist""",
-        description="""Get a playlist by ID""",
-        params={"playlist_id": "A Playlist ID"},
+        id="""Get ContentList""",
+        description="""Get a content list by ID""",
+        params={"content list_id": "A ContentList ID"},
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
-    @ns.marshal_with(playlists_response)
+    @ns.marshal_with(content lists_response)
     @cache(ttl_sec=5)
-    def get(self, playlist_id):
-        playlist_id = decode_with_abort(playlist_id, ns)
-        playlist = get_playlist(playlist_id, None)
-        response = success_response([playlist] if playlist else [])
+    def get(self, content list_id):
+        content list_id = decode_with_abort(content list_id, ns)
+        content list = get_content list(content list_id, None)
+        response = success_response([content list] if content list else [])
         return response
 
 
-playlist_agreements_response = make_response(
-    "playlist_agreements_response", ns, fields.List(fields.Nested(agreement))
+content list_agreements_response = make_response(
+    "content list_agreements_response", ns, fields.List(fields.Nested(agreement))
 )
 
 
-@full_ns.route(PLAYLIST_ROUTE)
-class FullPlaylist(Resource):
+@full_ns.route(CONTENT_LIST_ROUTE)
+class FullContentList(Resource):
     @ns.doc(
-        id="""Get Playlist""",
-        description="""Get a playlist by ID""",
-        params={"playlist_id": "A Playlist ID"},
+        id="""Get ContentList""",
+        description="""Get a content list by ID""",
+        params={"content list_id": "A ContentList ID"},
     )
     @ns.expect(current_user_parser)
-    @ns.marshal_with(full_playlists_response)
+    @ns.marshal_with(full_content lists_response)
     @cache(ttl_sec=5)
-    def get(self, playlist_id):
-        playlist_id = decode_with_abort(playlist_id, full_ns)
+    def get(self, content list_id):
+        content list_id = decode_with_abort(content list_id, full_ns)
         args = current_user_parser.parse_args()
         current_user_id = get_current_user_id(args)
 
-        playlist = get_playlist(playlist_id, current_user_id)
-        if playlist:
-            agreements = get_agreements_for_playlist(playlist_id, current_user_id)
-            playlist["agreements"] = agreements
-        response = success_response([playlist] if playlist else [])
+        content list = get_content list(content list_id, current_user_id)
+        if content list:
+            agreements = get_agreements_for_content list(content list_id, current_user_id)
+            content list["agreements"] = agreements
+        response = success_response([content list] if content list else [])
         return response
 
 
-@ns.route("/<string:playlist_id>/agreements")
-class PlaylistAgreements(Resource):
+@ns.route("/<string:content list_id>/agreements")
+class ContentListAgreements(Resource):
     @record_metrics
     @ns.doc(
-        id="""Get Playlist Agreements""",
-        description="""Fetch agreements within a playlist.""",
-        params={"playlist_id": "A Playlist ID"},
+        id="""Get ContentList Agreements""",
+        description="""Fetch agreements within a content list.""",
+        params={"content list_id": "A ContentList ID"},
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
-    @ns.marshal_with(playlist_agreements_response)
+    @ns.marshal_with(content list_agreements_response)
     @cache(ttl_sec=5)
-    def get(self, playlist_id):
-        decoded_id = decode_with_abort(playlist_id, ns)
-        agreements = get_agreements_for_playlist(decoded_id)
+    def get(self, content list_id):
+        decoded_id = decode_with_abort(content list_id, ns)
+        agreements = get_agreements_for_content list(decoded_id)
         return success_response(agreements)
 
 
-playlist_search_result = make_response(
-    "playlist_search_result", ns, fields.List(fields.Nested(playlist_model))
+content list_search_result = make_response(
+    "content list_search_result", ns, fields.List(fields.Nested(content list_model))
 )
 
 
 @ns.route("/search")
-class PlaylistSearchResult(Resource):
+class ContentListSearchResult(Resource):
     @record_metrics
     @ns.doc(
-        id="""Search Playlists""",
-        description="""Search for a playlist""",
+        id="""Search ContentLists""",
+        description="""Search for a content list""",
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
     @ns.expect(search_parser)
-    @ns.marshal_with(playlist_search_result)
+    @ns.marshal_with(content list_search_result)
     @cache(ttl_sec=600)
     def get(self):
         args = search_parser.parse_args()
@@ -189,7 +189,7 @@ class PlaylistSearchResult(Resource):
             abort_bad_request_param("query", ns)
         search_args = {
             "query": query,
-            "kind": SearchKind.playlists.name,
+            "kind": SearchKind.content lists.name,
             "is_auto_complete": False,
             "current_user_id": None,
             "with_users": True,
@@ -197,14 +197,14 @@ class PlaylistSearchResult(Resource):
             "offset": 0,
         }
         response = search(search_args)
-        return success_response(response["playlists"])
+        return success_response(response["content lists"])
 
 
 top_parser = pagination_parser.copy()
 top_parser.add_argument(
     "type",
     required=True,
-    choices=("album", "playlist"),
+    choices=("album", "content list"),
     description="The collection type",
 )
 top_parser.add_argument(
@@ -217,8 +217,8 @@ top_parser.add_argument(
 @full_ns.route("/top", doc=False)
 class Top(Resource):
     @record_metrics
-    @ns.doc(id="""Top Playlists""", description="""Gets top playlists.""")
-    @ns.marshal_with(full_playlists_with_score_response)
+    @ns.doc(id="""Top ContentLists""", description="""Gets top content lists.""")
+    @ns.marshal_with(full_content lists_with_score_response)
     @cache(ttl_sec=30 * 60)
     def get(self):
         args = top_parser.parse_args()
@@ -228,151 +228,151 @@ class Top(Resource):
             args["limit"] = min(args.get("limit"), 100)
         if args.get("offset") is None:
             args["offset"] = 0
-        if args.get("type") not in ["album", "playlist"]:
+        if args.get("type") not in ["album", "content list"]:
             abort_bad_request_param("type", ns)
 
         args["with_users"] = True
 
-        response = get_top_playlists(args.type, args)
+        response = get_top_content lists(args.type, args)
 
-        playlists = list(map(extend_playlist, response))
-        return success_response(playlists)
+        content lists = list(map(extend_content list, response))
+        return success_response(content lists)
 
 
-playlist_favorites_response = make_full_response(
+content list_favorites_response = make_full_response(
     "following_response", full_ns, fields.List(fields.Nested(user_model_full))
 )
 
 
-@full_ns.route("/<string:playlist_id>/favorites")
+@full_ns.route("/<string:content list_id>/favorites")
 class FullAgreementFavorites(Resource):
     @full_ns.doc(
-        id="""Get Users From Playlist Favorites""",
-        description="""Get users that favorited a playlist""",
-        params={"playlist_id": "A Playlist ID"},
+        id="""Get Users From ContentList Favorites""",
+        description="""Get users that favorited a content list""",
+        params={"content list_id": "A ContentList ID"},
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
     @full_ns.expect(pagination_with_current_user_parser)
-    @full_ns.marshal_with(playlist_favorites_response)
+    @full_ns.marshal_with(content list_favorites_response)
     @cache(ttl_sec=5)
-    def get(self, playlist_id):
+    def get(self, content list_id):
         args = pagination_with_current_user_parser.parse_args()
-        decoded_id = decode_with_abort(playlist_id, full_ns)
+        decoded_id = decode_with_abort(content list_id, full_ns)
         limit = get_default_max(args.get("limit"), 10, 100)
         offset = get_default_max(args.get("offset"), 0)
         current_user_id = get_current_user_id(args)
         args = {
-            "save_playlist_id": decoded_id,
+            "save_content list_id": decoded_id,
             "current_user_id": current_user_id,
             "limit": limit,
             "offset": offset,
         }
-        users = get_savers_for_playlist(args)
+        users = get_savers_for_content list(args)
         users = list(map(extend_user, users))
 
         return success_response(users)
 
 
-playlist_reposts_response = make_full_response(
+content list_reposts_response = make_full_response(
     "following_response", full_ns, fields.List(fields.Nested(user_model_full))
 )
 
 
-@full_ns.route("/<string:playlist_id>/reposts")
-class FullPlaylistReposts(Resource):
+@full_ns.route("/<string:content list_id>/reposts")
+class FullContentListReposts(Resource):
     @full_ns.doc(
-        id="""Get Users From Playlist Reposts""",
-        description="""Get users that reposted a playlist""",
-        params={"playlist_id": "A Playlist ID"},
+        id="""Get Users From ContentList Reposts""",
+        description="""Get users that reposted a content list""",
+        params={"content list_id": "A ContentList ID"},
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
     @full_ns.expect(pagination_with_current_user_parser)
-    @full_ns.marshal_with(playlist_reposts_response)
+    @full_ns.marshal_with(content list_reposts_response)
     @cache(ttl_sec=5)
-    def get(self, playlist_id):
+    def get(self, content list_id):
         args = pagination_with_current_user_parser.parse_args()
-        decoded_id = decode_with_abort(playlist_id, full_ns)
+        decoded_id = decode_with_abort(content list_id, full_ns)
         limit = get_default_max(args.get("limit"), 10, 100)
         offset = get_default_max(args.get("offset"), 0)
         current_user_id = get_current_user_id(args)
         args = {
-            "repost_playlist_id": decoded_id,
+            "repost_content list_id": decoded_id,
             "current_user_id": current_user_id,
             "limit": limit,
             "offset": offset,
         }
-        users = get_reposters_for_playlist(args)
+        users = get_reposters_for_content list(args)
         users = list(map(extend_user, users))
         return success_response(users)
 
 
 trending_response = make_response(
-    "trending_playlists_response", ns, fields.List(fields.Nested(playlist_model))
+    "trending_content lists_response", ns, fields.List(fields.Nested(content list_model))
 )
-trending_playlist_parser = trending_parser.copy()
-trending_playlist_parser.remove_argument("genre")
+trending_content list_parser = trending_parser.copy()
+trending_content list_parser.remove_argument("genre")
 
 
 @ns.route(
     "/trending",
-    defaults={"version": DEFAULT_TRENDING_VERSIONS[TrendingType.PLAYLISTS].name},
+    defaults={"version": DEFAULT_TRENDING_VERSIONS[TrendingType.CONTENT_LISTS].name},
     strict_slashes=False,
     doc={
         "get": {
-            "id": """Get Trending Playlists""",
-            "description": """Gets trending playlists for a time period""",
+            "id": """Get Trending ContentLists""",
+            "description": """Gets trending content lists for a time period""",
             "responses": {200: "Success", 400: "Bad request", 500: "Server error"},
         }
     },
 )
 @ns.route("/trending/<string:version>", doc=False)
-class TrendingPlaylists(Resource):
+class TrendingContentLists(Resource):
     @record_metrics
-    @ns.expect(trending_playlist_parser)
+    @ns.expect(trending_content list_parser)
     @ns.marshal_with(trending_response)
     @cache(ttl_sec=TRENDING_TTL_SEC)
     def get(self, version):
-        trending_playlist_versions = trending_strategy_factory.get_versions_for_type(
-            TrendingType.PLAYLISTS
+        trending_content list_versions = trending_strategy_factory.get_versions_for_type(
+            TrendingType.CONTENT_LISTS
         ).keys()
         version_list = list(
-            filter(lambda v: v.name == version, trending_playlist_versions)
+            filter(lambda v: v.name == version, trending_content list_versions)
         )
         if not version_list:
             abort_bad_path_param("version", ns)
 
-        args = trending_playlist_parser.parse_args()
+        args = trending_content list_parser.parse_args()
         time = args.get("time")
         time = "week" if time not in ["week", "month", "year"] else time
         args = {"time": time, "with_agreements": False}
         strategy = trending_strategy_factory.get_strategy(
-            TrendingType.PLAYLISTS, version_list[0]
+            TrendingType.CONTENT_LISTS, version_list[0]
         )
-        playlists = get_trending_playlists(args, strategy)
-        playlists = playlists[:TRENDING_LIMIT]
-        playlists = list(map(extend_playlist, playlists))
+        content lists = get_trending_content lists(args, strategy)
+        content lists = content lists[:TRENDING_LIMIT]
+        content lists = list(map(extend_content list, content lists))
 
-        return success_response(playlists)
+        return success_response(content lists)
 
 
-full_trending_playlists_response = make_full_response(
-    "full_trending_playlists_response",
+full_trending_content lists_response = make_full_response(
+    "full_trending_content lists_response",
     full_ns,
-    fields.List(fields.Nested(full_playlist_model)),
+    fields.List(fields.Nested(full_content list_model)),
 )
 
-full_trending_playlist_parser = full_trending_parser.copy()
-full_trending_playlist_parser.remove_argument("genre")
+full_trending_content list_parser = full_trending_parser.copy()
+full_trending_content list_parser.remove_argument("genre")
 
 
 @full_ns.route(
     "/trending",
-    defaults={"version": DEFAULT_TRENDING_VERSIONS[TrendingType.PLAYLISTS].name},
+    defaults={"version": DEFAULT_TRENDING_VERSIONS[TrendingType.CONTENT_LISTS].name},
     strict_slashes=False,
     doc={
         "get": {
-            "id": """Get Trending Playlists""",
-            "description": """Returns trending playlists for a time period""",
+            "id": """Get Trending ContentLists""",
+            "description": """Returns trending content lists for a time period""",
             "responses": {200: "Success", 400: "Bad request", 500: "Server error"},
         }
     },
@@ -381,30 +381,30 @@ full_trending_playlist_parser.remove_argument("genre")
     "/trending/<string:version>",
     doc={
         "get": {
-            "id": """Get Trending Playlists With Version""",
-            "description": """Returns trending playlists for a time period based on the given trending version""",
+            "id": """Get Trending ContentLists With Version""",
+            "description": """Returns trending content lists for a time period based on the given trending version""",
             "params": {"version": "The strategy version of trending to use"},
             "responses": {200: "Success", 400: "Bad request", 500: "Server error"},
         }
     },
 )
-class FullTrendingPlaylists(Resource):
+class FullTrendingContentLists(Resource):
     @record_metrics
-    @full_ns.expect(full_trending_playlist_parser)
-    @full_ns.marshal_with(full_trending_playlists_response)
+    @full_ns.expect(full_trending_content list_parser)
+    @full_ns.marshal_with(full_trending_content lists_response)
     def get(self, version):
-        trending_playlist_versions = trending_strategy_factory.get_versions_for_type(
-            TrendingType.PLAYLISTS
+        trending_content list_versions = trending_strategy_factory.get_versions_for_type(
+            TrendingType.CONTENT_LISTS
         ).keys()
         version_list = list(
-            filter(lambda v: v.name == version, trending_playlist_versions)
+            filter(lambda v: v.name == version, trending_content list_versions)
         )
         if not version_list:
             abort_bad_path_param("version", full_ns)
 
-        args = full_trending_playlist_parser.parse_args()
+        args = full_trending_content list_parser.parse_args()
         strategy = trending_strategy_factory.get_strategy(
-            TrendingType.PLAYLISTS, version_list[0]
+            TrendingType.CONTENT_LISTS, version_list[0]
         )
-        playlists = get_full_trending_playlists(request, args, strategy)
-        return success_response(playlists)
+        content lists = get_full_trending_content lists(request, args, strategy)
+        return success_response(content lists)

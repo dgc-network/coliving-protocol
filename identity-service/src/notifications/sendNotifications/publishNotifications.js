@@ -15,12 +15,12 @@ const getPublishNotifBaseType = (notification) => {
     case notificationTypes.Follow:
       return notificationTypes.Follow
     case notificationTypes.Repost.agreement:
-    case notificationTypes.Repost.playlist:
+    case notificationTypes.Repost.content list:
     case notificationTypes.Repost.album:
     case notificationTypes.Repost.base:
       return notificationTypes.Repost.base
     case notificationTypes.Favorite.agreement:
-    case notificationTypes.Favorite.playlist:
+    case notificationTypes.Favorite.content list:
     case notificationTypes.Favorite.album:
     case notificationTypes.Favorite.base:
       return notificationTypes.Favorite.base
@@ -29,7 +29,7 @@ const getPublishNotifBaseType = (notification) => {
     case notificationTypes.RemixCosign:
       return notificationTypes.RemixCosign
     case notificationTypes.Create.agreement:
-    case notificationTypes.Create.playlist:
+    case notificationTypes.Create.content list:
     case notificationTypes.Create.album:
     case notificationTypes.Create.base:
       return notificationTypes.Create.base
@@ -42,8 +42,8 @@ const getPublishNotifBaseType = (notification) => {
       return notificationTypes.Milestone
     case notificationTypes.TierChange:
       return notificationTypes.TierChange
-    case notificationTypes.AddAgreementToPlaylist:
-      return notificationTypes.AddAgreementToPlaylist
+    case notificationTypes.AddAgreementToContentList:
+      return notificationTypes.AddAgreementToContentList
     case notificationTypes.Reaction:
       return notificationTypes.Reaction
     case notificationTypes.TipReceive:
@@ -75,7 +75,7 @@ const getPublishUserId = (notif, baseType) => {
   else if (baseType === notificationTypes.ChallengeReward) return notif.initiator
   else if (baseType === notificationTypes.Milestone) return notif.initiator
   else if (baseType === notificationTypes.TierChange) return notif.initiator
-  else if (baseType === notificationTypes.AddAgreementToPlaylist) return notif.metadata.agreementOwnerId
+  else if (baseType === notificationTypes.AddAgreementToContentList) return notif.metadata.agreementOwnerId
   else if (baseType === notificationTypes.Reaction) return notif.metadata.reacted_to_entity.tip_sender_id
   else if (baseType === notificationTypes.SupporterRankUp) return notif.initiator
   else if (baseType === notificationTypes.SupportingRankUp) return notif.metadata.entity_id
@@ -87,10 +87,10 @@ const alwaysSendNotifications = [
   notificationTypes.RemixCosign,
   notificationTypes.Create.base,
   notificationTypes.Create.agreement,
-  notificationTypes.Create.playlist,
+  notificationTypes.Create.content list,
   notificationTypes.Create.album,
   notificationTypes.ChallengeReward,
-  notificationTypes.AddAgreementToPlaylist,
+  notificationTypes.AddAgreementToContentList,
   notificationTypes.Reaction,
   notificationTypes.TipReceive,
   notificationTypes.SupporterRankUp,

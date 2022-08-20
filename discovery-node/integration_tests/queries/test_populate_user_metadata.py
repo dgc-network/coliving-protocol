@@ -26,14 +26,14 @@ def test_populate_user_metadata(app):
             {"agreement_id": 8, "owner_id": 3},
             {"agreement_id": 9, "is_unlisted": True, "owner_id": 3},
         ],
-        "playlists": [
-            {"playlist_id": 1, "playlist_owner_id": 1},
-            {"playlist_id": 2, "playlist_owner_id": 1},
-            {"playlist_id": 3, "is_album": True, "playlist_owner_id": 1},
-            {"playlist_id": 4, "playlist_owner_id": 2},
-            {"playlist_id": 5, "is_delete": True, "playlist_owner_id": 2},
-            {"playlist_id": 6, "is_album": True, "playlist_owner_id": 3},
-            {"playlist_id": 6, "is_private": True, "playlist_owner_id": 3},
+        "content lists": [
+            {"content list_id": 1, "content list_owner_id": 1},
+            {"content list_id": 2, "content list_owner_id": 1},
+            {"content list_id": 3, "is_album": True, "content list_owner_id": 1},
+            {"content list_id": 4, "content list_owner_id": 2},
+            {"content list_id": 5, "is_delete": True, "content list_owner_id": 2},
+            {"content list_id": 6, "is_album": True, "content list_owner_id": 3},
+            {"content list_id": 6, "is_private": True, "content list_owner_id": 3},
         ],
         "users": [
             {"user_id": 1, "handle": "user1", "wallet": "0x111"},
@@ -48,18 +48,18 @@ def test_populate_user_metadata(app):
         ],
         "reposts": [
             {"repost_item_id": 1, "repost_type": "agreement", "user_id": 2},
-            {"repost_item_id": 1, "repost_type": "playlist", "user_id": 2},
+            {"repost_item_id": 1, "repost_type": "content list", "user_id": 2},
             {"repost_item_id": 1, "repost_type": "agreement", "user_id": 3},
-            {"repost_item_id": 1, "repost_type": "playlist", "user_id": 3},
+            {"repost_item_id": 1, "repost_type": "content list", "user_id": 3},
             {"repost_item_id": 4, "repost_type": "agreement", "user_id": 1},
             {"repost_item_id": 5, "repost_type": "agreement", "user_id": 1},
             {"repost_item_id": 6, "repost_type": "agreement", "user_id": 1},
         ],
         "saves": [
             {"save_item_id": 1, "save_type": "agreement", "user_id": 2},
-            {"save_item_id": 1, "save_type": "playlist", "user_id": 2},
+            {"save_item_id": 1, "save_type": "content list", "user_id": 2},
             {"save_item_id": 1, "save_type": "agreement", "user_id": 3},
-            {"save_item_id": 1, "save_type": "playlist", "user_id": 3},
+            {"save_item_id": 1, "save_type": "content list", "user_id": 3},
             {"save_item_id": 4, "save_type": "agreement", "user_id": 1},
             {"save_item_id": 5, "save_type": "agreement", "user_id": 1},
             {"save_item_id": 6, "save_type": "agreement", "user_id": 1},
@@ -89,7 +89,7 @@ def test_populate_user_metadata(app):
 
         assert users[0]["user_id"] == 1
         assert users[0][response_name_constants.agreement_count] == 2
-        assert users[0][response_name_constants.playlist_count] == 2
+        assert users[0][response_name_constants.content list_count] == 2
         assert users[0][response_name_constants.album_count] == 1
         assert users[0][response_name_constants.follower_count] == 0
         assert users[0][response_name_constants.followee_count] == 2
@@ -97,7 +97,7 @@ def test_populate_user_metadata(app):
 
         assert users[1]["user_id"] == 2
         assert users[1][response_name_constants.agreement_count] == 4
-        assert users[1][response_name_constants.playlist_count] == 1
+        assert users[1][response_name_constants.content list_count] == 1
         assert users[1][response_name_constants.album_count] == 0
         assert users[1][response_name_constants.follower_count] == 1
         assert users[1][response_name_constants.followee_count] == 1
@@ -105,7 +105,7 @@ def test_populate_user_metadata(app):
 
         assert users[2]["user_id"] == 3
         assert users[2][response_name_constants.agreement_count] == 2
-        assert users[2][response_name_constants.playlist_count] == 0
+        assert users[2][response_name_constants.content list_count] == 0
         assert users[2][response_name_constants.album_count] == 1
         assert users[2][response_name_constants.follower_count] == 2
         assert users[2][response_name_constants.followee_count] == 0
@@ -113,7 +113,7 @@ def test_populate_user_metadata(app):
 
         assert users[3]["user_id"] == 4
         assert users[3][response_name_constants.agreement_count] == 0
-        assert users[3][response_name_constants.playlist_count] == 0
+        assert users[3][response_name_constants.content list_count] == 0
         assert users[3][response_name_constants.album_count] == 0
         assert users[3][response_name_constants.follower_count] == 0
         assert users[3][response_name_constants.followee_count] == 0
@@ -121,7 +121,7 @@ def test_populate_user_metadata(app):
 
         assert users[4]["user_id"] == 5
         assert users[4][response_name_constants.agreement_count] == 0
-        assert users[4][response_name_constants.playlist_count] == 0
+        assert users[4][response_name_constants.content list_count] == 0
         assert users[4][response_name_constants.album_count] == 0
         assert users[4][response_name_constants.follower_count] == 0
         assert users[4][response_name_constants.followee_count] == 0

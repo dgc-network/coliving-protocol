@@ -76,7 +76,7 @@ describe('test ensureStorageMiddleware', () => {
       .post('/sync')
       .send({
         wallet: ['0xvickywashere'],
-        creator_node_endpoint: 'http://i-am-definitely-a-real-node.co',
+        content_node_endpoint: 'http://i-am-definitely-a-real-node.co',
         immediate: true
       })
       .expect(500)

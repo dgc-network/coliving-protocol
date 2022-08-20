@@ -26,7 +26,7 @@ def upgrade():
         sa.Column("save_item_id", sa.Integer(), nullable=False),
         sa.Column(
             "save_type",
-            sa.Enum("agreement", "playlist", "album", name="savetype"),
+            sa.Enum("agreement", "content list", "album", name="savetype"),
             nullable=False,
         ),
         sa.Column("timestamp", sa.DateTime(), nullable=False),

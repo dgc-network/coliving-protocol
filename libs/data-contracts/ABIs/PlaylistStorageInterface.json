@@ -1,5 +1,5 @@
 {
-  "contractName": "PlaylistStorageInterface",
+  "contractName": "ContentListStorageInterface",
   "abi": [
     {
       "constant": false,
@@ -17,10 +17,10 @@
           "type": "uint256[]"
         }
       ],
-      "name": "createPlaylist",
+      "name": "createContentList",
       "outputs": [
         {
-          "name": "newPlaylistId",
+          "name": "newContentListId",
           "type": "uint256"
         }
       ],
@@ -32,7 +32,7 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         },
         {
@@ -40,7 +40,7 @@
           "type": "uint256"
         }
       ],
-      "name": "addPlaylistAgreement",
+      "name": "addContentListAgreement",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -50,7 +50,7 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         },
         {
@@ -58,7 +58,7 @@
           "type": "uint256"
         }
       ],
-      "name": "deletePlaylistAgreement",
+      "name": "deleteContentListAgreement",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -68,14 +68,14 @@
       "constant": true,
       "inputs": [
         {
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         }
       ],
-      "name": "getPlaylistOwner",
+      "name": "getContentListOwner",
       "outputs": [
         {
-          "name": "playlistOwnerId",
+          "name": "content listOwnerId",
           "type": "uint256"
         }
       ],
@@ -87,7 +87,7 @@
       "constant": true,
       "inputs": [
         {
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         },
         {
@@ -95,10 +95,10 @@
           "type": "uint256"
         }
       ],
-      "name": "isAgreementInPlaylist",
+      "name": "isAgreementInContentList",
       "outputs": [
         {
-          "name": "agreementInPlaylist",
+          "name": "agreementInContentList",
           "type": "bool"
         }
       ],
@@ -110,11 +110,11 @@
       "constant": true,
       "inputs": [
         {
-          "name": "_playlistId",
+          "name": "_content listId",
           "type": "uint256"
         }
       ],
-      "name": "playlistExists",
+      "name": "content listExists",
       "outputs": [
         {
           "name": "exists",

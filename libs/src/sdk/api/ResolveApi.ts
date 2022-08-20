@@ -1,6 +1,6 @@
 import {
   HTTPHeaders,
-  Playlist,
+  ContentList,
   RequiredError,
   Agreement,
   User
@@ -14,7 +14,7 @@ export class ResolveApi extends GeneratedResolveApi {
   /**
    * Resolves a provided Coliving app URL to the API resource it represents
    */
-  async resolve<T extends Agreement | Playlist | User>(
+  async resolve<T extends Agreement | ContentList | User>(
     requestParameters: ResolveRequest
   ): Promise<T> {
     if (requestParameters.url === null || requestParameters.url === undefined) {

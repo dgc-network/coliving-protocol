@@ -13,7 +13,7 @@ pagination_next: null
 
 **bestNewReleases**(): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
 
-Gets the agreements found on the \"Best New Releases\" smart playlist
+Gets the agreements found on the \"Best New Releases\" smart content list
 
 #### Returns
 
@@ -51,7 +51,7 @@ ___
 
 **getMostLovedAgreements**(`requestParameters?`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
 
-Gets the agreements found on the \"Most Loved\" smart playlist
+Gets the agreements found on the \"Most Loved\" smart content list
 
 #### Parameters
 
@@ -285,7 +285,7 @@ ___
 
 **getUnderTheRadarAgreements**(`requestParameters?`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
 
-Gets the agreements found on the \"Under the Radar\" smart playlist
+Gets the agreements found on the \"Under the Radar\" smart content list
 
 #### Parameters
 

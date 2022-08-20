@@ -487,8 +487,8 @@ def update_user_model_metadata(
     #         "sol",
     #     )
 
-    if "playlist_library" in metadata_dict and metadata_dict["playlist_library"]:
-        user_record.playlist_library = metadata_dict["playlist_library"]
+    if "content list_library" in metadata_dict and metadata_dict["content list_library"]:
+        user_record.content list_library = metadata_dict["content list_library"]
 
     if "is_deactivated" in metadata_dict:
         user_record.is_deactivated = metadata_dict["is_deactivated"]
@@ -503,8 +503,8 @@ def update_user_model_metadata(
     #     )
 
     # reconstructed endpoints from sp IDs in tx not /ipfs response
-    if "creator_node_endpoint" in metadata_dict:
-        user_record.creator_node_endpoint = metadata_dict["creator_node_endpoint"]
+    if "content_node_endpoint" in metadata_dict:
+        user_record.content_node_endpoint = metadata_dict["content_node_endpoint"]
 
 
 def update_agreement_model_metadata(

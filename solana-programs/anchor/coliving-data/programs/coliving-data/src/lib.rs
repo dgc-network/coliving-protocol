@@ -1062,7 +1062,7 @@ pub enum ManagementActions {
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq)]
 pub enum EntityTypes {
     Agreement,
-    Playlist,
+    ContentList,
 }
 
 // Seed & bump used to validate the user's ID with the account base

@@ -5,10 +5,10 @@ const authMiddleware = require('../authMiddleware')
 
 module.exports = function (app) {
   /**
-   * Returns the playlistUpdates dictionary for given user
+   * Returns the content listUpdates dictionary for given user
    * @param {string} walletAddress   user wallet address
    */
-  app.get('/user_playlist_updates', handleResponse(async (req) => {
+  app.get('/user_content list_updates', handleResponse(async (req) => {
     const { walletAddress } = req.query
     if (!walletAddress) {
       return errorResponseBadRequest('Please provide a wallet address')
@@ -16,62 +16,62 @@ module.exports = function (app) {
 
     try {
       const userEvents = await models.UserEvents.findOne({
-        attributes: ['playlistUpdates'],
+        attributes: ['content listUpdates'],
         where: { walletAddress }
       })
       if (!userEvents) throw new Error(`UserEvents for ${walletAddress} not found`)
 
-      return successResponse({ playlistUpdates: userEvents.playlistUpdates })
+      return successResponse({ content listUpdates: userEvents.content listUpdates })
     } catch (e) {
       req.logger.error(e)
       // no-op. No user events.
       return errorResponseServerError(
-        `Unable to get user last playlist views for ${walletAddress}`
+        `Unable to get user last content list views for ${walletAddress}`
       )
     }
   }))
 
   /**
-   * Updates the lastPlaylistViews field for the user in the UserEvents table
-   * @param {boolean} playlistId   id of playlist or folder to update
+   * Updates the lastContentListViews field for the user in the UserEvents table
+   * @param {boolean} content listId   id of content list or folder to update
    */
-  app.post('/user_playlist_updates', authMiddleware, handleResponse(async (req) => {
-    const { playlistId } = req.query
+  app.post('/user_content list_updates', authMiddleware, handleResponse(async (req) => {
+    const { content listId } = req.query
     const { walletAddress } = req.user
-    if (!walletAddress || !playlistId) {
+    if (!walletAddress || !content listId) {
       return errorResponseBadRequest(
-        'Please provide a wallet address and a playlist library item id'
+        'Please provide a wallet address and a content list library item id'
       )
     }
 
     try {
       const result = await models.UserEvents.findOne({
-        attributes: ['playlistUpdates'],
+        attributes: ['content listUpdates'],
         where: { walletAddress }
       })
-      if (!result) throw new Error(`Playlist updates for ${walletAddress} not found`)
+      if (!result) throw new Error(`ContentList updates for ${walletAddress} not found`)
 
-      const playlistUpdatesResult = result.playlistUpdates
+      const content listUpdatesResult = result.content listUpdates
       const now = moment().utc().valueOf()
-      let playlistUpdates = {}
-      if (!playlistUpdatesResult) {
-        playlistUpdates[playlistId] = {
+      let content listUpdates = {}
+      if (!content listUpdatesResult) {
+        content listUpdates[content listId] = {
           lastUpdated: now,
           userLastViewed: now
         }
       } else {
-        playlistUpdates = {
-          ...playlistUpdatesResult,
-          [playlistId]: {
+        content listUpdates = {
+          ...content listUpdatesResult,
+          [content listId]: {
             lastUpdated: now,
-            ...playlistUpdatesResult[playlistId],
+            ...content listUpdatesResult[content listId],
             userLastViewed: now
           }
         }
       }
 
       await models.UserEvents.update(
-        { playlistUpdates },
+        { content listUpdates },
         { where: { walletAddress } }
       )
       return successResponse({})
@@ -79,7 +79,7 @@ module.exports = function (app) {
       req.logger.error(e)
       console.log(e)
       return errorResponseServerError(
-        `Unable to update user last playlist views for ${walletAddress} for playlist library item id ${playlistId}`
+        `Unable to update user last content list views for ${walletAddress} for content list library item id ${content listId}`
       )
     }
   }))

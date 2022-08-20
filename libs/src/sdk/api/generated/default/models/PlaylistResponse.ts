@@ -14,23 +14,23 @@
  */
 
 import {
-    Playlist,
-    PlaylistFromJSON,
-    PlaylistFromJSONTyped,
-    PlaylistToJSON,
-} from './Playlist';
+    ContentList,
+    ContentListFromJSON,
+    ContentListFromJSONTyped,
+    ContentListToJSON,
+} from './ContentList';
 
 /**
  * 
  * @export
- * @interface PlaylistResponse
+ * @interface ContentListResponse
  */
-export interface PlaylistResponse {
+export interface ContentListResponse {
     /**
      * 
-     * @type {Array<Playlist>}
-     * @memberof PlaylistResponse
+     * @type {Array<ContentList>}
+     * @memberof ContentListResponse
      */
-    data?: Array<Playlist>;
+    data?: Array<ContentList>;
 }
 
