@@ -41,7 +41,7 @@ function install_docker_compose() {
 
 function clone_repo() {
     sudo apt-get install -y git
-    git clone git@github.com:dgc.network/load-test-tools.git
+    git clone git@github.com:dgc-network/load-test-tools.git
 }
 
 function install_pip() {

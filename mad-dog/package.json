@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dgc.network/mad-dog.git"
+    "url": "git+https://github.com/dgc-network/mad-dog.git"
   },
   "author": "Coliving",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/dgc.network/mad-dog/issues"
+    "url": "https://github.com/dgc-network/mad-dog/issues"
   },
-  "homepage": "https://github.com/dgc.network/mad-dog#readme",
+  "homepage": "https://github.com/dgc-network/mad-dog#readme",
   "engines": {
     "node": ">=10.16.0"
   },

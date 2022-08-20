@@ -9,7 +9,7 @@ Coliving est un protocole de partage de musique décentralisé, détenu par la c
 
 La mission du projet est de donner à chacun la liberté de partager, de monétiser et d'écouter n'importe quel fichier live.
 
-Le dépôt [Coliving Protocol](https://github.com/dgc.network/-protocol) est un dépôt mono-référentiel qui a toutes les pièces qui font et supportent le protocole, y compris les contrats intelligents, , et d'autres bibliothèques de support.
+Le dépôt [Coliving Protocol](https://github.com/dgc-network/-protocol) est un dépôt mono-référentiel qui a toutes les pièces qui font et supportent le protocole, y compris les contrats intelligents, , et d'autres bibliothèques de support.
 
 Si vous êtes intéressé par le fonctionnement d'un service, consultez la section [`exécutant un noeud`](../token/running-a-node/introduction.md). Si vous êtes intéressé à contribuer au protocole Coliving, explorez le code ci-dessous!
 
@@ -34,17 +34,17 @@ Pour plus de détails sur l'architecture Coliving, voir le [ White Paper sur le 
 
 | Service                                                                                               | Description                                                                                                                                 |
 |:----------------------------------------------------------------------------------------------------- |:------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`Nœud de contenu`](https://github.com/dgc.network/-protocol/tree/master/content-node)        | Maintenir la disponibilité du contenu des utilisateurs sur IPFS, y compris les métadonnées des utilisateurs, les images et le contenu live |
-| [`Noeud-Découverte`](https://github.com/dgc.network/-protocol/tree/master/discovery-node) | Indexe et stocke le contenu des contrats Coliving sur la blockchain Ethereum pour que les clients puissent les interroger via une API         |
-| [`Identité-Service`](https://github.com/dgc.network/-protocol/tree/master/identity-service)   | Stocke les cryptogrammes d'authentification, effectue Twitter OAuth et relaie les transactions (paie le gas) au nom des utilisateurs        |
+| [`Nœud de contenu`](https://github.com/dgc-network/-protocol/tree/master/content-node)        | Maintenir la disponibilité du contenu des utilisateurs sur IPFS, y compris les métadonnées des utilisateurs, les images et le contenu live |
+| [`Noeud-Découverte`](https://github.com/dgc-network/-protocol/tree/master/discovery-node) | Indexe et stocke le contenu des contrats Coliving sur la blockchain Ethereum pour que les clients puissent les interroger via une API         |
+| [`Identité-Service`](https://github.com/dgc-network/-protocol/tree/master/identity-service)   | Stocke les cryptogrammes d'authentification, effectue Twitter OAuth et relaie les transactions (paie le gas) au nom des utilisateurs        |
 
 ## Contrats Intelligents Coliving & Libs
 
 | Lib                                                                                           | Description                                                                                                                                                          |
 |:--------------------------------------------------------------------------------------------- |:-------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`libs`](https://github.com/dgc.network/-protocol/tree/master/libs)                   | Une interface simple vers le web décentralisé et les services Coliving : Identity Service, Discovery Node (fournisseur de découverte), Content Node (nœud de création) |
-| [`contracts`](https://github.com/dgc.network/-protocol/tree/master/contracts)         | Les smart contract / contrats intelligent, en cours de développement pour le protocole de streaming Coliving                                                           |
-| [`eth-contracts`](https://github.com/dgc.network/-protocol/tree/master/eth-contracts) | Les smart contract/ contrats intelligents Ethereum développés pour le protocole de streaming Coliving                                                                  |
+| [`libs`](https://github.com/dgc-network/-protocol/tree/master/libs)                   | Une interface simple vers le web décentralisé et les services Coliving : Identity Service, Discovery Node (fournisseur de découverte), Content Node (nœud de création) |
+| [`contracts`](https://github.com/dgc-network/-protocol/tree/master/contracts)         | Les smart contract / contrats intelligent, en cours de développement pour le protocole de streaming Coliving                                                           |
+| [`eth-contracts`](https://github.com/dgc-network/-protocol/tree/master/eth-contracts) | Les smart contract/ contrats intelligents Ethereum développés pour le protocole de streaming Coliving                                                                  |
 
 ## Démarrage rapide pour les fournisseurs de services
 

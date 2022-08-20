@@ -405,7 +405,7 @@ var getTwitter = function getTwitter(notification) {
             remixUser = notification.remixUser,
             remixAgreement = notification.remixAgreement;
         var twitterHandle = parentAgreementUser.twitterHandle ? "@".concat(parentAgreementUser.twitterHandle) : parentAgreementUser.name;
-        var text = "New remix of ".concat(parentAgreement.title, " by ").concat(twitterHandle, " on @dgc.network #Coliving");
+        var text = "New remix of ".concat(parentAgreement.title, " by ").concat(twitterHandle, " on @dgc-network #Coliving");
         var url = getAgreementLink(remixAgreement);
         return {
           message: 'Share With Your Friends',
@@ -427,7 +427,7 @@ var getTwitter = function getTwitter(notification) {
 
         var _twitterHandle = _parentAgreementUser.twitterHandle ? "@".concat(_parentAgreementUser.twitterHandle) : _parentAgreementUser.name;
 
-        var _text = "My remix of ".concat(_parentAgreement.title, " was Co-Signed by ").concat(_twitterHandle, " on @dgc.network #Coliving");
+        var _text = "My remix of ".concat(_parentAgreement.title, " was Co-Signed by ").concat(_twitterHandle, " on @dgc-network #Coliving");
 
         return {
           message: 'Share With Your Friends',
@@ -444,7 +444,7 @@ var getTwitter = function getTwitter(notification) {
 
         var rankSuffix = (0, _formatNotificationMetadata.getRankSuffix)(rank);
 
-        var _text2 = "My agreement ".concat(entity.title, " is trending ").concat(rank).concat(rankSuffix, " on @dgc.network! #ColivingTrending #Coliving");
+        var _text2 = "My agreement ".concat(entity.title, " is trending ").concat(rank).concat(rankSuffix, " on @dgc-network! #ColivingTrending #Coliving");
 
         return {
           message: 'Share this Milestone',
@@ -454,7 +454,7 @@ var getTwitter = function getTwitter(notification) {
 
     case _constants.notificationTypes.ChallengeReward:
       {
-        var _text3 = "I earned $LIVE for completing challenges on @dgc.network #AudioRewards";
+        var _text3 = "I earned $LIVE for completing challenges on @dgc-network #AudioRewards";
         return {
           message: 'Share this with your fans',
           href: "http://twitter.com/share?text=".concat(encodeURIComponent(_text3))

@@ -12,7 +12,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
     onBrokenLinks: "throw",
     onBrokenMarkdownLinks: "warn",
     favicon: "img/favicon.ico",
-    organizationName: "dgc.network", // Usually your GitHub org/user name.
+    organizationName: "dgc-network", // Usually your GitHub org/user name.
     projectName: "docs.coliving.org", // Usually your repo name.
 
     presets: [
@@ -24,7 +24,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
             path: "docs",
             routeBasePath: "/",
             sidebarPath: require.resolve("./sidebars.js"),
-            editUrl: 'https://github.com/dgc.network/docs.coliving.org/',
+            editUrl: 'https://github.com/dgc-network/docs.coliving.org/',
           },
           theme: {
             customCss: require.resolve("./src/css/custom.css"),
@@ -114,7 +114,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
               position: "right",
             },
             {
-              href: "https://github.com/dgc.network",
+              href: "https://github.com/dgc-network",
               label: "GitHub",
               position: "right",
             },
@@ -156,7 +156,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
                 },
                 {
                   label: "Twitter",
-                  href: "https://twitter.com/dgc.network",
+                  href: "https://twitter.com/dgc-network",
                 },
               ],
             },
@@ -165,7 +165,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
               items: [
                 {
                   label: "GitHub",
-                  href: "https://github.com/dgc.network",
+                  href: "https://github.com/dgc-network",
                 },
               ],
             },

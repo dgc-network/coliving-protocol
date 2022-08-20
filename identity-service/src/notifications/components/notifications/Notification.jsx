@@ -335,7 +335,7 @@ const getTwitter = (notification) => {
       const twitterHandle = parentAgreementUser.twitterHandle 
         ? `@${parentAgreementUser.twitterHandle}`
         : parentAgreementUser.name
-      const text = `New remix of ${parentAgreement.title} by ${twitterHandle} on @dgc.network #Coliving`
+      const text = `New remix of ${parentAgreement.title} by ${twitterHandle} on @dgc-network #Coliving`
       const url = getAgreementLink(remixAgreement)
       return {
         message: 'Share With Your Friends',
@@ -350,7 +350,7 @@ const getTwitter = (notification) => {
       const twitterHandle = parentAgreementUser.twitterHandle 
         ? `@${parentAgreementUser.twitterHandle}`
         : parentAgreementUser.name
-      const text = `My remix of ${parentAgreement.title} was Co-Signed by ${twitterHandle} on @dgc.network #Coliving`
+      const text = `My remix of ${parentAgreement.title} was Co-Signed by ${twitterHandle} on @dgc-network #Coliving`
       return {
         message: 'Share With Your Friends',
         href: `http://twitter.com/share?url=${encodeURIComponent(url)
@@ -361,7 +361,7 @@ const getTwitter = (notification) => {
       const { rank, entity } = notification
       const url = getAgreementLink(entity)
       const rankSuffix = getRankSuffix(rank)
-      const text = `My agreement ${entity.title} is trending ${rank}${rankSuffix} on @dgc.network! #ColivingTrending #Coliving`
+      const text = `My agreement ${entity.title} is trending ${rank}${rankSuffix} on @dgc-network! #ColivingTrending #Coliving`
       return {
         message: 'Share this Milestone',
         href: `http://twitter.com/share?url=${encodeURIComponent(url)
@@ -369,7 +369,7 @@ const getTwitter = (notification) => {
       }
     }
     case NotificationType.ChallengeReward: {
-      const text = `I earned $LIVE for completing challenges on @dgc.network #AudioRewards`
+      const text = `I earned $LIVE for completing challenges on @dgc-network #AudioRewards`
       return {
         message: 'Share this with your fans',
         href: `http://twitter.com/share?text=${encodeURIComponent(text)}`

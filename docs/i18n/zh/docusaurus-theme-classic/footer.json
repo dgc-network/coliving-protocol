@@ -25,11 +25,11 @@
   },
   "link.item.label.Twitter": {
     "message": "Twitter",
-    "description": "The label of footer link with label=Twitter linking to https://twitter.com/dgc.network"
+    "description": "The label of footer link with label=Twitter linking to https://twitter.com/dgc-network"
   },
   "link.item.label.GitHub": {
     "message": "GitHub",
-    "description": "The label of footer link with label=GitHub linking to https://github.com/dgc.network"
+    "description": "The label of footer link with label=GitHub linking to https://github.com/dgc-network"
   },
   "copyright": {
     "message": "Copyright © 2021 Coliving, Inc. Built with Docusaurus.",

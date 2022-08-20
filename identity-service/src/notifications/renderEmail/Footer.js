@@ -27,7 +27,7 @@ var InstagramLink = function InstagramLink() {
 
 var TwitterLink = function TwitterLink() {
   return /*#__PURE__*/_react["default"].createElement("a", {
-    href: "https://twitter.com/dgc.network"
+    href: "https://twitter.com/dgc-network"
   }, /*#__PURE__*/_react["default"].createElement("img", {
     src: "https://download.coliving.lol/static-resources/email/iconTwitter.png",
     alt: "twitter",

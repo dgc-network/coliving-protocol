@@ -23,7 +23,7 @@ coliving-cli set-config --required discovery-node
 #### Creator Node
 There are four required creator node environment variables, available in the creator node section [here](setup.md#content-node).
 
-The full list of variables and explanations can be found [here](https://github.com/dgc.network/coliving-protocol/blob/master/content-node/src/config.js). Generally node operators will not need to modify any other environment variables.
+The full list of variables and explanations can be found [here](https://github.com/dgc-network/coliving-protocol/blob/master/content-node/src/config.js). Generally node operators will not need to modify any other environment variables.
 
 ##### External Creator Node Postgres
 If you set an external Postgres url during setup you can skip this section.
@@ -39,7 +39,7 @@ value : <db url>
 #### Discovery Node
 There are two required discovery node environment variables, available in the discovery node section [here](setup.md#discovery-node).
 
-The full list of variables and explanations can be found [here](https://github.com/dgc.network/coliving-protocol/blob/master/discovery-node/default_config.ini). Generally node operators will not need to modify any other environment variables.
+The full list of variables and explanations can be found [here](https://github.com/dgc-network/coliving-protocol/blob/master/discovery-node/default_config.ini). Generally node operators will not need to modify any other environment variables.
 
 
 ##### External Discovery Node Postgres Instance
@@ -81,7 +81,7 @@ coliving-cli launch discovery-node (--seed)
 
 ```sh
 # Clone and install related dependencies
-git clone https://github.com/dgc.network/coliving-docker-compose.git ~/coliving-docker-compose
+git clone https://github.com/dgc-network/coliving-docker-compose.git ~/coliving-docker-compose
 bash ~/coliving-docker-compose/setup.sh
 
 # Get configs from k8s-manifests and set them again via set-config

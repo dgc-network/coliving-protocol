@@ -104,7 +104,7 @@ case "$service" in
 		if [ "${fast:-0}" -eq "0" ]; then
 			execute_with_ssh $provider $user $name \
 				"[[ ! -d ~/coliving-protocol ]]" \
-				"&& git clone --branch $coliving_protocol_git_ref https://github.com/dgc.network/coliving-protocol.git" \
+				"&& git clone --branch $coliving_protocol_git_ref https://github.com/dgc-network/coliving-protocol.git" \
 				"&& yes | bash coliving-protocol/service-commands/scripts/provision-dev-env.sh $coliving_protocol_git_ref $coliving_client_git_ref"
 
 			wait_for_instance $provider $user $name

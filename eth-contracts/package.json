@@ -2,7 +2,7 @@
   "name": "eth-contracts",
   "version": "0.1.0",
   "description": "Coliving token and other contracts on Ethereum",
-  "author": "dgc.network",
+  "author": "dgc-network",
   "license": "Apache-2.0",
   "scripts": {
     "ganache": "docker run --name coliving_ganache_cli_eth_contracts -d -p 8546:8545 trufflesuite/ganache-cli:v6.9.1 -h 0.0.0.0 -a 50 -l 8000000",

@@ -31,7 +31,7 @@ if (solanaColivingAnchorDataProgramId) {
  * Maps the instruction enum to the index of the rewards manager account (the base account of the program)
  * A value of -1 means the instruction is not allowed.
  *
- * @see {@link [../../../solana-programs/reward-manager/program/src/instruction.rs](https://github.com/dgc.network/coliving-protocol/blob/db31fe03f2c8cff357379b84130539d51ccca213/solana-programs/reward-manager/program/src/instruction.rs#L60)}
+ * @see {@link [../../../solana-programs/reward-manager/program/src/instruction.rs](https://github.com/dgc-network/coliving-protocol/blob/db31fe03f2c8cff357379b84130539d51ccca213/solana-programs/reward-manager/program/src/instruction.rs#L60)}
  * @type {Record<number, number | null>}
  */
 const rewardManagerBaseAccountIndices = {
@@ -49,7 +49,7 @@ const rewardManagerBaseAccountIndices = {
  * Maps the instruction enum to the index of the claimable token authority account (derived from the base token account and the program id)
  * A value of -1 means the instruction is not allowed.
  *
- * @see {@link [../../../solana-programs/claimable-tokens/program/src/instruction.rs](https://github.com/dgc.network/coliving-protocol/blob/2c93f29596a1d6cc8ca4e76ef1f0d2e57f0e09e6/solana-programs/claimable-tokens/program/src/instruction.rs#L21)}
+ * @see {@link [../../../solana-programs/claimable-tokens/program/src/instruction.rs](https://github.com/dgc-network/coliving-protocol/blob/2c93f29596a1d6cc8ca4e76ef1f0d2e57f0e09e6/solana-programs/claimable-tokens/program/src/instruction.rs#L21)}
  */
 const claimableTokenAuthorityIndices = {
   0: 2, // CreateTokenAccount

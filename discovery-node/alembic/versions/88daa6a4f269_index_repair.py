@@ -97,7 +97,7 @@ def upgrade():
 
 def downgrade():
     # not going to put a downgrade here, as the above is essentially the manually created "downgrade" of:
-    # https://github.com/dgc.network/coliving-protocol/blob/master/discovery-node/alembic/versions/d321f0a00721_partial_indexes.py
+    # https://github.com/dgc-network/coliving-protocol/blob/master/discovery-node/alembic/versions/d321f0a00721_partial_indexes.py
     #
     # if we need to further adjust these indexes we can do it in a later "roll forward" migration
     pass

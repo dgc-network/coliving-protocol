@@ -6,7 +6,7 @@
   "description": "This repository contains the smart contracts being developed for the  protocol.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dgc.network/-protocol/tree/master/contracts"
+    "url": "https://github.com/dgc-network/-protocol/tree/master/contracts"
   },
   "private": true,
   "scripts": {

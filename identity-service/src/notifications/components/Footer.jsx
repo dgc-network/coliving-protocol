@@ -17,7 +17,7 @@ const InstagramLink = () => (
 )
 
 const TwitterLink = () => (
-  <a href='https://twitter.com/dgc.network'>
+  <a href='https://twitter.com/dgc-network'>
     <img
       src='https://download.coliving.lol/static-resources/email/iconTwitter.png'
       alt='twitter'

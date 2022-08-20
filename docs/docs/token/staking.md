@@ -49,7 +49,7 @@ Talk about a platform adapting to the needs of its users!
 
 ### **Staking on Coliving**
 
-To stake on Coliving, node operators can set up content and/or discovery nodes using [these resources](https://github.com/dgc.network/coliving-protocol/wiki/Staking-Resources).
+To stake on Coliving, node operators can set up content and/or discovery nodes using [these resources](https://github.com/dgc-network/coliving-protocol/wiki/Staking-Resources).
 
 https://twitter.com/Figment_io/status/1324763638729740288?s=20
 

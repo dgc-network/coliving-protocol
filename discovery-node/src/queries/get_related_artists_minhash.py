@@ -83,7 +83,7 @@ def update_related_artist_minhash(session: Session):
                 # score = mh.jaccard(mh2)
 
                 # this attempts to match previous formula
-                # https://github.com/dgc.network/coliving-protocol/blob/ddda462014ecdfd588f2834d07bf0a6066c56487/discovery-node/src/queries/get_related_artists.py#L95-L98
+                # https://github.com/dgc-network/coliving-protocol/blob/ddda462014ecdfd588f2834d07bf0a6066c56487/discovery-node/src/queries/get_related_artists.py#L95-L98
                 union = MinHash.union(mh, mh2)
                 intersection_size = mh.count() + mh2.count() - union.count()
                 score = intersection_size * intersection_size / mh2.count()

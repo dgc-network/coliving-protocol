@@ -78,7 +78,7 @@ By default, this will run every service which includes
 
 ```bash
 # Clone the coliving protocol repo
-git clone https://github.com/dgc.network/coliving-protocol.git
+git clone https://github.com/dgc-network/coliving-protocol.git
 
 # Navigate to network monitoring
 cd coliving-protocol/discovery-provder/plugins/network-monitoring

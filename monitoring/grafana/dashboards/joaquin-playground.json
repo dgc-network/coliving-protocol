@@ -433,7 +433,7 @@
         "id": 21,
         "panels": [
           {
-            "description": "[Census](https://github.com/dgc.network/load-test-tools/tree/master/census) is a load-test-tool that runs periodically to count the total number of entities that are stored at the database level.\n\nThe population panel shows the total number of entities to date.\n\nThe daily growth panel shows the growth per entity within the past ISO date.",
+            "description": "[Census](https://github.com/dgc-network/load-test-tools/tree/master/census) is a load-test-tool that runs periodically to count the total number of entities that are stored at the database level.\n\nThe population panel shows the total number of entities to date.\n\nThe daily growth panel shows the growth per entity within the past ISO date.",
             "fieldConfig": {
               "defaults": {
                 "color": {
@@ -523,7 +523,7 @@
             "type": "timeseries"
           },
           {
-            "description": "[Census](https://github.com/dgc.network/load-test-tools/tree/master/census) is a load-test-tool that runs periodically to count the total number of entities that are stored at the database level.\n\nThe population panel shows the total number of entities to date.\n\nThe daily growth panel shows the growth per entity within the past ISO date.",
+            "description": "[Census](https://github.com/dgc-network/load-test-tools/tree/master/census) is a load-test-tool that runs periodically to count the total number of entities that are stored at the database level.\n\nThe population panel shows the total number of entities to date.\n\nThe daily growth panel shows the growth per entity within the past ISO date.",
             "fieldConfig": {
               "defaults": {
                 "color": {

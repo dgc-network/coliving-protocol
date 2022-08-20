@@ -1,6 +1,6 @@
 {
   "name": "coliving-protocol",
-  "description": "Coliving is working to create a fully decentralized community of artists, developers, and listeners collaborating to share and defend the world’s music.",
+  "description": "Coliving is working to create a fully decentralized community of developers, landloads, and rsidents collaborating to share and defend the agreements.",
   "dependencies": {
     "pre-commit": "^1.2.2"
   },
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dgc.network/coliving-protocol.git"
+    "url": "git+https://github.com/dgc-network/coliving-protocol.git"
   },
   "author": "",
   "license": "Apache-2.0",
