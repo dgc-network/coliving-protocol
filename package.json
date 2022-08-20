@@ -2,7 +2,7 @@
   "name": "coliving-protocol",
   "description": "Coliving is working to create a fully decentralized community of developers, landloads, and rsidents collaborating to share and defend the agreements.",
   "dependencies": {
-    "pre-commit": "^1.2.2"
+    "pre-commit": "^0.1.0"
   },
   "scripts": {
     "check-secrets": "sh ./check_secrets.sh"
