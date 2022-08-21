@@ -919,7 +919,9 @@ export class DiscoveryNode {
       const error = e as AxiosError
       const resp = error.response
       const duration = Date.now() - start
-      const errData = error.response?.data ?? error
+      //const errData = error.response?.data ?? error
+      const errData = error;
+      //const errData = Object.assign(resp, error);
 
       // Fire monitoring callbacks for request failure case
       if (this.monitoringCallbacks && 'request' in this.monitoringCallbacks) {
