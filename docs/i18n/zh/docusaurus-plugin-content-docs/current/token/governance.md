@@ -12,7 +12,7 @@ In this post, we’ll cover how governance works in Coliving, and what you can d
 
 ### **Governance Portal**
 
-The single source of truth for Coliving governance can be found in the protocol dashboard under the [Governance tab](https://dashboard.coliving.org/governance).
+The single source of truth for Coliving governance can be found in the protocol dashboard under the [Governance tab](https://dashboard.coliving.lol/governance).
 
 
 Here you can see a list of all Active and Resolved proposals in chronological order along with whether they have passed or failed.
@@ -62,7 +62,7 @@ Governance topics can be seen as a means of signalling, where proposers receive 
 
 #### **Coliving Forum**
 
-The Coliving [governance forum](https://gov.coliving.org/) is the primary place to discuss in-depth details around proposals.
+The Coliving [governance forum](https://gov.coliving.lol/) is the primary place to discuss in-depth details around proposals.
 
 
 All proposals are recommended to cover the following topics:
@@ -86,7 +86,7 @@ After receiving feedback, node operators can submit that proposal on-chain throu
 
 Please note that proposition power is correlated to the amount of LIVE staked or delegated for network security, meaning node operators are the primary candidates for on-chain proposals.
 
-A list of all on-chain proposals can be found [here](https://dashboard.coliving.org/#/governance).
+A list of all on-chain proposals can be found [here](https://dashboard.coliving.lol/#/governance).
 
 
 The details of the proposal should map to the specifications outlined in the forum post, including details and implementations around any technical changes required for the proposal to be implemented.
@@ -94,7 +94,7 @@ The details of the proposal should map to the specifications outlined in the for
 
 #### **On-chain Voting**
 
-Using Figment’s [most recent governance proposal](https://dashboard.coliving.org/#/governance/proposal/9) as an example, you can see that different node operators and delegators voted in favor of extending the voting time from 48 to 72 hours.
+Using Figment’s [most recent governance proposal](https://dashboard.coliving.lol/#/governance/proposal/9) as an example, you can see that different node operators and delegators voted in favor of extending the voting time from 48 to 72 hours.
 
 
 ![](https://assets.website-files.com/6024b69839b1b7fd3787991c/607d16049feb3a126f852b57_H6OK09A-2szawbI66mlGi7489J5aj-x604boPIeDUs6zhfZB7Fs77rIsaskaMGslMNWdGrTfm2ZM_sLalkwBvLCn-I0aUm7g9aSIYr11qC0b2t5WHELcyUtSlK21OaD5UgB9mnRN.png)

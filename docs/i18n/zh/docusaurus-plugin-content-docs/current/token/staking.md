@@ -53,7 +53,7 @@ To stake on Coliving, node operators can set up content and/or discovery nodes u
 
 https://twitter.com/Figment_io/status/1324763638729740288?s=20
 
-A list of all active node operators can be found under the [Services tab](https://dashboard.coliving.org/services) in the Coliving protocol dashboard.
+A list of all active node operators can be found under the [Services tab](https://dashboard.coliving.lol/services) in the Coliving protocol dashboard.
 
 $LIVE holders can delegate a minimum of 100 tokens to any of these node operators by connecting to either MetaMask or using a Gnosis Safe. More details on delegation will be released soon!
 

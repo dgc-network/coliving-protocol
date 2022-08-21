@@ -9,7 +9,7 @@ An Coliving Content Node is a service that stores and maintains the availability
 Content types include user, agreement, and contentList metadata, images and artwork, and live content.
 
 [github repository](https://github.com/dgc-network/coliving-protocol/tree/master/content-node)
-[registered discovery nodes](https://dashboard.coliving.org/#/services/content-node)
+[registered discovery nodes](https://dashboard.coliving.lol/#/services/content-node)
 
 Design Goals
 

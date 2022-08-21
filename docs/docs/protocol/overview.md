@@ -17,9 +17,9 @@ If you are interested in operating a service, see the [`running a node`](../toke
 
 Coliving consists of three demographics of users: Landlords (content creators), Residents (content consumers), and Service Providers. Some users check fall into all three demographics!
 
-- **Landlords** upload agreements, create albums, and share content to their following
+- **Landlords** upload agreements, and share content to their following
 - **Residents** stream agreements, create contentLists, subscribe to & follow landlords, and re-share content to their following
-- **Service Providers** serve app traffic, stream songs, and help secure the network
+- **Service Providers** serve app traffic, and help secure the network
 
 Service providers can provide one or more of the following services by staking $LIVE tokens and registering their service:
 
@@ -34,7 +34,7 @@ For more details on the Coliving architecture, see the [Coliving protocol whitep
 
 | Service          | Description                                                                                                        | GitHub                                                                                  |
 | :--------------- | :----------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------- |
-| Content Node     | Maintains the availability of users' content on IPFS including user metadata, images, and live content            | [Link](https://github.com/dgc-network/coliving-protocol/tree/master/content-node)       |
+| Content Node     | Maintains the availability of users' content on IPFS including user metadata, and content            | [Link](https://github.com/dgc-network/coliving-protocol/tree/master/content-node)       |
 | Discovery Node   | Indexes and stores the contents of the Coliving contracts on the Ethereum blockchain for clients to query via an API | [Link](https://github.com/dgc-network/coliving-protocol/tree/master/discovery-node) |
 | Identity Service | Stores encrypted auth ciphertexts, does Twitter OAuth and relays transactions (pays gas) on behalf of users        | [Link](https://github.com/dgc-network/coliving-protocol/tree/master/identity-service)   |
 

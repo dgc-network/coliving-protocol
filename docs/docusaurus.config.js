@@ -7,13 +7,13 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
   module.exports = {
     title: "Coliving Docs",
     tagline: "",
-    url: "https://docs.coliving.org",
+    url: "https://docs.coliving.lol",
     baseUrl: "/",
     onBrokenLinks: "throw",
     onBrokenMarkdownLinks: "warn",
     favicon: "img/favicon.ico",
     organizationName: "dgc-network", // Usually your GitHub org/user name.
-    projectName: "docs.coliving.org", // Usually your repo name.
+    projectName: "docs.coliving.lol", // Usually your repo name.
 
     presets: [
       [
@@ -24,7 +24,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
             path: "docs",
             routeBasePath: "/",
             sidebarPath: require.resolve("./sidebars.js"),
-            editUrl: 'https://github.com/dgc-network/docs.coliving.org/',
+            editUrl: 'https://github.com/dgc-network/docs.coliving.lol/',
           },
           theme: {
             customCss: require.resolve("./src/css/custom.css"),

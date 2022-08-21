@@ -23,4 +23,4 @@ The minimum resource requirements per registered node are as follows.
 
 
 
-History of election of node requirements can be viewed on the public governance forum: [https://gov.coliving.org/t/minimum-node-requirements/169](https://gov.coliving.org/t/minimum-node-requirements/169)
+History of election of node requirements can be viewed on the public governance forum: [https://gov.coliving.lol/t/minimum-node-requirements/169](https://gov.coliving.lol/t/minimum-node-requirements/169)
