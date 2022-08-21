@@ -2,7 +2,7 @@
 
 /**
  * Adds 'website' and 'donation' fields to SocialHandles, which
- * signify a personal/artist website and a donation link
+ * signify a personal/landlord website and a donation link
  */
 module.exports = {
   up: (queryInterface, Sequelize) => {

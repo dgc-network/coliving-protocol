@@ -54,6 +54,6 @@ We use Redis for several things in the discovery node
 
 ## Elastic Search
 
-Elastic Search is used denormalize data and support certain quries (Feed, Search, Related Artists, etc.). Elastic Search data is populated and kept up to date by database triggers that live on the Postgres database.
+Elastic Search is used denormalize data and support certain quries (Feed, Search, Related Landlords, etc.). Elastic Search data is populated and kept up to date by database triggers that live on the Postgres database.
 
 ETL code for the Elastic Search layer is found in the [es-indexer](https://github.com/dgc-network/-protocol/tree/master/discovery-node/es-indexer).

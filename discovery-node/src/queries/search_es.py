@@ -42,7 +42,7 @@ def search_es_full(args: dict):
 
     # Scoring Summary
     # Query score * Function score multiplier
-    # Query score = boosted on text similarity, verified artists, personalization (current user saved or reposted or followed)
+    # Query score = boosted on text similarity, verified landlords, personalization (current user saved or reposted or followed)
     # Function score multiplier = popularity (repost count)
 
     # agreements

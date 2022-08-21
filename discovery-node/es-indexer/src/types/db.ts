@@ -302,9 +302,9 @@ export interface ReactionRow {
   'timestamp': Date;
   'tx_signature'?: string | null;
 }
-export interface RelatedArtistRow {
+export interface RelatedLandlordRow {
   'created_at': Date;
-  'related_artist_user_id': number;
+  'related_landlord_user_id': number;
   'score': number;
   'user_id': number;
 }

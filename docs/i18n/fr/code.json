@@ -262,8 +262,8 @@
     "message": "Tags",
     "description": "The title of the tag list page"
   },
-  "Query, stream, and search Artists, Agreements, and ContentLists from your own app, game, or project": {
-    "message": "Query, stream, and search Artists, Agreements, and ContentLists from your own app, game, or project",
+  "Query, stream, and search Landlords, Agreements, and ContentLists from your own app, game, or project": {
+    "message": "Query, stream, and search Landlords, Agreements, and ContentLists from your own app, game, or project",
     "description": "rest-api"
   }
 }

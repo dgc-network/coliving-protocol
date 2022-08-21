@@ -26,7 +26,7 @@ models/ContentListResponse.ts
 models/ContentListSearchResult.ts
 models/ContentListAgreementsResponse.ts
 models/ProfilePicture.ts
-models/RelatedArtistResponse.ts
+models/RelatedLandlordResponse.ts
 models/RemixParent.ts
 models/Reposts.ts
 models/Supporter.ts

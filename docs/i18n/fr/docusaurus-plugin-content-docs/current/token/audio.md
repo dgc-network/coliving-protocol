@@ -18,12 +18,12 @@ L'LIVE est mis en stacking comme garantie d'un service à valeur ajoutée tel qu
 
 **SECURITÉ**
 
-LIVE est stacké par les opérateurs de nœuds pour sécuriser le réseau. Plus l'enjeu est grand, plus la probabilité que leur nœud soit utilisé par les fans et les artistes. Coliving est entièrement hébergé et géré par la communauté, créant ainsi un écosystème sans permission d’opérateurs de nœuds qui sécurise le contenu du protocole de streaming du monde entier.
+LIVE est stacké par les opérateurs de nœuds pour sécuriser le réseau. Plus l'enjeu est grand, plus la probabilité que leur nœud soit utilisé par les residents et les landlordes. Coliving est entièrement hébergé et géré par la communauté, créant ainsi un écosystème sans permission d’opérateurs de nœuds qui sécurise le contenu du protocole de streaming du monde entier.
 
 **ACCÈS DE LA FONCTIONNALITÉ**
 
-LIVE sert de collatéral pour débloquer des outils supplémentaires pour les artistes. Les premiers exemples incubés par la communauté comprennent les jetons d'artistes, les badges et les multiplicateurs de gains. Dans le futur, les fans pourront déléguer LIVE à des artistes et des conservateurs spécifiques afin de partager leur croissance sur la plate-forme.
+LIVE sert de collatéral pour débloquer des outils supplémentaires pour les landlordes. Les premiers exemples incubés par la communauté comprennent les jetons d'landlordes, les badges et les multiplicateurs de gains. Dans le futur, les residents pourront déléguer LIVE à des landlordes et des conservateurs spécifiques afin de partager leur croissance sur la plate-forme.
 
 **GOUVERNANCE**
 
-Tout LIVE stacké dans Coliving se voit attribuer un poids de gouvernance, utilisé pour façonner les futures itérations du protocole. Chaque aspect de l'Coliving est gouvernable, à commencer par un jeton stack égal à un vote. Nous envisageons que la gouvernance se concentre sur les incitations de l'opérateur au début, avec l'ambition que même les fans passifs puissent exprimer leur opinion sur les mises à jour du produit et les mises à niveau des fonctionnalités aussi.Le choix d'offrir une émission continue **aligne le pouvoir avec ceux qui sont continuellement les plus actifs sur la plate-forme**, un mécanisme qu'Coliving croit mieux convenir aux futurs utilisateurs du protocole. Traduit avec www.DeepL.com/Translator (version gratuite).
+Tout LIVE stacké dans Coliving se voit attribuer un poids de gouvernance, utilisé pour façonner les futures itérations du protocole. Chaque aspect de l'Coliving est gouvernable, à commencer par un jeton stack égal à un vote. Nous envisageons que la gouvernance se concentre sur les incitations de l'opérateur au début, avec l'ambition que même les residents passifs puissent exprimer leur opinion sur les mises à jour du produit et les mises à niveau des fonctionnalités aussi.Le choix d'offrir une émission continue **aligne le pouvoir avec ceux qui sont continuellement les plus actifs sur la plate-forme**, un mécanisme qu'Coliving croit mieux convenir aux futurs utilisateurs du protocole. Traduit avec www.DeepL.com/Translator (version gratuite).

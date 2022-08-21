@@ -174,7 +174,7 @@ Once you know your user's Coliving user id, you can retrieve their Coliving info
 
 - Provide a convenient way for users to sign up and/or log in to your app without having to set a password or fill in a profile form
 - Associate a user to their Coliving account so that you can retrieve their Coliving data (e.g. retrieve their agreements)
-- Confirm if a user is a "Verified" Coliving artist
+- Confirm if a user is a "Verified" Coliving landlord
 
 However, note that this flow **CANNOT**:
 
@@ -200,7 +200,7 @@ The JWT payload contains the following information about the user:
 - Email
 - Display name
 - Coliving handle
-- Whether the user is a verified artist (i.e. has a purple checkmark)
+- Whether the user is a verified landlord (i.e. has a purple checkmark)
 - Profile picture URL
 
 ## Manual Implementation

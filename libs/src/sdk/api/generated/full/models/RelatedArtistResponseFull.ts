@@ -29,55 +29,55 @@ import {
 /**
  * 
  * @export
- * @interface RelatedArtistResponseFull
+ * @interface RelatedLandlordResponseFull
  */
-export interface RelatedArtistResponseFull {
+export interface RelatedLandlordResponseFull {
     /**
      * 
      * @type {number}
-     * @memberof RelatedArtistResponseFull
+     * @memberof RelatedLandlordResponseFull
      */
     latest_chain_block: number;
     /**
      * 
      * @type {number}
-     * @memberof RelatedArtistResponseFull
+     * @memberof RelatedLandlordResponseFull
      */
     latest_indexed_block: number;
     /**
      * 
      * @type {number}
-     * @memberof RelatedArtistResponseFull
+     * @memberof RelatedLandlordResponseFull
      */
     latest_chain_slot_plays: number;
     /**
      * 
      * @type {number}
-     * @memberof RelatedArtistResponseFull
+     * @memberof RelatedLandlordResponseFull
      */
     latest_indexed_slot_plays: number;
     /**
      * 
      * @type {string}
-     * @memberof RelatedArtistResponseFull
+     * @memberof RelatedLandlordResponseFull
      */
     signature: string;
     /**
      * 
      * @type {string}
-     * @memberof RelatedArtistResponseFull
+     * @memberof RelatedLandlordResponseFull
      */
     timestamp: string;
     /**
      * 
      * @type {VersionMetadata}
-     * @memberof RelatedArtistResponseFull
+     * @memberof RelatedLandlordResponseFull
      */
     version: VersionMetadata;
     /**
      * 
      * @type {Array<UserFull>}
-     * @memberof RelatedArtistResponseFull
+     * @memberof RelatedLandlordResponseFull
      */
     data?: Array<UserFull>;
 }

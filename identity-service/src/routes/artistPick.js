@@ -4,7 +4,7 @@ const models = require('../models')
 const authMiddleware = require('../authMiddleware')
 
 module.exports = function (app) {
-  app.post('/artist_pick', authMiddleware, handleResponse(async (req, res, next) => {
+  app.post('/landlord_pick', authMiddleware, handleResponse(async (req, res, next) => {
     const handle = req.user.handle
     const { agreementId } = req.body
 
@@ -17,7 +17,7 @@ module.exports = function (app) {
     return successResponse()
   }))
 
-  app.get('/artist_pick', handleResponse(async (req, res, next) => {
+  app.get('/landlord_pick', handleResponse(async (req, res, next) => {
     const { handles } = req.query
     if (!handles) return errorResponseBadRequest('Please provide handles')
 
@@ -29,7 +29,7 @@ module.exports = function (app) {
       }
     })
     return successResponse({
-      artistPicks: userSocials.map(({ handle, pinnedAgreementId }) => ({ handle, pinnedAgreementId }))
+      landlordPicks: userSocials.map(({ handle, pinnedAgreementId }) => ({ handle, pinnedAgreementId }))
     })
   }))
 }

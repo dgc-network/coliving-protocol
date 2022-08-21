@@ -155,6 +155,6 @@ def test_populate_user_metadata(app):
         assert users[2][response_name_constants.balance] == "0"
         assert users[2][response_name_constants.associated_wallets_balance] == "0"
 
-        # get_top_users: should return only artists, most followers first
+        # get_top_users: should return only landlords, most followers first
         top_user_ids = [u["user_id"] for u in _get_top_users(session, 1, 100, 0)]
         assert top_user_ids == [3, 2, 1]

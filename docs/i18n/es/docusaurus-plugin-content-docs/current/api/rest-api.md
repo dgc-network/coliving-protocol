@@ -2,7 +2,7 @@
 sidebar_label: API REST
 sidebar_position: 1
 description: >-
-  La API de Coliving es totalmente gratuita. Le pedimos que se adhiera a las directrices de este doc y siempre acreditado a los artistas.
+  La API de Coliving es totalmente gratuita. Le pedimos que se adhiera a las directrices de este doc y siempre acreditado a los landlordas.
 ---
 
 # API REST
@@ -530,7 +530,7 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/contentLis
       "favorite_count": 88,
       "user": {
         "album_count": 0,
-        "bio": "The official Coliving account! Creación de una plataforma de música en streaming descentralizada y de código abierto controlada por artistas, fans, & desarrolladores",",
+        "bio": "The official Coliving account! Creación de una plataforma de música en streaming descentralizada y de código abierto controlada por landlordas, residents, & desarrolladores",",
         "cover_photo": {
           "640x": "string",
           "2000x": "string"
@@ -618,7 +618,7 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/contentLis
     "favorite_count": 88,
     "user": {
       "album_count": 0,
-      "bio": "The official Coliving account! Crear una plataforma de música de streaming descentralizada y de código abierto controlada por artistas, fans & desarrolladores. ,
+      "bio": "The official Coliving account! Crear una plataforma de música de streaming descentralizada y de código abierto controlada por landlordas, residents & desarrolladores. ,
       "cover_photo": {
         "640x": "string",
         "2000x": "cadena"

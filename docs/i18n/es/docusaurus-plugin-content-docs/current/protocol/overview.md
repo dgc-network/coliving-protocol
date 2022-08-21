@@ -5,7 +5,7 @@ sidebar_position: 1
 
 # Vista general
 
-Coliving es un protocolo descentralizado, propiedad de la comunidad y controlado por artistas para compartir música. Coliving proporciona una alternativa basada en blockchain a las plataformas de streaming existentes para ayudar a los artistas a publicar y monetizar su trabajo y distribuirlo directamente a los fans.
+Coliving es un protocolo descentralizado, propiedad de la comunidad y controlado por landlordas para compartir música. Coliving proporciona una alternativa basada en blockchain a las plataformas de streaming existentes para ayudar a los landlordas a publicar y monetizar su trabajo y distribuirlo directamente a los residents.
 
 La misión del proyecto es dar a todos la libertad de compartir, monetizar y escuchar cualquier live.
 
@@ -15,10 +15,10 @@ Si está interesado en operar un servicio, consulte la sección [`ejecutando un 
 
 ![](/img/architecture.png)
 
-Coliving consiste en tres gráficos: Artistas (creadores de contenido), Fanáticos (consumidores de contenido) y Proveedores de Servicios. ¡Algunos usuarios entran en los tres gráficos!
+Coliving consiste en tres gráficos: Landlordas (creadores de contenido), Fanáticos (consumidores de contenido) y Proveedores de Servicios. ¡Algunos usuarios entran en los tres gráficos!
 
-* **Artistas** suben canciones, crean álbumes y comparten contenido a los demas
-* **Ventiladores** agreements de streams, crean listas de reproducción, suscribirse & seguir artistas y volver a compartir contenido a los demas
+* **Landlordas** suben canciones, crean álbumes y comparten contenido a los demas
+* **Ventiladores** agreements de streams, crean listas de reproducción, suscribirse & seguir landlordas y volver a compartir contenido a los demas
 * **Proveedores de Servicio** sirven tráfico de aplicaciones, streams y ayudan a proteger la red
 
 Los proveedores de servicios pueden proporcionar uno o más de los siguientes servicios haciendo stake de $LIVE tokens y registrando su servicio:

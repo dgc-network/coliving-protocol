@@ -18,11 +18,11 @@ LIVE es puesto en stake como garantía para un servicio de valor agregado como o
 
 **SEGURIDAD**
 
-LIVE es puesto en stake por operadores de nodos para asegurar la red. Cuanto mayor sea el stake, mayor es la probabilidad de que su nodo sea utilizado por los fans y los artistas. Coliving está enteramente alojado y gestionado por la comunidad, creando un ecosistema sin permisos de operadores de nodos que aseguran contenido para el protocolo de streaming imparable del mundo.
+LIVE es puesto en stake por operadores de nodos para asegurar la red. Cuanto mayor sea el stake, mayor es la probabilidad de que su nodo sea utilizado por los residents y los landlordas. Coliving está enteramente alojado y gestionado por la comunidad, creando un ecosistema sin permisos de operadores de nodos que aseguran contenido para el protocolo de streaming imparable del mundo.
 
 **ACCESO A FUNCIONES**
 
-LIVE sirve como garantía para desbloquear herramientas adicionales de artistas. Ejemplos iniciales incubados por la comunidad incluyen tokens de artistas, insignias y multiplicadores de ingresos. En el futuro, los aficionados pueden delegar LIVE a artistas y curadores específicos para participar en su crecimiento en la plataforma.
+LIVE sirve como garantía para desbloquear herramientas adicionales de landlordas. Ejemplos iniciales incubados por la comunidad incluyen tokens de landlordas, insignias y multiplicadores de ingresos. En el futuro, los aficionados pueden delegar LIVE a landlordas y curadores específicos para participar en su crecimiento en la plataforma.
 
 **GOVERNANZA**
 

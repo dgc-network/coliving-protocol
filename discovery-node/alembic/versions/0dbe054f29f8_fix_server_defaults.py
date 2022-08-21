@@ -76,7 +76,7 @@ def upgrade():
         ALTER TABLE "plays_archive" ALTER COLUMN "updated_at" SET DEFAULT CURRENT_TIMESTAMP;
         ALTER TABLE "plays_archive" ALTER COLUMN "archived_at" SET DEFAULT CURRENT_TIMESTAMP;
 
-        ALTER TABLE "related_artists" ALTER COLUMN "created_at" SET DEFAULT CURRENT_TIMESTAMP;
+        ALTER TABLE "related_landlords" ALTER COLUMN "created_at" SET DEFAULT CURRENT_TIMESTAMP;
 
         ALTER TABLE "users" ALTER COLUMN "is_creator" SET DEFAULT false;
         ALTER TABLE "users" ALTER COLUMN "created_at" SET DEFAULT CURRENT_TIMESTAMP;

@@ -712,13 +712,13 @@ ___
 
 ___
 
-### RelatedArtistResponse
+### RelatedLandlordResponse
 
- **RelatedArtistResponse**: `Object`
+ **RelatedLandlordResponse**: `Object`
 
 **`export`**
 
-**`interface`** RelatedArtistResponse
+**`interface`** RelatedLandlordResponse
 
 ___
 

@@ -164,7 +164,7 @@ DB Entries
   * NotificationAction - actionEntityType: 'agreement', entityId: T2  
 
 Note: RemixCreate notifications do not stack. The means that if multiple users remix the same 
-agreement, the original artist will not receive a single notifications will all of the remix, instead
+agreement, the original landlord will not receive a single notifications will all of the remix, instead
 it will be multiple individual notifications.
 
 **RemixCosign**  
@@ -174,5 +174,5 @@ DB Entries
   * NotificationAction - actionEntityType: 'user', entityId: U2  
 
 Note: RemixCosign notifications do not stack. The means that if a agreement remixes multiple other agreements
-and the original artist of those agreements cosign the remix, the remix upload user will not receive a 
+and the original landlord of those agreements cosign the remix, the remix upload user will not receive a 
 single notifications will all of the remix cosigned, but instead get multiple individual notifications.

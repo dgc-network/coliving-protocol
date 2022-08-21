@@ -3,7 +3,7 @@ sidebar_label: REST API
 sidebar_position: 1
 description: >-
   The Coliving API is entirely free to use. We ask that you adhere to the
-  guidelines in this doc and always credit artists.
+  guidelines in this doc and always credit landlords.
 ---
 
 # REST API

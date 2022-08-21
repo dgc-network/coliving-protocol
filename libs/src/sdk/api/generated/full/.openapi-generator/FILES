@@ -37,7 +37,7 @@ models/ContentListArtwork.ts
 models/ContentListFull.ts
 models/ContentListLibrary.ts
 models/ProfilePicture.ts
-models/RelatedArtistResponseFull.ts
+models/RelatedLandlordResponseFull.ts
 models/RemixesResponse.ts
 models/RemixesResponseFull.ts
 models/RemixingResponse.ts

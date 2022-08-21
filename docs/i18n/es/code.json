@@ -12,7 +12,7 @@
     "description": "api-reference"
   },
   "Query, stream, and search Arists, Agreements, and ContentLists from your own app, game, or project": {
-    "message": "Consulta, transmite y busca Artistas, Canciones y ContentLists desde tu propia aplicación, juego o proyecto",
+    "message": "Consulta, transmite y busca Landlordas, Canciones y ContentLists desde tu propia aplicación, juego o proyecto",
     "description": "rest-api"
   },
   "🎧 $LIVE": {
@@ -262,8 +262,8 @@
     "message": "Etiquetas",
     "description": "The title of the tag list page"
   },
-  "Query, stream, and search Artists, Agreements, and ContentLists from your own app, game, or project": {
-    "message": "Consulta, transmite y busca Artistas, Canciones y ContentLists desde tu propia aplicación, juego o proyecto",
+  "Query, stream, and search Landlords, Agreements, and ContentLists from your own app, game, or project": {
+    "message": "Consulta, transmite y busca Landlordas, Canciones y ContentLists desde tu propia aplicación, juego o proyecto",
     "description": "rest-api"
   }
 }

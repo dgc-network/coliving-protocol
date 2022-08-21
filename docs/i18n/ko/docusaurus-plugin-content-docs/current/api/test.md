@@ -1807,7 +1807,7 @@ func main() {
       "favorite_count": 88,
       "user": {
         "album_count": 0,
-        "bio": "The official Coliving account! Creating a decentralized and open-source streaming music platform controlled by artists, fans, & developers.",
+        "bio": "The official Coliving account! Creating a decentralized and open-source streaming music platform controlled by landlords, residents, & developers.",
         "cover_photo": {
           "640x": "string",
           "2000x": "string"
@@ -2212,7 +2212,7 @@ func main() {
     "favorite_count": 88,
     "user": {
       "album_count": 0,
-      "bio": "The official Coliving account! Creating a decentralized and open-source streaming music platform controlled by artists, fans, & developers.",
+      "bio": "The official Coliving account! Creating a decentralized and open-source streaming music platform controlled by landlords, residents, & developers.",
       "cover_photo": {
         "640x": "string",
         "2000x": "string"

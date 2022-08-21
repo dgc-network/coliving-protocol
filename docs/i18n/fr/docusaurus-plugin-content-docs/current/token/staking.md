@@ -24,9 +24,9 @@ Sur Coliving, le contenu est acheminé vers deux types de nœuds différents :
 * _Content Nodes_ - Pour stocker et relayer le contenu live (pistes, mixages, etc.) diffusé sur Coliving
 * _Discovery Nodes_ - Pour indexer et trier les données telles que les profils d'utilisateurs, les listes de lecture et les abonnés.
 
-En tant qu'artiste, le téléchargement sur Coliving n'est pas différent du téléchargement sur une plateforme comme Soundcloud. Mais ce qui se passe dans les coulisses, c'est ce qui rend l'Coliving si unique.
+En tant qu'landlorde, le téléchargement sur Coliving n'est pas différent du téléchargement sur une plateforme comme Soundcloud. Mais ce qui se passe dans les coulisses, c'est ce qui rend l'Coliving si unique.
 
-Quand un artiste télécharge une piste sur Coliving :
+Quand un landlorde télécharge une piste sur Coliving :
 
 1. Ce contenu est téléchargé vers Content Node.
 2. Les données sont transcodées et renvoient un code de référence utilisé pour identifier la piste.

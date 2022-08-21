@@ -5,7 +5,7 @@ sidebar_position: 1
 
 # Aperçu
 
-Coliving est un protocole de partage de musique décentralisé, détenu par la communauté et contrôlé par les artistes. Coliving offre une alternative basée sur la blockchain aux plateformes de streaming existantes pour aider les artistes à publier et monétiser leur travail et à le distribuer directement aux fans.
+Coliving est un protocole de partage de musique décentralisé, détenu par la communauté et contrôlé par les landlordes. Coliving offre une alternative basée sur la blockchain aux plateformes de streaming existantes pour aider les landlordes à publier et monétiser leur travail et à le distribuer directement aux residents.
 
 La mission du projet est de donner à chacun la liberté de partager, de monétiser et d'écouter n'importe quel fichier live.
 
@@ -15,10 +15,10 @@ Si vous êtes intéressé par le fonctionnement d'un service, consultez la secti
 
 ![](/img/architecture.png)
 
-Coliving se compose de trois types d'utilisateurs : Les artistes (créateurs de contenu), les fans (consommateurs de contenu) et les fournisseurs de services. Certains utilisateurs vérifient les trois catégories d'utilisateurs !
+Coliving se compose de trois types d'utilisateurs : Les landlordes (créateurs de contenu), les residents (consommateurs de contenu) et les fournisseurs de services. Certains utilisateurs vérifient les trois catégories d'utilisateurs !
 
-* **Les artistes** téléchargent des titres, créent des albums et partagent du contenu avec leurs fans
-* **Les fans** écoutent des titres, créent des listes de lecture, s'abonnent à des artistes et les suivent, et partagent du contenu avec leurs amis
+* **Les landlordes** téléchargent des titres, créent des albums et partagent du contenu avec leurs residents
+* **Les residents** écoutent des titres, créent des listes de lecture, s'abonnent à des landlordes et les suivent, et partagent du contenu avec leurs amis
 * **Les prestataires de service** servent le trafic d'applications, diffusent des chansons et aident à sécuriser le réseau
 
 Les prestataires de services peuvent fournir un ou plusieurs des services suivants en échangeant des jetons $LIVE et en enregistrant leur service :

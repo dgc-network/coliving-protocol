@@ -2,7 +2,7 @@
 sidebar_label: REST API
 sidebar_position: 1
 description: >-
-  L'API Coliving est entièrement gratuite. Nous vous demandons de respecter les directives contenues dans ce document et de toujours créditer les artistes.
+  L'API Coliving est entièrement gratuite. Nous vous demandons de respecter les directives contenues dans ce document et de toujours créditer les landlordes.
 ---
 
 # REST API

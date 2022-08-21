@@ -1,17 +1,17 @@
 ---
-id: "full.RelatedArtistResponse"
-title: "Interface: RelatedArtistResponse"
-sidebar_label: "RelatedArtistResponse"
+id: "full.RelatedLandlordResponse"
+title: "Interface: RelatedLandlordResponse"
+sidebar_label: "RelatedLandlordResponse"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).RelatedArtistResponse
+[full](../namespaces/full.md).RelatedLandlordResponse
 
 **`export`**
 
-**`interface`** RelatedArtistResponse
+**`interface`** RelatedLandlordResponse
 
 ## Properties
 
@@ -19,7 +19,7 @@ pagination_next: null
 
  `Optional` **data**: [`UserFull`](full.UserFull.md)[]
 
-**`memberof`** RelatedArtistResponse
+**`memberof`** RelatedLandlordResponse
 
 ___
 
@@ -27,7 +27,7 @@ ___
 
  **latest\_chain\_block**: `number`
 
-**`memberof`** RelatedArtistResponse
+**`memberof`** RelatedLandlordResponse
 
 ___
 
@@ -35,7 +35,7 @@ ___
 
  **latest\_chain\_slot\_plays**: `number`
 
-**`memberof`** RelatedArtistResponse
+**`memberof`** RelatedLandlordResponse
 
 ___
 
@@ -43,7 +43,7 @@ ___
 
  **latest\_indexed\_block**: `number`
 
-**`memberof`** RelatedArtistResponse
+**`memberof`** RelatedLandlordResponse
 
 ___
 
@@ -51,7 +51,7 @@ ___
 
  **latest\_indexed\_slot\_plays**: `number`
 
-**`memberof`** RelatedArtistResponse
+**`memberof`** RelatedLandlordResponse
 
 ___
 
@@ -59,7 +59,7 @@ ___
 
  **signature**: `string`
 
-**`memberof`** RelatedArtistResponse
+**`memberof`** RelatedLandlordResponse
 
 ___
 
@@ -67,7 +67,7 @@ ___
 
  **timestamp**: `string`
 
-**`memberof`** RelatedArtistResponse
+**`memberof`** RelatedLandlordResponse
 
 ___
 
@@ -75,4 +75,4 @@ ___
 
  **version**: [`VersionMetadata`](full.VersionMetadata.md)
 
-**`memberof`** RelatedArtistResponse
+**`memberof`** RelatedLandlordResponse

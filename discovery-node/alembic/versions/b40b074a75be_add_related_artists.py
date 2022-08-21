@@ -1,4 +1,4 @@
-"""Add SYSTEM_ROWS sampling function and related_artists table
+"""Add SYSTEM_ROWS sampling function and related_landlords table
 
 Revision ID: b40b074a75be
 Revises: 9ff8c8ae8de2
@@ -24,12 +24,12 @@ def upgrade():
     )
 
     op.create_table(
-        "related_artists",
+        "related_landlords",
         sa.Column("user_id", sa.Integer(), nullable=False, index=True),
-        sa.Column("related_artist_user_id", sa.Integer(), nullable=False),
+        sa.Column("related_landlord_user_id", sa.Integer(), nullable=False),
         sa.Column("score", sa.Float(), nullable=False),
         sa.Column("created_at", sa.DateTime(), nullable=False),
-        sa.PrimaryKeyConstraint("user_id", "related_artist_user_id"),
+        sa.PrimaryKeyConstraint("user_id", "related_landlord_user_id"),
     )
 
 
@@ -39,4 +39,4 @@ def downgrade():
         DROP EXTENSION IF EXISTS tsm_system_rows;
         """
     )
-    op.drop_table("related_artists")
+    op.drop_table("related_landlords")

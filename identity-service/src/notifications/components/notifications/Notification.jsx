@@ -23,7 +23,7 @@ const challengeRewardsConfig = {
     icon: <IncomingEnvelopeIcon />
   },
   'ref-v': {
-    title: 'Invite your Fans',
+    title: 'Invite your Residents',
     icon: <IncomingEnvelopeIcon />
   },
   'connect-verified': {
@@ -371,7 +371,7 @@ const getTwitter = (notification) => {
     case NotificationType.ChallengeReward: {
       const text = `I earned $LIVE for completing challenges on @dgc-network #AudioRewards`
       return {
-        message: 'Share this with your fans',
+        message: 'Share this with your residents',
         href: `http://twitter.com/share?text=${encodeURIComponent(text)}`
       }
     }

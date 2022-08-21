@@ -31,7 +31,7 @@ export * from './ContentListArtwork';
 export * from './ContentListFull';
 export * from './ContentListLibrary';
 export * from './ProfilePicture';
-export * from './RelatedArtistResponseFull';
+export * from './RelatedLandlordResponseFull';
 export * from './RemixesResponse';
 export * from './RemixesResponseFull';
 export * from './RemixingResponse';

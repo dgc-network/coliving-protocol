@@ -519,7 +519,7 @@ def get_top_genre_users_route():
 
 
 # Get the agreements that are 'children' remixes of the requested agreement
-# The results are sorted by if the original artist has reposted or saved the agreement
+# The results are sorted by if the original landlord has reposted or saved the agreement
 @bp.route("/remixes/<int:agreement_id>/children", methods=("GET",))
 @record_metrics
 def get_remixes_of_route(agreement_id):

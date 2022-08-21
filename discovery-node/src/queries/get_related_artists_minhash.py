@@ -8,7 +8,7 @@ top_k = 100
 num_perm = 256
 
 # was 200 before, but since mh.count() is aprox.
-# and we filter on >= 200 in get_related_artists query
+# and we filter on >= 200 in get_related_landlords query
 # set to 150 here
 MIN_FOLLOWER_REQUIREMENT = 150
 
@@ -53,7 +53,7 @@ def build_minhash(session: Session):
         connection.close()
 
 
-def update_related_artist_minhash(session: Session):
+def update_related_landlord_minhash(session: Session):
 
     (user_mh, forest) = build_minhash(session)
 
@@ -62,7 +62,7 @@ def update_related_artist_minhash(session: Session):
     cursor = connection.cursor()
 
     try:
-        cursor.execute("truncate table related_artists;")
+        cursor.execute("truncate table related_landlords;")
 
         for user_id, mh in user_mh.items():
             if mh.count() < MIN_FOLLOWER_REQUIREMENT:
@@ -83,7 +83,7 @@ def update_related_artist_minhash(session: Session):
                 # score = mh.jaccard(mh2)
 
                 # this attempts to match previous formula
-                # https://github.com/dgc-network/coliving-protocol/blob/ddda462014ecdfd588f2834d07bf0a6066c56487/discovery-node/src/queries/get_related_artists.py#L95-L98
+                # https://github.com/dgc-network/coliving-protocol/blob/ddda462014ecdfd588f2834d07bf0a6066c56487/discovery-node/src/queries/get_related_landlords.py#L95-L98
                 union = MinHash.union(mh, mh2)
                 intersection_size = mh.count() + mh2.count() - union.count()
                 score = intersection_size * intersection_size / mh2.count()
@@ -92,7 +92,7 @@ def update_related_artist_minhash(session: Session):
 
             rows = sorted(rows, key=lambda x: x[2], reverse=True)[:top_k]
 
-            insert_query = "insert into related_artists (user_id, related_artist_user_id, score, created_at) values %s"
+            insert_query = "insert into related_landlords (user_id, related_landlord_user_id, score, created_at) values %s"
             execute_values(cursor, insert_query, rows, template=None, page_size=100000)
 
     finally:

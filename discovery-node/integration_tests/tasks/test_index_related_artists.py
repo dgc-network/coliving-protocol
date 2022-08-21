@@ -4,8 +4,8 @@ from typing import List
 
 from integration_tests.utils import populate_mock_db
 from sqlalchemy.sql.expression import desc
-from src.models.users.related_artist import RelatedArtist
-from src.queries.get_related_artists_minhash import update_related_artist_minhash
+from src.models.users.related_landlord import RelatedLandlord
+from src.queries.get_related_landlords_minhash import update_related_landlord_minhash
 from src.utils.config import shared_config
 from src.utils.db_session import get_db
 
@@ -14,7 +14,7 @@ REDIS_URL = shared_config["redis"]["url"]
 logger = logging.getLogger(__name__)
 
 
-def test_index_related_artists(app):
+def test_index_related_landlords(app):
     with app.app_context():
         db = get_db()
 
@@ -42,12 +42,12 @@ def test_index_related_artists(app):
     populate_mock_db(db, entities)
 
     with db.scoped_session() as session:
-        update_related_artist_minhash(session)
+        update_related_landlord_minhash(session)
 
-        results: List[RelatedArtist] = list(
-            session.query(RelatedArtist)
-            .filter(RelatedArtist.user_id == 0)
-            .order_by(desc(RelatedArtist.score))
+        results: List[RelatedLandlord] = list(
+            session.query(RelatedLandlord)
+            .filter(RelatedLandlord.user_id == 0)
+            .order_by(desc(RelatedLandlord.score))
             .all()
         )
 
@@ -72,12 +72,12 @@ def test_index_related_artists(app):
     )
 
     with db.scoped_session() as session:
-        update_related_artist_minhash(session)
+        update_related_landlord_minhash(session)
 
-        results: List[RelatedArtist] = (
-            session.query(RelatedArtist)
-            .filter(RelatedArtist.user_id == 0)
-            .order_by(desc(RelatedArtist.score))
+        results: List[RelatedLandlord] = (
+            session.query(RelatedLandlord)
+            .filter(RelatedLandlord.user_id == 0)
+            .order_by(desc(RelatedLandlord.score))
             .all()
         )
 
@@ -93,5 +93,5 @@ def test_index_related_artists(app):
 
 
 def compare_results_to_expectations(results, expectations):
-    got = [(row.related_artist_user_id, math.floor(row.score)) for row in results]
+    got = [(row.related_landlord_user_id, math.floor(row.score)) for row in results]
     assert got == expectations

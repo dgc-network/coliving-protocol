@@ -18,12 +18,12 @@ LIVE is staked as collateral for a value-added service such as operating a node 
 
 **SECURITY**
 
-LIVE is staked by node operators to secure the network. The larger the stake, the higher the probability of their node being used by fans and artists. Coliving is entirely hosted and operated by the community, creating a permissionless ecosystem of node operators securing content for the world’s unstoppable streaming protocol.
+LIVE is staked by node operators to secure the network. The larger the stake, the higher the probability of their node being used by residents and landlords. Coliving is entirely hosted and operated by the community, creating a permissionless ecosystem of node operators securing content for the world’s unstoppable streaming protocol.
 
 **FEATURE ACCESS**
 
-LIVE serves as collateral to unlock additional artist tooling. Early examples incubated by the community include artists tokens, badges, and earnings multipliers. In the future, fans may delegate LIVE to specific artists and curators to share in their growth on the platform.
+LIVE serves as collateral to unlock additional landlord tooling. Early examples incubated by the community include landlords tokens, badges, and earnings multipliers. In the future, residents may delegate LIVE to specific landlords and curators to share in their growth on the platform.
 
 **GOVERNANCE**
 
-Any LIVE staked within Coliving is assigned governance weight, used to shape future iterations of the protocol. Every aspect of Coliving is governable, starting with one token staked equal to one vote. We envision governance to focus on operator incentives at inception, with the ambition for even passive fans to voice their opinion over product updates and feature upgrades too.The choice to offer ongoing issuance **aligns power with those who are continually the most active on the platform**, a mechanism Coliving believes better suits future users of the protocol.
+Any LIVE staked within Coliving is assigned governance weight, used to shape future iterations of the protocol. Every aspect of Coliving is governable, starting with one token staked equal to one vote. We envision governance to focus on operator incentives at inception, with the ambition for even passive residents to voice their opinion over product updates and feature upgrades too.The choice to offer ongoing issuance **aligns power with those who are continually the most active on the platform**, a mechanism Coliving believes better suits future users of the protocol.

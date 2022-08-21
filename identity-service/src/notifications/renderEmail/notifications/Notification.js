@@ -47,7 +47,7 @@ var challengeRewardsConfig = {
     icon: /*#__PURE__*/_react["default"].createElement(_Icons.IncomingEnvelopeIcon, null)
   },
   'ref-v': {
-    title: 'Invite your Fans',
+    title: 'Invite your Residents',
     icon: /*#__PURE__*/_react["default"].createElement(_Icons.IncomingEnvelopeIcon, null)
   },
   'connect-verified': {
@@ -456,7 +456,7 @@ var getTwitter = function getTwitter(notification) {
       {
         var _text3 = "I earned $LIVE for completing challenges on @dgc-network #AudioRewards";
         return {
-          message: 'Share this with your fans',
+          message: 'Share this with your residents',
           href: "http://twitter.com/share?text=".concat(encodeURIComponent(_text3))
         };
       }

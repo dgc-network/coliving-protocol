@@ -21,7 +21,7 @@ export * from './ContentListResponse';
 export * from './ContentListSearchResult';
 export * from './ContentListAgreementsResponse';
 export * from './ProfilePicture';
-export * from './RelatedArtistResponse';
+export * from './RelatedLandlordResponse';
 export * from './RemixParent';
 export * from './Reposts';
 export * from './Supporter';

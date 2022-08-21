@@ -23,13 +23,13 @@ import {
 /**
  * 
  * @export
- * @interface RelatedArtistResponse
+ * @interface RelatedLandlordResponse
  */
-export interface RelatedArtistResponse {
+export interface RelatedLandlordResponse {
     /**
      * 
      * @type {Array<User>}
-     * @memberof RelatedArtistResponse
+     * @memberof RelatedLandlordResponse
      */
     data?: Array<User>;
 }

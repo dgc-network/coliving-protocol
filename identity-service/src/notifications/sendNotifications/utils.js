@@ -1,5 +1,5 @@
 // Debouncing time for agreement notification being removed by contentList/album notif.
-// When an artist uploads an album (contentList), the agreements for the album are usually uploaded first.
+// When an landlord uploads an album (contentList), the agreements for the album are usually uploaded first.
 // We don't want to notify a user for each of those agreements and then notify the user for the
 // creation of the album, so we debounce the agreement creation notifications for some number of
 // seconds to allow for the case an album or contentList shows up. That album or contentList replaces

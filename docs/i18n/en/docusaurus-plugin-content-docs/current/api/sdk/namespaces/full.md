@@ -109,7 +109,7 @@ pagination_next: null
 - [ContentListFull](../interfaces/full.ContentListFull.md)
 - [ContentListLibrary](../interfaces/full.ContentListLibrary.md)
 - [ProfilePicture](../interfaces/full.ProfilePicture.md)
-- [RelatedArtistResponse](../interfaces/full.RelatedArtistResponse.md)
+- [RelatedLandlordResponse](../interfaces/full.RelatedLandlordResponse.md)
 - [RemixesResponse](../interfaces/full.RemixesResponse.md)
 - [RemixesResponseFull](../interfaces/full.RemixesResponseFull.md)
 - [RemixingResponse](../interfaces/full.RemixingResponse.md)

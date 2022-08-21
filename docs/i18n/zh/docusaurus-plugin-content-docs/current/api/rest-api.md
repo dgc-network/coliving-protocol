@@ -2,7 +2,7 @@
 sidebar_label: REST API
 sidebar_position: 1
 description: >-
-  The Coliving API is entirely free to use. We ask that you adhere to the guidelines in this doc and always credit artists.
+  The Coliving API is entirely free to use. We ask that you adhere to the guidelines in this doc and always credit landlords.
 ---
 
 # REST API
@@ -530,7 +530,7 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/contentLis
       "favorite_count": 88,
       "user": {
         "album_count": 0,
-        "bio": "The official Coliving account! Creating a decentralized and open-source streaming music platform controlled by artists, fans, & developers.",
+        "bio": "The official Coliving account! Creating a decentralized and open-source streaming music platform controlled by landlords, residents, & developers.",
         "cover_photo": {
           "640x": "string",
           "2000x": "string"
@@ -618,7 +618,7 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/contentLis
     "favorite_count": 88,
     "user": {
       "album_count": 0,
-      "bio": "The official Coliving account! Creating a decentralized and open-source streaming music platform controlled by artists, fans, & developers.",
+      "bio": "The official Coliving account! Creating a decentralized and open-source streaming music platform controlled by landlords, residents, & developers.",
       "cover_photo": {
         "640x": "string",
         "2000x": "string"

@@ -53,7 +53,7 @@ from src.queries.get_associated_user_wallet import get_associated_user_wallet
 from src.queries.get_challenges import get_challenges
 from src.queries.get_followees_for_user import get_followees_for_user
 from src.queries.get_followers_for_user import get_followers_for_user
-from src.queries.get_related_artists import get_related_artists
+from src.queries.get_related_landlords import get_related_landlords
 from src.queries.get_repost_feed_for_user import get_repost_feed_for_user
 from src.queries.get_save_agreements import get_save_agreements
 from src.queries.get_saves import get_saves
@@ -797,13 +797,13 @@ class FollowingUsers(FullFollowingUsers):
         return super()._get(id)
 
 
-related_artist_route_parser = pagination_with_current_user_parser.copy()
-related_artist_route_parser.remove_argument("offset")
-related_artist_response = make_response(
-    "related_artist_response", ns, fields.List(fields.Nested(user_model))
+related_landlord_route_parser = pagination_with_current_user_parser.copy()
+related_landlord_route_parser.remove_argument("offset")
+related_landlord_response = make_response(
+    "related_landlord_response", ns, fields.List(fields.Nested(user_model))
 )
-related_artist_response_full = make_full_response(
-    "related_artist_response_full", full_ns, fields.List(fields.Nested(user_model_full))
+related_landlord_response_full = make_full_response(
+    "related_landlord_response_full", full_ns, fields.List(fields.Nested(user_model_full))
 )
 
 USER_RELATED_ROUTE = "/<string:id>/related"
@@ -814,11 +814,11 @@ class FullRelatedUsers(Resource):
     @record_metrics
     @cache(ttl_sec=5)
     def _get(self, id):
-        args = related_artist_route_parser.parse_args()
+        args = related_landlord_route_parser.parse_args()
         limit = get_default_max(args.get("limit"), 10, 100)
         current_user_id = get_current_user_id(args)
         decoded_id = decode_with_abort(id, full_ns)
-        users = get_related_artists(decoded_id, current_user_id, limit)
+        users = get_related_landlords(decoded_id, current_user_id, limit)
         users = list(map(extend_user, users))
         return success_response(users)
 
@@ -828,8 +828,8 @@ class FullRelatedUsers(Resource):
         params={"id": "A User ID"},
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
-    @full_ns.expect(related_artist_route_parser)
-    @full_ns.marshal_with(related_artist_response_full)
+    @full_ns.expect(related_landlord_route_parser)
+    @full_ns.marshal_with(related_landlord_response_full)
     def get(self, id):
         return self._get(id)
 
@@ -842,8 +842,8 @@ class RelatedUsers(FullRelatedUsers):
         params={"id": "A User ID"},
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
-    @ns.expect(related_artist_route_parser)
-    @ns.marshal_with(related_artist_response)
+    @ns.expect(related_landlord_route_parser)
+    @ns.marshal_with(related_landlord_response)
     def get(self, id):
         return super()._get(id)
 

@@ -326,7 +326,7 @@ const NewFavoriteTitle = 'New Favorite'
 const NewRepostTitle = 'New Repost'
 const NewFollowerTitle = 'New Follower'
 const NewMilestoneTitle = 'Congratulations! 🎉'
-const NewSubscriptionUpdateTitle = 'New Artist Update'
+const NewSubscriptionUpdateTitle = 'New Landlord Update'
 
 const TrendingAgreementTitle = 'Congrats - You’re Trending! 📈'
 const RemixCreateTitle = 'New Remix Of Your Agreement ♻️'
@@ -356,7 +356,7 @@ const challengeInfoMap = {
     amount: 1
   },
   'ref-v': {
-    title: '📨 Invite your Fans',
+    title: '📨 Invite your Residents',
     amount: 1
   },
   'connect-verified': {

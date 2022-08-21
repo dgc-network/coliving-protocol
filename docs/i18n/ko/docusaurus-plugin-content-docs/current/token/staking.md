@@ -24,9 +24,9 @@ On Coliving, content is routed to two different types of nodes:
 * _Content Nodes_ - To store and relay live content \(agreements, mixes, etc.\) streamed on Coliving
 * _Discovery Nodes_ - To index and hash data like user profiles, contentLists and followers.
 
-As an artist, uploading to Coliving feels no different than uploading to a platform like Soundcloud. But, what happens behind the scenes is what makes Coliving so unique.
+As an landlord, uploading to Coliving feels no different than uploading to a platform like Soundcloud. But, what happens behind the scenes is what makes Coliving so unique.
 
-When an artist uploads a agreement to Coliving:
+When an landlord uploads a agreement to Coliving:
 
 1. That content is uploaded to a Content Node.
 2. The data gets transcoded and returns a reference code used to identify the agreement

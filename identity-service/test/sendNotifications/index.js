@@ -242,7 +242,7 @@ describe('Test Send Notifications', function () {
     assert.deepStrictEqual(pushNotifications.length, 9)
 
     for (const notification of pushNotifications) {
-      assert.deepStrictEqual(notification.notificationParams.title, 'New Artist Update')
+      assert.deepStrictEqual(notification.notificationParams.title, 'New Landlord Update')
       assert.deepStrictEqual(notification.types, ['mobile', 'browser'])
     }
 
@@ -344,7 +344,7 @@ describe('Test Send Notifications', function () {
     assert.deepStrictEqual(pushNotifications.length, mockNotifications.length)
 
     for (const notification of pushNotifications) {
-      assert.deepStrictEqual(notification.notificationParams.title, 'New Artist Update')
+      assert.deepStrictEqual(notification.notificationParams.title, 'New Landlord Update')
       assert.deepStrictEqual(notification.types, ['mobile', 'browser'])
     }
 

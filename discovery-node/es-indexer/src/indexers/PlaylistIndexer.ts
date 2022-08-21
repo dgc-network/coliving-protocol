@@ -194,7 +194,7 @@ export class ContentListIndexer extends BaseIndexer<ContentListDoc> {
     if (!agreementIds.length) return {}
     const pg = dialPg()
     const idList = Array.from(agreementIds).join(',')
-    // do we want artist name from users
+    // do we want landlord name from users
     // or save + repost counts from aggregate_agreement?
     const q = `
       select 

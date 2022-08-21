@@ -40,9 +40,9 @@ import {
     HistoryResponse,
     HistoryResponseFromJSON,
     HistoryResponseToJSON,
-    RelatedArtistResponse,
-    RelatedArtistResponseFromJSON,
-    RelatedArtistResponseToJSON,
+    RelatedLandlordResponse,
+    RelatedLandlordResponseFromJSON,
+    RelatedLandlordResponseToJSON,
     Reposts,
     RepostsFromJSON,
     RepostsToJSON,
@@ -498,7 +498,7 @@ export class UsersApi extends runtime.BaseAPI {
     /**
      * Gets a list of users that might be of interest to followers of this user.
      */
-    async getRelatedUsers(requestParameters: GetRelatedUsersRequest): Promise<NonNullable<RelatedArtistResponse["data"]>> {
+    async getRelatedUsers(requestParameters: GetRelatedUsersRequest): Promise<NonNullable<RelatedLandlordResponse["data"]>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getRelatedUsers.');
         }
@@ -520,7 +520,7 @@ export class UsersApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }) as Promise<NonNullable<RelatedArtistResponse["data"]>>;
+        }) as Promise<NonNullable<RelatedLandlordResponse["data"]>>;
     }
 
     /**
