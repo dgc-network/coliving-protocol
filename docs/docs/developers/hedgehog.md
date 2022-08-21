@@ -28,7 +28,7 @@ Decentralized apps today require lots of technical knowledge to configure and us
 ### Installation
 
 ```bash
-npm i --save @audius/hedgehog
+npm i --save @coliving/hedgehog
 ```
 
 ### Docs & Examples

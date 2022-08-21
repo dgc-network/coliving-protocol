@@ -1,5 +1,5 @@
 import { ProgramError } from '@project-serum/anchor'
-import * as ColivingData from '@audius/anchor-audius-data'
+import * as ColivingData from '@coliving/anchor-coliving-data'
 
 /**
  * All errors returned by Anchor Coliving Data
