@@ -17,7 +17,7 @@ Once you've selected a host, all API requests can be sent directly to it. We rec
 
 For the following documention, we've selected one for you:
 
-`https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud`
+`https://discoverynode.coliving1.prod-us-west-2.staked.cloud`
 
 > Code Sample
 
@@ -67,7 +67,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/users/search?query=Brownies&app_name=EXAMPLEAPP',
+fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/users/search?query=Brownies&app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -142,7 +142,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/users/nlGNe?app_name=EXAMPLEAPP',
+fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/users/nlGNe?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -215,7 +215,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/users/nlGNe/favorites?app_name=EXAMPLEAPP',
+fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/users/nlGNe/favorites?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -283,7 +283,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/users/string/reposts?app_name=EXAMPLEAPP',
+fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/users/string/reposts?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -344,7 +344,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/users/string/tags?user_id=string&app_name=EXAMPLEAPP',
+fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/users/string/tags?user_id=string&app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -402,7 +402,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/users/nlGNe/agreements?app_name=EXAMPLEAPP',
+fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/users/nlGNe/agreements?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -497,7 +497,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/contentLists/search?query=Hot & New&app_name=EXAMPLEAPP',
+fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/contentLists/search?query=Hot & New&app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -586,7 +586,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/contentLists/DOPRl?app_name=EXAMPLEAPP',
+fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/contentLists/DOPRl?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -673,7 +673,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/contentLists/DOPRl/agreements?app_name=EXAMPLEAPP',
+fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/contentLists/DOPRl/agreements?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -770,7 +770,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/agreements/search?query=baauer b2b&app_name=EXAMPLEAPP',
+fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/agreements/search?query=baauer b2b&app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -863,7 +863,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/agreements/trending?app_name=EXAMPLEAPP',
+fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/agreements/trending?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -955,7 +955,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/agreements/D7KyD?app_name=EXAMPLEAPP',
+fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/agreements/D7KyD?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -1045,7 +1045,7 @@ This endpoint accepts the Range header for streaming. https://developer.mozilla.
 
 ```javascript
 
-fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/agreements/D7KyD/stream?app_name=EXAMPLEAPP',
+fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/agreements/D7KyD/stream?app_name=EXAMPLEAPP',
 {
   method: 'GET'
 
@@ -1087,7 +1087,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/metrics/app_name/trailing/string?app_name=EXAMPLEAPP',
+fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/metrics/app_name/trailing/string?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -1157,7 +1157,7 @@ const headers = {
   'Accept':'text/plain'
 };
 
-fetch('https://discoveryprovider.coliving1.prod-us-west-2.staked.cloud/v1/resolve?url=https://.co/camouflybeats/hypermantra-86216&app_name=EXAMPLEAPP',
+fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/resolve?url=https://.co/camouflybeats/hypermantra-86216&app_name=EXAMPLEAPP',
 {
   method: 'GET',
 

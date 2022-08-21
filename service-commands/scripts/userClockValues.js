@@ -152,7 +152,7 @@ function parseArgsAndEnv() {
   program.parse(process.argv)
   if (!discoveryProviderEndpoint) {
     const errorMessage =
-      'Incorrect script usage, expected DISCOVERY_PROVIDER_ENDPOINT in env.\ntry `export DISCOVERY_PROVIDER_ENDPOINT="https://discoveryprovider.coliving.lol"`'
+      'Incorrect script usage, expected DISCOVERY_PROVIDER_ENDPOINT in env.\ntry `export DISCOVERY_PROVIDER_ENDPOINT="https://discoverynode.coliving.lol"`'
     throw new Error(errorMessage)
   }
 

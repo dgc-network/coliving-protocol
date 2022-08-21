@@ -26,13 +26,13 @@
 
   # monitor canary nodes, which are not listed as part of getServiceProviderList
 
-  - job_name: 'discoveryprovider4-coliving-co'
+  - job_name: 'discoverynode4-coliving-co'
     scheme: https
     metrics_path: '/prometheus_metrics'
     static_configs:
-      - targets: ['discoveryprovider4.coliving.lol']
+      - targets: ['discoverynode4.coliving.lol']
         labels:
-          host: 'discoveryprovider4.coliving.lol'
+          host: 'discoverynode4.coliving.lol'
           environment: 'prod'
           service: 'coliving'
           component: 'discover-provider'

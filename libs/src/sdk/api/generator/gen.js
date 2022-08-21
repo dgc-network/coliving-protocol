@@ -36,10 +36,10 @@ const generate = ({ env, apiVersion, apiFlavor, generator }) => {
     baseURL = 'http://dn1_web-server_1:5000'
   } else if (env === 'stage') {
     // Hardcode a stage DN, it doesn't matter
-    baseURL = 'https://discoveryprovider.staging.coliving.lol'
+    baseURL = 'https://discoverynode.staging.coliving.lol'
   } else if (env === 'prod') {
     // Hardcode a prod DN, it doesn't matter
-    baseURL = 'https://discoveryprovider.coliving.lol'
+    baseURL = 'https://discoverynode.coliving.lol'
   }
   const outputFolderName = apiFlavor === '' ? 'default' : apiFlavor
   const apiPath = apiFlavor === '' ? apiVersion : `${apiVersion}/${apiFlavor}`

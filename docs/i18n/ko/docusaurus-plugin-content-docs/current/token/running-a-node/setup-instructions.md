@@ -363,7 +363,7 @@ If you see the message "Error running script" this script did not finish success
 **Discovery Node**
 
 ```text
-➜ discoveryNodeEndpoint=https://discoveryprovider.domain.co node healthChecks.js
+➜ discoveryNodeEndpoint=https://discoverynode.domain.co node healthChecks.js
 ✓ Health check passed
 All checks passed!
 ```

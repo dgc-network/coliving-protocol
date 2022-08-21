@@ -494,7 +494,7 @@ Si vous voyez le message "Erreur lors de l'exécution du script" ce script ne s'
 
 
 ```text
-➜ discoveryNodeEndpoint=https://discoveryprovider.domain.co node healthChecks.js
+➜ discoveryNodeEndpoint=https://discoverynode.domain.co node healthChecks.js
 ✓ Health check passed
 All checks passed!
 ```

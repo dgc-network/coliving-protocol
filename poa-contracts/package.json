@@ -24,7 +24,7 @@
     "test": "npm run truffle-test",
     "test-only": "./node_modules/.bin/truffle test test/*.js --network=test_local",
     "test-circle-ci": "./scripts/circleci-test.sh",
-    "discprov-script-t": "./node_modules/.bin/truffle exec scripts/_discoveryprovider-test-init.js -test --ipfs-test-host localhost --ipfs-test-port 6001"
+    "discprov-script-t": "./node_modules/.bin/truffle exec scripts/_discoverynode-test-init.js -test --ipfs-test-host localhost --ipfs-test-port 6001"
   },
   "dependencies": {
     "@openzeppelin/upgrades": "2.8.0",

@@ -10,7 +10,6 @@ sidebar_position: 2
 The Content Node's core service is a web server with an HTTP API to process incoming requests and perform the following functions:
 
 - user & agreement metadata upload
-- user & agreement image upload
 - user agreement file upload
 - user & agreement data, metadata, and agreement file retrieval
 

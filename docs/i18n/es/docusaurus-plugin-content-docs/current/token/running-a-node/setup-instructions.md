@@ -363,7 +363,7 @@ Si ves el mensaje "Error al ejecutar el script" este script no terminó correcta
 **Proveedor de descubrimiento**
 
 ```text
-► discoveryNodeEndpoint=https://discoveryprovider.domain.co node healthChecks.js
+► discoveryNodeEndpoint=https://discoverynode.domain.co node healthChecks.js
 ✓ Revisión de salud ha pasado
 ¡Todas las comprobaciones han pasado!
 ```

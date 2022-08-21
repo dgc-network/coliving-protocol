@@ -12,7 +12,7 @@ L'API REST Coliving vous permet de lancer des requêtes, diffuser de la musique,
 Veuillez l'essayer!
 
 ```bash
-curl https://discoveryprovider..co/v1/agreements/trending?app_name=ExampleApp
+curl https://discoverynode..co/v1/agreements/trending?app_name=ExampleApp
 ```
 
 ## [Référence API Complète](https://colivingproject.github.io/api-docs/#-api-docs)  👈  

@@ -170,7 +170,7 @@ export class DiscoveryProviderSelection extends ServiceSelection {
    *
    * @param response axios response
    * @param urlMap health check urls mapped to their cannonical url
-   * e.g. https://discoveryprovider.coliving.lol/health_check => https://discoveryprovider.coliving.lol
+   * e.g. https://discoverynode.coliving.lol/health_check => https://discoverynode.coliving.lol
    */
   override isHealthy(response: AxiosResponse, urlMap: Record<string, string>) {
     const { status, data } = response

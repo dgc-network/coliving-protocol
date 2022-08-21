@@ -216,7 +216,7 @@ Ensure you filter your metrics by `{environment=~"$env", host=~"$host"}` so they
 
 By default, your legends may look something like this:
 
-> `{__name__="primary_user_count", component="network-monitoring", endpoint="https://creatornode5.staging.coliving.lol", environment="stage", exported_job="network-monitoring", host="discoveryprovider2.staging.coliving.lol", instance="35.202.199.159:9091", job="stage-network-monitoring", run_id="9", service="coliving"}`
+> `{__name__="primary_user_count", component="network-monitoring", endpoint="https://creatornode5.staging.coliving.lol", environment="stage", exported_job="network-monitoring", host="discoverynode2.staging.coliving.lol", instance="35.202.199.159:9091", job="stage-network-monitoring", run_id="9", service="coliving"}`
 
 In this specific case, we want the legend to be the content node's hostname, so set the Legend to:
 

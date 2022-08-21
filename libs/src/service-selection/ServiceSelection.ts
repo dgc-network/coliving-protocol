@@ -366,7 +366,7 @@ export class ServiceSelection {
    * What the criteria is for a healthy service
    * @param response axios response
    * @param {{ [key: string]: string}} urlMap health check urls mapped to their cannonical url
-   * e.g. https://discoveryprovider.coliving.lol/health_check => https://discoveryprovider.coliving.lol
+   * e.g. https://discoverynode.coliving.lol/health_check => https://discoverynode.coliving.lol
    */
   isHealthy(response: AxiosResponse, _urlMap: Record<string, Service>) {
     return response.status === 200
