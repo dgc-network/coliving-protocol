@@ -31,7 +31,7 @@
   "ethWallets": "",
   "spOwnerWalletIndex": 1,
   "spOwnerWallet": "",
-  "discoveryProviderWhitelist": "",
+  "discoveryNodeWhitelist": "",
   "identityService": "http://coliving-identity-service_identity-service_1:7000",
   "dataRegistryAddress": "",
   "dataProviderUrl": "http://docker.for.mac.localhost:8545",

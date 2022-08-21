@@ -1,7 +1,7 @@
 require('./helpers')
 require('./registryClientTest')
 require('./userClientTest')
-require('./creatorNodeTest')
+require('./contentNodeTest')
 require('./agreementClientTest')
 require('./contentListClientTest')
 require('./socialFeatureClientTest')

@@ -12,20 +12,20 @@ const PACKET_LOSS_PERCENT = 20
 
 let didPause = false
 
-const makeCreatorNodeName = num => `cn${num}_content-node_1`
+const makeContentNodeName = num => `cn${num}_content-node_1`
 
 // For now, this only takes down a single node
 // per test.
 class MadDog {
   constructor ({
-    numCreatorNodes,
+    numContentNodes,
     downProbability = DOWN_PROBABILITY,
     pauseDurationSec = PAUSE_DURATION_SEC,
     networkDownDurationSec = NETWORK_DOWN_DURATION_SEC,
     packetLossPercent = PACKET_LOSS_PERCENT
   }) {
-    this.services = _.range(1, numCreatorNodes + 1).map(i =>
-      makeCreatorNodeName(i)
+    this.services = _.range(1, numContentNodes + 1).map(i =>
+      makeContentNodeName(i)
     )
     console.log({ s: this.services })
     this.tickToken = null
@@ -100,4 +100,4 @@ class MadDog {
 }
 
 module.exports = MadDog
-module.exports.makeCreatorNodeName = makeCreatorNodeName
+module.exports.makeContentNodeName = makeContentNodeName

@@ -308,7 +308,7 @@ services:
     environment:
       logLevel: "debug"
       devMode: "true"
-      creatorNodeIsDebug: "true"
+      contentNodeIsDebug: "true"
       debuggerPort: 10000
 
       rateLimitingColivingUserReqLimit: 3000

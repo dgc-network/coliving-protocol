@@ -324,7 +324,7 @@ class NotificationProcessor {
 
     logger.info(`notifications main indexAll job - minBlock: ${minBlock}, oldMaxBlockNumber: ${oldMaxBlockNumber}, startDate: ${startDate}, startTime: ${new Date()}`)
 
-    const { discoveryProvider } = colivingLibsWrapper.getColivingLibs()
+    const { discoveryNode } = colivingLibsWrapper.getColivingLibs()
 
     const agreementIdOwnersToRequestList = []
 
@@ -333,7 +333,7 @@ class NotificationProcessor {
     // The owner info is then used to target listenCount milestone notifications
     // Timeout of 5 minutes
     const timeout = 5 /* min */ * 60 /* sec */ * 1000 /* ms */
-    const { info: metadata, notifications, owners, milestones } = await discoveryProvider.getNotifications(minBlock, agreementIdOwnersToRequestList, timeout)
+    const { info: metadata, notifications, owners, milestones } = await discoveryNode.getNotifications(minBlock, agreementIdOwnersToRequestList, timeout)
     logger.info(`notifications main indexAll job - query notifications from discovery node complete in ${Date.now() - time}ms`)
     time = Date.now()
 
@@ -397,11 +397,11 @@ class NotificationProcessor {
 
     logger.info(`${logLabel} - minSlot: ${minSlot}, oldMaxSlot: ${oldMaxSlot}, startDate: ${startDate}, startTime: ${startTime}`)
 
-    const { discoveryProvider } = colivingLibsWrapper.getColivingLibs()
+    const { discoveryNode } = colivingLibsWrapper.getColivingLibs()
 
     // Timeout of 2 minutes
     const timeout = 2 /* min */ * 60 /* sec */ * 1000 /* ms */
-    const { info: metadata, notifications } = await discoveryProvider.getSolanaNotifications(minSlot, timeout)
+    const { info: metadata, notifications } = await discoveryNode.getSolanaNotifications(minSlot, timeout)
     logger.info(`${logLabel} - query solana notifications from discovery node complete in ${Date.now() - time}ms`)
     time = Date.now()
 

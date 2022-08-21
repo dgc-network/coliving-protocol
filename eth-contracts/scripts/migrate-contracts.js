@@ -5,7 +5,7 @@ const os = require('os')
 const ColivingToken = artifacts.require('ColivingToken')
 
 const ColivingIdentityService = 'identity-service'
-const ColivingCreatorNode = 'content-node'
+const ColivingContentNode = 'content-node'
 const ColivingEthContracts = 'eth-contracts'
 const ColivingDiscoveryNode = 'discovery-node'
 
@@ -139,7 +139,7 @@ module.exports = async callback => {
 
   // output to Content Node
   try {
-    await outputJsonConfigFile(path.join(getDirectoryRoot(ColivingCreatorNode), '/eth-contract-config.json'))
+    await outputJsonConfigFile(path.join(getDirectoryRoot(ColivingContentNode), '/eth-contract-config.json'))
   } catch (e) {
     console.log("Creator node doesn't exist", e)
   }

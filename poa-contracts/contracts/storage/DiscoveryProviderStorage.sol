@@ -7,9 +7,9 @@ import "../interface/RegistryInterface.sol";
 /** @title - The persistent storage for Coliving Discovery Nodes
 *  @dev - TODO - needs to be converted to proper eternal dumb storage
 */
-contract DiscoveryProviderStorage is RegistryContract {
+contract DiscoveryNodeStorage is RegistryContract {
 
-    bytes32 constant CALLER_REGISTRY_KEY = "DiscoveryProviderFactory";
+    bytes32 constant CALLER_REGISTRY_KEY = "DiscoveryNodeFactory";
 
     RegistryInterface registry = RegistryInterface(0);
 
@@ -28,7 +28,7 @@ contract DiscoveryProviderStorage is RegistryContract {
         registry = RegistryInterface(_registryAddress);
     }
 
-    function getDiscoveryProvider(uint _id)
+    function getDiscoveryNode(uint _id)
     external view onlyRegistrant(CALLER_REGISTRY_KEY)
     returns (address wallet, string memory endpoint)
     {

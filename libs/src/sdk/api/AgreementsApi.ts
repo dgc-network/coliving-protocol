@@ -1,4 +1,4 @@
-import type { DiscoveryProvider } from '../../services/discoveryProvider'
+import type { DiscoveryNode } from '../../services/discoveryNode'
 import { BASE_PATH, RequiredError } from './generated/default/runtime'
 
 import {
@@ -8,9 +8,9 @@ import {
 } from './generated/default'
 
 export class AgreementsApi extends GeneratedAgreementsApi {
-  discoveryNode: DiscoveryProvider
+  discoveryNode: DiscoveryNode
 
-  constructor(configuration: Configuration, discoveryNode: DiscoveryProvider) {
+  constructor(configuration: Configuration, discoveryNode: DiscoveryNode) {
     super(configuration)
     this.discoveryNode = discoveryNode
   }
@@ -33,7 +33,7 @@ export class AgreementsApi extends GeneratedAgreementsApi {
       `{${'agreement_id'}}`,
       encodeURIComponent(String(requestParameters.agreementId))
     )
-    const host = await this.discoveryNode.getHealthyDiscoveryProviderEndpoint(0)
+    const host = await this.discoveryNode.getHealthyDiscoveryNodeEndpoint(0)
     return `${host}${BASE_PATH}${path}`
   }
 }

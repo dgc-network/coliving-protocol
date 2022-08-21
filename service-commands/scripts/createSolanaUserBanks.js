@@ -34,21 +34,21 @@ const qs = require('qs')
  * @typedef {Object} Config
  * @property {SolanaConfig} solanaConfig
  * @property {ServiceConfig} identityServiceConfig
- * @property {ServiceConfig} discoveryProviderConfig
+ * @property {ServiceConfig} discoveryNodeConfig
  */
 
 /**
  * Gets a batch of users from the /users endpoint to get their wallets
  * Preferred over depending on libs since we want to specify a DN manually
- * @param {string} discoveryProviderUrl the url to the selected discovery node
+ * @param {string} discoveryNodeUrl the url to the selected discovery node
  * @param {number} batchNumber the current batch number (0 for first)
  * @param {number} batchSize the number of users to fetch
  * @return {Object[]} the users
  */
-async function getUserBatch(discoveryProviderUrl, batchNumber, batchSize) {
+async function getUserBatch(discoveryNodeUrl, batchNumber, batchSize) {
   const response = await axios({
     method: 'get',
-    baseURL: discoveryProviderUrl,
+    baseURL: discoveryNodeUrl,
     url: '/users',
 
     params: {
@@ -63,14 +63,14 @@ async function getUserBatch(discoveryProviderUrl, batchNumber, batchSize) {
 /**
  * Gets a batch of users from the /users endpoint to get their wallets
  * Preferred over depending on libs since we want to specify a DN manually
- * @param {string} discoveryProviderUrl the url to the selected discovery node
+ * @param {string} discoveryNodeUrl the url to the selected discovery node
  * @param {string[]} ids the ids of the users to fetch
  * @return {Object[]} the users
  */
-async function getUserBatchFromIds(discoveryProviderUrl, ids) {
+async function getUserBatchFromIds(discoveryNodeUrl, ids) {
   const response = await axios({
     method: 'get',
-    baseURL: discoveryProviderUrl,
+    baseURL: discoveryNodeUrl,
     url: '/users',
     params: {
       id: ids,
@@ -86,14 +86,14 @@ async function getUserBatchFromIds(discoveryProviderUrl, ids) {
 /**
  * Check discovery to see if it indexed the changes.
  * Done by checking has_solana_bank is true for all users in the batch
- * @param {string} discoveryProviderUrl the discovery node to query against
+ * @param {string} discoveryNodeUrl the discovery node to query against
  * @param {number[] | string[]} ids the list of user ids to check
  * @param {Options} options options object that includes what the throttle is and max retries
  * @param {number} attempt used in recursion to keep agreement of what attempt this is
  * @returns {boolean} whether the batch was confirmed or not
  */
-async function confirmBatch(discoveryProviderUrl, ids, options, attempt = 0) {
-  const users = await getUserBatchFromIds(discoveryProviderUrl, ids)
+async function confirmBatch(discoveryNodeUrl, ids, options, attempt = 0) {
+  const users = await getUserBatchFromIds(discoveryNodeUrl, ids)
   if (users.every(u => u.has_solana_bank)) {
     console.debug('[CONFIRMER]: Successfully confirmed batch')
     return true
@@ -104,7 +104,7 @@ async function confirmBatch(discoveryProviderUrl, ids, options, attempt = 0) {
       )
       return new Promise((resolve, reject) => {
         setTimeout(() => {
-          resolve(confirmBatch(discoveryProviderUrl, ids, options, attempt + 1))
+          resolve(confirmBatch(discoveryNodeUrl, ids, options, attempt + 1))
         }, options.throttle)
       })
     } else {
@@ -122,7 +122,7 @@ async function setupConfig(config) {
   const {
     solanaConfig,
     identityServiceConfig,
-    discoveryProviderConfig
+    discoveryNodeConfig
   } = config
   // Helper to safely create pubkey from nullable val
   const newPublicKeyNullable = val => (val ? new PublicKey(val) : null)
@@ -163,7 +163,7 @@ async function setupConfig(config) {
     claimableTokenProgramKey,
     identityService,
     connection,
-    discoveryProviderUrl: discoveryProviderConfig.url
+    discoveryNodeUrl: discoveryNodeConfig.url
   }
   Object.keys(result).forEach(key => {
     if (result[key] === null) {
@@ -202,7 +202,7 @@ function getConfigForEnv(env) {
         : undefined
     },
     identityServiceConfig: { url: config.get('identity_service') },
-    discoveryProviderConfig: {
+    discoveryNodeConfig: {
       // Manually set DN instead of using auto selection
       url: 'http://dn1_web-server_1:5000'
     }
@@ -216,7 +216,7 @@ function getConfigForEnv(env) {
 async function main(options) {
   // Setup config and init variables
   const config = getConfigForEnv(options.env)
-  const { discoveryProviderUrl, ...createUserBankParams } = await setupConfig(
+  const { discoveryNodeUrl, ...createUserBankParams } = await setupConfig(
     config
   )
   let batchNumber = 0
@@ -236,7 +236,7 @@ async function main(options) {
    */
   const processAll = async () => {
     let users = await getUserBatch(
-      discoveryProviderUrl,
+      discoveryNodeUrl,
       batchNumber,
       options.batchSize
     )
@@ -247,7 +247,7 @@ async function main(options) {
         options.output
       )
       const confirmed = await confirmBatch(
-        discoveryProviderUrl,
+        discoveryNodeUrl,
         successfulUsers.filter(Boolean).map(u => u.user_id),
         options
       )
@@ -257,7 +257,7 @@ async function main(options) {
       console.log(`[BATCH] Done with batch ${batchNumber}`)
       batchNumber++
       users = await getUserBatch(
-        discoveryProviderUrl,
+        discoveryNodeUrl,
         batchNumber,
         options.batchSize
       )
@@ -275,7 +275,7 @@ async function main(options) {
       idBatch.push(line)
       if (idBatch.length >= options.batchSize) {
         lineReader.pause()
-        const users = await getUserBatchFromIds(discoveryProviderUrl, idBatch)
+        const users = await getUserBatchFromIds(discoveryNodeUrl, idBatch)
         // Check for missing IDs
         const userIds = users.map(u => u.user_id.toString())
         idBatch
@@ -292,7 +292,7 @@ async function main(options) {
           options.output
         )
         const confirmed = await confirmBatch(
-          discoveryProviderUrl,
+          discoveryNodeUrl,
           successfulUsers.filter(Boolean).map(u => u.user_id),
           options
         )
@@ -308,7 +308,7 @@ async function main(options) {
     lineReader.on('error', console.error)
     lineReader.on('end', () => {
       // Process last batch
-      getUserBatchFromIds(discoveryProviderUrl, idBatch)
+      getUserBatchFromIds(discoveryNodeUrl, idBatch)
         .then(users =>
           processUserBatch(users, createUserBankParams, options.output)
         )
@@ -360,7 +360,7 @@ async function main(options) {
     console.log(`[START] Processing file '${options.input}'`)
     processInputFile()
   } else {
-    console.log(`[START] Processing all users from ${discoveryProviderUrl}`)
+    console.log(`[START] Processing all users from ${discoveryNodeUrl}`)
     await processAll()
   }
 }

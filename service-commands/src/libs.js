@@ -3,7 +3,7 @@ const untildify = require('untildify')
 const Web3 = require('web3')
 const axios = require('axios')
 const { libs: ColivingLibs } = require('@coliving/sdk')
-const { CreatorNode, Utils } = ColivingLibs
+const { ContentNode, Utils } = ColivingLibs
 const config = require('../config/config')
 
 const DISCOVERY_NODE_ENDPOINT = 'http://dn1_web-server_1:5000'
@@ -108,9 +108,9 @@ function LibsWrapper(walletIndex = 0) {
       ETH_PROVIDER_URL,
       ETH_OWNER_WALLET
     )
-    const discoveryProviderConfig = {}
+    const discoveryNodeConfig = {}
 
-    const creatorNodeConfig = ColivingLibs.configCreatorNode(USER_NODE, true)
+    const contentNodeConfig = ColivingLibs.configContentNode(USER_NODE, true)
     const identityServiceConfig = ColivingLibs.configIdentityService(
       IDENTITY_SERVICE
     )
@@ -118,9 +118,9 @@ function LibsWrapper(walletIndex = 0) {
     const libs = new ColivingLibs({
       web3Config,
       ethWeb3Config,
-      discoveryProviderConfig,
+      discoveryNodeConfig,
       identityServiceConfig,
-      creatorNodeConfig,
+      contentNodeConfig,
       isServer: true,
       enableUserReplicaSetManagerContract: true,
       preferHigherPatchForPrimary: true,
@@ -170,22 +170,22 @@ function LibsWrapper(walletIndex = 0) {
    *
    * @param {*} args number of nodes to include in replica set, whitelist of nodes to select from, blacklist of nodes to exclude
    */
-  this.autoSelectCreatorNodes = async ({
+  this.autoSelectContentNodes = async ({
     numberOfNodes,
     whitelist,
     blacklist
   }) => {
     assertLibsDidInit()
-    return this.libsInstance.ServiceProvider.autoSelectCreatorNodes({
+    return this.libsInstance.ServiceProvider.autoSelectContentNodes({
       numberOfNodes,
       whitelist,
       blacklist
     })
   }
 
-  this.setCreatorNodeEndpoint = async primary => {
+  this.setContentNodeEndpoint = async primary => {
     assertLibsDidInit()
-    return this.libsInstance.creatorNode.setEndpoint(primary)
+    return this.libsInstance.contentNode.setEndpoint(primary)
   }
 
   this.updateCreator = async (userId, metadata) => {
@@ -279,7 +279,7 @@ function LibsWrapper(walletIndex = 0) {
    */
   this.getAgreement = async agreementId => {
     assertLibsDidInit()
-    const agreements = await this.libsInstance.discoveryProvider.getAgreements(
+    const agreements = await this.libsInstance.discoveryNode.getAgreements(
       1 /* Limit */,
       0 /* Ofset */,
       [agreementId] /* idsArray */,
@@ -337,7 +337,7 @@ function LibsWrapper(walletIndex = 0) {
    */
   this.getUserAccount = async wallet => {
     assertLibsDidInit()
-    const userAccount = await this.libsInstance.discoveryProvider.getUserAccount(
+    const userAccount = await this.libsInstance.discoveryNode.getUserAccount(
       wallet
     )
 
@@ -349,7 +349,7 @@ function LibsWrapper(walletIndex = 0) {
   }
 
   /**
-   * Updates userStateManager and updates the primary endpoint in libsInstance.creatorNode
+   * Updates userStateManager and updates the primary endpoint in libsInstance.contentNode
    * @param {Object} userAccount new metadata field
    */
   this.setCurrentUserAndUpdateLibs = async userAccount => {
@@ -372,32 +372,32 @@ function LibsWrapper(walletIndex = 0) {
 
   /**
    * Gets the primary off the user metadata and then sets the primary
-   * on the CreatorNode instance in libs
+   * on the ContentNode instance in libs
    * @param {string} contentNodeEndpointField content_node_endpoint field in user metadata
    */
   this.getPrimaryAndSetLibs = contentNodeEndpointField => {
     assertLibsDidInit()
-    const primary = CreatorNode.getPrimary(contentNodeEndpointField)
-    this.libsInstance.creatorNode.setEndpoint(primary)
+    const primary = ContentNode.getPrimary(contentNodeEndpointField)
+    this.libsInstance.contentNode.setEndpoint(primary)
   }
 
   /**
-   * Wrapper for libsInstance.creatorNode.getEndpoints()
+   * Wrapper for libsInstance.contentNode.getEndpoints()
    * @param {string} contentNodesEndpointField content_node_endpoint field from user's metadata
    */
   this.getContentNodeEndpoints = contentNodesEndpointField => {
     assertLibsDidInit()
-    return CreatorNode.getEndpoints(contentNodesEndpointField)
+    return ContentNode.getEndpoints(contentNodesEndpointField)
   }
 
   this.getPrimary = contentNodesEndpointField => {
     assertLibsDidInit()
-    return CreatorNode.getPrimary(contentNodesEndpointField)
+    return ContentNode.getPrimary(contentNodesEndpointField)
   }
 
   this.getSecondaries = contentNodesEndpointField => {
     assertLibsDidInit()
-    return CreatorNode.getSecondaries(contentNodesEndpointField)
+    return ContentNode.getSecondaries(contentNodesEndpointField)
   }
 
   /**
@@ -415,11 +415,11 @@ function LibsWrapper(walletIndex = 0) {
   }
 
   /**
-   * Wrapper for libsInstance.creatorNode.getClockValuesFromReplicaSet()
+   * Wrapper for libsInstance.contentNode.getClockValuesFromReplicaSet()
    */
   this.getClockValuesFromReplicaSet = async () => {
     assertLibsDidInit()
-    return this.libsInstance.creatorNode.getClockValuesFromReplicaSet()
+    return this.libsInstance.contentNode.getClockValuesFromReplicaSet()
   }
 
   /**
@@ -680,11 +680,11 @@ function LibsWrapper(walletIndex = 0) {
   }
 
   this.getDiscoveryNodeEndpoint = () => {
-    return this.libsInstance.discoveryProvider.discoveryProviderEndpoint
+    return this.libsInstance.discoveryNode.discoveryNodeEndpoint
   }
 
   this.getURSMContentNodes = ownerWallet => {
-    return this.libsInstance.discoveryProvider.getURSMContentNodes(ownerWallet)
+    return this.libsInstance.discoveryNode.getURSMContentNodes(ownerWallet)
   }
 
   // Record a single agreement listen
@@ -812,7 +812,7 @@ function LibsWrapper(walletIndex = 0) {
   }
 
   this.updateUserStateManagerToChainData = async userId => {
-    const users = await this.libsInstance.discoveryProvider.getUsers(1, 0, [
+    const users = await this.libsInstance.discoveryNode.getUsers(1, 0, [
       userId
     ])
     if (!users || !users[0])

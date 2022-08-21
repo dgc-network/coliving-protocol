@@ -90,7 +90,7 @@ type GetChallengeAttestationConfig = {
   encodedUserId: string
   specifier: string
   oracleEthAddress: string
-  discoveryProviderEndpoint: string
+  discoveryNodeEndpoint: string
   logger: Logger
 }
 
@@ -443,17 +443,17 @@ export class Rewards extends Base {
     encodedUserId,
     specifier,
     oracleEthAddress,
-    discoveryProviderEndpoint,
+    discoveryNodeEndpoint,
     logger = console
   }: GetChallengeAttestationConfig) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
     try {
-      const res = await this.discoveryProvider.getChallengeAttestation(
+      const res = await this.discoveryNode.getChallengeAttestation(
         challengeId,
         encodedUserId,
         specifier,
         oracleEthAddress,
-        discoveryProviderEndpoint
+        discoveryNodeEndpoint
       )
 
       const meta = {
@@ -467,7 +467,7 @@ export class Rewards extends Base {
       logger.error(
         `Failed to get challenge attestation for userId [${decodeHashId(
           encodedUserId
-        )}] challengeId [${challengeId}]from ${discoveryProviderEndpoint} with ${err}`
+        )}] challengeId [${challengeId}]from ${discoveryNodeEndpoint} with ${err}`
       )
       const mappedErr =
         GetAttestationError[err as keyof typeof GetAttestationError] ||
@@ -498,7 +498,7 @@ export class Rewards extends Base {
   ) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
     try {
-      const res = await this.discoveryProvider.getUndisbursedChallenges(
+      const res = await this.discoveryNode.getUndisbursedChallenges(
         limit,
         offset,
         completedBlockNumber,
@@ -621,7 +621,7 @@ export class Rewards extends Base {
             encodedUserId,
             specifier,
             oracleEthAddress,
-            discoveryProviderEndpoint: endpoint,
+            discoveryNodeEndpoint: endpoint,
             logger
           })
           return { endpoint, res }
@@ -714,7 +714,7 @@ export class Rewards extends Base {
     const attestations = await Promise.all(
       attestEndpoints.map(async (attestEndpoint) => {
         try {
-          const res = await this.discoveryProvider.getCreateSenderAttestation(
+          const res = await this.discoveryNode.getCreateSenderAttestation(
             senderEthAddress,
             attestEndpoint
           )

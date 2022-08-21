@@ -58,8 +58,8 @@ function getLibsMock() {
     ContentList: {
       getContentLists: sinon.mock().atLeast(1)
     },
-    discoveryProvider: {
-      discoveryProviderEndpoint: 'http://docker.for.mac.localhost:5000'
+    discoveryNode: {
+      discoveryNodeEndpoint: 'http://docker.for.mac.localhost:5000'
     }
   }
 

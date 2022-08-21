@@ -499,7 +499,7 @@ const discoveryNodeWebServerUp = async (options = { verbose: false }) => {
  * Brings up all services relevant to the content node
  * @returns {Promise<void>}
  */
-const creatorNodeUp = async (serviceNumber, options = { verbose: false }) => {
+const contentNodeUp = async (serviceNumber, options = { verbose: false }) => {
   console.log(
     "\n\n========================================\n\nNOTICE - Please make sure your '/etc/hosts' file is up to date.\n\n========================================\n\n"
       .error
@@ -541,7 +541,7 @@ const creatorNodeUp = async (serviceNumber, options = { verbose: false }) => {
  * Deregisters a content node
  * @returns {Promise<void>}
  */
-const deregisterCreatorNode = async (
+const deregisterContentNode = async (
   serviceNumber,
   options = { verbose: false }
 ) => {
@@ -643,7 +643,7 @@ const identityServiceUp = async (options = { verbose: false }) => {
  * @param {*} config. currently supports up to 4 Creator Nodes.
  */
 const allUp = async ({
-  numCreatorNodes = 4,
+  numContentNodes = 4,
   numDiscoveryNodes = 1,
   withAAO = false,
   verbose = false,
@@ -654,7 +654,7 @@ const allUp = async ({
   if (verbose) {
     console.log('Running in verbose mode.')
     console.log({
-      numCreatorNodes,
+      numContentNodes,
       numDiscoveryNodes,
       verbose,
       parallel,
@@ -736,7 +736,7 @@ const allUp = async ({
   // Add content node commands
   for (
     let serviceNumber = 1;
-    serviceNumber < numCreatorNodes + 1;
+    serviceNumber < numContentNodes + 1;
     serviceNumber++
   ) {
     nodeUpCommands.push([
@@ -866,8 +866,8 @@ module.exports = {
   allUp,
   distribute,
   getAccounts,
-  creatorNodeUp,
-  deregisterCreatorNode,
+  contentNodeUp,
+  deregisterContentNode,
   discoveryNodeUp,
   discoveryNodeWebServerUp,
   identityServiceUp,

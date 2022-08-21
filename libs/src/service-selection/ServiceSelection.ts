@@ -75,7 +75,7 @@ export interface ServiceSelectionConfig {
  * ```
  *
  * const selector = new ServiceSelection({
- *   getServices: ethContracts.getDiscoveryProviders()
+ *   getServices: ethContracts.getDiscoveryNodes()
  * })
  *
  * const service = await selector.select()

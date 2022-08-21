@@ -14,9 +14,9 @@ import * as Requests from './requests'
 
 import urlJoin, { PathArg } from 'proper-url-join'
 import {
-  DiscoveryProviderSelection,
-  DiscoveryProviderSelectionConfig
-} from './DiscoveryProviderSelection'
+  DiscoveryNodeSelection,
+  DiscoveryNodeSelectionConfig
+} from './DiscoveryNodeSelection'
 import type { CurrentUser, UserStateManager } from '../../userStateManager'
 import type { EthContracts } from '../ethContracts'
 import type { Web3Manager } from '../web3Manager'
@@ -34,7 +34,7 @@ type RequestParams = {
   data?: Record<string, unknown>
 }
 
-export type DiscoveryProviderConfig = {
+export type DiscoveryNodeConfig = {
   whitelist?: Set<string>
   blacklist?: Set<string>
   userStateManager: UserStateManager
@@ -46,7 +46,7 @@ export type DiscoveryProviderConfig = {
   unhealthySlotDiffPlays?: number
   unhealthyBlockDiff?: number
 } & Pick<
-  DiscoveryProviderSelectionConfig,
+  DiscoveryNodeSelectionConfig,
   'selectionCallback' | 'monitoringCallbacks' | 'localStorage'
 >
 
@@ -80,24 +80,24 @@ export type UserProfile = {
  * @param unhealthySlotDiffPlays the number of slots we would consider a discovery node unhealthy
  * @param unhealthyBlockDiff the number of missed blocks after which we would consider a discovery node unhealthy
  */
-export class DiscoveryProvider {
+export class DiscoveryNode {
   whitelist: Set<string> | undefined
   blacklist: Set<string> | undefined
   userStateManager: UserStateManager
   ethContracts: EthContracts
   web3Manager: Web3Manager | undefined
   unhealthyBlockDiff: number
-  serviceSelector: DiscoveryProviderSelection
+  serviceSelector: DiscoveryNodeSelection
   selectionRequestTimeout: number
   selectionRequestRetries: number
   unhealthySlotDiffPlays: number | undefined
   request404Count: number
   maxRequestsForTrue404: number
   monitoringCallbacks:
-    | DiscoveryProviderSelection['monitoringCallbacks']
+    | DiscoveryNodeSelection['monitoringCallbacks']
     | undefined
 
-  discoveryProviderEndpoint: string | undefined
+  discoveryNodeEndpoint: string | undefined
   isInitialized = false
 
   constructor({
@@ -114,7 +114,7 @@ export class DiscoveryProvider {
     localStorage,
     unhealthySlotDiffPlays,
     unhealthyBlockDiff
-  }: DiscoveryProviderConfig) {
+  }: DiscoveryNodeConfig) {
     this.whitelist = whitelist
     this.blacklist = blacklist
     this.userStateManager = userStateManager
@@ -122,7 +122,7 @@ export class DiscoveryProvider {
     this.web3Manager = web3Manager
 
     this.unhealthyBlockDiff = unhealthyBlockDiff ?? DEFAULT_UNHEALTHY_BLOCK_DIFF
-    this.serviceSelector = new DiscoveryProviderSelection(
+    this.serviceSelector = new DiscoveryNodeSelection(
       {
         whitelist: this.whitelist,
         blacklist: this.blacklist,
@@ -166,7 +166,7 @@ export class DiscoveryProvider {
   }
 
   setEndpoint(endpoint: string) {
-    this.discoveryProviderEndpoint = endpoint
+    this.discoveryNodeEndpoint = endpoint
   }
 
   setUnhealthyBlockDiff(updatedBlockDiff = DEFAULT_UNHEALTHY_BLOCK_DIFF) {
@@ -827,7 +827,7 @@ export class DiscoveryProvider {
     encodedUserId: string,
     specifier: string,
     oracleAddress: string,
-    discoveryProviderEndpoint: string
+    discoveryNodeEndpoint: string
   ) {
     const req = Requests.getChallengeAttestation(
       challengeId,
@@ -837,18 +837,18 @@ export class DiscoveryProvider {
     )
     const { data } = await this._performRequestWithMonitoring<{
       data: { owner_wallet: string; attestation: string }
-    }>(req, discoveryProviderEndpoint)
+    }>(req, discoveryNodeEndpoint)
     return data
   }
 
   async getCreateSenderAttestation(
     senderEthAddress: string,
-    discoveryProviderEndpoint: string
+    discoveryNodeEndpoint: string
   ) {
     const req = Requests.getCreateSenderAttestation(senderEthAddress)
     const { data } = await this._performRequestWithMonitoring<{
       data: { owner_wallet: string; attestation: string }
-    }>(req, discoveryProviderEndpoint)
+    }>(req, discoveryNodeEndpoint)
     return data
   }
 
@@ -878,11 +878,11 @@ export class DiscoveryProvider {
    */
   async _performRequestWithMonitoring<Response>(
     requestObj: RequestParams,
-    discoveryProviderEndpoint: string
+    discoveryNodeEndpoint: string
   ) {
     const axiosRequest = this._createDiscProvRequest(
       requestObj,
-      discoveryProviderEndpoint
+      discoveryNodeEndpoint
     )
     let response: AxiosResponse<{
       signer: string
@@ -1038,14 +1038,14 @@ export class DiscoveryProvider {
 
     try {
       const newDiscProvEndpoint =
-        await this.getHealthyDiscoveryProviderEndpoint(attemptedRetries)
+        await this.getHealthyDiscoveryNodeEndpoint(attemptedRetries)
 
       // If new DP endpoint is selected, update disc prov endpoint and reset attemptedRetries count
-      if (this.discoveryProviderEndpoint !== newDiscProvEndpoint) {
-        let updateDiscProvEndpointMsg = `Current Discovery Node endpoint ${this.discoveryProviderEndpoint} is unhealthy. `
+      if (this.discoveryNodeEndpoint !== newDiscProvEndpoint) {
+        let updateDiscProvEndpointMsg = `Current Discovery Node endpoint ${this.discoveryNodeEndpoint} is unhealthy. `
         updateDiscProvEndpointMsg += `Switching over to the new Discovery Node endpoint ${newDiscProvEndpoint}!`
         console.info(updateDiscProvEndpointMsg)
-        this.discoveryProviderEndpoint = newDiscProvEndpoint
+        this.discoveryNodeEndpoint = newDiscProvEndpoint
         attemptedRetries = 0
       }
     } catch (e) {
@@ -1062,7 +1062,7 @@ export class DiscoveryProvider {
     try {
       parsedResponse = await this._performRequestWithMonitoring(
         requestObj as RequestParams,
-        this.discoveryProviderEndpoint
+        this.discoveryNodeEndpoint
       )
     } catch (e) {
       const error = e as { message: string; status: string }
@@ -1113,7 +1113,7 @@ export class DiscoveryProvider {
 
     const blockDiff = await this._getBlocksBehind(parsedResponse)
     if (notInRegressedMode && blockDiff) {
-      const errorMessage = `${this.discoveryProviderEndpoint} is too far behind [block diff: ${blockDiff}]`
+      const errorMessage = `${this.discoveryNodeEndpoint} is too far behind [block diff: ${blockDiff}]`
       if (retry) {
         console.info(
           `${errorMessage}. Retrying request at attempt #${attemptedRetries}...`
@@ -1130,7 +1130,7 @@ export class DiscoveryProvider {
 
     const playsSlotDiff = await this._getPlaysSlotsBehind(parsedResponse)
     if (notInRegressedMode && playsSlotDiff) {
-      const errorMessage = `${this.discoveryProviderEndpoint} is too far behind [slot diff: ${playsSlotDiff}]`
+      const errorMessage = `${this.discoveryNodeEndpoint} is too far behind [slot diff: ${playsSlotDiff}]`
       if (retry) {
         console.info(
           `${errorMessage}. Retrying request at attempt #${attemptedRetries}...`
@@ -1158,8 +1158,8 @@ export class DiscoveryProvider {
    * another healthy discovery node. Else, return the current discovery node endpoint
    * @param attemptedRetries the number of attempted requests made to the current disc prov endpoint
    */
-  async getHealthyDiscoveryProviderEndpoint(attemptedRetries: number) {
-    let endpoint = this.discoveryProviderEndpoint as string
+  async getHealthyDiscoveryNodeEndpoint(attemptedRetries: number) {
+    let endpoint = this.discoveryNodeEndpoint as string
     if (attemptedRetries > this.selectionRequestRetries || !endpoint) {
       // Add to unhealthy list if current disc prov endpoint has reached max retry count
       console.info(`Attempted max retries with endpoint ${endpoint}`)
@@ -1181,11 +1181,11 @@ export class DiscoveryProvider {
   /**
    * Creates the discovery node axios request object with necessary configs
    * @param requestObj
-   * @param discoveryProviderEndpoint
+   * @param discoveryNodeEndpoint
    */
   _createDiscProvRequest(
     requestObj: RequestParams,
-    discoveryProviderEndpoint: string
+    discoveryNodeEndpoint: string
   ) {
     // Sanitize URL params if needed
     if (requestObj.queryParams) {
@@ -1198,7 +1198,7 @@ export class DiscoveryProvider {
     }
 
     const requestUrl = urlJoin(
-      discoveryProviderEndpoint,
+      discoveryNodeEndpoint,
       requestObj.endpoint,
       requestObj.urlParams,
       { query: requestObj.queryParams }

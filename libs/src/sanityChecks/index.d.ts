@@ -5,5 +5,5 @@ export class SanityChecks {
   options: Options
 
   constructor(libsInstance: any, options?: Options): void
-  async run(creatorNodeWhitelist: string[] | null): Promise<void>
+  async run(contentNodeWhitelist: string[] | null): Promise<void>
 }

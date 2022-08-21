@@ -289,7 +289,7 @@
           "type": "string"
         }
       ],
-      "name": "UpdateCreatorNodeEndpoint",
+      "name": "UpdateContentNodeEndpoint",
       "type": "event"
     },
     {
@@ -609,7 +609,7 @@
           "type": "bytes"
         }
       ],
-      "name": "updateCreatorNodeEndpoint",
+      "name": "updateContentNodeEndpoint",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",

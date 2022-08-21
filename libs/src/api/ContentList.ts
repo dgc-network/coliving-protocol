@@ -53,7 +53,7 @@ export class ContentLists extends Base {
     withUsers = false
   ) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getContentLists(
+    return await this.discoveryNode.getContentLists(
       limit,
       offset,
       idsArray,
@@ -70,7 +70,7 @@ export class ContentLists extends Base {
    */
   async getSavedContentLists(limit = 100, offset = 0, withUsers = false) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getSavedContentLists(
+    return await this.discoveryNode.getSavedContentLists(
       limit,
       offset,
       withUsers
@@ -85,7 +85,7 @@ export class ContentLists extends Base {
    */
   async getSavedAlbums(limit = 100, offset = 0, withUsers = false) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getSavedAlbums(limit, offset, withUsers)
+    return await this.discoveryNode.getSavedAlbums(limit, offset, withUsers)
   }
 
   /* ------- SETTERS ------- */
@@ -157,7 +157,7 @@ export class ContentLists extends Base {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
 
     const userId = this.userStateManager.getCurrentUserId()
-    const contentList = await this.discoveryProvider.getContentLists(
+    const contentList = await this.discoveryNode.getContentLists(
       100,
       0,
       [contentListId],
@@ -198,7 +198,7 @@ export class ContentLists extends Base {
     }
 
     const userId = this.userStateManager.getCurrentUserId()
-    const contentList = await this.discoveryProvider.getContentLists(
+    const contentList = await this.discoveryNode.getContentLists(
       100,
       0,
       [contentListId],
@@ -252,7 +252,7 @@ export class ContentLists extends Base {
     this.REQUIRES(Services.DISCOVERY_PROVIDER, Services.CONTENT_NODE)
 
     const userId = this.userStateManager.getCurrentUserId()
-    const contentListsReponse = await this.discoveryProvider.getContentLists(
+    const contentListsReponse = await this.discoveryNode.getContentLists(
       1,
       0,
       [contentListId],
@@ -296,7 +296,7 @@ export class ContentLists extends Base {
   async uploadContentListCoverPhoto(coverPhotoFile: File) {
     this.REQUIRES(Services.CONTENT_NODE)
 
-    const updatedContentListImage = await this.creatorNode.uploadImage(
+    const updatedContentListImage = await this.contentNode.uploadImage(
       coverPhotoFile,
       true // square
     )

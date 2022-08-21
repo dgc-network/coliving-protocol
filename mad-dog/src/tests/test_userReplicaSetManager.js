@@ -107,10 +107,10 @@ const getLatestIndexedBlock = async (endpoint) => {
 
 const getAllSigners = async (user) => {
   const cnEndpoints = user.content_node_endpoint.split(',').filter(Boolean)
-  return Promise.all(cnEndpoints.map(getCreatorNodeSigner))
+  return Promise.all(cnEndpoints.map(getContentNodeSigner))
 }
 
-const getCreatorNodeSigner = async (endpoint) => {
+const getContentNodeSigner = async (endpoint) => {
   return (await axios({
     method: 'get',
     baseURL: endpoint,

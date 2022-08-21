@@ -28,7 +28,7 @@ const snapbackSMParallelSyncTest = async ({
   numUsers,
   executeAll,
   executeOne,
-  numCreatorNodes
+  numContentNodes
 }) => {
   // Initialize users
   if (!walletIndexToUserIdMap) {

@@ -6,7 +6,7 @@ const DEFAULT_INDEX = 1
 
 const {
   distribute,
-  creatorNodeUp
+  contentNodeUp
 } = ServiceCommands
 
 /**
@@ -46,14 +46,14 @@ const getContentNodeMaping = async (executeOne) => {
  * @param {*} executeOne The wrapper function with libs 
  * @returns Promise<Object> The mapping of content node ID to service info
  */
-const setNumCreatorNodes = async (numCN, executeOne) => {
+const setNumContentNodes = async (numCN, executeOne) => {
   let contentNodeIDToInfoMapping = await getContentNodeMaping(executeOne)
   if (Object.keys(contentNodeIDToInfoMapping).length < numCN) {
     // Distribute tokens to ensure wallets are able to register a node
     await distribute()
     for (let cnId = 1; cnId < numCN + 1; cnId++) {
       if (!(cnId in contentNodeIDToInfoMapping)) {
-        await creatorNodeUp(cnId)
+        await contentNodeUp(cnId)
       }
     }
 
@@ -64,6 +64,6 @@ const setNumCreatorNodes = async (numCN, executeOne) => {
 }
 
 
-module.exports = setNumCreatorNodes
+module.exports = setNumContentNodes
 module.exports.getIDfromEndpoint = getIDfromEndpoint
 module.exports.getContentNodeMaping = getContentNodeMaping

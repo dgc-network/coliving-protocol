@@ -14,14 +14,14 @@ class SanityChecks {
 
   /**
    * Runs sanity checks
-   * @param {Set<string>} creatorNodeWhitelist
+   * @param {Set<string>} contentNodeWhitelist
    */
-  async run (creatorNodeWhitelist = null) {
+  async run (contentNodeWhitelist = null) {
     await sanitizeNodes(this.libs)
     await addSecondaries(this.libs)
     await assignReplicaSetIfNecessary(this.libs)
     await syncNodes(this.libs)
-    if (!this.options.skipRollover) await rolloverNodes(this.libs, creatorNodeWhitelist)
+    if (!this.options.skipRollover) await rolloverNodes(this.libs, contentNodeWhitelist)
     await recoveryEmail(this.libs)
   }
 }

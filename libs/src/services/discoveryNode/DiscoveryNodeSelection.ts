@@ -5,7 +5,7 @@ import {
   ServiceSelectionConfig
 } from '../../service-selection'
 import {
-  DISCOVERY_PROVIDER_TIMESTAMP,
+  DISCOVERY_NODE_TIMESTAMP,
   DISCOVERY_SERVICE_NAME,
   DEFAULT_UNHEALTHY_BLOCK_DIFF,
   DISCOVERY_PROVIDER_RESELECT_TIMEOUT,
@@ -19,7 +19,7 @@ import type { LocalStorage } from '../../utils/localStorage'
 
 const PREVIOUS_VERSIONS_TO_CHECK = 5
 
-export type DiscoveryProviderSelectionConfig = Omit<
+export type DiscoveryNodeSelectionConfig = Omit<
   ServiceSelectionConfig,
   'getServices'
 > & {
@@ -34,16 +34,16 @@ export type DiscoveryProviderSelectionConfig = Omit<
   localStorage?: LocalStorage
 }
 
-export class DiscoveryProviderSelection extends ServiceSelection {
+export class DiscoveryNodeSelection extends ServiceSelection {
   currentVersion: string
   ethContracts: EthContracts
   reselectTimeout: Maybe<number>
   selectionCallback: Maybe<
-    DiscoveryProviderSelectionConfig['selectionCallback']
+    DiscoveryNodeSelectionConfig['selectionCallback']
   >
 
   monitoringCallbacks:
-    | NonNullable<DiscoveryProviderSelectionConfig['monitoringCallbacks']>
+    | NonNullable<DiscoveryNodeSelectionConfig['monitoringCallbacks']>
     | {}
 
   unhealthySlotDiffPlays: Nullable<number>
@@ -53,7 +53,7 @@ export class DiscoveryProviderSelection extends ServiceSelection {
   localStorage?: LocalStorage
 
   constructor(
-    config: DiscoveryProviderSelectionConfig,
+    config: DiscoveryNodeSelectionConfig,
     ethContracts: EthContracts
   ) {
     super({
@@ -96,7 +96,7 @@ export class DiscoveryProviderSelection extends ServiceSelection {
     if (this.localStorage) {
       try {
         const discProvTimestamp = await this.localStorage.getItem(
-          DISCOVERY_PROVIDER_TIMESTAMP
+          DISCOVERY_NODE_TIMESTAMP
         )
         if (discProvTimestamp) {
           const { endpoint: latestEndpoint, timestamp } =
@@ -128,7 +128,7 @@ export class DiscoveryProviderSelection extends ServiceSelection {
   /** Clears any cached discovery node from localstorage */
   async clearCached() {
     if (this.localStorage) {
-      await this.localStorage.removeItem(DISCOVERY_PROVIDER_TIMESTAMP)
+      await this.localStorage.removeItem(DISCOVERY_NODE_TIMESTAMP)
     }
   }
 
@@ -136,7 +136,7 @@ export class DiscoveryProviderSelection extends ServiceSelection {
   async setCached(endpoint: string) {
     if (this.localStorage) {
       await this.localStorage.setItem(
-        DISCOVERY_PROVIDER_TIMESTAMP,
+        DISCOVERY_NODE_TIMESTAMP,
         JSON.stringify({ endpoint, timestamp: Date.now() })
       )
     }

@@ -1,5 +1,5 @@
 import { Base, BaseConstructorArgs, Services } from './base'
-import { CreatorNode } from '../services/creatorNode'
+import { ContentNode } from '../services/contentNode'
 import { Nullable, User, UserMetadata, Utils } from '../utils'
 import { AuthHeaders } from '../constants'
 import { getPermitDigest, sign } from '../utils/signatures'
@@ -34,7 +34,7 @@ export class Account extends Base {
     this.associateInstagramUser = this.associateInstagramUser.bind(this)
     this.handleIsValid = this.handleIsValid.bind(this)
     this.lookupTwitterHandle = this.lookupTwitterHandle.bind(this)
-    this.updateCreatorNodeEndpoint = this.updateCreatorNodeEndpoint.bind(this)
+    this.updateContentNodeEndpoint = this.updateContentNodeEndpoint.bind(this)
     this.searchFull = this.searchFull.bind(this)
     this.searchAutocomplete = this.searchAutocomplete.bind(this)
     this.searchTags = this.searchTags.bind(this)
@@ -75,15 +75,15 @@ export class Account extends Base {
     }
 
     phase = phases.FIND_USER
-    const userAccount = await this.discoveryProvider.getUserAccount(
+    const userAccount = await this.discoveryNode.getUserAccount(
       this.web3Manager.getWalletAddress()
     )
     if (userAccount) {
       this.userStateManager.setCurrentUser(userAccount)
       const contentNodeEndpoint = userAccount.content_node_endpoint
       if (contentNodeEndpoint) {
-        this.creatorNode.setEndpoint(
-          CreatorNode.getPrimary(contentNodeEndpoint)!
+        this.contentNode.setEndpoint(
+          ContentNode.getPrimary(contentNodeEndpoint)!
         )
       }
       return { user: userAccount, error: false, phase }
@@ -330,11 +330,11 @@ export class Account extends Base {
    * Updates a user's content node endpoint. Sets the connected content node in the libs instance
    * and updates the user's metadata blob.
    */
-  async updateCreatorNodeEndpoint(url: string) {
+  async updateContentNodeEndpoint(url: string) {
     this.REQUIRES(Services.CONTENT_NODE)
 
     const user = this.userStateManager.getCurrentUser() as User
-    await this.creatorNode.setEndpoint(url)
+    await this.contentNode.setEndpoint(url)
     user.content_node_endpoint = url
     await this.User.updateCreator(user.user_id, user)
   }
@@ -350,7 +350,7 @@ export class Account extends Base {
    */
   async searchFull(text: string, kind: string, limit = 100, offset = 0) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.searchFull(text, kind, limit, offset)
+    return await this.discoveryNode.searchFull(text, kind, limit, offset)
   }
 
   /**
@@ -364,7 +364,7 @@ export class Account extends Base {
    */
   async searchAutocomplete(text: string, limit = 100, offset = 0) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.searchAutocomplete(text, limit, offset)
+    return await this.discoveryNode.searchAutocomplete(text, limit, offset)
   }
 
   /**
@@ -384,7 +384,7 @@ export class Account extends Base {
     offset = 0
   ) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.searchTags(
+    return await this.discoveryNode.searchTags(
       text,
       userTagCount,
       kind,

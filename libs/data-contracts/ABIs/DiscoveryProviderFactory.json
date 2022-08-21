@@ -1,5 +1,5 @@
 {
-  "contractName": "DiscoveryProviderFactory",
+  "contractName": "DiscoveryNodeFactory",
   "abi": [
     {
       "constant": false,
@@ -82,7 +82,7 @@
           "type": "address"
         },
         {
-          "name": "_discoveryProviderStorageRegistryKey",
+          "name": "_discoveryNodeStorageRegistryKey",
           "type": "bytes32"
         }
       ],
@@ -109,7 +109,7 @@
           "type": "string"
         }
       ],
-      "name": "NewDiscoveryProvider",
+      "name": "NewDiscoveryNode",
       "type": "event"
     },
     {
@@ -137,7 +137,7 @@
           "type": "uint256"
         }
       ],
-      "name": "getDiscoveryProvider",
+      "name": "getDiscoveryNode",
       "outputs": [
         {
           "name": "wallet",

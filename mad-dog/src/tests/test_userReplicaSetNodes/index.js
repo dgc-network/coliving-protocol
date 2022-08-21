@@ -1,8 +1,8 @@
 const { addAndUpgradeUsers } = require('../../helpers.js')
 const verifyValidCNs = require('./verifyValidCN')
-const deregisterRandomCreatorNode = require('./deregisterRandomCreatorNode.js')
-const stopRandomCreatorNode = require('./stopRandomCreatorNode.js')
-const setNumCreatorNodes = require('./setNumCreatorNodes.js')
+const deregisterRandomContentNode = require('./deregisterRandomContentNode.js')
+const stopRandomContentNode = require('./stopRandomContentNode.js')
+const setNumContentNodes = require('./setNumContentNodes.js')
 const { uploadAgreementsforUsers } = require('../../utils/uploadAgreementsForUsers')
 const { logger } = require('../../logger')
 const { delay } = require('../../helpers')
@@ -15,12 +15,12 @@ const WAIT_INTERVAL_TO_UPDATE_REPLICA_SET_MS = 20000
  */
 const deregisterCN = async ({
   numUsers = 10,
-  numCreatorNodes = 10,
+  numContentNodes = 10,
   iterations,
   executeAll,
   executeOne
 }) => {
-  let creatorNodeIDToInfoMapping = {}
+  let contentNodeIDToInfoMapping = {}
   let walletIndexToUserIdMap = {}
 
   // Creates and initialize users if user does not exist. Else, uses existing users.
@@ -36,12 +36,12 @@ const deregisterCN = async ({
 
   logger.info('[Snapback CN Deregistering] Start')
   for (let iteration = 0; iteration < iterations; iteration++) {
-    creatorNodeIDToInfoMapping = await setNumCreatorNodes(numCreatorNodes, executeOne)
+    contentNodeIDToInfoMapping = await setNumContentNodes(numContentNodes, executeOne)
 
     // Upload agreements to users
     await uploadAgreementsforUsers({ executeAll, executeOne, walletIndexToUserIdMap })
 
-    const deregisteredCreatorNodeId = await deregisterRandomCreatorNode(creatorNodeIDToInfoMapping)
+    const deregisteredContentNodeId = await deregisterRandomContentNode(contentNodeIDToInfoMapping)
 
     // Create a MadDog instance, responsible for taking down 1 node
     let attempts = 0
@@ -50,7 +50,7 @@ const deregisterCN = async ({
     while (attempts++ < MAX_ATTEMPTS_TO_VALIDATE_REPLICA_SET) {
       await delay(WAIT_INTERVAL_TO_UPDATE_REPLICA_SET_MS)
       try {
-        await verifyValidCNs(executeOne, executeAll, deregisteredCreatorNodeId, walletIndexToUserIdMap, creatorNodeIDToInfoMapping)
+        await verifyValidCNs(executeOne, executeAll, deregisteredContentNodeId, walletIndexToUserIdMap, contentNodeIDToInfoMapping)
         passed = true
         break
       } catch (e) {
@@ -70,12 +70,12 @@ const deregisterCN = async ({
 
 const forceCNUnavailability = async ({
   numUsers = 10,
-  numCreatorNodes = 10,
+  numContentNodes = 10,
   iterations,
   executeAll,
   executeOne
 }) => {
-  let creatorNodeIDToInfoMapping = {}
+  let contentNodeIDToInfoMapping = {}
   let walletIndexToUserIdMap = {}
 
   // Creates and initialize users if user does not exist. Else, uses existing users.
@@ -92,12 +92,12 @@ const forceCNUnavailability = async ({
   logger.info('[Snapback CN Unavailability] Start')
 
   for (let iteration = 0; iteration < iterations; iteration++) {
-    creatorNodeIDToInfoMapping = await setNumCreatorNodes(numCreatorNodes, executeOne)
+    contentNodeIDToInfoMapping = await setNumContentNodes(numContentNodes, executeOne)
 
     const {
       madDog,
-      removedCreatorNodeId
-    } = await stopRandomCreatorNode(creatorNodeIDToInfoMapping)
+      removedContentNodeId
+    } = await stopRandomContentNode(contentNodeIDToInfoMapping)
 
     let error = null
     let attempts = 0
@@ -105,7 +105,7 @@ const forceCNUnavailability = async ({
     while (attempts++ < MAX_ATTEMPTS_TO_VALIDATE_REPLICA_SET) {
       await delay(WAIT_INTERVAL_TO_UPDATE_REPLICA_SET_MS)
       try {
-        await verifyValidCNs(executeOne, executeAll, removedCreatorNodeId, walletIndexToUserIdMap, creatorNodeIDToInfoMapping)
+        await verifyValidCNs(executeOne, executeAll, removedContentNodeId, walletIndexToUserIdMap, contentNodeIDToInfoMapping)
         passed = true
         break
       } catch (e) {

@@ -128,7 +128,7 @@ describe('test retrieveClockValueForUserFromReplica()', function () {
     const replica = 'http://healthyCn.co'
     const wallet = '0x123456789'
 
-    // Get stubbed function with a CreatorNode dependency that returns a dummy clock value
+    // Get stubbed function with a ContentNode dependency that returns a dummy clock value
     const expectedClockValue = 12345
     const getClockValueStub = sandbox.stub().resolves(expectedClockValue)
     const { retrieveClockValueForUserFromReplica } = proxyquire(
@@ -136,7 +136,7 @@ describe('test retrieveClockValueForUserFromReplica()', function () {
       {
         '@coliving/sdk': {
           libs: {
-            CreatorNode: {
+            ContentNode: {
               getClockValue: getClockValueStub
             }
           }
@@ -150,11 +150,11 @@ describe('test retrieveClockValueForUserFromReplica()', function () {
     ).to.eventually.be.fulfilled.and.to.equal(expectedClockValue)
   })
 
-  it('throws when CreatorNode throws', async function () {
+  it('throws when ContentNode throws', async function () {
     const replica = 'http://healthyCn.co'
     const wallet = '0x123456789'
 
-    // Get stubbed function with a CreatorNode dependency that returns a dummy clock value
+    // Get stubbed function with a ContentNode dependency that returns a dummy clock value
     const expectedError = new Error('test error')
     const getClockValueStub = sandbox.stub().rejects(expectedError)
     const { retrieveClockValueForUserFromReplica } = proxyquire(
@@ -162,7 +162,7 @@ describe('test retrieveClockValueForUserFromReplica()', function () {
       {
         '@coliving/sdk': {
           libs: {
-            CreatorNode: {
+            ContentNode: {
               getClockValue: getClockValueStub
             }
           }

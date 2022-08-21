@@ -2,7 +2,7 @@ const fetch = require('node-fetch')
 
 const File = {}
 
-File.verifyCIDExistsOnCreatorNode = async (cid, contentNodeEndpoint) => {
+File.verifyCIDExistsOnContentNode = async (cid, contentNodeEndpoint) => {
   const url = `${contentNodeEndpoint}/ipfs/${cid}`
 
   // Perform HEAD request, ensuring the route returns 200

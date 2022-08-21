@@ -10,7 +10,7 @@ user_event_types_lookup = {
     "update_profile_photo": "UpdateProfilePhoto",
     "update_cover_photo": "UpdateCoverPhoto",
     "update_is_verified": "UpdateIsVerified",
-    "update_content_node_endpoint": "UpdateCreatorNodeEndpoint",
+    "update_content_node_endpoint": "UpdateContentNodeEndpoint",
 }
 
 # Array version of lookup with event names from the User contract

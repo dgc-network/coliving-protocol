@@ -126,11 +126,11 @@ async function findCIDInNetwork(
   if (attemptedStateFix) return
 
   // get list of content nodes
-  const creatorNodes = await getAllRegisteredCNodes(libs)
-  if (!creatorNodes.length) return
+  const contentNodes = await getAllRegisteredCNodes(libs)
+  if (!contentNodes.length) return
 
   // Remove excluded nodes from list of content nodes, no-op if empty list or nothing passed in
-  const creatorNodesFiltered = creatorNodes.filter(
+  const contentNodesFiltered = contentNodes.filter(
     (c) => !excludeList.includes(c.endpoint)
   )
 
@@ -142,8 +142,8 @@ async function findCIDInNetwork(
   )
   let node
 
-  for (let index = 0; index < creatorNodesFiltered.length; index++) {
-    node = creatorNodesFiltered[index]
+  for (let index = 0; index < contentNodesFiltered.length; index++) {
+    node = contentNodesFiltered[index]
     try {
       const resp = await axios({
         method: 'get',
@@ -208,25 +208,25 @@ async function getAllRegisteredCNodes(libs, logger) {
     }
 
     // Else, fetch from chain
-    let creatorNodes =
+    let contentNodes =
       await libs.ethContracts.ServiceProviderFactoryClient.getServiceProviderList(
         'content-node'
       )
 
     // Filter out self endpoint
-    creatorNodes = creatorNodes.filter(
+    contentNodes = contentNodes.filter(
       (node) => node.endpoint !== config.get('contentNodeEndpoint')
     )
 
     // Write fetched value to Redis with 30min expiry
     await redis.set(
       cacheKey,
-      JSON.stringify(creatorNodes),
+      JSON.stringify(contentNodes),
       'EX',
       THIRTY_MINUTES_IN_SECONDS
     )
 
-    CNodes = creatorNodes
+    CNodes = contentNodes
   } catch (e) {
     if (logger) {
       logger.error(

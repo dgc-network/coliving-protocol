@@ -919,8 +919,8 @@ router.get('/file_lookup', async (req, res) => {
     signature
   ).toLowerCase()
   const libs = req.app.get('colivingLibs')
-  const creatorNodes = await getAllRegisteredCNodes(libs)
-  const foundDelegateWallet = creatorNodes.some(
+  const contentNodes = await getAllRegisteredCNodes(libs)
+  const foundDelegateWallet = contentNodes.some(
     (node) => node.delegateOwnerWallet.toLowerCase() === recoveredWallet
   )
   if (recoveredWallet !== delegateWallet || !foundDelegateWallet) {

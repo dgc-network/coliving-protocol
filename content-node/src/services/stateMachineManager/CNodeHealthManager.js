@@ -123,7 +123,7 @@ class CNodeHealthManager {
    * Takes data off the verbose health check response and determines the peer heatlh
    * @param {Object} verboseHealthCheckResp verbose health check response
    *
-   * TODO: consolidate CreatorNodeSelection + peer set health check calculation logic
+   * TODO: consolidate ContentNodeSelection + peer set health check calculation logic
    */
   determinePeerHealth(verboseHealthCheckResp) {
     // Check for sufficient minimum storage size

@@ -12,7 +12,7 @@ const redis = require('../redis.js')
 const SyncDeDuplicator = require('./snapbackDeDuplicator')
 const PeerSetManager = require('./peerSetManager')
 const { libs } = require('@coliving/sdk')
-const CreatorNode = libs.CreatorNode
+const ContentNode = libs.ContentNode
 const SecondarySyncHealthAgreementer = require('./secondarySyncHealthAgreementer')
 const { generateTimestampAndSignature } = require('../apiSigning')
 const {
@@ -158,7 +158,7 @@ class SnapbackSM {
         maxStalledCount: 0
       },
       // Rate limit to 1 job every 3 minutes locally to prevent log spam during development
-      this.nodeConfig.get('creatorNodeIsDebug')
+      this.nodeConfig.get('contentNodeIsDebug')
         ? {
             max: 1,
             duration: 3000 * 60
@@ -233,8 +233,8 @@ class SnapbackSM {
 
     // PeerSetManager instance to determine the peer set and its health state
     this.peerSetManager = new PeerSetManager({
-      discoveryProviderEndpoint:
-        this.colivingLibs.discoveryProvider.discoveryProviderEndpoint,
+      discoveryNodeEndpoint:
+        this.colivingLibs.discoveryNode.discoveryNodeEndpoint,
       contentNodeEndpoint: this.endpoint
     })
 
@@ -1243,7 +1243,7 @@ class SnapbackSM {
          * There will be an explicit clock value check on the newly selected replica set nodes instead.
          */
         const { services: healthyServicesMap } =
-          await this.colivingLibs.ServiceProvider.autoSelectCreatorNodes({
+          await this.colivingLibs.ServiceProvider.autoSelectContentNodes({
             performSyncCheck: false,
             whitelist: this.reconfigNodeWhitelist,
             log: true
@@ -1411,7 +1411,7 @@ class SnapbackSM {
       this.delegatePrivateKey
     )
 
-    const clockValue = await CreatorNode.getClockValue(
+    const clockValue = await ContentNode.getClockValue(
       replica,
       wallet,
       CLOCK_STATUS_REQUEST_TIMEOUT_MS,
@@ -1994,7 +1994,7 @@ class SnapbackSM {
    */
   async getLatestUserId() {
     const discoveryNodeEndpoint =
-      this.colivingLibs.discoveryProvider.discoveryProviderEndpoint
+      this.colivingLibs.discoveryNode.discoveryNodeEndpoint
     if (!discoveryNodeEndpoint) {
       throw new Error('No discovery node currently selected, exiting')
     }

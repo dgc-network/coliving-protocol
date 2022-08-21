@@ -134,7 +134,7 @@ const healthCheck = async (
     ...versionInfo,
     healthy: true,
     git: process.env.GIT_SHA,
-    selectedDiscoveryProvider: 'none',
+    selectedDiscoveryNode: 'none',
     contentNodeEndpoint: config.get('contentNodeEndpoint'),
     spID: config.get('spID'),
     spOwnerWallet: config.get('spOwnerWallet'),
@@ -210,8 +210,8 @@ const healthCheck = async (
   }
 
   if (libs) {
-    response.selectedDiscoveryProvider =
-      libs.discoveryProvider.discoveryProviderEndpoint
+    response.selectedDiscoveryNode =
+      libs.discoveryNode.discoveryNodeEndpoint
   } else {
     logger.warn('Health check with no libs')
   }

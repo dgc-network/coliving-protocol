@@ -6,7 +6,7 @@ const dataContractsConfig = require('../data-contracts/config.json')
 const ethContractsConfig = require('../eth-contracts/config.json')
 
 const contentNodeEndpoint = 'http://localhost:4000'
-const discoveryProviderEndpoint = 'http://localhost:5000'
+const discoveryNodeEndpoint = 'http://localhost:5000'
 const identityServiceEndpoint = 'http://localhost:7000'
 const dataWeb3ProviderEndpoint = 'http://localhost:8545'
 const ethWeb3ProviderEndpoint = 'http://localhost:8546'
@@ -20,8 +20,8 @@ const constants = {
   agreementMetadataCID2: 'QmSH5gJPHg9xLzV823ty8BSGyHNP6ty22bgLaaaaaaaaaa',
   creatorMetadataCID: 'QmTDhoEDLE3k3CE5bu4mF1ogsEVkPwEAM41KsN7hZX1eWY',
   '0x0': '0x0000000000000000000000000000000000000000000000000000000000000000',
-  creatorNodeURL1: 'http://localhost:8000/',
-  creatorNodeURL2: 'http://localhost:8001/',
+  contentNodeURL1: 'http://localhost:8000/',
+  contentNodeURL2: 'http://localhost:8001/',
   signatureData: 'Click sign to authenticate with content node:1543885912',
   signatureAddress: '0x7d267e2f8dc64c53267c56dab55bf7050566baec',
   signature: '0xbb3ffe5f32950ace5c0a8ecb9c43ab836b7b7146a56e2519ac1c662e9b00bdcd7de9a3f3265206c54f0b8094f8ac8832d32d5852492c1aa3e9493e28ae3a31b91b',

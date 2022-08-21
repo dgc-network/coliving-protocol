@@ -14,7 +14,7 @@ function loadABI(abiFile: string) {
 loadABI('Registry.json')
 loadABI('UserFactory.json')
 loadABI('AgreementFactory.json')
-loadABI('DiscoveryProviderFactory.json')
+loadABI('DiscoveryNodeFactory.json')
 loadABI('SocialFeatureFactory.json')
 loadABI('ContentListFactory.json')
 loadABI('UserLibraryFactory.json')

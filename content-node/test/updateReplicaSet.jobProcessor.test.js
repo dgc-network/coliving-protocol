@@ -76,12 +76,12 @@ describe('test updateReplicaSet job processor', function () {
       .stub()
       .returns(cNodeEndpointToSpIdMap)
     const updateReplicaSetStub = sandbox.stub().resolves()
-    const autoSelectCreatorNodesStub = sandbox
+    const autoSelectContentNodesStub = sandbox
       .stub()
       .resolves({ services: healthyNodes })
     const colivingLibsStub = {
       ServiceProvider: {
-        autoSelectCreatorNodes: autoSelectCreatorNodesStub
+        autoSelectContentNodes: autoSelectContentNodesStub
       },
       contracts: {
         UserReplicaSetManagerClient: {

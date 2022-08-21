@@ -27,13 +27,13 @@ export const getAgreementFromFactory = async (agreementId, agreementFactory) => 
   }
 }
 
-/** Retrieves discovery node from DiscoveryProviderFactory contract
+/** Retrieves discovery node from DiscoveryNodeFactory contract
     * @param {number} discprovId
-    * @param {object} discprovFactory, deployed DiscoveryProvider truffle contract
+    * @param {object} discprovFactory, deployed DiscoveryNode truffle contract
     * @returns {object} dictionary with wallet address, discprov endpoint
     */
 export const getDiscprovFromFactory = async (discprovId, discprovFactory) => {
-  let discprov = await discprovFactory.getDiscoveryProvider.call(discprovId)
+  let discprov = await discprovFactory.getDiscoveryNode.call(discprovId)
   return {
     wallet: discprov[0],
     endpoint: discprov[1]

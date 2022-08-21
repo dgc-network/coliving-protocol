@@ -23,7 +23,7 @@ contract UserFactory is RegistryContract, SigningLogic {
     event UpdateCoverPhoto(uint _userId, bytes32 _coverPhotoDigest);
     event UpdateIsCreator(uint _userId, bool _isCreator);
     event UpdateIsVerified(uint _userId, bool _isVerified);
-    event UpdateCreatorNodeEndpoint(uint _userId, string _contentNodeEndpoint);
+    event UpdateContentNodeEndpoint(uint _userId, string _contentNodeEndpoint);
 
     bytes32 constant ADD_USER_REQUEST_TYPEHASH = keccak256(
         "AddUserRequest(bytes16 handle,bytes32 nonce)"
@@ -53,7 +53,7 @@ contract UserFactory is RegistryContract, SigningLogic {
         "UpdateUserVerifiedRequest(uint userId,bool newValue,bytes32 nonce)"
     );
     bytes32 constant UPDATE_USER_CONTENT_NODE_REQUEST_TYPEHASH = keccak256(
-        "UpdateUserCreatorNodeRequest(uint userId,string newValue,bytes32 nonce)"
+        "UpdateUserContentNodeRequest(uint userId,string newValue,bytes32 nonce)"
     );
 
     constructor(
@@ -280,7 +280,7 @@ contract UserFactory is RegistryContract, SigningLogic {
         emit UpdateIsVerified(_userId, _isVerified);
     }
 
-    function updateCreatorNodeEndpoint(
+    function updateContentNodeEndpoint(
         uint _userId,
         string calldata _contentNodeEndpoint,
         bytes32 _nonce,
@@ -297,7 +297,7 @@ contract UserFactory is RegistryContract, SigningLogic {
         burnSignatureDigest(_signatureDigest, signer);
         this.callerOwnsUser(signer, _userId);   // will revert if false
 
-        emit UpdateCreatorNodeEndpoint(_userId, _contentNodeEndpoint);
+        emit UpdateContentNodeEndpoint(_userId, _contentNodeEndpoint);
     }
 
     /** @notice returns true if handle is valid and not already taken, false otherwise */

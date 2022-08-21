@@ -2,10 +2,10 @@ import { pick, isEqual } from 'lodash'
 import { Base, BaseConstructorArgs, Services } from './base'
 import { Nullable, UserMetadata, Utils } from '../utils'
 import {
-  CreatorNode,
+  ContentNode,
   getSpIDForEndpoint,
   setSpIDForEndpoint
-} from '../services/creatorNode'
+} from '../services/contentNode'
 import type { ServiceProvider } from './ServiceProvider'
 
 // User metadata fields that are required on the metadata object and can have
@@ -69,8 +69,8 @@ export class Users extends Base {
 
     this.getClockValuesFromReplicaSet =
       this.getClockValuesFromReplicaSet.bind(this)
-    this._waitForCreatorNodeEndpointIndexing =
-      this._waitForCreatorNodeEndpointIndexing.bind(this)
+    this._waitForContentNodeEndpointIndexing =
+      this._waitForContentNodeEndpointIndexing.bind(this)
     this._addUserOperations = this._addUserOperations.bind(this)
     this._updateUserOperations = this._updateUserOperations.bind(this)
     this._validateUserMetadata = this._validateUserMetadata.bind(this)
@@ -110,7 +110,7 @@ export class Users extends Base {
     minBlockNumber: Nullable<number> = null
   ) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getUsers(
+    return await this.discoveryNode.getUsers(
       limit,
       offset,
       idsArray,
@@ -130,7 +130,7 @@ export class Users extends Base {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
     const followerUserId = this.userStateManager.getCurrentUserId()
     if (followerUserId) {
-      return await this.discoveryProvider.getFollowIntersectionUsers(
+      return await this.discoveryNode.getFollowIntersectionUsers(
         limit,
         offset,
         followeeUserId,
@@ -145,7 +145,7 @@ export class Users extends Base {
    */
   async getFollowersForUser(limit = 100, offset = 0, followeeUserId: string) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getFollowersForUser(
+    return await this.discoveryNode.getFollowersForUser(
       limit,
       offset,
       followeeUserId
@@ -157,7 +157,7 @@ export class Users extends Base {
    */
   async getFolloweesForUser(limit = 100, offset = 0, followerUserId: string) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getFolloweesForUser(
+    return await this.discoveryNode.getFolloweesForUser(
       limit,
       offset,
       followerUserId
@@ -185,7 +185,7 @@ export class Users extends Base {
     withUsers = false
   ) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getUserRepostFeed(
+    return await this.discoveryNode.getUserRepostFeed(
       userId,
       limit,
       offset,
@@ -217,7 +217,7 @@ export class Users extends Base {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
     const owner = this.userStateManager.getCurrentUser()
     if (owner) {
-      return await this.discoveryProvider.getSocialFeed(
+      return await this.discoveryNode.getSocialFeed(
         filter,
         limit,
         offset,
@@ -244,7 +244,7 @@ export class Users extends Base {
     withUsers = false
   ) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getTopCreatorsByGenres(
+    return await this.discoveryNode.getTopCreatorsByGenres(
       genres,
       limit,
       offset,
@@ -290,13 +290,13 @@ export class Users extends Base {
 
       // Autoselect a new replica set and update the metadata object with new content node endpoints
       phase = phases.AUTOSELECT_CONTENT_NODES
-      const response = await this.ServiceProvider.autoSelectCreatorNodes({
+      const response = await this.ServiceProvider.autoSelectContentNodes({
         performSyncCheck: false,
         preferHigherPatchForPrimary: this.preferHigherPatchForPrimary,
         preferHigherPatchForSecondaries: this.preferHigherPatchForSecondaries
       })
       console.log(
-        `${logPrefix} [phase: ${phase}] ServiceProvider.autoSelectCreatorNodes() completed in ${
+        `${logPrefix} [phase: ${phase}] ServiceProvider.autoSelectContentNodes() completed in ${
           Date.now() - startMs
         }ms`
       )
@@ -310,7 +310,7 @@ export class Users extends Base {
         throw new Error('Could not select a primary.')
       }
 
-      const newContentNodeEndpoints = CreatorNode.buildEndpoint(
+      const newContentNodeEndpoints = ContentNode.buildEndpoint(
         primary,
         secondaries
       )
@@ -318,7 +318,7 @@ export class Users extends Base {
 
       // Update the new primary to the auto-selected primary
       phase = phases.SET_PRIMARY
-      await this.creatorNode.setEndpoint(primary)
+      await this.contentNode.setEndpoint(primary)
 
       // Update metadata in CN and on chain of newly assigned replica set
       phase = phases.UPLOAD_METADATA_AND_UPDATE_ON_CHAIN
@@ -359,12 +359,12 @@ export class Users extends Base {
   ) {
     let didMetadataUpdate = false
     if (profilePictureFile) {
-      const resp = await this.creatorNode.uploadImage(profilePictureFile, true)
+      const resp = await this.contentNode.uploadImage(profilePictureFile, true)
       metadata.profile_picture_sizes = resp.dirCID
       didMetadataUpdate = true
     }
     if (coverPhotoFile) {
-      const resp = await this.creatorNode.uploadImage(coverPhotoFile, false)
+      const resp = await this.contentNode.uploadImage(coverPhotoFile, false)
       metadata.cover_photo_sizes = resp.dirCID
       didMetadataUpdate = true
     }
@@ -426,7 +426,7 @@ export class Users extends Base {
     this._validateUserMetadata(newMetadata)
 
     // Retrieve the current user metadata
-    const users = await this.discoveryProvider.getUsers(
+    const users = await this.discoveryNode.getUsers(
       1,
       0,
       [userId],
@@ -467,13 +467,13 @@ export class Users extends Base {
 
     // Ensure libs is connected to correct CN
     if (
-      this.creatorNode.getEndpoint() !==
-      CreatorNode.getPrimary(newMetadata.content_node_endpoint!)
+      this.contentNode.getEndpoint() !==
+      ContentNode.getPrimary(newMetadata.content_node_endpoint!)
     ) {
       throw new Error(
-        `Not connected to correct content node. Expected ${CreatorNode.getPrimary(
+        `Not connected to correct content node. Expected ${ContentNode.getPrimary(
           newMetadata.content_node_endpoint!
-        )}, got ${this.creatorNode.getEndpoint()}`
+        )}, got ${this.contentNode.getEndpoint()}`
       )
     }
 
@@ -500,12 +500,12 @@ export class Users extends Base {
       )
       startMs = Date.now()
 
-      await this._waitForURSMCreatorNodeEndpointIndexing(
+      await this._waitForURSMContentNodeEndpointIndexing(
         userId,
         replicaSetSPIDs
       )
       console.log(
-        `${logPrefix} _waitForURSMCreatorNodeEndpointIndexing() completed in ${
+        `${logPrefix} _waitForURSMContentNodeEndpointIndexing() completed in ${
           Date.now() - startMs
         }ms`
       )
@@ -513,7 +513,7 @@ export class Users extends Base {
 
     // Upload new metadata object to CN
     const { metadataMultihash, metadataFileUUID } =
-      await this.creatorNode.uploadCreatorContent(
+      await this.contentNode.uploadCreatorContent(
         // @ts-expect-error pretty tough one to type
         newMetadata,
         updateEndpointTxBlockNumber
@@ -532,7 +532,7 @@ export class Users extends Base {
       await this._updateUserOperations(newMetadata, oldMetadata, userId)
 
     // Write to CN to associate blockchain user id with updated metadata and block number
-    await this.creatorNode.associateCreator(
+    await this.contentNode.associateCreator(
       userId,
       metadataFileUUID,
       Math.max(txReceipt.blockNumber, latestBlockNumber)
@@ -594,7 +594,7 @@ export class Users extends Base {
    * Gets the clock status for user in userStateManager across replica set.
    */
   async getClockValuesFromReplicaSet() {
-    return await this.creatorNode.getClockValuesFromReplicaSet()
+    return await this.contentNode.getClockValuesFromReplicaSet()
   }
 
   /* ------- PRIVATE  ------- */
@@ -651,12 +651,12 @@ export class Users extends Base {
         )
         startMs = Date.now()
 
-        await this._waitForURSMCreatorNodeEndpointIndexing(
+        await this._waitForURSMContentNodeEndpointIndexing(
           userId,
           replicaSetSPIDs
         )
         console.log(
-          `${logPrefix} [phase: ${phase}] _waitForURSMCreatorNodeEndpointIndexing() completed in ${
+          `${logPrefix} [phase: ${phase}] _waitForURSMContentNodeEndpointIndexing() completed in ${
             Date.now() - startMs
           }ms`
         )
@@ -666,9 +666,9 @@ export class Users extends Base {
       phase = phases.UPLOAD_METADATA
       const { metadataMultihash, metadataFileUUID } =
         // @ts-expect-error tough converting UserMetadata to Metadata
-        await this.creatorNode.uploadCreatorContent(newMetadata)
+        await this.contentNode.uploadCreatorContent(newMetadata)
       console.log(
-        `${logPrefix} [phase: ${phase}] creatorNode.uploadCreatorContent() completed in ${
+        `${logPrefix} [phase: ${phase}] contentNode.uploadCreatorContent() completed in ${
           Date.now() - startMs
         }ms`
       )
@@ -706,13 +706,13 @@ export class Users extends Base {
 
       // Write to CN to associate blockchain user id with updated metadata and block number
       phase = phases.ASSOCIATE_USER
-      await this.creatorNode.associateCreator(
+      await this.contentNode.associateCreator(
         userId,
         metadataFileUUID,
         Math.max(txReceipt.blockNumber, latestBlockNumber)
       )
       console.log(
-        `${logPrefix} [phase: ${phase}] creatorNode.associateCreator() completed in ${
+        `${logPrefix} [phase: ${phase}] contentNode.associateCreator() completed in ${
           Date.now() - startMs
         }ms`
       )
@@ -754,12 +754,12 @@ export class Users extends Base {
   }
 
   /** Waits for a discovery node to confirm that a content node endpoint is updated. */
-  async _waitForCreatorNodeEndpointIndexing(
+  async _waitForContentNodeEndpointIndexing(
     userId: number,
     contentNodeEndpoint: string
   ) {
     while (true) {
-      const userList = await this.discoveryProvider.getUsers(1, 0, [userId])
+      const userList = await this.discoveryNode.getUsers(1, 0, [userId])
       if (userList) {
         const user = userList[0]
         if (user && user.content_node_endpoint === contentNodeEndpoint) {
@@ -771,7 +771,7 @@ export class Users extends Base {
     }
   }
 
-  async _waitForURSMCreatorNodeEndpointIndexing(
+  async _waitForURSMContentNodeEndpointIndexing(
     userId: number,
     replicaSetSPIDs: number[],
     timeoutMs = 60000
@@ -797,7 +797,7 @@ export class Users extends Base {
     await Utils.racePromiseWithTimeout(
       asyncFn(),
       timeoutMs,
-      `[User:_waitForURSMCreatorNodeEndpointIndexing()] Timeout error after ${timeoutMs}ms`
+      `[User:_waitForURSMContentNodeEndpointIndexing()] Timeout error after ${timeoutMs}ms`
     )
   }
 
@@ -970,8 +970,8 @@ export class Users extends Base {
       await this.contracts.initUserReplicaSetManagerClient()
     }
 
-    const primaryEndpoint = CreatorNode.getPrimary(contentNodeEndpoint)
-    const secondaries = CreatorNode.getSecondaries(contentNodeEndpoint)
+    const primaryEndpoint = ContentNode.getPrimary(contentNodeEndpoint)
+    const secondaries = ContentNode.getSecondaries(contentNodeEndpoint)
 
     if (secondaries.length < 2) {
       throw new Error(

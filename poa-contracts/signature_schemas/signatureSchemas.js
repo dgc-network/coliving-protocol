@@ -372,11 +372,11 @@ generators.getUpdateUserBioRequestData = function (chainId, contractAddress, use
   )
 }
 
-generators.getUpdateUserCreatorNodeRequestData = function (chainId, contractAddress, userId, newValue, nonce) {
+generators.getUpdateUserContentNodeRequestData = function (chainId, contractAddress, userId, newValue, nonce) {
   return _getUpdateUserRequestData(
     chainId,
     contractAddress,
-    'UpdateUserCreatorNodeRequest',
+    'UpdateUserContentNodeRequest',
     schemas.updateUserString,
     userId,
     newValue,

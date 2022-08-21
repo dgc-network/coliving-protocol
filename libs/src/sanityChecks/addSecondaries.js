@@ -1,4 +1,4 @@
-const { CreatorNode } = require('../services/creatorNode')
+const { ContentNode } = require('../services/contentNode')
 
 /**
  * Add secondary content nodes for a user if they don't have any
@@ -10,16 +10,16 @@ const addSecondaries = async (libs) => {
 
   if (!user) return
 
-  const primary = CreatorNode.getPrimary(user.content_node_endpoint)
-  const secondaries = CreatorNode.getSecondaries(user.content_node_endpoint)
+  const primary = ContentNode.getPrimary(user.content_node_endpoint)
+  const secondaries = ContentNode.getSecondaries(user.content_node_endpoint)
 
   // Get current endpoints and check if we don't have enough secondaries
   if (secondaries.length < 2) {
     console.debug(`Sanity Check - addSecondaries - User has only ${secondaries.length}`)
 
     // Find new healthy secondaries
-    const currentEndpoints = CreatorNode.getEndpoints(user.content_node_endpoint)
-    const services = await libs.ServiceProvider.getSelectableCreatorNodes(
+    const currentEndpoints = ContentNode.getEndpoints(user.content_node_endpoint)
+    const services = await libs.ServiceProvider.getSelectableContentNodes(
       /* whitelist */ null,
       /* blacklist */ new Set(currentEndpoints)
     )

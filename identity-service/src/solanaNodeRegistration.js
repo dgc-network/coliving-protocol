@@ -6,7 +6,7 @@ const JOB_FREQUENCY_MS = 15 /* min */ * 60 /* sec */ * 1000 /* msec */
 const registerNodes = async (colivingLibs, logger) => {
   try {
     logger.info('Beginning node registration job')
-    const nodes = await colivingLibs.ServiceProvider.discoveryProvider.serviceSelector.getServices({ verbose: true })
+    const nodes = await colivingLibs.ServiceProvider.discoveryNode.serviceSelector.getServices({ verbose: true })
     const unregistered = []
     for (const node of nodes) {
       const isRegistered = await colivingLibs.solanaWeb3Manager.getIsDiscoveryNodeRegistered(node.delegateOwnerWallet)

@@ -16,7 +16,7 @@ with open("output.json", "r") as f:
 content_nodes_set = set()
 for user in users:
     content_nodes_set |= set(
-        content_node["endpoint"] for content_node in user["creatorNodes"]
+        content_node["endpoint"] for content_node in user["contentNodes"]
     )
 content_nodes = sorted(content_nodes_set)
 
@@ -25,7 +25,7 @@ synced: defaultdict[str, set] = defaultdict(set)
 remaining: defaultdict[str, set] = defaultdict(set)
 for user in users:
     user_cids = set(user["cids"])
-    for content_node in user["creatorNodes"]:
+    for content_node in user["contentNodes"]:
         content_node_cids = set(content_node["cids"])
         synced[content_node["endpoint"]] |= content_node_cids
         remaining[content_node["endpoint"]] |= user_cids - content_node_cids
@@ -58,7 +58,7 @@ plt.savefig("synced_remaining.png")
 total: defaultdict[str, int] = defaultdict(int)
 as_primary: defaultdict[str, int] = defaultdict(int)
 for user in users:
-    for content_node in user["creatorNodes"]:
+    for content_node in user["contentNodes"]:
         if content_node["primary"]:
             as_primary[content_node["endpoint"]] += 1
         total[content_node["endpoint"]] += 1
@@ -90,7 +90,7 @@ plt.savefig("num_users_managed.png")
 # Plot frequnecy of number of time a cids was replicated
 cid_to_content_nodes = defaultdict(set)
 for user in users:
-    for content_node in user["creatorNodes"]:
+    for content_node in user["contentNodes"]:
         for cid in content_node["cids"]:
             cid_to_content_nodes[cid].add(content_node["endpoint"])
 
@@ -118,7 +118,7 @@ full_sync_count_frequency = defaultdict(list)
 for user in users:
     num_cids = len(user["cids"])
     full_synced = 0
-    for content_node in user["creatorNodes"]:
+    for content_node in user["contentNodes"]:
         if len(content_node["cids"]) == num_cids:
             full_synced += 1
 

@@ -708,10 +708,10 @@ const config = convict({
     env: 'optimizelySdkKey',
     default: 'MX4fYBgANQetvmBXGpuxzF'
   },
-  discoveryProviderWhitelist: {
+  discoveryNodeWhitelist: {
     doc: 'Whitelisted discovery nodes to select from (comma-separated)',
     format: String,
-    env: 'discoveryProviderWhitelist',
+    env: 'discoveryNodeWhitelist',
     default: ''
   },
   clusterForkProcessCount: {

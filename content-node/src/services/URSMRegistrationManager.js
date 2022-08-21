@@ -135,7 +135,7 @@ class URSMRegistrationManager {
      *  b. Remove duplicates by owner_wallet key due to on-chain uniqueness constraint
      */
     let URSMContentNodes =
-      await this.colivingLibs.discoveryProvider.getURSMContentNodes()
+      await this.colivingLibs.discoveryNode.getURSMContentNodes()
 
     URSMContentNodes = URSMContentNodes.filter((node) => node.endpoint)
     URSMContentNodes = _.shuffle(URSMContentNodes)

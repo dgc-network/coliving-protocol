@@ -44,12 +44,12 @@ const getLibsConfig = overrideConfig => {
       DATA_CONTRACTS_REGISTRY_ADDRESS,
       DATA_CONTRACTS_PROVIDER_ENDPOINTS
     ),
-    creatorNodeConfig: ColivingLibs.configCreatorNode(
+    contentNodeConfig: ColivingLibs.configContentNode(
       USER_METADATA_ENDPOINT,
       lazyConnect,
       CONTENT_NODE_ALLOWLIST
     ),
-    discoveryProviderConfig: {},
+    discoveryNodeConfig: {},
     identityServiceConfig: ColivingLibs.configIdentityService(
       IDENTITY_SERVICE_ENDPOINT,
       useHedgehogLocalStorage

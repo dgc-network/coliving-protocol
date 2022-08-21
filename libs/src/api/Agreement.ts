@@ -1,7 +1,7 @@
 import type { BaseConstructorArgs } from './base'
 
 import { Base, Services } from './base'
-import { CreatorNode } from '../services/creatorNode'
+import { ContentNode } from '../services/contentNode'
 import { Nullable, AgreementMetadata, Utils } from '../utils'
 import retry from 'async-retry'
 import type { TransactionReceipt } from 'web3-core'
@@ -45,8 +45,8 @@ export class Agreement extends Base {
     this.getListenHistoryAgreements = this.getListenHistoryAgreements.bind(this)
     this.checkIfDownloadAvailable = this.checkIfDownloadAvailable.bind(this)
     this.uploadAgreement = this.uploadAgreement.bind(this)
-    this.uploadAgreementContentToCreatorNode =
-      this.uploadAgreementContentToCreatorNode.bind(this)
+    this.uploadAgreementContentToContentNode =
+      this.uploadAgreementContentToContentNode.bind(this)
     this.addAgreementsToChainAndCnode = this.addAgreementsToChainAndCnode.bind(this)
     this.updateAgreement = this.updateAgreement.bind(this)
     this.logAgreementListen = this.logAgreementListen.bind(this)
@@ -90,7 +90,7 @@ export class Agreement extends Base {
     withUsers = false
   ) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getAgreements(
+    return await this.discoveryNode.getAgreements(
       limit,
       offset,
       idsArray,
@@ -109,7 +109,7 @@ export class Agreement extends Base {
    */
   async getAgreementsByHandleAndSlug(handle: string, slug: string) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getAgreementsByHandleAndSlug(handle, slug)
+    return await this.discoveryNode.getAgreementsByHandleAndSlug(handle, slug)
   }
 
   /**
@@ -117,7 +117,7 @@ export class Agreement extends Base {
    */
   async getAgreementsIncludingUnlisted(identifiers: string[], withUsers = false) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getAgreementsIncludingUnlisted(
+    return await this.discoveryNode.getAgreementsIncludingUnlisted(
       identifiers,
       withUsers
     )
@@ -135,7 +135,7 @@ export class Agreement extends Base {
     time: string
   ) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getRandomAgreements(
+    return await this.discoveryNode.getRandomAgreements(
       genre,
       limit,
       exclusionList,
@@ -148,7 +148,7 @@ export class Agreement extends Base {
    */
   async getStemsForAgreement(agreementId: number) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getStemsForAgreement(agreementId)
+    return await this.discoveryNode.getStemsForAgreement(agreementId)
   }
 
   /**
@@ -160,7 +160,7 @@ export class Agreement extends Base {
     offset: Nullable<number> = null
   ) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getRemixesOfAgreement(
+    return await this.discoveryNode.getRemixesOfAgreement(
       agreementId,
       limit,
       offset
@@ -176,7 +176,7 @@ export class Agreement extends Base {
     offset: Nullable<number> = null
   ) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getRemixAgreementParents(
+    return await this.discoveryNode.getRemixAgreementParents(
       agreementId,
       limit,
       offset
@@ -189,7 +189,7 @@ export class Agreement extends Base {
    */
   async getSavedAgreements(limit = 100, offset = 0, withUsers = false) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getSavedAgreements(limit, offset, withUsers)
+    return await this.discoveryNode.getSavedAgreements(limit, offset, withUsers)
   }
 
   /**
@@ -203,7 +203,7 @@ export class Agreement extends Base {
     offset: Nullable<number> = null
   ) {
     this.REQUIRES(Services.IDENTITY_SERVICE)
-    return await this.discoveryProvider.getTrendingAgreements(
+    return await this.discoveryNode.getTrendingAgreements(
       genre,
       time,
       idsArray,
@@ -243,7 +243,7 @@ export class Agreement extends Base {
    */
   async getSaversForAgreement(limit = 100, offset = 0, saveAgreementId: number) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getSaversForAgreement(
+    return await this.discoveryNode.getSaversForAgreement(
       limit,
       offset,
       saveAgreementId
@@ -259,7 +259,7 @@ export class Agreement extends Base {
    */
   async getSaversForContentList(limit = 100, offset = 0, saveContentListId: number) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getSaversForContentList(
+    return await this.discoveryNode.getSaversForContentList(
       limit,
       offset,
       saveContentListId
@@ -275,7 +275,7 @@ export class Agreement extends Base {
    */
   async getRepostersForAgreement(limit = 100, offset = 0, repostAgreementId: number) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getRepostersForAgreement(
+    return await this.discoveryNode.getRepostersForAgreement(
       limit,
       offset,
       repostAgreementId
@@ -295,7 +295,7 @@ export class Agreement extends Base {
     repostContentListId: number
   ) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    return await this.discoveryProvider.getRepostersForContentList(
+    return await this.discoveryNode.getRepostersForContentList(
       limit,
       offset,
       repostContentListId
@@ -323,7 +323,7 @@ export class Agreement extends Base {
     contentNodeEndpoints: string,
     agreementId: number
   ) {
-    return await CreatorNode.checkIfDownloadAvailable(
+    return await ContentNode.checkIfDownloadAvailable(
       contentNodeEndpoints,
       agreementId
     )
@@ -387,7 +387,7 @@ export class Agreement extends Base {
         transcodedAgreementCID
       } = await retry(
         async () => {
-          return await this.creatorNode.uploadAgreementContent(
+          return await this.contentNode.uploadAgreementContent(
             agreementFile,
             coverArtFile,
             metadata,
@@ -423,7 +423,7 @@ export class Agreement extends Base {
 
       phase = phases.ASSOCIATING_AGREEMENT
       // Associate the agreement id with the file metadata and block number
-      await this.creatorNode.associateAgreement(
+      await this.contentNode.associateAgreement(
         agreementId,
         metadataFileUUID,
         txReceipt.blockNumber,
@@ -450,7 +450,7 @@ export class Agreement extends Base {
    * WARNING: Uploads file to content node, but does not call contracts
    * Please pair this with the addAgreementsToChainAndCnode
    */
-  async uploadAgreementContentToCreatorNode(
+  async uploadAgreementContentToContentNode(
     agreementFile: File,
     coverArtFile: File,
     metadata: AgreementMetadata,
@@ -479,7 +479,7 @@ export class Agreement extends Base {
       transcodedAgreementUUID
     } = await retry(
       async () => {
-        return await this.creatorNode.uploadAgreementContent(
+        return await this.contentNode.uploadAgreementContent(
           agreementFile,
           coverArtFile,
           metadata,
@@ -495,7 +495,7 @@ export class Agreement extends Base {
         retries: 3,
         onRetry: (err) => {
           if (err) {
-            console.log('uploadAgreementContentToCreatorNode retry error: ', err)
+            console.log('uploadAgreementContentToContentNode retry error: ', err)
           }
         }
       }
@@ -511,7 +511,7 @@ export class Agreement extends Base {
   /**
    * Takes an array of [{metadataMultihash, metadataFileUUID}, {}, ]
    * Adds agreements to chain for this user
-   * Associates agreements with user on creatorNode
+   * Associates agreements with user on contentNode
    */
   async addAgreementsToChainAndCnode(agreementMultihashAndUUIDList: ChainInfo[]) {
     this.REQUIRES(Services.CONTENT_NODE)
@@ -568,20 +568,20 @@ export class Agreement extends Base {
       }
     }
 
-    const associatedWithCreatorNode = []
+    const associatedWithContentNode = []
     try {
       await Promise.all(
         addedToChain.map(async (chainAgreementInfo) => {
           const metadataFileUUID = chainAgreementInfo.metadataFileUUID
           const transcodedAgreementUUID = chainAgreementInfo.transcodedAgreementUUID
           const agreementId = chainAgreementInfo.agreementId
-          await this.creatorNode.associateAgreement(
+          await this.contentNode.associateAgreement(
             agreementId,
             metadataFileUUID,
             chainAgreementInfo.txReceipt.blockNumber,
             transcodedAgreementUUID
           )
-          associatedWithCreatorNode.push(agreementId)
+          associatedWithContentNode.push(agreementId)
         })
       )
     } catch (e) {
@@ -612,7 +612,7 @@ export class Agreement extends Base {
 
     // Upload new metadata
     const { metadataMultihash, metadataFileUUID } =
-      await this.creatorNode.uploadAgreementMetadata(metadata)
+      await this.contentNode.uploadAgreementMetadata(metadata)
     // Write the new metadata to chain
     const multihashDecoded = Utils.decodeMultihash(metadataMultihash)
     const agreementId = metadata.agreement_id
@@ -624,7 +624,7 @@ export class Agreement extends Base {
       multihashDecoded.size
     )
     // Re-associate the agreement id with the new metadata
-    await this.creatorNode.associateAgreement(
+    await this.contentNode.associateAgreement(
       agreementId,
       metadataFileUUID,
       txReceipt.blockNumber

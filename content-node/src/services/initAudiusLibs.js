@@ -14,8 +14,8 @@ module.exports = async (excludeDiscovery = false, logger = genericLogger) => {
    */
   const ethProviderUrl = config.get('ethProviderUrl')
   const ethNetworkId = config.get('ethNetworkId')
-  const discoveryProviderWhitelistConfig = config.get(
-    'discoveryProviderWhitelist'
+  const discoveryNodeWhitelistConfig = config.get(
+    'discoveryNodeWhitelist'
   )
   const identityService = config.get('identityService')
   const discoveryNodeUnhealthyBlockDiff = config.get(
@@ -27,10 +27,10 @@ module.exports = async (excludeDiscovery = false, logger = genericLogger) => {
   const dataRegistryAddress = config.get('dataRegistryAddress')
   const dataProviderUrl = config.get('dataProviderUrl')
   const delegatePrivateKey = config.get('delegatePrivateKey')
-  const creatorNodeIsDebug = config.get('creatorNodeIsDebug')
+  const contentNodeIsDebug = config.get('contentNodeIsDebug')
 
-  const discoveryProviderWhitelist = discoveryProviderWhitelistConfig
-    ? new Set(discoveryProviderWhitelistConfig.split(','))
+  const discoveryNodeWhitelist = discoveryNodeWhitelistConfig
+    ? new Set(discoveryNodeWhitelistConfig.split(','))
     : null
 
   /**
@@ -64,17 +64,17 @@ module.exports = async (excludeDiscovery = false, logger = genericLogger) => {
       // TODO - formatting this private key here is not ideal
       delegatePrivateKey.replace('0x', '')
     ),
-    discoveryProviderConfig: excludeDiscovery
+    discoveryNodeConfig: excludeDiscovery
       ? null
       : {
-          whitelist: discoveryProviderWhitelist,
+          whitelist: discoveryNodeWhitelist,
           unhealthyBlockDiff: discoveryNodeUnhealthyBlockDiff
         },
     // If an identity service config is present, set up libs with the connection, otherwise do nothing
     identityServiceConfig: identityService
       ? ColivingLibs.configIdentityService(identityService)
       : undefined,
-    isDebug: creatorNodeIsDebug,
+    isDebug: contentNodeIsDebug,
     isServer: true,
     preferHigherPatchForPrimary: true,
     preferHigherPatchForSecondaries: true,

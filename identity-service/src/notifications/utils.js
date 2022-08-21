@@ -18,7 +18,7 @@ const agreementListenMilestonePollCount = 100
  * For any users missing blockchain id, here we query the values from discprov and fill them in
  */
 async function updateBlockchainIds () {
-  const { discoveryProvider } = colivingLibsWrapper.getColivingLibs()
+  const { discoveryNode } = colivingLibsWrapper.getColivingLibs()
 
   let usersWithoutBlockchainId = await models.User.findAll({
     attributes: ['walletAddress', 'handle'],
@@ -30,7 +30,7 @@ async function updateBlockchainIds () {
       logger.info(`Updating user with wallet ${walletAddress}`)
       const response = await axios({
         method: 'get',
-        url: `${discoveryProvider.discoveryProviderEndpoint}/users`,
+        url: `${discoveryNode.discoveryNodeEndpoint}/users`,
         params: {
           wallet: walletAddress
         }
@@ -76,10 +76,10 @@ async function updateBlockchainIds () {
  *
  * @returns Array [{agreementId, listenCount}, agreementId, listenCount]
  */
-async function calculateAgreementListenMilestonesFromDiscovery (discoveryProvider) {
+async function calculateAgreementListenMilestonesFromDiscovery (discoveryNode) {
   // Pull listen count notification data from discovery node
   const timeout = 2 /* min */ * 60 /* sec */ * 1000 /* ms */
-  const agreementListenMilestones = await discoveryProvider.getAgreementListenMilestones(timeout)
+  const agreementListenMilestones = await discoveryNode.getAgreementListenMilestones(timeout)
   const listenCountBody = agreementListenMilestones.data
   let parsedListenCounts = []
   for (let key in listenCountBody) {

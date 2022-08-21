@@ -14,7 +14,7 @@ import {
   Logger
 } from '../../utils'
 import { CONTENT_NODE_SERVICE_NAME, DECISION_TREE_STATE } from './constants'
-import type { MonitoringCallbacks } from './CreatorNode'
+import type { MonitoringCallbacks } from './ContentNode'
 
 type Timeout = number | null
 
@@ -32,7 +32,7 @@ export function setSpIDForEndpoint(endpoint: string, spID?: number) {
   contentNodeEndpointToSpID[endpoint] = spID
 }
 
-type CreatorNode = {
+type ContentNode = {
   getSyncStatus: (
     service: ServiceName,
     timeout: Timeout
@@ -42,11 +42,11 @@ type CreatorNode = {
   monitoringCallbacks: MonitoringCallbacks
 }
 
-type CreatorNodeSelectionConfig = Omit<
+type ContentNodeSelectionConfig = Omit<
   ServiceSelectionConfig,
   'getServices'
 > & {
-  creatorNode: CreatorNode
+  contentNode: ContentNode
   numberOfNodes: number
   ethContracts: EthContracts
   maxStorageUsedPercent?: number
@@ -62,11 +62,11 @@ interface Decision {
   val?: unknown
 }
 
-export class CreatorNodeSelection extends ServiceSelection {
+export class ContentNodeSelection extends ServiceSelection {
   override decisionTree: Decision[]
   currentVersion: string | null = ''
   ethContracts: EthContracts
-  creatorNode: CreatorNode
+  contentNode: ContentNode
   numberOfNodes: number
   timeout: Timeout
   equivalencyDelta: number | null
@@ -79,7 +79,7 @@ export class CreatorNodeSelection extends ServiceSelection {
   logger: Logger
 
   constructor({
-    creatorNode,
+    contentNode,
     numberOfNodes,
     ethContracts,
     whitelist,
@@ -90,7 +90,7 @@ export class CreatorNodeSelection extends ServiceSelection {
     equivalencyDelta = null,
     preferHigherPatchForPrimary = true,
     preferHigherPatchForSecondaries = true
-  }: CreatorNodeSelectionConfig) {
+  }: ContentNodeSelectionConfig) {
     super({
       getServices: async () => {
         this.currentVersion = await ethContracts.getCurrentVersion(
@@ -105,11 +105,11 @@ export class CreatorNodeSelection extends ServiceSelection {
         })
       },
       // Use the content node's configured whitelist if not provided
-      whitelist: whitelist ?? creatorNode?.passList,
-      blacklist: blacklist ?? creatorNode?.blockList
+      whitelist: whitelist ?? contentNode?.passList,
+      blacklist: blacklist ?? contentNode?.blockList
     })
 
-    this.creatorNode = creatorNode
+    this.contentNode = contentNode
     this.numberOfNodes = numberOfNodes
     this.ethContracts = ethContracts
     this.timeout = timeout
@@ -219,7 +219,7 @@ export class CreatorNodeSelection extends ServiceSelection {
 
     if (log) {
       this.logger.info(
-        'CreatorNodeSelection - final decision tree state',
+        'ContentNodeSelection - final decision tree state',
         this.decisionTree
       )
     }
@@ -233,7 +233,7 @@ export class CreatorNodeSelection extends ServiceSelection {
    */
   async getSyncStatus(service: ServiceName, timeout: Timeout = null) {
     try {
-      const syncStatus = await this.creatorNode.getSyncStatus(service, timeout)
+      const syncStatus = await this.contentNode.getSyncStatus(service, timeout)
       return { service, syncStatus, error: null }
     } catch (e) {
       return { service, syncStatus: null, error: e }
@@ -324,7 +324,7 @@ export class CreatorNodeSelection extends ServiceSelection {
       // Could not perform a sync check. Add to unhealthy
       if (response.error) {
         this.logger.warn(
-          `CreatorNodeSelection - Failed sync status check for ${response.service}: ${response.error}`
+          `ContentNodeSelection - Failed sync status check for ${response.service}: ${response.error}`
         )
         this.addUnhealthy(response.service)
         continue
@@ -422,20 +422,20 @@ export class CreatorNodeSelection extends ServiceSelection {
     })
 
     // Record metrics
-    if (this.creatorNode?.monitoringCallbacks.healthCheck) {
+    if (this.contentNode?.monitoringCallbacks.healthCheck) {
       healthCheckedServices.forEach((check) => {
         if (check.response?.data) {
           const url = new URL(check.request.url)
           const data = check.response.data.data
           try {
             // @ts-expect-error we make a check that it exists above, not sure why this isn't caught
-            this.creatorNode.monitoringCallbacks.healthCheck({
+            this.contentNode.monitoringCallbacks.healthCheck({
               endpoint: url.origin,
               pathname: url.pathname,
               searchParams: url.searchParams,
               version: data.version,
               git: data.git,
-              selectedDiscoveryNode: data.selectedDiscoveryProvider,
+              selectedDiscoveryNode: data.selectedDiscoveryNode,
               databaseSize: data.databaseSize,
               databaseConnections: data.databaseConnections,
               totalMemory: data.totalMemory,

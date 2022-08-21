@@ -525,7 +525,7 @@ async function getOwnEndpoint({ libs }) {
  *
  * @returns {Array} - array of strings of replica set
  */
-async function getCreatorNodeEndpoints({
+async function getContentNodeEndpoints({
   libs,
   logger,
   wallet,
@@ -533,7 +533,7 @@ async function getCreatorNodeEndpoints({
   ensurePrimary,
   myCnodeEndpoint
 }) {
-  logger.info(`Starting getCreatorNodeEndpoints for wallet ${wallet}`)
+  logger.info(`Starting getContentNodeEndpoints for wallet ${wallet}`)
   const start = Date.now()
 
   let user = null
@@ -551,7 +551,7 @@ async function getCreatorNodeEndpoints({
     let discprovBlockNumber = -1
     for (let retry = 1; retry <= MaxRetries; retry++) {
       logger.info(
-        `getCreatorNodeEndpoints retry #${retry}/${MaxRetries} || time from start: ${
+        `getContentNodeEndpoints retry #${retry}/${MaxRetries} || time from start: ${
           Date.now() - start2
         } discprovBlockNumber ${discprovBlockNumber} || blockNumber ${blockNumber}`
       )
@@ -584,7 +584,7 @@ async function getCreatorNodeEndpoints({
 
       await utils.timeout(RetryTimeout)
       logger.info(
-        `getCreatorNodeEndpoints AFTER TIMEOUT retry #${retry}/${MaxRetries} || time from start: ${
+        `getContentNodeEndpoints AFTER TIMEOUT retry #${retry}/${MaxRetries} || time from start: ${
           Date.now() - start2
         } discprovBlockNumber ${discprovBlockNumber} || blockNumber ${blockNumber}`
       )
@@ -609,7 +609,7 @@ async function getCreatorNodeEndpoints({
      * Errors if retrieved primary does not match myCnodeEndpoint
      */
     logger.info(
-      `getCreatorNodeEndpoints || no blockNumber passed, retrying until DN returns same endpoint`
+      `getContentNodeEndpoints || no blockNumber passed, retrying until DN returns same endpoint`
     )
 
     const start2 = Date.now()
@@ -621,7 +621,7 @@ async function getCreatorNodeEndpoints({
     let returnedPrimaryEndpoint = null
     for (let retry = 1; retry <= MaxRetries; retry++) {
       logger.info(
-        `getCreatorNodeEndpoints retry #${retry}/${MaxRetries} || time from start: ${
+        `getContentNodeEndpoints retry #${retry}/${MaxRetries} || time from start: ${
           Date.now() - start2
         } myCnodeEndpoint ${myCnodeEndpoint}`
       )
@@ -650,7 +650,7 @@ async function getCreatorNodeEndpoints({
 
       await utils.timeout(RetryTimeout)
       logger.info(
-        `getCreatorNodeEndpoints AFTER TIMEOUT retry #${retry}/${MaxRetries} || time from start: ${
+        `getContentNodeEndpoints AFTER TIMEOUT retry #${retry}/${MaxRetries} || time from start: ${
           Date.now() - start2
         } myCnodeEndpoint ${myCnodeEndpoint}`
       )
@@ -674,7 +674,7 @@ async function getCreatorNodeEndpoints({
      * If neither of above conditions are met, falls back to single discprov query without polling
      */
     logger.info(
-      `getCreatorNodeEndpoints || ensurePrimary === false, fetching user without retries`
+      `getContentNodeEndpoints || ensurePrimary === false, fetching user without retries`
     )
     user = await libs.User.getUsers(1, 0, null, wallet)
   }
@@ -692,7 +692,7 @@ async function getCreatorNodeEndpoints({
   const endpoint = user[0].content_node_endpoint
   const userReplicaSet = endpoint ? endpoint.split(',') : []
 
-  logger.info(`getCreatorNodeEndpoints route time ${Date.now() - start}`)
+  logger.info(`getContentNodeEndpoints route time ${Date.now() - start}`)
   return userReplicaSet
 }
 
@@ -906,7 +906,7 @@ async function ensureValidSPMiddleware(req, res, next) {
 
 // Regular expression to check if endpoint is a FQDN. https://regex101.com/r/kIowvx/2
 function _isFQDN(url) {
-  if (config.get('creatorNodeIsDebug')) return true
+  if (config.get('contentNodeIsDebug')) return true
   const FQDN = new RegExp(
     /(?:^|[ \t])((https?:\/\/)?(?:localhost|[\w-]+(?:\.[\w-]+)+)(:\d+)?(\/\S*)?)/gm
   )
@@ -920,5 +920,5 @@ module.exports = {
   ensureValidSPMiddleware,
   issueAndWaitForSecondarySyncRequests,
   getOwnEndpoint,
-  getCreatorNodeEndpoints
+  getContentNodeEndpoints
 }

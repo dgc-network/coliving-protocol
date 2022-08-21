@@ -29,11 +29,11 @@ const MAX_NUMBER_SECONDS_PRIMARY_REMAINS_UNHEALTHY = config.get(
 
 class PeerSetManager {
   constructor({
-    discoveryProviderEndpoint,
+    discoveryNodeEndpoint,
     contentNodeEndpoint,
     maxNumberSecondsPrimaryRemainsUnhealthy
   }) {
-    this.discoveryProviderEndpoint = discoveryProviderEndpoint
+    this.discoveryNodeEndpoint = discoveryNodeEndpoint
     this.contentNodeEndpoint = contentNodeEndpoint
 
     /* We do not want to eagerly cycle off the primary when issuing reconfigs if necessary, as the primary may
@@ -127,7 +127,7 @@ class PeerSetManager {
     maxUsers = GET_NODE_USERS_DEFAULT_PAGE_SIZE
   ) {
     // Fetch discovery node currently connected to libs as this can change
-    if (!this.discoveryProviderEndpoint) {
+    if (!this.discoveryNodeEndpoint) {
       throw new Error('No discovery node currently selected, exiting')
     }
 
@@ -150,7 +150,7 @@ class PeerSetManager {
         asyncFn: async () => {
           return axios({
             method: 'get',
-            baseURL: this.discoveryProviderEndpoint,
+            baseURL: this.discoveryNodeEndpoint,
             url: `v1/full/users/content_node/all`,
             params: {
               content_node_endpoint: this.contentNodeEndpoint,
@@ -170,7 +170,7 @@ class PeerSetManager {
       }
       throw new Error(
         `getNodeUsers() Error: ${e.toString()} - connected discprov [${
-          this.discoveryProviderEndpoint
+          this.discoveryNodeEndpoint
         }]`
       )
     } finally {
@@ -246,7 +246,7 @@ class PeerSetManager {
    * Takes data off the verbose health check response and determines the peer heatlh
    * @param {Object} verboseHealthCheckResp verbose health check response
    *
-   * TODO: consolidate CreatorNodeSelection + peer set health check calculation logic
+   * TODO: consolidate ContentNodeSelection + peer set health check calculation logic
    */
   determinePeerHealth(verboseHealthCheckResp) {
     // Check for sufficient minimum storage size

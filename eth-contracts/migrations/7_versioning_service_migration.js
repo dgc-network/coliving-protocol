@@ -71,7 +71,7 @@ module.exports = (deployer, network, accounts) => {
     const serviceTypeManager = await ServiceTypeManager.at(serviceTypeManagerProxy.address)
     await _lib.registerContract(governance, serviceTypeManagerProxyKey, serviceTypeManager.address, guardianAddress)
 
-    /* Register creatorNode and discoveryProvider service types via governance */
+    /* Register contentNode and discoveryNode service types via governance */
 
     const callValue0 = _lib.toBN(0)
     const signatureAddServiceType = 'addServiceType(bytes32,uint256,uint256)'

@@ -35,9 +35,9 @@ const {
   getAgreementMetadata,
   getUser,
   getUsers,
-  verifyCIDExistsOnCreatorNode,
+  verifyCIDExistsOnContentNode,
   uploadPhotoAndUpdateMetadata,
-  setCreatorNodeEndpoint,
+  setContentNodeEndpoint,
   updateCreator,
   getURSMContentNodes,
   addContentListAgreement
@@ -70,7 +70,7 @@ module.exports = coreIntegration = async ({
   numUsers,
   executeAll,
   executeOne,
-  numCreatorNodes,
+  numContentNodes,
   testDurationSeconds,
   enableFaultInjection
 }) => {
@@ -87,7 +87,7 @@ module.exports = coreIntegration = async ({
 
       const URSMContentNodes = await executeOne(0, libs => getURSMContentNodes(libs))
 
-      if (URSMContentNodes.length === numCreatorNodes) {
+      if (URSMContentNodes.length === numContentNodes) {
         break
       }
 
@@ -450,7 +450,7 @@ module.exports = coreIntegration = async ({
 
   if (enableFaultInjection) {
     // Create a MadDog instance, responsible for taking down nodes
-    const m = new MadDog({ numCreatorNodes })
+    const m = new MadDog({ numContentNodes })
     m.start()
   }
 
@@ -510,7 +510,7 @@ module.exports = coreIntegration = async ({
     const newRSet = (secondaries.length) ? [secondaries[0], primary].concat(secondaries.slice(1)) : [primary]
 
     // Update libs instance with new endpoint
-    await executeOne(walletIndex, libs => setCreatorNodeEndpoint(libs, newRSet[0]))
+    await executeOne(walletIndex, libs => setContentNodeEndpoint(libs, newRSet[0]))
 
     // Update user metadata obj
     const newMetadata = { ...userMetadata }
@@ -614,7 +614,7 @@ const verifyAllCIDsExistOnCNodes = async (agreementUploads, executeOne) => {
     await Promise.all(cids.map(async (cid) => {
       await Promise.all(userRSet.map(async (replica) => {
         // TODO: add `fromFS` option when this is merged back into CN.
-        const exists = await verifyCIDExistsOnCreatorNode(cid, replica)
+        const exists = await verifyCIDExistsOnContentNode(cid, replica)
         if (!exists) {
           logger.warn(`Could not find CID ${cid} for user=${userId} on replica ${replica}`)
           failedCIDs.push(cid)

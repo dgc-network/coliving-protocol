@@ -30,7 +30,7 @@ class StateMachineManager {
       findReplicaSetUpdatesQueue,
       cNodeEndpointToSpIdMapQueue
     } = await stateMonitoringManager.init(
-      colivingLibs.discoveryProvider.discoveryProviderEndpoint,
+      colivingLibs.discoveryNode.discoveryNodeEndpoint,
       prometheusRegistry
     )
     const { manualSyncQueue, recurringSyncQueue, updateReplicaSetQueue } =

@@ -174,7 +174,7 @@ module.exports = function (app) {
 
     // get connected discprov via libs
     const colivingLibsInstance = req.app.get('colivingLibs')
-    return successResponse({ 'healthy': true, 'git': process.env.GIT_SHA, selectedDiscoveryProvider: colivingLibsInstance.discoveryProvider.discoveryProviderEndpoint })
+    return successResponse({ 'healthy': true, 'git': process.env.GIT_SHA, selectedDiscoveryNode: colivingLibsInstance.discoveryNode.discoveryNodeEndpoint })
   }))
 
   app.get('/balance_check', handleResponse(async (req, res) => {
@@ -335,11 +335,11 @@ module.exports = function (app) {
     const notificationEmailsJobLastSuccess = await redis.get(NOTIFICATION_EMAILS_JOB_LAST_SUCCESS_KEY)
     const notificationAnnouncementsJobLastSuccess = await redis.get(NOTIFICATION_ANNOUNCEMENTS_JOB_LAST_SUCCESS_KEY)
 
-    const { discoveryProvider } = colivingLibsWrapper.getColivingLibs()
+    const { discoveryNode } = colivingLibsWrapper.getColivingLibs()
 
     let body = (await axios({
       method: 'get',
-      url: `${discoveryProvider.discoveryProviderEndpoint}/health_check`
+      url: `${discoveryNode.discoveryNodeEndpoint}/health_check`
     })).data
     let discProvDbHighestBlock = body.data['db']['number']
     let notifBlockDiff = discProvDbHighestBlock - highestBlockNumber

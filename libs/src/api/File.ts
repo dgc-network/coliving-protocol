@@ -34,21 +34,21 @@ export class File extends Base {
   /**
    * Fetches a file from Content Node with a given CID.
    * @param cid IPFS content identifier
-   * @param creatorNodeGateways Content Node gateways to fetch content from
+   * @param contentNodeGateways Content Node gateways to fetch content from
    * @param callback callback called on each successful/failed fetch with
    *  [String, Bool](gateway, succeeded)
    *  Can be used for agreementing metrics on which gateways were used.
    */
   async fetchCID(
     cid: string,
-    creatorNodeGateways: string[],
+    contentNodeGateways: string[],
     callback: Nullable<(url: string) => void> = null,
     responseType: ResponseType = 'blob',
     agreementId = null
   ) {
     const urls: string[] = []
 
-    creatorNodeGateways.forEach((gateway) => {
+    contentNodeGateways.forEach((gateway) => {
       let gatewayWithCid = urlJoin(gateway, cid)
       if (agreementId)
         gatewayWithCid = urlJoin(gatewayWithCid, { query: { agreementId } })
@@ -89,7 +89,7 @@ export class File extends Base {
             console.debug(`Attempted to fetch image ${cid} via legacy method`)
             // Try legacy image format
             // Lop off anything like /480x480.jpg in the CID
-            const legacyUrls = creatorNodeGateways.map((gateway) =>
+            const legacyUrls = contentNodeGateways.map((gateway) =>
               urlJoin(gateway, cid.split('/')[0])
             )
             try {
@@ -132,15 +132,15 @@ export class File extends Base {
    * as fetchCID, but resolves with a download of the file rather than
    * returning the response content.
    * @param cid IPFS content identifier
-   * @param creatorNodeGateways Content Node gateways to fetch content from
+   * @param contentNodeGateways Content Node gateways to fetch content from
    * @param filename optional filename for the download
    */
   async downloadCID(
     cid: string,
-    creatorNodeGateways: string[],
+    contentNodeGateways: string[],
     filename: string
   ) {
-    const urls = creatorNodeGateways.map((gateway) =>
+    const urls = contentNodeGateways.map((gateway) =>
       urlJoin(gateway, cid, { query: { filename } })
     )
 
@@ -164,14 +164,14 @@ export class File extends Base {
   /**
    * Checks if a CID exists on a Content Node.
    * @param cid IPFS content identifier
-   * @param creatorNodeGateways Content Node gateways to fetch content from
-   * Eg. creatorNodeGateways = ["https://creatornode.coliving.lol/ipfs/", "https://creatornode2.coliving.lol/ipfs/"]
+   * @param contentNodeGateways Content Node gateways to fetch content from
+   * Eg. contentNodeGateways = ["https://creatornode.coliving.lol/ipfs/", "https://creatornode2.coliving.lol/ipfs/"]
    */
-  async checkIfCidAvailable(cid: string, creatorNodeGateways: string[]) {
+  async checkIfCidAvailable(cid: string, contentNodeGateways: string[]) {
     const exists: Record<string, unknown> = {}
 
     await Promise.all(
-      creatorNodeGateways.map(async (gateway) => {
+      contentNodeGateways.map(async (gateway) => {
         try {
           const { status } = await axios({
             url: urlJoin(gateway, cid),
@@ -198,7 +198,7 @@ export class File extends Base {
     // Assign a content_node_endpoint to the user if necessary
     await this.User.assignReplicaSetIfNecessary()
 
-    const resp = await this.creatorNode.uploadImage(
+    const resp = await this.contentNode.uploadImage(
       file,
       square,
       /* onProgress */ undefined,

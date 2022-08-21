@@ -109,7 +109,7 @@ const buildReturnObj = (tx, properties) => {
   return returnObj
 }
 
-/** Returns formatted event params from DiscoveryProvider.register() transaction receipt
+/** Returns formatted event params from DiscoveryNode.register() transaction receipt
   * @param {object} txReceipt - transaction receipt object
   * @returns {object} with eventName, discprovId, discprovWallet, discprovEndpoint
   */

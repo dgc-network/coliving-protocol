@@ -254,14 +254,14 @@ export class UserFactoryClient extends ContractClient {
     return [method.encodeABI(), contractAddress]
   }
 
-  async updateCreatorNodeEndpoint(userId: number, contentNodeEndpoint: string) {
+  async updateContentNodeEndpoint(userId: number, contentNodeEndpoint: string) {
     const [nonce, sig] = await this.getUpdateNonceAndSig(
-      signatureSchemas.generators.getUpdateUserCreatorNodeRequestData,
+      signatureSchemas.generators.getUpdateUserContentNodeRequestData,
       userId,
       contentNodeEndpoint
     )
     const method = await this.getMethod(
-      'updateCreatorNodeEndpoint',
+      'updateContentNodeEndpoint',
       userId,
       contentNodeEndpoint,
       nonce,
@@ -277,7 +277,7 @@ export class UserFactoryClient extends ContractClient {
     return {
       txReceipt: tx,
       contentNodeEndpoint:
-        tx.events?.['UpdateCreatorNodeEndpoint']?.returnValues
+        tx.events?.['UpdateContentNodeEndpoint']?.returnValues
           ._contentNodeEndpoint
     }
   }

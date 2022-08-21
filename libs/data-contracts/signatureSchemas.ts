@@ -476,7 +476,7 @@ const getUpdateUserBioRequestData: UserUpdateRequestFn = (
   )
 }
 
-const getUpdateUserCreatorNodeRequestData: UserUpdateRequestFn = (
+const getUpdateUserContentNodeRequestData: UserUpdateRequestFn = (
   chainId,
   contractAddress,
   userId,
@@ -486,7 +486,7 @@ const getUpdateUserCreatorNodeRequestData: UserUpdateRequestFn = (
   return _getUpdateUserRequestData(
     chainId,
     contractAddress,
-    'UpdateUserCreatorNodeRequest',
+    'UpdateUserContentNodeRequest',
     schemas.updateUserString,
     userId,
     newValue,
@@ -1153,7 +1153,7 @@ export const generators = {
   getUpdateUserProfilePhotoRequestData,
   getUpdateUserCoverPhotoRequestData,
   getUpdateUserBioRequestData,
-  getUpdateUserCreatorNodeRequestData,
+  getUpdateUserContentNodeRequestData,
   getUpdateUserCreatorRequestData,
   getUpdateUserVerifiedRequestData,
   getAddAgreementRequestData,

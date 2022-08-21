@@ -49,14 +49,14 @@ IpldBlacklistTest.newAgreementMetadata = async ({
   numUsers,
   executeAll,
   executeOne,
-  numCreatorNodes
+  numContentNodes
 }) => {
   try {
     const userId = await getCreatorId({
       numUsers,
       executeAll,
       executeOne,
-      numCreatorNodes
+      numContentNodes
     })
 
     // Create and upload a throwaway agreement
@@ -130,14 +130,14 @@ IpldBlacklistTest.updateAgreementMetadata = async ({
   numUsers,
   executeAll,
   executeOne,
-  numCreatorNodes
+  numContentNodes
 }) => {
   try {
     const userId = await getCreatorId({
       numUsers,
       executeAll,
       executeOne,
-      numCreatorNodes
+      numContentNodes
     })
 
     // Create and upload agreement
@@ -236,7 +236,7 @@ IpldBlacklistTest.newAgreementCoverPhoto = async ({
   numUsers,
   executeAll,
   executeOne,
-  numCreatorNodes
+  numContentNodes
 }) => {
   let agreementTxReceipt
   try {
@@ -244,7 +244,7 @@ IpldBlacklistTest.newAgreementCoverPhoto = async ({
       numUsers,
       executeAll,
       executeOne,
-      numCreatorNodes
+      numContentNodes
     })
 
     // Generate cover art and upload it to a Content Node
@@ -329,13 +329,13 @@ IpldBlacklistTest.updateAgreementCoverPhoto = async ({
   numUsers,
   executeAll,
   executeOne,
-  numCreatorNodes
+  numContentNodes
 }) => {
   const userId = await getCreatorId({
     numUsers,
     executeAll,
     executeOne,
-    numCreatorNodes
+    numContentNodes
   })
 
   const agreementToUpload = getRandomAgreementMetadata(userId)
@@ -403,14 +403,14 @@ IpldBlacklistTest.updateUserMetadata = async ({
   numUsers,
   executeAll,
   executeOne,
-  numCreatorNodes
+  numContentNodes
 }) => {
   try {
     const userId = await getCreatorId({
       numUsers,
       executeAll,
       executeOne,
-      numCreatorNodes
+      numContentNodes
     })
 
     // Keep agreement of original metadata CID
@@ -499,13 +499,13 @@ IpldBlacklistTest.updateUserProfilePhoto = async ({
   numUsers,
   executeAll,
   executeOne,
-  numCreatorNodes
+  numContentNodes
 }) => {
   const userId = await getCreatorId({
     numUsers,
     executeAll,
     executeOne,
-    numCreatorNodes
+    numContentNodes
   })
 
   const _createAndUploadUser = async () => Promise.resolve(userId)
@@ -565,13 +565,13 @@ IpldBlacklistTest.updateUserCoverPhoto = async ({
   numUsers,
   executeAll,
   executeOne,
-  numCreatorNodes
+  numContentNodes
 }) => {
   const userId = await getCreatorId({
     numUsers,
     executeAll,
     executeOne,
-    numCreatorNodes
+    numContentNodes
   })
   
   const _createAndUploadUser = async () => Promise.resolve(userId)
@@ -631,13 +631,13 @@ IpldBlacklistTest.updateContentListCoverPhoto = async ({
   numUsers,
   executeAll,
   executeOne,
-  numCreatorNodes
+  numContentNodes
 }) => {
   const userId = await getCreatorId({
     numUsers,
     executeAll,
     executeOne,
-    numCreatorNodes
+    numContentNodes
   })
 
   const _createAndUploadContentList = async () => {
@@ -723,7 +723,7 @@ async function getCreatorId ({
   numUsers,
   executeAll,
   executeOne,
-  numCreatorNodes
+  numContentNodes
 }) {
   const walletIndexToUserIdMap = await addAndUpgradeUsers(
     numUsers,

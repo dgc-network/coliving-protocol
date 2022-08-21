@@ -95,21 +95,21 @@ User.updateAndUploadMetadata = async (libsWrapper, { newMetadata, userId }) => {
   await libsWrapper.updateAndUploadMetadata({ newMetadata, userId })
 }
 
-User.autoSelectCreatorNodes = async (
+User.autoSelectContentNodes = async (
   libsWrapper,
   numberOfNodes,
   whitelist,
   blacklist
 ) => {
-  return libsWrapper.autoSelectCreatorNodes({
+  return libsWrapper.autoSelectContentNodes({
     numberOfNodes,
     whitelist,
     blacklist
   })
 }
 
-User.setCreatorNodeEndpoint = async (libsWrapper, primary) => {
-  return libsWrapper.setCreatorNodeEndpoint(primary)
+User.setContentNodeEndpoint = async (libsWrapper, primary) => {
+  return libsWrapper.setContentNodeEndpoint(primary)
 }
 
 User.updateCreator = async (libsWrapper, userId, metadata) => {

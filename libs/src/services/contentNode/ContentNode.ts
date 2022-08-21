@@ -35,7 +35,7 @@ type FileUploadResponse = {
 }
 
 // Currently only supports a single logged-in coliving user
-export class CreatorNode {
+export class ContentNode {
   /* Static Utils */
 
   /**
@@ -114,7 +114,7 @@ export class CreatorNode {
    * @param agreementId
    */
   static async checkIfDownloadAvailable(endpoints: string, agreementId: number) {
-    const primary = CreatorNode.getPrimary(endpoints)
+    const primary = ContentNode.getPrimary(endpoints)
     if (primary) {
       const req: AxiosRequestConfig = {
         baseURL: primary,
@@ -190,7 +190,7 @@ export class CreatorNode {
   }
 
   async init() {
-    if (!this.web3Manager) throw new Error('Failed to initialize CreatorNode')
+    if (!this.web3Manager) throw new Error('Failed to initialize ContentNode')
     if (!this.lazyConnect) {
       await this.connect()
     }
@@ -568,10 +568,10 @@ export class CreatorNode {
     if (!user) return
 
     if (!primary) {
-      primary = CreatorNode.getPrimary(user.content_node_endpoint!)
+      primary = ContentNode.getPrimary(user.content_node_endpoint!)
     }
     const secondaries = new Set(
-      CreatorNode.getSecondaries(user.content_node_endpoint!)
+      ContentNode.getSecondaries(user.content_node_endpoint!)
     )
     if (primary && secondary && (!validate || secondaries.has(secondary))) {
       const req: AxiosRequestConfig = {
@@ -695,7 +695,7 @@ export class CreatorNode {
       return
     }
 
-    const replicaSet = CreatorNode.getEndpoints(user.content_node_endpoint)
+    const replicaSet = ContentNode.getEndpoints(user.content_node_endpoint)
     const clockValueResponses = await Promise.all(
       replicaSet.map(
         async (endpoint) => await this._clockValueRequest({ user, endpoint })
@@ -717,11 +717,11 @@ export class CreatorNode {
     endpoint,
     timeout = 1000
   }: ClockValueRequestConfig) {
-    const primary = CreatorNode.getPrimary(user.content_node_endpoint!)
+    const primary = ContentNode.getPrimary(user.content_node_endpoint!)
     const type = primary === endpoint ? 'primary' : 'secondary'
 
     try {
-      const clockValue = await CreatorNode.getClockValue(
+      const clockValue = await ContentNode.getClockValue(
         endpoint,
         user.wallet!,
         timeout

@@ -18,8 +18,8 @@ class ColivingLibsWrapper {
     const dataWeb3 = await ColivingLibs.Utils.configureWeb3(web3ProviderUrl, null, false)
     if (!dataWeb3) throw new Error('Web3 incorrectly configured')
 
-    const discoveryProviderWhitelist = config.get('discoveryProviderWhitelist')
-      ? new Set(config.get('discoveryProviderWhitelist').split(','))
+    const discoveryNodeWhitelist = config.get('discoveryNodeWhitelist')
+      ? new Set(config.get('discoveryNodeWhitelist').split(','))
       : null
 
     const feePayerSecretKeys = config.get('solanaFeePayerWallets')
@@ -51,8 +51,8 @@ class ColivingLibsWrapper {
     })
 
     let colivingInstance = new ColivingLibs({
-      discoveryProviderConfig: {
-        whitelist: discoveryProviderWhitelist
+      discoveryNodeConfig: {
+        whitelist: discoveryNodeWhitelist
       },
       ethWeb3Config: ColivingLibs.configEthWeb3(
         config.get('ethTokenAddress'),

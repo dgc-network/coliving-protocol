@@ -3,11 +3,11 @@ import * as _validator from './utils/validator'
 import { getDiscprovFromFactory } from './utils/getters'
 import {
   Registry,
-  DiscoveryProviderStorage,
-  DiscoveryProviderFactory
+  DiscoveryNodeStorage,
+  DiscoveryNodeFactory
 } from './_lib/artifacts.js'
 
-contract('DiscoveryProviderFactory', async (accounts) => {
+contract('DiscoveryNodeFactory', async (accounts) => {
   let endpoints = [
     'lil',
     'dicky',
@@ -15,25 +15,25 @@ contract('DiscoveryProviderFactory', async (accounts) => {
     'http://-discprov-alpha-v2-lb-1680639124.us-west-1.elb.amazonaws.com'
   ]
   let discprovId = 1
-  let registry, discoveryProviderStorage, discoveryProviderFactory
+  let registry, discoveryNodeStorage, discoveryNodeFactory
 
   beforeEach(async () => {
     registry = await Registry.new()
-    discoveryProviderStorage = await DiscoveryProviderStorage.new(registry.address)
-    await registry.addContract(_constants.discoveryProviderStorageKey, discoveryProviderStorage.address)
-    discoveryProviderFactory = await DiscoveryProviderFactory.new(registry.address, _constants.discoveryProviderStorageKey)
-    await registry.addContract(_constants.discoveryProviderFactoryKey, discoveryProviderFactory.address)
+    discoveryNodeStorage = await DiscoveryNodeStorage.new(registry.address)
+    await registry.addContract(_constants.discoveryNodeStorageKey, discoveryNodeStorage.address)
+    discoveryNodeFactory = await DiscoveryNodeFactory.new(registry.address, _constants.discoveryNodeStorageKey)
+    await registry.addContract(_constants.discoveryNodeFactoryKey, discoveryNodeFactory.address)
   })
 
   it('Should register one discovery node', async () => {
     // add discprov
-    let tx = await discoveryProviderFactory.register(endpoints[3])
+    let tx = await discoveryNodeFactory.register(endpoints[3])
 
     // validate event output matches transaction input
     let event = _validator.validateDiscprovRegisterEvent(tx, discprovId, accounts[0], endpoints[3])
 
     // retrieve discprov from contract
-    let discprov = await getDiscprovFromFactory(event.discprovId, discoveryProviderFactory)
+    let discprov = await getDiscprovFromFactory(event.discprovId, discoveryNodeFactory)
 
     // validate retrieved discprov fields match transaction inputs
     _validator.validateRegisteredDiscprov(discprov, accounts[0], endpoints[3])
@@ -44,7 +44,7 @@ contract('DiscoveryProviderFactory', async (accounts) => {
     let transactions = []
     let i = 0
     for (i = 0; i < endpoints.length; i++) {
-      transactions[i] = await discoveryProviderFactory.register(endpoints[i])
+      transactions[i] = await discoveryNodeFactory.register(endpoints[i])
     }
 
     // validate event outputs match transaction inputs
@@ -58,13 +58,13 @@ contract('DiscoveryProviderFactory', async (accounts) => {
     }
 
     // validate total number of discprovs match input number of endpoints
-    let totalProviders = await discoveryProviderFactory.getTotalNumberOfProviders.call()
+    let totalProviders = await discoveryNodeFactory.getTotalNumberOfProviders.call()
     assert.equal(totalProviders, endpoints.length)
 
     // retrieve all discprovs from file
     let discProvList = []
     for (i = 0; i < totalProviders; i++) {
-      discProvList[i] = await discoveryProviderFactory.getDiscoveryProvider(i + 1)
+      discProvList[i] = await discoveryNodeFactory.getDiscoveryNode(i + 1)
     }
 
     // validate retrieved discprov list match input list

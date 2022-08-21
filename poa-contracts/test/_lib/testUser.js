@@ -83,11 +83,11 @@ export const addUserAndValidate = async (userFactory, userId, userWallet, multih
   let isCreatorTx = await userFactory.updateIsCreator(userId, isCreator, nonce, sig)
   parseTxWithAssertsAndResp(isCreatorTx, 'UpdateIsCreator', { _userId: userId, _isCreator: isCreator })
   const newCnode = 'http://localhost:4387'
-  signatureData = signatureSchemas.generators.getUpdateUserCreatorNodeRequestData(chainId, userFactory.address, userId, newCnode, nonce)
+  signatureData = signatureSchemas.generators.getUpdateUserContentNodeRequestData(chainId, userFactory.address, userId, newCnode, nonce)
 
   sig = await eth_signTypedData(userWallet, signatureData)
-  let contentNodeEndpointTx = await userFactory.updateCreatorNodeEndpoint(userId, newCnode, nonce, sig)
-  parseTxWithAssertsAndResp(contentNodeEndpointTx, 'UpdateCreatorNodeEndpoint', { _userId: userId, _contentNodeEndpoint: newCnode })
+  let contentNodeEndpointTx = await userFactory.updateContentNodeEndpoint(userId, newCnode, nonce, sig)
+  parseTxWithAssertsAndResp(contentNodeEndpointTx, 'UpdateContentNodeEndpoint', { _userId: userId, _contentNodeEndpoint: newCnode })
 
   // retrieve user from contract
   let user = await getUserFromFactory(userId, userFactory)

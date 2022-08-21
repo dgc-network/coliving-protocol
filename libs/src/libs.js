@@ -13,8 +13,8 @@ const { ColivingContracts } = require('./services/dataContracts')
 const { IdentityService } = require('./services/identity')
 const { Comstock } = require('./services/comstock')
 const { Hedgehog } = require('./services/hedgehog')
-const { CreatorNode } = require('./services/creatorNode')
-const { DiscoveryProvider } = require('./services/discoveryProvider')
+const { ContentNode } = require('./services/contentNode')
+const { DiscoveryNode } = require('./services/discoveryNode')
 const { Wormhole } = require('./services/wormhole')
 const { ColivingABIDecoder } = require('./services/ABIDecoder')
 const { SchemaValidator } = require('./services/schemaValidator')
@@ -66,7 +66,7 @@ class ColivingLibs {
    * @param {function} monitoringCallbacks.healthCheck
    * @param {boolean} writeQuorumEnabled whether or not to enforce waiting for replication to 2/3 nodes when writing data
    */
-  static configCreatorNode (
+  static configContentNode (
     fallbackUrl,
     lazyConnect = false,
     passList = null,
@@ -299,8 +299,8 @@ class ColivingLibs {
    * Unless default-valued, all configs are optional.
    * @example
    *  const coliving = ColivingLibs({
-   *    discoveryProviderConfig: {},
-   *    creatorNodeConfig: configCreatorNode('https://my-creator.node')
+   *    discoveryNodeConfig: {},
+   *    contentNodeConfig: configContentNode('https://my-creator.node')
    *  })
    *  await coliving.init()
    */
@@ -310,8 +310,8 @@ class ColivingLibs {
     solanaWeb3Config,
     solanaColivingDataConfig,
     identityServiceConfig,
-    discoveryProviderConfig,
-    creatorNodeConfig,
+    discoveryNodeConfig,
+    contentNodeConfig,
     comstockConfig,
     wormholeConfig,
     captchaConfig,
@@ -332,8 +332,8 @@ class ColivingLibs {
     this.solanaWeb3Config = solanaWeb3Config
     this.solanaColivingDataConfig = solanaColivingDataConfig
     this.identityServiceConfig = identityServiceConfig
-    this.creatorNodeConfig = creatorNodeConfig
-    this.discoveryProviderConfig = discoveryProviderConfig
+    this.contentNodeConfig = contentNodeConfig
+    this.discoveryNodeConfig = discoveryNodeConfig
     this.comstockConfig = comstockConfig
     this.wormholeConfig = wormholeConfig
     this.captchaConfig = captchaConfig
@@ -349,14 +349,14 @@ class ColivingLibs {
     this.userStateManager = null
     this.identityService = null
     this.hedgehog = null
-    this.discoveryProvider = null
+    this.discoveryNode = null
     this.ethWeb3Manager = null
     this.ethContracts = null
     this.web3Manager = null
     this.solanaWeb3Manager = null
     this.anchorColivingData = null
     this.contracts = null
-    this.creatorNode = null
+    this.contentNode = null
 
     // API
     this.Account = null
@@ -501,38 +501,38 @@ class ColivingLibs {
     }
 
     /** Discovery Node */
-    if (this.discoveryProviderConfig) {
-      this.discoveryProvider = new DiscoveryProvider({
+    if (this.discoveryNodeConfig) {
+      this.discoveryNode = new DiscoveryNode({
         userStateManager: this.userStateManager,
         ethContracts: this.ethContracts,
         web3Manager: this.web3Manager,
         localStorage: this.localStorage,
-        ...this.discoveryProviderConfig
+        ...this.discoveryNodeConfig
       })
-      await this.discoveryProvider.init()
+      await this.discoveryNode.init()
     }
 
     /** Creator Node */
-    if (this.creatorNodeConfig) {
+    if (this.contentNodeConfig) {
       const currentUser = this.userStateManager.getCurrentUser()
       const contentNodeEndpoint = currentUser
-        ? CreatorNode.getPrimary(currentUser.content_node_endpoint) ||
-          this.creatorNodeConfig.fallbackUrl
-        : this.creatorNodeConfig.fallbackUrl
+        ? ContentNode.getPrimary(currentUser.content_node_endpoint) ||
+          this.contentNodeConfig.fallbackUrl
+        : this.contentNodeConfig.fallbackUrl
 
-      this.creatorNode = new CreatorNode(
+      this.contentNode = new ContentNode(
         this.web3Manager,
         contentNodeEndpoint,
         this.isServer,
         this.userStateManager,
-        this.creatorNodeConfig.lazyConnect,
+        this.contentNodeConfig.lazyConnect,
         this.schemas,
-        this.creatorNodeConfig.passList,
-        this.creatorNodeConfig.blockList,
-        this.creatorNodeConfig.monitoringCallbacks,
-        this.creatorNodeConfig.writeQuorumEnabled
+        this.contentNodeConfig.passList,
+        this.contentNodeConfig.blockList,
+        this.contentNodeConfig.monitoringCallbacks,
+        this.contentNodeConfig.writeQuorumEnabled
       )
-      await this.creatorNode.init()
+      await this.contentNode.init()
     }
 
     /** Comstock */
@@ -545,7 +545,7 @@ class ColivingLibs {
       this.userStateManager,
       this.identityService,
       this.hedgehog,
-      this.discoveryProvider,
+      this.discoveryNode,
       this.web3Manager,
       this.contracts,
       this.ethWeb3Manager,
@@ -553,7 +553,7 @@ class ColivingLibs {
       this.solanaWeb3Manager,
       this.anchorColivingData,
       this.wormholeClient,
-      this.creatorNode,
+      this.contentNode,
       this.comstock,
       this.captcha,
       this.isServer,
@@ -586,4 +586,4 @@ module.exports.Utils = Utils
 module.exports.SolanaUtils = SolanaUtils
 module.exports.SanityChecks = SanityChecks
 module.exports.RewardsAttester = RewardsAttester
-module.exports.CreatorNode = CreatorNode
+module.exports.ContentNode = ContentNode

@@ -98,7 +98,7 @@ program
     console.log(
       `See ${process.env.PROTOCOL_DIR}/service-commands/output.log and ${process.env.PROTOCOL_DIR}/service-commands/error.log for troubleshooting.`
     )
-    const numCreatorNodes = parseInt(opts.numCnodes)
+    const numContentNodes = parseInt(opts.numCnodes)
     const numDiscoveryNodes = parseInt(opts.numDn)
     const {
       verbose,
@@ -108,7 +108,7 @@ program
       withDataEthBuild: buildDataEthContracts
     } = opts
     await allUp({
-      numCreatorNodes,
+      numContentNodes,
       numDiscoveryNodes,
       withAAO,
       verbose,
@@ -154,11 +154,11 @@ program
   )
   .action(async opts => {
     console.log('Restarting services...')
-    const numCreatorNodes = parseInt(opts.numCnodes)
+    const numContentNodes = parseInt(opts.numCnodes)
     const numDiscoveryNodes = parseInt(opts.numDn)
     const verbose = opts.verbose
     await runSetupCommand(Service.ALL, SetupCommand.DOWN, opts)
-    await allUp({ numCreatorNodes, numDiscoveryNodes, verbose })
+    await allUp({ numContentNodes, numDiscoveryNodes, verbose })
   })
 
 program
@@ -197,10 +197,10 @@ program
       const setupCommand = findCommand(command)
 
       if (serviceName === Service.ALL && setupCommand == SetupCommand.UP) {
-        const numCreatorNodes = parseInt(opts.numCnodes)
+        const numContentNodes = parseInt(opts.numCnodes)
         const numDiscoveryNodes = parseInt(opts.numDn)
         const withAAO = opts.withAao
-        await allUp({ numCreatorNodes, numDiscoveryNodes, withAAO, verbose })
+        await allUp({ numContentNodes, numDiscoveryNodes, withAAO, verbose })
         return
       }
 

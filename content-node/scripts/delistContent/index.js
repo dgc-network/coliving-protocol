@@ -6,7 +6,7 @@ const { generateTimestampAndSignature } = require('./apiSigning')
 // required env variables
 const PRIVATE_KEY = process.env.delegatePrivateKey
 const CONTENT_NODE_ENDPOINT = process.env.contentNodeEndpoint
-const DISCOVERY_PROVIDER_ENDPOINT = process.env.discoveryProviderEndpoint
+const DISCOVERY_PROVIDER_ENDPOINT = process.env.discoveryNodeEndpoint
 
 const REQUEST_CONCURRENCY_LIMIT = 20
 const MAX_LIMIT = 500
@@ -151,15 +151,15 @@ async function verifyDelistedContent ({ type, values, action }) {
   }
 
   // Batch requests
-  let creatorNodeCIDResponses = []
+  let contentNodeCIDResponses = []
   const checkCIDDelistStatusRequests = allCIDs.map(cid => checkFn(cid))
   for (let i = 0; i < allCIDs.length; i += REQUEST_CONCURRENCY_LIMIT) {
-    const creatorNodeCIDResponsesSlice = await Promise.all(checkCIDDelistStatusRequests.slice(i, i + REQUEST_CONCURRENCY_LIMIT))
-    creatorNodeCIDResponses = creatorNodeCIDResponses.concat(creatorNodeCIDResponsesSlice)
+    const contentNodeCIDResponsesSlice = await Promise.all(checkCIDDelistStatusRequests.slice(i, i + REQUEST_CONCURRENCY_LIMIT))
+    contentNodeCIDResponses = contentNodeCIDResponses.concat(contentNodeCIDResponsesSlice)
   }
 
   // CIDs that were not accounted for during delist/undelist
-  const unaccountedCIDs = creatorNodeCIDResponses
+  const unaccountedCIDs = contentNodeCIDResponses
     .filter(resp => filterFn(resp.delisted))
     .map(resp => resp.value)
 
@@ -173,19 +173,19 @@ async function verifyDelistedContent ({ type, values, action }) {
   // If the type is AGREEMENT, we also need to check the stream route
   if (type === 'AGREEMENT') {
     // Batch requests
-    let creatorNodeAgreementResponses = []
+    let contentNodeAgreementResponses = []
     const checkAgreementDelistStatusRequests = values.map(agreementId => checkIsAgreementDelisted(agreementId))
     for (let i = 0; i < values.length; i += REQUEST_CONCURRENCY_LIMIT) {
-      const creatorNodeAgreementResponsesSlice = await Promise.all(checkAgreementDelistStatusRequests.slice(i, i + REQUEST_CONCURRENCY_LIMIT))
-      creatorNodeAgreementResponses = creatorNodeAgreementResponses.concat(creatorNodeAgreementResponsesSlice)
+      const contentNodeAgreementResponsesSlice = await Promise.all(checkAgreementDelistStatusRequests.slice(i, i + REQUEST_CONCURRENCY_LIMIT))
+      contentNodeAgreementResponses = contentNodeAgreementResponses.concat(contentNodeAgreementResponsesSlice)
     }
 
     // CIDs that were not accounted for during delist/undelist
-    const unaccountedAgreements = creatorNodeAgreementResponses
+    const unaccountedAgreements = contentNodeAgreementResponses
       .filter(resp => filterFn(resp.delisted))
       .map(resp => resp.value)
 
-    Logger.debug('creatorNodeAgreementResponses', creatorNodeAgreementResponses)
+    Logger.debug('contentNodeAgreementResponses', contentNodeAgreementResponses)
     if (unaccountedAgreements.length > 0) {
       let errorMsg = `Agreements with ids [${values}] were not delisted/undelisted.`
       errorMsg += `\nNumber of Agreements: ${unaccountedAgreements.length}`

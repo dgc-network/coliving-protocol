@@ -60,7 +60,7 @@ async function initializeVersionServiceProviderContracts() {
       ethWeb3,
       ownerWallet
     ),
-    discoveryProviderConfig: {},
+    discoveryNodeConfig: {},
     isServer: isServer
   }
   let colivingLibs = new ColivingLibs(colivingLibsConfig)

@@ -1,7 +1,7 @@
 import type { Comstock } from '../services/comstock'
-import type { CreatorNode } from '../services/creatorNode'
+import type { ContentNode } from '../services/contentNode'
 import type { ColivingContracts } from '../services/dataContracts'
-import type { DiscoveryProvider } from '../services/discoveryProvider'
+import type { DiscoveryNode } from '../services/discoveryNode'
 import type { EthContracts } from '../services/ethContracts'
 import type { EthWeb3Manager } from '../services/ethWeb3Manager'
 import type { Hedgehog } from '../services/hedgehog'
@@ -27,7 +27,7 @@ export type BaseConstructorArgs = [
   UserStateManager,
   IdentityService,
   Hedgehog,
-  DiscoveryProvider,
+  DiscoveryNode,
   Web3Manager,
   ColivingContracts,
   EthWeb3Manager,
@@ -35,7 +35,7 @@ export type BaseConstructorArgs = [
   SolanaWeb3Manager,
   SolanaColivingData,
   Wormhole,
-  CreatorNode,
+  ContentNode,
   Comstock,
   Captcha,
   boolean,
@@ -46,7 +46,7 @@ export class Base {
   userStateManager: UserStateManager
   identityService: IdentityService
   hedgehog: HedgehogBase
-  discoveryProvider: DiscoveryProvider
+  discoveryNode: DiscoveryNode
   web3Manager: Web3Manager
   contracts: ColivingContracts
   ethWeb3Manager: EthWeb3Manager
@@ -54,7 +54,7 @@ export class Base {
   solanaWeb3Manager: SolanaWeb3Manager
   anchorColivingData: SolanaColivingData
   wormholeClient: Wormhole
-  creatorNode: CreatorNode
+  contentNode: ContentNode
   comstock: Comstock
   captcha: Captcha
   isServer: boolean
@@ -66,7 +66,7 @@ export class Base {
     userStateManager: UserStateManager,
     identityService: IdentityService,
     hedgehog: Hedgehog,
-    discoveryProvider: DiscoveryProvider,
+    discoveryNode: DiscoveryNode,
     web3Manager: Web3Manager,
     contracts: ColivingContracts,
     ethWeb3Manager: EthWeb3Manager,
@@ -74,7 +74,7 @@ export class Base {
     solanaWeb3Manager: SolanaWeb3Manager,
     anchorColivingData: SolanaColivingData,
     wormholeClient: Wormhole,
-    creatorNode: CreatorNode,
+    contentNode: ContentNode,
     comstock: Comstock,
     captcha: Captcha,
     isServer: boolean,
@@ -83,7 +83,7 @@ export class Base {
     this.userStateManager = userStateManager
     this.identityService = identityService
     this.hedgehog = hedgehog as unknown as HedgehogBase
-    this.discoveryProvider = discoveryProvider
+    this.discoveryNode = discoveryNode
     this.web3Manager = web3Manager
     this.contracts = contracts
     this.ethWeb3Manager = ethWeb3Manager
@@ -91,7 +91,7 @@ export class Base {
     this.solanaWeb3Manager = solanaWeb3Manager
     this.anchorColivingData = anchorColivingData
     this.wormholeClient = wormholeClient
-    this.creatorNode = creatorNode
+    this.contentNode = contentNode
     this.comstock = comstock
     this.captcha = captcha
     this.isServer = isServer
@@ -100,8 +100,8 @@ export class Base {
     this._serviceMapping = {
       [Services.IDENTITY_SERVICE]: this.identityService,
       [Services.HEDGEHOG]: this.hedgehog,
-      [Services.DISCOVERY_PROVIDER]: this.discoveryProvider,
-      [Services.CONTENT_NODE]: this.creatorNode,
+      [Services.DISCOVERY_PROVIDER]: this.discoveryNode,
+      [Services.CONTENT_NODE]: this.contentNode,
       [Services.COMSTOCK]: this.comstock,
       [Services.SOLANA_WEB3_MANAGER]: this.solanaWeb3Manager
     }

@@ -43,7 +43,7 @@ async function initColivingLibs(
         ethWeb3ProviderEndpoint,
         ethWallet
       ),
-      discoveryProviderConfig: {
+      discoveryNodeConfig: {
         whitelist: new Set(['http://docker.for.mac.localhost:5000'])
       },
       isServer,
@@ -62,8 +62,8 @@ async function initColivingLibs(
         ethWeb3ProviderEndpoint,
         ethContractsConfig.ownerWallet
       ),
-      creatorNodeConfig: ColivingLibs.configCreatorNode(contentNodeEndpoint),
-      discoveryProviderConfig: {},
+      contentNodeConfig: ColivingLibs.configContentNode(contentNodeEndpoint),
+      discoveryNodeConfig: {},
       identityServiceConfig: ColivingLibs.configIdentityService(
         identityServiceEndpoint
       ),

@@ -382,7 +382,7 @@ export class RewardsAttester {
     // This overrides any configured whitelist for the service selector.
     if (this.endpointPool.size === 0) {
       const pool =
-        await this.libs.discoveryProvider.serviceSelector.getServices()
+        await this.libs.discoveryNode.serviceSelector.getServices()
       this.endpointPool = new Set(pool)
     }
     await this._selectDiscoveryNodes()
@@ -764,7 +764,7 @@ export class RewardsAttester {
     )
     const startTime = Date.now()
     let endpoints: ServiceWithEndpoint[] =
-      (await this.libs.discoveryProvider.serviceSelector.findAll({
+      (await this.libs.discoveryNode.serviceSelector.findAll({
         verbose: true,
         whitelist: this.endpointPool.size > 0 ? this.endpointPool : null
       })) ?? []

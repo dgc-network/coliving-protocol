@@ -1,7 +1,7 @@
 import type {
-  DiscoveryProvider,
+  DiscoveryNode,
   UserProfile
-} from '../../services/discoveryProvider'
+} from '../../services/discoveryNode'
 
 export type LoginSuccessCallback = (profile: UserProfile) => void
 export type LoginErrorCallback = (errorMessage: string) => void
@@ -106,25 +106,25 @@ const CSRF_TOKEN_KEY = 'colivingOauthState'
 
 type OauthConfig = {
   appName: string
-  discoveryProvider: DiscoveryProvider
+  discoveryNode: DiscoveryNode
 }
 
 export class Oauth {
-  discoveryProvider: DiscoveryProvider
+  discoveryNode: DiscoveryNode
   appName: string
   activePopupWindow: null | Window
   popupCheckInterval: NodeJS.Timer | null
   loginSuccessCallback: LoginSuccessCallback | null
   loginErrorCallback: LoginErrorCallback | null
 
-  constructor({ discoveryProvider, appName }: OauthConfig) {
+  constructor({ discoveryNode, appName }: OauthConfig) {
     if (typeof window === 'undefined') {
       // TODO(nkang): Add link to documentation once written
       throw new Error(
         'Coliving OAuth SDK functions are only available in browser. Refer to our documentation to learn how to implement Coliving OAuth manually.'
       )
     }
-    this.discoveryProvider = discoveryProvider
+    this.discoveryNode = discoveryNode
     this.appName = appName
     this.activePopupWindow = null
     this.loginSuccessCallback = null
@@ -213,7 +213,7 @@ export class Oauth {
   }
 
   async verifyToken(token: string) {
-    return await this.discoveryProvider.verifyToken(token)
+    return await this.discoveryNode.verifyToken(token)
   }
 
   /* ------- INTERNAL FUNCTIONS ------- */

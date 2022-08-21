@@ -34,7 +34,7 @@ function MockLibs(getSlot = () => 100, getBlockNumber = () => 100) {
       }
     }
   }
-  this.discoveryProvider = {
+  this.discoveryNode = {
     serviceSelector: {
       findAll: ({ whitelist }) => {
         return whitelist

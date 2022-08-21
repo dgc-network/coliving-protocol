@@ -127,7 +127,7 @@ function getLibsConfig(config, privateKey, ownerWallet) {
       ethWeb3,
       ownerWallet
     ),
-    discoveryProviderConfig: {},
+    discoveryNodeConfig: {},
     isServer: isServer
   }
   return colivingLibsConfig

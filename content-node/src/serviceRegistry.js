@@ -28,7 +28,7 @@ const PrometheusRegistry = require('./services/prometheusMonitoring/prometheusRe
 
 /**
  * `ServiceRegistry` is a container responsible for exposing various
- * services for use throughout CreatorNode.
+ * services for use throughout ContentNode.
  *
  */
 class ServiceRegistry {

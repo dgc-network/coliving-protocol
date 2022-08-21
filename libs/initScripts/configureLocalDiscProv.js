@@ -35,7 +35,7 @@ const configureLocalDiscProv = async () => {
   console.log(`wliveAddress: ${wliveMint}, claimableTokenAddress: ${claimableTokenAddress}, wliveMint=${wliveMint}`)
   const envPath = path.join(process.cwd(), '../../', 'discovery-node/compose/.env')
 
-  await _updateDiscoveryProviderEnvFile(
+  await _updateDiscoveryNodeEnvFile(
     envPath,
     envPath,
     ethRegistryAddress,
@@ -52,7 +52,7 @@ const configureLocalDiscProv = async () => {
 }
 
 // Write an update to the local discovery node config .env file
-const _updateDiscoveryProviderEnvFile = async (
+const _updateDiscoveryNodeEnvFile = async (
   readPath,
   writePath,
   ethRegistryAddress,

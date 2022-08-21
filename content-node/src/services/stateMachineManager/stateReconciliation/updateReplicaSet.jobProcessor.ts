@@ -62,7 +62,7 @@ module.exports = async function ({
    */
   const colivingLibs = await initColivingLibs(true)
   const { services: healthyServicesMap } =
-    await colivingLibs.ServiceProvider.autoSelectCreatorNodes({
+    await colivingLibs.ServiceProvider.autoSelectContentNodes({
       performSyncCheck: false,
       whitelist: reconfigNodeWhitelist,
       log: true

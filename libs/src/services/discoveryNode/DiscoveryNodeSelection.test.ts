@@ -1,8 +1,8 @@
 import nock from 'nock'
 import assert from 'assert'
 import semver from 'semver'
-import { DiscoveryProviderSelection } from './DiscoveryProviderSelection'
-import { DISCOVERY_PROVIDER_TIMESTAMP } from './constants'
+import { DiscoveryNodeSelection } from './DiscoveryNodeSelection'
+import { DISCOVERY_NODE_TIMESTAMP } from './constants'
 import type { EthContracts } from '../ethContracts'
 import { LocalStorage } from 'node-localstorage'
 
@@ -32,10 +32,10 @@ const mockEthContracts = (
     }
   } as unknown as EthContracts)
 
-describe('DiscoveryProviderSelection', () => {
+describe('DiscoveryNodeSelection', () => {
   beforeEach(() => {
     const localStorage = new LocalStorage('./local-storage')
-    localStorage.removeItem(DISCOVERY_PROVIDER_TIMESTAMP)
+    localStorage.removeItem(DISCOVERY_NODE_TIMESTAMP)
   })
   afterEach(() => {
     nock.cleanAll()
@@ -53,7 +53,7 @@ describe('DiscoveryProviderSelection', () => {
         }
       })
 
-    const s = new DiscoveryProviderSelection(
+    const s = new DiscoveryNodeSelection(
       {},
       mockEthContracts([healthy], '1.2.3')
     )
@@ -83,7 +83,7 @@ describe('DiscoveryProviderSelection', () => {
         }
       })
 
-    const s = new DiscoveryProviderSelection(
+    const s = new DiscoveryNodeSelection(
       {},
       mockEthContracts([healthy, unhealthy], '1.2.3')
     )
@@ -113,7 +113,7 @@ describe('DiscoveryProviderSelection', () => {
         }
       })
 
-    const s = new DiscoveryProviderSelection(
+    const s = new DiscoveryNodeSelection(
       {},
       mockEthContracts([healthy, outdated], '1.2.3')
     )
@@ -143,7 +143,7 @@ describe('DiscoveryProviderSelection', () => {
         }
       })
 
-    const s = new DiscoveryProviderSelection(
+    const s = new DiscoveryNodeSelection(
       {},
       mockEthContracts([healthy, behind], '1.2.3')
     )
@@ -173,7 +173,7 @@ describe('DiscoveryProviderSelection', () => {
         }
       })
 
-    const s = new DiscoveryProviderSelection(
+    const s = new DiscoveryNodeSelection(
       {
         unhealthyBlockDiff: 25
       },
@@ -218,7 +218,7 @@ describe('DiscoveryProviderSelection', () => {
         }
       })
 
-    const s = new DiscoveryProviderSelection(
+    const s = new DiscoveryNodeSelection(
       {
         unhealthySlotDiffPlays: 10
       },
@@ -250,7 +250,7 @@ describe('DiscoveryProviderSelection', () => {
         }
       })
 
-    const s = new DiscoveryProviderSelection(
+    const s = new DiscoveryNodeSelection(
       { requestTimeout: 100 },
       mockEthContracts([healthyButBehind, pastVersionNotBehind], '1.2.3')
     )
@@ -293,7 +293,7 @@ describe('DiscoveryProviderSelection', () => {
         }
       })
 
-    const s = new DiscoveryProviderSelection(
+    const s = new DiscoveryNodeSelection(
       { requestTimeout: 100 },
       mockEthContracts([behind20, behind40], '1.2.3')
     )
@@ -337,7 +337,7 @@ describe('DiscoveryProviderSelection', () => {
         }
       })
 
-    const s = new DiscoveryProviderSelection(
+    const s = new DiscoveryNodeSelection(
       { requestTimeout: 100 },
       mockEthContracts([behind100, behind200], '1.2.0', ['1.2.0'])
     )
@@ -370,7 +370,7 @@ describe('DiscoveryProviderSelection', () => {
           block_difference: 20
         }
       })
-    const s = new DiscoveryProviderSelection(
+    const s = new DiscoveryNodeSelection(
       { requestTimeout: 100 },
       mockEthContracts([minorBehind], '1.2.3')
     )
@@ -401,7 +401,7 @@ describe('DiscoveryProviderSelection', () => {
         }
       })
 
-    const s = new DiscoveryProviderSelection(
+    const s = new DiscoveryNodeSelection(
       {
         whitelist: new Set([healthy2])
       },
@@ -425,14 +425,14 @@ describe('DiscoveryProviderSelection', () => {
         }
       })
 
-    const s = new DiscoveryProviderSelection(
+    const s = new DiscoveryNodeSelection(
       { localStorage },
       mockEthContracts([healthy1], '1.2.3')
     )
     const service = await s.select()
     assert.strictEqual(service, healthy1)
     const { endpoint } = JSON.parse(
-      localStorage.getItem(DISCOVERY_PROVIDER_TIMESTAMP) ?? '{}'
+      localStorage.getItem(DISCOVERY_NODE_TIMESTAMP) ?? '{}'
     )
     assert.strictEqual(endpoint, healthy1)
   })
@@ -475,13 +475,13 @@ describe('DiscoveryProviderSelection', () => {
         }
       })
 
-    const s = new DiscoveryProviderSelection(
+    const s = new DiscoveryNodeSelection(
       { localStorage },
       mockEthContracts([healthy1, healthy2, initiallyUnhealthy], '1.2.3')
     )
     const firstService = await s.select()
     const { endpoint } = JSON.parse(
-      localStorage.getItem(DISCOVERY_PROVIDER_TIMESTAMP) ?? '{}'
+      localStorage.getItem(DISCOVERY_NODE_TIMESTAMP) ?? '{}'
     )
     assert.strictEqual(endpoint, firstService)
 
@@ -496,7 +496,7 @@ describe('DiscoveryProviderSelection', () => {
 
     // Clear the cached service
     s.clearUnhealthy()
-    localStorage.removeItem(DISCOVERY_PROVIDER_TIMESTAMP)
+    localStorage.removeItem(DISCOVERY_NODE_TIMESTAMP)
 
     // Make healthy1 start failing but healthy2 succeed
     nock(healthy1)

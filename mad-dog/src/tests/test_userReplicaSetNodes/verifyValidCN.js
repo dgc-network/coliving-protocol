@@ -3,11 +3,11 @@ const ServiceCommands = require('@coliving/service-commands')
 
 const { verifyUserReplicaSetStatus } = require('../test_userReplicaSetManager')
 const { monitorAllUsersSyncStatus } = require('../test_snapbackSM')
-const { getIDfromEndpoint } = require('./setNumCreatorNodes')
+const { getIDfromEndpoint } = require('./setNumContentNodes')
 
 const { getUser } = ServiceCommands
 
-const verifyCreatorNodeRemoved = async (executeAll, removedCnId, walletIndexToUserIdMap) => {
+const verifyContentNodeRemoved = async (executeAll, removedCnId, walletIndexToUserIdMap) => {
   const userReplicaSets = await executeAll(async (libs, i) => {
     const userId = walletIndexToUserIdMap[i]
     const usrQueryInfo = await getUser(libs, userId)
@@ -54,7 +54,7 @@ const verifyUserReplicaSets = async (executeAll, walletIndexToUserIdMap, content
  */
 const verifyValidCNs = async (executeOne, executeAll, removedCNId, walletIndexToUserIdMap, contentNodeIDToInfoMapping) => {
   // Check Discovery for all user's replica set to ensure the cn is removed
-  await verifyCreatorNodeRemoved(executeAll, removedCNId, walletIndexToUserIdMap)
+  await verifyContentNodeRemoved(executeAll, removedCNId, walletIndexToUserIdMap)
 
   // Cross reference Discovery w/ the replcia set manager contract to
   // check that they are consistent

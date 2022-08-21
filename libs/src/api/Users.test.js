@@ -13,7 +13,7 @@ describe('Users tests', () => {
         /* userStateManager */ null,
         /* identityService */ null,
         /* hedgehog */ null,
-        /* discoveryProvider */ null,
+        /* discoveryNode */ null,
         /* web3Manager */ null,
         /* contracts */ {
           UserFactoryClient: {
@@ -52,7 +52,7 @@ describe('Users tests', () => {
         /* ethWeb3Manager */ null,
         /* ethContracts */ null,
         /* solanaWeb3Manager */ null,
-        /* creatorNode */ null,
+        /* contentNode */ null,
         /* comstock */ null,
         /* captcha */ null,
         /* isServer */ null
@@ -83,7 +83,7 @@ describe('Users tests', () => {
         /* userStateManager */ null,
         /* identityService */ null,
         /* hedgehog */ null,
-        /* discoveryProvider */ null,
+        /* discoveryNode */ null,
         /* web3Manager */ null,
         /* contracts */ {
           UserFactoryClient: {
@@ -122,7 +122,7 @@ describe('Users tests', () => {
         /* ethWeb3Manager */ null,
         /* ethContracts */ null,
         /* solanaWeb3Manager */ null,
-        /* creatorNode */ null,
+        /* contentNode */ null,
         /* comstock */ null,
         /* captcha */ null,
         /* isServer */ null

@@ -1,5 +1,5 @@
 const { Utils } = require('../utils')
-const { CreatorNode } = require('../services/creatorNode')
+const { ContentNode } = require('../services/contentNode')
 
 const THREE_SECONDS = 3000
 const MAX_TRIES = 3
@@ -20,7 +20,7 @@ const checkPrimaryHealthy = async (libs, primary, tries) => {
 /** Gets new endpoints from a user's secondaries */
 const getNewPrimary = async (libs, secondaries) => {
   for (const secondary of secondaries) {
-    const { isBehind } = await libs.creatorNode.getSyncStatus(secondary)
+    const { isBehind } = await libs.contentNode.getSyncStatus(secondary)
     if (!isBehind) {
       return secondary
     }
@@ -28,17 +28,17 @@ const getNewPrimary = async (libs, secondaries) => {
   throw new Error(`Could not find valid secondaries for user ${secondaries}`)
 }
 
-const rolloverNodes = async (libs, creatorNodeWhitelist) => {
+const rolloverNodes = async (libs, contentNodeWhitelist) => {
   console.debug('Sanity Check - rolloverNodes')
   const user = libs.userStateManager.getCurrentUser()
 
   if (!user) return
 
-  const primary = CreatorNode.getPrimary(user.content_node_endpoint)
+  const primary = ContentNode.getPrimary(user.content_node_endpoint)
   const healthy = await checkPrimaryHealthy(libs, primary, MAX_TRIES)
   if (healthy) return
 
-  const secondaries = CreatorNode.getSecondaries(user.content_node_endpoint)
+  const secondaries = ContentNode.getSecondaries(user.content_node_endpoint)
 
   try {
     // Get a new primary
@@ -47,9 +47,9 @@ const rolloverNodes = async (libs, creatorNodeWhitelist) => {
     // Get new secondaries and backfill up to 2
     let newSecondaries = [...secondaries]
     newSecondaries.splice(index, 1)
-    const autoselect = await libs.ServiceProvider.autoSelectCreatorNodes({
+    const autoselect = await libs.ServiceProvider.autoSelectContentNodes({
       numberOfNodes: 2 - newSecondaries.length,
-      whitelist: creatorNodeWhitelist,
+      whitelist: contentNodeWhitelist,
       // Exclude ones we currently have
       blacklist: new Set([newPrimary, ...newSecondaries]),
       preferHigherPatchForPrimary: libs.User.preferHigherPatchForPrimary,
@@ -59,7 +59,7 @@ const rolloverNodes = async (libs, creatorNodeWhitelist) => {
 
     // Set the new endpoint and connect to it
     const newEndpoints = [newPrimary, ...newSecondaries]
-    await libs.creatorNode.setEndpoint(newEndpoints[0])
+    await libs.contentNode.setEndpoint(newEndpoints[0])
 
     // Update the user
     const newMetadata = { ...user }

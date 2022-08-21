@@ -194,9 +194,9 @@ const run = async () => {
         // Local dev, delegate and owner wallet are equal
         const ownerWallet = ethAccounts[parseInt(serviceCount)]
         const delegateWallet = ownerWallet
-        const endpoint = makeCreatorNodeEndpoint(serviceCount)
+        const endpoint = makeContentNodeEndpoint(serviceCount)
 
-        await _updateCreatorNodeConfig({ ownerWallet, templatePath, writePath, endpoint, isShell: true, delegateWallet, envPath })
+        await _updateContentNodeConfig({ ownerWallet, templatePath, writePath, endpoint, isShell: true, delegateWallet, envPath })
         break
       }
 
@@ -464,26 +464,26 @@ const _initializeLocalEnvironment = async (colivingLibs, ethAccounts) => {
   await queryLocalServices(colivingLibs, serviceTypesList)
 }
 
-const makeDiscoveryProviderEndpoint = (serviceNumber) => `http://dn${serviceNumber}_web-server_1:${5000 + parseInt(serviceNumber) - 1}`
+const makeDiscoveryNodeEndpoint = (serviceNumber) => `http://dn${serviceNumber}_web-server_1:${5000 + parseInt(serviceNumber) - 1}`
 
 const _registerDiscProv = async (ethAccounts, serviceNumber) => {
   const colivingLibs = await initColivingLibs(true, null, ethAccounts[DISCOVERY_WALLET_OFFSET + serviceNumber])
-  const endpoint = makeDiscoveryProviderEndpoint(serviceNumber)
+  const endpoint = makeDiscoveryNodeEndpoint(serviceNumber)
   await registerLocalService(colivingLibs, discoveryNodeType, endpoint, amountOfAuds)
 }
 
-const makeCreatorNodeEndpoint = (serviceNumber) => `http://cn${serviceNumber}_content-node_1:${4000 + parseInt(serviceNumber) - 1}`
+const makeContentNodeEndpoint = (serviceNumber) => `http://cn${serviceNumber}_content-node_1:${4000 + parseInt(serviceNumber) - 1}`
 
 // Templated cnode to allow for dynamic number of services
 const _registerCnode = async (ethAccounts, serviceNumber) => {
   const colivingLibs = await initColivingLibs(true, null, ethAccounts[serviceNumber])
-  const endpoint = makeCreatorNodeEndpoint(serviceNumber)
+  const endpoint = makeContentNodeEndpoint(serviceNumber)
   await registerLocalService(colivingLibs, contentNodeType, endpoint, amountOfAuds)
 }
 
 const _deregisterCnode = async (ethAccounts, serviceNumber) => {
   const colivingLibs = await initColivingLibs(true, null, ethAccounts[serviceNumber])
-  const endpoint = makeCreatorNodeEndpoint(serviceNumber)
+  const endpoint = makeContentNodeEndpoint(serviceNumber)
   await deregisterLocalService(colivingLibs, contentNodeType, endpoint)
 }
 
@@ -504,11 +504,11 @@ const _printEthContractAccounts = async (ethAccounts, numAccounts = 20) => {
 // NOTE - newly selected wallet is the ethAccount with index 10 + current service number
 const _updateCNodeDelegateOwnerWallet = async (ethAccounts, serviceNumber) => {
   const colivingLibs = await initColivingLibs(true, null, ethAccounts[serviceNumber])
-  const endpoint = makeCreatorNodeEndpoint(serviceNumber)
+  const endpoint = makeContentNodeEndpoint(serviceNumber)
   await updateServiceDelegateOwnerWallet(colivingLibs, contentNodeType, endpoint, ethAccounts[serviceNumber + 10])
 }
 
-const _updateCreatorNodeConfig = async ({ ownerWallet, templatePath, writePath, endpoint = null, isShell = false, delegateWallet, envPath = null }) => {
+const _updateContentNodeConfig = async ({ ownerWallet, templatePath, writePath, endpoint = null, isShell = false, delegateWallet, envPath = null }) => {
   delegateWallet = (delegateWallet || ownerWallet).toLowerCase()
   ownerWallet = ownerWallet.toLowerCase()
 
@@ -518,7 +518,7 @@ const _updateCreatorNodeConfig = async ({ ownerWallet, templatePath, writePath, 
   const ownerWalletPrivKey = ganacheEthAccounts.private_keys[`${ownerWallet}`]
   const delegateWalletPrivKey = ganacheEthAccounts.private_keys[`${delegateWallet}`]
 
-  await _updateCreatorNodeConfigFile({ templatePath, writePath, ownerWallet, ownerWalletPrivKey, delegateWallet, delegateWalletPrivKey, endpoint, isShell, envPath })
+  await _updateContentNodeConfigFile({ templatePath, writePath, ownerWallet, ownerWalletPrivKey, delegateWallet, delegateWalletPrivKey, endpoint, isShell, envPath })
 }
 
 const _deregisterAllSPs = async (colivingLibs, ethAccounts) => {
@@ -578,7 +578,7 @@ const _configureDiscProv = async (ethAccounts, serviceNumber, templatePath, writ
 }
 
 // Write an update to shell env file for content nodes or docker env file
-const _updateCreatorNodeConfigFile = async ({ templatePath, writePath, ownerWallet, ownerWalletPkey, delegateWallet, delegateWalletPrivKey, endpoint, isShell, envPath }) => {
+const _updateContentNodeConfigFile = async ({ templatePath, writePath, ownerWallet, ownerWalletPkey, delegateWallet, delegateWalletPrivKey, endpoint, isShell, envPath }) => {
   const replaceMap = {
     DELEGATE_OWNER_WALLET: delegateWallet,
     DELEGATE_PRIVATE_KEY: delegateWalletPrivKey,

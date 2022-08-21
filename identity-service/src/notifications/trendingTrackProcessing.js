@@ -52,7 +52,7 @@ setInterval(async () => {
 
 const getDiscoveryNodes = async () => {
   const libs = await colivingLibsWrapper.getColivingLibsAsync()
-  const discoveryNodes = await libs.discoveryProvider.serviceSelector.findAll()
+  const discoveryNodes = await libs.discoveryNode.serviceSelector.findAll()
   logger.debug(`Updating discovery nodes for trendingAgreementProcessing to ${discoveryNodes}`)
   return sampleSize(discoveryNodes, NUM_DISCOVERY_NODES_FOR_CONSENSUS)
 }

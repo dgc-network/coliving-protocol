@@ -11,11 +11,11 @@ const colivingLibsWrapper = require('./colivingLibsInstance')
  * @returns {object} User Metadata object
  */
 const queryDiscprovForWalletAddressAndUserId = async (handle) => {
-  const { discoveryProvider } = colivingLibsWrapper.getColivingLibs()
+  const { discoveryNode } = colivingLibsWrapper.getColivingLibs()
 
   const response = await axios({
     method: 'get',
-    url: `${discoveryProvider.discoveryProviderEndpoint}/users`,
+    url: `${discoveryNode.discoveryNodeEndpoint}/users`,
     params: { handle }
   })
 

@@ -3,7 +3,7 @@ import assert from 'assert'
 import semver from 'semver'
 
 import { CONTENT_NODE_SERVICE_NAME } from './constants'
-import { CreatorNodeSelection } from './CreatorNodeSelection'
+import { ContentNodeSelection } from './ContentNodeSelection'
 import type { EthContracts } from '../ethContracts'
 
 const mockEthContracts = (
@@ -32,7 +32,7 @@ const mockEthContracts = (
     }
   } as unknown as EthContracts)
 
-const mockCreatorNode = {
+const mockContentNode = {
   getSyncStatus: async () => {
     return {
       isBehind: false,
@@ -66,7 +66,7 @@ const defaultHealthCheckData = {
 
 type HealthCheckData = { [K in keyof typeof defaultHealthCheckData]?: unknown }
 
-describe('test CreatorNodeSelection', () => {
+describe('test ContentNodeSelection', () => {
   it('selects the fastest healthy service as primary and rest as secondaries', async () => {
     const healthy = 'https://healthy.coliving.lol'
     nock(healthy)
@@ -85,8 +85,8 @@ describe('test CreatorNodeSelection', () => {
       .delay(200)
       .reply(200, { data: defaultHealthCheckData })
 
-    const cns = new CreatorNodeSelection({
-      creatorNode: mockCreatorNode,
+    const cns = new ContentNodeSelection({
+      contentNode: mockContentNode,
       numberOfNodes: 3,
       ethContracts: mockEthContracts(
         [healthy, healthyButSlow, healthyButSlowest],
@@ -129,8 +129,8 @@ describe('test CreatorNodeSelection', () => {
       .delay(200)
       .reply(200, { data: defaultHealthCheckData })
 
-    const cns = new CreatorNodeSelection({
-      creatorNode: mockCreatorNode,
+    const cns = new ContentNodeSelection({
+      contentNode: mockContentNode,
       numberOfNodes: 3,
       ethContracts: mockEthContracts(
         [healthy, healthyButSlow, healthyButSlowest],
@@ -169,8 +169,8 @@ describe('test CreatorNodeSelection', () => {
       .get('/health_check/verbose')
       .reply(200, { data: { ...defaultHealthCheckData, version: '1.2.0' } })
 
-    const cns = new CreatorNodeSelection({
-      creatorNode: mockCreatorNode,
+    const cns = new ContentNodeSelection({
+      contentNode: mockContentNode,
       numberOfNodes: 3,
       ethContracts: mockEthContracts(
         [upToDate, behindMajor, behindMinor, behindPatch],
@@ -210,8 +210,8 @@ describe('test CreatorNodeSelection', () => {
     const unhealthy5 = 'https://unhealthy5.coliving.lol'
     nock(unhealthy5).get('/health_check/verbose').delay(400).reply(500, {})
 
-    const cns = new CreatorNodeSelection({
-      creatorNode: mockCreatorNode,
+    const cns = new ContentNodeSelection({
+      contentNode: mockContentNode,
       numberOfNodes: 3,
       ethContracts: mockEthContracts(
         [unhealthy1, unhealthy2, unhealthy3, unhealthy4, unhealthy5],
@@ -263,8 +263,8 @@ describe('test CreatorNodeSelection', () => {
       .delay(100)
       .reply(200, { data: { ...defaultHealthCheckData, version: '1.2.0' } })
 
-    const cns = new CreatorNodeSelection({
-      creatorNode: mockCreatorNode,
+    const cns = new ContentNodeSelection({
+      contentNode: mockContentNode,
       numberOfNodes: 3,
       ethContracts: mockEthContracts(
         [
@@ -315,8 +315,8 @@ describe('test CreatorNodeSelection', () => {
 
     let cns
     for (let i = 0; i < numNodes; i++) {
-      cns = new CreatorNodeSelection({
-        creatorNode: mockCreatorNode,
+      cns = new ContentNodeSelection({
+        contentNode: mockContentNode,
         numberOfNodes: numNodes - i,
         ethContracts: mockEthContracts(contentNodes, '1.2.3'),
         whitelist: null,
@@ -347,8 +347,8 @@ describe('test CreatorNodeSelection', () => {
     const unhealthy = 'https://unhealthy.coliving.lol'
     nock(unhealthy).get('/health_check/verbose').reply(500, {})
 
-    const cns = new CreatorNodeSelection({
-      creatorNode: mockCreatorNode,
+    const cns = new ContentNodeSelection({
+      contentNode: mockContentNode,
       numberOfNodes: 3,
       ethContracts: mockEthContracts(
         [unhealthy, shouldBePrimary, shouldBeSecondary],
@@ -430,8 +430,8 @@ describe('test CreatorNodeSelection', () => {
         }
       })
 
-    const cns = new CreatorNodeSelection({
-      creatorNode: mockCreatorNode,
+    const cns = new ContentNodeSelection({
+      contentNode: mockContentNode,
       numberOfNodes: 3,
       ethContracts: mockEthContracts(
         [
@@ -528,8 +528,8 @@ describe('test CreatorNodeSelection', () => {
         }
       })
 
-    const cns = new CreatorNodeSelection({
-      creatorNode: mockCreatorNode,
+    const cns = new ContentNodeSelection({
+      contentNode: mockContentNode,
       numberOfNodes: 3,
       ethContracts: mockEthContracts(
         [
@@ -633,8 +633,8 @@ describe('test CreatorNodeSelection', () => {
         }
       })
 
-    const cns = new CreatorNodeSelection({
-      creatorNode: mockCreatorNode,
+    const cns = new ContentNodeSelection({
+      contentNode: mockContentNode,
       numberOfNodes: 3,
       ethContracts: mockEthContracts(
         [
@@ -708,8 +708,8 @@ describe('test CreatorNodeSelection', () => {
         }
       })
 
-    const cns = new CreatorNodeSelection({
-      creatorNode: mockCreatorNode,
+    const cns = new ContentNodeSelection({
+      contentNode: mockContentNode,
       numberOfNodes: 3,
       ethContracts: mockEthContracts(
         [shouldBePrimary, shouldBeSecondary1, shouldBeSecondary2],
@@ -756,8 +756,8 @@ describe('test CreatorNodeSelection', () => {
         .delay(200)
         .reply(200, { data: defaultHealthCheckData })
 
-      const cns = new CreatorNodeSelection({
-        creatorNode: mockCreatorNode,
+      const cns = new ContentNodeSelection({
+        contentNode: mockContentNode,
         numberOfNodes: 2,
         ethContracts: mockEthContracts([one, two], '1.2.3'),
         whitelist: null,
@@ -792,8 +792,8 @@ describe('test CreatorNodeSelection', () => {
         .get('/health_check/verbose')
         .reply(200, { data: defaultHealthCheckData })
 
-      const cns = new CreatorNodeSelection({
-        creatorNode: mockCreatorNode,
+      const cns = new ContentNodeSelection({
+        contentNode: mockContentNode,
         numberOfNodes: 3,
         ethContracts: mockEthContracts(
           [healthy, aheadPatchButSlow, aheadPatch],
@@ -841,8 +841,8 @@ describe('test CreatorNodeSelection', () => {
         .get('/health_check/verbose')
         .reply(200, { data: { ...defaultHealthCheckData, version: '1.2.3' } })
 
-      const cns = new CreatorNodeSelection({
-        creatorNode: mockCreatorNode,
+      const cns = new ContentNodeSelection({
+        contentNode: mockContentNode,
         numberOfNodes: 3,
         ethContracts: mockEthContracts(
           [healthy, healthyButBehindPatch, aheadPatchButSlow, aheadPatch],
@@ -897,8 +897,8 @@ describe('test CreatorNodeSelection', () => {
         .get('/health_check/verbose')
         .reply(200, { data: { ...defaultHealthCheckData, version: '1.2.3' } })
 
-      const cns = new CreatorNodeSelection({
-        creatorNode: mockCreatorNode,
+      const cns = new ContentNodeSelection({
+        contentNode: mockContentNode,
         numberOfNodes: 3,
         ethContracts: mockEthContracts(
           [
@@ -958,8 +958,8 @@ describe('test CreatorNodeSelection', () => {
         .get('/health_check/verbose')
         .reply(200, { data: { ...defaultHealthCheckData, version: '1.2.3' } })
 
-      const cns = new CreatorNodeSelection({
-        creatorNode: mockCreatorNode,
+      const cns = new ContentNodeSelection({
+        contentNode: mockContentNode,
         numberOfNodes: 3,
         ethContracts: mockEthContracts(
           [

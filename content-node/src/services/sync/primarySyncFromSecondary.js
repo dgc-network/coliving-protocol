@@ -7,7 +7,7 @@ const { WalletWriteLock } = redis
 const models = require('../../models')
 const { logger: genericLogger } = require('../../logging')
 const DBManager = require('../../dbManager')
-const { getCreatorNodeEndpoints } = require('../../middlewares')
+const { getContentNodeEndpoints } = require('../../middlewares')
 const { saveFileForMultihashToFS } = require('../../fileManager')
 const SyncHistoryAggregator = require('../../snapbackSM/syncHistoryAggregator')
 const initColivingLibs = require('../initColivingLibs')
@@ -452,7 +452,7 @@ async function filterOutAlreadyPresentDBEntries({
 
 async function getUserReplicaSet({ wallet, selfEndpoint, libs, logger }) {
   try {
-    let userReplicaSet = await getCreatorNodeEndpoints({
+    let userReplicaSet = await getContentNodeEndpoints({
       libs,
       logger,
       wallet,

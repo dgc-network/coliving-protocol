@@ -2,7 +2,7 @@ import { sampleSize } from 'lodash'
 
 import { Base } from './base'
 import { timeRequests } from '../utils/network'
-import { CreatorNodeSelection } from '../services/creatorNode'
+import { ContentNodeSelection } from '../services/contentNode'
 
 import type { Nullable, ServiceWithEndpoint } from '../utils'
 
@@ -26,7 +26,7 @@ const CONTENT_NODE_SELECTION_EQUIVALENCY_DELTA = 200
 export class ServiceProvider extends Base {
   /* ------- Content Node  ------- */
 
-  async listCreatorNodes() {
+  async listContentNodes() {
     return await this.ethContracts.ServiceProviderFactoryClient.getServiceProviderList(
       CONTENT_NODE_SERVICE_NAME
     )
@@ -35,27 +35,27 @@ export class ServiceProvider extends Base {
   /**
    * Fetches healthy Content Nodes filtered down to a given whitelist and blacklist
    */
-  async getSelectableCreatorNodes(
+  async getSelectableContentNodes(
     whitelist: Nullable<Set<string>> = null, // whether or not to include only specified nodes (default no whiltelist)
     blacklist: Nullable<Set<string>> = null, // whether or not to exclude any nodes (default no blacklist)
     timeout = CONTENT_NODE_DEFAULT_SELECTION_TIMEOUT
   ) {
-    let creatorNodes = await this.listCreatorNodes()
+    let contentNodes = await this.listContentNodes()
 
     // Filter whitelist
     if (whitelist) {
-      creatorNodes = creatorNodes.filter((node) => whitelist.has(node.endpoint))
+      contentNodes = contentNodes.filter((node) => whitelist.has(node.endpoint))
     }
     // Filter blacklist
     if (blacklist) {
-      creatorNodes = creatorNodes.filter(
+      contentNodes = contentNodes.filter(
         (node) => !blacklist.has(node.endpoint)
       )
     }
 
     // Time requests and get version info
     const timings = await timeRequests({
-      requests: creatorNodes.map((node) => ({
+      requests: contentNodes.map((node) => ({
         id: node.endpoint,
         url: `${node.endpoint}/health_check/verbose`
       })),
@@ -85,7 +85,7 @@ export class ServiceProvider extends Base {
    * // secondaries: string[]
    * // services: { contentNodeEndpoint: healthCheckResponse }
    */
-  async autoSelectCreatorNodes({
+  async autoSelectContentNodes({
     numberOfNodes = 3,
     whitelist = null,
     blacklist = null,
@@ -96,8 +96,8 @@ export class ServiceProvider extends Base {
     preferHigherPatchForSecondaries = true,
     log = true
   }) {
-    const creatorNodeSelection = new CreatorNodeSelection({
-      creatorNode: this.creatorNode,
+    const contentNodeSelection = new ContentNodeSelection({
+      contentNode: this.contentNode,
       ethContracts: this.ethContracts,
       logger: this.logger,
       numberOfNodes,
@@ -110,13 +110,13 @@ export class ServiceProvider extends Base {
     })
 
     const { primary, secondaries, services } =
-      await creatorNodeSelection.select(performSyncCheck, log)
+      await contentNodeSelection.select(performSyncCheck, log)
     return { primary, secondaries, services }
   }
 
   /* ------- Discovery Node ------ */
 
-  async listDiscoveryProviders() {
+  async listDiscoveryNodes() {
     return await this.ethContracts.ServiceProviderFactoryClient.getServiceProviderList(
       DISCOVERY_NODE_SERVICE_NAME
     )
@@ -141,7 +141,7 @@ export class ServiceProvider extends Base {
     if (!discoveryNodes || discoveryNodes.length === 0) {
       // Whitelist logic: if useWhitelist is false, pass in null to override internal whitelist logic; if true, pass in undefined
       // so service selector uses internal whitelist
-      discoveryNodes = (await this.discoveryProvider.serviceSelector.findAll({
+      discoveryNodes = (await this.discoveryNode.serviceSelector.findAll({
         verbose: true,
         whitelist: useWhitelist ? undefined : null
       })) as ServiceWithEndpoint[]

@@ -28,7 +28,7 @@ it('should call addUser and verify new creator', async function () {
     'cover_photo': helpers.constants.agreementMetadataCID,
     'bio': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
     'location': 'San Francisco',
-    'content_node_endpoint': helpers.constants.creatorNodeURL1,
+    'content_node_endpoint': helpers.constants.contentNodeURL1,
     'is_verified': false
   }
 
@@ -95,11 +95,11 @@ it('should call addUser and verify new creator', async function () {
     `Transaction failed - ${coverPhotoMultihashDecoded.digest}`
   )
 
-  const updateCreatorNodeEndpointResp = await colivingInstance.contracts.UserFactoryClient.updateCreatorNodeEndpoint(
+  const updateContentNodeEndpointResp = await colivingInstance.contracts.UserFactoryClient.updateContentNodeEndpoint(
     userId, metadata.content_node_endpoint
   )
   assert.deepStrictEqual(
-    updateCreatorNodeEndpointResp.contentNodeEndpoint,
+    updateContentNodeEndpointResp.contentNodeEndpoint,
     metadata.content_node_endpoint,
     `Transaction failed - ${metadata.content_node_endpoint}`
   )

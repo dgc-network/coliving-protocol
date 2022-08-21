@@ -18,7 +18,7 @@ const truffle_dev_config = artifacts.options['_values']['networks']['development
 const ColivingLibs = 'libs'
 const ColivingDiscoveryNode = 'discovery-node'
 const ColivingIdentityService = 'identity-service'
-const ColivingCreatorNode = 'content-node'
+const ColivingContentNode = 'content-node'
 const ColivingDataContracts = 'contracts'
 
 const getDefaultAccount = async () => {
@@ -148,7 +148,7 @@ module.exports = async callback => {
 
   // output to Creator Node
   try {
-    outputJsonConfigFile(getDirectoryRoot(ColivingCreatorNode) + '/contract-config.json')
+    outputJsonConfigFile(getDirectoryRoot(ColivingContentNode) + '/contract-config.json')
   } catch (e) {
     console.log("Creator node dir doesn't exist", e)
   }

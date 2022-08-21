@@ -30,8 +30,8 @@ const snapbackSMMock = {
 }
 
 const libsMock = {
-  discoveryProvider: {
-    discoveryProviderEndpoint: TEST_ENDPOINT
+  discoveryNode: {
+    discoveryNodeEndpoint: TEST_ENDPOINT
   }
 }
 
@@ -178,7 +178,7 @@ describe('Test Health Check', function () {
       service: 'content-node',
       healthy: true,
       git: undefined,
-      selectedDiscoveryProvider: TEST_ENDPOINT,
+      selectedDiscoveryNode: TEST_ENDPOINT,
       spID: config.get('spID'),
       spOwnerWallet: config.get('spOwnerWallet'),
       contentNodeEndpoint: config.get('contentNodeEndpoint'),
@@ -291,7 +291,7 @@ describe('Test Health Check', function () {
       service: 'content-node',
       healthy: true,
       git: undefined,
-      selectedDiscoveryProvider: 'none',
+      selectedDiscoveryNode: 'none',
       spID: config.get('spID'),
       spOwnerWallet: config.get('spOwnerWallet'),
       contentNodeEndpoint: config.get('contentNodeEndpoint'),
@@ -393,7 +393,7 @@ describe('Test Health Check', function () {
       service: 'content-node',
       healthy: true,
       git: undefined,
-      selectedDiscoveryProvider: 'none',
+      selectedDiscoveryNode: 'none',
       spID: config.get('spID'),
       spOwnerWallet: config.get('spOwnerWallet'),
       contentNodeEndpoint: config.get('contentNodeEndpoint'),
@@ -536,7 +536,7 @@ describe('Test Health Check Verbose', function () {
       service: 'content-node',
       healthy: true,
       git: undefined,
-      selectedDiscoveryProvider: 'none',
+      selectedDiscoveryNode: 'none',
       spID: config.get('spID'),
       spOwnerWallet: config.get('spOwnerWallet'),
       contentNodeEndpoint: config.get('contentNodeEndpoint'),

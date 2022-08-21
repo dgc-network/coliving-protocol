@@ -9,7 +9,7 @@
  *
  */
 const axios = require('axios')
-const CreatorNode = require('@coliving/sdk/src/services/creatorNode')
+const ContentNode = require('@coliving/sdk/src/services/contentNode')
 const { Command } = require('commander')
 
 function commaSeparatedList(value, unusedPrevValue) {
@@ -28,32 +28,32 @@ program
     5000
   )
 
-const discoveryProviderEndpoint = process.env.DISCOVERY_PROVIDER_ENDPOINT
+const discoveryNodeEndpoint = process.env.DISCOVERY_PROVIDER_ENDPOINT
 
-async function getUserByHandle(handle, discoveryProviderEndpoint, timeout) {
+async function getUserByHandle(handle, discoveryNodeEndpoint, timeout) {
   try {
     return (
       await axios({
         url: `/v1/full/users/handle/${handle}`,
         method: 'get',
-        baseURL: discoveryProviderEndpoint,
+        baseURL: discoveryNodeEndpoint,
         timeout: timeout
       })
     ).data.data[0]
   } catch (err) {
     console.log(
-      `Failed to get content node endpoint and wallet from endpoint: ${discoveryProviderEndpoint} and handle: ${handle} with ${err}`
+      `Failed to get content node endpoint and wallet from endpoint: ${discoveryNodeEndpoint} and handle: ${handle} with ${err}`
     )
   }
 }
 
-async function getUserById(userId, discoveryProviderEndpoint, timeout) {
+async function getUserById(userId, discoveryNodeEndpoint, timeout) {
   try {
     const resp = (
       await axios({
         url: `/users?id=${userId}`,
         method: 'get',
-        baseURL: discoveryProviderEndpoint,
+        baseURL: discoveryNodeEndpoint,
         timeout
       })
     ).data.data[0]
@@ -65,7 +65,7 @@ async function getUserById(userId, discoveryProviderEndpoint, timeout) {
     return resp
   } catch (err) {
     console.log(
-      `Failed to get content node endpoint and wallet from endpoint: ${discoveryProviderEndpoint} and user id: ${userId} with ${err}`
+      `Failed to get content node endpoint and wallet from endpoint: ${discoveryNodeEndpoint} and user id: ${userId} with ${err}`
     )
   }
 }
@@ -74,8 +74,8 @@ async function getClockValues(
   { wallet, content_node_endpoint: contentNodeEndpoint, handle },
   timeout
 ) {
-  const primaryCreatorNode = CreatorNode.getPrimary(contentNodeEndpoint)
-  const secondaryCreatorNodes = CreatorNode.getSecondaries(contentNodeEndpoint)
+  const primaryContentNode = ContentNode.getPrimary(contentNodeEndpoint)
+  const secondaryContentNodes = ContentNode.getSecondaries(contentNodeEndpoint)
 
   if (!contentNodeEndpoint) {
     return {
@@ -88,16 +88,16 @@ async function getClockValues(
   }
 
   return {
-    primaryNode: primaryCreatorNode,
-    primaryClockValue: await CreatorNode.getClockValue(
-      primaryCreatorNode,
+    primaryNode: primaryContentNode,
+    primaryClockValue: await ContentNode.getClockValue(
+      primaryContentNode,
       wallet,
       timeout
     ),
-    secondaryNodes: secondaryCreatorNodes,
+    secondaryNodes: secondaryContentNodes,
     secondaryClockValues: await Promise.all(
-      secondaryCreatorNodes.map(secondaryNode =>
-        CreatorNode.getClockValue(secondaryNode, wallet, timeout)
+      secondaryContentNodes.map(secondaryNode =>
+        ContentNode.getClockValue(secondaryNode, wallet, timeout)
       )
     ),
     handle
@@ -107,11 +107,11 @@ async function getClockValues(
 // get clock values for all users / some users via userIds / handles
 async function getUserClockValues(handles, userIds, timeout) {
   const usersFromHandles = handles.map(handle =>
-    getUserByHandle(handle, discoveryProviderEndpoint, timeout)
+    getUserByHandle(handle, discoveryNodeEndpoint, timeout)
   )
 
   const usersFromIds = userIds.map(userId =>
-    getUserById(userId, discoveryProviderEndpoint, timeout)
+    getUserById(userId, discoveryNodeEndpoint, timeout)
   )
 
   const users = await Promise.all([...usersFromHandles, ...usersFromIds])
@@ -150,7 +150,7 @@ async function run() {
  */
 function parseArgsAndEnv() {
   program.parse(process.argv)
-  if (!discoveryProviderEndpoint) {
+  if (!discoveryNodeEndpoint) {
     const errorMessage =
       'Incorrect script usage, expected DISCOVERY_PROVIDER_ENDPOINT in env.\ntry `export DISCOVERY_PROVIDER_ENDPOINT="https://discoverynode.coliving.lol"`'
     throw new Error(errorMessage)

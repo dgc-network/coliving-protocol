@@ -6,5 +6,5 @@ export * from './sdk/api/generated/default'
 
 export const libs: any = ColivingLibs
 export { Utils } from './utils'
-export { CreatorNode } from './services/creatorNode'
+export { ContentNode } from './services/contentNode'
 export * from './sanityChecks'

@@ -11,8 +11,8 @@ const handleReaction = async ({ senderWallet, reactionType, reactedTo, libs, rea
   const currentSlot = await solanaWeb3Manager.getSlot()
 
   // Get tips on DN to ensure reactions only to received tips
-  const { discoveryProviderEndpoint } = libs.discoveryProvider
-  const url = `${discoveryProviderEndpoint}/v1/full/tips`
+  const { discoveryNodeEndpoint } = libs.discoveryNode
+  const url = `${discoveryNodeEndpoint}/v1/full/tips`
   const resp = await Axios({
     method: 'get',
     url,

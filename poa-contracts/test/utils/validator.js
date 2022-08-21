@@ -13,7 +13,7 @@ export const validateDiscprovRegisterEvent = (tx, id, wallet, endpoint) => {
   let event = parseDiscprovRegisterTx(tx)
 
   // validate all event details
-  validateObj(event, { eventName: 'NewDiscoveryProvider', discprovId: id, discprovWallet: wallet, discprovEndpoint: endpoint })
+  validateObj(event, { eventName: 'NewDiscoveryNode', discprovId: id, discprovWallet: wallet, discprovEndpoint: endpoint })
 
   return event
 }

@@ -1,7 +1,7 @@
 const BullQueue = require('bull')
 
 const { libs } = require('@coliving/sdk')
-const CreatorNode = libs.CreatorNode
+const ContentNode = libs.ContentNode
 const axios = require('axios')
 const retry = require('async-retry')
 
@@ -127,7 +127,7 @@ const retrieveClockValueForUserFromReplica = async (replica, wallet) => {
     DELEGATE_PRIVATE_KEY
   )
 
-  const clockValue = await CreatorNode.getClockValue(
+  const clockValue = await ContentNode.getClockValue(
     replica,
     wallet,
     CLOCK_STATUS_REQUEST_TIMEOUT_MS,

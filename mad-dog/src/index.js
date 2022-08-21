@@ -59,14 +59,14 @@ const services = [
 // this flag.
 // The `additionalConfigs` is used for additional parameters for tests
 // * It is used to pass in `iterations` for the test_userReplicaSetNodes
-const makeTest = (name, testFn, { numUsers, numCreatorNodes, useZeroIndexedWallet, executeAllBatchSize = numUsers + 1, ...additionalConfigs }) => {
+const makeTest = (name, testFn, { numUsers, numContentNodes, useZeroIndexedWallet, executeAllBatchSize = numUsers + 1, ...additionalConfigs }) => {
  const wrappedTest = async ({ executeAll, executeOne }) => {
    try {
      const res = await testFn({
        executeAll,
        executeOne,
        numUsers,
-       numCreatorNodes,
+       numContentNodes,
        ...additionalConfigs
      })
      if (res && res.error) return { error: res.error }
@@ -174,7 +174,7 @@ async function main () {
    switch (cmd) {
      case 'test': {
        const test = makeTest('consistency', coreIntegration, {
-         numCreatorNodes: DEFAULT_NUM_CONTENT_NODES,
+         numContentNodes: DEFAULT_NUM_CONTENT_NODES,
          numUsers: DEFAULT_NUM_USERS
        })
        await testRunner([test])
@@ -218,7 +218,7 @@ async function main () {
          SnapbackReconfigTests.deregisterCN,
          {
            numUsers: 8,
-           numCreatorNodes: 10,
+           numContentNodes: 10,
            iterations: 2
          }
        )
@@ -228,7 +228,7 @@ async function main () {
          SnapbackReconfigTests.forceCNUnavailability,
          {
            numUsers: 8,
-           numCreatorNodes: 10,
+           numContentNodes: 10,
            iterations: 2
          }
        )
@@ -252,7 +252,7 @@ async function main () {
        const blacklistTests = Object.entries(IpldBlacklistTest).map(
          ([testName, testLogic]) =>
            makeTest(testName, testLogic, {
-             numCreatorNodes: 1,
+             numContentNodes: 1,
              numUsers: DEFAULT_NUM_USERS,
              useZeroIndexedWallet: true
            })
@@ -262,7 +262,7 @@ async function main () {
      }
      case 'test-nightly': {
        const coreIntegrationTests = makeTest('consistency', coreIntegration, {
-         numCreatorNodes: DEFAULT_NUM_CONTENT_NODES,
+         numContentNodes: DEFAULT_NUM_CONTENT_NODES,
          numUsers: DEFAULT_NUM_USERS,
          testDurationSeconds: MAD_DOG_NIGHTLY_DURATION_SECONDS
        })
@@ -276,7 +276,7 @@ async function main () {
        const blacklistTests = Object.entries(IpldBlacklistTest).map(
          ([testName, testLogic]) =>
            makeTest(testName, testLogic, {
-             numCreatorNodes: 1,
+             numContentNodes: 1,
              numUsers: DEFAULT_NUM_USERS,
              useZeroIndexedWallet: true
            })
@@ -309,7 +309,7 @@ async function main () {
          SnapbackReconfigTests.deregisterCN,
          {
            numUsers: 2,
-           numCreatorNodes: 10,
+           numContentNodes: 10,
            iterations: 2
          }
        )
@@ -319,7 +319,7 @@ async function main () {
          SnapbackReconfigTests.forceCNUnavailability,
          {
            numUsers: 2,
-           numCreatorNodes: 10,
+           numContentNodes: 10,
            iterations: 2
          }
        )

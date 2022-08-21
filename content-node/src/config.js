@@ -391,10 +391,10 @@ const config = convict({
     env: 'contentNodeEndpoint',
     default: null
   },
-  discoveryProviderWhitelist: {
+  discoveryNodeWhitelist: {
     doc: 'Whitelisted discovery nodes to select from (comma-separated)',
     format: String,
-    env: 'discoveryProviderWhitelist',
+    env: 'discoveryNodeWhitelist',
     default: ''
   },
   discoveryNodeUnhealthyBlockDiff: {
@@ -409,10 +409,10 @@ const config = convict({
     env: 'identityService',
     default: ''
   },
-  creatorNodeIsDebug: {
+  contentNodeIsDebug: {
     doc: 'Whether the creatornode is in debug mode.',
     format: Boolean,
-    env: 'creatorNodeIsDebug',
+    env: 'contentNodeIsDebug',
     default: false
   },
   snapbackHighestReconfigMode: {

@@ -1,7 +1,7 @@
 import {
-  DiscoveryProvider,
-  DiscoveryProviderConfig
-} from '../services/discoveryProvider'
+  DiscoveryNode,
+  DiscoveryNodeConfig
+} from '../services/discoveryNode'
 import { EthContracts, EthContractsConfig } from '../services/ethContracts'
 import { EthWeb3Config, EthWeb3Manager } from '../services/ethWeb3Manager'
 import { IdentityService } from '../services/identity'
@@ -46,9 +46,9 @@ type SdkConfig = {
    */
   appName: string
   /**
-   * Configuration for the DiscoveryProvider client
+   * Configuration for the DiscoveryNode client
    */
-  discoveryProviderConfig?: DiscoveryProviderConfig
+  discoveryNodeConfig?: DiscoveryNodeConfig
   /**
    * Configuration for the Ethereum contracts client
    */
@@ -78,15 +78,15 @@ export const sdk = (config: SdkConfig) => {
   const { appName } = config
 
   // Initialize services
-  const { discoveryProvider } = initializeServices(config)
+  const { discoveryNode } = initializeServices(config)
 
   // Initialize APIs
-  const apis = initializeApis({ appName, discoveryProvider })
+  const apis = initializeApis({ appName, discoveryNode })
 
   // Initialize OAuth
   const oauth =
     typeof window !== 'undefined'
-      ? new Oauth({ discoveryProvider, appName })
+      ? new Oauth({ discoveryNode, appName })
       : undefined
 
   return {
@@ -97,7 +97,7 @@ export const sdk = (config: SdkConfig) => {
 
 const initializeServices = (config: SdkConfig) => {
   const {
-    discoveryProviderConfig,
+    discoveryNodeConfig,
     ethContractsConfig,
     ethWeb3Config,
     identityServiceConfig,
@@ -129,24 +129,24 @@ const initializeServices = (config: SdkConfig) => {
     ...ethContractsConfig
   })
 
-  const discoveryProvider = new DiscoveryProvider({
+  const discoveryNode = new DiscoveryNode({
     ethContracts,
     userStateManager,
     localStorage,
-    ...discoveryProviderConfig
+    ...discoveryNodeConfig
   })
 
-  return { discoveryProvider }
+  return { discoveryNode }
 }
 
 const initializeApis = ({
   appName,
-  discoveryProvider
+  discoveryNode
 }: {
   appName: string
-  discoveryProvider: DiscoveryProvider
+  discoveryNode: DiscoveryNode
 }) => {
-  const initializationPromise = discoveryProvider.init()
+  const initializationPromise = discoveryNode.init()
 
   const generatedApiClientConfig = new Configuration({
     fetchApi: async (url: string) => {
@@ -159,7 +159,7 @@ const initializeApis = ({
         (url.includes('?') ? '&' : '?') +
         querystring({ app_name: appName })
 
-      return await discoveryProvider._makeRequest(
+      return await discoveryNode._makeRequest(
         {
           endpoint: urlWithAppName
         },
@@ -171,7 +171,7 @@ const initializeApis = ({
     }
   })
 
-  const agreements = new AgreementsApi(generatedApiClientConfig, discoveryProvider)
+  const agreements = new AgreementsApi(generatedApiClientConfig, discoveryNode)
   const users = new UsersApi(generatedApiClientConfig)
   const contentLists = new ContentListsApi(generatedApiClientConfig)
   const tips = new TipsApi(generatedApiClientConfig)
