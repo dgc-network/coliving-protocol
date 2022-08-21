@@ -34,8 +34,8 @@
     "gen:prod:full": "node ./src/sdk/api/generator/gen.js --api-flavor full"
   },
   "dependencies": {
-    "@coliving/anchor-coliving-data": "0.0.2",
-    "@coliving/hedgehog": "2.1.0",
+    "@audius/anchor-audius-data": "0.0.2",
+    "@audius/hedgehog": "2.1.0",
     "@babel/runtime": "^7.18.3",
     "@certusone/wormhole-sdk": "0.1.1",
     "@ethersproject/solidity": "5.0.5",
@@ -58,6 +58,7 @@
     "ethereumjs-wallet": "1.0.2",
     "ethers": "5.4.7",
     "form-data": "3.0.0",
+    "got": "^12.3.1",
     "hashids": "2.2.10",
     "interface-blockstore": "^2.0.3",
     "interface-store": "^2.0.2",
@@ -72,7 +73,7 @@
     "secp256k1": "4.0.2",
     "semver": "6.3.0",
     "stream-browserify": "3.0.0",
-    "web3": "1.7.1",
+    "web3": "^1.7.5",
     "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {
@@ -123,7 +124,7 @@
     "standard": "16.0.4",
     "ts-mocha": "9.0.2",
     "ts-node": "10.7.0",
-    "typescript": "^4.6.2"
+    "typescript": "^4.7.4"
   },
   "repository": {
     "type": "git",
