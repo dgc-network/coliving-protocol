@@ -11,7 +11,7 @@
   "license": "ISC",
   "devDependencies": {
     "@rollup/plugin-typescript": "^8.3.3",
-    "rollup": "^2.75.7",
+    "rollup": "^2.78.1",
     "typedoc": "^0.22.17"
   }
 }

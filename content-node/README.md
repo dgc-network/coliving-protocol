@@ -1,5 +1,5 @@
 # Content Node
-An Coliving Content Node maintains the availability of content on Coliving's decentralized network. The information stored includes Coliving user metadata, and files content. The content is backed by either aws S3 or a local directory.
+A Coliving Content Node maintains the availability of content on Coliving's decentralized network. The information stored includes Coliving user metadata, and files content. The content is backed by either aws S3 or a local directory.
 
 To blacklist content on an already running node:
 1. Export the keys `delegatePrivateKey`, `contentNodeEndpoint`, and `discoveryNodeEndpoint` in your terminal

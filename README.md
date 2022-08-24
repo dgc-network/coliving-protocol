@@ -1,9 +1,8 @@
 # Coliving Protocol
 
-Coliving is a decentralized, community-owned music-sharing protocol
+Coliving is a decentralized, community-owned file-sharing protocol
 
-This repository encompasses all of the services, contracts, and client-side libraries that
-comprise the Coliving protocol.
+This repository encompasses all of the services, contracts, and client-side libraries that comprise the Coliving protocol.
 
 For further details on operating an Coliving service, getting started with the Token and the API, see [docs.coliving.lol](https://docs.coliving.lol/).
 
@@ -26,8 +25,8 @@ The independent sets of smart contracts that power the on-chain aspects of the C
 | Contracts                                                        | Description                                                                                       
 | -- | --
 | [`eth-contracts`](eth-contracts) | The Ethereum smart contracts that run the Coliving protocol, encompassing the Coliving ERC20 token and functionality for staking, off-chain service registration / lookup, and governance
-| [`solana-programs`](solana-programs) | The Solana programs for the Coliving protocol, encompassing user account, contentListing, and content interaction functionality
-| [`contracts`](contracts)         | The POA network smart contracts for the Coliving protocol, encompassing user account, contentListing, and content interaction functionality
+| [`solana-programs`](solana-programs) | The Solana programs for the Coliving protocol, encompassing user account, content listing, and content interaction functionality
+| [`poa-contracts`](poa-contracts)         | The POA network smart contracts for the Coliving protocol, encompassing user account, content listing, and content interaction functionality
 
 ### Coliving Client Libraries
 
