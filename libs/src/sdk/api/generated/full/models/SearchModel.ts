@@ -73,7 +73,7 @@ export interface SearchModel {
      * @type {Array<ContentListFull>}
      * @memberof SearchModel
      */
-    saved_contentLists?: Array<ContentListFull>;
+    saved_content_lists?: Array<ContentListFull>;
     /**
      * 
      * @type {Array<ContentListFull>}

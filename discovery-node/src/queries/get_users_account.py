@@ -1,6 +1,6 @@
 from sqlalchemy import and_, asc, desc, or_
 from src import exceptions
-from src.models.contentLists.contentList import ContentList
+from src.models.content_lists.content_list import ContentList
 from src.models.social.save import Save, SaveType
 from src.models.users.user import User
 from src.queries.get_unpopulated_users import get_unpopulated_users
@@ -54,54 +54,54 @@ def get_users_account(args):
         save_collection_ids = [item[0] for item in saved_query_results]
 
         # Get ContentList/Albums saved or owned by the user
-        contentList_query = (
+        content_list_query = (
             session.query(ContentList)
             .filter(
                 or_(
                     and_(
                         ContentList.is_current == True,
                         ContentList.is_delete == False,
-                        ContentList.contentList_owner_id == user_id,
+                        ContentList.content_list_owner_id == user_id,
                     ),
                     and_(
                         ContentList.is_current == True,
                         ContentList.is_delete == False,
-                        ContentList.contentList_id.in_(save_collection_ids),
+                        ContentList.content_list_id.in_(save_collection_ids),
                     ),
                 )
             )
             .order_by(desc(ContentList.created_at))
         )
-        contentLists = contentList_query.all()
+        contentLists = content_list_query.all()
         contentLists = helpers.query_result_to_list(contentLists)
 
-        contentList_owner_ids = list(
-            {contentList["contentList_owner_id"] for contentList in contentLists}
+        content_list_owner_ids = list(
+            {contentList["content_list_owner_id"] for contentList in contentLists}
         )
 
         # Get Users for the ContentList/Albums
-        users = get_unpopulated_users(session, contentList_owner_ids)
+        users = get_unpopulated_users(session, content_list_owner_ids)
 
         user_map = {}
 
-        stripped_contentLists = []
+        stripped_content_lists = []
         # Map the users to the contentLists/albums
-        for contentList_owner in users:
-            user_map[contentList_owner["user_id"]] = contentList_owner
+        for content_list_owner in users:
+            user_map[content_list_owner["user_id"]] = content_list_owner
         for contentList in contentLists:
-            contentList_owner = user_map[contentList["contentList_owner_id"]]
-            stripped_contentList = {
-                "id": contentList["contentList_id"],
-                "name": contentList["contentList_name"],
+            content_list_owner = user_map[contentList["content_list_owner_id"]]
+            stripped_content_list = {
+                "id": contentList["content_list_id"],
+                "name": contentList["content_list_name"],
                 "is_album": contentList["is_album"],
                 "user": {
-                    "id": contentList_owner["user_id"],
-                    "handle": contentList_owner["handle"],
+                    "id": content_list_owner["user_id"],
+                    "handle": content_list_owner["handle"],
                 },
             }
-            if contentList_owner["is_deactivated"]:
-                stripped_contentList["user"]["is_deactivated"] = True
-            stripped_contentLists.append(stripped_contentList)
-        user["contentLists"] = stripped_contentLists
+            if content_list_owner["is_deactivated"]:
+                stripped_content_list["user"]["is_deactivated"] = True
+            stripped_content_lists.append(stripped_content_list)
+        user["content_lists"] = stripped_content_lists
 
     return user

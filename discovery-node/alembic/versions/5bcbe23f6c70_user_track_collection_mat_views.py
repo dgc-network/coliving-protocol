@@ -29,7 +29,7 @@ def upgrade():
         SELECT
             distinct(u.user_id),
             COALESCE (user_agreement.agreement_count, 0) as agreement_count,
-            COALESCE (user_contentList.contentList_count, 0) as contentList_count,
+            COALESCE (user_content_list.content_list_count, 0) as content_list_count,
             COALESCE (user_album.album_count, 0) as album_count,
             COALESCE (user_follower.follower_count, 0) as follower_count,
             COALESCE (user_followee.followee_count, 0) as following_count,
@@ -54,8 +54,8 @@ def upgrade():
         -- join on subquery for contentLists created
         LEFT OUTER JOIN (
             SELECT
-                p.contentList_owner_id as owner_id,
-                count(p.contentList_owner_id) as contentList_count
+                p.content_list_owner_id as owner_id,
+                count(p.content_list_owner_id) as content_list_count
             FROM
                 contentLists p
             WHERE
@@ -63,13 +63,13 @@ def upgrade():
                 p.is_current is True AND
                 p.is_delete is False AND
                 p.is_private is False
-            GROUP BY p.contentList_owner_id
-        ) as user_contentList ON user_contentList.owner_id = u.user_id
+            GROUP BY p.content_list_owner_id
+        ) as user_content_list ON user_content_list.owner_id = u.user_id
         -- join on subquery for albums created
         LEFT OUTER JOIN (
             SELECT
-                p.contentList_owner_id as owner_id,
-                count(p.contentList_owner_id) as album_count
+                p.content_list_owner_id as owner_id,
+                count(p.content_list_owner_id) as album_count
             FROM
                 contentLists p
             WHERE
@@ -77,7 +77,7 @@ def upgrade():
                 p.is_current is True AND
                 p.is_delete is False AND
                 p.is_private is False
-            GROUP BY p.contentList_owner_id
+            GROUP BY p.content_list_owner_id
         ) user_album ON user_album.owner_id = u.user_id
         -- join on subquery for followers
         LEFT OUTER JOIN (
@@ -177,21 +177,21 @@ def upgrade():
         CREATE UNIQUE INDEX aggregate_agreement_idx ON aggregate_agreement (agreement_id);
 
         --- ======================= AGGREGATE CONTENT_LIST =======================
-        DROP MATERIALIZED VIEW IF EXISTS aggregate_contentList;
-        DROP INDEX IF EXISTS aggregate_contentList_idx;
+        DROP MATERIALIZED VIEW IF EXISTS aggregate_content_list;
+        DROP INDEX IF EXISTS aggregate_content_list_idx;
 
-        CREATE MATERIALIZED VIEW aggregate_contentList as
+        CREATE MATERIALIZED VIEW aggregate_content_list as
         SELECT
-          p.contentList_id,
+          p.content_list_id,
           p.is_album,
-          COALESCE (contentList_repost.repost_count, 0) as repost_count,
-          COALESCE (contentList_save.save_count, 0) as save_count
+          COALESCE (content_list_repost.repost_count, 0) as repost_count,
+          COALESCE (content_list_save.save_count, 0) as save_count
         FROM 
           contentLists p
         -- inner join on subquery for reposts
         LEFT OUTER JOIN (
           SELECT
-            r.repost_item_id as contentList_id,
+            r.repost_item_id as content_list_id,
             count(r.repost_item_id) as repost_count
           FROM
             reposts r
@@ -200,11 +200,11 @@ def upgrade():
             (r.repost_type = 'contentList' OR r.repost_type = 'album') AND
             r.is_delete is False
           GROUP BY r.repost_item_id
-        ) contentList_repost ON contentList_repost.contentList_id = p.contentList_id
+        ) content_list_repost ON content_list_repost.content_list_id = p.content_list_id
         -- inner join on subquery for agreement saves
         LEFT OUTER JOIN (
           SELECT
-            s.save_item_id as contentList_id,
+            s.save_item_id as content_list_id,
             count(s.save_item_id) as save_count
           FROM
             saves s
@@ -213,12 +213,12 @@ def upgrade():
             (s.save_type = 'contentList' OR s.save_type = 'album') AND
             s.is_delete is False
           GROUP BY s.save_item_id
-        ) contentList_save ON contentList_save.contentList_id = p.contentList_id
+        ) content_list_save ON content_list_save.content_list_id = p.content_list_id
         WHERE
           p.is_current is True AND
           p.is_delete is False;
 
-        CREATE UNIQUE INDEX aggregate_contentList_idx ON aggregate_contentList (contentList_id);
+        CREATE UNIQUE INDEX aggregate_content_list_idx ON aggregate_content_list (content_list_id);
       commit;
     """
     )
@@ -233,10 +233,10 @@ def downgrade():
       begin;
         DROP INDEX IF EXISTS aggregate_user_idx;
         DROP INDEX IF EXISTS aggregate_agreement_idx;
-        DROP INDEX IF EXISTS aggregate_contentList_idx;
+        DROP INDEX IF EXISTS aggregate_content_list_idx;
         DROP MATERIALIZED VIEW aggregate_user;
         DROP MATERIALIZED VIEW aggregate_agreement;
-        DROP MATERIALIZED VIEW aggregate_contentList;
+        DROP MATERIALIZED VIEW aggregate_content_list;
       commit;
     """
     )

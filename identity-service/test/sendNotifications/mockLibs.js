@@ -56,7 +56,7 @@ const contentListTemplate = (id) => ({
   'is_current': true,
   'is_delete': false,
   'is_private': false,
-  'contentList_contents': {
+  'content_list_contents': {
     'agreement_ids': [
       {
         'time': 1603994075,
@@ -68,11 +68,11 @@ const contentListTemplate = (id) => ({
       }
     ]
   },
-  'contentList_id': id,
-  'contentList_image_multihash': null,
-  'contentList_image_sizes_multihash': 'QmQTz4HHRxiyueyJDbK799KCo3ZypB8mDEJWWR9jWcFbMr',
-  'contentList_name': `PLaylist id: ${id}`,
-  'contentList_owner_id': 69054,
+  'content_list_id': id,
+  'content_list_image_multihash': null,
+  'content_list_image_sizes_multihash': 'QmQTz4HHRxiyueyJDbK799KCo3ZypB8mDEJWWR9jWcFbMr',
+  'content_list_name': `PLaylist id: ${id}`,
+  'content_list_owner_id': 69054,
   'repost_count': 0,
   'save_count': 0,
   'total_play_count': 2,
@@ -100,7 +100,7 @@ const userTemplate = (id) => ({
   'location': 'chik fil yay!',
   'metadata_multihash': 'QmXR4Geg4NKtYtp596GenPxsN3NVyGnb1a6ipHmqSkaEHs',
   'name': `user ${id}`,
-  'contentList_count': 5,
+  'content_list_count': 5,
   'profile_picture': 'QmXBLfsD6G8ALVeTr9A5XXKLCoiFRfoTGqXZmBbz9MoQrd',
   'profile_picture_sizes': null,
   'repost_count': 1183,

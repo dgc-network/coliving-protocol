@@ -14,7 +14,7 @@ import {
 
 export class ContentListIndexer extends BaseIndexer<ContentListDoc> {
   constructor() {
-    super('contentLists', 'contentList_id')
+    super('contentLists', 'content_list_id')
   }
 
   mapping: IndicesCreateRequest = {
@@ -30,20 +30,20 @@ export class ContentListIndexer extends BaseIndexer<ContentListDoc> {
       dynamic: false,
       properties: {
         blocknumber: { type: 'integer' },
-        contentList_owner_id: { type: 'keyword' },
+        content_list_owner_id: { type: 'keyword' },
         created_at: { type: 'date' },
         updated_at: { type: 'date' },
         is_album: { type: 'boolean' },
         is_private: { type: 'boolean' },
         is_delete: { type: 'boolean' },
         suggest: standardSuggest,
-        contentList_name: {
+        content_list_name: {
           type: 'keyword',
           fields: {
             searchable: standardText,
           },
         },
-        'contentList_contents.agreement_ids.agreement': { type: 'keyword' },
+        'content_list_contents.agreement_ids.agreement': { type: 'keyword' },
 
         user: {
           properties: {
@@ -114,7 +114,7 @@ export class ContentListIndexer extends BaseIndexer<ContentListDoc> {
             is_current = true
             and is_delete = false
             and repost_type = (case when is_album then 'album' else 'contentList' end)::reposttype
-            and repost_item_id = contentList_id
+            and repost_item_id = content_list_id
             order by created_at desc
         ) as reposted_by,
       
@@ -125,12 +125,12 @@ export class ContentListIndexer extends BaseIndexer<ContentListDoc> {
             is_current = true
             and is_delete = false
             and save_type = (case when is_album then 'album' else 'contentList' end)::savetype
-            and save_item_id = contentList_id
+            and save_item_id = content_list_id
             order by created_at desc
         ) as saved_by
 
       from contentLists 
-      join users on contentList_owner_id = user_id
+      join users on content_list_owner_id = user_id
       left join aggregate_user on users.user_id = aggregate_user.user_id
       where 
         contentLists.is_current
@@ -147,8 +147,8 @@ export class ContentListIndexer extends BaseIndexer<ContentListDoc> {
     // agreement play_count will also go stale (same problem as above)
 
     return `
-      and contentList_id in (
-        select contentList_id from contentLists where is_current and blocknumber >= ${checkpoint.contentLists}
+      and content_list_id in (
+        select content_list_id from contentLists where is_current and blocknumber >= ${checkpoint.contentLists}
         union
         select save_item_id from saves where is_current and save_type in ('contentList', 'album') and blocknumber >= ${checkpoint.saves}
         union
@@ -160,7 +160,7 @@ export class ContentListIndexer extends BaseIndexer<ContentListDoc> {
     // collect all the agreement IDs
     const agreementIds = new Set<number>()
     for (let row of rows) {
-      row.contentList_contents.agreement_ids
+      row.content_list_contents.agreement_ids
         .map((t: any) => t.agreement)
         .filter(Boolean)
         .forEach((t: any) => agreementIds.add(t))
@@ -171,7 +171,7 @@ export class ContentListIndexer extends BaseIndexer<ContentListDoc> {
 
     // pull agreement data onto contentList
     for (let contentList of rows) {
-      contentList.agreements = contentList.contentList_contents.agreement_ids
+      contentList.agreements = contentList.content_list_contents.agreement_ids
         .map((t: any) => agreementsById[t.agreement])
         .filter(Boolean)
 
@@ -183,7 +183,7 @@ export class ContentListIndexer extends BaseIndexer<ContentListDoc> {
   }
 
   withRow(row: ContentListDoc) {
-    row.suggest = [row.contentList_name, row.user.handle, row.user.name]
+    row.suggest = [row.content_list_name, row.user.handle, row.user.name]
       .filter((x) => x)
       .join(' ')
     row.repost_count = row.reposted_by.length

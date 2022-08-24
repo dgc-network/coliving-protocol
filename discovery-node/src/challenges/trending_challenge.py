@@ -57,7 +57,7 @@ trending_underground_agreement_challenge_manager = ChallengeManager(
     "tut", TrendingChallengeUpdater()
 )
 
-trending_contentList_challenge_manager = ChallengeManager("tp", TrendingChallengeUpdater())
+trending_content_list_challenge_manager = ChallengeManager("tp", TrendingChallengeUpdater())
 
 
 def is_dst(zonename, dt):

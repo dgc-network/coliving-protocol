@@ -73,7 +73,7 @@ yarn run ts-node cli/main.ts -f createAgreement \
     --admin-account-keypair "$ADMIN_ACCOUNT_KEYPAIR_PATH" \
     --user-id 1 # metadata CID that would point off-chain is randomly generated here
 
-echo "Creating contentList"
+echo "Creating content list"
 
 yarn run ts-node cli/main.ts -f createContentList \
     -k "$OWNER_KEYPAIR_PATH" \
@@ -84,7 +84,7 @@ yarn run ts-node cli/main.ts -f createContentList \
 
 CONTENT_LIST_ID=$(cut -d '=' -f 3 <<< $(cat /tmp/createContentListOutput.txt | grep "Transacting on entity"))
 
-echo "Updating contentList"
+echo "Updating content list"
 
 yarn run ts-node cli/main.ts -f updateContentList \
     -k "$OWNER_KEYPAIR_PATH" \
@@ -94,7 +94,7 @@ yarn run ts-node cli/main.ts -f updateContentList \
     --id "$CONTENT_LIST_ID" \
     --user-id 1 # metadata CID that would point off-chain is randomly generated here 
 
-echo "Deleting contentList"
+echo "Deleting content list"
 
 yarn run ts-node cli/main.ts -f deleteContentList \
     -k "$OWNER_KEYPAIR_PATH" \

@@ -24,9 +24,9 @@ export const addContentListAndValidate = async (contentListFactory, expectedCont
   let parsedCreateContentList = parseTx(tx)
   let parsedCreateContentListName = tx.logs[1].args._updatedContentListName
   let eventInfo = parsedCreateContentList.event.args
-  let returnedContentListId = eventInfo._contentListId
+  let returnedContentListId = eventInfo._content_listId
   assert.equal(returnedContentListId, expectedContentListId, 'Expected contentList id does not match')
-  let emittedContentListId = eventInfo._contentListId.toNumber()
+  let emittedContentListId = eventInfo._content_listId.toNumber()
 
   assert.equal(emittedContentListId, expectedContentListId, 'Expected update event contentListId array to match expected')
   let emittedEventPrivacy = eventInfo._isPrivate
@@ -62,7 +62,7 @@ export const deleteContentListAndValidate = async (contentListFactory, walletAdd
   let tx = await contentListFactory.deleteContentList(contentListId, nonce, sig)
 
   // validate event output = transaction input
-  let event = parseTxWithResp(tx, { _contentListId: true })
+  let event = parseTxWithResp(tx, { _content_listId: true })
   validateObj(event, { eventName: 'ContentListDeleted', contentListId })
 
   // TODO - after storage implemented - attempt to retrieve contentList from chain
@@ -89,7 +89,7 @@ export const orderContentListAgreementsAndValidate = async (contentListFactory, 
 
   let parsedOrderContentListAgreements = parseTx(tx)
   let eventInfo = parsedOrderContentListAgreements.event.args
-  let emittedContentListId = eventInfo._contentListId.toNumber()
+  let emittedContentListId = eventInfo._content_listId.toNumber()
 
   assert.equal(emittedContentListId, contentListId, 'Expected update event contentListId array to match input')
   let emittedAgreementIds = eventInfo._orderedAgreementIds
@@ -113,7 +113,7 @@ export const updateContentListPrivacyAndValidate = async (contentListFactory, wa
 
   let parsedUpdateContentListPrivacy = parseTx(tx)
   let eventInfo = parsedUpdateContentListPrivacy.event.args
-  let emittedContentListId = eventInfo._contentListId.toNumber()
+  let emittedContentListId = eventInfo._content_listId.toNumber()
 
   assert.equal(emittedContentListId, contentListId, 'Expected update event contentListId array to match input')
   let emittedEventPrivacy = eventInfo._updatedIsPrivate
@@ -132,7 +132,7 @@ export const updateContentListNameAndValidate = async (contentListFactory, walle
 
   let parsedUpdateContentListName = parseTx(tx)
   let eventInfo = parsedUpdateContentListName.event.args
-  let emittedContentListId = eventInfo._contentListId.toNumber()
+  let emittedContentListId = eventInfo._content_listId.toNumber()
 
   assert.equal(emittedContentListId, contentListId, 'Expected update event contentListId array to match input')
   let emittedEventContentListName = eventInfo._updatedContentListName
@@ -149,7 +149,7 @@ export const updateContentListCoverPhotoAndValidate = async (contentListFactory,
 
   let parsedUpdateContentListCoverPhoto = parseTx(tx)
   let eventInfo = parsedUpdateContentListCoverPhoto.event.args
-  let emittedImageMultihash = eventInfo._contentListImageMultihashDigest
+  let emittedImageMultihash = eventInfo._content_listImageMultihashDigest
   assert.equal(emittedImageMultihash, updatedContentListImageMultihashDigest, 'Expect emitted image multihash to equal input')
 }
 
@@ -162,7 +162,7 @@ export const updateContentListUPCAndValidate = async (contentListFactory, wallet
   let tx = await contentListFactory.updateContentListUPC(contentListId, updatedContentListUPC, nonce, signature)
 
   let parseUpdateContentListUPC = parseTx(tx)
-  let emittedContentListUPC = (parseUpdateContentListUPC.event.args._contentListUPC)
+  let emittedContentListUPC = (parseUpdateContentListUPC.event.args._content_listUPC)
   let paddedInputUPC = web3New.utils.padRight(updatedContentListUPC, 64)
   assert.equal(emittedContentListUPC, paddedInputUPC, 'Expect emitted UPC to equal input')
 }
@@ -177,7 +177,7 @@ export const updateContentListDescriptionAndValidate = async (contentListFactory
 
   let parsedUpdateContentListDescription = parseTx(tx)
   let eventInfo = parsedUpdateContentListDescription.event.args
-  let emittedContentListDescription = eventInfo._contentListDescription
+  let emittedContentListDescription = eventInfo._content_listDescription
 
   assert.equal(emittedContentListDescription, updatedContentListDescription, 'Expect emitted contentList description to equal input')
 }
@@ -198,7 +198,7 @@ export const addContentListRepostAndValidate = async (socialFeatureFactory, user
   let tx = await socialFeatureFactory.addContentListRepost(userId, contentListId, nonce, sig)
 
   // validate event output = transaction input
-  let event = parseTxWithResp(tx, { _userId: true, _contentListId: true })
+  let event = parseTxWithResp(tx, { _userId: true, _content_listId: true })
   validateObj(event, { eventName: 'ContentListRepostAdded', userId, contentListId })
 
   // validate storage
@@ -225,7 +225,7 @@ export const deleteContentListRepostAndValidate = async (socialFeatureFactory, u
   let tx = await socialFeatureFactory.deleteContentListRepost(userId, contentListId, nonce, sig)
 
   // validate event output = transaction input
-  let event = parseTxWithResp(tx, { _userId: true, _contentListId: true })
+  let event = parseTxWithResp(tx, { _userId: true, _content_listId: true })
   validateObj(event, { eventName: 'ContentListRepostDeleted', userId, contentListId })
 
   // validate storage
@@ -248,7 +248,7 @@ export const addContentListAgreement = async (contentListFactory, walletAddress,
   // TODO:  asserts
   let parsedAddContentListAgreement = parseTx(tx)
   let eventInfo = parsedAddContentListAgreement.event.args
-  let emittedContentListId = eventInfo._contentListId.toNumber()
+  let emittedContentListId = eventInfo._content_listId.toNumber()
 
   assert.equal(emittedContentListId, contentListId, 'Expected update event contentListId to match input')
   let emittedAddedAgreementId = eventInfo._addedAgreementId.toNumber()
@@ -271,7 +271,7 @@ export const deleteContentListAgreement = async (contentListFactory, walletAddre
 
   let parsedDeleteContentListAgreement = parseTx(tx)
   let eventInfo = parsedDeleteContentListAgreement.event.args
-  let emittedContentListId = eventInfo._contentListId.toNumber()
+  let emittedContentListId = eventInfo._content_listId.toNumber()
 
   assert.equal(emittedContentListId, contentListId, 'Expected update event contentListId to match input')
   let emittedDeletedAgreementId = eventInfo._deletedAgreementId.toNumber()
@@ -297,7 +297,7 @@ export const addContentListSaveAndValidate = async (userLibraryFactory, userAddr
   let parsedContentListSave = parseTx(tx)
   let eventInfo = parsedContentListSave.event.args
 
-  assertEqualValues(parsedContentListSave, undefined, { _userId: eventInfo._userId, _contentListId: eventInfo._contentListId })
+  assertEqualValues(parsedContentListSave, undefined, { _userId: eventInfo._userId, _content_listId: eventInfo._content_listId })
 }
 
 export const deleteContentListSaveAndValidate = async (userLibraryFactory, userAddress, userId, contentListId) => {
@@ -312,5 +312,5 @@ export const deleteContentListSaveAndValidate = async (userLibraryFactory, userA
   let parsedContentListSave = parseTx(tx)
   let eventInfo = parsedContentListSave.event.args
 
-  assertEqualValues(parsedContentListSave, undefined, { _userId: eventInfo._userId, _contentListId: eventInfo._contentListId })
+  assertEqualValues(parsedContentListSave, undefined, { _userId: eventInfo._userId, _content_listId: eventInfo._content_listId })
 }

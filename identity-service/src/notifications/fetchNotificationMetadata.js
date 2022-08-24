@@ -355,7 +355,7 @@ async function fetchNotificationMetadata (
 
   userIdsToFetch.push(
     ...agreements.map(({ owner_id: id }) => id),
-    ...collections.map(({ contentList_owner_id: id }) => id)
+    ...collections.map(({ content_list_owner_id: id }) => id)
   )
   const uniqueUserIds = [...new Set(userIdsToFetch)]
 
@@ -391,7 +391,7 @@ async function fetchNotificationMetadata (
   }))
 
   const collectionMap = collections.reduce((cm, collection) => {
-    cm[collection.contentList_id] = collection
+    cm[collection.content_list_id] = collection
     return cm
   }, {})
 

@@ -25,7 +25,7 @@ const { SystemProgram } = anchor.web3;
 
 chai.use(chaiAsPromised);
 
-describe("contentLists", function () {
+describe("content_lists", function () {
   const provider = anchor.AnchorProvider.local("http://localhost:8899", {
     preflightCommitment: "confirmed",
     commitment: "confirmed",
@@ -104,7 +104,7 @@ describe("contentLists", function () {
     contentNodes["3"] = cn3;
   });
 
-  it("Initializing + claiming user, creating + updating contentList", async function () {
+  it("Initializing + claiming user, creating + updating content list", async function () {
     const { ethAccount, userId, metadata } = initTestConstants();
 
     const {
@@ -205,7 +205,7 @@ describe("contentLists", function () {
     });
   });
 
-  it("creating + deleting a contentList", async function () {
+  it("creating + deleting a content list", async function () {
     const { ethAccount, metadata, userId } = initTestConstants();
 
     const {

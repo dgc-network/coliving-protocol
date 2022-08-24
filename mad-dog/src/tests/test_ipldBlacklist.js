@@ -674,7 +674,7 @@ IpldBlacklistTest.updateContentListCoverPhoto = async ({
       libsWrapper => {
         return updateContentListCoverPhoto(
           libsWrapper,
-          uploadedContentLists[0].contentList_id,
+          uploadedContentLists[0].content_list_id,
           digest
         )
       }
@@ -682,8 +682,8 @@ IpldBlacklistTest.updateContentListCoverPhoto = async ({
   }
 
   const _verifyNonBlacklistedCidUpdated = (contentListsBeforeUpdate, contentListsAfterUpdate, nonBlacklistedCid) => {
-    const previousPicCid = contentListsBeforeUpdate[0].contentList_image_sizes_multihash
-    const updatedPicCid = contentListsAfterUpdate[0].contentList_image_sizes_multihash
+    const previousPicCid = contentListsBeforeUpdate[0].content_list_image_sizes_multihash
+    const updatedPicCid = contentListsAfterUpdate[0].content_list_image_sizes_multihash
     if (previousPicCid === updatedPicCid) {
       throw new Error(
         "ContentList cover photo CID should've updated. The rest of the test will produce a false positive."
@@ -699,8 +699,8 @@ IpldBlacklistTest.updateContentListCoverPhoto = async ({
   const _verifyBlacklistedCidDidNotUpdate = (contentLists, blacklistedCid) => {
     const contentList = contentLists[0]
     if (
-      contentList.contentList_image_multihash === blacklistedCid ||
-      contentList.contentList_image_sizes_multihash === blacklistedCid
+      contentList.content_list_image_multihash === blacklistedCid ||
+      contentList.content_list_image_sizes_multihash === blacklistedCid
     ) {
       throw new Error('Update contentList with blacklisted cover photo should not have been indexed.')
     }

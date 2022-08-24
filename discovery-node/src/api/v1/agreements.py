@@ -1026,7 +1026,7 @@ class UnderTheRadar(Resource):
     @record_metrics
     @full_ns.doc(
         id="""Get Under the Radar Agreements""",
-        description="""Gets the agreements found on the \"Under the Radar\" smart contentList""",
+        description="""Gets the agreements found on the \"Under the Radar\" smart content list""",
     )
     @full_ns.expect(under_the_radar_parser)
     @full_ns.marshal_with(full_agreements_response)
@@ -1067,7 +1067,7 @@ class MostLoved(Resource):
     @record_metrics
     @full_ns.doc(
         id="""Get Most Loved Agreements""",
-        description="""Gets the agreements found on the \"Most Loved\" smart contentList""",
+        description="""Gets the agreements found on the \"Most Loved\" smart content list""",
     )
     @full_ns.expect(most_loved_parser)
     @full_ns.marshal_with(full_agreements_response)

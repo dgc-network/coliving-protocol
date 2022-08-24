@@ -8,7 +8,7 @@ class AggregateUser(Base, RepresentableMixin):
 
     user_id = Column(Integer, primary_key=True)
     agreement_count = Column(BigInteger, server_default=text("0"))
-    contentList_count = Column(BigInteger, server_default=text("0"))
+    content_list_count = Column(BigInteger, server_default=text("0"))
     album_count = Column(BigInteger, server_default=text("0"))
     follower_count = Column(BigInteger, server_default=text("0"))
     following_count = Column(BigInteger, server_default=text("0"))

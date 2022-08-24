@@ -223,7 +223,7 @@ def test_profile_completion_challenge_with_agreements(app):
         assert state.current_step_count == 7 and state.is_complete == True
 
 
-def test_profile_completion_challenge_with_contentLists(app):
+def test_profile_completion_challenge_with_content_lists(app):
 
     redis_conn = redis.Redis.from_url(url=REDIS_URL)
 

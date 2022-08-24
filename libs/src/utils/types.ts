@@ -47,7 +47,7 @@ export type UserMetadata = {
   // this should be removed
   is_creator: boolean
   name: string
-  contentList_count: number
+  content_list_count: number
   profile_picture: Nullable<CID>
   repost_count: number
   agreement_count: number
@@ -132,16 +132,16 @@ export type CollectionMetadata = {
   is_album: boolean
   is_delete: boolean
   is_private: boolean
-  contentList_contents: {
+  content_list_contents: {
     agreement_ids: Array<{ time: number; agreement: ID; uid?: UID }>
   }
   agreements?: AgreementMetadata[]
   agreement_count: number
-  contentList_id: ID
+  content_list_id: ID
   cover_art: CID | null
   cover_art_sizes: Nullable<CID>
-  contentList_name: string
-  contentList_owner_id: ID
+  content_list_name: string
+  content_list_owner_id: ID
   repost_count: number
   save_count: number
   upc?: string | null

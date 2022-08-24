@@ -45,11 +45,11 @@ def add_agreement_artwork(agreement):
     return agreement
 
 
-def add_contentList_artwork(contentList):
+def add_content_list_artwork(contentList):
     if "user" not in contentList:
         return contentList
     endpoint = get_primary_endpoint(contentList["user"])
-    cid = contentList["contentList_image_sizes_multihash"]
+    cid = contentList["content_list_image_sizes_multihash"]
     if not endpoint or not cid:
         return contentList
     artwork = {
@@ -61,11 +61,11 @@ def add_contentList_artwork(contentList):
     return contentList
 
 
-def add_contentList_added_timestamps(contentList):
-    if "contentList_contents" not in contentList:
+def add_content_list_added_timestamps(contentList):
+    if "content_list_contents" not in contentList:
         return contentList
     added_timestamps = []
-    for agreement in contentList["contentList_contents"]["agreement_ids"]:
+    for agreement in contentList["content_list_contents"]["agreement_ids"]:
         added_timestamps.append(
             {"agreement_id": encode_int_id(agreement["agreement"]), "timestamp": agreement["time"]}
         )
@@ -108,14 +108,14 @@ def extend_search(resp):
         resp["agreements"] = list(map(extend_agreement, resp["agreements"]))
     if "saved_agreements" in resp:
         resp["saved_agreements"] = list(map(extend_agreement, resp["saved_agreements"]))
-    if "contentLists" in resp:
-        resp["contentLists"] = list(map(extend_contentList, resp["contentLists"]))
-    if "saved_contentLists" in resp:
-        resp["saved_contentLists"] = list(map(extend_contentList, resp["saved_contentLists"]))
+    if "content_lists" in resp:
+        resp["content_lists"] = list(map(extend_content_list, resp["content_lists"]))
+    if "saved_content_lists" in resp:
+        resp["saved_content_lists"] = list(map(extend_content_list, resp["saved_content_lists"]))
     if "albums" in resp:
-        resp["albums"] = list(map(extend_contentList, resp["albums"]))
+        resp["albums"] = list(map(extend_content_list, resp["albums"]))
     if "saved_albums" in resp:
-        resp["saved_albums"] = list(map(extend_contentList, resp["saved_albums"]))
+        resp["saved_albums"] = list(map(extend_content_list, resp["saved_albums"]))
     return resp
 
 
@@ -125,10 +125,10 @@ def extend_user(user, current_user_id=None):
     user = add_user_artwork(user)
     # Do not surface contentList library in user response unless we are
     # that user specifically
-    if "contentList_library" in user and (
+    if "content_list_library" in user and (
         not current_user_id or current_user_id != user["user_id"]
     ):
-        del user["contentList_library"]
+        del user["content_list_library"]
     # Marshal wallets into clear names
     user["erc_wallet"] = user["wallet"]
 
@@ -240,12 +240,12 @@ def stem_from_agreement(agreement):
     }
 
 
-def extend_contentList(contentList):
-    contentList_id = encode_int_id(contentList["contentList_id"])
-    owner_id = encode_int_id(contentList["contentList_owner_id"])
-    contentList["id"] = contentList_id
+def extend_content_list(contentList):
+    content_list_id = encode_int_id(contentList["content_list_id"])
+    owner_id = encode_int_id(contentList["content_list_owner_id"])
+    contentList["id"] = content_list_id
     contentList["user_id"] = owner_id
-    contentList = add_contentList_artwork(contentList)
+    contentList = add_content_list_artwork(contentList)
     if "user" in contentList:
         contentList["user"] = extend_user(contentList["user"])
     if "followee_saves" in contentList:
@@ -259,15 +259,15 @@ def extend_contentList(contentList):
     if "save_count" in contentList:
         contentList["favorite_count"] = contentList["save_count"]
 
-    contentList["added_timestamps"] = add_contentList_added_timestamps(contentList)
-    contentList["cover_art"] = contentList["contentList_image_multihash"]
-    contentList["cover_art_sizes"] = contentList["contentList_image_sizes_multihash"]
+    contentList["added_timestamps"] = add_content_list_added_timestamps(contentList)
+    contentList["cover_art"] = contentList["content_list_image_multihash"]
+    contentList["cover_art_sizes"] = contentList["content_list_image_sizes_multihash"]
     # If a trending contentList, we have 'agreement_count'
     # already to preserve the original, non-abbreviated agreement count
     contentList["agreement_count"] = (
         contentList["agreement_count"]
         if "agreement_count" in contentList
-        else len(contentList["contentList_contents"]["agreement_ids"])
+        else len(contentList["content_list_contents"]["agreement_ids"])
     )
     return contentList
 
@@ -279,11 +279,11 @@ def extend_activity(item):
             "timestamp": item["activity_timestamp"],
             "item": extend_agreement(item),
         }
-    if item.get("contentList_id"):
+    if item.get("content_list_id"):
         return {
-            "item_type": "contentList",
+            "item_type": "content_list",
             "timestamp": item["activity_timestamp"],
-            "item": extend_contentList(item),
+            "item": extend_content_list(item),
         }
     return None
 
@@ -494,7 +494,7 @@ full_search_parser.add_argument(
     required=False,
     type=str,
     default="all",
-    choices=("all", "users", "agreements", "contentLists", "albums"),
+    choices=("all", "users", "agreements", "content_lists", "albums"),
     description="The type of response, one of: all, users, agreements, contentLists, or albums",
 )
 

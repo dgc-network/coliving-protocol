@@ -1,4 +1,4 @@
-"""fix_profile_completion_challenge_contentList_favorite
+"""fix_profile_completion_challenge_content_list_favorite
 
 Revision ID: 8e4dda8255fd
 Revises: a6d2e50a8efa

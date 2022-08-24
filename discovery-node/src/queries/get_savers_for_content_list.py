@@ -1,6 +1,6 @@
 from sqlalchemy import desc, func
 from src import exceptions
-from src.models.contentLists.contentList import ContentList
+from src.models.content_lists.content_list import ContentList
 from src.models.social.save import Save, SaveType
 from src.models.users.aggregate_user import AggregateUser
 from src.models.users.user import User
@@ -10,24 +10,24 @@ from src.utils import helpers
 from src.utils.db_session import get_db_read_replica
 
 
-def get_savers_for_contentList(args):
+def get_savers_for_content_list(args):
     user_results = []
     current_user_id = args.get("current_user_id")
-    save_contentList_id = args.get("save_contentList_id")
+    save_content_list_id = args.get("save_content_list_id")
     limit = args.get("limit")
     offset = args.get("offset")
 
     db = get_db_read_replica()
     with db.scoped_session() as session:
-        # Ensure ContentList exists for provided save_contentList_id.
-        contentList_entry = (
+        # Ensure ContentList exists for provided save_content_list_id.
+        content_list_entry = (
             session.query(ContentList)
             .filter(
-                ContentList.contentList_id == save_contentList_id, ContentList.is_current == True
+                ContentList.content_list_id == save_content_list_id, ContentList.is_current == True
             )
             .first()
         )
-        if contentList_entry is None:
+        if content_list_entry is None:
             raise exceptions.NotFoundError(
                 "Resource not found for provided contentList id"
             )
@@ -48,7 +48,7 @@ def get_savers_for_contentList(args):
                 # Only select users that saved given contentList.
                 User.user_id.in_(
                     session.query(Save.user_id).filter(
-                        Save.save_item_id == save_contentList_id,
+                        Save.save_item_id == save_content_list_id,
                         # Select Saves for ContentLists and Albums (i.e. not Agreements).
                         Save.save_type != SaveType.agreement,
                         Save.is_current == True,

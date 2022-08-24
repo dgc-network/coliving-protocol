@@ -169,7 +169,7 @@ describe('Test ContentLists', function () {
     assert.ok(fileRecord)
     const metadata = {
       test: 'field1',
-      contentList_image_sizes_multihash: imageDirCID
+      content_list_image_sizes_multihash: imageDirCID
     }
 
     // Upload contentList metadata with valid image dirCID

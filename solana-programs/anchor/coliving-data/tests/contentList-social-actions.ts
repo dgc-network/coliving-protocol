@@ -20,7 +20,7 @@ const { SystemProgram } = anchor.web3;
 
 chai.use(chaiAsPromised);
 
-describe("contentList-actions", function () {
+describe("content-list-actions", function () {
   const provider = anchor.AnchorProvider.local("http://localhost:8899", {
     preflightCommitment: "confirmed",
     commitment: "confirmed",
@@ -97,7 +97,7 @@ describe("contentList-actions", function () {
     contentNodes["3"] = cn3;
   });
 
-  it("Delete save for a contentList", async function () {
+  it("Delete save for a content list", async function () {
     const user = await createSolanaUser(program, provider, adminAccountKeypair);
 
     const tx = deleteContentListSave({
@@ -132,7 +132,7 @@ describe("contentList-actions", function () {
     );
   });
 
-  it("Save a newly created contentList", async function () {
+  it("Save a newly created content list", async function () {
     const user = await createSolanaUser(program, provider, adminAccountKeypair);
 
     const tx = addContentListSave({
@@ -166,7 +166,7 @@ describe("contentList-actions", function () {
     );
   });
 
-  it("Repost a contentList", async function () {
+  it("Repost a content list", async function () {
     const user = await createSolanaUser(program, provider, adminAccountKeypair);
 
     const tx = addContentListRepost({
@@ -200,7 +200,7 @@ describe("contentList-actions", function () {
     );
   });
 
-  it("Delete repost for a contentList", async function () {
+  it("Delete repost for a content list", async function () {
     const user = await createSolanaUser(program, provider, adminAccountKeypair);
 
     const tx = deleteContentListRepost({

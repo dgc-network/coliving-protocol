@@ -7,8 +7,8 @@ from sqlalchemy import Integer, and_, bindparam, cast, desc, func, text
 from sqlalchemy.orm.session import Session
 from sqlalchemy.sql.expression import or_
 from src import exceptions
-from src.models.contentLists.aggregate_contentList import AggregateContentList
-from src.models.contentLists.contentList import ContentList
+from src.models.content_lists.aggregate_content_list import AggregateContentList
+from src.models.content_lists.content_list import ContentList
 from src.models.social.aggregate_plays import AggregatePlay
 from src.models.social.follow import Follow
 from src.models.social.repost import Repost, RepostType
@@ -106,7 +106,7 @@ def parse_sort_param(base_query, model, whitelist_sort_params):
 
 
 # given list of user ids and corresponding users, populates each user object with:
-#   agreement_count, contentList_count, album_count, follower_count, followee_count, repost_count, supporter_count, supporting_count
+#   agreement_count, content_list_count, album_count, follower_count, followee_count, repost_count, supporter_count, supporting_count
 #   if current_user_id available, populates does_current_user_follow, followee_follows
 def populate_user_metadata(
     session, user_ids, users, current_user_id, with_agreement_save_count=False
@@ -115,7 +115,7 @@ def populate_user_metadata(
         session.query(
             AggregateUser.user_id,
             AggregateUser.agreement_count,
-            AggregateUser.contentList_count,
+            AggregateUser.content_list_count,
             AggregateUser.album_count,
             AggregateUser.follower_count,
             AggregateUser.following_count,
@@ -138,7 +138,7 @@ def populate_user_metadata(
     count_dict = {
         user_id: {
             response_name_constants.agreement_count: agreement_count,
-            response_name_constants.contentList_count: contentList_count,
+            response_name_constants.content_list_count: content_list_count,
             response_name_constants.album_count: album_count,
             response_name_constants.follower_count: follower_count,
             response_name_constants.followee_count: following_count,
@@ -150,7 +150,7 @@ def populate_user_metadata(
         for (
             user_id,
             agreement_count,
-            contentList_count,
+            content_list_count,
             album_count,
             follower_count,
             following_count,
@@ -237,8 +237,8 @@ def populate_user_metadata(
         user[response_name_constants.agreement_count] = count_dict.get(user_id, {}).get(
             response_name_constants.agreement_count, 0
         )
-        user[response_name_constants.contentList_count] = count_dict.get(user_id, {}).get(
-            response_name_constants.contentList_count, 0
+        user[response_name_constants.content_list_count] = count_dict.get(user_id, {}).get(
+            response_name_constants.content_list_count, 0
         )
         user[response_name_constants.album_count] = count_dict.get(user_id, {}).get(
             response_name_constants.album_count, 0
@@ -594,65 +594,65 @@ def get_agreement_remix_metadata(session, agreements, current_user_id):
 #   if current_user_id available, populates followee_reposts, has_current_user_reposted, has_current_user_saved
 
 
-def populate_contentList_metadata(
-    session, contentList_ids, contentLists, repost_types, save_types, current_user_id
+def populate_content_list_metadata(
+    session, content_list_ids, contentLists, repost_types, save_types, current_user_id
 ):
     # build dict of contentList id --> repost & save count
     counts = (
         session.query(
-            AggregateContentList.contentList_id,
+            AggregateContentList.content_list_id,
             AggregateContentList.repost_count,
             AggregateContentList.save_count,
         )
         .filter(
-            AggregateContentList.contentList_id.in_(contentList_ids),
+            AggregateContentList.content_list_id.in_(content_list_ids),
         )
         .all()
     )
 
     count_dict = {
-        contentList_id: {
+        content_list_id: {
             response_name_constants.repost_count: repost_count,
             response_name_constants.save_count: save_count,
         }
-        for (contentList_id, repost_count, save_count) in counts
+        for (content_list_id, repost_count, save_count) in counts
     }
 
-    user_reposted_contentList_dict = {}
-    user_saved_contentList_dict = {}
-    followee_contentList_repost_dict = {}
-    followee_contentList_save_dict = {}
+    user_reposted_content_list_dict = {}
+    user_saved_content_list_dict = {}
+    followee_content_list_repost_dict = {}
+    followee_content_list_save_dict = {}
     if current_user_id:
         # has current user reposted any of requested contentList ids
-        current_user_contentList_reposts = (
+        current_user_content_list_reposts = (
             session.query(Repost.repost_item_id)
             .filter(
                 Repost.is_current == True,
                 Repost.is_delete == False,
-                Repost.repost_item_id.in_(contentList_ids),
+                Repost.repost_item_id.in_(content_list_ids),
                 Repost.repost_type.in_(repost_types),
                 Repost.user_id == current_user_id,
             )
             .all()
         )
-        user_reposted_contentList_dict = {
-            r[0]: True for r in current_user_contentList_reposts
+        user_reposted_content_list_dict = {
+            r[0]: True for r in current_user_content_list_reposts
         }
 
         # has current user saved any of requested contentList ids
-        user_saved_contentLists_query = (
+        user_saved_content_lists_query = (
             session.query(Save.save_item_id)
             .filter(
                 Save.is_current == True,
                 Save.is_delete == False,
                 Save.user_id == current_user_id,
-                Save.save_item_id.in_(contentList_ids),
+                Save.save_item_id.in_(content_list_ids),
                 Save.save_type.in_(save_types),
             )
             .all()
         )
-        user_saved_contentList_dict = {
-            save[0]: True for save in user_saved_contentLists_query
+        user_saved_content_list_dict = {
+            save[0]: True for save in user_saved_content_lists_query
         }
 
         # Get current user's followees.
@@ -667,80 +667,80 @@ def populate_contentList_metadata(
         )
 
         # Build dict of contentList id --> followee reposts.
-        followee_contentList_reposts = (
+        followee_content_list_reposts = (
             session.query(Repost)
             .filter(
                 Repost.is_current == True,
                 Repost.is_delete == False,
-                Repost.repost_item_id.in_(contentList_ids),
+                Repost.repost_item_id.in_(content_list_ids),
                 Repost.repost_type.in_(repost_types),
                 Repost.user_id.in_(followee_user_ids),
             )
             .all()
         )
-        followee_contentList_reposts = helpers.query_result_to_list(
-            followee_contentList_reposts
+        followee_content_list_reposts = helpers.query_result_to_list(
+            followee_content_list_reposts
         )
-        for contentList_repost in followee_contentList_reposts:
-            if contentList_repost["repost_item_id"] not in followee_contentList_repost_dict:
-                followee_contentList_repost_dict[contentList_repost["repost_item_id"]] = []
-            followee_contentList_repost_dict[contentList_repost["repost_item_id"]].append(
-                contentList_repost
+        for content_list_repost in followee_content_list_reposts:
+            if content_list_repost["repost_item_id"] not in followee_content_list_repost_dict:
+                followee_content_list_repost_dict[content_list_repost["repost_item_id"]] = []
+            followee_content_list_repost_dict[content_list_repost["repost_item_id"]].append(
+                content_list_repost
             )
 
         # Build dict of contentList id --> followee saves.
-        followee_contentList_saves = (
+        followee_content_list_saves = (
             session.query(Save)
             .filter(
                 Save.is_current == True,
                 Save.is_delete == False,
-                Save.save_item_id.in_(contentList_ids),
+                Save.save_item_id.in_(content_list_ids),
                 Save.save_type.in_(save_types),
                 Save.user_id.in_(followee_user_ids),
             )
             .all()
         )
-        followee_contentList_saves = helpers.query_result_to_list(followee_contentList_saves)
-        for contentList_save in followee_contentList_saves:
-            if contentList_save["save_item_id"] not in followee_contentList_save_dict:
-                followee_contentList_save_dict[contentList_save["save_item_id"]] = []
-            followee_contentList_save_dict[contentList_save["save_item_id"]].append(
-                contentList_save
+        followee_content_list_saves = helpers.query_result_to_list(followee_content_list_saves)
+        for content_list_save in followee_content_list_saves:
+            if content_list_save["save_item_id"] not in followee_content_list_save_dict:
+                followee_content_list_save_dict[content_list_save["save_item_id"]] = []
+            followee_content_list_save_dict[content_list_save["save_item_id"]].append(
+                content_list_save
             )
 
     agreement_ids = []
     for contentList in contentLists:
-        for agreement in contentList["contentList_contents"]["agreement_ids"]:
+        for agreement in contentList["content_list_contents"]["agreement_ids"]:
             agreement_ids.append(agreement["agreement"])
     play_count_dict = get_agreement_play_count_dict(session, agreement_ids)
 
     for contentList in contentLists:
-        contentList_id = contentList["contentList_id"]
+        content_list_id = contentList["content_list_id"]
         contentList[response_name_constants.repost_count] = count_dict.get(
-            contentList_id, {}
+            content_list_id, {}
         ).get(response_name_constants.repost_count, 0)
         contentList[response_name_constants.save_count] = count_dict.get(
-            contentList_id, {}
+            content_list_id, {}
         ).get(response_name_constants.save_count, 0)
 
         total_play_count = 0
-        for agreement in contentList["contentList_contents"]["agreement_ids"]:
+        for agreement in contentList["content_list_contents"]["agreement_ids"]:
             total_play_count += play_count_dict.get(agreement["agreement"], 0)
         contentList[response_name_constants.total_play_count] = total_play_count
 
         # current user specific
         contentList[
             response_name_constants.followee_reposts
-        ] = followee_contentList_repost_dict.get(contentList_id, [])
+        ] = followee_content_list_repost_dict.get(content_list_id, [])
         contentList[
             response_name_constants.followee_saves
-        ] = followee_contentList_save_dict.get(contentList_id, [])
+        ] = followee_content_list_save_dict.get(content_list_id, [])
         contentList[
             response_name_constants.has_current_user_reposted
-        ] = user_reposted_contentList_dict.get(contentList_id, False)
+        ] = user_reposted_content_list_dict.get(content_list_id, False)
         contentList[
             response_name_constants.has_current_user_saved
-        ] = user_saved_contentList_dict.get(contentList_id, False)
+        ] = user_saved_content_list_dict.get(content_list_id, False)
 
     return contentLists
 
@@ -827,13 +827,13 @@ def get_karma(
     ids: Tuple[int],
     strategy: TrendingVersion,
     time: str = None,
-    is_contentList: bool = False,
+    is_content_list: bool = False,
     xf: bool = False,
 ):
     """Gets the total karma for provided ids (agreement or contentList)"""
 
-    repost_type = RepostType.contentList if is_contentList else RepostType.agreement
-    save_type = SaveType.contentList if is_contentList else SaveType.agreement
+    repost_type = RepostType.contentList if is_content_list else RepostType.agreement
+    save_type = SaveType.contentList if is_content_list else SaveType.agreement
 
     reposters = session.query(
         Repost.user_id.label("user_id"), Repost.repost_item_id.label("item_id")
@@ -1073,8 +1073,8 @@ def get_users_by_id(session, user_ids, current_user_id=None, use_request_context
 def get_users_ids(results):
     user_ids = []
     for result in results:
-        if "contentList_owner_id" in result:
-            user_ids.append(int(result["contentList_owner_id"]))
+        if "content_list_owner_id" in result:
+            user_ids.append(int(result["content_list_owner_id"]))
         elif "owner_id" in result:
             user_ids.append(int(result["owner_id"]))
     # Remove duplicate user ids
@@ -1082,7 +1082,7 @@ def get_users_ids(results):
     return user_ids
 
 
-def create_followee_contentLists_subquery(session, current_user_id):
+def create_followee_content_lists_subquery(session, current_user_id):
     """
     Creates a subquery that returns contentLists created by users that
     `current_user_id` follows.
@@ -1101,16 +1101,16 @@ def create_followee_contentLists_subquery(session, current_user_id):
         )
         .subquery()
     )
-    followee_contentLists_subquery = (
+    followee_content_lists_subquery = (
         session.query(ContentList)
         .select_from(ContentList)
         .join(
             followee_user_ids_subquery,
-            ContentList.contentList_owner_id == followee_user_ids_subquery.c.followee_user_id,
+            ContentList.content_list_owner_id == followee_user_ids_subquery.c.followee_user_id,
         )
         .subquery()
     )
-    return followee_contentLists_subquery
+    return followee_content_lists_subquery
 
 
 def seconds_ago(timestamp):
@@ -1140,7 +1140,7 @@ def decayed_score(score, created_at, peak=1000, nominal_timestamp=60 * 24 * 60 *
     return score * decay_value
 
 
-def filter_to_contentList_mood(session, mood, query, correlation):
+def filter_to_content_list_mood(session, mood, query, correlation):
     """
     Takes a session that is querying for contentLists and filters the contentLists
     to only those with the dominant mood provided.
@@ -1162,7 +1162,7 @@ def filter_to_contentList_mood(session, mood, query, correlation):
         return query
 
     agreements_subquery = session.query(
-        func.jsonb_array_elements(correlation.c.contentList_contents["agreement_ids"])
+        func.jsonb_array_elements(correlation.c.content_list_contents["agreement_ids"])
         .op("->>")("agreement")
         .cast(Integer)
     )

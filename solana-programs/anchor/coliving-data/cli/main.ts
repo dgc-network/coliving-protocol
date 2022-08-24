@@ -364,7 +364,7 @@ program
   )
   .option("--metadata <string>", "metadata CID")
   .option("--num-agreements <integer>", "number of agreements to generate")
-  .option("--num-contentLists <integer>", "number of contentLists to generate")
+  .option("--num-content-lists <integer>", "number of contentLists to generate")
   .option("--id <integer>", "ID of entity targeted by transaction")
   .option("-sp-id, --cn-sp-id <string>", "ID of incoming content node")
   .option(

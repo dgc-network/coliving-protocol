@@ -12,7 +12,7 @@ from src.models.users.user import User
 from src.models.users.user_balance import UserBalance
 from src.queries.search_es import search_es_full
 from src.queries.search_queries import (
-    contentList_search_query,
+    content_list_search_query,
     agreement_search_query,
     user_search_query,
 )
@@ -150,12 +150,12 @@ def setup_search(app_module):
         ContentList(
             blockhash=hex(1),
             blocknumber=1,
-            contentList_id=1,
-            contentList_owner_id=1,
+            content_list_id=1,
+            content_list_owner_id=1,
             is_album=False,
             is_private=False,
-            contentList_name="contentList 1",
-            contentList_contents={"agreement_ids": [{"agreement": 1, "time": 1}]},
+            content_list_name="contentList 1",
+            content_list_contents={"agreement_ids": [{"agreement": 1, "time": 1}]},
             is_current=True,
             is_delete=False,
             updated_at=now,
@@ -164,12 +164,12 @@ def setup_search(app_module):
         ContentList(
             blockhash=hex(2),
             blocknumber=2,
-            contentList_id=2,
-            contentList_owner_id=2,
+            content_list_id=2,
+            content_list_owner_id=2,
             is_album=True,
             is_private=False,
-            contentList_name="album 1",
-            contentList_contents={"agreement_ids": [{"agreement": 2, "time": 2}]},
+            content_list_name="album 1",
+            content_list_contents={"agreement_ids": [{"agreement": 2, "time": 2}]},
             is_current=True,
             is_delete=False,
             updated_at=now,
@@ -246,7 +246,7 @@ def setup_search(app_module):
         session.execute("REFRESH MATERIALIZED VIEW agreement_lexeme_dict;")
         session.execute("REFRESH MATERIALIZED VIEW user_lexeme_dict;")
 
-        session.execute("REFRESH MATERIALIZED VIEW contentList_lexeme_dict;")
+        session.execute("REFRESH MATERIALIZED VIEW content_list_lexeme_dict;")
         session.execute("REFRESH MATERIALIZED VIEW album_lexeme_dict;")
 
     subprocess.run(
@@ -464,20 +464,20 @@ def test_get_internal_users_no_following(app_module):
     assert len(es_res["followed_users"]) == 0
 
 
-def test_get_external_contentLists(app_module):
-    """Tests we get all contentLists"""
+def test_get_external_content_lists(app_module):
+    """Tests we get all content lists"""
     with app_module.app_context():
         db = get_db()
 
     with db.scoped_session() as session:
-        res = contentList_search_query(session, "contentList", 10, 0, False, False, None)
+        res = content_list_search_query(session, "content_list", 10, 0, False, False, None)
         assert len(res["all"]) == 1
         assert len(res["saved"]) == 0
 
     search_args = {
         "is_auto_complete": False,
-        "kind": "contentLists",
-        "query": "contentList",
+        "kind": "content_lists",
+        "query": "content_list",
         "current_user_id": None,
         "with_users": True,
         "limit": 10,
@@ -485,24 +485,24 @@ def test_get_external_contentLists(app_module):
         "only_downloadable": False,
     }
     es_res = search_es_full(search_args)
-    assert len(es_res["contentLists"]) == 1
-    assert len(es_res["saved_contentLists"]) == 0
+    assert len(es_res["content_lists"]) == 1
+    assert len(es_res["saved_content_lists"]) == 0
 
 
-def test_get_autocomplete_contentLists(app_module):
+def test_get_autocomplete_content_lists(app_module):
     """Tests we get all agreements with autocomplete"""
     with app_module.app_context():
         db = get_db()
 
     with db.scoped_session() as session:
-        res = contentList_search_query(session, "contentList", 10, 0, False, True, None)
+        res = content_list_search_query(session, "content_list", 10, 0, False, True, None)
         assert len(res["all"]) == 1
         assert len(res["saved"]) == 0
 
     search_args = {
         "is_auto_complete": True,
-        "kind": "contentLists",
-        "query": "contentList",
+        "kind": "content_lists",
+        "query": "content_list",
         "current_user_id": None,
         "with_users": True,
         "limit": 10,
@@ -510,24 +510,24 @@ def test_get_autocomplete_contentLists(app_module):
         "only_downloadable": False,
     }
     es_res = search_es_full(search_args)
-    assert len(es_res["contentLists"]) == 1
-    assert len(es_res["saved_contentLists"]) == 0
+    assert len(es_res["content_lists"]) == 1
+    assert len(es_res["saved_content_lists"]) == 0
 
 
-def test_get_internal_contentLists(app_module):
+def test_get_internal_content_lists(app_module):
     """Tests we get contentLists when a user is logged in"""
     with app_module.app_context():
         db = get_db()
 
     with db.scoped_session() as session:
-        res = contentList_search_query(session, "contentList", 10, 0, False, False, 1)
+        res = content_list_search_query(session, "content_list", 10, 0, False, False, 1)
         assert len(res["all"]) == 1
         assert len(res["saved"]) == 1
 
     search_args = {
         "is_auto_complete": False,
-        "kind": "contentLists",
-        "query": "contentList",
+        "kind": "content_lists",
+        "query": "content_list",
         "current_user_id": 1,
         "with_users": True,
         "limit": 10,
@@ -535,8 +535,8 @@ def test_get_internal_contentLists(app_module):
         "only_downloadable": False,
     }
     es_res = search_es_full(search_args)
-    assert len(es_res["contentLists"]) == 1
-    assert len(es_res["saved_contentLists"]) == 1
+    assert len(es_res["content_lists"]) == 1
+    assert len(es_res["saved_content_lists"]) == 1
 
 
 def test_get_external_albums(app_module):
@@ -545,7 +545,7 @@ def test_get_external_albums(app_module):
         db = get_db()
 
     with db.scoped_session() as session:
-        res = contentList_search_query(session, "album", 10, 0, True, False, None)
+        res = content_list_search_query(session, "album", 10, 0, True, False, None)
         assert len(res["all"]) == 1
         assert len(res["saved"]) == 0
 
@@ -570,7 +570,7 @@ def test_get_autocomplete_albums(app_module):
         db = get_db()
 
     with db.scoped_session() as session:
-        res = contentList_search_query(session, "album", 10, 0, True, True, None)
+        res = content_list_search_query(session, "album", 10, 0, True, True, None)
         assert len(res["all"]) == 1
         assert len(res["saved"]) == 0
 
@@ -595,7 +595,7 @@ def test_get_internal_albums(app_module):
         db = get_db()
 
     with db.scoped_session() as session:
-        res = contentList_search_query(session, "album", 10, 0, True, False, 1)
+        res = content_list_search_query(session, "album", 10, 0, True, False, 1)
         assert len(res["all"]) == 1
         assert len(res["saved"]) == 1
 

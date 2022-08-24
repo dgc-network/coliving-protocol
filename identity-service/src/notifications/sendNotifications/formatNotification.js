@@ -223,7 +223,7 @@ async function formatNotifications (notifications, notificationSettings, tx) {
         metadata: {
           agreementOwnerId: notif.metadata.agreement_owner_id,
           contentListOwnerId: notif.initiator,
-          contentListId: notif.metadata.contentList_id
+          contentListId: notif.metadata.content_list_id
         },
         entityId: notif.metadata.agreement_id,
         type: notificationTypes.AddAgreementToContentList

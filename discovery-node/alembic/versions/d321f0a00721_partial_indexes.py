@@ -28,10 +28,10 @@ def upgrade():
     CREATE INDEX IF NOT EXISTS agreement_created_at_idx ON agreements (created_at) WHERE is_current;
 
     -- add index for contentList owner
-    CREATE INDEX IF NOT EXISTS contentList_owner_id_idx ON contentLists (contentList_owner_id) WHERE is_current;
+    CREATE INDEX IF NOT EXISTS content_list_owner_id_idx ON contentLists (content_list_owner_id) WHERE is_current;
 
-    -- add index for contentList_created_at
-    CREATE INDEX IF NOT EXISTS contentList_created_at_idx ON contentLists (created_at) WHERE is_current;
+    -- add index for content_list_created_at
+    CREATE INDEX IF NOT EXISTS content_list_created_at_idx ON contentLists (created_at) WHERE is_current;
 
     -- make repost_user_id a partial index
     DROP INDEX IF EXISTS repost_user_id_idx;
@@ -74,8 +74,8 @@ def downgrade():
     DROP INDEX IF EXISTS agreement_created_at_idx;
 
     -- contentList owner + contentList created_at
-    DROP INDEX IF EXISTS contentList_owner_id_idx;
-    DROP INDEX IF EXISTS contentList_created_at_idx;
+    DROP INDEX IF EXISTS content_list_owner_id_idx;
+    DROP INDEX IF EXISTS content_list_created_at_idx;
 
     -- repost user
     DROP INDEX IF EXISTS repost_user_id_idx;

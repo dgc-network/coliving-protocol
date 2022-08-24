@@ -24,7 +24,7 @@ user_id = "user_id"  # integer - unique id of a user
 follower_count = "follower_count"  # integer - total follower count of given user
 followee_count = "followee_count"  # integer - total followee count of given user
 # integer - total count of contentLists created by given user
-contentList_count = "contentList_count"
+content_list_count = "content_list_count"
 # integer - total count of albums created by given user (0 for all non-creators)
 album_count = "album_count"
 agreement_count = "agreement_count"  # integer - total count of agreements created by given user
@@ -65,13 +65,13 @@ activity_timestamp = "activity_timestamp"
 agreement_owner_follower_count = "agreement_owner_follower_count"
 agreement_owner_id = "agreement_owner_id"
 agreement_id = "agreement_id"
-contentList_id = "contentList_id"
+content_list_id = "content_list_id"
 owner_id = "owner_id"
 listen_counts = "listen_counts"
 
 agreements = "agreements"
 albums = "albums"
-contentLists = "contentLists"
+contentLists = "content_lists"
 user = "user"
 
 # notifications metadata
@@ -82,9 +82,9 @@ notification_type_repost = "Repost"
 notification_type_create = "Create"
 notification_type_remix_create = "RemixCreate"
 notification_type_remix_cosign = "RemixCosign"
-notification_type_contentList_update = "ContentListUpdate"
+notification_type_content_list_update = "ContentListUpdate"
 notification_type_tier_change = "TierChange"
-notification_type_add_agreement_to_contentList = "AddAgreementToContentList"
+notification_type_add_agreement_to_content_list = "AddAgreementToContentList"
 
 notification_blocknumber = "blocknumber"
 notification_initiator = "initiator"
@@ -104,8 +104,8 @@ notification_followee_id = "followee_user_id"
 notification_repost_counts = "repost_counts"
 notification_favorite_counts = "favorite_counts"
 
-notification_contentList_update_timestamp = "contentList_update_timestamp"
-notification_contentList_update_users = "contentList_update_users"
+notification_content_list_update_timestamp = "content_list_update_timestamp"
+notification_content_list_update_users = "content_list_update_users"
 
 notification_tier = "tier"
 

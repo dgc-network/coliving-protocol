@@ -244,7 +244,7 @@ module.exports = coreIntegration = async ({
             const verifiedContentList = await executeOne(walletIndex, l =>
               getContentLists(l, 100, 0, [contentList.contentListId], userId)
             )
-            if (verifiedContentList[0].contentList_id !== contentList.contentListId) {
+            if (verifiedContentList[0].content_list_id !== contentList.contentListId) {
               throw new Error(`Error verifying contentList [${contentList.contentListId}]`)
             }
           }, {})
@@ -280,7 +280,7 @@ module.exports = coreIntegration = async ({
               const contentLists = await executeOne(walletIndex, l =>
                 getContentLists(l, 100, 0, [contentListId], userId)
               )
-              const contentListAgreements = contentLists[0].contentList_contents.agreement_ids.map(obj => obj.agreement)
+              const contentListAgreements = contentLists[0].content_list_contents.agreement_ids.map(obj => obj.agreement)
               if (!contentListAgreements.includes(agreementId)) {
                 throw new Error(`Agreement [${agreementId}] not found in contentList [${contentListId}]`)
               }

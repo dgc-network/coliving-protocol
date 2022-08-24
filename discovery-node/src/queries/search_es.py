@@ -3,7 +3,7 @@ from typing import Any, Dict, Optional
 
 from src.api.v1.helpers import (
     extend_favorite,
-    extend_contentList,
+    extend_content_list,
     extend_repost,
     extend_agreement,
     extend_user,
@@ -15,7 +15,7 @@ from src.utils.elasticdsl import (
     ES_USERS,
     esclient,
     pluck_hits,
-    populate_agreement_or_contentList_metadata_es,
+    populate_agreement_or_content_list_metadata_es,
     populate_user_metadata_es,
 )
 
@@ -35,7 +35,7 @@ def search_es_full(args: dict):
     is_auto_complete = args.get("is_auto_complete")
     do_agreements = search_type == "all" or search_type == "agreements"
     do_users = search_type == "all" or search_type == "users"
-    do_contentLists = search_type == "all" or search_type == "contentLists"
+    do_content_lists = search_type == "all" or search_type == "content_lists"
     do_albums = search_type == "all" or search_type == "albums"
 
     mdsl: Any = []
@@ -90,11 +90,11 @@ def search_es_full(args: dict):
             )
 
     # contentLists
-    if do_contentLists:
+    if do_content_lists:
         mdsl.extend(
             [
                 {"index": ES_CONTENT_LISTS},
-                contentList_dsl(search_str, current_user_id),
+                content_list_dsl(search_str, current_user_id),
             ]
         )
 
@@ -103,7 +103,7 @@ def search_es_full(args: dict):
             mdsl.extend(
                 [
                     {"index": ES_CONTENT_LISTS},
-                    contentList_dsl(search_str, current_user_id, True),
+                    content_list_dsl(search_str, current_user_id, True),
                 ]
             )
 
@@ -132,8 +132,8 @@ def search_es_full(args: dict):
         "saved_agreements": [],
         "users": [],
         "followed_users": [],
-        "contentLists": [],
-        "saved_contentLists": [],
+        "content_lists": [],
+        "saved_content_lists": [],
         "albums": [],
         "saved_albums": [],
     }
@@ -148,10 +148,10 @@ def search_es_full(args: dict):
         if current_user_id:
             response["followed_users"] = pluck_hits(mfound["responses"].pop(0))
 
-    if do_contentLists:
-        response["contentLists"] = pluck_hits(mfound["responses"].pop(0))
+    if do_content_lists:
+        response["content_lists"] = pluck_hits(mfound["responses"].pop(0))
         if current_user_id:
-            response["saved_contentLists"] = pluck_hits(mfound["responses"].pop(0))
+            response["saved_content_lists"] = pluck_hits(mfound["responses"].pop(0))
 
     if do_albums:
         response["albums"] = pluck_hits(mfound["responses"].pop(0))
@@ -264,7 +264,7 @@ def finalize_response(
     for items in response.values():
         for item in items:
             item_keys.append(item_key(item))
-            user_ids.add(item.get("owner_id", item.get("contentList_owner_id")))
+            user_ids.add(item.get("owner_id", item.get("content_list_owner_id")))
 
     # fetch users
     users_by_id = {}
@@ -301,7 +301,7 @@ def finalize_response(
         response[k] = [map_user(user, current_user, legacy_mode) for user in users]
 
     # contentLists: finalize
-    for k in ["contentLists", "saved_contentLists", "albums", "saved_albums"]:
+    for k in ["content_lists", "saved_content_lists", "albums", "saved_albums"]:
         if k not in response:
             continue
         contentLists = response[k]
@@ -309,7 +309,7 @@ def finalize_response(
             hydrate_saves_reposts(contentLists, follow_saves, follow_reposts, legacy_mode)
         hydrate_user(contentLists, users_by_id)
         response[k] = [
-            map_contentList(contentList, current_user, legacy_mode) for contentList in contentLists
+            map_content_list(contentList, current_user, legacy_mode) for contentList in contentLists
         ]
 
     return response
@@ -419,7 +419,7 @@ def user_dsl(search_str, current_user_id, must_saved=False):
     return default_function_score(dsl, "follower_count")
 
 
-def base_contentList_dsl(search_str, is_album):
+def base_content_list_dsl(search_str, is_album):
     return {
         "must": [
             *base_match(search_str),
@@ -434,14 +434,14 @@ def base_contentList_dsl(search_str, is_album):
     }
 
 
-def contentList_dsl(search_str, current_user_id, must_saved=False):
-    dsl = base_contentList_dsl(search_str, False)
+def content_list_dsl(search_str, current_user_id, must_saved=False):
+    dsl = base_content_list_dsl(search_str, False)
     personalize_dsl(dsl, current_user_id, must_saved)
     return default_function_score(dsl, "repost_count")
 
 
 def album_dsl(search_str, current_user_id, must_saved=False):
-    dsl = base_contentList_dsl(search_str, True)
+    dsl = base_content_list_dsl(search_str, True)
     personalize_dsl(dsl, current_user_id, must_saved)
     return default_function_score(dsl, "repost_count")
 
@@ -474,7 +474,7 @@ def lower_ascii_name(name):
 
 def hydrate_user(items, users_by_id):
     for item in items:
-        uid = str(item.get("owner_id", item.get("contentList_owner_id")))
+        uid = str(item.get("owner_id", item.get("content_list_owner_id")))
         user = users_by_id.get(uid)
         if user:
             item["user"] = user
@@ -499,14 +499,14 @@ def map_user(user, current_user, legacy_mode):
 
 
 def map_agreement(agreement, current_user, legacy_mode):
-    agreement = populate_agreement_or_contentList_metadata_es(agreement, current_user)
+    agreement = populate_agreement_or_content_list_metadata_es(agreement, current_user)
     if not legacy_mode:
         agreement = extend_agreement(agreement)
     return agreement
 
 
-def map_contentList(contentList, current_user, legacy_mode):
-    contentList = populate_agreement_or_contentList_metadata_es(contentList, current_user)
+def map_content_list(contentList, current_user, legacy_mode):
+    contentList = populate_agreement_or_content_list_metadata_es(contentList, current_user)
     if not legacy_mode:
-        contentList = extend_contentList(contentList)
+        contentList = extend_content_list(contentList)
     return contentList

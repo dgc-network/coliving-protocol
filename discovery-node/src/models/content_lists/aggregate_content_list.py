@@ -4,9 +4,9 @@ from src.models.model_utils import RepresentableMixin
 
 
 class AggregateContentList(Base, RepresentableMixin):
-    __tablename__ = "aggregate_contentList"
+    __tablename__ = "aggregate_content_list"
 
-    contentList_id = Column(Integer, primary_key=True)
+    content_list_id = Column(Integer, primary_key=True)
     is_album = Column(Boolean)
     repost_count = Column(Integer, server_default=text("0"))
     save_count = Column(Integer, server_default=text("0"))

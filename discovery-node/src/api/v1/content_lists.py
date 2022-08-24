@@ -7,7 +7,7 @@ from src.api.v1.helpers import (
     abort_bad_request_param,
     current_user_parser,
     decode_with_abort,
-    extend_contentList,
+    extend_content_list,
     extend_agreement,
     extend_user,
     full_trending_parser,
@@ -21,18 +21,18 @@ from src.api.v1.helpers import (
     success_response,
     trending_parser,
 )
-from src.api.v1.models.contentLists import full_contentList_model, contentList_model
+from src.api.v1.models.content_lists import full_content_list_model, content_list_model
 from src.api.v1.models.users import user_model_full
-from src.queries.get_contentList_agreements import get_contentList_agreements
-from src.queries.get_contentLists import get_contentLists
-from src.queries.get_reposters_for_contentList import get_reposters_for_contentList
-from src.queries.get_savers_for_contentList import get_savers_for_contentList
-from src.queries.get_top_contentLists import get_top_contentLists  # pylint: disable=C0302
-from src.queries.get_trending_contentLists import (
+from src.queries.get_content_list_agreements import get_content_list_agreements
+from src.queries.get_content_lists import get_content_lists
+from src.queries.get_reposters_for_content_list import get_reposters_for_content_list
+from src.queries.get_savers_for_content_list import get_savers_for_content_list
+from src.queries.get_top_content_lists import get_top_content_lists  # pylint: disable=C0302
+from src.queries.get_trending_content_lists import (
     TRENDING_LIMIT,
     TRENDING_TTL_SEC,
-    get_full_trending_contentLists,
-    get_trending_contentLists,
+    get_full_trending_content_lists,
+    get_trending_content_lists,
 )
 from src.queries.search_queries import SearchKind, search
 from src.trending_strategies.trending_strategy_factory import (
@@ -50,57 +50,57 @@ logger = logging.getLogger(__name__)
 
 trending_strategy_factory = TrendingStrategyFactory()
 
-ns = Namespace("contentLists", description="ContentList related operations")
-full_ns = Namespace("contentLists", description="Full contentList related operations")
+ns = Namespace("content_lists", description="ContentList related operations")
+full_ns = Namespace("content_lists", description="Full contentList related operations")
 
-contentLists_response = make_response(
-    "contentList_response", ns, fields.List(fields.Nested(contentList_model))
+content_lists_response = make_response(
+    "content_list_response", ns, fields.List(fields.Nested(content_list_model))
 )
-full_contentLists_response = make_full_response(
-    "full_contentList_response", full_ns, fields.List(fields.Nested(full_contentList_model))
+full_content_lists_response = make_full_response(
+    "full_content_list_response", full_ns, fields.List(fields.Nested(full_content_list_model))
 )
 
-contentLists_with_score = ns.clone(
-    "contentList_full",
-    full_contentList_model,
+content_lists_with_score = ns.clone(
+    "content_list_full",
+    full_content_list_model,
     {"score": fields.Float},
 )
 
-full_contentLists_with_score_response = make_full_response(
-    "full_contentList_with_score_response",
+full_content_lists_with_score_response = make_full_response(
+    "full_content_list_with_score_response",
     full_ns,
-    fields.List(fields.Nested(contentLists_with_score)),
+    fields.List(fields.Nested(content_lists_with_score)),
 )
 
 
-def get_contentList(contentList_id, current_user_id):
+def get_content_list(content_list_id, current_user_id):
     """Returns a single contentList, or None"""
     args = {
-        "contentList_id": [contentList_id],
+        "content_list_id": [content_list_id],
         "with_users": True,
         "current_user_id": current_user_id,
     }
-    contentLists = get_contentLists(args)
+    contentLists = get_content_lists(args)
     if contentLists:
-        return extend_contentList(contentLists[0])
+        return extend_content_list(contentLists[0])
     return None
 
 
-def get_agreements_for_contentList(contentList_id, current_user_id=None):
+def get_agreements_for_content_list(content_list_id, current_user_id=None):
     db = get_db_read_replica()
     with db.scoped_session() as session:
         args = {
-            "contentList_ids": [contentList_id],
+            "content_list_ids": [content_list_id],
             "populate_agreements": True,
             "current_user_id": current_user_id,
         }
-        contentList_agreements_map = get_contentList_agreements(session, args)
-        contentList_agreements = contentList_agreements_map[contentList_id]
-        agreements = list(map(extend_agreement, contentList_agreements))
+        content_list_agreements_map = get_content_list_agreements(session, args)
+        content_list_agreements = content_list_agreements_map[content_list_id]
+        agreements = list(map(extend_agreement, content_list_agreements))
         return agreements
 
 
-CONTENT_LIST_ROUTE = "/<string:contentList_id>"
+CONTENT_LIST_ROUTE = "/<string:content_list_id>"
 
 
 @ns.route(CONTENT_LIST_ROUTE)
@@ -109,20 +109,20 @@ class ContentList(Resource):
     @ns.doc(
         id="""Get ContentList""",
         description="""Get a contentList by ID""",
-        params={"contentList_id": "A ContentList ID"},
+        params={"content_list_id": "A ContentList ID"},
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
-    @ns.marshal_with(contentLists_response)
+    @ns.marshal_with(content_lists_response)
     @cache(ttl_sec=5)
-    def get(self, contentList_id):
-        contentList_id = decode_with_abort(contentList_id, ns)
-        contentList = get_contentList(contentList_id, None)
+    def get(self, content_list_id):
+        content_list_id = decode_with_abort(content_list_id, ns)
+        contentList = get_content_list(content_list_id, None)
         response = success_response([contentList] if contentList else [])
         return response
 
 
-contentList_agreements_response = make_response(
-    "contentList_agreements_response", ns, fields.List(fields.Nested(agreement))
+content_list_agreements_response = make_response(
+    "content_list_agreements_response", ns, fields.List(fields.Nested(agreement))
 )
 
 
@@ -131,43 +131,43 @@ class FullContentList(Resource):
     @ns.doc(
         id="""Get ContentList""",
         description="""Get a contentList by ID""",
-        params={"contentList_id": "A ContentList ID"},
+        params={"content_list_id": "A ContentList ID"},
     )
     @ns.expect(current_user_parser)
-    @ns.marshal_with(full_contentLists_response)
+    @ns.marshal_with(full_content_lists_response)
     @cache(ttl_sec=5)
-    def get(self, contentList_id):
-        contentList_id = decode_with_abort(contentList_id, full_ns)
+    def get(self, content_list_id):
+        content_list_id = decode_with_abort(content_list_id, full_ns)
         args = current_user_parser.parse_args()
         current_user_id = get_current_user_id(args)
 
-        contentList = get_contentList(contentList_id, current_user_id)
+        contentList = get_content_list(content_list_id, current_user_id)
         if contentList:
-            agreements = get_agreements_for_contentList(contentList_id, current_user_id)
+            agreements = get_agreements_for_content_list(content_list_id, current_user_id)
             contentList["agreements"] = agreements
         response = success_response([contentList] if contentList else [])
         return response
 
 
-@ns.route("/<string:contentList_id>/agreements")
+@ns.route("/<string:content_list_id>/agreements")
 class ContentListAgreements(Resource):
     @record_metrics
     @ns.doc(
         id="""Get ContentList Agreements""",
         description="""Fetch agreements within a contentList.""",
-        params={"contentList_id": "A ContentList ID"},
+        params={"content_list_id": "A ContentList ID"},
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
-    @ns.marshal_with(contentList_agreements_response)
+    @ns.marshal_with(content_list_agreements_response)
     @cache(ttl_sec=5)
-    def get(self, contentList_id):
-        decoded_id = decode_with_abort(contentList_id, ns)
-        agreements = get_agreements_for_contentList(decoded_id)
+    def get(self, content_list_id):
+        decoded_id = decode_with_abort(content_list_id, ns)
+        agreements = get_agreements_for_content_list(decoded_id)
         return success_response(agreements)
 
 
-contentList_search_result = make_response(
-    "contentList_search_result", ns, fields.List(fields.Nested(contentList_model))
+content_list_search_result = make_response(
+    "content_list_search_result", ns, fields.List(fields.Nested(content_list_model))
 )
 
 
@@ -176,11 +176,11 @@ class ContentListSearchResult(Resource):
     @record_metrics
     @ns.doc(
         id="""Search ContentLists""",
-        description="""Search for a contentList""",
+        description="""Search for a content list""",
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
     @ns.expect(search_parser)
-    @ns.marshal_with(contentList_search_result)
+    @ns.marshal_with(content_list_search_result)
     @cache(ttl_sec=600)
     def get(self):
         args = search_parser.parse_args()
@@ -197,14 +197,14 @@ class ContentListSearchResult(Resource):
             "offset": 0,
         }
         response = search(search_args)
-        return success_response(response["contentLists"])
+        return success_response(response["content_lists"])
 
 
 top_parser = pagination_parser.copy()
 top_parser.add_argument(
     "type",
     required=True,
-    choices=("album", "contentList"),
+    choices=("album", "content_list"),
     description="The collection type",
 )
 top_parser.add_argument(
@@ -218,7 +218,7 @@ top_parser.add_argument(
 class Top(Resource):
     @record_metrics
     @ns.doc(id="""Top ContentLists""", description="""Gets top contentLists.""")
-    @ns.marshal_with(full_contentLists_with_score_response)
+    @ns.marshal_with(full_content_lists_with_score_response)
     @cache(ttl_sec=30 * 60)
     def get(self):
         args = top_parser.parse_args()
@@ -228,89 +228,89 @@ class Top(Resource):
             args["limit"] = min(args.get("limit"), 100)
         if args.get("offset") is None:
             args["offset"] = 0
-        if args.get("type") not in ["album", "contentList"]:
+        if args.get("type") not in ["album", "content_list"]:
             abort_bad_request_param("type", ns)
 
         args["with_users"] = True
 
-        response = get_top_contentLists(args.type, args)
+        response = get_top_content_lists(args.type, args)
 
-        contentLists = list(map(extend_contentList, response))
+        contentLists = list(map(extend_content_list, response))
         return success_response(contentLists)
 
 
-contentList_favorites_response = make_full_response(
+content_list_favorites_response = make_full_response(
     "following_response", full_ns, fields.List(fields.Nested(user_model_full))
 )
 
 
-@full_ns.route("/<string:contentList_id>/favorites")
+@full_ns.route("/<string:content_list_id>/favorites")
 class FullAgreementFavorites(Resource):
     @full_ns.doc(
         id="""Get Users From ContentList Favorites""",
-        description="""Get users that favorited a contentList""",
-        params={"contentList_id": "A ContentList ID"},
+        description="""Get users that favorited a content list""",
+        params={"content_list_id": "A ContentList ID"},
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
     @full_ns.expect(pagination_with_current_user_parser)
-    @full_ns.marshal_with(contentList_favorites_response)
+    @full_ns.marshal_with(content_list_favorites_response)
     @cache(ttl_sec=5)
-    def get(self, contentList_id):
+    def get(self, content_list_id):
         args = pagination_with_current_user_parser.parse_args()
-        decoded_id = decode_with_abort(contentList_id, full_ns)
+        decoded_id = decode_with_abort(content_list_id, full_ns)
         limit = get_default_max(args.get("limit"), 10, 100)
         offset = get_default_max(args.get("offset"), 0)
         current_user_id = get_current_user_id(args)
         args = {
-            "save_contentList_id": decoded_id,
+            "save_content_list_id": decoded_id,
             "current_user_id": current_user_id,
             "limit": limit,
             "offset": offset,
         }
-        users = get_savers_for_contentList(args)
+        users = get_savers_for_content_list(args)
         users = list(map(extend_user, users))
 
         return success_response(users)
 
 
-contentList_reposts_response = make_full_response(
+content_list_reposts_response = make_full_response(
     "following_response", full_ns, fields.List(fields.Nested(user_model_full))
 )
 
 
-@full_ns.route("/<string:contentList_id>/reposts")
+@full_ns.route("/<string:content_list_id>/reposts")
 class FullContentListReposts(Resource):
     @full_ns.doc(
         id="""Get Users From ContentList Reposts""",
-        description="""Get users that reposted a contentList""",
-        params={"contentList_id": "A ContentList ID"},
+        description="""Get users that reposted a content list""",
+        params={"content_list_id": "A ContentList ID"},
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
     @full_ns.expect(pagination_with_current_user_parser)
-    @full_ns.marshal_with(contentList_reposts_response)
+    @full_ns.marshal_with(content_list_reposts_response)
     @cache(ttl_sec=5)
-    def get(self, contentList_id):
+    def get(self, content_list_id):
         args = pagination_with_current_user_parser.parse_args()
-        decoded_id = decode_with_abort(contentList_id, full_ns)
+        decoded_id = decode_with_abort(content_list_id, full_ns)
         limit = get_default_max(args.get("limit"), 10, 100)
         offset = get_default_max(args.get("offset"), 0)
         current_user_id = get_current_user_id(args)
         args = {
-            "repost_contentList_id": decoded_id,
+            "repost_content_list_id": decoded_id,
             "current_user_id": current_user_id,
             "limit": limit,
             "offset": offset,
         }
-        users = get_reposters_for_contentList(args)
+        users = get_reposters_for_content_list(args)
         users = list(map(extend_user, users))
         return success_response(users)
 
 
 trending_response = make_response(
-    "trending_contentLists_response", ns, fields.List(fields.Nested(contentList_model))
+    "trending_content_lists_response", ns, fields.List(fields.Nested(content_list_model))
 )
-trending_contentList_parser = trending_parser.copy()
-trending_contentList_parser.remove_argument("genre")
+trending_content_list_parser = trending_parser.copy()
+trending_content_list_parser.remove_argument("genre")
 
 
 @ns.route(
@@ -328,41 +328,41 @@ trending_contentList_parser.remove_argument("genre")
 @ns.route("/trending/<string:version>", doc=False)
 class TrendingContentLists(Resource):
     @record_metrics
-    @ns.expect(trending_contentList_parser)
+    @ns.expect(trending_content_list_parser)
     @ns.marshal_with(trending_response)
     @cache(ttl_sec=TRENDING_TTL_SEC)
     def get(self, version):
-        trending_contentList_versions = trending_strategy_factory.get_versions_for_type(
+        trending_content_list_versions = trending_strategy_factory.get_versions_for_type(
             TrendingType.CONTENT_LISTS
         ).keys()
         version_list = list(
-            filter(lambda v: v.name == version, trending_contentList_versions)
+            filter(lambda v: v.name == version, trending_content_list_versions)
         )
         if not version_list:
             abort_bad_path_param("version", ns)
 
-        args = trending_contentList_parser.parse_args()
+        args = trending_content_list_parser.parse_args()
         time = args.get("time")
         time = "week" if time not in ["week", "month", "year"] else time
         args = {"time": time, "with_agreements": False}
         strategy = trending_strategy_factory.get_strategy(
             TrendingType.CONTENT_LISTS, version_list[0]
         )
-        contentLists = get_trending_contentLists(args, strategy)
+        contentLists = get_trending_content_lists(args, strategy)
         contentLists = contentLists[:TRENDING_LIMIT]
-        contentLists = list(map(extend_contentList, contentLists))
+        contentLists = list(map(extend_content_list, contentLists))
 
         return success_response(contentLists)
 
 
-full_trending_contentLists_response = make_full_response(
-    "full_trending_contentLists_response",
+full_trending_content_lists_response = make_full_response(
+    "full_trending_content_lists_response",
     full_ns,
-    fields.List(fields.Nested(full_contentList_model)),
+    fields.List(fields.Nested(full_content_list_model)),
 )
 
-full_trending_contentList_parser = full_trending_parser.copy()
-full_trending_contentList_parser.remove_argument("genre")
+full_trending_content_list_parser = full_trending_parser.copy()
+full_trending_content_list_parser.remove_argument("genre")
 
 
 @full_ns.route(
@@ -390,21 +390,21 @@ full_trending_contentList_parser.remove_argument("genre")
 )
 class FullTrendingContentLists(Resource):
     @record_metrics
-    @full_ns.expect(full_trending_contentList_parser)
-    @full_ns.marshal_with(full_trending_contentLists_response)
+    @full_ns.expect(full_trending_content_list_parser)
+    @full_ns.marshal_with(full_trending_content_lists_response)
     def get(self, version):
-        trending_contentList_versions = trending_strategy_factory.get_versions_for_type(
+        trending_content_list_versions = trending_strategy_factory.get_versions_for_type(
             TrendingType.CONTENT_LISTS
         ).keys()
         version_list = list(
-            filter(lambda v: v.name == version, trending_contentList_versions)
+            filter(lambda v: v.name == version, trending_content_list_versions)
         )
         if not version_list:
             abort_bad_path_param("version", full_ns)
 
-        args = full_trending_contentList_parser.parse_args()
+        args = full_trending_content_list_parser.parse_args()
         strategy = trending_strategy_factory.get_strategy(
             TrendingType.CONTENT_LISTS, version_list[0]
         )
-        contentLists = get_full_trending_contentLists(request, args, strategy)
+        contentLists = get_full_trending_content_lists(request, args, strategy)
         return success_response(contentLists)

@@ -2,7 +2,7 @@ import datetime
 
 from flask import request
 from sqlalchemy import and_, desc, func, or_
-from src.models.contentLists.contentList import ContentList
+from src.models.content_lists.content_list import ContentList
 from src.models.social.follow import Follow
 from src.models.social.repost import Repost, RepostType
 from src.models.social.save import SaveType
@@ -15,7 +15,7 @@ from src.queries.query_helpers import (
     get_users_by_id,
     get_users_ids,
     paginate_query,
-    populate_contentList_metadata,
+    populate_content_list_metadata,
     populate_agreement_metadata,
 )
 from src.utils import helpers
@@ -68,43 +68,43 @@ def get_feed_sql(args):
         if feed_filter in ["original", "all"]:
             if not agreements_only:
                 # Query contentLists posted by followees, sorted and paginated by created_at desc
-                created_contentLists_query = (
+                created_content_lists_query = (
                     session.query(ContentList)
                     .filter(
                         ContentList.is_current == True,
                         ContentList.is_delete == False,
                         ContentList.is_private == False,
-                        ContentList.contentList_owner_id.in_(followee_user_ids),
+                        ContentList.content_list_owner_id.in_(followee_user_ids),
                     )
                     .order_by(desc(ContentList.created_at))
                 )
-                created_contentLists = paginate_query(created_contentLists_query, False).all()
+                created_content_lists = paginate_query(created_content_lists_query, False).all()
 
                 # get agreement ids for all agreements in contentLists
-                contentList_agreement_ids = set()
-                for contentList in created_contentLists:
-                    for agreement in contentList.contentList_contents["agreement_ids"]:
-                        contentList_agreement_ids.add(agreement["agreement"])
+                content_list_agreement_ids = set()
+                for contentList in created_content_lists:
+                    for agreement in contentList.content_list_contents["agreement_ids"]:
+                        content_list_agreement_ids.add(agreement["agreement"])
 
                 # get all agreement objects for agreement ids
-                contentList_agreements = get_unpopulated_agreements(session, contentList_agreement_ids)
-                contentList_agreements_dict = {
-                    agreement["agreement_id"]: agreement for agreement in contentList_agreements
+                content_list_agreements = get_unpopulated_agreements(session, content_list_agreement_ids)
+                content_list_agreements_dict = {
+                    agreement["agreement_id"]: agreement for agreement in content_list_agreements
                 }
 
                 # get all agreement ids that have same owner as contentList and created in "same action"
                 # "same action": agreement created within [x time] before contentList creation
                 agreements_to_dedupe = set()
-                for contentList in created_contentLists:
-                    for agreement_entry in contentList.contentList_contents["agreement_ids"]:
-                        agreement = contentList_agreements_dict.get(agreement_entry["agreement"])
+                for contentList in created_content_lists:
+                    for agreement_entry in contentList.content_list_contents["agreement_ids"]:
+                        agreement = content_list_agreements_dict.get(agreement_entry["agreement"])
                         if not agreement:
                             continue
                         max_timedelta = datetime.timedelta(
                             minutes=agreementDedupeMaxMinutes
                         )
                         if (
-                            (agreement["owner_id"] == contentList.contentList_owner_id)
+                            (agreement["owner_id"] == contentList.content_list_owner_id)
                             and (agreement["created_at"] <= contentList.created_at)
                             and (
                                 contentList.created_at - agreement["created_at"]
@@ -116,7 +116,7 @@ def get_feed_sql(args):
             else:
                 # No contentLists to consider
                 agreements_to_dedupe = []
-                created_contentLists = []
+                created_content_lists = []
 
             # Query agreements posted by followees, sorted & paginated by created_at desc
             # exclude agreements that were posted in "same action" as contentList
@@ -134,10 +134,10 @@ def get_feed_sql(args):
             )
             created_agreements = paginate_query(created_agreements_query, False).all()
 
-            # extract created_agreement_ids and created_contentList_ids
+            # extract created_agreement_ids and created_content_list_ids
             created_agreement_ids = [agreement.agreement_id for agreement in created_agreements]
-            created_contentList_ids = [
-                contentList.contentList_id for contentList in created_contentLists
+            created_content_list_ids = [
+                contentList.content_list_id for contentList in created_content_lists
             ]
 
         # Fetch followee reposts if requested
@@ -159,7 +159,7 @@ def get_feed_sql(args):
                         ),
                         and_(
                             Repost.repost_type != RepostType.agreement,
-                            Repost.repost_item_id.notin_(created_contentList_ids),
+                            Repost.repost_item_id.notin_(created_content_list_ids),
                         ),
                     )
                 )
@@ -178,9 +178,9 @@ def get_feed_sql(args):
             )
             followee_reposts = paginate_query(repost_query, False).all()
 
-            # build dict of agreement_id / contentList_id -> oldest followee repost timestamp from followee_reposts above
+            # build dict of agreement_id / content_list_id -> oldest followee repost timestamp from followee_reposts above
             agreement_repost_timestamp_dict = {}
-            contentList_repost_timestamp_dict = {}
+            content_list_repost_timestamp_dict = {}
             for (
                 repost_item_id,
                 repost_type,
@@ -191,13 +191,13 @@ def get_feed_sql(args):
                         repost_item_id
                     ] = oldest_followee_repost_timestamp
                 elif repost_type in (RepostType.contentList, RepostType.album):
-                    contentList_repost_timestamp_dict[
+                    content_list_repost_timestamp_dict[
                         repost_item_id
                     ] = oldest_followee_repost_timestamp
 
-            # extract reposted_agreement_ids and reposted_contentList_ids
+            # extract reposted_agreement_ids and reposted_content_list_ids
             reposted_agreement_ids = list(agreement_repost_timestamp_dict.keys())
-            reposted_contentList_ids = list(contentList_repost_timestamp_dict.keys())
+            reposted_content_list_ids = list(content_list_repost_timestamp_dict.keys())
 
             # Query agreements reposted by followees
             reposted_agreements = session.query(Agreement).filter(
@@ -216,35 +216,35 @@ def get_feed_sql(args):
 
             if not agreements_only:
                 # Query contentLists reposted by followees, excluding contentLists already fetched from above
-                reposted_contentLists = session.query(ContentList).filter(
+                reposted_content_lists = session.query(ContentList).filter(
                     ContentList.is_current == True,
                     ContentList.is_delete == False,
                     ContentList.is_private == False,
-                    ContentList.contentList_id.in_(reposted_contentList_ids),
+                    ContentList.content_list_id.in_(reposted_content_list_ids),
                 )
                 # exclude contentLists already fetched from above, in case of "all" filter
                 if feed_filter == "all":
-                    reposted_contentLists = reposted_contentLists.filter(
-                        ContentList.contentList_id.notin_(created_contentList_ids)
+                    reposted_content_lists = reposted_content_lists.filter(
+                        ContentList.content_list_id.notin_(created_content_list_ids)
                     )
-                reposted_contentLists = reposted_contentLists.order_by(
+                reposted_content_lists = reposted_content_lists.order_by(
                     desc(ContentList.created_at)
                 ).all()
             else:
-                reposted_contentLists = []
+                reposted_content_lists = []
 
         if feed_filter == "original":
             agreements_to_process = created_agreements
-            contentLists_to_process = created_contentLists
+            content_lists_to_process = created_content_lists
         elif feed_filter == "repost":
             agreements_to_process = reposted_agreements
-            contentLists_to_process = reposted_contentLists
+            content_lists_to_process = reposted_content_lists
         else:
             agreements_to_process = created_agreements + reposted_agreements
-            contentLists_to_process = created_contentLists + reposted_contentLists
+            content_lists_to_process = created_content_lists + reposted_content_lists
 
         agreements = helpers.query_result_to_list(agreements_to_process)
-        contentLists = helpers.query_result_to_list(contentLists_to_process)
+        contentLists = helpers.query_result_to_list(content_lists_to_process)
 
         # define top level feed activity_timestamp to enable sorting
         # activity_timestamp: created_at if item created by followee, else reposted_at
@@ -256,22 +256,22 @@ def get_feed_sql(args):
                     response_name_constants.activity_timestamp
                 ] = agreement_repost_timestamp_dict[agreement["agreement_id"]]
         for contentList in contentLists:
-            if contentList["contentList_owner_id"] in followee_user_ids:
+            if contentList["content_list_owner_id"] in followee_user_ids:
                 contentList[response_name_constants.activity_timestamp] = contentList[
                     "created_at"
                 ]
             else:
                 contentList[
                     response_name_constants.activity_timestamp
-                ] = contentList_repost_timestamp_dict[contentList["contentList_id"]]
+                ] = content_list_repost_timestamp_dict[contentList["content_list_id"]]
 
         # bundle peripheral info into agreement and contentList objects
         agreement_ids = list(map(lambda agreement: agreement["agreement_id"], agreements))
-        contentList_ids = list(map(lambda contentList: contentList["contentList_id"], contentLists))
+        content_list_ids = list(map(lambda contentList: contentList["content_list_id"], contentLists))
         agreements = populate_agreement_metadata(session, agreement_ids, agreements, current_user_id)
-        contentLists = populate_contentList_metadata(
+        contentLists = populate_content_list_metadata(
             session,
-            contentList_ids,
+            content_list_ids,
             contentLists,
             [RepostType.contentList, RepostType.album],
             [SaveType.contentList, SaveType.album],
@@ -295,8 +295,8 @@ def get_feed_sql(args):
             user_id_list = get_users_ids(feed_results)
             users = get_users_by_id(session, user_id_list)
             for result in feed_results:
-                if "contentList_owner_id" in result:
-                    user = users[result["contentList_owner_id"]]
+                if "content_list_owner_id" in result:
+                    user = users[result["content_list_owner_id"]]
                     if user:
                         result["user"] = user
                 elif "owner_id" in result:

@@ -8,7 +8,7 @@ module.exports = function (app) {
    * Returns the contentListUpdates dictionary for given user
    * @param {string} walletAddress   user wallet address
    */
-  app.get('/user_contentList_updates', handleResponse(async (req) => {
+  app.get('/user_content_list_updates', handleResponse(async (req) => {
     const { walletAddress } = req.query
     if (!walletAddress) {
       return errorResponseBadRequest('Please provide a wallet address')
@@ -35,7 +35,7 @@ module.exports = function (app) {
    * Updates the lastContentListViews field for the user in the UserEvents table
    * @param {boolean} contentListId   id of contentList or folder to update
    */
-  app.post('/user_contentList_updates', authMiddleware, handleResponse(async (req) => {
+  app.post('/user_content_list_updates', authMiddleware, handleResponse(async (req) => {
     const { contentListId } = req.query
     const { walletAddress } = req.user
     if (!walletAddress || !contentListId) {

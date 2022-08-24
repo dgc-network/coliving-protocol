@@ -1,7 +1,7 @@
-from src.trending_strategies.BDNxn_trending_contentLists_strategy import (
+from src.trending_strategies.BDNxn_trending_content_lists_strategy import (
     TrendingContentListsStrategyBDNxn,
 )
-from src.trending_strategies.EJ57D_trending_contentLists_strategy import (
+from src.trending_strategies.EJ57D_trending_content_lists_strategy import (
     TrendingContentListsStrategyEJ57D,
 )
 from src.trending_strategies.EJ57D_trending_agreements_strategy import (

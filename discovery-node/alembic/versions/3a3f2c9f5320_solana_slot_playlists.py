@@ -21,12 +21,12 @@ def upgrade():
         """
         begin;
 
-            ALTER TABLE contentLists DROP CONSTRAINT IF EXISTS contentLists_pkey;
+            ALTER TABLE contentLists DROP CONSTRAINT IF EXISTS content_lists_pkey;
             UPDATE contentLists
                 SET txhash = ('unset_' || substr(md5(random()::text), 0, 10) || substr(blockhash, 3, 13))
                 WHERE txhash='';
 
-            ALTER TABLE contentLists ADD PRIMARY KEY (is_current, contentList_id, txhash);
+            ALTER TABLE contentLists ADD PRIMARY KEY (is_current, content_list_id, txhash);
 
             ALTER TABLE contentLists ADD COLUMN IF NOT EXISTS slot INTEGER;
 
@@ -45,8 +45,8 @@ def downgrade():
         """
         begin;
 
-            ALTER TABLE contentLists DROP CONSTRAINT IF EXISTS contentLists_pkey;
-            ALTER TABLE contentLists ADD PRIMARY KEY (is_current, contentList_id, contentList_owner_id, blockhash, txhash);
+            ALTER TABLE contentLists DROP CONSTRAINT IF EXISTS content_lists_pkey;
+            ALTER TABLE contentLists ADD PRIMARY KEY (is_current, content_list_id, content_list_owner_id, blockhash, txhash);
 
             ALTER TABLE contentLists DROP COLUMN IF EXISTS slot;
 

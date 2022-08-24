@@ -298,7 +298,7 @@ def downgrade():
         SELECT
             distinct(u.user_id),
             COALESCE (user_agreement.agreement_count, 0) as agreement_count,
-            COALESCE (user_contentList.contentList_count, 0) as contentList_count,
+            COALESCE (user_content_list.content_list_count, 0) as content_list_count,
             COALESCE (user_album.album_count, 0) as album_count,
             COALESCE (user_follower.follower_count, 0) as follower_count,
             COALESCE (user_followee.followee_count, 0) as following_count,
@@ -323,8 +323,8 @@ def downgrade():
         -- join on subquery for contentLists created
         LEFT OUTER JOIN (
             SELECT
-                p.contentList_owner_id as owner_id,
-                count(p.contentList_owner_id) as contentList_count
+                p.content_list_owner_id as owner_id,
+                count(p.content_list_owner_id) as content_list_count
             FROM
                 contentLists p
             WHERE
@@ -332,13 +332,13 @@ def downgrade():
                 p.is_current is True AND
                 p.is_delete is False AND
                 p.is_private is False
-            GROUP BY p.contentList_owner_id
-        ) as user_contentList ON user_contentList.owner_id = u.user_id
+            GROUP BY p.content_list_owner_id
+        ) as user_content_list ON user_content_list.owner_id = u.user_id
         -- join on subquery for albums created
         LEFT OUTER JOIN (
             SELECT
-                p.contentList_owner_id as owner_id,
-                count(p.contentList_owner_id) as album_count
+                p.content_list_owner_id as owner_id,
+                count(p.content_list_owner_id) as album_count
             FROM
                 contentLists p
             WHERE
@@ -346,7 +346,7 @@ def downgrade():
                 p.is_current is True AND
                 p.is_delete is False AND
                 p.is_private is False
-            GROUP BY p.contentList_owner_id
+            GROUP BY p.content_list_owner_id
         ) user_album ON user_album.owner_id = u.user_id
         -- join on subquery for followers
         LEFT OUTER JOIN (

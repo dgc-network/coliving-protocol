@@ -23,7 +23,7 @@ begin
     when 'users' then
       PERFORM pg_notify(TG_TABLE_NAME, json_build_object('user_id', new.user_id)::text);
     when 'contentLists' then
-      PERFORM pg_notify(TG_TABLE_NAME, json_build_object('contentList_id', new.contentList_id)::text);
+      PERFORM pg_notify(TG_TABLE_NAME, json_build_object('content_list_id', new.content_list_id)::text);
     else
       PERFORM pg_notify(TG_TABLE_NAME, to_json(new)::text);
   end case;

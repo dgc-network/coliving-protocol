@@ -10,7 +10,7 @@ requirements = [str(ir.req) for ir in install_reqs]
 
 config = {
     "description": "Coliving Discovery Node",
-    "author": "Hareesh Nagaraj",
+    "author": "dgc.network",
     "url": "",
     "download_url": "",
     "author_email": "",
@@ -18,7 +18,7 @@ config = {
     "install_requires": requirements,
     "packages": find_packages(),
     "scripts": [],
-    "name": "coliving_discovery_provider",
+    "name": "coliving_discovery_node",
 }
 
 setup(**config)

@@ -3,7 +3,7 @@ from typing import Optional, TypedDict, cast
 from sqlalchemy import desc
 from sqlalchemy.orm.session import Session
 from sqlalchemy.sql.elements import and_, or_
-from src.models.contentLists.contentList import ContentList
+from src.models.content_lists.content_list import ContentList
 from src.models.social.repost import Repost, RepostType
 from src.models.social.save import SaveType
 from src.models.agreements.agreement import Agreement
@@ -13,7 +13,7 @@ from src.queries.query_helpers import (
     add_query_pagination,
     get_users_by_id,
     get_users_ids,
-    populate_contentList_metadata,
+    populate_content_list_metadata,
     populate_agreement_metadata,
 )
 from src.utils import helpers
@@ -81,8 +81,8 @@ def _get_repost_feed_for_user(
         .outerjoin(
             ContentList,
             and_(
-                Repost.repost_item_id == ContentList.contentList_id,
-                or_(Repost.repost_type == "contentList", Repost.repost_type == "album"),
+                Repost.repost_item_id == ContentList.content_list_id,
+                or_(Repost.repost_type == "content_list", Repost.repost_type == "album"),
                 ContentList.is_current == True,
                 ContentList.is_delete == False,
                 ContentList.is_private == False,
@@ -93,7 +93,7 @@ def _get_repost_feed_for_user(
             Repost.is_delete == False,
             Repost.user_id == user_id,
             # Drop rows that have no join found for either agreement or contentList
-            or_(Agreement.agreement_id != None, ContentList.contentList_id != None),
+            or_(Agreement.agreement_id != None, ContentList.content_list_id != None),
         )
         .order_by(
             desc(Repost.created_at),
@@ -108,13 +108,13 @@ def _get_repost_feed_for_user(
     agreement_reposts = helpers.query_result_to_list(agreement_reposts)
 
     # get contentList reposts from above
-    contentList_reposts = [r[0] for r in reposts if r[2] is not None]
-    contentList_reposts = helpers.query_result_to_list(contentList_reposts)
+    content_list_reposts = [r[0] for r in reposts if r[2] is not None]
+    content_list_reposts = helpers.query_result_to_list(content_list_reposts)
 
     # build agreement/contentList id --> repost dict from repost lists
     agreement_repost_dict = {repost["repost_item_id"]: repost for repost in agreement_reposts}
-    contentList_repost_dict = {
-        repost["repost_item_id"]: repost for repost in contentList_reposts
+    content_list_repost_dict = {
+        repost["repost_item_id"]: repost for repost in content_list_reposts
     }
 
     agreements = helpers.query_result_to_list(
@@ -128,13 +128,13 @@ def _get_repost_feed_for_user(
     agreement_ids = [agreement["agreement_id"] for agreement in agreements]
 
     # get contentList ids
-    contentList_ids = [contentList["contentList_id"] for contentList in contentLists]
+    content_list_ids = [contentList["content_list_id"] for contentList in contentLists]
 
     # populate full metadata
     agreements = populate_agreement_metadata(session, agreement_ids, agreements, current_user_id)
-    contentLists = populate_contentList_metadata(
+    contentLists = populate_content_list_metadata(
         session,
-        contentList_ids,
+        content_list_ids,
         contentLists,
         [RepostType.contentList, RepostType.album],
         [SaveType.contentList, SaveType.album],
@@ -148,8 +148,8 @@ def _get_repost_feed_for_user(
         ]["created_at"]
 
     for contentList in contentLists:
-        contentList[response_name_constants.activity_timestamp] = contentList_repost_dict[
-            contentList["contentList_id"]
+        contentList[response_name_constants.activity_timestamp] = content_list_repost_dict[
+            contentList["content_list_id"]
         ]["created_at"]
 
     unsorted_feed = agreements + contentLists
@@ -165,8 +165,8 @@ def _get_repost_feed_for_user(
         user_id_list = get_users_ids(feed_results)
         users = get_users_by_id(session, user_id_list)
         for result in feed_results:
-            if "contentList_owner_id" in result:
-                user = users[result["contentList_owner_id"]]
+            if "content_list_owner_id" in result:
+                user = users[result["content_list_owner_id"]]
                 if user:
                     result["user"] = user
             elif "owner_id" in result:

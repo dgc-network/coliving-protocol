@@ -487,8 +487,8 @@ def update_user_model_metadata(
     #         "sol",
     #     )
 
-    if "contentList_library" in metadata_dict and metadata_dict["contentList_library"]:
-        user_record.contentList_library = metadata_dict["contentList_library"]
+    if "content_list_library" in metadata_dict and metadata_dict["content_list_library"]:
+        user_record.content_list_library = metadata_dict["content_list_library"]
 
     if "is_deactivated" in metadata_dict:
         user_record.is_deactivated = metadata_dict["is_deactivated"]

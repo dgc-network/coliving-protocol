@@ -30,19 +30,19 @@ def upgrade():
       --  - view row consists of unique user id + word pairs (accomplished via unnest())
       --  - all future searches can then do comparisons against any word present in documents,
       --  -   and retrieve associated user id
-      CREATE MATERIALIZED VIEW contentList_lexeme_dict as
+      CREATE MATERIALIZED VIEW content_list_lexeme_dict as
       SELECT * FROM (
         SELECT
-          p.contentList_id,
-          unnest(tsvector_to_array(to_tsvector('coliving_ts_config', replace(COALESCE(p."contentList_name", ''), '&', 'and')))) as word
+          p.content_list_id,
+          unnest(tsvector_to_array(to_tsvector('coliving_ts_config', replace(COALESCE(p."content_list_name", ''), '&', 'and')))) as word
         FROM
-            "contentLists" p
+            "content_lists" p
         WHERE p."is_current" = true and p."is_album" = false and p."is_private" = false
-        GROUP BY p."contentList_id", p."contentList_name"
+        GROUP BY p."content_list_id", p."content_list_name"
       ) AS words;
 
       -- add index on above materialized view
-      CREATE INDEX contentList_words_idx ON contentList_lexeme_dict USING gin(word gin_trgm_ops);
+      CREATE INDEX content_list_words_idx ON content_list_lexeme_dict USING gin(word gin_trgm_ops);
     """
     )
 
@@ -59,12 +59,12 @@ def upgrade():
       CREATE MATERIALIZED VIEW album_lexeme_dict as
       SELECT * FROM (
         SELECT
-          p.contentList_id,
-          unnest(tsvector_to_array(to_tsvector('coliving_ts_config', replace(COALESCE(p."contentList_name", ''), '&', 'and')))) as word
+          p.content_list_id,
+          unnest(tsvector_to_array(to_tsvector('coliving_ts_config', replace(COALESCE(p."content_list_name", ''), '&', 'and')))) as word
         FROM
-            "contentLists" p
+            "content_lists" p
         WHERE p."is_current" = true and p."is_album" = true and p."is_private" = false
-        GROUP BY p."contentList_id", p."contentList_name"
+        GROUP BY p."content_list_id", p."content_list_name"
       ) AS words;
 
       -- add index on above materialized view

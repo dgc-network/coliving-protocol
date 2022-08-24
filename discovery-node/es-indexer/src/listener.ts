@@ -85,7 +85,7 @@ const handlers = {
     pending.agreementIds.add(agreement.agreement_id)
   },
   contentLists: (contentList: ContentListRow) => {
-    pending.contentListIds.add(contentList.contentList_id)
+    pending.contentListIds.add(contentList.content_list_id)
   },
 }
 

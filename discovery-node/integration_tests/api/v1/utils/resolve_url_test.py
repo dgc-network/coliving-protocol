@@ -20,7 +20,7 @@ def test_resolve_agreement_url(app):
             )
 
 
-def test_resolve_contentList_url(app):
+def test_resolve_content_list_url(app):
     """Tests that it resolves a contentList url"""
     with app.test_request_context():
         db = get_db()

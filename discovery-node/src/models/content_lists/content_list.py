@@ -7,24 +7,24 @@ from src.models.model_utils import RepresentableMixin, validate_field_helper
 
 
 class ContentList(Base, RepresentableMixin):
-    __tablename__ = "contentLists"
+    __tablename__ = "content_lists"
 
     blockhash = Column(ForeignKey("blocks.blockhash"))  # type: ignore
     blocknumber = Column(ForeignKey("blocks.number"), index=True)  # type: ignore
-    contentList_id = Column(Integer, primary_key=True, nullable=False)
-    contentList_owner_id = Column(Integer, nullable=False, index=True)
+    content_list_id = Column(Integer, primary_key=True, nullable=False)
+    content_list_owner_id = Column(Integer, nullable=False, index=True)
     is_album = Column(Boolean, nullable=False)
     is_private = Column(Boolean, nullable=False)
-    contentList_name = Column(String)
-    contentList_contents = Column(JSONB(), nullable=False)
-    contentList_image_multihash = Column(String)
+    content_list_name = Column(String)
+    content_list_contents = Column(JSONB(), nullable=False)
+    content_list_image_multihash = Column(String)
     is_current = Column(Boolean, primary_key=True, nullable=False)
     is_delete = Column(Boolean, nullable=False)
     description = Column(String)
     created_at = Column(DateTime, nullable=False, index=True)
     upc = Column(String)
     updated_at = Column(DateTime, nullable=False)
-    contentList_image_sizes_multihash = Column(String)
+    content_list_image_sizes_multihash = Column(String)
     txhash = Column(
         String,
         primary_key=True,
@@ -42,7 +42,7 @@ class ContentList(Base, RepresentableMixin):
     )
 
     ModelValidator.init_model_schemas("ContentList")
-    fields = ["contentList_name", "description"]
+    fields = ["content_list_name", "description"]
 
     # unpacking args into @validates
     @validates(*fields)

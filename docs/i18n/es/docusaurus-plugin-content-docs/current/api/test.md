@@ -516,7 +516,7 @@ func main() {
       "is_verified": true,
       "location": "Los Angeles, CA",
       "name": "Brownies & Lemonade",
-      "contentList_count": 2,
+      "content_list_count": 2,
       "profile_picture": {
         "150x150": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/150x150.jpg",
         "480x480": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/480x480.jpg",
@@ -703,7 +703,7 @@ func main() {
     "is_verified": true,
     "location": "Los Angeles, CA",
     "name": "Brownies & Lemonade",
-    "contentList_count": 2,
+    "content_list_count": 2,
     "profile_picture": {
       "150x150": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/150x150.jpg",
       "480x480": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/480x480.jpg",
@@ -1612,7 +1612,7 @@ func main() {
         "is_verified": true,
         "location": "Los Angeles, CA",
         "name": "Brownies & Lemonade",
-        "contentList_count": 2,
+        "content_list_count": 2,
         "profile_picture": {
           "150x150": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/150x150.jpg",
           "480x480": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/480x480.jpg",
@@ -1634,7 +1634,7 @@ func main() {
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                   |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                   |
 
-<h1 id="api-contentLists">lista de reproducción</h1>
+<h1 id="api-content-lists">lista de reproducción</h1>
 
 ## Buscar listas de reproducción
 
@@ -1781,7 +1781,7 @@ func main() {
 
 *Buscar una lista de reproducción*
 
-<h3 id="search-contentLists-parameters">Parámetros de consulta</h3>
+<h3 id="search-content-lists-parameters">Parámetros de consulta</h3>
 
 | Nombre           | Tipo   | Requerido | Descripción |
 | ---------------- | ------ | --------- | ----------- |
@@ -1802,7 +1802,7 @@ func main() {
       "description": "All the latest hot new agreements on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
       "id": "DOPRl",
       "is_album": true,
-      "contentList_name": "Hot & New on Coliving 🔥",
+      "content_list_name": "Hot & New on Coliving 🔥",
       "repost_count": 46,
       "favorite_count": 88,
       "user": {
@@ -1819,7 +1819,7 @@ func main() {
         "is_verified": true,
         "location": "SF & LA",
         "name": "Coliving",
-        "contentList_count": 9,
+        "content_list_count": 9,
         "profile_picture": {
           "150x150": "https://usermetadata..co/ipfs/QmNjJv1wQf2DJq3GNXjXzSL8UXFUGXfchg4NhL7UpbnF1f",
           "480x480": "https://usermetadata..co/ipfs/QmNjJv1wQf2DJq3GNXjXzSL8UXFUGXfchg4NhL7UpbnF1f",
@@ -1833,11 +1833,11 @@ func main() {
 }
 ```
 
-<h3 id="search-contentLists-responses">Respuestas</h3>
+<h3 id="search-content-lists-responses">Respuestas</h3>
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                        |
 | ------ | ------------------------------------------------------------------------------- | -------------------- | -------------------------------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [contentList_resultado_búsqueda](#schemacontentList_search_result) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [content_list_resultado_búsqueda](#schemacontent_list_search_result) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                                        |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                                        |
 
@@ -1983,7 +1983,7 @@ func main() {
 
 *Obtiene las listas de reproducción que más tienden a aparecer en el período de tiempo en Coliving*
 
-<h3 id="trending-contentLists-parameters">Parámetros de consulta</h3>
+<h3 id="trending-content-lists-parameters">Parámetros de consulta</h3>
 
 | Nombre    | Tipo   | Requerido | Descripción                     |
 | --------- | ------ | --------- | ------------------------------- |
@@ -2006,7 +2006,7 @@ func main() {
       "description": "string",
       "id": "string",
       "is_album": true,
-      "contentList_name": "string",
+      "content_list_name": "string",
       "repost_count": 0,
       "favorite_count": 0,
       "total_play_count": 0,
@@ -2024,7 +2024,7 @@ func main() {
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "contentList_count": 0,
+        "content_list_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",
@@ -2038,11 +2038,11 @@ func main() {
 }
 ```
 
-<h3 id="trending-contentLists-responses">Respuestas</h3>
+<h3 id="trending-content-lists-responses">Respuestas</h3>
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                                       |
 | ------ | ------------------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | Exitoso              | [respuesta de las listas de reproducción](#schematrending_contentLists_response) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | Exitoso              | [respuesta de las listas de reproducción](#schematrending_content_lists_response) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                                                       |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                                                       |
 
@@ -2184,15 +2184,15 @@ func main() {
 
 ```
 
-`OBTENER /contentLists/{contentList_id}`
+`OBTENER /contentLists/{content_list_id}`
 
 *Buscar una lista*
 
-<h3 id="get-contentList-parameters">Parámetros de consulta</h3>
+<h3 id="get-content-list-parameters">Parámetros de consulta</h3>
 
 | Nombre      | Tipo   | Requerido | Descripción                    |
 | ----------- | ------ | --------- | ------------------------------ |
-| contentList_id | cadena | verdad    | Un ID de lista de reproducción |
+| content_list_id | cadena | verdad    | Un ID de lista de reproducción |
 
 > Ejemplo de respuesta
 
@@ -2207,7 +2207,7 @@ func main() {
     "description": "All the latest hot new agreements on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
     "id": "DOPRl",
     "is_album": true,
-    "contentList_name": "Hot & New on Coliving 🔥",
+    "content_list_name": "Hot & New on Coliving 🔥",
     "repost_count": 46,
     "favorite_count": 88,
     "user": {
@@ -2224,7 +2224,7 @@ func main() {
       "is_verified": true,
       "location": "SF & LA",
       "name": "Coliving",
-      "contentList_count": 9,
+      "content_list_count": 9,
       "profile_picture": {
         "150x150": "https://usermetadata..co/ipfs/QmNjJv1wQf2DJq3GNXjXzSL8UXFUGXfchg4NhL7UpbnF1f",
         "480x480": "https://usermetadata..co/ipfs/QmNjJv1wQf2DJq3GNXjXzSL8UXFUGXfchg4NhL7UpbnF1f",
@@ -2237,11 +2237,11 @@ func main() {
 }
 ```
 
-<h3 id="get-contentList-responses">Respuestas</h3>
+<h3 id="get-content-list-responses">Respuestas</h3>
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                        |
 | ------ | ------------------------------------------------------------------------------- | -------------------- | ---------------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [contentList_respuesta](#schemacontentList_response) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [content_list_respuesta](#schemacontent_list_response) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                        |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                        |
 
@@ -2383,15 +2383,15 @@ func main() {
 
 ```
 
-`OBTENER /listas de reproducción/{contentList_id}/pistas`
+`OBTENER /listas de reproducción/{content_list_id}/pistas`
 
 *Obtener pistas dentro de una lista de reproducción*
 
-<h3 id="get-contentList-agreements-parameters">Parámetros de consulta</h3>
+<h3 id="get-content-list-agreements-parameters">Parámetros de consulta</h3>
 
 | Nombre      | Tipo   | Requerido | Descripción                    |
 | ----------- | ------ | --------- | ------------------------------ |
-| contentList_id | cadena | verdad    | Un ID de lista de reproducción |
+| content_list_id | cadena | verdad    | Un ID de lista de reproducción |
 
 > Ejemplo de respuesta
 
@@ -2428,7 +2428,7 @@ func main() {
         "is_verified": true,
         "location": "Los Angeles, CA",
         "name": "Brownies & Lemonade",
-        "contentList_count": 2,
+        "content_list_count": 2,
         "profile_picture": {
           "150x150": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/150x150.jpg",
           "480x480": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/480x480.jpg",
@@ -2442,11 +2442,11 @@ func main() {
 }
 ```
 
-<h3 id="get-contentList-agreements-responses">Respuestas</h3>
+<h3 id="get-content-list-agreements-responses">Respuestas</h3>
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                         |
 | ------ | ------------------------------------------------------------------------------- | -------------------- | --------------------------------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [contentList_pistas_respuesta_](#schemacontentList_agreements_response) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [content_list_pistas_respuesta_](#schemacontent_list_agreements_response) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                                         |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                                         |
 
@@ -2641,7 +2641,7 @@ func main() {
       "is_verified": true,
       "location": "string",
       "name": "string",
-      "contentList_count": 0,
+      "content_list_count": 0,
       "profile_picture": {
         "150x150": "string",
         "480x480": "string",
@@ -2859,7 +2859,7 @@ func main() {
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "contentList_count": 0,
+        "content_list_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",
@@ -3072,7 +3072,7 @@ func main() {
         "is_verified": true,
         "location": "Los Angeles, CA",
         "name": "Brownies & Lemonade",
-        "contentList_count": 2,
+        "content_list_count": 2,
         "profile_picture": {
           "150x150": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/150x150.jpg",
           "480x480": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/480x480.jpg",
@@ -3287,7 +3287,7 @@ func main() {
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "contentList_count": 0,
+        "content_list_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",
@@ -3495,7 +3495,7 @@ func main() {
       "is_verified": true,
       "location": "Los Angeles, CA",
       "name": "Brownies & Lemonade",
-      "contentList_count": 2,
+      "content_list_count": 2,
       "profile_picture": {
         "150x150": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/150x150.jpg",
         "480x480": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/480x480.jpg",
@@ -4372,7 +4372,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
     "is_verified": true,
     "location": "string",
     "name": "string",
-    "contentList_count": 0,
+    "content_list_count": 0,
     "profile_picture": {
       "150x150": "string",
       "480x480": "string",
@@ -4412,7 +4412,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
   "is_verified": true,
   "location": "string",
   "name": "string",
-  "contentList_count": 0,
+  "content_list_count": 0,
   "profile_picture": {
     "150x150": "string",
     "480x480": "string",
@@ -4532,7 +4532,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "contentList_count": 0,
+        "content_list_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",
@@ -4600,7 +4600,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
     "is_verified": true,
     "location": "string",
     "name": "string",
-    "contentList_count": 0,
+    "content_list_count": 0,
     "profile_picture": {
       "150x150": "string",
       "480x480": "string",
@@ -4843,7 +4843,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
       "is_verified": true,
       "location": "string",
       "name": "string",
-      "contentList_count": 0,
+      "content_list_count": 0,
       "profile_picture": {
         "150x150": "string",
         "480x480": "string",
@@ -5023,11 +5023,11 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 | reto_tipo              | cadena  | verdad    | ninguna       | ninguna     |
 | metadatos              | objeto  | verdad    | ninguna       | ninguna     |
 
-<a id="schemacontentList_response"></a>
-<a id="schema_contentList_response"></a>
-<a id="tocScontentList_response"></a>
-<a id="tocscontentList_response"></a>
-<h2 id="tocS_contentList_response">contentList_respuesta</h2>
+<a id="schemacontent_list_response"></a>
+<a id="schema_content_list_response"></a>
+<a id="tocScontent_list_response"></a>
+<a id="tocscontent_list_response"></a>
+<h2 id="tocS_content_list_response">content_list_respuesta</h2>
 
 ```json
 {
@@ -5041,7 +5041,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
       "description": "string",
       "id": "string",
       "is_album": true,
-      "contentList_name": "string",
+      "content_list_name": "string",
       "repost_count": 0,
       "favorite_count": 0,
       "total_play_count": 0,
@@ -5059,7 +5059,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "contentList_count": 0,
+        "content_list_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",
@@ -5081,10 +5081,10 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 | datos  | [[lista de reproducción](#schemacontentList)] | falso     | ninguna       | ninguna     |
 
 <a id="schemacontentList"></a>
-<a id="schema_contentList"></a>
+<a id="schema_content_list"></a>
 <a id="tocScontentList"></a>
 <a id="tocscontentList"></a>
-<h2 id="tocS_contentList">lista de reproducción</h2>
+<h2 id="tocS_content_list">lista de reproducción</h2>
 
 ```json
 {
@@ -5096,7 +5096,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
   "description": "string",
   "id": "string",
   "is_album": true,
-  "contentList_name": "string",
+  "content_list_name": "string",
   "repost_count": 0,
   "favorite_count": 0,
   "total_play_count": 0,
@@ -5114,7 +5114,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
     "is_verified": true,
     "location": "string",
     "name": "string",
-    "contentList_count": 0,
+    "content_list_count": 0,
     "profile_picture": {
       "150x150": "string",
       "480x480": "string",
@@ -5131,21 +5131,21 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre                  | Tipo                                        | Requerido | Restricciones | Descripción |
 | ----------------------- | ------------------------------------------- | --------- | ------------- | ----------- |
-| obra de arte            | [contentList_artwork](#schemacontentList_artwork) | falso     | ninguna       | ninguna     |
+| obra de arte            | [content_list_artwork](#schemacontent_list_artwork) | falso     | ninguna       | ninguna     |
 | descripción             | cadena                                      | falso     | ninguna       | ninguna     |
 | id                      | cadena                                      | verdad    | ninguna       | ninguna     |
 | es_álbum                | boolean                                     | verdad    | ninguna       | ninguna     |
-| contentList_name           | cadena                                      | verdad    | ninguna       | ninguna     |
+| content_list_name           | cadena                                      | verdad    | ninguna       | ninguna     |
 | contador_repost_count | entero                                      | verdad    | ninguna       | ninguna     |
 | contador_favoritos      | entero                                      | verdad    | ninguna       | ninguna     |
 | contador_total_jugar  | entero                                      | verdad    | ninguna       | ninguna     |
 | usuario                 | [usuario](#schemauser)                      | verdad    | ninguna       | ninguna     |
 
-<a id="schemacontentList_artwork"></a>
-<a id="schema_contentList_artwork"></a>
-<a id="tocScontentList_artwork"></a>
-<a id="tocscontentList_artwork"></a>
-<h2 id="tocS_contentList_artwork">contentList_artwork</h2>
+<a id="schemacontent_list_artwork"></a>
+<a id="schema_content_list_artwork"></a>
+<a id="tocScontent_list_artwork"></a>
+<a id="tocscontent_list_artwork"></a>
+<h2 id="tocS_content_list_artwork">content_list_artwork</h2>
 
 ```json
 {
@@ -5164,11 +5164,11 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 | 480 x 480 | cadena | falso     | ninguna       | ninguna     |
 | 1000x1000 | cadena | falso     | ninguna       | ninguna     |
 
-<a id="schemacontentList_agreements_response"></a>
-<a id="schema_contentList_agreements_response"></a>
-<a id="tocScontentList_agreements_response"></a>
-<a id="tocscontentList_agreements_response"></a>
-<h2 id="tocS_contentList_agreements_response">contentList_pistas_respuesta_</h2>
+<a id="schemacontent_list_agreements_response"></a>
+<a id="schema_content_list_agreements_response"></a>
+<a id="tocScontent_list_agreements_response"></a>
+<a id="tocscontent_list_agreements_response"></a>
+<h2 id="tocS_content_list_agreements_response">content_list_pistas_respuesta_</h2>
 
 ```json
 {
@@ -5209,7 +5209,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "contentList_count": 0,
+        "content_list_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",
@@ -5234,11 +5234,11 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 | ------ | ----------------------- | --------- | ------------- | ----------- |
 | datos  | [[Pista](#schemaagreement)] | falso     | ninguna       | ninguna     |
 
-<a id="schemacontentList_search_result"></a>
-<a id="schema_contentList_search_result"></a>
-<a id="tocScontentList_search_result"></a>
-<a id="tocscontentList_search_result"></a>
-<h2 id="tocS_contentList_search_result">contentList_resultado_búsqueda</h2>
+<a id="schemacontent_list_search_result"></a>
+<a id="schema_content_list_search_result"></a>
+<a id="tocScontent_list_search_result"></a>
+<a id="tocscontent_list_search_result"></a>
+<h2 id="tocS_content_list_search_result">content_list_resultado_búsqueda</h2>
 
 ```json
 {
@@ -5252,7 +5252,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
       "description": "string",
       "id": "string",
       "is_album": true,
-      "contentList_name": "string",
+      "content_list_name": "string",
       "repost_count": 0,
       "favorite_count": 0,
       "total_play_count": 0,
@@ -5270,7 +5270,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "contentList_count": 0,
+        "content_list_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",
@@ -5291,11 +5291,11 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 | ------ | ------------------------------------------ | --------- | ------------- | ----------- |
 | datos  | [[lista de reproducción](#schemacontentList)] | falso     | ninguna       | ninguna     |
 
-<a id="schematrending_contentLists_response"></a>
-<a id="schema_trending_contentLists_response"></a>
-<a id="tocStrending_contentLists_response"></a>
-<a id="tocstrending_contentLists_response"></a>
-<h2 id="tocS_trending_contentLists_response">respuesta de las listas de reproducción</h2>
+<a id="schematrending_content_lists_response"></a>
+<a id="schema_trending_content_lists_response"></a>
+<a id="tocStrending_content_lists_response"></a>
+<a id="tocstrending_content_lists_response"></a>
+<h2 id="tocS_trending_content_lists_response">respuesta de las listas de reproducción</h2>
 
 ```json
 {
@@ -5309,7 +5309,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
       "description": "string",
       "id": "string",
       "is_album": true,
-      "contentList_name": "string",
+      "content_list_name": "string",
       "repost_count": 0,
       "favorite_count": 0,
       "total_play_count": 0,
@@ -5327,7 +5327,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "contentList_count": 0,
+        "content_list_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",
@@ -5392,7 +5392,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
       "is_verified": true,
       "location": "string",
       "name": "string",
-      "contentList_count": 0,
+      "content_list_count": 0,
       "profile_picture": {
         "150x150": "string",
         "480x480": "string",
@@ -5461,7 +5461,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
         "is_verified": true,
         "location": "string",
         "name": "string",
-        "contentList_count": 0,
+        "content_list_count": 0,
         "profile_picture": {
           "150x150": "string",
           "480x480": "string",

@@ -107,17 +107,17 @@ def upgrade():
     CREATE INDEX agreements_user_handle_idx ON agreement_lexeme_dict(handle);
     CREATE UNIQUE INDEX agreement_row_number_idx ON agreement_lexeme_dict(row_number);
 
-    DROP MATERIALIZED VIEW IF EXISTS contentList_lexeme_dict;
+    DROP MATERIALIZED VIEW IF EXISTS content_list_lexeme_dict;
     DROP MATERIALIZED VIEW IF EXISTS album_lexeme_dict;
-    DROP INDEX IF EXISTS contentList_words_idx;
+    DROP INDEX IF EXISTS content_list_words_idx;
     DROP INDEX IF EXISTS album_words_idx;
 
-    CREATE MATERIALIZED VIEW contentList_lexeme_dict as
+    CREATE MATERIALIZED VIEW content_list_lexeme_dict as
     SELECT row_number() OVER (PARTITION BY true), * FROM (
         SELECT
-            p.contentList_id,
-            lower(p.contentList_name) as contentList_name,
-            p.contentList_owner_id as owner_id,
+            p.content_list_id,
+            lower(p.content_list_name) as content_list_name,
+            p.content_list_owner_id as owner_id,
             lower(u.handle) as handle,
             lower(u.name) as user_name,
             a.repost_count as repost_count,
@@ -125,14 +125,14 @@ def upgrade():
                 tsvector_to_array(
                     to_tsvector(
                         'coliving_ts_config',
-                        replace(COALESCE(p.contentList_name, ''), '&', 'and')
+                        replace(COALESCE(p.content_list_name, ''), '&', 'and')
                     )
                 )
             ) as word
         FROM
                 contentLists p
-        INNER JOIN users u ON p.contentList_owner_id = u.user_id
-        INNER JOIN aggregate_contentList a on a.contentList_id = p.contentList_id
+        INNER JOIN users u ON p.content_list_owner_id = u.user_id
+        INNER JOIN aggregate_content_list a on a.content_list_id = p.content_list_id
         WHERE
                 p.is_current = true and p.is_album = false and p.is_private = false and p.is_delete = false
                 and u.is_current = true and 
@@ -146,15 +146,15 @@ def upgrade():
                     on lower(u.name) = sq.handle and u.user_id != sq.user_id
                     where u.is_current = true
                 )
-        GROUP BY p.contentList_id, p.contentList_name, p.contentList_owner_id, u.handle, u.name, a.repost_count
+        GROUP BY p.content_list_id, p.content_list_name, p.content_list_owner_id, u.handle, u.name, a.repost_count
     ) AS words;
 
     CREATE MATERIALIZED VIEW album_lexeme_dict as
     SELECT row_number() OVER (PARTITION BY true), * FROM (
         SELECT
-            p.contentList_id,
-            lower(p.contentList_name) as contentList_name,
-            p.contentList_owner_id as owner_id,
+            p.content_list_id,
+            lower(p.content_list_name) as content_list_name,
+            p.content_list_owner_id as owner_id,
             lower(u.handle) as handle,
             lower(u.name) as user_name,
             a.repost_count as repost_count,
@@ -162,14 +162,14 @@ def upgrade():
                 tsvector_to_array(
                     to_tsvector(
                         'coliving_ts_config',
-                        replace(COALESCE(p.contentList_name, ''), '&', 'and')
+                        replace(COALESCE(p.content_list_name, ''), '&', 'and')
                     )
                 )
             ) as word
         FROM
                 contentLists p
-        INNER JOIN users u ON p.contentList_owner_id = u.user_id
-        INNER JOIN aggregate_contentList a on a.contentList_id = p.contentList_id
+        INNER JOIN users u ON p.content_list_owner_id = u.user_id
+        INNER JOIN aggregate_content_list a on a.content_list_id = p.content_list_id
         WHERE
                 p.is_current = true and p.is_album = true and p.is_private = false and p.is_delete = false
                 and u.is_current = true and
@@ -183,13 +183,13 @@ def upgrade():
                     on lower(u.name) = sq.handle and u.user_id != sq.user_id
                     where u.is_current = true
                 )
-        GROUP BY p.contentList_id, p.contentList_name, p.contentList_owner_id, u.handle, u.name, a.repost_count
+        GROUP BY p.content_list_id, p.content_list_name, p.content_list_owner_id, u.handle, u.name, a.repost_count
     ) AS words;
 
-    CREATE INDEX contentList_words_idx ON contentList_lexeme_dict USING gin(word gin_trgm_ops);
-    CREATE INDEX contentList_user_name_idx ON contentList_lexeme_dict USING gin(user_name gin_trgm_ops);
-    CREATE INDEX contentList_user_handle_idx ON contentList_lexeme_dict(handle);
-    CREATE UNIQUE INDEX contentList_row_number_idx ON contentList_lexeme_dict(row_number);
+    CREATE INDEX content_list_words_idx ON content_list_lexeme_dict USING gin(word gin_trgm_ops);
+    CREATE INDEX content_list_user_name_idx ON content_list_lexeme_dict USING gin(user_name gin_trgm_ops);
+    CREATE INDEX content_list_user_handle_idx ON content_list_lexeme_dict(handle);
+    CREATE UNIQUE INDEX content_list_row_number_idx ON content_list_lexeme_dict(row_number);
 
     CREATE INDEX album_words_idx ON album_lexeme_dict USING gin(word gin_trgm_ops);
     CREATE INDEX album_user_name_idx ON album_lexeme_dict USING gin(user_name gin_trgm_ops);

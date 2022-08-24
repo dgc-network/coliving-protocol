@@ -169,7 +169,7 @@ def get_agreement_id_cache_key(id):
     return f"agreement:id:{id}"
 
 
-def get_contentList_id_cache_key(id):
+def get_content_list_id_cache_key(id):
     return f"contentList:id:{id}"
 
 
@@ -193,10 +193,10 @@ def remove_cached_agreement_ids(redis, agreement_ids):
         logger.error("Unable to remove cached agreements: %s", e, exc_info=True)
 
 
-def remove_cached_contentList_ids(redis, contentList_ids):
+def remove_cached_content_list_ids(redis, content_list_ids):
     try:
-        contentList_keys = list(map(get_contentList_id_cache_key, contentList_ids))
-        redis.delete(*contentList_keys)
+        content_list_keys = list(map(get_content_list_id_cache_key, content_list_ids))
+        redis.delete(*content_list_keys)
     except Exception as e:
         logger.error("Unable to remove cached contentLists: %s", e, exc_info=True)
 

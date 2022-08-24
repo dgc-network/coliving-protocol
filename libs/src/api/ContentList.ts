@@ -172,7 +172,7 @@ export class ContentLists extends Base {
     }
     // error if contentList already at max length
     if (
-      contentList[0]!.contentList_contents.agreement_ids.length >= MAX_CONTENT_LIST_LENGTH
+      contentList[0]!.content_list_contents.agreement_ids.length >= MAX_CONTENT_LIST_LENGTH
     ) {
       throw new Error(
         `Cannot add agreement - contentList is already at max length of ${MAX_CONTENT_LIST_LENGTH}`
@@ -212,7 +212,7 @@ export class ContentLists extends Base {
       )
     }
 
-    const contentListAgreementIds = contentList[0]!.contentList_contents.agreement_ids.map(
+    const contentListAgreementIds = contentList[0]!.content_list_contents.agreement_ids.map(
       (a) => a.agreement
     )
     // error if agreementIds arg array length does not match contentList length
@@ -267,7 +267,7 @@ export class ContentLists extends Base {
     }
 
     const contentList = contentListsReponse[0]!
-    const contentListAgreementIds = contentList.contentList_contents.agreement_ids.map(
+    const contentListAgreementIds = contentList.content_list_contents.agreement_ids.map(
       (a) => a.agreement
     )
 

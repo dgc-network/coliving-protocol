@@ -150,7 +150,7 @@ const CLI_TO_COMMAND_MAP = {
         }
       ]
     },
-    'create-contentList': {
+    'create-content-list': {
       api: 'ContentList',
       description: 'create contentList',
       method: 'createContentList',
@@ -185,7 +185,7 @@ const CLI_TO_COMMAND_MAP = {
         }
       ]
     },
-    'add-contentList-agreement': {
+    'add-content-list-agreement': {
       api: 'ContentList',
       description: 'add agreement to contentList (must be owned by user ID passed in as active user)',
       method: 'addContentListAgreement',
@@ -202,7 +202,7 @@ const CLI_TO_COMMAND_MAP = {
         }
       ]
     },
-    'repost-contentList': {
+    'repost-content-list': {
       api: 'ContentList',
       description: 'repost contentList',
       method: 'addContentListRepost',
@@ -214,7 +214,7 @@ const CLI_TO_COMMAND_MAP = {
         }
       ]
     },
-    'favorite-contentList': {
+    'favorite-content-list': {
       api: 'ContentList',
       description: 'favorite contentList',
       method: 'addContentListSave',

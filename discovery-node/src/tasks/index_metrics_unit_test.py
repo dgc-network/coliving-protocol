@@ -65,7 +65,7 @@ def test_process_route_keys(redis_mock, db_mock):
         )
         assert len(trending_agreements) == 1
 
-        contentList_route = (
+        content_list_route = (
             session.query(RouteMetric)
             .filter(
                 RouteMetric.version == "1",
@@ -77,7 +77,7 @@ def test_process_route_keys(redis_mock, db_mock):
             .all()
         )
 
-        assert len(contentList_route) == 1
+        assert len(content_list_route) == 1
 
         no_version_agreements = (
             session.query(RouteMetric)

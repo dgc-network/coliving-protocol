@@ -47,9 +47,9 @@ ___
 
 ___
 
-### saved\_contentLists
+### saved\_content_lists
 
- `Optional` **saved\_contentLists**: [`ContentListFull`](full.ContentListFull.md)[]
+ `Optional` **saved\_content_lists**: [`ContentListFull`](full.ContentListFull.md)[]
 
 **`memberof`** SearchModel
 

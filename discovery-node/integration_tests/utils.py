@@ -94,7 +94,7 @@ def populate_mock_db(db, entities, block_offset=None):
                 block_offset = 0
 
         agreements = entities.get("agreements", [])
-        contentLists = entities.get("contentLists", [])
+        contentLists = entities.get("content_lists", [])
         users = entities.get("users", [])
         follows = entities.get("follows", [])
         reposts = entities.get("reposts", [])
@@ -161,31 +161,31 @@ def populate_mock_db(db, entities, block_offset=None):
                 is_unlisted=agreement_meta.get("is_unlisted", False),
             )
             session.add(agreement)
-        for i, contentList_meta in enumerate(contentLists):
+        for i, content_list_meta in enumerate(contentLists):
             contentList = ContentList(
                 blockhash=hex(i + block_offset),
                 blocknumber=i + block_offset,
-                txhash=contentList_meta.get("txhash", str(i + block_offset)),
-                contentList_id=contentList_meta.get("contentList_id", i),
-                is_current=contentList_meta.get("is_current", True),
-                is_delete=contentList_meta.get("is_delete", False),
-                contentList_owner_id=contentList_meta.get("contentList_owner_id", 1),
-                is_album=contentList_meta.get("is_album", False),
-                is_private=contentList_meta.get("is_private", False),
-                contentList_name=contentList_meta.get("contentList_name", f"contentList_{i}"),
-                contentList_contents=contentList_meta.get(
-                    "contentList_contents", {"agreement_ids": []}
+                txhash=content_list_meta.get("txhash", str(i + block_offset)),
+                content_list_id=content_list_meta.get("content_list_id", i),
+                is_current=content_list_meta.get("is_current", True),
+                is_delete=content_list_meta.get("is_delete", False),
+                content_list_owner_id=content_list_meta.get("content_list_owner_id", 1),
+                is_album=content_list_meta.get("is_album", False),
+                is_private=content_list_meta.get("is_private", False),
+                content_list_name=content_list_meta.get("content_list_name", f"content_list_{i}"),
+                content_list_contents=content_list_meta.get(
+                    "content_list_contents", {"agreement_ids": []}
                 ),
-                contentList_image_multihash=contentList_meta.get(
-                    "contentList_image_multihash", ""
+                content_list_image_multihash=content_list_meta.get(
+                    "content_list_image_multihash", ""
                 ),
-                contentList_image_sizes_multihash=contentList_meta.get(
-                    "contentList_image_sizes_multihash", ""
+                content_list_image_sizes_multihash=content_list_meta.get(
+                    "content_list_image_sizes_multihash", ""
                 ),
-                description=contentList_meta.get("description", f"description_{i}"),
-                upc=contentList_meta.get("upc", f"upc_{i}"),
-                updated_at=contentList_meta.get("updated_at", datetime.now()),
-                created_at=contentList_meta.get("created_at", datetime.now()),
+                description=content_list_meta.get("description", f"description_{i}"),
+                upc=content_list_meta.get("upc", f"upc_{i}"),
+                updated_at=content_list_meta.get("updated_at", datetime.now()),
+                created_at=content_list_meta.get("created_at", datetime.now()),
             )
             session.add(contentList)
 
@@ -297,7 +297,7 @@ def populate_mock_db(db, entities, block_offset=None):
             user = AggregateUser(
                 user_id=aggregate_user_meta.get("user_id", i),
                 agreement_count=aggregate_user_meta.get("agreement_count", 0),
-                contentList_count=aggregate_user_meta.get("contentList_count", 0),
+                content_list_count=aggregate_user_meta.get("content_list_count", 0),
                 album_count=aggregate_user_meta.get("album_count", 0),
                 follower_count=aggregate_user_meta.get("follower_count", 0),
                 following_count=aggregate_user_meta.get("following_count", 0),

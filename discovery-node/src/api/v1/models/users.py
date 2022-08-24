@@ -1,7 +1,7 @@
 from flask_restx import fields
 
 from .common import ns
-from .contentList_library import contentList_library
+from .content_list_library import content_list_library
 
 # DEPRECATED
 # See connected_wallets
@@ -38,7 +38,7 @@ user_model = ns.model(
         "is_verified": fields.Boolean(required=True),
         "location": fields.String,
         "name": fields.String(required=True),
-        "contentList_count": fields.Integer(required=True),
+        "content_list_count": fields.Integer(required=True),
         "profile_picture": fields.Nested(profile_picture, allow_null=True),
         "repost_count": fields.Integer(required=True),
         "agreement_count": fields.Integer(required=True),
@@ -73,7 +73,7 @@ user_model_full = ns.clone(
         "profile_picture_legacy": fields.String,
         "metadata_multihash": fields.String,
         "has_collectibles": fields.Boolean(required=True),
-        "contentList_library": fields.Nested(contentList_library, allow_null=True),
+        "content_list_library": fields.Nested(content_list_library, allow_null=True),
     },
 )
 

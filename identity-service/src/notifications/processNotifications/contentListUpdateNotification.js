@@ -23,8 +23,8 @@ async function processContentListUpdateNotifications (notifications, tx) {
     const { metadata } = notification
     const {
       entity_id: contentListId,
-      contentList_update_timestamp: contentListUpdatedAt,
-      contentList_update_users: userIds
+      content_list_update_timestamp: contentListUpdatedAt,
+      content_list_update_users: userIds
     } = metadata
     userIds.forEach(userId => {
       if (userContentListUpdatesMap[userId]) {

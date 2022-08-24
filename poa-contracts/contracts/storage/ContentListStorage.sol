@@ -33,7 +33,7 @@ contract ContentListStorage is RegistryContract {
     }
 
     function createContentList(
-        uint _contentListOwnerId,
+        uint _content_listOwnerId,
         bool _isAlbum,
         uint[] calldata _agreementIds
     ) external onlyRegistrant(CALLER_REGISTRY_KEY) returns (uint newContentListId)
@@ -47,7 +47,7 @@ contract ContentListStorage is RegistryContract {
         require(contentListId != newContentListId, "expected incremented contentListId");
 
         // Update contentList owner
-        contentListOwner[newContentListId] = _contentListOwnerId;
+        contentListOwner[newContentListId] = _content_listOwnerId;
 
         // Update additional on-chain fields
         isAlbum[newContentListId] = _isAlbum;
@@ -62,45 +62,45 @@ contract ContentListStorage is RegistryContract {
     }
 
     function addContentListAgreement(
-        uint _contentListId,
+        uint _content_listId,
         uint _addedAgreementId
     ) external onlyRegistrant(CALLER_REGISTRY_KEY)
     {
-        contentListContents[_contentListId][_addedAgreementId] += 1;
+        contentListContents[_content_listId][_addedAgreementId] += 1;
     }
 
     function deleteContentListAgreement(
-        uint _contentListId,
+        uint _content_listId,
         uint _deletedAgreementId
     ) external onlyRegistrant(CALLER_REGISTRY_KEY)
     {
         require(
-            contentListContents[_contentListId][_deletedAgreementId] > 0,
+            contentListContents[_content_listId][_deletedAgreementId] > 0,
             "Valid agreement in contentList required for delete"
         );
-        contentListContents[_contentListId][_deletedAgreementId] -= 1;
+        contentListContents[_content_listId][_deletedAgreementId] -= 1;
     }
 
-    function getContentListOwner(uint _contentListId)
+    function getContentListOwner(uint _content_listId)
     external view onlyRegistrant(CALLER_REGISTRY_KEY) returns (uint)
     {
-        return contentListOwner[_contentListId];
+        return contentListOwner[_content_listId];
     }
 
     function isAgreementInContentList(
-        uint _contentListId,
+        uint _content_listId,
         uint _agreementId
     ) external view onlyRegistrant(CALLER_REGISTRY_KEY) returns (bool)
     {
-        return contentListContents[_contentListId][_agreementId] > 0;
+        return contentListContents[_content_listId][_agreementId] > 0;
     }
 
-    function contentListExists(uint _contentListId)
+    function contentListExists(uint _content_listId)
     external view onlyRegistrant(CALLER_REGISTRY_KEY) returns (bool exists)
     {
-        require(_contentListId > 0, "Invalid contentList id");
+        require(_content_listId > 0, "Invalid contentList id");
         // If the incremented contentList ID is less than the argument,
         // the contentList ID has not yet been assigned
-        return _contentListId < contentListId;
+        return _content_listId < contentListId;
     }
 }

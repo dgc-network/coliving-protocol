@@ -294,7 +294,7 @@ var notificationMap = (_notificationMap = {}, _defineProperty(_notificationMap, 
   }), /*#__PURE__*/_react["default"].createElement(BodyText, {
     text: " to their contentList "
   }), /*#__PURE__*/_react["default"].createElement(HighlightText, {
-    text: notification.contentList.contentList_name
+    text: notification.contentList.content_list_name
   }));
 }), _defineProperty(_notificationMap, _constants.notificationTypes.Reaction, function (notification) {
   return /*#__PURE__*/_react["default"].createElement("span", {

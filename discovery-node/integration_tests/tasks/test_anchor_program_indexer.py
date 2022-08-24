@@ -391,7 +391,7 @@ mock_cid_metadata = {
         "associated_wallets": None,
         "associated_sol_wallets": None,
         "collectibles": None,
-        "contentList_library": None,
+        "content_list_library": None,
         "events": None,
         "user_id": 1,
     }

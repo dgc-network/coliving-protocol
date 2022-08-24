@@ -6,7 +6,7 @@ from sqlalchemy.orm.session import Session
 from src.challenges.challenge_event import ChallengeEvent
 from src.challenges.challenge_event_bus import ChallengeEventBus
 from src.database_task import DatabaseTask
-from src.models.contentLists.contentList import ContentList
+from src.models.content_lists.content_list import ContentList
 from src.models.social.follow import Follow
 from src.models.social.repost import Repost, RepostType
 from src.utils.indexing_errors import IndexingError
@@ -35,10 +35,10 @@ def social_feature_state_update(
 
     # stores net state changes of all reposts and follows and corresponding events in current block
     #   agreement_repost_state_changes = { "user_id": { "agreement_id": {__Repost__} } }
-    #   contentList_repost_state_changes = { "user_id": { "contentList_id": {__Repost__} } }
+    #   content_list_repost_state_changes = { "user_id": { "content_list_id": {__Repost__} } }
     #   follow_state_changes = { "follower_user_id": { "followee_user_id": {__Follow__} } }
     agreement_repost_state_changes: Dict[int, Dict[int, Repost]] = {}
-    contentList_repost_state_changes: Dict[int, Dict[int, Repost]] = {}
+    content_list_repost_state_changes: Dict[int, Dict[int, Repost]] = {}
     follow_state_changes: Dict[int, Dict[int, Follow]] = {}
 
     for tx_receipt in social_feature_factory_txs:
@@ -63,7 +63,7 @@ def social_feature_state_update(
                 block_datetime,
                 agreement_repost_state_changes,
             )
-            add_contentList_repost(
+            add_content_list_repost(
                 self,
                 update_task.social_feature_contract,
                 update_task,
@@ -71,9 +71,9 @@ def social_feature_state_update(
                 tx_receipt,
                 block_number,
                 block_datetime,
-                contentList_repost_state_changes,
+                content_list_repost_state_changes,
             )
-            delete_contentList_repost(
+            delete_content_list_repost(
                 self,
                 update_task.social_feature_contract,
                 update_task,
@@ -81,7 +81,7 @@ def social_feature_state_update(
                 tx_receipt,
                 block_number,
                 block_datetime,
-                contentList_repost_state_changes,
+                content_list_repost_state_changes,
             )
             add_follow(
                 self,
@@ -123,18 +123,18 @@ def social_feature_state_update(
             dispatch_challenge_repost(challenge_bus, repost, block_number)
         num_total_changes += len(repost_agreement_ids)
 
-    for repost_user_id, repost_contentList_ids in contentList_repost_state_changes.items():
-        for repost_contentList_id in repost_contentList_ids:
+    for repost_user_id, repost_content_list_ids in content_list_repost_state_changes.items():
+        for repost_content_list_id in repost_content_list_ids:
             invalidate_old_repost(
                 session,
                 repost_user_id,
-                repost_contentList_id,
-                repost_contentList_ids[repost_contentList_id].repost_type,
+                repost_content_list_id,
+                repost_content_list_ids[repost_content_list_id].repost_type,
             )
-            repost = repost_contentList_ids[repost_contentList_id]
+            repost = repost_content_list_ids[repost_content_list_id]
             session.add(repost)
             dispatch_challenge_repost(challenge_bus, repost, block_number)
-        num_total_changes += len(repost_contentList_ids)
+        num_total_changes += len(repost_content_list_ids)
 
     for follower_user_id, followee_user_ids in follow_state_changes.items():
         for followee_user_id in followee_user_ids:
@@ -276,7 +276,7 @@ def delete_agreement_repost(
                 agreement_repost_state_changes[repost_user_id] = {repost_agreement_id: repost}
 
 
-def add_contentList_repost(
+def add_content_list_repost(
     self,
     social_feature_factory_contract,
     update_task,
@@ -284,36 +284,36 @@ def add_contentList_repost(
     tx_receipt,
     block_number,
     block_datetime,
-    contentList_repost_state_changes,
+    content_list_repost_state_changes,
 ):
     txhash = update_task.web3.toHex(tx_receipt.transactionHash)
-    new_contentList_repost_events = (
+    new_content_list_repost_events = (
         social_feature_factory_contract.events.ContentListRepostAdded().processReceipt(
             tx_receipt
         )
     )
-    for event in new_contentList_repost_events:
+    for event in new_content_list_repost_events:
         event_args = event["args"]
         repost_user_id = event_args._userId
-        repost_contentList_id = event_args._contentListId
+        repost_content_list_id = event_args._content_listId
         repost_type = RepostType.contentList
 
-        contentList_entries = (
+        content_list_entries = (
             session.query(ContentList)
             .filter(
-                ContentList.is_current == True, ContentList.contentList_id == repost_contentList_id
+                ContentList.is_current == True, ContentList.content_list_id == repost_content_list_id
             )
             .all()
         )
 
-        if contentList_entries and contentList_entries[0].is_album:
+        if content_list_entries and content_list_entries[0].is_album:
             repost_type = RepostType.album
 
-        if (repost_user_id in contentList_repost_state_changes) and (
-            repost_contentList_id in contentList_repost_state_changes[repost_user_id]
+        if (repost_user_id in content_list_repost_state_changes) and (
+            repost_content_list_id in content_list_repost_state_changes[repost_user_id]
         ):
-            contentList_repost_state_changes[repost_user_id][
-                repost_contentList_id
+            content_list_repost_state_changes[repost_user_id][
+                repost_content_list_id
             ].is_delete = False
         else:
             repost = Repost(
@@ -321,23 +321,23 @@ def add_contentList_repost(
                 blocknumber=block_number,
                 txhash=txhash,
                 user_id=repost_user_id,
-                repost_item_id=repost_contentList_id,
+                repost_item_id=repost_content_list_id,
                 repost_type=repost_type,
                 is_current=True,
                 is_delete=False,
                 created_at=block_datetime,
             )
-            if repost_user_id in contentList_repost_state_changes:
-                contentList_repost_state_changes[repost_user_id][
-                    repost_contentList_id
+            if repost_user_id in content_list_repost_state_changes:
+                content_list_repost_state_changes[repost_user_id][
+                    repost_content_list_id
                 ] = repost
             else:
-                contentList_repost_state_changes[repost_user_id] = {
-                    repost_contentList_id: repost
+                content_list_repost_state_changes[repost_user_id] = {
+                    repost_content_list_id: repost
                 }
 
 
-def delete_contentList_repost(
+def delete_content_list_repost(
     self,
     social_feature_factory_contract,
     update_task,
@@ -345,36 +345,36 @@ def delete_contentList_repost(
     tx_receipt,
     block_number,
     block_datetime,
-    contentList_repost_state_changes,
+    content_list_repost_state_changes,
 ):
     txhash = update_task.web3.toHex(tx_receipt.transactionHash)
-    new_contentList_repost_events = (
+    new_content_list_repost_events = (
         social_feature_factory_contract.events.ContentListRepostDeleted().processReceipt(
             tx_receipt
         )
     )
-    for event in new_contentList_repost_events:
+    for event in new_content_list_repost_events:
         event_args = event["args"]
         repost_user_id = event_args._userId
-        repost_contentList_id = event_args._contentListId
+        repost_content_list_id = event_args._content_listId
         repost_type = RepostType.contentList
 
-        contentList_entries = (
+        content_list_entries = (
             session.query(ContentList)
             .filter(
-                ContentList.is_current == True, ContentList.contentList_id == repost_contentList_id
+                ContentList.is_current == True, ContentList.content_list_id == repost_content_list_id
             )
             .all()
         )
 
-        if contentList_entries and contentList_entries[0].is_album:
+        if content_list_entries and content_list_entries[0].is_album:
             repost_type = RepostType.album
 
-        if (repost_user_id in contentList_repost_state_changes) and (
-            repost_contentList_id in contentList_repost_state_changes[repost_user_id]
+        if (repost_user_id in content_list_repost_state_changes) and (
+            repost_content_list_id in content_list_repost_state_changes[repost_user_id]
         ):
-            contentList_repost_state_changes[repost_user_id][
-                repost_contentList_id
+            content_list_repost_state_changes[repost_user_id][
+                repost_content_list_id
             ].is_delete = True
         else:
             repost = Repost(
@@ -382,19 +382,19 @@ def delete_contentList_repost(
                 blocknumber=block_number,
                 txhash=txhash,
                 user_id=repost_user_id,
-                repost_item_id=repost_contentList_id,
+                repost_item_id=repost_content_list_id,
                 repost_type=repost_type,
                 is_current=True,
                 is_delete=True,
                 created_at=block_datetime,
             )
-            if repost_user_id in contentList_repost_state_changes:
-                contentList_repost_state_changes[repost_user_id][
-                    repost_contentList_id
+            if repost_user_id in content_list_repost_state_changes:
+                content_list_repost_state_changes[repost_user_id][
+                    repost_content_list_id
                 ] = repost
             else:
-                contentList_repost_state_changes[repost_user_id] = {
-                    repost_contentList_id: repost
+                content_list_repost_state_changes[repost_user_id] = {
+                    repost_content_list_id: repost
                 }
 
 

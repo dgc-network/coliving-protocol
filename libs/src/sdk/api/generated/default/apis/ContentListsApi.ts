@@ -76,7 +76,7 @@ export class ContentListsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/contentLists/{contentList_id}`.replace(`{${"contentList_id"}}`, encodeURIComponent(String(requestParameters.contentListId))),
+            path: `/contentLists/{content_list_id}`.replace(`{${"content_list_id"}}`, encodeURIComponent(String(requestParameters.contentListId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -96,7 +96,7 @@ export class ContentListsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/contentLists/{contentList_id}/agreements`.replace(`{${"contentList_id"}}`, encodeURIComponent(String(requestParameters.contentListId))),
+            path: `/contentLists/{content_list_id}/agreements`.replace(`{${"content_list_id"}}`, encodeURIComponent(String(requestParameters.contentListId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

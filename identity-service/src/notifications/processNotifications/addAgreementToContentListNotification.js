@@ -15,7 +15,7 @@ async function processAddAgreementToContentListNotification (notifications, tx) 
 
   for (const notification of notifications) {
     const {
-      contentList_id: contentListId,
+      content_list_id: contentListId,
       agreement_id: agreementId,
       agreement_owner_id: agreementOwnerId
     } = notification.metadata

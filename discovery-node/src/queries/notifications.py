@@ -10,7 +10,7 @@ from sqlalchemy.orm.session import Session
 from src import api_helpers
 from src.models.indexing.block import Block
 from src.models.notifications.milestone import Milestone, MilestoneName
-from src.models.contentLists.contentList import ContentList
+from src.models.content_lists.content_list import ContentList
 from src.models.rewards.challenge_disbursement import ChallengeDisbursement
 from src.models.social.follow import Follow
 from src.models.social.reaction import Reaction
@@ -73,9 +73,9 @@ def get_owner_id(session, entity_type, entity_id):
 
     if entity_type == "album":
         owner_id_query = (
-            session.query(ContentList.contentList_owner_id)
+            session.query(ContentList.content_list_owner_id)
             .filter(
-                ContentList.contentList_id == entity_id,
+                ContentList.content_list_id == entity_id,
                 ContentList.is_delete == False,
                 ContentList.is_current == True,
                 ContentList.is_album == True,
@@ -87,11 +87,11 @@ def get_owner_id(session, entity_type, entity_id):
         owner_id = owner_id_query[0][0]
         return owner_id
 
-    if entity_type == "contentList":
+    if entity_type == "content_list":
         owner_id_query = (
-            session.query(ContentList.contentList_owner_id)
+            session.query(ContentList.content_list_owner_id)
             .filter(
-                ContentList.contentList_id == entity_id,
+                ContentList.content_list_id == entity_id,
                 ContentList.is_delete == False,
                 ContentList.is_current == True,
                 ContentList.is_album == False,
@@ -219,9 +219,9 @@ def get_milestone_info(
     for milestone_name, *id_threshold in milestones_in_block:
         milestones[milestone_name].append(id_threshold)
 
-    milestone_contentList_ids = [
-        contentList_id
-        for name, contentList_id, _ in milestones_in_block
+    milestone_content_list_ids = [
+        content_list_id
+        for name, content_list_id, _ in milestones_in_block
         if name
         in (
             MilestoneName.CONTENT_LIST_REPOST_COUNT,
@@ -229,44 +229,44 @@ def get_milestone_info(
         )
     ]
 
-    contentList_id_albums: Dict[int, bool] = {}
-    if milestone_contentList_ids:
-        contentList_id_albums_response = (
-            session.query(ContentList.contentList_id, ContentList.is_album)
+    content_list_id_albums: Dict[int, bool] = {}
+    if milestone_content_list_ids:
+        content_list_id_albums_response = (
+            session.query(ContentList.content_list_id, ContentList.is_album)
             .filter(
                 ContentList.is_current == True,
-                ContentList.contentList_id.in_(milestone_contentList_ids),
+                ContentList.content_list_id.in_(milestone_content_list_ids),
             )
             .all()
         )
-        contentList_id_albums = dict(contentList_id_albums_response)
+        content_list_id_albums = dict(content_list_id_albums_response)
 
     album_favorites: List[Tuple[int, int]] = []
-    contentList_favorites: List[Tuple[int, int]] = []
+    content_list_favorites: List[Tuple[int, int]] = []
     for id, threshold in milestones.get(MilestoneName.CONTENT_LIST_SAVE_COUNT, []):
-        if id in contentList_id_albums and contentList_id_albums[id]:
+        if id in content_list_id_albums and content_list_id_albums[id]:
             album_favorites.append((id, threshold))
         else:
-            contentList_favorites.append((id, threshold))
+            content_list_favorites.append((id, threshold))
 
     album_reposts: List[Tuple[int, int]] = []
-    contentList_reposts: List[Tuple[int, int]] = []
+    content_list_reposts: List[Tuple[int, int]] = []
     for id, threshold in milestones.get(MilestoneName.CONTENT_LIST_REPOST_COUNT, []):
-        if id in contentList_id_albums and contentList_id_albums[id]:
+        if id in content_list_id_albums and content_list_id_albums[id]:
             album_reposts.append((id, threshold))
         else:
-            contentList_reposts.append((id, threshold))
+            content_list_reposts.append((id, threshold))
 
     favorite_milestones: GroupMilestones = {
         "agreements": dict(milestones.get(MilestoneName.AGREEMENT_SAVE_COUNT, [])),
         "albums": dict(album_favorites),
-        "contentLists": dict(contentList_favorites),
+        "content_lists": dict(content_list_favorites),
     }
 
     repost_milestones: GroupMilestones = {
         "agreements": dict(milestones.get(MilestoneName.AGREEMENT_REPOST_COUNT, [])),
         "albums": dict(album_reposts),
-        "contentLists": dict(contentList_reposts),
+        "content_lists": dict(content_list_reposts),
     }
 
     milestone_info: MilestoneInfo = {
@@ -300,8 +300,8 @@ def notifications():
                 entity_id?: (int) the id of the target entity (ie. contentList id of a contentList that is reposted)
                 entity_type?: (string) the type of the target entity
                 entity_owner_id?: (int) the id of the target entity's owner (if applicable)
-                contentList_update_timestamp?: (string) timestamp of last update of a given contentList
-                contentList_update_users?: (array<int>) user ids which favorited a given contentList
+                content_list_update_timestamp?: (string) timestamp of last update of a given contentList
+                content_list_update_users?: (array<int>) user ids which favorited a given contentList
 
         info: Dictionary of metadata w/ min_block_number & max_block_number fields
 
@@ -409,7 +409,7 @@ def notifications():
         # ID lists to query count aggregates
         favorited_agreement_ids = []
         favorited_album_ids = []
-        favorited_contentList_ids = []
+        favorited_content_list_ids = []
 
         # List of favorite notifications
         favorite_notifications = []
@@ -458,11 +458,11 @@ def notifications():
                 owner_info[const.albums][save_item_id] = owner_id
 
             elif save_type == SaveType.contentList:
-                owner_id = get_owner_id(session, "contentList", save_item_id)
+                owner_id = get_owner_id(session, "content_list", save_item_id)
                 if not owner_id:
                     continue
                 metadata[const.notification_entity_owner_id] = owner_id
-                favorited_contentList_ids.append(save_item_id)
+                favorited_content_list_ids.append(save_item_id)
                 owner_info[const.contentLists][save_item_id] = owner_id
 
             favorite_notif[const.notification_metadata] = metadata
@@ -538,7 +538,7 @@ def notifications():
         # ID lists to query counts
         reposted_agreement_ids = []
         reposted_album_ids = []
-        reposted_contentList_ids = []
+        reposted_content_list_ids = []
 
         # List of repost notifications
         repost_notifications = []
@@ -586,11 +586,11 @@ def notifications():
                 owner_info[const.albums][repost_item_id] = owner_id
 
             elif repost_type == RepostType.contentList:
-                owner_id = get_owner_id(session, "contentList", repost_item_id)
+                owner_id = get_owner_id(session, "content_list", repost_item_id)
                 if not owner_id:
                     continue
                 metadata[const.notification_entity_owner_id] = owner_id
-                reposted_contentList_ids.append(repost_item_id)
+                reposted_content_list_ids.append(repost_item_id)
                 owner_info[const.contentLists][repost_item_id] = owner_id
 
             repost_notif[const.notification_metadata] = metadata
@@ -786,36 +786,36 @@ def notifications():
                 const.notification_type: const.notification_type_create,
                 const.notification_blocknumber: entry.blocknumber,
                 const.notification_timestamp: entry.created_at,
-                const.notification_initiator: entry.contentList_owner_id,
+                const.notification_initiator: entry.content_list_owner_id,
             }
             metadata = {
-                const.notification_entity_id: entry.contentList_id,
-                const.notification_entity_owner_id: entry.contentList_owner_id,
-                const.notification_collection_content: entry.contentList_contents,
+                const.notification_entity_id: entry.content_list_id,
+                const.notification_entity_owner_id: entry.content_list_owner_id,
+                const.notification_collection_content: entry.content_list_contents,
             }
 
             if entry.is_album:
                 metadata[const.notification_entity_type] = "album"
             else:
-                metadata[const.notification_entity_type] = "contentList"
+                metadata[const.notification_entity_type] = "content_list"
             collection_notif[const.notification_metadata] = metadata
             created_notifications.append(collection_notif)
 
         # ContentLists that were private and turned to public aka 'published'
         # TODO: Consider switching blocknumber for updated at?
-        publish_contentLists_query = session.query(ContentList)
-        publish_contentLists_query = publish_contentLists_query.filter(
+        publish_content_lists_query = session.query(ContentList)
+        publish_content_lists_query = publish_content_lists_query.filter(
             ContentList.is_private == False,
             ContentList.created_at != ContentList.updated_at,
             ContentList.blocknumber > min_block_number,
             ContentList.blocknumber <= max_block_number,
         )
-        publish_contentList_results = publish_contentLists_query.all()
-        for entry in publish_contentList_results:
+        publish_content_list_results = publish_content_lists_query.all()
+        for entry in publish_content_list_results:
             prev_entry_query = (
                 session.query(ContentList)
                 .filter(
-                    ContentList.contentList_id == entry.contentList_id,
+                    ContentList.content_list_id == entry.content_list_id,
                     ContentList.blocknumber < entry.blocknumber,
                 )
                 .order_by(desc(ContentList.blocknumber))
@@ -823,45 +823,45 @@ def notifications():
             # Previous private entry indicates transition to public, triggering a notification
             prev_entry = prev_entry_query.first()
             if prev_entry.is_private == True:
-                publish_contentList_notif = {
+                publish_content_list_notif = {
                     const.notification_type: const.notification_type_create,
                     const.notification_blocknumber: entry.blocknumber,
                     const.notification_timestamp: entry.created_at,
-                    const.notification_initiator: entry.contentList_owner_id,
+                    const.notification_initiator: entry.content_list_owner_id,
                 }
                 metadata = {
-                    const.notification_entity_id: entry.contentList_id,
-                    const.notification_entity_owner_id: entry.contentList_owner_id,
-                    const.notification_collection_content: entry.contentList_contents,
-                    const.notification_entity_type: "contentList",
+                    const.notification_entity_id: entry.content_list_id,
+                    const.notification_entity_owner_id: entry.content_list_owner_id,
+                    const.notification_collection_content: entry.content_list_contents,
+                    const.notification_entity_type: "content_list",
                 }
-                publish_contentList_notif[const.notification_metadata] = metadata
-                created_notifications.append(publish_contentList_notif)
+                publish_content_list_notif[const.notification_metadata] = metadata
+                created_notifications.append(publish_content_list_notif)
 
         # ContentLists that had agreements added to them
         # Get all contentLists that were modified over this range
-        contentList_agreement_added_query = session.query(ContentList).filter(
+        content_list_agreement_added_query = session.query(ContentList).filter(
             ContentList.is_current == True,
             ContentList.is_delete == False,
             ContentList.is_private == False,
             ContentList.blocknumber > min_block_number,
             ContentList.blocknumber <= max_block_number,
         )
-        contentList_agreement_added_results = contentList_agreement_added_query.all()
+        content_list_agreement_added_results = content_list_agreement_added_query.all()
         # Loop over all contentList updates and determine if there were agreements added
         # at the block that the contentList update is at
-        agreement_added_to_contentList_notifications = []
+        agreement_added_to_content_list_notifications = []
         agreement_ids = []
-        for entry in contentList_agreement_added_results:
-            # Get the agreement_ids from entry["contentList_contents"]
-            if not entry.contentList_contents["agreement_ids"]:
+        for entry in content_list_agreement_added_results:
+            # Get the agreement_ids from entry["content_list_contents"]
+            if not entry.content_list_contents["agreement_ids"]:
                 # skip empty contentLists
                 continue
-            contentList_contents = entry.contentList_contents
+            content_list_contents = entry.content_list_contents
             min_block = web3.eth.get_block(min_block_number)
             max_block = web3.eth.get_block(max_block_number)
 
-            for agreement in contentList_contents["agreement_ids"]:
+            for agreement in content_list_contents["agreement_ids"]:
                 agreement_id = agreement["agreement"]
                 agreement_timestamp = agreement["time"]
                 # We know that this agreement was added to the contentList at this specific update
@@ -870,21 +870,21 @@ def notifications():
                     and agreement_timestamp <= max_block.timestamp
                 ):
                     agreement_ids.append(agreement_id)
-                    agreement_added_to_contentList_notification = {
-                        const.notification_type: const.notification_type_add_agreement_to_contentList,
+                    agreement_added_to_content_list_notification = {
+                        const.notification_type: const.notification_type_add_agreement_to_content_list,
                         const.notification_blocknumber: entry.blocknumber,
                         const.notification_timestamp: entry.created_at,
-                        const.notification_initiator: entry.contentList_owner_id,
+                        const.notification_initiator: entry.content_list_owner_id,
                     }
                     metadata = {
-                        const.contentList_id: entry.contentList_id,
+                        const.content_list_id: entry.content_list_id,
                         const.agreement_id: agreement_id,
                     }
-                    agreement_added_to_contentList_notification[
+                    agreement_added_to_content_list_notification[
                         const.notification_metadata
                     ] = metadata
-                    agreement_added_to_contentList_notifications.append(
-                        agreement_added_to_contentList_notification
+                    agreement_added_to_content_list_notifications.append(
+                        agreement_added_to_content_list_notification
                     )
 
         agreements = (
@@ -903,7 +903,7 @@ def notifications():
             agreement_owner_map[agreement_id] = owner_id
 
         # Loop over notifications and populate their metadata
-        for notification in agreement_added_to_contentList_notifications:
+        for notification in agreement_added_to_content_list_notifications:
             agreement_id = notification[const.notification_metadata][const.agreement_id]
             if agreement_id not in agreement_owner_map:
                 # Note: if agreement_id not in agreement_owner_map, it's because the agreement is either deleted, unlisted, or doesn't exist
@@ -942,8 +942,8 @@ def notifications():
         thirty_days_ago_time = datetime(
             thirty_days_ago.year, thirty_days_ago.month, thirty_days_ago.day, 0, 0, 0
         )
-        contentList_update_query = session.query(ContentList)
-        contentList_update_query = contentList_update_query.filter(
+        content_list_update_query = session.query(ContentList)
+        content_list_update_query = content_list_update_query.filter(
             ContentList.is_current == True,
             ContentList.is_delete == False,
             ContentList.last_added_to >= thirty_days_ago_time,
@@ -951,55 +951,55 @@ def notifications():
             ContentList.blocknumber <= max_block_number,
         )
 
-        contentList_update_results = contentList_update_query.all()
+        content_list_update_results = content_list_update_query.all()
 
         logger.info(
-            f"notifications.py | get contentList updates at {datetime.now() - start_time}, contentList updates {len(contentList_update_results)}"
+            f"notifications.py | get contentList updates at {datetime.now() - start_time}, contentList updates {len(content_list_update_results)}"
         )
 
         # Represents all contentList update notifications
-        contentList_update_notifications = []
-        contentList_update_notifs_by_contentList_id = {}
-        for entry in contentList_update_results:
-            contentList_update_notifs_by_contentList_id[entry.contentList_id] = {
-                const.notification_type: const.notification_type_contentList_update,
+        content_list_update_notifications = []
+        content_list_update_notifs_by_content_list_id = {}
+        for entry in content_list_update_results:
+            content_list_update_notifs_by_content_list_id[entry.content_list_id] = {
+                const.notification_type: const.notification_type_content_list_update,
                 const.notification_blocknumber: entry.blocknumber,
                 const.notification_timestamp: entry.created_at,
-                const.notification_initiator: entry.contentList_owner_id,
+                const.notification_initiator: entry.content_list_owner_id,
                 const.notification_metadata: {
-                    const.notification_entity_id: entry.contentList_id,
-                    const.notification_entity_type: "contentList",
-                    const.notification_contentList_update_timestamp: entry.last_added_to,
+                    const.notification_entity_id: entry.content_list_id,
+                    const.notification_entity_type: "content_list",
+                    const.notification_content_list_update_timestamp: entry.last_added_to,
                 },
             }
 
         # get all favorited contentLists
         # contentLists may have been favorited outside the blocknumber bounds
         # e.g. before the min_block_number
-        contentList_favorites_query = session.query(Save)
-        contentList_favorites_query = contentList_favorites_query.filter(
+        content_list_favorites_query = session.query(Save)
+        content_list_favorites_query = content_list_favorites_query.filter(
             Save.is_current == True,
             Save.is_delete == False,
             Save.save_type == SaveType.contentList,
-            Save.save_item_id.in_(contentList_update_notifs_by_contentList_id.keys()),
+            Save.save_item_id.in_(content_list_update_notifs_by_content_list_id.keys()),
         )
-        contentList_favorites_results = contentList_favorites_query.all()
+        content_list_favorites_results = content_list_favorites_query.all()
 
         logger.info(
-            f"notifications.py | get contentList favorites {datetime.now() - start_time}, contentList favorites {len(contentList_favorites_results)}"
+            f"notifications.py | get contentList favorites {datetime.now() - start_time}, contentList favorites {len(content_list_favorites_results)}"
         )
 
         # dictionary of contentList id => users that favorited said contentList
         # e.g. { contentList1: [user1, user2, ...], ... }
         # we need this dictionary to know which users need to be notified of a contentList update
-        users_that_favorited_contentLists_dict = {}
-        for result in contentList_favorites_results:
-            if result.save_item_id in users_that_favorited_contentLists_dict:
-                users_that_favorited_contentLists_dict[result.save_item_id].append(
+        users_that_favorited_content_lists_dict = {}
+        for result in content_list_favorites_results:
+            if result.save_item_id in users_that_favorited_content_lists_dict:
+                users_that_favorited_content_lists_dict[result.save_item_id].append(
                     result.user_id
                 )
             else:
-                users_that_favorited_contentLists_dict[result.save_item_id] = [
+                users_that_favorited_content_lists_dict[result.save_item_id] = [
                     result.user_id
                 ]
 
@@ -1007,22 +1007,22 @@ def notifications():
             f"notifications.py | computed users that favorited dict {datetime.now() - start_time}"
         )
 
-        for contentList_id in users_that_favorited_contentLists_dict:
+        for content_list_id in users_that_favorited_content_lists_dict:
             # TODO: We probably do not need this check because we are filtering
-            # contentList_favorites_query to only matching ids
-            if contentList_id not in contentList_update_notifs_by_contentList_id:
+            # content_list_favorites_query to only matching ids
+            if content_list_id not in content_list_update_notifs_by_content_list_id:
                 continue
-            contentList_update_notif = contentList_update_notifs_by_contentList_id[contentList_id]
-            contentList_update_notif[const.notification_metadata].update(
+            content_list_update_notif = content_list_update_notifs_by_content_list_id[content_list_id]
+            content_list_update_notif[const.notification_metadata].update(
                 {
-                    const.notification_contentList_update_users: users_that_favorited_contentLists_dict[
-                        contentList_id
+                    const.notification_content_list_update_users: users_that_favorited_content_lists_dict[
+                        content_list_id
                     ]
                 }
             )
-            contentList_update_notifications.append(contentList_update_notif)
+            content_list_update_notifications.append(content_list_update_notif)
 
-        notifications_unsorted.extend(contentList_update_notifications)
+        notifications_unsorted.extend(content_list_update_notifications)
 
         logger.info(
             f"notifications.py | all contentList updates at {datetime.now() - start_time}"

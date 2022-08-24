@@ -32,7 +32,7 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_contentListId",
+          "name": "_content_listId",
           "type": "uint256"
         },
         {
@@ -50,7 +50,7 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_contentListId",
+          "name": "_content_listId",
           "type": "uint256"
         },
         {
@@ -68,7 +68,7 @@
       "constant": true,
       "inputs": [
         {
-          "name": "_contentListId",
+          "name": "_content_listId",
           "type": "uint256"
         }
       ],
@@ -87,7 +87,7 @@
       "constant": true,
       "inputs": [
         {
-          "name": "_contentListId",
+          "name": "_content_listId",
           "type": "uint256"
         },
         {
@@ -110,7 +110,7 @@
       "constant": true,
       "inputs": [
         {
-          "name": "_contentListId",
+          "name": "_content_listId",
           "type": "uint256"
         }
       ],

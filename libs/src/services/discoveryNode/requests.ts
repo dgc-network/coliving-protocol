@@ -234,7 +234,7 @@ export const getContentLists = (
     queryParams: {
       limit,
       offset,
-      ...(idsArray != null ? { contentList_id: idsArray } : {}),
+      ...(idsArray != null ? { content_list_id: idsArray } : {}),
       ...(targetUserId ? { user_id: targetUserId } : {}),
       ...(withUsers ? { with_users: true } : {})
     }

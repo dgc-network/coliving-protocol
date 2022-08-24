@@ -3,7 +3,7 @@ const models = require('../models')
 const authMiddleware = require('../authMiddleware')
 
 module.exports = function (app) {
-  app.post('/user_contentList_favorites', authMiddleware, handleResponse(async (req, res, next) => {
+  app.post('/user_content_list_favorites', authMiddleware, handleResponse(async (req, res, next) => {
     const { blockchainUserId: userId } = req.user
     const { favorites } = req.body
 
@@ -22,7 +22,7 @@ module.exports = function (app) {
     }
   }))
 
-  app.get('/user_contentList_favorites', authMiddleware, handleResponse(async (req, res, next) => {
+  app.get('/user_content_list_favorites', authMiddleware, handleResponse(async (req, res, next) => {
     const { blockchainUserId: userId } = req.user
 
     const userContentListFavorites = await models.UserContentListFavorites.findOne({

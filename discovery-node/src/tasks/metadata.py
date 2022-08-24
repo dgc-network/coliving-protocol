@@ -41,7 +41,7 @@ user_metadata_format = {
     "associated_wallets": None,
     "associated_sol_wallets": None,
     "collectibles": None,
-    "contentList_library": None,
+    "content_list_library": None,
     "events": None,
     "is_deactivated": None,
 }

@@ -7,7 +7,7 @@ from sqlalchemy.sql.expression import or_
 from src.challenges.challenge_event_bus import ChallengeEvent, ChallengeEventBus
 from src.challenges.trending_challenge import (
     should_trending_challenge_update,
-    trending_contentList_challenge_manager,
+    trending_content_list_challenge_manager,
     trending_agreement_challenge_manager,
     trending_underground_agreement_challenge_manager,
 )
@@ -102,13 +102,13 @@ def test_trending_challenge_job(app):
             {"agreement_id": 14, "owner_id": 4},
             {"agreement_id": 15, "owner_id": 5},
         ],
-        "contentLists": [
+        "content_lists": [
             {
-                "contentList_id": 1,
-                "contentList_owner_id": 1,
-                "contentList_name": "name",
+                "content_list_id": 1,
+                "content_list_owner_id": 1,
+                "content_list_name": "name",
                 "description": "description",
-                "contentList_contents": {
+                "content_list_contents": {
                     "agreement_ids": [
                         {"agreement": 1, "time": 1},
                         {"agreement": 2, "time": 2},
@@ -117,11 +117,11 @@ def test_trending_challenge_job(app):
                 },
             },
             {
-                "contentList_id": 2,
-                "contentList_owner_id": 2,
-                "contentList_name": "name",
+                "content_list_id": 2,
+                "content_list_owner_id": 2,
+                "content_list_name": "name",
                 "description": "description",
-                "contentList_contents": {
+                "content_list_contents": {
                     "agreement_ids": [
                         {"agreement": 1, "time": 1},
                         {"agreement": 2, "time": 2},
@@ -130,12 +130,12 @@ def test_trending_challenge_job(app):
                 },
             },
             {
-                "contentList_id": 3,
+                "content_list_id": 3,
                 "is_album": True,
-                "contentList_owner_id": 3,
-                "contentList_name": "name",
+                "content_list_owner_id": 3,
+                "content_list_name": "name",
                 "description": "description",
-                "contentList_contents": {
+                "content_list_contents": {
                     "agreement_ids": [
                         {"agreement": 1, "time": 1},
                         {"agreement": 2, "time": 2},
@@ -144,11 +144,11 @@ def test_trending_challenge_job(app):
                 },
             },
             {
-                "contentList_id": 4,
-                "contentList_owner_id": 4,
-                "contentList_name": "name",
+                "content_list_id": 4,
+                "content_list_owner_id": 4,
+                "content_list_name": "name",
                 "description": "description",
-                "contentList_contents": {
+                "content_list_contents": {
                     "agreement_ids": [
                         {"agreement": 1, "time": 1},
                         {"agreement": 2, "time": 2},
@@ -157,11 +157,11 @@ def test_trending_challenge_job(app):
                 },
             },
             {
-                "contentList_id": 5,
-                "contentList_owner_id": 5,
-                "contentList_name": "name",
+                "content_list_id": 5,
+                "content_list_owner_id": 5,
+                "content_list_name": "name",
                 "description": "description",
-                "contentList_contents": {
+                "content_list_contents": {
                     "agreement_ids": [
                         {"agreement": 1, "time": 1},
                         {"agreement": 2, "time": 2},
@@ -221,9 +221,9 @@ def test_trending_challenge_job(app):
         ],
         "reposts": [
             {"repost_item_id": 1, "repost_type": "agreement", "user_id": 2},
-            {"repost_item_id": 1, "repost_type": "contentList", "user_id": 2},
+            {"repost_item_id": 1, "repost_type": "content_list", "user_id": 2},
             {"repost_item_id": 3, "repost_type": "agreement", "user_id": 3},
-            {"repost_item_id": 1, "repost_type": "contentList", "user_id": 3},
+            {"repost_item_id": 1, "repost_type": "content_list", "user_id": 3},
             {"repost_item_id": 4, "repost_type": "agreement", "user_id": 1},
             {"repost_item_id": 5, "repost_type": "agreement", "user_id": 1},
             {"repost_item_id": 6, "repost_type": "agreement", "user_id": 1},
@@ -234,11 +234,11 @@ def test_trending_challenge_job(app):
             {"save_item_id": 4, "save_type": "agreement", "user_id": 1},
             {"save_item_id": 5, "save_type": "agreement", "user_id": 1},
             {"save_item_id": 6, "save_type": "agreement", "user_id": 1},
-            {"save_item_id": 1, "save_type": "contentList", "user_id": 4},
-            {"save_item_id": 2, "save_type": "contentList", "user_id": 3},
-            {"save_item_id": 3, "save_type": "contentList", "user_id": 2},
-            {"save_item_id": 4, "save_type": "contentList", "user_id": 1},
-            {"save_item_id": 5, "save_type": "contentList", "user_id": 2},
+            {"save_item_id": 1, "save_type": "content_list", "user_id": 4},
+            {"save_item_id": 2, "save_type": "content_list", "user_id": 3},
+            {"save_item_id": 3, "save_type": "content_list", "user_id": 2},
+            {"save_item_id": 4, "save_type": "content_list", "user_id": 1},
+            {"save_item_id": 5, "save_type": "content_list", "user_id": 2},
         ],
         "plays": [{"item_id": 1} for _ in range(55)]
         + [{"item_id": 2} for _ in range(60)]
@@ -265,7 +265,7 @@ def test_trending_challenge_job(app):
         ChallengeEvent.trending_agreement, trending_agreement_challenge_manager
     )
     bus.register_listener(
-        ChallengeEvent.trending_contentList, trending_contentList_challenge_manager
+        ChallengeEvent.trending_content_list, trending_content_list_challenge_manager
     )
 
     trending_date = datetime.fromisoformat("2021-08-20")
@@ -322,9 +322,9 @@ def test_trending_challenge_job(app):
             assert challenge.specifier in ranks
             ranks.remove(challenge.specifier)
 
-        trending_contentLists = (
+        trending_content_lists = (
             session.query(TrendingResult)
             .filter(TrendingResult.type == str(TrendingType.CONTENT_LISTS))
             .all()
         )
-        assert len(trending_contentLists) == 5
+        assert len(trending_content_lists) == 5

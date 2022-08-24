@@ -23,6 +23,6 @@ class FirstContentListChallengeUpdater(ChallengeUpdater):
             user_challenge.is_complete = True
 
 
-first_contentList_challenge_manager = ChallengeManager(
-    "first-contentList", FirstContentListChallengeUpdater()
+first_content_list_challenge_manager = ChallengeManager(
+    "first-content-list", FirstContentListChallengeUpdater()
 )

@@ -240,7 +240,7 @@ const notificationMap = {
         <BodyText text={` added your agreement `} />
         <HighlightText text={notification.agreement.title} />
         <BodyText text={` to their contentList `} />
-        <HighlightText text={notification.contentList.contentList_name} />
+        <HighlightText text={notification.contentList.content_list_name} />
       </span>
     )
   },

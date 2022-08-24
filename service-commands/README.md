@@ -158,6 +158,6 @@ node setup.js run content-node down -i 1
 - Uploading images for users/agreements at creation time
 - Batch seed for actions beyond `create-user`
 - `A seed update-user`
-- `A seed remove-contentList-agreement`
+- `A seed remove-content-list-agreement`
 - `--reset-state` flag to clear DB for `A seed clear`
 - (maybe?) Read actions e.g. `A seed get-users`

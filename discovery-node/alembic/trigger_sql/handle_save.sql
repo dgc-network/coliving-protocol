@@ -13,7 +13,7 @@ begin
   if new.save_type = 'agreement' then
     insert into aggregate_agreement (agreement_id) values (new.save_item_id) on conflict do nothing;
   else
-    insert into aggregate_contentList (contentList_id) values (new.save_item_id) on conflict do nothing;
+    insert into aggregate_content_list (content_list_id) values (new.save_item_id) on conflict do nothing;
   end if;
 
   -- increment or decrement?
@@ -38,9 +38,9 @@ begin
 
   else
     milestone_name := 'CONTENT_LIST_SAVE_COUNT';
-    update aggregate_contentList
+    update aggregate_content_list
     set save_count = save_count + delta
-    where contentList_id = new.save_item_id
+    where content_list_id = new.save_item_id
     returning save_count into new_val;
   end if;
 

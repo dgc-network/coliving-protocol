@@ -8,27 +8,27 @@ from sqlalchemy.orm.session import Session
 from sqlalchemy.sql.functions import GenericFunction
 from sqlalchemy.sql.type_api import TypeEngine
 from src.api.v1.helpers import (
-    extend_contentList,
+    extend_content_list,
     extend_agreement,
     format_limit,
     format_offset,
     to_dict,
 )
-from src.models.contentLists.aggregate_contentList import AggregateContentList
-from src.models.contentLists.contentList import ContentList
+from src.models.content_lists.aggregate_content_list import AggregateContentList
+from src.models.content_lists.content_list import ContentList
 from src.models.social.repost import RepostType
 from src.models.social.save import Save, SaveType
 from src.models.users.aggregate_user import AggregateUser
 from src.queries import response_name_constants
-from src.queries.get_contentList_agreements import get_contentList_agreements
-from src.queries.get_unpopulated_contentLists import get_unpopulated_contentLists
+from src.queries.get_content_list_agreements import get_content_list_agreements
+from src.queries.get_unpopulated_content_lists import get_unpopulated_content_lists
 from src.queries.query_helpers import (
     add_users_to_agreements,
     get_karma,
     get_repost_counts,
     get_users_by_id,
     get_users_ids,
-    populate_contentList_metadata,
+    populate_content_list_metadata,
     populate_agreement_metadata,
 )
 from src.tasks.generate_trending import time_delta_map
@@ -65,10 +65,10 @@ TRENDING_TTL_SEC = 30 * 60
 CONTENT_LIST_AGREEMENTS_LIMIT = 5
 
 
-def get_scorable_contentList_data(session, time_range, strategy):
+def get_scorable_content_list_data(session, time_range, strategy):
     """Gets data about contentLists to be scored. Returns:
     Array<{
-        "contentList_id": number
+        "content_list_id": number
         "created_at": string
         "owner_id": string
         "windowed_save_count": number
@@ -94,11 +94,11 @@ def get_scorable_contentList_data(session, time_range, strategy):
         session.query(
             Save.save_item_id,
             ContentList.created_at,
-            ContentList.contentList_owner_id,
+            ContentList.content_list_owner_id,
             func.count(Save.save_item_id),
         )
-        .join(ContentList, ContentList.contentList_id == Save.save_item_id)
-        .join(AggregateUser, AggregateUser.user_id == ContentList.contentList_owner_id)
+        .join(ContentList, ContentList.content_list_id == Save.save_item_id)
+        .join(AggregateUser, AggregateUser.user_id == ContentList.content_list_owner_id)
         .filter(
             Save.is_current == True,
             Save.is_delete == False,
@@ -107,20 +107,20 @@ def get_scorable_contentList_data(session, time_range, strategy):
             ContentList.is_current == True,
             ContentList.is_delete == False,
             ContentList.is_private == False,
-            jsonb_array_length(ContentList.contentList_contents["agreement_ids"]) >= mt,
+            jsonb_array_length(ContentList.content_list_contents["agreement_ids"]) >= mt,
             AggregateUser.following_count < zq,
         )
-        .group_by(Save.save_item_id, ContentList.created_at, ContentList.contentList_owner_id)
+        .group_by(Save.save_item_id, ContentList.created_at, ContentList.content_list_owner_id)
         .order_by(desc(func.count(Save.save_item_id)))
         .limit(TRENDING_LIMIT)
     ).all()
 
     # Build up a map of contentList data
-    # contentList_id -> data
+    # content_list_id -> data
     # Some fields initialized at zero
-    contentList_map = {
+    content_list_map = {
         record[0]: {
-            response_name_constants.contentList_id: record[0],
+            response_name_constants.content_list_id: record[0],
             response_name_constants.created_at: record[1].isoformat(timespec="seconds"),
             response_name_constants.owner_id: record[2],
             response_name_constants.windowed_save_count: record[3],
@@ -134,103 +134,103 @@ def get_scorable_contentList_data(session, time_range, strategy):
         for record in contentLists
     }
 
-    contentList_ids = [record[0] for record in contentLists]
-    # map owner_id -> [contentList_id], accounting for multiple contentLists with the same ID
+    content_list_ids = [record[0] for record in contentLists]
+    # map owner_id -> [content_list_id], accounting for multiple contentLists with the same ID
     # used in follows
-    contentList_owner_id_map = {}
-    for (contentList_id, _, owner_id, _) in contentLists:
-        if owner_id not in contentList_owner_id_map:
-            contentList_owner_id_map[owner_id] = [contentList_id]
+    content_list_owner_id_map = {}
+    for (content_list_id, _, owner_id, _) in contentLists:
+        if owner_id not in content_list_owner_id_map:
+            content_list_owner_id_map[owner_id] = [content_list_id]
         else:
-            contentList_owner_id_map[owner_id].append(contentList_id)
+            content_list_owner_id_map[owner_id].append(content_list_id)
 
     # Add repost counts
     repost_counts = (
-        session.query(AggregateContentList.contentList_id, AggregateContentList.repost_count)
-        .filter(AggregateContentList.contentList_id.in_(contentList_ids))
+        session.query(AggregateContentList.content_list_id, AggregateContentList.repost_count)
+        .filter(AggregateContentList.content_list_id.in_(content_list_ids))
         .all()
     )
-    for (contentList_id, repost_count) in repost_counts:
-        contentList_map[contentList_id][response_name_constants.repost_count] = repost_count
+    for (content_list_id, repost_count) in repost_counts:
+        content_list_map[content_list_id][response_name_constants.repost_count] = repost_count
 
     # Add windowed repost counts
     repost_counts_for_time = get_repost_counts(
-        session, False, False, contentList_ids, [RepostType.contentList], None, time_range
+        session, False, False, content_list_ids, [RepostType.contentList], None, time_range
     )
-    for (contentList_id, repost_count) in repost_counts_for_time:
-        contentList_map[contentList_id][
+    for (content_list_id, repost_count) in repost_counts_for_time:
+        content_list_map[content_list_id][
             response_name_constants.windowed_repost_count
         ] = repost_count
 
     # Add save counts
     save_counts = (
-        session.query(AggregateContentList.contentList_id, AggregateContentList.save_count)
-        .filter(AggregateContentList.contentList_id.in_(contentList_ids))
+        session.query(AggregateContentList.content_list_id, AggregateContentList.save_count)
+        .filter(AggregateContentList.content_list_id.in_(content_list_ids))
         .all()
     )
-    for (contentList_id, save_count) in save_counts:
-        contentList_map[contentList_id][response_name_constants.save_count] = save_count
+    for (content_list_id, save_count) in save_counts:
+        content_list_map[content_list_id][response_name_constants.save_count] = save_count
 
     # Add follower counts
     follower_counts = (
         session.query(AggregateUser.user_id, AggregateUser.follower_count)
         .filter(
-            AggregateUser.user_id.in_(list(contentList_owner_id_map.keys())),
+            AggregateUser.user_id.in_(list(content_list_owner_id_map.keys())),
         )
         .all()
     )
 
     for (followee_user_id, follower_count) in follower_counts:
         if follower_count >= pt:
-            owned_contentList_ids = contentList_owner_id_map[followee_user_id]
-            for contentList_id in owned_contentList_ids:
-                contentList_map[contentList_id][
+            owned_content_list_ids = content_list_owner_id_map[followee_user_id]
+            for content_list_id in owned_content_list_ids:
+                content_list_map[content_list_id][
                     response_name_constants.owner_follower_count
                 ] = follower_count
 
     # Add karma
-    karma_scores = get_karma(session, tuple(contentList_ids), strategy, None, True, xf)
-    for (contentList_id, karma) in karma_scores:
-        contentList_map[contentList_id]["karma"] = karma
+    karma_scores = get_karma(session, tuple(content_list_ids), strategy, None, True, xf)
+    for (content_list_id, karma) in karma_scores:
+        content_list_map[content_list_id]["karma"] = karma
 
-    return contentList_map.values()
+    return content_list_map.values()
 
 
-def make_get_unpopulated_contentLists(session, time_range, strategy):
+def make_get_unpopulated_content_lists(session, time_range, strategy):
     """Gets scorable data, scores and sorts, then returns full unpopulated contentLists.
     Returns a function, because this is used in a Redis cache hook"""
 
     def wrapped():
-        contentList_scoring_data = get_scorable_contentList_data(
+        content_list_scoring_data = get_scorable_content_list_data(
             session, time_range, strategy
         )
 
         # score the contentLists
-        scored_contentLists = [
+        scored_content_lists = [
             strategy.get_agreement_score(time_range, contentList)
-            for contentList in contentList_scoring_data
+            for contentList in content_list_scoring_data
         ]
-        sorted_contentLists = sorted(
-            scored_contentLists, key=lambda k: k["score"], reverse=True
+        sorted_content_lists = sorted(
+            scored_content_lists, key=lambda k: k["score"], reverse=True
         )
 
         # Get the unpopulated contentList metadata
-        contentList_ids = [contentList["contentList_id"] for contentList in sorted_contentLists]
-        contentLists = get_unpopulated_contentLists(session, contentList_ids)
+        content_list_ids = [contentList["content_list_id"] for contentList in sorted_content_lists]
+        contentLists = get_unpopulated_content_lists(session, content_list_ids)
 
-        contentList_agreements_map = get_contentList_agreements(session, {"contentLists": contentLists})
+        content_list_agreements_map = get_content_list_agreements(session, {"content_lists": contentLists})
 
         for contentList in contentLists:
-            contentList["agreements"] = contentList_agreements_map.get(contentList["contentList_id"], [])
+            contentList["agreements"] = content_list_agreements_map.get(contentList["content_list_id"], [])
 
         results = []
         for contentList in contentLists:
             # For the BDNxn strategy, filter out contentLists with < 3 agreements from other users
             if strategy.version == TrendingVersion.BDNxn:
-                contentList_owner_id = contentList["contentList_owner_id"]
+                content_list_owner_id = contentList["content_list_owner_id"]
                 agreement_owner_ids = list(
                     filter(
-                        lambda owner_id: owner_id != contentList_owner_id,
+                        lambda owner_id: owner_id != content_list_owner_id,
                         map(lambda agreement: agreement["owner_id"], contentList["agreements"]),
                     )
                 )
@@ -238,7 +238,7 @@ def make_get_unpopulated_contentLists(session, time_range, strategy):
                     continue
             results.append(contentList)
 
-        return (results, list(map(lambda contentList: contentList["contentList_id"], results)))
+        return (results, list(map(lambda contentList: contentList["content_list_id"], results)))
 
     return wrapped
 
@@ -251,7 +251,7 @@ def make_trending_cache_key(
         if version != DEFAULT_TRENDING_VERSIONS[TrendingType.CONTENT_LISTS]
         else ""
     )
-    return f"generated-trending-contentLists{version_name}:{time_range}"
+    return f"generated-trending-content-lists{version_name}:{time_range}"
 
 
 class GetTrendingContentListsArgs(TypedDict, total=False):
@@ -262,7 +262,7 @@ class GetTrendingContentListsArgs(TypedDict, total=False):
     limit: int
 
 
-def _get_trending_contentLists_with_session(
+def _get_trending_content_lists_with_session(
     session: Session, args: GetTrendingContentListsArgs, strategy, use_request_context=True
 ):
     """Returns Trending ContentLists. Checks Redis cache for unpopulated contentLists."""
@@ -274,20 +274,20 @@ def _get_trending_contentLists_with_session(
 
     # Get unpopulated contentLists,
     # cached if it exists.
-    (contentLists, contentList_ids) = use_redis_cache(
-        key, None, make_get_unpopulated_contentLists(session, time, strategy)
+    (contentLists, content_list_ids) = use_redis_cache(
+        key, None, make_get_unpopulated_content_lists(session, time, strategy)
     )
 
     # Apply limit + offset early to reduce the amount of
     # population work we have to do
     if limit is not None and offset is not None:
         contentLists = contentLists[offset : limit + offset]
-        contentList_ids = contentList_ids[offset : limit + offset]
+        content_list_ids = content_list_ids[offset : limit + offset]
 
     # Populate contentList metadata
-    contentLists = populate_contentList_metadata(
+    contentLists = populate_content_list_metadata(
         session,
-        contentList_ids,
+        content_list_ids,
         contentLists,
         [RepostType.contentList, RepostType.album],
         [SaveType.contentList, SaveType.album],
@@ -300,24 +300,24 @@ def _get_trending_contentLists_with_session(
         # Trim agreement_ids, which ultimately become added_timestamps
         # and need to match the agreements.
         trimmed_agreement_ids = {agreement["agreement_id"] for agreement in contentList["agreements"]}
-        contentList_agreement_ids = contentList["contentList_contents"]["agreement_ids"]
-        contentList_agreement_ids = list(
+        content_list_agreement_ids = contentList["content_list_contents"]["agreement_ids"]
+        content_list_agreement_ids = list(
             filter(
                 lambda agreement_id: agreement_id["agreement"]
                 in trimmed_agreement_ids,  # pylint: disable=W0640
-                contentList_agreement_ids,
+                content_list_agreement_ids,
             )
         )
-        contentList["contentList_contents"]["agreement_ids"] = contentList_agreement_ids
+        contentList["content_list_contents"]["agreement_ids"] = content_list_agreement_ids
 
-    contentLists_map = {contentList["contentList_id"]: contentList for contentList in contentLists}
+    content_lists_map = {contentList["content_list_id"]: contentList for contentList in contentLists}
 
     if with_agreements:
         # populate agreement metadata
         agreements = []
         for contentList in contentLists:
-            contentList_agreements = contentList["agreements"]
-            agreements.extend(contentList_agreements)
+            content_list_agreements = contentList["agreements"]
+            agreements.extend(content_list_agreements)
         agreement_ids = [agreement["agreement_id"] for agreement in agreements]
         populated_agreements = populate_agreement_metadata(
             session, agreement_ids, agreements, current_user_id
@@ -329,43 +329,43 @@ def _get_trending_contentLists_with_session(
         # Re-associate agreements with contentLists
         # agreement_id -> populated_agreement
         populated_agreement_map = {agreement["agreement_id"]: agreement for agreement in populated_agreements}
-        for contentList in contentLists_map.values():
+        for contentList in content_lists_map.values():
             for i in range(len(contentList["agreements"])):
                 agreement_id = contentList["agreements"][i]["agreement_id"]
                 populated = populated_agreement_map[agreement_id]
                 contentList["agreements"][i] = populated
             contentList["agreements"] = list(map(extend_agreement, contentList["agreements"]))
 
-    # re-sort contentLists to original order, because populate_contentList_metadata
+    # re-sort contentLists to original order, because populate_content_list_metadata
     # unsorts.
-    sorted_contentLists = [contentLists_map[contentList_id] for contentList_id in contentList_ids]
+    sorted_content_lists = [content_lists_map[content_list_id] for content_list_id in content_list_ids]
 
     # Add users to contentLists
-    user_id_list = get_users_ids(sorted_contentLists)
+    user_id_list = get_users_ids(sorted_content_lists)
     users = get_users_by_id(session, user_id_list, current_user_id, use_request_context)
-    for contentList in sorted_contentLists:
-        user = users[contentList["contentList_owner_id"]]
+    for contentList in sorted_content_lists:
+        user = users[contentList["content_list_owner_id"]]
         if user:
             contentList["user"] = user
 
     # Extend the contentLists
-    contentLists = list(map(extend_contentList, contentLists))
-    return sorted_contentLists
+    contentLists = list(map(extend_content_list, contentLists))
+    return sorted_content_lists
 
 
-def get_trending_contentLists(args: GetTrendingContentListsArgs, strategy):
+def get_trending_content_lists(args: GetTrendingContentListsArgs, strategy):
     """Returns Trending ContentLists. Checks Redis cache for unpopulated contentLists."""
     db = get_db_read_replica()
     with db.scoped_session() as session:
-        return _get_trending_contentLists_with_session(session, args, strategy)
+        return _get_trending_content_lists_with_session(session, args, strategy)
 
 
-def get_full_trending_contentLists(request, args, strategy):
+def get_full_trending_content_lists(request, args, strategy):
     offset, limit = format_offset(args), format_limit(args, TRENDING_LIMIT)
     current_user_id, time = args.get("user_id"), args.get("time", "week")
     time = "week" if time not in ["week", "month", "year"] else time
 
-    # If we have a user_id, we call into `get_trending_contentList`
+    # If we have a user_id, we call into `get_trending_content_list`
     # which fetches the cached unpopulated agreements and then
     # populates metadata. Otherwise, just
     # retrieve the last cached value.
@@ -377,7 +377,7 @@ def get_full_trending_contentLists(request, args, strategy):
         args = {"time": time, "with_agreements": True, "limit": limit, "offset": offset}
         decoded = decode_string_id(current_user_id)
         args["current_user_id"] = decoded
-        contentLists = get_trending_contentLists(args, strategy)
+        contentLists = get_trending_content_lists(args, strategy)
     else:
         args = {
             "time": time,
@@ -385,7 +385,7 @@ def get_full_trending_contentLists(request, args, strategy):
         }
         key = get_trending_cache_key(to_dict(request.args), request.path)
         contentLists = use_redis_cache(
-            key, TRENDING_TTL_SEC, lambda: get_trending_contentLists(args, strategy)
+            key, TRENDING_TTL_SEC, lambda: get_trending_content_lists(args, strategy)
         )
         contentLists = contentLists[offset : limit + offset]
 

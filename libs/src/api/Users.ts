@@ -25,7 +25,7 @@ const USER_PROPS = [
   'associated_wallets',
   'associated_sol_wallets',
   'collectibles',
-  'contentList_library',
+  'content_list_library',
   'events'
 ] as Array<keyof UserMetadata>
 // User metadata fields that are required on the metadata object and only can have
@@ -89,7 +89,7 @@ export class Users extends Base {
    * @returns Array of User metadata Objects
    * additional metadata fields on user objects:
    *  {Integer} agreement_count - agreement count for given user
-   *  {Integer} contentList_count - contentList count for given user
+   *  {Integer} content_list_count - contentList count for given user
    *  {Integer} album_count - album count for given user
    *  {Integer} follower_count - follower count for given user
    *  {Integer} followee_count - followee count for given user

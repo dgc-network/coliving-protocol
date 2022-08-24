@@ -59,23 +59,23 @@ contract SocialFeatureStorage is RegistryContract {
 
     function addContentListRepost(
         uint _userId,
-        uint _contentListId
+        uint _content_listId
     ) external onlyRegistrant(CALLER_REGISTRY_KEY)
     {
-        userContentListReposts[_userId][_contentListId] = true; 
+        userContentListReposts[_userId][_content_listId] = true; 
     }
 
     function deleteContentListRepost(
         uint _userId,
-        uint _contentListId
+        uint _content_listId
     ) external onlyRegistrant(CALLER_REGISTRY_KEY)
     {
-        userContentListReposts[_userId][_contentListId] = false;
+        userContentListReposts[_userId][_content_listId] = false;
     }
 
-    function userRepostedContentList(uint _userId, uint _contentListId)
+    function userRepostedContentList(uint _userId, uint _content_listId)
     external view onlyRegistrant(CALLER_REGISTRY_KEY) returns (bool)
     {
-        return userContentListReposts[_userId][_contentListId];
+        return userContentListReposts[_userId][_content_listId];
     }
 }

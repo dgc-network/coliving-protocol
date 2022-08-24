@@ -17,13 +17,13 @@ interface SocialFeatureStorageInterface {
 
   function addContentListRepost(
     uint _userId,
-    uint _contentListId) external;
+    uint _content_listId) external;
 
   function deleteContentListRepost(
     uint _userId,
-    uint _contentListId) external;
+    uint _content_listId) external;
 
   function userRepostedContentList(
     uint _userId,
-    uint _contentListId) external view returns (bool reposted);
+    uint _content_listId) external view returns (bool reposted);
 }

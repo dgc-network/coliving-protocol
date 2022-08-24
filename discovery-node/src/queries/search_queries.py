@@ -12,7 +12,7 @@ from src.models.social.follow import Follow
 from src.models.social.repost import RepostType
 from src.models.social.save import Save, SaveType
 from src.queries import response_name_constants
-from src.queries.get_unpopulated_contentLists import get_unpopulated_contentLists
+from src.queries.get_unpopulated_content_lists import get_unpopulated_content_lists
 from src.queries.get_unpopulated_agreements import get_unpopulated_agreements
 from src.queries.get_unpopulated_users import get_unpopulated_users
 from src.queries.query_helpers import (
@@ -20,7 +20,7 @@ from src.queries.query_helpers import (
     get_pagination_vars,
     get_users_by_id,
     get_users_ids,
-    populate_contentList_metadata,
+    populate_content_list_metadata,
     populate_agreement_metadata,
     populate_user_metadata,
 )
@@ -184,8 +184,8 @@ def add_users(session, results):
     users = get_users_by_id(session, user_id_list)
     for result in results:
         user_id = None
-        if "contentList_owner_id" in result:
-            user_id = result["contentList_owner_id"]
+        if "content_list_owner_id" in result:
+            user_id = result["content_list_owner_id"]
         elif "owner_id" in result:
             user_id = result["owner_id"]
 
@@ -225,8 +225,8 @@ def perform_search_query(db, search_type, args):
                 is_auto_complete,
                 current_user_id,
             )
-        elif search_type == "contentLists":
-            results = contentList_search_query(
+        elif search_type == "content_lists":
+            results = content_list_search_query(
                 session,
                 search_str,
                 limit,
@@ -236,7 +236,7 @@ def perform_search_query(db, search_type, args):
                 current_user_id,
             )
         elif search_type == "albums":
-            results = contentList_search_query(
+            results = content_list_search_query(
                 session,
                 search_str,
                 limit,
@@ -335,7 +335,7 @@ def search(args):
             if searchKind in [SearchKind.all, SearchKind.users]:
                 submit_and_add("users")
             if searchKind in [SearchKind.all, SearchKind.contentLists]:
-                submit_and_add("contentLists")
+                submit_and_add("content_lists")
 
             if searchKind in [SearchKind.all, SearchKind.albums]:
                 submit_and_add("albums")
@@ -352,9 +352,9 @@ def search(args):
                 elif future_type == "users":
                     results["users"] = search_result["all"]
                     results["followed_users"] = search_result["followed"]
-                elif future_type == "contentLists":
-                    results["contentLists"] = search_result["all"]
-                    results["saved_contentLists"] = search_result["saved"]
+                elif future_type == "content_lists":
+                    results["content_lists"] = search_result["all"]
+                    results["saved_content_lists"] = search_result["saved"]
                 elif future_type == "albums":
                     results["albums"] = search_result["all"]
                     results["saved_albums"] = search_result["saved"]
@@ -367,8 +367,8 @@ def search(args):
                 for (_, result_list) in results.items():
                     for result in result_list:
                         user_id = None
-                        if "contentList_owner_id" in result:
-                            user_id = result["contentList_owner_id"]
+                        if "content_list_owner_id" in result:
+                            user_id = result["content_list_owner_id"]
                         elif "owner_id" in result:
                             user_id = result["owner_id"]
 
@@ -627,7 +627,7 @@ def user_search_query(
     return users_response
 
 
-def contentList_search_query(
+def content_list_search_query(
     session,
     search_str,
     limit,
@@ -637,7 +637,7 @@ def contentList_search_query(
     current_user_id,
 ):
 
-    table_name = "album_lexeme_dict" if is_album else "contentList_lexeme_dict"
+    table_name = "album_lexeme_dict" if is_album else "content_list_lexeme_dict"
     repost_type = RepostType.album if is_album else RepostType.contentList
     save_type = SaveType.album if is_album else SaveType.contentList
 
@@ -647,14 +647,14 @@ def contentList_search_query(
     res = sqlalchemy.text(
         # pylint: disable=C0301
         f"""
-        select p.contentList_id, b.balance, b.associated_wallets_balance, is_saved from (
-            select distinct on (owner_id) contentList_id, owner_id, is_saved, total_score from (
-                select contentList_id, owner_id, is_saved, (
+        select p.content_list_id, b.balance, b.associated_wallets_balance, is_saved from (
+            select distinct on (owner_id) content_list_id, owner_id, is_saved, total_score from (
+                select content_list_id, owner_id, is_saved, (
                     (:similarity_weight * sum(score)) +
-                    (:title_weight * similarity(coalesce(contentList_name, ''), query)) +
+                    (:title_weight * similarity(coalesce(content_list_name, ''), query)) +
                     (:user_name_weight * similarity(coalesce(user_name, ''), query)) +
                     (:repost_weight * log(case when (repost_count = 0) then 1 else repost_count end)) +
-                    (case when (lower(query) = coalesce(contentList_name, '')) then :title_match_boost else 0 end) +
+                    (case when (lower(query) = coalesce(content_list_name, '')) then :title_match_boost else 0 end) +
                     (case when (lower(query) = handle) then :handle_match_boost else 0 end) +
                     (case when (lower(query) = user_name) then :user_name_match_boost else 0 end)
                     {
@@ -666,8 +666,8 @@ def contentList_search_query(
                 ) as total_score
                 from (
                     select
-                        d."contentList_id" as contentList_id, d."word" as word, similarity(d."word", :query) as score,
-                        d."contentList_name" as contentList_name, :query as query, d."repost_count" as repost_count,
+                        d."content_list_id" as content_list_id, d."word" as word, similarity(d."word", :query) as score,
+                        d."content_list_name" as content_list_name, :query as query, d."repost_count" as repost_count,
                         d."handle" as handle, d."user_name" as user_name, d."owner_id" as owner_id
                         {
                             ', s."user_id" is not null as is_saved'
@@ -679,13 +679,13 @@ def contentList_search_query(
                         "left outer join (select save_item_id, user_id from saves where saves.save_type = '"
                         + save_type + "' and saves.is_current = true and " +
                         "saves.is_delete = false and saves.user_id = :current_user_id ) " +
-                        "s on s.save_item_id = d.contentList_id"
+                        "s on s.save_item_id = d.content_list_id"
                         if current_user_id
                         else ""
                     }
                     where (d."word" % lower(:query) or d."handle" = lower(:query) or d."user_name" % lower(:query))
                 ) as results
-                group by contentList_id, contentList_name, query, repost_count, user_name, handle, owner_id, is_saved
+                group by content_list_id, content_list_name, query, repost_count, user_name, handle, owner_id, is_saved
             ) as results2
             order by owner_id, total_score desc
         ) as p left join user_balances b on p.owner_id = b.user_id
@@ -695,7 +695,7 @@ def contentList_search_query(
         """
     )
 
-    contentList_result_proxy = session.execute(
+    content_list_result_proxy = session.execute(
         res,
         {
             "query": search_str,
@@ -712,37 +712,37 @@ def contentList_search_query(
             "current_user_saved_match_boost": current_user_saved_match_boost,
         },
     )
-    contentList_data = contentList_result_proxy.fetchall()
-    contentList_cols = contentList_result_proxy.keys()
+    content_list_data = content_list_result_proxy.fetchall()
+    content_list_cols = content_list_result_proxy.keys()
 
-    # contentList_ids is list of tuples - simplify to 1-D list
-    contentList_ids = [
-        contentList[contentList_cols.index("contentList_id")] for contentList in contentList_data
+    # content_list_ids is list of tuples - simplify to 1-D list
+    content_list_ids = [
+        contentList[content_list_cols.index("content_list_id")] for contentList in content_list_data
     ]
-    saved_contentLists = {
+    saved_content_lists = {
         contentList[0]
-        for contentList in contentList_data
-        if contentList[contentList_cols.index("is_saved")]
+        for contentList in content_list_data
+        if contentList[content_list_cols.index("is_saved")]
     }
 
-    contentLists = get_unpopulated_contentLists(session, contentList_ids, True)
+    contentLists = get_unpopulated_content_lists(session, content_list_ids, True)
 
     # TODO: Populate contentList metadata should be sped up to be able to be
     # used in search autocomplete as that'll give us better results.
     if is_auto_complete:
         # fetch users for contentLists
-        contentList_owner_ids = list(
-            map(lambda contentList: contentList["contentList_owner_id"], contentLists)
+        content_list_owner_ids = list(
+            map(lambda contentList: contentList["content_list_owner_id"], contentLists)
         )
-        users = get_unpopulated_users(session, contentList_owner_ids)
+        users = get_unpopulated_users(session, content_list_owner_ids)
         users_dict = {user["user_id"]: user for user in users}
 
         # attach user objects to contentList objects
         for i, contentList in enumerate(contentLists):
-            user = users_dict[contentList["contentList_owner_id"]]
+            user = users_dict[contentList["content_list_owner_id"]]
             # Add user balance
-            balance = contentList_data[i][1]
-            associated_balance = contentList_data[i][2]
+            balance = content_list_data[i][1]
+            associated_balance = content_list_data[i][2]
             user[response_name_constants.balance] = balance
             user[
                 response_name_constants.associated_wallets_balance
@@ -751,28 +751,28 @@ def contentList_search_query(
 
     else:
         # bundle peripheral info into contentList results
-        contentLists = populate_contentList_metadata(
+        contentLists = populate_content_list_metadata(
             session,
-            contentList_ids,
+            content_list_ids,
             contentLists,
             [repost_type],
             [save_type],
             current_user_id,
         )
 
-    # Preserve order from contentList_ids above
-    contentLists_map = {}
+    # Preserve order from content_list_ids above
+    content_lists_map = {}
     for p in contentLists:
-        contentLists_map[p["contentList_id"]] = p
-    contentLists = [contentLists_map[contentList_id] for contentList_id in contentList_ids]
+        content_lists_map[p["content_list_id"]] = p
+    contentLists = [content_lists_map[content_list_id] for content_list_id in content_list_ids]
 
-    contentLists_resp = {
+    content_lists_resp = {
         "all": contentLists,
         "saved": list(
             filter(
-                lambda contentList: contentList["contentList_id"] in saved_contentLists, contentLists
+                lambda contentList: contentList["content_list_id"] in saved_content_lists, contentLists
             )
         ),
     }
 
-    return contentLists_resp
+    return content_lists_resp
