@@ -15,7 +15,7 @@
 DIFF_BRANCH="origin/master"
 REPOS="
     libs
-    contracts
+    poa-contracts
     eth-contracts
     content-node
     discovery-node

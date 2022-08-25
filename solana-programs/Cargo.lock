@@ -28,6 +28,26 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f26201604c87b1e01bd3d98f8d5d9a8fcbb815e8cedb41ffccbeb4bf593a35fe"
 
 [[package]]
+name = "agreement_listen_count"
+version = "0.1.0"
+dependencies = [
+ "arrayref",
+ "borsh 0.9.3",
+ "chrono",
+ "coliving_eth_registry",
+ "libsecp256k1 0.3.5",
+ "num-derive",
+ "num-traits",
+ "num_enum",
+ "rand 0.8.5",
+ "sha3",
+ "solana-program",
+ "solana-program-test",
+ "solana-sdk",
+ "thiserror",
+]
+
+[[package]]
 name = "ahash"
 version = "0.4.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -118,101 +138,6 @@ dependencies = [
  "hermit-abi",
  "libc",
  "winapi",
-]
-
-[[package]]
-name = "coliving-eth-registry-cli"
-version = "0.1.0"
-dependencies = [
- "coliving_eth_registry",
- "borsh 0.9.3",
- "clap",
- "hex",
- "libsecp256k1 0.5.0",
- "serde_json",
- "sha3",
- "solana-account-decoder",
- "solana-clap-utils",
- "solana-cli-config",
- "solana-client",
- "solana-logger",
- "solana-program",
- "solana-sdk",
-]
-
-[[package]]
-name = "coliving-reward-manager"
-version = "0.1.0"
-dependencies = [
- "arrayref",
- "bincode",
- "borsh 0.9.3",
- "bs58 0.4.0",
- "claimable-tokens",
- "libsecp256k1 0.5.0",
- "num-derive",
- "num-traits",
- "num_enum",
- "rand 0.7.3",
- "rand 0.8.5",
- "serde",
- "serde_bytes",
- "serde_derive",
- "serde_json",
- "sha3",
- "solana-program",
- "solana-program-test",
- "solana-sdk",
- "spl-token",
- "thiserror",
-]
-
-[[package]]
-name = "coliving-reward-manager-cli"
-version = "0.1.0"
-dependencies = [
- "coliving-reward-manager",
- "bincode",
- "borsh 0.8.2",
- "claimable-tokens",
- "clap",
- "csv",
- "hex",
- "libsecp256k1 0.5.0",
- "regex",
- "serde",
- "serde_json",
- "sha3",
- "solana-account-decoder",
- "solana-clap-utils",
- "solana-cli-config",
- "solana-client",
- "solana-logger",
- "solana-program",
- "solana-sdk",
- "spl-token",
-]
-
-[[package]]
-name = "coliving_eth_registry"
-version = "0.1.0"
-dependencies = [
- "arrayref",
- "bincode",
- "borsh 0.9.3",
- "borsh-derive 0.9.3",
- "chrono",
- "libsecp256k1 0.5.0",
- "num-derive",
- "num-traits",
- "num_enum",
- "rand 0.7.3",
- "rand 0.8.5",
- "sha3",
- "solana-program",
- "solana-program-test",
- "solana-sdk",
- "thiserror",
 ]
 
 [[package]]
@@ -652,6 +577,101 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ddfc5b9aa5d4507acaf872de71051dfd0e309860e88966e1051e462a077aac4f"
 dependencies = [
  "bitflags",
+]
+
+[[package]]
+name = "coliving-eth-registry-cli"
+version = "0.1.0"
+dependencies = [
+ "borsh 0.9.3",
+ "clap",
+ "coliving_eth_registry",
+ "hex",
+ "libsecp256k1 0.5.0",
+ "serde_json",
+ "sha3",
+ "solana-account-decoder",
+ "solana-clap-utils",
+ "solana-cli-config",
+ "solana-client",
+ "solana-logger",
+ "solana-program",
+ "solana-sdk",
+]
+
+[[package]]
+name = "coliving-reward-manager"
+version = "0.1.0"
+dependencies = [
+ "arrayref",
+ "bincode",
+ "borsh 0.9.3",
+ "bs58 0.4.0",
+ "claimable-tokens",
+ "libsecp256k1 0.5.0",
+ "num-derive",
+ "num-traits",
+ "num_enum",
+ "rand 0.7.3",
+ "rand 0.8.5",
+ "serde",
+ "serde_bytes",
+ "serde_derive",
+ "serde_json",
+ "sha3",
+ "solana-program",
+ "solana-program-test",
+ "solana-sdk",
+ "spl-token",
+ "thiserror",
+]
+
+[[package]]
+name = "coliving-reward-manager-cli"
+version = "0.1.0"
+dependencies = [
+ "bincode",
+ "borsh 0.8.2",
+ "claimable-tokens",
+ "clap",
+ "coliving-reward-manager",
+ "csv",
+ "hex",
+ "libsecp256k1 0.5.0",
+ "regex",
+ "serde",
+ "serde_json",
+ "sha3",
+ "solana-account-decoder",
+ "solana-clap-utils",
+ "solana-cli-config",
+ "solana-client",
+ "solana-logger",
+ "solana-program",
+ "solana-sdk",
+ "spl-token",
+]
+
+[[package]]
+name = "coliving_eth_registry"
+version = "0.1.0"
+dependencies = [
+ "arrayref",
+ "bincode",
+ "borsh 0.9.3",
+ "borsh-derive 0.9.3",
+ "chrono",
+ "libsecp256k1 0.5.0",
+ "num-derive",
+ "num-traits",
+ "num_enum",
+ "rand 0.7.3",
+ "rand 0.8.5",
+ "sha3",
+ "solana-program",
+ "solana-program-test",
+ "solana-sdk",
+ "thiserror",
 ]
 
 [[package]]
@@ -4069,26 +4089,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f54c8ca710e81886d498c2fd3331b56c93aa248d49de2222ad2742247c60072f"
 dependencies = [
  "lazy_static",
-]
-
-[[package]]
-name = "agreement_listen_count"
-version = "0.1.0"
-dependencies = [
- "arrayref",
- "coliving_eth_registry",
- "borsh 0.9.3",
- "chrono",
- "libsecp256k1 0.3.5",
- "num-derive",
- "num-traits",
- "num_enum",
- "rand 0.8.5",
- "sha3",
- "solana-program",
- "solana-program-test",
- "solana-sdk",
- "thiserror",
 ]
 
 [[package]]
