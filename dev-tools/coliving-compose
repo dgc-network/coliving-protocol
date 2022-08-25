@@ -101,7 +101,7 @@ def build(protocol_dir, content_node_replicas):
 @click.option("-c", "--content-node-replicas", default=3, type=int)
 @click.option("-d", "--discovery-node-replicas", default=3, type=int)
 @click.pass_obj
-def up(protocol_dir, content_node_replicas, discovery_provider_replicas):
+def up(protocol_dir, content_node_replicas, discovery_node_replicas):
     generate_env(protocol_dir, content_node_replicas)
 
     subprocess.run(
@@ -115,7 +115,7 @@ def up(protocol_dir, content_node_replicas, discovery_provider_replicas):
             "--scale",
             f"content-node={content_node_replicas}",
             "--scale",
-            f"discovery-node={discovery_provider_replicas}",
+            f"discovery-node={discovery_node_replicas}",
             "-d",
         ],
     )

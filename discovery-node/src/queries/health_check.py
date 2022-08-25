@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 bp = Blueprint("health_check", __name__)
 
-disc_prov_version = helpers.get_discovery_provider_version()
+disc_prov_version = helpers.get_discovery_node_version()
 
 
 @bp.route("/version", methods=["GET"])

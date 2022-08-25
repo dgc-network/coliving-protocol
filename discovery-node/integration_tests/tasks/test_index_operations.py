@@ -204,7 +204,7 @@ def test_index_operations(celery_app, celery_app_contracts, mocker):
     """
     Confirm indexing of user operations results in expected state change
     """
-    task = celery_app.celery.tasks["update_discovery_provider"]
+    task = celery_app.celery.tasks["update_discovery_node"]
     db = task.db
     web3 = celery_app_contracts["web3"]
 
@@ -253,7 +253,7 @@ def test_index_operations_metadata_fetch_error(
     """
     Confirm indexer throws IndexingError when ipfs metadata fetch throws an error
     """
-    task = celery_app.celery.tasks["update_discovery_provider"]
+    task = celery_app.celery.tasks["update_discovery_node"]
     db = task.db
     web3 = celery_app_contracts["web3"]
 
@@ -307,7 +307,7 @@ def test_index_operations_tx_receipts_fetch_error(
     """
     Confirm indexer throws IndexingError when tx receipt fetch throws an error
     """
-    task = celery_app.celery.tasks["update_discovery_provider"]
+    task = celery_app.celery.tasks["update_discovery_node"]
     db = task.db
     web3 = celery_app_contracts["web3"]
 
@@ -366,7 +366,7 @@ def test_index_operations_tx_parse_error(celery_app, celery_app_contracts, mocke
     """
     Confirm indexer throws IndexingError when the parser throws an error
     """
-    task = celery_app.celery.tasks["update_discovery_provider"]
+    task = celery_app.celery.tasks["update_discovery_node"]
     db = task.db
     web3 = celery_app_contracts["web3"]
 
@@ -432,7 +432,7 @@ def test_index_operations_indexing_error_on_commit(
     """
     Confirm indexer throws IndexingError when db session "commit" throws an error
     """
-    task = celery_app.celery.tasks["update_discovery_provider"]
+    task = celery_app.celery.tasks["update_discovery_node"]
     db = task.db
     web3 = celery_app_contracts["web3"]
 
@@ -504,7 +504,7 @@ def test_index_operations_skip_block(celery_app, celery_app_contracts, mocker):
     """
     Confirm indexer skips block when session commit fails
     """
-    task = celery_app.celery.tasks["update_discovery_provider"]
+    task = celery_app.celery.tasks["update_discovery_node"]
     db = task.db
     web3 = celery_app_contracts["web3"]
 

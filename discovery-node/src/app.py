@@ -384,8 +384,8 @@ def configure_celery(celery, test_config=None):
             "src.tasks.update_agreement_is_available",
         ],
         beat_schedule={
-            "update_discovery_provider": {
-                "task": "update_discovery_provider",
+            "update_discovery_node": {
+                "task": "update_discovery_node",
                 "schedule": timedelta(seconds=indexing_interval_sec),
             },
             "update_metrics": {

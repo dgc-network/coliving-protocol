@@ -61,9 +61,9 @@ def app_impl():
         alembic.command.upgrade(alembic_config, "head")
 
     # Create application for testing
-    discovery_provider_app = create_app(TEST_CONFIG_OVERRIDE)
+    discovery_node_app = create_app(TEST_CONFIG_OVERRIDE)
 
-    yield discovery_provider_app
+    yield discovery_node_app
 
 
 @pytest.fixture
@@ -216,7 +216,7 @@ def celery_app_contracts(celery_app):  # pylint: disable=redefined-outer-name
     Initializes contracts to be used with the `celery_app` fixture
     """
     # Pull singletons off of the default first task
-    task = celery_app.celery.tasks["update_discovery_provider"]
+    task = celery_app.celery.tasks["update_discovery_node"]
     return init_contracts(task.shared_config)
 
 

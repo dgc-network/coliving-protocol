@@ -21,7 +21,7 @@ redis_url = shared_config["redis"]["url"]
 redis_conn = redis.Redis.from_url(url=redis_url)
 web3_connection = web3_provider.get_web3()
 logger = logging.getLogger(__name__)
-disc_prov_version = helpers.get_discovery_provider_version()
+disc_prov_version = helpers.get_discovery_node_version()
 
 
 # Subclass JSONEncoder

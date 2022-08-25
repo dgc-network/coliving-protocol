@@ -47,7 +47,7 @@ MONITORS = monitors.MONITORS
 
 number_of_cpus = os.cpu_count()
 
-disc_prov_version = helpers.get_discovery_provider_version()
+disc_prov_version = helpers.get_discovery_node_version()
 
 openresty_public_key = helpers.get_openresty_public_key()
 

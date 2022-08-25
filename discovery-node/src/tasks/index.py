@@ -1061,7 +1061,7 @@ def revert_user_events(session, revert_user_events_entries, revert_block_number)
 
 
 # CELERY TASKS
-@celery.task(name="update_discovery_provider", bind=True)
+@celery.task(name="update_discovery_node", bind=True)
 @save_duration_metric(metric_group="celery_task")
 def update_task(self):
     # Cache custom task class properties

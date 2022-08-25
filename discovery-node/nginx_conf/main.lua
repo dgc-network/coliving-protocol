@@ -52,16 +52,16 @@ function _M.start_update_redirect_weights_timer ()
     end
 end
 
-function get_cached_public_key (discovery_provider)
-    local public_key = ngx.shared.rsa_public_key_store:get(discovery_provider)
+function get_cached_public_key (discovery_node)
+    local public_key = ngx.shared.rsa_public_key_store:get(discovery_node)
     if not public_key then
         local httpc = resty_http.new()
-        local res, err = httpc:request_uri(discovery_provider .. "/openresty_pubkey", { method = "GET" })
+        local res, err = httpc:request_uri(discovery_node .. "/openresty_pubkey", { method = "GET" })
         httpc:close()
         if not res then
             return nil, err
         end
-        ngx.shared.rsa_public_key_store:set(discovery_provider, res.body, 60) -- cache key for 60 seconds
+        ngx.shared.rsa_public_key_store:set(discovery_node, res.body, 60) -- cache key for 60 seconds
         public_key = res.body
     end
     return public_key, nil
@@ -91,18 +91,18 @@ function get_redirect_target ()
     end
 end
 
-function verify_signature (discovery_provider, nonce, signature)
+function verify_signature (discovery_node, nonce, signature)
     -- reject if all of the parameter are not provided
-    if discovery_provider == nil and nonce == nil and signature == nil then
+    if discovery_node == nil and nonce == nil and signature == nil then
         return false
     end
 
     -- reject if one of the parameter is not provided
-    if discovery_provider == nil or nonce == nil or signature == nil then
+    if discovery_node == nil or nonce == nil or signature == nil then
         ngx.log(
             ngx.WARN,
             "Signature verification failed: ",
-            "discovery_provider=", discovery_provider,
+            "discovery_node=", discovery_node,
             ", signature=", signature,
             ", nonce=", nonce
         )
@@ -110,11 +110,11 @@ function verify_signature (discovery_provider, nonce, signature)
     end
 
     -- reject if nonce was already used
-    if ngx.shared.nonce_store:get(discovery_provider .. ";" .. nonce) then
+    if ngx.shared.nonce_store:get(discovery_node .. ";" .. nonce) then
         ngx.log(
             ngx.WARN,
             "Signature verification failed: ",
-            "discovery_provider=", discovery_provider,
+            "discovery_node=", discovery_node,
             ", signature=", signature,
             ", nonce=", nonce
         )
@@ -123,17 +123,17 @@ function verify_signature (discovery_provider, nonce, signature)
 
     -- Allow all discovery nodes for now instead of just whitelisted ones
     -- reject if discovery node is not in the accept_redirect_from set
-    -- if not config.accept_redirect_from[discovery_provider] then
+    -- if not config.accept_redirect_from[discovery_node] then
     --     return false
     -- end
 
-    local public_key, err = get_cached_public_key(discovery_provider)
+    local public_key, err = get_cached_public_key(discovery_node)
     if not public_key then
         ngx.log(ngx.ERR, "failed to get rsa key: ", err)
         ngx.log(
             ngx.WARN,
             "Signature verification failed: ",
-            "discovery_provider=", discovery_provider,
+            "discovery_node=", discovery_node,
             ", signature=", signature,
             ", nonce=", nonce
         )
@@ -153,12 +153,12 @@ function verify_signature (discovery_provider, nonce, signature)
 
     if ok then
         -- set nonce as used for discovery node for next 60 seconds
-        ngx.shared.nonce_store:set(discovery_provider .. ";" .. nonce, true, 60)
+        ngx.shared.nonce_store:set(discovery_node .. ";" .. nonce, true, 60)
     else
         ngx.log(
             ngx.WARN,
             "Signature verification failed: ",
-            "discovery_provider=", discovery_provider,
+            "discovery_node=", discovery_node,
             ", signature=", signature,
             ", nonce=", nonce
         )

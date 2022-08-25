@@ -13,7 +13,7 @@ import {
   deleteAgreementRepost,
 } from "../lib/lib";
 import { getTransaction, randomString } from "../lib/utils";
-//import { ColivingData } from "../target/types/coliving_data";
+import { ColivingData } from "../target/types/coliving_data";
 //import { ColivingData } from "../programs/coliving-data/lib";
 import {
   createSolanaContentNode,

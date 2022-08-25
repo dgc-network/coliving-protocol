@@ -349,7 +349,7 @@ def get_web3_endpoint(shared_config):
     return web3endpoint
 
 
-def get_discovery_provider_version():
+def get_discovery_node_version():
     versionFilePath = os.path.join(os.getcwd(), ".version.json")
     data = None
     with open(versionFilePath) as f:
