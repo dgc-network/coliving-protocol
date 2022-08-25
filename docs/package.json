@@ -19,11 +19,11 @@
   },
   "dependencies": {
     "@coliving/sdk": "file:../libs",
-    "@docusaurus/core": "2.0.0-beta.20",
-    "@docusaurus/preset-classic": "2.0.0-beta.20",
-    "@docusaurus/theme-search-algolia": "2.0.0-beta.20",
+    "@docusaurus/core": "2.0.1",
+    "@docusaurus/preset-classic": "2.0.1",
+    "@docusaurus/theme-search-algolia": "2.0.1",
     "@mdx-js/react": "^1.6.21",
-    "@svgr/webpack": "^5.5.0",
+    "@svgr/webpack": "^6.3.1",
     "clsx": "^1.1.1",
     "docusaurus-plugin-typedoc": "^0.17.5",
     "file-loader": "^6.2.0",
@@ -49,6 +49,6 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.14.184",
-    "docusaurus": "^1.14.7"
+    "docusaurus": "^0.0.2"
   }
 }
