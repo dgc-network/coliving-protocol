@@ -25,7 +25,7 @@
     "node-fetch": "^2.6.7",
     "random-picture": "4.0.4",
     "untildify": "4.0.0",
-    "web3": "^0.20.7",
+    "web3": "^1.7.5",
     "winston": "3.2.1"
   },
   "devDependencies": {

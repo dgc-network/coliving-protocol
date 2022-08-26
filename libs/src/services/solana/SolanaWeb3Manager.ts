@@ -11,7 +11,7 @@ import {
   getAssociatedTokenAccountInfo,
   findAssociatedTokenAddress
 } from './tokenAccount'
-import { wAudioFromWeiAudio } from './wAudio'
+import { wAudioFromWeiAudio } from './wLive'
 import { Logger, Nullable, Utils } from '../../utils'
 import { SolanaUtils } from './SolanaUtils'
 import { TransactionHandler } from './transactionHandler'

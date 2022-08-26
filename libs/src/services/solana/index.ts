@@ -1,6 +1,6 @@
 export * from './SolanaWeb3Manager'
 export * from './SolanaUtils'
-export * from './wAudio'
+export * from './wLive'
 export * from './transactionHandler'
 export * from './transfer'
 export * from './userBank'
