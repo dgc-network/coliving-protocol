@@ -6,7 +6,7 @@ import {
   METRIC_NAMES,
   QUEUE_INTERVAL
   // eslint-disable-next-line import/no-unresolved
-} from './prometheus.constants'
+} from './prometheusConstants'
 import * as PrometheusClient from 'prom-client'
 
 /**

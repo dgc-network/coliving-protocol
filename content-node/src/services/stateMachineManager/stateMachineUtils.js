@@ -9,7 +9,7 @@ const {
   METRIC_RECORD_TYPE,
   METRIC_NAMES,
   METRIC_LABELS
-} = require('../prometheusMonitoring/prometheus.constants')
+} = require('../prometheusMonitoring/prometheusConstants')
 const config = require('../../config')
 const { logger, createChildLogger } = require('../../logging')
 const { generateTimestampAndSignature } = require('../../apiSigning')

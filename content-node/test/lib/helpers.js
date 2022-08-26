@@ -21,7 +21,7 @@ const uploadAgreement = async (filePath, cnodeUserUUID, blacklistManager) => {
       }
     },
     {
-      fileName: `${fileUUID}.mp3`,
+      fileName: `${fileUUID}.pdf`,
       fileDir,
       fileDestination: fileDir,
       cnodeUserUUID
@@ -40,7 +40,7 @@ const saveFileToStorage = (filePath) => {
   )
   fs.mkdirSync(fileDir)
   fs.mkdirSync(fileDir + '/segments')
-  fs.writeFileSync(path.join(fileDir, `${fileName}.mp3`), file)
+  fs.writeFileSync(path.join(fileDir, `${fileName}.pdf`), file)
 
   return { fileUUID: fileName, fileDir }
 }
