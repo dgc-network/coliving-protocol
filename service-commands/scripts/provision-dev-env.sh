@@ -139,10 +139,10 @@ function silence_motd() {
     touch ~/.hushlogin
 }
 
-function setup_solana_dev() {
-    cd $PROTOCOL_DIR/solana-programs/anchor/coliving-data
-    npm run install-dev
-}
+#function setup_solana_dev() {
+#    cd $PROTOCOL_DIR/solana-programs/anchor/coliving-data
+#    npm run install-dev
+#}
 
 function setup_coliving_repos() {
     source $HOME/.profile
