@@ -36,8 +36,8 @@ npm install
 cd $PROTOCOL_DIR/content-node
 npm install
 
-cd $PROTOCOL_DIR/solana-programs/anchor/coliving-data
-npm run install-dev
+#cd $PROTOCOL_DIR/solana-programs/anchor/coliving-data
+#npm run install-dev
 # npm run build
 
 cd $PROTOCOL_DIR/libs
@@ -60,12 +60,12 @@ npm install
 cd $PROTOCOL_DIR/service-commands
 npm link
 
-cd $PROTOCOL_DIR/solana-programs/anchor/coliving-data
-npm link
+#cd $PROTOCOL_DIR/solana-programs/anchor/coliving-data
+#npm link
 
-cd $PROTOCOL_DIR/libs
-npm link @coliving/anchor-coliving-data
-npm link
+#cd $PROTOCOL_DIR/libs
+#npm link @coliving/anchor-coliving-data
+#npm link
 
 cd $PROTOCOL_DIR/mad-dog
 npm link @coliving/service-commands
