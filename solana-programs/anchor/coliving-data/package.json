@@ -21,7 +21,8 @@
     "test": "BROWSER= anchor test"
   },
   "dependencies": {
-    "@project-serum/anchor": "0.24.1"
+    "@project-serum/anchor": "0.24.1",
+    "web3-core": "^1.7.5"
   },
   "devDependencies": {
     "@project-serum/anchor-cli": "0.24.1",
