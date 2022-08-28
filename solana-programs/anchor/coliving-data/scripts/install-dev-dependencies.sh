@@ -6,6 +6,7 @@ SOLANA_CLI_VERSION=v1.9.13
 ANCHOR_CLI_VERSION=v0.24.1
 
 cd $PROTOCOL_DIR/solana-programs/anchor/coliving-data
+#cd /Users/roverchen/Documents/coliving-projects/coliving-protocol/solana-programs/anchor/coliving-data
 echo "Installing dev deps for anchor coliving-data development..."
 # install rust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
@@ -29,11 +30,11 @@ fi
 solana config set --url localhost
 
 # install anchor
-npm i -g "@project-serum/anchor-cli@$ANCHOR_CLI_VERSION"
+sudo npm i -g "@project-serum/anchor-cli@$ANCHOR_CLI_VERSION"
 # verify anchor version
 anchor --version
 # install dependencies
-npm install
+npm install --force
 
 # init solana keypair
 solana-keygen new --no-bip39-passphrase --force -o "$HOME/.config/solana/id.json"
