@@ -7,8 +7,8 @@ import type { EthWeb3Manager } from '../services/ethWeb3Manager'
 import type { Hedgehog } from '../services/hedgehog'
 import type { Hedgehog as HedgehogBase } from '@audius/hedgehog'
 import type { IdentityService } from '../services/identity'
-import type { SolanaColivingData } from '../services/solanaColivingData'
-import type { SolanaWeb3Manager } from '../services/solana'
+//import type { SolanaColivingData } from '../services/solanaColivingData'
+//import type { SolanaWeb3Manager } from '../services/solana'
 import type { Web3Manager } from '../services/web3Manager'
 import type { UserStateManager } from '../userStateManager'
 import type { Captcha } from '../utils'
@@ -32,8 +32,8 @@ export type BaseConstructorArgs = [
   ColivingContracts,
   EthWeb3Manager,
   EthContracts,
-  SolanaWeb3Manager,
-  SolanaColivingData,
+  //SolanaWeb3Manager,
+  //SolanaColivingData,
   Wormhole,
   ContentNode,
   Comstock,
@@ -51,8 +51,8 @@ export class Base {
   contracts: ColivingContracts
   ethWeb3Manager: EthWeb3Manager
   ethContracts: EthContracts
-  solanaWeb3Manager: SolanaWeb3Manager
-  anchorColivingData: SolanaColivingData
+  //solanaWeb3Manager: SolanaWeb3Manager
+  //anchorColivingData: SolanaColivingData
   wormholeClient: Wormhole
   contentNode: ContentNode
   comstock: Comstock
@@ -71,8 +71,8 @@ export class Base {
     contracts: ColivingContracts,
     ethWeb3Manager: EthWeb3Manager,
     ethContracts: EthContracts,
-    solanaWeb3Manager: SolanaWeb3Manager,
-    anchorColivingData: SolanaColivingData,
+    //solanaWeb3Manager: SolanaWeb3Manager,
+    //anchorColivingData: SolanaColivingData,
     wormholeClient: Wormhole,
     contentNode: ContentNode,
     comstock: Comstock,
@@ -88,8 +88,8 @@ export class Base {
     this.contracts = contracts
     this.ethWeb3Manager = ethWeb3Manager
     this.ethContracts = ethContracts
-    this.solanaWeb3Manager = solanaWeb3Manager
-    this.anchorColivingData = anchorColivingData
+    //this.solanaWeb3Manager = solanaWeb3Manager
+    //this.anchorColivingData = anchorColivingData
     this.wormholeClient = wormholeClient
     this.contentNode = contentNode
     this.comstock = comstock
@@ -103,7 +103,7 @@ export class Base {
       [Services.DISCOVERY_PROVIDER]: this.discoveryNode,
       [Services.CONTENT_NODE]: this.contentNode,
       [Services.COMSTOCK]: this.comstock,
-      [Services.SOLANA_WEB3_MANAGER]: this.solanaWeb3Manager
+      //[Services.SOLANA_WEB3_MANAGER]: this.solanaWeb3Manager
     }
   }
 

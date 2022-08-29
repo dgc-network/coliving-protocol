@@ -1,14 +1,14 @@
 const packageJSON = require('../package.json')
 
 const { EthWeb3Manager } = require('./services/ethWeb3Manager')
-const { SolanaColivingData } = require('./services/solanaColivingData/index')
+//const { SolanaColivingData } = require('./services/solanaColivingData/index')
 const { Web3Manager } = require('./services/web3Manager')
 const { EthContracts } = require('./services/ethContracts')
-const {
-  SolanaWeb3Manager,
-  SolanaUtils,
-  RewardsAttester
-} = require('./services/solana')
+//const {
+//  SolanaWeb3Manager,
+//  SolanaUtils,
+//  RewardsAttester
+//} = require('./services/solana')
 const { ColivingContracts } = require('./services/dataContracts')
 const { IdentityService } = require('./services/identity')
 const { Comstock } = require('./services/comstock')
