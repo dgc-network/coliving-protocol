@@ -21,7 +21,7 @@
   },
   "engineStrict": true,
   "dependencies": {
-    "@coliving/sdk": "0.0.2",
+    "@coliving/sdk": "file:../libs",
     "async-retry": "^1.3.3",
     "axios": "^0.20.0",
     "convict": "^6.0.0",

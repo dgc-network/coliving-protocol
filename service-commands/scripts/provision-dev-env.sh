@@ -165,7 +165,7 @@ function setup_coliving_repos() {
     # set up repos
     node $PROTOCOL_DIR/service-commands/scripts/setup.js run init-repos up
 
-    setup_solana_dev
+    #setup_solana_dev
 }
 
 function install_zsh_tooling() {
