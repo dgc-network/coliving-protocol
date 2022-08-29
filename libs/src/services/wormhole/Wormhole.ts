@@ -4,7 +4,7 @@ import type { ContractReceipt } from 'ethers'
 import type { EthWeb3Manager } from '../ethWeb3Manager'
 import type { Hedgehog } from '../hedgehog'
 import type { IdentityService, RelayTransactionData } from '../identity'
-import type { SolanaWeb3Manager } from '../solana'
+//import type { SolanaWeb3Manager } from '../solana'
 
 import bs58 from 'bs58'
 import { BN, toBuffer } from 'ethereumjs-util'
@@ -12,7 +12,7 @@ import { zeroPad } from 'ethers/lib/utils'
 import { providers } from 'ethers/lib/index'
 import wormholeSDK, { ChainId } from '@certusone/wormhole-sdk'
 
-import { SolanaUtils, wAudioFromWeiAudio } from '../solana'
+//import { SolanaUtils, wAudioFromWeiAudio } from '../solana'
 import { Utils, sign, getTransferTokensDigest } from '../../utils'
 import type {
   RpcResponseAndContext,
@@ -27,7 +27,7 @@ export class Wormhole {
   ethWeb3Manager: EthWeb3Manager
   ethContracts: EthContracts
   identityService: IdentityService
-  solanaWeb3Manager: SolanaWeb3Manager
+  //solanaWeb3Manager: SolanaWeb3Manager
   rpcHosts: string[]
   solBridgeAddress: string
   solTokenBridgeAddress: string
@@ -40,7 +40,7 @@ export class Wormhole {
     ethWeb3Manager: EthWeb3Manager,
     ethContracts: EthContracts,
     identityService: IdentityService,
-    solanaWeb3Manager: SolanaWeb3Manager,
+    //solanaWeb3Manager: SolanaWeb3Manager,
     rpcHosts: string[],
     solBridgeAddress: string,
     solTokenBridgeAddress: string,
@@ -52,7 +52,7 @@ export class Wormhole {
     this.ethWeb3Manager = ethWeb3Manager
     this.ethContracts = ethContracts
     this.identityService = identityService
-    this.solanaWeb3Manager = solanaWeb3Manager
+    //this.solanaWeb3Manager = solanaWeb3Manager
 
     // Wormhole config
     this.rpcHosts = rpcHosts
@@ -134,20 +134,20 @@ export class Wormhole {
         options
       )
 
-      const connection = this.solanaWeb3Manager.connection
+      //const connection = this.solanaWeb3Manager.connection
       let signTransaction: (transaction: Transaction) => Promise<Transaction>
       if (customSignTransaction) {
         signTransaction = customSignTransaction
       } else {
         signTransaction = async (transaction: Transaction) => {
-          const { blockhash } = await connection.getLatestBlockhash()
+          //const { blockhash } = await connection.getLatestBlockhash()
           // Must call serialize message to set the correct signatures on the transaction
           transaction.serializeMessage()
           const transactionData: RelayTransactionData = {
-            recentBlockhash: blockhash,
-            instructions: transaction.instructions.map(
-              SolanaUtils.prepareInstructionForRelay
-            ),
+            //recentBlockhash: blockhash,
+            //instructions: transaction.instructions.map(
+              //SolanaUtils.prepareInstructionForRelay
+            //),
             signatures: transaction.signatures.map((sig) => ({
               publicKey: sig.publicKey.toString(),
               signature: sig.signature!
