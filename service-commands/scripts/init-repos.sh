@@ -63,9 +63,9 @@ npm link
 #cd $PROTOCOL_DIR/solana-programs/anchor/coliving-data
 #npm link
 
-#cd $PROTOCOL_DIR/libs
+cd $PROTOCOL_DIR/libs
 #npm link @coliving/anchor-coliving-data
-#npm link
+npm link
 
 cd $PROTOCOL_DIR/mad-dog
 npm link @coliving/service-commands
