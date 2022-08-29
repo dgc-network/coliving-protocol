@@ -1,24 +1,25 @@
 import type { Hedgehog as HedgehogBase } from '@audius/hedgehog'
 import type { EthContracts } from '../ethContracts'
-import type { ContractReceipt } from 'ethers'
+//import type { ContractReceipt } from 'ethers'
 import type { EthWeb3Manager } from '../ethWeb3Manager'
 import type { Hedgehog } from '../hedgehog'
-import type { IdentityService, RelayTransactionData } from '../identity'
+//import type { IdentityService, RelayTransactionData } from '../identity'
+import type { IdentityService } from '../identity'
 //import type { SolanaWeb3Manager } from '../solana'
 
 import bs58 from 'bs58'
 import { BN, toBuffer } from 'ethereumjs-util'
-import { zeroPad } from 'ethers/lib/utils'
-import { providers } from 'ethers/lib/index'
+//import { zeroPad } from 'ethers/lib/utils'
+//import { providers } from 'ethers/lib/index'
 import wormholeSDK, { ChainId } from '@certusone/wormhole-sdk'
 
 //import { SolanaUtils, wAudioFromWeiAudio } from '../solana'
 import { Utils, sign, getTransferTokensDigest } from '../../utils'
-import type {
-  RpcResponseAndContext,
-  SignatureResult,
-  Transaction
-} from '@solana/web3.js'
+//import type {
+//  RpcResponseAndContext,
+//  SignatureResult,
+//  Transaction
+//} from '@solana/web3.js'
 import type { GetSignedVAAResponse } from '@certusone/wormhole-sdk/lib/cjs/proto/publicrpc/v1/publicrpc'
 /** Singleton state-manager for Coliving Eth Contracts */
 
@@ -99,6 +100,7 @@ export class Wormhole {
   /**
    * Sends `amount` tokens to `solanaAccount` by way of the wormhole
    */
+/*  
   async attestAndCompleteTransferEthToSol(
     ethTxReceipt: string,
     customSignTransaction?: (transaction: Transaction) => Promise<Transaction>,
@@ -134,20 +136,20 @@ export class Wormhole {
         options
       )
 
-      //const connection = this.solanaWeb3Manager.connection
+      const connection = this.solanaWeb3Manager.connection
       let signTransaction: (transaction: Transaction) => Promise<Transaction>
       if (customSignTransaction) {
         signTransaction = customSignTransaction
       } else {
         signTransaction = async (transaction: Transaction) => {
-          //const { blockhash } = await connection.getLatestBlockhash()
+          const { blockhash } = await connection.getLatestBlockhash()
           // Must call serialize message to set the correct signatures on the transaction
           transaction.serializeMessage()
           const transactionData: RelayTransactionData = {
-            //recentBlockhash: blockhash,
-            //instructions: transaction.instructions.map(
-              //SolanaUtils.prepareInstructionForRelay
-            //),
+            recentBlockhash: blockhash,
+            instructions: transaction.instructions.map(
+              SolanaUtils.prepareInstructionForRelay
+            ),
             signatures: transaction.signatures.map((sig) => ({
               publicKey: sig.publicKey.toString(),
               signature: sig.signature!
@@ -231,10 +233,11 @@ export class Wormhole {
       }
     }
   }
-
+*/
   /**
    * Sends `amount` tokens to `solanaAccount` by way of the wormhole
    */
+/*
   async sendTokensFromSolToEthViaWormhole(
     amount: BN,
     ethTargetAddress: string,
@@ -254,7 +257,7 @@ export class Wormhole {
       if (
         typeof window === 'undefined' ||
         window == null ||
-        // @ts-expect-error
+        /// @ts-expect-error
         window.ethereum == null
       ) {
         throw new Error('Expected a browser/client context with Metamask')
@@ -365,7 +368,7 @@ export class Wormhole {
       // Redeem on Ethereum
       // NOTE: The signer should be the user's personal wallet
       phase = phases.REDEEM_ON_ETH
-      // @ts-expect-error
+      /// @ts-expect-error
       const signer = new providers.Web3Provider(window.ethereum).getSigner()
       await this.wormholeSDK.redeemOnEth(
         this.ethTokenBridgeAddress,
@@ -382,7 +385,7 @@ export class Wormhole {
       }
     }
   }
-
+*/
   /**
    * Locks assets owned by `fromAccount` into the Solana wormhole with a target
    * solanaAccount destination via the provided relayer wallet.
