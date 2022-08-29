@@ -25,10 +25,10 @@ def generate_env(protocol_dir, content_node_replicas):
         (protocol_dir / "discovery-node/.version.json").read_text(),
     )["version"]
 
-    for name, secret_key in config.get("solana-accounts", {}).items():
-        keypair = solana.keypair.Keypair.from_secret_key(bytes(secret_key))
-        env[f"{name}_SECRET_KEY"] = json.dumps(list(keypair.secret_key))
-        env[f"{name}_PUBLIC_KEY"] = keypair.public_key.to_base58().decode()
+    #for name, secret_key in config.get("solana-accounts", {}).items():
+    #    keypair = solana.keypair.Keypair.from_secret_key(bytes(secret_key))
+    #    env[f"{name}_SECRET_KEY"] = json.dumps(list(keypair.secret_key))
+    #    env[f"{name}_PUBLIC_KEY"] = keypair.public_key.to_base58().decode()
 
     for name, private_key in config.get("eth-accounts", {}).items():
         account = eth_account.Account.from_key(private_key)

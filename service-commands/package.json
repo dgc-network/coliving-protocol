@@ -23,6 +23,7 @@
     "lodash": "4.17.21",
     "mkdirp-promise": "^5.0.1",
     "node-fetch": "^2.6.7",
+    "node-localstorage": "^2.2.1",
     "random-picture": "4.0.4",
     "untildify": "4.0.0",
     "web3": "^1.7.5",

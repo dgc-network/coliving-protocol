@@ -3,7 +3,8 @@ const untildify = require('untildify')
 const Web3 = require('web3')
 const axios = require('axios')
 const { libs: ColivingLibs } = require('@coliving/sdk')
-const { ContentNode, Utils } = ColivingLibs
+//const { ContentNode, Utils } = ColivingLibs
+const { ContentNode, Utils } = require('@coliving/sdk')
 const config = require('../config/config')
 
 const DISCOVERY_NODE_ENDPOINT = 'http://dn1_web-server_1:5000'
