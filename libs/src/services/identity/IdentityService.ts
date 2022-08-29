@@ -160,7 +160,7 @@ export class IdentityService {
       return await this._makeRequest<{ email: string | undefined | null }>({
         url: '/user/email',
         method: 'get',
-        headers
+        //headers
       })
     } else {
       throw new Error('Cannot get user email - user is not authenticated')
@@ -466,13 +466,13 @@ export class IdentityService {
 
   // Relays tx data through the solana relay endpoint
   async solanaRelay(transactionData: RelayTransactionData) {
-    const headers = await this._signData()
+    //const headers = await this._signData()
 
     return await this._makeRequest<{ transactionSignature: string }>({
       url: '/solana/relay',
       method: 'post',
       data: transactionData,
-      headers
+      //headers
     })
   }
 
@@ -520,13 +520,13 @@ export class IdentityService {
    * Post a reaction to identity.
    */
   async submitReaction(data: Reaction) {
-    const headers = await this._signData()
+    //const headers = await this._signData()
 
     return await this._makeRequest({
       url: '/reactions',
       method: 'post',
       data,
-      headers
+      //headers
     })
   }
 
@@ -552,10 +552,10 @@ export class IdentityService {
       return resp.data
     } catch (e) {
       const error = e as AxiosError
-      if (error.response?.data?.error) {
+      if (error.response?.data) {
         console.error(
           `Server returned error for requestId ${requestId}: [${error.response.status.toString()}] ${
-            error.response.data.error
+            error.response.data
           }`
         )
       }

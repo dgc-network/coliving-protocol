@@ -806,6 +806,7 @@ export class ContentNode {
       } catch (e) {
         const error = e as AxiosError
         const resp = error.response
+        const data = Array(resp?.data) 
         const duration = Date.now() - start
 
         if (this.monitoringCallbacks.request) {
@@ -825,7 +826,8 @@ export class ContentNode {
         }
 
         // if the content node returns an invalid auth token error, clear connection and reconnect
-        if (resp?.data?.error?.includes('Invalid authentication token')) {
+        //if (resp?.data?.error?.includes('Invalid authentication token')) {
+        if (data.includes('Invalid authentication token')) {
           this.clearConnection()
           try {
             await this.ensureConnected()
@@ -873,7 +875,7 @@ export class ContentNode {
       formData.append(key, `${extraFormDataOptions[key]}`)
     })
 
-    let headers: Record<string, string | null> = {}
+    let headers: Record<string, any | null> = {}
     if (this.isServer) {
       headers = formData.getHeaders()
     }
@@ -954,7 +956,7 @@ export class ContentNode {
         // Set content length headers (only applicable in server/node environments).
         // See: https://github.com/axios/axios/issues/1362
         maxContentLength: Infinity,
-        // @ts-expect-error TODO: including even though it's not an axios config. should double check
+        //\s*\/\/\s* @ts-expect-error TODO: including even though it's not an axios config. should double check
         maxBodyLength: Infinity
       }
 
@@ -991,7 +993,8 @@ export class ContentNode {
           retries - 1
         )
       } else if (
-        error.response?.data?.error?.includes('Invalid authentication token')
+        //error.response?.data?.error?.includes('Invalid authentication token')
+        Array(error.response?.data).includes('Invalid authentication token')
       ) {
         // if the content node returns an invalid auth token error, clear connection and reconnect
         this.clearConnection()
@@ -1011,11 +1014,13 @@ export class ContentNode {
     requestUrl?: string,
     requestId: string | null = null
   ) {
-    if ('response' in e && e.response?.data?.error) {
+    //if ('response' in e && e.response?.data?.error) {
+    if ('response' in e && e.response?.data) {
       const cnRequestID = e.response.headers['cn-request-id']
       // cnRequestID will be the same as requestId if it receives the X-Request-ID header
       const errMessage = `Server returned error: [${e.response.status.toString()}] [${
-        e.response.data.error
+        //e.response.data.error
+        e.response.data
       }] for request: [${cnRequestID}, ${requestId}]`
 
       console.error(errMessage)
