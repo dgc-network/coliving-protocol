@@ -404,7 +404,7 @@ module.exports = function (app) {
 
         req.logger.info(`AgreementListen tx confirmed, ${solTxSignature} userId=${userId}, agreementId=${agreementId}, sendRawTransaction=${sendRawTransaction}`)
 
-        // Increment success agreementer
+        // Increment success tracker
         await redis.incr(agreementingRedisKeys.success)
         await redis.zadd(AGREEMENTING_LISTEN_SUCCESS_KEY, Date.now(), Date.now() + entropy)
         return successResponse({

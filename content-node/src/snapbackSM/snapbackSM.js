@@ -13,7 +13,7 @@ const SyncDeDuplicator = require('./snapbackDeDuplicator')
 const PeerSetManager = require('./peerSetManager')
 const { libs } = require('@coliving/sdk')
 const ContentNode = libs.ContentNode
-const SecondarySyncHealthAgreementer = require('./secondarySyncHealthAgreementer')
+const SecondarySyncHealthTracker = require('./secondarySyncHealthTracker')
 const { generateTimestampAndSignature } = require('../apiSigning')
 const {
   MAX_SELECT_NEW_REPLICA_SET_ATTEMPTS,
@@ -1640,7 +1640,7 @@ class SnapbackSM {
     }
 
     const userSecondarySyncMetricsMap =
-      await SecondarySyncHealthAgreementer.computeUsersSecondarySyncSuccessRatesForToday(
+      await SecondarySyncHealthTracker.computeUsersSecondarySyncSuccessRatesForToday(
         walletsToSecondariesMapping
       )
 
@@ -1650,7 +1650,7 @@ class SnapbackSM {
   /**
    * Monitor an ongoing sync operation for a given secondaryUrl and user wallet
    * Return boolean indicating if an additional sync is required
-   * Record SyncRequest outcomes to SecondarySyncHealthAgreementer
+   * Record SyncRequest outcomes to SecondarySyncHealthTracker
    */
   async additionalSyncIsRequired(
     userWallet,
@@ -1711,7 +1711,7 @@ class SnapbackSM {
      */
     let additionalSyncIsRequired
     if (secondaryCaughtUpToPrimary) {
-      await SecondarySyncHealthAgreementer.recordSuccess(
+      await SecondarySyncHealthTracker.recordSuccess(
         secondaryUrl,
         userWallet,
         syncType
@@ -1724,7 +1724,7 @@ class SnapbackSM {
       // Secondary completed sync but is still behind primary since it was behind by more than max export range
       // Since syncs are all-or-nothing, if secondary clock has increased at all, we know it successfully completed sync
     } else if (finalSecondaryClock > initialSecondaryClock) {
-      await SecondarySyncHealthAgreementer.recordSuccess(
+      await SecondarySyncHealthTracker.recordSuccess(
         secondaryUrl,
         userWallet,
         syncType
@@ -1736,7 +1736,7 @@ class SnapbackSM {
 
       // (1) secondary did not catch up to primary AND (2) secondary did not complete sync
     } else {
-      await SecondarySyncHealthAgreementer.recordFailure(
+      await SecondarySyncHealthTracker.recordFailure(
         secondaryUrl,
         userWallet,
         syncType
@@ -1786,7 +1786,7 @@ class SnapbackSM {
      * Do not issue syncRequest if SecondaryUserSyncFailureCountForToday already exceeded threshold
      */
     const secondaryUserSyncFailureCountForToday =
-      await SecondarySyncHealthAgreementer.getSecondaryUserSyncFailureCountForToday(
+      await SecondarySyncHealthTracker.getSecondaryUserSyncFailureCountForToday(
         secondaryEndpoint,
         userWallet,
         syncType

@@ -1,10 +1,10 @@
 const assert = require('assert')
 
-const SecondarySyncHealthAgreementer = require('../src/snapbackSM/secondarySyncHealthAgreementer')
+const SecondarySyncHealthTracker = require('../src/snapbackSM/secondarySyncHealthTracker')
 const { getLibsMock } = require('./lib/libsMock')
 const { getApp } = require('./lib/app')
 
-describe('test secondarySyncHealthAgreementer', function () {
+describe('test secondarySyncHealthTracker', function () {
   let app, server
 
   beforeEach(async function () {
@@ -26,13 +26,13 @@ describe('test secondarySyncHealthAgreementer', function () {
       const secondary = 'http://secondary1.co'
       const syncType = 'testSyncType'
 
-      await SecondarySyncHealthAgreementer.recordSuccess(secondary, wallet, syncType)
+      await SecondarySyncHealthTracker.recordSuccess(secondary, wallet, syncType)
 
       const walletsToSecondariesMapping = {
         [wallet]: [[secondary]]
       }
       const userSecondarySyncMetricsMap =
-        await SecondarySyncHealthAgreementer.computeUsersSecondarySyncSuccessRatesForToday(
+        await SecondarySyncHealthTracker.computeUsersSecondarySyncSuccessRatesForToday(
           walletsToSecondariesMapping
         )
 
@@ -55,14 +55,14 @@ describe('test secondarySyncHealthAgreementer', function () {
       const secondary = 'http://secondary1.co'
       const syncType = 'testSyncType'
 
-      await SecondarySyncHealthAgreementer.recordSuccess(secondary, wallet, syncType)
-      await SecondarySyncHealthAgreementer.recordFailure(secondary, wallet, syncType)
+      await SecondarySyncHealthTracker.recordSuccess(secondary, wallet, syncType)
+      await SecondarySyncHealthTracker.recordFailure(secondary, wallet, syncType)
 
       const walletsToSecondariesMapping = {
         [wallet]: [[secondary]]
       }
       const userSecondarySyncMetricsMap =
-        await SecondarySyncHealthAgreementer.computeUsersSecondarySyncSuccessRatesForToday(
+        await SecondarySyncHealthTracker.computeUsersSecondarySyncSuccessRatesForToday(
           walletsToSecondariesMapping
         )
 
@@ -85,13 +85,13 @@ describe('test secondarySyncHealthAgreementer', function () {
       const secondary = 'http://secondary1.co'
       const syncType = 'testSyncType'
 
-      await SecondarySyncHealthAgreementer.recordFailure(secondary, wallet, syncType)
+      await SecondarySyncHealthTracker.recordFailure(secondary, wallet, syncType)
 
       const walletsToSecondariesMapping = {
         [wallet]: [[secondary]]
       }
       const userSecondarySyncMetricsMap =
-        await SecondarySyncHealthAgreementer.computeUsersSecondarySyncSuccessRatesForToday(
+        await SecondarySyncHealthTracker.computeUsersSecondarySyncSuccessRatesForToday(
           walletsToSecondariesMapping
         )
 
@@ -119,11 +119,11 @@ describe('test secondarySyncHealthAgreementer', function () {
       const syncType = 'testSyncType'
 
       for (const currSecondary of [secondary, secondary2, secondary3]) {
-        await SecondarySyncHealthAgreementer.recordSuccess(currSecondary, wallet, syncType)
-        await SecondarySyncHealthAgreementer.recordSuccess(currSecondary, wallet, syncType)
-        await SecondarySyncHealthAgreementer.recordFailure(currSecondary, wallet2, syncType)
-        await SecondarySyncHealthAgreementer.recordSuccess(currSecondary, wallet3, syncType)
-        await SecondarySyncHealthAgreementer.recordFailure(currSecondary, wallet3, syncType)
+        await SecondarySyncHealthTracker.recordSuccess(currSecondary, wallet, syncType)
+        await SecondarySyncHealthTracker.recordSuccess(currSecondary, wallet, syncType)
+        await SecondarySyncHealthTracker.recordFailure(currSecondary, wallet2, syncType)
+        await SecondarySyncHealthTracker.recordSuccess(currSecondary, wallet3, syncType)
+        await SecondarySyncHealthTracker.recordFailure(currSecondary, wallet3, syncType)
       }
 
       const walletsToSecondariesMapping = {
@@ -131,7 +131,7 @@ describe('test secondarySyncHealthAgreementer', function () {
         [wallet2]: [[secondary], [secondary3]]
       }
       const userSecondarySyncMetricsMap =
-        await SecondarySyncHealthAgreementer.computeUsersSecondarySyncSuccessRatesForToday(
+        await SecondarySyncHealthTracker.computeUsersSecondarySyncSuccessRatesForToday(
           walletsToSecondariesMapping
         )
 

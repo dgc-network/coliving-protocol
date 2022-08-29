@@ -422,7 +422,7 @@ class PeerSetManager {
       return true
     }
 
-    // If a primary ever becomes healthy again and was once marked as unhealthy, remove agreementer
+    // If a primary ever becomes healthy again and was once marked as unhealthy, remove tracker
     this.removePrimaryFromUnhealthyPrimaryMap(primary)
     return true
   }

@@ -88,7 +88,7 @@ describe('test issueSyncRequest job processor', function () {
       './stateReconciliationUtils': {
         getNewOrExistingSyncReq: getNewOrExistingSyncReqStub
       },
-      './SecondarySyncHealthAgreementer': {
+      './SecondarySyncHealthTracker': {
         getSecondaryUserSyncFailureCountForToday:
           getSecondaryUserSyncFailureCountForTodayStub,
         recordSuccess: recordSuccessStub,
