@@ -79,8 +79,8 @@ npm link @coliving/sdk
 cd $PROTOCOL_DIR/identity-service
 npm link @coliving/sdk
 
-cd $PROTOCOL_DIR/..
-if [ -d "coliving-client" ]; then
-    cd coliving-client
-    cd packages/web && npm link @coliving/sdk
-fi
+#cd $PROTOCOL_DIR/..
+#if [ -d "coliving-client" ]; then
+#    cd coliving-client
+#    cd packages/web && npm link @coliving/sdk
+#fi
