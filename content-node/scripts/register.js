@@ -1,4 +1,5 @@
-const ColivingLibs = require("@coliving/libs");
+//const ColivingLibs = require("@coliving/libs");
+const ColivingLibs = require("@coliving/sdk");
 const config = require("../src/config");
 const axios = require("axios");
 const BN = require("bn.js");

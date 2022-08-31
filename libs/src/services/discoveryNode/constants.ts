@@ -1,5 +1,6 @@
 export const DISCOVERY_NODE_TIMESTAMP =
-  '@coliving/libs:discovery-node-timestamp'
+  //'@coliving/libs:discovery-node-timestamp'
+  '@coliving/sdk:discovery-node-timestamp'
 export const DISCOVERY_SERVICE_NAME = 'discovery-node'
 export const DEFAULT_UNHEALTHY_BLOCK_DIFF = 15
 export const REGRESSED_MODE_TIMEOUT = 2 * 60 * 1000 // two minutes

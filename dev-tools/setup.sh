@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source /etc/os-release
+#source /etc/os-release
 case "$ID" in
 debian | ubuntu)
     # Uninstall old versions of docker

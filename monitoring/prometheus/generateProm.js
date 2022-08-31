@@ -3,8 +3,8 @@
 
 const fs = require('fs');
 const dotenv = require('dotenv');
-const ColivingLibs = require("@coliving/libs");
-
+//const ColivingLibs = require("@coliving/libs");
+const ColivingLibs = require("@coliving/sdk");
 
 const readFromFileAndWriteToStream = (stream, filename) => {
   stream.write(fs.readFileSync("./ymls/" + filename))
