@@ -1,6 +1,7 @@
 // adapted from https://github.com/albertocuestacanada/ERC20Permit/blob/master/utils/signatures.ts to not use typescript
 
-import { keccak256, defaultAbiCoder, toUtf8Bytes, solidityPack } from 'ethers-latest/lib/utils'
+//import { keccak256, defaultAbiCoder, toUtf8Bytes, solidityPack } from 'ethers-latest/lib/utils'
+import { keccak256, defaultAbiCoder, toUtf8Bytes, solidityPack } from 'ethers/lib/utils'
 import { ecsign } from 'ethereumjs-util'
 
 export const sign = (digest, privateKey) => {
