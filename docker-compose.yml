@@ -12,7 +12,7 @@ services:
 
   poa-ganache:
     build:
-      context: contracts
+      context: poa-contracts
       dockerfile: Dockerfile.dev
       args:
         bootstrapSPIds: ${BOOTSTRAP_SP_IDS}
@@ -20,7 +20,7 @@ services:
         bootstrapSPOwnerWallets: ${BOOTSTRAP_SP_OWNER_WALLETS}
     command: bash /tmp/dev-tools/startup/poa-ganache.sh
     volumes:
-      - poa-contracts-abis:/usr/src/app/build/contracts
+      - poa-contracts-abis:/usr/src/app/build/poa-contracts
       - ./dev-tools:/tmp/dev-tools
     ports:
       - "8545:8545"
@@ -115,33 +115,33 @@ services:
 
   # solana-programs
 
-  solana-test-validator:
-    build:
-      context: solana-programs
-      dockerfile: Dockerfile.dev
-      args:
-        COLIVING_ETH_REGISTRY_PRIVATE_KEY: "${SOLANA_COLIVING_ETH_REGISTRY_SECRET_KEY}"
-        AGREEMENT_LISTEN_COUNT_PRIVATE_KEY: "${SOLANA_AGREEMENT_LISTEN_COUNT_SECRET_KEY}"
-        CLAIMABLE_TOKENS_PRIVATE_KEY: "${SOLANA_CLAIMABLE_TOKENS_SECRET_KEY}"
-        REWARD_MANAGER_PRIVATE_KEY: "${SOLANA_REWARD_MANAGER_SECRET_KEY}"
-        COLIVING_DATA_PRIVATE_KEY: "${SOLANA_COLIVING_DATA_SECRET_KEY}"
-        owner_private_key: "${SOLANA_OWNER_SECRET_KEY}"
-        feepayer_private_key: "${SOLANA_FEEPAYER_SECRET_KEY}"
-        token_private_key: "${SOLANA_TOKEN_MINT_SECRET_KEY}"
-        admin_authority_private_key: "${SOLANA_ADMIN_AUTHORITY_SECRET_KEY}"
-        admin_account_private_key: "${SOLANA_ADMIN_ACCOUNT_SECRET_KEY}"
-        signer_group_private_key: "${SOLANA_SIGNER_GROUP_SECRET_KEY}"
-        valid_signer_private_key: "${SOLANA_VALID_SIGNER_SECRET_KEY}"
-        reward_manager_pda_private_key: "${SOLANA_REWARD_MANAGER_PDA_SECRET_KEY}"
-        reward_manager_token_pda_private_key: "${SOLANA_REWARD_MANAGER_TOKEN_PDA_SECRET_KEY}"
-        valid_signer_eth_address: "${ETH_VALID_SIGNER_ADDRESS}"
-    volumes:
-      - solana-programs-idl:/usr/src/app/anchor/coliving-data/idl
-    ports:
-      - "8899:8899"
-    logging: *default-logging
-    deploy:
-      mode: global
+  #solana-test-validator:
+  #  build:
+  #    context: solana-programs
+  #    dockerfile: Dockerfile.dev
+  #    args:
+  #      COLIVING_ETH_REGISTRY_PRIVATE_KEY: "${SOLANA_COLIVING_ETH_REGISTRY_SECRET_KEY}"
+  #      AGREEMENT_LISTEN_COUNT_PRIVATE_KEY: "${SOLANA_AGREEMENT_LISTEN_COUNT_SECRET_KEY}"
+  #      CLAIMABLE_TOKENS_PRIVATE_KEY: "${SOLANA_CLAIMABLE_TOKENS_SECRET_KEY}"
+  #      REWARD_MANAGER_PRIVATE_KEY: "${SOLANA_REWARD_MANAGER_SECRET_KEY}"
+  #      COLIVING_DATA_PRIVATE_KEY: "${SOLANA_COLIVING_DATA_SECRET_KEY}"
+  #      owner_private_key: "${SOLANA_OWNER_SECRET_KEY}"
+  #      feepayer_private_key: "${SOLANA_FEEPAYER_SECRET_KEY}"
+  #      token_private_key: "${SOLANA_TOKEN_MINT_SECRET_KEY}"
+  #      admin_authority_private_key: "${SOLANA_ADMIN_AUTHORITY_SECRET_KEY}"
+  #      admin_account_private_key: "${SOLANA_ADMIN_ACCOUNT_SECRET_KEY}"
+  #      signer_group_private_key: "${SOLANA_SIGNER_GROUP_SECRET_KEY}"
+  #      valid_signer_private_key: "${SOLANA_VALID_SIGNER_SECRET_KEY}"
+  #      reward_manager_pda_private_key: "${SOLANA_REWARD_MANAGER_PDA_SECRET_KEY}"
+  #      reward_manager_token_pda_private_key: "${SOLANA_REWARD_MANAGER_TOKEN_PDA_SECRET_KEY}"
+  #      valid_signer_eth_address: "${ETH_VALID_SIGNER_ADDRESS}"
+  #  volumes:
+  #    - solana-programs-idl:/usr/src/app/anchor/coliving-data/idl
+  #  ports:
+  #    - "8899:8899"
+  #  logging: *default-logging
+  #  deploy:
+  #    mode: global
 
   # build libs
 
@@ -223,18 +223,18 @@ services:
       ethRegistryAddress: "${ETH_REGISTRY_ADDRESS}"
       ethOwnerWallet: "${ETH_OWNER_WALLET}"
 
-      solanaEndpoint: "http://solana-test-validator:8899"
-      solanaAgreementListenCountAddress: "${SOLANA_AGREEMENT_LISTEN_COUNT_PUBLIC_KEY}"
-      solanaColivingEthRegistryAddress: "${SOLANA_COLIVING_ETH_REGISTRY_PUBLIC_KEY}"
-      solanaValidSigner: "${SOLANA_VALID_SIGNER_PUBLIC_KEY}"
-      solanaFeePayerWallets: "[{\"privateKey\":${SOLANA_FEEPAYER_SECRET_KEY}}]"
-      solanaSignerPrivateKey: "${ETH_VALID_SIGNER_PRIVATE_KEY}"
-      solanaMintAddress: "${SOLANA_TOKEN_MINT_PUBLIC_KEY}"
-      solanaClaimableTokenProgramAddress: "${SOLANA_CLAIMABLE_TOKENS_PUBLIC_KEY}"
-      solanaRewardsManagerAddress: "${SOLANA_REWARD_MANAGER_PUBLIC_KEY}"
-      solanaRewardsManagerProgramPDA: "${SOLANA_REWARD_MANAGER_PDA_PUBLIC_KEY}"
-      solanaRewardsManagerTokenPDA: "${SOLANA_REWARD_MANAGER_TOKEN_PDA_PUBLIC_KEY}"
-      solanaColivingAnchorDataProgramId: "${SOLANA_COLIVING_DATA_PUBLIC_KEY}"
+  #    solanaEndpoint: "http://solana-test-validator:8899"
+  #    solanaAgreementListenCountAddress: "${SOLANA_AGREEMENT_LISTEN_COUNT_PUBLIC_KEY}"
+  #    solanaColivingEthRegistryAddress: "${SOLANA_COLIVING_ETH_REGISTRY_PUBLIC_KEY}"
+  #    solanaValidSigner: "${SOLANA_VALID_SIGNER_PUBLIC_KEY}"
+  #    solanaFeePayerWallets: "[{\"privateKey\":${SOLANA_FEEPAYER_SECRET_KEY}}]"
+  #    solanaSignerPrivateKey: "${ETH_VALID_SIGNER_PRIVATE_KEY}"
+  #    solanaMintAddress: "${SOLANA_TOKEN_MINT_PUBLIC_KEY}"
+  #    solanaClaimableTokenProgramAddress: "${SOLANA_CLAIMABLE_TOKENS_PUBLIC_KEY}"
+  #    solanaRewardsManagerAddress: "${SOLANA_REWARD_MANAGER_PUBLIC_KEY}"
+  #    solanaRewardsManagerProgramPDA: "${SOLANA_REWARD_MANAGER_PDA_PUBLIC_KEY}"
+  #    solanaRewardsManagerTokenPDA: "${SOLANA_REWARD_MANAGER_TOKEN_PDA_PUBLIC_KEY}"
+  #    solanaColivingAnchorDataProgramId: "${SOLANA_COLIVING_DATA_PUBLIC_KEY}"
     volumes:
       - ./identity-service/src:/usr/src/app/src
       - coliving-libs:/usr/src/coliving-libs
@@ -247,8 +247,8 @@ services:
         condition: service_healthy
       eth-ganache:
         condition: service_healthy
-      solana-test-validator:
-        condition: service_healthy
+  #    solana-test-validator:
+  #      condition: service_healthy
       build-coliving-libs:
         condition: service_started
     logging: *default-logging
@@ -271,30 +271,30 @@ services:
       coliving_eth_contracts_registry: "${ETH_REGISTRY_ADDRESS}"
       coliving_eth_contracts_token: "${ETH_TOKEN_ADDRESS}"
 
-      coliving_solana_endpoint: "http://solana-test-validator:8899"
-      coliving_solana_agreement_listen_count_address: "${SOLANA_AGREEMENT_LISTEN_COUNT_PUBLIC_KEY}"
-      coliving_solana_signer_group_address: "${SOLANA_SIGNER_GROUP_PUBLIC_KEY}"
-      coliving_solana_user_bank_program_address: "${SOLANA_CLAIMABLE_TOKENS_PUBLIC_KEY}"
-      coliving_solana_wlive_mint: "${SOLANA_TOKEN_MINT_PUBLIC_KEY}"
-      coliving_solana_rewards_manager_program_address: "${SOLANA_REWARD_MANAGER_PUBLIC_KEY}"
-      coliving_solana_rewards_manager_account: "${SOLANA_REWARD_MANAGER_PDA_PUBLIC_KEY}"
-      coliving_solana_anchor_data_program_id: "${SOLANA_COLIVING_DATA_PUBLIC_KEY}"
-      coliving_solana_anchor_admin_storage_public_key: "${SOLANA_ADMIN_ACCOUNT_PUBLIC_KEY}"
+  #    coliving_solana_endpoint: "http://solana-test-validator:8899"
+  #    coliving_solana_agreement_listen_count_address: "${SOLANA_AGREEMENT_LISTEN_COUNT_PUBLIC_KEY}"
+  #    coliving_solana_signer_group_address: "${SOLANA_SIGNER_GROUP_PUBLIC_KEY}"
+  #    coliving_solana_user_bank_program_address: "${SOLANA_CLAIMABLE_TOKENS_PUBLIC_KEY}"
+  #    coliving_solana_wlive_mint: "${SOLANA_TOKEN_MINT_PUBLIC_KEY}"
+  #    coliving_solana_rewards_manager_program_address: "${SOLANA_REWARD_MANAGER_PUBLIC_KEY}"
+  #    coliving_solana_rewards_manager_account: "${SOLANA_REWARD_MANAGER_PDA_PUBLIC_KEY}"
+  #    coliving_solana_anchor_data_program_id: "${SOLANA_COLIVING_DATA_PUBLIC_KEY}"
+  #    coliving_solana_anchor_admin_storage_public_key: "${SOLANA_ADMIN_ACCOUNT_PUBLIC_KEY}"
 
       coliving_discprov_dev_mode: "true"
     volumes:
       - ./discovery-node:/coliving-discovery-node
-      - poa-contracts-abis:/coliving-discovery-node/build/contracts
+      - poa-contracts-abis:/coliving-discovery-node/build/poa-contracts
       - eth-contracts-abis:/coliving-discovery-node/build/eth-contracts
-      - solana-programs-idl:/coliving-discovery-node/idl
+  #    - solana-programs-idl:/coliving-discovery-node/idl
       - ./dev-tools:/tmp/dev-tools
     depends_on:
       poa-ganache:
         condition: service_healthy
       eth-ganache:
         condition: service_healthy
-      solana-test-validator:
-        condition: service_healthy
+  #    solana-test-validator:
+  #      condition: service_healthy
     logging: *default-logging
     deploy:
       mode: replicated
@@ -336,8 +336,8 @@ services:
         condition: service_healthy
       eth-ganache:
         condition: service_healthy
-      solana-test-validator:
-        condition: service_healthy
+  #    solana-test-validator:
+  #      condition: service_healthy
       build-coliving-libs:
         condition: service_started
     logging: *default-logging
@@ -374,5 +374,5 @@ services:
 volumes:
   poa-contracts-abis:
   eth-contracts-abis:
-  solana-programs-idl:
+  #solana-programs-idl:
   coliving-libs:
