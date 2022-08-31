@@ -1,8 +1,8 @@
 # requires authentication to Dockerhub
-FROM coliving/contracts:1.0.0 AS contracts
+#FROM coliving/poa-contracts:1.0.0 AS poa-contracts
 
 FROM alpine:3.14
-LABEL maintainer="Hareesh Nagaraj <hareesh@coliving.lol>"
+LABEL maintainer="dgc.network <dgc.network@coliving.lol>"
 
 ENV INSTALL_PATH /coliving-discovery-node
 WORKDIR $INSTALL_PATH
@@ -70,7 +70,7 @@ RUN python3 -m pip install --upgrade pip && python3 -m pip install -r requiremen
 COPY . .
 RUN cd es-indexer && npm install && npm run build
 
-COPY --from=contracts /usr/src/app/build/contracts/ build/contracts/
+#COPY --from=poa-contracts /usr/src/app/build/poa-contracts/ build/poa-contracts/
 
 ARG git_sha
 ARG coliving_loggly_disable
