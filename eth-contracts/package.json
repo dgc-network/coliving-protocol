@@ -37,10 +37,10 @@
     "babel-preset-env": "^1.7.0",
     "ethereumjs-abi": "^0.6.8",
     "ethers": "^5.7.0",
-    "ethlint": "^1.2.5",
+    "ethlint": "^0.0.0",
     "fs-extra": "^10.1.0",
     "lodash": "^4.17.21",
-    "truffle": "5.5.28"
+    "truffle": "^5.1.65"
   },
   "devDependencies": {
     "@openzeppelin/test-helpers": "^0.5.15",
