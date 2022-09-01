@@ -43,7 +43,7 @@
     "lodash": "^4.17.21",
     "openzeppelin-contracts": "^4.0.0",
     "solc": "^0.8.16",
-    "truffle": "^5.1.65"
+    "truffle": "^5.5.28"
   },
   "devDependencies": {
     "@openzeppelin/test-helpers": "^0.5.15",
