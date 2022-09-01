@@ -1,4 +1,5 @@
-pragma solidity ^0.5.0;
+//pragma solidity ^0.5.0;
+pragma solidity ^0.6.1;
 
 /// @title - Interface for Coliving DiscoveryNodeFactory contract
 interface DiscoveryNodeFactoryInterface {

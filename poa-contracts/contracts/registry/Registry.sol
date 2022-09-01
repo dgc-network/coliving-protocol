@@ -1,4 +1,5 @@
-pragma solidity ^0.5.0;
+//pragma solidity ^0.5.0;
+pragma solidity ^0.6.1;
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "../interface/RegistryContractInterface.sol";

@@ -1,4 +1,5 @@
-pragma solidity ^0.5.0;
+//pragma solidity ^0.5.0;
+pragma solidity ^0.6.1;
 
 // Interface for interaction with Wormhole v2 TokenBridge
 // https://github.com/certusone/wormhole/blob/7e2cf1f9818099c63c21d101afbfedb1903ee9ba/ethereum/contracts/bridge/Bridge.sol#L93
