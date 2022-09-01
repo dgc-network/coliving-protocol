@@ -2,9 +2,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.16;
 
-//import "@openzeppelin/upgrades/contracts/Initializable.sol";
-import "@openzeppelin/upgrades//packages/core/contracts/Initializable.sol";
-
+import "@openzeppelin/upgrades/contracts/Initializable.sol";
 
 /**
  * Wrapper around OpenZeppelin's Initializable contract.

@@ -42,6 +42,7 @@
     "fs-extra": "^10.1.0",
     "lodash": "^4.17.21",
     "openzeppelin-contracts": "^4.0.0",
+    "solc": "^0.8.16",
     "truffle": "^5.1.65"
   },
   "devDependencies": {

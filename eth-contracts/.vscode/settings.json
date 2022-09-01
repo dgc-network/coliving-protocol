@@ -1,8 +1,0 @@
-{
-  
-  "solidity.remappings":[
-    "@openzeppelin/=~/documents/coliving-projects/coliving-protocol/eth-contracts/node_modules/@openzeppelin",
-    "@openzeppelin/contracts/=~/documents/coliving-projects/coliving-protocol/eth-contracts/node_modules/@openzeppelin/contracts"
-  ] 
-  
-}

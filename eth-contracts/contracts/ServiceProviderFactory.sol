@@ -1,5 +1,5 @@
 //pragma solidity ^0.5.0;
-pragma solidity ^0.6.1;
+pragma solidity ^0.8.16;
 
 import "@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol";
 import "./ServiceTypeManager.sol";
