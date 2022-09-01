@@ -1,9 +1,7 @@
-//pragma solidity ^0.5.0;
-pragma solidity ^0.6.1;
+pragma solidity ^0.5.0;
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "../interface/RegistryContractInterface.sol";
-
 
 /**
 * @title Central hub for RegistryContracts that stores all contract addresses

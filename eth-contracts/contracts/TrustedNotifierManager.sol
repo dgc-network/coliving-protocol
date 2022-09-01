@@ -1,10 +1,8 @@
-//pragma solidity ^0.5.0;
-pragma solidity ^0.6.1;
+pragma solidity ^0.5.0;
 
 import "@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol";
 import "./Governance.sol";
 import "./InitializableV2.sol";
-
 
 contract TrustedNotifierManager is InitializableV2 {
     using SafeMath for uint256;

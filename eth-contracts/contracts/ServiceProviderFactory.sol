@@ -1,12 +1,10 @@
-//pragma solidity ^0.5.0;
-pragma solidity ^0.8.16;
+pragma solidity ^0.5.0;
 
 import "@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol";
 import "./ServiceTypeManager.sol";
 import "./ClaimsManager.sol";
 import "./Staking.sol";
 /// @notice Governance imported via Staking.sol
-
 
 contract ServiceProviderFactory is InitializableV2 {
     using SafeMath for uint256;

@@ -1,5 +1,4 @@
-//pragma solidity ^0.5.0;
-pragma solidity ^0.6.1;
+pragma solidity ^0.5.0;
 
 import "openzeppelin-solidity/contracts/cryptography/ECDSA.sol";
 import "@openzeppelin/upgrades/contracts/Initializable.sol";

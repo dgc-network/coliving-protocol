@@ -1,6 +1,4 @@
-//pragma solidity ^0.5.0;
-pragma solidity ^0.6.1;
-
+pragma solidity ^0.5.0;
 
 interface TestStorageInterface {
   function getData(bytes32 _key) external view returns (bytes32 val);

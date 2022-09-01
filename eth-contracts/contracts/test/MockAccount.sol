@@ -1,5 +1,4 @@
-//pragma solidity ^0.5.0;
-pragma solidity ^0.6.1;
+pragma solidity ^0.5.0;
 
 /// Simple test contract with self destruct function
 /// Used to validate contractHash enforcement in governance
