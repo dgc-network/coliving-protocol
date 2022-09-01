@@ -1,4 +1,5 @@
-pragma solidity ^0.5.0;
+//pragma solidity ^0.5.0;
+pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol";
 import "./Staking.sol";

@@ -32,7 +32,9 @@ const solc = {
   // 0.5.17 is latest 0.5.x version
   // cannot use 0.6.x due to openzeppelin dependency, which are only 0.5.x compatible
   //version: '^0.5.17',
+  //version: '^0.8.0',
   version: 'pragma',
+  //version: 'native',
   parser: 'solcjs', // Leverages solc-js purely for speedy parsing
   settings: {
     evmVersion: 'istanbul', // istanbul is latest stable, and default setting

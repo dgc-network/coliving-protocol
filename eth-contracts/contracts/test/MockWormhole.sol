@@ -1,9 +1,11 @@
-pragma solidity ^0.5.0;
+//pragma solidity ^0.5.0;
+pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/SafeERC20.sol";
-import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Detailed.sol";
-
+//import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20.sol";
+//import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Detailed.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "../erc20/ERC20Detailed.sol";
 
 contract MockWormhole {
     using SafeERC20 for ERC20;
