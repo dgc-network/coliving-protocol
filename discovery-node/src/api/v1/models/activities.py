@@ -3,7 +3,7 @@ from flask_restx.fields import MarshallingError
 from flask_restx.marshalling import marshal
 
 from .common import ns
-from .contentLists import full_content_list_model, content_list_model
+from .content_lists import full_content_list_model, content_list_model
 from .agreements import agreement, agreement_full
 
 

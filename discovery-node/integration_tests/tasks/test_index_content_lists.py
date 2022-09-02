@@ -12,8 +12,8 @@ from src.models.indexing.skipped_transaction import (
     SkippedTransaction,
     SkippedTransactionLevel,
 )
-from src.models.contentLists.contentList import ContentList
-from src.tasks.contentLists import (
+from src.models.content_lists.content_list import ContentList
+from src.tasks.content_lists import (
     lookup_content_list_record,
     parse_content_list_event,
     content_list_state_update,

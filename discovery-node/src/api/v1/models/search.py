@@ -1,7 +1,7 @@
 from flask_restx import fields
 
 from .common import ns
-from .contentLists import full_content_list_model
+from .content_lists import full_content_list_model
 from .agreements import agreement_full
 from .users import user_model_full
 

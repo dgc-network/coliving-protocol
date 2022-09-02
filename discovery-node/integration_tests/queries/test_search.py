@@ -4,7 +4,7 @@ from datetime import datetime
 
 import pytest
 from src.models.indexing.block import Block
-from src.models.contentLists.contentList import ContentList
+from src.models.content_lists.content_list import ContentList
 from src.models.social.follow import Follow
 from src.models.social.save import Save, SaveType
 from src.models.agreements.agreement import Agreement
