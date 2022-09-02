@@ -51,3 +51,5 @@ compose/env/tmp*/
 
 *.tsbuildinfo
 es-indexer/.env
+
+.vscode/
