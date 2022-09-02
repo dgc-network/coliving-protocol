@@ -369,7 +369,7 @@ const getTwitter = (notification) => {
       }
     }
     case NotificationType.ChallengeReward: {
-      const text = `I earned $LIVE for completing challenges on @dgc-network #AudioRewards`
+      const text = `I earned $LIVE for completing challenges on @dgc-network #LiveRewards`
       return {
         message: 'Share this with your residents',
         href: `http://twitter.com/share?text=${encodeURIComponent(text)}`

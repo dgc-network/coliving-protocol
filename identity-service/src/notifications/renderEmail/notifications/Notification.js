@@ -454,7 +454,7 @@ var getTwitter = function getTwitter(notification) {
 
     case _constants.notificationTypes.ChallengeReward:
       {
-        var _text3 = "I earned $LIVE for completing challenges on @dgc-network #AudioRewards";
+        var _text3 = "I earned $LIVE for completing challenges on @dgc-network #LiveRewards";
         return {
           message: 'Share this with your residents',
           href: "http://twitter.com/share?text=".concat(encodeURIComponent(_text3))
