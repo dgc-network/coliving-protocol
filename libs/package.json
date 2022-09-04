@@ -35,7 +35,6 @@
   },
   "dependencies": {
     "@audius/hedgehog": "2.1.0",
-    "@babel/runtime": "^7.18.3",
     "@certusone/wormhole-sdk": "0.1.1",
     "@ethersproject/solidity": "5.0.5",
     "@improbable-eng/grpc-web-node-http-transport": "0.15.0",
@@ -97,7 +96,6 @@
     "@types/mocha": "9.1.0",
     "@types/pify": "^5.0.1",
     "@types/proper-url-join": "2.1.1",
-    "@types/semver": "7.3.9",
     "commander": "9.2.0",
     "eslint": "7.32.0",
     "eslint-config-prettier": "^8.5.0",
