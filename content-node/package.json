@@ -76,7 +76,6 @@
   "devDependencies": {
     "@types/bull": "^3.15.8",
     "@types/bunyan": "^1.8.8",
-    "@typescript-eslint/parser": "^5.35.1",
     "chai": "4.3.6",
     "chai-as-promised": "^7.1.1",
     "coveralls": "3.1.1",

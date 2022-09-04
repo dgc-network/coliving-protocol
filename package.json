@@ -17,6 +17,5 @@
     "check-secrets"
   ],
   "devDependencies": {
-    "@types/node": "^18.7.2"
   }
 }
