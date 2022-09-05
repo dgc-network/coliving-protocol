@@ -21,17 +21,15 @@
     "@coliving/sdk": "file:../libs",
     "@docusaurus/core": "2.0.1",
     "@docusaurus/preset-classic": "2.0.1",
-    "@docusaurus/theme-search-algolia": "2.0.1",
-    "@mdx-js/react": "^1.6.21",
-    "@svgr/webpack": "^6.3.1",
     "clsx": "^1.1.1",
     "docusaurus-plugin-typedoc": "^0.17.5",
-    "file-loader": "^6.2.0",
     "prism-react-renderer": "^1.2.1",
     "react": "^17.0.1",
-    "typedoc": "^0.22.17",
     "typedoc-plugin-markdown": "^3.12.1",
     "url-loader": "^4.1.1"
+  },
+  "devDependencies": {
+    "docusaurus": "^0.0.2"
   },
   "browserslist": {
     "production": [
@@ -44,8 +42,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "docusaurus": "^0.0.2"
   }
 }
