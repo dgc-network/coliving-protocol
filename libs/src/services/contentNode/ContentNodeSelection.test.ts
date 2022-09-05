@@ -772,7 +772,8 @@ describe('test ContentNodeSelection', () => {
     }
     // Make sure there is some variance
     assert(!primaries.every((val) => val === primaries[0]))
-  }).timeout(10000)
+  //}).timeout(10000)
+  })
 
   describe('Test preferHigherPatchForPrimary and preferHigherPatchForSecondaries', () => {
     it('Selects highest version nodes when preferHigherPatchForPrimary and preferHigherPatchForSecondaries are enabled', async () => {

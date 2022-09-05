@@ -100,7 +100,7 @@ export class Wormhole {
   /**
    * Sends `amount` tokens to `solanaAccount` by way of the wormhole
    */
-/*  
+/*
   async attestAndCompleteTransferEthToSol(
     ethTxReceipt: string,
     customSignTransaction?: (transaction: Transaction) => Promise<Transaction>,

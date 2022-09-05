@@ -26,6 +26,7 @@ export class Comstock {
       return resp.data
     } catch (e) {
       const error = e as AxiosError
+/*
       if (error.response?.data?.error) {
         throw new Error(
           `Server returned error: [${error.response.status.toString()}] ${
@@ -33,6 +34,7 @@ export class Comstock {
           }`
         )
       }
+*/
       throw error
     }
   }

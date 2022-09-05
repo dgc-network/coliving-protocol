@@ -27,6 +27,7 @@
     "discprov-script-t": "./node_modules/.bin/truffle exec scripts/_discoverynode-test-init.js -test --ipfs-test-host localhost --ipfs-test-port 6001"
   },
   "dependencies": {
+    "@openzeppelin/contracts": "^4.7.3",
     "@openzeppelin/upgrades": "2.8.0",
     "@truffle/hdwallet-provider": "^1.0.13",
     "babel-polyfill": "^6.26.0",

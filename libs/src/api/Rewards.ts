@@ -2,9 +2,9 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { sampleSize } from 'lodash'
 
 import { Base, BaseConstructorArgs, Services } from './base'
-import BN from 'bn.js'
+//import BN from 'bn.js'
 //import { RewardsManagerError } from '../services/solana/errors'
-import { WLIVE_DECMIALS } from '../constants'
+//import { WLIVE_DECMIALS } from '../constants'
 import { Utils } from '../utils/utils'
 import type { ServiceProvider } from './ServiceProvider'
 import type { Logger, Nullable } from '../utils'
@@ -33,18 +33,18 @@ const AggregateAttestationError = Object.freeze({
   INSUFFICIENT_DISCOVERY_NODE_COUNT: 'INSUFFICIENT_DISCOVERY_NODE_COUNT',
   UNKNOWN_ERROR: 'UNKNOWN_ERROR'
 })
-
+/*
 const GetSenderAttestationError = Object.freeze({
   REQUEST_FOR_ATTESTATION_FAILED: 'REQUEST_FOR_ATTESTATION_FAILED'
 })
-
+*/
 /**
  * Combined error type for `SubmitAndEvaluate`
  */
 export const SubmitAndEvaluateError = Object.freeze({
   ...GetAttestationError,
   ...AggregateAttestationError,
-  ...RewardsManagerError
+  //...RewardsManagerError
 })
 
 export const AttestationPhases = Object.freeze({
@@ -115,7 +115,7 @@ type SendAttestationResultConfig = {
   phase?: string
   reason?: string
 }
-
+/*
 type CreateSenderPublicConfig = {
   // the new sender eth address to add. The delegate wallet.
   senderEthAddress: string
@@ -128,9 +128,9 @@ type CreateSenderPublicConfig = {
   // optional override feepayer
   feePayerOverride?: string
 }
-
+*/
 const AAO_REQUEST_TIMEOUT_MS = 15 * 1000
-const WRAPPED_LIVE_PRECISION = 10 ** WLIVE_DECMIALS
+//const WRAPPED_LIVE_PRECISION = 10 ** WLIVE_DECMIALS
 
 export class Rewards extends Base {
   ServiceProvider: ServiceProvider
@@ -146,17 +146,17 @@ export class Rewards extends Base {
     challengeId,
     encodedUserId,
     handle,
-    recipientEthAddress,
+    //recipientEthAddress,
     specifier,
     oracleEthAddress,
     amount,
     quorumSize,
     AAOEndpoint,
-    instructionsPerTransaction,
+    //instructionsPerTransaction,
     maxAggregationAttempts = 20,
     endpoints = null,
     logger = console,
-    feePayerOverride = null
+    //feePayerOverride = null
   }: SubmitAndEvaluateConfig) {
     let phase
     let nodesToReselect = null
@@ -176,6 +176,7 @@ export class Rewards extends Base {
         )}], challengeId [${challengeId}]`
       )
       phase = AttestationPhases.AGGREGATE_ATTESTATIONS
+
       const {
         discoveryNodeAttestations,
         aaoAttestation,
@@ -208,9 +209,10 @@ export class Rewards extends Base {
           aaoAttestation ? 1 : 0
         }] oracle attestations.`
       )
-      const fullTokenAmount = new BN(amount * WRAPPED_LIVE_PRECISION)
+      //const fullTokenAmount = new BN(amount * WRAPPED_LIVE_PRECISION)
       phase = AttestationPhases.SUBMIT_ATTESTATIONS
-      // @ts-expect-error the return types are a bit strange here
+      //// @ts-expect-error the return types are a bit strange here
+/*
       const { errorCode: submitErrorCode, error: submitError } =
         await this.solanaWeb3Manager.submitChallengeAttestations({
           attestations: discoveryNodeAttestations as AttestationMeta[],
@@ -255,9 +257,9 @@ export class Rewards extends Base {
           })
         } else {
           throw new Error(submitErrorCode || submitError)
-        }
+        }        
       }
-
+*/
       // Evaluate
 
       logger.info(
@@ -266,6 +268,7 @@ export class Rewards extends Base {
         )}]`
       )
       phase = AttestationPhases.EVALUATE_ATTESTATIONS
+/*
       const { errorCode: evaluateErrorCode, error: evaluateError } =
         await this.solanaWeb3Manager.evaluateChallengeAttestations({
           challengeId,
@@ -282,7 +285,7 @@ export class Rewards extends Base {
           (evaluateErrorCode ?? evaluateError) as unknown as string
         )
       }
-
+*/
       return { success: true, error: null, phase: null, nodesToReselect: null }
     } catch (e) {
       const err = (e as Error).message
@@ -342,7 +345,8 @@ export class Rewards extends Base {
 
     // First attempt AAO
 
-    let aaoAttestation: Nullable<AttestationMeta> = null
+    //let aaoAttestation: Nullable<AttestationMeta> = null
+    let aaoAttestation = null
 
     try {
       const { success, error: aaoAttestationError } =
@@ -679,6 +683,7 @@ export class Rewards extends Base {
    * a given new senderEthAddress (delegate wallet) and operatorEthAddress (owner wallet).
    * Those attestations are bundled
    */
+/*  
   async createSenderPublic({
     senderEthAddress,
     operatorEthAddress,
@@ -701,6 +706,7 @@ export class Rewards extends Base {
               )
             return isRegistered
           }
+
         })
     }
 
@@ -748,7 +754,7 @@ export class Rewards extends Base {
     })
     return receipt
   }
-
+*/
   /**
    * Logs results of an attestation to identity.
    */

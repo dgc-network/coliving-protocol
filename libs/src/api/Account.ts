@@ -2,16 +2,16 @@ import { Base, BaseConstructorArgs, Services } from './base'
 import { ContentNode } from '../services/contentNode'
 import { Nullable, User, UserMetadata, Utils } from '../utils'
 import { AuthHeaders } from '../constants'
-import { getPermitDigest, sign } from '../utils/signatures'
-import { PublicKey } from '@solana/web3.js'
-import { BN } from '@project-serum/anchor'
+//import { getPermitDigest, sign } from '../utils/signatures'
+//import { PublicKey } from '@solana/web3.js'
+import type { BN } from '@project-serum/anchor'
 import type { Users } from './Users'
-
+/*
 type UserBankOutcomes = {
   Request: string
   Failure: string
 }
-
+*/
 export class Account extends Base {
   User: Users
 
@@ -38,10 +38,10 @@ export class Account extends Base {
     this.searchFull = this.searchFull.bind(this)
     this.searchAutocomplete = this.searchAutocomplete.bind(this)
     this.searchTags = this.searchTags.bind(this)
-    this.sendTokensFromEthToSol = this.sendTokensFromEthToSol.bind(this)
-    this.sendTokensFromSolToEth = this.sendTokensFromSolToEth.bind(this)
-    this.getUserAccountOnSolana = this.getUserAccountOnSolana.bind(this)
-    this.userHasClaimedSolAccount = this.userHasClaimedSolAccount.bind(this)
+    //this.sendTokensFromEthToSol = this.sendTokensFromEthToSol.bind(this)
+    //this.sendTokensFromSolToEth = this.sendTokensFromSolToEth.bind(this)
+    //this.getUserAccountOnSolana = this.getUserAccountOnSolana.bind(this)
+    //this.userHasClaimedSolAccount = this.userHasClaimedSolAccount.bind(this)
   }
 
   /**
@@ -127,9 +127,9 @@ export class Account extends Base {
     coverPhotoFile: Nullable<File> = null,
     hasWallet = false,
     host = (typeof window !== 'undefined' && window.location.origin) || null,
-    handleUserBankOutcomes = (_outcome?: string, _errorCodes?: {}) => {},
-    userBankOutcomes: Partial<UserBankOutcomes> = {},
-    feePayerOverride: Nullable<string> = null,
+    //handleUserBankOutcomes = (_outcome?: string, _errorCodes?: {}) => {},
+    //userBankOutcomes: Partial<UserBankOutcomes> = {},
+    //feePayerOverride: Nullable<string> = null,
     generateRecoveryLink = true
   ) {
     const phases = {
@@ -168,6 +168,7 @@ export class Account extends Base {
       // Create a wAudio user bank address.
       // If userbank creation fails, we still proceed
       // through signup
+/*      
       if (this.solanaWeb3Manager) {
         phase = phases.SOLANA_USER_BANK_CREATION
         // Fire and forget createUserBank. In the case of failure, we will
@@ -197,7 +198,7 @@ export class Account extends Base {
           }
         })()
       }
-
+*/
       // Add user to chain
       phase = phases.ADD_USER
       const response = await this.User.addUser(metadata)
@@ -459,6 +460,7 @@ export class Account extends Base {
   /**
    * Sends `amount` tokens to `recipientAddress`
    */
+/*  
   async permitAndSendTokens(recipientAddress: string, amount: BN) {
     this.REQUIRES(Services.IDENTITY_SERVICE)
     const myWalletAddress = this.web3Manager.getWalletAddress()
@@ -473,13 +475,14 @@ export class Account extends Base {
       amount
     )
   }
-
+*/
   /**
    * Sends Eth `amount` tokens to `solanaAccount` by way of the wormhole
    * 1.) Permits the eth relay to proxy send tokens on behalf of the user
    * 2.) Transfers the tokens on the eth side to the wormhole contract
    * 3.) Gathers attestations from wormhole oracles and relizes the tokens on sol
    */
+/*  
   async sendTokensFromEthToSol(amount: BN, solanaAccount: string) {
     this.REQUIRES(Services.IDENTITY_SERVICE)
     const phases = {
@@ -536,11 +539,12 @@ export class Account extends Base {
       }
     }
   }
-
+*/
   /**
    * Sends Eth `amount` tokens to `solanaAccount` on the identity service
    * by way of the wormhole.
    */
+/*  
   async proxySendTokensFromEthToSol(amount: BN, solanaAccount: string) {
     this.REQUIRES(Services.IDENTITY_SERVICE)
     const myWalletAddress = this.web3Manager.getWalletAddress()
@@ -575,7 +579,7 @@ export class Account extends Base {
       transferTokens
     })
   }
-
+*/
   /**
    * Sends `amount` tokens to `ethAccount` by way of the wormhole
    * 1.) Creates a solana root wallet
@@ -584,6 +588,7 @@ export class Account extends Base {
    * 4.) Transfers to the wrapped live to the sol wormhole contract
    * 5.) Gathers attestations from wormhole oracles and realizes the tokens on eth
    */
+/*
   async sendTokensFromSolToEth(amount: BN, ethAccount: string) {
     const { error, logs, phase } =
       await this.wormholeClient.sendTokensFromSolToEthViaWormhole(
@@ -600,12 +605,12 @@ export class Account extends Base {
   ) {
     const web3 = this.ethWeb3Manager.getWeb3()
     const myPrivateKey = this.web3Manager.getOwnerWalletPrivateKey()
-    /* eslint-disable -- some funky promise logic ahead */
+    // eslint-disable -- some funky promise logic ahead
     const chainId = await new Promise<number>(
       async (resolve) =>
         await web3.eth.getChainId((_, chainId) => resolve(chainId))
     )
-    /* eslint-enable */
+    // eslint-enable
     const name = await this.ethContracts.ColivingTokenClient.name()
     const tokenAddress = this.ethContracts.ColivingTokenClient.contractAddress
 
@@ -629,12 +634,13 @@ export class Account extends Base {
     return {
       result,
       deadline
-    }
+    }    
   }
-
+*/
   /**
    * Permits `relayerAddress` to send `amount` on behalf of the current user, `owner`
    */
+/*  
   async permitProxySendTokens(
     owner: string,
     relayerAddress: string,
@@ -656,10 +662,11 @@ export class Account extends Base {
     )
     return tx
   }
-
+*/
   /**
    * Gets the permit method to proxy send tokens `relayerAddress` to send `amount` on behalf of the current user, `owner`
    */
+/*  
   async getPermitProxySendTokensMethod(
     owner: string,
     relayerAddress: string,
@@ -682,7 +689,7 @@ export class Account extends Base {
       )
     return contractMethod
   }
-
+*/
   /**
    * Sends `amount` tokens to `address` from `owner`
    */
@@ -726,6 +733,7 @@ export class Account extends Base {
    * @returns with keys ethAddress, authority, replicaSet or
    * null when account not found
    */
+/*  
   async getUserAccountOnSolana(
     {
       userId,
@@ -763,11 +771,12 @@ export class Account extends Base {
     const account = await this.solanaWeb3Manager.fetchAccount(userAccountPDA)
     return account
   }
-
+*/
   /**
    * Checks that the current user has claimed account PDA on SOL
    * @returns userHasClaimedAccount
    */
+/*
   async userHasClaimedSolAccount(
     {
       account = null,
@@ -784,12 +793,15 @@ export class Account extends Base {
         'Must supply EITHER an `account` OR `wallet` and `userId` to look up whether userHasClaimedSolAccount'
       )
     }
+
     if (!account && wallet && userId) {
       account = await this.getUserAccountOnSolana({ wallet, userId })
     }
+
     const userHasClaimedAccount =
       PublicKey.default.toString() !== account.authority.toString()
 
     return userHasClaimedAccount
   }
+*/  
 }
