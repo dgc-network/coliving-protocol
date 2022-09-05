@@ -45,7 +45,7 @@
     "hcaptcha": "^0.1.0",
     "ioredis": "^4.9.0",
     "keccak256": "^1.0.2",
-    "mailgun-js": "^0.22.0",
+    "mailgun-js": "^0.6.7",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.27",
     "numeral": "^2.0.6",
