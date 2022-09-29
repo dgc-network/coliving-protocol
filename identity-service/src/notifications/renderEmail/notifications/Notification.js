@@ -9,7 +9,7 @@ var _react = _interopRequireDefault(require("react"));
 
 var _formatNotificationMetadata = require("../../formatNotificationMetadata");
 
-var _NotificationBody = _interopRequireDefault(require("./NotificationBody"));
+var _NotificationBody = _interopRequireDefault(require("./notificationBody"));
 
 var _Icons = require("./Icons");
 

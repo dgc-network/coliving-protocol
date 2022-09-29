@@ -18,7 +18,7 @@ import {
     ProfilePictureFromJSON,
     ProfilePictureFromJSONTyped,
     ProfilePictureToJSON,
-} from './ProfilePicture';
+} from './profilePicture';
 
 /**
  * 

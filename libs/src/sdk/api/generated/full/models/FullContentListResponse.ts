@@ -18,13 +18,13 @@ import {
     ContentListFullFromJSON,
     ContentListFullFromJSONTyped,
     ContentListFullToJSON,
-} from './ContentListFull';
+} from './contentListFull';
 import {
     VersionMetadata,
     VersionMetadataFromJSON,
     VersionMetadataFromJSONTyped,
     VersionMetadataToJSON,
-} from './VersionMetadata';
+} from './versionMetadata';
 
 /**
  * 

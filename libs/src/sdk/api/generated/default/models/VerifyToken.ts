@@ -18,7 +18,7 @@ import {
     DecodedUserTokenFromJSON,
     DecodedUserTokenFromJSONTyped,
     DecodedUserTokenToJSON,
-} from './DecodedUserToken';
+} from './decodedUserToken';
 
 /**
  * 

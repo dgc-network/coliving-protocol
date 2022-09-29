@@ -86,7 +86,7 @@ class App {
       await new Promise(resolve => setTimeout(resolve, 2000))
       await this.runMigrations()
 
-      // clear POA & ETH relayer keys
+      // clear DATA & ETH relayer keys
       await Lock.clearAllLocks(generateWalletLockKey('*'))
       await Lock.clearAllLocks(generateETHWalletLockKey('*'))
 
@@ -102,7 +102,7 @@ class App {
         await this.configureReporter()
 
         // Fork extra web server workers
-        // note - we can't have more than 1 worker at the moment because POA and ETH relays
+        // note - we can't have more than 1 worker at the moment because DATA and ETH relays
         // use in memory wallet locks
         for (let i = 0; i < config.get('clusterForkProcessCount'); i++) {
           cluster.fork({ 'WORKER_TYPE': 'web_server' })

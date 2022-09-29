@@ -155,7 +155,7 @@ const selectWallet = async () => {
       const locked = await Lock.setLock(generateWalletLockKey(wallet.publicKey))
       if (locked) return wallet
     } catch (e) {
-      logger.error('Error selecting POA wallet for txRelay, reselecting', e)
+      logger.error('Error selecting DATA wallet for txRelay, reselecting', e)
     }
   }
 }

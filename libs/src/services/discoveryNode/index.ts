@@ -1,1 +1,1 @@
-export * from './DiscoveryNode'
+export * from './discoveryNode'

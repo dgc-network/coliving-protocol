@@ -1,1 +1,1 @@
-export * from './Comstock'
+export * from './comstock'

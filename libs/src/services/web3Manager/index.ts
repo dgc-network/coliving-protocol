@@ -1,2 +1,2 @@
-export * from './Web3Config'
-export * from './Web3Manager'
+export * from './web3Config'
+export * from './web3Manager'

@@ -11,7 +11,7 @@ El protocolo Coliving está propulsado por dos servicios fuera de la cadena, el 
 
 **Nodo de descubrimiento**
 
-* Indexa las blockchains utilizadas por el protocolo Coliving \ (Main-net Ethereum, POA, y Solana\)
+* Indexa las blockchains utilizadas por el protocolo Coliving \ (Main-net Ethereum, DATA, y Solana\)
 * Tráfico API
 * Métricas de uso
 

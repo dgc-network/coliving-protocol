@@ -7,8 +7,8 @@ import { EthWeb3Config, EthWeb3Manager } from '../services/ethWeb3Manager'
 import { IdentityService } from '../services/identity'
 import { UserStateManager } from '../userStateManager'
 import { Oauth } from './oauth'
-import { AgreementsApi } from './api/AgreementsApi'
-import { ResolveApi } from './api/ResolveApi'
+import { AgreementsApi } from './api/agreementsApi'
+import { ResolveApi } from './api/resolveApi'
 import {
   Configuration,
   ContentListsApi,

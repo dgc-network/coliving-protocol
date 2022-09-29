@@ -7,7 +7,7 @@ exports["default"] = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
-var _Footer = _interopRequireDefault(require("./Footer"));
+var _Footer = _interopRequireDefault(require("./footer"));
 
 var _Notification = _interopRequireDefault(require("./notifications/Notification"));
 

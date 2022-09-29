@@ -399,7 +399,7 @@ const config = convict({
     env: 'awsSNSAndroidARN'
   },
   minGasPrice: {
-    doc: 'minimum gas price; 10 GWei, 10 * POA default gas price',
+    doc: 'minimum gas price; 10 GWei, 10 * DATA default gas price',
     format: 'nat',
     default: 10 * Math.pow(10, 9),
     env: 'minGasPrice'

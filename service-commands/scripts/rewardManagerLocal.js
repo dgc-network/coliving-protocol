@@ -81,7 +81,7 @@ const createSenderInstructionSchema = new Map([
 
 const createSenderLocal = async ethAddress => {
   const protocolDir = getEnv('PROTOCOL_DIR')
-  const solanaConfig = require(`${protocolDir}/solana-programs/solana-program-config.json`)
+  //const solanaConfig = require(`${protocolDir}/solana-programs/solana-program-config.json`)
   const ownerWalletBytes = solanaConfig.ownerWallet
   const feepayerWalletBytes = (solanaConfig.feePayerWallets && solanaConfig.feePayerWallets.length) ? solanaConfig.feePayerWallets[0].privateKey : null
   if (!feepayerWalletBytes) {

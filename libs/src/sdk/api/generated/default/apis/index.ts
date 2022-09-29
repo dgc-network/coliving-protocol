@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-export * from './ContentListsApi';
-export * from './ResolveApi';
-export * from './TipsApi';
-export * from './AgreementsApi';
-export * from './UsersApi';
+export * from './contentListsApi';
+export * from './resolveApi';
+export * from './tipsApi';
+export * from './agreementsApi';
+export * from './usersApi';

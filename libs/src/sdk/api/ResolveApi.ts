@@ -8,7 +8,7 @@ import {
 import {
   ResolveApi as GeneratedResolveApi,
   ResolveRequest
-} from './generated/default/apis/ResolveApi'
+} from './generated/default/apis/resolveApi'
 
 export class ResolveApi extends GeneratedResolveApi {
   /**

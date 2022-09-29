@@ -1,1 +1,1 @@
-export * from './ColivingContracts'
+export * from './colivingContracts'

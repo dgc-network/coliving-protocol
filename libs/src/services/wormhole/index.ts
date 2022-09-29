@@ -1,1 +1,1 @@
-export * from './Wormhole'
+export * from './wormhole'

@@ -18,13 +18,13 @@ import {
     AgreementFullFromJSON,
     AgreementFullFromJSONTyped,
     AgreementFullToJSON,
-} from './AgreementFull';
+} from './agreementFull';
 import {
     VersionMetadata,
     VersionMetadataFromJSON,
     VersionMetadataFromJSONTyped,
     VersionMetadataToJSON,
-} from './VersionMetadata';
+} from './versionMetadata';
 
 /**
  * 

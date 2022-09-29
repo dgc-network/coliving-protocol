@@ -6,7 +6,7 @@ import {
   getSpIDForEndpoint,
   setSpIDForEndpoint
 } from '../services/contentNode'
-import type { ServiceProvider } from './ServiceProvider'
+import type { ServiceProvider } from './serviceProvider'
 
 // User metadata fields that are required on the metadata object and can have
 // null or non-null values

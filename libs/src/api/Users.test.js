@@ -1,6 +1,6 @@
 const assert = require('assert')
 
-const { Users } = require('./Users')
+const { Users } = require('./users')
 
 describe('Users tests', () => {
   it('_addUserOperations finds latest block hash', async () => {

@@ -18,13 +18,13 @@ import {
     ActivityFromJSON,
     ActivityFromJSONTyped,
     ActivityToJSON,
-} from './Activity';
+} from './activity';
 import {
     VersionMetadata,
     VersionMetadataFromJSON,
     VersionMetadataFromJSONTyped,
     VersionMetadataToJSON,
-} from './VersionMetadata';
+} from './versionMetadata';
 
 /**
  * 

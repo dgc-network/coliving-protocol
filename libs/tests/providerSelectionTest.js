@@ -34,7 +34,7 @@ describe('Testing ContractClient class with ProviderSelection', () => {
 
     assert.strictEqual(
       contractClient.web3Manager.getWeb3().currentProvider.host,
-      'https://.poa.network'
+      'https://.data.network'
     )
     assert(initWithProviderSelectionSpy.calledOnce)
     assert(consoleSpy.notCalled)
@@ -137,7 +137,7 @@ describe('Testing ContractClient class with ProviderSelection', () => {
 
     assert.strictEqual(
       contractClient.web3Manager.getWeb3().currentProvider.host,
-      'https://.poa.network'
+      'https://.data.network'
     )
     assert(initWithProviderSelectionSpy.calledOnce)
     assert(consoleSpy.notCalled)
@@ -169,7 +169,7 @@ describe('Testing ContractClient class with ProviderSelection', () => {
 // Helper stub and functions for providerSelectionTest
 
 // Available providers
-const gateways = ['https://.poa.network', 'https://public.poa.network']
+const gateways = ['https://.data.network', 'https://public.data.network']
 
 // Creates barebones web3 object
 function createWeb3Obj(host) {
@@ -212,7 +212,7 @@ function createContractClientWithInternalWeb3() {
     }
   }
   const web3Manager = new Web3Manager({})
-  web3Manager.web3 = createWeb3Obj('https://.poa.network')
+  web3Manager.web3 = createWeb3Obj('https://.data.network')
   web3Manager.web3Config = web3Config
   return createContractClient(web3Manager)
 }
@@ -225,7 +225,7 @@ function createContractClientWithExternalWeb3() {
     }
   }
   const web3Manager = new Web3Manager({})
-  web3Manager.web3 = createWeb3Obj('https://.poa.network')
+  web3Manager.web3 = createWeb3Obj('https://.data.network')
   web3Manager.web3Config = web3Config
   return createContractClient(web3Manager)
 }

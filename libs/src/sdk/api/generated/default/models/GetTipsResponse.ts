@@ -18,7 +18,7 @@ import {
     TipFromJSON,
     TipFromJSONTyped,
     TipToJSON,
-} from './Tip';
+} from './tip';
 
 /**
  * 

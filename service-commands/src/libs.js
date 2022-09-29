@@ -66,9 +66,9 @@ function LibsWrapper(walletIndex = 0) {
     if (this.libsInstance) return
 
     const [
-      // POA Registry
+      // DATA Registry
       REGISTRY_ADDRESS,
-      // Gateway for POA calls.
+      // Gateway for DATA calls.
       WEB3_PROVIDER_URLS,
       ETH_TOKEN_ADDRESS,
       ETH_REGISTRY_ADDRESS,

@@ -43,7 +43,7 @@ const SERVICES = [
   'coliving_ganache_cli',
   'coliving_client',
   'coliving-identity-service_identity-service_1',
-  'solana',
+  //'solana',
   'trusted_notifier_service',
   'anti-abuse-oracle_anti_abuse_oracle_1'
 ]

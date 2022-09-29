@@ -1,1 +1,1 @@
-export * from './Hedgehog'
+export * from './hedgehog'

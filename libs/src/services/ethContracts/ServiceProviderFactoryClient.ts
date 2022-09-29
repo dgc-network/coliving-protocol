@@ -1,14 +1,14 @@
 // TODO: a lot of extra parseInt's that result in incorrect (as unknown as string) typecasting
 
 import { ContractABI, Logger, Utils } from '../../utils'
-import { GovernedContractClient } from '../contracts/GovernedContractClient'
+import { GovernedContractClient } from '../contracts/governedContractClient'
 import axios, { AxiosRequestConfig } from 'axios'
 import { range } from 'lodash'
 import type { EthWeb3Manager } from '../ethWeb3Manager'
-import type { GetRegistryAddress } from '../contracts/ContractClient'
-import type { ColivingTokenClient } from './ColivingTokenClient'
-import type { StakingProxyClient } from './StakingProxyClient'
-import type { GovernanceClient } from './GovernanceClient'
+import type { GetRegistryAddress } from '../contracts/contractClient'
+import type { ColivingTokenClient } from './colivingTokenClient'
+import type { StakingProxyClient } from './stakingProxyClient'
+import type { GovernanceClient } from './governanceClient'
 import urlJoin from 'proper-url-join'
 import type BN from 'bn.js'
 

@@ -18,13 +18,13 @@ import {
     FullTipFromJSON,
     FullTipFromJSONTyped,
     FullTipToJSON,
-} from './FullTip';
+} from './fullTip';
 import {
     VersionMetadata,
     VersionMetadataFromJSON,
     VersionMetadataFromJSONTyped,
     VersionMetadataToJSON,
-} from './VersionMetadata';
+} from './versionMetadata';
 
 /**
  * 

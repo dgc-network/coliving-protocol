@@ -18,13 +18,13 @@ import {
     SearchModelFromJSON,
     SearchModelFromJSONTyped,
     SearchModelToJSON,
-} from './SearchModel';
+} from './searchModel';
 import {
     VersionMetadata,
     VersionMetadataFromJSON,
     VersionMetadataFromJSONTyped,
     VersionMetadataToJSON,
-} from './VersionMetadata';
+} from './versionMetadata';
 
 /**
  * 

@@ -11,7 +11,7 @@ Le protocole Coliving est alimenté par deux services hors chaîne, le Discovery
 
 **Discovery Node**
 
-* Index des blockchains utilisées par le protocole Coliving \(Main-net Ethereum, POA, et Solana\)
+* Index des blockchains utilisées par le protocole Coliving \(Main-net Ethereum, DATA, et Solana\)
 * Sert le trafic de l'API
 * Suivi des mesures d'utilisation
 

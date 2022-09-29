@@ -1,7 +1,7 @@
 import nock from 'nock'
 import assert from 'assert'
 import semver from 'semver'
-import { DiscoveryNodeSelection } from './DiscoveryNodeSelection'
+import { DiscoveryNodeSelection } from './discoveryNodeSelection'
 import { DISCOVERY_NODE_TIMESTAMP } from './constants'
 import type { EthContracts } from '../ethContracts'
 import { LocalStorage } from 'node-localstorage'

@@ -1,1 +1,1 @@
-export * from './EthContracts'
+export * from './ethContracts'

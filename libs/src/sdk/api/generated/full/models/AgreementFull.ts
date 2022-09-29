@@ -18,55 +18,55 @@ import {
     DownloadMetadataFromJSON,
     DownloadMetadataFromJSONTyped,
     DownloadMetadataToJSON,
-} from './DownloadMetadata';
+} from './downloadMetadata';
 import {
     Favorite,
     FavoriteFromJSON,
     FavoriteFromJSONTyped,
     FavoriteToJSON,
-} from './Favorite';
+} from './favorite';
 import {
     FieldVisibility,
     FieldVisibilityFromJSON,
     FieldVisibilityFromJSONTyped,
     FieldVisibilityToJSON,
-} from './FieldVisibility';
+} from './fieldVisibility';
 import {
     FullRemixParent,
     FullRemixParentFromJSON,
     FullRemixParentFromJSONTyped,
     FullRemixParentToJSON,
-} from './FullRemixParent';
+} from './fullRemixParent';
 import {
     Repost,
     RepostFromJSON,
     RepostFromJSONTyped,
     RepostToJSON,
-} from './Repost';
+} from './repost';
 import {
     StemParent,
     StemParentFromJSON,
     StemParentFromJSONTyped,
     StemParentToJSON,
-} from './StemParent';
+} from './stemParent';
 import {
     AgreementArtwork,
     AgreementArtworkFromJSON,
     AgreementArtworkFromJSONTyped,
     AgreementArtworkToJSON,
-} from './AgreementArtwork';
+} from './agreementArtwork';
 import {
     AgreementSegment,
     AgreementSegmentFromJSON,
     AgreementSegmentFromJSONTyped,
     AgreementSegmentToJSON,
-} from './AgreementSegment';
+} from './agreementSegment';
 import {
     UserFull,
     UserFullFromJSON,
     UserFullFromJSONTyped,
     UserFullToJSON,
-} from './UserFull';
+} from './userFull';
 
 /**
  * 

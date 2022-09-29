@@ -18,7 +18,7 @@ import {
     AgreementIdFromJSON,
     AgreementIdFromJSONTyped,
     AgreementIdToJSON,
-} from './AgreementId';
+} from './agreementId';
 
 /**
  * 

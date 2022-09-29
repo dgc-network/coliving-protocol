@@ -179,7 +179,7 @@ describe('Test Render Email Notification', function () {
     await runMigrations()
   })
 
-  it('should render poa actions to an email', async function () {
+  it('should render data actions to an email', async function () {
     // ======================================= Process initial Notifications =======================================
     const tx1 = await models.sequelize.transaction()
     await processNotifications(notifications, tx1)

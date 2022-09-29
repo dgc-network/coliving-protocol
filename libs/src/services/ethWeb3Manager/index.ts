@@ -1,1 +1,1 @@
-export * from './EthWeb3Manager'
+export * from './ethWeb3Manager'

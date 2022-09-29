@@ -18,13 +18,13 @@ import {
     FullSupportingFromJSON,
     FullSupportingFromJSONTyped,
     FullSupportingToJSON,
-} from './FullSupporting';
+} from './fullSupporting';
 import {
     VersionMetadata,
     VersionMetadataFromJSON,
     VersionMetadataFromJSONTyped,
     VersionMetadataToJSON,
-} from './VersionMetadata';
+} from './versionMetadata';
 
 /**
  * 

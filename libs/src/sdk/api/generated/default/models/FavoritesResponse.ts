@@ -18,7 +18,7 @@ import {
     FavoriteFromJSON,
     FavoriteFromJSONTyped,
     FavoriteToJSON,
-} from './Favorite';
+} from './favorite';
 
 /**
  * 

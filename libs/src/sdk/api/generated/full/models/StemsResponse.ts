@@ -18,13 +18,13 @@ import {
     StemFullFromJSON,
     StemFullFromJSONTyped,
     StemFullToJSON,
-} from './StemFull';
+} from './stemFull';
 import {
     VersionMetadata,
     VersionMetadataFromJSON,
     VersionMetadataFromJSONTyped,
     VersionMetadataToJSON,
-} from './VersionMetadata';
+} from './versionMetadata';
 
 /**
  * 

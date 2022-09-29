@@ -5,7 +5,7 @@ const { logger } = require('./logging')
 
 /**
  * Generic locking class with the ability to set, get and clear
- * Primarily used in POA and ETH relay transactions to lock
+ * Primarily used in DATA and ETH relay transactions to lock
  * relay wallets during a transaction
  */
 class Lock {

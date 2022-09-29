@@ -166,8 +166,8 @@ filebeat.autodiscover:
                 docker.container.image: "redis"
             - contains:
                 docker.container.image: "postgres"
-            - contains:
-                docker.container.image: "solana-programs"
+            #- contains:
+                #docker.container.image: "solana-programs"
             - contains:
                 docker.container.image: "ganache"
         - config:
@@ -192,8 +192,8 @@ filebeat.autodiscover:
                 docker.container.image: "redis"
             - not.contains:
                 docker.container.image: "postgres"
-            - not.contains:
-                docker.container.image: "solana-programs"
+            #- not.contains:
+                #docker.container.image: "solana-programs"
             - not.contains:
                 docker.container.image: "ganache"
 

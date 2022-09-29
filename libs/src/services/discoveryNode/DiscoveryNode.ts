@@ -16,7 +16,7 @@ import urlJoin, { PathArg } from 'proper-url-join'
 import {
   DiscoveryNodeSelection,
   DiscoveryNodeSelectionConfig
-} from './DiscoveryNodeSelection'
+} from './discoveryNodeSelection'
 import type { CurrentUser, UserStateManager } from '../../userStateManager'
 import type { EthContracts } from '../ethContracts'
 import type { Web3Manager } from '../web3Manager'

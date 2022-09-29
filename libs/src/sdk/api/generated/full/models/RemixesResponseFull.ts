@@ -18,13 +18,13 @@ import {
     RemixesResponseFromJSON,
     RemixesResponseFromJSONTyped,
     RemixesResponseToJSON,
-} from './RemixesResponse';
+} from './remixesResponse';
 import {
     VersionMetadata,
     VersionMetadataFromJSON,
     VersionMetadataFromJSONTyped,
     VersionMetadataToJSON,
-} from './VersionMetadata';
+} from './versionMetadata';
 
 /**
  * 

@@ -18,7 +18,7 @@ import {
     EncodedUserIdFromJSON,
     EncodedUserIdFromJSONTyped,
     EncodedUserIdToJSON,
-} from './EncodedUserId';
+} from './encodedUserId';
 
 /**
  * 

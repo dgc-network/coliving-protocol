@@ -1,4 +1,4 @@
-import { ContractClient } from '../contracts/ContractClient'
+import { ContractClient } from '../contracts/contractClient'
 
 export class EthRewardsManagerClient extends ContractClient {
   /* ------- GETTERS ------- */

@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const readline = require('readline')
 const ethContractsMigrationOutput = require('../../eth-contracts/migrations/migration-output.json')
-const solanaConfig = require('../../solana-programs/solana-program-config.json')
+//const solanaConfig = require('../../solana-programs/solana-program-config.json')
 
 const ETH_CONTRACTS_REGISTRY = 'coliving_eth_contracts_registry'
 const SOLANA_AGREEMENT_LISTEN_COUNT_ADDRESS = 'coliving_solana_agreement_listen_count_address'

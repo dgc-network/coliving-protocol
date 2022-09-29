@@ -18,13 +18,13 @@ import {
     CoverPhotoFromJSON,
     CoverPhotoFromJSONTyped,
     CoverPhotoToJSON,
-} from './CoverPhoto';
+} from './coverPhoto';
 import {
     ProfilePicture,
     ProfilePictureFromJSON,
     ProfilePictureFromJSONTyped,
     ProfilePictureToJSON,
-} from './ProfilePicture';
+} from './profilePicture';
 
 /**
  * 

@@ -1,1 +1,1 @@
-export * from './ColivingABIDecoder'
+export * from './colivingABIDecoder'

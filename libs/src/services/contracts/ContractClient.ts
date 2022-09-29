@@ -1,4 +1,4 @@
-import { ProviderSelection } from './ProviderSelection'
+import { ProviderSelection } from './providerSelection'
 import { Web3Manager } from '../web3Manager'
 import retry from 'async-retry'
 import type { ContractABI, Nullable, Logger } from '../../utils'
@@ -54,7 +54,7 @@ export class ContractClient {
     this._isInitializing = false
     this._initAttempts = 0
 
-    // Initializing this.providerSelector for POA provider fallback logic
+    // Initializing this.providerSelector for DATA provider fallback logic
     if (
       this.web3Manager instanceof Web3Manager &&
       !this.web3Manager.web3Config.useExternalWeb3

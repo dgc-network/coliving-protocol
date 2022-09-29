@@ -18,7 +18,7 @@ import {
     ConnectedWalletsFromJSON,
     ConnectedWalletsFromJSONTyped,
     ConnectedWalletsToJSON,
-} from './ConnectedWallets';
+} from './connectedWallets';
 
 /**
  * 

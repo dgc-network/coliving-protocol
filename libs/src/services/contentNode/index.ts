@@ -1,2 +1,2 @@
-export * from './ContentNode'
-export * from './ContentNodeSelection'
+export * from './contentNode'
+export * from './contentNodeSelection'

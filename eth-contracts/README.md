@@ -2,7 +2,7 @@
 
 Coliving has two sets of contracts - the one in this directory, which runs on Ethereum mainnet in
 production, and the one
-[here](https://github.com/dgc-network/coliving-protocol/tree/master/contracts) which runs on POA
+[here](https://github.com/dgc-network/coliving-protocol/tree/master/contracts) which runs on DATA
 mainnet in production.
 
 The smart contracts in this directory implement the Coliving ERC-20 token, staking functionality, service

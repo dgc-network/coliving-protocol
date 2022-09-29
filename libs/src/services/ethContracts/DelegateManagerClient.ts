@@ -1,11 +1,11 @@
 import type BN from 'bn.js'
 import { ContractABI, Logger, Utils } from '../../utils'
-import type { GetRegistryAddress } from '../contracts/ContractClient'
-import { GovernedContractClient } from '../contracts/GovernedContractClient'
+import type { GetRegistryAddress } from '../contracts/contractClient'
+import { GovernedContractClient } from '../contracts/governedContractClient'
 import type { EthWeb3Manager } from '../ethWeb3Manager'
-import type { ColivingTokenClient } from './ColivingTokenClient'
-import type { GovernanceClient } from './GovernanceClient'
-import type { StakingProxyClient } from './StakingProxyClient'
+import type { ColivingTokenClient } from './colivingTokenClient'
+import type { GovernanceClient } from './governanceClient'
+import type { StakingProxyClient } from './stakingProxyClient'
 
 type GetEvent = {
   delegator: string

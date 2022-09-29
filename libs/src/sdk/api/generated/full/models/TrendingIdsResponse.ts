@@ -18,7 +18,7 @@ import {
     TrendingTimesIdsFromJSON,
     TrendingTimesIdsFromJSONTyped,
     TrendingTimesIdsToJSON,
-} from './TrendingTimesIds';
+} from './trendingTimesIds';
 
 /**
  * 

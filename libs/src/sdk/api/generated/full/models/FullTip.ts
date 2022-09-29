@@ -18,13 +18,13 @@ import {
     SupporterReferenceFromJSON,
     SupporterReferenceFromJSONTyped,
     SupporterReferenceToJSON,
-} from './SupporterReference';
+} from './supporterReference';
 import {
     UserFull,
     UserFullFromJSON,
     UserFullFromJSONTyped,
     UserFullToJSON,
-} from './UserFull';
+} from './userFull';
 
 /**
  * 

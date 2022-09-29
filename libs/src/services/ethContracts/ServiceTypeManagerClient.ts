@@ -1,5 +1,5 @@
 import { Utils } from '../../utils'
-import { GovernedContractClient } from '../contracts/GovernedContractClient'
+import { GovernedContractClient } from '../contracts/governedContractClient'
 
 export class ServiceTypeManagerClient extends GovernedContractClient {
   /**

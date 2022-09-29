@@ -1,8 +1,8 @@
-import { ContractClient, GetRegistryAddress } from '../contracts/ContractClient'
+import { ContractClient, GetRegistryAddress } from '../contracts/contractClient'
 import { ContractABI, ContractMethod, Logger, Utils } from '../../utils'
 import type { EthWeb3Manager } from '../ethWeb3Manager'
-import type { ColivingTokenClient } from './ColivingTokenClient'
-import type { StakingProxyClient } from './StakingProxyClient'
+import type { ColivingTokenClient } from './colivingTokenClient'
+import type { StakingProxyClient } from './stakingProxyClient'
 import type { EventLog } from 'web3-core'
 
 type ProposalTxn = {

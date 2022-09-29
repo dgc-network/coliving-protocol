@@ -23,7 +23,7 @@ cd $PROTOCOL_DIR/mad-dog
 npm install
 mkdir -p local-storage/tmp-imgs
 
-cd $PROTOCOL_DIR/poa-contracts
+cd $PROTOCOL_DIR/data-contracts
 npm install
 
 cd $PROTOCOL_DIR/eth-contracts

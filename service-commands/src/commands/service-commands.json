@@ -8,9 +8,6 @@
       "docker network prune -f",
       "sudo rm -rf content-node/compose/env/tmp",
       "sudo rm -rf discovery-node/compose/env/tmp",
-      "sudo rm -rf solana-programs/claimable-tokens/cli/target",
-      "sudo rm -rf solana-programs/cli/target",
-      "sudo rm -rf solana-programs/reward-manager/target",
       "sudo rm -rf discovery-node/.venv",
       "sudo rm -rf discovery-node/.mypy_cache",
       "sudo rm -f discovery-node/*.log",
@@ -100,50 +97,6 @@
       "cd contracts/; npm run ganache-q"
     ]
   },
-  "solana-validator-predeployed": {
-    "protocol": "http",
-    "host": "localhost",
-    "port": 8899,
-    "health_check_endpoint": "",
-    "up": [
-      "docker run -d --name solana -p 8899:8899/tcp -p 8900-8902:8900-8902/tcp --network coliving_dev coliving/solana-programs:predeployed-6cc9fdc48706622cd86951b9aa6438d606a0c46f",
-      "mkdir -p ~/.coliving; docker cp solana:/solana-program-config.json ~/.coliving",
-      "docker cp solana:/solana-program-config.json $PROTOCOL_DIR/solana-programs",
-      "docker cp solana:/solana-program-config.json $PROTOCOL_DIR/identity-service",
-      "mkdir -p $PROTOCOL_DIR/discovery-node/idl/; docker cp solana:/coliving-data/target/idl/coliving_data.json $PROTOCOL_DIR/discovery-node/idl/coliving_data.json"
-    ],
-    "down": [
-      "docker container stop solana || true",
-      "docker container rm solana || true"
-    ]
-  },
-  "solana-validator": {
-    "protocol": "http",
-    "host": "localhost",
-    "port": 8899,
-    "health_check_endpoint": "",
-    "up": [
-      "docker run -d --name solana -p 8899:8899/tcp -p 8900-8902:8900-8902/tcp --network coliving_dev --entrypoint='' solanalabs/solana:v1.9.13 sh -c 'solana-test-validator --gossip-host solana --limit-ledger-size 1000000'"
-    ],
-    "down": [
-      "docker container stop solana || true",
-      "docker container rm solana || true"
-    ]
-  },
-  "solana-programs": {
-    "path": "solana-programs",
-    "up": [
-      "cd solana-programs/; DOCKER_BUILDKIT=1 docker build . -t coliving/solana-programs:local",
-      "cd solana-programs/; docker run --name coliving_solana_programs --network coliving_dev -e SOLANA_HOST='http://solana:8899' -v \"$PWD:/usr/src/app\" coliving/solana-programs:local >> $PROTOCOL_DIR/service-commands/output.log 2>&1",
-      "mkdir -p discovery-node/idl/ ~/.coliving",
-      "docker cp coliving_solana_programs:/usr/src/app/solana-program-config.json ../identity-service/solana-program-config.json",
-      "docker cp coliving_solana_programs:/usr/src/app/solana-program-config.json ~/.coliving/solana-program-config.json",
-      "docker cp coliving_solana_programs:/usr/src/app/anchor/coliving-data/target/idl/coliving_data.json discovery-node/idl/coliving_data.json"
-    ],
-    "add-sender": [
-      "cd solana-programs/reward-manager/cli; cargo run create-sender --eth-operator-address $sender_address --eth-sender-address $sender_address --reward-manager $reward_manager_address"
-    ]
-  },
   "ipfs": {
     "up": [
       "libs/scripts/ipfs.sh up local-ipfs-node"
@@ -200,9 +153,6 @@
     "down": [
       "cd discovery-node; . compose/env/tmp/shellEnv#.sh; docker-compose -f compose/docker-compose.db.yml -f compose/docker-compose.elasticsearch.yml -f compose/docker-compose.redis.yml -f compose/docker-compose.backend.yml -f compose/docker-compose.ipfs.yml down",
       "cd discovery-node; . compose/env/unsetShellEnv.sh",
-      "sudo rm -rf solana-programs/claimable-tokens/cli/target",
-      "sudo rm -rf solana-programs/cli/target",
-      "sudo rm -rf solana-programs/reward-manager/target",
       "sudo rm -rf discovery-node/.venv",
       "sudo rm -rf discovery-node/.mypy_cache",
       "sudo rm -f discovery-node/*.log"

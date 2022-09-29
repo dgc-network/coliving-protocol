@@ -3,7 +3,7 @@ import assert from 'assert'
 import semver from 'semver'
 
 import { CONTENT_NODE_SERVICE_NAME } from './constants'
-import { ContentNodeSelection } from './ContentNodeSelection'
+import { ContentNodeSelection } from './contentNodeSelection'
 import type { EthContracts } from '../ethContracts'
 
 const mockEthContracts = (

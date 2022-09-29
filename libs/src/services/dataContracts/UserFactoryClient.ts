@@ -1,4 +1,4 @@
-import { ContractClient } from '../contracts/ContractClient'
+import { ContractClient } from '../contracts/contractClient'
 import * as signatureSchemas from '../../../data-contracts/signatureSchemas'
 import type { UserUpdateRequestFn } from '../../../data-contracts/signatureSchemas'
 import { Nullable, Utils } from '../../utils'

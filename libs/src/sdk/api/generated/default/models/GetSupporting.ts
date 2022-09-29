@@ -18,7 +18,7 @@ import {
     SupportingFromJSON,
     SupportingFromJSONTyped,
     SupportingToJSON,
-} from './Supporting';
+} from './supporting';
 
 /**
  * 

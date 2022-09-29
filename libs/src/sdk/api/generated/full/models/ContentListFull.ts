@@ -18,37 +18,37 @@ import {
     FavoriteFromJSON,
     FavoriteFromJSONTyped,
     FavoriteToJSON,
-} from './Favorite';
+} from './favorite';
 import {
     ContentListAddedTimestamp,
     ContentListAddedTimestampFromJSON,
     ContentListAddedTimestampFromJSONTyped,
     ContentListAddedTimestampToJSON,
-} from './ContentListAddedTimestamp';
+} from './contentListAddedTimestamp';
 import {
     ContentListArtwork,
     ContentListArtworkFromJSON,
     ContentListArtworkFromJSONTyped,
     ContentListArtworkToJSON,
-} from './ContentListArtwork';
+} from './contentListArtwork';
 import {
     Repost,
     RepostFromJSON,
     RepostFromJSONTyped,
     RepostToJSON,
-} from './Repost';
+} from './repost';
 import {
     AgreementFull,
     AgreementFullFromJSON,
     AgreementFullFromJSONTyped,
     AgreementFullToJSON,
-} from './AgreementFull';
+} from './agreementFull';
 import {
     UserFull,
     UserFullFromJSON,
     UserFullFromJSONTyped,
     UserFullToJSON,
-} from './UserFull';
+} from './userFull';
 
 /**
  * 

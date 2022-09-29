@@ -1,3 +1,3 @@
-const SeedSession = require('./SeedSession')
+const SeedSession = require('./seedSession')
 
 module.exports = SeedSession

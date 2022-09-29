@@ -18,7 +18,7 @@ import {
     AgreementElementFromJSON,
     AgreementElementFromJSONTyped,
     AgreementElementToJSON,
-} from './AgreementElement';
+} from './agreementElement';
 
 /**
  * 

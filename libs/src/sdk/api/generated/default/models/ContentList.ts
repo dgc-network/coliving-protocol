@@ -18,13 +18,13 @@ import {
     ContentListArtworkFromJSON,
     ContentListArtworkFromJSONTyped,
     ContentListArtworkToJSON,
-} from './ContentListArtwork';
+} from './contentListArtwork';
 import {
     User,
     UserFromJSON,
     UserFromJSONTyped,
     UserToJSON,
-} from './User';
+} from './user';
 
 /**
  * 

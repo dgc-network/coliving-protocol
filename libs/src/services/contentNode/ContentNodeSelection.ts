@@ -14,7 +14,7 @@ import {
   Logger
 } from '../../utils'
 import { CONTENT_NODE_SERVICE_NAME, DECISION_TREE_STATE } from './constants'
-import type { MonitoringCallbacks } from './ContentNode'
+import type { MonitoringCallbacks } from './contentNode'
 
 type Timeout = number | null
 

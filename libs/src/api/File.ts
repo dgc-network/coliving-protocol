@@ -4,7 +4,7 @@ import axios, { ResponseType } from 'axios'
 import { Base, BaseConstructorArgs, Services } from './base'
 import { raceRequests } from '../utils/network'
 import retry from 'async-retry'
-import type { Users } from './Users'
+import type { Users } from './users'
 import type { Nullable } from '../utils'
 
 /**

@@ -18,7 +18,7 @@ import {
     AgreementFullFromJSON,
     AgreementFullFromJSONTyped,
     AgreementFullToJSON,
-} from './AgreementFull';
+} from './agreementFull';
 
 /**
  * 

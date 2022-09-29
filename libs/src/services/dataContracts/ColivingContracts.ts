@@ -1,16 +1,16 @@
 import { Utils, Logger } from '../../utils'
 
 // load classes wrapping contracts
-import { RegistryClient } from './RegistryClient'
-import { UserFactoryClient } from './UserFactoryClient'
-import { AgreementFactoryClient } from './AgreementFactoryClient'
-import { SocialFeatureFactoryClient } from './SocialFeatureFactoryClient'
-import { ContentListFactoryClient } from './ContentListFactoryClient'
-import { UserLibraryFactoryClient } from './UserLibraryFactoryClient'
-import { IPLDBlacklistFactoryClient } from './IPLDBlacklistFactoryClient'
-import { UserReplicaSetManagerClient } from './UserReplicaSetManagerClient'
+import { RegistryClient } from './registryClient'
+import { UserFactoryClient } from './userFactoryClient'
+import { AgreementFactoryClient } from './agreementFactoryClient'
+import { SocialFeatureFactoryClient } from './socialFeatureFactoryClient'
+import { ContentListFactoryClient } from './contentListFactoryClient'
+import { UserLibraryFactoryClient } from './userLibraryFactoryClient'
+import { IPLDBlacklistFactoryClient } from './ipldBlacklistFactoryClient'
+import { UserReplicaSetManagerClient } from './userReplicaSetManagerClient'
 import type { Web3Manager } from '../web3Manager'
-import type { ContractClient } from '../contracts/ContractClient'
+import type { ContractClient } from '../contracts/contractClient'
 
 // Make sure the json file exists before importing because it could silently fail
 // import data contract ABI's

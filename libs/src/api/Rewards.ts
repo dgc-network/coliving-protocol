@@ -6,7 +6,7 @@ import { Base, BaseConstructorArgs, Services } from './base'
 //import { RewardsManagerError } from '../services/solana/errors'
 //import { WLIVE_DECMIALS } from '../constants'
 import { Utils } from '../utils/utils'
-import type { ServiceProvider } from './ServiceProvider'
+import type { ServiceProvider } from './serviceProvider'
 import type { Logger, Nullable } from '../utils'
 //import type { AttestationMeta } from '../services/solana/rewards'
 

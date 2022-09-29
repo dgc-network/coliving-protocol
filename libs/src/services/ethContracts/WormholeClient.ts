@@ -1,7 +1,7 @@
 import type Web3 from 'web3'
 import type { ContractABI } from '../../utils'
 import type { EthWeb3Manager } from '../ethWeb3Manager'
-import type { ColivingTokenClient } from './ColivingTokenClient'
+import type { ColivingTokenClient } from './colivingTokenClient'
 import type { Contract } from 'web3-eth-contract'
 import type BN from 'bn.js'
 import type { ECDSASignature } from 'ethereumjs-util'

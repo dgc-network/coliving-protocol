@@ -5,7 +5,7 @@ import { AuthHeaders } from '../constants'
 //import { getPermitDigest, sign } from '../utils/signatures'
 //import { PublicKey } from '@solana/web3.js'
 import type { BN } from '@project-serum/anchor'
-import type { Users } from './Users'
+import type { Users } from './users'
 /*
 type UserBankOutcomes = {
   Request: string

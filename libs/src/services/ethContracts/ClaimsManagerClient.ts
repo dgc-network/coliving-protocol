@@ -1,5 +1,5 @@
 import { Utils } from '../../utils'
-import { ContractClient } from '../contracts/ContractClient'
+import { ContractClient } from '../contracts/contractClient'
 import type { EthWeb3Manager } from '../ethWeb3Manager'
 
 export class ClaimsManagerClient extends ContractClient {

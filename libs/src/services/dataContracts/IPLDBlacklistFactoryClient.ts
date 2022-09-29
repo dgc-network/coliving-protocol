@@ -1,4 +1,4 @@
-import { ContractClient } from '../contracts/ContractClient'
+import { ContractClient } from '../contracts/contractClient'
 import * as signatureSchemas from '../../../data-contracts/signatureSchemas'
 import sigUtil, { EIP712TypedData } from 'eth-sig-util'
 import { Buffer as SafeBuffer } from 'safe-buffer'

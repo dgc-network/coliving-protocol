@@ -19,7 +19,7 @@ const {
   getRandomImageFilePath
 } = RandomUtils
 
-const ContainerLogs = require('@coliving/service-commands/src/ContainerLogs')
+const ContainerLogs = require('@coliving/service-commands/src/containerLogs.js')
 
 const USER_PIC_PATH = path.resolve('assets/images/profile-pic.jpg')
 const MAX_SYNC_TIMEOUT = 300000

@@ -34,6 +34,6 @@ tip-live () {
     sender_eth=$(get-eth-private-key $sender_id)
     receiver_user_bank=$(get-user-bank $receiver_id)
     mint=$(jq -rc .splToken < ~/.coliving/solana-program-config.json)
-    echo "${PROTOCOL_DIR}/solana-programs/claimable-tokens/cli/target/debug/claimable-tokens-cli transfer $mint $sender_eth $amount --recipient $receiver_user_bank"
-    $PROTOCOL_DIR/solana-programs/claimable-tokens/cli/target/debug/claimable-tokens-cli transfer $mint $sender_eth $amount --recipient $receiver_user_bank
+    #echo "${PROTOCOL_DIR}/solana-programs/claimable-tokens/cli/target/debug/claimable-tokens-cli transfer $mint $sender_eth $amount --recipient $receiver_user_bank"
+    #$PROTOCOL_DIR/solana-programs/claimable-tokens/cli/target/debug/claimable-tokens-cli transfer $mint $sender_eth $amount --recipient $receiver_user_bank
 }

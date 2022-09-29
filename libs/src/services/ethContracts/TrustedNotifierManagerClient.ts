@@ -1,4 +1,4 @@
-import { GovernedContractClient } from '../contracts/GovernedContractClient'
+import { GovernedContractClient } from '../contracts/governedContractClient'
 
 export class TrustedNotifierManagerClient extends GovernedContractClient {
   /**

@@ -454,7 +454,7 @@
     "folderId": 0,
     "folderUid": "",
     "uid": "erW7rK6nk",
-    "name": "POA Indexing",
+    "name": "DATA Indexing",
     "kind": 1,
     "type": "timeseries",
     "description": "",
@@ -519,7 +519,7 @@
       },
       "id": 13,
       "libraryPanel": {
-        "name": "POA Indexing",
+        "name": "DATA Indexing",
         "uid": "erW7rK6nk"
       },
       "options": {
@@ -590,7 +590,7 @@
           "refId": "E"
         }
       ],
-      "title": "POA Indexing",
+      "title": "DATA Indexing",
       "type": "timeseries"
     },
     "version": 2,

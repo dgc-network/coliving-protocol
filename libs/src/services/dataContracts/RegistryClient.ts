@@ -1,6 +1,6 @@
 import { ContractABI, Utils } from '../../utils'
 import { Web3Manager } from '../web3Manager'
-import { ProviderSelection } from '../contracts/ProviderSelection'
+import { ProviderSelection } from '../contracts/providerSelection'
 import type { HttpProvider } from 'web3-core'
 import type { Contract } from 'web3-eth-contract'
 

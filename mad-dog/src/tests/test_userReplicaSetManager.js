@@ -243,7 +243,7 @@ const verifyUrsmContentNodes = async (executeOne) => {
       let ownerWalletFromChain = walletInfoFromChain.ownerWallet
 
       /**
-       * Query POA contract and confirm IDs
+       * Query DATA contract and confirm IDs
        */
       if (queriedDelegateOwnerWallet !== delegateWalletFromChain) {
         throw new Error(

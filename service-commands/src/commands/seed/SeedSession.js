@@ -1,6 +1,6 @@
 const { libs: ColivingLibs } = require('@coliving/sdk')
-const UserCache = require('./UserCache')
-const LocalStorageWrapper = require('./LocalStorageWrapper')
+const UserCache = require('./userCache')
+const LocalStorageWrapper = require('./localStorageWrapper')
 const fetch = require('node-fetch')
 const BN = require('bn.js')
 

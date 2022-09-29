@@ -18,7 +18,7 @@ import {
     FullRemixFromJSON,
     FullRemixFromJSONTyped,
     FullRemixToJSON,
-} from './FullRemix';
+} from './fullRemix';
 
 /**
  * 

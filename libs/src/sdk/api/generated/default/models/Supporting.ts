@@ -18,7 +18,7 @@ import {
     UserFromJSON,
     UserFromJSONTyped,
     UserToJSON,
-} from './User';
+} from './user';
 
 /**
  * 

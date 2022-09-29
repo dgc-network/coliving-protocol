@@ -25,8 +25,7 @@ The independent sets of smart contracts that power the on-chain aspects of the C
 | Contracts                                                        | Description                                                                                       
 | -- | --
 | [`eth-contracts`](eth-contracts) | The Ethereum smart contracts that run the Coliving protocol, encompassing the Coliving ERC20 token and functionality for staking, off-chain service registration / lookup, and governance
-| [`solana-programs`](solana-programs) | The Solana programs for the Coliving protocol, encompassing user account, content listing, and content interaction functionality
-| [`poa-contracts`](poa-contracts)         | The POA network smart contracts for the Coliving protocol, encompassing user account, content listing, and content interaction functionality
+| [`data-contracts`](data-contracts)         | The DATA network smart contracts for the Coliving protocol, encompassing user account, content listing, and content interaction functionality
 
 ### Coliving Client Libraries
 

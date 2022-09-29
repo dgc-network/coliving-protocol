@@ -1,4 +1,4 @@
-import { ServiceSelection } from './ServiceSelection'
+import { ServiceSelection } from './serviceSelection'
 import nock from 'nock'
 import assert from 'assert'
 import { Utils } from '../utils'

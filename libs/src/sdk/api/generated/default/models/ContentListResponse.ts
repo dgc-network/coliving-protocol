@@ -18,7 +18,7 @@ import {
     ContentListFromJSON,
     ContentListFromJSONTyped,
     ContentListToJSON,
-} from './ContentList';
+} from './contentList';
 
 /**
  * 

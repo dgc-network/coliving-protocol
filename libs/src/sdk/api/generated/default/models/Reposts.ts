@@ -18,7 +18,7 @@ import {
     ActivityFromJSON,
     ActivityFromJSONTyped,
     ActivityToJSON,
-} from './Activity';
+} from './activity';
 
 /**
  * 

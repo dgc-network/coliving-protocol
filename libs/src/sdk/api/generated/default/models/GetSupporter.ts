@@ -18,7 +18,7 @@ import {
     SupporterFromJSON,
     SupporterFromJSONTyped,
     SupporterToJSON,
-} from './Supporter';
+} from './supporter';
 
 /**
  * 

@@ -18,13 +18,13 @@ import {
     UserFromJSON,
     UserFromJSONTyped,
     UserToJSON,
-} from './User';
+} from './user';
 import {
     VersionMetadata,
     VersionMetadataFromJSON,
     VersionMetadataFromJSONTyped,
     VersionMetadataToJSON,
-} from './VersionMetadata';
+} from './versionMetadata';
 
 /**
  * 

@@ -1,1 +1,1 @@
-export * from './IdentityService'
+export * from './identityService'

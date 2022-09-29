@@ -1,7 +1,7 @@
 import type { ContractABI, Logger } from '../../utils'
-import { ContractClient, GetRegistryAddress } from '../contracts/ContractClient'
+import { ContractClient, GetRegistryAddress } from '../contracts/contractClient'
 import type { EthWeb3Manager } from '../ethWeb3Manager'
-import type { ColivingTokenClient } from './ColivingTokenClient'
+import type { ColivingTokenClient } from './colivingTokenClient'
 import type BN from 'bn.js'
 
 export class StakingProxyClient extends ContractClient {

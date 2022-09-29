@@ -18,19 +18,19 @@ import {
     RemixParentFromJSON,
     RemixParentFromJSONTyped,
     RemixParentToJSON,
-} from './RemixParent';
+} from './remixParent';
 import {
     AgreementArtwork,
     AgreementArtworkFromJSON,
     AgreementArtworkFromJSONTyped,
     AgreementArtworkToJSON,
-} from './AgreementArtwork';
+} from './agreementArtwork';
 import {
     User,
     UserFromJSON,
     UserFromJSONTyped,
     UserToJSON,
-} from './User';
+} from './user';
 
 /**
  * 

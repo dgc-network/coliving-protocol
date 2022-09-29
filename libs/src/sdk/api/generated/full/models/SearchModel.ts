@@ -18,19 +18,19 @@ import {
     ContentListFullFromJSON,
     ContentListFullFromJSONTyped,
     ContentListFullToJSON,
-} from './ContentListFull';
+} from './contentListFull';
 import {
     AgreementFull,
     AgreementFullFromJSON,
     AgreementFullFromJSONTyped,
     AgreementFullToJSON,
-} from './AgreementFull';
+} from './agreementFull';
 import {
     UserFull,
     UserFullFromJSON,
     UserFullFromJSONTyped,
     UserFullToJSON,
-} from './UserFull';
+} from './userFull';
 
 /**
  * 

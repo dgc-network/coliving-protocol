@@ -20,7 +20,7 @@ export class ProviderSelection extends ServiceSelection {
 
   /**
    * Filters out previously tried providers, and then initializes the client
-   * (ContractClient, RegistryClient) with a healthy POA provider.
+   * (ContractClient, RegistryClient) with a healthy DATA provider.
    *
    * @param client object used for making transaction calls
    */

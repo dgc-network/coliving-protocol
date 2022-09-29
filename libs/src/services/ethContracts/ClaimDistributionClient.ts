@@ -1,5 +1,5 @@
 import type BN from 'bn.js'
-import { ContractClient } from '../contracts/ContractClient'
+import { ContractClient } from '../contracts/contractClient'
 import type { EthWeb3Manager } from '../ethWeb3Manager'
 
 export class ClaimDistributionClient extends ContractClient {
