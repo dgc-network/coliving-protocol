@@ -4,7 +4,7 @@
 // creation of the album, so we debounce the agreement creation notifications for some number of
 // seconds to allow for the case an album or contentList shows up. That album or contentList replaces
 // all the agreement notifications that occurred over the debounce.
-// As a TODO, we should implement agreement => contentList or agreement => album agreementing so this is a non-issue.
+// As a TODO, we should implement agreement => contentList or agreement => album tracking so this is a non-issue.
 const PENDING_CREATE_DEDUPE_MS = 3 * 60 * 1000
 const getPendingCreateDedupeMs = () => {
   return PENDING_CREATE_DEDUPE_MS

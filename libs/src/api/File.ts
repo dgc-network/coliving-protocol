@@ -37,7 +37,7 @@ export class File extends Base {
    * @param contentNodeGateways Content Node gateways to fetch content from
    * @param callback callback called on each successful/failed fetch with
    *  [String, Bool](gateway, succeeded)
-   *  Can be used for agreementing metrics on which gateways were used.
+   *  Can be used for tracking metrics on which gateways were used.
    */
   async fetchCID(
     cid: string,

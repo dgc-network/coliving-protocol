@@ -18,7 +18,7 @@ const secondarySyncFromPrimary = require('../../services/sync/secondarySyncFromP
 const router = express.Router()
 
 /**
- * Dictionary agreementing currently queued up syncs with debounce
+ * Dictionary tracking currently queued up syncs with debounce
  * @notice - this feature is likely to be deprecated in future as the need to debounce syncs goes away
  */
 const syncDebounceQueue = {}

@@ -1045,7 +1045,7 @@ contract('DelegateManagerV2', async (accounts) => {
         // Update dictionary of expected values
         let expectedDelegateStake = delegatorStake.add(delegateRewards)
         expectedDelegateStakeDictionary[delegator] = expectedDelegateStake
-        // Update total deployer cut agreementing
+        // Update total deployer cut tracking
         spDeployerCutRewards = spDeployerCutRewards.add(spDeployerCut)
         // Update total delegated stake increase
         totalDelegateStakeIncrease = totalDelegateStakeIncrease.add(delegateRewards)
@@ -2267,7 +2267,7 @@ contract('DelegateManagerV2', async (accounts) => {
         assert.isTrue(acctInfo.spFactoryStake.eq(DEFAULT_AMOUNT), 'Expect default in sp factory')
       })
 
-      it('Balance agreementing inconsistency', async () => {
+      it('Balance tracking inconsistency', async () => {
         const staker3Amt = _lib.toBN('384823535956494802781028')
         const staker4Amt = _lib.toBN('462563700468205107730431')
         const staker5Amt = _lib.toBN('221500000000000000000000')

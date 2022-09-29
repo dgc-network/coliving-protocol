@@ -5,7 +5,7 @@ const sinon = require('sinon')
 const { getApp } = require('../lib/app')
 const solClient = require('../../src/solana-client')
 
-describe('test Solana listen agreementing', function () {
+describe('test Solana listen tracking', function () {
   const AGREEMENT_ID = 12345
   const USER_ID = 54321
   const AGREEMENTING_LISTEN_SUBMISSION_KEY = 'listens-tx-submission-ts'

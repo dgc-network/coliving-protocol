@@ -31,8 +31,8 @@ const maxLimit = 500
 const defaultOffset = 0
 const minOffset = 0
 
-// Duration for listen agreementing redis keys prior to expiry is 1 week (in seconds)
-const redisTxAgreementingExpirySeconds = oneWeekInMs / 1000
+// Duration for listen tracking redis keys prior to expiry is 1 week (in seconds)
+const redisTxTrackingExpirySeconds = oneWeekInMs / 1000
 
 const getPaginationVars = (limit, offset) => {
   if (!limit) limit = defaultLimit
@@ -210,10 +210,10 @@ const getTrendingAgreements = async (
 }
 
 /**
- * Generate the redis keys required for agreementing listen submission vs success
+ * Generate the redis keys required for tracking listen submission vs success
  * @param {string} hour formatted as such - 2022-01-25T21:00:00.000Z
  */
-const getAgreementingListenKeys = (hour) => {
+const getTrackingListenKeys = (hour) => {
   return {
     submission: `listens-tx-submission::${hour}`,
     success: `listens-tx-success::${hour}`
@@ -248,12 +248,12 @@ module.exports = function (app) {
       let split = entry.split('::')
       if (split.length >= 2) {
         let hourSuffix = split[1]
-        const agreementingRedisKeys = getAgreementingListenKeys(hourSuffix)
+        const trackingRedisKeys = getTrackingListenKeys(hourSuffix)
 
         if (!hourlyResponseData.hasOwnProperty(hourSuffix)) {
           hourlyResponseData[hourSuffix] = {
-            submission: Number(await redis.get(agreementingRedisKeys.submission)),
-            success: Number(await redis.get(agreementingRedisKeys.success)),
+            submission: Number(await redis.get(trackingRedisKeys.submission)),
+            success: Number(await redis.get(trackingRedisKeys.success)),
             time: new Date(hourSuffix)
           }
         }
@@ -261,7 +261,7 @@ module.exports = function (app) {
     }
 
     // Clean up time series entries that are greater than 1 week old
-    const oldestExpireMillis = Date.now() - redisTxAgreementingExpirySeconds * 1000
+    const oldestExpireMillis = Date.now() - redisTxTrackingExpirySeconds * 1000
     await redis.zremrangebyscore(AGREEMENTING_LISTEN_SUBMISSION_KEY, 0, oldestExpireMillis)
     await redis.zremrangebyscore(AGREEMENTING_LISTEN_SUCCESS_KEY, 0, oldestExpireMillis)
 
@@ -325,13 +325,13 @@ module.exports = function (app) {
       const entropy = uuidv4()
 
       // Example key format = listens-tx-success::2022-01-25T21:00:00.000Z
-      const agreementingRedisKeys = getAgreementingListenKeys(suffix)
-      await initializeExpiringRedisKey(redis, agreementingRedisKeys.submission, redisTxAgreementingExpirySeconds)
-      await initializeExpiringRedisKey(redis, agreementingRedisKeys.success, redisTxAgreementingExpirySeconds)
+      const trackingRedisKeys = getTrackingListenKeys(suffix)
+      await initializeExpiringRedisKey(redis, trackingRedisKeys.submission, redisTxTrackingExpirySeconds)
+      await initializeExpiringRedisKey(redis, trackingRedisKeys.success, redisTxTrackingExpirySeconds)
 
-      req.logger.info(`AgreementListen tx submission, agreementId=${agreementId} userId=${userId}, ${JSON.stringify(agreementingRedisKeys)}`)
+      req.logger.info(`AgreementListen tx submission, agreementId=${agreementId} userId=${userId}, ${JSON.stringify(trackingRedisKeys)}`)
 
-      await redis.incr(agreementingRedisKeys.submission)
+      await redis.incr(trackingRedisKeys.submission)
       await redis.zadd(AGREEMENTING_LISTEN_SUBMISSION_KEY, Date.now(), Date.now() + entropy)
       let location
       try {
@@ -405,7 +405,7 @@ module.exports = function (app) {
         req.logger.info(`AgreementListen tx confirmed, ${solTxSignature} userId=${userId}, agreementId=${agreementId}, sendRawTransaction=${sendRawTransaction}`)
 
         // Increment success tracker
-        await redis.incr(agreementingRedisKeys.success)
+        await redis.incr(trackingRedisKeys.success)
         await redis.zadd(AGREEMENTING_LISTEN_SUCCESS_KEY, Date.now(), Date.now() + entropy)
         return successResponse({
           solTxSignature

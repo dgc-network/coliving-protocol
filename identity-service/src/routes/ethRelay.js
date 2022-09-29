@@ -44,7 +44,7 @@ module.exports = function (app) {
     return successResponse({ selectedEthWallet })
   }))
 
-  // Serves latest state of production gas agreementing on identity service
+  // Serves latest state of production gas tracking on identity service
   app.get('/eth_gas_price', handleResponse(async (req, res, next) => {
     let gasInfo = await ethTxRelay.getProdGasInfo(req.app.get('redis'), req.logger)
     return successResponse(gasInfo)

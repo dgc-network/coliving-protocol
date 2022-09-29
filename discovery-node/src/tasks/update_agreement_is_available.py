@@ -239,7 +239,7 @@ def update_agreement_is_available(self) -> None:
         )
         try:
             # TODO: we can deprecate this manual redis timestamp tracker once we confirm
-            # that prometheus works in agreementing duration. Needs to be removed from
+            # that prometheus works in tracking duration. Needs to be removed from
             # the health check too
             redis.set(
                 UPDATE_AGREEMENT_IS_AVAILABLE_START_REDIS_KEY,

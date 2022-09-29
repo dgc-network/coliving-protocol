@@ -16,7 +16,7 @@ If adding a new field, or changing an existing field mapping, the safest thing i
 - Increment version suffix in `indexNames.ts`
 - You may want to also adjust `omit_keys` in `elasticdsl.py` if adding new fields for indexing which should be removed.
 
-If you are adding a new denormalization (attaching data from a related model), the data dependency agreementing should be updated:
+If you are adding a new denormalization (attaching data from a related model), the data dependency tracking should be updated:
 
 - For "catchup" mode this is the `checkpointSql` function. See UserIndexer or AgreementIndexer for an example
 - For listen / notify mode, this is the handler code in `listen.ts`

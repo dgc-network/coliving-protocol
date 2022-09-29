@@ -47,7 +47,7 @@ function errorHandler(err, req, res, next) {
  * }
  * @param {Object[]} routers Array of Express routers
  */
-function _setupRouteDurationAgreementing(routers) {
+function _setupRouteDurationTracking(routers) {
   let layers = routers.map((route) => route.stack)
   layers = _.flatten(layers)
 
@@ -134,11 +134,11 @@ const initializeApp = (port, serviceRegistry) => {
     replicaSetRoutes
   ]
 
-  const { routesWithParams, routes } = _setupRouteDurationAgreementing(routers)
+  const { routesWithParams, routes } = _setupRouteDurationTracking(routers)
 
   const prometheusRegistry = serviceRegistry.prometheusRegistry
 
-  // Metric agreementing middleware
+  // Metric tracking middleware
   app.use(
     routes.map((route) => route.path),
     prometheusMiddleware({
@@ -147,9 +147,9 @@ const initializeApp = (port, serviceRegistry) => {
       promRegistry: prometheusRegistry.registry,
       // Override metric name to include namespace prefix
       httpDurationMetricName: `${prometheusRegistry.namespacePrefix}_http_request_duration_seconds`,
-      // Include HTTP method in duration agreementing
+      // Include HTTP method in duration tracking
       includeMethod: true,
-      // Include HTTP status code in duration agreementing
+      // Include HTTP status code in duration tracking
       includePath: true,
       // Disable default gauge counter to indicate if this middleware is running
       includeUp: false,
@@ -170,7 +170,7 @@ const initializeApp = (port, serviceRegistry) => {
           }
         } catch (e) {
           req.logger.warn(
-            `DurationAgreementing || Could not match on regex: ${e.message}`
+            `DurationTracking || Could not match on regex: ${e.message}`
           )
         }
         return path
