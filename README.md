@@ -29,12 +29,11 @@ The independent sets of smart contracts that power the on-chain aspects of the C
 
 ### Coliving Client Libraries
 
-Client-side libraries to provide a unified interface for interacting with the entire
-Coliving protocol:
+Client-side libraries to provide a unified interface for interacting with the entire Coliving protocol:
 
 | Library                                                        | Description                                                                                       
 | -- | --
-| [`libs`](libs)     | A complete javascript interface to the Coliving smart contracts and Coliving services: Identity Service, Discovery Node, Creator Node
+| [`libs`](libs)     | A complete javascript interface to the Coliving smart contracts and Coliving services: Identity Service, Discovery Node, Content Node
 
 ### Coliving Tools & Tests
 
