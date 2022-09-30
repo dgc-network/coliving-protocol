@@ -9,8 +9,8 @@ const networks = new Set([
   'test_local'
   // disable mainnet keys for now
   /* 'coliving_private',
-  'poa_mainnet',
-  'poa_sokol' */
+  'data_mainnet',
+  'data_sokol' */
 ])
 
 let config

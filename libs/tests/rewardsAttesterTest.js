@@ -64,7 +64,7 @@ describe('Delay calculator tests', () => {
     // Should be 90: 100 - 5 / 0.5 block/sec
     assert.strictEqual(slotThreshold, 90)
 
-    const blockThreshold = await calc.getPOABlockThreshold()
+    const blockThreshold = await calc.getDATABlockThreshold()
     // Should be 99: 100 - 5 / 5
     assert.strictEqual(blockThreshold, 99)
   })
@@ -81,14 +81,14 @@ describe('Delay calculator tests', () => {
     })
     await calc.start()
     await calc.getSolanaSlotThreshold()
-    await calc.getPOABlockThreshold()
+    await calc.getDATABlockThreshold()
 
     // Test cached values
     libs.getSlot = () => 110
     libs.getBlockNumber = () => 110
     const slotThreshold = await calc.getSolanaSlotThreshold()
     assert.strictEqual(slotThreshold, 90)
-    const blockThreshold = await calc.getPOABlockThreshold()
+    const blockThreshold = await calc.getDATABlockThreshold()
     assert.strictEqual(blockThreshold, 99)
   })
 
@@ -104,7 +104,7 @@ describe('Delay calculator tests', () => {
     })
     await calc.start()
     await calc.getSolanaSlotThreshold()
-    await calc.getPOABlockThreshold()
+    await calc.getDATABlockThreshold()
 
     // Test cached values
     await new Promise((res) => setTimeout(res, 1100))
@@ -112,7 +112,7 @@ describe('Delay calculator tests', () => {
     libs.getBlockNumber = () => 110
     const slotThreshold = await calc.getSolanaSlotThreshold()
     assert.strictEqual(slotThreshold, 100)
-    const blockThreshold = await calc.getPOABlockThreshold()
+    const blockThreshold = await calc.getDATABlockThreshold()
     assert.strictEqual(blockThreshold, 109)
   })
 

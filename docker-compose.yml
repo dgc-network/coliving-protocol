@@ -185,8 +185,8 @@ services:
 
       web3Provider: "http://data-ganache:8545"
       secondaryWeb3Provider: "http://data-ganache:8545"
-      registryAddress: "${POA_REGISTRY_ADDRESS}"
-      ownerWallet: "${POA_OWNER_WALLET}"
+      registryAddress: "${DATA_REGISTRY_ADDRESS}"
+      ownerWallet: "${DATA_OWNER_WALLET}"
 
       ethProviderUrl: "http://eth-ganache:8545"
       ethTokenAddress: "${ETH_TOKEN_ADDRESS}"
@@ -223,7 +223,7 @@ services:
       coliving_web3_host: "data-ganache"
       coliving_web3_port: "8545"
       coliving_web3_eth_provider_url: "http://eth-ganache:8545"
-      coliving_contracts_registry: "${POA_REGISTRY_ADDRESS}"
+      coliving_contracts_registry: "${DATA_REGISTRY_ADDRESS}"
       coliving_eth_contracts_registry: "${ETH_REGISTRY_ADDRESS}"
       coliving_eth_contracts_token: "${ETH_TOKEN_ADDRESS}"
       coliving_discprov_dev_mode: "true"
@@ -268,7 +268,7 @@ services:
       ethOwnerWallet: "${ETH_OWNER_WALLET}"
 
       dataProviderUrl: "http://data-ganache:8545"
-      dataRegistryAddress: "${POA_REGISTRY_ADDRESS}"
+      dataRegistryAddress: "${DATA_REGISTRY_ADDRESS}"
     volumes:
       - ./content-node/src:/usr/src/app/src
       - coliving-libs:/usr/src/coliving-libs

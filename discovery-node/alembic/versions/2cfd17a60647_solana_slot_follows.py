@@ -30,7 +30,7 @@ def upgrade():
 
             ALTER TABLE ursm_content_nodes ADD COLUMN IF NOT EXISTS slot INTEGER;
 
-            -- Drop NOT NULL Constraint on POA blockhash and tx hash columns
+            -- Drop NOT NULL Constraint on DATA blockhash and tx hash columns
             ALTER TABLE ursm_content_nodes ALTER COLUMN blockhash DROP NOT NULL;
             ALTER TABLE ursm_content_nodes ALTER COLUMN blocknumber DROP NOT NULL;
 
@@ -42,12 +42,12 @@ def upgrade():
 
             ALTER TABLE follows ADD COLUMN IF NOT EXISTS slot INTEGER;
 
-            -- Drop NOT NULL Constraint on POA blockhash and tx hash columns
+            -- Drop NOT NULL Constraint on DATA blockhash and tx hash columns
             ALTER TABLE follows ALTER COLUMN blockhash DROP NOT NULL;
             ALTER TABLE follows ALTER COLUMN blocknumber DROP NOT NULL;
             
 
-            -- Drop NOT NULL Constraint on POA blockhash and tx hash columns
+            -- Drop NOT NULL Constraint on DATA blockhash and tx hash columns
             ALTER TABLE user_events ADD COLUMN IF NOT EXISTS slot INTEGER;
             ALTER TABLE user_events ALTER COLUMN blockhash DROP NOT NULL;
             ALTER TABLE user_events ALTER COLUMN blocknumber DROP NOT NULL;
@@ -68,7 +68,7 @@ def downgrade():
             
             ALTER TABLE ursm_content_nodes DROP COLUMN IF EXISTS slot;
 
-            -- Add NOT NULL Constraint on POA blockhash and tx hash columns
+            -- Add NOT NULL Constraint on DATA blockhash and tx hash columns
             DELETE FROM ursm_content_nodes where blockhash IS NULL or blocknumber IS NULL;
             ALTER TABLE ursm_content_nodes ALTER COLUMN blockhash SET NOT NULL;
             ALTER TABLE ursm_content_nodes ALTER COLUMN blocknumber SET NOT NULL;
@@ -79,13 +79,13 @@ def downgrade():
             ALTER TABLE follows ADD PRIMARY KEY (is_current, follower_user_id, followee_user_id, blockhash, txhash);
             ALTER TABLE follows DROP COLUMN IF EXISTS slot;
 
-            -- Add NOT NULL Constraint on POA blockhash and tx hash columns
+            -- Add NOT NULL Constraint on DATA blockhash and tx hash columns
             ALTER TABLE follows ALTER COLUMN blockhash SET NOT NULL;
             ALTER TABLE follows ALTER COLUMN blocknumber SET NOT NULL;
 
             UPDATE follows SET txhash = '' WHERE txhash LIKE 'unset_%%';
 
-            -- Drop NOT NULL Constraint on POA blockhash and tx hash columns
+            -- Drop NOT NULL Constraint on DATA blockhash and tx hash columns
             ALTER TABLE user_events DROP COLUMN IF EXISTS slot;
             ALTER TABLE user_events ALTER COLUMN blockhash SET NOT NULL;
             ALTER TABLE user_events ALTER COLUMN blocknumber SET NOT NULL;

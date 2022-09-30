@@ -91,7 +91,7 @@ module.exports = {
       network_id: 1353,
       gasPrice: 1000000000
     },
-    poa_mainnet: {
+    data_mainnet: {
       host: 'localhost',
       port: 8545,
       network_id: '99',
@@ -99,7 +99,7 @@ module.exports = {
       gasPrice: 1000000000,
       skipDryRun: true
     },
-    poa_sokol: {
+    data_sokol: {
       provider: function () {
         return new HDWalletProvider(
           [

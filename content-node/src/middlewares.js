@@ -55,7 +55,7 @@ async function authMiddleware(req, res, next) {
     )
   }
 
-  // Every libs session for a user logged into CN will pass a userId from POA.UserFactory
+  // Every libs session for a user logged into CN will pass a userId from DATA.UserFactory
   let userId = req.get('User-Id')
 
   // Not every libs call passes this header until all clients upgrade to version 1.2.18
@@ -697,7 +697,7 @@ async function getContentNodeEndpoints({
 }
 
 /**
- * Retrieves user replica set spIDs from chain (POA.UserReplicaSetManager)
+ * Retrieves user replica set spIDs from chain (DATA.UserReplicaSetManager)
  *
  * Polls contract (via web3 provider) conditionally as follows:
  *    - If `blockNumber` provided, polls contract until it has indexed that blockNumber (for up to 200 seconds)

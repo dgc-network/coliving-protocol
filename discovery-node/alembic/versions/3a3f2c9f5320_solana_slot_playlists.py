@@ -30,7 +30,7 @@ def upgrade():
 
             ALTER TABLE contentLists ADD COLUMN IF NOT EXISTS slot INTEGER;
 
-            -- Drop NOT NULL Constraint on POA blockhash and tx hash columns
+            -- Drop NOT NULL Constraint on DATA blockhash and tx hash columns
             ALTER TABLE contentLists ALTER COLUMN blockhash DROP NOT NULL;
             ALTER TABLE contentLists ALTER COLUMN blocknumber DROP NOT NULL;
 
@@ -50,7 +50,7 @@ def downgrade():
 
             ALTER TABLE contentLists DROP COLUMN IF EXISTS slot;
 
-            -- Add NOT NULL Constraint on POA blockhash and tx hash columns
+            -- Add NOT NULL Constraint on DATA blockhash and tx hash columns
             DELETE FROM contentLists where blockhash IS NULL or blocknumber IS NULL;
             ALTER TABLE contentLists ALTER COLUMN blockhash SET NOT NULL;
             ALTER TABLE contentLists ALTER COLUMN blocknumber SET NOT NULL;

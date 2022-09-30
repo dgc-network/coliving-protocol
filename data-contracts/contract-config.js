@@ -35,7 +35,7 @@ module.exports = {
     userReplicaSetBootstrapAddress: null,
     registryAddress: null
   },
-  poa_mainnet: {
+  data_mainnet: {
     verifierAddress: '0xbeef8E42e8B5964fDD2b7ca8efA0d9aef38AA996',
     blacklisterAddress: '0xfeebEA99dE524ac668B6f151177EcA60b30A09c9',
     bootstrapSPIds: [ 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 ],
@@ -92,7 +92,7 @@ module.exports = {
     userReplicaSetBootstrapAddress: '0xaB50eDA5800bAd74cF8c7A2F4C859C9C3f702075',
     registryAddress: '0xC611C82150b56E6e4Ec5973AcAbA8835Dd0d75A2'
   },
-  poa_sokol: {
+  data_sokol: {
     verifierAddress: '0xbbbb93A6B3A1D6fDd27909729b95CCB0cc9002C0',
     blacklisterAddress: '0xbbbb93A6B3A1D6fDd27909729b95CCB0cc9002C0',
     bootstrapSPIds: [3, 4, 5],

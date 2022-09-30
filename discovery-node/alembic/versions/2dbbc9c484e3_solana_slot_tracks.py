@@ -29,7 +29,7 @@ def upgrade():
 
             ALTER TABLE agreements ADD COLUMN IF NOT EXISTS slot INTEGER;
 
-            -- Drop NOT NULL Constraint on POA blockhash and tx hash columns
+            -- Drop NOT NULL Constraint on DATA blockhash and tx hash columns
             ALTER TABLE agreements ALTER COLUMN blockhash DROP NOT NULL;
             ALTER TABLE agreements ALTER COLUMN blocknumber DROP NOT NULL;
         commit;
@@ -48,7 +48,7 @@ def downgrade():
 
             ALTER TABLE agreements DROP COLUMN IF EXISTS slot;
 
-            -- Add NOT NULL Constraint on POA blockhash and tx hash columns
+            -- Add NOT NULL Constraint on DATA blockhash and tx hash columns
             DELETE FROM agreements where blockhash IS NULL or blocknumber IS NULL;
             ALTER TABLE agreements ALTER COLUMN blockhash SET NOT NULL;
             ALTER TABLE agreements ALTER COLUMN blocknumber SET NOT NULL;

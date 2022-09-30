@@ -30,7 +30,7 @@ def upgrade():
 
             ALTER TABLE reposts ADD COLUMN IF NOT EXISTS slot INTEGER;
 
-            -- Drop NOT NULL Constraint on POA blockhash and tx hash columns
+            -- Drop NOT NULL Constraint on DATA blockhash and tx hash columns
             ALTER TABLE reposts ALTER COLUMN blockhash DROP NOT NULL;
             ALTER TABLE reposts ALTER COLUMN blocknumber DROP NOT NULL;
 
@@ -42,7 +42,7 @@ def upgrade():
             
             ALTER TABLE saves ADD COLUMN IF NOT EXISTS slot INTEGER;
 
-            -- Drop NOT NULL Constraint on POA blockhash and tx hash columns
+            -- Drop NOT NULL Constraint on DATA blockhash and tx hash columns
             ALTER TABLE saves ALTER COLUMN blockhash DROP NOT NULL;
             ALTER TABLE saves ALTER COLUMN blocknumber DROP NOT NULL;
 
@@ -64,7 +64,7 @@ def downgrade():
 
             ALTER TABLE reposts DROP COLUMN IF EXISTS slot;
 
-            -- Add NOT NULL Constraint on POA blockhash and tx hash columns
+            -- Add NOT NULL Constraint on DATA blockhash and tx hash columns
             DELETE FROM reposts where blockhash IS NULL or blocknumber IS NULL;
             ALTER TABLE reposts ALTER COLUMN blockhash SET NOT NULL;
             ALTER TABLE reposts ALTER COLUMN blocknumber SET NOT NULL;
@@ -76,7 +76,7 @@ def downgrade():
             
             ALTER TABLE saves DROP COLUMN IF EXISTS slot;
 
-            -- Add NOT NULL Constraint on POA blockhash and tx hash columns
+            -- Add NOT NULL Constraint on DATA blockhash and tx hash columns
             DELETE FROM saves where blockhash IS NULL or blocknumber IS NULL;
             ALTER TABLE saves ALTER COLUMN blockhash SET NOT NULL;
             ALTER TABLE saves ALTER COLUMN blocknumber SET NOT NULL;

@@ -24,7 +24,7 @@ async function delay (ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
-const generateWalletLockKey = (publicKey) => `POA_RELAYER_WALLET:${publicKey}`
+const generateWalletLockKey = (publicKey) => `DATA_RELAYER_WALLET:${publicKey}`
 
 async function getGasPrice (logger, web3) {
   let gasPrice = parseInt(await web3.eth.getGasPrice())

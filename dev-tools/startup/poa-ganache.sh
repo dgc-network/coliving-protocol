@@ -7,7 +7,7 @@ npx ganache \
   --database.dbPath /usr/db \
   --chain.networkId 12345 &
 
-while ! node -e "require('http').request('http://poa-blockscout:4000').end()" 2>/dev/null; do
+while ! node -e "require('http').request('http://data-blockscout:4000').end()" 2>/dev/null; do
   sleep 1
 done
 

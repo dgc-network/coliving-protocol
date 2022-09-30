@@ -38,7 +38,7 @@ def upgrade():
             ADD COLUMN IF NOT EXISTS user_storage_account VARCHAR,
             ADD COLUMN IF NOT EXISTS user_authority_account VARCHAR;
             
-            -- Drop NOT NULL Constraint on POA blockhash and tx hash columns
+            -- Drop NOT NULL Constraint on DATA blockhash and tx hash columns
             ALTER TABLE users ALTER COLUMN blockhash DROP NOT NULL;
             ALTER TABLE users ALTER COLUMN blocknumber DROP NOT NULL;
 
@@ -63,7 +63,7 @@ def downgrade():
             DROP COLUMN IF EXISTS user_storage_account,
             DROP COLUMN IF EXISTS user_authority_account;
             
-            -- Add NOT NULL Constraint on POA blockhash and tx hash columns
+            -- Add NOT NULL Constraint on DATA blockhash and tx hash columns
             DELETE FROM users where blockhash IS NULL or blocknumber IS NULL;
             ALTER TABLE users ALTER COLUMN blockhash SET NOT NULL;
             ALTER TABLE users ALTER COLUMN blocknumber SET NOT NULL;

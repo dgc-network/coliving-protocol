@@ -189,7 +189,7 @@ class CIDMetadataClient:
                 raise e
         return cid_metadata
 
-    # Used in POA indexing
+    # Used in DATA indexing
     def fetch_metadata_from_gateway_endpoints(
         self,
         fetched_cids: KeysView[str],
