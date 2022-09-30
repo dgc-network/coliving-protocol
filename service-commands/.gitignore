@@ -4,3 +4,4 @@ libs.log
 local-storage
 
 node_modules
+.DS_Store
