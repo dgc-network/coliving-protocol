@@ -142,9 +142,9 @@ const SetupCommand = Object.freeze({
 const Service = Object.freeze({
   ALL: 'all',
   NETWORK: 'network',
-  CONTRACTS: 'contracts',
+  DATA_CONTRACTS: 'data-contracts',
   ETH_CONTRACTS: 'eth-contracts',
-  CONTRACTS_PREDEPLOYED: 'contracts-predeployed',
+  DATA_CONTRACTS_PREDEPLOYED: 'data-contracts-predeployed',
   ETH_CONTRACTS_PREDEPLOYED: 'eth-contracts-predeployed',
   IPFS: 'ipfs',
   IPFS_2: 'ipfs-2',
@@ -341,7 +341,7 @@ const performHealthCheck = async (service, serviceNumber) => {
     }
   }
   if (
-    service === Service.CONTRACTS_PREDEPLOYED ||
+    service === Service.DATA_CONTRACTS_PREDEPLOYED ||
     service === Service.ETH_CONTRACTS_PREDEPLOYED
   ) {
     healthCheckRequestOptions = {
@@ -395,7 +395,7 @@ const discoveryNodeUp = async (options = { verbose: false }) => {
   ]
 
   const inParallel = [
-    [Service.CONTRACTS, SetupCommand.UP],
+    [Service.DATA_CONTRACTS, SetupCommand.UP],
     [Service.ETH_CONTRACTS, SetupCommand.UP],
     [Service.SOLANA_PROGRAMS, SetupCommand.UP]
   ]
@@ -454,7 +454,7 @@ const discoveryNodeWebServerUp = async (options = { verbose: false }) => {
   ]
 
   const inParallel = [
-    [Service.CONTRACTS, SetupCommand.UP],
+    [Service.DATA_CONTRACTS, SetupCommand.UP],
     [Service.ETH_CONTRACTS, SetupCommand.UP],
     [Service.SOLANA_PROGRAMS, SetupCommand.UP]
   ]
@@ -608,7 +608,7 @@ const identityServiceUp = async (options = { verbose: false }) => {
   ]
 
   const inParallel = [
-    [Service.CONTRACTS, SetupCommand.UP],
+    [Service.DATA_CONTRACTS, SetupCommand.UP],
     [Service.ETH_CONTRACTS, SetupCommand.UP],
     [Service.SOLANA_PROGRAMS, SetupCommand.UP]
   ]
@@ -674,14 +674,14 @@ const allUp = async ({
   const ipfsAndContractsCommands = [
     [Service.IPFS, SetupCommand.UP],
     [Service.IPFS_2, SetupCommand.UP],
-    [Service.CONTRACTS_PREDEPLOYED, SetupCommand.UP],
+    [Service.DATA_CONTRACTS_PREDEPLOYED, SetupCommand.UP],
     [Service.ETH_CONTRACTS_PREDEPLOYED, SetupCommand.UP],
     [Service.LIBS, SetupCommand.UP]
   ]
 
   const contractHealthChecksCommands = [
     [
-      Service.CONTRACTS_PREDEPLOYED,
+      Service.DATA_CONTRACTS_PREDEPLOYED,
       SetupCommand.HEALTH_CHECK_RETRY,
       { waitSec: 3 }
     ],
