@@ -1,6 +1,6 @@
 {
   "protocol_dir": {
-    "default": "~/documents/coliving-projects/coliving-protocol",
+    "default": "~/Documents/coliving-projects/coliving-protocol",
     "env": "PROTOCOL_DIR"
   },
   "remote_dev_host": {
