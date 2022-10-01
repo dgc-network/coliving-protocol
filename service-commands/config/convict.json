@@ -1,6 +1,6 @@
 {
   "protocol_dir": {
-    "default": "~/Documents/Coliving/coliving-protocol",
+    "default": "~/Documents/coliving-projects/coliving-protocol",
     "env": "PROTOCOL_DIR"
   },
   "remote_dev_host": {
@@ -8,7 +8,7 @@
     "env": "COLIVING_REMOTE_DEV_HOST"
   },
   "coliving_config_dir": {
-    "default": "~/.coliving",
+    "default": "~/.coliving-projects",
     "env": "COLIVING_CONFIG_DIR"
   },
   "health_check_wait_ms": {
