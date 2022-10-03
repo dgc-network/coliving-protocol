@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@coliving/sdk": "file: ../libs",
+    "@coliving/sdk": "file:../../libs",
     "dotenv": "^16.0.0",
     "web3": "^1.7.3"
   }
