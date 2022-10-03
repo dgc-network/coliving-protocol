@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Footer from './Footer'
+import Footer from './footer'
 import Notification from './notifications/Notification'
 import { notificationTypes as NotificationType } from '../constants'
 

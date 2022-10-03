@@ -1,7 +1,7 @@
 import React from 'react'
 import { getRankSuffix } from '../../formatNotificationMetadata'
 
-import NotificationBody from './NotificationBody'
+import NotificationBody from './notificationBody'
 import {
   WhiteHeavyCheckMarkIcon,
   IncomingEnvelopeIcon,
