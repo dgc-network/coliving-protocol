@@ -5,7 +5,7 @@ import type { EthContracts } from '../ethContracts'
 import {
   ServiceSelection,
   ServiceSelectionConfig
-} from '../../service-selection'
+} from '../../serviceSelection'
 import {
   timeRequests,
   sortServiceTimings,

@@ -3,7 +3,7 @@ import {
   Decision,
   ServiceSelection,
   ServiceSelectionConfig
-} from '../../service-selection'
+} from '../../serviceSelection'
 import {
   DISCOVERY_NODE_TIMESTAMP,
   DISCOVERY_SERVICE_NAME,

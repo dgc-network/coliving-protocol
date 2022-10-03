@@ -1,5 +1,5 @@
 import Web3 from 'web3'
-import { ServiceSelection } from '../../service-selection'
+import { ServiceSelection } from '../../serviceSelection'
 import type { EthWeb3Manager } from '../ethWeb3Manager'
 import type { Web3Manager } from '../web3Manager'
 
