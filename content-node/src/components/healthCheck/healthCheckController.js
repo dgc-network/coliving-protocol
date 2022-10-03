@@ -15,7 +15,7 @@ const { syncHealthCheck } = require('./syncHealthCheckComponentService')
 const { serviceRegistry } = require('../../serviceRegistry')
 const { sequelize } = require('../../models')
 const { getMonitors } = require('../../monitors/monitors')
-const TranscodingQueue = require('../../TranscodingQueue')
+const TranscodingQueue = require('../../transcodingQueue')
 
 const { ensureValidSPMiddleware } = require('../../middlewares')
 

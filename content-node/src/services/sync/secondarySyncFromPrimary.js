@@ -7,7 +7,7 @@ const { saveFileForMultihashToFS } = require('../../fileManager')
 const { getOwnEndpoint, getContentNodeEndpoints } = require('../../middlewares')
 const SyncHistoryAggregator = require('../../snapbackSM/syncHistoryAggregator')
 const DBManager = require('../../dbManager')
-const UserSyncFailureCountManager = require('./UserSyncFailureCountManager')
+const UserSyncFailureCountManager = require('./userSyncFailureCountManager')
 
 const handleSyncFromPrimary = async (
   serviceRegistry,

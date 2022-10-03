@@ -19,7 +19,7 @@ const {
   MAX_SELECT_NEW_REPLICA_SET_ATTEMPTS,
   MAX_USER_BATCH_CLOCK_FETCH_RETRIES,
   SYNC_MONITORING_RETRY_DELAY_MS
-} = require('./StateMachineConstants')
+} = require('./stateMachineConstants')
 
 // Timeout for fetching batch clock values
 const BATCH_CLOCK_STATUS_REQUEST_TIMEOUT = 10000 // 10s

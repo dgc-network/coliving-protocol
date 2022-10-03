@@ -8,7 +8,7 @@ const {
   GET_NODE_USERS_TIMEOUT_MS,
   GET_NODE_USERS_CANCEL_TOKEN_MS,
   GET_NODE_USERS_DEFAULT_PAGE_SIZE
-} = require('./StateMachineConstants')
+} = require('./stateMachineConstants')
 
 const PEER_HEALTH_CHECK_REQUEST_TIMEOUT_MS = config.get(
   'peerHealthCheckRequestTimeout'

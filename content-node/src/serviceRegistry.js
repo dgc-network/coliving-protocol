@@ -7,7 +7,7 @@ const redisClient = require('./redis')
 const BlacklistManager = require('./blacklistManager')
 const { SnapbackSM } = require('./snapbackSM/snapbackSM')
 const initColivingLibs = require('./services/initColivingLibs')
-const URSMRegistrationManager = require('./services/URSMRegistrationManager')
+const URSMRegistrationManager = require('./services/ursmRegistrationManager')
 const {
   logger: genericLogger,
   getStartTime,
@@ -15,14 +15,14 @@ const {
 } = require('./logging')
 const utils = require('./utils')
 const config = require('./config')
-const MonitoringQueue = require('./monitors/MonitoringQueue')
+const MonitoringQueue = require('./monitors/monitoringQueue')
 const SyncQueue = require('./services/sync/syncQueue')
 const SkippedCIDsRetryQueue = require('./services/sync/skippedCIDsRetryService')
 const SessionExpirationQueue = require('./services/SessionExpirationQueue')
-const AsyncProcessingQueue = require('./AsyncProcessingQueue')
+const AsyncProcessingQueue = require('./asyncProcessingQueue')
 const TrustedNotifierManager = require('./services/TrustedNotifierManager')
 const ImageProcessingQueue = require('./ImageProcessingQueue')
-const TranscodingQueue = require('./TranscodingQueue')
+const TranscodingQueue = require('./transcodingQueue')
 const StateMachineManager = require('./services/stateMachineManager')
 const PrometheusRegistry = require('./services/prometheusMonitoring/prometheusRegistry')
 

@@ -36,7 +36,7 @@ const { getCID, streamFromFileSystem } = require('./files')
 const DBManager = require('../dbManager')
 const { generateListenTimestampAndSignature } = require('../apiSigning')
 const BlacklistManager = require('../blacklistManager')
-const TranscodingQueue = require('../TranscodingQueue')
+const TranscodingQueue = require('../transcodingQueue')
 
 const readFile = promisify(fs.readFile)
 

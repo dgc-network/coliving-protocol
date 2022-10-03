@@ -11,7 +11,7 @@ const models = require('../../models')
 const { libs } = require('@coliving/sdk')
 const Utils = libs.Utils
 const DBManager = require('../../dbManager')
-const TranscodingQueue = require('../../TranscodingQueue')
+const TranscodingQueue = require('../../transcodingQueue')
 const FileManager = require('../../fileManager')
 
 const SEGMENT_FILE_BATCH_SIZE = 10
@@ -27,14 +27,14 @@ class AgreementContentUploadManager {
    * @param {Object} transcodeAndSegmentParams
    * @param {string} transcodeAndSegmentParams.fileName the file name of the uploaded agreement (<cid>.<file type extension>)
    * @param {string} transcodeAndSegmentParams.fileDir the dir path of the temp agreement artifacts
-   * @returns an Object with the structure: 
+   * @returns an Object with the structure:
    * {
       transcodeFilePath {string}: the path to the transcode file,
       segmentFileNames {string[]}: a list of segment file names; will have the structure `segment<number>.ts`,
       segmentFilePaths {string[]}: a list of segment file paths,
       m3u8FilePath {string}: the path to the m3u8 file,
       fileName {string}: the original upload agreement file name
-    } 
+    }
    */
   static async transcodeAndSegment({ logContext }, { fileName, fileDir }) {
     let transcodeFilePath, segmentFileNames, segmentFilePaths, m3u8FilePath

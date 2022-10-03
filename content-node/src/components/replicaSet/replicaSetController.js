@@ -10,7 +10,7 @@ const {
 } = require('../../apiHelpers')
 const {
   respondToURSMRequestForSignature
-} = require('./URSMRegistrationComponentService')
+} = require('./ursmRegistrationComponentService')
 const { ensureStorageMiddleware } = require('../../middlewares')
 const { enqueueSync } = require('./syncQueueComponentService')
 const secondarySyncFromPrimary = require('../../services/sync/secondarySyncFromPrimary')

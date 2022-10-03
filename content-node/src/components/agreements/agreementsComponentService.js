@@ -4,7 +4,7 @@ const {
   getStartTime
 } = require('../../logging')
 
-const AgreementTranscodeHandoffManager = require('./AgreementTranscodeHandoffManager')
+const AgreementTranscodeHandoffManager = require('./agreementTranscodeHandoffManager')
 const AgreementContentUploadManager = require('./agreementContentUploadManager')
 
 /**

@@ -6,7 +6,7 @@ const StateMonitoringManager = require('./stateMonitoring')
 const StateReconciliationManager = require('./stateReconciliation')
 const { RECONFIG_MODES, QUEUE_NAMES } = require('./stateMachineConstants')
 const makeOnCompleteCallback = require('./makeOnCompleteCallback')
-const CNodeToSpIdMapManager = require('./CNodeToSpIdMapManager')
+const CNodeToSpIdMapManager = require('./cNodeToSpIdMapManager')
 
 /**
  * Manages the queue for monitoring the state of Content Nodes and

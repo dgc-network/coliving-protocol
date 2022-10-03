@@ -44,7 +44,7 @@ services:
       # Mount coliving libs as a directory
       - ../../libs:/usr/src/coliving-libs
       # Mount solana-programs
-      - ../../solana-programs:/usr/src/solana-programs
+      #- ../../solana-programs:/usr/src/solana-programs
     networks:
       - coliving_dev
   content-node-redis:
