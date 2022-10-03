@@ -3,7 +3,7 @@ import { Client as ES } from '@elastic/elasticsearch'
 import Cursor from 'pg-cursor'
 import _ from 'lodash'
 import { indexNames } from './indexNames'
-import { BlocknumberCheckpoint } from './types/blocknumber_checkpoint'
+import { BlocknumberCheckpoint } from './types/blocknumberCheckpoint'
 import { MsearchResponseItem } from '@elastic/elasticsearch/lib/api/types'
 
 let pool: PG | undefined = undefined

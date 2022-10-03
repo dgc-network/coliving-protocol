@@ -1,6 +1,6 @@
 import { IndicesCreateRequest } from '@elastic/elasticsearch/lib/api/types'
 import { indexNames } from '../indexNames'
-import { BlocknumberCheckpoint } from '../types/blocknumber_checkpoint'
+import { BlocknumberCheckpoint } from '../types/blocknumberCheckpoint'
 import { RepostDoc } from '../types/docs'
 import { BaseIndexer } from './baseIndexer'
 

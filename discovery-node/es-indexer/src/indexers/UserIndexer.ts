@@ -3,7 +3,7 @@ import { groupBy, keyBy, merge } from 'lodash'
 import { dialPg } from '../conn'
 import { splitTags } from '../helpers/splitTags'
 import { indexNames } from '../indexNames'
-import { BlocknumberCheckpoint } from '../types/blocknumber_checkpoint'
+import { BlocknumberCheckpoint } from '../types/blocknumberCheckpoint'
 import { UserDoc } from '../types/docs'
 import { BaseIndexer } from './baseIndexer'
 import {

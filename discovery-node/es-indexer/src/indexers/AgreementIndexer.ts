@@ -2,7 +2,7 @@ import { IndicesCreateRequest } from '@elastic/elasticsearch/lib/api/types'
 import { merge } from 'lodash'
 import { splitTags } from '../helpers/splitTags'
 import { indexNames } from '../indexNames'
-import { BlocknumberCheckpoint } from '../types/blocknumber_checkpoint'
+import { BlocknumberCheckpoint } from '../types/blocknumberCheckpoint'
 import { AgreementDoc } from '../types/docs'
 import { BaseIndexer } from './baseIndexer'
 import {
