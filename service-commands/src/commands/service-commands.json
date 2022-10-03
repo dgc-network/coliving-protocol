@@ -25,17 +25,17 @@
   },
   "contracts": {
     "up": [
-      "cd contracts/",
+      "cd data-contracts/",
       "docker run --name coliving_ganache_cli -d -p 8545:8545 --network=coliving_dev trufflesuite/ganache-cli:v6.9.1 -h 0.0.0.0 -l 8000000 --acctKeys contracts-ganache-accounts.json --networkId 1000000000001 -a 100 -b 5 --deterministic true --db ./db",
       "echo 'Waiting for ganache to fully come online...'",
       "sleep 10",
       "echo 'Migrating contracts'",
-      "cd contracts/; node_modules/.bin/truffle migrate >> $PROTOCOL_DIR/service-commands/output.log 2>$PROTOCOL_DIR/service-commands/error.log",
+      "cd data-contracts/; node_modules/.bin/truffle migrate >> $PROTOCOL_DIR/service-commands/output.log 2>$PROTOCOL_DIR/service-commands/error.log",
       "echo 'Writing configs'",
-      "cd contracts/; node_modules/.bin/truffle exec scripts/migrate-contracts.js"
+      "cd data-contracts/; node_modules/.bin/truffle exec scripts/migrate-contracts.js"
     ],
     "down": [
-      "cd contracts/; npm run ganache-q"
+      "cd data-contracts/; npm run ganache-q"
     ]
   },
   "contracts-predeployed": {
@@ -57,7 +57,7 @@
     "port": 8545,
     "health_check_endpoint": "",
     "down": [
-      "cd contracts/; npm run ganache-q"
+      "cd data-contracts/; npm run ganache-q"
     ]
   },
   "eth-contracts": {
