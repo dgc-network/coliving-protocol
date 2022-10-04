@@ -149,7 +149,8 @@ export class UserIndexer extends BaseIndexer<UserDoc> {
     const result = await dialPg().query(q)
     const grouped = groupBy(result.rows, 'follower_user_id')
     for (let [user_id, follow_rows] of Object.entries(grouped)) {
-      grouped[user_id] = follow_rows.map((r) => r.followee_user_id)
+      //grouped[user_id] = follow_rows.map((r) => r.followee_user_id)
+      grouped[user_id] = grouped[follow_rows].map((r) => r.followee_user_id)
     }
     return grouped
   }

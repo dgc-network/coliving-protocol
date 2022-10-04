@@ -13,7 +13,7 @@ ARG bootstrapSPIds
 ARG bootstrapSPDelegateWallets
 ARG bootstrapSPOwnerWallets
 
-RUN ./scripts/setup-predeployed-ganache.sh /usr/db 12345
+#RUN ./scripts/setup-predeployed-ganache.sh /usr/db 12345
 
 HEALTHCHECK --interval=5s --timeout=5s --retries=10 \
     CMD node -e "require('http').request('http://localhost:8545').end()" || exit 1
