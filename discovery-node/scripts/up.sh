@@ -42,7 +42,7 @@ fi
 
 (
     cd ${PROTOCOL_DIR}/libs/initScripts
-    node configureLocalDiscProv.js
+    #node configureLocalDiscProv.js
 )
 
 (

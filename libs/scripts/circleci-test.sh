@@ -8,9 +8,9 @@ COMMENT
 
 ##### INIT DATA CONTRACTS #####
 
-if [ -d "../contracts" ]; then
+if [ -d "../data-contracts" ]; then
   echo "Coliving contracts repo is present"
-  cd ../contracts/
+  cd ../data-contracts/
 else
   echo "INCORRECT REPOSITORY STRUCTURE. PLEASE FOLLOW README"
   exit 1

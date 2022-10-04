@@ -3,7 +3,7 @@
 function cd_data_contracts_repo {
   # Navigate to contracts repository
   if [ -d "../data-contracts" ]; then
-    cd ../contracts/
+    cd ../data-contracts/
     pwd
   else
     echo "INCORRECT REPOSITORY STRUCTURE. PLEASE FOLLOW README"

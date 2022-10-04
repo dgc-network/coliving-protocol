@@ -15,6 +15,6 @@ npx ganache --wallet.deterministic --wallet.totalAccounts 50 --database.dbPath "
 ganache_pid=$!
 
 npx truffle migrate --to 12 --network predeploy
-npx truffle exec --network predeploy scripts/setup-dev.js
+npx truffle exec --network predeploy scripts/setupDev.js
 
 kill $ganache_pid
