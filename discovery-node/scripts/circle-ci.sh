@@ -6,7 +6,7 @@ function main {
   source env/bin/activate
 
   # run contract migrations
-  cd_contracts_repo
+  cd_data_contracts_repo
   echo 'Migrating contracts'
   node_modules/.bin/truffle migrate --network test_local
   echo 'Writing contracts flask config'

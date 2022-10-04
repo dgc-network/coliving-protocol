@@ -30,7 +30,7 @@ if [ -n "${VERBOSE}" ]; then
 fi
 
 # Reset local blockchain for deterministic test results
-cd_contracts_repo
+cd_data_contracts_repo
 npm run ganache-q
 npm run ganache
 sleep 5

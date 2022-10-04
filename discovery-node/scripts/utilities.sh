@@ -1,8 +1,8 @@
 #!/bin/bash
 
-function cd_contracts_repo {
+function cd_data_contracts_repo {
   # Navigate to contracts repository
-  if [ -d "../contracts" ]; then
+  if [ -d "../data-contracts" ]; then
     cd ../contracts/
     pwd
   else

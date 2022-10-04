@@ -24,7 +24,7 @@ function main {
   printf '\nColiving Discovery Node - Local Setup'
   printf '\n%20s\n' | tr ' ' -
 
-  cd_contracts_repo
+  cd_data_contracts_repo
 
   set +e
   if install_ask

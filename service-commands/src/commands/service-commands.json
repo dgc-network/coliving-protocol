@@ -49,8 +49,8 @@
       "docker cp coliving_ganache_cli:/app/contract_config.ini $PROTOCOL_DIR/discovery-node/contract_config.ini",
       "docker cp coliving_ganache_cli:/app/contracts/. $PROTOCOL_DIR/discovery-node/build/contracts",
       "docker cp coliving_ganache_cli:/app/contracts/. $PROTOCOL_DIR/libs/data-contracts/ABIs",
-      "docker cp coliving_ganache_cli:/app/build/contracts/. $PROTOCOL_DIR/contracts/build",
-      "docker cp coliving_ganache_cli:/app/migration-output.json $PROTOCOL_DIR/contracts/migrations/migration-output.json"
+      "docker cp coliving_ganache_cli:/app/build/contracts/. $PROTOCOL_DIR/data-contracts/build",
+      "docker cp coliving_ganache_cli:/app/migration-output.json $PROTOCOL_DIR/data-contracts/migrations/migration-output.json"
     ],
     "protocol": "http",
     "host": "localhost",

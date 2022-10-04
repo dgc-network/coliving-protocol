@@ -35,7 +35,7 @@ const main = async () => {
   execSync(`mkdir -p ${tmpEthContracts}`, { stdio: 'inherit' })
 
   // ========== Run ganache and migrate contracts  ==========
-  execSync('A run contracts up', { stdio: 'inherit' })
+  execSync('A run data-contracts up', { stdio: 'inherit' })
   execSync('A run eth-contracts up', { stdio: 'inherit' })
   execSync('A run init-contracts-info up', { stdio: 'inherit' })
   execSync('A run init-token-versions up', { stdio: 'inherit' })
@@ -106,11 +106,11 @@ const main = async () => {
     { stdio: 'inherit' }
   )
   execSync(
-    `cp -r ${process.env.PROTOCOL_DIR}/contracts/migrations/migration-output.json ${tmpDataContracts}`,
+    `cp -r ${process.env.PROTOCOL_DIR}/data-contracts/migrations/migration-output.json ${tmpDataContracts}`,
     { stdio: 'inherit' }
   )
   execSync(
-    `cp -r ${process.env.PROTOCOL_DIR}/contracts/build ${tmpDataContracts}`,
+    `cp -r ${process.env.PROTOCOL_DIR}/data-contracts/build ${tmpDataContracts}`,
     { stdio: 'inherit' }
   )
   execSync(
@@ -126,7 +126,7 @@ const main = async () => {
     { stdio: 'inherit' }
   )
   execSync(
-    `cp -r ${process.env.PROTOCOL_DIR}/contracts/Dockerfile.cacheLedger ${tmpDataContracts}`,
+    `cp -r ${process.env.PROTOCOL_DIR}/data-contracts/Dockerfile.cacheLedger ${tmpDataContracts}`,
     { stdio: 'inherit' }
   )
 
