@@ -8,7 +8,8 @@ cd ${PROTOCOL_DIR}/content-node
 
 if [[ "$RESTART" == true ]]; then
     . compose/env/unsetShellEnv.sh
-    . compose/env/tmp/shellEnv${ITERATION}.sh
+    #. compose/env/tmp/shellEnv${ITERATION}.sh
+    . compose/env/shellEnv${ITERATION}.sh
     docker-compose -f compose/docker-compose.yml down --remove-orphans
 
     (
@@ -18,10 +19,12 @@ if [[ "$RESTART" == true ]]; then
 fi
 
 mkdir -p compose/env/tmp/file-storage-${ITERATION}
-. compose/env/tmp/shellEnv${ITERATION}.sh
+#. compose/env/tmp/shellEnv${ITERATION}.sh
+. compose/env/shellEnv${ITERATION}.sh
 
 time docker-compose -f compose/docker-compose.yml build
 
-. compose/env/tmp/shellEnv${ITERATION}.sh
+#. compose/env/tmp/shellEnv${ITERATION}.sh
+. compose/env/shellEnv${ITERATION}.sh
 time docker-compose -f compose/docker-compose.yml up -d
 . compose/env/unsetShellEnv.sh
