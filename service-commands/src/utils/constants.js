@@ -24,7 +24,7 @@ if (fs.existsSync(`${DOT_COLIVING_PATH}`)) {
 const config = {
     DOT_COLIVING_PATH,
     SERVICE_COMMANDS_PATH,
-    ETH_PROVIDER_ENDPOINT: process.env.ETH_PROVIDER_ENDPOINT,
+    ETH_CONTRACTS_PROVIDER_ENDPOINTS: process.env.ETH_CONTRACTS_PROVIDER_ENDPOINTS,
     ETH_REGISTRY_ADDRESS: process.env.ETH_REGISTRY_ADDRESS || ethContractsConfig.registryAddress,
     ETH_TOKEN_ADDRESS: process.env.ETH_TOKEN_ADDRESS || ethContractsConfig.colivingTokenAddress,
     ETH_OWNER_WALLET: process.env.ETH_OWNER_WALLET || ethContractsConfig.ownerWallet,
