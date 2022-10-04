@@ -35,7 +35,7 @@ const {
   findCIDInNetwork,
   timeout
 } = require('../utils')
-const ImageProcessingQueue = require('../ImageProcessingQueue')
+const ImageProcessingQueue = require('../imageProcessingQueue')
 const DBManager = require('../dbManager')
 const DiskManager = require('../diskManager')
 const { libs } = require('@coliving/sdk')
