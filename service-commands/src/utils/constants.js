@@ -13,7 +13,7 @@ let ethContractsConfig
 let dataContractsConfig
 if (fs.existsSync(`${DOT_COLIVING_PATH}`)) {
     ethContractsConfig = require(`${DOT_COLIVING_PATH}/eth-config.json`)
-    dataContractsConfig = require(`${DOT_COLIVING_PATH}/config.json`)
+    dataContractsConfig = require(`${DOT_COLIVING_PATH}/data-config.json`)
     solanaConfig = require(`${DOT_COLIVING_PATH}/solana-program-config.json`)
 } else {
     ethContractsConfig = {}

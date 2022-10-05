@@ -140,7 +140,7 @@ module.exports = async callback => {
 
   // output to Identity Service
   try {
-    outputJsonConfigFile(getDirectoryRoot(ColivingIdentityService) + '/contract-config.json')
+    outputJsonConfigFile(getDirectoryRoot(ColivingIdentityService) + '/data-contract-config.json')
   }
   catch(e){
     console.log("Identity service doesn't exist", e)
@@ -148,7 +148,7 @@ module.exports = async callback => {
 
   // output to Creator Node
   try {
-    outputJsonConfigFile(getDirectoryRoot(ColivingContentNode) + '/contract-config.json')
+    outputJsonConfigFile(getDirectoryRoot(ColivingContentNode) + '/data-contract-config.json')
   } catch (e) {
     console.log("Creator node dir doesn't exist", e)
   }

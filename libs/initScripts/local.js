@@ -1,7 +1,8 @@
 const fs = require('fs')
 const readline = require('readline')
 
-const initColivingLibs = require('../examples/initColivingLibs')
+//const initColivingLibs = require('../examples/initColivingLibs')
+const initColivingLibs = require('../src/index')
 const dataContractsConfig = require('../data-contracts/config.json')
 const { distributeTokens } = require('./helpers/distributeTokens')
 const { setServiceVersion, addServiceType } = require('./helpers/version')
@@ -589,7 +590,7 @@ const _updateContentNodeConfigFile = async ({ templatePath, writePath, ownerWall
 }
 
 const _updateUserReplicaSetManagerBootstrapConfig = async (ethAccounts) => {
-  const dataContractConfigPath = '../contracts/contract-config.js'
+  const dataContractConfigPath = '../../data-contracts/contract-config.js'
   const fileStream = fs.createReadStream(dataContractConfigPath)
   const rl = readline.createInterface({
     input: fileStream,

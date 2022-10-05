@@ -23,7 +23,7 @@
       "docker network rm coliving_dev || true"
     ]
   },
-  "contracts": {
+  "data-contracts": {
     "up": [
       "cd data-contracts/",
       "docker run --name coliving_ganache_cli -d -p 8545:8545 --network=coliving_dev trufflesuite/ganache-cli:v6.9.1 -h 0.0.0.0 -l 8000000 --acctKeys contracts-ganache-accounts.json --networkId 1000000000001 -a 100 -b 5 --deterministic true --db ./db",
@@ -38,13 +38,13 @@
       "cd data-contracts/; npm run ganache-q"
     ]
   },
-  "contracts-predeployed": {
+  "data-contracts-predeployed": {
     "up": [
       "docker run --name coliving_ganache_cli -d -p 8545:8545 --network=coliving_dev coliving/ganache:data-contracts-predeployed-a25931b955adce92676cec029661533f80013908",
       "docker cp coliving_ganache_cli:/app/contract-config.json $PROTOCOL_DIR/identity-service/contract-config.json",
       "docker cp coliving_ganache_cli:/app/contract-config.json $PROTOCOL_DIR/content-node/contract-config.json",
       "docker cp coliving_ganache_cli:/app/contract-config.json ~/.coliving/contract-config.json",
-      "docker cp coliving_ganache_cli:/app/contract-config.json ~/.coliving/config.json",
+      "docker cp coliving_ganache_cli:/app/contract-config.json ~/.coliving/data-config.json",
       "docker cp coliving_ganache_cli:/app/contract-config.json $PROTOCOL_DIR/libs/data-contracts/config.json",
       "docker cp coliving_ganache_cli:/app/contract_config.ini $PROTOCOL_DIR/discovery-node/contract_config.ini",
       "docker cp coliving_ganache_cli:/app/contracts/. $PROTOCOL_DIR/discovery-node/build/contracts",

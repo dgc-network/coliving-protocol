@@ -1,6 +1,8 @@
 const Web3 = require('../src/web3')
 
-const { libs: ColivingLibs } = require('../dist/index')
+//const { libs: ColivingLibs } = require('../dist/index')
+const { libs: ColivingLibs } = require('../src/index')
+//const dataContractsConfig = require('../data-contracts/config.json')
 const dataContractsConfig = require('../data-contracts/config.json')
 const ethContractsConfig = require('../eth-contracts/config.json')
 

@@ -1,5 +1,5 @@
 const { getDataContractAccounts } = require('../initScripts/helpers/utils')
-const contractConfig = require('../../contracts/contract-config.js')
+const contractConfig = require('../../data-contracts/contract-config.js')
 const ColivingLibs = require('../src')
 const { initializeLibConfig } = require('../tests/helpers')
 const Utils = require('../src/utils')

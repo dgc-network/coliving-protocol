@@ -759,8 +759,8 @@ if (fs.existsSync(pathTo('eth-contract-config.json'))) {
   })
 }
 
-if (fs.existsSync(pathTo('contract-config.json'))) {
-  const dataContractConfig = require(pathTo('contract-config.json'))
+if (fs.existsSync(pathTo('data-contract-config.json'))) {
+  const dataContractConfig = require(pathTo('data-contract-config.json'))
   config.load({
     dataRegistryAddress: dataContractConfig.registryAddress
   })

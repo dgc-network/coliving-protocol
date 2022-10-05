@@ -1,5 +1,5 @@
-data-contracts/config.json
-eth-contracts/config.json
+#data-contracts/config.json
+#eth-contracts/config.json
 node_modules/
 *.swp
 *.swo
@@ -9,7 +9,7 @@ test.js
 tests/assets/random.txt
 *.code-workspace
 local-storage/
-initScripts/*-config.json
+#initScripts/*-config.json
 .npmrc
 .nyc_output/*
 coverage/
