@@ -11,11 +11,11 @@ The Coliving protocol is powered by two off-chain services, the Discovery Node a
 
 **Discovery Node**
 
-* Indexes blockchains used by the Coliving protocol \(Main-net Ethereum, DATA, and Solana\)
+* Indexes blockchains used by the Coliving protocol \(Main-net Ethereum, and DATA\)
 * Serves API traffic
 * Agreements usage metrics
 
 **Content Node**
 
-* Hosts live and image content
+* Hosts text and image content
 * Syncs content across nodes to ensure data is consistent and highly available \(using the Coliving Storage Protocol under the hood\)
