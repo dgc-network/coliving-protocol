@@ -5,7 +5,7 @@ sidebar_position: 1
 
 # Introduction
 
-This section describes how to run an Coliving node.
+This section describes how to run a Coliving node.
 
 The Coliving protocol is powered by two off-chain services, the Discovery Node and the Content Node.
 
