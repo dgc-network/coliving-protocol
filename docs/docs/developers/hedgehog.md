@@ -7,7 +7,7 @@ sidebar_position: 2
 
 Build DApps Like Apps
 
-[Github](https://github.com/dgc-network/hedgehog) 👈  
+[Github](https://github.com/audiusproject/hedgehog) 👈  
   
 Hedgehog is an open-source, client-side Ethereum wallet that uses a username and password. It aims to lower the barrier of entry to crypto projects for non tech-savvy users.
 
@@ -33,9 +33,9 @@ npm i --save @audius/hedgehog
 
 ### Docs & Examples
 
-Check out our full technical [docs](http://colivingproject.github.io/hedgehog-docs) and [api how-to](http://colivingproject.github.io/hedgehog-docs#how-to).
+Check out our full technical [docs](http://audiusproject.github.io/hedgehog-docs) and [api how-to](http://audiusproject.github.io/hedgehog-docs#how-to).
 
-For a quick browser-side demo, [look no further](https://codesandbox.io/embed/pp9zzv2n00). For a full end-to-end auth demonstration, see our [demo repo](https://github.com/dgc-network/coliving-hedgehog-demo).
+For a quick browser-side demo, [look no further](https://codesandbox.io/embed/pp9zzv2n00). For a full end-to-end auth demonstration, see our [demo repo](https://github.com/audiusproject/audius-hedgehog-demo).
 
 ### Why Use This?
 
@@ -85,4 +85,4 @@ if (hedgehog.isLoggedIn()) {
 After creating or retrieving a user's wallet, you can either **fund their wallet directly** to pay transaction fees or **relay their transactions through a EIP-712 relayer**.  
 
 
-### 👉 [Take a deeper dive into the docs](https://colivingproject.github.io/hedgehog-docs/#installation) 👈
+### 👉 [Take a deeper dive into the docs](https://audiusproject.github.io/hedgehog-docs/#installation) 👈
