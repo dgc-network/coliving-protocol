@@ -1,6 +1,7 @@
 pragma solidity ^0.8.0;
 
-import './UpgradeabilityProxy.sol';
+import './BaseUpgradeabilityProxy.sol';
+//import './UpgradeabilityProxy.sol';
 
 /**
  * @title BaseAdminUpgradeabilityProxy
@@ -10,8 +11,8 @@ import './UpgradeabilityProxy.sol';
  * `ifAdmin` modifier. See ethereum/solidity#3864 for a Solidity
  * feature proposal that would enable this to be done automatically.
  */
-//contract BaseAdminUpgradeabilityProxy is BaseUpgradeabilityProxy {
-contract BaseAdminUpgradeabilityProxy is UpgradeabilityProxy {
+contract BaseAdminUpgradeabilityProxy is BaseUpgradeabilityProxy {
+//contract BaseAdminUpgradeabilityProxy is UpgradeabilityProxy {
   /**
    * @dev Emitted when the administration has been transferred.
    * @param previousAdmin Address of the previous admin.
