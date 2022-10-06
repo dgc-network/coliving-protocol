@@ -328,7 +328,6 @@ contract UserFactory is RegistryContract, SigningLogic {
     /**
      * @notice returns lowercased input string if possible, errors if invalid char found
      * @param _str {bytes16} bytestring to be lowercased
-     * @return {bytes16 | revert} bytestring of lowercased argument
      * @dev based on: https://gist.github.com/ottodevs/c43d0a8b4b891ac2da675f825b1d1dbf
      */
     function toLower(bytes16 _str) internal pure returns (bytes16 output) {

@@ -22,7 +22,8 @@ contract RegistryContract is Ownable {
 
     /// @notice all contracts that inherit from RegistryContract are automatically Ownable()
     /// @dev internal constructor makes RegistryContract abstract
-    constructor() Ownable() internal { }
+    //constructor() Ownable() internal { }
+    constructor() Ownable() { }
 
     /// @notice only allow storage contracts to be called by the respective factory.
     ///     i.e. AgreementStorage methods can only be invoked by AgreementFactory.
