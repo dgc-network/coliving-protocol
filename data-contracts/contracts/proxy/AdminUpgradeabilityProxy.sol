@@ -1,6 +1,7 @@
 pragma solidity ^0.8.0;
 
 import './BaseAdminUpgradeabilityProxy.sol';
+//import './UpgradeabilityProxy.sol';
 
 /**
  * @title AdminUpgradeabilityProxy
@@ -8,6 +9,7 @@ import './BaseAdminUpgradeabilityProxy.sol';
  * initializing the implementation, admin, and init data.
  */
 contract AdminUpgradeabilityProxy is BaseAdminUpgradeabilityProxy, UpgradeabilityProxy {
+//contract AdminUpgradeabilityProxy is UpgradeabilityProxy {
   /**
    * Contract constructor.
    * @param _logic address of the initial implementation.
