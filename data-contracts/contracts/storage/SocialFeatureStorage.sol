@@ -13,7 +13,9 @@ contract SocialFeatureStorage is RegistryContract {
 
     bytes32 constant CALLER_REGISTRY_KEY = "SocialFeatureFactory";
 
-    RegistryInterface registry = RegistryInterface(0);
+    //RegistryInterface registry = RegistryInterface(0);
+    address _registryAddress;
+    RegistryInterface registry = RegistryInterface(_registryAddress);
 
     /**
      * @dev - Mapping of agreement repost contents

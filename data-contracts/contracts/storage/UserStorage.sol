@@ -8,7 +8,9 @@ contract UserStorage is RegistryContract {
 
     bytes32 constant CALLER_REGISTRY_KEY = "UserFactory";
 
-    RegistryInterface registry = RegistryInterface(0);
+    //RegistryInterface registry = RegistryInterface(0);
+    address _registryAddress;
+    RegistryInterface registry = RegistryInterface(_registryAddress);
 
     /** @dev - Uniquely assigned userId, incremented for each new assignment */
     uint userId = 1;

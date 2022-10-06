@@ -10,8 +10,9 @@ import "./SigningLogic.sol";
 /** @title Contract responsible for managing agreement business logic */
 contract AgreementFactory is RegistryContract, SigningLogic {
 
-    RegistryInterface registry = RegistryInterface(0);
-    //RegistryInterface registry = RegistryInterface();
+    //RegistryInterface registry = RegistryInterface(0);
+    address _registryAddress;
+    RegistryInterface registry = RegistryInterface(_registryAddress);
     bytes32 userFactoryRegistryKey;
     bytes32 agreementStorageRegistryKey;
 

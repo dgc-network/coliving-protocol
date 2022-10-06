@@ -11,7 +11,9 @@ import "./SigningLogic.sol";
 * agreement saves and contentList/album saves */
 contract UserLibraryFactory is RegistryContract, SigningLogic {
 
-    RegistryInterface registry = RegistryInterface(0);
+    //RegistryInterface registry = RegistryInterface(0);
+    address _registryAddress;
+    RegistryInterface registry = RegistryInterface(_registryAddress);
     bytes32 userFactoryRegistryKey;
     bytes32 agreementFactoryRegistryKey;
     bytes32 contentListFactoryRegistryKey;

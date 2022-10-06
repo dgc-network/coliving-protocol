@@ -5,7 +5,9 @@ import "../../interface/RegistryInterface.sol";
 
 contract TestStorage is RegistryContract {
 
-    RegistryInterface registry = RegistryInterface(0);
+    //RegistryInterface registry = RegistryInterface(0);
+    address _registryAddress;
+    RegistryInterface registry = RegistryInterface(_registryAddress);
 
     mapping(bytes32 => bytes32) private data;
 

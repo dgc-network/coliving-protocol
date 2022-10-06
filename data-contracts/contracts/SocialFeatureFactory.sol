@@ -12,7 +12,9 @@ import "./SigningLogic.sol";
 * addAgreementRepost, deleteAgreementRepost, addUserFollow, deleteUserFollow */
 contract SocialFeatureFactory is RegistryContract, SigningLogic {
 
-    RegistryInterface registry = RegistryInterface(0);
+    //RegistryInterface registry = RegistryInterface(0);
+    address _registryAddress;
+    RegistryInterface registry = RegistryInterface(_registryAddress);
     bytes32 socialFeatureStorageRegistryKey;
     bytes32 userFactoryRegistryKey;
     bytes32 agreementFactoryRegistryKey;

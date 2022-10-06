@@ -8,7 +8,9 @@ contract ContentListStorage is RegistryContract {
 
     bytes32 constant CALLER_REGISTRY_KEY = "ContentListFactory";
 
-    RegistryInterface registry = RegistryInterface(0);
+    //RegistryInterface registry = RegistryInterface(0);
+    address _registryAddress;
+    RegistryInterface registry = RegistryInterface(_registryAddress);
 
     /** @dev - Uniquely assigned contentListId, incremented for each new contentList/album */
     uint contentListId = 1;

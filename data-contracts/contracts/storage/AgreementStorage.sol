@@ -8,7 +8,9 @@ contract AgreementStorage is RegistryContract {
 
     bytes32 constant CALLER_REGISTRY_KEY = "AgreementFactory";
 
-    RegistryInterface registry = RegistryInterface(0);
+    //RegistryInterface registry = RegistryInterface(0);
+    address _registryAddress;
+    RegistryInterface registry = RegistryInterface(_registryAddress);
 
     /** @dev - Uniquely assigned agreementId, incremented for each new assignment */
     uint agreementId = 1;

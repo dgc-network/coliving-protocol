@@ -9,7 +9,9 @@ import "../interface/test/TestStorageInterface.sol";
 */
 contract TestContractWithStorage is RegistryContract {
 
-    RegistryInterface registry = RegistryInterface(0);
+    //RegistryInterface registry = RegistryInterface(0);
+    address _registryAddress;
+    RegistryInterface registry = RegistryInterface(_registryAddress);
     address testStorageAddress = address(0x00);
 
     event NewData(bytes32 _key, bytes32 _val);

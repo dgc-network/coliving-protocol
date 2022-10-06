@@ -13,7 +13,9 @@ contract ContentListFactory is RegistryContract, SigningLogic {
 
     uint constant AGREEMENT_LIMIT = 200;
 
-    RegistryInterface registry = RegistryInterface(0);
+    //RegistryInterface registry = RegistryInterface(0);
+    address _registryAddress;
+    RegistryInterface registry = RegistryInterface(_registryAddress);
     bytes32 contentListStorageRegistryKey;
     bytes32 userFactoryRegistryKey;
     bytes32 agreementFactoryRegistryKey;
