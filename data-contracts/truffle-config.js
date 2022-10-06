@@ -119,5 +119,10 @@ module.exports = {
   mocha: {
     enableTimeouts: false
   },
-  plugins: ['truffle-plugin-verify']
+  plugins: ['truffle-plugin-verify'],
+  compilers: {
+    solc: {
+      version: "^0.8.0"
+    }
+  }
 }

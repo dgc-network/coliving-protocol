@@ -1,10 +1,14 @@
 //pragma solidity ^0.5.0;
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol";
-import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/SafeERC20.sol";
-import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts-ethereum-package/contracts/utils/Address.sol";
+//import "@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol";
+//import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/SafeERC20.sol";
+//import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20.sol";
+//import "@openzeppelin/contracts-ethereum-package/contracts/utils/Address.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/utils/Address.sol";
 import "./InitializableV2.sol";
 import "./IWormhole.sol";
 
@@ -68,7 +72,7 @@ contract WormholeClient is InitializableV2 {
         uint chainId;
         // solium-disable security/no-inline-assembly
         assembly {
-            chainId := chainid
+            //chainId := chainid
         }
         DOMAIN_SEPARATOR = keccak256(
             abi.encode(

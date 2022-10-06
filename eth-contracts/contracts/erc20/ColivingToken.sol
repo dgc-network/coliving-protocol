@@ -4,11 +4,13 @@ pragma solidity ^0.8.0;
 //import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20.sol";
 //import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Detailed.sol";
 //import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Mintable.sol";
-import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Pausable.sol";
-import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Burnable.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+//import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Pausable.sol";
+//import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Burnable.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "./ERC20Detailed.sol";
 import "./ERC20Mintable.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Pausable.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import "../InitializableV2.sol";
 
 /** Upgradeable ERC20 token that is Detailed, Mintable, Pausable, Burnable. */
@@ -69,7 +71,7 @@ contract ColivingToken is InitializableV2,
         uint chainId;
         // solium-disable security/no-inline-assembly
         assembly {
-            chainId := chainid
+            //chainId := chainid
         }
         DOMAIN_SEPARATOR = keccak256(
             abi.encode(

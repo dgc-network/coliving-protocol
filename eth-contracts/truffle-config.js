@@ -99,4 +99,9 @@ module.exports = {
     enableTimeouts: false,
   },
   plugins: ['solidity-coverage', 'truffle-plugin-verify'],
+  compilers: {
+    solc: {
+      version: "^0.8.0"
+    }
+  }
 }
