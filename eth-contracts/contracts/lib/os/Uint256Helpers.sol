@@ -3,7 +3,6 @@
 
 pragma solidity ^0.8.0;
 
-
 library Uint256Helpers {
     uint256 private constant MAX_UINT8 = uint8(-1);
     uint256 private constant MAX_UINT64 = uint64(-1);

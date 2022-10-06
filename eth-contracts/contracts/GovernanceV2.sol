@@ -1,14 +1,11 @@
-//pragma solidity ^0.5.0;
 pragma solidity ^0.8.0;
 
-//import "@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "./Staking.sol";
 import "./ServiceProviderFactory.sol";
 import "./DelegateManagerV2.sol";
 import "./registry/Registry.sol";
 import "./InitializableV2.sol";
-
 
 /**
  * This contract is identical to Governance.sol with the following differences:

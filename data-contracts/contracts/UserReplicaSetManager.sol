@@ -1,4 +1,3 @@
-//pragma solidity ^0.5.0;
 pragma solidity ^0.8.0;
 
 import "./interface/RegistryInterface.sol";
@@ -6,7 +5,6 @@ import "./registry/RegistryContract.sol";
 import "./UserFactory.sol";
 
 import "./SigningLogicInitializable.sol";
-
 
 /** @title Contract for Coliving user replica set management */
 contract UserReplicaSetManager is SigningLogicInitializable, RegistryContract {

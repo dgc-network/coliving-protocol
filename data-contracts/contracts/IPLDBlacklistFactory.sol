@@ -1,10 +1,8 @@
-//pragma solidity ^0.5.0;
 pragma solidity ^0.8.0;
 
 import "./interface/RegistryInterface.sol";
 import "./registry/RegistryContract.sol";
 import "./SigningLogic.sol";
-
 
 /** @title Contract responsible for managing IPLD blacklist business logic */
 contract IPLDBlacklistFactory is RegistryContract, SigningLogic {

@@ -1,9 +1,6 @@
-//pragma solidity ^0.5.0;
 pragma solidity ^0.8.0;
 
-//import "@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-//import "@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 import "../InitializableV2.sol";

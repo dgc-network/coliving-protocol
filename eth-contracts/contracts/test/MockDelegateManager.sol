@@ -1,13 +1,9 @@
-//pragma solidity ^0.5.0;
 pragma solidity ^0.8.0;
 
-//import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Mintable.sol";
-//import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20.sol";
-import "../erc20/ERC20Mintable.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "../erc20/ERC20Mintable.sol";
 import "../InitializableV2.sol";
 import "../ClaimsManager.sol";
-
 
 // TEST ONLY MOCK CONTRACT
 contract MockDelegateManager is InitializableV2 {

@@ -1,9 +1,7 @@
-//pragma solidity ^0.5.0;
 pragma solidity ^0.8.0;
 
 import "./InitializableV2.sol";
 import "./Governance.sol";
-
 
 contract ServiceTypeManager is InitializableV2 {
     address governanceAddress;

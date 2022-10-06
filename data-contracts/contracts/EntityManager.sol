@@ -1,8 +1,6 @@
-//pragma solidity ^0.5.0;
 pragma solidity ^0.8.0;
 
 import "./SigningLogicInitializable.sol";
-
 
 /** @title Contract for Coliving User Data management */
 contract EntityManager is SigningLogicInitializable {

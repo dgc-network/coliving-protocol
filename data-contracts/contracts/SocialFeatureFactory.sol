@@ -1,4 +1,3 @@
-//pragma solidity ^0.5.0;
 pragma solidity ^0.8.0;
 
 import "./interface/RegistryInterface.sol";
@@ -8,7 +7,6 @@ import "./interface/AgreementFactoryInterface.sol";
 import "./interface/ContentListFactoryInterface.sol";
 import "./interface/SocialFeatureStorageInterface.sol";
 import "./SigningLogic.sol";
-
 
 /** @title Logic contract for all Coliving social features including
 * addAgreementRepost, deleteAgreementRepost, addUserFollow, deleteUserFollow */

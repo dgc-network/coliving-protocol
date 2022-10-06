@@ -1,6 +1,5 @@
 pragma solidity ^0.8.0;
 
-
 /**
 * @title Checkpointing - Library to handle a historic set of numeric values
 */

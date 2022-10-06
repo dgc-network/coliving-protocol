@@ -1,4 +1,3 @@
-//pragma solidity ^0.5.0;
 pragma solidity ^0.8.0;
 
 import "./interface/RegistryInterface.sol";
@@ -7,7 +6,6 @@ import "./interface/UserFactoryInterface.sol";
 import "./interface/AgreementFactoryInterface.sol";
 import "./interface/ContentListFactoryInterface.sol";
 import "./SigningLogic.sol";
-
 
 /** @title Logic contract for Coliving user library features including
 * agreement saves and contentList/album saves */

@@ -1,11 +1,7 @@
-//pragma solidity ^0.5.0;
 pragma solidity ^0.8.0;
 
-//import "openzeppelin-solidity/contracts/cryptography/ECDSA.sol";
-//import "@openzeppelin/upgrades/contracts/Initializable.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
-
 
 /**
 * @title SigningLogicInitializable is a contract implementing signature recovery from typed data signatures

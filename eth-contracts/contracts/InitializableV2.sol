@@ -1,7 +1,5 @@
-//pragma solidity >=0.4.24 <0.7.0;
 pragma solidity ^0.8.0;
 
-//import "@openzeppelin/upgrades/contracts/Initializable.sol";
 import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 
 /**
