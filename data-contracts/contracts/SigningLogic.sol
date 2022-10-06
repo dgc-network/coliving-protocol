@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 //import "openzeppelin-solidity/contracts/cryptography/ECDSA.sol";
-import "openzeppelin-contracts/contracts/utils/cryptography/ECDSA.sol";
+import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 /**
 * @title SigningLogic is contract implementing signature recovery from typed data signatures
