@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 //import "@openzeppelin/upgrades/contracts/upgradeability/UpgradeabilityProxy.sol";
 //import "@openzeppelin/cli/packages/lib/contracts/upgradeability/UpgradeabilityProxy.sol";
 //import "@zeppelinos/zos-lib/contracts/upgradeability/UpgradeabilityProxy.sol";
-import "./proxy/UpgradeabilityProxy";
+import "./proxy/UpgradeabilityProxy.sol";
 
 /**
  * @notice Wrapper around OpenZeppelin's UpgradeabilityProxy contract.

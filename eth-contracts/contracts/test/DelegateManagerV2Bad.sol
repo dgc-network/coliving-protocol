@@ -686,7 +686,6 @@ contract DelegateManagerV2Bad is InitializableV2 {
      * @notice Evaluate removeDelegator request
      * @param _serviceProvider - address of service provider
      * @param _delegator - address of delegator
-     * @return Updated total amount delegated to the service provider by delegator
      */
     function removeDelegator(address _serviceProvider, address _delegator) external {
         _requireIsInitialized();
@@ -1073,7 +1072,6 @@ contract DelegateManagerV2Bad is InitializableV2 {
                and do validation
      * @param spFactory - reference to ServiceProviderFactory contract
      * @param _serviceProvider - address for which rewards are being claimed
-     * @return (totalBalanceInStaking, totalBalanceInSPFactory, totalActiveFunds, spLockedStake, totalRewards, deployerCut)
      */
     function _validateClaimRewards(ServiceProviderFactory spFactory, address _serviceProvider)
     internal returns (
@@ -1231,7 +1229,6 @@ contract DelegateManagerV2Bad is InitializableV2 {
      * @param _totalRewards - total rewaards generated in this round
      * @param _deployerCut - service provider cut of delegate rewards, defined as deployerCut / deployerCutBase
      * @param _deployerCutBase - denominator value for calculating service provider cut as a %
-     * @return (totalBalanceInStaking, totalBalanceInSPFactory, totalBalanceOutsideStaking)
      */
     function _distributeDelegateRewards(
         address _sp,

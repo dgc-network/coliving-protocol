@@ -845,7 +845,6 @@ contract Governance is InitializableV2 {
      * @notice Get vote direction and vote magnitude for a given proposal and voter
      * @param _proposalId - id of the proposal
      * @param _voter - address of the voter we want to check
-     * @return returns vote direction and magnitude if valid vote, else default values
      */
     function getVoteInfoByProposalAndVoter(uint256 _proposalId, address _voter)
     external view returns (Vote vote, uint256 voteMagnitude)

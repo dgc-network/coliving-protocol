@@ -6,13 +6,15 @@ pragma solidity ^0.8.0;
 //import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20.sol";
 //import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Burnable.sol";
 //import "@openzeppelin/contracts-ethereum-package/contracts/utils/Address.sol";
+//import "@aragon/court/contracts/lib/Checkpointing.sol";
+//import "@aragon/court/contracts/lib/os/Uint256Helpers.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
-import "@aragon/court/contracts/lib/Checkpointing.sol";
-import "@aragon/court/contracts/lib/os/Uint256Helpers.sol";
+import "./lib/Checkpointing.sol";
+import "./lib/os/Uint256Helpers.sol";
 import "./InitializableV2.sol";
 import "./Governance.sol";
 

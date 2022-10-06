@@ -155,7 +155,6 @@ contract ServiceTypeManager is InitializableV2 {
     /**
      * @notice Get isValid, min and max stake for a given service type
      * @param _serviceType - type of service
-     * @return isValid, min and max stake for type
      */
     function getServiceTypeInfo(bytes32 _serviceType)
     external view returns (bool isValid, uint256 minStake, uint256 maxStake)

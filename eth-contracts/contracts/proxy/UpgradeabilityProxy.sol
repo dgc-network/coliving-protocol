@@ -19,11 +19,10 @@ contract UpgradeabilityProxy is Proxy {
   /**
    * @dev Constructor function
    */
-  function UpgradeabilityProxy() public {}
+  //function UpgradeabilityProxy() public {}
 
   /**
    * @dev Tells the address of the current implementation
-   * @return address of the current implementation
    */
   function implementation() public view returns (address impl) {
     bytes32 position = implementationPosition;
