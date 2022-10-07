@@ -1,5 +1,5 @@
-module.exports.sdk = require('./sdk')
-//export const sdk = require('./sdk')
+//module.exports.sdk = require('./sdk')
+export const sdk = require('./sdk')
 
 
 /**

@@ -7,7 +7,7 @@ import { toStr, eth_signTypedData } from '../utils/util'
 import { validateObj } from '../utils/validator'
 import { web3New } from '../utils/web3New'
 
-const signatureSchemas = require('../../signature_schemas/signatureSchemas')
+const signatureSchemas = require('../../signatureSchemas/signatureSchemas')
 
 /** UserReplicaSetManager functions */
 export const updateReplicaSet = async (userReplicaSetManager, userId, primary, secondaries, oldPrimary, oldSecondaries, senderAcct) => {

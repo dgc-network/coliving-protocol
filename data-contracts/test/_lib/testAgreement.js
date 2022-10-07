@@ -4,7 +4,7 @@ import { assertEqualValues, parseTx, parseTxWithResp } from '../utils/parser'
 import { getAgreementFromFactory, getNetworkIdForContractInstance } from '../utils/getters'
 import { eth_signTypedData } from '../utils/util'
 import { validateObj } from '../utils/validator'
-const signatureSchemas = require('../../signature_schemas/signatureSchemas')
+const signatureSchemas = require('../../signatureSchemas/signatureSchemas')
 
 /****** EXTERNAL E2E FUNCTIONS ******/
 

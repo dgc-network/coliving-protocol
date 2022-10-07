@@ -7,7 +7,7 @@ import { eth_signTypedData } from '../utils/util'
 import { validateObj } from '../utils/validator'
 import { web3New } from '../utils/web3New'
 
-const signatureSchemas = require('../../signature_schemas/signatureSchemas')
+const signatureSchemas = require('../../signatureSchemas/signatureSchemas')
 export const addContentListAndValidate = async (contentListFactory, expectedContentListId, walletAddress, contentListOwnerId, contentListName, isPrivate, isAlbum, agreementIds) => {
   const nonce = signatureSchemas.getNonce()
   const chainId = getNetworkIdForContractInstance(contentListFactory)
