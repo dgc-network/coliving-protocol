@@ -2,17 +2,19 @@
   "contractName": "ContentListStorageInterface",
   "abi": [
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_userId",
           "type": "uint256"
         },
         {
+          "internalType": "bool",
           "name": "_isAlbum",
           "type": "bool"
         },
         {
+          "internalType": "uint256[]",
           "name": "_agreementIds",
           "type": "uint256[]"
         }
@@ -20,54 +22,54 @@
       "name": "createContentList",
       "outputs": [
         {
+          "internalType": "uint256",
           "name": "newContentListId",
           "type": "uint256"
         }
       ],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_content_listId",
           "type": "uint256"
         },
         {
+          "internalType": "uint256",
           "name": "_addedAgreementId",
           "type": "uint256"
         }
       ],
       "name": "addContentListAgreement",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_content_listId",
           "type": "uint256"
         },
         {
+          "internalType": "uint256",
           "name": "_deletedAgreementId",
           "type": "uint256"
         }
       ],
       "name": "deleteContentListAgreement",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": true,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_content_listId",
           "type": "uint256"
         }
@@ -75,22 +77,23 @@
       "name": "getContentListOwner",
       "outputs": [
         {
+          "internalType": "uint256",
           "name": "contentListOwnerId",
           "type": "uint256"
         }
       ],
-      "payable": false,
       "stateMutability": "view",
       "type": "function"
     },
     {
-      "constant": true,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_content_listId",
           "type": "uint256"
         },
         {
+          "internalType": "uint256",
           "name": "_agreementId",
           "type": "uint256"
         }
@@ -98,18 +101,18 @@
       "name": "isAgreementInContentList",
       "outputs": [
         {
+          "internalType": "bool",
           "name": "agreementInContentList",
           "type": "bool"
         }
       ],
-      "payable": false,
       "stateMutability": "view",
       "type": "function"
     },
     {
-      "constant": true,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_content_listId",
           "type": "uint256"
         }
@@ -117,11 +120,11 @@
       "name": "contentListExists",
       "outputs": [
         {
+          "internalType": "bool",
           "name": "exists",
           "type": "bool"
         }
       ],
-      "payable": false,
       "stateMutability": "view",
       "type": "function"
     }

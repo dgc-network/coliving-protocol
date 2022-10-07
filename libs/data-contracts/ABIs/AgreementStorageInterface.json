@@ -2,9 +2,9 @@
   "contractName": "AgreementStorageInterface",
   "abi": [
     {
-      "constant": true,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_agreementId",
           "type": "uint256"
         }
@@ -12,42 +12,48 @@
       "name": "getAgreement",
       "outputs": [
         {
+          "internalType": "uint256",
           "name": "agreementOwnerId",
           "type": "uint256"
         },
         {
+          "internalType": "bytes32",
           "name": "multihashDigest",
           "type": "bytes32"
         },
         {
+          "internalType": "uint8",
           "name": "multihashHashFn",
           "type": "uint8"
         },
         {
+          "internalType": "uint8",
           "name": "multihashSize",
           "type": "uint8"
         }
       ],
-      "payable": false,
       "stateMutability": "view",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_agreementOwnerId",
           "type": "uint256"
         },
         {
+          "internalType": "bytes32",
           "name": "_multihashDigest",
           "type": "bytes32"
         },
         {
+          "internalType": "uint8",
           "name": "_multihashHashFn",
           "type": "uint8"
         },
         {
+          "internalType": "uint8",
           "name": "_multihashSize",
           "type": "uint8"
         }
@@ -55,34 +61,38 @@
       "name": "addAgreement",
       "outputs": [
         {
+          "internalType": "uint256",
           "name": "newAgreementId",
           "type": "uint256"
         }
       ],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_agreementId",
           "type": "uint256"
         },
         {
+          "internalType": "uint256",
           "name": "_agreementOwnerId",
           "type": "uint256"
         },
         {
+          "internalType": "bytes32",
           "name": "_multihashDigest",
           "type": "bytes32"
         },
         {
+          "internalType": "uint8",
           "name": "_multihashHashFn",
           "type": "uint8"
         },
         {
+          "internalType": "uint8",
           "name": "_multihashSize",
           "type": "uint8"
         }
@@ -90,18 +100,18 @@
       "name": "updateAgreement",
       "outputs": [
         {
+          "internalType": "bool",
           "name": "updatePerformed",
           "type": "bool"
         }
       ],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": true,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_id",
           "type": "uint256"
         }
@@ -109,11 +119,11 @@
       "name": "agreementExists",
       "outputs": [
         {
+          "internalType": "bool",
           "name": "exists",
           "type": "bool"
         }
       ],
-      "payable": false,
       "stateMutability": "view",
       "type": "function"
     }

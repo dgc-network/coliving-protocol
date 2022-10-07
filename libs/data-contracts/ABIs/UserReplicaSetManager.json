@@ -2,160 +2,47 @@
   "contractName": "UserReplicaSetManager",
   "abi": [
     {
-      "constant": false,
-      "inputs": [],
-      "name": "kill",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [],
-      "name": "renounceOwnership",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "owner",
-      "outputs": [
-        {
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "isOwner",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "_registryAddress",
-          "type": "address"
-        }
-      ],
-      "name": "setRegistry",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "newOwner",
-          "type": "address"
-        }
-      ],
-      "name": "transferOwnership",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "",
-          "type": "bytes32"
-        }
-      ],
-      "name": "usedSignatures",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "anonymous": false,
       "inputs": [
         {
           "indexed": false,
-          "name": "_userId",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "name": "_primaryId",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "name": "_secondaryIds",
-          "type": "uint256[]"
-        },
-        {
-          "indexed": false,
-          "name": "_signer",
-          "type": "address"
-        }
-      ],
-      "name": "UpdateReplicaSet",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
+          "internalType": "uint256",
           "name": "_cnodeSpId",
           "type": "uint256"
         },
         {
           "indexed": false,
+          "internalType": "address",
           "name": "_cnodeDelegateOwnerWallet",
           "type": "address"
         },
         {
           "indexed": false,
+          "internalType": "address",
           "name": "_cnodeOwnerWallet",
           "type": "address"
         },
         {
           "indexed": false,
+          "internalType": "uint256[3]",
           "name": "_proposerSpIds",
           "type": "uint256[3]"
         },
         {
           "indexed": false,
+          "internalType": "address",
           "name": "_proposer1DelegateOwnerWallet",
           "type": "address"
         },
         {
           "indexed": false,
+          "internalType": "address",
           "name": "_proposer2DelegateOwnerWallet",
           "type": "address"
         },
         {
           "indexed": false,
+          "internalType": "address",
           "name": "_proposer3DelegateOwnerWallet",
           "type": "address"
         }
@@ -167,12 +54,27 @@
       "anonymous": false,
       "inputs": [
         {
+          "indexed": false,
+          "internalType": "uint8",
+          "name": "version",
+          "type": "uint8"
+        }
+      ],
+      "name": "Initialized",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
           "indexed": true,
+          "internalType": "address",
           "name": "previousOwner",
           "type": "address"
         },
         {
           "indexed": true,
+          "internalType": "address",
           "name": "newOwner",
           "type": "address"
         }
@@ -181,169 +83,285 @@
       "type": "event"
     },
     {
-      "constant": false,
+      "anonymous": false,
       "inputs": [
         {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_userId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_primaryId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256[]",
+          "name": "_secondaryIds",
+          "type": "uint256[]"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_signer",
+          "type": "address"
+        }
+      ],
+      "name": "UpdateReplicaSet",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "kill",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address payable",
+          "name": "_registryAddress",
+          "type": "address"
+        }
+      ],
+      "name": "setRegistry",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "name": "usedSignatures",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
           "name": "name",
           "type": "string"
         },
         {
+          "internalType": "string",
           "name": "version",
           "type": "string"
         },
         {
+          "internalType": "uint256",
           "name": "chainId",
           "type": "uint256"
         }
       ],
       "name": "initialize",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "address",
           "name": "_registryAddress",
           "type": "address"
         },
         {
+          "internalType": "bytes32",
           "name": "_userFactoryRegistryKey",
           "type": "bytes32"
         },
         {
+          "internalType": "address",
           "name": "_userReplicaSetBootstrapAddress",
           "type": "address"
         },
         {
+          "internalType": "uint256",
           "name": "_networkId",
           "type": "uint256"
         }
       ],
       "name": "initialize",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256[]",
           "name": "_bootstrapSPIds",
           "type": "uint256[]"
         },
         {
+          "internalType": "address[]",
           "name": "_bootstrapNodeDelegateWallets",
           "type": "address[]"
         },
         {
+          "internalType": "address[]",
           "name": "_bootstrapNodeOwnerWallets",
           "type": "address[]"
         }
       ],
       "name": "seedBootstrapNodes",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_cnodeSpId",
           "type": "uint256"
         },
         {
+          "internalType": "address[2]",
           "name": "_cnodeWallets",
           "type": "address[2]"
         },
         {
+          "internalType": "uint256[3]",
           "name": "_proposerSpIds",
           "type": "uint256[3]"
         },
         {
+          "internalType": "bytes32[3]",
           "name": "_proposerNonces",
           "type": "bytes32[3]"
         },
         {
+          "internalType": "bytes",
           "name": "_proposer1Sig",
           "type": "bytes"
         },
         {
+          "internalType": "bytes",
           "name": "_proposer2Sig",
           "type": "bytes"
         },
         {
+          "internalType": "bytes",
           "name": "_proposer3Sig",
           "type": "bytes"
         }
       ],
       "name": "addOrUpdateContentNode",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_userId",
           "type": "uint256"
         },
         {
+          "internalType": "uint256",
           "name": "_primaryId",
           "type": "uint256"
         },
         {
+          "internalType": "uint256[]",
           "name": "_secondaryIds",
           "type": "uint256[]"
         },
         {
+          "internalType": "uint256",
           "name": "_oldPrimaryId",
           "type": "uint256"
         },
         {
+          "internalType": "uint256[]",
           "name": "_oldSecondaryIds",
           "type": "uint256[]"
         },
         {
+          "internalType": "bytes32",
           "name": "_requestNonce",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes",
           "name": "_subjectSig",
           "type": "bytes"
         }
       ],
       "name": "updateReplicaSet",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "address",
           "name": "_newBootstrapAddress",
           "type": "address"
         }
       ],
       "name": "updateUserReplicaBootstrapAddress",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": true,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_userId",
           "type": "uint256"
         }
@@ -351,22 +369,23 @@
       "name": "getUserReplicaSet",
       "outputs": [
         {
+          "internalType": "uint256",
           "name": "primaryId",
           "type": "uint256"
         },
         {
+          "internalType": "uint256[]",
           "name": "secondaryIds",
           "type": "uint256[]"
         }
       ],
-      "payable": false,
       "stateMutability": "view",
       "type": "function"
     },
     {
-      "constant": true,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_spID",
           "type": "uint256"
         }
@@ -374,43 +393,42 @@
       "name": "getContentNodeWallets",
       "outputs": [
         {
+          "internalType": "address",
           "name": "delegateOwnerWallet",
           "type": "address"
         },
         {
+          "internalType": "address",
           "name": "ownerWallet",
           "type": "address"
         }
       ],
-      "payable": false,
       "stateMutability": "view",
       "type": "function"
     },
     {
-      "constant": true,
       "inputs": [],
       "name": "getUserReplicaSetBootstrapAddress",
       "outputs": [
         {
+          "internalType": "address",
           "name": "",
           "type": "address"
         }
       ],
-      "payable": false,
       "stateMutability": "view",
       "type": "function"
     },
     {
-      "constant": true,
       "inputs": [],
       "name": "getSeedComplete",
       "outputs": [
         {
+          "internalType": "bool",
           "name": "",
           "type": "bool"
         }
       ],
-      "payable": false,
       "stateMutability": "view",
       "type": "function"
     }

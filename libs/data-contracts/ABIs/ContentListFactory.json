@@ -2,122 +2,33 @@
   "contractName": "ContentListFactory",
   "abi": [
     {
-      "constant": false,
-      "inputs": [],
-      "name": "kill",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [],
-      "name": "renounceOwnership",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "owner",
-      "outputs": [
-        {
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "isOwner",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": false,
       "inputs": [
         {
-          "name": "_registryAddress",
-          "type": "address"
-        }
-      ],
-      "name": "setRegistry",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "newOwner",
-          "type": "address"
-        }
-      ],
-      "name": "transferOwnership",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "",
-          "type": "bytes32"
-        }
-      ],
-      "name": "usedSignatures",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
+          "internalType": "address",
           "name": "_registryAddress",
           "type": "address"
         },
         {
+          "internalType": "bytes32",
           "name": "_content_listStorageRegistryKey",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes32",
           "name": "_userFactoryRegistryKey",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes32",
           "name": "_agreementFactoryRegistryKey",
           "type": "bytes32"
         },
         {
+          "internalType": "uint256",
           "name": "_networkId",
           "type": "uint256"
         }
       ],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "constructor"
     },
@@ -126,55 +37,13 @@
       "inputs": [
         {
           "indexed": false,
+          "internalType": "uint256",
           "name": "_content_listId",
           "type": "uint256"
         },
         {
           "indexed": false,
-          "name": "_content_listOwnerId",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "name": "_isPrivate",
-          "type": "bool"
-        },
-        {
-          "indexed": false,
-          "name": "_isAlbum",
-          "type": "bool"
-        },
-        {
-          "indexed": false,
-          "name": "_agreementIds",
-          "type": "uint256[]"
-        }
-      ],
-      "name": "ContentListCreated",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "name": "_content_listId",
-          "type": "uint256"
-        }
-      ],
-      "name": "ContentListDeleted",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "name": "_content_listId",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
+          "internalType": "uint256",
           "name": "_addedAgreementId",
           "type": "uint256"
         }
@@ -187,16 +56,19 @@
       "inputs": [
         {
           "indexed": false,
+          "internalType": "uint256",
           "name": "_content_listId",
           "type": "uint256"
         },
         {
           "indexed": false,
+          "internalType": "uint256",
           "name": "_deletedAgreementId",
           "type": "uint256"
         },
         {
           "indexed": false,
+          "internalType": "uint256",
           "name": "_deletedAgreementTimestamp",
           "type": "uint256"
         }
@@ -209,11 +81,13 @@
       "inputs": [
         {
           "indexed": false,
+          "internalType": "uint256",
           "name": "_content_listId",
           "type": "uint256"
         },
         {
           "indexed": false,
+          "internalType": "uint256[]",
           "name": "_orderedAgreementIds",
           "type": "uint256[]"
         }
@@ -226,45 +100,13 @@
       "inputs": [
         {
           "indexed": false,
+          "internalType": "uint256",
           "name": "_content_listId",
           "type": "uint256"
         },
         {
           "indexed": false,
-          "name": "_updatedContentListName",
-          "type": "string"
-        }
-      ],
-      "name": "ContentListNameUpdated",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "name": "_content_listId",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "name": "_updatedIsPrivate",
-          "type": "bool"
-        }
-      ],
-      "name": "ContentListPrivacyUpdated",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "name": "_content_listId",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
+          "internalType": "bytes32",
           "name": "_content_listImageMultihashDigest",
           "type": "bytes32"
         }
@@ -277,11 +119,63 @@
       "inputs": [
         {
           "indexed": false,
+          "internalType": "uint256",
           "name": "_content_listId",
           "type": "uint256"
         },
         {
           "indexed": false,
+          "internalType": "uint256",
+          "name": "_content_listOwnerId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "_isPrivate",
+          "type": "bool"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "_isAlbum",
+          "type": "bool"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256[]",
+          "name": "_agreementIds",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "ContentListCreated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_content_listId",
+          "type": "uint256"
+        }
+      ],
+      "name": "ContentListDeleted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_content_listId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
           "name": "_content_listDescription",
           "type": "string"
         }
@@ -294,11 +188,51 @@
       "inputs": [
         {
           "indexed": false,
+          "internalType": "uint256",
           "name": "_content_listId",
           "type": "uint256"
         },
         {
           "indexed": false,
+          "internalType": "string",
+          "name": "_updatedContentListName",
+          "type": "string"
+        }
+      ],
+      "name": "ContentListNameUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_content_listId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "_updatedIsPrivate",
+          "type": "bool"
+        }
+      ],
+      "name": "ContentListPrivacyUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_content_listId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
           "name": "_content_listUPC",
           "type": "bytes32"
         }
@@ -311,11 +245,13 @@
       "inputs": [
         {
           "indexed": true,
+          "internalType": "address",
           "name": "previousOwner",
           "type": "address"
         },
         {
           "indexed": true,
+          "internalType": "address",
           "name": "newOwner",
           "type": "address"
         }
@@ -324,33 +260,111 @@
       "type": "event"
     },
     {
-      "constant": false,
+      "inputs": [],
+      "name": "kill",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "inputs": [
         {
+          "internalType": "address payable",
+          "name": "_registryAddress",
+          "type": "address"
+        }
+      ],
+      "name": "setRegistry",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "name": "usedSignatures",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
           "name": "_content_listOwnerId",
           "type": "uint256"
         },
         {
+          "internalType": "string",
           "name": "_content_listName",
           "type": "string"
         },
         {
+          "internalType": "bool",
           "name": "_isPrivate",
           "type": "bool"
         },
         {
+          "internalType": "bool",
           "name": "_isAlbum",
           "type": "bool"
         },
         {
+          "internalType": "uint256[]",
           "name": "_agreementIds",
           "type": "uint256[]"
         },
         {
+          "internalType": "bytes32",
           "name": "_nonce",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes",
           "name": "_subjectSig",
           "type": "bytes"
         }
@@ -358,26 +372,28 @@
       "name": "createContentList",
       "outputs": [
         {
+          "internalType": "uint256",
           "name": "newContentListId",
           "type": "uint256"
         }
       ],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_content_listId",
           "type": "uint256"
         },
         {
+          "internalType": "bytes32",
           "name": "_nonce",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes",
           "name": "_subjectSig",
           "type": "bytes"
         }
@@ -385,230 +401,247 @@
       "name": "deleteContentList",
       "outputs": [
         {
+          "internalType": "bool",
           "name": "status",
           "type": "bool"
         }
       ],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_content_listId",
           "type": "uint256"
         },
         {
+          "internalType": "uint256",
           "name": "_addedAgreementId",
           "type": "uint256"
         },
         {
+          "internalType": "bytes32",
           "name": "_nonce",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes",
           "name": "_subjectSig",
           "type": "bytes"
         }
       ],
       "name": "addContentListAgreement",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_content_listId",
           "type": "uint256"
         },
         {
+          "internalType": "uint256",
           "name": "_deletedAgreementId",
           "type": "uint256"
         },
         {
+          "internalType": "uint256",
           "name": "_deletedAgreementTimestamp",
           "type": "uint256"
         },
         {
+          "internalType": "bytes32",
           "name": "_nonce",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes",
           "name": "_subjectSig",
           "type": "bytes"
         }
       ],
       "name": "deleteContentListAgreement",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_content_listId",
           "type": "uint256"
         },
         {
+          "internalType": "uint256[]",
           "name": "_agreementIds",
           "type": "uint256[]"
         },
         {
+          "internalType": "bytes32",
           "name": "_nonce",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes",
           "name": "_subjectSig",
           "type": "bytes"
         }
       ],
       "name": "orderContentListAgreements",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_content_listId",
           "type": "uint256"
         },
         {
+          "internalType": "string",
           "name": "_updatedContentListName",
           "type": "string"
         },
         {
+          "internalType": "bytes32",
           "name": "_nonce",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes",
           "name": "_subjectSig",
           "type": "bytes"
         }
       ],
       "name": "updateContentListName",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_content_listId",
           "type": "uint256"
         },
         {
+          "internalType": "bool",
           "name": "_updatedContentListPrivacy",
           "type": "bool"
         },
         {
+          "internalType": "bytes32",
           "name": "_nonce",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes",
           "name": "_subjectSig",
           "type": "bytes"
         }
       ],
       "name": "updateContentListPrivacy",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_content_listId",
           "type": "uint256"
         },
         {
+          "internalType": "bytes32",
           "name": "_content_listImageMultihashDigest",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes32",
           "name": "_nonce",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes",
           "name": "_subjectSig",
           "type": "bytes"
         }
       ],
       "name": "updateContentListCoverPhoto",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_content_listId",
           "type": "uint256"
         },
         {
+          "internalType": "string",
           "name": "_content_listDescription",
           "type": "string"
         },
         {
+          "internalType": "bytes32",
           "name": "_nonce",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes",
           "name": "_subjectSig",
           "type": "bytes"
         }
       ],
       "name": "updateContentListDescription",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_content_listId",
           "type": "uint256"
         },
         {
+          "internalType": "bytes32",
           "name": "_updatedContentListUPC",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes32",
           "name": "_nonce",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes",
           "name": "_subjectSig",
           "type": "bytes"
         }
       ],
       "name": "updateContentListUPC",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": true,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_content_listId",
           "type": "uint256"
         }
@@ -616,22 +649,23 @@
       "name": "contentListExists",
       "outputs": [
         {
+          "internalType": "bool",
           "name": "exists",
           "type": "bool"
         }
       ],
-      "payable": false,
       "stateMutability": "view",
       "type": "function"
     },
     {
-      "constant": true,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_content_listId",
           "type": "uint256"
         },
         {
+          "internalType": "uint256",
           "name": "_agreementId",
           "type": "uint256"
         }
@@ -639,29 +673,29 @@
       "name": "isAgreementInContentList",
       "outputs": [
         {
+          "internalType": "bool",
           "name": "",
           "type": "bool"
         }
       ],
-      "payable": false,
       "stateMutability": "view",
       "type": "function"
     },
     {
-      "constant": true,
       "inputs": [
         {
+          "internalType": "address",
           "name": "_caller",
           "type": "address"
         },
         {
+          "internalType": "uint256",
           "name": "_content_listId",
           "type": "uint256"
         }
       ],
       "name": "callerOwnsContentList",
       "outputs": [],
-      "payable": false,
       "stateMutability": "view",
       "type": "function"
     }

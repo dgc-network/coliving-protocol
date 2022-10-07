@@ -2,49 +2,50 @@
   "contractName": "SocialFeatureStorageInterface",
   "abi": [
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_userId",
           "type": "uint256"
         },
         {
+          "internalType": "uint256",
           "name": "_agreementId",
           "type": "uint256"
         }
       ],
       "name": "addAgreementRepost",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_userId",
           "type": "uint256"
         },
         {
+          "internalType": "uint256",
           "name": "_agreementId",
           "type": "uint256"
         }
       ],
       "name": "deleteAgreementRepost",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": true,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_userId",
           "type": "uint256"
         },
         {
+          "internalType": "uint256",
           "name": "_agreementId",
           "type": "uint256"
         }
@@ -52,58 +53,59 @@
       "name": "userRepostedAgreement",
       "outputs": [
         {
+          "internalType": "bool",
           "name": "reposted",
           "type": "bool"
         }
       ],
-      "payable": false,
       "stateMutability": "view",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_userId",
           "type": "uint256"
         },
         {
+          "internalType": "uint256",
           "name": "_content_listId",
           "type": "uint256"
         }
       ],
       "name": "addContentListRepost",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_userId",
           "type": "uint256"
         },
         {
+          "internalType": "uint256",
           "name": "_content_listId",
           "type": "uint256"
         }
       ],
       "name": "deleteContentListRepost",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": true,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_userId",
           "type": "uint256"
         },
         {
+          "internalType": "uint256",
           "name": "_content_listId",
           "type": "uint256"
         }
@@ -111,11 +113,11 @@
       "name": "userRepostedContentList",
       "outputs": [
         {
+          "internalType": "bool",
           "name": "reposted",
           "type": "bool"
         }
       ],
-      "payable": false,
       "stateMutability": "view",
       "type": "function"
     }

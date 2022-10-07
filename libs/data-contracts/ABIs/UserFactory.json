@@ -2,118 +2,28 @@
   "contractName": "UserFactory",
   "abi": [
     {
-      "constant": false,
-      "inputs": [],
-      "name": "kill",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [],
-      "name": "renounceOwnership",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "owner",
-      "outputs": [
-        {
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "isOwner",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": false,
       "inputs": [
         {
-          "name": "_registryAddress",
-          "type": "address"
-        }
-      ],
-      "name": "setRegistry",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "newOwner",
-          "type": "address"
-        }
-      ],
-      "name": "transferOwnership",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "",
-          "type": "bytes32"
-        }
-      ],
-      "name": "usedSignatures",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
+          "internalType": "address",
           "name": "_registryAddress",
           "type": "address"
         },
         {
+          "internalType": "bytes32",
           "name": "_userStorageRegistryKey",
           "type": "bytes32"
         },
         {
+          "internalType": "uint256",
           "name": "_networkId",
           "type": "uint256"
         },
         {
+          "internalType": "address",
           "name": "_verifierAddress",
           "type": "address"
         }
       ],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "constructor"
     },
@@ -122,16 +32,19 @@
       "inputs": [
         {
           "indexed": false,
+          "internalType": "uint256",
           "name": "_userId",
           "type": "uint256"
         },
         {
           "indexed": false,
+          "internalType": "bytes16",
           "name": "_handle",
           "type": "bytes16"
         },
         {
           "indexed": false,
+          "internalType": "address",
           "name": "_wallet",
           "type": "address"
         }
@@ -143,17 +56,19 @@
       "anonymous": false,
       "inputs": [
         {
-          "indexed": false,
-          "name": "_userId",
-          "type": "uint256"
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
         },
         {
-          "indexed": false,
-          "name": "_multihashDigest",
-          "type": "bytes32"
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
         }
       ],
-      "name": "UpdateMultihash",
+      "name": "OwnershipTransferred",
       "type": "event"
     },
     {
@@ -161,45 +76,13 @@
       "inputs": [
         {
           "indexed": false,
+          "internalType": "uint256",
           "name": "_userId",
           "type": "uint256"
         },
         {
           "indexed": false,
-          "name": "_name",
-          "type": "bytes32"
-        }
-      ],
-      "name": "UpdateName",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "name": "_userId",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "name": "_location",
-          "type": "bytes32"
-        }
-      ],
-      "name": "UpdateLocation",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "name": "_userId",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
+          "internalType": "string",
           "name": "_bio",
           "type": "string"
         }
@@ -212,16 +95,18 @@
       "inputs": [
         {
           "indexed": false,
+          "internalType": "uint256",
           "name": "_userId",
           "type": "uint256"
         },
         {
           "indexed": false,
-          "name": "_profilePhotoDigest",
-          "type": "bytes32"
+          "internalType": "string",
+          "name": "_contentNodeEndpoint",
+          "type": "string"
         }
       ],
-      "name": "UpdateProfilePhoto",
+      "name": "UpdateContentNodeEndpoint",
       "type": "event"
     },
     {
@@ -229,11 +114,13 @@
       "inputs": [
         {
           "indexed": false,
+          "internalType": "uint256",
           "name": "_userId",
           "type": "uint256"
         },
         {
           "indexed": false,
+          "internalType": "bytes32",
           "name": "_coverPhotoDigest",
           "type": "bytes32"
         }
@@ -246,11 +133,13 @@
       "inputs": [
         {
           "indexed": false,
+          "internalType": "uint256",
           "name": "_userId",
           "type": "uint256"
         },
         {
           "indexed": false,
+          "internalType": "bool",
           "name": "_isCreator",
           "type": "bool"
         }
@@ -263,11 +152,13 @@
       "inputs": [
         {
           "indexed": false,
+          "internalType": "uint256",
           "name": "_userId",
           "type": "uint256"
         },
         {
           "indexed": false,
+          "internalType": "bool",
           "name": "_isVerified",
           "type": "bool"
         }
@@ -280,57 +171,171 @@
       "inputs": [
         {
           "indexed": false,
+          "internalType": "uint256",
           "name": "_userId",
           "type": "uint256"
         },
         {
           "indexed": false,
-          "name": "_contentNodeEndpoint",
-          "type": "string"
+          "internalType": "bytes32",
+          "name": "_location",
+          "type": "bytes32"
         }
       ],
-      "name": "UpdateContentNodeEndpoint",
+      "name": "UpdateLocation",
       "type": "event"
     },
     {
       "anonymous": false,
       "inputs": [
         {
-          "indexed": true,
-          "name": "previousOwner",
-          "type": "address"
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_userId",
+          "type": "uint256"
         },
         {
-          "indexed": true,
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "_multihashDigest",
+          "type": "bytes32"
+        }
+      ],
+      "name": "UpdateMultihash",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_userId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "_name",
+          "type": "bytes32"
+        }
+      ],
+      "name": "UpdateName",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_userId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "_profilePhotoDigest",
+          "type": "bytes32"
+        }
+      ],
+      "name": "UpdateProfilePhoto",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "kill",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address payable",
+          "name": "_registryAddress",
+          "type": "address"
+        }
+      ],
+      "name": "setRegistry",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
           "name": "newOwner",
           "type": "address"
         }
       ],
-      "name": "OwnershipTransferred",
-      "type": "event"
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
     },
     {
-      "constant": true,
       "inputs": [
         {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "name": "usedSignatures",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
           "name": "_callerAddress",
           "type": "address"
         },
         {
+          "internalType": "uint256",
           "name": "_userId",
           "type": "uint256"
         }
       ],
       "name": "callerOwnsUser",
       "outputs": [],
-      "payable": false,
       "stateMutability": "view",
       "type": "function"
     },
     {
-      "constant": true,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_id",
           "type": "uint256"
         }
@@ -338,34 +343,38 @@
       "name": "getUser",
       "outputs": [
         {
+          "internalType": "address",
           "name": "wallet",
           "type": "address"
         },
         {
+          "internalType": "bytes16",
           "name": "handle",
           "type": "bytes16"
         }
       ],
-      "payable": false,
       "stateMutability": "view",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "address",
           "name": "_owner",
           "type": "address"
         },
         {
+          "internalType": "bytes16",
           "name": "_handle",
           "type": "bytes16"
         },
         {
+          "internalType": "bytes32",
           "name": "_nonce",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes",
           "name": "_subjectSig",
           "type": "bytes"
         }
@@ -373,252 +382,270 @@
       "name": "addUser",
       "outputs": [
         {
+          "internalType": "uint256",
           "name": "",
           "type": "uint256"
         }
       ],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_userId",
           "type": "uint256"
         },
         {
+          "internalType": "bytes32",
           "name": "_multihashDigest",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes32",
           "name": "_nonce",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes",
           "name": "_subjectSig",
           "type": "bytes"
         }
       ],
       "name": "updateMultihash",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_userId",
           "type": "uint256"
         },
         {
+          "internalType": "bytes32",
           "name": "_name",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes32",
           "name": "_nonce",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes",
           "name": "_subjectSig",
           "type": "bytes"
         }
       ],
       "name": "updateName",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_userId",
           "type": "uint256"
         },
         {
+          "internalType": "bytes32",
           "name": "_location",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes32",
           "name": "_nonce",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes",
           "name": "_subjectSig",
           "type": "bytes"
         }
       ],
       "name": "updateLocation",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_userId",
           "type": "uint256"
         },
         {
+          "internalType": "string",
           "name": "_bio",
           "type": "string"
         },
         {
+          "internalType": "bytes32",
           "name": "_nonce",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes",
           "name": "_subjectSig",
           "type": "bytes"
         }
       ],
       "name": "updateBio",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_userId",
           "type": "uint256"
         },
         {
+          "internalType": "bytes32",
           "name": "_profilePhotoDigest",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes32",
           "name": "_nonce",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes",
           "name": "_subjectSig",
           "type": "bytes"
         }
       ],
       "name": "updateProfilePhoto",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_userId",
           "type": "uint256"
         },
         {
+          "internalType": "bytes32",
           "name": "_coverPhotoDigest",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes32",
           "name": "_nonce",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes",
           "name": "_subjectSig",
           "type": "bytes"
         }
       ],
       "name": "updateCoverPhoto",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_userId",
           "type": "uint256"
         },
         {
+          "internalType": "bool",
           "name": "_isCreator",
           "type": "bool"
         },
         {
+          "internalType": "bytes32",
           "name": "_nonce",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes",
           "name": "_subjectSig",
           "type": "bytes"
         }
       ],
       "name": "updateIsCreator",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_userId",
           "type": "uint256"
         },
         {
+          "internalType": "bool",
           "name": "_isVerified",
           "type": "bool"
         },
         {
+          "internalType": "bytes32",
           "name": "_nonce",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes",
           "name": "_subjectSig",
           "type": "bytes"
         }
       ],
       "name": "updateIsVerified",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_userId",
           "type": "uint256"
         },
         {
+          "internalType": "string",
           "name": "_contentNodeEndpoint",
           "type": "string"
         },
         {
+          "internalType": "bytes32",
           "name": "_nonce",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes",
           "name": "_subjectSig",
           "type": "bytes"
         }
       ],
       "name": "updateContentNodeEndpoint",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": true,
       "inputs": [
         {
+          "internalType": "bytes16",
           "name": "_handle",
           "type": "bytes16"
         }
@@ -626,18 +653,18 @@
       "name": "handleIsValid",
       "outputs": [
         {
+          "internalType": "bool",
           "name": "isValid",
           "type": "bool"
         }
       ],
-      "payable": false,
       "stateMutability": "view",
       "type": "function"
     },
     {
-      "constant": true,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_id",
           "type": "uint256"
         }
@@ -645,11 +672,11 @@
       "name": "userExists",
       "outputs": [
         {
+          "internalType": "bool",
           "name": "exists",
           "type": "bool"
         }
       ],
-      "payable": false,
       "stateMutability": "view",
       "type": "function"
     }

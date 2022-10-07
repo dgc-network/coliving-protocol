@@ -2,9 +2,22 @@
   "contractName": "SigningLogicInitializable",
   "abi": [
     {
-      "constant": true,
+      "anonymous": false,
       "inputs": [
         {
+          "indexed": false,
+          "internalType": "uint8",
+          "name": "version",
+          "type": "uint8"
+        }
+      ],
+      "name": "Initialized",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
           "name": "",
           "type": "bytes32"
         }
@@ -12,33 +25,34 @@
       "name": "usedSignatures",
       "outputs": [
         {
+          "internalType": "bool",
           "name": "",
           "type": "bool"
         }
       ],
-      "payable": false,
       "stateMutability": "view",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "string",
           "name": "name",
           "type": "string"
         },
         {
+          "internalType": "string",
           "name": "version",
           "type": "string"
         },
         {
+          "internalType": "uint256",
           "name": "chainId",
           "type": "uint256"
         }
       ],
       "name": "initialize",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     }

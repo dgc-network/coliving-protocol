@@ -2,9 +2,9 @@
   "contractName": "DiscoveryNodeFactoryInterface",
   "abi": [
     {
-      "constant": true,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_id",
           "type": "uint256"
         }
@@ -12,36 +12,36 @@
       "name": "getDiscoveryNode",
       "outputs": [
         {
+          "internalType": "address",
           "name": "wallet",
           "type": "address"
         },
         {
+          "internalType": "string",
           "name": "endpoint",
           "type": "string"
         }
       ],
-      "payable": false,
       "stateMutability": "view",
       "type": "function"
     },
     {
-      "constant": true,
       "inputs": [],
       "name": "getTotalNumberOfProviders",
       "outputs": [
         {
+          "internalType": "uint256",
           "name": "total",
           "type": "uint256"
         }
       ],
-      "payable": false,
       "stateMutability": "view",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "string",
           "name": "_endpoint",
           "type": "string"
         }
@@ -49,11 +49,11 @@
       "name": "register",
       "outputs": [
         {
+          "internalType": "uint256",
           "name": "discProvId",
           "type": "uint256"
         }
       ],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     }

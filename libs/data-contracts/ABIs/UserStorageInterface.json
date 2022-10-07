@@ -2,17 +2,19 @@
   "contractName": "UserStorageInterface",
   "abi": [
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "address",
           "name": "_wallet",
           "type": "address"
         },
         {
+          "internalType": "bytes16",
           "name": "_handle",
           "type": "bytes16"
         },
         {
+          "internalType": "bytes16",
           "name": "_handleLower",
           "type": "bytes16"
         }
@@ -20,18 +22,18 @@
       "name": "addUser",
       "outputs": [
         {
+          "internalType": "uint256",
           "name": "newUserId",
           "type": "uint256"
         }
       ],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": true,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_id",
           "type": "uint256"
         }
@@ -39,22 +41,23 @@
       "name": "getUser",
       "outputs": [
         {
+          "internalType": "address",
           "name": "wallet",
           "type": "address"
         },
         {
+          "internalType": "bytes16",
           "name": "handle",
           "type": "bytes16"
         }
       ],
-      "payable": false,
       "stateMutability": "view",
       "type": "function"
     },
     {
-      "constant": true,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_id",
           "type": "uint256"
         }
@@ -62,18 +65,18 @@
       "name": "userExists",
       "outputs": [
         {
+          "internalType": "bool",
           "name": "exists",
           "type": "bool"
         }
       ],
-      "payable": false,
       "stateMutability": "view",
       "type": "function"
     },
     {
-      "constant": true,
       "inputs": [
         {
+          "internalType": "bytes16",
           "name": "_handle",
           "type": "bytes16"
         }
@@ -81,11 +84,11 @@
       "name": "handleIsTaken",
       "outputs": [
         {
+          "internalType": "bool",
           "name": "isTaken",
           "type": "bool"
         }
       ],
-      "payable": false,
       "stateMutability": "view",
       "type": "function"
     }

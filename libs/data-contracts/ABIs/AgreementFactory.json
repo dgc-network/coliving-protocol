@@ -2,118 +2,28 @@
   "contractName": "AgreementFactory",
   "abi": [
     {
-      "constant": false,
-      "inputs": [],
-      "name": "kill",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [],
-      "name": "renounceOwnership",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "owner",
-      "outputs": [
-        {
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "isOwner",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": false,
       "inputs": [
         {
-          "name": "_registryAddress",
-          "type": "address"
-        }
-      ],
-      "name": "setRegistry",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "newOwner",
-          "type": "address"
-        }
-      ],
-      "name": "transferOwnership",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "",
-          "type": "bytes32"
-        }
-      ],
-      "name": "usedSignatures",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
+          "internalType": "address",
           "name": "_registryAddress",
           "type": "address"
         },
         {
+          "internalType": "bytes32",
           "name": "_agreementStorageRegistryKey",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes32",
           "name": "_userFactoryRegistryKey",
           "type": "bytes32"
         },
         {
+          "internalType": "uint256",
           "name": "_networkId",
           "type": "uint256"
         }
       ],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "constructor"
     },
@@ -122,70 +32,7 @@
       "inputs": [
         {
           "indexed": false,
-          "name": "_id",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "name": "_agreementOwnerId",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "name": "_multihashDigest",
-          "type": "bytes32"
-        },
-        {
-          "indexed": false,
-          "name": "_multihashHashFn",
-          "type": "uint8"
-        },
-        {
-          "indexed": false,
-          "name": "_multihashSize",
-          "type": "uint8"
-        }
-      ],
-      "name": "NewAgreement",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "name": "_agreementId",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "name": "_agreementOwnerId",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "name": "_multihashDigest",
-          "type": "bytes32"
-        },
-        {
-          "indexed": false,
-          "name": "_multihashHashFn",
-          "type": "uint8"
-        },
-        {
-          "indexed": false,
-          "name": "_multihashSize",
-          "type": "uint8"
-        }
-      ],
-      "name": "UpdateAgreement",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
+          "internalType": "uint256",
           "name": "_agreementId",
           "type": "uint256"
         }
@@ -197,12 +44,51 @@
       "anonymous": false,
       "inputs": [
         {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_id",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_agreementOwnerId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "_multihashDigest",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint8",
+          "name": "_multihashHashFn",
+          "type": "uint8"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint8",
+          "name": "_multihashSize",
+          "type": "uint8"
+        }
+      ],
+      "name": "NewAgreement",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
           "indexed": true,
+          "internalType": "address",
           "name": "previousOwner",
           "type": "address"
         },
         {
           "indexed": true,
+          "internalType": "address",
           "name": "newOwner",
           "type": "address"
         }
@@ -211,9 +97,118 @@
       "type": "event"
     },
     {
-      "constant": true,
+      "anonymous": false,
       "inputs": [
         {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_agreementId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_agreementOwnerId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "_multihashDigest",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint8",
+          "name": "_multihashHashFn",
+          "type": "uint8"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint8",
+          "name": "_multihashSize",
+          "type": "uint8"
+        }
+      ],
+      "name": "UpdateAgreement",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "kill",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address payable",
+          "name": "_registryAddress",
+          "type": "address"
+        }
+      ],
+      "name": "setRegistry",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "name": "usedSignatures",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
           "name": "_id",
           "type": "uint256"
         }
@@ -221,38 +216,43 @@
       "name": "agreementExists",
       "outputs": [
         {
+          "internalType": "bool",
           "name": "exists",
           "type": "bool"
         }
       ],
-      "payable": false,
       "stateMutability": "view",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_agreementOwnerId",
           "type": "uint256"
         },
         {
+          "internalType": "bytes32",
           "name": "_multihashDigest",
           "type": "bytes32"
         },
         {
+          "internalType": "uint8",
           "name": "_multihashHashFn",
           "type": "uint8"
         },
         {
+          "internalType": "uint8",
           "name": "_multihashSize",
           "type": "uint8"
         },
         {
+          "internalType": "bytes32",
           "name": "_nonce",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes",
           "name": "_subjectSig",
           "type": "bytes"
         }
@@ -260,42 +260,48 @@
       "name": "addAgreement",
       "outputs": [
         {
+          "internalType": "uint256",
           "name": "",
           "type": "uint256"
         }
       ],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_agreementId",
           "type": "uint256"
         },
         {
+          "internalType": "uint256",
           "name": "_agreementOwnerId",
           "type": "uint256"
         },
         {
+          "internalType": "bytes32",
           "name": "_multihashDigest",
           "type": "bytes32"
         },
         {
+          "internalType": "uint8",
           "name": "_multihashHashFn",
           "type": "uint8"
         },
         {
+          "internalType": "uint8",
           "name": "_multihashSize",
           "type": "uint8"
         },
         {
+          "internalType": "bytes32",
           "name": "_nonce",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes",
           "name": "_subjectSig",
           "type": "bytes"
         }
@@ -303,26 +309,28 @@
       "name": "updateAgreement",
       "outputs": [
         {
+          "internalType": "bool",
           "name": "",
           "type": "bool"
         }
       ],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_agreementId",
           "type": "uint256"
         },
         {
+          "internalType": "bytes32",
           "name": "_nonce",
           "type": "bytes32"
         },
         {
+          "internalType": "bytes",
           "name": "_subjectSig",
           "type": "bytes"
         }
@@ -330,36 +338,36 @@
       "name": "deleteAgreement",
       "outputs": [
         {
+          "internalType": "bool",
           "name": "status",
           "type": "bool"
         }
       ],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": true,
       "inputs": [
         {
+          "internalType": "address",
           "name": "_caller",
           "type": "address"
         },
         {
+          "internalType": "uint256",
           "name": "_agreementId",
           "type": "uint256"
         }
       ],
       "name": "callerOwnsAgreement",
       "outputs": [],
-      "payable": false,
       "stateMutability": "view",
       "type": "function"
     },
     {
-      "constant": true,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "_id",
           "type": "uint256"
         }
@@ -367,23 +375,26 @@
       "name": "getAgreement",
       "outputs": [
         {
+          "internalType": "uint256",
           "name": "agreementOwnerId",
           "type": "uint256"
         },
         {
+          "internalType": "bytes32",
           "name": "multihashDigest",
           "type": "bytes32"
         },
         {
+          "internalType": "uint8",
           "name": "multihashHashFn",
           "type": "uint8"
         },
         {
+          "internalType": "uint8",
           "name": "multihashSize",
           "type": "uint8"
         }
       ],
-      "payable": false,
       "stateMutability": "view",
       "type": "function"
     }
