@@ -146,11 +146,11 @@ module.exports = async callback => {
     console.log("Identity service doesn't exist", e)
   }
 
-  // output to Creator Node
+  // output to Content Node
   try {
     outputJsonConfigFile(getDirectoryRoot(ColivingContentNode) + '/data-contract-config.json')
   } catch (e) {
-    console.log("Creator node dir doesn't exist", e)
+    console.log("Content node dir doesn't exist", e)
   }
 
   // output to Discovery Node
@@ -162,7 +162,7 @@ module.exports = async callback => {
 
     let flaskConfigPath = path.join(
       getDirectoryRoot(ColivingDiscoveryNode),
-      'contract_config.ini'
+      'data_contract_config.ini'
     )
     // Write updated flask config file
     outputFlaskConfigFile(flaskConfigPath)
@@ -175,5 +175,5 @@ module.exports = async callback => {
   if (!fs.existsSync(dappOutput)) {
     fs.mkdirSync(dappOutput, { recursive: true })
   }
-  outputJsonConfigFile(dappOutput + '/data-config.json')
+  outputJsonConfigFile(dappOutput + '/data-contract-config.json')
 }
