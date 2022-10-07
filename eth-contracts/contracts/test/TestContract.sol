@@ -7,9 +7,9 @@ contract TestContract is InitializableV2 {
 
     uint256 public x = 1;
 
-    function initialize() public initializer {
-        InitializableV2.initialize();
-    }
+    //function initialize() public initializer {
+    //    InitializableV2.initialize();
+    //}
 
     function setX(uint256 _x) external {
         _requireIsInitialized();

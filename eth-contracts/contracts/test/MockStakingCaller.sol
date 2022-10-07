@@ -15,7 +15,9 @@ contract MockStakingCaller is InitializableV2 {
     uint256 max;
     uint256 min;
 
-    Staking staking = Staking(0);
+    //Staking staking = Staking(0);
+    address _stakingAddress;
+    Staking staking = Staking(_stakingAddress);
     ERC20 internal stakingToken;
     address payable stakingAddress;
 

@@ -352,7 +352,8 @@ contract ServiceProviderFactory is InitializableV2 {
                 // Overwrite element to be deleted with last element in array
                 serviceProviderAddressToId[msg.sender][_serviceType][i] = serviceProviderAddressToId[msg.sender][_serviceType][spTypeLength - 1];
                 // Reduce array size, exit loop
-                serviceProviderAddressToId[msg.sender][_serviceType].length--;
+                //serviceProviderAddressToId[msg.sender][_serviceType].length--;
+                delete serviceProviderAddressToId[msg.sender][_serviceType][i];
                 // Confirm this ID has been found for the service provider
                 break;
             }

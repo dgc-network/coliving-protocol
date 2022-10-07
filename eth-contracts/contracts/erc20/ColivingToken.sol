@@ -1,16 +1,15 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "./ERC20Detailed.sol";
+//import "./ERC20Detailed.sol";
 import "./ERC20Mintable.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Pausable.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import "../InitializableV2.sol";
 
 /** Upgradeable ERC20 token that is Detailed, Mintable, Pausable, Burnable. */
-contract ColivingToken is InitializableV2,
-    ERC20,
-    ERC20Detailed,
+//contract ColivingToken is InitializableV2, ERC20Detailed, ERC20Mintable, ERC20Burnable {
+abstract contract ColivingToken is InitializableV2,
     ERC20Mintable,
     ERC20Pausable,
     ERC20Burnable
@@ -42,15 +41,16 @@ contract ColivingToken is InitializableV2,
         // ERC20 has no initialize function
 
         // ERC20Detailed provides setters/getters for name, symbol, decimals properties
-        ERC20Detailed.initialize(NAME, SYMBOL, DECIMALS);
+        //ERC20Detailed.initialize(NAME, SYMBOL, DECIMALS);
+        //ERC20.initialize(NAME, SYMBOL, DECIMALS);
 
         // ERC20Burnable has no initialize function. Makes token burnable
 
         // Initialize call makes token pausable & gives pauserRole to governance
-        ERC20Pausable.initialize(governance);
+        //ERC20Pausable.initialize(governance);
 
         // Initialize call makes token mintable & gives minterRole to msg.sender
-        ERC20Mintable.initialize(msg.sender);
+        //ERC20Mintable.initialize(msg.sender);
 
         // Mints initial token supply & transfers to _owner account
         _mint(_owner, INITIAL_SUPPLY);

@@ -18,7 +18,7 @@ contract InitializableV2 is Initializable {
      *      initializable modifier ensures this function can only be called once by each deployed child contract
      *      sets isInitialized flag to true to which is used by _requireIsInitialized()
      */
-    function initialize() public initializer {
+    function initialize() public virtual initializer {
         isInitialized = true;
     }
 

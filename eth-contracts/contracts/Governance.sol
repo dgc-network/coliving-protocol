@@ -295,6 +295,23 @@ contract Governance is InitializableV2 {
         uint256 newProposalId = lastProposalId.add(1);
 
         // Store new Proposal obj in proposals mapping
+        Proposal storage proposal = proposals[newProposalId];
+            proposal.proposalId= newProposalId;
+            proposal.proposer= proposer;
+            proposal.submissionBlockNumber= block.number;
+            proposal.targetContractRegistryKey= _targetContractRegistryKey;
+            proposal.targetContractAddress= targetContractAddress;
+            //newProposal.callValue= _newProposalcallValue;
+            proposal.functionSignature= _functionSignature;
+            proposal.callData= _callData;
+            proposal.outcome= Outcome.InProgress;
+            proposal.voteMagnitudeYes= 0;
+            proposal.voteMagnitudeNo= 0;
+            proposal.numVotes= 0;
+            proposal.contractHash= _getCodeHash(targetContractAddress);
+            /* votes: mappings are auto-initialized to default state */
+            /* voteMagnitudes: mappings are auto-initialized to default state */
+/*
         proposals[newProposalId] = Proposal({
             proposalId: newProposalId,
             proposer: proposer,
@@ -309,10 +326,8 @@ contract Governance is InitializableV2 {
             voteMagnitudeNo: 0,
             numVotes: 0,
             contractHash: _getCodeHash(targetContractAddress)
-            /* votes: mappings are auto-initialized to default state */
-            /* voteMagnitudes: mappings are auto-initialized to default state */
         });
-
+*/
         // Append new proposalId to inProgressProposals array
         inProgressProposals.push(newProposalId);
 
@@ -802,7 +817,8 @@ contract Governance is InitializableV2 {
         _requireIsInitialized();
         _requireValidProposalId(_proposalId);
 
-        Proposal memory proposal = proposals[_proposalId];
+        //Proposal memory proposal = proposals[_proposalId];
+        Proposal storage proposal = proposals[_proposalId];
         return (
             proposal.proposalId,
             proposal.proposer,
@@ -978,7 +994,8 @@ contract Governance is InitializableV2 {
         );
         (success, returnData) = (
             // solium-disable-next-line security/no-call-value
-            _targetContractAddress.call.value(_callValue)(encodedCallData)
+            //_targetContractAddress.call.value(_callValue)(encodedCallData)
+            _targetContractAddress.call{value: _callValue}(encodedCallData)
         );
 
         return (success, returnData);
@@ -1039,7 +1056,8 @@ contract Governance is InitializableV2 {
      * @dev Note that quorum is evaluated based on total staked at proposal submission
      *      not total staked at proposal evaluation, this is expected behavior
      */
-    function _quorumMet(Proposal memory proposal, Staking stakingContract)
+    //function _quorumMet(Proposal memory proposal, Staking stakingContract)
+    function _quorumMet(Proposal storage proposal, Staking stakingContract)
     internal view returns (bool)
     {
         uint256 participation = (

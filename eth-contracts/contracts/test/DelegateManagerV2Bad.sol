@@ -1213,7 +1213,8 @@ contract DelegateManagerV2Bad is InitializableV2 {
             if (spDelegateInfo[_serviceProvider].delegators[i] == _delegator) {
                 // Overwrite and shrink delegators list
                 spDelegateInfo[_serviceProvider].delegators[i] = spDelegateInfo[_serviceProvider].delegators[spDelegateInfo[_serviceProvider].delegators.length - 1];
-                spDelegateInfo[_serviceProvider].delegators.length--;
+                //spDelegateInfo[_serviceProvider].delegators.length--;
+                delete spDelegateInfo[_serviceProvider].delegators[i];
                 break;
             }
         }

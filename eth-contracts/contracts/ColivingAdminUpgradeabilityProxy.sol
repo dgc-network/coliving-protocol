@@ -9,7 +9,7 @@ import "./proxy/UpgradeabilityProxy.sol";
  * @dev Any logic contract that has a signature clash with this proxy contract will be unable to call those functions
  *      Please ensure logic contract functions do not share a signature with any functions defined in this file
  */
-contract ColivingAdminUpgradeabilityProxy is UpgradeabilityProxy {
+abstract contract ColivingAdminUpgradeabilityProxy is UpgradeabilityProxy {
     address private proxyAdmin;
     string private constant ERROR_ONLY_ADMIN = (
         "ColivingAdminUpgradeabilityProxy: Caller must be current proxy admin"
@@ -25,12 +25,20 @@ contract ColivingAdminUpgradeabilityProxy is UpgradeabilityProxy {
      * @param _data - data of function to be called on logic contract.
      *      Passed to UpgradeabilityProxy constructor.
      */
+/*
     constructor(
       address _logic,
       address _proxyAdmin,
       bytes memory _data
     )
     UpgradeabilityProxy(_logic, _data) public payable
+*/    
+    constructor(
+      address _logic,
+      address _proxyAdmin,
+      bytes memory _data
+    )
+    UpgradeabilityProxy() payable
     {
         proxyAdmin = _proxyAdmin;
     }
@@ -56,9 +64,9 @@ contract ColivingAdminUpgradeabilityProxy is UpgradeabilityProxy {
     /**
      * @return The address of the implementation.
      */
-    function implementation() external view returns (address) {
-        return _implementation();
-    }
+    //function implementation() external override view returns (address) {
+    //    return _implementation();
+    //}
 
     /**
      * @notice Set the Coliving Proxy Admin

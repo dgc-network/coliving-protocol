@@ -142,7 +142,8 @@ contract ServiceTypeManager is InitializableV2 {
         // Overwrite service index
         uint256 lastIndex = validServiceTypes.length - 1;
         validServiceTypes[serviceIndex] = validServiceTypes[lastIndex];
-        validServiceTypes.length--;
+        //validServiceTypes.length--;
+        delete validServiceTypes[serviceIndex];
 
         // Mark as invalid
         serviceTypeInfo[_serviceType].isValid = false;

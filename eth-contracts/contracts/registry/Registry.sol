@@ -35,9 +35,9 @@ contract Registry is InitializableV2, Ownable {
         address indexed _newAddress
     );
 
-    function initialize() public initializer {
+    function initialize() public override initializer {
         /// @notice Ownable.initialize(address _sender) sets contract owner to _sender.
-        Ownable.initialize(msg.sender);
+        //Ownable.initialize(msg.sender);
         InitializableV2.initialize();
     }
 
