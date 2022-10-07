@@ -26,7 +26,6 @@ const printOptions = () => {
   console.log('node setup.js run network up')
   console.log('node setup.js run ipfs up')
   console.log('node setup.js run ipfs-2 up')
-  console.log('node setup.js run data-contracts up')
   console.log('-----------------------------------')
 }
 
