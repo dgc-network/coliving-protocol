@@ -15,8 +15,8 @@ const MAX_INDEXING_TIMEOUT = 10000
  */
 const loadLibsVars = () => {
   const configDir = untildify(config.get('coliving_config_dir'))
-  const dataConfig = `${configDir}/data-config.json`
-  const ethConfig = `${configDir}/eth-config.json`
+  const dataConfig = `${configDir}/data-contract-config.json`
+  const ethConfig = `${configDir}/eth-contract-config.json`
   try {
     console.log(`Config dir: ${configDir}`)
     console.log(dataConfig)

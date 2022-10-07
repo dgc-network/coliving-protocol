@@ -165,5 +165,5 @@ module.exports = async callback => {
   if (!fs.existsSync(dappOutput)) {
     fs.mkdirSync(dappOutput, { recursive: true })
   }
-  await outputJsonConfigFile(path.join(dappOutput, '/eth-config.json'))
+  await outputJsonConfigFile(path.join(dappOutput, '/eth-contract-config.json'))
 }
