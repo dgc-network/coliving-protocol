@@ -8,11 +8,8 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import "../InitializableV2.sol";
 
 /** Upgradeable ERC20 token that is Detailed, Mintable, Pausable, Burnable. */
-//contract ColivingToken is InitializableV2, ERC20Detailed, ERC20Mintable, ERC20Burnable {
-abstract contract ColivingToken is InitializableV2,
-    ERC20Mintable,
-    ERC20Pausable,
-    ERC20Burnable
+//contract ColivingToken is InitializableV2, ERC20, ERC20Detailed, ERC20Mintable, ERC20Burnable {
+abstract contract ColivingToken is InitializableV2, ERC20Mintable
 {
     string constant NAME = "Coliving";
 
