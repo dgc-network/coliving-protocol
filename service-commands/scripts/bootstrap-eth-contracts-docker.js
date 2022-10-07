@@ -114,15 +114,15 @@ const main = async () => {
     { stdio: 'inherit' }
   )
   execSync(
-    `cp -r ${process.env.PROTOCOL_DIR}/identity-service/contract-config.json ${tmpDataContracts}`,
+    `cp -r ${process.env.PROTOCOL_DIR}/identity-service/data-contract-config.json ${tmpDataContracts}`,
     { stdio: 'inherit' }
   )
   execSync(
-    `cp -r ${process.env.PROTOCOL_DIR}/discovery-node/contract_config.ini ${tmpDataContracts}`,
+    `cp -r ${process.env.PROTOCOL_DIR}/discovery-node/data_contract_config.ini ${tmpDataContracts}`,
     { stdio: 'inherit' }
   )
   execSync(
-    `cp -r ${process.env.PROTOCOL_DIR}/discovery-node/build/contracts/ ${tmpDataContracts}/contracts`,
+    `cp -r ${process.env.PROTOCOL_DIR}/discovery-node/build/data-contracts/ ${tmpDataContracts}/data-contracts`,
     { stdio: 'inherit' }
   )
   execSync(

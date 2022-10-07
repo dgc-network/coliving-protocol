@@ -854,8 +854,8 @@ if (fs.existsSync('aao-config.json')) {
 
 // the contract-config.json file is used to load registry address locally
 // during development
-const contractConfigExists = fs.existsSync('contract-config.json')
-if (contractConfigExists) config.loadFile('contract-config.json')
+const contractConfigExists = fs.existsSync('data-contract-config.json')
+if (contractConfigExists) config.loadFile('data-contract-config.json')
 
 // Perform validation and error any properties are not present on schema
 config.validate()

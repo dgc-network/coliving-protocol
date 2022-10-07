@@ -155,7 +155,7 @@ module.exports = async callback => {
 
   // output to Discovery Node
   try {
-    let discProvOutputPath = path.join(getDirectoryRoot(ColivingDiscoveryNode), 'build', 'contracts')
+    let discProvOutputPath = path.join(getDirectoryRoot(ColivingDiscoveryNode), 'build', 'data-contracts')
 
     // Copy build directory
     await copyBuildDirectory(discProvOutputPath)
@@ -175,5 +175,5 @@ module.exports = async callback => {
   if (!fs.existsSync(dappOutput)) {
     fs.mkdirSync(dappOutput, { recursive: true })
   }
-  outputJsonConfigFile(dappOutput + '/config.json')
+  outputJsonConfigFile(dappOutput + '/data-config.json')
 }

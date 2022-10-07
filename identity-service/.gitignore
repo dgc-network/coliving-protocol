@@ -9,7 +9,7 @@ npm-debug.log
 file_storage/
 local-storage/
 local-test/
-contract-config.json
+data-contract-config.json
 eth-contract-config.json
 solana-program-config.json
 aao-config.json

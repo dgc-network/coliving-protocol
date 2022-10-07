@@ -41,12 +41,12 @@
   "data-contracts-predeployed": {
     "up": [
       "docker run --name coliving_ganache_cli -d -p 8545:8545 --network=coliving_dev coliving/ganache:data-contracts-predeployed-a25931b955adce92676cec029661533f80013908",
-      "docker cp coliving_ganache_cli:/app/contract-config.json $PROTOCOL_DIR/identity-service/data-contract-config.json",
-      "docker cp coliving_ganache_cli:/app/contract-config.json $PROTOCOL_DIR/content-node/data-contract-config.json",
-      "docker cp coliving_ganache_cli:/app/contract-config.json ~/.coliving/contract-config.json",
-      "docker cp coliving_ganache_cli:/app/contract-config.json ~/.coliving/data-config.json",
-      "docker cp coliving_ganache_cli:/app/contract-config.json $PROTOCOL_DIR/libs/data-contracts/config.json",
-      "docker cp coliving_ganache_cli:/app/contract_config.ini $PROTOCOL_DIR/discovery-node/contract_config.ini",
+      "docker cp coliving_ganache_cli:/app/data-contract-config.json $PROTOCOL_DIR/identity-service/data-contract-config.json",
+      "docker cp coliving_ganache_cli:/app/data-contract-config.json $PROTOCOL_DIR/content-node/data-contract-config.json",
+      "docker cp coliving_ganache_cli:/app/data-contract-config.json ~/.coliving/contract-config.json",
+      "docker cp coliving_ganache_cli:/app/data-contract-config.json ~/.coliving/data-config.json",
+      "docker cp coliving_ganache_cli:/app/data-contract-config.json $PROTOCOL_DIR/libs/data-contracts/config.json",
+      "docker cp coliving_ganache_cli:/app/data_contract_config.ini $PROTOCOL_DIR/discovery-node/data_contract_config.ini",
       "docker cp coliving_ganache_cli:/app/contracts/. $PROTOCOL_DIR/discovery-node/build/contracts",
       "docker cp coliving_ganache_cli:/app/contracts/. $PROTOCOL_DIR/libs/data-contracts/ABIs",
       "docker cp coliving_ganache_cli:/app/build/contracts/. $PROTOCOL_DIR/data-contracts/build",
