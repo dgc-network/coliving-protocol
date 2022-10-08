@@ -13,7 +13,7 @@ const fs = require('fs-extra')
 const path = require('path')
 const os = require('os');
 
-const truffle_dev_config = artifacts.options['_values']['networks']['development']
+//const truffle_dev_config = artifacts.options['_values']['networks']['development']
 
 const ColivingLibs = 'libs'
 const ColivingDiscoveryNode = 'discovery-node'
