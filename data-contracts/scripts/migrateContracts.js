@@ -66,9 +66,9 @@ async function createDir (dir) {
   }
 }
 
-/** Copy the contents of signature_schemas to the given path */
+/** Copy the contents of signatureSchemas to the given path */
 const copySignatureSchemas = (outputPath) => {
-  const sourcePath = __dirname + '/../signature_schemas/signatureSchemas.js'
+  const sourcePath = __dirname + '/../signatureSchemas/signatureSchemas.js'
   fs.copySync(sourcePath, outputPath)
 }
 

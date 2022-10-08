@@ -10,7 +10,7 @@ import { eth_signTypedData } from './utils/util'
 
 const { expectRevert, expectEvent } = require('@openzeppelin/test-helpers');
 const abi = require('ethereumjs-abi')
-const signatureSchemas = require('../signature_schemas/signatureSchemas')
+const signatureSchemas = require('../signatureSchemas/signatureSchemas')
 
 const encodeCall = (name, args, values) => {
     const methodId = abi.methodID(name, args).toString('hex')
