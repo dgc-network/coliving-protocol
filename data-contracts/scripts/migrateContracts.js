@@ -177,3 +177,4 @@ module.exports = async callback => {
   }
   outputJsonConfigFile(dappOutput + '/data-contract-config.json')
 }
+

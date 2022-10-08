@@ -161,7 +161,7 @@ module.exports = async callback => {
     console.log("Discovery node doesn't exist", e)
   }
 
-  const dappOutput = path.join(os.homedir(), '/.coliving')
+  const dappOutput = path.join(os.homedir(), '/.coliving-projects')
   if (!fs.existsSync(dappOutput)) {
     fs.mkdirSync(dappOutput, { recursive: true })
   }

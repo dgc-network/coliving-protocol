@@ -1,6 +1,6 @@
 import { ContractClient } from '../contracts/contractClient'
 
-import * as signatureSchemas from '../../data-contracts/signatureSchemas'
+import * as signatureSchemas from '../../../data-contracts/signatureSchemas'
 
 import type { Web3Manager } from '../web3Manager'
 
