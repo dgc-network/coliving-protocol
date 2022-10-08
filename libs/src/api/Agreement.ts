@@ -568,7 +568,8 @@ export class Agreement extends Base {
       }
     }
 
-    const associatedWithContentNode = []
+    //const associatedWithContentNode = []
+    const associatedWithContentNode : number[] = []
     try {
       await Promise.all(
         addedToChain.map(async (chainAgreementInfo) => {

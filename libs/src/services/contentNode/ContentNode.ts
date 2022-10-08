@@ -338,7 +338,7 @@ export class ContentNode {
       }
     }
 
-    const uploadPromises = []
+    const uploadPromises : any[]|null = []
     uploadPromises.push(this.uploadAgreementAudio(agreementFile, onAgreementProgress))
     if (coverArtFile)
       uploadPromises.push(this.uploadImage(coverArtFile, true, onImageProgress))

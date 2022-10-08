@@ -272,7 +272,8 @@ export class ContentLists extends Base {
     )
 
     // Check if each agreement is in the contentList
-    const invalidAgreementIds = []
+    //const invalidAgreementIds = []
+    const invalidAgreementIds : number[] = []
     for (const agreementId of contentListAgreementIds) {
       const agreementInContentList =
         await this.contracts.ContentListFactoryClient.isAgreementInContentList(

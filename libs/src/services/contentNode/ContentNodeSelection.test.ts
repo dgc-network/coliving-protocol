@@ -302,7 +302,7 @@ describe('test ContentNodeSelection', () => {
    * - n services are returned
    */
   it('selects numNodes - 1 number of secondaries (starting with numNodes=5->1)', async () => {
-    const contentNodes = []
+    const contentNodes : any[]|null = []
     const numNodes = 5
     for (let i = 0; i < numNodes; i++) {
       const healthyUrl = `https://healthy${i}.coliving.lol`

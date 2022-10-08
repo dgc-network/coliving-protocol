@@ -481,7 +481,8 @@ export class Users extends Base {
     const oldMetadata = { ...user }
 
     // Update user content_node_endpoint on chain if applicable
-    let updateEndpointTxBlockNumber = null
+    //let updateEndpointTxBlockNumber = null
+    let updateEndpointTxBlockNumber : number | null | undefined = null
     if (
       newMetadata.content_node_endpoint !== oldMetadata.content_node_endpoint
     ) {
@@ -806,7 +807,8 @@ export class Users extends Base {
     newMetadata: UserMetadata,
     exclude = []
   ) {
-    const addOps = []
+    //const addOps = []
+    const addOps : any[] = []
 
     // Remove excluded keys from metadata object
     const metadata = { ...newMetadata }
@@ -820,10 +822,7 @@ export class Users extends Base {
     }
     if (metadata.location) {
       addOps.push(
-        this.contracts.UserFactoryClient.updateLocation(
-          userId,
-          metadata.location
-        )
+        this.contracts.UserFactoryClient.updateLocation(userId, metadata.location)
       )
     }
     if (metadata.bio) {
@@ -873,7 +872,7 @@ export class Users extends Base {
     userId: number,
     exclude: Array<keyof UserMetadata> = []
   ) {
-    const updateOps = []
+    const updateOps : any[] = []
 
     // Remove excluded keys from metadata object
     const metadata = { ...newMetadata }

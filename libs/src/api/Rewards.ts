@@ -142,7 +142,7 @@ export class Rewards extends Base {
   /**
    * Top level method to aggregate attestations, submit them to RewardsManager, and evalute the result.
    */
-  async submitAndEvaluate({
+   async submitAndEvaluate({
     challengeId,
     encodedUserId,
     handle,
@@ -159,7 +159,8 @@ export class Rewards extends Base {
     //feePayerOverride = null
   }: SubmitAndEvaluateConfig) {
     let phase
-    let nodesToReselect = null
+    //let nodesToReselect = null
+    let nodesToReselect : string[] | null = null
     try {
       phase = AttestationPhases.SANITY_CHECKS
 
@@ -346,7 +347,8 @@ export class Rewards extends Base {
     // First attempt AAO
 
     //let aaoAttestation: Nullable<AttestationMeta> = null
-    let aaoAttestation = null
+    //let aaoAttestation = null
+    let aaoAttestation : object | null = null
 
     try {
       const { success, error: aaoAttestationError } =

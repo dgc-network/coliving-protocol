@@ -1,6 +1,6 @@
 export const uuid = () => {
   // https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript/873856#873856
-  const s = []
+  const s : any[]|null = []
   const hexDigits = '0123456789abcdef'
   for (let i = 0; i < 36; i++) {
     s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1)

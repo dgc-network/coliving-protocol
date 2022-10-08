@@ -11,7 +11,7 @@ interface WalletResponse {
  * @param {object} response entire service provider response (not axios)
  */
 export function recoverWallet(web3: Web3, response: WalletResponse) {
-  let recoveredDelegateWallet = null
+  let recoveredDelegateWallet : any|null = null
 
   const dataForRecovery = JSON.parse(JSON.stringify(response))
   delete dataForRecovery.signature
