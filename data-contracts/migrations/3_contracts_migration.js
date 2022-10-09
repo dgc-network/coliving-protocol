@@ -42,7 +42,7 @@ module.exports = (deployer, network, accounts) => {
     await deployer.deploy(AgreementStorage, Registry.address)
     await registry.addContract(agreementStorageKey, AgreementStorage.address)
 
-    const verifierAddress = config.verifierAddress || accounts[0]
+    const verifierAddress = await config.verifierAddress || accounts[0]
     // this is the blacklist's veriferAddress
     const blacklisterAddress = config.blacklisterAddress || accounts[0]
 

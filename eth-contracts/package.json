@@ -32,6 +32,7 @@
     "@openzeppelin/contracts": "^4.7.3",
     "@truffle/hdwallet-provider": "^1.0.13",
     "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
     "ethereumjs-abi": "^0.6.8",
     "ethers": "^5.7.0",
     "fs-extra": "^10.1.0",
