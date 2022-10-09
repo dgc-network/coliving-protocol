@@ -60,7 +60,7 @@ const main = async () => {
     { stdio: 'inherit' }
   )
   execSync(
-    `cp -r ${process.env.PROTOCOL_DIR}/libs/scripts/colivingClaimDistributor.json ${tmpEthContracts}/eth-contracts`,
+    `cp -r ${process.env.PROTOCOL_DIR}/libs/scripts/ColivingClaimDistributor.json ${tmpEthContracts}/eth-contracts`,
     { stdio: 'inherit' }
   )
   execSync(
@@ -84,7 +84,7 @@ const main = async () => {
     { stdio: 'inherit' }
   )
   execSync(
-    `cp -r ${process.env.PROTOCOL_DIR}/libs/scripts/colivingClaimDistributor.json ${tmpEthContracts}/build/contracts`,
+    `cp -r ${process.env.PROTOCOL_DIR}/libs/scripts/ColivingClaimDistributor.json ${tmpEthContracts}/build/contracts`,
     { stdio: 'inherit' }
   )
   execSync(

@@ -19,7 +19,8 @@ const ColivingLibs = 'libs'
 const ColivingDiscoveryNode = 'discovery-node'
 const ColivingIdentityService = 'identity-service'
 const ColivingContentNode = 'content-node'
-const ColivingDataContracts = 'contracts'
+//const ColivingDataContracts = 'contracts'
+const ColivingDataContracts = 'data-contracts'
 
 const getDefaultAccount = async () => {
   let accounts = await web3.eth.getAccounts()

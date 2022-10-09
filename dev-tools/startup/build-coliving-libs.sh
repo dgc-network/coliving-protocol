@@ -16,6 +16,6 @@ for abi in ../eth-contracts/ABIs/*; do
   node strip_abi.js < "$abi" > eth-contracts/ABIs/$(basename "$abi")
 done
 
-cp scripts/ColivingClaimDistributor.json scripts/Wormhole.json eth-contracts/ABIs/
+cp scripts/ColivingClaimDistributor.json scripts/wormhole.json eth-contracts/ABIs/
 
 npx rollup -c -w

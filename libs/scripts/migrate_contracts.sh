@@ -17,7 +17,7 @@ then
   cd ../eth-contracts/
   echo "Writing eth-contracts config files"
   node_modules/.bin/truffle exec scripts/migrateContracts.js
-  cp ../libs/scripts/colivingClaimDistributor.json ../libs/eth-contracts/ABIs/colivingClaimDistributor.json
+  cp ../libs/scripts/ColivingClaimDistributor.json ../libs/eth-contracts/ABIs/ColivingClaimDistributor.json
   cp ../libs/scripts/wormhole.json ../libs/eth-contracts/ABIs/wormhole.json
 else
   echo "INCORRECT REPOSITORY STRUCTURE. PLEASE FOLLOW README"
