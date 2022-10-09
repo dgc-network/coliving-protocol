@@ -73,5 +73,6 @@ module.exports = (deployer, network, accounts) => {
 
     await deployer.deploy(IPLDBlacklistFactory, Registry.address, network_id, blacklisterAddress)
     await registry.addContract(ipldBlacklistFactorykey, IPLDBlacklistFactory.address)
+    
   })
 }
