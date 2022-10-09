@@ -67,7 +67,7 @@ export function getTransferTokensDigest(
         keccak256(
           defaultAbiCoder.encode(
             [
-              'bytes32', 
+              'bytes32',
               'address',
               'uint256',
               'uint16',

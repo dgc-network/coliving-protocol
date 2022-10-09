@@ -130,7 +130,7 @@
   },
   "init-contracts-info": {
     "up": [
-      "cd libs/; sh ./scripts/migrate_contracts.sh >> $PROTOCOL_DIR/service-commands/output.log 2>$PROTOCOL_DIR/service-commands/error.log"
+      "cd libs/; sh ./scripts/migrate-contracts.sh >> $PROTOCOL_DIR/service-commands/output.log 2>$PROTOCOL_DIR/service-commands/error.log"
     ]
   },
   "init-token-versions": {

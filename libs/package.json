@@ -16,7 +16,7 @@
     "test:unit": "ts-mocha 'src/**/*.test.{js,ts}' --exit",
     "test:unit:watch": "ts-mocha 'src/**/*.test.{js,ts}' --watch",
     "test:integration": "ts-mocha tests/index.js",
-    "setup": "./scripts/migrate_contracts.sh",
+    "setup": "./scripts/migrate-contracts.sh",
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "lint": "eslint ./src ./types",

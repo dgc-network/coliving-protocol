@@ -52,7 +52,7 @@ cd ../libs/
 # - Copy contracts build dir + create config files
 # - Data contracts config: registry contract & owner wallet addresses
 # - Eth contracts config: ColivingToken contract, registry contract and owner wallet addresses
-sh ./scripts/migrate_contracts.sh
+sh ./scripts/migrate-contracts.sh
 
 #### RUN TESTS #####
 
