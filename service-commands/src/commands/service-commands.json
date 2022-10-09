@@ -26,7 +26,7 @@
   "data-contracts": {
     "up": [
       "cd data-contracts/",
-      "docker run --name coliving_ganache_cli -d -p 8545:8545 --network=coliving_dev trufflesuite/ganache-cli:v6.9.1 -h 0.0.0.0 -l 8000000 --acctKeys contracts-ganache-accounts.json --networkId 1000000000001 -a 100 -b 5 --deterministic true --db ./db",
+      "docker run --name coliving_ganache_cli_data_contracts -d -p 8545:8545 --network=coliving_dev trufflesuite/ganache-cli:v6.9.1 -h 0.0.0.0 -l 8000000 --acctKeys data-contracts-ganache-accounts.json --networkId 1000000000001 -a 100 -b 5 --deterministic true --db ./db",
       "echo 'Waiting for ganache to fully come online...'",
       "sleep 10",
       "echo 'Migrating contracts'",

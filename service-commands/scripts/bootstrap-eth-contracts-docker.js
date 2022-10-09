@@ -98,11 +98,11 @@ const main = async () => {
 
   // ========== Copy the ledger & build artifacts for data ==========
 
-  execSync(`docker cp coliving_ganache_cli:/app/db ${tmpDataContracts}/db`, {
+  execSync(`docker cp coliving_ganache_cli_data_contracts:/app/db ${tmpDataContracts}/db`, {
     stdio: 'inherit'
   })
   execSync(
-    `docker cp coliving_ganache_cli:/app/contracts-ganache-accounts.json ${tmpDataContracts}/contracts-ganache-accounts.json`,
+    `docker cp coliving_ganache_cli_data_contracts:/app/data-contracts-ganache-accounts.json ${tmpDataContracts}/data-contracts-ganache-accounts.json`,
     { stdio: 'inherit' }
   )
   execSync(
@@ -153,9 +153,10 @@ const main = async () => {
     { stdio: 'inherit' }
   )
 
-  execSync('docker kill coliving_ganache_cli && docker rm coliving_ganache_cli', {
-    stdio: 'inherit'
-  })
+  execSync(
+    'docker kill coliving_ganache_cli_data_contracts && docker rm coliving_ganache_cli_data_contracts', 
+    { stdio: 'inherit' }
+  )
   execSync(
     'docker kill coliving_ganache_cli_eth_contracts && docker rm coliving_ganache_cli_eth_contracts',
     { stdio: 'inherit' }

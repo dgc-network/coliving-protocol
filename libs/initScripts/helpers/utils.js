@@ -24,7 +24,7 @@ async function execParseOutput (cmd) {
 }
 
 async function getDataContractAccounts () {
-  return execParseOutput('docker exec coliving_ganache_cli cat contracts-ganache-accounts.json')
+  return execParseOutput('docker exec coliving_ganache_cli_data_contracts cat data-contracts-ganache-accounts.json')
 }
 
 async function getEthContractAccounts () {
