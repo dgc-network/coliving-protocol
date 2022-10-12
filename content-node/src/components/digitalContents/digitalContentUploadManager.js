@@ -19,7 +19,7 @@ const SEGMENT_FILE_BATCH_SIZE = 10
 /**
  * Manages digital_content content upload in the DB and file system
  */
-class DigitalContentContentUploadManager {
+class DigitalContentUploadManager {
   /**
    * Create digital_content transcode and segments, and save all to disk. Removes temp file dir of digital_content data if failed to
    * segment or transcode.
@@ -65,7 +65,7 @@ class DigitalContentContentUploadManager {
     }
   }
 
-  // Helper methods for DigitalContentContentUploadManager
+  // Helper methods for DigitalContentUploadManager
 
   /**
    * 1. Batch saves the transcode and segments to local dir
@@ -321,4 +321,4 @@ async function batchSaveFilesToDisk({
   return { segmentFileResult, transcodeFileResult }
 }
 
-module.exports = DigitalContentContentUploadManager
+module.exports = DigitalContentUploadManager

@@ -5,7 +5,7 @@ const {
 } = require('../../logging')
 
 const DigitalContentTranscodeHandoffManager = require('./digitalContentTranscodeHandoffManager')
-const DigitalContentContentUploadManager = require('./digitalContentUploadManager')
+const DigitalContentUploadManager = require('./digitalContentUploadManager')
 
 /**
  * Upload digital_content segment files and make avail - will later be associated with Coliving digital_content
@@ -20,7 +20,7 @@ const DigitalContentContentUploadManager = require('./digitalContentUploadManage
  * upload digital_content segment files and make avail - will later be associated with Coliving digital_content
  * @dev - Prune upload artifacts after successful and failed uploads. Make call without awaiting, and let async queue clean up.
  */
-const handleDigitalContentContentRoute = async ({ logContext }, requestProps) => {
+const handleDigitalContentRoute = async ({ logContext }, requestProps) => {
   const logger = genericLogger.child(logContext)
   const { fileName, fileDir, fileDestination, cnodeUserUUID } = requestProps
 
@@ -29,7 +29,7 @@ const handleDigitalContentContentRoute = async ({ logContext }, requestProps) =>
   // Create digital_content transcode and segments, and save all to disk
   const codeBlockTimeStart = getStartTime()
   const { transcodeFilePath, segmentFileNames } =
-    await DigitalContentContentUploadManager.transcodeAndSegment(
+    await DigitalContentUploadManager.transcodeAndSegment(
       { logContext },
       { fileName, fileDir }
     )
@@ -38,7 +38,7 @@ const handleDigitalContentContentRoute = async ({ logContext }, requestProps) =>
     `Successfully re-encoded digital_content file=${fileName}`
   )
 
-  const resp = await DigitalContentContentUploadManager.processTranscodeAndSegments(
+  const resp = await DigitalContentUploadManager.processTranscodeAndSegments(
     { logContext },
     {
       cnodeUserUUID,
@@ -61,7 +61,7 @@ async function handleTranscodeAndSegment(
   { logContext },
   { fileName, fileDir }
 ) {
-  return DigitalContentContentUploadManager.transcodeAndSegment(
+  return DigitalContentUploadManager.transcodeAndSegment(
     { logContext },
     { fileName, fileDir }
   )
@@ -94,7 +94,7 @@ async function handleTranscodeHandOff(
 }
 
 module.exports = {
-  handleDigitalContentContentRoute,
+  handleDigitalContentRoute,
   handleTranscodeAndSegment,
   handleTranscodeHandOff
 }

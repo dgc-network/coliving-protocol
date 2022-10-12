@@ -5,7 +5,7 @@ const redisClient = require('./redis')
 
 // Processing fns
 const {
-  handleDigitalContentContentRoute: digitalContentContentUpload,
+  handleDigitalContentRoute: digitalContentUpload,
   handleTranscodeAndSegment: transcodeAndSegment,
   handleTranscodeHandOff: transcodeHandOff
 } = require('./components/digitalContents/digitalContentsComponentService')
@@ -16,7 +16,7 @@ const {
 const MAX_CONCURRENCY = 100
 const EXPIRATION_SECONDS = 86400 // 24 hours in seconds
 const PROCESS_NAMES = Object.freeze({
-  digitalContentContentUpload: 'digitalContentContentUpload',
+  digitalContentUpload: 'digitalContentUpload',
   transcodeAndSegment: 'transcodeAndSegment',
   processTranscodeAndSegments: 'processTranscodeAndSegments',
   transcodeHandOff: 'transcodeHandOff'
@@ -78,7 +78,7 @@ class AsyncProcessingQueue {
         this.logStatus(
           'Failed to hand off transcode. Retrying upload to current node...'
         )
-        await this.addDigitalContentContentUploadTask({
+        await this.addDigitalContentUploadTask({
           logContext,
           req: job.data.req
         })
@@ -129,8 +129,8 @@ class AsyncProcessingQueue {
 
   // TODO: Make these jobs background processes
 
-  async addDigitalContentContentUploadTask(params) {
-    params.task = PROCESS_NAMES.digitalContentContentUpload
+  async addDigitalContentUploadTask(params) {
+    params.task = PROCESS_NAMES.digitalContentUpload
     return this.addTask(params)
   }
 
@@ -172,8 +172,8 @@ class AsyncProcessingQueue {
   getFn(task) {
     switch (task) {
       // Called via /digital_content_async route (runs on primary)
-      case PROCESS_NAMES.digitalContentContentUpload:
-        return digitalContentContentUpload
+      case PROCESS_NAMES.digitalContentUpload:
+        return digitalContentUpload
 
       // Called via /transcode_and_segment (running on node that has been handed off digital_content)
       case PROCESS_NAMES.transcodeAndSegment:
@@ -252,7 +252,7 @@ class AsyncProcessingQueue {
    * Example response:
    *
    * {
-   *    digitalContentContentUpload: 1,
+   *    digitalContentUpload: 1,
    *    transcodeAndSegment: 4,
    *    processTranscodeAndSegments: 0,
    *    transcodeHandOff: 2
@@ -262,7 +262,7 @@ class AsyncProcessingQueue {
    */
   getTasks(jobs) {
     const response = {
-      digitalContentContentUpload: 0,
+      digitalContentUpload: 0,
       transcodeAndSegment: 0,
       processTranscodeAndSegments: 0,
       transcodeHandOff: 0

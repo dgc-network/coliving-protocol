@@ -6,12 +6,12 @@ const crypto = require('crypto')
 const DiskManager = require('../../src/diskManager')
 
 const {
-  handleDigitalContentContentRoute
+  handleDigitalContentRoute
 } = require('../../src/components/digital_contents/digitalContentsComponentService')
 
 const uploadDigitalContent = async (filePath, cnodeUserUUID, blacklistManager) => {
   const { fileUUID, fileDir } = saveFileToStorage(filePath)
-  const resp = await handleDigitalContentContentRoute(
+  const resp = await handleDigitalContentRoute(
     {
       logContext: {
         requestID: uuid(),

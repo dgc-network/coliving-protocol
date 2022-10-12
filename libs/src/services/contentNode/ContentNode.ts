@@ -307,7 +307,7 @@ export class ContentNode {
    * @param metadata the metadata for the digital_content
    * @param onProgress an optional on progress callback
    */
-  async uploadDigitalContentContent(
+  async uploadDigitalContent(
     digitalContentFile: File,
     coverArtFile: File,
     metadata: DigitalContentMetadata,
@@ -343,17 +343,17 @@ export class ContentNode {
     if (coverArtFile)
       uploadPromises.push(this.uploadImage(coverArtFile, true, onImageProgress))
 
-    const [digitalContentContentResp, coverArtResp] = await Promise.all(uploadPromises)
-    metadata.digital_content_segments = digitalContentContentResp.digital_content_segments
+    const [digitalContentResp, coverArtResp] = await Promise.all(uploadPromises)
+    metadata.digital_content_segments = digitalContentResp.digital_content_segments
     if (metadata.download?.is_downloadable) {
-      metadata.download.cid = digitalContentContentResp.transcodedDigitalContentCID
+      metadata.download.cid = digitalContentResp.transcodedDigitalContentCID
     }
 
-    const sourceFile = digitalContentContentResp.source_file
+    const sourceFile = digitalContentResp.source_file
     if (!sourceFile) {
       throw new Error(
         `Invalid or missing sourceFile in response: ${JSON.stringify(
-          digitalContentContentResp
+          digitalContentResp
         )}`
       )
     }
@@ -364,7 +364,7 @@ export class ContentNode {
     // Creates new digital_content entity on content node, making digital_content's metadata available
     // @returns {Object} {cid: CID of digital_content metadata, id: id of digital_content to be used with associate function}
     const metadataResp = await this.uploadDigitalContentMetadata(metadata, sourceFile)
-    return { ...metadataResp, ...digitalContentContentResp }
+    return { ...metadataResp, ...digitalContentResp }
   }
 
   /**
@@ -468,7 +468,7 @@ export class ContentNode {
     const start = Date.now()
     while (Date.now() - start < MAX_AGREEMENT_TRANSCODE_TIMEOUT) {
       try {
-        const { status, resp } = await this.getDigitalContentContentProcessingStatus(
+        const { status, resp } = await this.getDigitalContentProcessingStatus(
           uuid
         )
         // Should have a body structure of:
@@ -508,7 +508,7 @@ export class ContentNode {
    * @param uuid the uuid of the digital_content transcoding task
    * @returns the status, and the success or failed response if the task is complete
    */
-  async getDigitalContentContentProcessingStatus(uuid: string) {
+  async getDigitalContentProcessingStatus(uuid: string) {
     const { data: body } = await this._makeRequest({
       url: '/async_processing_status',
       params: {

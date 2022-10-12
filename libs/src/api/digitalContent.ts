@@ -45,8 +45,8 @@ export class DigitalContent extends Base {
     this.getListenHistoryDigitalContents = this.getListenHistoryDigitalContents.bind(this)
     this.checkIfDownloadAvailable = this.checkIfDownloadAvailable.bind(this)
     this.uploadDigitalContent = this.uploadDigitalContent.bind(this)
-    this.uploadDigitalContentContentToContentNode =
-      this.uploadDigitalContentContentToContentNode.bind(this)
+    this.uploadDigitalContentToContentNode =
+      this.uploadDigitalContentToContentNode.bind(this)
     this.addDigitalContentsToChainAndCnode = this.addDigitalContentsToChainAndCnode.bind(this)
     this.updateDigitalContent = this.updateDigitalContent.bind(this)
     this.logDigitalContentListen = this.logDigitalContentListen.bind(this)
@@ -387,7 +387,7 @@ export class DigitalContent extends Base {
         transcodedDigitalContentCID
       } = await retry(
         async () => {
-          return await this.contentNode.uploadDigitalContentContent(
+          return await this.contentNode.uploadDigitalContent(
             digitalContentFile,
             coverArtFile,
             metadata,
@@ -403,7 +403,7 @@ export class DigitalContent extends Base {
           retries: 3,
           onRetry: (err) => {
             if (err) {
-              console.log('uploadDigitalContentContent retry error: ', err)
+              console.log('uploadDigitalContent retry error: ', err)
             }
           }
         }
@@ -450,7 +450,7 @@ export class DigitalContent extends Base {
    * WARNING: Uploads file to content node, but does not call contracts
    * Please pair this with the addDigitalContentsToChainAndCnode
    */
-  async uploadDigitalContentContentToContentNode(
+  async uploadDigitalContentToContentNode(
     digitalContentFile: File,
     coverArtFile: File,
     metadata: DigitalContentMetadata,
@@ -479,7 +479,7 @@ export class DigitalContent extends Base {
       transcodedDigitalContentUUID
     } = await retry(
       async () => {
-        return await this.contentNode.uploadDigitalContentContent(
+        return await this.contentNode.uploadDigitalContent(
           digitalContentFile,
           coverArtFile,
           metadata,
@@ -495,7 +495,7 @@ export class DigitalContent extends Base {
         retries: 3,
         onRetry: (err) => {
           if (err) {
-            console.log('uploadDigitalContentContentToContentNode retry error: ', err)
+            console.log('uploadDigitalContentToContentNode retry error: ', err)
           }
         }
       }

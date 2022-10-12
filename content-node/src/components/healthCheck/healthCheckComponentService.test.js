@@ -115,21 +115,21 @@ const AsyncProcessingQueueMock = (active = 0, waiting = 0, failed = 0) => {
     getAsyncProcessingQueueJobs: async () => {
       return {
         waiting: {
-          digitalContentContentUpload: 0,
+          digitalContentUpload: 0,
           transcodeAndSegment: 0,
           processTranscodeAndSegments: 0,
           transcodeHandOff: 0,
           total: waiting
         },
         active: {
-          digitalContentContentUpload: 0,
+          digitalContentUpload: 0,
           transcodeAndSegment: 0,
           processTranscodeAndSegments: 0,
           transcodeHandOff: 0,
           total: active
         },
         failed: {
-          digitalContentContentUpload: 0,
+          digitalContentUpload: 0,
           transcodeAndSegment: 0,
           processTranscodeAndSegments: 0,
           transcodeHandOff: 0,
@@ -220,21 +220,21 @@ describe('Test Health Check', function () {
       shouldHandleTranscode: true,
       asyncProcessingQueue: {
         waiting: {
-          digitalContentContentUpload: 0,
+          digitalContentUpload: 0,
           transcodeAndSegment: 0,
           processTranscodeAndSegments: 0,
           transcodeHandOff: 0,
           total: 2
         },
         active: {
-          digitalContentContentUpload: 0,
+          digitalContentUpload: 0,
           transcodeAndSegment: 0,
           processTranscodeAndSegments: 0,
           transcodeHandOff: 0,
           total: 0
         },
         failed: {
-          digitalContentContentUpload: 0,
+          digitalContentUpload: 0,
           transcodeAndSegment: 0,
           processTranscodeAndSegments: 0,
           transcodeHandOff: 0,
@@ -333,21 +333,21 @@ describe('Test Health Check', function () {
       shouldHandleTranscode: true,
       asyncProcessingQueue: {
         waiting: {
-          digitalContentContentUpload: 0,
+          digitalContentUpload: 0,
           transcodeAndSegment: 0,
           processTranscodeAndSegments: 0,
           transcodeHandOff: 0,
           total: 2
         },
         active: {
-          digitalContentContentUpload: 0,
+          digitalContentUpload: 0,
           transcodeAndSegment: 0,
           processTranscodeAndSegments: 0,
           transcodeHandOff: 0,
           total: 0
         },
         failed: {
-          digitalContentContentUpload: 0,
+          digitalContentUpload: 0,
           transcodeAndSegment: 0,
           processTranscodeAndSegments: 0,
           transcodeHandOff: 0,
@@ -435,21 +435,21 @@ describe('Test Health Check', function () {
       shouldHandleTranscode: true,
       asyncProcessingQueue: {
         waiting: {
-          digitalContentContentUpload: 0,
+          digitalContentUpload: 0,
           transcodeAndSegment: 0,
           processTranscodeAndSegments: 0,
           transcodeHandOff: 0,
           total: 2
         },
         active: {
-          digitalContentContentUpload: 0,
+          digitalContentUpload: 0,
           transcodeAndSegment: 0,
           processTranscodeAndSegments: 0,
           transcodeHandOff: 0,
           total: 0
         },
         failed: {
-          digitalContentContentUpload: 0,
+          digitalContentUpload: 0,
           transcodeAndSegment: 0,
           processTranscodeAndSegments: 0,
           transcodeHandOff: 0,
@@ -578,21 +578,21 @@ describe('Test Health Check Verbose', function () {
       shouldHandleTranscode: true,
       asyncProcessingQueue: {
         waiting: {
-          digitalContentContentUpload: 0,
+          digitalContentUpload: 0,
           transcodeAndSegment: 0,
           processTranscodeAndSegments: 0,
           transcodeHandOff: 0,
           total: 2
         },
         active: {
-          digitalContentContentUpload: 0,
+          digitalContentUpload: 0,
           transcodeAndSegment: 0,
           processTranscodeAndSegments: 0,
           transcodeHandOff: 0,
           total: 0
         },
         failed: {
-          digitalContentContentUpload: 0,
+          digitalContentUpload: 0,
           transcodeAndSegment: 0,
           processTranscodeAndSegments: 0,
           transcodeHandOff: 0,

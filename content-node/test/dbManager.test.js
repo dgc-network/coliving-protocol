@@ -637,7 +637,7 @@ describe('Test deleteAllCNodeUserDataFromDB()', async function () {
   const initialClockVal = 0
   const userId = 1
 
-  // Create the req context for handleDigitalContentContentRoute
+  // Create the req context for handleDigitalContentRoute
   function getReqObj(fileUUID, fileDir, session) {
     return {
       fileName: `${fileUUID}.mp3`,
@@ -700,9 +700,9 @@ describe('Test deleteAllCNodeUserDataFromDB()', async function () {
     }
 
     const uploadDigitalContentState = async () => {
-      // Mock `generateNonImageCid()` in `handleDigitalContentContentRoute()` to succeed
+      // Mock `generateNonImageCid()` in `handleDigitalContentRoute()` to succeed
       const mockCid = 'QmYfSQCgCwhxwYcdEwCkFJHicDe6rzCAb7AtLz3GrHmuU6'
-      const { handleDigitalContentContentRoute } = proxyquire(
+      const { handleDigitalContentRoute } = proxyquire(
         '../src/components/digital_contents/digitalContentsComponentService.js',
         {
           '@coliving/sdk': {
@@ -735,7 +735,7 @@ describe('Test deleteAllCNodeUserDataFromDB()', async function () {
 
       // Upload digital_content content
       const { fileUUID, fileDir } = saveFileToStorage(TestAudioFilePath)
-      const digitalContentContentResp = await handleDigitalContentContentRoute(
+      const digitalContentResp = await handleDigitalContentRoute(
         {},
         getReqObj(fileUUID, fileDir, session)
       )
@@ -745,7 +745,7 @@ describe('Test deleteAllCNodeUserDataFromDB()', async function () {
         digital_content_segments: digitalContentSegments,
         source_file: sourceFile,
         transcodedDigitalContentUUID
-      } = digitalContentContentResp
+      } = digitalContentResp
       const digitalContentMetadata = {
         test: 'field1',
         digital_content_segments: digitalContentSegments,

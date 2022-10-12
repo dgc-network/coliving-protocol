@@ -596,7 +596,7 @@ const digitalContentFileUpload = multer({
   }
 })
 
-const handleDigitalContentContentUpload = (req, res, next) => {
+const handleDigitalContentUpload = (req, res, next) => {
   digitalContentFileUpload.single('file')(req, res, (err) => {
     if (err) {
       if (err.code === 'LIMIT_FILE_SIZE') {
@@ -730,7 +730,7 @@ module.exports = {
   upload,
   uploadTempDiskStorage,
   digitalContentFileUpload,
-  handleDigitalContentContentUpload,
+  handleDigitalContentUpload,
   hasEnoughStorageSpace,
   getFileExtension,
   checkFileMiddleware,

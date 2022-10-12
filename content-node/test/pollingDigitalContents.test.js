@@ -45,7 +45,7 @@ const logContext = {
   }
 }
 
-// Create the req context for handleDigitalContentContentRoute
+// Create the req context for handleDigitalContentRoute
 function getReqObj(fileUUID, fileDir, session) {
   return {
     fileName: `${fileUUID}.mp3`,
@@ -73,7 +73,7 @@ describe('test Polling DigitalContents with mocked IPFS', function () {
   let app,
     server,
     libsMock,
-    handleDigitalContentContentRoute
+    handleDigitalContentRoute
   let session, userId, userWallet
 
   const spId = 1
@@ -92,9 +92,9 @@ describe('test Polling DigitalContents with mocked IPFS', function () {
     server = appInfo.server
     session = await createStarterCNodeUser(userId, userWallet)
 
-    // Mock `generateNonImageCid()` in `handleDigitalContentContentRoute()` to succeed
+    // Mock `generateNonImageCid()` in `handleDigitalContentRoute()` to succeed
     const mockCid = 'QmYfSQCgCwhxwYcdEwCkFJHicDe6rzCAb7AtLz3GrHmuU6'
-    ;({ handleDigitalContentContentRoute } = proxyquire(
+    ;({ handleDigitalContentRoute } = proxyquire(
       '../src/components/digital_contents/digitalContentsComponentService.js',
       {
         '@coliving/sdk': {
@@ -198,7 +198,7 @@ describe('test Polling DigitalContents with mocked IPFS', function () {
 
   it('uploads /digital_content_async', async function () {
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
-    const resp = await handleDigitalContentContentRoute(
+    const resp = await handleDigitalContentRoute(
       logContext,
       getReqObj(fileUUID, fileDir, session)
     )
@@ -229,7 +229,7 @@ describe('test Polling DigitalContents with mocked IPFS', function () {
 
     /** Upload digital_content */
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
-    let resp = await handleDigitalContentContentRoute(
+    let resp = await handleDigitalContentRoute(
       logContext,
       getReqObj(fileUUID, fileDir, session)
     )
@@ -414,7 +414,7 @@ describe('test Polling DigitalContents with mocked IPFS', function () {
     /** Upload digital_content for user 1 */
     const { fileUUID: fileUUID1, fileDir: fileDir1 } =
       saveFileToStorage(testAudioFilePath)
-    await handleDigitalContentContentRoute(
+    await handleDigitalContentRoute(
       logContext,
       getReqObj(fileUUID1, fileDir1, session)
     )
@@ -432,7 +432,7 @@ describe('test Polling DigitalContents with mocked IPFS', function () {
     /** Upload digital_content for user 2 */
     const { fileUUID: fileUUID2, fileDir: fileDir2 } =
       saveFileToStorage(testAudioFilePath)
-    await handleDigitalContentContentRoute(
+    await handleDigitalContentRoute(
       logContext,
       getReqObj(fileUUID2, fileDir2, session2)
     )
@@ -521,7 +521,7 @@ describe('test Polling DigitalContents with mocked IPFS', function () {
     libsMock.User.getUsers.exactly(2)
 
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
-    const resp = await handleDigitalContentContentRoute(
+    const resp = await handleDigitalContentRoute(
       logContext,
       getReqObj(fileUUID, fileDir, session)
     )
@@ -560,7 +560,7 @@ describe('test Polling DigitalContents with mocked IPFS', function () {
     libsMock.User.getUsers.exactly(2)
 
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
-    const resp = await handleDigitalContentContentRoute(
+    const resp = await handleDigitalContentRoute(
       logContext,
       getReqObj(fileUUID, fileDir, session)
     )
@@ -594,7 +594,7 @@ describe('test Polling DigitalContents with mocked IPFS', function () {
     libsMock.User.getUsers.exactly(2)
 
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
-    const resp = await handleDigitalContentContentRoute(
+    const resp = await handleDigitalContentRoute(
       logContext,
       getReqObj(fileUUID, fileDir, session)
     )
@@ -628,7 +628,7 @@ describe('test Polling DigitalContents with mocked IPFS', function () {
     libsMock.User.getUsers.exactly(2)
 
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
-    const resp = await handleDigitalContentContentRoute(
+    const resp = await handleDigitalContentRoute(
       logContext,
       getReqObj(fileUUID, fileDir, session)
     )
@@ -663,7 +663,7 @@ describe('test Polling DigitalContents with mocked IPFS', function () {
       digital_content_segments: digitalContentSegments,
       source_file: sourceFile,
       transcodedDigitalContentUUID
-    } = await handleDigitalContentContentRoute(
+    } = await handleDigitalContentRoute(
       logContext,
       getReqObj(fileUUID, fileDir, session)
     )
@@ -705,7 +705,7 @@ describe('test Polling DigitalContents with mocked IPFS', function () {
     libsMock.User.getUsers.exactly(2)
 
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
-    const resp = await handleDigitalContentContentRoute(
+    const resp = await handleDigitalContentRoute(
       logContext,
       getReqObj(fileUUID, fileDir, session)
     )
@@ -751,7 +751,7 @@ describe('test Polling DigitalContents with mocked IPFS', function () {
       digital_content_segments: digitalContentSegments,
       source_file: sourceFile,
       transcodedDigitalContentUUID
-    } = await handleDigitalContentContentRoute(
+    } = await handleDigitalContentRoute(
       logContext,
       getReqObj(fileUUID, fileDir, session)
     )
@@ -803,7 +803,7 @@ describe('test Polling DigitalContents with mocked IPFS', function () {
 })
 
 describe('test Polling DigitalContents with real files', function () {
-  let app2, server, session, libsMock, handleDigitalContentContentRoute, userId
+  let app2, server, session, libsMock, handleDigitalContentRoute, userId
 
   /** Inits libs mock, web server app, blacklist manager, and creates starter CNodeUser */
   beforeEach(async () => {
@@ -819,8 +819,8 @@ describe('test Polling DigitalContents with real files', function () {
     server = appInfo.server
     session = await createStarterCNodeUser(userId)
 
-    handleDigitalContentContentRoute =
-      require('../src/components/digital_contents/digitalContentsComponentService').handleDigitalContentContentRoute
+    handleDigitalContentRoute =
+      require('../src/components/digital_contents/digitalContentsComponentService').handleDigitalContentRoute
   })
 
   /** Reset sinon & close server */
@@ -831,7 +831,7 @@ describe('test Polling DigitalContents with real files', function () {
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~ /digital_content_async TESTS ~~~~~~~~~~~~~~~~~~~~~~~~~
   it('sends server error response if segmenting fails', async function () {
-    const { handleDigitalContentContentRoute } = proxyquire(
+    const { handleDigitalContentRoute } = proxyquire(
       '../src/components/digital_contents/digitalContentsComponentService.js',
       {
         '../../TranscodingQueue': {
@@ -845,7 +845,7 @@ describe('test Polling DigitalContents with real files', function () {
 
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
     try {
-      await handleDigitalContentContentRoute(
+      await handleDigitalContentRoute(
         logContext,
         getReqObj(fileUUID, fileDir, session)
       )
@@ -856,7 +856,7 @@ describe('test Polling DigitalContents with real files', function () {
   })
 
   it('sends server error response if transcoding fails', async function () {
-    const { handleDigitalContentContentRoute } = proxyquire(
+    const { handleDigitalContentRoute } = proxyquire(
       '../src/components/digital_contents/digitalContentsComponentService.js',
       {
         '../../TranscodingQueue': {
@@ -870,7 +870,7 @@ describe('test Polling DigitalContents with real files', function () {
 
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
     try {
-      await handleDigitalContentContentRoute(
+      await handleDigitalContentRoute(
         logContext,
         getReqObj(fileUUID, fileDir, session)
       )
@@ -882,7 +882,7 @@ describe('test Polling DigitalContents with real files', function () {
 
   it('should successfully upload digital_content + transcode and prune upload artifacts when TranscodingQueue is available', async function () {
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
-    const resp = await handleDigitalContentContentRoute(
+    const resp = await handleDigitalContentRoute(
       logContext,
       getReqObj(fileUUID, fileDir, session)
     )
@@ -1012,7 +1012,7 @@ describe('test Polling DigitalContents with real files', function () {
       digital_content_segments: digitalContentSegments,
       transcodedDigitalContentUUID,
       source_file: sourceFile
-    } = await handleDigitalContentContentRoute(
+    } = await handleDigitalContentRoute(
       logContext,
       getReqObj(fileUUID, fileDir, session)
     )
@@ -1054,7 +1054,7 @@ describe('test Polling DigitalContents with real files', function () {
       digital_content_segments: digitalContentSegments,
       transcodedDigitalContentUUID,
       source_file: sourceFile
-    } = await handleDigitalContentContentRoute(
+    } = await handleDigitalContentRoute(
       logContext,
       getReqObj(fileUUID, fileDir, session)
     )
@@ -1066,7 +1066,7 @@ describe('test Polling DigitalContents with real files', function () {
       digital_content_segments: digitalContent2Segments,
       transcodedDigitalContentUUID: transcodedDigitalContent2UUID,
       source_file: sourceFile2
-    } = await handleDigitalContentContentRoute(
+    } = await handleDigitalContentRoute(
       logContext,
       getReqObj(fileUUID2, fileDir2, session)
     )

@@ -10,7 +10,7 @@ const {
   saveFileFromBufferToDisk,
   removeDigitalContentFolder,
   getTmpDigitalContentUploadArtifactsPathWithInputUUID,
-  handleDigitalContentContentUpload
+  handleDigitalContentUpload
 } = require('../fileManager')
 const {
   handleResponse,
@@ -51,7 +51,7 @@ router.post(
   authMiddleware,
   ensurePrimaryMiddleware,
   ensureStorageMiddleware,
-  handleDigitalContentContentUpload,
+  handleDigitalContentUpload,
   handleResponse(async (req, res) => {
     if (req.fileSizeError || req.fileFilterError) {
       removeDigitalContentFolder({ logContext: req.logContext }, req.fileDir)
@@ -67,7 +67,7 @@ router.post(
     })
 
     if (selfTranscode) {
-      await AsyncProcessingQueue.addDigitalContentContentUploadTask({
+      await AsyncProcessingQueue.addDigitalContentUploadTask({
         logContext: req.logContext,
         req: {
           fileName: req.fileName,
@@ -126,7 +126,7 @@ router.post(
   '/transcode_and_segment',
   ensureValidSPMiddleware,
   ensureStorageMiddleware,
-  handleDigitalContentContentUpload,
+  handleDigitalContentUpload,
   handleResponse(async (req, res) => {
     const AsyncProcessingQueue =
       req.app.get('serviceRegistry').asyncProcessingQueue
