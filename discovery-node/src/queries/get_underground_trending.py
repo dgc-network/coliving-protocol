@@ -10,7 +10,7 @@ from src.models.social.aggregate_plays import AggregatePlay
 from src.models.social.follow import Follow
 from src.models.social.repost import RepostType
 from src.models.social.save import SaveType
-from src.models.agreements.digital_content import DigitalContent
+from src.models.digitalContents.digital_content import DigitalContent
 from src.models.users.aggregate_user import AggregateUser
 from src.models.users.user import User
 from src.queries.get_trending_digital_contents import (
@@ -123,7 +123,7 @@ def get_scorable_digital_content_data(session, redis_instance, strategy):
         )
     ).all()
 
-    agreements_map = {
+    digitalContents_map = {
         record[0]: {
             "digital_content_id": record[0],
             "created_at": record[4].isoformat(timespec="seconds"),
@@ -161,17 +161,17 @@ def get_scorable_digital_content_data(session, redis_instance, strategy):
 
     # Associate all the extra data
     for (digital_content_id, repost_count) in repost_counts:
-        agreements_map[digital_content_id]["repost_count"] = repost_count
+        digitalContents_map[digital_content_id]["repost_count"] = repost_count
     for (digital_content_id, repost_count) in windowed_repost_counts:
-        agreements_map[digital_content_id]["windowed_repost_count"] = repost_count
+        digitalContents_map[digital_content_id]["windowed_repost_count"] = repost_count
     for (digital_content_id, save_count) in save_counts:
-        agreements_map[digital_content_id]["save_count"] = save_count
+        digitalContents_map[digital_content_id]["save_count"] = save_count
     for (digital_content_id, save_count) in windowed_save_counts:
-        agreements_map[digital_content_id]["windowed_save_count"] = save_count
+        digitalContents_map[digital_content_id]["windowed_save_count"] = save_count
     for (digital_content_id, karma) in karma_scores:
-        agreements_map[digital_content_id]["karma"] = karma
+        digitalContents_map[digital_content_id]["karma"] = karma
 
-    return list(agreements_map.values())
+    return list(digitalContents_map.values())
 
 
 def make_underground_trending_cache_key(
@@ -197,13 +197,13 @@ def make_get_unpopulated_digital_contents(session, redis_instance, strategy):
 
         # Get unpopulated metadata
         digital_content_ids = [digital_content["digital_content_id"] for digital_content in sorted_digital_contents]
-        agreements = get_unpopulated_digital_contents(session, digital_content_ids)
-        return (agreements, digital_content_ids)
+        digitalContents = get_unpopulated_digital_contents(session, digital_content_ids)
+        return (digitalContents, digital_content_ids)
 
     return wrapped
 
 
-class GetUndergroundTrendingAgreementcArgs(TypedDict, total=False):
+class GetUndergroundTrendingDigitalContentcArgs(TypedDict, total=False):
     current_user_id: Optional[Any]
     offset: int
     limit: int
@@ -211,7 +211,7 @@ class GetUndergroundTrendingAgreementcArgs(TypedDict, total=False):
 
 def _get_underground_trending_with_session(
     session: Session,
-    args: GetUndergroundTrendingAgreementcArgs,
+    args: GetUndergroundTrendingDigitalContentcArgs,
     strategy,
     use_request_context=True,
 ):
@@ -219,7 +219,7 @@ def _get_underground_trending_with_session(
     limit, offset = args.get("limit"), args.get("offset")
     key = make_underground_trending_cache_key(strategy.version)
 
-    (agreements, digital_content_ids) = use_redis_cache(
+    (digitalContents, digital_content_ids) = use_redis_cache(
         key, None, make_get_unpopulated_digital_contents(session, redis_conn, strategy)
     )
 
@@ -228,12 +228,12 @@ def _get_underground_trending_with_session(
     if limit is not None and offset is not None:
         digital_content_ids = digital_content_ids[offset : limit + offset]
 
-    agreements = populate_digital_content_metadata(session, digital_content_ids, agreements, current_user_id)
+    digitalContents = populate_digital_content_metadata(session, digital_content_ids, digitalContents, current_user_id)
 
-    agreements_map = {digital_content["digital_content_id"]: digital_content for digital_content in agreements}
+    digitalContents_map = {digital_content["digital_content_id"]: digital_content for digital_content in digitalContents}
 
-    # Re-sort the populated agreements b/c it loses sort order in sql query
-    sorted_digital_contents = [agreements_map[digital_content_id] for digital_content_id in digital_content_ids]
+    # Re-sort the populated digitalContents b/c it loses sort order in sql query
+    sorted_digital_contents = [digitalContents_map[digital_content_id] for digital_content_id in digital_content_ids]
     user_id_list = get_users_ids(sorted_digital_contents)
     users = get_users_by_id(session, user_id_list, current_user_id, use_request_context)
     for digital_content in sorted_digital_contents:
@@ -244,7 +244,7 @@ def _get_underground_trending_with_session(
     return sorted_digital_contents
 
 
-def _get_underground_trending(args: GetUndergroundTrendingAgreementcArgs, strategy):
+def _get_underground_trending(args: GetUndergroundTrendingDigitalContentcArgs, strategy):
     db = get_db_read_replica()
     with db.scoped_session() as session:
         return _get_underground_trending_with_session(session, args, strategy)
@@ -262,9 +262,9 @@ def get_underground_trending(request, args, strategy):
         args["current_user_id"] = decoded
         trending = _get_underground_trending(args, strategy)
     else:
-        # If no user ID, fetch all cached agreements
+        # If no user ID, fetch all cached digitalContents
         # and perform pagination here, passing
-        # no args so we get the full list of agreements.
+        # no args so we get the full list of digitalContents.
         key = get_trending_cache_key(to_dict(request.args), request.path)
         trending = use_redis_cache(
             key, TRENDING_TTL_SEC, lambda: _get_underground_trending({}, strategy)

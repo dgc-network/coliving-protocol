@@ -7,19 +7,19 @@ module.exports = {
       concurrently: true
     })
 
-    await queryInterface.addIndex('Agreements', ['digital_content_UUID'], {
+    await queryInterface.addIndex('DigitalContents', ['digital_content_UUID'], {
       name: 'digital_content_UUID_idx',
       using: 'btree',
       concurrently: true
     })
 
-    await queryInterface.addIndex('Agreements', ['metadataFileUUID'], {
+    await queryInterface.addIndex('DigitalContents', ['metadataFileUUID'], {
       name: 'digital_content_metadataFileUUID_idx',
       using: 'btree',
       concurrently: true
     })
 
-    await queryInterface.addIndex('Agreements', ['coverArtFileUUID'], {
+    await queryInterface.addIndex('DigitalContents', ['coverArtFileUUID'], {
       name: 'digital_content_coverArtFileUUID_idx',
       using: 'btree',
       concurrently: true
@@ -45,9 +45,9 @@ module.exports = {
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.removeIndex('CNodeUsers', 'cnodeUsers_cnodeuserUUID_idx')
-    await queryInterface.removeIndex('Agreements', 'digital_content_UUID_idx')
-    await queryInterface.removeIndex('Agreements', 'digital_content_metadataFileUUID_idx')
-    await queryInterface.removeIndex('Agreements', 'digital_content_coverArtFileUUID_idx')
+    await queryInterface.removeIndex('DigitalContents', 'digital_content_UUID_idx')
+    await queryInterface.removeIndex('DigitalContents', 'digital_content_metadataFileUUID_idx')
+    await queryInterface.removeIndex('DigitalContents', 'digital_content_coverArtFileUUID_idx')
     await queryInterface.removeIndex('ColivingUsers', 'colivingUsers_metadataFileUUID_idx')
     await queryInterface.removeIndex('ColivingUsers', 'colivingUsers_coverArtFileUUID_idx')
     await queryInterface.removeIndex('ColivingUsers', 'colivingUsers_profilePicFileUUID_idx')

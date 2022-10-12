@@ -1,7 +1,7 @@
 ---
-id: "GetAgreementsByUserRequest"
-title: "Interface: GetAgreementsByUserRequest"
-sidebar_label: "GetAgreementsByUserRequest"
+id: "GetDigitalContentsByUserRequest"
+title: "Interface: GetDigitalContentsByUserRequest"
+sidebar_label: "GetDigitalContentsByUserRequest"
 sidebar_position: 0
 custom_edit_url: null
 pagination_prev: null
@@ -36,7 +36,7 @@ ___
 
 ### sort
 
- `Optional` **sort**: [`GetAgreementsByUserSortEnum`](../enums/GetAgreementsByUserSortEnum.md)
+ `Optional` **sort**: [`GetDigitalContentsByUserSortEnum`](../enums/GetDigitalContentsByUserSortEnum.md)
 
 Field to sort by
 

@@ -1,6 +1,6 @@
 ---
-id: "full.AgreementsApi"
-title: "Agreements"
+id: "full.DigitalContentsApi"
+title: "DigitalContents"
 sidebar_position: 0
 custom_edit_url: null
 ---
@@ -9,27 +9,27 @@ custom_edit_url: null
 
 ### bestNewReleases
 
-**bestNewReleases**(): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
+**bestNewReleases**(): `Promise`<[`DigitalContentFull`](../interfaces/full.DigitalContentFull.md)[]\>
 
-Gets the agreements found on the \"Best New Releases\" smart contentList
+Gets the digitalContents found on the \"Best New Releases\" smart contentList
 
 #### Returns
 
-`Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
+`Promise`<[`DigitalContentFull`](../interfaces/full.DigitalContentFull.md)[]\>
 
 ___
 
-### getBulkAgreements
+### getBulkDigitalContents
 
-**getBulkAgreements**(`requestParameters?`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)\>
+**getBulkDigitalContents**(`requestParameters?`): `Promise`<[`DigitalContentFull`](../interfaces/full.DigitalContentFull.md)\>
 
-Gets a list of agreements using their IDs or permalinks
+Gets a list of digitalContents using their IDs or permalinks
 
 Example:
 
 ```typescript
 
-const agreements = await colivingSdk.agreements.getBulkAgreements();
+const digitalContents = await colivingSdk.digitalContents.getBulkDigitalContents();
 
 ```
 
@@ -37,89 +37,89 @@ const agreements = await colivingSdk.agreements.getBulkAgreements();
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetBulkAgreementsRequest`](../interfaces/full.GetBulkAgreementsRequest.md) |
+| `requestParameters` | [`GetBulkDigitalContentsRequest`](../interfaces/full.GetBulkDigitalContentsRequest.md) |
 
 #### Returns
 
-`Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)\>
+`Promise`<[`DigitalContentFull`](../interfaces/full.DigitalContentFull.md)\>
 
 ___
 
-### getMostLovedAgreements
+### getMostLovedDigitalContents
 
-**getMostLovedAgreements**(`requestParameters?`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
+**getMostLovedDigitalContents**(`requestParameters?`): `Promise`<[`DigitalContentFull`](../interfaces/full.DigitalContentFull.md)[]\>
 
-Gets the agreements found on the \"Most Loved\" smart contentList
+Gets the digitalContents found on the \"Most Loved\" smart contentList
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetMostLovedAgreementsRequest`](../interfaces/full.GetMostLovedAgreementsRequest.md) |
+| `requestParameters` | [`GetMostLovedDigitalContentsRequest`](../interfaces/full.GetMostLovedDigitalContentsRequest.md) |
 
 #### Returns
 
-`Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
+`Promise`<[`DigitalContentFull`](../interfaces/full.DigitalContentFull.md)[]\>
 
 ___
 
-### getRecommendedAgreements
+### getRecommendedDigitalContents
 
-**getRecommendedAgreements**(`requestParameters?`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
+**getRecommendedDigitalContents**(`requestParameters?`): `Promise`<[`DigitalContentFull`](../interfaces/full.DigitalContentFull.md)[]\>
 
-Get recommended agreements
+Get recommended digitalContents
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetRecommendedAgreementsRequest`](../interfaces/full.GetRecommendedAgreementsRequest.md) |
+| `requestParameters` | [`GetRecommendedDigitalContentsRequest`](../interfaces/full.GetRecommendedDigitalContentsRequest.md) |
 
 #### Returns
 
-`Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
+`Promise`<[`DigitalContentFull`](../interfaces/full.DigitalContentFull.md)[]\>
 
 ___
 
-### getRecommendedAgreementsWithVersion
+### getRecommendedDigitalContentsWithVersion
 
-**getRecommendedAgreementsWithVersion**(`requestParameters`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
+**getRecommendedDigitalContentsWithVersion**(`requestParameters`): `Promise`<[`DigitalContentFull`](../interfaces/full.DigitalContentFull.md)[]\>
 
-Get recommended agreements using the given trending strategy version
+Get recommended digitalContents using the given trending strategy version
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetRecommendedAgreementsWithVersionRequest`](../interfaces/full.GetRecommendedAgreementsWithVersionRequest.md) |
+| `requestParameters` | [`GetRecommendedDigitalContentsWithVersionRequest`](../interfaces/full.GetRecommendedDigitalContentsWithVersionRequest.md) |
 
 #### Returns
 
-`Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
+`Promise`<[`DigitalContentFull`](../interfaces/full.DigitalContentFull.md)[]\>
 
 ___
 
-### getRemixableAgreements
+### getRemixableDigitalContents
 
-**getRemixableAgreements**(`requestParameters?`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)\>
+**getRemixableDigitalContents**(`requestParameters?`): `Promise`<[`DigitalContentFull`](../interfaces/full.DigitalContentFull.md)\>
 
-Gets a list of agreements that have stems available for remixing
+Gets a list of digitalContents that have stems available for remixing
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetRemixableAgreementsRequest`](../interfaces/full.GetRemixableAgreementsRequest.md) |
+| `requestParameters` | [`GetRemixableDigitalContentsRequest`](../interfaces/full.GetRemixableDigitalContentsRequest.md) |
 
 #### Returns
 
-`Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)\>
+`Promise`<[`DigitalContentFull`](../interfaces/full.DigitalContentFull.md)\>
 
 ___
 
-### getAgreement
+### getDigitalContent
 
-**getAgreement**(`requestParameters`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)\>
+**getDigitalContent**(`requestParameters`): `Promise`<[`DigitalContentFull`](../interfaces/full.DigitalContentFull.md)\>
 
 Gets a digital_content by ID. If `show_unlisted` is true, then `handle` and `url_title` are required.
 
@@ -127,8 +127,8 @@ Example:
 
 ```typescript
 
-const digital_content = await colivingSdk.agreements.getAgreement({
-    agreementId: "D7KyD",
+const digital_content = await colivingSdk.digitalContents.getDigitalContent({
+    digitalContentId: "D7KyD",
 });
 
 ```
@@ -137,43 +137,43 @@ const digital_content = await colivingSdk.agreements.getAgreement({
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetAgreementRequest`](../interfaces/full.GetAgreementRequest.md) |
+| `requestParameters` | [`GetDigitalContentRequest`](../interfaces/full.GetDigitalContentRequest.md) |
 
 #### Returns
 
-`Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)\>
+`Promise`<[`DigitalContentFull`](../interfaces/full.DigitalContentFull.md)\>
 
 ___
 
-### getAgreementRemixParents
+### getDigitalContentRemixParents
 
-**getAgreementRemixParents**(`requestParameters`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
+**getDigitalContentRemixParents**(`requestParameters`): `Promise`<[`DigitalContentFull`](../interfaces/full.DigitalContentFull.md)[]\>
 
-Gets all the agreements that the given digital_content remixes
+Gets all the digitalContents that the given digital_content remixes
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetAgreementRemixParentsRequest`](../interfaces/full.GetAgreementRemixParentsRequest.md) |
+| `requestParameters` | [`GetDigitalContentRemixParentsRequest`](../interfaces/full.GetDigitalContentRemixParentsRequest.md) |
 
 #### Returns
 
-`Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
+`Promise`<[`DigitalContentFull`](../interfaces/full.DigitalContentFull.md)[]\>
 
 ___
 
-### getAgreementRemixes
+### getDigitalContentRemixes
 
-**getAgreementRemixes**(`requestParameters`): `Promise`<[`RemixesResponse`](../interfaces/full.RemixesResponse.md)\>
+**getDigitalContentRemixes**(`requestParameters`): `Promise`<[`RemixesResponse`](../interfaces/full.RemixesResponse.md)\>
 
-Get all agreements that remix the given digital_content
+Get all digitalContents that remix the given digital_content
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetAgreementRemixesRequest`](../interfaces/full.GetAgreementRemixesRequest.md) |
+| `requestParameters` | [`GetDigitalContentRemixesRequest`](../interfaces/full.GetDigitalContentRemixesRequest.md) |
 
 #### Returns
 
@@ -181,9 +181,9 @@ Get all agreements that remix the given digital_content
 
 ___
 
-### getAgreementStems
+### getDigitalContentStems
 
-**getAgreementStems**(`requestParameters`): `Promise`<[`StemFull`](../interfaces/full.StemFull.md)[]\>
+**getDigitalContentStems**(`requestParameters`): `Promise`<[`StemFull`](../interfaces/full.StemFull.md)[]\>
 
 Get the remixable stems of a digital_content
 
@@ -191,7 +191,7 @@ Get the remixable stems of a digital_content
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetAgreementStemsRequest`](../interfaces/full.GetAgreementStemsRequest.md) |
+| `requestParameters` | [`GetDigitalContentStemsRequest`](../interfaces/full.GetDigitalContentStemsRequest.md) |
 
 #### Returns
 
@@ -199,17 +199,17 @@ Get the remixable stems of a digital_content
 
 ___
 
-### getTrendingAgreementIDs
+### getTrendingDigitalContentIDs
 
-**getTrendingAgreementIDs**(`requestParameters?`): `Promise`<[`TrendingTimesIds`](../interfaces/full.TrendingTimesIds.md)\>
+**getTrendingDigitalContentIDs**(`requestParameters?`): `Promise`<[`TrendingTimesIds`](../interfaces/full.TrendingTimesIds.md)\>
 
-Gets the digital_content IDs of the top trending agreements on Coliving
+Gets the digital_content IDs of the top trending digitalContents on Coliving
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetTrendingAgreementIDsRequest`](../interfaces/full.GetTrendingAgreementIDsRequest.md) |
+| `requestParameters` | [`GetTrendingDigitalContentIDsRequest`](../interfaces/full.GetTrendingDigitalContentIDsRequest.md) |
 
 #### Returns
 
@@ -217,17 +217,17 @@ Gets the digital_content IDs of the top trending agreements on Coliving
 
 ___
 
-### getTrendingAgreements
+### getTrendingDigitalContents
 
-**getTrendingAgreements**(`requestParameters?`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
+**getTrendingDigitalContents**(`requestParameters?`): `Promise`<[`DigitalContentFull`](../interfaces/full.DigitalContentFull.md)[]\>
 
-Gets the top 100 trending (most popular) agreements on Coliving
+Gets the top 100 trending (most popular) digitalContents on Coliving
 
 Example:
 
 ```typescript
 
-const agreements = await colivingSdk.agreements.getTrendingAgreements();
+const digitalContents = await colivingSdk.digitalContents.getTrendingDigitalContents();
 
 ```
 
@@ -235,25 +235,25 @@ const agreements = await colivingSdk.agreements.getTrendingAgreements();
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetTrendingAgreementsRequest`](../interfaces/full.GetTrendingAgreementsRequest.md) |
+| `requestParameters` | [`GetTrendingDigitalContentsRequest`](../interfaces/full.GetTrendingDigitalContentsRequest.md) |
 
 #### Returns
 
-`Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
+`Promise`<[`DigitalContentFull`](../interfaces/full.DigitalContentFull.md)[]\>
 
 ___
 
-### getTrendingAgreementsIDsWithVersion
+### getTrendingDigitalContentsIDsWithVersion
 
-**getTrendingAgreementsIDsWithVersion**(`requestParameters`): `Promise`<[`TrendingTimesIds`](../interfaces/full.TrendingTimesIds.md)\>
+**getTrendingDigitalContentsIDsWithVersion**(`requestParameters`): `Promise`<[`TrendingTimesIds`](../interfaces/full.TrendingTimesIds.md)\>
 
-Gets the digital_content IDs of the top trending agreements on Coliving based on the given trending strategy version
+Gets the digital_content IDs of the top trending digitalContents on Coliving based on the given trending strategy version
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetTrendingAgreementsIDsWithVersionRequest`](../interfaces/full.GetTrendingAgreementsIDsWithVersionRequest.md) |
+| `requestParameters` | [`GetTrendingDigitalContentsIDsWithVersionRequest`](../interfaces/full.GetTrendingDigitalContentsIDsWithVersionRequest.md) |
 
 #### Returns
 
@@ -261,75 +261,75 @@ Gets the digital_content IDs of the top trending agreements on Coliving based on
 
 ___
 
-### getTrendingAgreementsWithVersion
+### getTrendingDigitalContentsWithVersion
 
-**getTrendingAgreementsWithVersion**(`requestParameters`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
+**getTrendingDigitalContentsWithVersion**(`requestParameters`): `Promise`<[`DigitalContentFull`](../interfaces/full.DigitalContentFull.md)[]\>
 
-Gets the top 100 trending (most popular agreements on Coliving using a given trending strategy version
+Gets the top 100 trending (most popular digitalContents on Coliving using a given trending strategy version
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetTrendingAgreementsWithVersionRequest`](../interfaces/full.GetTrendingAgreementsWithVersionRequest.md) |
+| `requestParameters` | [`GetTrendingDigitalContentsWithVersionRequest`](../interfaces/full.GetTrendingDigitalContentsWithVersionRequest.md) |
 
 #### Returns
 
-`Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
+`Promise`<[`DigitalContentFull`](../interfaces/full.DigitalContentFull.md)[]\>
 
 ___
 
-### getUnderTheRadarAgreements
+### getUnderTheRadarDigitalContents
 
-**getUnderTheRadarAgreements**(`requestParameters?`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
+**getUnderTheRadarDigitalContents**(`requestParameters?`): `Promise`<[`DigitalContentFull`](../interfaces/full.DigitalContentFull.md)[]\>
 
-Gets the agreements found on the \"Under the Radar\" smart contentList
+Gets the digitalContents found on the \"Under the Radar\" smart contentList
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetUnderTheRadarAgreementsRequest`](../interfaces/full.GetUnderTheRadarAgreementsRequest.md) |
+| `requestParameters` | [`GetUnderTheRadarDigitalContentsRequest`](../interfaces/full.GetUnderTheRadarDigitalContentsRequest.md) |
 
 #### Returns
 
-`Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
+`Promise`<[`DigitalContentFull`](../interfaces/full.DigitalContentFull.md)[]\>
 
 ___
 
-### getUndergroundTrendingAgreements
+### getUndergroundTrendingDigitalContents
 
-**getUndergroundTrendingAgreements**(`requestParameters?`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
+**getUndergroundTrendingDigitalContents**(`requestParameters?`): `Promise`<[`DigitalContentFull`](../interfaces/full.DigitalContentFull.md)[]\>
 
-Gets the top 100 trending underground agreements on Coliving
+Gets the top 100 trending underground digitalContents on Coliving
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetUndergroundTrendingAgreementsRequest`](../interfaces/full.GetUndergroundTrendingAgreementsRequest.md) |
+| `requestParameters` | [`GetUndergroundTrendingDigitalContentsRequest`](../interfaces/full.GetUndergroundTrendingDigitalContentsRequest.md) |
 
 #### Returns
 
-`Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
+`Promise`<[`DigitalContentFull`](../interfaces/full.DigitalContentFull.md)[]\>
 
 ___
 
-### getUndergroundTrendingAgreementsWithVersion
+### getUndergroundTrendingDigitalContentsWithVersion
 
-**getUndergroundTrendingAgreementsWithVersion**(`requestParameters`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
+**getUndergroundTrendingDigitalContentsWithVersion**(`requestParameters`): `Promise`<[`DigitalContentFull`](../interfaces/full.DigitalContentFull.md)[]\>
 
-Gets the top 100 trending underground agreements on Coliving using a given trending strategy version
+Gets the top 100 trending underground digitalContents on Coliving using a given trending strategy version
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetUndergroundTrendingAgreementsWithVersionRequest`](../interfaces/full.GetUndergroundTrendingAgreementsWithVersionRequest.md) |
+| `requestParameters` | [`GetUndergroundTrendingDigitalContentsWithVersionRequest`](../interfaces/full.GetUndergroundTrendingDigitalContentsWithVersionRequest.md) |
 
 #### Returns
 
-`Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
+`Promise`<[`DigitalContentFull`](../interfaces/full.DigitalContentFull.md)[]\>
 
 ___
 

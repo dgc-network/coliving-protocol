@@ -29,9 +29,9 @@ ___
 
 ___
 
-### agreements
+### digitalContents
 
- **agreements**: [`AgreementFull`](full.AgreementFull.md)[]
+ **digitalContents**: [`DigitalContentFull`](full.DigitalContentFull.md)[]
 
 **`memberof`** ContentListFull
 

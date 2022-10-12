@@ -7,7 +7,7 @@ const OPERATION_TYPE = Object.freeze({
   CREATE_CONTENT_LIST: 'CREATE_CONTENT_LIST'
 })
 
-function AgreementUploadRequest (walletIndex, userId) {
+function DigitalContentUploadRequest (walletIndex, userId) {
   return {
     type: OPERATION_TYPE.AGREEMENT_UPLOAD,
     walletIndex,
@@ -15,9 +15,9 @@ function AgreementUploadRequest (walletIndex, userId) {
   }
 }
 
-function AgreementUploadResponse (
+function DigitalContentUploadResponse (
   walletIndex,
-  agreementId,
+  digitalContentId,
   metadata,
   success = true,
   error = null
@@ -25,14 +25,14 @@ function AgreementUploadResponse (
   return {
     type: OPERATION_TYPE.AGREEMENT_UPLOAD,
     walletIndex,
-    agreementId,
+    digitalContentId,
     metadata,
     success,
     error
   }
 }
 
-function AgreementRepostRequest (walletIndex, userId) {
+function DigitalContentRepostRequest (walletIndex, userId) {
   return {
     type: OPERATION_TYPE.AGREEMENT_REPOST,
     walletIndex,
@@ -40,9 +40,9 @@ function AgreementRepostRequest (walletIndex, userId) {
   }
 }
 
-function AgreementRepostResponse (
+function DigitalContentRepostResponse (
   walletIndex,
-  agreementId,
+  digitalContentId,
   userId,
   success = true,
   error = null
@@ -50,14 +50,14 @@ function AgreementRepostResponse (
   return {
     type: OPERATION_TYPE.AGREEMENT_REPOST,
     walletIndex,
-    agreementId,
+    digitalContentId,
     userId,
     success,
     error
   }
 }
 
-function AddContentListAgreementRequest (walletIndex, userId) {
+function AddContentListDigitalContentRequest (walletIndex, userId) {
   return {
     type: OPERATION_TYPE.ADD_CONTENT_LIST_AGREEMENT,
     walletIndex,
@@ -65,16 +65,16 @@ function AddContentListAgreementRequest (walletIndex, userId) {
   }
 }
 
-function AddContentListAgreementResponse (
+function AddContentListDigitalContentResponse (
   walletIndex,
-  agreementId,
+  digitalContentId,
   success = true,
   error = null
 ) {
   return {
     type: OPERATION_TYPE.ADD_CONTENT_LIST_AGREEMENT,
     walletIndex,
-    agreementId,
+    digitalContentId,
     success,
     error
   }
@@ -107,12 +107,12 @@ function CreateContentListResponse (
 
 module.exports = {
   OPERATION_TYPE,
-  AgreementUploadRequest,
-  AgreementUploadResponse,
-  AgreementRepostRequest,
-  AgreementRepostResponse,
-  AddContentListAgreementRequest,
-  AddContentListAgreementResponse,
+  DigitalContentUploadRequest,
+  DigitalContentUploadResponse,
+  DigitalContentRepostRequest,
+  DigitalContentRepostResponse,
+  AddContentListDigitalContentRequest,
+  AddContentListDigitalContentResponse,
   CreateContentListRequest,
   CreateContentListResponse
 }

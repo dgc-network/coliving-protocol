@@ -14,7 +14,7 @@ def test_get_milestones(app):
 
     test_entities = {
         "users": [{"user_id": 1}, {"user_id": 2}, {"user_id": 3}, {"user_id": 4}],
-        "agreements": [
+        "digitalContents": [
             {
                 "digital_content_id": 1,
                 "owner_id": 1,
@@ -94,12 +94,12 @@ def test_get_milestones(app):
         assert milestones == {
             "follower_counts": {1: 10, 2: 25},
             "repost_counts": {
-                "agreements": {1: 1000},
+                "digitalContents": {1: 1000},
                 "albums": {},
                 "content_lists": {1: 10, 2: 25},
             },
             "favorite_counts": {
-                "agreements": {2: 100},
+                "digitalContents": {2: 100},
                 "albums": {3: 500},
                 "content_lists": {},
             },

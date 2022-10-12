@@ -38,11 +38,11 @@ import {
     RepostToJSON,
 } from './repost';
 import {
-    AgreementFull,
-    AgreementFullFromJSON,
-    AgreementFullFromJSONTyped,
-    AgreementFullToJSON,
-} from './agreementFull';
+    DigitalContentFull,
+    DigitalContentFullFromJSON,
+    DigitalContentFullFromJSONTyped,
+    DigitalContentFullToJSON,
+} from './digitalContentFull';
 import {
     UserFull,
     UserFullFromJSON,
@@ -178,10 +178,10 @@ export interface ContentListFull {
     user_id: string;
     /**
      * 
-     * @type {Array<AgreementFull>}
+     * @type {Array<DigitalContentFull>}
      * @memberof ContentListFull
      */
-    agreements: Array<AgreementFull>;
+    digitalContents: Array<DigitalContentFull>;
     /**
      * 
      * @type {string}

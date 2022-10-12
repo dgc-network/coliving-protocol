@@ -53,7 +53,7 @@ const checkPropertiesExist = (tx, properties) => {
 }
 
 // Asserts that the tx key-value matches the expected values
-// TODO check for the properties emittedAgreementIds, _addedAgreementId (potentially more)
+// TODO check for the properties emittedDigitalContentIds, _addedDigitalContentId (potentially more)
 export const assertEqualValues = (tx, name, properties) => {
   if (name) {
     assert.equal(tx.event.name, name, 'Expected same event name')
@@ -91,7 +91,7 @@ const buildReturnObj = (tx, properties) => {
   for (var p in properties) {
     switch (p) {
       case '_id':
-        returnObj['agreementId'] = tx.event.args[p].toNumber()
+        returnObj['digitalContentId'] = tx.event.args[p].toNumber()
         break
       case '_userId':
       case '_digital_contentOwnerId':

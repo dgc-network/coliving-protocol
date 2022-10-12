@@ -31,7 +31,7 @@ class FullSearch(Resource):
     @record_metrics
     @full_ns.doc(
         id="Search",
-        description="""Get Users/Agreements/ContentLists/Albums that best match the search query""",
+        description="""Get Users/DigitalContents/ContentLists/Albums that best match the search query""",
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
     @full_ns.expect(full_search_parser)
@@ -74,7 +74,7 @@ class FullSearchAutocomplete(Resource):
     @cache(ttl_sec=5)
     def get(self):
         """
-        Get Users/Agreements/ContentLists/Albums that best match the search query
+        Get Users/DigitalContents/ContentLists/Albums that best match the search query
 
         Same as search but optimized for quicker response at the cost of some entity information.
         """

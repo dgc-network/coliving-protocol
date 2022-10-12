@@ -12,7 +12,7 @@ const {
 } = require('./middlewares/readOnly/readOnlyMiddleware')
 const {
   userReqLimiter,
-  agreementReqLimiter,
+  digitalContentReqLimiter,
   colivingUserReqLimiter,
   metadataReqLimiter,
   imageReqLimiter,
@@ -116,7 +116,7 @@ const initializeApp = (port, serviceRegistry) => {
 
   // Rate limit routes
   app.use('/users/', userReqLimiter)
-  app.use('/digital_content*', agreementReqLimiter)
+  app.use('/digital_content*', digitalContentReqLimiter)
   app.use('/coliving_user/', colivingUserReqLimiter)
   app.use('/metadata', metadataReqLimiter)
   app.use('/image_upload', imageReqLimiter)
@@ -157,7 +157,7 @@ const initializeApp = (port, serviceRegistry) => {
       buckets: [0.2, 0.5, ...exponentialBucketsRange(1, 60, 4)],
       // Do not register the default /metrics route, since we have the /prometheus_metrics
       autoregister: false,
-      // Normalizes the path to be agreemented in this middleware. For routes with route params,
+      // Normalizes the path to be digitalContented in this middleware. For routes with route params,
       // this fn maps those routes to generic paths. e.g. /ipfs/QmSomeCid -> /ipfs/#CID
       normalizePath: function (req, opts) {
         const path = prometheusMiddleware.normalizePath(req, opts)

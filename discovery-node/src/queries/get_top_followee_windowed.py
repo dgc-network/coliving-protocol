@@ -1,8 +1,8 @@
 from sqlalchemy import desc, text
 from src import exceptions
 from src.models.social.follow import Follow
-from src.models.agreements.aggregate_digital_content import AggregateAgreement
-from src.models.agreements.digital_content import DigitalContent
+from src.models.digitalContents.aggregate_digital_content import AggregateDigitalContent
+from src.models.digitalContents.digital_content import DigitalContent
 from src.queries.query_helpers import (
     get_users_by_id,
     get_users_ids,
@@ -35,8 +35,8 @@ def get_top_followee_windowed(type, window, args):
         )
         followee_user_ids_subquery = followee_user_ids.subquery()
 
-        # Queries for agreements joined against followed users and counts
-        agreements_query = (
+        # Queries for digitalContents joined against followed users and counts
+        digitalContents_query = (
             session.query(
                 DigitalContent,
             )
@@ -44,35 +44,35 @@ def get_top_followee_windowed(type, window, args):
                 followee_user_ids_subquery,
                 DigitalContent.owner_id == followee_user_ids_subquery.c.followee_user_id,
             )
-            .join(AggregateAgreement, DigitalContent.digital_content_id == AggregateAgreement.digital_content_id)
+            .join(AggregateDigitalContent, DigitalContent.digital_content_id == AggregateDigitalContent.digital_content_id)
             .filter(
                 DigitalContent.is_current == True,
                 DigitalContent.is_delete == False,
                 DigitalContent.is_unlisted == False,
                 DigitalContent.stem_of == None,
-                # Query only agreements created `window` time ago (week, month, etc.)
+                # Query only digitalContents created `window` time ago (week, month, etc.)
                 DigitalContent.created_at >= text(f"NOW() - interval '1 {window}'"),
             )
             .order_by(
-                desc(AggregateAgreement.repost_count + AggregateAgreement.save_count),
+                desc(AggregateDigitalContent.repost_count + AggregateDigitalContent.save_count),
                 desc(DigitalContent.digital_content_id),
             )
             .limit(limit)
         )
 
-        agreements_query_results = agreements_query.all()
-        agreements = helpers.query_result_to_list(agreements_query_results)
-        digital_content_ids = list(map(lambda digital_content: digital_content["digital_content_id"], agreements))
+        digitalContents_query_results = digitalContents_query.all()
+        digitalContents = helpers.query_result_to_list(digitalContents_query_results)
+        digital_content_ids = list(map(lambda digital_content: digital_content["digital_content_id"], digitalContents))
 
         # Bundle peripheral info into digital_content results
-        agreements = populate_digital_content_metadata(session, digital_content_ids, agreements, current_user_id)
+        digitalContents = populate_digital_content_metadata(session, digital_content_ids, digitalContents, current_user_id)
 
         if args.get("with_users", False):
-            user_id_list = get_users_ids(agreements)
+            user_id_list = get_users_ids(digitalContents)
             users = get_users_by_id(session, user_id_list)
-            for digital_content in agreements:
+            for digital_content in digitalContents:
                 user = users[digital_content["owner_id"]]
                 if user:
                     digital_content["user"] = user
 
-    return agreements
+    return digitalContents

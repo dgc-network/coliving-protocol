@@ -53,7 +53,7 @@ const sequelizeMock = {
 const getMonitorsMock = async (monitors) => {
   return monitors.map((monitor) => {
     switch (monitor.name) {
-      case MONITORS.DATABASE_LIVENESS.name:
+      case MONITORS.DATABASE_DGCONESS.name:
         return true
       case MONITORS.DATABASE_CONNECTIONS.name:
         return 5
@@ -115,21 +115,21 @@ const AsyncProcessingQueueMock = (active = 0, waiting = 0, failed = 0) => {
     getAsyncProcessingQueueJobs: async () => {
       return {
         waiting: {
-          agreementContentUpload: 0,
+          digitalContentContentUpload: 0,
           transcodeAndSegment: 0,
           processTranscodeAndSegments: 0,
           transcodeHandOff: 0,
           total: waiting
         },
         active: {
-          agreementContentUpload: 0,
+          digitalContentContentUpload: 0,
           transcodeAndSegment: 0,
           processTranscodeAndSegments: 0,
           transcodeHandOff: 0,
           total: active
         },
         failed: {
-          agreementContentUpload: 0,
+          digitalContentContentUpload: 0,
           transcodeAndSegment: 0,
           processTranscodeAndSegments: 0,
           transcodeHandOff: 0,
@@ -220,21 +220,21 @@ describe('Test Health Check', function () {
       shouldHandleTranscode: true,
       asyncProcessingQueue: {
         waiting: {
-          agreementContentUpload: 0,
+          digitalContentContentUpload: 0,
           transcodeAndSegment: 0,
           processTranscodeAndSegments: 0,
           transcodeHandOff: 0,
           total: 2
         },
         active: {
-          agreementContentUpload: 0,
+          digitalContentContentUpload: 0,
           transcodeAndSegment: 0,
           processTranscodeAndSegments: 0,
           transcodeHandOff: 0,
           total: 0
         },
         failed: {
-          agreementContentUpload: 0,
+          digitalContentContentUpload: 0,
           transcodeAndSegment: 0,
           processTranscodeAndSegments: 0,
           transcodeHandOff: 0,
@@ -333,21 +333,21 @@ describe('Test Health Check', function () {
       shouldHandleTranscode: true,
       asyncProcessingQueue: {
         waiting: {
-          agreementContentUpload: 0,
+          digitalContentContentUpload: 0,
           transcodeAndSegment: 0,
           processTranscodeAndSegments: 0,
           transcodeHandOff: 0,
           total: 2
         },
         active: {
-          agreementContentUpload: 0,
+          digitalContentContentUpload: 0,
           transcodeAndSegment: 0,
           processTranscodeAndSegments: 0,
           transcodeHandOff: 0,
           total: 0
         },
         failed: {
-          agreementContentUpload: 0,
+          digitalContentContentUpload: 0,
           transcodeAndSegment: 0,
           processTranscodeAndSegments: 0,
           transcodeHandOff: 0,
@@ -435,21 +435,21 @@ describe('Test Health Check', function () {
       shouldHandleTranscode: true,
       asyncProcessingQueue: {
         waiting: {
-          agreementContentUpload: 0,
+          digitalContentContentUpload: 0,
           transcodeAndSegment: 0,
           processTranscodeAndSegments: 0,
           transcodeHandOff: 0,
           total: 2
         },
         active: {
-          agreementContentUpload: 0,
+          digitalContentContentUpload: 0,
           transcodeAndSegment: 0,
           processTranscodeAndSegments: 0,
           transcodeHandOff: 0,
           total: 0
         },
         failed: {
-          agreementContentUpload: 0,
+          digitalContentContentUpload: 0,
           transcodeAndSegment: 0,
           processTranscodeAndSegments: 0,
           transcodeHandOff: 0,
@@ -578,21 +578,21 @@ describe('Test Health Check Verbose', function () {
       shouldHandleTranscode: true,
       asyncProcessingQueue: {
         waiting: {
-          agreementContentUpload: 0,
+          digitalContentContentUpload: 0,
           transcodeAndSegment: 0,
           processTranscodeAndSegments: 0,
           transcodeHandOff: 0,
           total: 2
         },
         active: {
-          agreementContentUpload: 0,
+          digitalContentContentUpload: 0,
           transcodeAndSegment: 0,
           processTranscodeAndSegments: 0,
           transcodeHandOff: 0,
           total: 0
         },
         failed: {
-          agreementContentUpload: 0,
+          digitalContentContentUpload: 0,
           transcodeAndSegment: 0,
           processTranscodeAndSegments: 0,
           transcodeHandOff: 0,

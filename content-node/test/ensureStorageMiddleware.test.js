@@ -53,7 +53,7 @@ describe('test ensureStorageMiddleware', () => {
     const storagePathUsed = await monitoringQueueMock.getRedisValue(storagePathUsedRedisKey)
     assert(storagePathUsed === '100')
 
-    const testPicture = path.resolve(__dirname, 'testAgreementWrongFormat.jpg')
+    const testPicture = path.resolve(__dirname, 'testDigitalContentWrongFormat.jpg')
     let file = fs.readFileSync(testPicture)
     const resp = await request(app)
       .post('/image_upload')
@@ -90,7 +90,7 @@ describe('test ensureStorageMiddleware', () => {
     const storagePathUsed = await monitoringQueueMock.getRedisValue(storagePathUsedRedisKey)
     assert(storagePathUsed === '100')
 
-    const testAudioFilePath = path.resolve(__dirname, 'testAgreement.mp3')
+    const testAudioFilePath = path.resolve(__dirname, 'testDigitalContent.mp3')
     const file = fs.readFileSync(testAudioFilePath)
     const resp = await request(app)
       .post('/digital_content_async')
@@ -104,7 +104,7 @@ describe('test ensureStorageMiddleware', () => {
     assert(errorObj.error.state === 'NODE_REACHED_CAPACITY')
   })
 
-  it('fails with bad request when storage capacity is reached (/agreements/metadata)', async () => {
+  it('fails with bad request when storage capacity is reached (/digital_contents/metadata)', async () => {
     await monitoringQueueMock.setRedisValue(storagePathUsedRedisKey, 100)
     const storagePathUsed = await monitoringQueueMock.getRedisValue(storagePathUsedRedisKey)
     assert(storagePathUsed === '100')
@@ -113,7 +113,7 @@ describe('test ensureStorageMiddleware', () => {
     const file = Buffer.from('i am a digital_content file!!!')
 
     const resp = await request(app)
-      .post('/agreements/metadata')
+      .post('/digital_contents/metadata')
       .set('X-Session-ID', session.sessionToken)
       .set('User-Id', session.userId)
       .send(
@@ -121,7 +121,7 @@ describe('test ensureStorageMiddleware', () => {
           metadata: {
             test: 'abel is my hero',
             owner_id: 1,
-            digital_content_segments: ['agreementsegment1', 'agreementsegment2']
+            digital_content_segments: ['digitalContentsegment1', 'digitalContentsegment2']
           },
           source_file: file
         }

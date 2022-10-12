@@ -16,8 +16,8 @@ require('@openzeppelin/test-helpers/configure')({
 const isServer = true
 
 const constants = {
-  agreementMetadataCID: 'QmSH5gJPHg9xLzV823ty8BSGyHNP6ty22bgLsv5MLY3kBq',
-  agreementMetadataCID2: 'QmSH5gJPHg9xLzV823ty8BSGyHNP6ty22bgLaaaaaaaaaa',
+  digitalContentMetadataCID: 'QmSH5gJPHg9xLzV823ty8BSGyHNP6ty22bgLsv5MLY3kBq',
+  digitalContentMetadataCID2: 'QmSH5gJPHg9xLzV823ty8BSGyHNP6ty22bgLaaaaaaaaaa',
   creatorMetadataCID: 'QmTDhoEDLE3k3CE5bu4mF1ogsEVkPwEAM41KsN7hZX1eWY',
   '0x0': '0x0000000000000000000000000000000000000000000000000000000000000000',
   contentNodeURL1: 'http://localhost:8000/',

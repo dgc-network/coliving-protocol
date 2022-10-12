@@ -1,4 +1,4 @@
-const agreementTemplate = (id) => ({
+const digitalContentTemplate = (id) => ({
   'blockhash': '0xdebe84fe16960b2b1fe156d12c826257b8ac154581551e38e852bd326bc2b414',
   'blocknumber': 8593023,
   'cover_art': 'QmRwbZUcmCnHsWqiPSJbM36Sa6cuRzNbBoNouCmdPS1osd',
@@ -28,7 +28,7 @@ const agreementTemplate = (id) => ({
   'play_count': 216,
   'release_date': 'Mon Apr 29 2019 16:58:04 GMT-0700',
   'remix_of': {
-    'agreements': [
+    'digitalContents': [
       { 'parent_digital_content_id': id + 1 }
     ]
   },
@@ -113,7 +113,7 @@ const userTemplate = (id) => ({
 
 const mockColivingLibs = {
   DigitalContent: {
-    getAgreements: (limit, offset, ids) => ids.map(id => agreementTemplate(id))
+    getDigitalContents: (limit, offset, ids) => ids.map(id => digitalContentTemplate(id))
   },
   ContentList: {
     getContentLists: (limit, offset, ids) => ids.map(id => contentListTemplate(id))

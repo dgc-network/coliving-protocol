@@ -20,11 +20,11 @@ import {
     ContentListFullToJSON,
 } from './contentListFull';
 import {
-    AgreementFull,
-    AgreementFullFromJSON,
-    AgreementFullFromJSONTyped,
-    AgreementFullToJSON,
-} from './agreementFull';
+    DigitalContentFull,
+    DigitalContentFullFromJSON,
+    DigitalContentFullFromJSONTyped,
+    DigitalContentFullToJSON,
+} from './digitalContentFull';
 import {
     UserFull,
     UserFullFromJSON,
@@ -52,16 +52,16 @@ export interface SearchModel {
     followed_users?: Array<UserFull>;
     /**
      * 
-     * @type {Array<AgreementFull>}
+     * @type {Array<DigitalContentFull>}
      * @memberof SearchModel
      */
-    agreements: Array<AgreementFull>;
+    digitalContents: Array<DigitalContentFull>;
     /**
      * 
-     * @type {Array<AgreementFull>}
+     * @type {Array<DigitalContentFull>}
      * @memberof SearchModel
      */
-    saved_digital_contents?: Array<AgreementFull>;
+    saved_digital_contents?: Array<DigitalContentFull>;
     /**
      * 
      * @type {Array<ContentListFull>}

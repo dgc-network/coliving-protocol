@@ -6,12 +6,12 @@ const crypto = require('crypto')
 const DiskManager = require('../../src/diskManager')
 
 const {
-  handleAgreementContentRoute
-} = require('../../src/components/agreements/agreementsComponentService')
+  handleDigitalContentContentRoute
+} = require('../../src/components/digital_contents/digitalContentsComponentService')
 
-const uploadAgreement = async (filePath, cnodeUserUUID, blacklistManager) => {
+const uploadDigitalContent = async (filePath, cnodeUserUUID, blacklistManager) => {
   const { fileUUID, fileDir } = saveFileToStorage(filePath)
-  const resp = await handleAgreementContentRoute(
+  const resp = await handleDigitalContentContentRoute(
     {
       logContext: {
         requestID: uuid(),
@@ -35,7 +35,7 @@ const saveFileToStorage = (filePath) => {
   const file = fs.readFileSync(filePath)
   const fileName = uuid()
   const fileDir = path.join(
-    DiskManager.getTmpAgreementUploadArtifactsPath(),
+    DiskManager.getTmpDigitalContentUploadArtifactsPath(),
     fileName
   )
   fs.mkdirSync(fileDir)
@@ -55,7 +55,7 @@ const computeFilesHash = function (multihashes) {
 }
 
 module.exports = {
-  uploadAgreement,
+  uploadDigitalContent,
   saveFileToStorage,
   computeFilesHash
 }

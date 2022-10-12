@@ -37,9 +37,9 @@ import {
     FullReposts,
     FullRepostsFromJSON,
     FullRepostsToJSON,
-    FullAgreements,
-    FullAgreementsFromJSON,
-    FullAgreementsToJSON,
+    FullDigitalContents,
+    FullDigitalContentsFromJSON,
+    FullDigitalContentsToJSON,
     FullUserResponse,
     FullUserResponseFromJSON,
     FullUserResponseToJSON,
@@ -265,7 +265,7 @@ export interface GetTopUsersInGenreRequest {
     genre?: Array<string>;
 }
 
-export interface GetAgreementsByUserRequest {
+export interface GetDigitalContentsByUserRequest {
     /**
      * A User ID
      */
@@ -285,10 +285,10 @@ export interface GetAgreementsByUserRequest {
     /**
      * Field to sort by
      */
-    sort?: GetAgreementsByUserSortEnum;
+    sort?: GetDigitalContentsByUserSortEnum;
 }
 
-export interface GetAgreementsByUserHandleRequest {
+export interface GetDigitalContentsByUserHandleRequest {
     /**
      * A User handle
      */
@@ -308,7 +308,7 @@ export interface GetAgreementsByUserHandleRequest {
     /**
      * Field to sort by
      */
-    sort?: GetAgreementsByUserHandleSortEnum;
+    sort?: GetDigitalContentsByUserHandleSortEnum;
 }
 
 export interface GetUserRequest {
@@ -333,7 +333,7 @@ export interface GetUserByHandleRequest {
     userId?: string;
 }
 
-export interface GetUsersAgreementHistoryRequest {
+export interface GetUsersDigitalContentHistoryRequest {
     /**
      * A User ID
      */
@@ -358,7 +358,7 @@ export interface GetUsersAgreementHistoryRequest {
 export class UsersApi extends runtime.BaseAPI {
 
     /**
-     * Gets a user\'s favorite agreements
+     * Gets a user\'s favorite digitalContents
      */
     async getFavorites(requestParameters: GetFavoritesRequest): Promise<NonNullable<FavoritesResponseFull["data"]>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -382,7 +382,7 @@ export class UsersApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/users/{id}/favorites/agreements`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/users/{id}/favorites/digitalContents`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -722,11 +722,11 @@ export class UsersApi extends runtime.BaseAPI {
     }
 
     /**
-     * Gets the agreements created by a user using their user ID
+     * Gets the digitalContents created by a user using their user ID
      */
-    async getAgreementsByUser(requestParameters: GetAgreementsByUserRequest): Promise<NonNullable<FullAgreements["data"]>> {
+    async getDigitalContentsByUser(requestParameters: GetDigitalContentsByUserRequest): Promise<NonNullable<FullDigitalContents["data"]>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getAgreementsByUser.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getDigitalContentsByUser.');
         }
 
         const queryParameters: any = {};
@@ -750,19 +750,19 @@ export class UsersApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/users/{id}/agreements`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/users/{id}/digitalContents`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }) as Promise<NonNullable<FullAgreements["data"]>>;
+        }) as Promise<NonNullable<FullDigitalContents["data"]>>;
     }
 
     /**
-     * Gets the agreements created by a user using the user\'s handle
+     * Gets the digitalContents created by a user using the user\'s handle
      */
-    async getAgreementsByUserHandle(requestParameters: GetAgreementsByUserHandleRequest): Promise<NonNullable<FullAgreements["data"]>> {
+    async getDigitalContentsByUserHandle(requestParameters: GetDigitalContentsByUserHandleRequest): Promise<NonNullable<FullDigitalContents["data"]>> {
         if (requestParameters.handle === null || requestParameters.handle === undefined) {
-            throw new runtime.RequiredError('handle','Required parameter requestParameters.handle was null or undefined when calling getAgreementsByUserHandle.');
+            throw new runtime.RequiredError('handle','Required parameter requestParameters.handle was null or undefined when calling getDigitalContentsByUserHandle.');
         }
 
         const queryParameters: any = {};
@@ -786,11 +786,11 @@ export class UsersApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/users/handle/{handle}/agreements`.replace(`{${"handle"}}`, encodeURIComponent(String(requestParameters.handle))),
+            path: `/users/handle/{handle}/digitalContents`.replace(`{${"handle"}}`, encodeURIComponent(String(requestParameters.handle))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }) as Promise<NonNullable<FullAgreements["data"]>>;
+        }) as Promise<NonNullable<FullDigitalContents["data"]>>;
     }
 
     /**
@@ -842,11 +842,11 @@ export class UsersApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get the agreements the user recently listened to.
+     * Get the digitalContents the user recently listened to.
      */
-    async getUsersAgreementHistory(requestParameters: GetUsersAgreementHistoryRequest): Promise<NonNullable<HistoryResponseFull["data"]>> {
+    async getUsersDigitalContentHistory(requestParameters: GetUsersDigitalContentHistoryRequest): Promise<NonNullable<HistoryResponseFull["data"]>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getUsersAgreementHistory.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getUsersDigitalContentHistory.');
         }
 
         const queryParameters: any = {};
@@ -866,7 +866,7 @@ export class UsersApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/users/{id}/history/agreements`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/users/{id}/history/digitalContents`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -879,7 +879,7 @@ export class UsersApi extends runtime.BaseAPI {
     * @export
     * @enum {string}
     */
-export enum GetAgreementsByUserSortEnum {
+export enum GetDigitalContentsByUserSortEnum {
     Date = 'date',
     Plays = 'plays'
 }
@@ -887,7 +887,7 @@ export enum GetAgreementsByUserSortEnum {
     * @export
     * @enum {string}
     */
-export enum GetAgreementsByUserHandleSortEnum {
+export enum GetDigitalContentsByUserHandleSortEnum {
     Date = 'date',
     Plays = 'plays'
 }

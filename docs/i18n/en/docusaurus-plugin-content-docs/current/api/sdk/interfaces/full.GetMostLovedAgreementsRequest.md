@@ -1,13 +1,13 @@
 ---
-id: "full.GetMostLovedAgreementsRequest"
-title: "Interface: GetMostLovedAgreementsRequest"
-sidebar_label: "GetMostLovedAgreementsRequest"
+id: "full.GetMostLovedDigitalContentsRequest"
+title: "Interface: GetMostLovedDigitalContentsRequest"
+sidebar_label: "GetMostLovedDigitalContentsRequest"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).GetMostLovedAgreementsRequest
+[full](../namespaces/full.md).GetMostLovedDigitalContentsRequest
 
 ## Properties
 
@@ -15,7 +15,7 @@ pagination_next: null
 
  `Optional` **limit**: `number`
 
-Number of agreements to fetch
+Number of digitalContents to fetch
 
 ___
 
@@ -31,4 +31,4 @@ ___
 
  `Optional` **withUsers**: `boolean`
 
-Boolean to include user info with agreements
+Boolean to include user info with digitalContents

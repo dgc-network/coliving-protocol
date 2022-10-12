@@ -8,7 +8,7 @@ from src.utils.redis_cache import extract_key, use_redis_cache
 
 logger = logging.getLogger(__name__)
 
-request_cache_path = "/v1/full/agreements/trending"
+request_cache_path = "/v1/full/digital_contents/trending"
 
 
 def get_time_trending(cache_args, time, limit, strategy):
@@ -31,12 +31,12 @@ def get_time_trending(cache_args, time, limit, strategy):
 
 def get_trending_ids(args, strategy):
     """
-    Fetches the ids of the trending agreements using the route's cache
+    Fetches the ids of the trending digitalContents using the route's cache
 
     Args:
         args: (dict) The args of the request
         args.limit: (number) The number of digital_content ids to return
-        args.genre: (string?) The genre to fetch the trending agreements for
+        args.genre: (string?) The genre to fetch the trending digitalContents for
         strategy: (string?) The strategy to apply to compute trending
 
     Returns:

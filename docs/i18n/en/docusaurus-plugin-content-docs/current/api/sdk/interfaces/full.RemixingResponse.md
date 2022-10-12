@@ -17,7 +17,7 @@ pagination_next: null
 
 ### data
 
- `Optional` **data**: [`AgreementFull`](full.AgreementFull.md)[]
+ `Optional` **data**: [`DigitalContentFull`](full.DigitalContentFull.md)[]
 
 **`memberof`** RemixingResponse
 

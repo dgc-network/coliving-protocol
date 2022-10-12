@@ -53,7 +53,7 @@
           "type": "uint256"
         }
       ],
-      "name": "AgreementRepostAdded",
+      "name": "DigitalContentRepostAdded",
       "type": "event"
     },
     {
@@ -72,7 +72,7 @@
           "type": "uint256"
         }
       ],
-      "name": "AgreementRepostDeleted",
+      "name": "DigitalContentRepostDeleted",
       "type": "event"
     },
     {
@@ -265,7 +265,7 @@
           "type": "bytes"
         }
       ],
-      "name": "addAgreementRepost",
+      "name": "addDigitalContentRepost",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -321,7 +321,7 @@
           "type": "bytes"
         }
       ],
-      "name": "deleteAgreementRepost",
+      "name": "deleteDigitalContentRepost",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -435,7 +435,7 @@
           "type": "uint256"
         }
       ],
-      "name": "userRepostedAgreement",
+      "name": "userRepostedDigitalContent",
       "outputs": [
         {
           "internalType": "bool",

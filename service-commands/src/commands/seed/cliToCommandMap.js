@@ -6,12 +6,12 @@ const {
 const {
   parseMetadataIntoObject,
   getProgressCallback,
-  getUserProvidedOrRandomAgreementFile,
+  getUserProvidedOrRandomDigitalContentFile,
   getUserProvidedOrRandomImageFile,
-  getUserProvidedOrRandomAgreementMetadata,
+  getUserProvidedOrRandomDigitalContentMetadata,
   getRandomUserIdFromCurrentSeedSessionCache,
-  getRandomAgreementIdFromCurrentSeedSessionCache,
-  addAgreementToSeedSessionCache,
+  getRandomDigitalContentIdFromCurrentSeedSessionCache,
+  addDigitalContentToSeedSessionCache,
   getActiveUserFromSeedSessionCache,
   getRandomString
 } = SeedUtils
@@ -51,13 +51,13 @@ const CLI_TO_COMMAND_MAP = {
     'upload-digital-content': {
       api: 'DigitalContent',
       description: 'upload digital_content with dummy digitalcoin and cover art file',
-      method: 'uploadAgreement',
+      method: 'uploadDigitalContent',
       params: [
         {
-          name: 'agreementFile',
+          name: 'digitalContentFile',
           description: 'path to digital_content file on local FS',
           userInputHandler: fs.ensureFileSync,
-          defaultHandler: getUserProvidedOrRandomAgreementFile
+          defaultHandler: getUserProvidedOrRandomDigitalContentFile
         },
         {
           name: 'coverArtFile',
@@ -69,7 +69,7 @@ const CLI_TO_COMMAND_MAP = {
           name: 'metadata',
           description: 'metadata for digital_content in comma-separated string',
           userInputHandler: parseMetadataIntoObject,
-          defaultHandler: getUserProvidedOrRandomAgreementMetadata,
+          defaultHandler: getUserProvidedOrRandomDigitalContentMetadata,
         },
         {
           name: 'onProgress',
@@ -77,7 +77,7 @@ const CLI_TO_COMMAND_MAP = {
           defaultHandler: getProgressCallback
         }
       ],
-      onSuccess: addAgreementToSeedSessionCache
+      onSuccess: addDigitalContentToSeedSessionCache
     },
     // below is the only API not working right now - failing with tx rejection 'caller does not own userId'
     // 'update-user': {
@@ -127,26 +127,26 @@ const CLI_TO_COMMAND_MAP = {
     'repost-digital-content': {
       api: 'DigitalContent',
       description: 'add digital_content repost by user',
-      method: 'addAgreementRepost',
+      method: 'addDigitalContentRepost',
       params: [
         {
-          name: 'agreementId',
+          name: 'digitalContentId',
           description: 'digital_content ID of digital_content receiving the repost',
           userInputHandler: Number,
-          defaultHandler: getRandomAgreementIdFromCurrentSeedSessionCache
+          defaultHandler: getRandomDigitalContentIdFromCurrentSeedSessionCache
         }
       ]
     },
     'favorite-digital-content': {
       api: 'DigitalContent',
       description: 'add digital_content favorite/save by user',
-      method: 'addAgreementSave',
+      method: 'addDigitalContentSave',
       params: [
         {
-          name: 'agreementId',
+          name: 'digitalContentId',
           description: 'digital_content ID of digital_content receiving the favorite',
           userInputHandler: Number,
-          defaultHandler: getRandomAgreementIdFromCurrentSeedSessionCache
+          defaultHandler: getRandomDigitalContentIdFromCurrentSeedSessionCache
         }
       ]
     },
@@ -179,7 +179,7 @@ const CLI_TO_COMMAND_MAP = {
           defaultHandler: () => false
         },
         {
-          name: 'agreementIds',
+          name: 'digitalContentIds',
           description: 'comma-separated list of digital_content IDs to associate with the contentList - example: 5,6',
           userInputHandler: userInput => userInput.split(',').map(Number)
         }
@@ -188,7 +188,7 @@ const CLI_TO_COMMAND_MAP = {
     'add-content-list-digital-content': {
       api: 'ContentList',
       description: 'add digital_content to contentList (must be owned by user ID passed in as active user)',
-      method: 'addContentListAgreement',
+      method: 'addContentListDigitalContent',
       params: [
         {
           name: 'contentListId',
@@ -196,7 +196,7 @@ const CLI_TO_COMMAND_MAP = {
           userInputHandler: Number
         },
         {
-          name: 'agreementId',
+          name: 'digitalContentId',
           description: 'ID of digital_content to add',
           userInputHandler: Number
         }

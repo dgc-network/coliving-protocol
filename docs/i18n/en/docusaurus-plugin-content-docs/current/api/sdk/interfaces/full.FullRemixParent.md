@@ -15,8 +15,8 @@ pagination_next: null
 
 ## Properties
 
-### agreements
+### digitalContents
 
- `Optional` **agreements**: [`FullRemix`](full.FullRemix.md)[]
+ `Optional` **digitalContents**: [`FullRemix`](full.FullRemix.md)[]
 
 **`memberof`** FullRemixParent

@@ -45,7 +45,7 @@ const notifications = [
     type: 'Follow'
   },
   {
-    // User id 2 favorites agreements id 1 owned by user id 1
+    // User id 2 favorites digitalContents id 1 owned by user id 1
     blocknumber: 4,
     initiator: 2,
     metadata: {
@@ -82,7 +82,7 @@ const notifications = [
 
 const mockColivingLibs = {
   DigitalContent: {
-    getAgreements: (limit, offset, ids) => {
+    getDigitalContents: (limit, offset, ids) => {
       return ids.map((id) => ({
         digital_content_id: id,
         owner_id: id,

@@ -1,13 +1,13 @@
 'use strict'
 
 /**
- * Adds a 'count' field to UserAgreementListens, which signifies the
+ * Adds a 'count' field to UserDigitalContentListens, which signifies the
  * number of times a user has listened to a digital_content
  */
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.sequelize.transaction(async (transaction) => {
-      await queryInterface.addColumn('UserAgreementListens', 'count', {
+      await queryInterface.addColumn('UserDigitalContentListens', 'count', {
         type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: 1
@@ -16,6 +16,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.removeColumn('UserAgreementListens', 'count')
+    return queryInterface.removeColumn('UserDigitalContentListens', 'count')
   }
 }

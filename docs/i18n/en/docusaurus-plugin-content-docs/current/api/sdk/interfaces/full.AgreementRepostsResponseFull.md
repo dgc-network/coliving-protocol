@@ -1,17 +1,17 @@
 ---
-id: "full.AgreementRepostsResponseFull"
-title: "Interface: AgreementRepostsResponseFull"
-sidebar_label: "AgreementRepostsResponseFull"
+id: "full.DigitalContentRepostsResponseFull"
+title: "Interface: DigitalContentRepostsResponseFull"
+sidebar_label: "DigitalContentRepostsResponseFull"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).AgreementRepostsResponseFull
+[full](../namespaces/full.md).DigitalContentRepostsResponseFull
 
 **`export`**
 
-**`interface`** AgreementRepostsResponseFull
+**`interface`** DigitalContentRepostsResponseFull
 
 ## Properties
 
@@ -19,7 +19,7 @@ pagination_next: null
 
  `Optional` **data**: [`UserFull`](full.UserFull.md)[]
 
-**`memberof`** AgreementRepostsResponseFull
+**`memberof`** DigitalContentRepostsResponseFull
 
 ___
 
@@ -27,7 +27,7 @@ ___
 
  **latest\_chain\_block**: `number`
 
-**`memberof`** AgreementRepostsResponseFull
+**`memberof`** DigitalContentRepostsResponseFull
 
 ___
 
@@ -35,7 +35,7 @@ ___
 
  **latest\_chain\_slot\_plays**: `number`
 
-**`memberof`** AgreementRepostsResponseFull
+**`memberof`** DigitalContentRepostsResponseFull
 
 ___
 
@@ -43,7 +43,7 @@ ___
 
  **latest\_indexed\_block**: `number`
 
-**`memberof`** AgreementRepostsResponseFull
+**`memberof`** DigitalContentRepostsResponseFull
 
 ___
 
@@ -51,7 +51,7 @@ ___
 
  **latest\_indexed\_slot\_plays**: `number`
 
-**`memberof`** AgreementRepostsResponseFull
+**`memberof`** DigitalContentRepostsResponseFull
 
 ___
 
@@ -59,7 +59,7 @@ ___
 
  **signature**: `string`
 
-**`memberof`** AgreementRepostsResponseFull
+**`memberof`** DigitalContentRepostsResponseFull
 
 ___
 
@@ -67,7 +67,7 @@ ___
 
  **timestamp**: `string`
 
-**`memberof`** AgreementRepostsResponseFull
+**`memberof`** DigitalContentRepostsResponseFull
 
 ___
 
@@ -75,4 +75,4 @@ ___
 
  **version**: [`VersionMetadata`](full.VersionMetadata.md)
 
-**`memberof`** AgreementRepostsResponseFull
+**`memberof`** DigitalContentRepostsResponseFull

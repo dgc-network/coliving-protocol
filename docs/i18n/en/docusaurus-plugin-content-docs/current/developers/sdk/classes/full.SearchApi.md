@@ -11,7 +11,7 @@ custom_edit_url: null
 
 **search**(`requestParameters`): `Promise`<[`SearchModel`](../interfaces/full.SearchModel.md)\>
 
-Get Users/Agreements/ContentLists/Albums that best match the search query
+Get Users/DigitalContents/ContentLists/Albums that best match the search query
 
 #### Parameters
 
@@ -30,7 +30,7 @@ ___
 **searchAutocomplete**(`requestParameters`): `Promise`<[`SearchModel`](../interfaces/full.SearchModel.md)\>
 
 Same as search but optimized for quicker response at the cost of some entity information.
-Get Users/Agreements/ContentLists/Albums that best match the search query
+Get Users/DigitalContents/ContentLists/Albums that best match the search query
 
 #### Parameters
 

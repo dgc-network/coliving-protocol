@@ -11,9 +11,9 @@ custom_edit_url: null
 
 ## Enumeration Members
 
-### Agreements
+### DigitalContents
 
- **Agreements**
+ **DigitalContents**
 
 ___
 

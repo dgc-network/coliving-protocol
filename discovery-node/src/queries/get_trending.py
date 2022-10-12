@@ -30,8 +30,8 @@ def get_trending(args, strategy):
         decoded_id = decode_string_id(current_user_id)
         args["current_user_id"] = decoded_id
 
-    agreements = get_trending_digital_contents(args, strategy)
-    return list(map(extend_digital_content, agreements))
+    digitalContents = get_trending_digital_contents(args, strategy)
+    return list(map(extend_digital_content, digitalContents))
 
 
 def get_full_trending(request, args, strategy):
@@ -39,7 +39,7 @@ def get_full_trending(request, args, strategy):
     limit = format_limit(args, TRENDING_LIMIT)
     key = get_trending_cache_key(to_dict(request.args), request.path)
 
-    # Attempt to use the cached agreements list
+    # Attempt to use the cached digitalContents list
     if args["user_id"] is not None:
         full_trending = get_trending(args, strategy)
     else:

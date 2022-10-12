@@ -185,10 +185,10 @@ const config = convict({
     env: 'rateLimitingImageReqLimit',
     default: null
   },
-  rateLimitingAgreementReqLimit: {
+  rateLimitingDigitalContentReqLimit: {
     doc: 'Total requests per hour rate limit for /digital_content routes',
     format: 'nat',
-    env: 'rateLimitingAgreementReqLimit',
+    env: 'rateLimitingDigitalContentReqLimit',
     default: null
   },
   rateLimitingBatchCidsExistLimit: {

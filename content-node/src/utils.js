@@ -108,7 +108,7 @@ async function validateStateForImageDirCIDAndReturnFileUUID(req, imageDirCID) {
  * @param {String} cid content hash of the file
  * @param {Object} logger logger object
  * @param {Object} libs libs instance
- * @param {Integer?} agreementId optional agreementId that corresponds to the cid, see file_lookup route for more info
+ * @param {Integer?} digitalContentId optional digitalContentId that corresponds to the cid, see file_lookup route for more info
  * @param {Array?} excludeList optional array of content nodes to exclude in network wide search
  * @returns {Boolean} returns true if the file was found in the network
  */
@@ -117,7 +117,7 @@ async function findCIDInNetwork(
   cid,
   logger,
   libs,
-  agreementId = null,
+  digitalContentId = null,
   excludeList = []
 ) {
   let found = false
@@ -153,7 +153,7 @@ async function findCIDInNetwork(
           timestamp,
           delegateWallet,
           signature,
-          agreementId
+          digitalContentId
         },
         responseType: 'stream',
         timeout: 1000

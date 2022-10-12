@@ -8,16 +8,16 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.sequelize.query(`
-      DELETE FROM "UserAgreementListens"
+      DELETE FROM "UserDigitalContentListens"
       WHERE "id" in (
         SELECT "id" FROM (
           SELECT *,
-          ROW_NUMBER() OVER (PARTITION BY "userId", "agreementId" ORDER BY "userId", "agreementId") as rowNumber
-          FROM "UserAgreementListens"
+          ROW_NUMBER() OVER (PARTITION BY "userId", "digitalContentId" ORDER BY "userId", "digitalContentId") as rowNumber
+          FROM "UserDigitalContentListens"
         ) A
         WHERE A.rowNumber > 1
     )`).then(() => {
-      return queryInterface.addConstraint('UserAgreementListens', ['userId', 'agreementId'], {
+      return queryInterface.addConstraint('UserDigitalContentListens', ['userId', 'digitalContentId'], {
         type: 'unique',
         name: 'unique_on_user_id_and_digital_content_id'
       })
@@ -26,6 +26,6 @@ module.exports = {
 
   down: (queryInterface, Sequelize) => {
     // return new Promise(resolve => resolve())
-    return queryInterface.removeConstraint('UserAgreementListens', 'unique_on_user_id_and_digital_content_id')
+    return queryInterface.removeConstraint('UserDigitalContentListens', 'unique_on_user_id_and_digital_content_id')
   }
 }

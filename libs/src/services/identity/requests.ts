@@ -10,7 +10,7 @@ type QueryParams = {
   end?: string
 }
 
-export const getAgreementListens = (
+export const getDigitalContentListens = (
   timeFrame: TimeFrame | null = null,
   idsArray: number[] | null = null,
   startTime: string | null = null,
@@ -18,7 +18,7 @@ export const getAgreementListens = (
   limit: number | null = null,
   offset: number | null = null
 ) => {
-  let queryUrl = 'agreements/listens/'
+  let queryUrl = 'digitalContents/listens/'
 
   if (timeFrame != null) {
     switch (timeFrame) {

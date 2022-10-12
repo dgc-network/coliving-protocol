@@ -42,8 +42,8 @@ const getPublishNotifBaseType = (notification) => {
       return notificationTypes.Milestone
     case notificationTypes.TierChange:
       return notificationTypes.TierChange
-    case notificationTypes.AddAgreementToContentList:
-      return notificationTypes.AddAgreementToContentList
+    case notificationTypes.AddDigitalContentToContentList:
+      return notificationTypes.AddDigitalContentToContentList
     case notificationTypes.Reaction:
       return notificationTypes.Reaction
     case notificationTypes.TipReceive:
@@ -75,7 +75,7 @@ const getPublishUserId = (notif, baseType) => {
   else if (baseType === notificationTypes.ChallengeReward) return notif.initiator
   else if (baseType === notificationTypes.Milestone) return notif.initiator
   else if (baseType === notificationTypes.TierChange) return notif.initiator
-  else if (baseType === notificationTypes.AddAgreementToContentList) return notif.metadata.agreementOwnerId
+  else if (baseType === notificationTypes.AddDigitalContentToContentList) return notif.metadata.digitalContentOwnerId
   else if (baseType === notificationTypes.Reaction) return notif.metadata.reacted_to_entity.tip_sender_id
   else if (baseType === notificationTypes.SupporterRankUp) return notif.initiator
   else if (baseType === notificationTypes.SupportingRankUp) return notif.metadata.entity_id
@@ -90,7 +90,7 @@ const alwaysSendNotifications = [
   notificationTypes.Create.contentList,
   notificationTypes.Create.album,
   notificationTypes.ChallengeReward,
-  notificationTypes.AddAgreementToContentList,
+  notificationTypes.AddDigitalContentToContentList,
   notificationTypes.Reaction,
   notificationTypes.TipReceive,
   notificationTypes.SupporterRankUp,
@@ -146,7 +146,7 @@ const shouldFilterOutNotification = (notificationType, optimizelyClient) => {
  * Takes a list of notifications, populates them with extra metadata, checks their notification settings
  * and publishes it to the notification queue to be sent out.
  * @param {Array<Object>} notifications
- * @param {Object} metadata Metadata of all the users/agreements/collections needed for populating the notifications
+ * @param {Object} metadata Metadata of all the users/digital_contents/collections needed for populating the notifications
  * @param {Object} userNotificationSettings A map of userID to their mobile & browser notification settings
  * @param {*} tx Transction for DB queries
  */

@@ -302,7 +302,7 @@ export class Wormhole {
         amount
       )
       logs.push(
-        `Transferred wlive ${wAudioAmount.toString()} balance to associated token account`
+        `Transferred wei_digitalcoin ${wAudioAmount.toString()} balance to associated token account`
       )
       phase = phases.TRANFER_FROM_SOL
 

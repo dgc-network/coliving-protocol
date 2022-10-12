@@ -20,12 +20,12 @@ Session = sessionmaker()
 
 
 def upgrade():
-    op.add_column("agreements", sa.Column("route_id", sa.String, nullable=True))
+    op.add_column("digitalContents", sa.Column("route_id", sa.String, nullable=True))
     bind = op.get_bind()
     session = Session(bind=bind)
     res = session.execute(
         sa.text(
-            """SELECT t."title", t."digital_content_id", t."blockhash", u."user_id", u."handle" FROM "agreements" t INNER JOIN "users" u on "t"."owner_id" = u."user_id" AND u."is_current" = true;"""
+            """SELECT t."title", t."digital_content_id", t."blockhash", u."user_id", u."handle" FROM "digitalContents" t INNER JOIN "users" u on "t"."owner_id" = u."user_id" AND u."is_current" = true;"""
         )
     ).fetchall()
 
@@ -34,10 +34,10 @@ def upgrade():
     for i in range(len(route_ids)):
         session.execute(
             sa.text(
-                f"""UPDATE "agreements" SET "route_id" = '{route_ids[i]}' WHERE "blockhash" = '{res[i][2]}' AND "digital_content_id" = '{res[i][1]}'"""
+                f"""UPDATE "digitalContents" SET "route_id" = '{route_ids[i]}' WHERE "blockhash" = '{res[i][2]}' AND "digital_content_id" = '{res[i][1]}'"""
             )
         )
 
 
 def downgrade():
-    op.drop_column("agreements", "route_id")
+    op.drop_column("digitalContents", "route_id")

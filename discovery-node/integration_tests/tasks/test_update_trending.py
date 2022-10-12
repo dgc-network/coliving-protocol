@@ -3,10 +3,10 @@ from datetime import datetime, timedelta
 
 from integration_tests.utils import populate_mock_db
 from src.models.social.aggregate_interval_plays import t_aggregate_interval_plays
-from src.models.agreements.digital_content_trending_score import AgreementTrendingScore
-from src.models.agreements.trending_param import t_trending_params
+from src.models.digitalContents.digital_content_trending_score import DigitalContentTrendingScore
+from src.models.digitalContents.trending_param import t_trending_params
 from src.trending_strategies.EJ57D_trending_digital_contents_strategy import (
-    TrendingAgreementsStrategyEJ57D,
+    TrendingDigitalContentsStrategyEJ57D,
 )
 from src.utils.db_session import get_db
 
@@ -17,8 +17,8 @@ logger = logging.getLogger(__name__)
 def setup_trending(db):
     # Test data
 
-    # test agreements
-    # when creating agreements, digital_content_id == index
+    # test digitalContents
+    # when creating digitalContents, digital_content_id == index
     test_entities = {
         "users": [
             *[
@@ -45,7 +45,7 @@ def setup_trending(db):
                 for i in range(5, 20)
             ],
         ],
-        "agreements": [
+        "digitalContents": [
             {"digital_content_id": 1, "owner_id": 1},
             {
                 "digital_content_id": 2,
@@ -303,8 +303,8 @@ def test_update_trending_params(app):
         session.execute("REFRESH MATERIALIZED VIEW trending_params")
         trending_params = session.query(t_trending_params).all()
 
-        # Test that trending_params are not generated for hidden/deleted agreements
-        # There should be 7 valid agreements with trending params
+        # Test that trending_params are not generated for hidden/deleted digitalContents
+        # There should be 7 valid digitalContents with trending params
         assert len(trending_params) == 7
 
         def get_digital_content_id(digital_content_id):
@@ -341,15 +341,15 @@ def test_update_digital_content_score_query(app):
 
     # setup
     setup_trending(db)
-    udpated_strategy = TrendingAgreementsStrategyEJ57D()
+    udpated_strategy = TrendingDigitalContentsStrategyEJ57D()
 
     with db.scoped_session() as session:
         session.execute("REFRESH MATERIALIZED VIEW aggregate_interval_plays")
         session.execute("REFRESH MATERIALIZED VIEW trending_params")
         udpated_strategy.update_digital_content_score_query(session)
-        scores = session.query(AgreementTrendingScore).all()
-        # Test that scores are not generated for hidden/deleted agreements
-        # There should be 7 valid agreements * 3 valid time ranges (week/month/year)
+        scores = session.query(DigitalContentTrendingScore).all()
+        # Test that scores are not generated for hidden/deleted digitalContents
+        # There should be 7 valid digitalContents * 3 valid time ranges (week/month/year)
         assert len(scores) == 21
 
         def get_time_sorted(time_range):

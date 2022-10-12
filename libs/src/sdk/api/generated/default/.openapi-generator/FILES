@@ -1,7 +1,7 @@
 apis/contentListsApi.ts
 apis/resolveApi.ts
 apis/tipsApi.ts
-apis/agreementsApi.ts
+apis/digitalContentsApi.ts
 apis/usersApi.ts
 apis/index.ts
 index.ts
@@ -24,7 +24,7 @@ models/contentList.ts
 models/contentListArtwork.ts
 models/contentListResponse.ts
 models/contentListSearchResult.ts
-models/contentListAgreementsResponse.ts
+models/contentListDigitalContentsResponse.ts
 models/profilePicture.ts
 models/relatedLandlordResponse.ts
 models/remixParent.ts
@@ -36,11 +36,11 @@ models/tip.ts
 models/topGenreUsersResponse.ts
 models/topUsersResponse.ts
 models/digital_content.ts
-models/agreementArtwork.ts
-models/agreementElement.ts
-models/agreementResponse.ts
-models/agreementSearch.ts
-models/agreementsResponse.ts
+models/digitalContentArtwork.ts
+models/digitalContentElement.ts
+models/digitalContentResponse.ts
+models/digitalContentSearch.ts
+models/digitalContentsResponse.ts
 models/trendingContentListsResponse.ts
 models/user.ts
 models/userAssociatedWalletResponse.ts

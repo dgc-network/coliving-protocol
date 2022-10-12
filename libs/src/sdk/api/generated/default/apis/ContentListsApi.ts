@@ -22,9 +22,9 @@ import {
     ContentListSearchResult,
     ContentListSearchResultFromJSON,
     ContentListSearchResultToJSON,
-    ContentListAgreementsResponse,
-    ContentListAgreementsResponseFromJSON,
-    ContentListAgreementsResponseToJSON,
+    ContentListDigitalContentsResponse,
+    ContentListDigitalContentsResponseFromJSON,
+    ContentListDigitalContentsResponseToJSON,
     TrendingContentListsResponse,
     TrendingContentListsResponseFromJSON,
     TrendingContentListsResponseToJSON,
@@ -37,7 +37,7 @@ export interface GetContentListRequest {
     contentListId: string;
 }
 
-export interface GetContentListAgreementsRequest {
+export interface GetContentListDigitalContentsRequest {
     /**
      * A ContentList ID
      */
@@ -84,11 +84,11 @@ export class ContentListsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Fetch agreements within a contentList.
+     * Fetch digitalContents within a contentList.
      */
-    async getContentListAgreements(requestParameters: GetContentListAgreementsRequest): Promise<NonNullable<ContentListAgreementsResponse["data"]>> {
+    async getContentListDigitalContents(requestParameters: GetContentListDigitalContentsRequest): Promise<NonNullable<ContentListDigitalContentsResponse["data"]>> {
         if (requestParameters.contentListId === null || requestParameters.contentListId === undefined) {
-            throw new runtime.RequiredError('contentListId','Required parameter requestParameters.contentListId was null or undefined when calling getContentListAgreements.');
+            throw new runtime.RequiredError('contentListId','Required parameter requestParameters.contentListId was null or undefined when calling getContentListDigitalContents.');
         }
 
         const queryParameters: any = {};
@@ -96,11 +96,11 @@ export class ContentListsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/contentLists/{content_list_id}/agreements`.replace(`{${"content_list_id"}}`, encodeURIComponent(String(requestParameters.contentListId))),
+            path: `/contentLists/{content_list_id}/digitalContents`.replace(`{${"content_list_id"}}`, encodeURIComponent(String(requestParameters.contentListId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }) as Promise<NonNullable<ContentListAgreementsResponse["data"]>>;
+        }) as Promise<NonNullable<ContentListDigitalContentsResponse["data"]>>;
     }
 
     /**

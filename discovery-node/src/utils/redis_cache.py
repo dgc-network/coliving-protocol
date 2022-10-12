@@ -190,7 +190,7 @@ def remove_cached_digital_content_ids(redis, digital_content_ids):
         digital_content_keys = list(map(get_digital_content_id_cache_key, digital_content_ids))
         redis.delete(*digital_content_keys)
     except Exception as e:
-        logger.error("Unable to remove cached agreements: %s", e, exc_info=True)
+        logger.error("Unable to remove cached digitalContents: %s", e, exc_info=True)
 
 
 def remove_cached_content_list_ids(redis, content_list_ids):

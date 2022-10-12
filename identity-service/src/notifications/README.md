@@ -35,13 +35,13 @@ last block number parsed.
 ## Reference
 type enum values = 
   | 'Follow'
-  | 'RepostAgreement'
+  | 'RepostDigitalContent'
   | 'RepostContentList'
   | 'RepostAlbum'
-  | 'FavoriteAgreement'
+  | 'FavoriteDigitalContent'
   | 'FavoriteContentList'
   | 'FavoriteAlbum'
-  | 'CreateAgreement'
+  | 'CreateDigitalContent'
   | 'CreateContentList'
   | 'CreateAlbum'
   | 'Announcement'
@@ -51,7 +51,7 @@ type enum values =
   | 'MilestoneFollow'
   | 'RemixCreate'
   | 'RemixCosign'
-  | 'TrendingAgreement'
+  | 'TrendingDigitalContent'
 ```
 \* ___Note that the entityId will vary based on the notification. To be explained in the notification types section___
 
@@ -91,15 +91,15 @@ notification.
 **Repost (DigitalContent/ContentList/Album)**  
 Scenario: User U1 and U2 repost DigitalContent T1 owned by U3
 DB Entries
-* Notification - userId: U3, entityId: T1, type: 'RepostAgreement'
+* Notification - userId: U3, entityId: T1, type: 'RepostDigitalContent'
   * NotificationAction - actionEntityType: 'user', entityId: U1  
   * NotificationAction - actionEntityType: 'user', entityId: U2  
 
 Note: if user U3 checks the notification after U1 reposts and before U3 reposts, then 
 two notification db entries will be created w/ the new U2 repost referencing the new 
 notification.  
-Note: The pattern is the same for agreements/contentLists/album with the only difference being 
-the notification type field being 'RepostAgreement', 'RepostContentList', 'RepostAlbum'
+Note: The pattern is the same for digitalContents/contentLists/album with the only difference being 
+the notification type field being 'RepostDigitalContent', 'RepostContentList', 'RepostAlbum'
 
 **Favorite (DigitalContent/ContentList/Album)**  
 Scenario: User U1 and U2 favorite ContentList P1 owned by U3  
@@ -111,15 +111,15 @@ DB Entries
 Note if user U3 checks the notification after U1 favorites and before U2 favorites, then 
 two notification db entries will be created w/ the new U2 favorite referencing the new 
 notification.  
-Note: The pattern is the same for agreements/contentLists/album with the only difference being 
-the notification type field being 'FavoriteAgreement', 'FavoriteContentList', 'FavoriteAlbum'
+Note: The pattern is the same for digitalContents/contentLists/album with the only difference being 
+the notification type field being 'FavoriteDigitalContent', 'FavoriteContentList', 'FavoriteAlbum'
 
 **Create (DigitalContent/ContentList/Album)**  
 Scenario: User U1 and U2 subscribe to user U3 and U3 uploads a public DigitalContent T1  
 DB Entries
-* Notification - userId: U1, entityId: U3, type: 'CreateAgreement'
+* Notification - userId: U1, entityId: U3, type: 'CreateDigitalContent'
   * NotificationAction - actionEntityType: 'digital_content', entityId: T1  
-* Notification - userId: U2, entityId: P1, type: 'CreateAgreement'
+* Notification - userId: U2, entityId: P1, type: 'CreateDigitalContent'
   * NotificationAction - actionEntityType: 'digital_content', entityId: T1  
 
 Scenario: User U1 subscribes to user U3 and U3 uploads a public ContentList P1  
@@ -130,7 +130,7 @@ DB Entries
 Note: The pattern for create contentList and album are the same for with the only difference being 
 the notification type field 'CreateContentList', 'CreateAlbum'  
 Note: The reason digital_content creation notifications are different from contentList/album notifications 
-is because agreements can be grouped together, but contentList/album creation cannot be.  
+is because digitalContents can be grouped together, but contentList/album creation cannot be.  
 
 **Announcement**  
 Scenario: New product feature notification to be sent to all users.  
@@ -145,10 +145,10 @@ TODO: Fill out information about the flow & script to automate the process.
 TODO: Fill in this section. 
 Note: Milestones use a different flow from the other notifications.
 
-**TrendingAgreement**  
-Scenario: User U1 posts digital_content T1 which breaking into the top 10 weekly trending agreements as number 3  
+**TrendingDigitalContent**  
+Scenario: User U1 posts digital_content T1 which breaking into the top 10 weekly trending digitalContents as number 3  
 DB Entries
-* Notification - userId: U1, entityId: T1, type: 'TrendingAgreement'
+* Notification - userId: U1, entityId: T1, type: 'TrendingDigitalContent'
   * NotificationAction - actionEntityType: 'weekly-all', entityId: 3
 
 A notification is only created if the digital_content is in the top 10 trending list. 
@@ -164,15 +164,15 @@ DB Entries
   * NotificationAction - actionEntityType: 'digital_content', entityId: T2  
 
 Note: RemixCreate notifications do not stack. The means that if multiple users remix the same 
-digital_content, the original landlord will not receive a single notifications will all of the remix, instead
+digital_content, the original author will not receive a single notifications will all of the remix, instead
 it will be multiple individual notifications.
 
 **RemixCosign**  
 Scenario: User U1 owns digital_content T1 that remixes digital_content T2 owned by user U2 and U2 cosigns T1  
 DB Entries
-* Notification - userId: U1, entityId: T1, type: 'CosignAgreement'
+* Notification - userId: U1, entityId: T1, type: 'CosignDigitalContent'
   * NotificationAction - actionEntityType: 'user', entityId: U2  
 
-Note: RemixCosign notifications do not stack. The means that if a digital_content remixes multiple other agreements
-and the original landlord of those agreements cosign the remix, the remix upload user will not receive a 
+Note: RemixCosign notifications do not stack. The means that if a digital_content remixes multiple other digitalContents
+and the original author of those digitalContents cosign the remix, the remix upload user will not receive a 
 single notifications will all of the remix cosigned, but instead get multiple individual notifications.

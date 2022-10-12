@@ -86,9 +86,9 @@ def get_users_route():
     return api_helpers.success_response(users)
 
 
-# Returns all agreements (paginated) with each digital_content's repost count
+# Returns all digitalContents (paginated) with each digital_content's repost count
 # optionally filters by digital_content ids
-@bp.route("/agreements", methods=("GET",))
+@bp.route("/digitalContents", methods=("GET",))
 @record_metrics
 def get_digital_contents_route():
     args = to_dict(request.args)
@@ -104,14 +104,14 @@ def get_digital_contents_route():
         args["min_block_number"] = request.args.get("min_block_number", type=int)
     current_user_id = get_current_user_id(required=False)
     args["current_user_id"] = current_user_id
-    agreements = get_digital_contents(args)
-    return api_helpers.success_response(agreements)
+    digitalContents = get_digital_contents(args)
+    return api_helpers.success_response(digitalContents)
 
 
-# Get all agreements matching a route_id and digital_content_id.
+# Get all digitalContents matching a route_id and digital_content_id.
 # Expects a JSON body of shape:
-#   { "agreements": [{ "id": number, "url_title": string, "handle": string }]}
-@bp.route("/agreements_including_unlisted", methods=("POST",))
+#   { "digitalContents": [{ "id": number, "url_title": string, "handle": string }]}
+@bp.route("/digitalContents_including_unlisted", methods=("POST",))
 @record_metrics
 def get_digital_contents_including_unlisted_route():
     args = to_dict(request.args)
@@ -121,10 +121,10 @@ def get_digital_contents_including_unlisted_route():
         args["with_users"] = parse_bool_param(request.args.get("with_users"))
     current_user_id = get_current_user_id(required=False)
     args["current_user_id"] = current_user_id
-    identifiers = request.get_json()["agreements"]
+    identifiers = request.get_json()["digitalContents"]
     args["identifiers"] = identifiers
-    agreements = get_digital_contents_including_unlisted(args)
-    return api_helpers.success_response(agreements)
+    digitalContents = get_digital_contents_including_unlisted(args)
+    return api_helpers.success_response(digitalContents)
 
 
 @bp.route("/stems/<int:digital_content_id>", methods=("GET",))
@@ -159,7 +159,7 @@ def get_content_lists_route():
 #   - Query all digital_content and public contentList reposts from followees
 #     - Generate list of reposted digital_content ids and reposted contentList ids
 #   - Query all digital_content and public contentLists reposted OR created by followees, ordered by timestamp
-#     - At this point, 2 separate arrays one for contentLists / one for agreements
+#     - At this point, 2 separate arrays one for contentLists / one for digitalContents
 #   - Query additional metadata around feed entries in each array, repost + save counts, user repost boolean
 #   - Combine unsorted contentList and digital_content arrays
 #   - Sort combined results by 'timestamp' field and return
@@ -177,8 +177,8 @@ def get_feed_route():
         args["filter"] = args.get("filter")
     else:
         args["filter"] = "all"
-    if "agreements_only" in request.args:
-        args["agreements_only"] = parse_bool_param(request.args.get("agreements_only"))
+    if "digitalContents_only" in request.args:
+        args["digitalContents_only"] = parse_bool_param(request.args.get("digitalContents_only"))
     if "with_users" in request.args:
         args["with_users"] = parse_bool_param(request.args.get("with_users"))
     if "followee_user_id" in request.args:
@@ -391,7 +391,7 @@ def get_users_account_route():
         return api_helpers.error_response(str(e), 400)
 
 
-# Gets the max id for agreements, contentLists, or users.
+# Gets the max id for digitalContents, contentLists, or users.
 @bp.route("/latest/<type>", methods=("GET",))
 @record_metrics
 def get_max_id_route(type):
@@ -464,8 +464,8 @@ def get_top_followee_windowed_route(type, window):
     user_id = get_current_user_id()
     args["user_id"] = user_id
     try:
-        agreements = get_top_followee_windowed(type, window, args)
-        return api_helpers.success_response(agreements)
+        digitalContents = get_top_followee_windowed(type, window, args)
+        return api_helpers.success_response(digitalContents)
     except exceptions.ArgumentError as e:
         return api_helpers.error_response(str(e), 400)
 
@@ -493,16 +493,16 @@ def get_top_followee_saves_route(type):
     user_id = get_current_user_id()
     args["user_id"] = user_id
     try:
-        agreements = get_top_followee_saves(type, args)
-        return api_helpers.success_response(agreements)
+        digitalContents = get_top_followee_saves(type, args)
+        return api_helpers.success_response(digitalContents)
     except exceptions.ArgumentError as e:
         return api_helpers.error_response(str(e), 400)
 
 
 # Retrieves the top users for a requested genre under the follow parameters
 # - A given user can only be associated w/ one genre
-# - The user's associated genre is calculated by tallying the genre of the agreements and taking the max
-#   - If there is a tie for # of agreements in a genre, then the first genre alphabetically is taken
+# - The user's associated genre is calculated by tallying the genre of the digitalContents and taking the max
+#   - If there is a tie for # of digitalContents in a genre, then the first genre alphabetically is taken
 # - The users associated w/ the requested genre are then sorted by follower count
 # Route Parameters
 #   urlParam: {Array<string>?}  genre       List of genres to query for the 'top' users
@@ -518,8 +518,8 @@ def get_top_genre_users_route():
     return api_helpers.success_response(users)
 
 
-# Get the agreements that are 'children' remixes of the requested digital_content
-# The results are sorted by if the original landlord has reposted or saved the digital_content
+# Get the digitalContents that are 'children' remixes of the requested digital_content
+# The results are sorted by if the original author has reposted or saved the digital_content
 @bp.route("/remixes/<int:digital_content_id>/children", methods=("GET",))
 @record_metrics
 def get_remixes_of_route(digital_content_id):
@@ -538,7 +538,7 @@ def get_remixes_of_route(digital_content_id):
         return api_helpers.error_response(str(e), 400)
 
 
-# Get the agreements that are 'parent' remixes of the requested digital_content
+# Get the digitalContents that are 'parent' remixes of the requested digital_content
 @bp.route("/remixes/<int:digital_content_id>/parents", methods=("GET",))
 @record_metrics
 def get_remix_digital_content_parents_route(digital_content_id):
@@ -550,17 +550,17 @@ def get_remix_digital_content_parents_route(digital_content_id):
     limit, offset = get_pagination_vars()
     args["limit"] = limit
     args["offset"] = offset
-    agreements = get_remix_digital_content_parents(args)
-    return api_helpers.success_response(agreements)
+    digitalContents = get_remix_digital_content_parents(args)
+    return api_helpers.success_response(digitalContents)
 
 
-# Get the agreements that were previously unlisted and became public after the date provided
+# Get the digitalContents that were previously unlisted and became public after the date provided
 @bp.route("/previously_unlisted/digital_content", methods=("GET",))
 @record_metrics
 def get_previously_unlisted_digital_contents_route():
     try:
-        agreements = get_previously_unlisted_digital_contents(to_dict(request.args))
-        return api_helpers.success_response(agreements)
+        digitalContents = get_previously_unlisted_digital_contents(to_dict(request.args))
+        return api_helpers.success_response(digitalContents)
     except exceptions.ArgumentError as e:
         return api_helpers.error_response(str(e), 400)
 

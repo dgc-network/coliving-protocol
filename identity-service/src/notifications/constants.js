@@ -2,19 +2,19 @@ const notificationTypes = Object.freeze({
   Follow: 'Follow',
   Repost: {
     base: 'Repost',
-    digital_content: 'RepostAgreement',
+    digital_content: 'RepostDigitalContent',
     album: 'RepostAlbum',
     contentList: 'RepostContentList'
   },
   Favorite: {
     base: 'Favorite',
-    digital_content: 'FavoriteAgreement',
+    digital_content: 'FavoriteDigitalContent',
     album: 'FavoriteAlbum',
     contentList: 'FavoriteContentList'
   },
   Create: {
     base: 'Create',
-    digital_content: 'CreateAgreement',
+    digital_content: 'CreateDigitalContent',
     album: 'CreateAlbum',
     contentList: 'CreateContentList'
   },
@@ -27,7 +27,7 @@ const notificationTypes = Object.freeze({
   MilestoneListen: 'MilestoneListen',
   Announcement: 'Announcement',
   UserSubscription: 'UserSubscription',
-  TrendingAgreement: 'TrendingAgreement',
+  TrendingDigitalContent: 'TrendingDigitalContent',
   ChallengeReward: 'ChallengeReward',
   TierChange: 'TierChange',
   ContentListUpdate: 'ContentListUpdate',
@@ -37,7 +37,7 @@ const notificationTypes = Object.freeze({
   Reaction: 'Reaction',
   SupporterRankUp: 'SupporterRankUp',
   SupportingRankUp: 'SupportingRankUp',
-  AddAgreementToContentList: 'AddAgreementToContentList'
+  AddDigitalContentToContentList: 'AddDigitalContentToContentList'
 })
 
 const actionEntityTypes = Object.freeze({

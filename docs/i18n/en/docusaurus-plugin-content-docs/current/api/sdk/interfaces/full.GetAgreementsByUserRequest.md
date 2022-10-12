@@ -1,13 +1,13 @@
 ---
-id: "full.GetAgreementsByUserRequest"
-title: "Interface: GetAgreementsByUserRequest"
-sidebar_label: "GetAgreementsByUserRequest"
+id: "full.GetDigitalContentsByUserRequest"
+title: "Interface: GetDigitalContentsByUserRequest"
+sidebar_label: "GetDigitalContentsByUserRequest"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).GetAgreementsByUserRequest
+[full](../namespaces/full.md).GetDigitalContentsByUserRequest
 
 ## Properties
 
@@ -37,7 +37,7 @@ ___
 
 ### sort
 
- `Optional` **sort**: [`GetAgreementsByUserSortEnum`](../enums/full.GetAgreementsByUserSortEnum.md)
+ `Optional` **sort**: [`GetDigitalContentsByUserSortEnum`](../enums/full.GetDigitalContentsByUserSortEnum.md)
 
 Field to sort by
 

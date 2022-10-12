@@ -69,13 +69,13 @@ Sample commands:
 
     > UserFactory.deployed().then(inst => cf = inst)
     >
-    > AgreementFactory.deployed().then(inst => tf = inst)
+    > DigitalContentFactory.deployed().then(inst => tf = inst)
     >
     > cf.createUser('sid')
     >
     > tf.setUserFactoryContractAddress(cf.address)
     >
-    > tf.createAgreement(0, 'digital_content_key_0')
+    > tf.createDigitalContent(0, 'digital_content_key_0')
 
 
 

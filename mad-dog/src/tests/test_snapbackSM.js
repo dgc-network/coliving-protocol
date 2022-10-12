@@ -6,12 +6,12 @@ const {
   ensureReplicaSetSyncIsConsistent
 } = require('../helpers.js')
 const {
-  uploadAgreement,
+  uploadDigitalContent,
   RandomUtils
 } = ServiceCommands
 const {
-  getRandomAgreementMetadata,
-  getRandomAgreementFilePath
+  getRandomDigitalContentMetadata,
+  getRandomDigitalContentFilePath
 } = RandomUtils
 
 const TEMP_STORAGE_PATH = path.resolve('./local-storage/tmp/')
@@ -48,22 +48,22 @@ const snapbackSMParallelSyncTest = async ({
     // Retrieve user id if known from walletIndexToUserIdMap
     // NOTE - It might be easier to just create a map of wallets instead of using 'index'
     const userId = walletIndexToUserIdMap[i]
-    const newAgreementMetadata = getRandomAgreementMetadata(userId)
-    const randomAgreementFilePath = await getRandomAgreementFilePath(TEMP_STORAGE_PATH)
+    const newDigitalContentMetadata = getRandomDigitalContentMetadata(userId)
+    const randomDigitalContentFilePath = await getRandomDigitalContentFilePath(TEMP_STORAGE_PATH)
     logger.info(
-      `Uploading DigitalContent for userId:${userId} (${libs.walletAddress}), ${randomAgreementFilePath}, ${JSON.stringify(newAgreementMetadata)}`
+      `Uploading DigitalContent for userId:${userId} (${libs.walletAddress}), ${randomDigitalContentFilePath}, ${JSON.stringify(newDigitalContentMetadata)}`
     )
     try {
       const startTime = Date.now()
-      const agreementId = await executeOne(i, (l) =>
-        uploadAgreement(
+      const digitalContentId = await executeOne(i, (l) =>
+        uploadDigitalContent(
           l,
-          newAgreementMetadata,
-          randomAgreementFilePath
+          newDigitalContentMetadata,
+          randomDigitalContentFilePath
         )
       )
       const duration = Date.now() - startTime
-      logger.info(`Uploaded digital_content for userId=${userId}, agreementId=${agreementId} in ${duration}ms`)
+      logger.info(`Uploaded digital_content for userId=${userId}, digitalContentId=${digitalContentId} in ${duration}ms`)
     } catch (e) {
       logger.error(`Error uploading digital_content for userId:${userId} :${e}`)
     }

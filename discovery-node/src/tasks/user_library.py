@@ -145,7 +145,7 @@ def add_digital_content_save(
 ):
     txhash = update_task.web3.toHex(tx_receipt.transactionHash)
     new_add_digital_content_events = (
-        update_task.user_library_contract.events.AgreementSaveAdded().processReceipt(
+        update_task.user_library_contract.events.DigitalContentSaveAdded().processReceipt(
             tx_receipt
         )
     )
@@ -246,7 +246,7 @@ def delete_digital_content_save(
 ):
     txhash = update_task.web3.toHex(tx_receipt.transactionHash)
     new_delete_digital_content_events = (
-        update_task.user_library_contract.events.AgreementSaveDeleted().processReceipt(
+        update_task.user_library_contract.events.DigitalContentSaveDeleted().processReceipt(
             tx_receipt
         )
     )

@@ -38,7 +38,7 @@ CASCADING_SCHEMA = """
                     ) || lower(COALESCE(t."title", ''))
                 ) AS word
             FROM
-                agreements t
+                digitalContents t
             INNER JOIN users u ON t.owner_id = u.user_id
             INNER JOIN aggregate_digital_content a ON a.digital_content_id = t.digital_content_id
             WHERE t.is_current = true AND t.is_unlisted = false AND t.is_delete = false AND t.stem_of IS NULL AND u.is_current = true AND
@@ -57,7 +57,7 @@ CASCADING_SCHEMA = """
 
         CREATE INDEX digital_content_words_idx ON digital_content_lexeme_dict USING gin(word gin_trgm_ops);
         CREATE INDEX digital_content_user_name_idx ON digital_content_lexeme_dict USING gin(user_name gin_trgm_ops);
-        CREATE INDEX agreements_user_handle_idx ON digital_content_lexeme_dict(handle);
+        CREATE INDEX digitalContents_user_handle_idx ON digital_content_lexeme_dict(handle);
         CREATE UNIQUE INDEX digital_content_row_number_idx ON digital_content_lexeme_dict(row_number);
 
         DROP MATERIALIZED VIEW IF EXISTS trending_params;
@@ -78,7 +78,7 @@ CASCADING_SCHEMA = """
               COALESCE (save_year.repost_count, 0) as save_year_count,
               COALESCE (karma.karma, 0) as karma
           FROM
-              agreements t
+              digitalContents t
           -- join on subquery for aggregate play count
           LEFT OUTER JOIN (
               SELECT
@@ -293,7 +293,7 @@ def downgrade():
           COALESCE (digital_content_repost.repost_count, 0) as repost_count,
           COALESCE (digital_content_save.save_count, 0) as save_count
         FROM 
-          agreements t
+          digitalContents t
         -- inner join on subquery for reposts
         LEFT OUTER JOIN (
           SELECT

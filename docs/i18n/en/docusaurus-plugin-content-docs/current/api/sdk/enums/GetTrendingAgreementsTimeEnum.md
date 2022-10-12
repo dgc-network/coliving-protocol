@@ -1,7 +1,7 @@
 ---
-id: "GetTrendingAgreementsTimeEnum"
-title: "Enumeration: GetTrendingAgreementsTimeEnum"
-sidebar_label: "GetTrendingAgreementsTimeEnum"
+id: "GetTrendingDigitalContentsTimeEnum"
+title: "Enumeration: GetTrendingDigitalContentsTimeEnum"
+sidebar_label: "GetTrendingDigitalContentsTimeEnum"
 sidebar_position: 0
 custom_edit_url: null
 pagination_prev: null

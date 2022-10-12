@@ -14,9 +14,9 @@ custom_edit_url: null
 
 - [GetTipsCurrentUserFollowsEnum](enums/GetTipsCurrentUserFollowsEnum.md)
 - [GetTipsUniqueByEnum](enums/GetTipsUniqueByEnum.md)
-- [GetAgreementsByUserSortEnum](enums/GetAgreementsByUserSortEnum.md)
+- [GetDigitalContentsByUserSortEnum](enums/GetDigitalContentsByUserSortEnum.md)
 - [GetTrendingContentListsTimeEnum](enums/GetTrendingContentListsTimeEnum.md)
-- [GetTrendingAgreementsTimeEnum](enums/GetTrendingAgreementsTimeEnum.md)
+- [GetTrendingDigitalContentsTimeEnum](enums/GetTrendingDigitalContentsTimeEnum.md)
 
 ## Classes
 
@@ -24,7 +24,7 @@ custom_edit_url: null
 - [ContentLists](classes/ContentListsApi.md)
 - [Resolve](classes/ResolveApi.md)
 - [Tips](classes/TipsApi.md)
-- [Agreements](classes/AgreementsApi.md)
+- [DigitalContents](classes/DigitalContentsApi.md)
 - [Users](classes/UsersApi.md)
 
 ## Interfaces
@@ -38,11 +38,11 @@ custom_edit_url: null
 - [EncodedUserId](interfaces/EncodedUserId.md)
 - [Favorite](interfaces/Favorite.md)
 - [FavoritesResponse](interfaces/FavoritesResponse.md)
-- [GetBulkAgreementsRequest](interfaces/GetBulkAgreementsRequest.md)
+- [GetBulkDigitalContentsRequest](interfaces/GetBulkDigitalContentsRequest.md)
 - [GetConnectedWalletsRequest](interfaces/GetConnectedWalletsRequest.md)
 - [GetFavoritesRequest](interfaces/GetFavoritesRequest.md)
 - [GetContentListRequest](interfaces/GetContentListRequest.md)
-- [GetContentListAgreementsRequest](interfaces/GetContentListAgreementsRequest.md)
+- [GetContentListDigitalContentsRequest](interfaces/GetContentListDigitalContentsRequest.md)
 - [GetRepostsRequest](interfaces/GetRepostsRequest.md)
 - [GetSupporters](interfaces/GetSupporters.md)
 - [GetSupportersRequest](interfaces/GetSupportersRequest.md)
@@ -50,36 +50,36 @@ custom_edit_url: null
 - [GetSupportingsRequest](interfaces/GetSupportingsRequest.md)
 - [GetTipsRequest](interfaces/GetTipsRequest.md)
 - [GetTipsResponse](interfaces/GetTipsResponse.md)
-- [GetTopAgreementTagsRequest](interfaces/GetTopAgreementTagsRequest.md)
-- [GetAgreementRequest](interfaces/GetAgreementRequest.md)
-- [GetAgreementsByUserRequest](interfaces/GetAgreementsByUserRequest.md)
+- [GetTopDigitalContentTagsRequest](interfaces/GetTopDigitalContentTagsRequest.md)
+- [GetDigitalContentRequest](interfaces/GetDigitalContentRequest.md)
+- [GetDigitalContentsByUserRequest](interfaces/GetDigitalContentsByUserRequest.md)
 - [GetTrendingContentListsRequest](interfaces/GetTrendingContentListsRequest.md)
-- [GetTrendingAgreementsRequest](interfaces/GetTrendingAgreementsRequest.md)
+- [GetTrendingDigitalContentsRequest](interfaces/GetTrendingDigitalContentsRequest.md)
 - [GetUserIDFromWalletRequest](interfaces/GetUserIDFromWalletRequest.md)
 - [GetUserRequest](interfaces/GetUserRequest.md)
 - [ContentList](interfaces/ContentList.md)
 - [ContentListArtwork](interfaces/ContentListArtwork.md)
 - [ContentListResponse](interfaces/ContentListResponse.md)
 - [ContentListSearchResult](interfaces/ContentListSearchResult.md)
-- [ContentListAgreementsResponse](interfaces/ContentListAgreementsResponse.md)
+- [ContentListDigitalContentsResponse](interfaces/ContentListDigitalContentsResponse.md)
 - [ProfilePicture](interfaces/ProfilePicture.md)
 - [RemixParent](interfaces/RemixParent.md)
 - [Reposts](interfaces/Reposts.md)
 - [ResolveRequest](interfaces/ResolveRequest.md)
 - [SearchContentListsRequest](interfaces/SearchContentListsRequest.md)
-- [SearchAgreementsRequest](interfaces/SearchAgreementsRequest.md)
+- [SearchDigitalContentsRequest](interfaces/SearchDigitalContentsRequest.md)
 - [SearchUsersRequest](interfaces/SearchUsersRequest.md)
-- [StreamAgreementRequest](interfaces/StreamAgreementRequest.md)
+- [StreamDigitalContentRequest](interfaces/StreamDigitalContentRequest.md)
 - [Supporter](interfaces/Supporter.md)
 - [Supporting](interfaces/Supporting.md)
 - [TagsResponse](interfaces/TagsResponse.md)
 - [Tip](interfaces/Tip.md)
 - [DigitalContent](interfaces/DigitalContent.md)
-- [AgreementArtwork](interfaces/AgreementArtwork.md)
-- [AgreementElement](interfaces/AgreementElement.md)
-- [AgreementResponse](interfaces/AgreementResponse.md)
-- [AgreementSearch](interfaces/AgreementSearch.md)
-- [AgreementsResponse](interfaces/AgreementsResponse.md)
+- [DigitalContentArtwork](interfaces/DigitalContentArtwork.md)
+- [DigitalContentElement](interfaces/DigitalContentElement.md)
+- [DigitalContentResponse](interfaces/DigitalContentResponse.md)
+- [DigitalContentSearch](interfaces/DigitalContentSearch.md)
+- [DigitalContentsResponse](interfaces/DigitalContentsResponse.md)
 - [TrendingContentListsResponse](interfaces/TrendingContentListsResponse.md)
 - [User](interfaces/User.md)
 - [UserAssociatedWalletResponse](interfaces/UserAssociatedWalletResponse.md)
@@ -129,16 +129,16 @@ The Coliving SDK
 
 | Name | Type |
 | :------ | :------ |
-| `full` | { `contentLists`: `ContentListsApi` ; `reactions`: `ReactionsApi` ; `search`: `SearchApi` ; `tips`: `TipsApi` ; `agreements`: `AgreementsApi` ; `users`: `UsersApi`  } |
+| `full` | { `contentLists`: `ContentListsApi` ; `reactions`: `ReactionsApi` ; `search`: `SearchApi` ; `tips`: `TipsApi` ; `digitalContents`: `DigitalContentsApi` ; `users`: `UsersApi`  } |
 | `full.contentLists` | `ContentListsApi` |
 | `full.reactions` | `ReactionsApi` |
 | `full.search` | `SearchApi` |
 | `full.tips` | `TipsApi` |
-| `full.agreements` | `AgreementsApi` |
+| `full.digitalContents` | `DigitalContentsApi` |
 | `full.users` | `UsersApi` |
 | `oauth` | `undefined` \| `Oauth` |
 | `contentLists` | [`ContentLists`](classes/ContentListsApi.md) |
 | `resolve` | <T\>(`requestParameters`: [`ResolveRequest`](interfaces/ResolveRequest.md)) => `Promise`<`T`\> |
 | `tips` | [`Tips`](classes/TipsApi.md) |
-| `agreements` | [`Agreements`](classes/AgreementsApi.md) |
+| `digitalContents` | [`DigitalContents`](classes/DigitalContentsApi.md) |
 | `users` | [`Users`](classes/UsersApi.md) |

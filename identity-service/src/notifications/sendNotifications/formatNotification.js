@@ -212,23 +212,23 @@ async function formatNotifications (notifications, notificationSettings, tx) {
     }
 
     // Handle the 'digital_content added to contentList' notification type
-    if (notif.type === notificationTypes.AddAgreementToContentList) {
-      const formattedAddAgreementToContentListNotification = {
+    if (notif.type === notificationTypes.AddDigitalContentToContentList) {
+      const formattedAddDigitalContentToContentListNotification = {
         ...notif,
         actions: [{
           actionEntityType: actionEntityTypes.DigitalContent,
-          actionAgreementId: notif.metadata.digital_content_id,
+          actionDigitalContentId: notif.metadata.digital_content_id,
           blocknumber
         }],
         metadata: {
-          agreementOwnerId: notif.metadata.digital_content_owner_id,
+          digitalContentOwnerId: notif.metadata.digital_content_owner_id,
           contentListOwnerId: notif.initiator,
           contentListId: notif.metadata.content_list_id
         },
         entityId: notif.metadata.digital_content_id,
-        type: notificationTypes.AddAgreementToContentList
+        type: notificationTypes.AddDigitalContentToContentList
       }
-      formattedNotifications.push(formattedAddAgreementToContentListNotification)
+      formattedNotifications.push(formattedAddDigitalContentToContentListNotification)
     }
 
     if (notif.type === notificationTypes.Reaction) {
@@ -318,7 +318,7 @@ async function _processCreateNotifications (notif, tx) {
   // No operation if no users subscribe to this creator
   if (subscribers.length === 0) { return [] }
 
-  // The notification entity id is the uploader id for agreements
+  // The notification entity id is the uploader id for digitalContents
   // Each digital_content will added to the notification actions table
   // For contentList/albums, the notification entity id is the collection id itself
   let notificationEntityId =
@@ -326,7 +326,7 @@ async function _processCreateNotifications (notif, tx) {
       ? notif.initiator
       : notif.metadata.entity_id
 
-  // Action table entity is agreementId for CreateAgreement notifications
+  // Action table entity is digitalContentId for CreateDigitalContent notifications
   // Allowing multiple digital_content creates to be associated w/ a single notif for your subscription
   // For collections, the entity is the owner id, producing a distinct notif for each
   let createdActionEntityId =
@@ -358,10 +358,10 @@ async function _processCreateNotifications (notif, tx) {
   // Dedupe album /contentList notification
   if (createType === notificationTypes.Create.album ||
       createType === notificationTypes.Create.contentList) {
-    let agreementIdObjectList = notif.metadata.collection_content.digital_content_ids
-    let agreementIdsArray = agreementIdObjectList.map(x => x.digital_content)
+    let digitalContentIdObjectList = notif.metadata.collection_content.digital_content_ids
+    let digitalContentIdsArray = digitalContentIdObjectList.map(x => x.digital_content)
 
-    if (agreementIdObjectList.length > 0) {
+    if (digitalContentIdObjectList.length > 0) {
       // Clear duplicate push notifications in local queue
       let dupeFound = false
       for (let i = 0; i < subscriberPushNotifications.length; i++) {
@@ -370,8 +370,8 @@ async function _processCreateNotifications (notif, tx) {
         if (type === notificationTypes.Create.digital_content) {
           let pushActionEntityId = pushNotif.metadata.entity_id
           // Check if this pending notification includes a duplicate digital_content
-          if (agreementIdsArray.includes(pushActionEntityId)) {
-            logger.debug(`Found dupe push notif ${type}, agreementId: ${pushActionEntityId}`)
+          if (digitalContentIdsArray.includes(pushActionEntityId)) {
+            logger.debug(`Found dupe push notif ${type}, digitalContentId: ${pushActionEntityId}`)
             dupeFound = true
             subscriberPushNotifications[i].pending = false
           }

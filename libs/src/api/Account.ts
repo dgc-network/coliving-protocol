@@ -341,11 +341,11 @@ export class Account extends Base {
   }
 
   /**
-   * Perform a full-text search. Returns agreements, users, contentLists, albums
+   * Perform a full-text search. Returns digitalContents, users, contentLists, albums
    *    with optional user-specific results for each
    *  - user, digital_content, and contentList objects have all same data as returned from standalone endpoints
    * @param text search query
-   * @param kind 'agreements', 'users', 'contentLists', 'albums', 'all'
+   * @param kind 'digitalContents', 'users', 'contentLists', 'albums', 'all'
    * @param limit max # of items to return per list (for pagination)
    * @param offset offset into list to return from (for pagination)
    */
@@ -355,7 +355,7 @@ export class Account extends Base {
   }
 
   /**
-   * Perform a lighter-weight full-text search. Returns agreements, users, contentLists, albums
+   * Perform a lighter-weight full-text search. Returns digitalContents, users, contentLists, albums
    *    with optional user-specific results for each
    *  - user, digital_content, and contentList objects have core data, and digital_content & contentList objects
    *    also return user object
@@ -369,11 +369,11 @@ export class Account extends Base {
   }
 
   /**
-   * Perform a tags-only search. Returns agreements with required tag and users
+   * Perform a tags-only search. Returns digitalContents with required tag and users
    * that have used a tag greater than a specified number of times
    * @param text search query
    * @param userTagCount min # of times a user must have used a tag to be returned
-   * @param kind 'agreements', 'users', 'contentLists', 'albums', 'all'
+   * @param kind 'digitalContents', 'users', 'contentLists', 'albums', 'all'
    * @param limit max # of items to return per list (for pagination)
    * @param offset offset into list to return from (for pagination)
    */

@@ -1222,7 +1222,7 @@ contract DelegateManagerV2Bad is InitializableV2 {
 
     /**
      * @notice Helper function to distribute rewards to any delegators
-     * @param _sp - service provider account agreemented in staking
+     * @param _sp - service provider account digitalContented in staking
      * @param _totalActiveFunds - total funds minus any locked stake
      * @param _totalRewards - total rewaards generated in this round
      * @param _deployerCut - service provider cut of delegate rewards, defined as deployerCut / deployerCutBase

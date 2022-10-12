@@ -339,7 +339,7 @@ Thresholds are best used when Alerts are defined within Panel `Description`. The
 
 ### Saving Dashboards
 
-Modifications to production dashboards are internally agreemented by Grafana in case a quick restoration is required:
+Modifications to production dashboards are internally digitalContented by Grafana in case a quick restoration is required:
 
 * Navigate to a dashboard
 * Open the Dashboard `Settings` (the cog on the top-right)

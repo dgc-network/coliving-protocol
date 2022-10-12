@@ -32,7 +32,7 @@ def test_index_user_listening_history_populate(app):
 
     # run
     entities = {
-        "agreements": [
+        "digitalContents": [
             {"digital_content_id": 1, "title": "digital_content 1"},
             {"digital_content_id": 2, "title": "digital_content 2"},
             {"digital_content_id": 3, "title": "digital_content 3"},
@@ -105,7 +105,7 @@ def test_index_user_listening_history_update(app):
 
     # run
     entities = {
-        "agreements": [
+        "digitalContents": [
             {"digital_content_id": 1, "title": "digital_content 1"},
             {"digital_content_id": 2, "title": "digital_content 2"},
             {"digital_content_id": 3, "title": "digital_content 3"},
@@ -159,7 +159,7 @@ def test_index_user_listening_history_update(app):
             },  # re-listen to existing digital_content, dedupe
         ]
         + [
-            # new user listens to many agreements
+            # new user listens to many digitalContents
             {
                 "item_id": i + 1,
                 "user_id": 4,
@@ -236,7 +236,7 @@ def test_index_user_listening_history_no_update(app):
 
     # run
     entities = {
-        "agreements": [
+        "digitalContents": [
             {"digital_content_id": 1, "title": "digital_content 1"},
             {"digital_content_id": 2, "title": "digital_content 2"},
             {"digital_content_id": 3, "title": "digital_content 3"},

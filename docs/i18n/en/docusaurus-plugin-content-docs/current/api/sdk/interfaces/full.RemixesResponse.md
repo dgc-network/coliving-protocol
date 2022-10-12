@@ -23,8 +23,8 @@ pagination_next: null
 
 ___
 
-### agreements
+### digitalContents
 
- `Optional` **agreements**: [`AgreementFull`](full.AgreementFull.md)[]
+ `Optional` **digitalContents**: [`DigitalContentFull`](full.DigitalContentFull.md)[]
 
 **`memberof`** RemixesResponse

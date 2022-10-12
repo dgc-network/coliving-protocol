@@ -28,7 +28,7 @@ const getNotifType = (entityType) => {
 
 /**
  * Batch process create notifications, by bulk insertion in the DB for each
- * set of subscribers and dedpupe agreements in collections.
+ * set of subscribers and dedpupe digitalContents in collections.
  * @param {Array<Object>} notifications
  * @param {*} tx The DB transcation to attach to DB requests
  */
@@ -54,7 +54,7 @@ async function processCreateNotifications (notifications, tx) {
     // No operation if no users subscribe to this creator
     if (subscribers.length === 0) continue
 
-    // The notification entity id is the uploader id for agreements
+    // The notification entity id is the uploader id for digitalContents
     // Each digital_content will added to the notification actions table
     // For contentList/albums, the notification entity id is the collection id itself
     let notificationEntityId =
@@ -62,7 +62,7 @@ async function processCreateNotifications (notifications, tx) {
         ? notification.initiator
         : notification.metadata.entity_id
 
-    // Action table entity is agreementId for CreateAgreement notifications
+    // Action table entity is digitalContentId for CreateDigitalContent notifications
     // Allowing multiple digital_content creates to be associated w/ a single notification for your subscription
     // For collections, the entity is the owner id, producing a distinct notification for each
     let createdActionEntityId =
@@ -86,7 +86,7 @@ async function processCreateNotifications (notifications, tx) {
     const subscriberIdsWithoutNotification = subscriberIds.filter(s => !unreadSubscribersUserIds.has(s))
     if (subscriberIdsWithoutNotification.length > 0) {
       // Bulk create notifications for users that do not have a un-viewed notification
-      const createAgreementNotifTx = await models.Notification.bulkCreate(subscriberIdsWithoutNotification.map(id => ({
+      const createDigitalContentNotifTx = await models.Notification.bulkCreate(subscriberIdsWithoutNotification.map(id => ({
         isViewed: false,
         isRead: false,
         isHidden: false,
@@ -96,7 +96,7 @@ async function processCreateNotifications (notifications, tx) {
         blocknumber,
         timestamp
       }), { transaction: tx }))
-      notificationIds.push(...createAgreementNotifTx.map(notif => notif.id))
+      notificationIds.push(...createDigitalContentNotifTx.map(notif => notif.id))
     }
 
     await Promise.all(notificationIds.map(async (notificationId) => {
@@ -128,15 +128,15 @@ async function processCreateNotifications (notifications, tx) {
     // Dedupe album /contentList notification
     if (createType === notificationTypes.Create.album ||
         createType === notificationTypes.Create.contentList) {
-      let agreementIdObjectList = notification.metadata.collection_content.digital_content_ids
-      if (agreementIdObjectList.length > 0) {
+      let digitalContentIdObjectList = notification.metadata.collection_content.digital_content_ids
+      if (digitalContentIdObjectList.length > 0) {
         // Clear duplicate notifications from identity database
-        for (var entry of agreementIdObjectList) {
-          let agreementId = entry.digital_content
+        for (var entry of digitalContentIdObjectList) {
+          let digitalContentId = entry.digital_content
           await models.NotificationAction.destroy({
             where: {
               actionEntityType: actionEntityTypes.DigitalContent,
-              actionEntityId: agreementId
+              actionEntityId: digitalContentId
             },
             transaction: tx
           })

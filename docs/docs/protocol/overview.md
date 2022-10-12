@@ -17,11 +17,11 @@ If you are interested in operating a service, see the [`running a node`](../toke
 
 Coliving consists of three demographics of users: Landlords (content creators), Residents (content consumers), and Service Providers. Some users check fall into all three demographics!
 
-- **Landlords** upload agreements, and share content to their following
-- **Residents** stream agreements, create contentLists, subscribe to & follow landlords, and re-share content to their following
+- **Landlords** upload digitalContents, and share content to their following
+- **Residents** stream digitalContents, create contentLists, subscribe to & follow landlords, and re-share content to their following
 - **Service Providers** serve app traffic, and help secure the network
 
-Service providers can provide one or more of the following services by staking $LIVE tokens and registering their service:
+Service providers can provide one or more of the following services by staking $DGCO tokens and registering their service:
 
 - Discovery node \(host an endpoint with SSL support and register endpoint with stake\)
 - Content node \(host an endpoint with SSL support and register endpoint with stake\)

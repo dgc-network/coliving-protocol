@@ -17,7 +17,7 @@ pagination_next: null
 
 ### month
 
- `Optional` **month**: [`AgreementId`](full.AgreementId.md)[]
+ `Optional` **month**: [`DigitalContentId`](full.DigitalContentId.md)[]
 
 **`memberof`** TrendingTimesIds
 
@@ -25,7 +25,7 @@ ___
 
 ### week
 
- `Optional` **week**: [`AgreementId`](full.AgreementId.md)[]
+ `Optional` **week**: [`DigitalContentId`](full.DigitalContentId.md)[]
 
 **`memberof`** TrendingTimesIds
 
@@ -33,6 +33,6 @@ ___
 
 ### year
 
- `Optional` **year**: [`AgreementId`](full.AgreementId.md)[]
+ `Optional` **year**: [`DigitalContentId`](full.DigitalContentId.md)[]
 
 **`memberof`** TrendingTimesIds

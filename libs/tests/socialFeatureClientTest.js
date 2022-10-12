@@ -15,25 +15,25 @@ it('Should add + delete digital_content repost', async function () {
   assert.ok(creatorId && Number.isInteger(creatorId), 'invalid creatorId')
 
   // add digital_content
-  const cid = helpers.constants.agreementMetadataCID
-  const agreementMultihashDecoded = Utils.decodeMultihash(cid)
-  const { agreementId } = await colivingInstance.contracts.AgreementFactoryClient.addAgreement(
+  const cid = helpers.constants.digitalContentMetadataCID
+  const digitalContentMultihashDecoded = Utils.decodeMultihash(cid)
+  const { digitalContentId } = await colivingInstance.contracts.DigitalContentFactoryClient.addDigitalContent(
     creatorId,
-    agreementMultihashDecoded.digest,
-    agreementMultihashDecoded.hashFn,
-    agreementMultihashDecoded.size
+    digitalContentMultihashDecoded.digest,
+    digitalContentMultihashDecoded.hashFn,
+    digitalContentMultihashDecoded.size
   )
-  assert.ok(agreementId && Number.isInteger(agreementId), 'invalid agreementId')
-  const digital_content = await colivingInstance.contracts.AgreementFactoryClient.getAgreement(agreementId)
-  assert.strictEqual(digital_content.multihashDigest, agreementMultihashDecoded.digest, 'Unexpected digital_content multihash digest')
+  assert.ok(digitalContentId && Number.isInteger(digitalContentId), 'invalid digitalContentId')
+  const digital_content = await colivingInstance.contracts.DigitalContentFactoryClient.getDigitalContent(digitalContentId)
+  assert.strictEqual(digital_content.multihashDigest, digitalContentMultihashDecoded.digest, 'Unexpected digital_content multihash digest')
 
   // add digital_content repost
-  const addAgreementRepostTx = await colivingInstance.contracts.SocialFeatureFactoryClient.addAgreementRepost(creatorId, agreementId)
-  assert.ok('AgreementRepostAdded' in addAgreementRepostTx.events, 'Did not find AgreementRepostAdded event in transaction')
+  const addDigitalContentRepostTx = await colivingInstance.contracts.SocialFeatureFactoryClient.addDigitalContentRepost(creatorId, digitalContentId)
+  assert.ok('DigitalContentRepostAdded' in addDigitalContentRepostTx.events, 'Did not find DigitalContentRepostAdded event in transaction')
 
   // delete digital_content repost
-  const deleteAgreementRepostTx = await colivingInstance.contracts.SocialFeatureFactoryClient.deleteAgreementRepost(creatorId, agreementId)
-  assert.ok('AgreementRepostDeleted' in deleteAgreementRepostTx.events, 'Did not find AgreementRepostDeleted event in transaction')
+  const deleteDigitalContentRepostTx = await colivingInstance.contracts.SocialFeatureFactoryClient.deleteDigitalContentRepost(creatorId, digitalContentId)
+  assert.ok('DigitalContentRepostDeleted' in deleteDigitalContentRepostTx.events, 'Did not find DigitalContentRepostDeleted event in transaction')
 })
 
 it('Should add + delete contentList repost', async function () {

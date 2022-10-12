@@ -1,10 +1,10 @@
 ---
-sidebar_label: '$LIVE'
+sidebar_label: '$DGCO'
 sidebar_position: 1
-description: '$LIVE— el token de la plataforma de Coliving que sustenta las acciones de valor añadido en Coliving'
+description: '$DGCO— el token de la plataforma de Coliving que sustenta las acciones de valor añadido en Coliving'
 ---
 
-# $LIVE
+# $DGCO
 
 #### Cómo funciona
 

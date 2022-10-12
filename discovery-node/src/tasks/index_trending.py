@@ -6,7 +6,7 @@ from typing import List, Optional, Tuple
 from redis import Redis
 from sqlalchemy.orm.session import Session
 from src.models.indexing.block import Block
-from src.models.agreements.digital_content import DigitalContent
+from src.models.digitalContents.digital_content import DigitalContent
 from src.queries.get_trending_digital_contents import (
     generate_unpopulated_trending,
     generate_unpopulated_trending_from_mat_views,
@@ -79,7 +79,7 @@ genre_allowlist = {
     "R&B/Soul",
     "Reggae",
     "Rock",
-    "Soundagreement",
+    "SounddigitalContent",
     "Spoken Word",
     "Tech House",
     "Techno",

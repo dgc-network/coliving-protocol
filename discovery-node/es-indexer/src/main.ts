@@ -2,7 +2,7 @@ import { RepostDoc, SaveDoc } from './types/docs'
 import { ContentListIndexer } from './indexers/contentListIndexer'
 import { RepostIndexer } from './indexers/repostIndexer'
 import { SaveIndexer } from './indexers/saveIndexer'
-import { AgreementIndexer } from './indexers/agreementIndexer'
+import { DigitalContentIndexer } from './indexers/digitalContentIndexer'
 import { UserIndexer } from './indexers/userIndexer'
 import { PendingUpdates, startListener, takePending } from './listener'
 import { logger } from './logger'
@@ -18,14 +18,14 @@ export const indexer = {
   contentLists: new ContentListIndexer(),
   reposts: new RepostIndexer(),
   saves: new SaveIndexer(),
-  agreements: new AgreementIndexer(),
+  digitalContents: new DigitalContentIndexer(),
   users: new UserIndexer(),
 }
 
 async function processPending(pending: PendingUpdates) {
   return Promise.all([
     indexer.contentLists.indexIds(Array.from(pending.contentListIds)),
-    indexer.agreements.indexIds(Array.from(pending.agreementIds)),
+    indexer.digitalContents.indexIds(Array.from(pending.digitalContentIds)),
     indexer.users.indexIds(Array.from(pending.userIds)),
 
     indexer.reposts.indexRows(pending.reposts as RepostDoc[]),

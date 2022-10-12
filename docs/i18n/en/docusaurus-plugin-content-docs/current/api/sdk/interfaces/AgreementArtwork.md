@@ -1,7 +1,7 @@
 ---
-id: "AgreementArtwork"
-title: "Interface: AgreementArtwork"
-sidebar_label: "AgreementArtwork"
+id: "DigitalContentArtwork"
+title: "Interface: DigitalContentArtwork"
+sidebar_label: "DigitalContentArtwork"
 sidebar_position: 0
 custom_edit_url: null
 pagination_prev: null
@@ -10,7 +10,7 @@ pagination_next: null
 
 **`export`**
 
-**`interface`** AgreementArtwork
+**`interface`** DigitalContentArtwork
 
 ## Properties
 
@@ -18,7 +18,7 @@ pagination_next: null
 
  `Optional` **\_1000x1000**: `string`
 
-**`memberof`** AgreementArtwork
+**`memberof`** DigitalContentArtwork
 
 ___
 
@@ -26,7 +26,7 @@ ___
 
  `Optional` **\_150x150**: `string`
 
-**`memberof`** AgreementArtwork
+**`memberof`** DigitalContentArtwork
 
 ___
 
@@ -34,4 +34,4 @@ ___
 
  `Optional` **\_480x480**: `string`
 
-**`memberof`** AgreementArtwork
+**`memberof`** DigitalContentArtwork

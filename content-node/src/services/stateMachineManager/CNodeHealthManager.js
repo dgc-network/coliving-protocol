@@ -21,7 +21,7 @@ const MAX_NUMBER_SECONDS_PRIMARY_REMAINS_UNHEALTHY = config.get(
 )
 
 /**
- * Agreements and caches health of Content Nodes.
+ * DigitalContents and caches health of Content Nodes.
  * TODO: Add caching for secondaries similar to how primaries have a threshold of time to remain unhealthy for.
  */
 class CNodeHealthManager {
@@ -212,7 +212,7 @@ class CNodeHealthManager {
    * Perform a simple health check to see if a primary is truly unhealthy. If the primary returns a
    * non-200 response, digital_content the timestamp in the map. If the health check has failed for a primary over
    * `this.maxNumberSecondsPrimaryRemainsUnhealthy`, return as unhealthy. Else, keep digital_content of the timestamp
-   * of the visit if not already agreemented.
+   * of the visit if not already digitalContented.
    *
    * If the primary is healthy, reset the counter in the map and return as healthy.
    * @param {string} primary primary endpoint

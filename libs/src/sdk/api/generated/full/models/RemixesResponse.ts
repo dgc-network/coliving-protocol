@@ -14,11 +14,11 @@
  */
 
 import {
-    AgreementFull,
-    AgreementFullFromJSON,
-    AgreementFullFromJSONTyped,
-    AgreementFullToJSON,
-} from './agreementFull';
+    DigitalContentFull,
+    DigitalContentFullFromJSON,
+    DigitalContentFullFromJSONTyped,
+    DigitalContentFullToJSON,
+} from './digitalContentFull';
 
 /**
  * 
@@ -34,9 +34,9 @@ export interface RemixesResponse {
     count: number;
     /**
      * 
-     * @type {Array<AgreementFull>}
+     * @type {Array<DigitalContentFull>}
      * @memberof RemixesResponse
      */
-    agreements?: Array<AgreementFull>;
+    digitalContents?: Array<DigitalContentFull>;
 }
 

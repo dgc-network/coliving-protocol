@@ -79,31 +79,31 @@ AND is_current = TRUE;
 
 INSERT INTO tmp_cid_table (cid, user_id)
 SELECT cover_art, owner_id
-FROM agreements
+FROM digitalContents
 WHERE cover_art IS NOT NULL
 AND is_current = TRUE;
 
 INSERT INTO tmp_cid_table (cid, user_id)
 SELECT cover_art_sizes, owner_id
-FROM agreements 
+FROM digitalContents 
 WHERE cover_art_sizes IS NOT NULL
 AND is_current = TRUE;
 
 INSERT INTO tmp_cid_table (cid, user_id)
 SELECT metadata_multihash, owner_id
-FROM agreements 
+FROM digitalContents 
 WHERE metadata_multihash IS NOT NULL
 AND is_current = TRUE;
 
 INSERT INTO tmp_cid_table (cid, user_id)
 SELECT download -> 'cid' as cid, owner_id
-FROM agreements 
+FROM digitalContents 
 WHERE download -> 'cid' != 'null'
 AND is_current = TRUE;
 
 INSERT INTO tmp_cid_table (cid, user_id)
 SELECT jsonb_array_elements(digital_content_segments) -> 'multihash', owner_id
-FROM agreements
+FROM digitalContents
 WHERE digital_content_segments IS NOT NULL
 AND is_current = TRUE;
 

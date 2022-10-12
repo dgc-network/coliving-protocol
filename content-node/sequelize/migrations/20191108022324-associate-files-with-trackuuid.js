@@ -8,12 +8,12 @@ module.exports = {
     // Set all file digital_content_UUIDs to null before re-assigning.
     await queryInterface.sequelize.query('update "Files" set "digital_content_UUID" = null;')
 
-    const agreements = (await queryInterface.sequelize.query(
-      'select "digital_content_UUID", "metadataJSON"->\'digital_content_segments\' as segments, "cnodeUserUUID" from "Agreements";'
+    const digitalContents = (await queryInterface.sequelize.query(
+      'select "digital_content_UUID", "metadataJSON"->\'digital_content_segments\' as segments, "cnodeUserUUID" from "DigitalContents";'
     ))[0]
 
     /** For every digital_content, find all potential un-matched files, check for matches and associate. */
-    for (const digital_content of agreements) {
+    for (const digital_content of digitalContents) {
       const cids = digital_content.segments.map(segment => segment.multihash)
       if (cids.length === 0) {
         console.log(`digital_content_UUID ${digital_content.digital_content_UUID} has digital_content segments length 0.`)
@@ -32,7 +32,7 @@ module.exports = {
         continue
       }
 
-      // Get all segment files for sourceFiles from above, to account for agreements that are superset of current digital_content.
+      // Get all segment files for sourceFiles from above, to account for digitalContents that are superset of current digital_content.
       const sourceFiles = segmentFiles.map(segmentFile => segmentFile.sourceFile)
       segmentFiles = (await queryInterface.sequelize.query(
         'select * from "Files" where "type" = \'digital_content\' and "sourceFile" in (:sourceFiles) and "cnodeUserUUID" = (:cnodeUserUUID) and "digital_content_UUID" is null;',
@@ -72,7 +72,7 @@ module.exports = {
         { replacements: { digital_content_UUID: digital_content.digital_content_UUID, fileUUIDs } }
       )
     }
-    console.log(`Finished processing ${agreements.length} agreements in ${Date.now() - start}ms.`)
+    console.log(`Finished processing ${digitalContents.length} digitalContents in ${Date.now() - start}ms.`)
   },
   down: (queryInterface, Sequelize) => { }
 }

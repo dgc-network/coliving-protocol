@@ -21,7 +21,7 @@ def test_get_plays_metrics(app):
 
     date = datetime(2020, 10, 4).replace(minute=0, second=0, microsecond=0)
     test_entities = {
-        "agreements": [
+        "digitalContents": [
             {"digital_content_id": 1, "title": "digital_content 1"},
             {"digital_content_id": 2, "title": "digital_content 2"},
             {"digital_content_id": 3, "title": "digital_content 3"},
@@ -66,7 +66,7 @@ def test_get_plays_metrics_with_weekly_buckets(app):
     # A Thursday
     date = datetime(2020, 10, 1).replace(minute=0, second=0, microsecond=0)
     test_entities = {
-        "agreements": [
+        "digitalContents": [
             {"digital_content_id": 1, "title": "digital_content 1"},
             {"digital_content_id": 2, "title": "digital_content 2"},
             {"digital_content_id": 3, "title": "digital_content 3"},
@@ -109,7 +109,7 @@ def test_get_plays_metrics_with_yearly_buckets(app):
 
     date = datetime(2020, 10, 4).replace(minute=0, second=0, microsecond=0)
     test_entities = {
-        "agreements": [
+        "digitalContents": [
             {"digital_content_id": 1, "title": "digital_content 1"},
             {"digital_content_id": 2, "title": "digital_content 2"},
             {"digital_content_id": 3, "title": "digital_content 3"},

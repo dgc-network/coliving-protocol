@@ -57,7 +57,7 @@ export class UserIndexer extends BaseIndexer<UserDoc> {
         follower_count: { type: 'integer' },
 
         digital_content_count: { type: 'integer' },
-        agreements: {
+        digitalContents: {
           properties: {
             mood: { type: 'keyword' },
             genre: { type: 'keyword' },
@@ -75,8 +75,8 @@ export class UserIndexer extends BaseIndexer<UserDoc> {
       users.*,
       coalesce(user_balances.balance, '0') as balance,
       coalesce(user_balances.associated_wallets_balance, '0') as associated_wallets_balance,
-      coalesce(user_balances.wlive, '0') as wlive,
-      coalesce(user_balances.wlive, '0') as wlive_balance, -- do we need both wlive and wlive_balance
+      coalesce(user_balances.wei_digitalcoin, '0') as wei_digitalcoin,
+      coalesce(user_balances.wei_digitalcoin, '0') as wei_digitalcoin_balance, -- do we need both wei_digitalcoin and wei_digitalcoin_balance
       user_balances.associated_sol_wallets_balance,
       user_bank_accounts.bank_account as spl_wallet,
       coalesce(digital_content_count, 0) as digital_content_count,
@@ -107,21 +107,21 @@ export class UserIndexer extends BaseIndexer<UserDoc> {
         union
         select followee_user_id from follows where is_current and blocknumber >= ${checkpoint.users}
         union
-        select owner_id from agreements where is_current and blocknumber >= ${checkpoint.agreements}
+        select owner_id from digitalContents where is_current and blocknumber >= ${checkpoint.digitalContents}
       )
     `
   }
 
   async withBatch(rows: UserDoc[]) {
-    // attach user's agreements
+    // attach user's digitalContents
     const userIds = rows.map((r) => r.user_id)
-    const [agreementsByOwnerId, followMap] = await Promise.all([
-      this.userAgreements(userIds),
+    const [digitalContentsByOwnerId, followMap] = await Promise.all([
+      this.userDigitalContents(userIds),
       this.userFollows(userIds),
     ])
     for (let user of rows) {
-      user.agreements = agreementsByOwnerId[user.user_id] || []
-      user.digital_content_count = user.agreements.length
+      user.digitalContents = digitalContentsByOwnerId[user.user_id] || []
+      user.digital_content_count = user.digitalContents.length
       user.following_ids = followMap[user.user_id] || []
     }
   }
@@ -155,14 +155,14 @@ export class UserIndexer extends BaseIndexer<UserDoc> {
     return grouped
   }
 
-  private async userAgreements(userIds: number[]) {
+  private async userDigitalContents(userIds: number[]) {
     if (!userIds.length) return {}
     const pg = dialPg()
     const idList = Array.from(userIds).join(',')
     const q = `
       select 
         digital_content_id, owner_id, genre, mood, tags, title, length, created_at
-      from agreements 
+      from digitalContents 
       where 
         is_current
         and not is_delete 
@@ -171,11 +171,11 @@ export class UserIndexer extends BaseIndexer<UserDoc> {
         and owner_id in (${idList})
       order by created_at desc
     `
-    const allAgreements = await pg.query(q)
-    for (let t of allAgreements.rows) {
+    const allDigitalContents = await pg.query(q)
+    for (let t of allDigitalContents.rows) {
       t.tags = splitTags(t.tags)
     }
-    const grouped = groupBy(allAgreements.rows, 'owner_id')
+    const grouped = groupBy(allDigitalContents.rows, 'owner_id')
     return grouped
   }
 }

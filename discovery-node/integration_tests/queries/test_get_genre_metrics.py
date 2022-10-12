@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 
 from src.models.indexing.block import Block
-from src.models.agreements.digital_content import DigitalContent
+from src.models.digitalContents.digital_content import DigitalContent
 from src.queries.get_genre_metrics import _get_genre_metrics
 from src.utils.db_session import get_db
 

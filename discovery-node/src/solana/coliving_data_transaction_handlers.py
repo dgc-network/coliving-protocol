@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import Any, Dict, List, TypedDict
 
 from sqlalchemy.orm.session import Session
-from src.models.agreements.digital_content import DigitalContent
+from src.models.digitalContents.digital_content import DigitalContent
 from src.models.users.user import User
 from src.solana.anchor_parser import ParsedTxInstr
 from src.solana.solana_transaction_types import TransactionInfoResult
@@ -264,7 +264,7 @@ def handle_manage_entity(
         entity_type, entity_type.DigitalContent
     ):
 
-        if digital_content_id in db_models["agreements"]:
+        if digital_content_id in db_models["digitalContents"]:
             logger.info(f"Skipping create digital_content {digital_content_id} because it already exists.")
             return
 
@@ -283,19 +283,19 @@ def handle_manage_entity(
         update_digital_content_model_metadata(session, digital_content, digital_content_metadata)
         # TODO update stems, remixes, challenge
         records.append(digital_content)
-        db_models["agreements"][digital_content_id].append(digital_content)
+        db_models["digitalContents"][digital_content_id].append(digital_content)
     elif isinstance(management_action, management_action.Update) and isinstance(
         entity_type, entity_type.DigitalContent
     ):
-        if digital_content_id not in db_models["agreements"]:
+        if digital_content_id not in db_models["digitalContents"]:
             logger.info(f"Skipping update digital_content {digital_content_id} because it doesn't exist.")
             return
-        digital_content_record = db_models["agreements"].get(digital_content_id)[-1]
+        digital_content_record = db_models["digitalContents"].get(digital_content_id)[-1]
 
         # Clone new record
         new_digital_content_record = clone_model(digital_content_record)
 
-        for prior_record in db_models["agreements"][digital_content_id]:
+        for prior_record in db_models["digitalContents"][digital_content_id]:
             prior_record.is_current = False
         new_digital_content_record.digital_content_id = digital_content_id
         new_digital_content_record.txhash = txhash
@@ -309,7 +309,7 @@ def handle_manage_entity(
         records.append(new_digital_content_record)
 
         # Append most recent record
-        db_models["agreements"][digital_content_id].append(new_digital_content_record)
+        db_models["digitalContents"][digital_content_id].append(new_digital_content_record)
 
 
 def handle_create_content_node(

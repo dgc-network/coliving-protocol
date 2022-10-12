@@ -13,8 +13,8 @@ module.exports = {
       concurrently: true
     })
 
-    await queryInterface.addIndex('Agreements', ['cnodeUserUUID'], {
-      name: 'ss_Agreements_cnodeUserUUID_idx',
+    await queryInterface.addIndex('DigitalContents', ['cnodeUserUUID'], {
+      name: 'ss_DigitalContents_cnodeUserUUID_idx',
       using: 'btree',
       concurrently: true
     })
@@ -28,7 +28,7 @@ module.exports = {
   down: async (queryInterface, Sequelize) => {
     await queryInterface.removeIndex('Files', 'ss_Files_multihash_idx')
     await queryInterface.removeIndex('ColivingUsers', 'ss_ColivingUsers_cnodeUserUUID_idx')
-    await queryInterface.removeIndex('Agreements', 'ss_Agreements_cnodeUserUUID_idx')
+    await queryInterface.removeIndex('DigitalContents', 'ss_DigitalContents_cnodeUserUUID_idx')
     await queryInterface.removeIndex('Files', 'ss_Files_cnodeUserUUID_idx')
   }
 }

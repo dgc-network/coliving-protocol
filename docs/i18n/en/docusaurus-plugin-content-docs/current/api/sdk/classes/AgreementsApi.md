@@ -1,6 +1,6 @@
 ---
-id: "AgreementsApi"
-title: "Agreements"
+id: "DigitalContentsApi"
+title: "DigitalContents"
 sidebar_position: 0
 custom_edit_url: null
 pagination_prev: null
@@ -9,17 +9,17 @@ pagination_next: null
 
 ## Methods
 
-### getBulkAgreements
+### getBulkDigitalContents
 
-**getBulkAgreements**(`requestParameters?`): `Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)[]\>
+**getBulkDigitalContents**(`requestParameters?`): `Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)[]\>
 
-Gets a list of agreements using their IDs or permalinks
+Gets a list of digitalContents using their IDs or permalinks
 
 Example:
 
 ```typescript
 
-const agreements = await colivingSdk.agreements.getBulkAgreements();
+const digitalContents = await colivingSdk.digitalContents.getBulkDigitalContents();
 
 ```
 
@@ -27,7 +27,7 @@ const agreements = await colivingSdk.agreements.getBulkAgreements();
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetBulkAgreementsRequest`](../interfaces/GetBulkAgreementsRequest.md) |
+| `requestParameters` | [`GetBulkDigitalContentsRequest`](../interfaces/GetBulkDigitalContentsRequest.md) |
 
 #### Returns
 
@@ -35,13 +35,13 @@ const agreements = await colivingSdk.agreements.getBulkAgreements();
 
 #### Inherited from
 
-GeneratedAgreementsApi.getBulkAgreements
+GeneratedDigitalContentsApi.getBulkDigitalContents
 
 ___
 
-### getAgreement
+### getDigitalContent
 
-**getAgreement**(`requestParameters`): `Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)\>
+**getDigitalContent**(`requestParameters`): `Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)\>
 
 Gets a digital_content by ID
 
@@ -49,8 +49,8 @@ Example:
 
 ```typescript
 
-const digital_content = await colivingSdk.agreements.getAgreement({
-    agreementId: "D7KyD",
+const digital_content = await colivingSdk.digitalContents.getDigitalContent({
+    digitalContentId: "D7KyD",
 });
 
 ```
@@ -59,7 +59,7 @@ const digital_content = await colivingSdk.agreements.getAgreement({
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetAgreementRequest`](../interfaces/GetAgreementRequest.md) |
+| `requestParameters` | [`GetDigitalContentRequest`](../interfaces/GetDigitalContentRequest.md) |
 
 #### Returns
 
@@ -67,21 +67,21 @@ const digital_content = await colivingSdk.agreements.getAgreement({
 
 #### Inherited from
 
-GeneratedAgreementsApi.getAgreement
+GeneratedDigitalContentsApi.getDigitalContent
 
 ___
 
-### getTrendingAgreements
+### getTrendingDigitalContents
 
-**getTrendingAgreements**(`requestParameters?`): `Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)[]\>
+**getTrendingDigitalContents**(`requestParameters?`): `Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)[]\>
 
-Gets the top 100 trending (most popular) agreements on Coliving
+Gets the top 100 trending (most popular) digitalContents on Coliving
 
 Example:
 
 ```typescript
 
-const agreements = await colivingSdk.agreements.getTrendingAgreements();
+const digitalContents = await colivingSdk.digitalContents.getTrendingDigitalContents();
 
 ```
 
@@ -89,7 +89,7 @@ const agreements = await colivingSdk.agreements.getTrendingAgreements();
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetTrendingAgreementsRequest`](../interfaces/GetTrendingAgreementsRequest.md) |
+| `requestParameters` | [`GetTrendingDigitalContentsRequest`](../interfaces/GetTrendingDigitalContentsRequest.md) |
 
 #### Returns
 
@@ -97,21 +97,21 @@ const agreements = await colivingSdk.agreements.getTrendingAgreements();
 
 #### Inherited from
 
-GeneratedAgreementsApi.getTrendingAgreements
+GeneratedDigitalContentsApi.getTrendingDigitalContents
 
 ___
 
-### searchAgreements
+### searchDigitalContents
 
-**searchAgreements**(`requestParameters`): `Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)[]\>
+**searchDigitalContents**(`requestParameters`): `Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)[]\>
 
-Search for a digital_content or agreements
+Search for a digital_content or digitalContents
 
 Example:
 
 ```typescript
 
-const searchResult = await colivingSdk.agreements.searchAgreements({
+const searchResult = await colivingSdk.digitalContents.searchDigitalContents({
     query: "skrillex",
 });
 
@@ -121,7 +121,7 @@ const searchResult = await colivingSdk.agreements.searchAgreements({
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`SearchAgreementsRequest`](../interfaces/SearchAgreementsRequest.md) |
+| `requestParameters` | [`SearchDigitalContentsRequest`](../interfaces/SearchDigitalContentsRequest.md) |
 
 #### Returns
 
@@ -129,13 +129,13 @@ const searchResult = await colivingSdk.agreements.searchAgreements({
 
 #### Inherited from
 
-GeneratedAgreementsApi.searchAgreements
+GeneratedDigitalContentsApi.searchDigitalContents
 
 ___
 
-### streamAgreement
+### streamDigitalContent
 
-**streamAgreement**(`requestParameters`): `Promise`<`string`\>
+**streamDigitalContent**(`requestParameters`): `Promise`<`string`\>
 
 Get the url of the digital_content's streamable mp3 file
 
@@ -143,8 +143,8 @@ Example:
 
 ```typescript
 
-const url = await colivingSdk.agreements.streamAgreement({
-    agreementId: "PjdWN",
+const url = await colivingSdk.digitalContents.streamDigitalContent({
+    digitalContentId: "PjdWN",
 });
 const digitalcoin = new Audio(url);
 digitalcoin.play();
@@ -155,7 +155,7 @@ digitalcoin.play();
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`StreamAgreementRequest`](../interfaces/StreamAgreementRequest.md) |
+| `requestParameters` | [`StreamDigitalContentRequest`](../interfaces/StreamDigitalContentRequest.md) |
 
 #### Returns
 

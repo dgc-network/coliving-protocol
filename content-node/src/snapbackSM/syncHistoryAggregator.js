@@ -107,7 +107,7 @@ class SyncHistoryAggregator {
       await redisClient.expire(dailyWalletSyncKey[state], dailyWalletSyncKeyTTL)
 
       logger.info(
-        `SyncHistoryAggregator - Successfully agreemented ${state} sync for wallet ${wallet} at ${timeOfEvent}`
+        `SyncHistoryAggregator - Successfully digitalContented ${state} sync for wallet ${wallet} at ${timeOfEvent}`
       )
     } catch (e) {
       // Only log error to not block any main thread

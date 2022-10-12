@@ -90,7 +90,7 @@ def update_aggregate_table(
         )
         return
 
-    # update aggregate digital_content with new agreements that came after the prev_checkpoint
+    # update aggregate digital_content with new digitalContents that came after the prev_checkpoint
     logger.info(
         f"{task_name} | Updating {table_name}"
         f" | checkpoint: ({prev_checkpoint}, {current_checkpoint}]"

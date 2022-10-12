@@ -114,7 +114,7 @@
         "type": "barchart"
       },
       {
-        "description": "How long the Agreements route takes to respond for each bucket",
+        "description": "How long the DigitalContents route takes to respond for each bucket",
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -173,7 +173,7 @@
             "refId": "A"
           }
         ],
-        "title": "Agreements 200 /POST duration breakdown (s)",
+        "title": "DigitalContents 200 /POST duration breakdown (s)",
         "type": "bargauge"
       },
       {
@@ -271,7 +271,7 @@
         "type": "timeseries"
       },
       {
-        "description": "How long the Agreements route takes to respond for each bucket",
+        "description": "How long the DigitalContents route takes to respond for each bucket",
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -371,7 +371,7 @@
             "refId": "B"
           }
         ],
-        "title": "Agreements /POST duration breakdown (s)",
+        "title": "DigitalContents /POST duration breakdown (s)",
         "type": "timeseries"
       }
     ],

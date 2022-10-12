@@ -1,13 +1,13 @@
 ---
-id: "full.GetUsersAgreementHistoryRequest"
-title: "Interface: GetUsersAgreementHistoryRequest"
-sidebar_label: "GetUsersAgreementHistoryRequest"
+id: "full.GetUsersDigitalContentHistoryRequest"
+title: "Interface: GetUsersDigitalContentHistoryRequest"
+sidebar_label: "GetUsersDigitalContentHistoryRequest"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).GetUsersAgreementHistoryRequest
+[full](../namespaces/full.md).GetUsersDigitalContentHistoryRequest
 
 ## Properties
 

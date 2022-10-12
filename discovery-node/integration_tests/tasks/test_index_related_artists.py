@@ -37,7 +37,7 @@ def test_index_related_landlords(app):
         + [{"follower_user_id": i, "followee_user_id": 5} for i in range(151, 651)]
         # 60 mutual followers between user_6 & user_0 make up 30% of user_6 followers = score 18
         + [{"follower_user_id": i, "followee_user_id": 6} for i in range(141, 341)],
-        "agreements": [{"owner_id": i} for i in range(0, 7)],
+        "digitalContents": [{"owner_id": i} for i in range(0, 7)],
     }
     populate_mock_db(db, entities)
 

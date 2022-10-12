@@ -1,7 +1,7 @@
 import logging  # pylint: disable=C0302
 
 from sqlalchemy import func
-from src.models.agreements.tag_digital_content_user_matview import t_tag_digital_content_user
+from src.models.digitalContents.tag_digital_content_user_matview import t_tag_digital_content_user
 from src.models.users.user import User
 from src.queries import response_name_constants
 from src.queries.query_helpers import populate_user_metadata
@@ -12,16 +12,16 @@ logger = logging.getLogger(__name__)
 
 def search_user_tags(session, args):
     """
-    Gets the users with agreements with a given tag
+    Gets the users with digitalContents with a given tag
 
     Args:
         session: sqlalchemy db session instance
         args: dict of arguments
         args.search_str: string the tag search string
         args.current_user_id: id | null The user id making the query
-        args.limit: number the query limit of number of returns agreements
+        args.limit: number the query limit of number of returns digitalContents
         args.offset: number the query offset for results
-        args.user_tag_count: number The number of agreements with the query tag
+        args.user_tag_count: number The number of digitalContents with the query tag
 
     Returns:
         list of users sorted by followee count

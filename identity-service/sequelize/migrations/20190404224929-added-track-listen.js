@@ -1,8 +1,8 @@
 'use strict'
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('AgreementListenCounts', {
-      agreementId: {
+    return queryInterface.createTable('DigitalContentListenCounts', {
+      digitalContentId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: false,
@@ -28,6 +28,6 @@ module.exports = {
     })
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('AgreementListenCounts')
+    return queryInterface.dropTable('DigitalContentListenCounts')
   }
 }

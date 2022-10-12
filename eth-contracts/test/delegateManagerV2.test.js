@@ -362,7 +362,7 @@ contract('DelegateManagerV2', async (accounts) => {
   /*
      Function to re-calculate expected delegator stake total given
       list of types and IDs, and compare calculated value with 
-      delegator balance agreemented on chain
+      delegator balance digitalContented on chain
   */
   const getTotalDelegatorStake = async (delegator) => {
     let validTypes = await serviceTypeManager.getValidServiceTypes()
@@ -2690,7 +2690,7 @@ contract('DelegateManagerV2', async (accounts) => {
 
     it('lets a service provider return to valid bounds when a delegator changes delegation', async () => {
       /**
-       * Test case to address behavior exercised in Postmortem: $LIVE Claim Error (Claim of 0 $LIVE)
+       * Test case to address behavior exercised in Postmortem: $DGCO Claim Error (Claim of 0 $DGCO)
        * on 05-08-2021.
        *
        * Confirm initial state of serviceType and serviceProvider

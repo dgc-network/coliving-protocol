@@ -3,7 +3,7 @@ import { AuthHeaders } from '../../constants'
 import { uuid } from '../../utils/uuid'
 import type { Captcha, Nullable } from '../../utils'
 
-import { getAgreementListens, TimeFrame } from './requests'
+import { getDigitalContentListens, TimeFrame } from './requests'
 import type { Web3Manager } from '../web3Manager'
 import type { TransactionReceipt } from 'web3-core'
 import type Wallet from 'ethereumjs-wallet'
@@ -205,13 +205,13 @@ export class IdentityService {
 
   /**
    * Logs a digital_content listen for a given user id.
-   * @param agreementId
+   * @param digitalContentId
    * @param userId
    * @param listenerAddress if logging this listen on behalf of another IP address, pass through here
    * @param signatureData if logging this listen via a 3p service, a signed piece of data proving authenticity
    */
-  async logAgreementListen(
-    agreementId: number,
+  async logDigitalContentListen(
+    digitalContentId: number,
     userId: number,
     listenerAddress: Nullable<string>,
     signatureData: Nullable<{ signature: string; timestamp: string }>,
@@ -228,7 +228,7 @@ export class IdentityService {
       data.timestamp = signatureData.timestamp
     }
     const request: AxiosRequestConfig = {
-      url: `/agreements/${agreementId}/listen`,
+      url: `/digital_contents/${digitalContentId}/listen`,
       method: 'post',
       data
     }
@@ -242,15 +242,15 @@ export class IdentityService {
   }
 
   /**
-   * Return listen history agreements for a given user id.
+   * Return listen history digitalContents for a given user id.
    * @param userId - User ID
    * @param limit - max # of items to return
    * @param offset - offset into list to return from (for pagination)
    */
-  async getListenHistoryAgreements(userId: number, limit = 100, offset = 0) {
+  async getListenHistoryDigitalContents(userId: number, limit = 100, offset = 0) {
     const req: AxiosRequestConfig = {
       method: 'get',
-      url: '/agreements/history',
+      url: '/digital_contents/history',
       params: { userId, limit, offset }
     }
     return await this._makeRequest(req)
@@ -273,19 +273,19 @@ export class IdentityService {
   }
 
   /**
-   * Gets agreements trending on Coliving.
+   * Gets digitalContents trending on Coliving.
    * @param timeFrame one of day, week, month, or year
    * @param idsArray digital_content ids
    * @param limit
    * @param offset
    */
-  async getTrendingAgreements(
+  async getTrendingDigitalContents(
     timeFrame: string | null = null,
     idsArray: number[] | null = null,
     limit: number | null = null,
     offset: number | null = null
   ) {
-    let queryUrl = '/agreements/trending/'
+    let queryUrl = '/digital_contents/trending/'
 
     if (timeFrame != null) {
       switch (timeFrame) {
@@ -314,7 +314,7 @@ export class IdentityService {
     }
 
     return await this._makeRequest<{
-      listenCounts: Array<{ agreementId: number; listens: number }>
+      listenCounts: Array<{ digitalContentId: number; listens: number }>
     }>({
       url: queryUrl,
       method: 'get',
@@ -323,7 +323,7 @@ export class IdentityService {
   }
 
   /**
-   * Gets listens for agreements bucketted by timeFrame.
+   * Gets listens for digitalContents bucketted by timeFrame.
    * @param timeFrame one of day, week, month, or year
    * @param idsArray digital_content ids
    * @param startTime parseable by Date.parse
@@ -331,7 +331,7 @@ export class IdentityService {
    * @param limit
    * @param offset
    */
-  async getAgreementListens(
+  async getDigitalContentListens(
     timeFrame: TimeFrame | null = null,
     idsArray: number[] | null = null,
     startTime: string | null = null,
@@ -339,9 +339,9 @@ export class IdentityService {
     limit: number | null = null,
     offset: number | null = null
   ): Promise<{
-    bucket: Array<{ agreementId: number; date: string; listens: number }>
+    bucket: Array<{ digitalContentId: number; date: string; listens: number }>
   }> {
-    const req = getAgreementListens(
+    const req = getDigitalContentListens(
       timeFrame,
       idsArray,
       startTime,

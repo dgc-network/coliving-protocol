@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
       },
       // only non-null for digital_content/copy320 files (as opposed to image/metadata files)
-      agreementBlockchainId: {
+      digitalContentBlockchainId: {
         type: DataTypes.INTEGER,
         allowNull: true
       },
@@ -75,7 +75,7 @@ module.exports = (sequelize, DataTypes) => {
           fields: ['dirMultihash']
         },
         {
-          fields: ['agreementBlockchainId']
+          fields: ['digitalContentBlockchainId']
         },
         {
           unique: true,
@@ -89,7 +89,7 @@ module.exports = (sequelize, DataTypes) => {
   )
 
   /**
-   * @dev - there is intentionally no reference from File.agreementBlockchainId to DigitalContent.blockchainId. This is to
+   * @dev - there is intentionally no reference from File.digitalContentBlockchainId to DigitalContent.blockchainId. This is to
    *    remove the two-way association between these models
    */
   File.associate = function (models) {
@@ -110,8 +110,8 @@ module.exports = (sequelize, DataTypes) => {
     metadata: 'metadata'
   }
 
-  File.AgreementTypes = [File.Types.digital_content, File.Types.copy320]
-  File.NonAgreementTypes = [File.Types.dir, File.Types.image, File.Types.metadata]
+  File.DigitalContentTypes = [File.Types.digital_content, File.Types.copy320]
+  File.NonDigitalContentTypes = [File.Types.dir, File.Types.image, File.Types.metadata]
 
   return File
 }

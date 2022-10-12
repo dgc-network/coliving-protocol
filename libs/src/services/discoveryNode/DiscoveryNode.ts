@@ -217,15 +217,15 @@ export class DiscoveryNode {
   }
 
   /**
-   * get agreements with all relevant digital_content data
+   * get digitalContents with all relevant digital_content data
    * can be filtered by providing an integer array of ids
    * @param limit
    * @param offset
    * @param idsArray
-   * @param targetUserId the owner of the agreements being queried
+   * @param targetUserId the owner of the digitalContents being queried
    * @param sort a string of form eg. blocknumber:asc,timestamp:desc describing a sort path
    * @param minBlockNumber The min block number
-   * @param filterDeleted If set to true, filters the deleted agreements
+   * @param filterDeleted If set to true, filters the deleted digitalContents
    * @returns Array of digital_content metadata Objects
    * additional metadata fields on digital_content objects:
    *  {Integer} repost_count - repost count for given digital_content
@@ -234,10 +234,10 @@ export class DiscoveryNode {
    *  {Boolean} has_current_user_reposted - has current user reposted given digital_content
    *  {Boolean} has_current_user_saved - has current user saved given digital_content
    * @example
-   * await getAgreements()
-   * await getAgreements(100, 0, [3,2,6]) - Invalid digital_content ids will not be accepted
+   * await getDigitalContents()
+   * await getDigitalContents(100, 0, [3,2,6]) - Invalid digital_content ids will not be accepted
    */
-  async getAgreements(
+  async getDigitalContents(
     limit = 100,
     offset = 0,
     idsArray: Nullable<string[]>,
@@ -247,7 +247,7 @@ export class DiscoveryNode {
     filterDeleted: Nullable<boolean>,
     withUsers?: boolean
   ) {
-    const req = Requests.getAgreements(
+    const req = Requests.getDigitalContents(
       limit,
       offset,
       idsArray,
@@ -267,82 +267,82 @@ export class DiscoveryNode {
    * @param slug the URL slug of the digital_content, generally the title urlized
    * @returns the requested digital_content's metadata
    */
-  async getAgreementsByHandleAndSlug(handle: string, slug: string) {
+  async getDigitalContentsByHandleAndSlug(handle: string, slug: string) {
     // Note: retries are disabled here because the v1 API response returns a 404 instead
     // of an empty array, which can cause a retry storm.
     // TODO: Rewrite this API with something more effective, change makeRequest to
     // support 404s and not retry & use ColivingAPIClient.
     return await this._makeRequest(
-      Requests.getAgreementsByHandleAndSlug(handle, slug),
+      Requests.getDigitalContentsByHandleAndSlug(handle, slug),
       /* retry */ false
     )
   }
 
   /**
-   * gets all agreements matching identifiers, including unlisted.
+   * gets all digitalContents matching identifiers, including unlisted.
    *
    */
-  async getAgreementsIncludingUnlisted(identifiers: string[], withUsers = false) {
-    const req = Requests.getAgreementsIncludingUnlisted(identifiers, withUsers)
+  async getDigitalContentsIncludingUnlisted(identifiers: string[], withUsers = false) {
+    const req = Requests.getDigitalContentsIncludingUnlisted(identifiers, withUsers)
     return await this._makeRequest(req)
   }
 
   /**
-   * Gets random agreements from trending agreements for a given genre.
-   * If genre not given, will return trending agreements across all genres.
+   * Gets random digitalContents from trending digitalContents for a given genre.
+   * If genre not given, will return trending digitalContents across all genres.
    * Excludes specified digital_content ids.
    */
-  async getRandomAgreements(
+  async getRandomDigitalContents(
     genre: string,
     limit: number,
     exclusionList: number[],
     time: string
   ) {
-    const req = Requests.getRandomAgreements(genre, limit, exclusionList, time)
+    const req = Requests.getRandomDigitalContents(genre, limit, exclusionList, time)
     return await this._makeRequest(req)
   }
 
   /**
-   * Gets all stems for a given agreementId as an array of agreements.
+   * Gets all stems for a given digitalContentId as an array of digitalContents.
    */
-  async getStemsForAgreement(agreementId: number) {
-    const req = Requests.getStemsForAgreement(agreementId)
+  async getStemsForDigitalContent(digitalContentId: number) {
+    const req = Requests.getStemsForDigitalContent(digitalContentId)
     return await this._makeRequest(req)
   }
 
   /**
-   * Gets all the remixes of a given agreementId as an array of agreements.
+   * Gets all the remixes of a given digitalContentId as an array of digitalContents.
    */
-  async getRemixesOfAgreement(
-    agreementId: number,
+  async getRemixesOfDigitalContent(
+    digitalContentId: number,
     limit: Nullable<number>,
     offset: Nullable<number>
   ) {
-    const req = Requests.getRemixesOfAgreement(agreementId, limit, offset)
+    const req = Requests.getRemixesOfDigitalContent(digitalContentId, limit, offset)
     return await this._makeRequest(req)
   }
 
   /**
-   * Gets the remix parents of a given agreementId as an array of agreements.
+   * Gets the remix parents of a given digitalContentId as an array of digitalContents.
    */
-  async getRemixAgreementParents(
-    agreementId: number,
+  async getRemixDigitalContentParents(
+    digitalContentId: number,
     limit: Nullable<number>,
     offset: Nullable<number>
   ) {
-    const req = Requests.getRemixAgreementParents(agreementId, limit, offset)
+    const req = Requests.getRemixDigitalContentParents(digitalContentId, limit, offset)
     return await this._makeRequest(req)
   }
 
   /**
-   * Gets agreements trending on Coliving.
+   * Gets digitalContents trending on Coliving.
    * @param genre
    * @param timeFrame one of day, week, month, or year
    * @param idsArray digital_content ids
    * @param limit
    * @param offset
    */
-  async getTrendingAgreements(
+  async getTrendingDigitalContents(
     genre: Nullable<string>,
     timeFrame: Nullable<string>,
     idsArray: Nullable<number[]>,
@@ -350,7 +350,7 @@ export class DiscoveryNode {
     offset: Nullable<number>,
     withUsers = false
   ) {
-    const req = Requests.getTrendingAgreements(
+    const req = Requests.getTrendingDigitalContents(
       genre,
       timeFrame,
       idsArray,
@@ -359,12 +359,12 @@ export class DiscoveryNode {
       withUsers
     )
     return await this._makeRequest<{
-      listenCounts: Array<{ agreementId: number; listens: number }>
+      listenCounts: Array<{ digitalContentId: number; listens: number }>
     }>(req)
   }
 
   /**
-   * get full contentList objects, including agreements, for passed in array of contentListId
+   * get full contentList objects, including digitalContents, for passed in array of contentListId
    * @returns array of contentList objects
    * additional metadata fields on contentList objects:
    *  {Integer} repost_count - repost count for given contentList
@@ -410,14 +410,14 @@ export class DiscoveryNode {
     limit = 100,
     offset = 0,
     withUsers = false,
-    agreementsOnly = false
+    digitalContentsOnly = false
   ) {
     const req = Requests.getSocialFeed(
       filter,
       limit,
       offset,
       withUsers,
-      agreementsOnly
+      digitalContentsOnly
     )
     return await this._makeRequest(req)
   }
@@ -469,23 +469,23 @@ export class DiscoveryNode {
   }
 
   /**
-   * get intersection of users that have reposted repostAgreementId and users that are followed by followerUserId
+   * get intersection of users that have reposted repostDigitalContentId and users that are followed by followerUserId
    * followee = user that is followed; follower = user that follows
-   * @param repostAgreementId digital_content that is reposted
+   * @param repostDigitalContentId digital_content that is reposted
    * @param followerUserId user that reposted digital_content
    * @example
-   * getAgreementRepostIntersectionUsers(100, 0, 1, 1) - IDs must be valid
+   * getDigitalContentRepostIntersectionUsers(100, 0, 1, 1) - IDs must be valid
    */
-  async getAgreementRepostIntersectionUsers(
+  async getDigitalContentRepostIntersectionUsers(
     limit = 100,
     offset = 0,
-    repostAgreementId: number,
+    repostDigitalContentId: number,
     followerUserId: number
   ) {
-    const req = Requests.getAgreementRepostIntersectionUsers(
+    const req = Requests.getDigitalContentRepostIntersectionUsers(
       limit,
       offset,
-      repostAgreementId,
+      repostDigitalContentId,
       followerUserId
     )
     return await this._makeRequest(req)
@@ -535,16 +535,16 @@ export class DiscoveryNode {
   }
 
   /**
-   * get users that reposted repostAgreementId, sorted by follower count descending
-   * @param repostAgreementId
+   * get users that reposted repostDigitalContentId, sorted by follower count descending
+   * @param repostDigitalContentId
    * @return array of user objects
    * additional metadata fields on user objects:
    *  {Integer} follower_count - follower count of given user
    * @example
-   * getRepostersForAgreement(100, 0, 1) - ID must be valid
+   * getRepostersForDigitalContent(100, 0, 1) - ID must be valid
    */
-  async getRepostersForAgreement(limit = 100, offset = 0, repostAgreementId: number) {
-    const req = Requests.getRepostersForAgreement(limit, offset, repostAgreementId)
+  async getRepostersForDigitalContent(limit = 100, offset = 0, repostDigitalContentId: number) {
+    const req = Requests.getRepostersForDigitalContent(limit, offset, repostDigitalContentId)
     return await this._makeRequest(req)
   }
 
@@ -571,16 +571,16 @@ export class DiscoveryNode {
   }
 
   /**
-   * get users that saved saveAgreementId, sorted by follower count descending
-   * @param saveAgreementId
+   * get users that saved saveDigitalContentId, sorted by follower count descending
+   * @param saveDigitalContentId
    * @return array of user objects
    * additional metadata fields on user objects:
    *  {Integer} follower_count - follower count of given user
    * @example
-   * getSaversForAgreement(100, 0, 1) - ID must be valid
+   * getSaversForDigitalContent(100, 0, 1) - ID must be valid
    */
-  async getSaversForAgreement(limit = 100, offset = 0, saveAgreementId: number) {
-    const req = Requests.getSaversForAgreement(limit, offset, saveAgreementId)
+  async getSaversForDigitalContent(limit = 100, offset = 0, saveDigitalContentId: number) {
+    const req = Requests.getSaversForDigitalContent(limit, offset, saveDigitalContentId)
     return await this._makeRequest(req)
   }
 
@@ -614,11 +614,11 @@ export class DiscoveryNode {
   }
 
   /**
-   * Perform a full-text search. Returns agreements, users, contentLists, albums
+   * Perform a full-text search. Returns digitalContents, users, contentLists, albums
    *    with optional user-specific results for each
    *  - user, digital_content, and contentList objects have all same data as returned from standalone endpoints
    * @param text search query
-   * @param kind 'agreements', 'users', 'contentLists', 'albums', 'all'
+   * @param kind 'digitalContents', 'users', 'contentLists', 'albums', 'all'
    * @param limit max # of items to return per list (for pagination)
    * @param offset offset into list to return from (for pagination)
    */
@@ -628,7 +628,7 @@ export class DiscoveryNode {
   }
 
   /**
-   * Perform a lighter-weight full-text search. Returns agreements, users, contentLists, albums
+   * Perform a lighter-weight full-text search. Returns digitalContents, users, contentLists, albums
    *    with optional user-specific results for each
    *  - user, digital_content, and contentList objects have core data, and digital_content & contentList objects
    *    also return user object
@@ -642,11 +642,11 @@ export class DiscoveryNode {
   }
 
   /**
-   * Perform a tags-only search. Returns agreements with required tag and users
+   * Perform a tags-only search. Returns digitalContents with required tag and users
    * that have used a tag greater than a specified number of times
    * @param text search query
    * @param userTagCount min # of times a user must have used a tag to be returned
-   * @param kind 'agreements', 'users', 'contentLists', 'albums', 'all'
+   * @param kind 'digitalContents', 'users', 'contentLists', 'albums', 'all'
    * @param limit max # of items to return per list (for pagination)
    * @param offset offset into list to return from (for pagination)
    */
@@ -684,13 +684,13 @@ export class DiscoveryNode {
   }
 
   /**
-   * Return saved agreements for current user
+   * Return saved digitalContents for current user
    * NOTE in returned JSON, SaveType string one of digital_content, contentList, album
    * @param limit - max # of items to return
    * @param offset - offset into list to return from (for pagination)
    */
-  async getSavedAgreements(limit = 100, offset = 0, withUsers = false) {
-    const req = Requests.getSavedAgreements(limit, offset, withUsers)
+  async getSavedDigitalContents(limit = 100, offset = 0, withUsers = false) {
+    const req = Requests.getSavedDigitalContents(limit, offset, withUsers)
     return await this._makeRequest(req)
   }
 
@@ -762,19 +762,19 @@ export class DiscoveryNode {
   }
 
   /**
-   * @deprecated Migrate to using getMostLovedAgreements
+   * @deprecated Migrate to using getMostLovedDigitalContents
    */
   async getTopFolloweeSaves(type: string, limit: string, withUsers = false) {
     const req = Requests.getTopFolloweeSaves(type, limit, withUsers)
     return await this._makeRequest(req)
   }
 
-  async getMostLovedAgreements(
+  async getMostLovedDigitalContents(
     encodedUserId: string,
     limit: string,
     withUsers = false
   ) {
-    const req = Requests.getMostLovedAgreements(encodedUserId, limit, withUsers)
+    const req = Requests.getMostLovedDigitalContents(encodedUserId, limit, withUsers)
     return await this._makeRequest(req)
   }
 
@@ -805,10 +805,10 @@ export class DiscoveryNode {
 
   async getNotifications(
     minBlockNumber: string,
-    agreementIds: string[],
+    digitalContentIds: string[],
     timeout: number
   ) {
-    const req = Requests.getNotifications(minBlockNumber, agreementIds, timeout)
+    const req = Requests.getNotifications(minBlockNumber, digitalContentIds, timeout)
     return await this._makeRequest(req)
   }
 
@@ -817,8 +817,8 @@ export class DiscoveryNode {
     return await this._makeRequest(req)
   }
 
-  async getAgreementListenMilestones(timeout: number) {
-    const req = Requests.getAgreementListenMilestones(timeout)
+  async getDigitalContentListenMilestones(timeout: number) {
+    const req = Requests.getDigitalContentListenMilestones(timeout)
     return await this._makeRequest(req)
   }
 

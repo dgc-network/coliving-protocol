@@ -16,7 +16,7 @@ pagination_next: null
 
 ### artwork
 
- `Optional` **artwork**: [`AgreementArtwork`](AgreementArtwork.md)
+ `Optional` **artwork**: [`DigitalContentArtwork`](DigitalContentArtwork.md)
 
 **`memberof`** DigitalContent
 

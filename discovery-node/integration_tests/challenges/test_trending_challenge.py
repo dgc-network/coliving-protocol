@@ -13,7 +13,7 @@ from src.challenges.trending_challenge import (
 )
 from src.models.rewards.challenge import Challenge
 from src.models.rewards.user_challenge import UserChallenge
-from src.models.agreements.trending_result import TrendingResult
+from src.models.digitalContents.trending_result import TrendingResult
 from src.tasks.calculate_trending_challenges import enqueue_trending_challenges
 from src.trending_strategies.trending_strategy_factory import TrendingStrategyFactory
 from src.trending_strategies.trending_type_and_version import TrendingType
@@ -62,7 +62,7 @@ def test_trending_challenge_should_update(app):
                 user_id=1,
                 rank=1,
                 id="1",
-                type="agreements",
+                type="digitalContents",
                 version="EJ57D",
                 week="2021-08-20",
             )
@@ -86,7 +86,7 @@ def test_trending_challenge_job(app):
     redis_conn = redis.Redis.from_url(url=REDIS_URL)
 
     test_entities = {
-        "agreements": [
+        "digitalContents": [
             {"digital_content_id": 1, "owner_id": 1},
             {"digital_content_id": 2, "owner_id": 2},
             {"digital_content_id": 3, "owner_id": 3},

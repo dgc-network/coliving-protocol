@@ -17,8 +17,8 @@ import TabItem from '@theme/TabItem';
 
 The Coliving JavaScript (TypeScript) SDK allows you to easily build upon and interact with the Coliving protocol.
 - ✍️ Log in with Coliving
-- 🎵 Fetch and stream agreements
-- 🔍 Search and display users, agreements, and contentLists
+- 🎵 Fetch and stream digitalContents
+- 🔍 Search and display users, digitalContents, and contentLists
 
 👷‍♀️ We're actively working on building out more SDK features and functionality - stay tuned!
 
@@ -46,8 +46,8 @@ The Coliving JavaScript (TypeScript) SDK allows you to easily build upon and int
     ### 3. Make your first API call using the SDK!
 
     ```js
-    const agreements = await colivingSdk.discoveryNode.getAgreements()
-    console.log(agreements, 'Agreements fetched!')
+    const digitalContents = await colivingSdk.discoveryNode.getDigitalContents()
+    console.log(digitalContents, 'DigitalContents fetched!')
     ```
 
     ### Full example
@@ -61,8 +61,8 @@ The Coliving JavaScript (TypeScript) SDK allows you to easily build upon and int
 
     const colivingSdk = sdk({ appName: 'My Example App' })
 
-    const agreements = await colivingSdk.discoveryNode.getAgreements()
-    console.log(agreements, 'Agreements fetched!')
+    const digitalContents = await colivingSdk.discoveryNode.getDigitalContents()
+    console.log(digitalContents, 'DigitalContents fetched!')
     ```
 
   </TabItem>
@@ -98,7 +98,7 @@ const colivingSdk = window.colivingSdk({ appName: 'Name of your app goes here' }
 #### 3. Make your first API call using the SDK!
 
 ```js
-const agreements = await colivingSdk.discoveryNode.getAgreements()
+const digitalContents = await colivingSdk.discoveryNode.getDigitalContents()
 ```
 
 #### Full example
@@ -113,8 +113,8 @@ const agreements = await colivingSdk.discoveryNode.getAgreements()
       const colivingSdk = window.colivingSdk({
         appName: "My Example App",
       });
-      const agreements = await colivingSdk.discoveryNode.getAgreements();
-      console.log(agreements, "Agreements fetched!");
+      const digitalContents = await colivingSdk.discoveryNode.getDigitalContents();
+      console.log(digitalContents, "DigitalContents fetched!");
     </script>
   </head>
   <body>

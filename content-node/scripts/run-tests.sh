@@ -133,7 +133,7 @@ rm -r $storagePath
 
 # remove test generated segments folder and .m3u8 file
 rm -rf "./test/segments"
-rm -rf "./test/testAgreement.m3u8"
+rm -rf "./test/testDigitalContent.m3u8"
 
 if [ "$2" == "teardown" ]; then
   tear_down

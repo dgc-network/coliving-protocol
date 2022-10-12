@@ -46,7 +46,7 @@ describe('test Prometheus metrics', async function () {
     assert.ok(!resp.text.includes('blahblahblah'))
   })
 
-  it('Checks the middleware agreements routes with route params', async function () {
+  it('Checks the middleware digitalContents routes with route params', async function () {
     await request(app).get('/ipfs/QmVickyWasHere')
     await request(app).get('/content/QmVickyWasHere')
 

@@ -8,8 +8,8 @@ const {
   updateBlockchainIds,
   getHighestSlot,
   getHighestBlockNumber
-  // calculateAgreementListenMilestones,
-  // calculateAgreementListenMilestonesFromDiscovery
+  // calculateDigitalContentListenMilestones,
+  // calculateDigitalContentListenMilestonesFromDiscovery
 } = require('./utils')
 const { processEmailNotifications } = require('./sendNotificationEmails')
 const { processDownloadAppEmail } = require('./sendDownloadAppEmails')
@@ -24,7 +24,7 @@ const {
 const { drainPublishedMessages, drainPublishedSolanaMessages } = require('./notificationQueue')
 const emailCachePath = './emailCache'
 const processNotifications = require('./processNotifications/index.js')
-const { indexTrendingAgreements } = require('./trendingAgreementProcessing')
+const { indexTrendingDigitalContents } = require('./trendingDigitalContentProcessing')
 const sendNotifications = require('./sendNotifications/index.js')
 const colivingLibsWrapper = require('../colivingLibsInstance')
 
@@ -307,7 +307,7 @@ class NotificationProcessor {
   }
 
   /**
-   * 1. Get the total listens for the most reecently listened to agreements
+   * 1. Get the total listens for the most reecently listened to digitalContents
    * 2. Query the discprov for new notifications starting at minBlock
    * 3. Combine owner object from discprov with digital_content listen counts
    * 4. Process notifications
@@ -326,14 +326,14 @@ class NotificationProcessor {
 
     const { discoveryNode } = colivingLibsWrapper.getColivingLibs()
 
-    const agreementIdOwnersToRequestList = []
+    const digitalContentIdOwnersToRequestList = []
 
     // These digital_content_id get parameters will be used to retrieve digital_content owner info
     // This is required since there is no guarantee that there are indeed notifications for this user
     // The owner info is then used to target listenCount milestone notifications
     // Timeout of 5 minutes
     const timeout = 5 /* min */ * 60 /* sec */ * 1000 /* ms */
-    const { info: metadata, notifications, owners, milestones } = await discoveryNode.getNotifications(minBlock, agreementIdOwnersToRequestList, timeout)
+    const { info: metadata, notifications, owners, milestones } = await discoveryNode.getNotifications(minBlock, digitalContentIdOwnersToRequestList, timeout)
     logger.info(`notifications main indexAll job - query notifications from discovery node complete in ${Date.now() - time}ms`)
     time = Date.now()
 
@@ -358,8 +358,8 @@ class NotificationProcessor {
       time = Date.now()
 
       // Fetch trending digital_content milestones
-      await indexTrendingAgreements(colivingLibs, optimizelyClient, tx)
-      logger.info(`notifications main indexAll job - indexTrendingAgreements complete in ${Date.now() - time}ms`)
+      await indexTrendingDigitalContents(colivingLibs, optimizelyClient, tx)
+      logger.info(`notifications main indexAll job - indexTrendingDigitalContents complete in ${Date.now() - time}ms`)
       time = Date.now()
 
       // Commit

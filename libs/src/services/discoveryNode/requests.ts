@@ -41,7 +41,7 @@ export const getUsers = (
   return req
 }
 
-export const getAgreements = (
+export const getDigitalContents = (
   limit = 100,
   offset = 0,
   idsArray: Nullable<string[]>,
@@ -86,19 +86,19 @@ export const getAgreements = (
     queryParams.with_users = true
   }
 
-  const req = { endpoint: 'agreements', queryParams }
+  const req = { endpoint: 'digitalContents', queryParams }
   return req
 }
 
-export const getAgreementsByHandleAndSlug = (handle: string, slug: string) => {
+export const getDigitalContentsByHandleAndSlug = (handle: string, slug: string) => {
   return {
-    endpoint: 'v1/agreements',
+    endpoint: 'v1/digitalContents',
     method: 'get',
     queryParams: { handle, slug }
   }
 }
 
-export const getAgreementsIncludingUnlisted = (
+export const getDigitalContentsIncludingUnlisted = (
   identifiers: string[],
   withUsers = false
 ) => {
@@ -109,10 +109,10 @@ export const getAgreementsIncludingUnlisted = (
   }
 
   const req = {
-    endpoint: 'agreements_including_unlisted',
+    endpoint: 'digitalContents_including_unlisted',
     method: 'post',
     data: {
-      agreements: identifiers
+      digitalContents: identifiers
     },
     queryParams
   }
@@ -120,14 +120,14 @@ export const getAgreementsIncludingUnlisted = (
   return req
 }
 
-export const getRandomAgreements = (
+export const getRandomDigitalContents = (
   genre: string,
   limit: number,
   exclusionList: number[],
   time: string
 ) => {
   const req = {
-    endpoint: 'agreements/random',
+    endpoint: 'digitalContents/random',
     queryParams: {
       genre,
       limit,
@@ -138,9 +138,9 @@ export const getRandomAgreements = (
   return req
 }
 
-export const getStemsForAgreement = (agreementId: number) => {
+export const getStemsForDigitalContent = (digitalContentId: number) => {
   const req = {
-    endpoint: `stems/${agreementId}`,
+    endpoint: `stems/${digitalContentId}`,
     queryParams: {
       with_users: true
     }
@@ -148,13 +148,13 @@ export const getStemsForAgreement = (agreementId: number) => {
   return req
 }
 
-export const getRemixesOfAgreement = (
-  agreementId: number,
+export const getRemixesOfDigitalContent = (
+  digitalContentId: number,
   limit: number | null = null,
   offset: number | null = null
 ) => {
   const req = {
-    endpoint: `remixes/${agreementId}/children`,
+    endpoint: `remixes/${digitalContentId}/children`,
     queryParams: {
       with_users: true,
       limit,
@@ -164,13 +164,13 @@ export const getRemixesOfAgreement = (
   return req
 }
 
-export const getRemixAgreementParents = (
-  agreementId: number,
+export const getRemixDigitalContentParents = (
+  digitalContentId: number,
   limit: number | null = null,
   offset: number | null = null
 ) => {
   const req = {
-    endpoint: `remixes/${agreementId}/parents`,
+    endpoint: `remixes/${digitalContentId}/parents`,
     queryParams: {
       with_users: true,
       limit,
@@ -180,7 +180,7 @@ export const getRemixAgreementParents = (
   return req
 }
 
-export const getTrendingAgreements = (
+export const getTrendingDigitalContents = (
   genre: string | null = null,
   timeFrame: string | null = null,
   idsArray: number[] | null = null,
@@ -246,7 +246,7 @@ export const getSocialFeed = (
   limit = 100,
   offset = 0,
   withUsers = false,
-  agreementsOnly = false
+  digitalContentsOnly = false
 ) => {
   return {
     endpoint: 'feed',
@@ -255,7 +255,7 @@ export const getSocialFeed = (
       limit,
       offset,
       with_users: withUsers,
-      agreements_only: agreementsOnly
+      digitalContents_only: digitalContentsOnly
     }
   }
 }
@@ -286,16 +286,16 @@ export const getFollowIntersectionUsers = (
   }
 }
 
-export const getAgreementRepostIntersectionUsers = (
+export const getDigitalContentRepostIntersectionUsers = (
   limit = 100,
   offset = 0,
-  repostAgreementId: number,
+  repostDigitalContentId: number,
   followerUserId: number
 ) => {
   return {
     endpoint: 'users',
     urlParams:
-      '/intersection/repost/digital_content/' + repostAgreementId + '/' + followerUserId,
+      '/intersection/repost/digital_content/' + repostDigitalContentId + '/' + followerUserId,
     queryParams: { limit: limit, offset: offset }
   }
 }
@@ -341,14 +341,14 @@ export const getFolloweesForUser = (
   }
 }
 
-export const getRepostersForAgreement = (
+export const getRepostersForDigitalContent = (
   limit = 100,
   offset = 0,
-  repostAgreementId: number
+  repostDigitalContentId: number
 ) => {
   return {
     endpoint: 'users',
-    urlParams: '/reposts/digital_content/' + repostAgreementId,
+    urlParams: '/reposts/digital_content/' + repostDigitalContentId,
     queryParams: { limit: limit, offset: offset }
   }
 }
@@ -365,14 +365,14 @@ export const getRepostersForContentList = (
   }
 }
 
-export const getSaversForAgreement = (
+export const getSaversForDigitalContent = (
   limit = 100,
   offset = 0,
-  saveAgreementId: number
+  saveDigitalContentId: number
 ) => {
   return {
     endpoint: 'users',
-    urlParams: '/saves/digital_content/' + saveAgreementId,
+    urlParams: '/saves/digital_content/' + saveDigitalContentId,
     queryParams: { limit: limit, offset: offset }
   }
 }
@@ -445,9 +445,9 @@ export const getSavedAlbums = (limit = 100, offset = 0, withUsers = false) => {
   }
 }
 
-export const getSavedAgreements = (limit = 100, offset = 0, withUsers = false) => {
+export const getSavedDigitalContents = (limit = 100, offset = 0, withUsers = false) => {
   return {
-    endpoint: 'saves/agreements',
+    endpoint: 'saves/digitalContents',
     queryParams: { limit: limit, offset: offset, with_users: withUsers }
   }
 }
@@ -538,7 +538,7 @@ export const getBestNewReleases = (
   withUsers = false
 ) => {
   return {
-    endpoint: `/v1/full/agreements/best_new_releases`,
+    endpoint: `/v1/full/digital_contents/best_new_releases`,
     queryParams: {
       window,
       limit,
@@ -548,13 +548,13 @@ export const getBestNewReleases = (
   }
 }
 
-export const getMostLovedAgreements = (
+export const getMostLovedDigitalContents = (
   encodedUserId: string,
   limit: string,
   withUsers = false
 ) => {
   return {
-    endpoint: `/v1/full/agreements/most_loved`,
+    endpoint: `/v1/full/digital_contents/most_loved`,
     queryParams: {
       limit,
       user_id: encodedUserId,
@@ -606,14 +606,14 @@ export const getURSMContentNodes = (ownerWallet: string | null) => {
 
 export const getNotifications = (
   minBlockNumber: string,
-  agreementIds: string[],
+  digitalContentIds: string[],
   timeout: number
 ) => {
   return {
     endpoint: 'notifications',
     queryParams: {
       min_block_number: minBlockNumber,
-      digital_content_id: agreementIds
+      digital_content_id: digitalContentIds
     },
     timeout
   }
@@ -632,7 +632,7 @@ export const getSolanaNotifications = (
   }
 }
 
-export const getAgreementListenMilestones = (timeout: number) => {
+export const getDigitalContentListenMilestones = (timeout: number) => {
   return {
     endpoint: 'digital_content_listen_milestones',
     timeout

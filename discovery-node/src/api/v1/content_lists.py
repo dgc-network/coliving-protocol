@@ -44,7 +44,7 @@ from src.utils.db_session import get_db_read_replica
 from src.utils.redis_cache import cache
 from src.utils.redis_metrics import record_metrics
 
-from .models.agreements import digital_content
+from .models.digitalContents import digital_content
 
 logger = logging.getLogger(__name__)
 
@@ -96,8 +96,8 @@ def get_digital_contents_for_content_list(content_list_id, current_user_id=None)
         }
         content_list_digital_contents_map = get_content_list_digital_contents(session, args)
         content_list_digital_contents = content_list_digital_contents_map[content_list_id]
-        agreements = list(map(extend_digital_content, content_list_digital_contents))
-        return agreements
+        digitalContents = list(map(extend_digital_content, content_list_digital_contents))
+        return digitalContents
 
 
 CONTENT_LIST_ROUTE = "/<string:content_list_id>"
@@ -143,18 +143,18 @@ class FullContentList(Resource):
 
         contentList = get_content_list(content_list_id, current_user_id)
         if contentList:
-            agreements = get_digital_contents_for_content_list(content_list_id, current_user_id)
-            contentList["agreements"] = agreements
+            digitalContents = get_digital_contents_for_content_list(content_list_id, current_user_id)
+            contentList["digitalContents"] = digitalContents
         response = success_response([contentList] if contentList else [])
         return response
 
 
-@ns.route("/<string:content_list_id>/agreements")
-class ContentListAgreements(Resource):
+@ns.route("/<string:content_list_id>/digitalContents")
+class ContentListDigitalContents(Resource):
     @record_metrics
     @ns.doc(
-        id="""Get ContentList Agreements""",
-        description="""Fetch agreements within a contentList.""",
+        id="""Get ContentList DigitalContents""",
+        description="""Fetch digitalContents within a contentList.""",
         params={"content_list_id": "A ContentList ID"},
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
@@ -162,8 +162,8 @@ class ContentListAgreements(Resource):
     @cache(ttl_sec=5)
     def get(self, content_list_id):
         decoded_id = decode_with_abort(content_list_id, ns)
-        agreements = get_digital_contents_for_content_list(decoded_id)
-        return success_response(agreements)
+        digitalContents = get_digital_contents_for_content_list(decoded_id)
+        return success_response(digitalContents)
 
 
 content_list_search_result = make_response(
@@ -245,7 +245,7 @@ content_list_favorites_response = make_full_response(
 
 
 @full_ns.route("/<string:content_list_id>/favorites")
-class FullAgreementFavorites(Resource):
+class FullDigitalContentFavorites(Resource):
     @full_ns.doc(
         id="""Get Users From ContentList Favorites""",
         description="""Get users that favorited a content list""",

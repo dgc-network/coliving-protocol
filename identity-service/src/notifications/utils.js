@@ -11,8 +11,8 @@ const colivingLibsWrapper = require('../colivingLibsInstance')
 // default configs
 const startBlock = config.get('notificationStartBlock')
 const startSlot = config.get('solanaNotificationStartSlot')
-// Number of agreements to fetch for new listens on each poll
-const agreementListenMilestonePollCount = 100
+// Number of digitalContents to fetch for new listens on each poll
+const digitalContentListenMilestonePollCount = 100
 
 /**
  * For any users missing blockchain id, here we query the values from discprov and fill them in
@@ -70,21 +70,21 @@ async function updateBlockchainIds () {
 }
 
 /**
- * Queries the discovery node and returns n most listened to agreements, with the
- * total listen count for each of those agreements
+ * Queries the discovery node and returns n most listened to digitalContents, with the
+ * total listen count for each of those digitalContents
  * This includes digital_content listens writen to Solana
  *
- * @returns Array [{agreementId, listenCount}, agreementId, listenCount]
+ * @returns Array [{digitalContentId, listenCount}, digitalContentId, listenCount]
  */
-async function calculateAgreementListenMilestonesFromDiscovery (discoveryNode) {
+async function calculateDigitalContentListenMilestonesFromDiscovery (discoveryNode) {
   // Pull listen count notification data from discovery node
   const timeout = 2 /* min */ * 60 /* sec */ * 1000 /* ms */
-  const agreementListenMilestones = await discoveryNode.getAgreementListenMilestones(timeout)
-  const listenCountBody = agreementListenMilestones.data
+  const digitalContentListenMilestones = await discoveryNode.getDigitalContentListenMilestones(timeout)
+  const listenCountBody = digitalContentListenMilestones.data
   let parsedListenCounts = []
   for (let key in listenCountBody) {
     parsedListenCounts.push({
-      agreementId: key,
+      digitalContentId: key,
       listenCount: listenCountBody[key]
     })
   }
@@ -92,45 +92,45 @@ async function calculateAgreementListenMilestonesFromDiscovery (discoveryNode) {
 }
 
 /**
- * For the n most recently listened to agreements, return the all time listen counts for those agreements
- * where n is `agreementListenMilestonePollCount
+ * For the n most recently listened to digitalContents, return the all time listen counts for those digitalContents
+ * where n is `digitalContentListenMilestonePollCount
  *
- * @returns Array [{agreementId, listenCount}, agreementId, listenCount}]
+ * @returns Array [{digitalContentId, listenCount}, digitalContentId, listenCount}]
  */
-async function calculateAgreementListenMilestones () {
+async function calculateDigitalContentListenMilestones () {
   let recentListenCountQuery = {
-    attributes: [[models.Sequelize.col('agreementId'), 'agreementId'],
+    attributes: [[models.Sequelize.col('digitalContentId'), 'digitalContentId'],
       [models.Sequelize.fn('max', models.Sequelize.col('hour')), 'hour']],
     order: [[models.Sequelize.col('hour'), 'DESC']],
-    group: ['agreementId'],
-    limit: agreementListenMilestonePollCount
+    group: ['digitalContentId'],
+    limit: digitalContentListenMilestonePollCount
   }
 
-  // Distinct agreements
-  let res = await models.AgreementListenCount.findAll(recentListenCountQuery)
-  let agreementsListenedTo = res.map((listenEntry) => listenEntry.agreementId)
+  // Distinct digitalContents
+  let res = await models.DigitalContentListenCount.findAll(recentListenCountQuery)
+  let digitalContentsListenedTo = res.map((listenEntry) => listenEntry.digitalContentId)
 
   // Total listens query
   let totalListens = {
     attributes: [
-      [models.Sequelize.col('agreementId'), 'agreementId'],
+      [models.Sequelize.col('digitalContentId'), 'digitalContentId'],
       [
         models.Sequelize.fn('date_trunc', 'millennium', models.Sequelize.col('hour')),
         'date'
       ],
       [models.Sequelize.fn('sum', models.Sequelize.col('listens')), 'listens']
     ],
-    group: ['agreementId', 'date'],
+    group: ['digitalContentId', 'date'],
     order: [[models.Sequelize.col('listens'), 'DESC']],
     where: {
-      agreementId: { [models.Sequelize.Op.in]: agreementsListenedTo }
+      digitalContentId: { [models.Sequelize.Op.in]: digitalContentsListenedTo }
     }
   }
 
   // Map of listens
-  let totalListenQuery = await models.AgreementListenCount.findAll(totalListens)
+  let totalListenQuery = await models.DigitalContentListenCount.findAll(totalListens)
   let processedTotalListens = totalListenQuery.map((x) => {
-    return { agreementId: x.agreementId, listenCount: x.listens }
+    return { digitalContentId: x.digitalContentId, listenCount: x.listens }
   })
 
   return processedTotalListens
@@ -249,8 +249,8 @@ module.exports = {
   encodeHashId,
   decodeHashId,
   updateBlockchainIds,
-  calculateAgreementListenMilestones,
-  calculateAgreementListenMilestonesFromDiscovery,
+  calculateDigitalContentListenMilestones,
+  calculateDigitalContentListenMilestonesFromDiscovery,
   getHighestBlockNumber,
   getHighestSlot,
   shouldNotifyUser,

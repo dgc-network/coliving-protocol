@@ -15,7 +15,7 @@ def test_populate_user_metadata(app):
         db = get_db()
 
     test_entities = {
-        "agreements": [
+        "digitalContents": [
             {"digital_content_id": 1, "owner_id": 1},
             {"digital_content_id": 2, "owner_id": 1},
             {"digital_content_id": 3, "owner_id": 2},

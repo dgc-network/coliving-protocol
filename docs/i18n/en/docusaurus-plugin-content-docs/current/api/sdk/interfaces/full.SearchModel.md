@@ -57,15 +57,15 @@ ___
 
 ### saved\_digital_contents
 
- `Optional` **saved\_digital_contents**: [`AgreementFull`](full.AgreementFull.md)[]
+ `Optional` **saved\_digital_contents**: [`DigitalContentFull`](full.DigitalContentFull.md)[]
 
 **`memberof`** SearchModel
 
 ___
 
-### agreements
+### digitalContents
 
- **agreements**: [`AgreementFull`](full.AgreementFull.md)[]
+ **digitalContents**: [`DigitalContentFull`](full.DigitalContentFull.md)[]
 
 **`memberof`** SearchModel
 

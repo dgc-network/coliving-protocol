@@ -89,10 +89,10 @@ def init_contracts():
         address=user_factory_address, abi=abi_values["UserFactory"]["abi"]
     )
     digital_content_factory_address = registry_instance.functions.getContract(
-        bytes("AgreementFactory", "utf-8")
+        bytes("DigitalContentFactory", "utf-8")
     ).call()
     digital_content_factory_instance = web3.eth.contract(
-        address=digital_content_factory_address, abi=abi_values["AgreementFactory"]["abi"]
+        address=digital_content_factory_address, abi=abi_values["DigitalContentFactory"]["abi"]
     )
 
     social_feature_factory_address = registry_instance.functions.getContract(

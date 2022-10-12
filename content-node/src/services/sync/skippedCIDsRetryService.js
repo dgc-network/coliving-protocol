@@ -105,7 +105,7 @@ class SkippedCIDsRetryQueue {
         file.storagePath,
         registeredGateways,
         file.fileName,
-        file.agreementBlockchainId
+        file.digitalContentBlockchainId
       )
       if (success) {
         savedFileUUIDs.push(file.fileUUID)

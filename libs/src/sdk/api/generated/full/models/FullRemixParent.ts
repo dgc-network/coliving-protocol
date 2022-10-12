@@ -31,6 +31,6 @@ export interface FullRemixParent {
      * @type {Array<FullRemix>}
      * @memberof FullRemixParent
      */
-    agreements?: Array<FullRemix>;
+    digitalContents?: Array<FullRemix>;
 }
 

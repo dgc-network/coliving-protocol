@@ -57,11 +57,11 @@ logger = logging.getLogger(__name__)
 # How many contentLists to include
 TRENDING_LIMIT = 30
 
-# Cache duration. Faster than trending agreements because
+# Cache duration. Faster than trending digitalContents because
 # contentLists refresh faster; we can afford to cache this more frequently.
 TRENDING_TTL_SEC = 30 * 60
 
-# Max agreements to include in a contentList.
+# Max digitalContents to include in a contentList.
 CONTENT_LIST_AGREEMENTS_LIMIT = 5
 
 
@@ -221,17 +221,17 @@ def make_get_unpopulated_content_lists(session, time_range, strategy):
         content_list_digital_contents_map = get_content_list_digital_contents(session, {"content_lists": contentLists})
 
         for contentList in contentLists:
-            contentList["agreements"] = content_list_digital_contents_map.get(contentList["content_list_id"], [])
+            contentList["digitalContents"] = content_list_digital_contents_map.get(contentList["content_list_id"], [])
 
         results = []
         for contentList in contentLists:
-            # For the BDNxn strategy, filter out contentLists with < 3 agreements from other users
+            # For the BDNxn strategy, filter out contentLists with < 3 digitalContents from other users
             if strategy.version == TrendingVersion.BDNxn:
                 content_list_owner_id = contentList["content_list_owner_id"]
                 digital_content_owner_ids = list(
                     filter(
                         lambda owner_id: owner_id != content_list_owner_id,
-                        map(lambda digital_content: digital_content["owner_id"], contentList["agreements"]),
+                        map(lambda digital_content: digital_content["owner_id"], contentList["digitalContents"]),
                     )
                 )
                 if len(digital_content_owner_ids) < 3:
@@ -295,11 +295,11 @@ def _get_trending_content_lists_with_session(
     )
 
     for contentList in contentLists:
-        contentList["digital_content_count"] = len(contentList["agreements"])
-        contentList["agreements"] = contentList["agreements"][:CONTENT_LIST_AGREEMENTS_LIMIT]
+        contentList["digital_content_count"] = len(contentList["digitalContents"])
+        contentList["digitalContents"] = contentList["digitalContents"][:CONTENT_LIST_AGREEMENTS_LIMIT]
         # Trim digital_content_ids, which ultimately become added_timestamps
-        # and need to match the agreements.
-        trimmed_digital_content_ids = {digital_content["digital_content_id"] for digital_content in contentList["agreements"]}
+        # and need to match the digitalContents.
+        trimmed_digital_content_ids = {digital_content["digital_content_id"] for digital_content in contentList["digitalContents"]}
         content_list_digital_content_ids = contentList["content_list_contents"]["digital_content_ids"]
         content_list_digital_content_ids = list(
             filter(
@@ -314,27 +314,27 @@ def _get_trending_content_lists_with_session(
 
     if with_digital_contents:
         # populate digital_content metadata
-        agreements = []
+        digitalContents = []
         for contentList in contentLists:
-            content_list_digital_contents = contentList["agreements"]
-            agreements.extend(content_list_digital_contents)
-        digital_content_ids = [digital_content["digital_content_id"] for digital_content in agreements]
+            content_list_digital_contents = contentList["digitalContents"]
+            digitalContents.extend(content_list_digital_contents)
+        digital_content_ids = [digital_content["digital_content_id"] for digital_content in digitalContents]
         populated_digital_contents = populate_digital_content_metadata(
-            session, digital_content_ids, agreements, current_user_id
+            session, digital_content_ids, digitalContents, current_user_id
         )
 
         # Add users if necessary
         add_users_to_digital_contents(session, populated_digital_contents, current_user_id)
 
-        # Re-associate agreements with contentLists
+        # Re-associate digitalContents with contentLists
         # digital_content_id -> populated_digital_content
         populated_digital_content_map = {digital_content["digital_content_id"]: digital_content for digital_content in populated_digital_contents}
         for contentList in content_lists_map.values():
-            for i in range(len(contentList["agreements"])):
-                digital_content_id = contentList["agreements"][i]["digital_content_id"]
+            for i in range(len(contentList["digitalContents"])):
+                digital_content_id = contentList["digitalContents"][i]["digital_content_id"]
                 populated = populated_digital_content_map[digital_content_id]
-                contentList["agreements"][i] = populated
-            contentList["agreements"] = list(map(extend_digital_content, contentList["agreements"]))
+                contentList["digitalContents"][i] = populated
+            contentList["digitalContents"] = list(map(extend_digital_content, contentList["digitalContents"]))
 
     # re-sort contentLists to original order, because populate_content_list_metadata
     # unsorts.
@@ -366,7 +366,7 @@ def get_full_trending_content_lists(request, args, strategy):
     time = "week" if time not in ["week", "month", "year"] else time
 
     # If we have a user_id, we call into `get_trending_content_list`
-    # which fetches the cached unpopulated agreements and then
+    # which fetches the cached unpopulated digitalContents and then
     # populates metadata. Otherwise, just
     # retrieve the last cached value.
     #

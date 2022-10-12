@@ -5,7 +5,7 @@ import {
   ContentListRow,
   RepostRow,
   SaveRow,
-  AgreementRow,
+  DigitalContentRow,
   UserRow,
 } from './types/db'
 import { Client } from 'pg'
@@ -14,7 +14,7 @@ import { LISTEN_TABLES } from './setup'
 
 export class PendingUpdates {
   userIds: Set<number> = new Set()
-  agreementIds: Set<number> = new Set()
+  digitalContentIds: Set<number> = new Set()
   contentListIds: Set<number> = new Set()
 
   reposts: Array<RepostRow> = []
@@ -27,7 +27,7 @@ export class PendingUpdates {
         this.saves.length +
         this.follows.length +
         this.userIds.size +
-        this.agreementIds.size +
+        this.digitalContentIds.size +
         this.contentListIds.size ==
       0
     )
@@ -49,13 +49,13 @@ const handlers = {
   },
   aggregate_plays: (row: AggregatePlayRow) => {
     if (!row.play_item_id) return // when could this happen?
-    pending.agreementIds.add(row.play_item_id)
+    pending.digitalContentIds.add(row.play_item_id)
   },
   // TODO: can we do trigger on agg contentList matview?
   saves: (save: SaveRow) => {
     pending.saves.push(save)
     if (save.save_type == 'digital_content') {
-      pending.agreementIds.add(save.save_item_id)
+      pending.digitalContentIds.add(save.save_item_id)
     } else {
       pending.contentListIds.add(save.save_item_id)
     }
@@ -63,7 +63,7 @@ const handlers = {
   reposts: (repost: RepostRow) => {
     pending.reposts.push(repost)
     if (repost.repost_type == 'digital_content') {
-      pending.agreementIds.add(repost.repost_item_id)
+      pending.digitalContentIds.add(repost.repost_item_id)
     } else {
       pending.contentListIds.add(repost.repost_item_id)
     }
@@ -81,8 +81,8 @@ const handlers = {
   users: (user: UserRow) => {
     pending.userIds.add(user.user_id)
   },
-  agreements: (digital_content: AgreementRow) => {
-    pending.agreementIds.add(digital_content.digital_content_id)
+  digitalContents: (digital_content: DigitalContentRow) => {
+    pending.digitalContentIds.add(digital_content.digital_content_id)
   },
   contentLists: (contentList: ContentListRow) => {
     pending.contentListIds.add(contentList.content_list_id)

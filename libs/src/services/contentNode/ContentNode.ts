@@ -1,10 +1,10 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios'
 import FormData from 'form-data'
 import retry from 'async-retry'
-import { AgreementMetadata, Utils, uuid } from '../../utils'
+import { DigitalContentMetadata, Utils, uuid } from '../../utils'
 import {
   userSchemaType,
-  agreementSchemaType,
+  digitalContentSchemaType,
   Schemas
 } from '../schemaValidator/schemaValidator'
 import type { Web3Manager } from '../web3Manager'
@@ -111,14 +111,14 @@ export class ContentNode {
   /**
    * Checks if a download is available from provided content node endpoints
    * @param endpoints content node endpoints
-   * @param agreementId
+   * @param digitalContentId
    */
-  static async checkIfDownloadAvailable(endpoints: string, agreementId: number) {
+  static async checkIfDownloadAvailable(endpoints: string, digitalContentId: number) {
     const primary = ContentNode.getPrimary(endpoints)
     if (primary) {
       const req: AxiosRequestConfig = {
         baseURL: primary,
-        url: `/agreements/download_status/${agreementId}`,
+        url: `/digital_contents/download_status/${digitalContentId}`,
         method: 'get'
       }
       const { data: body } = await axios(req)
@@ -255,7 +255,7 @@ export class ContentNode {
    * Uploads creator content to a content node
    * @param metadata the creator metadata
    */
-  async uploadCreatorContent(metadata: AgreementMetadata, blockNumber = null) {
+  async uploadCreatorContent(metadata: DigitalContentMetadata, blockNumber = null) {
     // this does the actual validation before sending to the content node
     // if validation fails, validate() will throw an error
     try {
@@ -302,58 +302,58 @@ export class ContentNode {
 
   /**
    * Uploads a digital_content (including digitalcoin and image content) to a content node
-   * @param agreementFile the digitalcoin content
+   * @param digitalContentFile the digitalcoin content
    * @param coverArtFile the image content
    * @param metadata the metadata for the digital_content
    * @param onProgress an optional on progress callback
    */
-  async uploadAgreementContent(
-    agreementFile: File,
+  async uploadDigitalContentContent(
+    digitalContentFile: File,
     coverArtFile: File,
-    metadata: AgreementMetadata,
+    metadata: DigitalContentMetadata,
     onProgress: ProgressCB = () => {}
   ) {
     let loadedImageBytes = 0
-    let loadedAgreementBytes = 0
+    let loadedDigitalContentBytes = 0
     let totalImageBytes = 0
-    let totalAgreementBytes = 0
+    let totalDigitalContentBytes = 0
     const onImageProgress: ProgressCB = (loaded, total) => {
       loadedImageBytes = loaded
       if (!totalImageBytes) totalImageBytes += total
-      if (totalImageBytes && totalAgreementBytes) {
+      if (totalImageBytes && totalDigitalContentBytes) {
         onProgress(
-          loadedImageBytes + loadedAgreementBytes,
-          totalImageBytes + totalAgreementBytes
+          loadedImageBytes + loadedDigitalContentBytes,
+          totalImageBytes + totalDigitalContentBytes
         )
       }
     }
-    const onAgreementProgress: ProgressCB = (loaded, total) => {
-      loadedAgreementBytes = loaded
-      if (!totalAgreementBytes) totalAgreementBytes += total
-      if ((!coverArtFile || totalImageBytes) && totalAgreementBytes) {
+    const onDigitalContentProgress: ProgressCB = (loaded, total) => {
+      loadedDigitalContentBytes = loaded
+      if (!totalDigitalContentBytes) totalDigitalContentBytes += total
+      if ((!coverArtFile || totalImageBytes) && totalDigitalContentBytes) {
         onProgress(
-          loadedImageBytes + loadedAgreementBytes,
-          totalImageBytes + totalAgreementBytes
+          loadedImageBytes + loadedDigitalContentBytes,
+          totalImageBytes + totalDigitalContentBytes
         )
       }
     }
 
     const uploadPromises : any[]|null = []
-    uploadPromises.push(this.uploadAgreementAudio(agreementFile, onAgreementProgress))
+    uploadPromises.push(this.uploadDigitalContentAudio(digitalContentFile, onDigitalContentProgress))
     if (coverArtFile)
       uploadPromises.push(this.uploadImage(coverArtFile, true, onImageProgress))
 
-    const [agreementContentResp, coverArtResp] = await Promise.all(uploadPromises)
-    metadata.digital_content_segments = agreementContentResp.digital_content_segments
+    const [digitalContentContentResp, coverArtResp] = await Promise.all(uploadPromises)
+    metadata.digital_content_segments = digitalContentContentResp.digital_content_segments
     if (metadata.download?.is_downloadable) {
-      metadata.download.cid = agreementContentResp.transcodedAgreementCID
+      metadata.download.cid = digitalContentContentResp.transcodedDigitalContentCID
     }
 
-    const sourceFile = agreementContentResp.source_file
+    const sourceFile = digitalContentContentResp.source_file
     if (!sourceFile) {
       throw new Error(
         `Invalid or missing sourceFile in response: ${JSON.stringify(
-          agreementContentResp
+          digitalContentContentResp
         )}`
       )
     }
@@ -363,8 +363,8 @@ export class ContentNode {
     }
     // Creates new digital_content entity on content node, making digital_content's metadata available
     // @returns {Object} {cid: CID of digital_content metadata, id: id of digital_content to be used with associate function}
-    const metadataResp = await this.uploadAgreementMetadata(metadata, sourceFile)
-    return { ...metadataResp, ...agreementContentResp }
+    const metadataResp = await this.uploadDigitalContentMetadata(metadata, sourceFile)
+    return { ...metadataResp, ...digitalContentContentResp }
   }
 
   /**
@@ -374,18 +374,18 @@ export class ContentNode {
    * @param metadata
    * @param sourceFile
    */
-  async uploadAgreementMetadata(metadata: AgreementMetadata, sourceFile?: string) {
+  async uploadDigitalContentMetadata(metadata: DigitalContentMetadata, sourceFile?: string) {
     // this does the actual validation before sending to the content node
     // if validation fails, validate() will throw an error
     try {
-      this.schemas[agreementSchemaType].validate?.(metadata)
+      this.schemas[digitalContentSchemaType].validate?.(metadata)
     } catch (e) {
       console.error('Error validating digital_content metadata', e)
     }
 
     const { data: body } = await this._makeRequest(
       {
-        url: '/agreements/metadata',
+        url: '/digital_contents/metadata',
         method: 'post',
         data: {
           metadata,
@@ -399,26 +399,26 @@ export class ContentNode {
 
   /**
    * Creates a digital_content on the content node, associating digital_content id with file content
-   * @param colivingAgreementId returned by digital_content creation on-blockchain
+   * @param colivingDigitalContentId returned by digital_content creation on-blockchain
    * @param metadataFileUUID unique ID for metadata file
    * @param blockNumber
-   * @param transcodedAgreementUUID the CID for the transcoded master if this is a first-time upload
+   * @param transcodedDigitalContentUUID the CID for the transcoded master if this is a first-time upload
    */
-  async associateAgreement(
-    colivingAgreementId: number,
+  async associateDigitalContent(
+    colivingDigitalContentId: number,
     metadataFileUUID: string,
     blockNumber: number,
-    transcodedAgreementUUID?: string
+    transcodedDigitalContentUUID?: string
   ) {
     this.maxBlockNumber = Math.max(this.maxBlockNumber, blockNumber)
     await this._makeRequest({
-      url: '/agreements',
+      url: '/digitalContents',
       method: 'post',
       data: {
-        blockchainAgreementId: colivingAgreementId,
+        blockchainDigitalContentId: colivingDigitalContentId,
         metadataFileUUID,
         blockNumber: this.maxBlockNumber,
-        transcodedAgreementUUID
+        transcodedDigitalContentUUID
       }
     })
   }
@@ -452,11 +452,11 @@ export class ContentNode {
    * @param onProgress called with loaded bytes and total bytes
    * @return response body
    */
-  async uploadAgreementAudio(file: File, onProgress: ProgressCB) {
-    return await this.handleAsyncAgreementUpload(file, onProgress)
+  async uploadDigitalContentAudio(file: File, onProgress: ProgressCB) {
+    return await this.handleAsyncDigitalContentUpload(file, onProgress)
   }
 
-  async handleAsyncAgreementUpload(file: File, onProgress: ProgressCB) {
+  async handleAsyncDigitalContentUpload(file: File, onProgress: ProgressCB) {
     const {
       data: { uuid }
     } = await this._uploadFile(file, '/digital_content_async', onProgress)
@@ -468,11 +468,11 @@ export class ContentNode {
     const start = Date.now()
     while (Date.now() - start < MAX_AGREEMENT_TRANSCODE_TIMEOUT) {
       try {
-        const { status, resp } = await this.getAgreementContentProcessingStatus(
+        const { status, resp } = await this.getDigitalContentContentProcessingStatus(
           uuid
         )
         // Should have a body structure of:
-        //   { transcodedAgreementCID, transcodedAgreementUUID, digital_content_segments, source_file }
+        //   { transcodedDigitalContentCID, transcodedDigitalContentUUID, digital_content_segments, source_file }
         if (status && status === 'DONE') return resp
         if (status && status === 'FAILED') {
           await this._handleErrorHelper(
@@ -508,7 +508,7 @@ export class ContentNode {
    * @param uuid the uuid of the digital_content transcoding task
    * @returns the status, and the success or failed response if the task is complete
    */
-  async getAgreementContentProcessingStatus(uuid: string) {
+  async getDigitalContentContentProcessingStatus(uuid: string) {
     const { data: body } = await this._makeRequest({
       url: '/async_processing_status',
       params: {
@@ -540,7 +540,7 @@ export class ContentNode {
       return {
         status,
         userBlockNumber: user.blocknumber,
-        agreementBlockNumber: user.digital_content_blocknumber,
+        digitalContentBlockNumber: user.digital_content_blocknumber,
         // Whether or not the endpoint is behind in syncing
         isBehind:
           status.latestBlockNumber <

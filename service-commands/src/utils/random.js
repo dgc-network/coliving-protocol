@@ -50,7 +50,7 @@ const getRandomUser = () => {
 /**
  * Generates a random digital_content.
  */
-const getRandomAgreementMetadata = userId => {
+const getRandomDigitalContentMetadata = userId => {
   return {
     owner_id: userId,
     cover_art: null,
@@ -79,15 +79,15 @@ const getRandomAgreementMetadata = userId => {
  * @notice this depends on AGREEMENT_URLS pointing to valid urls in S3. Ideally we'd be able to
  *    randomly select any file from the parent folder.
  */
-const getRandomAgreementFilePath = async localDirPath => {
+const getRandomDigitalContentFilePath = async localDirPath => {
   if (!fs.existsSync(localDirPath)) {
     fs.mkdirSync(localDirPath)
   }
 
-  const agreementURL = _.sample(AGREEMENT_URLS)
+  const digitalContentURL = _.sample(AGREEMENT_URLS)
   const targetFilePath = path.resolve(localDirPath, `${genRandomString(6)}.mp3`)
 
-  const response = await fetch(agreementURL)
+  const response = await fetch(digitalContentURL)
   if (!response.ok) {
     throw new Error(`unexpected response ${response.statusText}`)
   }
@@ -206,9 +206,9 @@ const getRandomUserMetadata = (email, password) => {
 module.exports = {
   genRandomUsers,
   getRandomUser,
-  getRandomAgreementMetadata,
+  getRandomDigitalContentMetadata,
   genRandomString,
-  getRandomAgreementFilePath,
+  getRandomDigitalContentFilePath,
   getRandomImageFilePath,
   r6,
   getRandomPassword,

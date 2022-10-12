@@ -1,10 +1,10 @@
 ---
-sidebar_label: '$LIVE'
+sidebar_label: '$DGCO'
 sidebar_position: 1
-description: '$LIVE — the Coliving platform token underpinning value-added actions in Coliving'
+description: '$DGCO — the Coliving platform token underpinning value-added actions in Coliving'
 ---
 
-# $LIVE
+# $DGCO
 
 #### How it Works
 
@@ -22,7 +22,7 @@ LIVE is staked by node operators to secure the network. The larger the stake, th
 
 **FEATURE ACCESS**
 
-LIVE serves as collateral to unlock additional landlord tooling. Early examples incubated by the community include landlords tokens, badges, and earnings multipliers. In the future, residents may delegate LIVE to specific landlords and curators to share in their growth on the platform.
+LIVE serves as collateral to unlock additional author tooling. Early examples incubated by the community include landlords tokens, badges, and earnings multipliers. In the future, residents may delegate LIVE to specific landlords and curators to share in their growth on the platform.
 
 **GOVERNANCE**
 

@@ -10,7 +10,7 @@ const CID = require('cids')
 const CID_DIRECTORY_REGEX =
   /\/(?<outer>Qm[a-zA-Z0-9]{44})\/?(?<inner>Qm[a-zA-Z0-9]{44})?/
 
-// variable to cache if we've run `ensureDirPathExists` in getTmpAgreementUploadArtifactsPath so we don't run
+// variable to cache if we've run `ensureDirPathExists` in getTmpDigitalContentUploadArtifactsPath so we don't run
 // it every time a digital_content is uploaded
 let TMP_AGREEMENT_ARTIFACTS_CREATED = false
 
@@ -27,7 +27,7 @@ class DiskManager {
    * is we should be able to delete the contents of this folder without scanning through other folders with the
    * naming scheme.
    */
-  static getTmpAgreementUploadArtifactsPath() {
+  static getTmpDigitalContentUploadArtifactsPath() {
     const dirPath = path.join(
       config.get('storagePath'),
       'files',

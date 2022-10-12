@@ -21,8 +21,8 @@ custom_edit_url: null
 
 ___
 
-### agreements
+### digitalContents
 
- `Optional` **agreements**: [`AgreementFull`](full.AgreementFull.md)[]
+ `Optional` **digitalContents**: [`DigitalContentFull`](full.DigitalContentFull.md)[]
 
 **`memberof`** RemixesResponse

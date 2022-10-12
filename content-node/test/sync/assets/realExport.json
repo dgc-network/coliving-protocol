@@ -24,7 +24,7 @@
             "updatedAt": "2022-01-19T16:47:10.447Z"
           }
         ],
-        "agreements": [
+        "digitalContents": [
           {
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
             "clock": 37,
@@ -173,7 +173,7 @@
           {
             "fileUUID": "78afc0fb-6278-4d68-8888-430b7edc0064",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": null,
+            "digitalContentBlockchainId": null,
             "multihash": "QmcyuCtU24R2N9Ejs5tsm7vebBhs3g6Qnhh6w3ZoEYBrUE",
             "sourceFile": null,
             "fileName": null,
@@ -188,7 +188,7 @@
           {
             "fileUUID": "0f976b75-336b-46db-b5d1-8cf4555d4028",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmRcVgkrvsyUeY3x3zvc6EhDSFjZJ8QD5qyKowHsPeWKFT",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -203,7 +203,7 @@
           {
             "fileUUID": "a2c2cb83-43da-4147-a09c-668bbc02c7e5",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmQQhdN8918ix1MibmSek9orTLKqZSSzqUvJAtEfMqTLku",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -218,7 +218,7 @@
           {
             "fileUUID": "59a0e87c-bb87-469b-b1d7-e74fa725a85a",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSMQGu2vrE6UwXiZDCxyJwTsCcpPrYNBPJBL4by4LKukd",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -233,7 +233,7 @@
           {
             "fileUUID": "58a399e4-3994-4577-b015-7c2bbccd96e9",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmdkuVqHUDhYePhXska15UEZHPike11NPHu5tsy9eY28Ch",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -248,7 +248,7 @@
           {
             "fileUUID": "ed5f80d5-6c48-432e-b037-357ec787bcd3",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmZQd76dJjyd4bLL29gT5urxqY6JRS9vjnAUpuwkS91vKJ",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -263,7 +263,7 @@
           {
             "fileUUID": "75d9e248-893e-4ea4-a93e-d8d89cf903b9",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmVLLQTLByH65Ht2J3bKyFXZaKjUDho6742dSqk9nqxvgP",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -278,7 +278,7 @@
           {
             "fileUUID": "91da240b-f1c4-46a8-823f-f511557d2704",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmZJipWYtJDebvUbti2xSA3cijYxQ6YmVnkotA5SXiqgGF",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -293,7 +293,7 @@
           {
             "fileUUID": "2566005b-217d-4dcf-85f9-2836fd5fe30d",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "Qmb5QCepqy2k26gvFKALcP74YvAaPS3AtCqNhXeH9YGMkB",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -308,7 +308,7 @@
           {
             "fileUUID": "1e56ea90-d85f-45da-b547-cfed497b7a5e",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmRiU48Xr3vD3n6KhzJAvcuchmPbbumBefa3y7aeNaBzan",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -323,7 +323,7 @@
           {
             "fileUUID": "27848af3-fa4d-445e-b996-eb435552bfd5",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmZwxEQSjS6uruo4vXwkh6fUhvjBK4Yp83qq9AHX4R38tr",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -338,7 +338,7 @@
           {
             "fileUUID": "a98aea07-3a0e-4299-880d-da2e7c69e704",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmPyxEWcfJ9qnQm8CNPChzLoDinhTbi9zVtyGTJBeoNDxB",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -353,7 +353,7 @@
           {
             "fileUUID": "0fc098bc-276c-494b-9f4c-8dac7c64eafc",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmULEs3yq1kCVMBoiSMSVv7JopVz6K3TgncqcriioNMdWi",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -368,7 +368,7 @@
           {
             "fileUUID": "82346229-98b9-478f-9d55-0488cb352f59",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmaqSv1buZQ6enNwsae4B3paPDAXjcXZTRY6cUscPoc2ik",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -383,7 +383,7 @@
           {
             "fileUUID": "d7b18470-4bf1-45c8-8dd0-1d4b1da4d597",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmYG4TY55oLoe5RjsABJmcUrAUWgyCc8jRpvBTWkT7ZNjH",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -398,7 +398,7 @@
           {
             "fileUUID": "d26a3115-7c93-4b80-94e0-1a00ca40a8e4",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmXyGwndsBXmM2xCW4VaWkRqp3pv4Cr6yAKfHnYDDTn63d",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -413,7 +413,7 @@
           {
             "fileUUID": "16dd9336-899c-4b45-a4c7-cd6b80c9ef0a",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmdjBYvYirb4ANjK55ktmE4eokEKVsej9tjeWuZDxasHoh",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -428,7 +428,7 @@
           {
             "fileUUID": "641024f8-d963-46a4-bd20-fbdc4a395f66",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmWbAbeaDGSM3LiARCKk2EWnLtgUqKcD3hK4nvHwdUZJK9",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -443,7 +443,7 @@
           {
             "fileUUID": "d08e3c0b-1ae6-445a-9686-2fe1ab4f10a0",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmTacAUYq6qUdMqkNEUPohYLbAu3eEetwAW9QYn53TWmj7",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -458,7 +458,7 @@
           {
             "fileUUID": "5882f542-4170-4ea5-a26f-17eeeab87c91",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmNbt57KLtgbEKz97qSoJDZ2DteEjmg455ZBvnoCHySQ9q",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -473,7 +473,7 @@
           {
             "fileUUID": "64763fc5-b3d8-40d8-ab92-04c3fb74e974",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmNpX6fcViqDTBBJmVKsAVcNmQdqZRV4zqzUuxfP4DJtot",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -488,7 +488,7 @@
           {
             "fileUUID": "fef4d1cd-5365-469d-99e4-36ab6a6bf5bf",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmcKcZfASQZJUVaHKtFxN7CqyhwD9oiQNeCkZxfDo36EKA",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -503,7 +503,7 @@
           {
             "fileUUID": "f6cb0f07-92a5-4476-b2c7-b961ec669391",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmZw9kq8iVcVtNzRapsS9K3zRiaLNsa8bD9Dbw4QBXzHnJ",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -518,7 +518,7 @@
           {
             "fileUUID": "9974f644-ccc9-4b5a-8f8a-1dba8446d7b7",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmYCWrB5vGJ3REaTRkL35QgpZNDN25E1XtEpMQVctPVSEx",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -533,7 +533,7 @@
           {
             "fileUUID": "7ff369a5-3290-4439-825c-70a13526a3f5",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmX9ePR6kL5djVNvGKzXogjigPfRtA75XKj3d71ZiAQELF",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -548,7 +548,7 @@
           {
             "fileUUID": "9125e4a0-b791-44db-9a9c-93d99c58be0b",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmPuDcNoaa8NmSa7mYPWneNDPqMmwiDoTnr6pAsrAg5CPY",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -563,7 +563,7 @@
           {
             "fileUUID": "6f71b5f4-b3e1-4cf6-884e-71a36fe716ef",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmZjt4SvTXhTqeoKTNPAKTPwfd8QadRWz9tjKXg9fEwDSY",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -578,7 +578,7 @@
           {
             "fileUUID": "93d60d20-4873-4d38-a57d-51ce22d31630",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmXLcCb5PTVtUusxtyo3pckJjCqeZKUt5VNv1FAbEdiRHn",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -593,7 +593,7 @@
           {
             "fileUUID": "1108cf26-5f2b-4302-9e84-da270df9f0f5",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmX1mAPkDpBTooEAoZbLv1PWFfaaq2aQ9gLX2Bcktd5TXT",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -608,7 +608,7 @@
           {
             "fileUUID": "cf05e17c-8c8a-4187-9a7c-7e59b13d01bc",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmPhEZL5o7uAtes7g1kmxRGaLeRXE9YF4h8CPHk1KYVvSk",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -623,7 +623,7 @@
           {
             "fileUUID": "2606fbb7-3361-4f18-b16f-ece16d5ec5e9",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmZEnMbMH9FzkLHn4LW4CGjW5FPHg6dw3PCYhHjCXrLZXy",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -638,7 +638,7 @@
           {
             "fileUUID": "31120186-3eb0-4853-8063-27e648596660",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmekrmmfT4oHvRst8aYioWLTPGAGHcNEj3as8cVgo1TAE8",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -653,7 +653,7 @@
           {
             "fileUUID": "34ae93a9-780a-4e67-af00-e75efe697b28",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmckKtz4nhmwsyFGNJ8pLpLSPPkgPGXq44bQRQwi75XTdp",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -668,7 +668,7 @@
           {
             "fileUUID": "7ee73655-b365-4822-ab4d-84802f886614",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmbJ9JdEDT6bzdcsY5grX71nq2etzNZXsCM6H84k1GMFas",
             "sourceFile": "3f70aa4d-827e-4b8f-a7f0-13324f83deb3.mp3",
             "fileName": null,
@@ -683,7 +683,7 @@
           {
             "fileUUID": "daca28dc-11f2-4d25-89a8-cb8b868d28bd",
             "cnodeUserUUID": "b0a4c279-8c11-48b3-b6fa-65bca9b42846",
-            "agreementBlockchainId": null,
+            "digitalContentBlockchainId": null,
             "multihash": "QmcYCwJHfCScqDFEXd78hkdFbyn98mJWXhej4QhQx2aPaZ",
             "sourceFile": null,
             "fileName": null,

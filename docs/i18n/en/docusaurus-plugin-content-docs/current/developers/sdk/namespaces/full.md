@@ -8,17 +8,17 @@ custom_edit_url: null
 
 ## Enumerations
 
-### GetRecommendedAgreementsTimeEnum
+### GetRecommendedDigitalContentsTimeEnum
 
- **GetRecommendedAgreementsTimeEnum**: `Object`
+ **GetRecommendedDigitalContentsTimeEnum**: `Object`
 
 **`export`**
 
 ___
 
-### GetRecommendedAgreementsWithVersionTimeEnum
+### GetRecommendedDigitalContentsWithVersionTimeEnum
 
- **GetRecommendedAgreementsWithVersionTimeEnum**: `Object`
+ **GetRecommendedDigitalContentsWithVersionTimeEnum**: `Object`
 
 **`export`**
 
@@ -40,17 +40,17 @@ ___
 
 ___
 
-### GetAgreementsByUserHandleSortEnum
+### GetDigitalContentsByUserHandleSortEnum
 
- **GetAgreementsByUserHandleSortEnum**: `Object`
+ **GetDigitalContentsByUserHandleSortEnum**: `Object`
 
 **`export`**
 
 ___
 
-### GetAgreementsByUserSortEnum
+### GetDigitalContentsByUserSortEnum
 
- **GetAgreementsByUserSortEnum**: `Object`
+ **GetDigitalContentsByUserSortEnum**: `Object`
 
 **`export`**
 
@@ -72,25 +72,25 @@ ___
 
 ___
 
-### GetTrendingAgreementsTimeEnum
+### GetTrendingDigitalContentsTimeEnum
 
- **GetTrendingAgreementsTimeEnum**: `Object`
-
-**`export`**
-
-___
-
-### GetTrendingAgreementsWithVersionTimeEnum
-
- **GetTrendingAgreementsWithVersionTimeEnum**: `Object`
+ **GetTrendingDigitalContentsTimeEnum**: `Object`
 
 **`export`**
 
 ___
 
-### GetUnderTheRadarAgreementsFilterEnum
+### GetTrendingDigitalContentsWithVersionTimeEnum
 
- **GetUnderTheRadarAgreementsFilterEnum**: `Object`
+ **GetTrendingDigitalContentsWithVersionTimeEnum**: `Object`
+
+**`export`**
+
+___
+
+### GetUnderTheRadarDigitalContentsFilterEnum
+
+ **GetUnderTheRadarDigitalContentsFilterEnum**: `Object`
 
 **`export`**
 
@@ -142,9 +142,9 @@ ___
 
 ___
 
-### AgreementsApi
+### DigitalContentsApi
 
- **AgreementsApi**: `Object`
+ **DigitalContentsApi**: `Object`
 
 ___
 
@@ -346,33 +346,33 @@ ___
 
 ___
 
-### FullAgreementResponse
+### FullDigitalContentResponse
 
- **FullAgreementResponse**: `Object`
+ **FullDigitalContentResponse**: `Object`
 
 **`export`**
 
-**`interface`** FullAgreementResponse
+**`interface`** FullDigitalContentResponse
 
 ___
 
-### FullAgreements
+### FullDigitalContents
 
- **FullAgreements**: `Object`
+ **FullDigitalContents**: `Object`
 
 **`export`**
 
-**`interface`** FullAgreements
+**`interface`** FullDigitalContents
 
 ___
 
-### FullAgreementsResponse
+### FullDigitalContentsResponse
 
- **FullAgreementsResponse**: `Object`
+ **FullDigitalContentsResponse**: `Object`
 
 **`export`**
 
-**`interface`** FullAgreementsResponse
+**`interface`** FullDigitalContentsResponse
 
 ___
 
@@ -396,9 +396,9 @@ ___
 
 ___
 
-### GetBulkAgreementsRequest
+### GetBulkDigitalContentsRequest
 
- **GetBulkAgreementsRequest**: `Object`
+ **GetBulkDigitalContentsRequest**: `Object`
 
 ___
 
@@ -420,9 +420,9 @@ ___
 
 ___
 
-### GetMostLovedAgreementsRequest
+### GetMostLovedDigitalContentsRequest
 
- **GetMostLovedAgreementsRequest**: `Object`
+ **GetMostLovedDigitalContentsRequest**: `Object`
 
 ___
 
@@ -432,15 +432,15 @@ ___
 
 ___
 
-### GetRecommendedAgreementsRequest
+### GetRecommendedDigitalContentsRequest
 
- **GetRecommendedAgreementsRequest**: `Object`
+ **GetRecommendedDigitalContentsRequest**: `Object`
 
 ___
 
-### GetRecommendedAgreementsWithVersionRequest
+### GetRecommendedDigitalContentsWithVersionRequest
 
- **GetRecommendedAgreementsWithVersionRequest**: `Object`
+ **GetRecommendedDigitalContentsWithVersionRequest**: `Object`
 
 ___
 
@@ -450,9 +450,9 @@ ___
 
 ___
 
-### GetRemixableAgreementsRequest
+### GetRemixableDigitalContentsRequest
 
- **GetRemixableAgreementsRequest**: `Object`
+ **GetRemixableDigitalContentsRequest**: `Object`
 
 ___
 
@@ -520,39 +520,39 @@ ___
 
 ___
 
-### GetAgreementRemixParentsRequest
+### GetDigitalContentRemixParentsRequest
 
- **GetAgreementRemixParentsRequest**: `Object`
-
-___
-
-### GetAgreementRemixesRequest
-
- **GetAgreementRemixesRequest**: `Object`
+ **GetDigitalContentRemixParentsRequest**: `Object`
 
 ___
 
-### GetAgreementRequest
+### GetDigitalContentRemixesRequest
 
- **GetAgreementRequest**: `Object`
-
-___
-
-### GetAgreementStemsRequest
-
- **GetAgreementStemsRequest**: `Object`
+ **GetDigitalContentRemixesRequest**: `Object`
 
 ___
 
-### GetAgreementsByUserHandleRequest
+### GetDigitalContentRequest
 
- **GetAgreementsByUserHandleRequest**: `Object`
+ **GetDigitalContentRequest**: `Object`
 
 ___
 
-### GetAgreementsByUserRequest
+### GetDigitalContentStemsRequest
 
- **GetAgreementsByUserRequest**: `Object`
+ **GetDigitalContentStemsRequest**: `Object`
+
+___
+
+### GetDigitalContentsByUserHandleRequest
+
+ **GetDigitalContentsByUserHandleRequest**: `Object`
+
+___
+
+### GetDigitalContentsByUserRequest
+
+ **GetDigitalContentsByUserRequest**: `Object`
 
 ___
 
@@ -568,45 +568,45 @@ ___
 
 ___
 
-### GetTrendingAgreementIDsRequest
+### GetTrendingDigitalContentIDsRequest
 
- **GetTrendingAgreementIDsRequest**: `Object`
-
-___
-
-### GetTrendingAgreementsIDsWithVersionRequest
-
- **GetTrendingAgreementsIDsWithVersionRequest**: `Object`
+ **GetTrendingDigitalContentIDsRequest**: `Object`
 
 ___
 
-### GetTrendingAgreementsRequest
+### GetTrendingDigitalContentsIDsWithVersionRequest
 
- **GetTrendingAgreementsRequest**: `Object`
-
-___
-
-### GetTrendingAgreementsWithVersionRequest
-
- **GetTrendingAgreementsWithVersionRequest**: `Object`
+ **GetTrendingDigitalContentsIDsWithVersionRequest**: `Object`
 
 ___
 
-### GetUnderTheRadarAgreementsRequest
+### GetTrendingDigitalContentsRequest
 
- **GetUnderTheRadarAgreementsRequest**: `Object`
-
-___
-
-### GetUndergroundTrendingAgreementsRequest
-
- **GetUndergroundTrendingAgreementsRequest**: `Object`
+ **GetTrendingDigitalContentsRequest**: `Object`
 
 ___
 
-### GetUndergroundTrendingAgreementsWithVersionRequest
+### GetTrendingDigitalContentsWithVersionRequest
 
- **GetUndergroundTrendingAgreementsWithVersionRequest**: `Object`
+ **GetTrendingDigitalContentsWithVersionRequest**: `Object`
+
+___
+
+### GetUnderTheRadarDigitalContentsRequest
+
+ **GetUnderTheRadarDigitalContentsRequest**: `Object`
+
+___
+
+### GetUndergroundTrendingDigitalContentsRequest
+
+ **GetUndergroundTrendingDigitalContentsRequest**: `Object`
+
+___
+
+### GetUndergroundTrendingDigitalContentsWithVersionRequest
+
+ **GetUndergroundTrendingDigitalContentsWithVersionRequest**: `Object`
 
 ___
 
@@ -646,9 +646,9 @@ ___
 
 ___
 
-### GetUsersAgreementHistoryRequest
+### GetUsersDigitalContentHistoryRequest
 
- **GetUsersAgreementHistoryRequest**: `Object`
+ **GetUsersDigitalContentHistoryRequest**: `Object`
 
 ___
 
@@ -864,63 +864,63 @@ ___
 
 ___
 
-### AgreementArtwork
+### DigitalContentArtwork
 
- **AgreementArtwork**: `Object`
+ **DigitalContentArtwork**: `Object`
 
 **`export`**
 
-**`interface`** AgreementArtwork
+**`interface`** DigitalContentArtwork
 
 ___
 
-### AgreementFavoritesResponseFull
+### DigitalContentFavoritesResponseFull
 
- **AgreementFavoritesResponseFull**: `Object`
+ **DigitalContentFavoritesResponseFull**: `Object`
 
 **`export`**
 
-**`interface`** AgreementFavoritesResponseFull
+**`interface`** DigitalContentFavoritesResponseFull
 
 ___
 
-### AgreementFull
+### DigitalContentFull
 
- **AgreementFull**: `Object`
+ **DigitalContentFull**: `Object`
 
 **`export`**
 
-**`interface`** AgreementFull
+**`interface`** DigitalContentFull
 
 ___
 
-### AgreementId
+### DigitalContentId
 
- **AgreementId**: `Object`
+ **DigitalContentId**: `Object`
 
 **`export`**
 
-**`interface`** AgreementId
+**`interface`** DigitalContentId
 
 ___
 
-### AgreementRepostsResponseFull
+### DigitalContentRepostsResponseFull
 
- **AgreementRepostsResponseFull**: `Object`
+ **DigitalContentRepostsResponseFull**: `Object`
 
 **`export`**
 
-**`interface`** AgreementRepostsResponseFull
+**`interface`** DigitalContentRepostsResponseFull
 
 ___
 
-### AgreementSegment
+### DigitalContentSegment
 
- **AgreementSegment**: `Object`
+ **DigitalContentSegment**: `Object`
 
 **`export`**
 
-**`interface`** AgreementSegment
+**`interface`** DigitalContentSegment
 
 ___
 

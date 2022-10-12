@@ -173,23 +173,23 @@ async function verifyDelistedContent ({ type, values, action }) {
   // If the type is AGREEMENT, we also need to check the stream route
   if (type === 'AGREEMENT') {
     // Batch requests
-    let contentNodeAgreementResponses = []
-    const checkAgreementDelistStatusRequests = values.map(agreementId => checkIsAgreementDelisted(agreementId))
+    let contentNodeDigitalContentResponses = []
+    const checkDigitalContentDelistStatusRequests = values.map(digitalContentId => checkIsDigitalContentDelisted(digitalContentId))
     for (let i = 0; i < values.length; i += REQUEST_CONCURRENCY_LIMIT) {
-      const contentNodeAgreementResponsesSlice = await Promise.all(checkAgreementDelistStatusRequests.slice(i, i + REQUEST_CONCURRENCY_LIMIT))
-      contentNodeAgreementResponses = contentNodeAgreementResponses.concat(contentNodeAgreementResponsesSlice)
+      const contentNodeDigitalContentResponsesSlice = await Promise.all(checkDigitalContentDelistStatusRequests.slice(i, i + REQUEST_CONCURRENCY_LIMIT))
+      contentNodeDigitalContentResponses = contentNodeDigitalContentResponses.concat(contentNodeDigitalContentResponsesSlice)
     }
 
     // CIDs that were not accounted for during delist/undelist
-    const unaccountedAgreements = contentNodeAgreementResponses
+    const unaccountedDigitalContents = contentNodeDigitalContentResponses
       .filter(resp => filterFn(resp.delisted))
       .map(resp => resp.value)
 
-    Logger.debug('contentNodeAgreementResponses', contentNodeAgreementResponses)
-    if (unaccountedAgreements.length > 0) {
-      let errorMsg = `Agreements with ids [${values}] were not delisted/undelisted.`
-      errorMsg += `\nNumber of Agreements: ${unaccountedAgreements.length}`
-      errorMsg += `\nAgreements: [${unaccountedAgreements.toString()}]`
+    Logger.debug('contentNodeDigitalContentResponses', contentNodeDigitalContentResponses)
+    if (unaccountedDigitalContents.length > 0) {
+      let errorMsg = `DigitalContents with ids [${values}] were not delisted/undelisted.`
+      errorMsg += `\nNumber of DigitalContents: ${unaccountedDigitalContents.length}`
+      errorMsg += `\nDigitalContents: [${unaccountedDigitalContents.toString()}]`
       throw new Error(errorMsg)
     }
   }
@@ -212,28 +212,28 @@ async function getCIDs (type, values) {
     // Fetch all the CIDs via disc prov
     switch (type) {
       case 'USER': {
-        const map = await fetchUserToNumAgreementsMap(values)
+        const map = await fetchUserToNumDigitalContentsMap(values)
         const additionalRequests = []
         discProvRequests = values
           .map(value => {
-            let numAgreementsForUser = map[value]
+            let numDigitalContentsForUser = map[value]
             const axiosRequest = {
-              url: `${DISCOVERY_PROVIDER_ENDPOINT}/agreements`,
+              url: `${DISCOVERY_PROVIDER_ENDPOINT}/digitalContents`,
               method: 'get',
               params: { user_id: value, limit: MAX_LIMIT },
               responseType: 'json'
             }
 
-            if (numAgreementsForUser > MAX_LIMIT) {
-            // If users have over 500 agreements, add additional requests to query those agreements
+            if (numDigitalContentsForUser > MAX_LIMIT) {
+            // If users have over 500 digitalContents, add additional requests to query those digitalContents
               let offset = 0
-              while (numAgreementsForUser > MAX_LIMIT) {
+              while (numDigitalContentsForUser > MAX_LIMIT) {
                 const axiosRequestWithOffset = { ...axiosRequest }
                 axiosRequestWithOffset.params.offset = offset
                 additionalRequests.push(axios(axiosRequest))
 
                 offset += MAX_LIMIT
-                numAgreementsForUser -= MAX_LIMIT
+                numDigitalContentsForUser -= MAX_LIMIT
               }
               return null
             } else {
@@ -241,7 +241,7 @@ async function getCIDs (type, values) {
               return axios(axiosRequest)
             }
           })
-          // Filter out null resps from mapping requests with users with over 500 agreements
+          // Filter out null resps from mapping requests with users with over 500 digitalContents
           .filter(Boolean)
 
         discProvRequests.concat(additionalRequests)
@@ -249,7 +249,7 @@ async function getCIDs (type, values) {
       }
       case 'AGREEMENT': {
         discProvRequests = values.map(value => axios({
-          url: `${DISCOVERY_PROVIDER_ENDPOINT}/agreements`,
+          url: `${DISCOVERY_PROVIDER_ENDPOINT}/digitalContents`,
           method: 'get',
           params: { id: value },
           responseType: 'json'
@@ -280,10 +280,10 @@ async function getCIDs (type, values) {
 }
 
 /**
- * Fetches the total agreements count from all input userIds, and returns a map of user_id:digital_content_count
+ * Fetches the total digitalContents count from all input userIds, and returns a map of user_id:digital_content_count
  * @param {number[]} userIds
  */
-async function fetchUserToNumAgreementsMap (userIds) {
+async function fetchUserToNumDigitalContentsMap (userIds) {
   const resp = await axios({
     url: `${DISCOVERY_PROVIDER_ENDPOINT}/users`,
     method: 'get',
@@ -318,10 +318,10 @@ async function checkIsCIDDelisted (cid) {
   return { type: 'CID', value: cid, delisted: false }
 }
 
-async function checkIsAgreementDelisted (id) {
+async function checkIsDigitalContentDelisted (id) {
   try {
     const encodedId = hashIds.encode(id)
-    await axios.head(`${CONTENT_NODE_ENDPOINT}/agreements/stream/${encodedId}`)
+    await axios.head(`${CONTENT_NODE_ENDPOINT}/digital_contents/stream/${encodedId}`)
   } catch (e) {
     if (e.response && e.response.status && e.response.status === 403) {
       return { value: id, delisted: true }

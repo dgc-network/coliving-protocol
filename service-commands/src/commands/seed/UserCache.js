@@ -40,7 +40,7 @@ class UserCache {
     cache[alias] = {
       userId,
       hedgehogEntropyKey,
-      agreements: [],
+      digitalContents: [],
       active: false
     }
     this.update(cache)
@@ -85,10 +85,10 @@ class UserCache {
     return Object.assign(userDetails, { userAlias })
   }
 
-  addAgreementToCachedUserDetails = ({ userId, agreementId }) => {
+  addDigitalContentToCachedUserDetails = ({ userId, digitalContentId }) => {
     const cache = this.get()
     let { userAlias, ...userDetails } = this.findUser({ userId })
-    userDetails.agreements = userDetails.agreements.concat([agreementId])
+    userDetails.digitalContents = userDetails.digitalContents.concat([digitalContentId])
     cache[userAlias] = userDetails
     this.update(cache)
   }
@@ -97,9 +97,9 @@ class UserCache {
     return Object.values(this.get())
   }
 
-  getAgreements = () => {
+  getDigitalContents = () => {
     return Object.values(this.get())
-      .map(u => u.agreements)
+      .map(u => u.digitalContents)
       .flat()
   }
 

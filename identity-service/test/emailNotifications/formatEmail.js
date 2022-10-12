@@ -128,7 +128,7 @@ describe('Test Favorite Notification', function () {
       limit
     })
 
-    assert.deepStrictEqual(notifications.map(n => n.type), [ 'FavoriteAgreement', 'Follow', 'RepostAgreement' ])
+    assert.deepStrictEqual(notifications.map(n => n.type), [ 'FavoriteDigitalContent', 'Follow', 'RepostDigitalContent' ])
 
     let followNotif = notifications.find(notif => notif.type === 'Follow')
     assert.deepStrictEqual(followNotif.actions.map(n => n.actionEntityId), [3, 2])
@@ -161,7 +161,7 @@ describe('Test Favorite Notification', function () {
       limit
     })
 
-    assert.deepStrictEqual(nextNotifs.map(n => n.type), ['Follow', 'FavoriteAgreement', 'RepostAgreement'])
+    assert.deepStrictEqual(nextNotifs.map(n => n.type), ['Follow', 'FavoriteDigitalContent', 'RepostDigitalContent'])
     followNotif = nextNotifs.find(notif => notif.type === 'Follow')
     assert.deepStrictEqual(followNotif.actions.map(n => n.actionEntityId), [4, 3, 2])
   })

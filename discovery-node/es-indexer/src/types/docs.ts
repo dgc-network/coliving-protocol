@@ -3,7 +3,7 @@ import {
   ContentListRow,
   RepostRow,
   SaveRow,
-  AgreementRow,
+  DigitalContentRow,
   UserRow,
 } from './db'
 
@@ -18,7 +18,7 @@ export type EntityUserDoc = {
 
 export type ContentListDoc = ContentListRow & {
   suggest: string
-  agreements: AgreementDoc[]
+  digitalContents: DigitalContentDoc[]
   save_count: number
   saved_by: number[]
   repost_count: number
@@ -29,13 +29,13 @@ export type ContentListDoc = ContentListRow & {
 
 export type UserDoc = UserRow & {
   suggest: string
-  agreements: AgreementRow[]
+  digitalContents: DigitalContentRow[]
   digital_content_count: number
   following_ids: number[]
   following_count: number
 }
 
-export type AgreementDoc = AgreementRow & {
+export type DigitalContentDoc = DigitalContentRow & {
   suggest: string
   reposted_by: number[]
   saved_by: number[]

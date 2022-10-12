@@ -25,8 +25,8 @@ if (getEnv('ENABLE_OPTIMIZER') === 'false') ENABLE_OPTIMIZER = false
 // Values must be set in calling environment
 // Consult @hareeshnagaraj for details
 const privateKey = getEnv('ETH_WALLET_PRIVATE_KEY')
-const liveNetwork = getEnv('ETH_LIVE_NETWORK')
-const liveNetworkId = getEnv('ETH_LIVE_NETWORK_ID')
+const liveNetwork = getEnv('ETH_DGCO_NETWORK')
+const liveNetworkId = getEnv('ETH_DGCO_NETWORK_ID')
 
 const solc = {
   // 0.5.17 is latest 0.5.x version

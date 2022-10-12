@@ -42,7 +42,7 @@ export interface SearchRequest {
      */
     userId?: string;
     /**
-     * The type of response, one of: all, users, agreements, contentLists, or albums
+     * The type of response, one of: all, users, digitalContents, contentLists, or albums
      */
     kind?: SearchKindEnum;
 }
@@ -65,7 +65,7 @@ export interface SearchAutocompleteRequest {
      */
     userId?: string;
     /**
-     * The type of response, one of: all, users, agreements, contentLists, or albums
+     * The type of response, one of: all, users, digitalContents, contentLists, or albums
      */
     kind?: SearchAutocompleteKindEnum;
 }
@@ -76,7 +76,7 @@ export interface SearchAutocompleteRequest {
 export class SearchApi extends runtime.BaseAPI {
 
     /**
-     * Get Users/Agreements/ContentLists/Albums that best match the search query
+     * Get Users/DigitalContents/ContentLists/Albums that best match the search query
      */
     async search(requestParameters: SearchRequest): Promise<NonNullable<SearchFullResponse["data"]>> {
         if (requestParameters.query === null || requestParameters.query === undefined) {
@@ -117,7 +117,7 @@ export class SearchApi extends runtime.BaseAPI {
 
     /**
      * Same as search but optimized for quicker response at the cost of some entity information.
-     * Get Users/Agreements/ContentLists/Albums that best match the search query
+     * Get Users/DigitalContents/ContentLists/Albums that best match the search query
      */
     async searchAutocomplete(requestParameters: SearchAutocompleteRequest): Promise<NonNullable<SearchAutocompleteResponse["data"]>> {
         if (requestParameters.query === null || requestParameters.query === undefined) {
@@ -165,7 +165,7 @@ export class SearchApi extends runtime.BaseAPI {
 export enum SearchKindEnum {
     All = 'all',
     Users = 'users',
-    Agreements = 'agreements',
+    DigitalContents = 'digitalContents',
     ContentLists = 'contentLists',
     Albums = 'albums'
 }
@@ -176,7 +176,7 @@ export enum SearchKindEnum {
 export enum SearchAutocompleteKindEnum {
     All = 'all',
     Users = 'users',
-    Agreements = 'agreements',
+    DigitalContents = 'digitalContents',
     ContentLists = 'contentLists',
     Albums = 'albums'
 }

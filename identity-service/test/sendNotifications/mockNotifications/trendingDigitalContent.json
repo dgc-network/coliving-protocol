@@ -1,0 +1,28 @@
+[
+  {
+    "digitalContentId": 100,
+    "userId": 1,
+    "rank": 1,
+    "type": "TrendingDigitalContent"
+  }, {
+    "digitalContentId": 101,
+    "userId": 1,
+    "rank": 2,
+    "type": "TrendingDigitalContent"
+  }, {
+    "digitalContentId": 102,
+    "userId": 2,
+    "rank": 3,
+    "type": "TrendingDigitalContent"
+  }, {
+    "digitalContentId": 103,
+    "userId": 3,
+    "rank": 4,
+    "type": "TrendingDigitalContent"
+  }, {
+    "digitalContentId": 104,
+    "userId": 4,
+    "rank": 5,
+    "type": "TrendingDigitalContent"
+  }
+]

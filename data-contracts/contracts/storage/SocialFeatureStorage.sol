@@ -19,9 +19,9 @@ contract SocialFeatureStorage is RegistryContract {
 
     /**
      * @dev - Mapping of digital_content repost contents
-     * userId -> <agreementId -> repostedAgreement>
+     * userId -> <digitalContentId -> repostedDigitalContent>
      */
-    mapping(uint => mapping(uint => bool)) private userAgreementReposts;
+    mapping(uint => mapping(uint => bool)) private userDigitalContentReposts;
 
     /**
      * @dev - Mapping of contentList repost contents
@@ -36,26 +36,26 @@ contract SocialFeatureStorage is RegistryContract {
         registry = RegistryInterface(_registryAddress);
     }
 
-    function addAgreementRepost(
+    function addDigitalContentRepost(
         uint _userId,
         uint _digital_contentId
     ) external onlyRegistrant(CALLER_REGISTRY_KEY)
     {   
-        userAgreementReposts[_userId][_digital_contentId] = true;
+        userDigitalContentReposts[_userId][_digital_contentId] = true;
     }
 
-    function deleteAgreementRepost(
+    function deleteDigitalContentRepost(
         uint _userId,
         uint _digital_contentId
     ) external onlyRegistrant(CALLER_REGISTRY_KEY)
     {   
-        userAgreementReposts[_userId][_digital_contentId] = false;
+        userDigitalContentReposts[_userId][_digital_contentId] = false;
     }
 
-    function userRepostedAgreement(uint _userId, uint _digital_contentId)
+    function userRepostedDigitalContent(uint _userId, uint _digital_contentId)
     external view onlyRegistrant(CALLER_REGISTRY_KEY) returns (bool)
     {
-        return userAgreementReposts[_userId][_digital_contentId];
+        return userDigitalContentReposts[_userId][_digital_contentId];
     }
 
     function addContentListRepost(

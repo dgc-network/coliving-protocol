@@ -8,14 +8,14 @@ ContentList.createContentList = async (
   contentListName,
   isPrivate,
   isAlbum,
-  agreementIds
+  digitalContentIds
 ) => {
   const createContentListTxReceipt = await libs.createContentList(
     userId,
     contentListName,
     isPrivate,
     isAlbum,
-    agreementIds
+    digitalContentIds
   )
   return createContentListTxReceipt
 }
@@ -52,12 +52,12 @@ ContentList.getContentLists = async (
   return await libs.getContentLists(limit, offset, idsArray, targetUserId, withUsers)
 }
 
-ContentList.addContentListAgreement = async (
+ContentList.addContentListDigitalContent = async (
   libs,
   contentListId,
-  agreementId
+  digitalContentId
 ) => {
-  return await libs.addContentListAgreement(contentListId, agreementId)
+  return await libs.addContentListDigitalContent(contentListId, digitalContentId)
 }
 
 module.exports = ContentList

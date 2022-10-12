@@ -38,11 +38,11 @@ def upgrade():
     -- undo partial indexes
 
     DROP INDEX IF EXISTS digital_content_owner_id_idx;
-    CREATE INDEX IF NOT EXISTS digital_content_owner_id_idx ON agreements (owner_id);
+    CREATE INDEX IF NOT EXISTS digital_content_owner_id_idx ON digitalContents (owner_id);
 
 
     drop index if exists digital_content_created_at_idx;
-    CREATE INDEX IF NOT EXISTS digital_content_created_at_idx ON agreements (created_at);
+    CREATE INDEX IF NOT EXISTS digital_content_created_at_idx ON digitalContents (created_at);
 
 
     drop index if exists content_list_owner_id_idx;
@@ -86,7 +86,7 @@ def upgrade():
     create index if not exists follows_blocknumber_idx on follows(blocknumber);
     create index if not exists saves_blocknumber_idx on saves(blocknumber);
     create index if not exists reposts_blocknumber_idx on reposts(blocknumber);
-    create index if not exists agreements_blocknumber_idx on agreements(blocknumber);
+    create index if not exists digitalContents_blocknumber_idx on digitalContents(blocknumber);
     create index if not exists users_blocknumber_idx on users(blocknumber);
     create index if not exists content_lists_blocknumber_idx on contentLists(blocknumber);
 

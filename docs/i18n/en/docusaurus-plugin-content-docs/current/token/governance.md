@@ -26,10 +26,10 @@ Every governance proposal comes with a breakdown of the following parameters:
 * _For_ - The amount of votes in favor of the proposal
 * _Against_ - The amount of votes against the proposal 
 
-**All proposals are subject to 5% of staked $LIVE quorum and 50% majority.**   
+**All proposals are subject to 5% of staked $DGCO quorum and 50% majority.**   
 
 
-This means that for a proposal to pass, at least 5% of all staked $LIVE must vote on the proposal and more than 50% of the votes must be ‘For’ the proposal.  
+This means that for a proposal to pass, at least 5% of all staked $DGCO must vote on the proposal and more than 50% of the votes must be ‘For’ the proposal.  
 
 
 Today, only those running a node may make a proposal on-chain. In future, the set of permitted proposers could be expanded in any way the community sees fit.  
@@ -100,7 +100,7 @@ Using Figment’s [most recent governance proposal](https://dashboard..org/#/gov
 ![](https://assets.website-files.com/6024b69839b1b7fd3787991c/607d16049feb3a126f852b57_H6OK09A-2szawbI66mlGi7489J5aj-x604boPIeDUs6zhfZB7Fs77rIsaskaMGslMNWdGrTfm2ZM_sLalkwBvLCn-I0aUm7g9aSIYr11qC0b2t5WHELcyUtSlK21OaD5UgB9mnRN.png)
 
   
-Given that the total number of votes \(1 LIVE, 1 vote\) was above the quorum requirement of ~11M $LIVE and the 50% majority \(100% voted in favor\) the proposal passed!  
+Given that the total number of votes \(1 LIVE, 1 vote\) was above the quorum requirement of ~11M $DGCO and the 50% majority \(100% voted in favor\) the proposal passed!  
 
 
 In doing so, the changes [from this proposal](https://etherscan.io/tx/0xd4e14895b2a22b48469a43923ab7b30bee75f9a688941933430b3dae9510b8a6) were [executed through the governance contract](https://etherscan.io/tx/0x4396652fb9c1116cec5900f412608dfba7a3ec1b9967f4109a8ec3e09d3a75af), changing the voting window from 48 hours to 72 hours!  
@@ -125,7 +125,7 @@ More details on the signers of this multisig as well as the intent for its use w
 
 ### **Evolving Governance** 
 
-Coliving governance is an evolving process geared at giving all $LIVE holders a voice of future iterations of the platform.  
+Coliving governance is an evolving process geared at giving all $DGCO holders a voice of future iterations of the platform.  
 
 
 The process detailed above is likely to change in line with new tools, product upgrades and onramps to allow for all token users to easily review and participate in governance decisions, regardless of their technical knowledge.  

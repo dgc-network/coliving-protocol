@@ -37,13 +37,13 @@ def upgrade():
             COALESCE (user_digital_content_save.save_count, 0) as digital_content_save_count
         FROM 
             users u
-        -- join on subquery for agreements created
+        -- join on subquery for digitalContents created
         LEFT OUTER JOIN (
             SELECT
                 t.owner_id as owner_id,
                 count(t.owner_id) as digital_content_count
             FROM
-                agreements t
+                digitalContents t
             WHERE
                 t.is_current is True AND
                 t.is_delete is False AND
@@ -143,7 +143,7 @@ def upgrade():
           COALESCE (digital_content_repost.repost_count, 0) as repost_count,
           COALESCE (digital_content_save.save_count, 0) as save_count
         FROM 
-          agreements t
+          digitalContents t
         -- inner join on subquery for reposts
         LEFT OUTER JOIN (
           SELECT

@@ -5,7 +5,7 @@ const redisClient = require('../../src/redis')
 class MonitoringQueueMock {
   constructor () {
     redisClient.set(
-      getMonitorRedisKey(MONITORS.DATABASE_LIVENESS),
+      getMonitorRedisKey(MONITORS.DATABASE_DGCONESS),
       'true'
     )
 

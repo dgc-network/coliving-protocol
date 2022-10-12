@@ -19,12 +19,12 @@ const {
 // Each type can be configured as needed
 const baseMilestoneList = [10, 25, 50, 100, 250, 500, 1000, 5000, 10000, 20000, 50000, 100000, 1000000]
 const followerMilestoneList = baseMilestoneList
-// Repost milestone list shared across agreements/albums/contentLists
+// Repost milestone list shared across digitalContents/albums/contentLists
 const repostMilestoneList = baseMilestoneList
-// Favorite milestone list shared across agreements/albums/contentLists
+// Favorite milestone list shared across digitalContents/albums/contentLists
 const favoriteMilestoneList = baseMilestoneList
 // DigitalContent listen milestone list
-const agreementListenMilestoneList = baseMilestoneList
+const digitalContentListenMilestoneList = baseMilestoneList
 
 async function indexMilestones (milestones, owners, metadata, listenCounts, colivingLibs, tx) {
   // Index follower milestones into notifications table
@@ -85,21 +85,21 @@ async function updateFollowerMilestones (followerCounts, blocknumber, timestamp,
  *
  */
 async function updateRepostMilestones (repostCounts, owners, blocknumber, timestamp, colivingLibs, tx) {
-  let agreementsReposted = Object.keys(repostCounts.agreements)
+  let digitalContentsReposted = Object.keys(repostCounts.digitalContents)
   let albumsReposted = Object.keys(repostCounts.albums)
   let contentListsReposted = Object.keys(repostCounts.contentLists)
   const repostMilestoneNotificationType = notificationTypes.MilestoneRepost
 
-  for (var repostedAgreementId of agreementsReposted) {
-    let agreementOwnerId = owners.agreements[repostedAgreementId]
-    let agreementRepostCount = repostCounts.agreements[repostedAgreementId]
+  for (var repostedDigitalContentId of digitalContentsReposted) {
+    let digitalContentOwnerId = owners.digitalContents[repostedDigitalContentId]
+    let digitalContentRepostCount = repostCounts.digitalContents[repostedDigitalContentId]
     for (var i = repostMilestoneList.length; i >= 0; i--) {
       let milestoneValue = repostMilestoneList[i]
-      if (agreementRepostCount === milestoneValue) {
+      if (digitalContentRepostCount === milestoneValue) {
         await _processMilestone(
           repostMilestoneNotificationType,
-          agreementOwnerId,
-          repostedAgreementId,
+          digitalContentOwnerId,
+          repostedDigitalContentId,
           actionEntityTypes.DigitalContent,
           milestoneValue,
           blocknumber,
@@ -163,21 +163,21 @@ async function updateRepostMilestones (repostCounts, owners, blocknumber, timest
  *
  */
 async function updateFavoriteMilestones (favoriteCounts, owners, blocknumber, timestamp, colivingLibs, tx) {
-  let agreementsFavorited = Object.keys(favoriteCounts.agreements)
+  let digitalContentsFavorited = Object.keys(favoriteCounts.digitalContents)
   let albumsFavorited = Object.keys(favoriteCounts.albums)
   let contentListsFavorited = Object.keys(favoriteCounts.contentLists)
   const favoriteMilestoneNotificationType = notificationTypes.MilestoneFavorite
 
-  for (var favoritedAgreementId of agreementsFavorited) {
-    let agreementOwnerId = owners.agreements[favoritedAgreementId]
-    let agreementFavoriteCount = favoriteCounts.agreements[favoritedAgreementId]
+  for (var favoritedDigitalContentId of digitalContentsFavorited) {
+    let digitalContentOwnerId = owners.digitalContents[favoritedDigitalContentId]
+    let digitalContentFavoriteCount = favoriteCounts.digitalContents[favoritedDigitalContentId]
     for (var i = favoriteMilestoneList.length; i >= 0; i--) {
       let milestoneValue = favoriteMilestoneList[i]
-      if (agreementFavoriteCount === milestoneValue) {
+      if (digitalContentFavoriteCount === milestoneValue) {
         await _processMilestone(
           favoriteMilestoneNotificationType,
-          agreementOwnerId,
-          favoritedAgreementId,
+          digitalContentOwnerId,
+          favoritedDigitalContentId,
           actionEntityTypes.DigitalContent,
           milestoneValue,
           blocknumber,
@@ -240,20 +240,20 @@ async function updateFavoriteMilestones (favoriteCounts, owners, blocknumber, ti
  * Listens Milestones
  *
  */
-async function updateAgreementListenMilestones (listenCounts, blocknumber, timestamp, colivingLibs, tx) { // eslint-disable-line no-unused-vars
+async function updateDigitalContentListenMilestones (listenCounts, blocknumber, timestamp, colivingLibs, tx) { // eslint-disable-line no-unused-vars
   const listensMilestoneNotificationType = notificationTypes.MilestoneListen
 
   for (var entry of listenCounts) {
-    let agreementListenCount = Number.parseInt(entry.listenCount)
-    for (var i = agreementListenMilestoneList.length; i >= 0; i--) {
-      let milestoneValue = agreementListenMilestoneList[i]
-      if (agreementListenCount === milestoneValue || (agreementListenCount >= milestoneValue && agreementListenCount <= milestoneValue * 1.1)) {
-        let agreementId = entry.agreementId
+    let digitalContentListenCount = Number.parseInt(entry.listenCount)
+    for (var i = digitalContentListenMilestoneList.length; i >= 0; i--) {
+      let milestoneValue = digitalContentListenMilestoneList[i]
+      if (digitalContentListenCount === milestoneValue || (digitalContentListenCount >= milestoneValue && digitalContentListenCount <= milestoneValue * 1.1)) {
+        let digitalContentId = entry.digitalContentId
         let ownerId = entry.owner
         await _processMilestone(
           listensMilestoneNotificationType,
           ownerId,
-          agreementId,
+          digitalContentId,
           actionEntityTypes.DigitalContent,
           milestoneValue,
           blocknumber,

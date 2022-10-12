@@ -3,7 +3,7 @@ const verifyValidCNs = require('./verifyValidCN')
 const deregisterRandomContentNode = require('./deregisterRandomContentNode.js')
 const stopRandomContentNode = require('./stopRandomContentNode.js')
 const setNumContentNodes = require('./setNumContentNodes.js')
-const { uploadAgreementsforUsers } = require('../../utils/uploadAgreementsForUsers')
+const { uploadDigitalContentsforUsers } = require('../../utils/uploadDigitalContentsForUsers')
 const { logger } = require('../../logger')
 const { delay } = require('../../helpers')
 
@@ -38,8 +38,8 @@ const deregisterCN = async ({
   for (let iteration = 0; iteration < iterations; iteration++) {
     contentNodeIDToInfoMapping = await setNumContentNodes(numContentNodes, executeOne)
 
-    // Upload agreements to users
-    await uploadAgreementsforUsers({ executeAll, executeOne, walletIndexToUserIdMap })
+    // Upload digitalContents to users
+    await uploadDigitalContentsforUsers({ executeAll, executeOne, walletIndexToUserIdMap })
 
     const deregisteredContentNodeId = await deregisterRandomContentNode(contentNodeIDToInfoMapping)
 

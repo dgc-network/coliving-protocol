@@ -7,7 +7,7 @@ from src.models.indexing.block import Block
 from src.models.content_lists.content_list import ContentList
 from src.models.social.follow import Follow
 from src.models.social.save import Save, SaveType
-from src.models.agreements.digital_content import DigitalContent
+from src.models.digitalContents.digital_content import DigitalContent
 from src.models.users.user import User
 from src.models.users.user_balance import UserBalance
 from src.queries.search_es import search_es_full
@@ -46,7 +46,7 @@ def setup_search(app_module):
             is_current=True,
         ),
     ]
-    agreements = [
+    digitalContents = [
         DigitalContent(
             blockhash=hex(1),
             blocknumber=1,
@@ -216,7 +216,7 @@ def setup_search(app_module):
             balance=0,
             associated_wallets_balance=0,
             associated_sol_wallets_balance=0,
-            wlive=0,
+            wei_digitalcoin=0,
         )
     ]
 
@@ -224,7 +224,7 @@ def setup_search(app_module):
         for block in blocks:
             session.add(block)
             session.flush()
-        for digital_content in agreements:
+        for digital_content in digitalContents:
             session.add(digital_content)
         for user in users:
             session.add(user)
@@ -260,7 +260,7 @@ def setup_search(app_module):
 
 
 def test_get_digital_contents_external(app_module):
-    """Tests we get all agreements, including downloaded"""
+    """Tests we get all digitalContents, including downloaded"""
     with app_module.app_context():
         db = get_db()
 
@@ -271,7 +271,7 @@ def test_get_digital_contents_external(app_module):
 
     search_args = {
         "is_auto_complete": False,
-        "kind": "agreements",
+        "kind": "digitalContents",
         "query": "the digital_content",
         "current_user_id": None,
         "with_users": True,
@@ -281,11 +281,11 @@ def test_get_digital_contents_external(app_module):
     }
     es_res = search_es_full(search_args)
 
-    assert len(es_res["agreements"]) == 2
+    assert len(es_res["digitalContents"]) == 2
 
 
 def test_get_autocomplete_digital_contents(app_module):
-    """Tests we get all agreements with autocomplete"""
+    """Tests we get all digitalContents with autocomplete"""
     with app_module.app_context():
         db = get_db()
 
@@ -296,7 +296,7 @@ def test_get_autocomplete_digital_contents(app_module):
 
     search_args = {
         "is_auto_complete": True,
-        "kind": "agreements",
+        "kind": "digitalContents",
         "query": "the digital_content",
         "current_user_id": None,
         "with_users": True,
@@ -306,11 +306,11 @@ def test_get_autocomplete_digital_contents(app_module):
     }
     es_res = search_es_full(search_args)
 
-    assert len(es_res["agreements"]) == 2
+    assert len(es_res["digitalContents"]) == 2
 
 
 def test_get_digital_contents_internal(app_module):
-    """Tests we get all agreements when a user is logged in"""
+    """Tests we get all digitalContents when a user is logged in"""
     with app_module.app_context():
         db = get_db()
 
@@ -321,7 +321,7 @@ def test_get_digital_contents_internal(app_module):
 
     search_args = {
         "is_auto_complete": False,
-        "kind": "agreements",
+        "kind": "digitalContents",
         "query": "the digital_content",
         "current_user_id": 1,
         "with_users": True,
@@ -331,7 +331,7 @@ def test_get_digital_contents_internal(app_module):
     }
     es_res = search_es_full(search_args)
 
-    assert len(es_res["agreements"]) == 2
+    assert len(es_res["digitalContents"]) == 2
     assert len(es_res["saved_digital_contents"]) == 1
 
 
@@ -347,7 +347,7 @@ def test_get_downloadable_digital_contents(app_module):
 
     search_args = {
         "is_auto_complete": False,
-        "kind": "agreements",
+        "kind": "digitalContents",
         "query": "the digital_content",
         "current_user_id": None,
         "with_users": True,
@@ -357,7 +357,7 @@ def test_get_downloadable_digital_contents(app_module):
     }
     es_res = search_es_full(search_args)
 
-    assert len(es_res["agreements"]) == 1
+    assert len(es_res["digitalContents"]) == 1
     assert len(es_res["saved_digital_contents"]) == 0
 
 
@@ -490,7 +490,7 @@ def test_get_external_content_lists(app_module):
 
 
 def test_get_autocomplete_content_lists(app_module):
-    """Tests we get all agreements with autocomplete"""
+    """Tests we get all digitalContents with autocomplete"""
     with app_module.app_context():
         db = get_db()
 

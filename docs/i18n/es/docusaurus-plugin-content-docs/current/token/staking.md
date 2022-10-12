@@ -9,13 +9,13 @@ sidebar_position: 2
 
 Construido como un protocolo descentralizado en Ethereum, todo el contenido, La información y los datos de Coliving son almacenados e indexados por una red creciente de operadores de nodos de terceros, en lugar de por el equipo de Coliving.
 
-Para asegurar que este contenido puede ser confiado y mantenido, los operadores de nodos están obligados a proporcionar garantía o “participación” como un vínculo para prestar servicio al protocolo. Este Stake, denominado en $LIVE, asegura que los operadores de nodos tengan tokens en riesgo que pueden ser barridos, o tomados, en caso de comportamiento malintencionado o deficiente.
+Para asegurar que este contenido puede ser confiado y mantenido, los operadores de nodos están obligados a proporcionar garantía o “participación” como un vínculo para prestar servicio al protocolo. Este Stake, denominado en $DGCO, asegura que los operadores de nodos tengan tokens en riesgo que pueden ser barridos, o tomados, en caso de comportamiento malintencionado o deficiente.
 
-Utilizando tokens de $LIVE como garantía, cualquiera con los requisitos de hardware adecuados puede unirse como operador de nodos de una manera completamente inpermisiva. Cuantos más $LIVE se pongan en stake en el protocolo, más segura será la red y menos vulnerable será a los ataques externos.
+Utilizando tokens de $DGCO como garantía, cualquiera con los requisitos de hardware adecuados puede unirse como operador de nodos de una manera completamente inpermisiva. Cuantos más $DGCO se pongan en stake en el protocolo, más segura será la red y menos vulnerable será a los ataques externos.
 
-Como recompensa por el servicio de la red, los operadores de nodos ganarán $LIVE a través de la emisión automática en cadena, o la creación en curso de nuevos tokens distribuidos a actores con valor agregado.
+Como recompensa por el servicio de la red, los operadores de nodos ganarán $DGCO a través de la emisión automática en cadena, o la creación en curso de nuevos tokens distribuidos a actores con valor agregado.
 
-Quienes obtengan más $LIVE ganarán una porción mayor de emisión a cambio de asegurar la red.
+Quienes obtengan más $DGCO ganarán una porción mayor de emisión a cambio de asegurar la red.
 
 ### Cómo funciona Coliving
 
@@ -39,7 +39,7 @@ Cuando un landlorda sube una canción en Coliving:
 
 En otras plataformas, un proceso similar es operado por la empresa matriz, convirtiéndolos efectivamente en el verdadero propietario del contenido. En caso de que la empresa deje de existir, también lo hace todo el contenido almacenado en su base de datos. Con Coliving, la pista es mantenida por la red y controlada por operadores de terceros y nodos descentralizados. **Coliving no depende de una empresa para seguir funcionando**.
 
-**Al hacer staking de $LIVE, estás ayudando a proteger y impulsar el protocolo.**
+**Al hacer staking de $DGCO, estás ayudando a proteger y impulsar el protocolo.**
 
 Este diseño permite a Coliving operar en la parte posterior de una red global de operadores de nodos de terceros, en lugar de hacerlo exclusivamente por parte del equipo de Coliving.
 
@@ -55,11 +55,11 @@ https://twitter.com/Figment_io/status/1324763638729740288?s=20
 
 Puede encontrar una lista de todos los operadores de nodos activos en la pestaña [Servicios](https://dashboard..org/services) en el panel de control del protocolo de Coliving.
 
-Los poseedores de $LIVE pueden delegar un mínimo de 100 tokens a cualquiera de estos operadores de nodos conectándose a MetaMask o usando una Gnosis Safe. Más detalles sobre la delegación serán publicados pronto!
+Los poseedores de $DGCO pueden delegar un mínimo de 100 tokens a cualquiera de estos operadores de nodos conectándose a MetaMask o usando una Gnosis Safe. Más detalles sobre la delegación serán publicados pronto!
 
-Los operadores de nodos pueden elegir ejecutar un Nodo de Contenido, un Nodo de Descubrimiento o una combinación de ambos. La cantidad de $LIVE en stake a un operador determinado puede ser considerada como su ancho de banda económico para ejecutar una o una combinación de servicios en la red.
+Los operadores de nodos pueden elegir ejecutar un Nodo de Contenido, un Nodo de Descubrimiento o una combinación de ambos. La cantidad de $DGCO en stake a un operador determinado puede ser considerada como su ancho de banda económico para ejecutar una o una combinación de servicios en la red.
 
-Todos los operadores de nodos están obligados a publicar un **auto-enlace mínimo de 200.000 $LIVE tokens por nodo**. Mientras tanto los nodos de contenido y descubrimiento utilizan la misma máquina, los nodos de contenido requieren más almacenamiento y, por lo tanto, cuestan un poco más para operar.
+Todos los operadores de nodos están obligados a publicar un **auto-enlace mínimo de 200.000 $DGCO tokens por nodo**. Mientras tanto los nodos de contenido y descubrimiento utilizan la misma máquina, los nodos de contenido requieren más almacenamiento y, por lo tanto, cuestan un poco más para operar.
 
 A tal efecto, los parámetros de stake de cada nodo son los siguientes:
 
@@ -77,21 +77,21 @@ El Stake mínimo asegura suficiente piel en el juego, mientras que el máximo im
 
 Cada operador recibe un perfil único, que permite a los usuarios identificar su dirección, cronología de votos, y los diferentes nodos que mantenen. Otros parámetros clave incluyen:
 
-* _$LIVE en Stake_ - La cantidad total de $LIVE en stake en todos los nodos del operador, medido como una combinación de tokens en stake o delegadas a una determinada dirección.
-* _Corte del desplegador_ - El porcentaje de las recompensas de stake que los delegados pagan a los operadores de nodos por hacer staking $LIVE en su nodo. Esto es configurable por el operador de nodos.
+* _$DGCO en Stake_ - La cantidad total de $DGCO en stake en todos los nodos del operador, medido como una combinación de tokens en stake o delegadas a una determinada dirección.
+* _Corte del desplegador_ - El porcentaje de las recompensas de stake que los delegados pagan a los operadores de nodos por hacer staking $DGCO en su nodo. Esto es configurable por el operador de nodos.
 * _Servicios_ - El número de nodos únicos ejecutados por un operador determinado.
 * _Delegadores_ - El número total de direcciones únicas delegando tokens al Operador.
 
 Los operadores de nodos también pueden llenar su información a través de [3Box](https://3box.io/), mostrando una imagen de perfil, título y enlace al sitio web para permitir a los delegados distinguirse más fácilmente de los demás de la red.
 
-Coliving presenta un período de tiempo de reutilización de 7 días para remover la delegación o el stake con el fin de proporcionar un tiempo adecuado para que los nodos sean barridos en caso de comportamiento malicioso. Durante el período de stake, los nodos operados por la Fundación Coliving tendrán su Corte de Desplegador fijado a 100%, con todos los ingresos siendo enrutados a una tesorería comunitaria para ser gobernados por $LIVE tokenholders. Estos nodos se retirarán en un futuro cercano.
+Coliving presenta un período de tiempo de reutilización de 7 días para remover la delegación o el stake con el fin de proporcionar un tiempo adecuado para que los nodos sean barridos en caso de comportamiento malicioso. Durante el período de stake, los nodos operados por la Fundación Coliving tendrán su Corte de Desplegador fijado a 100%, con todos los ingresos siendo enrutados a una tesorería comunitaria para ser gobernados por $DGCO tokenholders. Estos nodos se retirarán en un futuro cercano.
 
-### **Recompensas por Staking de $LIVE**
+### **Recompensas por Staking de $DGCO**
 
-Coliving ofrece una tasa de emisión automática del 7% anual distribuida en cadena y semanalmente. Las Recompensas de $LIVE se distribuyen directamente en cadena a los operadores de nodos, con el sistema en cadena deduciendo su corte de delegado y dirigiendo las recompensas restantes a los que delegaron sus fichas.
+Coliving ofrece una tasa de emisión automática del 7% anual distribuida en cadena y semanalmente. Las Recompensas de $DGCO se distribuyen directamente en cadena a los operadores de nodos, con el sistema en cadena deduciendo su corte de delegado y dirigiendo las recompensas restantes a los que delegaron sus fichas.
 
 Se espera que los proveedores de servicios ejecuten una transacción por semana para distribuir emisión para la red, donde las fichas pueden ser reclamadas en tiempo real por los operadores individuales de nodos.
 
-En un futuro cercano, la emisión de $LIVE comenzará a ser calculada a partir de la llamada de la función de recompensa. En el futuro, cualquiera que esté en la red puede llamar a la función de recompensa, con los tokens distribuidos en una cadencia semanal y cobrable en cualquier momento.
+En un futuro cercano, la emisión de $DGCO comenzará a ser calculada a partir de la llamada de la función de recompensa. En el futuro, cualquiera que esté en la red puede llamar a la función de recompensa, con los tokens distribuidos en una cadencia semanal y cobrable en cualquier momento.
 
-La tasa, la duración y los parámetros del stake de $LIVE están controlados completamente por la gobernanza.
+La tasa, la duración y los parámetros del stake de $DGCO están controlados completamente por la gobernanza.

@@ -903,7 +903,7 @@ func main() {
 
 ## Obtenez les titres préférés des utilisateurs
 
-<a id="opIdGet User's Favorite Agreements"></a>
+<a id="opIdGet User's Favorite DigitalContents"></a>
 
 > Exemple de code
 
@@ -1428,18 +1428,18 @@ func main() {
 
 ## Obtenir les pistes de l'utilisateur
 
-<a id="opIdGet User's Agreements"></a>
+<a id="opIdGet User's DigitalContents"></a>
 
 > Exemple de code
 
 ```shell
-curl COLIVING_API_HOST/v1/users/nlGNe/agreements 
+curl COLIVING_API_HOST/v1/users/nlGNe/digitalContents 
 
 
 ```
 
 ```http
-GET COLIVING_API_HOST/v1/users/nlGNe/agreements HTTP/1.1
+GET COLIVING_API_HOST/v1/users/nlGNe/digitalContents HTTP/1.1
 
 ```
 
@@ -1449,7 +1449,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('COLIVING_API_HOST/v1/users/nlGNe/agreements',
+fetch('COLIVING_API_HOST/v1/users/nlGNe/digitalContents',
 {
   method: 'GET',
 
@@ -1471,7 +1471,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'COLIVING_API_HOST/v1/users/nlGNe/agreements',
+result = RestClient.get 'COLIVING_API_HOST/v1/users/nlGNe/digitalContents',
   params: {
   }, headers: headers
 
@@ -1485,7 +1485,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('COLIVING_API_HOST/v1/users/nlGNe/agreements', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/users/nlGNe/digitalContents', headers = headers)
 
 print(r.json())
 
@@ -1506,7 +1506,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','COLIVING_API_HOST/v1/users/nlGNe/agreements', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/users/nlGNe/digitalContents', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -1523,7 +1523,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("COLIVING_API_HOST/v1/users/nlGNe/agreements");
+URL obj = new URL("COLIVING_API_HOST/v1/users/nlGNe/digitalContents");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -1554,7 +1554,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/users/nlGNe/agreements", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/users/nlGNe/digitalContents", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -1564,7 +1564,7 @@ func main() {
 
 ```
 
-`GET /users/{user_id}/agreements`
+`GET /users/{user_id}/digitalContents`
 
 *Récupérer une liste de titres pour un utilisateur*
 
@@ -1630,7 +1630,7 @@ func main() {
 
 | Status | Meaning                                                                    | Description  | Schema                                    |
 | ------ | -------------------------------------------------------------------------- | ------------ | ----------------------------------------- |
-| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [agreements_response](#schemaagreements_response) |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [digitalContents_response](#schemadigitalContents_response) |
 | 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | Bad request  | None                                      |
 | 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Server error | None                                      |
 
@@ -1799,7 +1799,7 @@ func main() {
         "480x480": "https://usermetadata..co/ipfs/Qmc7RFzLGgW3DUTgKK49LzxEwe3Lmb47q85ZwJJRVYTXPr/480x480.jpg",
         "1000x1000": "https://usermetadata..co/ipfs/Qmc7RFzLGgW3DUTgKK49LzxEwe3Lmb47q85ZwJJRVYTXPr/1000x1000.jpg"
       },
-      "description": "All the latest hot new agreements on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
+      "description": "All the latest hot new digitalContents on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
       "id": "DOPRl",
       "is_album": true,
       "content_list_name": "Hot & New on Coliving 🔥",
@@ -2204,7 +2204,7 @@ func main() {
       "480x480": "https://usermetadata..co/ipfs/Qmc7RFzLGgW3DUTgKK49LzxEwe3Lmb47q85ZwJJRVYTXPr/480x480.jpg",
       "1000x1000": "https://usermetadata..co/ipfs/Qmc7RFzLGgW3DUTgKK49LzxEwe3Lmb47q85ZwJJRVYTXPr/1000x1000.jpg"
     },
-    "description": "All the latest hot new agreements on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
+    "description": "All the latest hot new digitalContents on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
     "id": "DOPRl",
     "is_album": true,
     "content_list_name": "Hot & New on Coliving 🔥",
@@ -2247,18 +2247,18 @@ func main() {
 
 ## Obtenir les pistes de la liste de lecture
 
-<a id="opIdGet ContentList Agreements"></a>
+<a id="opIdGet ContentList DigitalContents"></a>
 
 > Exemple de code
 
 ```shell
-curl COLIVING_API_HOST/v1/contentLists/DOPRl/agreements 
+curl COLIVING_API_HOST/v1/contentLists/DOPRl/digitalContents 
 
 
 ```
 
 ```http
-GET COLIVING_API_HOST/v1/contentLists/DOPRl/agreements HTTP/1.1
+GET COLIVING_API_HOST/v1/contentLists/DOPRl/digitalContents HTTP/1.1
 
 ```
 
@@ -2268,7 +2268,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('COLIVING_API_HOST/v1/contentLists/DOPRl/agreements',
+fetch('COLIVING_API_HOST/v1/contentLists/DOPRl/digitalContents',
 {
   method: 'GET',
 
@@ -2290,7 +2290,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'COLIVING_API_HOST/v1/contentLists/DOPRl/agreements',
+result = RestClient.get 'COLIVING_API_HOST/v1/contentLists/DOPRl/digitalContents',
   params: {
   }, headers: headers
 
@@ -2304,7 +2304,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('COLIVING_API_HOST/v1/contentLists/DOPRl/agreements', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/contentLists/DOPRl/digitalContents', headers = headers)
 
 print(r.json())
 
@@ -2325,7 +2325,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','COLIVING_API_HOST/v1/contentLists/DOPRl/agreements', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/contentLists/DOPRl/digitalContents', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -2342,7 +2342,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("COLIVING_API_HOST/v1/contentLists/DOPRl/agreements");
+URL obj = new URL("COLIVING_API_HOST/v1/contentLists/DOPRl/digitalContents");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -2373,7 +2373,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/contentLists/DOPRl/agreements", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/contentLists/DOPRl/digitalContents", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -2383,7 +2383,7 @@ func main() {
 
 ```
 
-`GET /contentLists/{content_list_id}/agreements`
+`GET /contentLists/{content_list_id}/digitalContents`
 
 *Récupérer ls titres dans une contentList*
 
@@ -2459,13 +2459,13 @@ func main() {
 > Exemple de code
 
 ```shell
-curl COLIVING_API_HOST/v1/agreements 
+curl COLIVING_API_HOST/v1/digitalContents 
 
 
 ```
 
 ```http
-GET COLIVING_API_HOST/v1/agreements HTTP/1.1
+GET COLIVING_API_HOST/v1/digitalContents HTTP/1.1
 
 ```
 
@@ -2475,7 +2475,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('COLIVING_API_HOST/v1/agreements',
+fetch('COLIVING_API_HOST/v1/digitalContents',
 {
   method: 'GET',
 
@@ -2497,7 +2497,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'COLIVING_API_HOST/v1/agreements',
+result = RestClient.get 'COLIVING_API_HOST/v1/digitalContents',
   params: {
   }, headers: headers
 
@@ -2511,7 +2511,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('COLIVING_API_HOST/v1/agreements', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/digitalContents', headers = headers)
 
 print(r.json())
 
@@ -2532,7 +2532,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','COLIVING_API_HOST/v1/agreements', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/digitalContents', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -2549,7 +2549,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("COLIVING_API_HOST/v1/agreements");
+URL obj = new URL("COLIVING_API_HOST/v1/digitalContents");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -2580,7 +2580,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/agreements", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/digitalContents", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -2590,7 +2590,7 @@ func main() {
 
 ```
 
-`GET /agreements`
+`GET /digitalContents`
 
 <h3 id="get-digital-content-by-handle-and-slug-parameters">Paramètres de requête</h3>
 
@@ -2617,7 +2617,7 @@ func main() {
     "mood": "string",
     "release_date": "string",
     "remix_of": {
-      "agreements": [
+      "digitalContents": [
         {
           "parent_digital_content_id": "string"
         }
@@ -2668,18 +2668,18 @@ func main() {
 
 ## Pistes recommandées
 
-<a id="opIdRecommended Agreements"></a>
+<a id="opIdRecommended DigitalContents"></a>
 
 > Exemple de code
 
 ```shell
-curl COLIVING_API_HOST/v1/agreements/recommended/string 
+curl COLIVING_API_HOST/v1/digital_contents/recommended/string 
 
 
 ```
 
 ```http
-GET COLIVING_API_HOST/v1/agreements/recommended/string HTTP/1.1
+GET COLIVING_API_HOST/v1/digital_contents/recommended/string HTTP/1.1
 
 ```
 
@@ -2689,7 +2689,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('COLIVING_API_HOST/v1/agreements/recommended/string',
+fetch('COLIVING_API_HOST/v1/digital_contents/recommended/string',
 {
   method: 'GET',
 
@@ -2711,7 +2711,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'COLIVING_API_HOST/v1/agreements/recommended/string',
+result = RestClient.get 'COLIVING_API_HOST/v1/digital_contents/recommended/string',
   params: {
   }, headers: headers
 
@@ -2725,7 +2725,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('COLIVING_API_HOST/v1/agreements/recommended/string', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/digital_contents/recommended/string', headers = headers)
 
 print(r.json())
 
@@ -2746,7 +2746,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','COLIVING_API_HOST/v1/agreements/recommended/string', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/digital_contents/recommended/string', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -2763,7 +2763,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("COLIVING_API_HOST/v1/agreements/recommended/string");
+URL obj = new URL("COLIVING_API_HOST/v1/digital_contents/recommended/string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -2794,7 +2794,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/agreements/recommended/string", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/digital_contents/recommended/string", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -2804,16 +2804,16 @@ func main() {
 
 ```
 
-`GET /agreements/recommended/{version}`
+`GET /digital_contents/recommended/{version}`
 
 <h3 id="recommended-digital-contents-parameters">Paramètres de requête</h3>
 
 | Name           | Type   | Required | Description                                                        |
 | -------------- | ------ | -------- | ------------------------------------------------------------------ |
-| genre          | string | false    | Recommended trending agreements for a specified genre                  |
-| limit          | string | false    | Number of recommended agreements to fetch                              |
+| genre          | string | false    | Recommended trending digitalContents for a specified genre                  |
+| limit          | string | false    | Number of recommended digitalContents to fetch                              |
 | exclusion_list | string | false    | List of digital_content ids to exclude                                       |
-| time           | string | false    | Trending agreements over a specified time range (week, month, allTime) |
+| time           | string | false    | Trending digitalContents over a specified time range (week, month, allTime) |
 | version        | string | true     | none                                                               |
 
 > Exemple de réponse
@@ -2835,7 +2835,7 @@ func main() {
       "mood": "string",
       "release_date": "string",
       "remix_of": {
-        "agreements": [
+        "digitalContents": [
           {
             "parent_digital_content_id": "string"
           }
@@ -2881,24 +2881,24 @@ func main() {
 
 | Status | Meaning                                                                    | Description  | Schema                                    |
 | ------ | -------------------------------------------------------------------------- | ------------ | ----------------------------------------- |
-| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | Success      | [agreements_response](#schemaagreements_response) |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | Success      | [digitalContents_response](#schemadigitalContents_response) |
 | 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | Bad request  | None                                      |
 | 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Server error | None                                      |
 
 ## Recherche de pistes
 
-<a id="opIdSearch Agreements"></a>
+<a id="opIdSearch DigitalContents"></a>
 
 > Exemple de code
 
 ```shell
-curl COLIVING_API_HOST/v1/agreements/search?query=baauer b2b 
+curl COLIVING_API_HOST/v1/digital_contents/search?query=baauer b2b 
 
 
 ```
 
 ```http
-GET COLIVING_API_HOST/v1/agreements/search?query=baauer b2b HTTP/1.1
+GET COLIVING_API_HOST/v1/digital_contents/search?query=baauer b2b HTTP/1.1
 
 ```
 
@@ -2908,7 +2908,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('COLIVING_API_HOST/v1/agreements/search?query=baauer b2b',
+fetch('COLIVING_API_HOST/v1/digital_contents/search?query=baauer b2b',
 {
   method: 'GET',
 
@@ -2930,7 +2930,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'COLIVING_API_HOST/v1/agreements/search',
+result = RestClient.get 'COLIVING_API_HOST/v1/digital_contents/search',
   params: {
   'query' => 'string'
 }, headers: headers
@@ -2945,7 +2945,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('COLIVING_API_HOST/v1/agreements/search', params={
+r = requests.get('COLIVING_API_HOST/v1/digital_contents/search', params={
   'query': 'baauer b2b'
 }, headers = headers)
 
@@ -2968,7 +2968,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','COLIVING_API_HOST/v1/agreements/search', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/digital_contents/search', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -2985,7 +2985,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("COLIVING_API_HOST/v1/agreements/search?query=baauer b2b");
+URL obj = new URL("COLIVING_API_HOST/v1/digital_contents/search?query=baauer b2b");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -3016,7 +3016,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/agreements/search", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/digital_contents/search", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -3026,7 +3026,7 @@ func main() {
 
 ```
 
-`GET /agreements/search`
+`GET /digital_contents/search`
 
 *Recherche d'une piste*
 
@@ -3035,7 +3035,7 @@ func main() {
 | Name              | Type   | Required | Description                     |
 | ----------------- | ------ | -------- | ------------------------------- |
 | query             | string | true     | Search Query                    |
-| only_downloadable | string | false    | Return only downloadable agreements |
+| only_downloadable | string | false    | Return only downloadable digitalContents |
 
 > Exemple de réponse
 
@@ -3096,18 +3096,18 @@ func main() {
 
 ## Pistes populaires
 
-<a id="opIdTrending Agreements"></a>
+<a id="opIdTrending DigitalContents"></a>
 
 > Exemple de code
 
 ```shell
-curl COLIVING_API_HOST/v1/agreements/trending/string 
+curl COLIVING_API_HOST/v1/digital_contents/trending/string 
 
 
 ```
 
 ```http
-GET COLIVING_API_HOST/v1/agreements/trending/string HTTP/1.1
+GET COLIVING_API_HOST/v1/digital_contents/trending/string HTTP/1.1
 
 ```
 
@@ -3117,7 +3117,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('COLIVING_API_HOST/v1/agreements/trending/string',
+fetch('COLIVING_API_HOST/v1/digital_contents/trending/string',
 {
   method: 'GET',
 
@@ -3139,7 +3139,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'COLIVING_API_HOST/v1/agreements/trending/string',
+result = RestClient.get 'COLIVING_API_HOST/v1/digital_contents/trending/string',
   params: {
   }, headers: headers
 
@@ -3153,7 +3153,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('COLIVING_API_HOST/v1/agreements/trending/string', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/digital_contents/trending/string', headers = headers)
 
 print(r.json())
 
@@ -3174,7 +3174,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','COLIVING_API_HOST/v1/agreements/trending/string', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/digital_contents/trending/string', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -3191,7 +3191,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("COLIVING_API_HOST/v1/agreements/trending/string");
+URL obj = new URL("COLIVING_API_HOST/v1/digital_contents/trending/string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -3222,7 +3222,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/agreements/trending/string", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/digital_contents/trending/string", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -3232,7 +3232,7 @@ func main() {
 
 ```
 
-`GET /agreements/trending/{version}`
+`GET /digital_contents/trending/{version}`
 
 *Obtenez les 100 pistes les plus populaires sur Coliving*
 
@@ -3240,8 +3240,8 @@ func main() {
 
 | Name    | Type   | Required | Description                                                        |
 | ------- | ------ | -------- | ------------------------------------------------------------------ |
-| genre   | string | false    | Trending agreements for a specified genre                              |
-| time    | string | false    | Trending agreements over a specified time range (week, month, allTime) |
+| genre   | string | false    | Trending digitalContents for a specified genre                              |
+| time    | string | false    | Trending digitalContents over a specified time range (week, month, allTime) |
 | version | string | true     | none                                                               |
 
 > Exemple de réponse
@@ -3263,7 +3263,7 @@ func main() {
       "mood": "string",
       "release_date": "string",
       "remix_of": {
-        "agreements": [
+        "digitalContents": [
           {
             "parent_digital_content_id": "string"
           }
@@ -3309,7 +3309,7 @@ func main() {
 
 | Status | Meaning                                                                    | Description  | Schema                                    |
 | ------ | -------------------------------------------------------------------------- | ------------ | ----------------------------------------- |
-| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | Success      | [agreements_response](#schemaagreements_response) |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | Success      | [digitalContents_response](#schemadigitalContents_response) |
 | 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | Bad request  | None                                      |
 | 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Server error | None                                      |
 
@@ -3320,13 +3320,13 @@ func main() {
 > Exemple de code
 
 ```shell
-curl COLIVING_API_HOST/v1/agreements/D7KyD 
+curl COLIVING_API_HOST/v1/digital_contents/D7KyD 
 
 
 ```
 
 ```http
-GET COLIVING_API_HOST/v1/agreements/D7KyD HTTP/1.1
+GET COLIVING_API_HOST/v1/digital_contents/D7KyD HTTP/1.1
 
 ```
 
@@ -3336,7 +3336,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('COLIVING_API_HOST/v1/agreements/D7KyD',
+fetch('COLIVING_API_HOST/v1/digital_contents/D7KyD',
 {
   method: 'GET',
 
@@ -3358,7 +3358,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'COLIVING_API_HOST/v1/agreements/D7KyD',
+result = RestClient.get 'COLIVING_API_HOST/v1/digital_contents/D7KyD',
   params: {
   }, headers: headers
 
@@ -3372,7 +3372,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('COLIVING_API_HOST/v1/agreements/D7KyD', headers = headers)
+r = requests.get('COLIVING_API_HOST/v1/digital_contents/D7KyD', headers = headers)
 
 print(r.json())
 
@@ -3393,7 +3393,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','COLIVING_API_HOST/v1/agreements/D7KyD', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/digital_contents/D7KyD', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -3410,7 +3410,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("COLIVING_API_HOST/v1/agreements/D7KyD");
+URL obj = new URL("COLIVING_API_HOST/v1/digital_contents/D7KyD");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -3441,7 +3441,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/agreements/D7KyD", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/digital_contents/D7KyD", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -3451,7 +3451,7 @@ func main() {
 
 ```
 
-`GET /agreements/{digital_content_id}`
+`GET /digital_contents/{digital_content_id}`
 
 *Récupérer une piste*
 
@@ -3523,18 +3523,18 @@ func main() {
 > Exemple de code
 
 ```shell
-curl COLIVING_API_HOST/v1/agreements/D7KyD/stream
+curl COLIVING_API_HOST/v1/digital_contents/D7KyD/stream
 
 ```
 
 ```http
-GET COLIVING_API_HOST/v1/agreements/D7KyD/stream HTTP/1.1
+GET COLIVING_API_HOST/v1/digital_contents/D7KyD/stream HTTP/1.1
 
 ```
 
 ```javascript
 
-fetch('COLIVING_API_HOST/v1/agreements/D7KyD/stream',
+fetch('COLIVING_API_HOST/v1/digital_contents/D7KyD/stream',
 {
   method: 'GET'
 
@@ -3551,7 +3551,7 @@ fetch('COLIVING_API_HOST/v1/agreements/D7KyD/stream',
 require 'rest-client'
 require 'json'
 
-result = RestClient.get 'COLIVING_API_HOST/v1/agreements/D7KyD/stream',
+result = RestClient.get 'COLIVING_API_HOST/v1/digital_contents/D7KyD/stream',
   params: {
   }
 
@@ -3562,7 +3562,7 @@ p JSON.parse(result)
 ```python
 import requests
 
-r = requests.get('COLIVING_API_HOST/v1/agreements/D7KyD/stream')
+r = requests.get('COLIVING_API_HOST/v1/digital_contents/D7KyD/stream')
 
 print(r.json())
 
@@ -3579,7 +3579,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','COLIVING_API_HOST/v1/agreements/D7KyD/stream', array(
+    $response = $client->request('GET','COLIVING_API_HOST/v1/digital_contents/D7KyD/stream', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -3596,7 +3596,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("COLIVING_API_HOST/v1/agreements/D7KyD/stream");
+URL obj = new URL("COLIVING_API_HOST/v1/digital_contents/D7KyD/stream");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -3623,7 +3623,7 @@ import (
 func main() {
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/agreements/D7KyD/stream", data)
+    req, err := http.NewRequest("GET", "COLIVING_API_HOST/v1/digital_contents/D7KyD/stream", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -3633,7 +3633,7 @@ func main() {
 
 ```
 
-`GET /agreements/{digital_content_id}/stream`
+`GET /digital_contents/{digital_content_id}/stream`
 
 *Obtenir le fichier mp3 de la piste en streaming*
 
@@ -4335,7 +4335,7 @@ Ce endpoint vous permet de rechercher et d'accéder aux ressources de l'API lors
 > Redirection interne
 
 ```
-{"HTTP/1.1 302 Found Location":"/v1/agreements/V4W8r"}
+{"HTTP/1.1 302 Found Location":"/v1/digital_contents/V4W8r"}
 ```
 
 <h3 id="resolve-responses">Réponses</h3>
@@ -4487,11 +4487,11 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
 | 480x480   | string | false    | none         | none        |
 | 1000x1000 | string | false    | none         | none        |
 
-<a id="schemaagreements_response"></a>
+<a id="schemadigitalContents_response"></a>
 <a id="schema_digital_contents_response"></a>
-<a id="tocSagreements_response"></a>
-<a id="tocsagreements_response"></a>
-<h2 id="tocS_digital_contents_response">agreements_response</h2>
+<a id="tocSdigitalContents_response"></a>
+<a id="tocsdigitalContents_response"></a>
+<h2 id="tocS_digital_contents_response">digitalContents_response</h2>
 
 ```json
 {
@@ -4508,7 +4508,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
       "mood": "string",
       "release_date": "string",
       "remix_of": {
-        "agreements": [
+        "digitalContents": [
           {
             "parent_digital_content_id": "string"
           }
@@ -4555,13 +4555,13 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
 
 | Name | Type                    | Required | Restrictions | Description |
 | ---- | ----------------------- | -------- | ------------ | ----------- |
-| data | [[DigitalContent](#schemaagreement)] | false    | none         | none        |
+| data | [[DigitalContent](#schemadigitalContent)] | false    | none         | none        |
 
-<a id="schemaagreement"></a>
-<a id="schema_Agreement"></a>
-<a id="tocSagreement"></a>
-<a id="tocsagreement"></a>
-<h2 id="tocS_Agreement">Pistes</h2>
+<a id="schemadigitalContent"></a>
+<a id="schema_DigitalContent"></a>
+<a id="tocSdigitalContent"></a>
+<a id="tocsdigitalContent"></a>
+<h2 id="tocS_DigitalContent">Pistes</h2>
 
 ```json
 {
@@ -4576,7 +4576,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
   "mood": "string",
   "release_date": "string",
   "remix_of": {
-    "agreements": [
+    "digitalContents": [
       {
         "parent_digital_content_id": "string"
       }
@@ -4669,7 +4669,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
 
 ```json
 {
-  "agreements": [
+  "digitalContents": [
     {
       "parent_digital_content_id": "string"
     }
@@ -4682,7 +4682,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
 
 | Name   | Type                                    | Required | Restrictions | Description |
 | ------ | --------------------------------------- | -------- | ------------ | ----------- |
-| agreements | [[digital_content_element](#schemadigital_content_element)] | false    | none         | none        |
+| digitalContents | [[digital_content_element](#schemadigital_content_element)] | false    | none         | none        |
 
 <a id="schemadigital_content_element"></a>
 <a id="schema_digital_content_element"></a>
@@ -5185,7 +5185,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
       "mood": "string",
       "release_date": "string",
       "remix_of": {
-        "agreements": [
+        "digitalContents": [
           {
             "parent_digital_content_id": "string"
           }
@@ -5232,7 +5232,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
 
 | Name | Type                    | Required | Restrictions | Description |
 | ---- | ----------------------- | -------- | ------------ | ----------- |
-| data | [[DigitalContent](#schemaagreement)] | false    | none         | none        |
+| data | [[DigitalContent](#schemadigitalContent)] | false    | none         | none        |
 
 <a id="schemacontent_list_search_result"></a>
 <a id="schema_content_list_search_result"></a>
@@ -5368,7 +5368,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
     "mood": "string",
     "release_date": "string",
     "remix_of": {
-      "agreements": [
+      "digitalContents": [
         {
           "parent_digital_content_id": "string"
         }
@@ -5414,7 +5414,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
 
 | Name | Type                  | Required | Restrictions | Description |
 | ---- | --------------------- | -------- | ------------ | ----------- |
-| data | [DigitalContent](#schemaagreement) | false    | none         | none        |
+| data | [DigitalContent](#schemadigitalContent) | false    | none         | none        |
 
 <a id="schemadigital_content_search"></a>
 <a id="schema_digital_content_search"></a>
@@ -5437,7 +5437,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
       "mood": "string",
       "release_date": "string",
       "remix_of": {
-        "agreements": [
+        "digitalContents": [
           {
             "parent_digital_content_id": "string"
           }
@@ -5484,7 +5484,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
 
 | Name | Type                    | Required | Restrictions | Description |
 | ---- | ----------------------- | -------- | ------------ | ----------- |
-| data | [[DigitalContent](#schemaagreement)] | false    | none         | none        |
+| data | [[DigitalContent](#schemadigitalContent)] | false    | none         | none        |
 
 <a id="schemaattestation_reponse"></a>
 <a id="schema_attestation_reponse"></a>

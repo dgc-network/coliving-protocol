@@ -2,15 +2,15 @@ pragma solidity ^0.8.0;
 
 /// @title The interface for contracts to interact with the Coliving Social Feature Storage contract
 interface SocialFeatureStorageInterface {
-  function addAgreementRepost(
+  function addDigitalContentRepost(
     uint _userId,
     uint _digital_contentId) external; 
 
-  function deleteAgreementRepost(
+  function deleteDigitalContentRepost(
     uint _userId,
     uint _digital_contentId) external;
 
-  function userRepostedAgreement(
+  function userRepostedDigitalContent(
     uint _userId,
     uint _digital_contentId) external view returns (bool reposted);
 

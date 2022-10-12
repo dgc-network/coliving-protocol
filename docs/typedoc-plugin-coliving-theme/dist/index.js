@@ -9,8 +9,8 @@ const contentList = await colivingSdk.contentLists.getContentList({
     contentListId: "AxRP0",
 });
 `;
-const getContentListAgreements = `
-const agreements = await colivingSdk.contentLists.getContentListAgreements({
+const getContentListDigitalContents = `
+const digitalContents = await colivingSdk.contentLists.getContentListDigitalContents({
     contentListId: "AxRP0",
 });
 `;
@@ -26,7 +26,7 @@ const contentLists = await colivingSdk.contentLists.searchContentLists({
 var contentLists = /*#__PURE__*/Object.freeze({
     __proto__: null,
     getContentList: getContentList,
-    getContentListAgreements: getContentListAgreements,
+    getContentListDigitalContents: getContentListDigitalContents,
     getTrendingContentLists: getTrendingContentLists,
     searchContentLists: searchContentLists
 });
@@ -42,37 +42,37 @@ var resolve$1 = /*#__PURE__*/Object.freeze({
     resolve: resolve
 });
 
-const getBulkAgreements = `
-const agreements = await colivingSdk.agreements.getBulkAgreements();
+const getBulkDigitalContents = `
+const digitalContents = await colivingSdk.digitalContents.getBulkDigitalContents();
 `;
-const getAgreement = `
-const digital_content = await colivingSdk.agreements.getAgreement({
-    agreementId: "D7KyD",
+const getDigitalContent = `
+const digital_content = await colivingSdk.digitalContents.getDigitalContent({
+    digitalContentId: "D7KyD",
 });
 `;
-const getTrendingAgreements = `
-const agreements = await colivingSdk.agreements.getTrendingAgreements();
+const getTrendingDigitalContents = `
+const digitalContents = await colivingSdk.digitalContents.getTrendingDigitalContents();
 `;
-const searchAgreements = `
-const searchResult = await colivingSdk.agreements.searchAgreements({
+const searchDigitalContents = `
+const searchResult = await colivingSdk.digitalContents.searchDigitalContents({
     query: "skrillex",
 });
 `;
-const streamAgreement = `
-const url = await colivingSdk.agreements.streamAgreement({
-    agreementId: "PjdWN",
+const streamDigitalContent = `
+const url = await colivingSdk.digitalContents.streamDigitalContent({
+    digitalContentId: "PjdWN",
 });
 const digitalcoin = new Audio(url);
 digitalcoin.play();
 `;
 
-var agreements = /*#__PURE__*/Object.freeze({
+var digitalContents = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    getBulkAgreements: getBulkAgreements,
-    getAgreement: getAgreement,
-    getTrendingAgreements: getTrendingAgreements,
-    searchAgreements: searchAgreements,
-    streamAgreement: streamAgreement
+    getBulkDigitalContents: getBulkDigitalContents,
+    getDigitalContent: getDigitalContent,
+    getTrendingDigitalContents: getTrendingDigitalContents,
+    searchDigitalContents: searchDigitalContents,
+    streamDigitalContent: streamDigitalContent
 });
 
 const getConnectedWallets = `
@@ -100,13 +100,13 @@ const supportings = await colivingSdk.users.getSupportings({
     id: "eAZl3"
 })
 `;
-const getTopAgreementTags = `
-const tags = await colivingSdk.users.getTopAgreementTags({
+const getTopDigitalContentTags = `
+const tags = await colivingSdk.users.getTopDigitalContentTags({
     id: "eAZl3"
 })
 `;
-const getAgreementsByUser = `
-const agreements = await colivingSdk.users.getAgreementsByUser({
+const getDigitalContentsByUser = `
+const digitalContents = await colivingSdk.users.getDigitalContentsByUser({
     id: "eAZl3"
 })
 `;
@@ -133,8 +133,8 @@ var users = /*#__PURE__*/Object.freeze({
     getReposts: getReposts,
     getSupporters: getSupporters,
     getSupportings: getSupportings,
-    getTopAgreementTags: getTopAgreementTags,
-    getAgreementsByUser: getAgreementsByUser,
+    getTopDigitalContentTags: getTopDigitalContentTags,
+    getDigitalContentsByUser: getDigitalContentsByUser,
     getUser: getUser,
     getUserIdFromWallet: getUserIdFromWallet,
     searchUsers: searchUsers
@@ -144,7 +144,7 @@ var examples = /*#__PURE__*/Object.freeze({
     __proto__: null,
     contentLists: contentLists,
     resolve: resolve$1,
-    agreements: agreements,
+    digitalContents: digitalContents,
     users: users
 });
 

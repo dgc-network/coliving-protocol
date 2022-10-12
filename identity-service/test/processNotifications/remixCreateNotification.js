@@ -72,20 +72,20 @@ describe('Test Remix Create Notification', function () {
     // 1.) user 50 remixing digital_content 40 (owned by user 9)
     // 2.) user 52 remixing digital_content 40 (owned by user 9)
     const userNotifs = await models.Notification.findAll({ where: { userId: 40 } })
-    const agreement10Remix = userNotifs.find(notif => notif.entityId === 10)
-    const agreement12Remix = userNotifs.find(notif => notif.entityId === 12)
+    const digitalContent10Remix = userNotifs.find(notif => notif.entityId === 10)
+    const digitalContent12Remix = userNotifs.find(notif => notif.entityId === 12)
 
-    const agreement10NotificationActions = await models.NotificationAction.findAll({ where: { notificationId: agreement10Remix.id } })
-    assert.deepStrictEqual(agreement10NotificationActions.length, 1)
-    assert.deepStrictEqual(agreement10NotificationActions[0].actionEntityId, 9)
+    const digitalContent10NotificationActions = await models.NotificationAction.findAll({ where: { notificationId: digitalContent10Remix.id } })
+    assert.deepStrictEqual(digitalContent10NotificationActions.length, 1)
+    assert.deepStrictEqual(digitalContent10NotificationActions[0].actionEntityId, 9)
 
-    const agreement12NotificationActions = await models.NotificationAction.findAll({ where: { notificationId: agreement12Remix.id } })
-    assert.deepStrictEqual(agreement12NotificationActions.length, 1)
-    assert.deepStrictEqual(agreement12NotificationActions[0].actionEntityId, 15)
+    const digitalContent12NotificationActions = await models.NotificationAction.findAll({ where: { notificationId: digitalContent12Remix.id } })
+    assert.deepStrictEqual(digitalContent12NotificationActions.length, 1)
+    assert.deepStrictEqual(digitalContent12NotificationActions[0].actionEntityId, 15)
 
     // ======================================= Mark some Notifications as viewed =======================================
-    agreement10Remix.isViewed = true
-    await agreement10Remix.save()
+    digitalContent10Remix.isViewed = true
+    await digitalContent10Remix.save()
 
     // ======================================= Process additional notifications =======================================
     const tx2 = await models.sequelize.transaction()
@@ -98,10 +98,10 @@ describe('Test Remix Create Notification', function () {
     // 2.) user 52 remixing digital_content 40 (owned by user 9)
     const updatedUserNotifs = await models.Notification.findAll({ where: { userId: 40 } })
     assert.deepStrictEqual(updatedUserNotifs.length, 3)
-    const agreement13 = updatedUserNotifs.find(notif => notif.entityId === 13)
+    const digitalContent13 = updatedUserNotifs.find(notif => notif.entityId === 13)
 
-    const agreement13Actions = await models.NotificationAction.findAll({ where: { notificationId: agreement13.id } })
-    assert.deepStrictEqual(agreement13Actions.length, 1)
-    assert.deepStrictEqual(agreement13Actions[0].actionEntityId, 9)
+    const digitalContent13Actions = await models.NotificationAction.findAll({ where: { notificationId: digitalContent13.id } })
+    assert.deepStrictEqual(digitalContent13Actions.length, 1)
+    assert.deepStrictEqual(digitalContent13Actions[0].actionEntityId, 9)
   })
 })

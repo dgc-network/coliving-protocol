@@ -9,7 +9,7 @@ index_aggregate_user_last_refresh_completion_redis_key = (
     "index_aggregate_user:last-refresh-completion"
 )
 
-trending_digital_contents_last_completion_redis_key = "trending:agreements:last-completion"
+trending_digital_contents_last_completion_redis_key = "trending:digitalContents:last-completion"
 trending_content_lists_last_completion_redis_key = "trending-content-lists:last-completion"
 challenges_last_processed_event_redis_key = "challenges:last-processed-event"
 user_balances_refresh_last_completion_redis_key = "user_balances:last-completion"

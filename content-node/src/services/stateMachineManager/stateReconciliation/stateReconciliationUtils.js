@@ -3,7 +3,7 @@ const axios = require('axios')
 const { logger } = require('../../../logging')
 const Utils = require('../../../utils')
 const { SyncType, SYNC_MODES } = require('../stateMachineConstants')
-const SyncRequestDeDuplicator = require('./SyncRequestDeDuplicator')
+const SyncRequestDeDuplicator = require('./syncRequestDeDuplicator')
 
 /**
  * Returns a job can be enqueued to add a sync request for the given user to the given secondary,

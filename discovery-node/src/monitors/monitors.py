@@ -41,7 +41,7 @@ MONITORING_REDIS_PREFIX = "monitoring"
         Options are bool, int, float, str, json
 """
 
-DATABASE_LIVENESS = {
+DATABASE_DGCONESS = {
     monitor_names.name: monitor_names.database_liveness,
     monitor_names.func: get_database_liveness,
     monitor_names.type: "bool",
@@ -146,7 +146,7 @@ CELERY_TASKS = {
 }
 
 MONITORS = {
-    monitor_names.database_liveness: DATABASE_LIVENESS,
+    monitor_names.database_liveness: DATABASE_DGCONESS,
     monitor_names.database_size: DATABASE_SIZE,
     monitor_names.database_connections: DATABASE_CONNECTIONS,
     monitor_names.database_connection_info: DATABASE_CONNECTION_INFO,

@@ -1,11 +1,11 @@
 ---
-id: "full.GetAgreementRemixParentsRequest"
-title: "Interface: GetAgreementRemixParentsRequest"
-sidebar_label: "GetAgreementRemixParentsRequest"
+id: "full.GetDigitalContentRemixParentsRequest"
+title: "Interface: GetDigitalContentRemixParentsRequest"
+sidebar_label: "GetDigitalContentRemixParentsRequest"
 custom_edit_url: null
 ---
 
-[full](../namespaces/full.md).GetAgreementRemixParentsRequest
+[full](../namespaces/full.md).GetDigitalContentRemixParentsRequest
 
 ## Properties
 
@@ -25,9 +25,9 @@ The number of items to skip. Useful for pagination (page number * limit)
 
 ___
 
-### agreementId
+### digitalContentId
 
- **agreementId**: `string`
+ **digitalContentId**: `string`
 
 A DigitalContent ID
 

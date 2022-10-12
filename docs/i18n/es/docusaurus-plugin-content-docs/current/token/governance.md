@@ -26,10 +26,10 @@ Cada propuesta de gobernanza incluye un desglose de los siguientes parámetros:
 * _Por_ - La cantidad de votos a favor de la propuesta
 * _Contra_ - La cantidad de votos en contra de la propuesta
 
-**Todas las propuestas están sujetas al 5% del quórum $LIVE en stake y a la mayoría del 50%.**
+**Todas las propuestas están sujetas al 5% del quórum $DGCO en stake y a la mayoría del 50%.**
 
 
-Esto significa que para que una propuesta se apruebe, por lo menos el 5% de todos los $LIVE en stake deben votar en la propuesta y más del 50% de los votos deben ser "a favor" de la propuesta.
+Esto significa que para que una propuesta se apruebe, por lo menos el 5% de todos los $DGCO en stake deben votar en la propuesta y más del 50% de los votos deben ser "a favor" de la propuesta.
 
 
 Hoy en día, sólo quienes tienen un nodo pueden hacer una propuesta en cadena. En el futuro, el conjunto de proponentes permitidos podría ampliarse de cualquier forma que la comunidad considere oportuna.
@@ -100,7 +100,7 @@ Usando la [propuesta de gobernanza más reciente](https://dashboard..org/#/gover
 ![](https://assets.website-files.com/6024b69839b1b7fd3787991c/607d16049feb3a126f852b57_H6OK09A-2szawbI66mlGi7489J5aj-x604boPIeDUs6zhfZB7Fs77rIsaskaMGslMNWdGrTfm2ZM_sLalkwBvLCn-I0aUm7g9aSIYr11qC0b2t5WHELcyUtSlK21OaD5UgB9mnRN.png)
 
 
-Dado que el número total de votos \(1 LIVE, 1 voto\) estaba por encima del requisito de quórum de ~11M $LIVE y la mayoría del 50% \(100% votó a favor\) ¡la propuesta ha aprobado!
+Dado que el número total de votos \(1 LIVE, 1 voto\) estaba por encima del requisito de quórum de ~11M $DGCO y la mayoría del 50% \(100% votó a favor\) ¡la propuesta ha aprobado!
 
 
 Al hacerlo, los cambios [de esta propuesta](https://etherscan.io/tx/0xd4e14895b2a22b48469a43923ab7b30bee75f9a688941933430b3dae9510b8a6) fueron [ejecutados a través del contrato de gobernanza](https://etherscan.io/tx/0x4396652fb9c1116cec5900f412608dfba7a3ec1b9967f4109a8ec3e09d3a75af), cambiando la ventana de votación de 48 horas a 72 horas!
@@ -125,7 +125,7 @@ Más detalles sobre los firmantes de este multifirma así como la intención de 
 
 ### **Gobernanza evolutiva**
 
-La gobernanza de Coliving es un proceso que evoluciona para dar a todos los titulares de $LIVE una voz de futuras iteraciones de la plataforma.
+La gobernanza de Coliving es un proceso que evoluciona para dar a todos los titulares de $DGCO una voz de futuras iteraciones de la plataforma.
 
 
 El proceso detallado arriba probablemente cambie en línea con las nuevas herramientas, actualizaciones de productos y onramps para permitir a todos los usuarios de tokens revisar y participar fácilmente en las decisiones de gobernanza, independientemente de sus conocimientos técnicos.

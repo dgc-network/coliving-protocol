@@ -41,7 +41,7 @@ def upgrade():
 
         WITH digital_content_uploads AS (
             SELECT count(*) AS digital_content_count, owner_id
-            FROM agreements
+            FROM digitalContents
             WHERE
                 is_current=True AND
                 blocknumber >= 25346436

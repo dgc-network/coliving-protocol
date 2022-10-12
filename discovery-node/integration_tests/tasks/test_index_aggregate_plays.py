@@ -20,7 +20,7 @@ def test_index_aggregate_plays_populate(app):
 
     # run
     entities = {
-        "agreements": [
+        "digitalContents": [
             {"digital_content_id": 0, "title": "digital_content 0"},
             {"digital_content_id": 1, "title": "digital_content 1"},
             {"digital_content_id": 2, "title": "digital_content 2"},
@@ -75,7 +75,7 @@ def test_index_aggregate_plays_update(app):
 
     # run
     entities = {
-        "agreements": [
+        "digitalContents": [
             {"digital_content_id": 1, "title": "digital_content 1"},
             {"digital_content_id": 2, "title": "digital_content 2"},
             {"digital_content_id": 3, "title": "digital_content 3"},

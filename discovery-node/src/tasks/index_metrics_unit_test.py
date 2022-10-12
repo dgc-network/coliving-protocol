@@ -16,9 +16,9 @@ def test_process_route_keys(redis_mock, db_mock):
 
     routes = {
         "/v1/users/search?query=ray": "3",
-        "/v1/agreements/trending?genre=rap&timeRange=week": "2",
+        "/v1/digital_contents/trending?genre=rap&timeRange=week": "2",
         "/v1/contentLists/hash": "1",
-        "/agreements": "1",
+        "/digitalContents": "1",
     }
 
     key = "API_METRICS:routes:192.168.0.1:2020/08/06:19"
@@ -55,7 +55,7 @@ def test_process_route_keys(redis_mock, db_mock):
             session.query(RouteMetric)
             .filter(
                 RouteMetric.version == "1",
-                RouteMetric.route_path == "agreements/trending",
+                RouteMetric.route_path == "digitalContents/trending",
                 RouteMetric.query_string == "genre=rap&timeRange=week",
                 RouteMetric.ip == "192.168.0.1",
                 RouteMetric.count == 2,
@@ -83,7 +83,7 @@ def test_process_route_keys(redis_mock, db_mock):
             session.query(RouteMetric)
             .filter(
                 RouteMetric.version == "0",
-                RouteMetric.route_path == "agreements",
+                RouteMetric.route_path == "digitalContents",
                 RouteMetric.ip == "192.168.0.1",
                 RouteMetric.count == 1,
                 RouteMetric.timestamp == date,

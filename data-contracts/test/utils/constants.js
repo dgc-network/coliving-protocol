@@ -2,8 +2,8 @@ import { web3New } from './web3New'
 
 export const userStorageKey = web3New.utils.utf8ToHex('UserStorage')
 export const userFactoryKey = web3New.utils.utf8ToHex('UserFactory')
-export const agreementStorageKey = web3New.utils.utf8ToHex('AgreementStorage')
-export const agreementFactoryKey = web3New.utils.utf8ToHex('AgreementFactory')
+export const digitalContentStorageKey = web3New.utils.utf8ToHex('DigitalContentStorage')
+export const digitalContentFactoryKey = web3New.utils.utf8ToHex('DigitalContentFactory')
 export const discoveryNodeStorageKey = web3New.utils.utf8ToHex('DiscoveryNodeStorage')
 export const discoveryNodeFactoryKey = web3New.utils.utf8ToHex('DiscoveryNodeFactory')
 export const contentListStorageKey = web3New.utils.utf8ToHex('ContentListStorage')

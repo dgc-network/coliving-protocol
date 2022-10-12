@@ -172,7 +172,7 @@ const getCID = async (req, res) => {
   }
 
   const CID = req.params.CID
-  const agreementId = parseInt(req.query.agreementId)
+  const digitalContentId = parseInt(req.query.digitalContentId)
 
   const decisionTree = [{ stage: `BEGIN`, time: `${Date.now()}` }]
   const logPrefix = `[getCID] [CID=${CID}]`
@@ -182,7 +182,7 @@ const getCID = async (req, res) => {
    */
   let startMs = Date.now()
   const BlacklistManager = req.app.get('blacklistManager')
-  const isServable = await BlacklistManager.isServable(CID, agreementId)
+  const isServable = await BlacklistManager.isServable(CID, digitalContentId)
   decisionTree.push({
     stage: `BLACKLIST_MANAGER_CHECK_IS_SERVABLE`,
     time: `${Date.now() - startMs}ms`
@@ -471,7 +471,7 @@ const getCID = async (req, res) => {
       CID,
       req.logger,
       libs,
-      agreementId
+      digitalContentId
     )
     if (!found) {
       throw new Error('Not found in network')
@@ -510,7 +510,7 @@ const getDirCID = async (req, res) => {
     )
   }
 
-  // Do not act as a public gateway. Only serve files that are agreemented by this content node.
+  // Do not act as a public gateway. Only serve files that are digitalContented by this content node.
   const dirCID = req.params.dirCID
   const filename = req.params.filename
   const path = `${dirCID}/${filename}`
@@ -896,14 +896,14 @@ router.post(
  * @param req.query.delegateWallet the wallet address that signed this request
  * @param req.query.timestamp the timestamp when the request was made
  * @param req.query.signature the hashed signature of the object {filePath, delegateWallet, timestamp}
- * @param {string?} req.query.agreementId the agreementId of the requested file lookup
+ * @param {string?} req.query.digitalContentId the digitalContentId of the requested file lookup
  */
 router.get('/file_lookup', async (req, res) => {
   const BlacklistManager = req.app.get('blacklistManager')
   const { filePath, timestamp, signature } = req.query
-  let { delegateWallet, agreementId } = req.query
+  let { delegateWallet, digitalContentId } = req.query
   delegateWallet = delegateWallet.toLowerCase()
-  agreementId = parseInt(agreementId)
+  digitalContentId = parseInt(digitalContentId)
 
   // no filePath passed in
   if (!filePath)
@@ -942,7 +942,7 @@ router.get('/file_lookup', async (req, res) => {
     )
 
   const { outer, inner } = matchObj
-  let isServable = await BlacklistManager.isServable(outer, agreementId)
+  let isServable = await BlacklistManager.isServable(outer, digitalContentId)
   if (!isServable) {
     return sendResponse(
       req,
@@ -956,7 +956,7 @@ router.get('/file_lookup', async (req, res) => {
   // inner will only be set for image dir CID
   // if there's an inner CID, check if CID is blacklisted and set content disposition header
   if (inner) {
-    isServable = await BlacklistManager.isServable(inner, agreementId)
+    isServable = await BlacklistManager.isServable(inner, digitalContentId)
     if (!isServable) {
       return sendResponse(
         req,

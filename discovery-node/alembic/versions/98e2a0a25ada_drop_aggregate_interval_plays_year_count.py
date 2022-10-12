@@ -24,13 +24,13 @@ def upgrade():
         -- same query as 92571f94989a but without year count
         CREATE MATERIALIZED VIEW IF NOT EXISTS aggregate_interval_plays as
         SELECT
-            agreements.digital_content_id as digital_content_id,
-            agreements.genre as genre,
-            agreements.created_at as created_at,
+            digitalContents.digital_content_id as digital_content_id,
+            digitalContents.genre as genre,
+            digitalContents.created_at as created_at,
             COALESCE (week_listen_counts.count, 0) as week_listen_counts,
             COALESCE (month_listen_counts.count, 0) as month_listen_counts
         FROM
-            agreements
+            digitalContents
         LEFT OUTER JOIN (
             SELECT
                 plays.play_item_id as play_item_id,
@@ -40,7 +40,7 @@ def upgrade():
             WHERE
                 plays.created_at > (now() - interval '1 week')
             GROUP BY plays.play_item_id
-        ) as week_listen_counts ON week_listen_counts.play_item_id = agreements.digital_content_id
+        ) as week_listen_counts ON week_listen_counts.play_item_id = digitalContents.digital_content_id
         LEFT OUTER JOIN (
             SELECT
                 plays.play_item_id as play_item_id,
@@ -50,12 +50,12 @@ def upgrade():
             WHERE
                 plays.created_at > (now() - interval '1 month')
             GROUP BY plays.play_item_id
-        ) as month_listen_counts ON month_listen_counts.play_item_id = agreements.digital_content_id
+        ) as month_listen_counts ON month_listen_counts.play_item_id = digitalContents.digital_content_id
         WHERE
-            agreements.is_current is True AND
-            agreements.is_delete is False AND
-            agreements.is_unlisted is False AND
-            agreements.stem_of is Null;
+            digitalContents.is_current is True AND
+            digitalContents.is_delete is False AND
+            digitalContents.is_unlisted is False AND
+            digitalContents.stem_of is Null;
 
         -- create primary key
         CREATE INDEX IF NOT EXISTS interval_play_digital_content_id_idx ON aggregate_interval_plays (digital_content_id);
@@ -73,14 +73,14 @@ def downgrade():
 
         CREATE MATERIALIZED VIEW IF NOT EXISTS aggregate_interval_plays as
         SELECT
-            agreements.digital_content_id as digital_content_id,
-            agreements.genre as genre,
-            agreements.created_at as created_at,
+            digitalContents.digital_content_id as digital_content_id,
+            digitalContents.genre as genre,
+            digitalContents.created_at as created_at,
             COALESCE (week_listen_counts.count, 0) as week_listen_counts,
             COALESCE (month_listen_counts.count, 0) as month_listen_counts,
             COALESCE (year_listen_counts.count, 0) as year_listen_counts
         FROM
-            agreements
+            digitalContents
         LEFT OUTER JOIN (
             SELECT
                 plays.play_item_id as play_item_id,
@@ -90,7 +90,7 @@ def downgrade():
             WHERE
                 plays.created_at > (now() - interval '1 week')
             GROUP BY plays.play_item_id
-        ) as week_listen_counts ON week_listen_counts.play_item_id = agreements.digital_content_id
+        ) as week_listen_counts ON week_listen_counts.play_item_id = digitalContents.digital_content_id
         LEFT OUTER JOIN (
             SELECT
                 plays.play_item_id as play_item_id,
@@ -100,7 +100,7 @@ def downgrade():
             WHERE
                 plays.created_at > (now() - interval '1 month')
             GROUP BY plays.play_item_id
-        ) as month_listen_counts ON month_listen_counts.play_item_id = agreements.digital_content_id
+        ) as month_listen_counts ON month_listen_counts.play_item_id = digitalContents.digital_content_id
         LEFT OUTER JOIN (
             SELECT
                 plays.play_item_id as play_item_id,
@@ -110,12 +110,12 @@ def downgrade():
             WHERE
                 plays.created_at > (now() - interval '1 year')
             GROUP BY plays.play_item_id
-        ) as year_listen_counts ON year_listen_counts.play_item_id = agreements.digital_content_id
+        ) as year_listen_counts ON year_listen_counts.play_item_id = digitalContents.digital_content_id
         WHERE
-            agreements.is_current is True AND
-            agreements.is_delete is False AND
-            agreements.is_unlisted is False AND
-            agreements.stem_of is Null;
+            digitalContents.is_current is True AND
+            digitalContents.is_delete is False AND
+            digitalContents.is_unlisted is False AND
+            digitalContents.stem_of is Null;
 
         CREATE INDEX IF NOT EXISTS interval_play_digital_content_id_idx ON aggregate_interval_plays (digital_content_id);
         CREATE INDEX IF NOT EXISTS interval_play_week_count_idx ON aggregate_interval_plays (week_listen_counts);

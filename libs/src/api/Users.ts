@@ -212,7 +212,7 @@ export class Users extends Base {
     limit = 100,
     offset = 0,
     withUsers = false,
-    agreementsOnly = false
+    digitalContentsOnly = false
   ) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
     const owner = this.userStateManager.getCurrentUser()
@@ -222,7 +222,7 @@ export class Users extends Base {
         limit,
         offset,
         withUsers,
-        agreementsOnly
+        digitalContentsOnly
       )
     }
 

@@ -1,25 +1,25 @@
 ---
-id: "full.FullAgreementResponse"
-title: "Interface: FullAgreementResponse"
-sidebar_label: "FullAgreementResponse"
+id: "full.FullDigitalContentResponse"
+title: "Interface: FullDigitalContentResponse"
+sidebar_label: "FullDigitalContentResponse"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).FullAgreementResponse
+[full](../namespaces/full.md).FullDigitalContentResponse
 
 **`export`**
 
-**`interface`** FullAgreementResponse
+**`interface`** FullDigitalContentResponse
 
 ## Properties
 
 ### data
 
- `Optional` **data**: [`AgreementFull`](full.AgreementFull.md)
+ `Optional` **data**: [`DigitalContentFull`](full.DigitalContentFull.md)
 
-**`memberof`** FullAgreementResponse
+**`memberof`** FullDigitalContentResponse
 
 ___
 
@@ -27,7 +27,7 @@ ___
 
  **latest\_chain\_block**: `number`
 
-**`memberof`** FullAgreementResponse
+**`memberof`** FullDigitalContentResponse
 
 ___
 
@@ -35,7 +35,7 @@ ___
 
  **latest\_chain\_slot\_plays**: `number`
 
-**`memberof`** FullAgreementResponse
+**`memberof`** FullDigitalContentResponse
 
 ___
 
@@ -43,7 +43,7 @@ ___
 
  **latest\_indexed\_block**: `number`
 
-**`memberof`** FullAgreementResponse
+**`memberof`** FullDigitalContentResponse
 
 ___
 
@@ -51,7 +51,7 @@ ___
 
  **latest\_indexed\_slot\_plays**: `number`
 
-**`memberof`** FullAgreementResponse
+**`memberof`** FullDigitalContentResponse
 
 ___
 
@@ -59,7 +59,7 @@ ___
 
  **signature**: `string`
 
-**`memberof`** FullAgreementResponse
+**`memberof`** FullDigitalContentResponse
 
 ___
 
@@ -67,7 +67,7 @@ ___
 
  **timestamp**: `string`
 
-**`memberof`** FullAgreementResponse
+**`memberof`** FullDigitalContentResponse
 
 ___
 
@@ -75,4 +75,4 @@ ___
 
  **version**: [`VersionMetadata`](full.VersionMetadata.md)
 
-**`memberof`** FullAgreementResponse
+**`memberof`** FullDigitalContentResponse

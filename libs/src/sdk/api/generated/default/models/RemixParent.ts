@@ -14,11 +14,11 @@
  */
 
 import {
-    AgreementElement,
-    AgreementElementFromJSON,
-    AgreementElementFromJSONTyped,
-    AgreementElementToJSON,
-} from './agreementElement';
+    DigitalContentElement,
+    DigitalContentElementFromJSON,
+    DigitalContentElementFromJSONTyped,
+    DigitalContentElementToJSON,
+} from './digitalContentElement';
 
 /**
  * 
@@ -28,9 +28,9 @@ import {
 export interface RemixParent {
     /**
      * 
-     * @type {Array<AgreementElement>}
+     * @type {Array<DigitalContentElement>}
      * @memberof RemixParent
      */
-    agreements?: Array<AgreementElement>;
+    digitalContents?: Array<DigitalContentElement>;
 }
 

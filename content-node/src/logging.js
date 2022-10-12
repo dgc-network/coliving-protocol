@@ -44,7 +44,7 @@ const excludedRoutes = [
   '/health_check',
   '/ipfs',
   '/content',
-  '/agreements/download_status',
+  '/digital_contents/download_status',
   '/db_check',
   '/version',
   '/disk_check',

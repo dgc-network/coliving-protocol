@@ -18,7 +18,7 @@ const {
   destroyUsers
 } = require('./lib/dataSeeds')
 const { generateRandomCID } = require('./lib/utils')
-const { uploadAgreement } = require('./lib/helpers')
+const { uploadDigitalContent } = require('./lib/helpers')
 const { restartBlacklistManager } = require('./lib/blacklistManager')
 
 // Dummy keys from circle config.yml
@@ -33,7 +33,7 @@ const trustedNotifierConfig = {
   privateKey: 'fb0486224fc0221d1c23c00379cb10ce5f99aff2b0e5c1afd828c08b57f21429'
 }
 
-const testAudioFilePath = path.resolve(__dirname, 'testAgreement.mp3')
+const testAudioFilePath = path.resolve(__dirname, 'testDigitalContent.mp3')
 
 describe('test ContentBlacklist', function () {
   let app, server, libsMock, mockServiceRegistry, userId
@@ -70,9 +70,9 @@ describe('test ContentBlacklist', function () {
     await redis.flushall()
   })
 
-  it('should expose the proper agreements if added', async function () {
+  it('should expose the proper digitalContents if added', async function () {
     const expectedIds = [1, 2, 3, 4, 5, 6, 7]
-    const addAgreementData = generateTimestampAndSignature(
+    const addDigitalContentData = generateTimestampAndSignature(
       {
         type: BlacklistManager.getTypes().digital_content,
         values: expectedIds
@@ -85,13 +85,13 @@ describe('test ContentBlacklist', function () {
       .query({
         type: BlacklistManager.getTypes().digital_content,
         'values[]': expectedIds,
-        signature: addAgreementData.signature,
-        timestamp: addAgreementData.timestamp
+        signature: addDigitalContentData.signature,
+        timestamp: addDigitalContentData.timestamp
       })
       .expect(200)
 
     await request(app)
-      .get('/blacklist/agreements')
+      .get('/blacklist/digitalContents')
       .expect(200)
       .expect((resp) => {
         const actualIds = resp.body.data.values
@@ -101,9 +101,9 @@ describe('test ContentBlacklist', function () {
       })
   })
 
-  it('should expose empty list if no agreements are added', async function () {
+  it('should expose empty list if no digitalContents are added', async function () {
     await request(app)
-      .get('/blacklist/agreements')
+      .get('/blacklist/digitalContents')
       .expect(200)
       .expect((resp) => {
         const actualIds = resp.body.data.values
@@ -111,7 +111,7 @@ describe('test ContentBlacklist', function () {
       })
   })
 
-  it('should return the proper userIds, agreementIds, and segments', async () => {
+  it('should return the proper userIds, digitalContentIds, and segments', async () => {
     const ids = [43021]
     const addUserData = generateTimestampAndSignature(
       {
@@ -131,7 +131,7 @@ describe('test ContentBlacklist', function () {
       })
       .expect(200)
 
-    const addAgreementData = generateTimestampAndSignature(
+    const addDigitalContentData = generateTimestampAndSignature(
       {
         type: BlacklistManager.getTypes().digital_content,
         values: ids
@@ -144,8 +144,8 @@ describe('test ContentBlacklist', function () {
       .query({
         type: BlacklistManager.getTypes().digital_content,
         'values[]': ids,
-        signature: addAgreementData.signature,
-        timestamp: addAgreementData.timestamp
+        signature: addDigitalContentData.signature,
+        timestamp: addDigitalContentData.timestamp
       })
       .expect(200)
 
@@ -172,8 +172,8 @@ describe('test ContentBlacklist', function () {
       .get('/blacklist')
       .expect(200)
       .expect((resp) => {
-        assert.deepStrictEqual(resp.body.data.agreementIds.length, 1)
-        assert.deepStrictEqual(resp.body.data.agreementIds[0], '43021')
+        assert.deepStrictEqual(resp.body.data.digitalContentIds.length, 1)
+        assert.deepStrictEqual(resp.body.data.digitalContentIds[0], '43021')
         assert.deepStrictEqual(resp.body.data.userIds.length, 1)
         assert.deepStrictEqual(resp.body.data.userIds[0], '43021')
         assert.deepStrictEqual(resp.body.data.individualSegments.length, 1)
@@ -181,7 +181,7 @@ describe('test ContentBlacklist', function () {
       })
   })
 
-  it('should return the proper userIds, agreementIds, and segments when sent by trusted notifier', async () => {
+  it('should return the proper userIds, digitalContentIds, and segments when sent by trusted notifier', async () => {
     mockServiceRegistry.trustedNotifierManager.trustedNotifierData.wallet =
       trustedNotifierConfig.wallet
 
@@ -204,7 +204,7 @@ describe('test ContentBlacklist', function () {
       })
       .expect(200)
 
-    const addAgreementData = generateTimestampAndSignature(
+    const addDigitalContentData = generateTimestampAndSignature(
       {
         type: BlacklistManager.getTypes().digital_content,
         values: ids
@@ -217,8 +217,8 @@ describe('test ContentBlacklist', function () {
       .query({
         type: BlacklistManager.getTypes().digital_content,
         'values[]': ids,
-        signature: addAgreementData.signature,
-        timestamp: addAgreementData.timestamp
+        signature: addDigitalContentData.signature,
+        timestamp: addDigitalContentData.timestamp
       })
       .expect(200)
 
@@ -245,8 +245,8 @@ describe('test ContentBlacklist', function () {
       .get('/blacklist')
       .expect(200)
       .expect((resp) => {
-        assert.deepStrictEqual(resp.body.data.agreementIds.length, 1)
-        assert.deepStrictEqual(resp.body.data.agreementIds[0], '43021')
+        assert.deepStrictEqual(resp.body.data.digitalContentIds.length, 1)
+        assert.deepStrictEqual(resp.body.data.digitalContentIds[0], '43021')
         assert.deepStrictEqual(resp.body.data.userIds.length, 1)
         assert.deepStrictEqual(resp.body.data.userIds[0], '43021')
         assert.deepStrictEqual(resp.body.data.individualSegments.length, 1)
@@ -306,7 +306,7 @@ describe('test ContentBlacklist', function () {
     assert.deepStrictEqual(digital_content.value, ids[0].toString())
     assert.deepStrictEqual(digital_content.type, type)
     assert.deepStrictEqual(
-      await BlacklistManager.agreementIdIsInBlacklist(digital_content.value),
+      await BlacklistManager.digitalContentIdIsInBlacklist(digital_content.value),
       1
     )
   })
@@ -372,7 +372,7 @@ describe('test ContentBlacklist', function () {
     })
     assert.deepStrictEqual(digital_content, null)
     assert.deepStrictEqual(
-      await BlacklistManager.agreementIdIsInBlacklist(ids[0]),
+      await BlacklistManager.digitalContentIdIsInBlacklist(ids[0]),
       0
     )
   })
@@ -428,7 +428,7 @@ describe('test ContentBlacklist', function () {
     })
     assert.deepStrictEqual(digital_content, null)
     assert.deepStrictEqual(
-      await BlacklistManager.agreementIdIsInBlacklist(ids[0]),
+      await BlacklistManager.digitalContentIdIsInBlacklist(ids[0]),
       0
     )
   })
@@ -451,7 +451,7 @@ describe('test ContentBlacklist', function () {
       .query({ type, 'values[]': ids, timestamp, signature })
       .expect(200)
 
-    const agreements = await models.ContentBlacklist.findAll({
+    const digitalContents = await models.ContentBlacklist.findAll({
       where: {
         value: {
           [models.Sequelize.Op.in]: ids.map((id) => id.toString())
@@ -459,12 +459,12 @@ describe('test ContentBlacklist', function () {
         type
       }
     })
-    assert.deepStrictEqual(agreements.length, 1)
-    const digital_content = agreements[0]
+    assert.deepStrictEqual(digitalContents.length, 1)
+    const digital_content = digitalContents[0]
     assert.deepStrictEqual(digital_content.value, ids[0].toString())
     assert.deepStrictEqual(digital_content.type, type)
     assert.deepStrictEqual(
-      await BlacklistManager.agreementIdIsInBlacklist(digital_content.value),
+      await BlacklistManager.digitalContentIdIsInBlacklist(digital_content.value),
       1
     )
   })
@@ -539,7 +539,7 @@ describe('test ContentBlacklist', function () {
 
   it('should only blacklist partial digital_content ids list if only some ids are found', async () => {
     const ids = [Utils.getRandomInt(MAX_ID), Utils.getRandomInt(MAX_ID)]
-    libsMock.DigitalContent.getAgreements.returns([{ digital_content_id: ids[0] }]) // only user @ index 0 is found
+    libsMock.DigitalContent.getDigitalContents.returns([{ digital_content_id: ids[0] }]) // only user @ index 0 is found
     const type = BlacklistManager.getTypes().digital_content
     const { signature, timestamp } = generateTimestampAndSignature(
       { type, values: ids },
@@ -552,19 +552,19 @@ describe('test ContentBlacklist', function () {
       .expect(200)
 
     // Ensure only one digital_content was added to the blacklist
-    const agreements = await models.ContentBlacklist.findAll({
+    const digitalContents = await models.ContentBlacklist.findAll({
       where: {
         value: { [models.Sequelize.Op.in]: ids.map((id) => id.toString()) },
         type
       }
     })
 
-    assert.deepStrictEqual(agreements.length, 1)
-    const digital_content = agreements[0]
+    assert.deepStrictEqual(digitalContents.length, 1)
+    const digital_content = digitalContents[0]
     assert.deepStrictEqual(digital_content.value, ids[0].toString())
     assert.deepStrictEqual(digital_content.type, type)
     assert.deepStrictEqual(
-      await BlacklistManager.agreementIdIsInBlacklist(digital_content.value),
+      await BlacklistManager.digitalContentIdIsInBlacklist(digital_content.value),
       1
     )
   })
@@ -677,11 +677,11 @@ describe('test ContentBlacklist', function () {
   // TODO: need to consider the USER case UGHUAWIFEWHUIAWFHEWI
   it('should throw an error when adding an user id to the blacklist and streaming /ipfs/:CID route', async () => {
     // Create user and upload digital_content
-    const data = await createUserAndUploadAgreement()
-    const agreementId = data.digital_content.blockchainId
-    const ids = [agreementId]
+    const data = await createUserAndUploadDigitalContent()
+    const digitalContentId = data.digital_content.blockchainId
+    const ids = [digitalContentId]
 
-    // Blacklist agreementId
+    // Blacklist digitalContentId
     const type = BlacklistManager.getTypes().user
     const { signature, timestamp } = generateTimestampAndSignature(
       { type, values: ids },
@@ -694,10 +694,10 @@ describe('test ContentBlacklist', function () {
 
     // Hit /ipfs/:CID route for all digital_content CIDs and ensure error response is returned
     await Promise.all(
-      data.digital_content.agreementSegments.map((segment) =>
+      data.digital_content.digitalContentSegments.map((segment) =>
         request(app)
           .get(`/ipfs/${segment.multihash}`)
-          .query({ agreementId })
+          .query({ digitalContentId })
           .expect(200)
       )
     )
@@ -705,13 +705,13 @@ describe('test ContentBlacklist', function () {
     // TODO: add remove and test that the segments are unblacklisted
   })
 
-  it('should throw an error when adding a digital_content id to the blacklist, and streaming /ipfs/:CID without the agreementId query string', async () => {
+  it('should throw an error when adding a digital_content id to the blacklist, and streaming /ipfs/:CID without the digitalContentId query string', async () => {
     // Create user and upload digital_content
-    const data = await createUserAndUploadAgreement()
-    const agreementId = data.digital_content.blockchainId
-    const ids = [agreementId]
+    const data = await createUserAndUploadDigitalContent()
+    const digitalContentId = data.digital_content.blockchainId
+    const ids = [digitalContentId]
 
-    // Blacklist agreementId
+    // Blacklist digitalContentId
     const type = BlacklistManager.getTypes().digital_content
     const { signature, timestamp } = generateTimestampAndSignature(
       { type, values: ids },
@@ -722,21 +722,21 @@ describe('test ContentBlacklist', function () {
       .query({ type, 'values[]': ids, signature, timestamp })
       .expect(200)
 
-    // Hit /ipfs/:CID route for all digital_content CIDs and ensure error response is returned because no agreementId was passed
+    // Hit /ipfs/:CID route for all digital_content CIDs and ensure error response is returned because no digitalContentId was passed
     await Promise.all(
-      data.digital_content.agreementSegments.map((segment) =>
+      data.digital_content.digitalContentSegments.map((segment) =>
         request(app).get(`/ipfs/${segment.multihash}`).expect(403)
       )
     )
   })
 
-  it('should err when blacklisting digital_content, and streaming /ipfs/:CID?agreementId=<blacklistedAgreementId>, then pass after removing from BL and streaming again', async () => {
+  it('should err when blacklisting digital_content, and streaming /ipfs/:CID?digitalContentId=<blacklistedDigitalContentId>, then pass after removing from BL and streaming again', async () => {
     // Create user and upload digital_content
-    const data = await createUserAndUploadAgreement()
-    const agreementId = data.digital_content.blockchainId
-    const ids = [agreementId]
+    const data = await createUserAndUploadDigitalContent()
+    const digitalContentId = data.digital_content.blockchainId
+    const ids = [digitalContentId]
 
-    // Blacklist agreementId
+    // Blacklist digitalContentId
     const type = BlacklistManager.getTypes().digital_content
     const { signature, timestamp } = generateTimestampAndSignature(
       { type, values: ids },
@@ -749,10 +749,10 @@ describe('test ContentBlacklist', function () {
 
     // Hit /ipfs/:CID route for all digital_content CIDs and ensure error response is returned
     await Promise.all(
-      data.digital_content.agreementSegments.map((segment) =>
+      data.digital_content.digitalContentSegments.map((segment) =>
         request(app)
           .get(`/ipfs/${segment.multihash}`)
-          .query({ agreementId: data.digital_content.blockchainId })
+          .query({ digitalContentId: data.digital_content.blockchainId })
           .expect(403)
       )
     )
@@ -764,22 +764,22 @@ describe('test ContentBlacklist', function () {
 
     // After removing from blacklist, digital_content should be streamable
     await Promise.all(
-      data.digital_content.agreementSegments.map((segment) =>
+      data.digital_content.digitalContentSegments.map((segment) =>
         request(app)
           .get(`/ipfs/${segment.multihash}`)
-          .query({ agreementId })
+          .query({ digitalContentId })
           .expect(200)
       )
     )
   })
 
-  it('should throw an error when adding a digital_content id to the blacklist, and streaming /ipfs/:CID?agreementId=<agreementIdThatDoesntContainCID>', async () => {
+  it('should throw an error when adding a digital_content id to the blacklist, and streaming /ipfs/:CID?digitalContentId=<digitalContentIdThatDoesntContainCID>', async () => {
     // Create user and upload digital_content
-    const data = await createUserAndUploadAgreement()
-    const agreementId = data.digital_content.blockchainId
-    const ids = [agreementId]
+    const data = await createUserAndUploadDigitalContent()
+    const digitalContentId = data.digital_content.blockchainId
+    const ids = [digitalContentId]
 
-    // Blacklist agreementId
+    // Blacklist digitalContentId
     const type = BlacklistManager.getTypes().digital_content
     const { signature, timestamp } = generateTimestampAndSignature(
       { type, values: ids },
@@ -792,27 +792,27 @@ describe('test ContentBlacklist', function () {
 
     // Hit /ipfs/:CID route for all digital_content CIDs and ensure error response is returned
     await Promise.all(
-      data.digital_content.agreementSegments.map((segment) =>
+      data.digital_content.digitalContentSegments.map((segment) =>
         request(app)
           .get(`/ipfs/${segment.multihash}`)
-          .query({ agreementId: 1234 })
+          .query({ digitalContentId: 1234 })
           .expect(403)
       )
     )
   })
 
   // TODO: fix :(
-  it('should not throw an error when streaming a blacklisted CID of a non-blacklisted digital_content at /ipfs/:CID?agreementId=<agreementIdOfNonBlacklistedAgreement>', async () => {
+  it('should not throw an error when streaming a blacklisted CID of a non-blacklisted digital_content at /ipfs/:CID?digitalContentId=<digitalContentIdOfNonBlacklistedDigitalContent>', async () => {
     // Create user and upload digital_content
-    const agreement1 = await createUserAndUploadAgreement()
-    const agreement2 = await createUserAndUploadAgreement({
+    const digitalContent1 = await createUserAndUploadDigitalContent()
+    const digitalContent2 = await createUserAndUploadDigitalContent({
       inputUserId: 2,
-      agreementId: 2,
+      digitalContentId: 2,
       pubKey: '0x3f8f51ed837b15af580eb96cee740c723d340e7f'
     })
-    const ids = [agreement1.digital_content.blockchainId]
+    const ids = [digitalContent1.digital_content.blockchainId]
 
-    // Blacklist agreementId
+    // Blacklist digitalContentId
     const type = BlacklistManager.getTypes().digital_content
     const { signature, timestamp } = generateTimestampAndSignature(
       { type, values: ids },
@@ -825,10 +825,10 @@ describe('test ContentBlacklist', function () {
 
     // Hit /ipfs/:CID route for all digital_content CIDs and ensure no error response is returned
     await Promise.all(
-      agreement2.digital_content.agreementSegments.map((segment) =>
+      digitalContent2.digital_content.digitalContentSegments.map((segment) =>
         request(app)
           .get(`/ipfs/${segment.multihash}`)
-          .query({ agreementId: agreement2.digital_content.blockchainId })
+          .query({ digitalContentId: digitalContent2.digital_content.blockchainId })
           .expect(200)
       )
     )
@@ -888,7 +888,7 @@ describe('test ContentBlacklist', function () {
   })
 
   it('should throw an error if digital_content id does not exist', async () => {
-    libsMock.DigitalContent.getAgreements.returns([])
+    libsMock.DigitalContent.getDigitalContents.returns([])
     const ids = [Utils.getRandomInt(MAX_ID)]
     const type = BlacklistManager.getTypes().digital_content
     const resp1 = generateTimestampAndSignature(
@@ -987,11 +987,11 @@ describe('test ContentBlacklist', function () {
 
   it('should add the relevant CIDs to redis when adding a type AGREEMENT to redis', async () => {
     // Create user and upload digital_content
-    const data = await createUserAndUploadAgreement()
-    const agreementId = data.digital_content.blockchainId
-    const ids = [agreementId]
+    const data = await createUserAndUploadDigitalContent()
+    const digitalContentId = data.digital_content.blockchainId
+    const ids = [digitalContentId]
 
-    // Blacklist agreementId
+    // Blacklist digitalContentId
     const type = BlacklistManager.getTypes().digital_content
     const { signature, timestamp } = generateTimestampAndSignature(
       { type, values: ids },
@@ -1002,19 +1002,19 @@ describe('test ContentBlacklist', function () {
       .query({ type, 'values[]': ids, signature, timestamp })
       .expect(200)
 
-    // Hit /ipfs/:CID route for all digital_content CIDs and ensure error response is returned because no agreementId was passed
+    // Hit /ipfs/:CID route for all digital_content CIDs and ensure error response is returned because no digitalContentId was passed
     let blacklistedCIDs = await BlacklistManager.getAllCIDs()
     blacklistedCIDs = new Set(blacklistedCIDs)
-    for (const segment of data.digital_content.agreementSegments) {
+    for (const segment of data.digital_content.digitalContentSegments) {
       assert.deepStrictEqual(blacklistedCIDs.has(segment.multihash), true)
     }
   })
 
   /** Helper setup method to test ContentBlacklist.  */
-  async function createUserAndUploadAgreement(
-    { inputUserId, agreementId, pubKey } = {
+  async function createUserAndUploadDigitalContent(
+    { inputUserId, digitalContentId, pubKey } = {
       inputUserId: userId,
-      agreementId: Utils.getRandomInt(MAX_ID),
+      digitalContentId: Utils.getRandomInt(MAX_ID),
       pubKey: null
     }
   ) {
@@ -1063,48 +1063,48 @@ describe('test ContentBlacklist', function () {
       .send(associateRequest)
 
     // Upload a digital_content
-    const agreementUploadResponse = await uploadAgreement(
+    const digitalContentUploadResponse = await uploadDigitalContent(
       testAudioFilePath,
       cnodeUserUUID,
       mockServiceRegistry.blacklistManager
     )
 
     const {
-      transcodedAgreementUUID,
-      digital_content_segments: agreementSegments,
+      transcodedDigitalContentUUID,
+      digital_content_segments: digitalContentSegments,
       source_file: sourceFile
-    } = agreementUploadResponse
+    } = digitalContentUploadResponse
 
     // set digital_content metadata
-    const agreementMetadata = {
+    const digitalContentMetadata = {
       test: 'field1',
       owner_id: inputUserId,
-      digital_content_segments: agreementSegments
+      digital_content_segments: digitalContentSegments
     }
     const {
       body: {
-        data: { metadataFileUUID: agreementMetadataFileUUID }
+        data: { metadataFileUUID: digitalContentMetadataFileUUID }
       }
     } = await request(app)
-      .post('/agreements/metadata')
+      .post('/digital_contents/metadata')
       .set('X-Session-ID', sessionToken)
       .set('User-Id', inputUserId)
       .set('Enforce-Write-Quorum', false)
-      .send({ metadata: agreementMetadata, source_file: sourceFile })
+      .send({ metadata: digitalContentMetadata, source_file: sourceFile })
     // associate digital_content metadata with digital_content
     await request(app)
-      .post('/agreements')
+      .post('/digitalContents')
       .set('X-Session-ID', sessionToken)
       .set('User-Id', inputUserId)
       .send({
-        blockchainAgreementId: agreementId,
+        blockchainDigitalContentId: digitalContentId,
         blockNumber: 10,
-        metadataFileUUID: agreementMetadataFileUUID,
-        transcodedAgreementUUID
+        metadataFileUUID: digitalContentMetadataFileUUID,
+        transcodedDigitalContentUUID
       })
 
     // Return user and some digital_content data
-    return { cnodeUser, digital_content: { agreementSegments, blockchainId: agreementId } }
+    return { cnodeUser, digital_content: { digitalContentSegments, blockchainId: digitalContentId } }
   }
 })
 
@@ -1129,14 +1129,14 @@ const setupLibsMock = (libsMock) => {
     return resp
   })
 
-  libsMock.DigitalContent = { getAgreements: sinon.mock() }
-  libsMock.DigitalContent.getAgreements.callsFake((limit, offset, ids) => {
+  libsMock.DigitalContent = { getDigitalContents: sinon.mock() }
+  libsMock.DigitalContent.getDigitalContents.callsFake((limit, offset, ids) => {
     return ids.map((id) => {
       return {
         digital_content_id: id
       }
     })
   })
-  libsMock.DigitalContent.getAgreements.atLeast(0)
+  libsMock.DigitalContent.getDigitalContents.atLeast(0)
   return libsMock
 }

@@ -1,10 +1,10 @@
 ---
-sidebar_label: '$LIVE'
+sidebar_label: '$DGCO'
 sidebar_position: 1
-description: '$LIVE - le jeton de la plate-forme Coliving qui sous-tend les actions à valeur ajoutée dans Coliving'
+description: '$DGCO - le jeton de la plate-forme Coliving qui sous-tend les actions à valeur ajoutée dans Coliving'
 ---
 
-# $LIVE
+# $DGCO
 
 #### Comment ça marche
 

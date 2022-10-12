@@ -26,10 +26,10 @@ Chaque proposition de gouvernance est accompagnée d'une répartition des param�
 * _Pour_ - Le nombre de votes en faveur de la proposition
 * _Contre_ - Le nombre de votes contre la proposition
 
-**Toutes les propositions sont soumises à 5% du quorum de $LIVE et à une majorité de 50%.**
+**Toutes les propositions sont soumises à 5% du quorum de $DGCO et à une majorité de 50%.**
 
 
-Cela signifie que pour qu'une proposition soit adoptée, au moins 5% de tous les $LIVE misés doivent voter sur la proposition et plus de 50% des votes doivent être "Pour" la proposition.
+Cela signifie que pour qu'une proposition soit adoptée, au moins 5% de tous les $DGCO misés doivent voter sur la proposition et plus de 50% des votes doivent être "Pour" la proposition.
 
 
 Aujourd'hui, seuls ceux qui exécutent un nœud peuvent faire une proposition en chaîne. À l'avenir, l'ensemble des proposants autorisés pourrait être élargi de la manière dont la communauté le jugera bon.
@@ -100,7 +100,7 @@ En prenant comme exemple la proposition de gouvernance la plus récente , vous p
 ![](https://assets.website-files.com/6024b69839b1b7fd3787991c/607d16049feb3a126f852b57_H6OK09A-2szawbI66mlGi7489J5aj-x604boPIeDUs6zhfZB7Fs77rIsaskaMGslMNWdGrTfm2ZM_sLalkwBvLCn-I0aUm7g9aSIYr11qC0b2t5WHELcyUtSlK21OaD5UgB9mnRN.png)
 
 
-Étant donné que le nombre total de votes \(1 LIVE, 1 vote\) était supérieur au quorum requis de ~11M $LIVE et la majorité de 50% \(100% ont voté en faveur\) la proposition a été adoptée !
+Étant donné que le nombre total de votes \(1 LIVE, 1 vote\) était supérieur au quorum requis de ~11M $DGCO et la majorité de 50% \(100% ont voté en faveur\) la proposition a été adoptée !
 
 
 Ce faisant, les modifications de cette proposition ont été exécutées par le biais du contrat de gouvernance, faisant passer la fenêtre de vote de 48 heures à 72 heures !
@@ -125,7 +125,7 @@ Plus de détails sur les signataires de ce multisig ainsi que sur l'intention de
 
 ### **Gouvernance évolutive**
 
-La gouvernance Coliving est un processus évolutif visant à donner à tous les détenteurs de $LIVE une voix sur les futures itérations de la plateforme.
+La gouvernance Coliving est un processus évolutif visant à donner à tous les détenteurs de $DGCO une voix sur les futures itérations de la plateforme.
 
 
 Le processus décrit ci-dessus est susceptible d'évoluer en fonction des nouveaux outils, des mises à niveau de produits et des mises en service, afin de permettre à tous les utilisateurs de jetons d'examiner et de participer facilement aux décisions de gouvernance, quelles que soient leurs connaissances techniques.

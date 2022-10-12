@@ -51,7 +51,7 @@ bp = Blueprint("search_tags", __name__)
 
 class SearchKind(Enum):
     all = 1
-    agreements = 2
+    digitalContents = 2
     users = 3
     contentLists = 4
     albums = 5
@@ -85,7 +85,7 @@ def search_tags():
         user_tag_count = "2"
 
     kind = request.args.get("kind", type=str, default="all")
-    validSearchKinds = [SearchKind.all, SearchKind.agreements, SearchKind.users]
+    validSearchKinds = [SearchKind.all, SearchKind.digitalContents, SearchKind.users]
     try:
         searchKind = SearchKind[kind]
         if searchKind not in validSearchKinds:
@@ -106,8 +106,8 @@ def search_tags():
 
     db = get_db_read_replica()
     with db.scoped_session() as session:
-        if searchKind in [SearchKind.all, SearchKind.agreements]:
-            results["agreements"] = search_digital_content_tags(
+        if searchKind in [SearchKind.all, SearchKind.digitalContents]:
+            results["digitalContents"] = search_digital_content_tags(
                 session,
                 {
                     "search_str": search_str,
@@ -131,9 +131,9 @@ def search_tags():
 
     # Add personalized results for a given user
     if current_user_id:
-        if searchKind in [SearchKind.all, SearchKind.agreements]:
-            # Query saved agreements for the current user that contain this tag
-            digital_content_ids = [digital_content["digital_content_id"] for digital_content in results["agreements"]]
+        if searchKind in [SearchKind.all, SearchKind.digitalContents]:
+            # Query saved digitalContents for the current user that contain this tag
+            digital_content_ids = [digital_content["digital_content_id"] for digital_content in results["digitalContents"]]
 
             saves_query = (
                 session.query(Save.save_item_id)
@@ -150,7 +150,7 @@ def search_tags():
             saved_digital_contents = list(
                 filter(
                     lambda digital_content: digital_content["digital_content_id"] in saved_digital_content_ids,
-                    results["agreements"],
+                    results["digitalContents"],
                 )
             )
             results["saved_digital_contents"] = saved_digital_contents
@@ -206,7 +206,7 @@ def perform_search_query(db, search_type, args):
         only_downloadable = args.get("only_downloadable")
 
         results = None
-        if search_type == "agreements":
+        if search_type == "digitalContents":
             results = digital_content_search_query(
                 session,
                 search_str,
@@ -263,9 +263,9 @@ def perform_search_query(db, search_type, args):
 # - de-duplicates object_ids with multiple hits, returning highest match
 #
 # queries can be called for public data, or personalized data
-# - personalized data will return only saved agreements, saved contentLists, or followed users given current_user_id
+# - personalized data will return only saved digitalContents, saved contentLists, or followed users given current_user_id
 #
-# @devnote - digital_content_ids argument should match agreements argument
+# @devnote - digital_content_ids argument should match digitalContents argument
 
 
 def search(args):
@@ -329,8 +329,8 @@ def search(args):
                 futures.append(future)
                 futures_map[future] = search_type
 
-            if searchKind in [SearchKind.all, SearchKind.agreements]:
-                submit_and_add("agreements")
+            if searchKind in [SearchKind.all, SearchKind.digitalContents]:
+                submit_and_add("digitalContents")
 
             if searchKind in [SearchKind.all, SearchKind.users]:
                 submit_and_add("users")
@@ -346,8 +346,8 @@ def search(args):
 
                 # Add to the final results
                 # Add to user_ids
-                if future_type == "agreements":
-                    results["agreements"] = search_result["all"]
+                if future_type == "digitalContents":
+                    results["digitalContents"] = search_result["all"]
                     results["saved_digital_contents"] = search_result["saved"]
                 elif future_type == "users":
                     results["users"] = search_result["all"]
@@ -429,7 +429,7 @@ def digital_content_search_query(
                         else ""
                     }
                     {
-                        'inner join "agreements" t on t.digital_content_id = d.digital_content_id'
+                        'inner join "digitalContents" t on t.digital_content_id = d.digital_content_id'
                         if only_downloadable
                         else ""
                     }
@@ -477,18 +477,18 @@ def digital_content_search_query(
         digital_content[0] for digital_content in digital_content_data if digital_content[digital_content_cols.index("is_saved")]
     }
 
-    agreements = get_unpopulated_digital_contents(session, digital_content_ids, True)
+    digitalContents = get_unpopulated_digital_contents(session, digital_content_ids, True)
 
     # TODO: Populate digital_content metadata should be sped up to be able to be
     # used in search autocomplete as that'll give us better results.
     if is_auto_complete:
-        # fetch users for agreements
-        digital_content_owner_ids = list(map(lambda digital_content: digital_content["owner_id"], agreements))
+        # fetch users for digitalContents
+        digital_content_owner_ids = list(map(lambda digital_content: digital_content["owner_id"], digitalContents))
         users = get_unpopulated_users(session, digital_content_owner_ids)
         users_dict = {user["user_id"]: user for user in users}
 
         # attach user objects to digital_content objects
-        for i, digital_content in enumerate(agreements):
+        for i, digital_content in enumerate(digitalContents):
             user = users_dict[digital_content["owner_id"]]
             # Add user balance
             balance = digital_content_data[i][1]
@@ -500,20 +500,20 @@ def digital_content_search_query(
             digital_content["user"] = user
     else:
         # bundle peripheral info into digital_content results
-        agreements = populate_digital_content_metadata(session, digital_content_ids, agreements, current_user_id)
+        digitalContents = populate_digital_content_metadata(session, digital_content_ids, digitalContents, current_user_id)
 
     # Preserve order from digital_content_ids above
-    agreements_map = {}
-    for t in agreements:
-        agreements_map[t["digital_content_id"]] = t
-    agreements = [agreements_map[digital_content_id] for digital_content_id in digital_content_ids]
+    digitalContents_map = {}
+    for t in digitalContents:
+        digitalContents_map[t["digital_content_id"]] = t
+    digitalContents = [digitalContents_map[digital_content_id] for digital_content_id in digital_content_ids]
 
-    agreements_response = {
-        "all": agreements,
-        "saved": list(filter(lambda digital_content: digital_content["digital_content_id"] in saved_digital_contents, agreements)),
+    digitalContents_response = {
+        "all": digitalContents,
+        "saved": list(filter(lambda digital_content: digital_content["digital_content_id"] in saved_digital_contents, digitalContents)),
     }
 
-    return agreements_response
+    return digitalContents_response
 
 
 def user_search_query(

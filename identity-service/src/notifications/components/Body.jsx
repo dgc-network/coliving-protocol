@@ -72,7 +72,7 @@ const snippetMap = {
       return `You have reached over ${notification.value} Followers`
     }
   },
-  [NotificationType.TrendingAgreement] (notification) {
+  [NotificationType.TrendingDigitalContent] (notification) {
     const rank = notification.rank
     const suffix = getNumberSuffix(rank)
     return `Your DigitalContent ${notification.entity.title} is ${notification.rank}${suffix} on Trending Right Now!`
@@ -85,25 +85,25 @@ const snippetMap = {
     return `${user.name} released a new ${notification.entity.type.toLowerCase()} ${notification.entity.name}`
   },
   [NotificationType.RemixCreate] (notification) {
-    const { parentAgreement } = notification
-    return `New remix of your digital_content ${parentAgreement.title}`
+    const { parentDigitalContent } = notification
+    return `New remix of your digital_content ${parentDigitalContent.title}`
   },
   [NotificationType.RemixCosign] (notification) {
-    const { parentAgreementUser, parentAgreements } = notification
-    const parentAgreement = parentAgreements.find(t => t.ownerId === parentAgreementUser.userId)
-    return `${parentAgreementUser.name} Co-signed your Remix of ${parentAgreement.title}`
+    const { parentDigitalContentUser, parentDigitalContents } = notification
+    const parentDigitalContent = parentDigitalContents.find(t => t.ownerId === parentDigitalContentUser.userId)
+    return `${parentDigitalContentUser.name} Co-signed your Remix of ${parentDigitalContent.title}`
   },
   [NotificationType.ChallengeReward] (notification) {
-    return `You've earned $LIVE for completing challenges`
+    return `You've earned $DGCO for completing challenges`
   },
-  [NotificationType.AddAgreementToContentList] (notification) {
+  [NotificationType.AddDigitalContentToContentList] (notification) {
     return `${notification.contentListOwner.name} added ${notification.digital_content.title} to ${notification.contentList.content_list_name}`
   },
   [NotificationType.TipReceive] (notification) {
-    return `${notification.sendingUser.name} sent you a tip of ${notification.amount} $LIVE`
+    return `${notification.sendingUser.name} sent you a tip of ${notification.amount} $DGCO`
   },
   [NotificationType.Reaction] (notification) {
-    return `${notification.reactingUser.name} reacted to your tip of ${notification.amount} $LIVE`
+    return `${notification.reactingUser.name} reacted to your tip of ${notification.amount} $DGCO`
   },
   [NotificationType.SupporterRankUp] (notification) {
     return `${notification.sendingUser.name} became your #${notification.rank} top supporter`
@@ -120,7 +120,7 @@ const mapNotification = (notification) => {
       return notification
     }
     case NotificationType.RemixCosign: {
-      notification.digital_content = notification.remixAgreement
+      notification.digital_content = notification.remixDigitalContent
       return notification
     }
     default: {

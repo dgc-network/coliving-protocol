@@ -26,7 +26,7 @@ const { getApp } = require('./lib/app')
 const { getLibsMock } = require('./lib/libsMock')
 const { saveFileToStorage, computeFilesHash } = require('./lib/helpers')
 
-const TestAudioFilePath = path.resolve(__dirname, 'testAgreement.mp3')
+const TestAudioFilePath = path.resolve(__dirname, 'testDigitalContent.mp3')
 
 describe('Test createNewDataRecord()', async function () {
   const req = {
@@ -637,7 +637,7 @@ describe('Test deleteAllCNodeUserDataFromDB()', async function () {
   const initialClockVal = 0
   const userId = 1
 
-  // Create the req context for handleAgreementContentRoute
+  // Create the req context for handleDigitalContentContentRoute
   function getReqObj(fileUUID, fileDir, session) {
     return {
       fileName: `${fileUUID}.mp3`,
@@ -699,11 +699,11 @@ describe('Test deleteAllCNodeUserDataFromDB()', async function () {
         .expect(200)
     }
 
-    const uploadAgreementState = async () => {
-      // Mock `generateNonImageCid()` in `handleAgreementContentRoute()` to succeed
+    const uploadDigitalContentState = async () => {
+      // Mock `generateNonImageCid()` in `handleDigitalContentContentRoute()` to succeed
       const mockCid = 'QmYfSQCgCwhxwYcdEwCkFJHicDe6rzCAb7AtLz3GrHmuU6'
-      const { handleAgreementContentRoute } = proxyquire(
-        '../src/components/agreements/agreementsComponentService.js',
+      const { handleDigitalContentContentRoute } = proxyquire(
+        '../src/components/digital_contents/digitalContentsComponentService.js',
         {
           '@coliving/sdk': {
             libs: {
@@ -735,46 +735,46 @@ describe('Test deleteAllCNodeUserDataFromDB()', async function () {
 
       // Upload digital_content content
       const { fileUUID, fileDir } = saveFileToStorage(TestAudioFilePath)
-      const agreementContentResp = await handleAgreementContentRoute(
+      const digitalContentContentResp = await handleDigitalContentContentRoute(
         {},
         getReqObj(fileUUID, fileDir, session)
       )
 
       // Upload digital_content metadata
       const {
-        digital_content_segments: agreementSegments,
+        digital_content_segments: digitalContentSegments,
         source_file: sourceFile,
-        transcodedAgreementUUID
-      } = agreementContentResp
-      const agreementMetadata = {
+        transcodedDigitalContentUUID
+      } = digitalContentContentResp
+      const digitalContentMetadata = {
         test: 'field1',
-        digital_content_segments: agreementSegments,
+        digital_content_segments: digitalContentSegments,
         owner_id: userId
       }
-      const expectedAgreementMetadataMultihash =
+      const expectedDigitalContentMetadataMultihash =
         'QmTWhw49RfSMSJJmfm8cMHFBptgWoBGpNwjAc5jy2qeJfs'
-      const agreementMetadataResp = await request(app)
-        .post('/agreements/metadata')
+      const digitalContentMetadataResp = await request(app)
+        .post('/digital_contents/metadata')
         .set('X-Session-ID', session.sessionToken)
         .set('User-Id', session.userId)
         .set('Enforce-Write-Quorum', false)
-        .send({ metadata: agreementMetadata, sourceFile })
+        .send({ metadata: digitalContentMetadata, sourceFile })
         .expect(200)
       assert.deepStrictEqual(
-        agreementMetadataResp.body.data.metadataMultihash,
-        expectedAgreementMetadataMultihash
+        digitalContentMetadataResp.body.data.metadataMultihash,
+        expectedDigitalContentMetadataMultihash
       )
 
       // Complete digital_content upload
       await request(app)
-        .post('/agreements')
+        .post('/digitalContents')
         .set('X-Session-ID', session.sessionToken)
         .set('User-Id', session.userId)
         .send({
-          blockchainAgreementId: 1,
+          blockchainDigitalContentId: 1,
           blockNumber: 10,
-          metadataFileUUID: agreementMetadataResp.body.data.metadataFileUUID,
-          transcodedAgreementUUID
+          metadataFileUUID: digitalContentMetadataResp.body.data.metadataFileUUID,
+          transcodedDigitalContentUUID
         })
         .expect(200)
     }
@@ -786,7 +786,7 @@ describe('Test deleteAllCNodeUserDataFromDB()', async function () {
       const colivingUserEntries = await models.ColivingUser.findAll({
         where: { cnodeUserUUID }
       })
-      const agreementEntries = await models.DigitalContent.findAll({
+      const digitalContentEntries = await models.DigitalContent.findAll({
         where: { cnodeUserUUID }
       })
       const fileEntries = await models.File.findAll({
@@ -799,26 +799,26 @@ describe('Test deleteAllCNodeUserDataFromDB()', async function () {
       return {
         cnodeUserEntries,
         colivingUserEntries,
-        agreementEntries,
+        digitalContentEntries,
         fileEntries,
         clockRecordEntries
       }
     }
 
     await uploadColivingUserState()
-    await uploadAgreementState()
+    await uploadDigitalContentState()
 
     /** assert all tables non empty */
     let {
       cnodeUserEntries,
       colivingUserEntries,
-      agreementEntries,
+      digitalContentEntries,
       fileEntries,
       clockRecordEntries
     } = await getAllDBRecordsForUser(cnodeUserUUID)
     assert.ok(cnodeUserEntries.length > 0)
     assert.ok(colivingUserEntries.length > 0)
-    assert.ok(agreementEntries.length > 0)
+    assert.ok(digitalContentEntries.length > 0)
     assert.ok(fileEntries.length > 0)
     assert.ok(clockRecordEntries.length > 0)
 
@@ -831,13 +831,13 @@ describe('Test deleteAllCNodeUserDataFromDB()', async function () {
     ;({
       cnodeUserEntries,
       colivingUserEntries,
-      agreementEntries,
+      digitalContentEntries,
       fileEntries,
       clockRecordEntries
     } = await getAllDBRecordsForUser(cnodeUserUUID))
     assert.strictEqual(cnodeUserEntries.length, 0)
     assert.strictEqual(colivingUserEntries.length, 0)
-    assert.strictEqual(agreementEntries.length, 0)
+    assert.strictEqual(digitalContentEntries.length, 0)
     assert.strictEqual(fileEntries.length, 0)
     assert.strictEqual(clockRecordEntries.length, 0)
   })

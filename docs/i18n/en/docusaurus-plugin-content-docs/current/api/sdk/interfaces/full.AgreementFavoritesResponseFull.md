@@ -1,17 +1,17 @@
 ---
-id: "full.AgreementFavoritesResponseFull"
-title: "Interface: AgreementFavoritesResponseFull"
-sidebar_label: "AgreementFavoritesResponseFull"
+id: "full.DigitalContentFavoritesResponseFull"
+title: "Interface: DigitalContentFavoritesResponseFull"
+sidebar_label: "DigitalContentFavoritesResponseFull"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).AgreementFavoritesResponseFull
+[full](../namespaces/full.md).DigitalContentFavoritesResponseFull
 
 **`export`**
 
-**`interface`** AgreementFavoritesResponseFull
+**`interface`** DigitalContentFavoritesResponseFull
 
 ## Properties
 
@@ -19,7 +19,7 @@ pagination_next: null
 
  `Optional` **data**: [`UserFull`](full.UserFull.md)[]
 
-**`memberof`** AgreementFavoritesResponseFull
+**`memberof`** DigitalContentFavoritesResponseFull
 
 ___
 
@@ -27,7 +27,7 @@ ___
 
  **latest\_chain\_block**: `number`
 
-**`memberof`** AgreementFavoritesResponseFull
+**`memberof`** DigitalContentFavoritesResponseFull
 
 ___
 
@@ -35,7 +35,7 @@ ___
 
  **latest\_chain\_slot\_plays**: `number`
 
-**`memberof`** AgreementFavoritesResponseFull
+**`memberof`** DigitalContentFavoritesResponseFull
 
 ___
 
@@ -43,7 +43,7 @@ ___
 
  **latest\_indexed\_block**: `number`
 
-**`memberof`** AgreementFavoritesResponseFull
+**`memberof`** DigitalContentFavoritesResponseFull
 
 ___
 
@@ -51,7 +51,7 @@ ___
 
  **latest\_indexed\_slot\_plays**: `number`
 
-**`memberof`** AgreementFavoritesResponseFull
+**`memberof`** DigitalContentFavoritesResponseFull
 
 ___
 
@@ -59,7 +59,7 @@ ___
 
  **signature**: `string`
 
-**`memberof`** AgreementFavoritesResponseFull
+**`memberof`** DigitalContentFavoritesResponseFull
 
 ___
 
@@ -67,7 +67,7 @@ ___
 
  **timestamp**: `string`
 
-**`memberof`** AgreementFavoritesResponseFull
+**`memberof`** DigitalContentFavoritesResponseFull
 
 ___
 
@@ -75,4 +75,4 @@ ___
 
  **version**: [`VersionMetadata`](full.VersionMetadata.md)
 
-**`memberof`** AgreementFavoritesResponseFull
+**`memberof`** DigitalContentFavoritesResponseFull

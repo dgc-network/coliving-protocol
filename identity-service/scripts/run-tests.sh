@@ -24,7 +24,7 @@ export redisHost='localhost'
 export redisPort='6379'
 export dbUrl="postgres://postgres:postgres@localhost:$PG_PORT/coliving_identity_service_test"
 export logLevel='debug' #should be error
-export solanaAgreementListenCountAddress=''
+export solanaDigitalContentListenCountAddress=''
 export solanaColivingEthRegistryAddress=''
 export solanaValidSigner=''
 

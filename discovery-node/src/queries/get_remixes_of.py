@@ -3,9 +3,9 @@ from sqlalchemy import and_, case, desc, func
 from src import exceptions
 from src.models.social.repost import Repost, RepostType
 from src.models.social.save import Save, SaveType
-from src.models.agreements.aggregate_digital_content import AggregateAgreement
-from src.models.agreements.remix import Remix
-from src.models.agreements.digital_content import DigitalContent
+from src.models.digitalContents.aggregate_digital_content import AggregateDigitalContent
+from src.models.digitalContents.remix import Remix
+from src.models.digitalContents.digital_content import DigitalContent
 from src.queries.get_unpopulated_digital_contents import get_unpopulated_digital_contents
 from src.queries.query_helpers import (
     add_query_pagination,
@@ -47,8 +47,8 @@ def get_remixes_of(args):
             parent_digital_content = parent_digital_content_res[0]
             digital_content_owner_id = parent_digital_content["owner_id"]
 
-            # Get the 'children' remix agreements
-            # Use the digital_content owner id to fetch reposted/saved agreements returned first
+            # Get the 'children' remix digitalContents
+            # Use the digital_content owner id to fetch reposted/saved digitalContents returned first
             base_query = (
                 session.query(DigitalContent)
                 .join(
@@ -79,16 +79,16 @@ def get_remixes_of(args):
                     ),
                 )
                 .outerjoin(
-                    AggregateAgreement,
-                    AggregateAgreement.digital_content_id == DigitalContent.digital_content_id,
+                    AggregateDigitalContent,
+                    AggregateDigitalContent.digital_content_id == DigitalContent.digital_content_id,
                 )
                 .filter(
                     DigitalContent.is_current == True,
                     DigitalContent.is_delete == False,
                     DigitalContent.is_unlisted == False,
                 )
-                # 1. Co-signed agreements ordered by save + repost count
-                # 2. Other agreements ordered by save + repost count
+                # 1. Co-signed digitalContents ordered by save + repost count
+                # 2. Other digitalContents ordered by save + repost count
                 .order_by(
                     desc(
                         # If there is no "co-sign" for the digital_content (no repost or save from the parent owner),
@@ -104,36 +104,36 @@ def get_remixes_of(args):
                                 ),
                             ],
                             else_=(
-                                func.coalesce(AggregateAgreement.repost_count, 0)
-                                + func.coalesce(AggregateAgreement.save_count, 0)
+                                func.coalesce(AggregateDigitalContent.repost_count, 0)
+                                + func.coalesce(AggregateDigitalContent.save_count, 0)
                             ),
                         )
                     ),
                     # Order by saves + reposts
                     desc(
-                        func.coalesce(AggregateAgreement.repost_count, 0)
-                        + func.coalesce(AggregateAgreement.save_count, 0)
+                        func.coalesce(AggregateDigitalContent.repost_count, 0)
+                        + func.coalesce(AggregateDigitalContent.save_count, 0)
                     ),
                     # Ties, pick latest digital_content id
                     desc(DigitalContent.digital_content_id),
                 )
             )
 
-            (agreements, count) = add_query_pagination(
+            (digitalContents, count) = add_query_pagination(
                 base_query, limit, offset, True, True
             )
-            agreements = agreements.all()
-            agreements = helpers.query_result_to_list(agreements)
-            digital_content_ids = list(map(lambda digital_content: digital_content["digital_content_id"], agreements))
-            return (agreements, digital_content_ids, count)
+            digitalContents = digitalContents.all()
+            digitalContents = helpers.query_result_to_list(digitalContents)
+            digital_content_ids = list(map(lambda digital_content: digital_content["digital_content_id"], digitalContents))
+            return (digitalContents, digital_content_ids, count)
 
         key = make_cache_key(args)
-        (agreements, digital_content_ids, count) = use_redis_cache(
+        (digitalContents, digital_content_ids, count) = use_redis_cache(
             key, UNPOPULATED_REMIXES_CACHE_DURATION_SEC, get_unpopulated_remixes
         )
 
-        agreements = populate_digital_content_metadata(session, digital_content_ids, agreements, current_user_id)
+        digitalContents = populate_digital_content_metadata(session, digital_content_ids, digitalContents, current_user_id)
         if args.get("with_users", False):
-            add_users_to_digital_contents(session, agreements, current_user_id)
+            add_users_to_digital_contents(session, digitalContents, current_user_id)
 
-    return {"agreements": agreements, "count": count}
+    return {"digitalContents": digitalContents, "count": count}

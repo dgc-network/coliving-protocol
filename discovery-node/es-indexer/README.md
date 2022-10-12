@@ -18,7 +18,7 @@ If adding a new field, or changing an existing field mapping, the safest thing i
 
 If you are adding a new denormalization (attaching data from a related model), the data dependency tracking should be updated:
 
-- For "catchup" mode this is the `checkpointSql` function. See UserIndexer or AgreementIndexer for an example
+- For "catchup" mode this is the `checkpointSql` function. See UserIndexer or DigitalContentIndexer for an example
 - For listen / notify mode, this is the handler code in `listen.ts`
 
 When working on mapping changes, I might put code like this at top of `main.ts main()` function:

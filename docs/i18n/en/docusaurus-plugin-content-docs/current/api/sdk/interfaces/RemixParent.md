@@ -14,8 +14,8 @@ pagination_next: null
 
 ## Properties
 
-### agreements
+### digitalContents
 
- `Optional` **agreements**: [`AgreementElement`](AgreementElement.md)[]
+ `Optional` **digitalContents**: [`DigitalContentElement`](DigitalContentElement.md)[]
 
 **`memberof`** RemixParent

@@ -8,7 +8,7 @@ import src.utils.multihash
 from chance import chance
 from integration_tests.utils import toBytes
 from src.models.indexing.block import Block
-from src.models.agreements.digital_content import DigitalContent
+from src.models.digitalContents.digital_content import DigitalContent
 from src.models.users.user import User
 from src.queries.get_skipped_transactions import get_indexing_error
 from src.utils.helpers import remove_test_file
@@ -20,7 +20,7 @@ INDEXING_ERROR_KEY = "indexing:error"
 
 redis = get_redis()
 
-test_file = "integration_tests/res/test_live_file.mp3"
+test_file = "integration_tests/res/test_digitalcoin_file.mp3"
 digital_content_metadata_json_file = "integration_tests/res/test_digital_content_metadata.json"
 
 
@@ -81,15 +81,15 @@ def seed_contract_data(task, contracts, web3):
 
     # Add digitalcoin file to ipfs node
     res = ipfs.add(test_file)
-    test_live_file_hash = res["Hash"]
-    test_digital_content_segments = [{"multihash": test_live_file_hash, "duration": 28060}]
+    test_digitalcoin_file_hash = res["Hash"]
+    test_digital_content_segments = [{"multihash": test_digitalcoin_file_hash, "duration": 28060}]
 
     # Create digital_content metadata object
     digital_content_metadata = {
         "owner_id": user_id_from_event,
         "title": chance.name(),
         "length": 0.4,
-        "cover_art": test_live_file_hash,
+        "cover_art": test_digitalcoin_file_hash,
         "description": "putin sucks",
         "is_unlisted": False,
         "field_visibility": "",
@@ -132,8 +132,8 @@ def seed_contract_data(task, contracts, web3):
                 {"name": "chainId", "type": "uint256"},
                 {"name": "verifyingContract", "type": "address"},
             ],
-            "AddAgreementRequest": [
-                {"name": "agreementOwnerId", "type": "uint"},
+            "AddDigitalContentRequest": [
+                {"name": "digitalContentOwnerId", "type": "uint"},
                 {"name": "multihashDigest", "type": "bytes32"},
                 {"name": "multihashHashFn", "type": "uint8"},
                 {"name": "multihashSize", "type": "uint8"},
@@ -146,9 +146,9 @@ def seed_contract_data(task, contracts, web3):
             "chainId": chain_id,
             "verifyingContract": digital_content_factory_contract.address,
         },
-        "primaryType": "AddAgreementRequest",
+        "primaryType": "AddDigitalContentRequest",
         "message": {
-            "agreementOwnerId": user_id_from_event,
+            "digitalContentOwnerId": user_id_from_event,
             "multihashDigest": new_digital_content_multihash_digest,
             "multihashHashFn": new_digital_content_multihash_hash_fn,
             "multihashSize": new_digital_content_multihash_size,
@@ -161,7 +161,7 @@ def seed_contract_data(task, contracts, web3):
     )
 
     # add digital_content to blockchain
-    digital_content_factory_contract.functions.addAgreement(
+    digital_content_factory_contract.functions.addDigitalContent(
         user_id_from_event,
         new_digital_content_multihash_digest,
         new_digital_content_multihash_hash_fn,
@@ -242,9 +242,9 @@ def test_index_operations(celery_app, celery_app_contracts, mocker):
 
         # Make sure the data we added is there
         users = session.query(User).filter(User.handle == new_user_handle).all()
-        agreements = session.query(DigitalContent).filter(DigitalContent.owner_id == new_user_id).all()
+        digitalContents = session.query(DigitalContent).filter(DigitalContent.owner_id == new_user_id).all()
         assert len(users) > 0
-        assert len(agreements) > 0
+        assert len(digitalContents) > 0
 
 
 def test_index_operations_metadata_fetch_error(
@@ -375,7 +375,7 @@ def test_index_operations_tx_parse_error(celery_app, celery_app_contracts, mocke
         raise Exception("Broken parser")
 
     mocker.patch(
-        "src.tasks.agreements.parse_digital_content_event",
+        "src.tasks.digitalContents.parse_digital_content_event",
         side_effect=parse_digital_content_event,
         autospec=True,
     )

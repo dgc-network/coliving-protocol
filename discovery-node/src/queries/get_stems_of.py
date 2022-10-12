@@ -1,5 +1,5 @@
-from src.models.agreements.stem import Stem
-from src.models.agreements.digital_content import DigitalContent
+from src.models.digitalContents.stem import Stem
+from src.models.digitalContents.digital_content import DigitalContent
 from src.utils import helpers
 from src.utils.db_session import get_db_read_replica
 

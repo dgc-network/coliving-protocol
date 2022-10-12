@@ -4,12 +4,12 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.addColumn(
       'SocialHandles',
-      'pinnedAgreementId', {
+      'pinnedDigitalContentId', {
         type: Sequelize.INTEGER
       }
     )
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.removeColumn('SocialHandles', 'pinnedAgreementId')
+    return queryInterface.removeColumn('SocialHandles', 'pinnedDigitalContentId')
   }
 }

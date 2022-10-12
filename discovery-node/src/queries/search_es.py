@@ -33,7 +33,7 @@ def search_es_full(args: dict):
     search_type = args.get("kind", "all")
     only_downloadable = args.get("only_downloadable")
     is_auto_complete = args.get("is_auto_complete")
-    do_digital_contents = search_type == "all" or search_type == "agreements"
+    do_digital_contents = search_type == "all" or search_type == "digitalContents"
     do_users = search_type == "all" or search_type == "users"
     do_content_lists = search_type == "all" or search_type == "content_lists"
     do_albums = search_type == "all" or search_type == "albums"
@@ -45,7 +45,7 @@ def search_es_full(args: dict):
     # Query score = boosted on text similarity, verified landlords, personalization (current user saved or reposted or followed)
     # Function score multiplier = popularity (repost count)
 
-    # agreements
+    # digitalContents
     if do_digital_contents:
         mdsl.extend(
             [
@@ -59,7 +59,7 @@ def search_es_full(args: dict):
             ]
         )
 
-        # saved agreements
+        # saved digitalContents
         if current_user_id:
             mdsl.extend(
                 [
@@ -128,7 +128,7 @@ def search_es_full(args: dict):
     mfound = esclient.msearch(searches=mdsl)
 
     response: Dict = {
-        "agreements": [],
+        "digitalContents": [],
         "saved_digital_contents": [],
         "users": [],
         "followed_users": [],
@@ -139,7 +139,7 @@ def search_es_full(args: dict):
     }
 
     if do_digital_contents:
-        response["agreements"] = pluck_hits(mfound["responses"].pop(0))
+        response["digitalContents"] = pluck_hits(mfound["responses"].pop(0))
         if current_user_id:
             response["saved_digital_contents"] = pluck_hits(mfound["responses"].pop(0))
 
@@ -168,7 +168,7 @@ def search_tags_es(q: str, kind="all", current_user_id=None, limit=0, offset=0):
     if not esclient:
         raise Exception("esclient is None")
 
-    do_digital_contents = kind == "all" or kind == "agreements"
+    do_digital_contents = kind == "all" or kind == "digitalContents"
     do_users = kind == "all" or kind == "users"
     mdsl: Any = []
 
@@ -192,9 +192,9 @@ def search_tags_es(q: str, kind="all", current_user_id=None, limit=0, offset=0):
             mdsl.extend([{"index": ES_AGREEMENTS}, dsl])
 
     if do_users:
-        mdsl.extend([{"index": ES_USERS}, tag_match("agreements.tags")])
+        mdsl.extend([{"index": ES_USERS}, tag_match("digitalContents.tags")])
         if current_user_id:
-            dsl = tag_match("agreements.tags")
+            dsl = tag_match("digitalContents.tags")
             dsl["query"]["bool"]["must"].append(be_followed(current_user_id))
             mdsl.extend([{"index": ES_USERS}, dsl])
 
@@ -202,14 +202,14 @@ def search_tags_es(q: str, kind="all", current_user_id=None, limit=0, offset=0):
     mfound = esclient.msearch(searches=mdsl)
 
     response: Dict = {
-        "agreements": [],
+        "digitalContents": [],
         "saved_digital_contents": [],
         "users": [],
         "followed_users": [],
     }
 
     if do_digital_contents:
-        response["agreements"] = pluck_hits(mfound["responses"].pop(0))
+        response["digitalContents"] = pluck_hits(mfound["responses"].pop(0))
         if current_user_id:
             response["saved_digital_contents"] = pluck_hits(mfound["responses"].pop(0))
 
@@ -286,13 +286,13 @@ def finalize_response(
             current_user_id, item_keys, 20
         )
 
-    # agreements: finalize
-    for k in ["agreements", "saved_digital_contents"]:
-        agreements = response[k]
-        hydrate_user(agreements, users_by_id)
+    # digitalContents: finalize
+    for k in ["digitalContents", "saved_digital_contents"]:
+        digitalContents = response[k]
+        hydrate_user(digitalContents, users_by_id)
         if not is_auto_complete:
-            hydrate_saves_reposts(agreements, follow_saves, follow_reposts, legacy_mode)
-        response[k] = [map_digital_content(digital_content, current_user, legacy_mode) for digital_content in agreements]
+            hydrate_saves_reposts(digitalContents, follow_saves, follow_reposts, legacy_mode)
+        response[k] = [map_digital_content(digital_content, current_user, legacy_mode) for digital_content in digitalContents]
 
     # users: finalize
     for k in ["users", "followed_users"]:

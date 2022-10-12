@@ -11,24 +11,24 @@
     "message": "🎶 API",
     "description": "api-reference"
   },
-  "Query, stream, and search Arists, Agreements, and ContentLists from your own app, game, or project": {
+  "Query, stream, and search Arists, DigitalContents, and ContentLists from your own app, game, or project": {
     "message": "Consulta, transmite y busca Landlordas, Canciones y ContentLists desde tu propia aplicación, juego o proyecto",
     "description": "rest-api"
   },
-  "🎧 $LIVE": {
-    "message": "🎧 $LIVE",
+  "🎧 $DGCO": {
+    "message": "🎧 $DGCO",
     "description": "digitalcoin"
   },
-  "Learn about the $LIVE Token and how it keeps the network secure & operational": {
-    "message": "Aprende sobre el token $LIVE y cómo mantiene la red segura y operativa",
+  "Learn about the $DGCO Token and how it keeps the network secure & operational": {
+    "message": "Aprende sobre el token $DGCO y cómo mantiene la red segura y operativa",
     "description": "learn-about-the-token"
   },
   "🔓 Staking The Network": {
     "message": "🔓 Staking La Red",
     "description": "staking"
   },
-  "Stake & delegate the $LIVE token, earn rewards, and participate in Governance": {
-    "message": "Haz Stake y delega el token $LIVE, gana recompensas y participa en la gobernanza",
+  "Stake & delegate the $DGCO token, earn rewards, and participate in Governance": {
+    "message": "Haz Stake y delega el token $DGCO, gana recompensas y participa en la gobernanza",
     "description": "staking-and-delegating"
   },
   "🛠 Run A Node": {
@@ -262,7 +262,7 @@
     "message": "Etiquetas",
     "description": "The title of the tag list page"
   },
-  "Query, stream, and search Landlords, Agreements, and ContentLists from your own app, game, or project": {
+  "Query, stream, and search Landlords, DigitalContents, and ContentLists from your own app, game, or project": {
     "message": "Consulta, transmite y busca Landlordas, Canciones y ContentLists desde tu propia aplicación, juego o proyecto",
     "description": "rest-api"
   }

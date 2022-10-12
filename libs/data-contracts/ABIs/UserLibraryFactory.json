@@ -48,7 +48,7 @@
           "type": "uint256"
         }
       ],
-      "name": "AgreementSaveAdded",
+      "name": "DigitalContentSaveAdded",
       "type": "event"
     },
     {
@@ -67,7 +67,7 @@
           "type": "uint256"
         }
       ],
-      "name": "AgreementSaveDeleted",
+      "name": "DigitalContentSaveDeleted",
       "type": "event"
     },
     {
@@ -222,7 +222,7 @@
           "type": "bytes"
         }
       ],
-      "name": "addAgreementSave",
+      "name": "addDigitalContentSave",
       "outputs": [
         {
           "internalType": "bool",
@@ -256,7 +256,7 @@
           "type": "bytes"
         }
       ],
-      "name": "deleteAgreementSave",
+      "name": "deleteDigitalContentSave",
       "outputs": [
         {
           "internalType": "bool",

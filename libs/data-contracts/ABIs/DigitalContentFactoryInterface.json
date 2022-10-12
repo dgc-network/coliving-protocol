@@ -1,0 +1,76 @@
+{
+  "contractName": "DigitalContentFactoryInterface",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_caller",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_digital_contentId",
+          "type": "uint256"
+        }
+      ],
+      "name": "callerOwnsDigitalContent",
+      "outputs": [],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "getDigitalContent",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "digitalContentOwnerId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "multihashDigest",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint8",
+          "name": "multihashHashFn",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint8",
+          "name": "multihashSize",
+          "type": "uint8"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "digitalContentExists",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "exists",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ]
+}

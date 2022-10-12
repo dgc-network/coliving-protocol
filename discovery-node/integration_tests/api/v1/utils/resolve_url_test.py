@@ -16,7 +16,7 @@ def test_resolve_digital_content_url(app):
 
             assert (
                 resolved_url
-                == "/v1/agreements?slug=mb-shola-vivienne-%22westwood%22-87325&handle=urbanbankai"
+                == "/v1/digitalContents?slug=mb-shola-vivienne-%22westwood%22-87325&handle=urbanbankai"
             )
 
 
@@ -41,7 +41,7 @@ def test_resolve_non_fully_qualified_url(app):
 
             assert (
                 resolved_url
-                == "/v1/agreements?slug=mb-shola-vivienne-%22westwood%22-87325&handle=urbanbankai"
+                == "/v1/digitalContents?slug=mb-shola-vivienne-%22westwood%22-87325&handle=urbanbankai"
             )
 
 

@@ -194,7 +194,7 @@ export const importCids = async (run_id: number) => {
     await sequelizeConn.query(`
         INSERT INTO network_monitoring_cids_from_discovery (cid, run_id, ctype, user_id)
         SELECT cover_art, :run_id, 'image', owner_id
-        FROM agreements
+        FROM digitalContents
         WHERE cover_art IS NOT NULL
         AND is_current = TRUE;
             `, {
@@ -202,12 +202,12 @@ export const importCids = async (run_id: number) => {
         logging: false,
     })
 
-    console.log(`\t -> agreements.cover_art`)
+    console.log(`\t -> digitalContents.cover_art`)
 
     await sequelizeConn.query(`
         INSERT INTO network_monitoring_cids_from_discovery (cid, run_id, ctype, user_id)
         SELECT cover_art_sizes, :run_id, 'dir', owner_id
-        FROM agreements 
+        FROM digitalContents 
         WHERE cover_art_sizes IS NOT NULL
         AND is_current = TRUE;
             `, {
@@ -215,12 +215,12 @@ export const importCids = async (run_id: number) => {
         logging: false,
     })
 
-    console.log(`\t -> agreements.cover_art_sizes`)
+    console.log(`\t -> digitalContents.cover_art_sizes`)
 
     await sequelizeConn.query(`
         INSERT INTO network_monitoring_cids_from_discovery (cid, run_id, ctype, user_id)
         SELECT metadata_multihash, :run_id, 'metadata', owner_id
-        FROM agreements 
+        FROM digitalContents 
         WHERE metadata_multihash IS NOT NULL
         AND is_current = TRUE;
             `, {
@@ -228,12 +228,12 @@ export const importCids = async (run_id: number) => {
         logging: false,
     })
 
-    console.log(`\t -> agreements.metadata_multihash`)
+    console.log(`\t -> digitalContents.metadata_multihash`)
 
     await sequelizeConn.query(`
         INSERT INTO network_monitoring_cids_from_discovery (cid, run_id, ctype, user_id)
         SELECT download -> 'cid' as cid, :run_id, 'digital_content', owner_id
-        FROM agreements 
+        FROM digitalContents 
         WHERE download -> 'cid' != 'null'
         AND is_current = TRUE;
             `, {
@@ -241,7 +241,7 @@ export const importCids = async (run_id: number) => {
         logging: false,
     })
 
-    console.log(`\t -> agreements.download->'cid'`)
+    console.log(`\t -> digitalContents.download->'cid'`)
 
     await sequelizeConn.query(`
         INSERT INTO network_monitoring_cids_from_discovery (cid, run_id, ctype, user_id)
@@ -250,7 +250,7 @@ export const importCids = async (run_id: number) => {
             :run_id, 
             'digital_content',
             owner_id
-        FROM agreements
+        FROM digitalContents
         WHERE digital_content_segments IS NOT NULL
         AND is_current = TRUE;
     `, {
@@ -258,5 +258,5 @@ export const importCids = async (run_id: number) => {
         logging: false,
     })
 
-    console.log(`\t -> agreements.digital_content_segments->'multihash'`)
+    console.log(`\t -> digitalContents.digital_content_segments->'multihash'`)
 }

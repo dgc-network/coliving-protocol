@@ -26,7 +26,7 @@ domains.getUserFactoryDomain = function (chainId, contractAddress) {
   return getDomainData('User Factory', '1', chainId, contractAddress)
 }
 
-domains.getAgreementFactoryDomain = function (chainId, contractAddress) {
+domains.getDigitalContentFactoryDomain = function (chainId, contractAddress) {
   return getDomainData('DigitalContent Factory', '1', chainId, contractAddress)
 }
 
@@ -87,36 +87,36 @@ schemas.updateUserBool = [
 ]
 
 /* digital_content factory requests */
-schemas.addAgreementRequest = [
-  { name: 'agreementOwnerId', type: 'uint' },
+schemas.addDigitalContentRequest = [
+  { name: 'digitalContentOwnerId', type: 'uint' },
   { name: 'multihashDigest', type: 'bytes32' },
   { name: 'multihashHashFn', type: 'uint8' },
   { name: 'multihashSize', type: 'uint8' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-schemas.updateAgreementRequest = [
-  { name: 'agreementId', type: 'uint' },
-  { name: 'agreementOwnerId', type: 'uint' },
+schemas.updateDigitalContentRequest = [
+  { name: 'digitalContentId', type: 'uint' },
+  { name: 'digitalContentOwnerId', type: 'uint' },
   { name: 'multihashDigest', type: 'bytes32' },
   { name: 'multihashHashFn', type: 'uint8' },
   { name: 'multihashSize', type: 'uint8' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-schemas.deleteAgreementRequest = [
-  { name: 'agreementId', type: 'uint' },
+schemas.deleteDigitalContentRequest = [
+  { name: 'digitalContentId', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
 /* social features */
-schemas.addAgreementRepostRequest = [
+schemas.addDigitalContentRepostRequest = [
   { name: 'userId', type: 'uint' },
-  { name: 'agreementId', type: 'uint' },
+  { name: 'digitalContentId', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-schemas.deleteAgreementRepostRequest = schemas.addAgreementRepostRequest
+schemas.deleteDigitalContentRepostRequest = schemas.addDigitalContentRepostRequest
 
 schemas.addContentListRepostRequest = [
   { name: 'userId', type: 'uint' },
@@ -139,7 +139,7 @@ schemas.createContentListRequest = [
   { name: 'contentListName', type: 'string' },
   { name: 'isPrivate', type: 'bool' },
   { name: 'isAlbum', type: 'bool' },
-  { name: 'agreementIdsHash', type: 'bytes32' },
+  { name: 'digitalContentIdsHash', type: 'bytes32' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
@@ -148,22 +148,22 @@ schemas.deleteContentListRequest = [
   { name: 'nonce', type: 'bytes32' }
 ]
 
-schemas.addContentListAgreementRequest = [
+schemas.addContentListDigitalContentRequest = [
   { name: 'contentListId', type: 'uint' },
-  { name: 'addedAgreementId', type: 'uint' },
+  { name: 'addedDigitalContentId', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-schemas.deleteContentListAgreementRequest = [
+schemas.deleteContentListDigitalContentRequest = [
   { name: 'contentListId', type: 'uint' },
-  { name: 'deletedAgreementId', type: 'uint' },
-  { name: 'deletedAgreementTimestamp', type: 'uint' },
+  { name: 'deletedDigitalContentId', type: 'uint' },
+  { name: 'deletedDigitalContentTimestamp', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-schemas.orderContentListAgreementsRequest = [
+schemas.orderContentListDigitalContentsRequest = [
   { name: 'contentListId', type: 'uint' },
-  { name: 'agreementIdsHash', type: 'bytes32' },
+  { name: 'digitalContentIdsHash', type: 'bytes32' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
@@ -197,13 +197,13 @@ schemas.updateContentListUPCRequest = [
   { name: 'nonce', type: 'bytes32' }
 ]
 
-schemas.agreementSaveRequest = [
+schemas.digitalContentSaveRequest = [
   { name: 'userId', type: 'uint' },
-  { name: 'agreementId', type: 'uint' },
+  { name: 'digitalContentId', type: 'uint' },
   { name: 'nonce', type: 'bytes32' }
 ]
 
-schemas.deleteAgreementSaveRequest = schemas.agreementSaveRequest
+schemas.deleteDigitalContentSaveRequest = schemas.digitalContentSaveRequest
 
 schemas.contentListSaveRequest = [
   { name: 'userId', type: 'uint' },
@@ -409,87 +409,87 @@ generators.getUpdateUserVerifiedRequestData = function (chainId, contractAddress
 }
 
 /* DigitalContent Factory Generators */
-generators.getAddAgreementRequestData = function (chainId, contractAddress, agreementOwnerId, multihashDigest, multihashHashFn, multihashSize, nonce) {
+generators.getAddDigitalContentRequestData = function (chainId, contractAddress, digitalContentOwnerId, multihashDigest, multihashHashFn, multihashSize, nonce) {
   const message = {
-    agreementOwnerId: agreementOwnerId,
+    digitalContentOwnerId: digitalContentOwnerId,
     multihashDigest: multihashDigest,
     multihashHashFn: multihashHashFn,
     multihashSize: multihashSize,
     nonce: nonce
   }
   return getRequestData(
-    domains.getAgreementFactoryDomain,
+    domains.getDigitalContentFactoryDomain,
     chainId,
     contractAddress,
-    'AddAgreementRequest',
-    schemas.addAgreementRequest,
+    'AddDigitalContentRequest',
+    schemas.addDigitalContentRequest,
     message
   )
 }
 
-generators.getUpdateAgreementRequestData = function (chainId, contractAddress, agreementId, agreementOwnerId, multihashDigest, multihashHashFn, multihashSize, nonce) {
+generators.getUpdateDigitalContentRequestData = function (chainId, contractAddress, digitalContentId, digitalContentOwnerId, multihashDigest, multihashHashFn, multihashSize, nonce) {
   const message = {
-    agreementId: agreementId,
-    agreementOwnerId: agreementOwnerId,
+    digitalContentId: digitalContentId,
+    digitalContentOwnerId: digitalContentOwnerId,
     multihashDigest: multihashDigest,
     multihashHashFn: multihashHashFn,
     multihashSize: multihashSize,
     nonce: nonce
   }
   return getRequestData(
-    domains.getAgreementFactoryDomain,
+    domains.getDigitalContentFactoryDomain,
     chainId,
     contractAddress,
-    'UpdateAgreementRequest',
-    schemas.updateAgreementRequest,
+    'UpdateDigitalContentRequest',
+    schemas.updateDigitalContentRequest,
     message
   )
 }
 
-generators.getDeleteAgreementRequestData = function (chainId, contractAddress, agreementId, nonce) {
+generators.getDeleteDigitalContentRequestData = function (chainId, contractAddress, digitalContentId, nonce) {
   const message = {
-    agreementId: agreementId,
+    digitalContentId: digitalContentId,
     nonce: nonce
   }
   return getRequestData(
-    domains.getAgreementFactoryDomain,
+    domains.getDigitalContentFactoryDomain,
     chainId,
     contractAddress,
-    'DeleteAgreementRequest',
-    schemas.deleteAgreementRequest,
+    'DeleteDigitalContentRequest',
+    schemas.deleteDigitalContentRequest,
     message
   )
 }
 
 /* Social Feature Factory Generators */
-generators.getAddAgreementRepostRequestData = function (chainId, contractAddress, userId, agreementId, nonce) {
+generators.getAddDigitalContentRepostRequestData = function (chainId, contractAddress, userId, digitalContentId, nonce) {
   const message = {
     userId: userId,
-    agreementId: agreementId,
+    digitalContentId: digitalContentId,
     nonce: nonce
   }
   return getRequestData(
     domains.getSocialFeatureFactoryDomain,
     chainId,
     contractAddress,
-    'AddAgreementRepostRequest',
-    schemas.addAgreementRepostRequest,
+    'AddDigitalContentRepostRequest',
+    schemas.addDigitalContentRepostRequest,
     message
   )
 }
 
-generators.getDeleteAgreementRepostRequestData = function (chainId, contractAddress, userId, agreementId, nonce) {
+generators.getDeleteDigitalContentRepostRequestData = function (chainId, contractAddress, userId, digitalContentId, nonce) {
   const message = {
     userId: userId,
-    agreementId: agreementId,
+    digitalContentId: digitalContentId,
     nonce: nonce
   }
   return getRequestData(
     domains.getSocialFeatureFactoryDomain,
     chainId,
     contractAddress,
-    'DeleteAgreementRepostRequest',
-    schemas.deleteAgreementRepostRequest,
+    'DeleteDigitalContentRepostRequest',
+    schemas.deleteDigitalContentRepostRequest,
     message
   )
 }
@@ -558,10 +558,10 @@ generators.getDeleteUserFollowRequestData = function (chainId, contractAddress, 
   )
 }
 
-generators.getAgreementSaveRequestData = function (chainId, contractAddress, userId, agreementId, nonce) {
+generators.getDigitalContentSaveRequestData = function (chainId, contractAddress, userId, digitalContentId, nonce) {
   const message = {
     userId: userId,
-    agreementId: agreementId,
+    digitalContentId: digitalContentId,
     nonce: nonce
   }
 
@@ -569,16 +569,16 @@ generators.getAgreementSaveRequestData = function (chainId, contractAddress, use
     domains.getUserLibraryFactoryDomain,
     chainId,
     contractAddress,
-    'AgreementSaveRequest',
-    schemas.agreementSaveRequest,
+    'DigitalContentSaveRequest',
+    schemas.digitalContentSaveRequest,
     message
   )
 }
 
-generators.getDeleteAgreementSaveRequestData = function (chainId, contractAddress, userId, agreementId, nonce) {
+generators.getDeleteDigitalContentSaveRequestData = function (chainId, contractAddress, userId, digitalContentId, nonce) {
   const message = {
     userId: userId,
-    agreementId: agreementId,
+    digitalContentId: digitalContentId,
     nonce: nonce
   }
 
@@ -586,8 +586,8 @@ generators.getDeleteAgreementSaveRequestData = function (chainId, contractAddres
     domains.getUserLibraryFactoryDomain,
     chainId,
     contractAddress,
-    'DeleteAgreementSaveRequest',
-    schemas.deleteAgreementSaveRequest,
+    'DeleteDigitalContentSaveRequest',
+    schemas.deleteDigitalContentSaveRequest,
     message
   )
 }
@@ -628,16 +628,16 @@ generators.getDeleteContentListSaveRequestData = function (chainId, contractAddr
 
 /* ContentList Factory Generators */
 
-/* NOTE: Ensure the value for agreementIds hash is generated using the following snippet prior to calling this generator function:
- * web3New.utils.soliditySha3(web3New.eth.abi.encodeParameter('uint[]', agreementIds))
+/* NOTE: Ensure the value for digitalContentIds hash is generated using the following snippet prior to calling this generator function:
+ * web3New.utils.soliditySha3(web3New.eth.abi.encodeParameter('uint[]', digitalContentIds))
  */
-generators.getCreateContentListRequestData = function (chainId, contractAddress, contentListOwnerId, contentListName, isPrivate, isAlbum, agreementIdsHash, nonce) {
+generators.getCreateContentListRequestData = function (chainId, contractAddress, contentListOwnerId, contentListName, isPrivate, isAlbum, digitalContentIdsHash, nonce) {
   const message = {
     contentListOwnerId: contentListOwnerId,
     contentListName: contentListName,
     isPrivate: isPrivate,
     isAlbum: isAlbum,
-    agreementIdsHash: agreementIdsHash,
+    digitalContentIdsHash: digitalContentIdsHash,
     nonce: nonce
   }
 
@@ -666,10 +666,10 @@ generators.getDeleteContentListRequestData = function (chainId, contractAddress,
   )
 }
 
-generators.getAddContentListAgreementRequestData = function (chainId, contractAddress, contentListId, addedAgreementId, nonce) {
+generators.getAddContentListDigitalContentRequestData = function (chainId, contractAddress, contentListId, addedDigitalContentId, nonce) {
   const message = {
     contentListId: contentListId,
-    addedAgreementId: addedAgreementId,
+    addedDigitalContentId: addedDigitalContentId,
     nonce: nonce
   }
 
@@ -677,17 +677,17 @@ generators.getAddContentListAgreementRequestData = function (chainId, contractAd
     domains.getContentListFactoryDomain,
     chainId,
     contractAddress,
-    'AddContentListAgreementRequest',
-    schemas.addContentListAgreementRequest,
+    'AddContentListDigitalContentRequest',
+    schemas.addContentListDigitalContentRequest,
     message
   )
 }
 
-generators.getDeleteContentListAgreementRequestData = function (chainId, contractAddress, contentListId, deletedAgreementId, deletedAgreementTimestamp, nonce) {
+generators.getDeleteContentListDigitalContentRequestData = function (chainId, contractAddress, contentListId, deletedDigitalContentId, deletedDigitalContentTimestamp, nonce) {
   const message = {
     contentListId: contentListId,
-    deletedAgreementId: deletedAgreementId,
-    deletedAgreementTimestamp: deletedAgreementTimestamp,
+    deletedDigitalContentId: deletedDigitalContentId,
+    deletedDigitalContentTimestamp: deletedDigitalContentTimestamp,
     nonce: nonce
   }
 
@@ -695,16 +695,16 @@ generators.getDeleteContentListAgreementRequestData = function (chainId, contrac
     domains.getContentListFactoryDomain,
     chainId,
     contractAddress,
-    'DeleteContentListAgreementRequest',
-    schemas.deleteContentListAgreementRequest,
+    'DeleteContentListDigitalContentRequest',
+    schemas.deleteContentListDigitalContentRequest,
     message
   )
 }
 
-generators.getOrderContentListAgreementsRequestData = function (chainId, contractAddress, contentListId, agreementIdsHash, nonce) {
+generators.getOrderContentListDigitalContentsRequestData = function (chainId, contractAddress, contentListId, digitalContentIdsHash, nonce) {
   const message = {
     contentListId: contentListId,
-    agreementIdsHash: agreementIdsHash,
+    digitalContentIdsHash: digitalContentIdsHash,
     nonce: nonce
   }
 
@@ -712,8 +712,8 @@ generators.getOrderContentListAgreementsRequestData = function (chainId, contrac
     domains.getContentListFactoryDomain,
     chainId,
     contractAddress,
-    'OrderContentListAgreementsRequest',
-    schemas.orderContentListAgreementsRequest,
+    'OrderContentListDigitalContentsRequest',
+    schemas.orderContentListDigitalContentsRequest,
     message
   )
 }

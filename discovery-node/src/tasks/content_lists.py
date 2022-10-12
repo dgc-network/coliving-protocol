@@ -217,14 +217,14 @@ def parse_content_list_event(
     if event_type == content_list_event_types_lookup["content_list_digital_content_added"]:
         if getattr(content_list_record, "content_list_contents") is not None:
             logger.info(
-                f"index.py | contentLists.py | Adding digital_content {event_args._addedAgreementId} to contentList \
+                f"index.py | contentLists.py | Adding digital_content {event_args._addedDigitalContentId} to contentList \
             {content_list_record.content_list_id}"
             )
             old_content_list_content_array = content_list_record.content_list_contents["digital_content_ids"]
             new_content_list_content_array = old_content_list_content_array
             # Append new digital_content object
             new_content_list_content_array.append(
-                {"digital_content": event_args._addedAgreementId, "time": block_integer_time}
+                {"digital_content": event_args._addedDigitalContentId, "time": block_integer_time}
             )
             content_list_record.content_list_contents = {
                 "digital_content_ids": new_content_list_content_array
@@ -235,13 +235,13 @@ def parse_content_list_event(
     if event_type == content_list_event_types_lookup["content_list_digital_content_deleted"]:
         if getattr(content_list_record, "content_list_contents") is not None:
             logger.info(
-                f"index.py | contentLists.py | Removing digital_content {event_args._deletedAgreementId} from \
+                f"index.py | contentLists.py | Removing digital_content {event_args._deletedDigitalContentId} from \
             contentList {content_list_record.content_list_id}"
             )
             old_content_list_content_array = content_list_record.content_list_contents["digital_content_ids"]
             new_content_list_content_array = []
-            deleted_digital_content_id = event_args._deletedAgreementId
-            deleted_digital_content_timestamp = int(event_args._deletedAgreementTimestamp)
+            deleted_digital_content_id = event_args._deletedDigitalContentId
+            deleted_digital_content_timestamp = int(event_args._deletedDigitalContentTimestamp)
             delete_digital_content_entry_found = False
             for digital_content_entry in old_content_list_content_array:
                 if (
@@ -276,7 +276,7 @@ def parse_content_list_event(
                 intermediate_digital_content_time_lookup_dict[digital_content_id].append(digital_content_time)
 
             content_list_content_array = []
-            for digital_content_id in event_args._orderedAgreementIds:
+            for digital_content_id in event_args._orderedDigitalContentIds:
                 if digital_content_id in intermediate_digital_content_time_lookup_dict:
                     digital_content_time_array_length = len(
                         intermediate_digital_content_time_lookup_dict[digital_content_id]

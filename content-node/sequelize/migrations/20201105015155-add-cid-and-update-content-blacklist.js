@@ -68,7 +68,7 @@ module.exports = {
     }
   },
 
-  // IMPORTANT: running this will result in data loss for agreemented segments! do not run this unless
+  // IMPORTANT: running this will result in data loss for digitalContented segments! do not run this unless
   // you know what you are doing ! ! ! ! ! !
   down: async (queryInterface, Sequelize) => {
     const transaction = await queryInterface.sequelize.transaction()

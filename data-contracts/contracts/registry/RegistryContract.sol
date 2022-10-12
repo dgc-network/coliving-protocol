@@ -24,7 +24,7 @@ contract RegistryContract is Ownable {
     constructor() Ownable() { }
 
     /// @notice only allow storage contracts to be called by the respective factory.
-    ///     i.e. AgreementStorage methods can only be invoked by AgreementFactory.
+    ///     i.e. DigitalContentStorage methods can only be invoked by DigitalContentFactory.
     modifier onlyRegistrant(bytes32 _name) {
         require(
             msg.sender == RegistryInterface(registryAddress).getContract(_name),

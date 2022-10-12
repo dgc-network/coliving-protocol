@@ -269,7 +269,7 @@ class App {
     const listenCountLimiter = getRateLimiter({
       prefix: `listenCountLimiter:::${interval}-digital-content:::`,
       expiry: timeInSeconds,
-      max: config.get(`rateLimitingListensPerAgreementPer${interval}`), // max requests per interval
+      max: config.get(`rateLimitingListensPerDigitalContentPer${interval}`), // max requests per interval
       skip: function (req) {
         const { ip, senderIP } = getIP(req)
         const ipToCheck = senderIP || ip
@@ -277,20 +277,20 @@ class App {
         return isIPWhitelisted(ipToCheck, req)
       },
       keyGenerator: function (req) {
-        const agreementId = req.params.id
+        const digitalContentId = req.params.id
         const userId = req.body.userId
-        return `${agreementId}:::${userId}`
+        return `${digitalContentId}:::${userId}`
       }
     })
 
-    const listenCountIPAgreementLimiter = getRateLimiter({
+    const listenCountIPDigitalContentLimiter = getRateLimiter({
       prefix: `listenCountLimiter:::${interval}-ip-digital-content:::`,
       expiry: timeInSeconds,
-      max: config.get(`rateLimitingListensPerIPAgreementPer${interval}`), // max requests per interval
+      max: config.get(`rateLimitingListensPerIPDigitalContentPer${interval}`), // max requests per interval
       keyGenerator: function (req) {
-        const agreementId = req.params.id
+        const digitalContentId = req.params.id
         const { ip } = getIP(req)
-        return `${ip}:::${agreementId}`
+        return `${ip}:::${digitalContentId}`
       }
     })
 
@@ -305,7 +305,7 @@ class App {
       }
     })
 
-    return [listenCountLimiter, listenCountIPAgreementLimiter, listenCountIPRequestLimiter]
+    return [listenCountLimiter, listenCountIPDigitalContentLimiter, listenCountIPRequestLimiter]
   }
 
   setRateLimiters () {
@@ -325,18 +325,18 @@ class App {
     this.express.use('/tiktok/', tikTokRequestRateLimiter)
 
     const ONE_HOUR_IN_SECONDS = 60 * 60
-    const [listenCountHourlyLimiter, listenCountHourlyIPAgreementLimiter] = this._createRateLimitsForListenCounts('Hour', ONE_HOUR_IN_SECONDS)
-    const [listenCountDailyLimiter, listenCountDailyIPAgreementLimiter, listenCountDailyIPLimiter] = this._createRateLimitsForListenCounts('Day', ONE_HOUR_IN_SECONDS * 24)
-    const [listenCountWeeklyLimiter, listenCountWeeklyIPAgreementLimiter] = this._createRateLimitsForListenCounts('Week', ONE_HOUR_IN_SECONDS * 24 * 7)
+    const [listenCountHourlyLimiter, listenCountHourlyIPDigitalContentLimiter] = this._createRateLimitsForListenCounts('Hour', ONE_HOUR_IN_SECONDS)
+    const [listenCountDailyLimiter, listenCountDailyIPDigitalContentLimiter, listenCountDailyIPLimiter] = this._createRateLimitsForListenCounts('Day', ONE_HOUR_IN_SECONDS * 24)
+    const [listenCountWeeklyLimiter, listenCountWeeklyIPDigitalContentLimiter] = this._createRateLimitsForListenCounts('Week', ONE_HOUR_IN_SECONDS * 24 * 7)
 
     // This limiter double dips with the reqLimiter. The 5 requests every hour are also counted here
     this.express.use(
-      '/agreements/:id/listen',
-      listenCountWeeklyIPAgreementLimiter,
+      '/digital_contents/:id/listen',
+      listenCountWeeklyIPDigitalContentLimiter,
       listenCountWeeklyLimiter,
-      listenCountDailyIPAgreementLimiter,
+      listenCountDailyIPDigitalContentLimiter,
       listenCountDailyLimiter,
-      listenCountHourlyIPAgreementLimiter,
+      listenCountHourlyIPDigitalContentLimiter,
       listenCountHourlyLimiter,
       listenCountDailyIPLimiter
     )

@@ -9,9 +9,9 @@ custom_edit_url: null
 
 ## Properties
 
-### agreementId
+### digitalContentId
 
- **agreementId**: `string`
+ **digitalContentId**: `string`
 
 A DigitalContent ID
 

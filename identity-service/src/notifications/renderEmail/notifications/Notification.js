@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = exports.getAgreementLink = exports.getEntity = exports.getUsers = void 0;
+exports["default"] = exports.getDigitalContentLink = exports.getEntity = exports.getUsers = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
@@ -67,7 +67,7 @@ var challengeRewardsConfig = {
     icon: /*#__PURE__*/_react["default"].createElement(_Icons.WhiteHeavyCheckMarkIcon, null)
   },
   'digital-content-upload': {
-    title: 'Upload 3 Agreements',
+    title: 'Upload 3 DigitalContents',
     icon: /*#__PURE__*/_react["default"].createElement(_Icons.MultipleMusicalNotesIcon, null)
   }
 };
@@ -193,7 +193,7 @@ var notificationMap = (_notificationMap = {}, _defineProperty(_notificationMap, 
       text: "You have reached over ".concat(notification.value, " Followers ")
     });
   }
-}), _defineProperty(_notificationMap, _constants.notificationTypes.TrendingAgreement, function (notification) {
+}), _defineProperty(_notificationMap, _constants.notificationTypes.TrendingDigitalContent, function (notification) {
   var highlight = notification.entity.title;
   var rank = notification.rank;
   var rankSuffix = (0, _formatNotificationMetadata.getRankSuffix)(rank);
@@ -229,32 +229,32 @@ var notificationMap = (_notificationMap = {}, _defineProperty(_notificationMap, 
   }));
 }), _defineProperty(_notificationMap, _constants.notificationTypes.RemixCreate, function (notification) {
   var remixUser = notification.remixUser,
-      remixAgreement = notification.remixAgreement,
-      parentAgreementUser = notification.parentAgreementUser,
-      parentAgreement = notification.parentAgreement;
+      remixDigitalContent = notification.remixDigitalContent,
+      parentDigitalContentUser = notification.parentDigitalContentUser,
+      parentDigitalContent = notification.parentDigitalContent;
   return /*#__PURE__*/_react["default"].createElement("span", {
     className: 'notificationText'
   }, /*#__PURE__*/_react["default"].createElement(HighlightText, {
-    text: remixAgreement.title
+    text: remixDigitalContent.title
   }), /*#__PURE__*/_react["default"].createElement(BodyText, {
     text: " by "
   }), /*#__PURE__*/_react["default"].createElement(HighlightText, {
     text: remixUser.name
   }));
 }), _defineProperty(_notificationMap, _constants.notificationTypes.RemixCosign, function (notification) {
-  var parentAgreementUser = notification.parentAgreementUser,
-      parentAgreements = notification.parentAgreements;
-  var parentAgreement = parentAgreements.find(function (t) {
-    return t.owner_id === parentAgreementUser.user_id;
+  var parentDigitalContentUser = notification.parentDigitalContentUser,
+      parentDigitalContents = notification.parentDigitalContents;
+  var parentDigitalContent = parentDigitalContents.find(function (t) {
+    return t.owner_id === parentDigitalContentUser.user_id;
   });
   return /*#__PURE__*/_react["default"].createElement("span", {
     className: 'notificationText'
   }, /*#__PURE__*/_react["default"].createElement(HighlightText, {
-    text: parentAgreementUser.name
+    text: parentDigitalContentUser.name
   }), /*#__PURE__*/_react["default"].createElement(BodyText, {
     text: " Co-signed your Remix of "
   }), /*#__PURE__*/_react["default"].createElement(HighlightText, {
-    text: parentAgreement.title
+    text: parentDigitalContent.title
   }));
 }), _defineProperty(_notificationMap, _constants.notificationTypes.ChallengeReward, function (notification) {
   var rewardAmount = notification.rewardAmount;
@@ -264,9 +264,9 @@ var notificationMap = (_notificationMap = {}, _defineProperty(_notificationMap, 
   var bodyText;
 
   if (notification.challengeId === 'referred') {
-    bodyText = "You\u2019ve received ".concat(rewardAmount, " $LIVE for being referred! Invite your friends to join to earn more!");
+    bodyText = "You\u2019ve received ".concat(rewardAmount, " $DGCO for being referred! Invite your friends to join to earn more!");
   } else {
-    bodyText = "You\u2019ve earned ".concat(rewardAmount, " $LIVE for completing this challenge!");
+    bodyText = "You\u2019ve earned ".concat(rewardAmount, " $DGCO for completing this challenge!");
   }
 
   return /*#__PURE__*/_react["default"].createElement("span", {
@@ -282,7 +282,7 @@ var notificationMap = (_notificationMap = {}, _defineProperty(_notificationMap, 
   })))), /*#__PURE__*/_react["default"].createElement(BodyText, {
     text: bodyText
   }));
-}), _defineProperty(_notificationMap, _constants.notificationTypes.AddAgreementToContentList, function (notification) {
+}), _defineProperty(_notificationMap, _constants.notificationTypes.AddDigitalContentToContentList, function (notification) {
   return /*#__PURE__*/_react["default"].createElement("span", {
     className: 'notificationText'
   }, /*#__PURE__*/_react["default"].createElement(HighlightText, {
@@ -306,7 +306,7 @@ var notificationMap = (_notificationMap = {}, _defineProperty(_notificationMap, 
   }), /*#__PURE__*/_react["default"].createElement(HighlightText, {
     text: notification.amount
   }), /*#__PURE__*/_react["default"].createElement(BodyText, {
-    text: " $LIVE"
+    text: " $DGCO"
   }));
 }), _defineProperty(_notificationMap, _constants.notificationTypes.SupporterRankUp, function (notification) {
   return /*#__PURE__*/_react["default"].createElement("span", {
@@ -344,7 +344,7 @@ var notificationMap = (_notificationMap = {}, _defineProperty(_notificationMap, 
   }), /*#__PURE__*/_react["default"].createElement(HighlightText, {
     text: notification.amount
   }), /*#__PURE__*/_react["default"].createElement(BodyText, {
-    text: " $LIVE"
+    text: " $DGCO"
   }));
 }), _notificationMap);
 
@@ -358,13 +358,13 @@ var getTitle = function getTitle(notification) {
   switch (notification.type) {
     case _constants.notificationTypes.RemixCreate:
       {
-        var parentAgreement = notification.parentAgreement;
+        var parentDigitalContent = notification.parentDigitalContent;
         return /*#__PURE__*/_react["default"].createElement("span", {
           className: 'notificationText'
         }, /*#__PURE__*/_react["default"].createElement(BodyText, {
           text: "New remix of your digital_content "
         }), /*#__PURE__*/_react["default"].createElement(HighlightText, {
-          text: parentAgreement.title
+          text: parentDigitalContent.title
         }));
       }
 
@@ -373,15 +373,15 @@ var getTitle = function getTitle(notification) {
   }
 };
 
-var getAgreementMessage = function getAgreementMessage(notification) {
+var getDigitalContentMessage = function getDigitalContentMessage(notification) {
   switch (notification.type) {
     case _constants.notificationTypes.RemixCosign:
       {
-        var remixAgreement = notification.remixAgreement;
+        var remixDigitalContent = notification.remixDigitalContent;
         return /*#__PURE__*/_react["default"].createElement("span", {
           className: 'notificationText'
         }, /*#__PURE__*/_react["default"].createElement(HighlightText, {
-          text: remixAgreement.title
+          text: remixDigitalContent.title
         }));
       }
 
@@ -390,23 +390,23 @@ var getAgreementMessage = function getAgreementMessage(notification) {
   }
 };
 
-var getAgreementLink = function getAgreementLink(digital_content) {
+var getDigitalContentLink = function getDigitalContentLink(digital_content) {
   return "https://coliving.lol/".concat(digital_content.route_id, "-").concat(digital_content.digital_content_id);
 };
 
-exports.getAgreementLink = getAgreementLink;
+exports.getDigitalContentLink = getDigitalContentLink;
 
 var getTwitter = function getTwitter(notification) {
   switch (notification.type) {
     case _constants.notificationTypes.RemixCreate:
       {
-        var parentAgreement = notification.parentAgreement,
-            parentAgreementUser = notification.parentAgreementUser,
+        var parentDigitalContent = notification.parentDigitalContent,
+            parentDigitalContentUser = notification.parentDigitalContentUser,
             remixUser = notification.remixUser,
-            remixAgreement = notification.remixAgreement;
-        var twitterHandle = parentAgreementUser.twitterHandle ? "@".concat(parentAgreementUser.twitterHandle) : parentAgreementUser.name;
-        var text = "New remix of ".concat(parentAgreement.title, " by ").concat(twitterHandle, " on @dgc-network #Coliving");
-        var url = getAgreementLink(remixAgreement);
+            remixDigitalContent = notification.remixDigitalContent;
+        var twitterHandle = parentDigitalContentUser.twitterHandle ? "@".concat(parentDigitalContentUser.twitterHandle) : parentDigitalContentUser.name;
+        var text = "New remix of ".concat(parentDigitalContent.title, " by ").concat(twitterHandle, " on @dgc-network #Coliving");
+        var url = getDigitalContentLink(remixDigitalContent);
         return {
           message: 'Share With Your Friends',
           href: "http://twitter.com/share?url=".concat(encodeURIComponent(url), "&text=").concat(encodeURIComponent(text))
@@ -415,19 +415,19 @@ var getTwitter = function getTwitter(notification) {
 
     case _constants.notificationTypes.RemixCosign:
       {
-        var parentAgreements = notification.parentAgreements,
-            _parentAgreementUser = notification.parentAgreementUser,
-            _remixAgreement = notification.remixAgreement;
+        var parentDigitalContents = notification.parentDigitalContents,
+            _parentDigitalContentUser = notification.parentDigitalContentUser,
+            _remixDigitalContent = notification.remixDigitalContent;
 
-        var _parentAgreement = parentAgreements.find(function (t) {
-          return t.owner_id === _parentAgreementUser.user_id;
+        var _parentDigitalContent = parentDigitalContents.find(function (t) {
+          return t.owner_id === _parentDigitalContentUser.user_id;
         });
 
-        var _url = getAgreementLink(_remixAgreement);
+        var _url = getDigitalContentLink(_remixDigitalContent);
 
-        var _twitterHandle = _parentAgreementUser.twitterHandle ? "@".concat(_parentAgreementUser.twitterHandle) : _parentAgreementUser.name;
+        var _twitterHandle = _parentDigitalContentUser.twitterHandle ? "@".concat(_parentDigitalContentUser.twitterHandle) : _parentDigitalContentUser.name;
 
-        var _text = "My remix of ".concat(_parentAgreement.title, " was Co-Signed by ").concat(_twitterHandle, " on @dgc-network #Coliving");
+        var _text = "My remix of ".concat(_parentDigitalContent.title, " was Co-Signed by ").concat(_twitterHandle, " on @dgc-network #Coliving");
 
         return {
           message: 'Share With Your Friends',
@@ -435,12 +435,12 @@ var getTwitter = function getTwitter(notification) {
         };
       }
 
-    case _constants.notificationTypes.TrendingAgreement:
+    case _constants.notificationTypes.TrendingDigitalContent:
       {
         var rank = notification.rank,
             entity = notification.entity;
 
-        var _url2 = getAgreementLink(entity);
+        var _url2 = getDigitalContentLink(entity);
 
         var rankSuffix = (0, _formatNotificationMetadata.getRankSuffix)(rank);
 
@@ -454,7 +454,7 @@ var getTwitter = function getTwitter(notification) {
 
     case _constants.notificationTypes.ChallengeReward:
       {
-        var _text3 = "I earned $LIVE for completing challenges on @dgc-network #LiveRewards";
+        var _text3 = "I earned $DGCO for completing challenges on @dgc-network #DigitalcoinRewards";
         return {
           message: 'Share this with your residents',
           href: "http://twitter.com/share?text=".concat(encodeURIComponent(_text3))
@@ -469,12 +469,12 @@ var getTwitter = function getTwitter(notification) {
 var Notification = function Notification(props) {
   var message = getMessage(props);
   var title = getTitle(props);
-  var agreementMessage = getAgreementMessage(props);
+  var digitalContentMessage = getDigitalContentMessage(props);
   var twitter = getTwitter(props);
   return /*#__PURE__*/_react["default"].createElement(_NotificationBody["default"], _extends({}, props, {
     title: title,
     message: message,
-    agreementMessage: agreementMessage,
+    digitalContentMessage: digitalContentMessage,
     twitter: twitter
   }));
 };

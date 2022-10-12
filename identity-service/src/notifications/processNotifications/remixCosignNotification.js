@@ -16,24 +16,24 @@ async function processCosignNotifications (notifications, tx) {
   const validNotifications = []
   for (const notification of notifications) {
     const {
-      entity_id: childAgreementId,
-      entity_owner_id: childAgreementUserId
+      entity_id: childDigitalContentId,
+      entity_owner_id: childDigitalContentUserId
     } = notification.metadata
-    const parentAgreementUserId = notification.initiator
+    const parentDigitalContentUserId = notification.initiator
 
     // Query the Notification/NotificationActions to see if the notification already exists.
     let cosignNotifications = await models.Notification.findAll({
       where: {
-        userId: childAgreementUserId,
+        userId: childDigitalContentUserId,
         type: notificationTypes.RemixCosign,
-        entityId: childAgreementId
+        entityId: childDigitalContentId
       },
       include: [{
         model: models.NotificationAction,
         as: 'actions',
         where: {
           actionEntityType: actionEntityTypes.User,
-          actionEntityId: parentAgreementUserId
+          actionEntityId: parentDigitalContentUserId
         }
       }],
       transaction: tx
@@ -52,8 +52,8 @@ async function processCosignNotifications (notifications, tx) {
     // NOTE: Cosign Notifications do NOT stack. A new notification is created every time
     let cosignNotification = await models.Notification.create({
       type: notificationTypes.RemixCosign,
-      userId: childAgreementUserId,
-      entityId: childAgreementId,
+      userId: childDigitalContentUserId,
+      entityId: childDigitalContentId,
       blocknumber,
       timestamp: updatedTimestamp
     }, { transaction: tx })
@@ -61,7 +61,7 @@ async function processCosignNotifications (notifications, tx) {
     await models.NotificationAction.create({
       notificationId: cosignNotification.id,
       actionEntityType: actionEntityTypes.User,
-      actionEntityId: parentAgreementUserId,
+      actionEntityId: parentDigitalContentUserId,
       blocknumber
     }, { transaction: tx })
     validNotifications.push(notification)

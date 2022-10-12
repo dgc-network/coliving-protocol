@@ -5,10 +5,10 @@ from src.trending_strategies.EJ57D_trending_content_lists_strategy import (
     TrendingContentListsStrategyEJ57D,
 )
 from src.trending_strategies.EJ57D_trending_digital_contents_strategy import (
-    TrendingAgreementsStrategyEJ57D,
+    TrendingDigitalContentsStrategyEJ57D,
 )
 from src.trending_strategies.EJ57D_underground_trending_digital_contents_strategy import (
-    UndergroundTrendingAgreementsStrategyEJ57D,
+    UndergroundTrendingDigitalContentsStrategyEJ57D,
 )
 from src.trending_strategies.trending_type_and_version import (
     TrendingType,
@@ -26,10 +26,10 @@ class TrendingStrategyFactory:
     def __init__(self):
         self.strategies = {
             TrendingType.AGREEMENTS: {
-                TrendingVersion.EJ57D: TrendingAgreementsStrategyEJ57D(),
+                TrendingVersion.EJ57D: TrendingDigitalContentsStrategyEJ57D(),
             },
             TrendingType.UNDERGROUND_AGREEMENTS: {
-                TrendingVersion.EJ57D: UndergroundTrendingAgreementsStrategyEJ57D(),
+                TrendingVersion.EJ57D: UndergroundTrendingDigitalContentsStrategyEJ57D(),
             },
             TrendingType.CONTENT_LISTS: {
                 TrendingVersion.EJ57D: TrendingContentListsStrategyEJ57D(),

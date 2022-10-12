@@ -25,7 +25,7 @@ def upgrade():
 
     session.execute(sa.text("TRUNCATE TABLE digital_content_routes"))
 
-    # Bring over existing routes (current agreements)
+    # Bring over existing routes (current digitalContents)
     session.execute(
         sa.text(
             """
@@ -52,7 +52,7 @@ def upgrade():
                 , blockhash
                 , blocknumber
                 ,txhash
-            FROM agreements
+            FROM digitalContents
             WHERE is_current
             GROUP BY
                 owner_id
@@ -66,7 +66,7 @@ def upgrade():
         )
     )
 
-    # Bring over existing routes (non-current agreements)
+    # Bring over existing routes (non-current digitalContents)
     session.execute(
         sa.text(
             """
@@ -114,8 +114,8 @@ def upgrade():
                             PARTITION BY nc.route_id
                             ORDER BY nc.blocknumber DESC
                         ) AS rank
-                FROM agreements AS c_digital_contents
-                JOIN agreements AS nc
+                FROM digitalContents AS c_digital_contents
+                JOIN digitalContents AS nc
                 ON c_digital_contents.digital_content_id = nc.digital_content_id
                 WHERE NOT nc.is_current
                 AND c_digital_contents.is_current

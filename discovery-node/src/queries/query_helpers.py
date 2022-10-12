@@ -13,9 +13,9 @@ from src.models.social.aggregate_plays import AggregatePlay
 from src.models.social.follow import Follow
 from src.models.social.repost import Repost, RepostType
 from src.models.social.save import Save, SaveType
-from src.models.agreements.aggregate_digital_content import AggregateAgreement
-from src.models.agreements.remix import Remix
-from src.models.agreements.digital_content import DigitalContent
+from src.models.digitalContents.aggregate_digital_content import AggregateDigitalContent
+from src.models.digitalContents.remix import Remix
+from src.models.digitalContents.digital_content import DigitalContent
 from src.models.users.aggregate_user import AggregateUser
 from src.models.users.user import User
 from src.models.users.user_bank import UserBankAccount
@@ -284,8 +284,8 @@ def populate_user_metadata(
         user[response_name_constants.associated_sol_wallets_balance] = user_balance.get(
             "associated_sol_wallets_balance", "0"
         )
-        user[response_name_constants.wlive_balance] = user_balance.get(
-            "wlive_balance", "0"
+        user[response_name_constants.wei_digitalcoin_balance] = user_balance.get(
+            "wei_digitalcoin_balance", "0"
         )
         user[response_name_constants.spl_wallet] = user_banks_dict.get(
             user["wallet"], None
@@ -314,20 +314,20 @@ def get_digital_content_play_count_dict(session, digital_content_ids):
     return digital_content_play_dict
 
 
-# given list of digital_content ids and corresponding agreements, populates each digital_content object with:
+# given list of digital_content ids and corresponding digitalContents, populates each digital_content object with:
 #   repost_count, save_count
 #   if remix: remix users, has_remix_author_reposted, has_remix_author_saved
 #   if current_user_id available, populates followee_reposts, has_current_user_reposted, has_current_user_saved
-def populate_digital_content_metadata(session, digital_content_ids, agreements, current_user_id):
+def populate_digital_content_metadata(session, digital_content_ids, digitalContents, current_user_id):
     # build dict of digital_content id --> repost count
     counts = (
         session.query(
-            AggregateAgreement.digital_content_id,
-            AggregateAgreement.repost_count,
-            AggregateAgreement.save_count,
+            AggregateDigitalContent.digital_content_id,
+            AggregateDigitalContent.repost_count,
+            AggregateDigitalContent.save_count,
         )
         .filter(
-            AggregateAgreement.digital_content_id.in_(digital_content_ids),
+            AggregateDigitalContent.digital_content_id.in_(digital_content_ids),
         )
         .all()
     )
@@ -342,7 +342,7 @@ def populate_digital_content_metadata(session, digital_content_ids, agreements, 
 
     play_count_dict = get_digital_content_play_count_dict(session, digital_content_ids)
 
-    remixes = get_digital_content_remix_metadata(session, agreements, current_user_id)
+    remixes = get_digital_content_remix_metadata(session, digitalContents, current_user_id)
 
     user_reposted_digital_content_dict = {}
     user_saved_digital_content_dict = {}
@@ -414,7 +414,7 @@ def populate_digital_content_metadata(session, digital_content_ids, agreements, 
                 followee_digital_content_save_dict[digital_content_save["save_item_id"]] = []
             followee_digital_content_save_dict[digital_content_save["save_item_id"]].append(digital_content_save)
 
-    for digital_content in agreements:
+    for digital_content in digitalContents:
         digital_content_id = digital_content["digital_content_id"]
         digital_content[response_name_constants.repost_count] = count_dict.get(digital_content_id, {}).get(
             response_name_constants.repost_count, 0
@@ -437,13 +437,13 @@ def populate_digital_content_metadata(session, digital_content_ids, agreements, 
             response_name_constants.has_current_user_saved
         ] = user_saved_digital_content_dict.get(digital_content["digital_content_id"], False)
 
-        # Populate the remix_of agreements w/ the parent digital_content's user and if that user saved/reposted the child
+        # Populate the remix_of digitalContents w/ the parent digital_content's user and if that user saved/reposted the child
         if (
             response_name_constants.remix_of in digital_content
             and isinstance(digital_content[response_name_constants.remix_of], dict)
             and digital_content["digital_content_id"] in remixes
         ):
-            remix_digital_contents = digital_content[response_name_constants.remix_of].get("agreements")
+            remix_digital_contents = digital_content[response_name_constants.remix_of].get("digitalContents")
             if remix_digital_contents and isinstance(remix_digital_contents, list):
                 for remix_digital_content in remix_digital_contents:
                     parent_digital_content_id = remix_digital_content.get("parent_digital_content_id")
@@ -452,23 +452,23 @@ def populate_digital_content_metadata(session, digital_content_ids, agreements, 
         else:
             digital_content[response_name_constants.remix_of] = None
 
-    return agreements
+    return digitalContents
 
 
-def get_digital_content_remix_metadata(session, agreements, current_user_id):
+def get_digital_content_remix_metadata(session, digitalContents, current_user_id):
     """
-    Fetches agreements' remix parent owners and if they have saved/reposted the agreements
+    Fetches digitalContents' remix parent owners and if they have saved/reposted the digitalContents
 
     Args:
         session: (DB) The scoped db session for running db queries
-        agreements: (List<DigitalContent>) The agreements table objects to fetch remix parent user's information for
+        digitalContents: (List<DigitalContent>) The digitalContents table objects to fetch remix parent user's information for
         current_user_id?: (int) Requesting user's id for adding additional metadata to the fetched users
 
     Returns:
         remixes: (dict) Mapping of child digital_content ids to parent digital_content ids to parent digital_content user's metadata
         {
-            [childAgreementId] : {
-                [parentAgreementId]: {
+            [childDigitalContentId] : {
+                [parentDigitalContentId]: {
                     has_remix_author_saved: boolean,
                     has_remix_author_reposted: boolean,
                     user: populated user metadata
@@ -478,7 +478,7 @@ def get_digital_content_remix_metadata(session, agreements, current_user_id):
     """
     digital_content_ids_with_remix = []
     remix_query = []
-    for digital_content in agreements:
+    for digital_content in digitalContents:
         if response_name_constants.remix_of in digital_content:
             digital_content_ids_with_remix.append(digital_content["digital_content_id"])
 
@@ -792,7 +792,7 @@ def get_repost_counts_query(
     return repost_counts_query
 
 
-# Gets the repost count for users or agreements with the filters specified in the params.
+# Gets the repost count for users or digitalContents with the filters specified in the params.
 # The time param {day, week, month, year} is used in generate_trending to create a windowed time frame for repost counts
 
 
@@ -930,7 +930,7 @@ def get_save_counts_query(
     return save_counts_query
 
 
-# Gets the save count for users or agreements with the filters specified in the params.
+# Gets the save count for users or digitalContents with the filters specified in the params.
 # The time param {day, week, month, year} is used in generate_trending to create a windowed time frame for save counts
 def get_save_counts(
     session,
@@ -1067,7 +1067,7 @@ def get_users_by_id(session, user_ids, current_user_id=None, use_request_context
     return user_map
 
 
-# Given an array of agreements and/or contentLists, return an array of unique user ids
+# Given an array of digitalContents and/or contentLists, return an array of unique user ids
 
 
 def get_users_ids(results):
@@ -1144,7 +1144,7 @@ def filter_to_content_list_mood(session, mood, query, correlation):
     """
     Takes a session that is querying for contentLists and filters the contentLists
     to only those with the dominant mood provided.
-    Dominant mood means that *most* of its agreements are of the specified mood.
+    Dominant mood means that *most* of its digitalContents are of the specified mood.
 
     This method takes a query inserts a filter clause on it and returns the same query.
     We filter down those contentLists to dominant mood by running an "exists" clause
@@ -1161,7 +1161,7 @@ def filter_to_content_list_mood(session, mood, query, correlation):
     if not mood:
         return query
 
-    agreements_subquery = session.query(
+    digitalContents_subquery = session.query(
         func.jsonb_array_elements(correlation.c.content_list_contents["digital_content_ids"])
         .op("->>")("digital_content")
         .cast(Integer)
@@ -1171,7 +1171,7 @@ def filter_to_content_list_mood(session, mood, query, correlation):
         # If this query runs against a nested subquery, it might need to
         # be manually correlated to that subquery so it doesn't pull in all
         # contentLists here.
-        agreements_subquery = agreements_subquery.correlate(correlation)
+        digitalContents_subquery = digitalContents_subquery.correlate(correlation)
 
     # Query for the most common mood in a contentList
     dominant_mood_subquery = (
@@ -1183,7 +1183,7 @@ def filter_to_content_list_mood(session, mood, query, correlation):
         .filter(
             DigitalContent.is_current == True,
             DigitalContent.is_delete == False,
-            DigitalContent.digital_content_id.in_(agreements_subquery),
+            DigitalContent.digital_content_id.in_(digitalContents_subquery),
         )
         .group_by(DigitalContent.mood)
         .order_by(desc("cnt"), desc("latest"))
@@ -1201,27 +1201,27 @@ def filter_to_content_list_mood(session, mood, query, correlation):
     return query.filter(mood_exists_query.exists())
 
 
-def add_users_to_digital_contents(session, agreements, current_user_id=None):
+def add_users_to_digital_contents(session, digitalContents, current_user_id=None):
     """
-    Fetches the owners for the agreements and adds them to the digital_content dict under the key 'user'
+    Fetches the owners for the digitalContents and adds them to the digital_content dict under the key 'user'
 
     Args:
         session: (DB) sqlalchemy scoped db session
-        agreements: (Array<digital_content dict>) Array of agreements dict
+        digitalContents: (Array<digital_content dict>) Array of digitalContents dict
 
     Side Effects:
         Modifies the digital_content dictionaries to add a nested owner user
 
     Returns: None
     """
-    user_ids = get_users_ids(agreements)
+    user_ids = get_users_ids(digitalContents)
     users = []
-    if agreements and len(agreements) > 0 and agreements[0].get("user"):
-        users = list(map(lambda t: t["user"][0], agreements))
+    if digitalContents and len(digitalContents) > 0 and digitalContents[0].get("user"):
+        users = list(map(lambda t: t["user"][0], digitalContents))
     else:
-        # This shouldn't happen - all agreements should come preloaded with their owners per the relationship
+        # This shouldn't happen - all digitalContents should come preloaded with their owners per the relationship
         users = get_unpopulated_users(session, user_ids)
-        logger.warning("add_users_to_digital_contents() called but agreements have no users")
+        logger.warning("add_users_to_digital_contents() called but digitalContents have no users")
     set_users_in_cache(users)
     # bundle peripheral info into user results
     populated_users = populate_user_metadata(session, user_ids, users, current_user_id)
@@ -1229,7 +1229,7 @@ def add_users_to_digital_contents(session, agreements, current_user_id=None):
     for user in populated_users:
         user_map[user["user_id"]] = user
 
-    for digital_content in agreements:
+    for digital_content in digitalContents:
         user = user_map[digital_content["owner_id"]]
         if user:
             digital_content["user"] = user

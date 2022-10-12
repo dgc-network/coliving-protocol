@@ -5,7 +5,7 @@ const { LibsWrapper, Utils } = require('./libs')
 // Any method you add in these commands files will be automatically imported
 // and accessible via ServiceCommands
 const User = require('./commands/users')
-const DigitalContent = require('./commands/agreements')
+const DigitalContent = require('./commands/digitalContents')
 const File = require('./commands/files')
 const IpldBlacklist = require('./commands/ipldBlacklist')
 const ContentList = require('./commands/contentLists')

@@ -29,7 +29,7 @@ class Commander {
     this.program = new Command()
     this.program
       .usage(COMMANDER_HELP_STRING)
-      .requiredOption('-t, --type <type>', `Type of id - either 'digital_content', 'digital-content-hash-id', 'user' or 'cid'.\n'digital-content-hash-id' is an encoded version of a digital_content id commonly found in URLs with this pattern 'https://contentnode.domain.com/agreements/stream/7eP5n'. In this case the 'digital-content-hash-id' is '7eP5n'.`)
+      .requiredOption('-t, --type <type>', `Type of id - either 'digital_content', 'digital-content-hash-id', 'user' or 'cid'.\n'digital-content-hash-id' is an encoded version of a digital_content id commonly found in URLs with this pattern 'https://contentnode.domain.com/digital_contents/stream/7eP5n'. In this case the 'digital-content-hash-id' is '7eP5n'.`)
       .requiredOption('-l, --list <list>', 'comma separated list of ids or cids', ids => ids.split(','))
       .requiredOption('-a, --act <action>', '`add` to set of delisted content or `remove` from set of delisted content')
       .option('-v, --verbose', 'verbose mode to print out debug logs', false)

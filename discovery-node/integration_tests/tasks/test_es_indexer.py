@@ -15,7 +15,7 @@ basic_entities = {
         {"user_id": 1, "handle": "user1"},
         {"user_id": 2, "handle": "user2"},
     ],
-    "agreements": [
+    "digitalContents": [
         {"digital_content_id": 1, "owner_id": 1},
     ],
     "content_lists": [

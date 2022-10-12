@@ -186,11 +186,11 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/users/nlGN
 }
 ```
 
-### Get User's Favorite Agreements <a id="get-user-39-s-favorite-digital-contents"></a>
+### Get User's Favorite DigitalContents <a id="get-user-39-s-favorite-digital-contents"></a>
 
 `GET /users/{user_id}/favorites`
 
-_Fetch favorited agreements for a user_
+_Fetch favorited digitalContents for a user_
 
 #### Query Parameters <a id="get-user&apos;s-favorite-digital-contents-parameters"></a>
 
@@ -317,7 +317,7 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/users/stri
 
 `GET /users/{user_id}/tags`
 
-_Fetch most used tags in a user's agreements_
+_Fetch most used tags in a user's digitalContents_
 
 #### Query Parameters <a id="get-user&apos;s-most-used-digital-content-tags-parameters"></a>
 
@@ -370,11 +370,11 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/users/stri
 }
 ```
 
-### Get User's Agreements <a id="get-user-39-s-digital-contents"></a>
+### Get User's DigitalContents <a id="get-user-39-s-digital-contents"></a>
 
-`GET /users/{user_id}/agreements`
+`GET /users/{user_id}/digitalContents`
 
-_Fetch a list of agreements for a user_
+_Fetch a list of digitalContents for a user_
 
 #### Query Parameters <a id="get-user&apos;s-digital-contents-parameters"></a>
 
@@ -390,7 +390,7 @@ _Fetch a list of agreements for a user_
 
 | Status | Meaning                                                                    | Description  | Schema                                                                                           |
 |:------ |:-------------------------------------------------------------------------- |:------------ |:------------------------------------------------------------------------------------------------ |
-| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [agreements\_response](https://colivingproject.github.io/api-docs/?javascript#schemaagreements_response) |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [digitalContents\_response](https://colivingproject.github.io/api-docs/?javascript#schemadigitalContents_response) |
 | 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | Bad request  | None                                                                                             |
 | 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Server error | None                                                                                             |
 
@@ -402,7 +402,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/users/nlGNe/agreements?app_name=EXAMPLEAPP',
+fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/users/nlGNe/digitalContents?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -522,7 +522,7 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/contentLis
         "480x480": "https://usermetadata..co/ipfs/Qmc7RFzLGgW3DUTgKK49LzxEwe3Lmb47q85ZwJJRVYTXPr/480x480.jpg",
         "1000x1000": "https://usermetadata..co/ipfs/Qmc7RFzLGgW3DUTgKK49LzxEwe3Lmb47q85ZwJJRVYTXPr/1000x1000.jpg"
       },
-      "description": "All the latest hot new agreements on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
+      "description": "All the latest hot new digitalContents on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
       "id": "DOPRl",
       "is_album": true,
       "content_list_name": "Hot & New on Coliving 🔥",
@@ -610,7 +610,7 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/contentLis
       "480x480": "https://usermetadata..co/ipfs/Qmc7RFzLGgW3DUTgKK49LzxEwe3Lmb47q85ZwJJRVYTXPr/480x480.jpg",
       "1000x1000": "https://usermetadata..co/ipfs/Qmc7RFzLGgW3DUTgKK49LzxEwe3Lmb47q85ZwJJRVYTXPr/1000x1000.jpg"
     },
-    "description": "All the latest hot new agreements on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
+    "description": "All the latest hot new digitalContents on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
     "id": "DOPRl",
     "is_album": true,
     "content_list_name": "Hot & New on Coliving 🔥",
@@ -643,11 +643,11 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/contentLis
 }
 ```
 
-### Get ContentList Agreements <a id="get-content-list-digital-contents"></a>
+### Get ContentList DigitalContents <a id="get-content-list-digital-contents"></a>
 
-`GET /contentLists/{content_list_id}/agreements`
+`GET /contentLists/{content_list_id}/digitalContents`
 
-_Fetch agreements within a content_list_
+_Fetch digitalContents within a content_list_
 
 #### Query Parameters <a id="get-content-list-digital-contents-parameters"></a>
 
@@ -673,7 +673,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/contentLists/DOPRl/agreements?app_name=EXAMPLEAPP',
+fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/contentLists/DOPRl/digitalContents?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -736,11 +736,11 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/contentLis
 }
 ```
 
-## Agreements <a id="api-digital-contents"></a>
+## DigitalContents <a id="api-digital-contents"></a>
 
-### Search Agreements <a id="search-digital-contents"></a>
+### Search DigitalContents <a id="search-digital-contents"></a>
 
-`GET /agreements/search`
+`GET /digital_contents/search`
 
 _Search for a digital_content_
 
@@ -749,7 +749,7 @@ _Search for a digital_content_
 | Name                 | Type   | Required | Description                     |
 |:-------------------- |:------ |:-------- |:------------------------------- |
 | query                | string | true     | Search Query                    |
-| only\_downloadable | string | false    | Return only downloadable agreements |
+| only\_downloadable | string | false    | Return only downloadable digitalContents |
 | app\_name          | string | true     | Your app name                   |
 
 #### Responses <a id="search-digital-contents-responses"></a>
@@ -770,7 +770,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/agreements/search?query=baauer b2b&app_name=EXAMPLEAPP',
+fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/digital_contents/search?query=baauer b2b&app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -833,25 +833,25 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/agreements
 }
 ```
 
-### Trending Agreements <a id="trending-digital-contents"></a>
+### Trending DigitalContents <a id="trending-digital-contents"></a>
 
-`GET /agreements/trending`
+`GET /digital_contents/trending`
 
-_Gets the top 100 trending \(most popular\) agreements on Coliving_
+_Gets the top 100 trending \(most popular\) digitalContents on Coliving_
 
 #### Query Parameters <a id="trending-digital-contents-parameters"></a>
 
 | Name        | Type   | Required | Description                                                            |
 |:----------- |:------ |:-------- |:---------------------------------------------------------------------- |
-| genre       | string | false    | Trending agreements for a specified genre                                  |
-| time        | string | false    | Trending agreements over a specified time range \(week, month, allTime\) |
+| genre       | string | false    | Trending digitalContents for a specified genre                                  |
+| time        | string | false    | Trending digitalContents over a specified time range \(week, month, allTime\) |
 | app\_name | string | true     | Your app name                                                          |
 
 #### Responses <a id="trending-digital-contents-responses"></a>
 
 | Status | Meaning                                                                    | Description  | Schema                                                                                           |
 |:------ |:-------------------------------------------------------------------------- |:------------ |:------------------------------------------------------------------------------------------------ |
-| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [agreements\_response](https://colivingproject.github.io/api-docs/?javascript#schemaagreements_response) |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [digitalContents\_response](https://colivingproject.github.io/api-docs/?javascript#schemadigitalContents_response) |
 | 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | Bad request  | None                                                                                             |
 | 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Server error | None                                                                                             |
 
@@ -863,7 +863,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/agreements/trending?app_name=EXAMPLEAPP',
+fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/digital_contents/trending?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -928,7 +928,7 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/agreements
 
 ### Get DigitalContent <a id="get-digital-content"></a>
 
-`GET /agreements/{digital_content_id}`
+`GET /digital_contents/{digital_content_id}`
 
 _Fetch a digital_content_
 
@@ -955,7 +955,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/agreements/D7KyD?app_name=EXAMPLEAPP',
+fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/digital_contents/D7KyD?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -1018,7 +1018,7 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/agreements
 
 ### Stream DigitalContent <a id="stream-digital-content"></a>
 
-`GET /agreements/{digital_content_id}/stream`
+`GET /digital_contents/{digital_content_id}/stream`
 
 _Get the digital_content's streamable mp3 file_
 
@@ -1045,7 +1045,7 @@ This endpoint accepts the Range header for streaming. https://developer.mozilla.
 
 ```javascript
 
-fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/agreements/D7KyD/stream?app_name=EXAMPLEAPP',
+fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/digital_contents/D7KyD/stream?app_name=EXAMPLEAPP',
 {
   method: 'GET'
 
@@ -1126,7 +1126,7 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/metrics/ap
 
 _Resolves and redirects a provided Coliving app URL to the API resource URL it represents_
 
-This endpoint allows you to lookup and access API resources when you only know the .co URL. Agreements, ContentLists, and Users are supported.
+This endpoint allows you to lookup and access API resources when you only know the .co URL. DigitalContents, ContentLists, and Users are supported.
 
 #### Query Parameters <a id="resolve-parameters"></a>
 
@@ -1140,7 +1140,7 @@ This endpoint allows you to lookup and access API resources when you only know t
 > Internal redirect
 
 ```text
-{"HTTP/1.1 302 Found Location":"/v1/agreements/V4W8r"}
+{"HTTP/1.1 302 Found Location":"/v1/digital_contents/V4W8r"}
 ```
 
 #### Responses <a id="resolve-responses"></a>
@@ -1297,7 +1297,7 @@ The following are examples of response formats you can expect to receive from th
 | 480x480   | string | false    | none         | none        |
 | 1000x1000 | string | false    | none         | none        |
 
-### agreements\_response <a id="tocS_digital_contents_response"></a>
+### digitalContents\_response <a id="tocS_digital_contents_response"></a>
 
 ```json
 {
@@ -1314,7 +1314,7 @@ The following are examples of response formats you can expect to receive from th
       "mood": "string",
       "release_date": "string",
       "remix_of": {
-        "agreements": [
+        "digitalContents": [
           {
             "parent_digital_content_id": "string"
           }
@@ -1360,9 +1360,9 @@ The following are examples of response formats you can expect to receive from th
 
 | Name | Type                                                                            | Required | Restrictions | Description |
 |:---- |:------------------------------------------------------------------------------- |:-------- |:------------ |:----------- |
-| data | \[[DigitalContent](https://colivingproject.github.io/api-docs/?javascript#schemaagreement)\] | false    | none         | none        |
+| data | \[[DigitalContent](https://colivingproject.github.io/api-docs/?javascript#schemadigitalContent)\] | false    | none         | none        |
 
-### DigitalContent <a id="tocS_Agreement"></a>
+### DigitalContent <a id="tocS_DigitalContent"></a>
 
 ```json
 {
@@ -1377,7 +1377,7 @@ The following are examples of response formats you can expect to receive from th
   "mood": "string",
   "release_date": "string",
   "remix_of": {
-    "agreements": [
+    "digitalContents": [
       {
         "parent_digital_content_id": "string"
       }
@@ -1460,7 +1460,7 @@ The following are examples of response formats you can expect to receive from th
 
 ```json
 {
-  "agreements": [
+  "digitalContents": [
     {
       "parent_digital_content_id": "string"
     }
@@ -1473,7 +1473,7 @@ The following are examples of response formats you can expect to receive from th
 
 | Name   | Type                                                                                               | Required | Restrictions | Description |
 |:------ |:-------------------------------------------------------------------------------------------------- |:-------- |:------------ |:----------- |
-| agreements | \[[digital_content\_element](https://colivingproject.github.io/api-docs/?javascript#schemadigital_content_element)\] | false    | none         | none        |
+| digitalContents | \[[digital_content\_element](https://colivingproject.github.io/api-docs/?javascript#schemadigital_content_element)\] | false    | none         | none        |
 
 ### digital_content\_element <a id="tocS_digital_content_element"></a>
 
@@ -1772,7 +1772,7 @@ The following are examples of response formats you can expect to receive from th
       "mood": "string",
       "release_date": "string",
       "remix_of": {
-        "agreements": [
+        "digitalContents": [
           {
             "parent_digital_content_id": "string"
           }
@@ -1818,7 +1818,7 @@ The following are examples of response formats you can expect to receive from th
 
 | Name | Type                                                                            | Required | Restrictions | Description |
 |:---- |:------------------------------------------------------------------------------- |:-------- |:------------ |:----------- |
-| data | \[[DigitalContent](https://colivingproject.github.io/api-docs/?javascript#schemaagreement)\] | false    | none         | none        |
+| data | \[[DigitalContent](https://colivingproject.github.io/api-docs/?javascript#schemadigitalContent)\] | false    | none         | none        |
 
 ### contentList\_search\_result <a id="tocS_content_list_search_result"></a>
 
@@ -1889,7 +1889,7 @@ The following are examples of response formats you can expect to receive from th
     "mood": "string",
     "release_date": "string",
     "remix_of": {
-      "agreements": [
+      "digitalContents": [
         {
           "parent_digital_content_id": "string"
         }
@@ -1934,7 +1934,7 @@ The following are examples of response formats you can expect to receive from th
 
 | Name | Type                                                                      | Required | Restrictions | Description |
 |:---- |:------------------------------------------------------------------------- |:-------- |:------------ |:----------- |
-| data | [DigitalContent](https://colivingproject.github.io/api-docs/?javascript#schemaagreement) | false    | none         | none        |
+| data | [DigitalContent](https://colivingproject.github.io/api-docs/?javascript#schemadigitalContent) | false    | none         | none        |
 
 ### digital_content\_search <a id="tocS_digital_content_search"></a>
 
@@ -1953,7 +1953,7 @@ The following are examples of response formats you can expect to receive from th
       "mood": "string",
       "release_date": "string",
       "remix_of": {
-        "agreements": [
+        "digitalContents": [
           {
             "parent_digital_content_id": "string"
           }
@@ -1999,7 +1999,7 @@ The following are examples of response formats you can expect to receive from th
 
 | Name | Type                                                                            | Required | Restrictions | Description |
 |:---- |:------------------------------------------------------------------------------- |:-------- |:------------ |:----------- |
-| data | \[[DigitalContent](https://colivingproject.github.io/api-docs/?javascript#schemaagreement)\] | false    | none         | none        |
+| data | \[[DigitalContent](https://colivingproject.github.io/api-docs/?javascript#schemadigitalContent)\] | false    | none         | none        |
 
 ### app\_name\_trailing\_response <a id="tocS_app_name_trailing_response"></a>
 

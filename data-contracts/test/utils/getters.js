@@ -13,14 +13,14 @@ export const getUserFromFactory = async (userId, userFactory) => {
   }
 }
 /** Retrieves digital_content from factory contract
-    * @param {number} agreementId
-    * @param {object} agreementFactory, deployed AgreementFactory truffle contract
+    * @param {number} digitalContentId
+    * @param {object} digitalContentFactory, deployed DigitalContentFactory truffle contract
     * @returns {object} dictionary with userId, multihashDigest, multihashHashFn, multihashSize
     */
-export const getAgreementFromFactory = async (agreementId, agreementFactory) => {
-  let digital_content = await agreementFactory.getAgreement.call(agreementId)
+export const getDigitalContentFromFactory = async (digitalContentId, digitalContentFactory) => {
+  let digital_content = await digitalContentFactory.getDigitalContent.call(digitalContentId)
   return {
-    agreementOwnerId: digital_content[0],
+    digitalContentOwnerId: digital_content[0],
     multihashDigest: digital_content[1],
     multihashHashFn: digital_content[2],
     multihashSize: digital_content[3]

@@ -12,17 +12,17 @@ const {
 async function processMilestoneListenNotifications (notifications, tx) {
   const validNotifications = []
   for (const notification of notifications) {
-    const agreementOwnerId = notification.initiator
-    const agreementId = notification.metadata.entity_id
+    const digitalContentOwnerId = notification.initiator
+    const digitalContentId = notification.metadata.entity_id
     const threshold = notification.metadata.threshold
     const slot = notification.slot
 
     // Check for existing milestone
     let existingMilestoneQuery = await models.SolanaNotification.findAll({
       where: {
-        userId: agreementOwnerId,
+        userId: digitalContentOwnerId,
         type: notificationTypes.MilestoneListen,
-        entityId: agreementId
+        entityId: digitalContentId
       },
       include: [{
         model: models.SolanaNotificationAction,
@@ -36,9 +36,9 @@ async function processMilestoneListenNotifications (notifications, tx) {
     })
     if (existingMilestoneQuery.length === 0) {
       let createMilestoneTx = await models.SolanaNotification.create({
-        userId: agreementOwnerId,
+        userId: digitalContentOwnerId,
         type: notificationTypes.MilestoneListen,
-        entityId: agreementId,
+        entityId: digitalContentId,
         slot
       }, { transaction: tx })
       let notificationId = createMilestoneTx.id

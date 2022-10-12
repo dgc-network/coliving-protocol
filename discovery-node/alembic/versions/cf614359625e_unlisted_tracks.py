@@ -18,11 +18,11 @@ depends_on = None
 
 def upgrade():
     op.add_column(
-        "agreements",
+        "digitalContents",
         sa.Column("is_unlisted", sa.Boolean(), server_default="false", nullable=False),
     )
     op.add_column(
-        "agreements",
+        "digitalContents",
         sa.Column(
             "field_visibility", postgresql.JSONB(astext_type=sa.Text()), nullable=True
         ),
@@ -30,5 +30,5 @@ def upgrade():
 
 
 def downgrade():
-    op.drop_column("agreements", "is_unlisted")
-    op.drop_column("agreements", "field_visibility")
+    op.drop_column("digitalContents", "is_unlisted")
+    op.drop_column("digitalContents", "field_visibility")

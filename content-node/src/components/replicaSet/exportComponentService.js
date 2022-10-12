@@ -34,9 +34,9 @@ const exportComponentService = async ({
       (cnodeUser) => cnodeUser.cnodeUserUUID
     )
 
-    // Fetch all data for cnodeUserUUIDs: colivingUsers, agreements, files, clockRecords.
+    // Fetch all data for cnodeUserUUIDs: colivingUsers, digitalContents, files, clockRecords.
 
-    const [colivingUsers, agreements, files, clockRecords] = await Promise.all([
+    const [colivingUsers, digitalContents, files, clockRecords] = await Promise.all([
       models.ColivingUser.findAll({
         where: {
           cnodeUserUUID: cnodeUserUUIDs,
@@ -91,7 +91,7 @@ const exportComponentService = async ({
     for (const cnodeUser of cnodeUsers) {
       // Add cnodeUserUUID data fields
       cnodeUser.colivingUsers = []
-      cnodeUser.agreements = []
+      cnodeUser.digitalContents = []
       cnodeUser.files = []
       cnodeUser.clockRecords = []
 
@@ -131,8 +131,8 @@ const exportComponentService = async ({
     colivingUsers.forEach((colivingUser) => {
       cnodeUsersDict[colivingUser.cnodeUserUUID].colivingUsers.push(colivingUser)
     })
-    agreements.forEach((digital_content) => {
-      cnodeUsersDict[digital_content.cnodeUserUUID].agreements.push(digital_content)
+    digitalContents.forEach((digital_content) => {
+      cnodeUsersDict[digital_content.cnodeUserUUID].digitalContents.push(digital_content)
     })
     files.forEach((file) => {
       cnodeUsersDict[file.cnodeUserUUID].files.push(file)

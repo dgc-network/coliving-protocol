@@ -44,14 +44,14 @@ export class File extends Base {
     contentNodeGateways: string[],
     callback: Nullable<(url: string) => void> = null,
     responseType: ResponseType = 'blob',
-    agreementId = null
+    digitalContentId = null
   ) {
     const urls: string[] = []
 
     contentNodeGateways.forEach((gateway) => {
       let gatewayWithCid = urlJoin(gateway, cid)
-      if (agreementId)
-        gatewayWithCid = urlJoin(gatewayWithCid, { query: { agreementId } })
+      if (digitalContentId)
+        gatewayWithCid = urlJoin(gatewayWithCid, { query: { digitalContentId } })
       urls.push(gatewayWithCid)
     })
 
@@ -82,7 +82,7 @@ export class File extends Base {
           }
           return response
         } catch (e) {
-          // TODO: Remove this fallback logic when no more users/agreements/contentLists
+          // TODO: Remove this fallback logic when no more users/digital_contents/contentLists
           // contain "legacy" image formats (no dir cid)
           if (cid.includes('/')) {
             // dirCID -- an image

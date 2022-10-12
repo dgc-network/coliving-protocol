@@ -22,7 +22,7 @@ contract ContentListStorage is RegistryContract {
     mapping(uint => bool) private isAlbum;
 
     /** @dev - Mapping of contentList contents
-    *   contentListId -> <agreementId -> agreementCountInContentList>
+    *   contentListId -> <digitalContentId -> digitalContentCountInContentList>
     */
     mapping(uint => mapping(uint => uint)) private contentListContents;
 
@@ -42,7 +42,7 @@ contract ContentListStorage is RegistryContract {
         newContentListId = contentListId;
         contentListId += 1;
 
-        // Number of agreements in contentList
+        // Number of digitalContents in contentList
         uint contentListLength = _digital_contentIds.length;
 
         require(contentListId != newContentListId, "expected incremented contentListId");
@@ -55,31 +55,31 @@ contract ContentListStorage is RegistryContract {
 
         // Populate the contentList content mapping
         for (uint i = 0; i < contentListLength; i++) {
-            uint currentAgreementId = _digital_contentIds[i];
-            contentListContents[newContentListId][currentAgreementId] += 1;
+            uint currentDigitalContentId = _digital_contentIds[i];
+            contentListContents[newContentListId][currentDigitalContentId] += 1;
         }
 
         return newContentListId;
     }
 
-    function addContentListAgreement(
+    function addContentListDigitalContent(
         uint _content_listId,
-        uint _addedAgreementId
+        uint _addedDigitalContentId
     ) external onlyRegistrant(CALLER_REGISTRY_KEY)
     {
-        contentListContents[_content_listId][_addedAgreementId] += 1;
+        contentListContents[_content_listId][_addedDigitalContentId] += 1;
     }
 
-    function deleteContentListAgreement(
+    function deleteContentListDigitalContent(
         uint _content_listId,
-        uint _deletedAgreementId
+        uint _deletedDigitalContentId
     ) external onlyRegistrant(CALLER_REGISTRY_KEY)
     {
         require(
-            contentListContents[_content_listId][_deletedAgreementId] > 0,
+            contentListContents[_content_listId][_deletedDigitalContentId] > 0,
             "Valid digital_content in contentList required for delete"
         );
-        contentListContents[_content_listId][_deletedAgreementId] -= 1;
+        contentListContents[_content_listId][_deletedDigitalContentId] -= 1;
     }
 
     function getContentListOwner(uint _content_listId)
@@ -88,7 +88,7 @@ contract ContentListStorage is RegistryContract {
         return contentListOwner[_content_listId];
     }
 
-    function isAgreementInContentList(
+    function isDigitalContentInContentList(
         uint _content_listId,
         uint _digital_contentId
     ) external view onlyRegistrant(CALLER_REGISTRY_KEY) returns (bool)

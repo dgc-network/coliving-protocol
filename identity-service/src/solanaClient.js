@@ -8,8 +8,8 @@ const VALID_SIGNER = config.get('solanaValidSigner')
 const COLIVING_ETH_REGISTRY_PROGRAM = config.get('solanaColivingEthRegistryAddress') ? new solanaWeb3.PublicKey(
   config.get('solanaColivingEthRegistryAddress')
 ) : null
-const AGREEMENT_LISTEN_PROGRAM = config.get('solanaAgreementListenCountAddress') ? new solanaWeb3.PublicKey(
-  config.get('solanaAgreementListenCountAddress')
+const AGREEMENT_LISTEN_PROGRAM = config.get('solanaDigitalContentListenCountAddress') ? new solanaWeb3.PublicKey(
+  config.get('solanaDigitalContentListenCountAddress')
 ) : null
 const INSTRUCTIONS_PROGRAM = new solanaWeb3.PublicKey(
   'Sysvar1nstructions1111111111111111111111111'
@@ -18,18 +18,18 @@ const CLOCK_PROGRAM = new solanaWeb3.PublicKey(
   'SysvarC1ock11111111111111111111111111111111'
 )
 
-class AgreementData {
-  constructor ({ userId, agreementId, source, timestamp }) {
+class DigitalContentData {
+  constructor ({ userId, digitalContentId, source, timestamp }) {
     this.userId = userId
-    this.agreementId = agreementId
+    this.digitalContentId = digitalContentId
     this.source = source
     this.timestamp = timestamp
   }
 }
 
 class InstructionArgs {
-  constructor ({ agreementData, signature, recoveryId }) {
-    this.agreementData = agreementData
+  constructor ({ digitalContentData, signature, recoveryId }) {
+    this.digitalContentData = digitalContentData
     this.signature = signature
     this.recoveryId = recoveryId
   }
@@ -42,14 +42,14 @@ class InstructionEnum {
   }
 }
 
-const agreementDataSchema = new Map([
+const digitalContentDataSchema = new Map([
   [
-    AgreementData,
+    DigitalContentData,
     {
       kind: 'struct',
       fields: [
         ['userId', 'string'],
-        ['agreementId', 'string'],
+        ['digitalContentId', 'string'],
         ['source', 'string'],
         ['timestamp', 'u64']
       ]
@@ -71,19 +71,19 @@ const instructionSchema = new Map([
     {
       kind: 'struct',
       fields: [
-        ['agreementData', AgreementData],
+        ['digitalContentData', DigitalContentData],
         ['signature', [64]],
         ['recoveryId', 'u8']
       ]
     }
   ],
   [
-    AgreementData,
+    DigitalContentData,
     {
       kind: 'struct',
       fields: [
         ['userId', 'string'],
-        ['agreementId', 'string'],
+        ['digitalContentId', 'string'],
         ['source', 'string'],
         ['timestamp', 'u64']
       ]
@@ -117,8 +117,8 @@ function getFeePayerKeypair (singleFeePayer = true) {
   return feePayerKeypairs[randomFeePayerIndex]
 }
 
-let cachedListenBlocktime = null // in seconds, agreements recent blocktime
-let lastRetrievedListenBlocktime = null // in seconds, agreements time when cachedListenBlocktime was fetched
+let cachedListenBlocktime = null // in seconds, digitalContents recent blocktime
+let lastRetrievedListenBlocktime = null // in seconds, digitalContents time when cachedListenBlocktime was fetched
 
 /**
  * Get the blocktime for a recently finalized block, this relative time will be passed into listen transaction.
@@ -142,11 +142,11 @@ async function getListenTimestamp (connection) {
   return blockTime
 }
 
-async function createAgreementListenTransaction ({
+async function createDigitalContentListenTransaction ({
   validSigner,
   privateKey,
   userId,
-  agreementId,
+  digitalContentId,
   source,
   location,
   connection
@@ -170,20 +170,20 @@ async function createAgreementListenTransaction ({
   }
 
   // max sol tx size is 1232 bytes
-  let agreementData = new AgreementData({
+  let digitalContentData = new DigitalContentData({
     userId: userId,
-    agreementId: agreementId,
+    digitalContentId: digitalContentId,
     source: sourceData, // use api key as feature flag
     timestamp: (await getListenTimestamp(connection)) || Math.round(new Date().getTime() / 1000)
   })
 
-  const serializedAgreementData = borsh.serialize(agreementDataSchema, agreementData)
-  let msgHash = keccak256(serializedAgreementData.toJSON().data)
+  const serializedDigitalContentData = borsh.serialize(digitalContentDataSchema, digitalContentData)
+  let msgHash = keccak256(serializedDigitalContentData.toJSON().data)
 
   const sigObj = secp256k1.ecdsaSign(Uint8Array.from(msgHash), privKey)
 
   let instructionArgs = new InstructionArgs({
-    agreementData: agreementData,
+    digitalContentData: digitalContentData,
     signature: Array.from(sigObj.signature),
     recoveryId: sigObj.recid
   })
@@ -203,7 +203,7 @@ async function createAgreementListenTransaction ({
   let secpInstruction = solanaWeb3.Secp256k1Program.createInstructionWithPublicKey(
     {
       publicKey: pubKey,
-      message: serializedAgreementData.toJSON().data,
+      message: serializedDigitalContentData.toJSON().data,
       signature: sigObj.signature,
       recoveryId: sigObj.recid
     }
@@ -263,7 +263,7 @@ async function sendAndSignTransaction (connection, transaction, signers, timeout
       await delay(300)
     }
     let elapsed = getUnixTs() - startTime
-    logger.info(`AgreementListen | Exited retry send loop for ${txid}, elapsed=${elapsed}, done=${done}, timeout=${timeout}, startTime=${startTime}`)
+    logger.info(`DigitalContentListen | Exited retry send loop for ${txid}, elapsed=${elapsed}, done=${done}, timeout=${timeout}, startTime=${startTime}`)
   })()
 
   try {
@@ -310,7 +310,7 @@ async function awaitTransactionSignatureConfirmation (
         )
       } catch (e) {
         done = true
-        logger.error('AgreementListen | WS error in setup', txid, e)
+        logger.error('DigitalContentListen | WS error in setup', txid, e)
       }
       while (!done) {
         // eslint-disable-next-line no-loop-func
@@ -323,7 +323,7 @@ async function awaitTransactionSignatureConfirmation (
             if (!done) {
               if (!result) {
               } else if (result.err) {
-                logger.error('AgreementListen | REST error for', txid, result)
+                logger.error('DigitalContentListen | REST error for', txid, result)
                 done = true
                 reject(result.err)
               } else if (!(result.confirmations || result.confirmationStatus === 'confirmed' || result.confirmationStatus === 'finalized')) {
@@ -346,6 +346,6 @@ async function awaitTransactionSignatureConfirmation (
   return result
 }
 
-exports.createAgreementListenTransaction = createAgreementListenTransaction
+exports.createDigitalContentListenTransaction = createDigitalContentListenTransaction
 exports.getFeePayerKeypair = getFeePayerKeypair
 exports.sendAndSignTransaction = sendAndSignTransaction

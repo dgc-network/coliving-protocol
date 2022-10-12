@@ -28,13 +28,13 @@ def upgrade():
     op.drop_column("reposts", "timestamp")
     op.add_column("saves", sa.Column("created_at", sa.DateTime(), nullable=False))
     op.drop_column("saves", "timestamp")
-    op.add_column("agreements", sa.Column("created_at", sa.DateTime(), nullable=False))
-    op.add_column("agreements", sa.Column("description", sa.String(), nullable=True))
-    op.add_column("agreements", sa.Column("isrc", sa.String(), nullable=True))
-    op.add_column("agreements", sa.Column("iswc", sa.String(), nullable=True))
-    op.add_column("agreements", sa.Column("license", sa.String(), nullable=True))
-    op.add_column("agreements", sa.Column("updated_at", sa.DateTime(), nullable=False))
-    op.drop_column("agreements", "timestamp")
+    op.add_column("digitalContents", sa.Column("created_at", sa.DateTime(), nullable=False))
+    op.add_column("digitalContents", sa.Column("description", sa.String(), nullable=True))
+    op.add_column("digitalContents", sa.Column("isrc", sa.String(), nullable=True))
+    op.add_column("digitalContents", sa.Column("iswc", sa.String(), nullable=True))
+    op.add_column("digitalContents", sa.Column("license", sa.String(), nullable=True))
+    op.add_column("digitalContents", sa.Column("updated_at", sa.DateTime(), nullable=False))
+    op.drop_column("digitalContents", "timestamp")
     op.add_column("users", sa.Column("created_at", sa.DateTime(), nullable=False))
     op.add_column("users", sa.Column("updated_at", sa.DateTime(), nullable=False))
     # ### end Alembic commands ###
@@ -45,17 +45,17 @@ def downgrade():
     op.drop_column("users", "updated_at")
     op.drop_column("users", "created_at")
     op.add_column(
-        "agreements",
+        "digitalContents",
         sa.Column(
             "timestamp", postgresql.TIMESTAMP(), autoincrement=False, nullable=False
         ),
     )
-    op.drop_column("agreements", "updated_at")
-    op.drop_column("agreements", "license")
-    op.drop_column("agreements", "iswc")
-    op.drop_column("agreements", "isrc")
-    op.drop_column("agreements", "description")
-    op.drop_column("agreements", "created_at")
+    op.drop_column("digitalContents", "updated_at")
+    op.drop_column("digitalContents", "license")
+    op.drop_column("digitalContents", "iswc")
+    op.drop_column("digitalContents", "isrc")
+    op.drop_column("digitalContents", "description")
+    op.drop_column("digitalContents", "created_at")
     op.add_column(
         "saves",
         sa.Column(

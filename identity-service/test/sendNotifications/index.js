@@ -5,7 +5,7 @@ const models = require('../../src/models')
 const processNotifications = require('../../src/notifications/processNotifications/index.js')
 const { challengeInfoMap } = require('../../src/notifications/formatNotificationMetadata.js')
 const sendNotifications = require('../../src/notifications/sendNotifications/index.js')
-const { processTrendingAgreements } = require('../../src/notifications/trendingAgreementProcessing')
+const { processTrendingDigitalContents } = require('../../src/notifications/trendingDigitalContentProcessing')
 const { pushNotificationQueue } = require('../../src/notifications/notificationQueue')
 const { clearDatabase, runMigrations } = require('../lib/app')
 const notificationUtils = require('../../src/notifications/sendNotifications/utils')
@@ -17,7 +17,7 @@ const follow = require('./mockNotifications/follow.json')
 const repost = require('./mockNotifications/repost.json')
 const favorite = require('./mockNotifications/favorite.json')
 const create = require('./mockNotifications/create.json')
-const trendingAgreement = require('./mockNotifications/trendingAgreement.json')
+const trendingDigitalContent = require('./mockNotifications/trendingDigitalContent.json')
 const challengeReward = require('./mockNotifications/challengeReward.json')
 
 const mockColivingLibs = require('./mockLibs')
@@ -188,7 +188,7 @@ describe('Test Send Notifications', function () {
     )
 
     const tx1 = await models.sequelize.transaction()
-    await processTrendingAgreements(mockColivingLibs, 1, trendingAgreement, tx1)
+    await processTrendingDigitalContents(mockColivingLibs, 1, trendingDigitalContent, tx1)
     await tx1.commit()
 
     const pushNotifications = pushNotificationQueue.PUSH_NOTIFICATIONS_BUFFER
@@ -211,10 +211,10 @@ describe('Test Send Notifications', function () {
   })
 
   it('should have the correct create notifications', async function () {
-    // User 1 creates agreements 1, 2, 3, 4
+    // User 1 creates digitalContents 1, 2, 3, 4
     // User 2 creates digital_content 5
-    // User 1 creates contentList 1 w/ agreements 1
-    // User 1 creates album 2 w/ agreements 2
+    // User 1 creates contentList 1 w/ digitalContents 1
+    // User 1 creates album 2 w/ digitalContents 2
 
     // ======================================= Set subscribers for create notifications =======================================
     await models.Subscription.bulkCreate([
@@ -232,7 +232,7 @@ describe('Test Send Notifications', function () {
 
     assert.deepStrictEqual(pushNotifications.length, 0)
 
-    // Wait 60 seconds to debounce agreements / album notifications
+    // Wait 60 seconds to debounce digitalContents / album notifications
     await new Promise(resolve => setTimeout(resolve, 5 * 1000))
     const tx2 = await models.sequelize.transaction()
     await sendNotifications(mockColivingLibs, [], tx2)
@@ -242,7 +242,7 @@ describe('Test Send Notifications', function () {
     assert.deepStrictEqual(pushNotifications.length, 9)
 
     for (const notification of pushNotifications) {
-      assert.deepStrictEqual(notification.notificationParams.title, 'New Landlord Update')
+      assert.deepStrictEqual(notification.notificationParams.title, 'New Author Update')
       assert.deepStrictEqual(notification.types, ['mobile', 'browser'])
     }
 
@@ -280,13 +280,13 @@ describe('Test Send Notifications', function () {
     const notifs = [
       {
         title: challengeInfoMap['referred'].title,
-        msg: `You’ve received ${challengeInfoMap['referred'].amount} $LIVE for being referred! Invite your friends to join to earn more!`
+        msg: `You’ve received ${challengeInfoMap['referred'].amount} $DGCO for being referred! Invite your friends to join to earn more!`
       },
       ...([
         'profile-completion', 'listen-streak', 'digital-content-upload', 'referrals', 'ref-v', 'connect-verified', 'mobile-install'
       ].map(id => ({
         title: challengeInfoMap[id].title,
-        msg: `You’ve earned ${challengeInfoMap[id].amount} $LIVE for completing this challenge!`
+        msg: `You’ve earned ${challengeInfoMap[id].amount} $DGCO for completing this challenge!`
       })))
     ]
 
@@ -302,7 +302,7 @@ describe('Test Send Notifications', function () {
   })
 
   it('should batch digital_content metadata fetches', async function () {
-    // User 1 creates 500 agreements
+    // User 1 creates 500 digitalContents
 
     // ======================================= Set subscribers for create notifications =======================================
     await models.Subscription.bulkCreate([
@@ -334,7 +334,7 @@ describe('Test Send Notifications', function () {
 
     assert.deepStrictEqual(pushNotifications.length, 0)
 
-    // Wait 60 seconds to debounce agreements / album notifications
+    // Wait 60 seconds to debounce digitalContents / album notifications
     await new Promise(resolve => setTimeout(resolve, 5 * 1000))
     const tx2 = await models.sequelize.transaction()
     await sendNotifications(mockColivingLibs, [], tx2)
@@ -344,7 +344,7 @@ describe('Test Send Notifications', function () {
     assert.deepStrictEqual(pushNotifications.length, mockNotifications.length)
 
     for (const notification of pushNotifications) {
-      assert.deepStrictEqual(notification.notificationParams.title, 'New Landlord Update')
+      assert.deepStrictEqual(notification.notificationParams.title, 'New Author Update')
       assert.deepStrictEqual(notification.types, ['mobile', 'browser'])
     }
 

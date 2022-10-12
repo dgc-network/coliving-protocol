@@ -39,7 +39,7 @@ START_CHUNK_SIZE = 20
 # how many blocks from tail of chain we want to scan to
 ETH_BLOCK_TAIL_OFFSET = 1
 # the block number to start with if first time scanning
-# this should be the first block during and after which $LIVE transfer events started occurring
+# this should be the first block during and after which $DGCO transfer events started occurring
 MIN_SCAN_START_BLOCK = 11103292
 
 
@@ -75,7 +75,7 @@ class EventScanner:
         :param redis: redis handle
         :param web3: Web3 instantiated with provider url
         :param contract: Contract
-        :param state: state manager to keep agreements of last scanned block and persisting events to db
+        :param state: state manager to keep digitalContents of last scanned block and persisting events to db
         :param event_type: web3 Event we scan
         :param filters: Filters passed to get_logs e.g. { "address": <token-address> }
         """

@@ -3,7 +3,7 @@ const { snapbackSMParallelSyncTest } = require('./test_snapbackSM.js')
 const IpldBlacklistTest = require('./test_ipldBlacklist')
 const { userReplicaSetBlockSaturationTest } = require('./test_ursmBlockSaturation.js')
 const { userReplicaSetManagerTest } = require('./test_userReplicaSetManager.js')
-const { agreementListenCountsTest } = require('./test_plays.js')
+const { digitalContentListenCountsTest } = require('./test_plays.js')
 
 const SnapbackReconfigTests = require('./test_userReplicaSetNodes')
 
@@ -13,6 +13,6 @@ module.exports = {
   IpldBlacklistTest,
   userReplicaSetManagerTest,
   userReplicaSetBlockSaturationTest,
-  agreementListenCountsTest,
+  digitalContentListenCountsTest,
   SnapbackReconfigTests
 }

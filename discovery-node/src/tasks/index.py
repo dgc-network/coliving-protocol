@@ -16,8 +16,8 @@ from src.models.content_lists.content_list import ContentList
 from src.models.social.follow import Follow
 from src.models.social.repost import Repost
 from src.models.social.save import Save
-from src.models.agreements.digital_content import DigitalContent
-from src.models.agreements.digital_content_route import AgreementRoute
+from src.models.digitalContents.digital_content import DigitalContent
+from src.models.digitalContents.digital_content_route import DigitalContentRoute
 from src.models.users.associated_wallet import AssociatedWallet
 from src.models.users.user import User
 from src.models.users.user_events import UserEvent
@@ -34,7 +34,7 @@ from src.tasks.celery_app import celery
 from src.tasks.content_lists import content_list_state_update
 from src.tasks.social_features import social_feature_state_update
 from src.tasks.sort_block_transactions import sort_block_transactions
-from src.tasks.agreements import digital_content_event_types_lookup, digital_content_state_update
+from src.tasks.digitalContents import digital_content_event_types_lookup, digital_content_state_update
 from src.tasks.user_library import user_library_state_update
 from src.tasks.user_replica_set import user_replica_set_state_update
 from src.tasks.users import user_event_types_lookup, user_state_update
@@ -688,7 +688,7 @@ def index_blocks(self, db, blocks_list):
                     )
 
                     """
-                    Add state changes in block to db (users, agreements, etc.)
+                    Add state changes in block to db (users, digitalContents, etc.)
                     """
                     process_state_changes_start_time = time.time()
                     # bulk process operations once all tx's for block have been parsed
@@ -778,7 +778,7 @@ def index_blocks(self, db, blocks_list):
         logger.info(f"index.py | index_blocks | Indexed {num_blocks} blocks")
 
 
-# transactions are reverted in reverse dependency order (social features --> contentLists --> agreements --> users)
+# transactions are reverted in reverse dependency order (social features --> contentLists --> digitalContents --> users)
 def revert_blocks(self, db, revert_blocks_list):
     # TODO: Remove this exception once the unexpected revert scenario has been diagnosed
     num_revert_blocks = len(revert_blocks_list)
@@ -861,8 +861,8 @@ def revert_blocks(self, db, revert_blocks_list):
                 .all()
             )
             revert_digital_content_routes = (
-                session.query(AgreementRoute)
-                .filter(AgreementRoute.blockhash == revert_hash)
+                session.query(DigitalContentRoute)
+                .filter(DigitalContentRoute.blockhash == revert_hash)
                 .all()
             )
 
@@ -1018,12 +1018,12 @@ def revert_blocks(self, db, revert_blocks_list):
             for digital_content_route_to_revert in revert_digital_content_routes:
                 digital_content_id = digital_content_route_to_revert.digital_content_id
                 previous_digital_content_route_entry = (
-                    session.query(AgreementRoute)
+                    session.query(DigitalContentRoute)
                     .filter(
-                        AgreementRoute.digital_content_id == digital_content_id,
-                        AgreementRoute.blocknumber < revert_block_number,
+                        DigitalContentRoute.digital_content_id == digital_content_id,
+                        DigitalContentRoute.blocknumber < revert_block_number,
                     )
-                    .order_by(AgreementRoute.blocknumber.desc(), AgreementRoute.slug.asc())
+                    .order_by(DigitalContentRoute.blocknumber.desc(), DigitalContentRoute.slug.asc())
                     .first()
                 )
                 if previous_digital_content_route_entry:

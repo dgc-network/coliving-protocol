@@ -42,17 +42,17 @@ Get a contentList by ID
 
 ___
 
-### getContentListAgreements
+### getContentListDigitalContents
 
-**getContentListAgreements**(`requestParameters`): `Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)[]\>
+**getContentListDigitalContents**(`requestParameters`): `Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)[]\>
 
-Fetch agreements within a contentList.
+Fetch digitalContents within a contentList.
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetContentListAgreementsRequest`](../interfaces/GetContentListAgreementsRequest.md) |
+| `requestParameters` | [`GetContentListDigitalContentsRequest`](../interfaces/GetContentListDigitalContentsRequest.md) |
 
 #### Returns
 

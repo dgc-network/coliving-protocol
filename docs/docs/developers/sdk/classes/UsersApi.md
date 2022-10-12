@@ -24,17 +24,17 @@ runtime.BaseAPI.configuration
 
 ## Methods
 
-### getAgreementsByUser
+### getDigitalContentsByUser
 
-**getAgreementsByUser**(`requestParameters`): `Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)[]\>
+**getDigitalContentsByUser**(`requestParameters`): `Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)[]\>
 
-Gets the agreements created by a user using their user ID
+Gets the digitalContents created by a user using their user ID
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetAgreementsByUserRequest`](../interfaces/GetAgreementsByUserRequest.md) |
+| `requestParameters` | [`GetDigitalContentsByUserRequest`](../interfaces/GetDigitalContentsByUserRequest.md) |
 
 #### Returns
 
@@ -42,17 +42,17 @@ Gets the agreements created by a user using their user ID
 
 ___
 
-### getAgreementsByUserHandle
+### getDigitalContentsByUserHandle
 
-**getAgreementsByUserHandle**(`requestParameters`): `Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)[]\>
+**getDigitalContentsByUserHandle**(`requestParameters`): `Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)[]\>
 
-Gets the agreements created by a user using the user\'s handle
+Gets the digitalContents created by a user using the user\'s handle
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetAgreementsByUserHandleRequest`](../interfaces/GetAgreementsByUserHandleRequest.md) |
+| `requestParameters` | [`GetDigitalContentsByUserHandleRequest`](../interfaces/GetDigitalContentsByUserHandleRequest.md) |
 
 #### Returns
 
@@ -82,7 +82,7 @@ ___
 
 **getFavorites**(`requestParameters`): `Promise`<[`Favorite`](../interfaces/Favorite.md)[]\>
 
-Gets a user\'s favorite agreements
+Gets a user\'s favorite digitalContents
 
 #### Parameters
 
@@ -258,18 +258,18 @@ Gets the users that the given user supports
 
 ___
 
-### getTopAgreementTags
+### getTopDigitalContentTags
 
-**getTopAgreementTags**(`requestParameters`): `Promise`<`string`[]\>
+**getTopDigitalContentTags**(`requestParameters`): `Promise`<`string`[]\>
 
 Gets the most used digital_content tags by a user.
-Fetch most used tags in a user\'s agreements
+Fetch most used tags in a user\'s digitalContents
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetTopAgreementTagsRequest`](../interfaces/GetTopAgreementTagsRequest.md) |
+| `requestParameters` | [`GetTopDigitalContentTagsRequest`](../interfaces/GetTopDigitalContentTagsRequest.md) |
 
 #### Returns
 
@@ -367,17 +367,17 @@ Gets a User ID from an associated wallet address
 
 ___
 
-### getUsersAgreementHistory
+### getUsersDigitalContentHistory
 
-**getUsersAgreementHistory**(`requestParameters`): `Promise`<[`Activity`](../interfaces/Activity.md)[]\>
+**getUsersDigitalContentHistory**(`requestParameters`): `Promise`<[`Activity`](../interfaces/Activity.md)[]\>
 
-Get the agreements the user recently listened to.
+Get the digitalContents the user recently listened to.
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetUsersAgreementHistoryRequest`](../interfaces/GetUsersAgreementHistoryRequest.md) |
+| `requestParameters` | [`GetUsersDigitalContentHistoryRequest`](../interfaces/GetUsersDigitalContentHistoryRequest.md) |
 
 #### Returns
 

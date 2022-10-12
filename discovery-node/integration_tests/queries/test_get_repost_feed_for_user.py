@@ -22,7 +22,7 @@ def test_get_repost_feed_for_user(app):
             {"user_id": 1, "repost_item_id": 8, "repost_type": "album"},
             {"user_id": 1, "repost_item_id": 6, "repost_type": "digital_content"},
         ],
-        "agreements": [
+        "digitalContents": [
             {"digital_content_id": 1, "title": "digital_content 1"},
             {"digital_content_id": 2, "title": "digital_content 2"},
             {"digital_content_id": 3, "title": "digital_content 3"},
@@ -62,7 +62,7 @@ def test_get_repost_feed_for_user(app):
 def test_get_repost_feed_for_user_limit_bounds(app):
     """
     Tests that a repost feed for a user can be queried and respect a limit
-    with deleted agreements.
+    with deleted digitalContents.
     """
     with app.app_context():
         db = get_db()
@@ -81,7 +81,7 @@ def test_get_repost_feed_for_user_limit_bounds(app):
             {"user_id": 1, "repost_item_id": 8, "repost_type": "album"},
             {"user_id": 1, "repost_item_id": 6, "repost_type": "digital_content"},
         ],
-        "agreements": [
+        "digitalContents": [
             {"digital_content_id": 1, "title": "digital_content 1", "is_delete": True},
             {"digital_content_id": 2, "title": "digital_content 2"},
             {"digital_content_id": 3, "title": "digital_content 3"},

@@ -181,18 +181,18 @@ async function saveFilesToDisk({ files, userReplicaSet, libs, logger }) {
   const FileSaveMaxConcurrency = config.get('nodeSyncFileSaveMaxConcurrency')
 
   try {
-    const agreementFiles = files.filter((file) =>
-      models.File.AgreementTypes.includes(file.type)
+    const digitalContentFiles = files.filter((file) =>
+      models.File.DigitalContentTypes.includes(file.type)
     )
-    const nonAgreementFiles = files.filter((file) =>
-      models.File.NonAgreementTypes.includes(file.type)
+    const nonDigitalContentFiles = files.filter((file) =>
+      models.File.NonDigitalContentTypes.includes(file.type)
     )
 
     /**
      * Save all DigitalContent files to disk
      */
-    for (let i = 0; i < agreementFiles.length; i += FileSaveMaxConcurrency) {
-      const agreementFilesSlice = agreementFiles.slice(i, i + FileSaveMaxConcurrency)
+    for (let i = 0; i < digitalContentFiles.length; i += FileSaveMaxConcurrency) {
+      const digitalContentFilesSlice = digitalContentFiles.slice(i, i + FileSaveMaxConcurrency)
 
       /**
        * Fetch content for each CID + save to FS
@@ -201,19 +201,19 @@ async function saveFilesToDisk({ files, userReplicaSet, libs, logger }) {
        * - `saveFileForMultihashToFS()` should never reject - it will return error indicator for post processing
        */
       await Promise.all(
-        agreementFilesSlice.map(async (agreementFile) => {
+        digitalContentFilesSlice.map(async (digitalContentFile) => {
           const succeeded = await saveFileForMultihashToFS(
             libs,
             logger,
-            agreementFile.multihash,
-            agreementFile.storagePath,
+            digitalContentFile.multihash,
+            digitalContentFile.storagePath,
             userReplicaSet,
             null, // fileNameForImage
-            agreementFile.agreementBlockchainId
+            digitalContentFile.digitalContentBlockchainId
           )
           if (!succeeded) {
             throw new Error(
-              `[saveFileForMultihashToFS] Failed for multihash ${agreementFile.multihash}`
+              `[saveFileForMultihashToFS] Failed for multihash ${digitalContentFile.multihash}`
             )
           }
         })
@@ -223,40 +223,40 @@ async function saveFilesToDisk({ files, userReplicaSet, libs, logger }) {
     /**
      * Save all nonDigitalContent files to disk
      */
-    for (let i = 0; i < nonAgreementFiles.length; i += FileSaveMaxConcurrency) {
-      const nonAgreementFilesSlice = nonAgreementFiles.slice(
+    for (let i = 0; i < nonDigitalContentFiles.length; i += FileSaveMaxConcurrency) {
+      const nonDigitalContentFilesSlice = nonDigitalContentFiles.slice(
         i,
         i + FileSaveMaxConcurrency
       )
 
       await Promise.all(
-        nonAgreementFilesSlice.map(async (nonAgreementFile) => {
+        nonDigitalContentFilesSlice.map(async (nonDigitalContentFile) => {
           // Skip over directories since there's no actual content to sync
           // The files inside the directory are synced separately
-          if (nonAgreementFile.type === 'dir') {
+          if (nonDigitalContentFile.type === 'dir') {
             return
           }
 
-          const multihash = nonAgreementFile.multihash
+          const multihash = nonDigitalContentFile.multihash
 
           // if it's an image file, we need to pass in the actual filename because the gateway request is /ipfs/Qm123/<filename>
           // need to also check fileName is not null to make sure it's a dir-style image. non-dir images won't have a 'fileName' db column
           let succeeded
-          if (nonAgreementFile.type === 'image' && nonAgreementFile.fileName !== null) {
+          if (nonDigitalContentFile.type === 'image' && nonDigitalContentFile.fileName !== null) {
             succeeded = await saveFileForMultihashToFS(
               libs,
               logger,
               multihash,
-              nonAgreementFile.storagePath,
+              nonDigitalContentFile.storagePath,
               userReplicaSet,
-              nonAgreementFile.fileName
+              nonDigitalContentFile.fileName
             )
           } else {
             succeeded = await saveFileForMultihashToFS(
               libs,
               logger,
               multihash,
-              nonAgreementFile.storagePath,
+              nonDigitalContentFile.storagePath,
               userReplicaSet
             )
           }
@@ -284,7 +284,7 @@ async function saveEntriesToDB({ fetchedCNodeUser, logger, logPrefix }) {
     let {
       walletPublicKey,
       colivingUsers: fetchedColivingUsers,
-      agreements: fetchedAgreements,
+      digitalContents: fetchedDigitalContents,
       files: fetchedFiles
     } = fetchedCNodeUser
 
@@ -321,18 +321,18 @@ async function saveEntriesToDB({ fetchedCNodeUser, logger, logPrefix }) {
         comparisonFields: colivingUserComparisonFields
       })
 
-      const agreementComparisonFields = [
+      const digitalContentComparisonFields = [
         'blockchainId',
         'metadataFileUUID',
         'metadataJSON',
         'coverArtFileUUID'
       ]
-      fetchedAgreements = await filterOutAlreadyPresentDBEntries({
+      fetchedDigitalContents = await filterOutAlreadyPresentDBEntries({
         cnodeUserUUID,
         tableInstance: models.DigitalContent,
-        fetchedEntries: fetchedAgreements,
+        fetchedEntries: fetchedDigitalContents,
         transaction,
-        comparisonFields: agreementComparisonFields
+        comparisonFields: digitalContentComparisonFields
       })
 
       const fileComparisonFields = ['fileUUID']
@@ -363,7 +363,7 @@ async function saveEntriesToDB({ fetchedCNodeUser, logger, logPrefix }) {
         tableInstance: models.ColivingUser,
         entry: colivingUser
       })),
-      fetchedAgreements.map((digital_content) => ({
+      fetchedDigitalContents.map((digital_content) => ({
         tableInstance: models.DigitalContent,
         entry: digital_content
       })),

@@ -11,8 +11,8 @@ custom_edit_url: null
 
 **getFavorites**(`requestParameters`): `Promise`<[`ActivityFull`](../interfaces/full.ActivityFull.md)[]\>
 
-Gets a user's favorite agreements
-Fetch favorited agreements for a user
+Gets a user's favorite digitalContents
+Fetch favorited digitalContents for a user
 
 Example:
 
@@ -264,17 +264,17 @@ Get the Top Users for a Given Genre
 
 ___
 
-### getAgreementsByUser
+### getDigitalContentsByUser
 
-**getAgreementsByUser**(`requestParameters`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
+**getDigitalContentsByUser**(`requestParameters`): `Promise`<[`DigitalContentFull`](../interfaces/full.DigitalContentFull.md)[]\>
 
-Gets the agreements created by a user using their user ID
+Gets the digitalContents created by a user using their user ID
 
 Example:
 
 ```typescript
 
-const agreements = await colivingSdk.users.getAgreementsByUser({
+const digitalContents = await colivingSdk.users.getDigitalContentsByUser({
     id: "eAZl3"
 })
 
@@ -284,29 +284,29 @@ const agreements = await colivingSdk.users.getAgreementsByUser({
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetAgreementsByUserRequest`](../interfaces/full.GetAgreementsByUserRequest.md) |
+| `requestParameters` | [`GetDigitalContentsByUserRequest`](../interfaces/full.GetDigitalContentsByUserRequest.md) |
 
 #### Returns
 
-`Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
+`Promise`<[`DigitalContentFull`](../interfaces/full.DigitalContentFull.md)[]\>
 
 ___
 
-### getAgreementsByUserHandle
+### getDigitalContentsByUserHandle
 
-**getAgreementsByUserHandle**(`requestParameters`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
+**getDigitalContentsByUserHandle**(`requestParameters`): `Promise`<[`DigitalContentFull`](../interfaces/full.DigitalContentFull.md)[]\>
 
-Gets the agreements created by a user using the user's handle
+Gets the digitalContents created by a user using the user's handle
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetAgreementsByUserHandleRequest`](../interfaces/full.GetAgreementsByUserHandleRequest.md) |
+| `requestParameters` | [`GetDigitalContentsByUserHandleRequest`](../interfaces/full.GetDigitalContentsByUserHandleRequest.md) |
 
 #### Returns
 
-`Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
+`Promise`<[`DigitalContentFull`](../interfaces/full.DigitalContentFull.md)[]\>
 
 ___
 
@@ -356,17 +356,17 @@ Gets a single user by their handle
 
 ___
 
-### getUsersAgreementHistory
+### getUsersDigitalContentHistory
 
-**getUsersAgreementHistory**(`requestParameters`): `Promise`<[`ActivityFull`](../interfaces/full.ActivityFull.md)[]\>
+**getUsersDigitalContentHistory**(`requestParameters`): `Promise`<[`ActivityFull`](../interfaces/full.ActivityFull.md)[]\>
 
-Get the agreements the user recently listened to.
+Get the digitalContents the user recently listened to.
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetUsersAgreementHistoryRequest`](../interfaces/full.GetUsersAgreementHistoryRequest.md) |
+| `requestParameters` | [`GetUsersDigitalContentHistoryRequest`](../interfaces/full.GetUsersDigitalContentHistoryRequest.md) |
 
 #### Returns
 

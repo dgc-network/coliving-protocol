@@ -15,9 +15,9 @@ const {
 async function processRemixCreateNotifications (notifications, tx) {
   for (const notification of notifications) {
     const {
-      entity_id: childAgreementId,
-      remix_parent_digital_content_user_id: parentAgreementUserId,
-      remix_parent_digital_content_id: parentAgreementId
+      entity_id: childDigitalContentId,
+      remix_parent_digital_content_user_id: parentDigitalContentUserId,
+      remix_parent_digital_content_id: parentDigitalContentId
     } = notification.metadata
 
     // Create/Find a Notification and NotificationAction for this remix create event
@@ -30,8 +30,8 @@ async function processRemixCreateNotifications (notifications, tx) {
     const [notificationObj] = await models.Notification.findOrCreate({
       where: {
         type: notificationTypes.RemixCreate,
-        userId: parentAgreementUserId,
-        entityId: childAgreementId,
+        userId: parentDigitalContentUserId,
+        entityId: childDigitalContentId,
         blocknumber,
         timestamp: updatedTimestamp
       },
@@ -42,7 +42,7 @@ async function processRemixCreateNotifications (notifications, tx) {
       where: {
         notificationId: notificationObj.id,
         actionEntityType: actionEntityTypes.DigitalContent,
-        actionEntityId: parentAgreementId,
+        actionEntityId: parentDigitalContentId,
         blocknumber
       },
       transaction: tx

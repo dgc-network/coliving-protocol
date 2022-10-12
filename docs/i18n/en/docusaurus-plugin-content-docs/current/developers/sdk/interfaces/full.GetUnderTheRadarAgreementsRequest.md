@@ -1,17 +1,17 @@
 ---
-id: "full.GetUnderTheRadarAgreementsRequest"
-title: "Interface: GetUnderTheRadarAgreementsRequest"
-sidebar_label: "GetUnderTheRadarAgreementsRequest"
+id: "full.GetUnderTheRadarDigitalContentsRequest"
+title: "Interface: GetUnderTheRadarDigitalContentsRequest"
+sidebar_label: "GetUnderTheRadarDigitalContentsRequest"
 custom_edit_url: null
 ---
 
-[full](../namespaces/full.md).GetUnderTheRadarAgreementsRequest
+[full](../namespaces/full.md).GetUnderTheRadarDigitalContentsRequest
 
 ## Properties
 
 ### filter
 
- `Optional` **filter**: [`GetUnderTheRadarAgreementsFilterEnum`](../enums/full.GetUnderTheRadarAgreementsFilterEnum.md)
+ `Optional` **filter**: [`GetUnderTheRadarDigitalContentsFilterEnum`](../enums/full.GetUnderTheRadarDigitalContentsFilterEnum.md)
 
 Filters for activity that is original vs reposts
 
@@ -33,11 +33,11 @@ The number of items to skip. Useful for pagination (page number * limit)
 
 ___
 
-### agreementsOnly
+### digitalContentsOnly
 
- `Optional` **agreementsOnly**: `boolean`
+ `Optional` **digitalContentsOnly**: `boolean`
 
-Whether to only include agreements
+Whether to only include digitalContents
 
 ___
 
@@ -53,4 +53,4 @@ ___
 
  `Optional` **withUsers**: `boolean`
 
-Boolean to include user info with agreements
+Boolean to include user info with digitalContents

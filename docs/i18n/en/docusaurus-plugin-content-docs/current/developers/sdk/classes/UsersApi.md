@@ -39,7 +39,7 @@ ___
 
 **getFavorites**(`requestParameters`): `Promise`<[`Favorite`](../interfaces/Favorite.md)[]\>
 
-Gets a user's favorite agreements
+Gets a user's favorite digitalContents
 
 Example:
 
@@ -147,18 +147,18 @@ const supportings = await colivingSdk.users.getSupportings({
 
 ___
 
-### getTopAgreementTags
+### getTopDigitalContentTags
 
-**getTopAgreementTags**(`requestParameters`): `Promise`<`string`[]\>
+**getTopDigitalContentTags**(`requestParameters`): `Promise`<`string`[]\>
 
 Gets the most used digital_content tags by a user.
-Fetch most used tags in a user's agreements
+Fetch most used tags in a user's digitalContents
 
 Example:
 
 ```typescript
 
-const tags = await colivingSdk.users.getTopAgreementTags({
+const tags = await colivingSdk.users.getTopDigitalContentTags({
     id: "eAZl3"
 })
 
@@ -168,7 +168,7 @@ const tags = await colivingSdk.users.getTopAgreementTags({
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetTopAgreementTagsRequest`](../interfaces/GetTopAgreementTagsRequest.md) |
+| `requestParameters` | [`GetTopDigitalContentTagsRequest`](../interfaces/GetTopDigitalContentTagsRequest.md) |
 
 #### Returns
 
@@ -176,17 +176,17 @@ const tags = await colivingSdk.users.getTopAgreementTags({
 
 ___
 
-### getAgreementsByUser
+### getDigitalContentsByUser
 
-**getAgreementsByUser**(`requestParameters`): `Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)[]\>
+**getDigitalContentsByUser**(`requestParameters`): `Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)[]\>
 
-Gets the agreements created by a user using their user ID
+Gets the digitalContents created by a user using their user ID
 
 Example:
 
 ```typescript
 
-const agreements = await colivingSdk.users.getAgreementsByUser({
+const digitalContents = await colivingSdk.users.getDigitalContentsByUser({
     id: "eAZl3"
 })
 
@@ -196,7 +196,7 @@ const agreements = await colivingSdk.users.getAgreementsByUser({
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetAgreementsByUserRequest`](../interfaces/GetAgreementsByUserRequest.md) |
+| `requestParameters` | [`GetDigitalContentsByUserRequest`](../interfaces/GetDigitalContentsByUserRequest.md) |
 
 #### Returns
 

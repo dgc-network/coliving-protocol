@@ -10,7 +10,7 @@ def populate_mock_db(db, date):
     mock_route_metrics = [
         {
             "version": "1",
-            "route_path": "agreements/some_hash",
+            "route_path": "digitalContents/some_hash",
             "query_string": "",
             "ip": "192.168.0.1",
             "count": 3,
@@ -18,7 +18,7 @@ def populate_mock_db(db, date):
         },
         {
             "version": "1",
-            "route_path": "agreements/some_hash",
+            "route_path": "digitalContents/some_hash",
             "query_string": "with_users=true",
             "ip": "192.168.0.1",
             "count": 2,
@@ -26,7 +26,7 @@ def populate_mock_db(db, date):
         },
         {
             "version": "1",
-            "route_path": "agreements/some_hash/stream",
+            "route_path": "digitalContents/some_hash/stream",
             "query_string": "",
             "ip": "192.168.0.1",
             "count": 4,
@@ -34,7 +34,7 @@ def populate_mock_db(db, date):
         },
         {
             "version": "1",
-            "route_path": "agreements/some_hash",
+            "route_path": "digitalContents/some_hash",
             "query_string": "",
             "ip": "192.168.0.2",
             "count": 2,
@@ -63,7 +63,7 @@ def populate_mock_db_multiple_dates(db, date1, date2):
     mock_route_metrics = [
         {
             "version": "1",
-            "route_path": "agreements/some_hash",
+            "route_path": "digitalContents/some_hash",
             "query_string": "",
             "ip": "192.168.0.1",
             "count": 3,
@@ -71,7 +71,7 @@ def populate_mock_db_multiple_dates(db, date1, date2):
         },
         {
             "version": "1",
-            "route_path": "agreements/some_hash",
+            "route_path": "digitalContents/some_hash",
             "query_string": "",
             "ip": "192.168.0.2",
             "count": 2,
@@ -109,7 +109,7 @@ def test_get_route_metrics_exact(app):
     args = {
         "limit": 10,
         "start_time": before_date,
-        "path": "agreements/some_hash",
+        "path": "digitalContents/some_hash",
         "exact": True,
         "bucket_size": "hour",
     }
@@ -136,7 +136,7 @@ def test_get_route_metrics_non_exact(app):
     args = {
         "limit": 10,
         "start_time": before_date,
-        "path": "agreements/some_hash",
+        "path": "digitalContents/some_hash",
         "exact": False,
         "bucket_size": "hour",
     }
@@ -162,7 +162,7 @@ def test_get_route_metrics_query_string(app):
     args = {
         "limit": 10,
         "start_time": before_date,
-        "path": "agreements/some_hash",
+        "path": "digitalContents/some_hash",
         "query_string": "with_users=true",
         "exact": False,
         "bucket_size": "hour",
@@ -189,7 +189,7 @@ def test_get_route_metrics_no_matches(app):
     args = {
         "limit": 10,
         "start_time": before_date,
-        "path": "agreements/some_hash",
+        "path": "digitalContents/some_hash",
         "query_string": "with_users=WRONG",
         "exact": False,
         "bucket_size": "hour",
@@ -216,7 +216,7 @@ def test_get_route_metrics_with_daily_buckets(app):
     args = {
         "limit": 10,
         "start_time": before_date,
-        "path": "agreements/some_hash",
+        "path": "digitalContents/some_hash",
         "exact": False,
         "bucket_size": "day",
     }
@@ -246,7 +246,7 @@ def test_get_route_metrics_with_weekly_buckets(app):
     args = {
         "limit": 10,
         "start_time": before_date,
-        "path": "agreements/some_hash",
+        "path": "digitalContents/some_hash",
         "exact": False,
         "bucket_size": "week",
     }

@@ -11,13 +11,13 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ENUM({
         values: [
           'Follow',
-          'RepostAgreement',
+          'RepostDigitalContent',
           'RepostContentList',
           'RepostAlbum',
-          'FavoriteAgreement',
+          'FavoriteDigitalContent',
           'FavoriteContentList',
           'FavoriteAlbum',
-          'CreateAgreement',
+          'CreateDigitalContent',
           'CreateContentList',
           'CreateAlbum',
           'Announcement',
@@ -27,9 +27,9 @@ module.exports = (sequelize, DataTypes) => {
           'MilestoneFollow',
           'RemixCreate',
           'RemixCosign',
-          'TrendingAgreement',
+          'TrendingDigitalContent',
           'ChallengeReward',
-          'AddAgreementToContentList'
+          'AddDigitalContentToContentList'
         ]
       }),
       allowNull: false

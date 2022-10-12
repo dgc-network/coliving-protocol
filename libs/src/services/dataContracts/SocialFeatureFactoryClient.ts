@@ -5,26 +5,26 @@ import type { Web3Manager } from '../web3Manager'
 export class SocialFeatureFactoryClient extends ContractClient {
   override web3Manager!: Web3Manager
 
-  async addAgreementRepost(userId: number, agreementId: number) {
+  async addDigitalContentRepost(userId: number, digitalContentId: number) {
     // generate new digital_content repost request
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
     const signatureData =
-      signatureSchemas.generators.getAddAgreementRepostRequestData(
+      signatureSchemas.generators.getAddDigitalContentRepostRequestData(
         chainId,
         contractAddress,
         userId,
-        agreementId,
+        digitalContentId,
         nonce
       )
     const sig = await this.web3Manager.signTypedData(signatureData)
 
-    // add new agreementRepost to chain
+    // add new digitalContentRepost to chain
     const method = await this.getMethod(
-      'addAgreementRepost',
+      'addDigitalContentRepost',
       userId,
-      agreementId,
+      digitalContentId,
       nonce,
       sig
     )
@@ -35,26 +35,26 @@ export class SocialFeatureFactoryClient extends ContractClient {
     )
   }
 
-  async deleteAgreementRepost(userId: number, agreementId: number) {
+  async deleteDigitalContentRepost(userId: number, digitalContentId: number) {
     // generate new delete digital_content repost request
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
     const signatureData =
-      signatureSchemas.generators.getDeleteAgreementRepostRequestData(
+      signatureSchemas.generators.getDeleteDigitalContentRepostRequestData(
         chainId,
         contractAddress,
         userId,
-        agreementId,
+        digitalContentId,
         nonce
       )
     const sig = await this.web3Manager.signTypedData(signatureData)
 
-    // delete agreementRepost from chain
+    // delete digitalContentRepost from chain
     const method = await this.getMethod(
-      'deleteAgreementRepost',
+      'deleteDigitalContentRepost',
       userId,
-      agreementId,
+      digitalContentId,
       nonce,
       sig
     )

@@ -13,21 +13,21 @@ export class ContentListFactoryClient extends ContractClient {
     contentListName: string,
     isPrivate: boolean,
     isAlbum: boolean,
-    agreementIds: number[]
+    digitalContentIds: number[]
   ) {
-    if (!Array.isArray(agreementIds) || agreementIds.length > MAX_CONTENT_LIST_LENGTH) {
+    if (!Array.isArray(digitalContentIds) || digitalContentIds.length > MAX_CONTENT_LIST_LENGTH) {
       throw new Error(
-        `Cannot create contentList - agreementIds must be array with length <= ${MAX_CONTENT_LIST_LENGTH}`
+        `Cannot create contentList - digitalContentIds must be array with length <= ${MAX_CONTENT_LIST_LENGTH}`
       )
     }
 
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
-    const agreementIdsHash = this.web3Manager
+    const digitalContentIdsHash = this.web3Manager
       .getWeb3()
       .utils.soliditySha3(
-        this.web3Manager.getWeb3().eth.abi.encodeParameter('uint[]', agreementIds)
+        this.web3Manager.getWeb3().eth.abi.encodeParameter('uint[]', digitalContentIds)
       )
     const signatureData =
       signatureSchemas.generators.getCreateContentListRequestData(
@@ -37,7 +37,7 @@ export class ContentListFactoryClient extends ContractClient {
         contentListName,
         isPrivate,
         isAlbum,
-        agreementIdsHash,
+        digitalContentIdsHash,
         nonce
       )
     const sig = await this.web3Manager.signTypedData(signatureData)
@@ -48,7 +48,7 @@ export class ContentListFactoryClient extends ContractClient {
       contentListName,
       isPrivate,
       isAlbum,
-      agreementIds,
+      digitalContentIds,
       nonce,
       sig
     )
@@ -101,24 +101,24 @@ export class ContentListFactoryClient extends ContractClient {
     }
   }
 
-  async addContentListAgreement(contentListId: number, addedAgreementId: number) {
+  async addContentListDigitalContent(contentListId: number, addedDigitalContentId: number) {
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
     const signatureData =
-      signatureSchemas.generators.getAddContentListAgreementRequestData(
+      signatureSchemas.generators.getAddContentListDigitalContentRequestData(
         chainId,
         contractAddress,
         contentListId,
-        addedAgreementId,
+        addedDigitalContentId,
         nonce
       )
     const sig = await this.web3Manager.signTypedData(signatureData)
 
     const method = await this.getMethod(
-      'addContentListAgreement',
+      'addContentListDigitalContent',
       contentListId,
-      addedAgreementId,
+      addedDigitalContentId,
       nonce,
       sig
     )
@@ -130,9 +130,9 @@ export class ContentListFactoryClient extends ContractClient {
     )
   }
 
-  async deleteContentListAgreement(
+  async deleteContentListDigitalContent(
     contentListId: number,
-    deletedAgreementId: number,
+    deletedDigitalContentId: number,
     deletedContentListTimestamp: number,
     retries?: number
   ) {
@@ -140,20 +140,20 @@ export class ContentListFactoryClient extends ContractClient {
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
     const signatureData =
-      signatureSchemas.generators.getDeleteContentListAgreementRequestData(
+      signatureSchemas.generators.getDeleteContentListDigitalContentRequestData(
         chainId,
         contractAddress,
         contentListId,
-        deletedAgreementId,
+        deletedDigitalContentId,
         deletedContentListTimestamp,
         nonce
       )
 
     const sig = await this.web3Manager.signTypedData(signatureData)
     const method = await this.getMethod(
-      'deleteContentListAgreement',
+      'deleteContentListDigitalContent',
       contentListId,
-      deletedAgreementId,
+      deletedDigitalContentId,
       deletedContentListTimestamp,
       nonce,
       sig
@@ -167,33 +167,33 @@ export class ContentListFactoryClient extends ContractClient {
     )
   }
 
-  async orderContentListAgreements(
+  async orderContentListDigitalContents(
     contentListId: number,
-    agreementIds: number[],
+    digitalContentIds: number[],
     retries?: number
   ) {
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
-    const agreementIdsHash = this.web3Manager
+    const digitalContentIdsHash = this.web3Manager
       .getWeb3()
       .utils.soliditySha3(
-        this.web3Manager.getWeb3().eth.abi.encodeParameter('uint[]', agreementIds)
+        this.web3Manager.getWeb3().eth.abi.encodeParameter('uint[]', digitalContentIds)
       )
     const signatureData =
-      signatureSchemas.generators.getOrderContentListAgreementsRequestData(
+      signatureSchemas.generators.getOrderContentListDigitalContentsRequestData(
         chainId,
         contractAddress,
         contentListId,
-        agreementIdsHash,
+        digitalContentIdsHash,
         nonce
       )
     const sig = await this.web3Manager.signTypedData(signatureData)
 
     const method = await this.getMethod(
-      'orderContentListAgreements',
+      'orderContentListDigitalContents',
       contentListId,
-      agreementIds,
+      digitalContentIds,
       nonce,
       sig
     )
@@ -358,11 +358,11 @@ export class ContentListFactoryClient extends ContractClient {
     )
   }
 
-  async isAgreementInContentList(contentListId: number, agreementId: number) {
+  async isDigitalContentInContentList(contentListId: number, digitalContentId: number) {
     const method = await this.getMethod(
-      'isAgreementInContentList',
+      'isDigitalContentInContentList',
       contentListId,
-      agreementId
+      digitalContentId
     )
     const result = await method.call()
     return result

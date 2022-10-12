@@ -49,7 +49,7 @@ def get_savers_for_content_list(args):
                 User.user_id.in_(
                     session.query(Save.user_id).filter(
                         Save.save_item_id == save_content_list_id,
-                        # Select Saves for ContentLists and Albums (i.e. not Agreements).
+                        # Select Saves for ContentLists and Albums (i.e. not DigitalContents).
                         Save.save_type != SaveType.digital_content,
                         Save.is_current == True,
                         Save.is_delete == False,

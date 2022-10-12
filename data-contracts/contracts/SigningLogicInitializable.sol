@@ -17,7 +17,7 @@ contract SigningLogicInitializable is Initializable {
 
     bytes32 domainSeparator;
 
-    // Signatures contain a nonce to make them unique. usedSignatures agreements which signatures
+    // Signatures contain a nonce to make them unique. usedSignatures digitalContents which signatures
     //  have been used so they can't be replayed
     mapping (bytes32 => bool) public usedSignatures;
 

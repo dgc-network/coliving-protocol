@@ -80,36 +80,36 @@ def get_content_list_description_updated_event():
     )
 
 
-# event_type: ContentListAgreementAdded
-def get_content_list_digital_content_added_event(contentListId, addedAgreementId):
+# event_type: ContentListDigitalContentAdded
+def get_content_list_digital_content_added_event(contentListId, addedDigitalContentId):
     event_type = content_list_event_types_lookup["content_list_digital_content_added"]
     content_list_digital_content_added_event = AttrDict(
-        {"_content_listId": contentListId, "_addedAgreementId": addedAgreementId}
+        {"_content_listId": contentListId, "_addedDigitalContentId": addedDigitalContentId}
     )
     return event_type, AttrDict(
         {"blockHash": block_hash, "args": content_list_digital_content_added_event}
     )
 
 
-# event_type: ContentListAgreementsOrdered
+# event_type: ContentListDigitalContentsOrdered
 def get_content_list_digital_contents_ordered_event():
     event_type = content_list_event_types_lookup["content_list_digital_contents_ordered"]
     content_list_digital_contents_ordered_event = AttrDict(
-        {"_content_listId": 1, "_orderedAgreementIds": [2, 1]}
+        {"_content_listId": 1, "_orderedDigitalContentIds": [2, 1]}
     )
     return event_type, AttrDict(
         {"blockHash": block_hash, "args": content_list_digital_contents_ordered_event}
     )
 
 
-# event_type: ContentListAgreementDeleted
-def get_content_list_digital_content_delete_event(contentListId, deletedAgreementId, deletedAgreementTimestamp):
+# event_type: ContentListDigitalContentDeleted
+def get_content_list_digital_content_delete_event(contentListId, deletedDigitalContentId, deletedDigitalContentTimestamp):
     event_type = content_list_event_types_lookup["content_list_digital_content_deleted"]
     content_list_digital_content_delete_event = AttrDict(
         {
             "_content_listId": contentListId,
-            "_deletedAgreementId": deletedAgreementId,
-            "_deletedAgreementTimestamp": deletedAgreementTimestamp,
+            "_deletedDigitalContentId": deletedDigitalContentId,
+            "_deletedDigitalContentTimestamp": deletedDigitalContentTimestamp,
         }
     )
     return event_type, AttrDict(
@@ -260,7 +260,7 @@ def test_index_content_list(app):
 
         assert len(content_list_record.content_list_contents["digital_content_ids"]) == 1
         last_content_list_content = content_list_record.content_list_contents["digital_content_ids"][-1]
-        assert last_content_list_content == {"digital_content": entry.args._addedAgreementId, "time": 12}
+        assert last_content_list_content == {"digital_content": entry.args._addedDigitalContentId, "time": 12}
 
         # ================= Test content_list_digital_content_added with second digital_content Event =================
         event_type, entry = get_content_list_digital_content_added_event(1, 2)
@@ -277,7 +277,7 @@ def test_index_content_list(app):
 
         assert len(content_list_record.content_list_contents["digital_content_ids"]) == 2
         last_content_list_content = content_list_record.content_list_contents["digital_content_ids"][-1]
-        assert last_content_list_content == {"digital_content": entry.args._addedAgreementId, "time": 13}
+        assert last_content_list_content == {"digital_content": entry.args._addedDigitalContentId, "time": 13}
 
         # ================= Test content_list_digital_contents_ordered Event =================
         event_type, entry = get_content_list_digital_contents_ordered_event()

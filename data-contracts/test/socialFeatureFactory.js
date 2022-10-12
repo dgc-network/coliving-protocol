@@ -3,8 +3,8 @@ import {
   Registry,
   UserStorage,
   UserFactory,
-  AgreementStorage,
-  AgreementFactory,
+  DigitalContentStorage,
+  DigitalContentFactory,
   ContentListStorage,
   ContentListFactory,
   SocialFeatureStorage,
@@ -16,12 +16,12 @@ contract('SocialFeatureFactory', async (accounts) => {
   const testUserId1 = 1
   const testUserId2 = 2
   const testUserId3 = 3
-  const testAgreementId1 = 1
-  const testAgreementId2 = 2
-  const testAgreementId3 = 3
+  const testDigitalContentId1 = 1
+  const testDigitalContentId2 = 2
+  const testDigitalContentId3 = 3
 
   let contentListName1 = 'contentListName1'
-  let contentListAgreements1 = [1, 2]
+  let contentListDigitalContents1 = [1, 2]
   let contentListId1 = 1
   let contentListId2 = 2
   let contentListIsAlbum1 = false
@@ -29,8 +29,8 @@ contract('SocialFeatureFactory', async (accounts) => {
   let registry
   let userStorage
   let userFactory
-  let agreementStorage
-  let agreementFactory
+  let digitalContentStorage
+  let digitalContentFactory
   let contentListStorage
   let contentListFactory
   let socialFeatureStorage
@@ -45,20 +45,20 @@ contract('SocialFeatureFactory', async (accounts) => {
     await registry.addContract(_constants.userStorageKey, userStorage.address)
     userFactory = await UserFactory.new(registry.address, _constants.userStorageKey, networkId, accounts[5])
     await registry.addContract(_constants.userFactoryKey, userFactory.address)
-    agreementStorage = await AgreementStorage.new(registry.address)
-    await registry.addContract(_constants.agreementStorageKey, agreementStorage.address)
-    agreementFactory = await AgreementFactory.new(registry.address, _constants.agreementStorageKey, _constants.userFactoryKey, networkId)
-    await registry.addContract(_constants.agreementFactoryKey, agreementFactory.address)
+    digitalContentStorage = await DigitalContentStorage.new(registry.address)
+    await registry.addContract(_constants.digitalContentStorageKey, digitalContentStorage.address)
+    digitalContentFactory = await DigitalContentFactory.new(registry.address, _constants.digitalContentStorageKey, _constants.userFactoryKey, networkId)
+    await registry.addContract(_constants.digitalContentFactoryKey, digitalContentFactory.address)
     contentListStorage = await ContentListStorage.new(registry.address)
     await registry.addContract(_constants.contentListStorageKey, contentListStorage.address)
-    contentListFactory = await ContentListFactory.new(registry.address, _constants.contentListStorageKey, _constants.userFactoryKey, _constants.agreementFactoryKey, networkId)
+    contentListFactory = await ContentListFactory.new(registry.address, _constants.contentListStorageKey, _constants.userFactoryKey, _constants.digitalContentFactoryKey, networkId)
     await registry.addContract(_constants.contentListFactoryKey, contentListFactory.address)
     socialFeatureStorage = await SocialFeatureStorage.new(registry.address)
     await registry.addContract(_constants.socialFeatureStorageKey, socialFeatureStorage.address)
-    socialFeatureFactory = await SocialFeatureFactory.new(registry.address, _constants.socialFeatureStorageKey, _constants.userFactoryKey, _constants.agreementFactoryKey, _constants.contentListFactoryKey, networkId)
+    socialFeatureFactory = await SocialFeatureFactory.new(registry.address, _constants.socialFeatureStorageKey, _constants.userFactoryKey, _constants.digitalContentFactoryKey, _constants.contentListFactoryKey, networkId)
     await registry.addContract(_constants.socialFeatureFactoryKey, socialFeatureFactory.address)
 
-    // add users and agreements
+    // add users and digitalContents
     await _lib.addUserAndValidate(
       userFactory,
       testUserId1,
@@ -74,17 +74,17 @@ contract('SocialFeatureFactory', async (accounts) => {
       _constants.userHandle2,
       true)
 
-    await _lib.addAgreementAndValidate(
-      agreementFactory,
-      testAgreementId1,
+    await _lib.addDigitalContentAndValidate(
+      digitalContentFactory,
+      testDigitalContentId1,
       accounts[0],
       testUserId1,
       _constants.testMultihash.digest2,
       _constants.testMultihash.hashFn,
       _constants.testMultihash.size)
-    await _lib.addAgreementAndValidate(
-      agreementFactory,
-      testAgreementId2,
+    await _lib.addDigitalContentAndValidate(
+      digitalContentFactory,
+      testDigitalContentId2,
       accounts[0],
       testUserId1,
       _constants.testMultihash.digest2,
@@ -99,34 +99,34 @@ contract('SocialFeatureFactory', async (accounts) => {
       contentListName1,
       false,
       contentListIsAlbum1,
-      contentListAgreements1
+      contentListDigitalContents1
     )
   })
 
-  /******************** AgreementRepost ********************/
+  /******************** DigitalContentRepost ********************/
   /*****************************************************/
 
-  it('Should add one AgreementRepost', async () => {
+  it('Should add one DigitalContentRepost', async () => {
     // add digital_content repost and validate
-    await _lib.addAgreementRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testAgreementId1)
+    await _lib.addDigitalContentRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testDigitalContentId1)
   })
 
-  it('Should add and delete one AgreementRepost', async () => {
+  it('Should add and delete one DigitalContentRepost', async () => {
     // add digital_content repost and validate
-    await _lib.addAgreementRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testAgreementId1)
+    await _lib.addDigitalContentRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testDigitalContentId1)
 
     // delete digital_content repost and validate
-    await _lib.deleteAgreementRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testAgreementId1)
+    await _lib.deleteDigitalContentRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testDigitalContentId1)
   })
 
-  it('Should confirm duplicate add/delete AgreementReposts throw', async () => {
+  it('Should confirm duplicate add/delete DigitalContentReposts throw', async () => {
     // add digital_content repost and validate
-    await _lib.addAgreementRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testAgreementId1)
+    await _lib.addDigitalContentRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testDigitalContentId1)
 
     // confirm duplicate digital_content repost throws
     let caughtError = false
     try {
-      await _lib.addAgreementRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testAgreementId1)
+      await _lib.addDigitalContentRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testDigitalContentId1)
     } catch (e) {
       if (e.message.indexOf('digital_content repost already exists') >= 0) {
         caughtError = true
@@ -138,12 +138,12 @@ contract('SocialFeatureFactory', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
 
     // delete digital_content repost and validate
-    await _lib.deleteAgreementRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testAgreementId1)
+    await _lib.deleteDigitalContentRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testDigitalContentId1)
 
     // confirm duplicate digital_content repost delete throws
     caughtError = false
     try {
-      await _lib.deleteAgreementRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testAgreementId1)
+      await _lib.deleteDigitalContentRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testDigitalContentId1)
     } catch (e) {
       if (e.message.indexOf('digital_content repost does not exist') >= 0) {
         caughtError = true
@@ -155,10 +155,10 @@ contract('SocialFeatureFactory', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
   })
 
-  it('Should fail to add AgreementRepost with non-existent user', async () => {
+  it('Should fail to add DigitalContentRepost with non-existent user', async () => {
     let caughtError = false
     try {
-      await _lib.addAgreementRepostAndValidate(socialFeatureFactory, accounts[0], testUserId3, testAgreementId1)
+      await _lib.addDigitalContentRepostAndValidate(socialFeatureFactory, accounts[0], testUserId3, testDigitalContentId1)
     } catch (e) {
       // handle expected error
       if (e.message.indexOf('Caller does not own userId') >= 0) {
@@ -171,10 +171,10 @@ contract('SocialFeatureFactory', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
   })
 
-  it('Should fail to delete AgreementRepost with non-existent digital_content', async () => {
+  it('Should fail to delete DigitalContentRepost with non-existent digital_content', async () => {
     let caughtError = false
     try {
-      await _lib.deleteAgreementRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testAgreementId3)
+      await _lib.deleteDigitalContentRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testDigitalContentId3)
     } catch (e) {
       // handle expected error
       if (e.message.indexOf('must provide valid digital_content ID') >= 0) {
@@ -187,10 +187,10 @@ contract('SocialFeatureFactory', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
   })
 
-  it('Should fail to add AgreementRepost due to lack of ownership of reposter user', async () => {
+  it('Should fail to add DigitalContentRepost due to lack of ownership of reposter user', async () => {
     let caughtError = false
     try {
-      await _lib.addAgreementRepostAndValidate(socialFeatureFactory, accounts[1], testUserId1, testAgreementId1)
+      await _lib.addDigitalContentRepostAndValidate(socialFeatureFactory, accounts[1], testUserId1, testDigitalContentId1)
     } catch (e) {
       // handle expected error
       if (e.message.indexOf('Caller does not own userId') >= 0) {
@@ -203,10 +203,10 @@ contract('SocialFeatureFactory', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
   })
 
-  it('Should fail to delete AgreementRepost due to lack of ownership of reposter user', async () => {
+  it('Should fail to delete DigitalContentRepost due to lack of ownership of reposter user', async () => {
     let caughtError = false
     try {
-      await _lib.deleteAgreementRepostAndValidate(socialFeatureFactory, accounts[1], testUserId1, testAgreementId1)
+      await _lib.deleteDigitalContentRepostAndValidate(socialFeatureFactory, accounts[1], testUserId1, testDigitalContentId1)
     } catch (e) {
       // handle expected error
       if (e.message.indexOf('Caller does not own userId') >= 0) {

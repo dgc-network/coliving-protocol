@@ -74,7 +74,7 @@ export class ContentListIndexer extends BaseIndexer<ContentListDoc> {
         reposted_by: { type: 'keyword' },
         repost_count: { type: 'integer' },
 
-        agreements: {
+        digitalContents: {
           properties: {
             mood: { type: 'keyword' },
             genre: { type: 'keyword' },
@@ -139,7 +139,7 @@ export class ContentListIndexer extends BaseIndexer<ContentListDoc> {
   }
 
   checkpointSql(checkpoint: BlocknumberCheckpoint): string {
-    // really we should mark contentList stale if any of the contentList agreements changes
+    // really we should mark contentList stale if any of the contentList digitalContents changes
     // but don't know how to do the sql for that... so the low tech solution would be to re-do contentLists from scratch
     // which might actually be faster, since it's a very small collection
     // in which case we could just delete this function
@@ -158,24 +158,24 @@ export class ContentListIndexer extends BaseIndexer<ContentListDoc> {
 
   async withBatch(rows: ContentListDoc[]) {
     // collect all the digital_content IDs
-    const agreementIds = new Set<number>()
+    const digitalContentIds = new Set<number>()
     for (let row of rows) {
       row.content_list_contents.digital_content_ids
         .map((t: any) => t.digital_content)
         .filter(Boolean)
-        .forEach((t: any) => agreementIds.add(t))
+        .forEach((t: any) => digitalContentIds.add(t))
     }
 
-    // fetch the agreements...
-    const agreementsById = await this.getAgreements(Array.from(agreementIds))
+    // fetch the digitalContents...
+    const digitalContentsById = await this.getDigitalContents(Array.from(digitalContentIds))
 
     // pull digital_content data onto contentList
     for (let contentList of rows) {
-      contentList.agreements = contentList.content_list_contents.digital_content_ids
-        .map((t: any) => agreementsById[t.digital_content])
+      contentList.digitalContents = contentList.content_list_contents.digital_content_ids
+        .map((t: any) => digitalContentsById[t.digital_content])
         .filter(Boolean)
 
-      contentList.total_play_count = contentList.agreements.reduce(
+      contentList.total_play_count = contentList.digitalContents.reduce(
         (acc, s) => acc + parseInt(s.play_count),
         0
       )
@@ -190,11 +190,11 @@ export class ContentListIndexer extends BaseIndexer<ContentListDoc> {
     row.save_count = row.saved_by.length
   }
 
-  private async getAgreements(agreementIds: number[]) {
-    if (!agreementIds.length) return {}
+  private async getDigitalContents(digitalContentIds: number[]) {
+    if (!digitalContentIds.length) return {}
     const pg = dialPg()
-    const idList = Array.from(agreementIds).join(',')
-    // do we want landlord name from users
+    const idList = Array.from(digitalContentIds).join(',')
+    // do we want author name from users
     // or save + repost counts from aggregate_digital_content?
     const q = `
       select 
@@ -209,18 +209,18 @@ export class ContentListIndexer extends BaseIndexer<ContentListDoc> {
         coalesce(aggregate_digital_content.save_count, 0) as save_count,
         coalesce(aggregate_plays.count, 0) as play_count
   
-      from agreements
+      from digitalContents
       left join aggregate_digital_content using (digital_content_id)
-      left join aggregate_plays on agreements.digital_content_id = aggregate_plays.play_item_id
+      left join aggregate_plays on digitalContents.digital_content_id = aggregate_plays.play_item_id
       where 
         is_current 
         and not is_delete 
         and not is_unlisted 
         and digital_content_id in (${idList})`
-    const allAgreements = await pg.query(q)
-    for (let t of allAgreements.rows) {
+    const allDigitalContents = await pg.query(q)
+    for (let t of allDigitalContents.rows) {
       t.tags = splitTags(t.tags)
     }
-    return keyBy(allAgreements.rows, 'digital_content_id')
+    return keyBy(allDigitalContents.rows, 'digital_content_id')
   }
 }

@@ -40,7 +40,7 @@ describe('test segmentFile()', () => {
   */
   it('should throw an error if ffmpeg reads a bad digital_content file (image)', async () => {
     const fileDir = __dirname
-    const fileName = 'testAgreementWrongFormat.jpg'
+    const fileName = 'testDigitalContentWrongFormat.jpg'
 
     try {
       await segmentFile(fileDir, fileName, {})
@@ -57,7 +57,7 @@ describe('test segmentFile()', () => {
   */
   it('should properly segment digital_content', async () => {
     const fileDir = __dirname
-    const fileName = 'testAgreement.mp3'
+    const fileName = 'testDigitalContent.mp3'
 
     try {
       await segmentFile(fileDir, fileName, {})
@@ -66,12 +66,12 @@ describe('test segmentFile()', () => {
     }
 
     // read segments assets from /test-segments
-    // TODO - instead of using ./test/test-segments, use ./test/testAgreementUploadDir
+    // TODO - instead of using ./test/test-segments, use ./test/testDigitalContentUploadDir
     const testSegmentsPath = path.join(fileDir, 'test-segments')
     fs.readdir(testSegmentsPath, (err, files) => {
       if (err) assert.fail(`Could not read directory at ${testSegmentsPath}`)
 
-      // check that testAgreement.mp3 that 32 digital_content segments are written
+      // check that testDigitalContent.mp3 that 32 digital_content segments are written
       assert.deepStrictEqual(files.length, 32)
 
       const allSegmentsSet = new Set(files)

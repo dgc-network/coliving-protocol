@@ -70,7 +70,7 @@ export interface AggregatePlayRow {
   'count'?: string | null;
   'play_item_id'?: number | null;
 }
-export interface AggregateAgreementRow {
+export interface AggregateDigitalContentRow {
   'repost_count': number;
   'save_count': number;
   'digital_content_id': number;
@@ -399,12 +399,12 @@ export interface SupporterRankUpRow {
   'sender_user_id': number;
   'slot': number;
 }
-export interface TagAgreementUserRow {
+export interface TagDigitalContentUserRow {
   'owner_id'?: number | null;
   'tag'?: string | null;
   'digital_content_id'?: number | null;
 }
-export interface AgreementLexemeDictRow {
+export interface DigitalContentLexemeDictRow {
   'handle'?: string | null;
   'owner_id'?: number | null;
   'repost_count'?: number | null;
@@ -414,7 +414,7 @@ export interface AgreementLexemeDictRow {
   'user_name'?: string | null;
   'word'?: string | null;
 }
-export interface AgreementRouteRow {
+export interface DigitalContentRouteRow {
   'blockhash': string;
   'blocknumber': number;
   'collision_id': number;
@@ -425,7 +425,7 @@ export interface AgreementRouteRow {
   'digital_content_id': number;
   'txhash': string;
 }
-export interface AgreementTrendingScoreRow {
+export interface DigitalContentTrendingScoreRow {
   'created_at': Date;
   'genre'?: string | null;
   'score': number;
@@ -434,7 +434,7 @@ export interface AgreementTrendingScoreRow {
   'type': string;
   'version': string;
 }
-export interface AgreementRow {
+export interface DigitalContentRow {
   'blockhash'?: string | null;
   'blocknumber'?: number | null;
   'cover_art'?: string | null;
@@ -524,7 +524,7 @@ export interface UserBalanceRow {
   'created_at': Date;
   'updated_at': Date;
   'user_id'?: number;
-  'wlive'?: string | null;
+  'wei_digitalcoin'?: string | null;
 }
 export interface UserBankAccountRow {
   'bank_account': string;

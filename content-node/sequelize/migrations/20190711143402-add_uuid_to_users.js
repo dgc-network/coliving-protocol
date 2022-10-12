@@ -29,7 +29,7 @@ async function createColumns (queryInterface, Sequelize, t) {
     unique: true
   }, { transaction: t })
 
-  await queryInterface.addColumn('Agreements', 'digital_content_UUID', {
+  await queryInterface.addColumn('DigitalContents', 'digital_content_UUID', {
     type: Sequelize.UUID,
     unique: true
   }, { transaction: t })
@@ -107,7 +107,7 @@ async function createColumns (queryInterface, Sequelize, t) {
     type: Sequelize.UUID,
     onDelete: 'RESTRICT',
     references: {
-      model: 'Agreements',
+      model: 'DigitalContents',
       key: 'digital_content_UUID',
       as: 'digital_content_UUID'
     }
@@ -118,9 +118,9 @@ async function createColumns (queryInterface, Sequelize, t) {
   }, { transaction: t })
 
   /**
-   * Agreements
+   * DigitalContents
    */
-  await queryInterface.addColumn('Agreements', 'cnodeUserUUID', {
+  await queryInterface.addColumn('DigitalContents', 'cnodeUserUUID', {
     type: Sequelize.UUID,
     onDelete: 'RESTRICT',
     references: {
@@ -130,7 +130,7 @@ async function createColumns (queryInterface, Sequelize, t) {
     }
   }, { transaction: t })
 
-  await queryInterface.addColumn('Agreements', 'coverArtFileUUID', {
+  await queryInterface.addColumn('DigitalContents', 'coverArtFileUUID', {
     type: Sequelize.UUID,
     onDelete: 'RESTRICT',
     references: {
@@ -140,7 +140,7 @@ async function createColumns (queryInterface, Sequelize, t) {
     }
   }, { transaction: t })
 
-  await queryInterface.addColumn('Agreements', 'metadataFileUUID', {
+  await queryInterface.addColumn('DigitalContents', 'metadataFileUUID', {
     type: Sequelize.UUID,
     onDelete: 'RESTRICT',
     references: {
@@ -168,13 +168,13 @@ async function revertCreateColumns (queryInterface, Sequelize) {
   let removeUUIDFromUsers = queryInterface.removeColumn('Users', 'cnodeUserUUID')
   let removeUUIDFromColivingUsers = queryInterface.removeColumn('ColivingUsers', 'cnodeUserUUID')
   let removeUUIDFromFiles = queryInterface.removeColumn('Files', 'cnodeUserUUID')
-  let removeUUIDFromAgreements = queryInterface.removeColumn('Agreements', 'cnodeUserUUID')
+  let removeUUIDFromDigitalContents = queryInterface.removeColumn('DigitalContents', 'cnodeUserUUID')
   let removeUUIDFromSessionTokens = queryInterface.removeColumn('SessionTokens', 'cnodeUserUUID')
   return Promise.all([
     removeUUIDFromUsers,
     removeUUIDFromColivingUsers,
     removeUUIDFromFiles,
-    removeUUIDFromAgreements,
+    removeUUIDFromDigitalContents,
     removeUUIDFromSessionTokens
   ])
 }
@@ -186,9 +186,9 @@ async function insertUUIDs (queryInterface, t) {
     await queryInterface.sequelize.query(`UPDATE "Users" SET "cnodeUserUUID" = '${uuid()}' WHERE "id" = '${user.id}'`, { transaction: t })
   }
 
-  const agreements = (await queryInterface.sequelize.query(`SELECT * FROM "Agreements";`, { transaction: t }))[0]
-  for (let digital_content of agreements) {
-    await queryInterface.sequelize.query(`UPDATE "Agreements" SET "digital_content_UUID" = '${uuid()}' WHERE "id" = '${digital_content.id}'`, { transaction: t })
+  const digitalContents = (await queryInterface.sequelize.query(`SELECT * FROM "DigitalContents";`, { transaction: t }))[0]
+  for (let digital_content of digitalContents) {
+    await queryInterface.sequelize.query(`UPDATE "DigitalContents" SET "digital_content_UUID" = '${uuid()}' WHERE "id" = '${digital_content.id}'`, { transaction: t })
   }
 
   const files = (await queryInterface.sequelize.query(`SELECT * FROM "Files";`, { transaction: t }))[0]
@@ -238,26 +238,26 @@ async function insertUUIDs (queryInterface, t) {
     WHERE "ColivingUsers"."coverArtFileId" = "Files"."id"
   `, { transaction: t })
 
-  // associate Agreements table with cnodeUserUUID
+  // associate DigitalContents table with cnodeUserUUID
   await queryInterface.sequelize.query(`
-    UPDATE "Agreements"
+    UPDATE "DigitalContents"
     SET "cnodeUserUUID" = "Users"."cnodeUserUUID"
     FROM "Users"
-    WHERE "Users"."id" = "Agreements"."ownerId"
+    WHERE "Users"."id" = "DigitalContents"."ownerId"
   `, { transaction: t })
 
   await queryInterface.sequelize.query(`
-    UPDATE "Agreements"
+    UPDATE "DigitalContents"
     SET "metadataFileUUID" = "Files"."fileUUID"
     FROM "Files"
-    WHERE "Agreements"."metadataFileId" = "Files"."id"
+    WHERE "DigitalContents"."metadataFileId" = "Files"."id"
   `, { transaction: t })
 
   await queryInterface.sequelize.query(`
-    UPDATE "Agreements"
+    UPDATE "DigitalContents"
     SET "coverArtFileUUID" = "Files"."fileUUID"
     FROM "Files"
-    WHERE "Agreements"."coverArtFileId" = "Files"."id"
+    WHERE "DigitalContents"."coverArtFileId" = "Files"."id"
   `, { transaction: t })
 
   // associate SessionTokens table with cnodeUserUUID
@@ -272,8 +272,8 @@ async function insertUUIDs (queryInterface, t) {
     WITH "m" as (
       SELECT f."id", t."digital_content_UUID"
       FROM "Files" f
-      INNER JOIN "AgreementFile" tf ON f."id" = tf."FileId"
-      INNER JOIN "Agreements" t ON tf."AgreementId" = t."id"
+      INNER JOIN "DigitalContentFile" tf ON f."id" = tf."FileId"
+      INNER JOIN "DigitalContents" t ON tf."DigitalContentId" = t."id"
     )
 
     UPDATE "Files"
@@ -307,18 +307,18 @@ async function addNotNullConstraints (queryInterface, Sequelize, t) {
     allowNull: true
   }, { transaction: t })
 
-  await queryInterface.changeColumn('Agreements', 'cnodeUserUUID', {
+  await queryInterface.changeColumn('DigitalContents', 'cnodeUserUUID', {
     type: Sequelize.UUID,
     allowNull: false
   }, { transaction: t })
 
-  await queryInterface.changeColumn('Agreements', 'digital_content_UUID', {
+  await queryInterface.changeColumn('DigitalContents', 'digital_content_UUID', {
     type: Sequelize.UUID,
     allowNull: false,
     primaryKey: true
   }, { transaction: t })
 
-  await queryInterface.changeColumn('Agreements', 'blockchainId', {
+  await queryInterface.changeColumn('DigitalContents', 'blockchainId', {
     type: Sequelize.BIGINT,
     unique: true
   }, { transaction: t })
@@ -337,16 +337,16 @@ async function deleteOldColumns (queryInterface, t) {
 
   await queryInterface.removeColumn('Files', 'ownerId', { transaction: t })
 
-  await queryInterface.removeColumn('Agreements', 'ownerId', { transaction: t })
-  await queryInterface.removeColumn('Agreements', 'metadataFileId', { transaction: t })
-  await queryInterface.removeColumn('Agreements', 'coverArtFileId', { transaction: t })
+  await queryInterface.removeColumn('DigitalContents', 'ownerId', { transaction: t })
+  await queryInterface.removeColumn('DigitalContents', 'metadataFileId', { transaction: t })
+  await queryInterface.removeColumn('DigitalContents', 'coverArtFileId', { transaction: t })
 
   await queryInterface.removeColumn('SessionTokens', 'userId', { transaction: t })
 
   await queryInterface.removeColumn('Users', 'id', { transaction: t })
   await queryInterface.removeColumn('ColivingUsers', 'id', { transaction: t })
-  await queryInterface.dropTable('AgreementFile', { transaction: t })
-  await queryInterface.removeColumn('Agreements', 'id', { transaction: t })
+  await queryInterface.dropTable('DigitalContentFile', { transaction: t })
+  await queryInterface.removeColumn('DigitalContents', 'id', { transaction: t })
   await queryInterface.removeColumn('Files', 'id', { transaction: t })
   await queryInterface.renameTable('Users', 'CNodeUsers', { transaction: t })
 }

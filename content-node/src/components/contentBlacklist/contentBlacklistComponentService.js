@@ -3,9 +3,9 @@ const models = require('../../models')
 
 const types = models.ContentBlacklist.Types
 
-const getAllAgreementIds = async () => {
-  const resp = await BlacklistManager.getAllAgreementIds()
-  return resp.map((agreementId) => parseInt(agreementId))
+const getAllDigitalContentIds = async () => {
+  const resp = await BlacklistManager.getAllDigitalContentIds()
+  return resp.map((digitalContentId) => parseInt(digitalContentId))
 }
 
 const getAllContentBlacklist = async () => {
@@ -22,7 +22,7 @@ const getAllContentBlacklist = async () => {
   )
   const allSegments = await BlacklistManager.getAllCIDs()
   const blacklistedContent = {
-    agreementIds: await BlacklistManager.getAllAgreementIds(),
+    digitalContentIds: await BlacklistManager.getAllDigitalContentIds(),
     userIds: await BlacklistManager.getAllUserIds(),
     individualSegments: individuallyBlacklistedSegments,
     numberOfSegments: allSegments.length,
@@ -44,5 +44,5 @@ module.exports = {
   getAllContentBlacklist,
   addToContentBlacklist,
   removeFromContentBlacklist,
-  getAllAgreementIds
+  getAllDigitalContentIds
 }

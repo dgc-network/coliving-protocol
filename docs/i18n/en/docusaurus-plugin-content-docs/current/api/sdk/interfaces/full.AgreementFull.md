@@ -1,25 +1,25 @@
 ---
-id: "full.AgreementFull"
-title: "Interface: AgreementFull"
-sidebar_label: "AgreementFull"
+id: "full.DigitalContentFull"
+title: "Interface: DigitalContentFull"
+sidebar_label: "DigitalContentFull"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).AgreementFull
+[full](../namespaces/full.md).DigitalContentFull
 
 **`export`**
 
-**`interface`** AgreementFull
+**`interface`** DigitalContentFull
 
 ## Properties
 
 ### artwork
 
- `Optional` **artwork**: [`AgreementArtwork`](full.AgreementArtwork.md)
+ `Optional` **artwork**: [`DigitalContentArtwork`](full.DigitalContentArtwork.md)
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -27,7 +27,7 @@ ___
 
  **blocknumber**: `number`
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -35,7 +35,7 @@ ___
 
  `Optional` **cover\_art**: `string`
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -43,7 +43,7 @@ ___
 
  `Optional` **cover\_art\_sizes**: `string`
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -51,7 +51,7 @@ ___
 
  `Optional` **create\_date**: `string`
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -59,7 +59,7 @@ ___
 
  `Optional` **created\_at**: `string`
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -67,7 +67,7 @@ ___
 
  `Optional` **credits\_splits**: `string`
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -75,7 +75,7 @@ ___
 
  `Optional` **description**: `string`
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -83,7 +83,7 @@ ___
 
  `Optional` **download**: [`DownloadMetadata`](full.DownloadMetadata.md)
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -91,7 +91,7 @@ ___
 
  `Optional` **downloadable**: `boolean`
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -99,7 +99,7 @@ ___
 
  **duration**: `number`
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -107,7 +107,7 @@ ___
 
  **favorite\_count**: `number`
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -115,7 +115,7 @@ ___
 
  `Optional` **field\_visibility**: [`FieldVisibility`](full.FieldVisibility.md)
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -123,7 +123,7 @@ ___
 
  **followee\_favorites**: [`Favorite`](full.Favorite.md)[]
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -131,7 +131,7 @@ ___
 
  **followee\_reposts**: [`Repost`](full.Repost.md)[]
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -139,7 +139,7 @@ ___
 
  `Optional` **genre**: `string`
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -147,7 +147,7 @@ ___
 
  **has\_current\_user\_reposted**: `boolean`
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -155,7 +155,7 @@ ___
 
  **has\_current\_user\_saved**: `boolean`
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -163,7 +163,7 @@ ___
 
  **id**: `string`
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -171,7 +171,7 @@ ___
 
  `Optional` **is\_available**: `boolean`
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -179,7 +179,7 @@ ___
 
  `Optional` **is\_delete**: `boolean`
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -187,7 +187,7 @@ ___
 
  **is\_unlisted**: `boolean`
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -195,7 +195,7 @@ ___
 
  `Optional` **isrc**: `string`
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -203,7 +203,7 @@ ___
 
  `Optional` **iswc**: `string`
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -211,7 +211,7 @@ ___
 
  `Optional` **license**: `string`
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -219,7 +219,7 @@ ___
 
  `Optional` **mood**: `string`
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -227,7 +227,7 @@ ___
 
  `Optional` **permalink**: `string`
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -235,7 +235,7 @@ ___
 
  **play\_count**: `number`
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -243,7 +243,7 @@ ___
 
  `Optional` **release\_date**: `string`
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -251,7 +251,7 @@ ___
 
  `Optional` **remix\_of**: [`FullRemixParent`](full.FullRemixParent.md)
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -259,7 +259,7 @@ ___
 
  **repost\_count**: `number`
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -267,7 +267,7 @@ ___
 
  **route\_id**: `string`
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -275,7 +275,7 @@ ___
 
  `Optional` **stem\_of**: [`StemParent`](full.StemParent.md)
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -283,7 +283,7 @@ ___
 
  `Optional` **tags**: `string`
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -291,15 +291,15 @@ ___
 
  **title**: `string`
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
 ### digital_content\_segments
 
- `Optional` **digital_content\_segments**: [`AgreementSegment`](full.AgreementSegment.md)[]
+ `Optional` **digital_content\_segments**: [`DigitalContentSegment`](full.DigitalContentSegment.md)[]
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -307,7 +307,7 @@ ___
 
  `Optional` **updated\_at**: `string`
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -315,7 +315,7 @@ ___
 
  **user**: [`UserFull`](full.UserFull.md)
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull
 
 ___
 
@@ -323,4 +323,4 @@ ___
 
  **user\_id**: `string`
 
-**`memberof`** AgreementFull
+**`memberof`** DigitalContentFull

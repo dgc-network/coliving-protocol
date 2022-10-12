@@ -24,7 +24,7 @@ module.exports = {
       },
       sourceFile: {
         type: Sequelize.TEXT,
-        allowNull: true // `true` as we use File entries for more than just uploaded agreements
+        allowNull: true // `true` as we use File entries for more than just uploaded digitalContents
       },
       storagePath: {
         type: Sequelize.TEXT,

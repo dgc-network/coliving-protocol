@@ -13,7 +13,7 @@ const { logger: genericLogger } = require('./logging')
 const { sendResponse, errorResponseBadRequest } = require('./apiHelpers')
 const { findCIDInNetwork } = require('./utils')
 
-const MAX_LIVE_FILE_SIZE = parseInt(config.get('maxAudioFileSizeBytes')) // Default = 250,000,000 bytes = 250MB
+const MAX_DGCO_FILE_SIZE = parseInt(config.get('maxAudioFileSizeBytes')) // Default = 250,000,000 bytes = 250MB
 const MAX_MEMORY_FILE_SIZE = parseInt(config.get('maxMemoryFileSizeBytes')) // Default = 50,000,000 bytes = 50MB
 
 const ALLOWED_UPLOAD_FILE_EXTENSIONS = config.get('allowedUploadFileExtensions') // default set in config.json
@@ -112,7 +112,7 @@ async function copyMultihashToFs(multihash, srcPath, logContext) {
  * @param {Array} gatewaysToTry List of gateway endpoints to try
  * @param {String?} fileNameForImage file name if the CID is image in dir.
  *                  eg original.jpg or 150x150.jpg
- * @param {number?} agreementId if the CID is of a segment type, the agreementId to which it belongs to
+ * @param {number?} digitalContentId if the CID is of a segment type, the digitalContentId to which it belongs to
  * @param {number?} numRetries optional number of times to retry this function if there was an error during content verification
  * @return {Boolean} true if success, false if error
  */
@@ -123,7 +123,7 @@ async function saveFileForMultihashToFS(
   expectedStoragePath,
   gatewaysToTry,
   fileNameForImage = null,
-  agreementId = null,
+  digitalContentId = null,
   numRetries = 5
 ) {
   // stores all the stages of this function along with associated information relevant to that step
@@ -138,7 +138,7 @@ async function saveFileForMultihashToFS(
 
     let gatewayUrlsMapped = gatewaysToTry.map((endpoint) => {
       let baseUrl = `${endpoint.replace(/\/$/, '')}/ipfs/${multihash}`
-      if (agreementId) baseUrl += `?agreementId=${agreementId}`
+      if (digitalContentId) baseUrl += `?digitalContentId=${digitalContentId}`
 
       return baseUrl
     })
@@ -404,7 +404,7 @@ async function saveFileForMultihashToFS(
           expectedStoragePath,
           gatewaysToTry,
           fileNameForImage,
-          agreementId,
+          digitalContentId,
           numRetries - 1
         )
       }
@@ -456,7 +456,7 @@ const _printDecisionTreeObj = (decisionTree, logger) => {
  * (4) Remove 'fileDir/segments' and fileDir
  * @dev - Eventually this function execution should be moved off of main server process
  */
-async function removeAgreementFolder({ logContext }, fileDir) {
+async function removeDigitalContentFolder({ logContext }, fileDir) {
   const logger = genericLogger.child(logContext)
   try {
     logger.info(`Removing digital_content folder at fileDir ${fileDir}...`)
@@ -519,13 +519,13 @@ const getRandomFileName = () => {
   return getUuid()
 }
 
-const getTmpAgreementUploadArtifactsPathWithInputUUID = (fileName) => {
-  return path.join(DiskManager.getTmpAgreementUploadArtifactsPath(), fileName)
+const getTmpDigitalContentUploadArtifactsPathWithInputUUID = (fileName) => {
+  return path.join(DiskManager.getTmpDigitalContentUploadArtifactsPath(), fileName)
 }
 
 const getTmpSegmentsPath = (fileName) => {
   return path.join(
-    DiskManager.getTmpAgreementUploadArtifactsPath(),
+    DiskManager.getTmpDigitalContentUploadArtifactsPath(),
     fileName,
     'segments'
   )
@@ -546,7 +546,7 @@ const uploadTempDiskStorage = multer({
 })
 
 // Custom on-disk storage for digital_content files to prep for segmentation
-const agreementDiskStorage = multer.diskStorage({
+const digitalContentDiskStorage = multer.diskStorage({
   destination: function (req, file, cb) {
     let fileName
     if (req.query.uuid) {
@@ -557,7 +557,7 @@ const agreementDiskStorage = multer.diskStorage({
       fileName = getRandomFileName()
     }
 
-    const fileDir = getTmpAgreementUploadArtifactsPathWithInputUUID(fileName)
+    const fileDir = getTmpDigitalContentUploadArtifactsPathWithInputUUID(fileName)
     const segmentsDir = getTmpSegmentsPath(fileName)
 
     // create directories for original file and segments
@@ -579,9 +579,9 @@ const agreementDiskStorage = multer.diskStorage({
   }
 })
 
-const agreementFileUpload = multer({
-  storage: agreementDiskStorage,
-  limits: { fileSize: MAX_LIVE_FILE_SIZE },
+const digitalContentFileUpload = multer({
+  storage: digitalContentDiskStorage,
+  limits: { fileSize: MAX_DGCO_FILE_SIZE },
   fileFilter: function (req, file, cb) {
     try {
       checkFileType(req.logger, {
@@ -596,8 +596,8 @@ const agreementFileUpload = multer({
   }
 })
 
-const handleAgreementContentUpload = (req, res, next) => {
-  agreementFileUpload.single('file')(req, res, (err) => {
+const handleDigitalContentContentUpload = (req, res, next) => {
+  digitalContentFileUpload.single('file')(req, res, (err) => {
     if (err) {
       if (err.code === 'LIMIT_FILE_SIZE') {
         req.fileSizeError = err
@@ -645,9 +645,9 @@ function checkFileType(logger, { fileName, fileMimeType }) {
  * @param {number} fileSize file size in bytes
  */
 function checkFileSize(fileSize) {
-  if (fileSize > MAX_LIVE_FILE_SIZE) {
+  if (fileSize > MAX_DGCO_FILE_SIZE) {
     throw new Error(
-      `File exceeded maximum size (${MAX_LIVE_FILE_SIZE}): fileSize=${fileSize}`
+      `File exceeded maximum size (${MAX_DGCO_FILE_SIZE}): fileSize=${fileSize}`
     )
   }
 }
@@ -726,15 +726,15 @@ async function removeFile(storagePath) {
 module.exports = {
   saveFileFromBufferToDisk,
   saveFileForMultihashToFS,
-  removeAgreementFolder,
+  removeDigitalContentFolder,
   upload,
   uploadTempDiskStorage,
-  agreementFileUpload,
-  handleAgreementContentUpload,
+  digitalContentFileUpload,
+  handleDigitalContentContentUpload,
   hasEnoughStorageSpace,
   getFileExtension,
   checkFileMiddleware,
-  getTmpAgreementUploadArtifactsPathWithInputUUID,
+  getTmpDigitalContentUploadArtifactsPathWithInputUUID,
   getTmpSegmentsPath,
   copyMultihashToFs,
   EMPTY_FILE_CID

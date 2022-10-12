@@ -6,22 +6,22 @@ export class UserLibraryFactoryClient extends ContractClient {
   override web3Manager!: Web3Manager
   /* ------- SETTERS ------- */
 
-  async addAgreementSave(userId: number, agreementId: number) {
+  async addDigitalContentSave(userId: number, digitalContentId: number) {
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
-    const signatureData = signatureSchemas.generators.getAgreementSaveRequestData(
+    const signatureData = signatureSchemas.generators.getDigitalContentSaveRequestData(
       chainId,
       contractAddress,
       userId,
-      agreementId,
+      digitalContentId,
       nonce
     )
     const sig = await this.web3Manager.signTypedData(signatureData)
     const contractMethod = await this.getMethod(
-      'addAgreementSave',
+      'addDigitalContentSave',
       userId,
-      agreementId,
+      digitalContentId,
       nonce,
       sig
     )
@@ -32,23 +32,23 @@ export class UserLibraryFactoryClient extends ContractClient {
     )
   }
 
-  async deleteAgreementSave(userId: number, agreementId: number) {
+  async deleteDigitalContentSave(userId: number, digitalContentId: number) {
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
     const signatureData =
-      signatureSchemas.generators.getDeleteAgreementSaveRequestData(
+      signatureSchemas.generators.getDeleteDigitalContentSaveRequestData(
         chainId,
         contractAddress,
         userId,
-        agreementId,
+        digitalContentId,
         nonce
       )
     const sig = await this.web3Manager.signTypedData(signatureData)
     const contractMethod = await this.getMethod(
-      'deleteAgreementSave',
+      'deleteDigitalContentSave',
       userId,
-      agreementId,
+      digitalContentId,
       nonce,
       sig
     )

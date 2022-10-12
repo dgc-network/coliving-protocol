@@ -29,6 +29,6 @@ Coliving est l'alternative la plus directe au consommateur par rapport aux plate
 
 ## Documentation
 
-Ce site de documentation vous explique comment vous familiariser avec les concepts d'Coliving, comment participer à la communauté du protocole &amp ; d'un point de vue technique, et comment interagir avec le jeton $LIVE et l'utiliser.
+Ce site de documentation vous explique comment vous familiariser avec les concepts d'Coliving, comment participer à la communauté du protocole &amp ; d'un point de vue technique, et comment interagir avec le jeton $DGCO et l'utiliser.
 
 Si vous vous êtes retrouvé ici et que vous ne savez pas quoi faire, consultez l'implémentation du lecteur de musique de référence sur [.co](https://.co) et rejoignez notre [Discord](https://discord.com/invite/).

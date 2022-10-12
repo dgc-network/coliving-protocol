@@ -27,8 +27,8 @@ followee_count = "followee_count"  # integer - total followee count of given use
 content_list_count = "content_list_count"
 # integer - total count of albums created by given user (0 for all non-creators)
 album_count = "album_count"
-digital_content_count = "digital_content_count"  # integer - total count of agreements created by given user
-# integer - total count of agreements saves created by given user
+digital_content_count = "digital_content_count"  # integer - total count of digitalContents created by given user
+# integer - total count of digitalContents saves created by given user
 digital_content_save_count = "digital_content_save_count"
 created_at = "created_at"  # datetime - time digital_content was created
 repost_count = "repost_count"  # integer - total count of reposts by given user
@@ -40,7 +40,7 @@ balance = "balance"
 total_balance = "total_balance"
 associated_wallets_balance = "associated_wallets_balance"
 associated_sol_wallets_balance = "associated_sol_wallets_balance"
-wlive_balance = "wlive_balance"
+wei_digitalcoin_balance = "wei_digitalcoin_balance"
 erc_wallet = "erc_wallet"
 spl_wallet = "spl_wallet"
 supporter_count = "supporter_count"
@@ -69,7 +69,7 @@ content_list_id = "content_list_id"
 owner_id = "owner_id"
 listen_counts = "listen_counts"
 
-agreements = "agreements"
+digitalContents = "digitalContents"
 albums = "albums"
 contentLists = "content_lists"
 user = "user"
@@ -84,7 +84,7 @@ notification_type_remix_create = "RemixCreate"
 notification_type_remix_cosign = "RemixCosign"
 notification_type_content_list_update = "ContentListUpdate"
 notification_type_tier_change = "TierChange"
-notification_type_add_digital_content_to_content_list = "AddAgreementToContentList"
+notification_type_add_digital_content_to_content_list = "AddDigitalContentToContentList"
 
 notification_blocknumber = "blocknumber"
 notification_initiator = "initiator"

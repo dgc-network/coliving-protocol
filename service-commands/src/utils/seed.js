@@ -24,8 +24,8 @@ const {
 } = require('./constants')
 
 const {
-  getRandomAgreementMetadata,
-  getRandomAgreementFilePath,
+  getRandomDigitalContentMetadata,
+  getRandomDigitalContentFilePath,
   getRandomImageFilePath,
   r6
 } = require('./random')
@@ -92,12 +92,12 @@ const parseMetadataIntoObject = commaSeparatedKeyValuePairs => {
   return metadata
 }
 
-const getUserProvidedOrRandomAgreementFile = async userInputPath => {
+const getUserProvidedOrRandomDigitalContentFile = async userInputPath => {
   let path
   if (userInputPath) {
     path = userInputPath
   } else {
-    path = await getRandomAgreementFilePath(TEMP_AGREEMENT_STORAGE_PATH)
+    path = await getRandomDigitalContentFilePath(TEMP_AGREEMENT_STORAGE_PATH)
   }
   return fs.createReadStream(path)
 }
@@ -119,12 +119,12 @@ const getProgressCallback = () => {
   return progressCallback
 }
 
-const getUserProvidedOrRandomAgreementMetadata = (
+const getUserProvidedOrRandomDigitalContentMetadata = (
   userProvidedMetadata,
   seedSession
 ) => {
   const { userId } = seedSession.cache.getActiveUser()
-  let metadataObj = getRandomAgreementMetadata(userId)
+  let metadataObj = getRandomDigitalContentMetadata(userId)
   if (userProvidedMetadata) {
     metadataObj = Object.assign(metadataObj, userProvidedMetadata)
   }
@@ -163,24 +163,24 @@ const getRandomUserIdFromCurrentSeedSessionCache = (userInput, seedSession) => {
   return userId
 }
 
-const getRandomAgreementIdFromCurrentSeedSessionCache = (
+const getRandomDigitalContentIdFromCurrentSeedSessionCache = (
   userInput,
   seedSession
 ) => {
-  let agreementId
+  let digitalContentId
   if (userInput) {
-    agreementId = userInput
+    digitalContentId = userInput
   } else {
-    const cachedAgreements = seedSession.cache.getAgreements()
-    agreementId = _.sample(cachedAgreements)
+    const cachedDigitalContents = seedSession.cache.getDigitalContents()
+    digitalContentId = _.sample(cachedDigitalContents)
   }
-  return agreementId
+  return digitalContentId
 }
 
-const addAgreementToSeedSessionCache = (response, seedSession) => {
-  const { agreementId } = response
+const addDigitalContentToSeedSessionCache = (response, seedSession) => {
+  const { digitalContentId } = response
   const { userId } = seedSession.cache.getActiveUser()
-  seedSession.cache.addAgreementToCachedUserDetails({ agreementId, userId })
+  seedSession.cache.addDigitalContentToCachedUserDetails({ digitalContentId, userId })
 }
 
 const getActiveUserFromSeedSessionCache = (userInput, seedSession) => {
@@ -197,15 +197,15 @@ module.exports = {
   camelToKebabCase,
   kebabToCamelCase,
   parseMetadataIntoObject,
-  getUserProvidedOrRandomAgreementFile,
+  getUserProvidedOrRandomDigitalContentFile,
   getUserProvidedOrRandomImageFile,
-  getUserProvidedOrRandomAgreementMetadata,
+  getUserProvidedOrRandomDigitalContentMetadata,
   getProgressCallback,
   parseSeedActionRepeatCount,
   passThroughUserInput,
   getRandomUserIdFromCurrentSeedSessionCache,
-  getRandomAgreementIdFromCurrentSeedSessionCache,
-  addAgreementToSeedSessionCache,
+  getRandomDigitalContentIdFromCurrentSeedSessionCache,
+  addDigitalContentToSeedSessionCache,
   getActiveUserFromSeedSessionCache,
   getRandomString
 }

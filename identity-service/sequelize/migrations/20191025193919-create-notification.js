@@ -10,13 +10,13 @@ module.exports = {
       type: {
         type: Sequelize.ENUM(
           'Follow',
-          'RepostAgreement',
+          'RepostDigitalContent',
           'RepostContentList',
           'RepostAlbum',
-          'FavoriteAgreement',
+          'FavoriteDigitalContent',
           'FavoriteContentList',
           'FavoriteAlbum',
-          'CreateAgreement',
+          'CreateDigitalContent',
           'CreateContentList',
           'CreateAlbum',
           'Announcement',

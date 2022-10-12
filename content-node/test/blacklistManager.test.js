@@ -40,10 +40,10 @@ describe('test blacklistManager', () => {
     resp = await BlacklistManager.getAllUserIds()
     assert.deepStrictEqual(resp.length, 0)
 
-    resp = await BlacklistManager.getAllAgreementIds()
+    resp = await BlacklistManager.getAllDigitalContentIds()
     assert.deepStrictEqual(resp.length, 0)
 
-    resp = await BlacklistManager.getAllInvalidAgreementIds()
+    resp = await BlacklistManager.getAllInvalidDigitalContentIds()
     assert.deepStrictEqual(resp.length, 0)
   })
 
@@ -54,7 +54,7 @@ describe('test blacklistManager', () => {
     )
   })
 
-  it('[isServable] if cid is in blacklist and agreementId is invalid, do not serve', async () => {
+  it('[isServable] if cid is in blacklist and digitalContentId is invalid, do not serve', async () => {
     await BlacklistManager.addToRedis(
       'BM.SET.BLACKLIST.SEGMENTCID' /* REDIS_SET_BLACKLIST_SEGMENTCID_KEY */,
       [DUMMY_CID]
@@ -91,7 +91,7 @@ describe('test blacklistManager', () => {
     )
   })
 
-  it('[isServable] cid belongs to digital_content from input agreementId, and the input agreementId is valid + blacklisted, do not serve', async () => {
+  it('[isServable] cid belongs to digital_content from input digitalContentId, and the input digitalContentId is valid + blacklisted, do not serve', async () => {
     await BlacklistManager.addToRedis('BM.SET.BLACKLIST.SEGMENTCID', [
       DUMMY_CID
     ])
@@ -109,7 +109,7 @@ describe('test blacklistManager', () => {
     )
   })
 
-  it('[isServable] cid is in blacklist, cid belongs to digital_content from input agreementId with redis check, and the input agreementId is valid + not blacklisted, allow serve', async () => {
+  it('[isServable] cid is in blacklist, cid belongs to digital_content from input digitalContentId with redis check, and the input digitalContentId is valid + not blacklisted, allow serve', async () => {
     await BlacklistManager.addToRedis('BM.SET.BLACKLIST.SEGMENTCID', [
       DUMMY_CID
     ])
@@ -123,7 +123,7 @@ describe('test blacklistManager', () => {
     )
   })
 
-  it('[isServable] cid is in blacklist, cid does not belong to digital_content from input agreementId with redis check, and input digital_content is invalid, do not serve', async () => {
+  it('[isServable] cid is in blacklist, cid does not belong to digital_content from input digitalContentId with redis check, and input digital_content is invalid, do not serve', async () => {
     await BlacklistManager.addToRedis('BM.SET.BLACKLIST.SEGMENTCID', [
       DUMMY_CID
     ])
@@ -135,14 +135,14 @@ describe('test blacklistManager', () => {
     )
   })
 
-  it('[isServable] cid is in blacklist, cid does not belong to digital_content from input agreementId with redis check, and input digital_content is invalid with db check, do not serve', async () => {
+  it('[isServable] cid is in blacklist, cid does not belong to digital_content from input digitalContentId with redis check, and input digital_content is invalid with db check, do not serve', async () => {
     await BlacklistManager.addToRedis('BM.SET.BLACKLIST.SEGMENTCID', [
       DUMMY_CID
     ])
 
     // Mock DB call to return nothing
     sinon
-      .stub(BlacklistManager, 'getAllCIDsFromAgreementIdsInDb')
+      .stub(BlacklistManager, 'getAllCIDsFromDigitalContentIdsInDb')
       .callsFake(async () => {
         return []
       })
@@ -151,17 +151,17 @@ describe('test blacklistManager', () => {
       await BlacklistManager.isServable(DUMMY_CID, 1234),
       false
     )
-    assert.deepStrictEqual(await BlacklistManager.agreementIdIsInvalid(1234), 1)
+    assert.deepStrictEqual(await BlacklistManager.digitalContentIdIsInvalid(1234), 1)
   })
 
-  it('[isServable] cid is in blacklist, cid does not belong to digital_content from input agreementId with redis check, and input digital_content is valid with db check, and cid is in digital_content, allow serve', async () => {
+  it('[isServable] cid is in blacklist, cid does not belong to digital_content from input digitalContentId with redis check, and input digital_content is valid with db check, and cid is in digital_content, allow serve', async () => {
     await BlacklistManager.addToRedis('BM.SET.BLACKLIST.SEGMENTCID', [
       DUMMY_CID
     ])
 
     // Mock DB call to return proper segment
     sinon
-      .stub(BlacklistManager, 'getAllCIDsFromAgreementIdsInDb')
+      .stub(BlacklistManager, 'getAllCIDsFromDigitalContentIdsInDb')
       .callsFake(async () => {
         return [
           {
@@ -177,19 +177,19 @@ describe('test blacklistManager', () => {
       true
     )
     assert.deepStrictEqual(
-      await BlacklistManager.getAllCIDsFromAgreementIdInRedis(1),
+      await BlacklistManager.getAllCIDsFromDigitalContentIdInRedis(1),
       [DUMMY_CID]
     )
   }).timeout(0)
 
-  it('[isServable] cid is in blacklist, cid does not belong to digital_content from input agreementId with redis check, and input digital_content is valid with db check, and cid is not in digital_content, do not serve', async () => {
+  it('[isServable] cid is in blacklist, cid does not belong to digital_content from input digitalContentId with redis check, and input digital_content is valid with db check, and cid is not in digital_content, do not serve', async () => {
     await BlacklistManager.addToRedis('BM.SET.BLACKLIST.SEGMENTCID', [
       DUMMY_CID
     ])
 
     // Mock DB call to return proper segment that is not the same as `CID`
     sinon
-      .stub(BlacklistManager, 'getAllCIDsFromAgreementIdsInDb')
+      .stub(BlacklistManager, 'getAllCIDsFromDigitalContentIdsInDb')
       .callsFake(async () => {
         return [
           {
@@ -207,7 +207,7 @@ describe('test blacklistManager', () => {
       false
     )
     assert.deepStrictEqual(
-      await BlacklistManager.getAllCIDsFromAgreementIdInRedis(1),
+      await BlacklistManager.getAllCIDsFromDigitalContentIdInRedis(1),
       ['QmABC_tinashe_and_rei_ami']
     )
   })

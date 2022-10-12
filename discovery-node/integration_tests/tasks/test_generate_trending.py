@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from src.models.indexing.block import Block
 from src.models.social.aggregate_plays import AggregatePlay
 from src.models.social.play import Play
-from src.models.agreements.digital_content import DigitalContent
+from src.models.digitalContents.digital_content import DigitalContent
 from src.tasks.generate_trending import get_listen_counts
 
 
@@ -11,13 +11,13 @@ from src.tasks.generate_trending import get_listen_counts
 def setup_trending(db, date):
     # Test data
 
-    # test agreements
-    # when creating agreements, digital_content_id == index
+    # test digitalContents
+    # when creating digitalContents, digital_content_id == index
     test_digital_contents = [
         {"genre": "Electronic"},
         {"genre": "Pop"},
         {"genre": "Electronic"},
-        # Agreements we don't want to count
+        # DigitalContents we don't want to count
         {"genre": "Electronic", "is_unlisted": True},
         {"genre": "Electronic", "is_delete": True},
     ]
@@ -34,7 +34,7 @@ def setup_trending(db, date):
         {"item_id": 2, "created_at": date - timedelta(weeks=2)},
         {"item_id": 2, "created_at": date - timedelta(weeks=2)},
         {"item_id": 3, "created_at": date - timedelta(weeks=2)},
-        # We don't want to count these guys (agreements deleted/unlisted)
+        # We don't want to count these guys (digitalContents deleted/unlisted)
         {"item_id": 3},
         {"item_id": 3},
         {"item_id": 4},
@@ -43,7 +43,7 @@ def setup_trending(db, date):
 
     # pylint: disable=W0621
     with db.scoped_session() as session:
-        # seed agreements + blocks
+        # seed digitalContents + blocks
         for i, digital_content_meta in enumerate(test_digital_contents):
             blockhash = hex(i)
             block = Block(

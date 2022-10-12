@@ -2,7 +2,7 @@ from sqlalchemy import desc, func
 from src import exceptions
 from src.models.social.follow import Follow
 from src.models.social.save import Save
-from src.models.agreements.digital_content import DigitalContent
+from src.models.digitalContents.digital_content import DigitalContent
 from src.queries import response_name_constants
 from src.queries.query_helpers import (
     get_users_by_id,
@@ -51,8 +51,8 @@ def get_top_followee_saves(saveType, args):
         )
         save_count_subquery = save_count.subquery()
 
-        # Query for agreements joined against followee save counts
-        agreements_query = (
+        # Query for digitalContents joined against followee save counts
+        digitalContents_query = (
             session.query(
                 DigitalContent,
             )
@@ -68,19 +68,19 @@ def get_top_followee_saves(saveType, args):
             )
         )
 
-        agreements_query_results = agreements_query.all()
-        agreements = helpers.query_result_to_list(agreements_query_results)
-        digital_content_ids = list(map(lambda digital_content: digital_content["digital_content_id"], agreements))
+        digitalContents_query_results = digitalContents_query.all()
+        digitalContents = helpers.query_result_to_list(digitalContents_query_results)
+        digital_content_ids = list(map(lambda digital_content: digital_content["digital_content_id"], digitalContents))
 
         # bundle peripheral info into digital_content results
-        agreements = populate_digital_content_metadata(session, digital_content_ids, agreements, current_user_id)
+        digitalContents = populate_digital_content_metadata(session, digital_content_ids, digitalContents, current_user_id)
 
         if args.get("with_users", False):
-            user_id_list = get_users_ids(agreements)
+            user_id_list = get_users_ids(digitalContents)
             users = get_users_by_id(session, user_id_list)
-            for digital_content in agreements:
+            for digital_content in digitalContents:
                 user = users[digital_content["owner_id"]]
                 if user:
                     digital_content["user"] = user
 
-    return agreements
+    return digitalContents

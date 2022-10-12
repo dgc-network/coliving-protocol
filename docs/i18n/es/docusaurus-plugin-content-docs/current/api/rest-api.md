@@ -372,7 +372,7 @@ fetch('https://discoverynode.coliving1.prod-ichard west-2.staked. loud/v1/users/
 
 ### Obtener pistas de usuario <a id="get-user-39-s-digital-contents"></a>
 
-`GET /users/{user_id}/agreements`
+`GET /users/{user_id}/digitalContents`
 
 _Obtener una lista de pistas para un usuario_
 
@@ -390,7 +390,7 @@ _Obtener una lista de pistas para un usuario_
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                                                           |
 |:------ |:------------------------------------------------------------------------------- |:-------------------- |:------------------------------------------------------------------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [pistas\_respuesta](https://colivingproject.github.io/api-docs/?javascript#schemaagreements_response) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [pistas\_respuesta](https://colivingproject.github.io/api-docs/?javascript#schemadigitalContents_response) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                                                                           |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                                                                           |
 
@@ -402,7 +402,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/users/nlGNe/agreements?app_name=EXAMPLEAPP',
+fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/users/nlGNe/digitalContents?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -522,7 +522,7 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/contentLis
         "480x480": "https://usermetadata..co/ipfs/Qmc7RFzLGgW3DUTgKK49LzxEwe3Lmb47q85ZwJJRVYTXPr/480x480.jpg",
         "1000x1000": "https://usermetadata..co/ipfs/Qmc7RFzLGgW3DUTgKK49LzxEwe3Lmb47q85ZwJJRVYTXPr/1000x1000.jpg"
       },
-      "description": "All the latest hot new agreements on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
+      "description": "All the latest hot new digitalContents on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
       "id": "DOPRl",
       "is_album": true,
       "content_list_name": "Hot & New on Coliving 🔥",
@@ -610,7 +610,7 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/contentLis
       "480x480": "https://usermetadata..co/ipfs/Qmc7RFzLGgW3DUTgKK49LzxEwe3Lmb47q85ZwJJRVYTXPr/480x480.jpg",
       "1000x1000": "https://usermetadata..co/ipfs/Qmc7RFzLGgW3DUTgKK49LzxEwe3Lmb47q85ZwJJRVYTXPr/1000x1000.jpg"
     },
-    "description": "All the latest hot new agreements on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
+    "description": "All the latest hot new digitalContents on Coliving! Enjoy the eclectic sounds that are created during the peak of this 2020 Summer.",
     "id": "DOPRl",
     "is_album": true,
     "content_list_name": "Hot & New on Coliving 🔥",
@@ -770,7 +770,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/agreements/search?query=baauer b2b&app_name=EXAMPLEAPP',
+fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/digital_contents/search?query=baauer b2b&app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -835,7 +835,7 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/agreements
 
 ### Pistas populares <a id="trending-digital-contents"></a>
 
-`GET /agreements/tendencia`
+`GET /digital_contents/tendencia`
 
 _Obtiene las 100 pistas más populares \(más popular\) en Coliving_
 
@@ -851,7 +851,7 @@ _Obtiene las 100 pistas más populares \(más popular\) en Coliving_
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                                                           |
 |:------ |:------------------------------------------------------------------------------- |:-------------------- |:------------------------------------------------------------------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [pistas\_respuesta](https://colivingproject.github.io/api-docs/?javascript#schemaagreements_response) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [pistas\_respuesta](https://colivingproject.github.io/api-docs/?javascript#schemadigitalContents_response) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                                                                           |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                                                                           |
 
@@ -863,7 +863,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/agreements/trending?app_name=EXAMPLEAPP',
+fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/digital_contents/trending?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -955,7 +955,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/agreements/D7KyD?app_name=EXAMPLEAPP',
+fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/digital_contents/D7KyD?app_name=EXAMPLEAPP',
 {
   method: 'GET',
 
@@ -1018,7 +1018,7 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/agreements
 
 ### Pista de streaming <a id="stream-digital-content"></a>
 
-`GET /agreements/{digital_content_id}/stream`
+`GET /digital_contents/{digital_content_id}/stream`
 
 _Obtener el archivo mp3 streamable de la pista_
 
@@ -1045,7 +1045,7 @@ Este extremo acepta la cabecera de Rango para streaming. https://developer.mozil
 
 ```javascript
 
-fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/agreements/D7KyD/stream?app_name=EXAMPLEAPP',
+fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/digital_contents/D7KyD/stream?app_name=EXAMPLEAPP',
 {
   method: 'GET'
 
@@ -1140,7 +1140,7 @@ Este endpoint le permite buscar y acceder a los recursos API cuando sólo conoce
 > Redirección interna
 
 ```text
-{"HTTP/1.1 302 Localización encontrada":"/v1/agreements/V4W8r"}
+{"HTTP/1.1 302 Localización encontrada":"/v1/digital_contents/V4W8r"}
 ```
 
 #### Respuestas <a id="resolve-responses"></a>
@@ -1314,7 +1314,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
       "mood": "string",
       "release_date": "string",
       "remix_of": {
-        "agreements": [
+        "digitalContents": [
           {
             "parent_digital_content_id": "string"
           }
@@ -1360,9 +1360,9 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre | Tipo                                                                            | Requerido | Restricciones | Descripción |
 |:------ |:------------------------------------------------------------------------------- |:--------- |:------------- |:----------- |
-| datos  | \[[Pista](https://colivingproject.github.io/api-docs/?javascript#schemaagreement)\] | falso     | ninguna       | ninguna     |
+| datos  | \[[Pista](https://colivingproject.github.io/api-docs/?javascript#schemadigitalContent)\] | falso     | ninguna       | ninguna     |
 
-### Pista <a id="tocS_Agreement"></a>
+### Pista <a id="tocS_DigitalContent"></a>
 
 ```json
 {
@@ -1377,7 +1377,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
   "mood": "string",
   "release_date": "string",
   "remix_of": {
-    "agreements": [
+    "digitalContents": [
       {
         "parent_digital_content_id": "string"
       }
@@ -1460,7 +1460,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 ```json
 {
-  "agreements": [
+  "digitalContents": [
     {
       "parent_digital_content_id": "string"
     }
@@ -1774,7 +1774,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
       "mood": "string",
       "release_date": "string",
       "remix_of": {
-        "agreements": [
+        "digitalContents": [
           {
             "parent_digital_content_id": "string"
           }
@@ -1820,7 +1820,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre | Tipo                                                                            | Requerido | Restricciones | Descripción |
 |:------ |:------------------------------------------------------------------------------- |:--------- |:------------- |:----------- |
-| datos  | \[[Pista](https://colivingproject.github.io/api-docs/?javascript#schemaagreement)\] | falso     | ninguna       | ninguna     |
+| datos  | \[[Pista](https://colivingproject.github.io/api-docs/?javascript#schemadigitalContent)\] | falso     | ninguna       | ninguna     |
 
 ### contentList\_search\_result <a id="tocS_content_list_search_result"></a>
 
@@ -1891,7 +1891,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
     "mood": "string",
     "release_date": "string",
     "remix_of": {
-      "agreements": [
+      "digitalContents": [
         {
           "parent_digital_content_id": "string"
         }
@@ -1936,7 +1936,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre | Tipo                                                                      | Requerido | Restricciones | Descripción |
 |:------ |:------------------------------------------------------------------------- |:--------- |:------------- |:----------- |
-| datos  | [Pista](https://colivingproject.github.io/api-docs/?javascript#schemaagreement) | falso     | ninguna       | ninguna     |
+| datos  | [Pista](https://colivingproject.github.io/api-docs/?javascript#schemadigitalContent) | falso     | ninguna       | ninguna     |
 
 ### digital_content\_buscar <a id="tocS_digital_content_search"></a>
 
@@ -1955,7 +1955,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
       "mood": "string",
       "release_date": "string",
       "remix_of": {
-        "agreements": [
+        "digitalContents": [
           {
             "parent_digital_content_id": "string"
           }
@@ -2001,7 +2001,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre | Estilo                                                                          | Requerido | Restricciones | Descripción |
 |:------ |:------------------------------------------------------------------------------- |:--------- |:------------- |:----------- |
-| datos  | \[[Pista](https://colivingproject.github.io/api-docs/?javascript#schemaagreement)\] | falso     | ninguna       | ninguna     |
+| datos  | \[[Pista](https://colivingproject.github.io/api-docs/?javascript#schemadigitalContent)\] | falso     | ninguna       | ninguna     |
 
 ### app\_name\_trailing\_response <a id="tocS_app_name_trailing_response"></a>
 

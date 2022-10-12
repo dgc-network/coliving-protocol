@@ -754,7 +754,7 @@ contract ServiceProviderFactory is InitializableV2 {
             msg.sender == delegateManagerAddress,
             "ServiceProviderFactory: only callable by DelegateManager"
         );
-        // Update SP agreemented total
+        // Update SP digitalContented total
         spDetails[_serviceProvider].deployerStake = _amount;
         _updateServiceProviderBoundStatus(_serviceProvider);
     }

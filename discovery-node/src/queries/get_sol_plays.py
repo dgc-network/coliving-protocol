@@ -72,7 +72,7 @@ def get_latest_sol_plays(limit=10) -> Optional[List[PlayDict]]:
     return sol_plays
 
 
-# For the n most recently listened to agreements, return the all time listen counts for those agreements
+# For the n most recently listened to digitalContents, return the all time listen counts for those digitalContents
 def get_digital_content_listen_milestones(limit=100):
     db = get_db_read_replica()
 

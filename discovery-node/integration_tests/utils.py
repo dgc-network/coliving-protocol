@@ -13,11 +13,11 @@ from src.models.social.hourly_play_counts import HourlyPlayCount
 from src.models.social.play import Play
 from src.models.social.repost import Repost
 from src.models.social.save import Save
-from src.models.agreements.aggregate_digital_content import AggregateAgreement
-from src.models.agreements.remix import Remix
-from src.models.agreements.stem import Stem
-from src.models.agreements.digital_content import DigitalContent
-from src.models.agreements.digital_content_route import AgreementRoute
+from src.models.digitalContents.aggregate_digital_content import AggregateDigitalContent
+from src.models.digitalContents.remix import Remix
+from src.models.digitalContents.stem import Stem
+from src.models.digitalContents.digital_content import DigitalContent
+from src.models.digitalContents.digital_content_route import DigitalContentRoute
 from src.models.users.aggregate_user import AggregateUser
 from src.models.users.associated_wallet import AssociatedWallet, WalletChain
 from src.models.users.user import User
@@ -78,11 +78,11 @@ def populate_mock_db_blocks(db, min, max):
 
 def populate_mock_db(db, entities, block_offset=None):
     """
-    Helper function to populate the mock DB with agreements, users, plays, and follows
+    Helper function to populate the mock DB with digitalContents, users, plays, and follows
 
     Args:
         db - sqlalchemy db session
-        entities - dict of keys agreements, users, plays of arrays of metadata
+        entities - dict of keys digitalContents, users, plays of arrays of metadata
     """
     with db.scoped_session() as session:
         # check if blocknumber already exists for longer running tests
@@ -93,7 +93,7 @@ def populate_mock_db(db, entities, block_offset=None):
             else:
                 block_offset = 0
 
-        agreements = entities.get("agreements", [])
+        digitalContents = entities.get("digitalContents", [])
         contentLists = entities.get("content_lists", [])
         users = entities.get("users", [])
         follows = entities.get("follows", [])
@@ -117,7 +117,7 @@ def populate_mock_db(db, entities, block_offset=None):
         ursm_content_nodes = entities.get("ursm_content_nodes", [])
 
         num_blocks = max(
-            len(agreements), len(users), len(follows), len(saves), len(reposts)
+            len(digitalContents), len(users), len(follows), len(saves), len(reposts)
         )
         for i in range(block_offset, block_offset + num_blocks):
             max_block = session.query(Block).filter(Block.number == i).first()
@@ -134,10 +134,10 @@ def populate_mock_db(db, entities, block_offset=None):
                 session.add(block)
                 session.flush()
 
-        for i, digital_content_meta in enumerate(agreements):
+        for i, digital_content_meta in enumerate(digitalContents):
             digital_content_id = digital_content_meta.get("digital_content_id", i)
 
-            # mark previous agreements as is_current = False
+            # mark previous digitalContents as is_current = False
             session.query(DigitalContent).filter(DigitalContent.is_current == True).filter(
                 DigitalContent.digital_content_id == digital_content_id
             ).update({"is_current": False})
@@ -278,7 +278,7 @@ def populate_mock_db(db, entities, block_offset=None):
             session.add(aggregate_play)
 
         for i, aggregate_digital_content_meta in enumerate(aggregate_digital_content):
-            aggregate_digital_content = AggregateAgreement(
+            aggregate_digital_content = AggregateDigitalContent(
                 digital_content_id=aggregate_digital_content_meta.get("digital_content_id", i),
                 repost_count=aggregate_digital_content_meta.get("repost_count", 0),
                 save_count=aggregate_digital_content_meta.get("save_count", 0),
@@ -336,7 +336,7 @@ def populate_mock_db(db, entities, block_offset=None):
                 session.add(indexing_checkpoint)
 
         for i, route_meta in enumerate(digital_content_routes):
-            route = AgreementRoute(
+            route = DigitalContentRoute(
                 slug=route_meta.get("slug", ""),
                 title_slug=route_meta.get("title_slug", ""),
                 blockhash=hex(i + block_offset),

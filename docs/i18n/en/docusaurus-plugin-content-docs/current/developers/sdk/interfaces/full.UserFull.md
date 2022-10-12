@@ -333,8 +333,8 @@ ___
 
 ___
 
-### wlive\_balance
+### wei_digitalcoin\_balance
 
- **wlive\_balance**: `string`
+ **wei_digitalcoin\_balance**: `string`
 
 **`memberof`** UserFull

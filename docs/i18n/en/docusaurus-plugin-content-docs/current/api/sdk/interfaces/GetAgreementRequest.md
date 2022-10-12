@@ -1,7 +1,7 @@
 ---
-id: "GetAgreementRequest"
-title: "Interface: GetAgreementRequest"
-sidebar_label: "GetAgreementRequest"
+id: "GetDigitalContentRequest"
+title: "Interface: GetDigitalContentRequest"
+sidebar_label: "GetDigitalContentRequest"
 sidebar_position: 0
 custom_edit_url: null
 pagination_prev: null
@@ -10,8 +10,8 @@ pagination_next: null
 
 ## Properties
 
-### agreementId
+### digitalContentId
 
- **agreementId**: `string`
+ **digitalContentId**: `string`
 
 A DigitalContent ID

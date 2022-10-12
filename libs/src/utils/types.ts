@@ -72,7 +72,7 @@ export type UserMetadata = {
 
 export type User = UserMetadata
 
-export interface AgreementSegment {
+export interface DigitalContentSegment {
   duration: string
   multihash: CID
 }
@@ -82,7 +82,7 @@ export interface Download {
   cid: Nullable<string>
 }
 
-export type AgreementMetadata = {
+export type DigitalContentMetadata = {
   blocknumber: number
   activity_timestamp?: string
   is_delete: boolean
@@ -105,7 +105,7 @@ export type AgreementMetadata = {
   save_count: number
   tags: Nullable<string>
   title: string
-  digital_content_segments: AgreementSegment[]
+  digital_content_segments: DigitalContentSegment[]
   cover_art: Nullable<CID>
   cover_art_sizes: Nullable<CID>
   is_unlisted: boolean
@@ -135,7 +135,7 @@ export type CollectionMetadata = {
   content_list_contents: {
     digital_content_ids: Array<{ time: number; digital_content: ID; uid?: UID }>
   }
-  agreements?: AgreementMetadata[]
+  digitalContents?: DigitalContentMetadata[]
   digital_content_count: number
   content_list_id: ID
   cover_art: CID | null

@@ -13,7 +13,7 @@ from src.queries.get_trending_content_lists import (
 )
 from src.queries.get_trending_digital_contents import _get_trending_digital_contents_with_session
 from src.queries.get_underground_trending import (
-    GetUndergroundTrendingAgreementcArgs,
+    GetUndergroundTrendingDigitalContentcArgs,
     _get_underground_trending_with_session,
 )
 from src.tasks.aggregates import get_latest_blocknumber
@@ -50,12 +50,12 @@ def dispatch_trending_challenges(
     challenge_bus: ChallengeEventBus,
     challenge_event: ChallengeEvent,
     latest_blocknumber: int,
-    agreements,
+    digitalContents,
     version: str,
     date: datetime,
     type: TrendingType,
 ):
-    for idx, digital_content in enumerate(agreements):
+    for idx, digital_content in enumerate(digitalContents):
         challenge_bus.dispatch(
             challenge_event,
             latest_blocknumber,
@@ -118,7 +118,7 @@ def enqueue_trending_challenges(
             strategy = trending_strategy_factory.get_strategy(
                 TrendingType.UNDERGROUND_AGREEMENTS, version
             )
-            underground_args: GetUndergroundTrendingAgreementcArgs = {
+            underground_args: GetUndergroundTrendingDigitalContentcArgs = {
                 "offset": 0,
                 "limit": TRENDING_LIMIT,
             }

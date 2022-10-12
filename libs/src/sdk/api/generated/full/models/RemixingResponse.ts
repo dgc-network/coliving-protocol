@@ -14,11 +14,11 @@
  */
 
 import {
-    AgreementFull,
-    AgreementFullFromJSON,
-    AgreementFullFromJSONTyped,
-    AgreementFullToJSON,
-} from './agreementFull';
+    DigitalContentFull,
+    DigitalContentFullFromJSON,
+    DigitalContentFullFromJSONTyped,
+    DigitalContentFullToJSON,
+} from './digitalContentFull';
 import {
     VersionMetadata,
     VersionMetadataFromJSON,
@@ -76,9 +76,9 @@ export interface RemixingResponse {
     version: VersionMetadata;
     /**
      * 
-     * @type {Array<AgreementFull>}
+     * @type {Array<DigitalContentFull>}
      * @memberof RemixingResponse
      */
-    data?: Array<AgreementFull>;
+    data?: Array<DigitalContentFull>;
 }
 

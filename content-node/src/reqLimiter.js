@@ -84,13 +84,13 @@ const userReqLimiter = rateLimit({
   }
 })
 
-const agreementReqLimiter = rateLimit({
+const digitalContentReqLimiter = rateLimit({
   store: new RedisStore({
     client: client,
-    prefix: 'agreementReqLimiter',
+    prefix: 'digitalContentReqLimiter',
     expiry: 60 * 60 // one hour in seconds
   }),
-  max: config.get('rateLimitingAgreementReqLimit'), // max requests per hour
+  max: config.get('rateLimitingDigitalContentReqLimit'), // max requests per hour
   keyGenerator: ipKeyGenerator
 })
 
@@ -246,7 +246,7 @@ const getRateLimiterMiddleware = () => {
 
 module.exports = {
   userReqLimiter,
-  agreementReqLimiter,
+  digitalContentReqLimiter,
   colivingUserReqLimiter,
   metadataReqLimiter,
   imageReqLimiter,

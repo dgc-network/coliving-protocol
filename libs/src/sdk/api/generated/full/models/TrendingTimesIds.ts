@@ -14,11 +14,11 @@
  */
 
 import {
-    AgreementId,
-    AgreementIdFromJSON,
-    AgreementIdFromJSONTyped,
-    AgreementIdToJSON,
-} from './agreementId';
+    DigitalContentId,
+    DigitalContentIdFromJSON,
+    DigitalContentIdFromJSONTyped,
+    DigitalContentIdToJSON,
+} from './digitalContentId';
 
 /**
  * 
@@ -28,21 +28,21 @@ import {
 export interface TrendingTimesIds {
     /**
      * 
-     * @type {Array<AgreementId>}
+     * @type {Array<DigitalContentId>}
      * @memberof TrendingTimesIds
      */
-    week?: Array<AgreementId>;
+    week?: Array<DigitalContentId>;
     /**
      * 
-     * @type {Array<AgreementId>}
+     * @type {Array<DigitalContentId>}
      * @memberof TrendingTimesIds
      */
-    month?: Array<AgreementId>;
+    month?: Array<DigitalContentId>;
     /**
      * 
-     * @type {Array<AgreementId>}
+     * @type {Array<DigitalContentId>}
      * @memberof TrendingTimesIds
      */
-    year?: Array<AgreementId>;
+    year?: Array<DigitalContentId>;
 }
 

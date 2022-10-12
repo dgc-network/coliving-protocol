@@ -28,14 +28,14 @@ const supportings = await colivingSdk.users.getSupportings({
 })
 `;
 
-export const getTopAgreementTags = `
-const tags = await colivingSdk.users.getTopAgreementTags({
+export const getTopDigitalContentTags = `
+const tags = await colivingSdk.users.getTopDigitalContentTags({
     id: "eAZl3"
 })
 `;
 
-export const getAgreementsByUser = `
-const agreements = await colivingSdk.users.getAgreementsByUser({
+export const getDigitalContentsByUser = `
+const digitalContents = await colivingSdk.users.getDigitalContentsByUser({
     id: "eAZl3"
 })
 `;

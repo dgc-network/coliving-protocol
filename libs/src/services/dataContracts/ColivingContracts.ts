@@ -3,7 +3,7 @@ import { Utils, Logger } from '../../utils'
 // load classes wrapping contracts
 import { RegistryClient } from './registryClient'
 import { UserFactoryClient } from './userFactoryClient'
-import { AgreementFactoryClient } from './agreementFactoryClient'
+import { DigitalContentFactoryClient } from './digitalContentFactoryClient'
 import { SocialFeatureFactoryClient } from './socialFeatureFactoryClient'
 import { ContentListFactoryClient } from './contentListFactoryClient'
 import { UserLibraryFactoryClient } from './userLibraryFactoryClient'
@@ -16,7 +16,7 @@ import type { ContractClient } from '../contracts/contractClient'
 // import data contract ABI's
 const RegistryABI = Utils.importDataContractABI('Registry.json').abi
 const UserFactoryABI = Utils.importDataContractABI('UserFactory.json').abi
-const AgreementFactoryABI = Utils.importDataContractABI('AgreementFactory.json').abi
+const DigitalContentFactoryABI = Utils.importDataContractABI('DigitalContentFactory.json').abi
 const SocialFeatureFactoryABI = Utils.importDataContractABI(
   'SocialFeatureFactory.json'
 ).abi
@@ -35,7 +35,7 @@ const UserReplicaSetManagerABI = Utils.importDataContractABI(
 
 // define contract registry keys
 const UserFactoryRegistryKey = 'UserFactory'
-const AgreementFactoryRegistryKey = 'AgreementFactory'
+const DigitalContentFactoryRegistryKey = 'DigitalContentFactory'
 const SocialFeatureFactoryRegistryKey = 'SocialFeatureFactory'
 const ContentListFactoryRegistryKey = 'ContentListFactory'
 const UserLibraryFactoryRegistryKey = 'UserLibraryFactory'
@@ -49,7 +49,7 @@ export class ColivingContracts {
   logger: Logger
   RegistryClient: RegistryClient
   UserFactoryClient: UserFactoryClient
-  AgreementFactoryClient: AgreementFactoryClient
+  DigitalContentFactoryClient: DigitalContentFactoryClient
   SocialFeatureFactoryClient: SocialFeatureFactoryClient
   ContentListFactoryClient: ContentListFactoryClient
   UserLibraryFactoryClient: UserLibraryFactoryClient
@@ -86,10 +86,10 @@ export class ColivingContracts {
       this.logger
     )
 
-    this.AgreementFactoryClient = new AgreementFactoryClient(
+    this.DigitalContentFactoryClient = new DigitalContentFactoryClient(
       this.web3Manager,
-      AgreementFactoryABI,
-      AgreementFactoryRegistryKey,
+      DigitalContentFactoryABI,
+      DigitalContentFactoryRegistryKey,
       this.getRegistryAddressForContract,
       this.logger
     )
@@ -128,7 +128,7 @@ export class ColivingContracts {
 
     this.contractClients = [
       this.UserFactoryClient,
-      this.AgreementFactoryClient,
+      this.DigitalContentFactoryClient,
       this.SocialFeatureFactoryClient,
       this.ContentListFactoryClient,
       this.UserLibraryFactoryClient,

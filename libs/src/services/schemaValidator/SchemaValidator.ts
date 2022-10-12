@@ -1,9 +1,9 @@
 import { validate } from 'jsonschema'
 
-import AgreementSchema from './schemas/agreementSchema.json'
+import DigitalContentSchema from './schemas/digitalContentSchema.json'
 import UserSchema from './schemas/userSchema.json'
 
-export const agreementSchemaType = 'AgreementSchema'
+export const digitalContentSchemaType = 'DigitalContentSchema'
 export const userSchemaType = 'UserSchema'
 
 type SchemaConfig = {
@@ -18,10 +18,10 @@ type SchemaConfig = {
   validate?: (obj: Record<string, unknown>) => void
 }
 
-type SchemaType = typeof agreementSchemaType | typeof userSchemaType
+type SchemaType = typeof digitalContentSchemaType | typeof userSchemaType
 
 export type Schemas = {
-  AgreementSchema: SchemaConfig
+  DigitalContentSchema: SchemaConfig
   UserSchema: SchemaConfig
 }
 
@@ -32,7 +32,7 @@ export class SchemaValidator {
     /**
      * Fully formed schemas object looks like the below
      * {
-     *   'AgreementSchema': {
+     *   'DigitalContentSchema': {
      *     schema: <schemaJSON>,
      *     baseDefinition: 'String', //name of base definition property in schema
      *     validate: function // returns error if not validated correctly, otherwise null
@@ -43,8 +43,8 @@ export class SchemaValidator {
      * validate works like this `this.UserSchema.validate(userObj)`
      */
     this.schemas = {
-      [agreementSchemaType]: {
-        schema: AgreementSchema,
+      [digitalContentSchemaType]: {
+        schema: DigitalContentSchema,
         baseDefinition: 'DigitalContent'
       },
       [userSchemaType]: {

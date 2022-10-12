@@ -35,17 +35,17 @@ const contentList = await colivingSdk.contentLists.getContentList({
 
 ___
 
-### getContentListAgreements
+### getContentListDigitalContents
 
-**getContentListAgreements**(`requestParameters`): `Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)[]\>
+**getContentListDigitalContents**(`requestParameters`): `Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)[]\>
 
-Fetch agreements within a contentList.
+Fetch digitalContents within a contentList.
 
 Example:
 
 ```typescript
 
-const agreements = await colivingSdk.contentLists.getContentListAgreements({
+const digitalContents = await colivingSdk.contentLists.getContentListDigitalContents({
     contentListId: "AxRP0",
 });
 
@@ -55,7 +55,7 @@ const agreements = await colivingSdk.contentLists.getContentListAgreements({
 
 | Name | Type |
 | :------ | :------ |
-| `requestParameters` | [`GetContentListAgreementsRequest`](../interfaces/GetContentListAgreementsRequest.md) |
+| `requestParameters` | [`GetContentListDigitalContentsRequest`](../interfaces/GetContentListDigitalContentsRequest.md) |
 
 #### Returns
 

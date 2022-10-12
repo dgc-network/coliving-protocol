@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       type: DataTypes.STRING
     },
-    pinnedAgreementId: {
+    pinnedDigitalContentId: {
       allowNull: true,
       type: DataTypes.INTEGER
     },

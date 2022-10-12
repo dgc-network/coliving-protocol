@@ -5,18 +5,18 @@ const redisClient = require('./redis')
 
 // Processing fns
 const {
-  handleAgreementContentRoute: agreementContentUpload,
+  handleDigitalContentContentRoute: digitalContentContentUpload,
   handleTranscodeAndSegment: transcodeAndSegment,
   handleTranscodeHandOff: transcodeHandOff
-} = require('./components/agreements/agreementsComponentService')
+} = require('./components/digitalContents/digitalContentsComponentService')
 const {
   processTranscodeAndSegments
-} = require('./components/agreements/agreementContentUploadManager')
+} = require('./components/digitalContents/digitalContentUploadManager')
 
 const MAX_CONCURRENCY = 100
 const EXPIRATION_SECONDS = 86400 // 24 hours in seconds
 const PROCESS_NAMES = Object.freeze({
-  agreementContentUpload: 'agreementContentUpload',
+  digitalContentContentUpload: 'digitalContentContentUpload',
   transcodeAndSegment: 'transcodeAndSegment',
   processTranscodeAndSegments: 'processTranscodeAndSegments',
   transcodeHandOff: 'transcodeHandOff'
@@ -78,7 +78,7 @@ class AsyncProcessingQueue {
         this.logStatus(
           'Failed to hand off transcode. Retrying upload to current node...'
         )
-        await this.addAgreementContentUploadTask({
+        await this.addDigitalContentContentUploadTask({
           logContext,
           req: job.data.req
         })
@@ -129,8 +129,8 @@ class AsyncProcessingQueue {
 
   // TODO: Make these jobs background processes
 
-  async addAgreementContentUploadTask(params) {
-    params.task = PROCESS_NAMES.agreementContentUpload
+  async addDigitalContentContentUploadTask(params) {
+    params.task = PROCESS_NAMES.digitalContentContentUpload
     return this.addTask(params)
   }
 
@@ -172,8 +172,8 @@ class AsyncProcessingQueue {
   getFn(task) {
     switch (task) {
       // Called via /digital_content_async route (runs on primary)
-      case PROCESS_NAMES.agreementContentUpload:
-        return agreementContentUpload
+      case PROCESS_NAMES.digitalContentContentUpload:
+        return digitalContentContentUpload
 
       // Called via /transcode_and_segment (running on node that has been handed off digital_content)
       case PROCESS_NAMES.transcodeAndSegment:
@@ -252,7 +252,7 @@ class AsyncProcessingQueue {
    * Example response:
    *
    * {
-   *    agreementContentUpload: 1,
+   *    digitalContentContentUpload: 1,
    *    transcodeAndSegment: 4,
    *    processTranscodeAndSegments: 0,
    *    transcodeHandOff: 2
@@ -262,7 +262,7 @@ class AsyncProcessingQueue {
    */
   getTasks(jobs) {
     const response = {
-      agreementContentUpload: 0,
+      digitalContentContentUpload: 0,
       transcodeAndSegment: 0,
       processTranscodeAndSegments: 0,
       transcodeHandOff: 0

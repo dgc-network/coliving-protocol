@@ -34,7 +34,7 @@ describe('test AsyncProcessingQueue', function () {
       })
 
     let callCount = 0
-    sinon.stub(apq, 'addAgreementContentUploadTask').callsFake(async () => {
+    sinon.stub(apq, 'addDigitalContentContentUploadTask').callsFake(async () => {
       callCount++
     })
 
@@ -69,7 +69,7 @@ describe('test AsyncProcessingQueue', function () {
       })
 
     let callCount = 0
-    sinon.stub(apq, 'addAgreementContentUploadTask').callsFake(async () => {
+    sinon.stub(apq, 'addDigitalContentContentUploadTask').callsFake(async () => {
       callCount++
     })
 

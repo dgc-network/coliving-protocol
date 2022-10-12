@@ -7,7 +7,7 @@ import { EthWeb3Config, EthWeb3Manager } from '../services/ethWeb3Manager'
 import { IdentityService } from '../services/identity'
 import { UserStateManager } from '../userStateManager'
 import { Oauth } from './oauth'
-import { AgreementsApi } from './api/agreementsApi'
+import { DigitalContentsApi } from './api/digitalContentsApi'
 import { ResolveApi } from './api/resolveApi'
 import {
   Configuration,
@@ -20,7 +20,7 @@ import {
   ContentListsApi as ContentListsApiFull,
   ReactionsApi as ReactionsApiFull,
   SearchApi as SearchApiFull,
-  AgreementsApi as AgreementsApiFull,
+  DigitalContentsApi as DigitalContentsApiFull,
   UsersApi as UsersApiFull,
   TipsApi as TipsApiFull
 } from './api/generated/full'
@@ -171,14 +171,14 @@ const initializeApis = ({
     }
   })
 
-  const agreements = new AgreementsApi(generatedApiClientConfig, discoveryNode)
+  const digitalContents = new DigitalContentsApi(generatedApiClientConfig, discoveryNode)
   const users = new UsersApi(generatedApiClientConfig)
   const contentLists = new ContentListsApi(generatedApiClientConfig)
   const tips = new TipsApi(generatedApiClientConfig)
   const { resolve } = new ResolveApi(generatedApiClientConfig)
 
   const full = {
-    agreements: new AgreementsApiFull(generatedApiClientConfig as any),
+    digitalContents: new DigitalContentsApiFull(generatedApiClientConfig as any),
     users: new UsersApiFull(generatedApiClientConfig as any),
     search: new SearchApiFull(generatedApiClientConfig as any),
     contentLists: new ContentListsApiFull(generatedApiClientConfig as any),
@@ -187,7 +187,7 @@ const initializeApis = ({
   }
 
   return {
-    agreements,
+    digitalContents,
     users,
     contentLists,
     tips,

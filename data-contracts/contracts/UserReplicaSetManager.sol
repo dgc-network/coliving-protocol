@@ -273,7 +273,7 @@ contract UserReplicaSetManager is SigningLogicInitializable, RegistryContract {
         ).getUser(_userId);
         require(userWallet != address(0x00), "Valid user required");
 
-        // Valid updaters include userWallet (landlord account), existing primary, existing secondary, or contract deployer
+        // Valid updaters include userWallet (author account), existing primary, existing secondary, or contract deployer
         if (signer == userWallet ||
             signer == spIdToContentNodeWallets[_oldPrimaryId].delegateOwnerWallet ||
             signer == userReplicaSetBootstrapAddress

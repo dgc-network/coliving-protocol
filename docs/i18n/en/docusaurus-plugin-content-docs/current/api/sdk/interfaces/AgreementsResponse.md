@@ -1,7 +1,7 @@
 ---
-id: "AgreementsResponse"
-title: "Interface: AgreementsResponse"
-sidebar_label: "AgreementsResponse"
+id: "DigitalContentsResponse"
+title: "Interface: DigitalContentsResponse"
+sidebar_label: "DigitalContentsResponse"
 sidebar_position: 0
 custom_edit_url: null
 pagination_prev: null
@@ -10,7 +10,7 @@ pagination_next: null
 
 **`export`**
 
-**`interface`** AgreementsResponse
+**`interface`** DigitalContentsResponse
 
 ## Properties
 
@@ -18,4 +18,4 @@ pagination_next: null
 
  `Optional` **data**: [`DigitalContent`](DigitalContent.md)[]
 
-**`memberof`** AgreementsResponse
+**`memberof`** DigitalContentsResponse

@@ -6,7 +6,7 @@ from sqlalchemy.sql.elements import and_, or_
 from src.models.content_lists.content_list import ContentList
 from src.models.social.repost import Repost, RepostType
 from src.models.social.save import SaveType
-from src.models.agreements.digital_content import DigitalContent
+from src.models.digitalContents.digital_content import DigitalContent
 from src.models.users.user import User
 from src.queries import response_name_constants
 from src.queries.query_helpers import (
@@ -37,7 +37,7 @@ def get_repost_feed_for_user(user_id: int, args: GetRepostFeedForUserArgs):
         args: GetRepostFeedForUserArgs The parsed args from the request
 
     Returns:
-        Array of agreements and contentLists (albums) interspersed ordered by
+        Array of digitalContents and contentLists (albums) interspersed ordered by
         most recent repost
     """
     db = get_db_read_replica()
@@ -62,8 +62,8 @@ def _get_repost_feed_for_user(
         )
 
     # Query all reposts by a user.
-    # Outerjoin both agreements and contentLists to collect both
-    # so that a single limit/offset pagination does what we intend when agreements or contentLists
+    # Outerjoin both digitalContents and contentLists to collect both
+    # so that a single limit/offset pagination does what we intend when digitalContents or contentLists
     # are deleted.
     repost_query = (
         session.query(Repost, DigitalContent, ContentList)
@@ -117,7 +117,7 @@ def _get_repost_feed_for_user(
         repost["repost_item_id"]: repost for repost in content_list_reposts
     }
 
-    agreements = helpers.query_result_to_list(
+    digitalContents = helpers.query_result_to_list(
         filter(None, [repost[1] for repost in reposts])
     )
     contentLists = helpers.query_result_to_list(
@@ -125,13 +125,13 @@ def _get_repost_feed_for_user(
     )
 
     # get digital_content ids
-    digital_content_ids = [digital_content["digital_content_id"] for digital_content in agreements]
+    digital_content_ids = [digital_content["digital_content_id"] for digital_content in digitalContents]
 
     # get contentList ids
     content_list_ids = [contentList["content_list_id"] for contentList in contentLists]
 
     # populate full metadata
-    agreements = populate_digital_content_metadata(session, digital_content_ids, agreements, current_user_id)
+    digitalContents = populate_digital_content_metadata(session, digital_content_ids, digitalContents, current_user_id)
     contentLists = populate_content_list_metadata(
         session,
         content_list_ids,
@@ -142,7 +142,7 @@ def _get_repost_feed_for_user(
     )
 
     # add activity timestamps
-    for digital_content in agreements:
+    for digital_content in digitalContents:
         digital_content[response_name_constants.activity_timestamp] = digital_content_repost_dict[
             digital_content["digital_content_id"]
         ]["created_at"]
@@ -152,7 +152,7 @@ def _get_repost_feed_for_user(
             contentList["content_list_id"]
         ]["created_at"]
 
-    unsorted_feed = agreements + contentLists
+    unsorted_feed = digitalContents + contentLists
 
     # sort feed by repost timestamp desc
     feed_results = sorted(

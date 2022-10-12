@@ -30,6 +30,6 @@ Coliving is the most direct to consumer alternative to existing digital streamin
 
 ## Documentation
 
-This documentation site guides you through how to familiarize yourself with Coliving concepts, how to participate in the protocol & community from a technical perspective, and how to interact with and use the $LIVE token.
+This documentation site guides you through how to familiarize yourself with Coliving concepts, how to participate in the protocol & community from a technical perspective, and how to interact with and use the $DGCO token.
 
 If you've found yourself here and are confused, check out the reference music player implementation at [coliving.lol](https://coliving.lol) and join our [Discord](https://discord.com/invite/coliving).

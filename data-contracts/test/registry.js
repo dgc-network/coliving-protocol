@@ -6,9 +6,9 @@ import {
   Registry,
   TestContract,
   UserStorage,
-  AgreementStorage,
+  DigitalContentStorage,
   UserFactory,
-  AgreementFactory
+  DigitalContentFactory
 } from './_lib/artifacts.js'
 import { getUserFromFactory } from './utils/getters'
 import { validateObj } from './utils/validator'
@@ -189,17 +189,17 @@ contract('Registry', async (accounts) => {
     const networkId = Registry.network_id
     let userStorage = await UserStorage.new(registry.address)
     await registry.addContract(_constants.userStorageKey, userStorage.address)
-    let agreementStorage = await AgreementStorage.new(registry.address)
-    await registry.addContract(_constants.agreementStorageKey, agreementStorage.address)
+    let digitalContentStorage = await DigitalContentStorage.new(registry.address)
+    await registry.addContract(_constants.digitalContentStorageKey, digitalContentStorage.address)
     let userFactory = await UserFactory.new(registry.address, _constants.userStorageKey, networkId, accounts[5])
     await registry.addContract(_constants.userFactoryKey, userFactory.address)
-    let agreementFactory = await AgreementFactory.new(registry.address, _constants.agreementStorageKey, _constants.userFactoryKey, networkId)
-    await registry.addContract(_constants.agreementFactoryKey, agreementFactory.address)
+    let digitalContentFactory = await DigitalContentFactory.new(registry.address, _constants.digitalContentStorageKey, _constants.userFactoryKey, networkId)
+    await registry.addContract(_constants.digitalContentFactoryKey, digitalContentFactory.address)
 
     // perform expected behavior - add+validate user, add+validate digital_content
     let userId = 1
-    let agreementId = 1
-    let agreementId2 = 2
+    let digitalContentId = 1
+    let digitalContentId2 = 2
     let userWallet = accounts[1]
     await _lib.addUserAndValidate(
       userFactory,
@@ -209,9 +209,9 @@ contract('Registry', async (accounts) => {
       _constants.userHandle1,
       true
     )
-    await _lib.addAgreementAndValidate(
-      agreementFactory,
-      agreementId,
+    await _lib.addDigitalContentAndValidate(
+      digitalContentFactory,
+      digitalContentId,
       userWallet,
       userId,
       _constants.testMultihash.digest2,
@@ -225,19 +225,19 @@ contract('Registry', async (accounts) => {
     // re-point Coliving contracts to new registry
     await userStorage.setRegistry(registry2.address)
     await registry2.addContract(_constants.userStorageKey, userStorage.address)
-    await agreementStorage.setRegistry(registry2.address)
-    await registry2.addContract(_constants.agreementStorageKey, agreementStorage.address)
+    await digitalContentStorage.setRegistry(registry2.address)
+    await registry2.addContract(_constants.digitalContentStorageKey, digitalContentStorage.address)
     await userFactory.setRegistry(registry2.address)
     await registry2.addContract(_constants.userFactoryKey, userFactory.address)
-    await agreementFactory.setRegistry(registry2.address)
-    await registry2.addContract(_constants.agreementFactoryKey, agreementFactory.address)
+    await digitalContentFactory.setRegistry(registry2.address)
+    await registry2.addContract(_constants.digitalContentFactoryKey, digitalContentFactory.address)
 
     // perform expected behavior - retrieve+validate previous user; add+validate new digital_content with previous user
     let user = await getUserFromFactory(userId, userFactory)
     validateObj(user, { wallet: userWallet, handle: toStr(_constants.userHandle1) })
-    await _lib.addAgreementAndValidate(
-      agreementFactory,
-      agreementId2,
+    await _lib.addDigitalContentAndValidate(
+      digitalContentFactory,
+      digitalContentId2,
       userWallet,
       userId,
       _constants.testMultihash.digest2,

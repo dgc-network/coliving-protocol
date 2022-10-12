@@ -69,7 +69,7 @@ const Main = () => {
                   <div className="card__body">
                     <p>
                       <Translate description="rest-api">
-                        Query, stream, and search Landlords, Agreements, and ContentLists
+                        Query, stream, and search Landlords, DigitalContents, and ContentLists
                         from your own app, game, or project
                       </Translate>
                     </p>
@@ -121,13 +121,13 @@ const Main = () => {
                 <div className="card">
                   <div className="card__header">
                     <h3>
-                      <Translate description="digitalcoin">🎧 $LIVE</Translate>
+                      <Translate description="digitalcoin">🎧 $DGCO</Translate>
                     </h3>
                   </div>
                   <div className="card__body">
                     <p>
                       <Translate description="learn-about-the-token">
-                        Learn about the $LIVE Token and how it keeps the
+                        Learn about the $DGCO Token and how it keeps the
                         network secure & operational
                       </Translate>
                     </p>
@@ -148,7 +148,7 @@ const Main = () => {
                   <div className="card__body">
                     <p>
                       <Translate description="staking-and-delegating">
-                        Stake & delegate the $LIVE token, earn rewards, and
+                        Stake & delegate the $DGCO token, earn rewards, and
                         participate in Governance
                       </Translate>
                     </p>

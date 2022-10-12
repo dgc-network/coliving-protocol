@@ -1,7 +1,7 @@
 'use strict'
 
 /**
- * Content Tables = ColivingUsers, Agreements, Files
+ * Content Tables = ColivingUsers, DigitalContents, Files
  * CNodeUsers Table considered a Reference Table only
  */
 
@@ -16,7 +16,7 @@ module.exports = {
     // Create Clock table
     await createClockRecordsTable(queryInterface, Sequelize, transaction)
 
-    // Add composite unique constraint on (blockchainId, clock) to ColivingUsers and Agreements
+    // Add composite unique constraint on (blockchainId, clock) to ColivingUsers and DigitalContents
     // Add composite unique constraint on (cnodeUserUUID, clock) to Files
     await addCompositeUniqueConstraints(queryInterface, Sequelize, transaction)
 
@@ -38,7 +38,7 @@ async function addClockColumn (queryInterface, Sequelize, transaction) {
     unique: false,
     allowNull: true
   }, { transaction })
-  await queryInterface.addColumn('Agreements', 'clock', {
+  await queryInterface.addColumn('DigitalContents', 'clock', {
     type: Sequelize.INTEGER,
     unique: false,
     allowNull: true
@@ -61,11 +61,11 @@ async function addCompositeUniqueConstraints (queryInterface, Sequelize, transac
     }
   )
   await queryInterface.addConstraint(
-    'Agreements',
+    'DigitalContents',
     {
       type: 'UNIQUE',
       fields: ['blockchainId', 'clock'],
-      name: 'Agreements_unique_(blockchainId,clock)',
+      name: 'DigitalContents_unique_(blockchainId,clock)',
       transaction
     }
   )

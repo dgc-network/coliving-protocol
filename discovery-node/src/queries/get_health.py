@@ -18,7 +18,7 @@ from src.queries.get_oldest_unarchived_play import get_oldest_unarchived_play
 from src.queries.get_sol_plays import get_sol_play_health_info
 from src.queries.get_sol_rewards_manager import get_sol_rewards_manager_health_info
 from src.queries.get_sol_user_bank import get_sol_user_bank_health_info
-from src.queries.get_spl_live import get_spl_live_health_info
+from src.queries.get_spl_digitalcoin import get_spl_digitalcoin_health_info
 from src.utils import db_session, helpers, redis_connection, web3_provider
 from src.utils.config import shared_config
 from src.utils.elasticdsl import ES_INDEXES, esclient
@@ -192,7 +192,7 @@ def get_health(args: GetHealthArgs, use_redis_cache: bool = True) -> Tuple[Dict,
     play_health_info = get_play_health_info(redis, plays_count_max_drift)
     rewards_manager_health_info = get_rewards_manager_health_info(redis)
     user_bank_health_info = get_user_bank_health_info(redis)
-    spl_live_info = get_spl_live_info(redis)
+    spl_digitalcoin_info = get_spl_digitalcoin_info(redis)
     reactions_health_info = get_reactions_health_info(
         redis,
         args.get("reactions_max_indexing_drift"),
@@ -290,7 +290,7 @@ def get_health(args: GetHealthArgs, use_redis_cache: bool = True) -> Tuple[Dict,
         "rewards_manager": rewards_manager_health_info,
         "user_bank": user_bank_health_info,
         "openresty_public_key": openresty_public_key,
-        "spl_live_info": spl_live_info,
+        "spl_digitalcoin_info": spl_digitalcoin_info,
         "reactions": reactions_health_info,
         "infra_setup": infra_setup,
     }
@@ -558,13 +558,13 @@ def get_reactions_health_info(
     }
 
 
-def get_spl_live_info(redis: Redis, max_drift: Optional[int] = None) -> SolHealthInfo:
+def get_spl_digitalcoin_info(redis: Redis, max_drift: Optional[int] = None) -> SolHealthInfo:
     if redis is None:
-        raise Exception("Invalid arguments for get_spl_live_info")
+        raise Exception("Invalid arguments for get_spl_digitalcoin_info")
 
     current_time_utc = datetime.utcnow()
 
-    tx_health_info = get_spl_live_health_info(redis, current_time_utc)
+    tx_health_info = get_spl_digitalcoin_health_info(redis, current_time_utc)
     # If spl digitalcoin indexing max drift provided, perform comparison
     is_unhealthy = bool(max_drift and max_drift < tx_health_info["time_diff"])
 

@@ -39,7 +39,7 @@ class ServiceRegistry {
     // Some services are initialized to `null` and will be initialized in helper functions
 
     this.redis = redisClient // Redis Client
-    this.prometheusRegistry = new PrometheusRegistry() // Service that agreements metrics
+    this.prometheusRegistry = new PrometheusRegistry() // Service that digitalContents metrics
     this.libs = null // instance of Coliving Libs
     this.blacklistManager = BlacklistManager // Service that handles blacklisted content
     this.stateMachineManager = null // Service that manages user states
@@ -51,7 +51,7 @@ class ServiceRegistry {
     this.monitoringQueue = new MonitoringQueue() // Recurring job to monitor node state & performance metrics
     this.sessionExpirationQueue = new SessionExpirationQueue() // Recurring job to clear expired session tokens from Redis and DB
     this.imageProcessingQueue = ImageProcessingQueue // Resizes all images on Coliving
-    this.transcodingQueue = TranscodingQueue // Transcodes and segments all agreements
+    this.transcodingQueue = TranscodingQueue // Transcodes and segments all digitalContents
     this.skippedCIDsRetryQueue = null // Retries syncing CIDs that were unable to sync on first try
     this.syncQueue = null // Handles syncing data to users' replica sets
     this.asyncProcessingQueue = null // Handles all jobs that should be performed asynchronously. Currently handles digital_content upload and digital_content hand off

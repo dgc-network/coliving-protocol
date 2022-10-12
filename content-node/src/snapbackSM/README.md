@@ -36,7 +36,7 @@ To ensure user data is present, we must have some sort of data redundancy across
 - Fetches all users with the node in their replica sets
 - Queries the health check route for any peer and determines whether or not a peer is healthy
 - Creates a mapping of peer to its spId
-- Agreements the number of times a primary has failed its health check route
+- DigitalContents the number of times a primary has failed its health check route
 - Contains helper functions to build proper data structures for `snapbackSM.js`
 
 ### TODO:

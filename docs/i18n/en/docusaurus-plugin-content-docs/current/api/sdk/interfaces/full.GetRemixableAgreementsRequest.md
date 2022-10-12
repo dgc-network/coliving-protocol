@@ -1,13 +1,13 @@
 ---
-id: "full.GetRemixableAgreementsRequest"
-title: "Interface: GetRemixableAgreementsRequest"
-sidebar_label: "GetRemixableAgreementsRequest"
+id: "full.GetRemixableDigitalContentsRequest"
+title: "Interface: GetRemixableDigitalContentsRequest"
+sidebar_label: "GetRemixableDigitalContentsRequest"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).GetRemixableAgreementsRequest
+[full](../namespaces/full.md).GetRemixableDigitalContentsRequest
 
 ## Properties
 
@@ -31,4 +31,4 @@ ___
 
  `Optional` **withUsers**: `boolean`
 
-Boolean to include user info with agreements
+Boolean to include user info with digitalContents

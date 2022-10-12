@@ -12,8 +12,8 @@ custom_edit_url: null
 
 The Coliving JavaScript (TypeScript) SDK allows you to easily build on and interact with the Coliving protocol.
 - ✍️ Log In with Coliving
-- 🎵 Fetch and stream agreements
-- 🔍 Search and display users, agreements, and contentLists
+- 🎵 Fetch and stream digitalContents
+- 🔍 Search and display users, digitalContents, and contentLists
 
 👷‍♀️ We're actively working on building out more SDK features and functionality - stay tuned!
 
@@ -43,7 +43,7 @@ const colivingSdk = sdk({ appName: 'Name of your app goes here' })
 #### 3. Make your first API call using the SDK!
 
 ```js
-const digital_content = await colivingSdk.agreements.getAgreement({ agreementId: 'D7KyD' })
+const digital_content = await colivingSdk.digitalContents.getDigitalContent({ digitalContentId: 'D7KyD' })
 console.log(digital_content, 'DigitalContent fetched!')
 ```
 
@@ -58,7 +58,7 @@ window.Web3 = Web3
 
 const colivingSdk = sdk({ appName: 'My Example App' })
 
-const digital_content = await colivingSdk.agreements.getAgreement({ agreementId: 'D7KyD' })
+const digital_content = await colivingSdk.digitalContents.getDigitalContent({ digitalContentId: 'D7KyD' })
 console.log(digital_content, 'DigitalContent fetched!')
 ```
 
@@ -84,7 +84,7 @@ const colivingSdk = window.colivingSdk({ appName: 'Name of your app goes here' }
 #### 3. Make your first API call using the SDK!
 
 ```js
-const digital_content = await colivingSdk.agreements.getAgreement({ agreementId: 'D7KyD' })
+const digital_content = await colivingSdk.digitalContents.getDigitalContent({ digitalContentId: 'D7KyD' })
 ```
 
 #### Full example
@@ -100,7 +100,7 @@ const digital_content = await colivingSdk.agreements.getAgreement({ agreementId:
         const colivingSdk = window.colivingSdk({
           appName: "My Example App",
         });
-        const digital_content = await colivingSdk.agreements.getAgreement({ agreementId: 'D7KyD' });
+        const digital_content = await colivingSdk.digitalContents.getDigitalContent({ digitalContentId: 'D7KyD' });
         console.log(digital_content, "DigitalContent fetched!");
       }
       fn()

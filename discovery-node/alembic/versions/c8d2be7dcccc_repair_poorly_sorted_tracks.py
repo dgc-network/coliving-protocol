@@ -1,10 +1,10 @@
 """repair_poorly_sorted_digital_contents
 
-Agreements on coliving created before datetime(2021, 5, 19, 15, 27, 45) contain improperly sorted segments.
+DigitalContents on coliving created before datetime(2021, 5, 19, 15, 27, 45) contain improperly sorted segments.
 See https://github.com/dgc-network/coliving-protocol/commit/27576f58c4cdfa8e18e3f90f2c427d1e4a7eb51c
 for the forward looking fix.
 
-This migration retroactively repairs older agreements
+This migration retroactively repairs older digitalContents
 
 Revision ID: c8d2be7dcccc
 Revises: d9992d2d598c
@@ -112,7 +112,7 @@ def get_default_value(field, value, model, e):
 
 # Copy of DigitalContent model at time of migration to avoid deps on changing models
 class DigitalContent(Base):
-    __tablename__ = "agreements"
+    __tablename__ = "digitalContents"
 
     blockhash = Column(String, ForeignKey("blocks.blockhash"), nullable=False)
     blocknumber = Column(Integer, ForeignKey("blocks.number"), nullable=False)
@@ -280,7 +280,7 @@ def upgrade():
         # Something is wrong here, we should not have this many. Back out.
         return
 
-    logger.warning(f"Fixing {len(target_digital_contents)} target agreements")
+    logger.warning(f"Fixing {len(target_digital_contents)} target digitalContents")
     for digital_content in target_digital_contents:
         digital_content.digital_content_segments = fix_segments(digital_content.digital_content_segments)
     session.commit()
@@ -300,7 +300,7 @@ def downgrade():
         # Something is wrong here, we should not have this many. Back out.
         return
 
-    logger.warning(f"Un-fixing {len(target_digital_contents)} target agreements")
+    logger.warning(f"Un-fixing {len(target_digital_contents)} target digitalContents")
     for digital_content in target_digital_contents:
         digital_content.digital_content_segments = unfix_segments(digital_content.digital_content_segments)
     session.commit()

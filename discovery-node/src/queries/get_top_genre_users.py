@@ -2,7 +2,7 @@ import logging
 
 from sqlalchemy import asc, desc, func
 from src.models.social.follow import Follow
-from src.models.agreements.digital_content import DigitalContent
+from src.models.digitalContents.digital_content import DigitalContent
 from src.models.users.user import User
 from src.queries.get_unpopulated_users import get_unpopulated_users
 from src.queries.query_helpers import paginate_query, populate_user_metadata
@@ -25,8 +25,8 @@ def get_top_genre_users(args):
     with db.scoped_session() as session:
         with_genres = len(genres) != 0
 
-        # Associate the user w/ a genre by counting the total # of agreements per genre
-        # taking the genre w/ the most agreements (using genre name as secondary sort)
+        # Associate the user w/ a genre by counting the total # of digitalContents per genre
+        # taking the genre w/ the most digitalContents (using genre name as secondary sort)
         user_genre_count_query = (
             session.query(
                 User.user_id.label("user_id"),

@@ -11,24 +11,24 @@
     "message": "🎶 API",
     "description": "api-reference"
   },
-  "Query, stream, and search Arists, Agreements, and ContentLists from your own app, game, or project": {
-    "message": "Query, stream, and search Arists, Agreements, and ContentLists from your own app, game, or project",
+  "Query, stream, and search Arists, DigitalContents, and ContentLists from your own app, game, or project": {
+    "message": "Query, stream, and search Arists, DigitalContents, and ContentLists from your own app, game, or project",
     "description": "rest-api"
   },
-  "🎧 $LIVE": {
-    "message": "🎧 $LIVE",
+  "🎧 $DGCO": {
+    "message": "🎧 $DGCO",
     "description": "digitalcoin"
   },
-  "Learn about the $LIVE Token and how it keeps the network secure & operational": {
-    "message": "Learn about the $LIVE Token and how it keeps the network secure & operational",
+  "Learn about the $DGCO Token and how it keeps the network secure & operational": {
+    "message": "Learn about the $DGCO Token and how it keeps the network secure & operational",
     "description": "learn-about-the-token"
   },
   "🔓 Staking The Network": {
     "message": "🔓 Staking The Network",
     "description": "staking"
   },
-  "Stake & delegate the $LIVE token, earn rewards, and participate in Governance": {
-    "message": "Stake & delegate the $LIVE token, earn rewards, and participate in Governance",
+  "Stake & delegate the $DGCO token, earn rewards, and participate in Governance": {
+    "message": "Stake & delegate the $DGCO token, earn rewards, and participate in Governance",
     "description": "staking-and-delegating"
   },
   "🛠 Run A Node": {
@@ -262,8 +262,8 @@
     "message": "Tags",
     "description": "The title of the tag list page"
   },
-  "Query, stream, and search Landlords, Agreements, and ContentLists from your own app, game, or project": {
-    "message": "Query, stream, and search Landlords, Agreements, and ContentLists from your own app, game, or project",
+  "Query, stream, and search Landlords, DigitalContents, and ContentLists from your own app, game, or project": {
+    "message": "Query, stream, and search Landlords, DigitalContents, and ContentLists from your own app, game, or project",
     "description": "rest-api"
   },
   "🧳 SDK": {

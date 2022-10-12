@@ -1,13 +1,13 @@
 ---
-id: "full.GetTrendingAgreementsWithVersionTimeEnum"
-title: "Enumeration: GetTrendingAgreementsWithVersionTimeEnum"
-sidebar_label: "GetTrendingAgreementsWithVersionTimeEnum"
+id: "full.GetTrendingDigitalContentsWithVersionTimeEnum"
+title: "Enumeration: GetTrendingDigitalContentsWithVersionTimeEnum"
+sidebar_label: "GetTrendingDigitalContentsWithVersionTimeEnum"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).GetTrendingAgreementsWithVersionTimeEnum
+[full](../namespaces/full.md).GetTrendingDigitalContentsWithVersionTimeEnum
 
 **`export`**
 

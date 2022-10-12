@@ -1,7 +1,7 @@
 from sqlalchemy import func
 from src import exceptions
 from src.models.content_lists.content_list import ContentList
-from src.models.agreements.digital_content import DigitalContent
+from src.models.digitalContents.digital_content import DigitalContent
 from src.models.users.user import User
 from src.utils.db_session import get_db_read_replica
 

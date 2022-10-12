@@ -13,9 +13,9 @@ custom_edit_url: null
 
 ## Properties
 
-### agreements
+### digitalContents
 
- **agreements**: [`AgreementFull`](full.AgreementFull.md)[]
+ **digitalContents**: [`DigitalContentFull`](full.DigitalContentFull.md)[]
 
 **`memberof`** SearchModel
 
@@ -47,7 +47,7 @@ ___
 
 ### saved\_digital_contents
 
- `Optional` **saved\_digital_contents**: [`AgreementFull`](full.AgreementFull.md)[]
+ `Optional` **saved\_digital_contents**: [`DigitalContentFull`](full.DigitalContentFull.md)[]
 
 **`memberof`** SearchModel
 

@@ -12,7 +12,7 @@ const { logger } = require('../logging')
 const USER_NODE_IPFS_GATEWAY = config.get('environment').includes('staging') ? 'https://usermetadata.staging.coliving.lol/ipfs/' : 'https://usermetadata.coliving.lol/ipfs/'
 
 const DEFAULT_IMAGE_URL = 'https://download.coliving.lol/static-resources/email/imageProfilePicEmpty.png'
-const DEFAULT_AGREEMENT_IMAGE_URL = 'https://download.coliving.lol/static-resources/email/imageAgreementEmpty.jpg'
+const DEFAULT_AGREEMENT_IMAGE_URL = 'https://download.coliving.lol/static-resources/email/imageDigitalContentEmpty.jpg'
 
 // The number of users to fetch / display per notification (The displayed number of users)
 const USER_FETCH_LIMIT = 10
@@ -171,9 +171,9 @@ async function fetchNotificationMetadata (
   isEmailNotif = false
 ) {
   let userIdsToFetch = [...userIds]
-  let agreementIdsToFetch = []
+  let digitalContentIdsToFetch = []
   let collectionIdsToFetch = []
-  let fetchAgreementRemixParents = []
+  let fetchDigitalContentRemixParents = []
 
   for (let notification of notifications) {
     switch (notification.type) {
@@ -192,7 +192,7 @@ async function fetchNotificationMetadata (
           ...notification.actions
             .map(({ actionEntityId }) => actionEntityId).slice(0, USER_FETCH_LIMIT)
         )
-        agreementIdsToFetch.push(notification.entityId)
+        digitalContentIdsToFetch.push(notification.entityId)
         break
       }
       case NotificationType.Favorite.contentList:
@@ -212,21 +212,21 @@ async function fetchNotificationMetadata (
       case NotificationType.MilestoneFavorite:
       case NotificationType.MilestoneListen: {
         if (notification.actions[0].actionEntityType === Entity.DigitalContent) {
-          agreementIdsToFetch.push(notification.entityId)
+          digitalContentIdsToFetch.push(notification.entityId)
         } else {
           collectionIdsToFetch.push(notification.entityId)
         }
         break
       }
       case NotificationType.Create.digital_content: {
-        agreementIdsToFetch.push(...notification.actions.map(({ actionEntityId }) => actionEntityId))
+        digitalContentIdsToFetch.push(...notification.actions.map(({ actionEntityId }) => actionEntityId))
         break
       }
       case NotificationType.RemixCreate: {
-        agreementIdsToFetch.push(notification.entityId)
+        digitalContentIdsToFetch.push(notification.entityId)
         for (const action of notification.actions) {
           if (action.actionEntityType === Entity.DigitalContent) {
-            agreementIdsToFetch.push(action.actionEntityId)
+            digitalContentIdsToFetch.push(action.actionEntityId)
           } else if (action.actionEntityType === Entity.User) {
             userIdsToFetch.push(action.actionEntityId)
           }
@@ -234,23 +234,23 @@ async function fetchNotificationMetadata (
         break
       }
       case NotificationType.RemixCosign: {
-        agreementIdsToFetch.push(notification.entityId)
-        fetchAgreementRemixParents.push(notification.entityId)
+        digitalContentIdsToFetch.push(notification.entityId)
+        fetchDigitalContentRemixParents.push(notification.entityId)
         for (const action of notification.actions) {
           if (action.actionEntityType === Entity.DigitalContent) {
-            agreementIdsToFetch.push(action.actionEntityId)
+            digitalContentIdsToFetch.push(action.actionEntityId)
           } else if (action.actionEntityType === Entity.User) {
             userIdsToFetch.push(action.actionEntityId)
           }
         }
         break
       }
-      case NotificationType.TrendingAgreement: {
-        agreementIdsToFetch.push(notification.entityId)
+      case NotificationType.TrendingDigitalContent: {
+        digitalContentIdsToFetch.push(notification.entityId)
         break
       }
-      case NotificationType.AddAgreementToContentList: {
-        agreementIdsToFetch.push(notification.entityId)
+      case NotificationType.AddDigitalContentToContentList: {
+        digitalContentIdsToFetch.push(notification.entityId)
         userIdsToFetch.push(notification.metadata.contentListOwnerId)
         collectionIdsToFetch.push(notification.metadata.contentListId)
         break
@@ -293,52 +293,52 @@ async function fetchNotificationMetadata (
     }
   }
 
-  const uniqueAgreementIds = [...new Set(agreementIdsToFetch)]
+  const uniqueDigitalContentIds = [...new Set(digitalContentIdsToFetch)]
 
-  const agreements = []
+  const digitalContents = []
   // Batch digital_content fetches to avoid large request lines
-  const agreementBatchSize = 100 // use default limit
-  for (let agreementBatchOffset = 0; agreementBatchOffset < uniqueAgreementIds.length; agreementBatchOffset += agreementBatchSize) {
-    const agreementBatch = uniqueAgreementIds.slice(agreementBatchOffset, agreementBatchOffset + agreementBatchSize)
-    const agreementsResponse = await coliving.DigitalContent.getAgreements(
-      /** limit */ agreementBatch.length,
+  const digitalContentBatchSize = 100 // use default limit
+  for (let digitalContentBatchOffset = 0; digitalContentBatchOffset < uniqueDigitalContentIds.length; digitalContentBatchOffset += digitalContentBatchSize) {
+    const digitalContentBatch = uniqueDigitalContentIds.slice(digitalContentBatchOffset, digitalContentBatchOffset + digitalContentBatchSize)
+    const digitalContentsResponse = await coliving.DigitalContent.getDigitalContents(
+      /** limit */ digitalContentBatch.length,
       /** offset */ 0,
-      /** idsArray */ agreementBatch
+      /** idsArray */ digitalContentBatch
     )
-    agreements.push(...agreementsResponse)
+    digitalContents.push(...digitalContentsResponse)
   }
 
-  if (!Array.isArray(agreements)) {
-    logger.error(`fetchNotificationMetadata | Unable to fetch digital_content ids ${uniqueAgreementIds.join(',')}`)
+  if (!Array.isArray(digitalContents)) {
+    logger.error(`fetchNotificationMetadata | Unable to fetch digital_content ids ${uniqueDigitalContentIds.join(',')}`)
   }
 
-  const agreementMap = agreements.reduce((tm, digital_content) => {
+  const digitalContentMap = digitalContents.reduce((tm, digital_content) => {
     tm[digital_content.digital_content_id] = digital_content
     return tm
   }, {})
 
-  // Fetch the parents of the remix agreements & add to the agreements map
-  if (fetchAgreementRemixParents.length > 0) {
-    const agreementParentIds = fetchAgreementRemixParents.reduce((parentAgreementIds, remixAgreementId) => {
-      const digital_content = agreementMap[remixAgreementId]
-      const parentIds = (digital_content.remix_of && Array.isArray(digital_content.remix_of.agreements))
-        ? digital_content.remix_of.agreements.map(t => t.parent_digital_content_id)
+  // Fetch the parents of the remix digitalContents & add to the digitalContents map
+  if (fetchDigitalContentRemixParents.length > 0) {
+    const digitalContentParentIds = fetchDigitalContentRemixParents.reduce((parentDigitalContentIds, remixDigitalContentId) => {
+      const digital_content = digitalContentMap[remixDigitalContentId]
+      const parentIds = (digital_content.remix_of && Array.isArray(digital_content.remix_of.digitalContents))
+        ? digital_content.remix_of.digitalContents.map(t => t.parent_digital_content_id)
         : []
-      return parentAgreementIds.concat(parentIds)
+      return parentDigitalContentIds.concat(parentIds)
     }, [])
 
-    const uniqueParentAgreementIds = [...new Set(agreementParentIds)]
-    let parentAgreements = await coliving.DigitalContent.getAgreements(
-      /** limit */ uniqueParentAgreementIds.length,
+    const uniqueParentDigitalContentIds = [...new Set(digitalContentParentIds)]
+    let parentDigitalContents = await coliving.DigitalContent.getDigitalContents(
+      /** limit */ uniqueParentDigitalContentIds.length,
       /** offset */ 0,
-      /** idsArray */ uniqueParentAgreementIds
+      /** idsArray */ uniqueParentDigitalContentIds
     )
-    if (!Array.isArray(parentAgreements)) {
-      logger.error(`fetchNotificationMetadata | Unable to fetch parent digital_content ids ${uniqueParentAgreementIds.join(',')}`)
+    if (!Array.isArray(parentDigitalContents)) {
+      logger.error(`fetchNotificationMetadata | Unable to fetch parent digital_content ids ${uniqueParentDigitalContentIds.join(',')}`)
     }
 
-    parentAgreements.forEach(digital_content => {
-      agreementMap[digital_content.digital_content_id] = digital_content
+    parentDigitalContents.forEach(digital_content => {
+      digitalContentMap[digital_content.digital_content_id] = digital_content
     })
   }
 
@@ -354,7 +354,7 @@ async function fetchNotificationMetadata (
   }
 
   userIdsToFetch.push(
-    ...agreements.map(({ owner_id: id }) => id),
+    ...digitalContents.map(({ owner_id: id }) => id),
     ...collections.map(({ content_list_owner_id: id }) => id)
   )
   const uniqueUserIds = [...new Set(userIdsToFetch)]
@@ -401,14 +401,14 @@ async function fetchNotificationMetadata (
   }, {})
 
   if (fetchThumbnails) {
-    for (let agreementId of Object.keys(agreementMap)) {
-      const digital_content = agreementMap[agreementId]
-      digital_content.thumbnail = await getAgreementImage(digital_content, userMap)
+    for (let digitalContentId of Object.keys(digitalContentMap)) {
+      const digital_content = digitalContentMap[digitalContentId]
+      digital_content.thumbnail = await getDigitalContentImage(digital_content, userMap)
     }
   }
 
   return {
-    agreements: agreementMap,
+    digitalContents: digitalContentMap,
     collections: collectionMap,
     users: userMap
   }
@@ -445,15 +445,15 @@ async function getUserImage (user) {
   }
 }
 
-async function getAgreementImage (digital_content, usersMap) {
-  const agreementOwnerId = digital_content.owner_id
-  const agreementOwner = usersMap[agreementOwnerId]
-  const gateway = formatGateway(agreementOwner.content_node_endpoint)
-  const agreementCoverArt = digital_content.cover_art_sizes
+async function getDigitalContentImage (digital_content, usersMap) {
+  const digitalContentOwnerId = digital_content.owner_id
+  const digitalContentOwner = usersMap[digitalContentOwnerId]
+  const gateway = formatGateway(digitalContentOwner.content_node_endpoint)
+  const digitalContentCoverArt = digital_content.cover_art_sizes
     ? `${digital_content.cover_art_sizes}/480x480.jpg`
     : digital_content.cover_art
 
-  let imageUrl = getImageUrl(agreementCoverArt, gateway, DEFAULT_AGREEMENT_IMAGE_URL)
+  let imageUrl = getImageUrl(digitalContentCoverArt, gateway, DEFAULT_AGREEMENT_IMAGE_URL)
   if (imageUrl === DEFAULT_AGREEMENT_IMAGE_URL) { return imageUrl }
 
   try {

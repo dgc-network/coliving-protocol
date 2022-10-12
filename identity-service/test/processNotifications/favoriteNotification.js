@@ -114,14 +114,14 @@ describe('Test Favorite Notification', function () {
     // 1.) users 1 & 2 liked digital_content 10 (owned by user 20)
     // 2) user 2 liked digital_content 11 (owned by user 20)
     const userNotifs = await models.Notification.findAll({ where: { userId: 20 } })
-    const agreement10Notification = userNotifs.find(notif => notif.entityId === 10)
+    const digitalContent10Notification = userNotifs.find(notif => notif.entityId === 10)
 
     // For the digital_content 10 favorites, check that there are 2 notificationa actions - users 1 & 2 favoriting it!
-    const agreement10NotificationActions = await models.NotificationAction.findAll({ where: { notificationId: agreement10Notification.id } })
-    assert.deepStrictEqual(agreement10NotificationActions.length, 2)
+    const digitalContent10NotificationActions = await models.NotificationAction.findAll({ where: { notificationId: digitalContent10Notification.id } })
+    assert.deepStrictEqual(digitalContent10NotificationActions.length, 2)
 
-    const userIdsThatFavoirtedAgreement10 = agreement10NotificationActions.map(na => na.actionEntityId)
-    assert.deepStrictEqual(userIdsThatFavoirtedAgreement10, [1, 2])
+    const userIdsThatFavoirtedDigitalContent10 = digitalContent10NotificationActions.map(na => na.actionEntityId)
+    assert.deepStrictEqual(userIdsThatFavoirtedDigitalContent10, [1, 2])
 
     // User 23 Should have 1 notifications
     // 1.) users 3 liked contentList 14 (owned by user 23)
@@ -146,8 +146,8 @@ describe('Test Favorite Notification', function () {
     assert.deepStrictEqual(user25NotifAction[0].actionEntityId, 4)
 
     // ======================================= Mark some Notifications as viewed =======================================
-    agreement10Notification.isViewed = true
-    await agreement10Notification.save()
+    digitalContent10Notification.isViewed = true
+    await digitalContent10Notification.save()
 
     // ======================================= Process additional notifications =======================================
     const tx2 = await models.sequelize.transaction()
@@ -159,19 +159,19 @@ describe('Test Favorite Notification', function () {
     // 1) user 5 liked digital_content 10 (owned by user 20)
     // 2) user 2 & 5 liked digital_content 11 (owned by user 20)
     const updatedUserNotifs = await models.Notification.findAll({ where: { userId: 20 } })
-    const agreement10Prev = updatedUserNotifs.find(notif => notif.entityId === 10 && notif.isViewed === true)
-    const agreement10New = updatedUserNotifs.find(notif => notif.entityId === 10 && notif.isViewed === false)
-    const agreement11 = updatedUserNotifs.find(notif => notif.entityId === 11)
+    const digitalContent10Prev = updatedUserNotifs.find(notif => notif.entityId === 10 && notif.isViewed === true)
+    const digitalContent10New = updatedUserNotifs.find(notif => notif.entityId === 10 && notif.isViewed === false)
+    const digitalContent11 = updatedUserNotifs.find(notif => notif.entityId === 11)
     assert.deepStrictEqual(updatedUserNotifs.length, 3)
 
-    const agreement10PrevActions = await models.NotificationAction.findAll({ where: { notificationId: agreement10Prev.id } })
-    assert.deepStrictEqual(agreement10PrevActions.length, 2)
+    const digitalContent10PrevActions = await models.NotificationAction.findAll({ where: { notificationId: digitalContent10Prev.id } })
+    assert.deepStrictEqual(digitalContent10PrevActions.length, 2)
 
-    const agreement10NewActions = await models.NotificationAction.findAll({ where: { notificationId: agreement10New.id } })
-    assert.deepStrictEqual(agreement10NewActions.length, 1)
-    assert.deepStrictEqual(agreement10NewActions[0].actionEntityId, 5)
+    const digitalContent10NewActions = await models.NotificationAction.findAll({ where: { notificationId: digitalContent10New.id } })
+    assert.deepStrictEqual(digitalContent10NewActions.length, 1)
+    assert.deepStrictEqual(digitalContent10NewActions[0].actionEntityId, 5)
 
-    const agreement11Actions = await models.NotificationAction.findAll({ where: { notificationId: agreement11.id } })
-    assert.deepStrictEqual(agreement11Actions.length, 2)
+    const digitalContent11Actions = await models.NotificationAction.findAll({ where: { notificationId: digitalContent11.id } })
+    assert.deepStrictEqual(digitalContent11Actions.length, 2)
   })
 })

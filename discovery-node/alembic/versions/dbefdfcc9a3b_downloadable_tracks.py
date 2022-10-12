@@ -18,10 +18,10 @@ depends_on = None
 
 def upgrade():
     op.add_column(
-        "agreements",
+        "digitalContents",
         sa.Column("download", postgresql.JSONB(astext_type=sa.Text()), nullable=True),
     )
 
 
 def downgrade():
-    op.drop_column("agreements", "download")
+    op.drop_column("digitalContents", "download")

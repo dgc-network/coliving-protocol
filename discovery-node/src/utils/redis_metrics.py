@@ -517,7 +517,7 @@ def extract_route_key():
         ie: "API_METRICS:routes:192.168.0.1:2020/08/04:14"
     The hash should be of format:
         <path><sorted_query_params>
-        ie: "/v1/agreements/search?genre=rap&query=best"
+        ie: "/v1/digital_contents/search?genre=rap&query=best"
     """
     path = request.path
     req_args = request.args.items()

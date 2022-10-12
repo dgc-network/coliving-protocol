@@ -8,7 +8,7 @@ from src.models.social.follow import Follow
 from src.models.social.play import Play
 from src.models.social.repost import RepostType
 from src.models.social.save import SaveType
-from src.models.agreements.digital_content import DigitalContent
+from src.models.digitalContents.digital_content import DigitalContent
 from src.queries import response_name_constants
 from src.queries.query_helpers import (
     get_genre_list,
@@ -32,7 +32,7 @@ time_delta_map = {
 }
 
 
-# Returns listens counts for agreements, subject to time and
+# Returns listens counts for digitalContents, subject to time and
 # genre restrictions.
 # Returns [{ digital_content_id: number, listens: number }]
 def get_listen_counts(session, time, genre, limit, offset, net_multiplier=1):

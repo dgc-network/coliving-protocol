@@ -30,7 +30,7 @@ def test_index_hourly_play_counts_populate(app):
         db = get_db()
 
     entities = {
-        "agreements": [
+        "digitalContents": [
             {"digital_content_id": 1, "title": "digital_content 1"},
             {"digital_content_id": 2, "title": "digital_content 2"},
             {"digital_content_id": 3, "title": "digital_content 3"},
@@ -94,7 +94,7 @@ def test_index_hourly_play_counts_single_update(app):
         db = get_db()
 
     entities = {
-        "agreements": [
+        "digitalContents": [
             {"digital_content_id": 1, "title": "digital_content 0"},
             {"digital_content_id": 2, "title": "digital_content 1"},
             {"digital_content_id": 3, "title": "digital_content 2"},
@@ -172,7 +172,7 @@ def test_index_hourly_play_counts_idempotent(app):
         db = get_db()
 
     entities = {
-        "agreements": [
+        "digitalContents": [
             {"digital_content_id": 1, "title": "digital_content 0"},
             {"digital_content_id": 2, "title": "digital_content 1"},
             {"digital_content_id": 3, "title": "digital_content 2"},
@@ -252,7 +252,7 @@ def test_index_hourly_play_counts_no_change(app):
         db = get_db()
 
     entities = {
-        "agreements": [
+        "digitalContents": [
             {"digital_content_id": 1, "title": "digital_content 0"},
             {"digital_content_id": 2, "title": "digital_content 1"},
             {"digital_content_id": 3, "title": "digital_content 2"},
@@ -325,7 +325,7 @@ def test_index_hourly_play_counts_empty_plays(app):
         db = get_db()
 
     entities = {
-        "agreements": [
+        "digitalContents": [
             {"digital_content_id": 1, "title": "digital_content 0"},
             {"digital_content_id": 2, "title": "digital_content 1"},
             {"digital_content_id": 3, "title": "digital_content 2"},

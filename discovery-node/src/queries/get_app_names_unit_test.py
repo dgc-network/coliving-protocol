@@ -20,7 +20,7 @@ def test_get_app_names(db_mock):
     route_metrics = [
         {
             "version": "1",
-            "route_path": "agreements/some_hash",
+            "route_path": "digitalContents/some_hash",
             "query_string": "",
             "ip": "192.168.0.1",
             "count": 20,

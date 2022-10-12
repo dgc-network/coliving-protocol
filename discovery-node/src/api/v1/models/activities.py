@@ -4,7 +4,7 @@ from flask_restx.marshalling import marshal
 
 from .common import ns
 from .content_lists import full_content_list_model, content_list_model
-from .agreements import digital_content, digital_content_full
+from .digitalContents import digital_content, digital_content_full
 
 
 class ItemType(fields.Raw):

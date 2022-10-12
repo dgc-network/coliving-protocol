@@ -28,7 +28,7 @@ def test_index_aggregate_monthly_plays_populate(app):
 
     # run
     entities = {
-        "agreements": [
+        "digitalContents": [
             {"digital_content_id": 1, "title": "digital_content 1"},
             {"digital_content_id": 2, "title": "digital_content 2"},
             {"digital_content_id": 3, "title": "digital_content 3"},
@@ -94,7 +94,7 @@ def test_index_aggregate_monthly_plays_update(app):
 
     # run
     entities = {
-        "agreements": [
+        "digitalContents": [
             {"digital_content_id": 1, "title": "digital_content 1"},
             {"digital_content_id": 2, "title": "digital_content 2"},
             {"digital_content_id": 3, "title": "digital_content 3"},
@@ -183,7 +183,7 @@ def test_index_aggregate_monthly_plays_same_checkpoint(app):
 
     # run
     entities = {
-        "agreements": [
+        "digitalContents": [
             {"digital_content_id": 1, "title": "digital_content 1"},
             {"digital_content_id": 2, "title": "digital_content 2"},
             {"digital_content_id": 3, "title": "digital_content 3"},

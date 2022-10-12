@@ -195,7 +195,7 @@ PrometheusRegistry = {
     ),
     PrometheusMetricNames.AGREEMENT_STATE_UPDATE_DURATION_SECONDS: Histogram(
         f"{METRIC_PREFIX}_{PrometheusMetricNames.AGREEMENT_STATE_UPDATE_DURATION_SECONDS}",
-        "Runtimes for src.task.agreements:digital_content_state_update()",
+        "Runtimes for src.task.digitalContents:digital_content_state_update()",
         ("scope",),
     ),
     PrometheusMetricNames.UPDATE_AGGREGATE_TABLE_DURATION_SECONDS: Histogram(

@@ -4,9 +4,9 @@
 content_list_event_types_lookup = {
     "content_list_created": "ContentListCreated",
     "content_list_deleted": "ContentListDeleted",
-    "content_list_digital_content_added": "ContentListAgreementAdded",
-    "content_list_digital_content_deleted": "ContentListAgreementDeleted",
-    "content_list_digital_contents_ordered": "ContentListAgreementsOrdered",
+    "content_list_digital_content_added": "ContentListDigitalContentAdded",
+    "content_list_digital_content_deleted": "ContentListDigitalContentDeleted",
+    "content_list_digital_contents_ordered": "ContentListDigitalContentsOrdered",
     "content_list_name_updated": "ContentListNameUpdated",
     "content_list_privacy_updated": "ContentListPrivacyUpdated",
     "content_list_cover_photo_updated": "ContentListCoverPhotoUpdated",

@@ -11,7 +11,7 @@ const SOLANA_ENDPOINT = 'coliving_solana_endpoint'
 const SOLANA_SIGNER_GROUP_ADDRESS = 'coliving_solana_signer_group_address'
 
 const SOLANA_USER_BANK_ADDRESS = 'coliving_solana_user_bank_program_address'
-const SOLANA_WLIVE_MINT = 'coliving_solana_wlive_mint'
+const SOLANA_WLIVE_MINT = 'coliving_solana_wei_digitalcoin_mint'
 
 const SOLANA_REWARDS_MANAGER_ADDRESS = 'coliving_solana_rewards_manager_program_address'
 const SOLANA_REWARDS_MANAGER_ACCOUNT = 'coliving_solana_rewards_manager_account'
@@ -23,26 +23,26 @@ const SOLANA_ANCHOR_ADMIN_STORAGE_PUBLIC_KEY = 'coliving_solana_anchor_admin_sto
 // Updates coliving_eth_contracts_registry in discovery node
 const configureLocalDiscProv = async () => {
   const ethRegistryAddress = ethContractsMigrationOutput.registryAddress
-  const solanaAgreementListenCountAddress = solanaConfig.agreementListenCountAddress
+  const solanaDigitalContentListenCountAddress = solanaConfig.digitalContentListenCountAddress
   const signerGroup = solanaConfig.signerGroup
   const solanaEndpoint = solanaConfig.endpoint
-  const wliveMint = solanaConfig.splToken
+  const wei_digitalcoinMint = solanaConfig.splToken
   const claimableTokenAddress = solanaConfig.claimableTokenAddress
   const rewardsManagerAddress = solanaConfig.rewardsManagerAddress
   const rewardsManagerAccount = solanaConfig.rewardsManagerAccount
   const anchorProgramId = solanaConfig.anchorProgramId
   const anchorAdminStoragePublicKey = solanaConfig.anchorAdminStoragePublicKey
-  console.log(`wliveAddress: ${wliveMint}, claimableTokenAddress: ${claimableTokenAddress}, wliveMint=${wliveMint}`)
+  console.log(`wei_digitalcoinAddress: ${wei_digitalcoinMint}, claimableTokenAddress: ${claimableTokenAddress}, wei_digitalcoinMint=${wei_digitalcoinMint}`)
   const envPath = path.join(process.cwd(), '../../', 'discovery-node/compose/.env')
 
   await _updateDiscoveryNodeEnvFile(
     envPath,
     envPath,
     ethRegistryAddress,
-    solanaAgreementListenCountAddress,
+    solanaDigitalContentListenCountAddress,
     solanaEndpoint,
     signerGroup,
-    wliveMint,
+    wei_digitalcoinMint,
     claimableTokenAddress,
     rewardsManagerAddress,
     rewardsManagerAccount,
@@ -56,10 +56,10 @@ const _updateDiscoveryNodeEnvFile = async (
   readPath,
   writePath,
   ethRegistryAddress,
-  solanaAgreementListenCountAddress,
+  solanaDigitalContentListenCountAddress,
   solanaEndpoint,
   signerGroup,
-  wliveMint,
+  wei_digitalcoinMint,
   claimableTokenAddress,
   rewardsManagerAddress,
   rewardsManagerAccount,
@@ -73,11 +73,11 @@ const _updateDiscoveryNodeEnvFile = async (
   })
   const output = []
   let ethRegistryAddressFound = false
-  let solanaAgreementListenCountAddressFound = false
+  let solanaDigitalContentListenCountAddressFound = false
   let solanaEndpointFound = false
   let signerGroupFound = false
 
-  let wliveMintFound = false
+  let wei_digitalcoinMintFound = false
   let claimableTokenAddressFound = false
   let rewardsAddressFound = false
   let rewardsAccountFound = false
@@ -85,10 +85,10 @@ const _updateDiscoveryNodeEnvFile = async (
   let anchorAdminStoragePublicKeyFound = false
 
   const ethRegistryAddressLine = `${ETH_CONTRACTS_REGISTRY}=${ethRegistryAddress}`
-  const solanaAgreementListenCountAddressLine = `${SOLANA_AGREEMENT_LISTEN_COUNT_ADDRESS}=${solanaAgreementListenCountAddress}`
+  const solanaDigitalContentListenCountAddressLine = `${SOLANA_AGREEMENT_LISTEN_COUNT_ADDRESS}=${solanaDigitalContentListenCountAddress}`
   const solanaEndpointLine = `${SOLANA_ENDPOINT}=${solanaEndpoint}`
   const signerGroupLine = `${SOLANA_SIGNER_GROUP_ADDRESS}=${signerGroup}`
-  const wliveMintLine = `${SOLANA_WLIVE_MINT}=${wliveMint}`
+  const wei_digitalcoinMintLine = `${SOLANA_WLIVE_MINT}=${wei_digitalcoinMint}`
   const claimableTokenAddressLine = `${SOLANA_USER_BANK_ADDRESS}=${claimableTokenAddress}`
   const rewardsManagerAddressLine = `${SOLANA_REWARDS_MANAGER_ADDRESS}=${rewardsManagerAddress}`
   const rewardsManagerAccountLine = `${SOLANA_REWARDS_MANAGER_ACCOUNT}=${rewardsManagerAccount}`
@@ -100,8 +100,8 @@ const _updateDiscoveryNodeEnvFile = async (
       output.push(ethRegistryAddressLine)
       ethRegistryAddressFound = true
     } else if (line.includes(SOLANA_AGREEMENT_LISTEN_COUNT_ADDRESS)) {
-      output.push(solanaAgreementListenCountAddressLine)
-      solanaAgreementListenCountAddressFound = true
+      output.push(solanaDigitalContentListenCountAddressLine)
+      solanaDigitalContentListenCountAddressFound = true
     } else if (line.includes(SOLANA_ENDPOINT)) {
       output.push(solanaEndpointLine)
       solanaEndpointFound = true
@@ -112,8 +112,8 @@ const _updateDiscoveryNodeEnvFile = async (
       output.push(claimableTokenAddressLine)
       claimableTokenAddressFound = true
     } else if (line.includes(SOLANA_WLIVE_MINT)) {
-      output.push(wliveMintLine)
-      wliveMintFound = true
+      output.push(wei_digitalcoinMintLine)
+      wei_digitalcoinMintFound = true
     } else if (line.includes(SOLANA_REWARDS_MANAGER_ADDRESS)) {
       output.push(rewardsManagerAddressLine)
       rewardsAddressFound = true
@@ -133,8 +133,8 @@ const _updateDiscoveryNodeEnvFile = async (
   if (!ethRegistryAddressFound) {
     output.push(ethRegistryAddressLine)
   }
-  if (!solanaAgreementListenCountAddressFound) {
-    output.push(solanaAgreementListenCountAddressLine)
+  if (!solanaDigitalContentListenCountAddressFound) {
+    output.push(solanaDigitalContentListenCountAddressLine)
   }
   if (!solanaEndpointFound) {
     output.push(solanaEndpointLine)
@@ -142,8 +142,8 @@ const _updateDiscoveryNodeEnvFile = async (
   if (!signerGroupFound) {
     output.push(signerGroupLine)
   }
-  if (!wliveMintFound) {
-    output.push(wliveMintLine)
+  if (!wei_digitalcoinMintFound) {
+    output.push(wei_digitalcoinMintLine)
   }
   if (!claimableTokenAddressFound) {
     output.push(claimableTokenAddressLine)

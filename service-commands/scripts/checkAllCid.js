@@ -53,12 +53,12 @@ async function getUsersBatch (discoveryNode, offset, limit) {
 /**
  * @param {string} discoveryNode - Discovery Node endpoint
  * @param {number} batchSize - Batch Size to use for each request
- * @returns {Object} agreementCids - A object mapping user id to a list of digital_content cids
+ * @returns {Object} digitalContentCids - A object mapping user id to a list of digital_content cids
  */
-async function getAgreementCids (discoveryNode, batchSize) {
-  const agreementCids = {}
+async function getDigitalContentCids (discoveryNode, batchSize) {
+  const digitalContentCids = {}
 
-  const totalAgreements = (
+  const totalDigitalContents = (
     await makeRequest({
       method: 'get',
       url: '/latest/digital_content',
@@ -66,29 +66,29 @@ async function getAgreementCids (discoveryNode, batchSize) {
     })
   ).data.data
 
-  console.log(`Fetching agreements (total of ${totalAgreements})`)
+  console.log(`Fetching digitalContents (total of ${totalDigitalContents})`)
 
-  for (let offset = 0; offset < totalAgreements; offset += batchSize) {
-    console.time(`Fetching agreements (${offset} - ${offset + batchSize})`)
+  for (let offset = 0; offset < totalDigitalContents; offset += batchSize) {
+    console.time(`Fetching digitalContents (${offset} - ${offset + batchSize})`)
 
-    const agreementsBatch = (
+    const digitalContentsBatch = (
       await makeRequest({
         method: 'get',
-        url: '/agreements',
+        url: '/digitalContents',
         baseURL: discoveryNode,
         params: { offset, limit: batchSize }
       })
     ).data.data
 
-    agreementsBatch.forEach(({ metadata_multihash, owner_id }) => {
-      agreementCids[owner_id] = agreementCids[owner_id] || []
-      agreementCids[owner_id].push(metadata_multihash)
+    digitalContentsBatch.forEach(({ metadata_multihash, owner_id }) => {
+      digitalContentCids[owner_id] = digitalContentCids[owner_id] || []
+      digitalContentCids[owner_id].push(metadata_multihash)
     })
 
-    console.timeEnd(`Fetching agreements (${offset} - ${offset + batchSize})`)
+    console.timeEnd(`Fetching digitalContents (${offset} - ${offset + batchSize})`)
   }
 
-  return agreementCids
+  return digitalContentCids
 }
 
 /**
@@ -225,12 +225,12 @@ async function run () {
   const discoveryNode = 'https://discoverynode.coliving.lol/'
   // const discoveryNode = "https://discoverynode.staging.coliving.lol/"
   // const discoveryNode = 'http://localhost:5000'
-  const agreementBatchSize = 500
+  const digitalContentBatchSize = 500
   const userBatchSize = 500
 
-  const agreementCids = await getAgreementCids(discoveryNode, agreementBatchSize)
-  fs.writeFileSync('agreementCids.json', JSON.stringify(agreementCids, null, 4))
-  // const agreementCids = require('./agreementCids.json')
+  const digitalContentCids = await getDigitalContentCids(discoveryNode, digitalContentBatchSize)
+  fs.writeFileSync('digitalContentCids.json', JSON.stringify(digitalContentCids, null, 4))
+  // const digitalContentCids = require('./digitalContentCids.json')
 
   const totalUsers = (
     await makeRequest({
@@ -265,7 +265,7 @@ async function run () {
         profile_picture_sizes,
         metadata_multihash
       }) => {
-        cids[user_id] = Array.from(agreementCids[user_id] || [])
+        cids[user_id] = Array.from(digitalContentCids[user_id] || [])
         if (metadata_multihash) {
           cids[user_id].push(metadata_multihash)
         }

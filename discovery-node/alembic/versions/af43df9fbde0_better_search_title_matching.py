@@ -85,7 +85,7 @@ def upgrade():
                 ) || lower(COALESCE(t."title", ''))
             ) as word
         FROM
-            agreements t
+            digitalContents t
         INNER JOIN users u ON t.owner_id = u.user_id
         INNER JOIN aggregate_digital_content a on a.digital_content_id = t.digital_content_id
         WHERE t.is_current = true AND t.is_unlisted = false AND t.is_delete = false AND t.stem_of IS NULL AND u.is_current = true and
@@ -104,7 +104,7 @@ def upgrade():
 
     CREATE INDEX digital_content_words_idx ON digital_content_lexeme_dict USING gin(word gin_trgm_ops);
     CREATE INDEX digital_content_user_name_idx ON digital_content_lexeme_dict USING gin(user_name gin_trgm_ops);
-    CREATE INDEX agreements_user_handle_idx ON digital_content_lexeme_dict(handle);
+    CREATE INDEX digitalContents_user_handle_idx ON digital_content_lexeme_dict(handle);
     CREATE UNIQUE INDEX digital_content_row_number_idx ON digital_content_lexeme_dict(row_number);
 
     DROP MATERIALIZED VIEW IF EXISTS content_list_lexeme_dict;

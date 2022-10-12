@@ -11,7 +11,7 @@ from src.challenges.challenge import (
     FullEventMetadata,
 )
 from src.models.rewards.user_challenge import UserChallenge
-from src.models.agreements.trending_result import TrendingResult
+from src.models.digitalContents.trending_result import TrendingResult
 
 logger = logging.getLogger(__name__)
 

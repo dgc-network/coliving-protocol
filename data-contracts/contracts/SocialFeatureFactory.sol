@@ -3,13 +3,13 @@ pragma solidity ^0.8.0;
 import "./interface/RegistryInterface.sol";
 import "./registry/RegistryContract.sol";
 import "./interface/UserFactoryInterface.sol";
-import "./interface/AgreementFactoryInterface.sol";
+import "./interface/DigitalContentFactoryInterface.sol";
 import "./interface/ContentListFactoryInterface.sol";
 import "./interface/SocialFeatureStorageInterface.sol";
 import "./SigningLogic.sol";
 
 /** @title Logic contract for all Coliving social features including
-* addAgreementRepost, deleteAgreementRepost, addUserFollow, deleteUserFollow */
+* addDigitalContentRepost, deleteDigitalContentRepost, addUserFollow, deleteUserFollow */
 contract SocialFeatureFactory is RegistryContract, SigningLogic {
 
     //RegistryInterface registry = RegistryInterface(0);
@@ -17,11 +17,11 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
     RegistryInterface registry = RegistryInterface(_registryAddress);
     bytes32 socialFeatureStorageRegistryKey;
     bytes32 userFactoryRegistryKey;
-    bytes32 agreementFactoryRegistryKey;
+    bytes32 digitalContentFactoryRegistryKey;
     bytes32 contentListFactoryRegistryKey;
 
-    event AgreementRepostAdded(uint _userId, uint _digital_contentId);
-    event AgreementRepostDeleted(uint _userId, uint _digital_contentId);
+    event DigitalContentRepostAdded(uint _userId, uint _digital_contentId);
+    event DigitalContentRepostDeleted(uint _userId, uint _digital_contentId);
     event ContentListRepostAdded(uint _userId, uint _content_listId);
     event ContentListRepostDeleted(uint _userId, uint _content_listId);
     event UserFollowAdded(uint _followerUserId, uint _followeeUserId);
@@ -29,13 +29,13 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
 
     /* EIP-712 */
     bytes32 constant AGREEMENT_REPOST_REQUEST_TYPEHASH = keccak256(
-        "AddAgreementRepostRequest(uint userId,uint agreementId,bytes32 nonce)"
+        "AddDigitalContentRepostRequest(uint userId,uint digitalContentId,bytes32 nonce)"
     );
     bytes32 constant CONTENT_LIST_REPOST_REQUEST_TYPEHASH = keccak256(
         "AddContentListRepostRequest(uint userId,uint contentListId,bytes32 nonce)"
     );
     bytes32 constant DELETE_AGREEMENT_REPOST_REQUEST_TYPEHASH = keccak256(
-        "DeleteAgreementRepostRequest(uint userId,uint agreementId,bytes32 nonce)"
+        "DeleteDigitalContentRepostRequest(uint userId,uint digitalContentId,bytes32 nonce)"
     );   
     bytes32 constant USER_FOLLOW_REQUEST_TYPEHASH = keccak256(
         "UserFollowRequest(uint followerUserId,uint followeeUserId,bytes32 nonce)"
@@ -47,7 +47,7 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
         "DeleteContentListRepostRequest(uint userId,uint contentListId,bytes32 nonce)"
     );
 
-    /** @notice Sets registry address, and registryKeys for userFactory and agreementFactory */
+    /** @notice Sets registry address, and registryKeys for userFactory and digitalContentFactory */
     constructor(
         address _registryAddress,
         bytes32 _socialFeatureStorageRegistryKey,
@@ -68,22 +68,22 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
         registry = RegistryInterface(_registryAddress);
         socialFeatureStorageRegistryKey = _socialFeatureStorageRegistryKey;
         userFactoryRegistryKey = _userFactoryRegistryKey;
-        agreementFactoryRegistryKey = _digital_contentFactoryRegistryKey;
+        digitalContentFactoryRegistryKey = _digital_contentFactoryRegistryKey;
         contentListFactoryRegistryKey = _content_listFactoryRegistryKey;
     }
 
     /**
-    * Request that a repost be created for the given agreementId and userId on behalf of the
+    * Request that a repost be created for the given digitalContentId and userId on behalf of the
     * given user address
     */
-    function addAgreementRepost(
+    function addDigitalContentRepost(
         uint _userId,
         uint _digital_contentId,
         bytes32 _requestNonce,
         bytes calldata _subjectSig
     ) external
     {
-        bytes32 signatureDigest = generateAgreementRepostRequestSchemaHash(
+        bytes32 signatureDigest = generateDigitalContentRepostRequestSchemaHash(
             _userId, _digital_contentId, _requestNonce
         );
         address signer = recoverSigner(signatureDigest, _subjectSig);
@@ -92,21 +92,21 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
             registry.getContract(userFactoryRegistryKey)
         ).callerOwnsUser(signer, _userId);  // will revert if false
 
-        bool agreementExists = AgreementFactoryInterface(
-            registry.getContract(agreementFactoryRegistryKey)
-        ).agreementExists(_digital_contentId);
-        require(agreementExists == true, "must provide valid digital_content ID");
+        bool digitalContentExists = DigitalContentFactoryInterface(
+            registry.getContract(digitalContentFactoryRegistryKey)
+        ).digitalContentExists(_digital_contentId);
+        require(digitalContentExists == true, "must provide valid digital_content ID");
 
-        bool agreementRepostExists = SocialFeatureStorageInterface(
+        bool digitalContentRepostExists = SocialFeatureStorageInterface(
             registry.getContract(socialFeatureStorageRegistryKey)
-        ).userRepostedAgreement(_userId, _digital_contentId);
-        require(agreementRepostExists == false, "digital_content repost already exists");
+        ).userRepostedDigitalContent(_userId, _digital_contentId);
+        require(digitalContentRepostExists == false, "digital_content repost already exists");
 
         SocialFeatureStorageInterface(
             registry.getContract(socialFeatureStorageRegistryKey)
-        ).addAgreementRepost(_userId, _digital_contentId);
+        ).addDigitalContentRepost(_userId, _digital_contentId);
 
-        emit AgreementRepostAdded(_userId, _digital_contentId);
+        emit DigitalContentRepostAdded(_userId, _digital_contentId);
     }
 
     function addContentListRepost(
@@ -142,14 +142,14 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
         emit ContentListRepostAdded(_userId, _content_listId);
     }
 
-    function deleteAgreementRepost(
+    function deleteDigitalContentRepost(
         uint _userId,
         uint _digital_contentId,
         bytes32 _requestNonce,
         bytes calldata _subjectSig
     ) external
     {
-        bytes32 signatureDigest = generateDeleteAgreementRepostRequestSchemaHash(
+        bytes32 signatureDigest = generateDeleteDigitalContentRepostRequestSchemaHash(
             _userId, _digital_contentId, _requestNonce
         );
         address signer = recoverSigner(signatureDigest, _subjectSig);
@@ -158,21 +158,21 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
             registry.getContract(userFactoryRegistryKey)
         ).callerOwnsUser(signer, _userId);  // will revert if false
 
-        bool agreementExists = AgreementFactoryInterface(
-            registry.getContract(agreementFactoryRegistryKey)
-        ).agreementExists(_digital_contentId);
-        require(agreementExists == true, "must provide valid digital_content ID");
+        bool digitalContentExists = DigitalContentFactoryInterface(
+            registry.getContract(digitalContentFactoryRegistryKey)
+        ).digitalContentExists(_digital_contentId);
+        require(digitalContentExists == true, "must provide valid digital_content ID");
 
-        bool agreementRepostExists = SocialFeatureStorageInterface(
+        bool digitalContentRepostExists = SocialFeatureStorageInterface(
             registry.getContract(socialFeatureStorageRegistryKey)
-        ).userRepostedAgreement(_userId, _digital_contentId);
-        require(agreementRepostExists == true, "digital_content repost does not exist"); 
+        ).userRepostedDigitalContent(_userId, _digital_contentId);
+        require(digitalContentRepostExists == true, "digital_content repost does not exist"); 
 
         SocialFeatureStorageInterface(
             registry.getContract(socialFeatureStorageRegistryKey)
-        ).deleteAgreementRepost(_userId, _digital_contentId);
+        ).deleteDigitalContentRepost(_userId, _digital_contentId);
 
-        emit AgreementRepostDeleted(_userId, _digital_contentId);
+        emit DigitalContentRepostDeleted(_userId, _digital_contentId);
     }
 
     function deleteContentListRepost(
@@ -266,14 +266,14 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
         return true;
     }
 
-    function userRepostedAgreement(
+    function userRepostedDigitalContent(
         uint _userId,
         uint _digital_contentId
     ) external view returns (bool)
     {
         return SocialFeatureStorageInterface(
             registry.getContract(socialFeatureStorageRegistryKey)
-        ).userRepostedAgreement(_userId, _digital_contentId);
+        ).userRepostedDigitalContent(_userId, _digital_contentId);
     }
 
     function userRepostedContentList(
@@ -286,7 +286,7 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
         ).userRepostedContentList(_userId, _content_listId);
     }
 
-    function generateAgreementRepostRequestSchemaHash(
+    function generateDigitalContentRepostRequestSchemaHash(
         uint _userId,
         uint _digital_contentId,
         bytes32 _nonce
@@ -322,7 +322,7 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
         );
     }
 
-    function generateDeleteAgreementRepostRequestSchemaHash(
+    function generateDeleteDigitalContentRepostRequestSchemaHash(
         uint _userId,
         uint _digital_contentId,
         bytes32 _nonce

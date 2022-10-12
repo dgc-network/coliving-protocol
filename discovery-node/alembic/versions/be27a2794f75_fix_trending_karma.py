@@ -42,7 +42,7 @@ def upgrade():
                 COALESCE (save_year.repost_count, 0) as save_year_count,
                 COALESCE (karma.karma, 0) as karma
             FROM
-                agreements t
+                digitalContents t
             -- join on subquery for aggregate play count
             LEFT OUTER JOIN (
                 SELECT

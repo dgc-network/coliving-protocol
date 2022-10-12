@@ -130,7 +130,7 @@ type CreateSenderPublicConfig = {
 }
 */
 const AAO_REQUEST_TIMEOUT_MS = 15 * 1000
-//const WRAPPED_LIVE_PRECISION = 10 ** WLIVE_DECMIALS
+//const WRAPPED_DGCO_PRECISION = 10 ** WLIVE_DECMIALS
 
 export class Rewards extends Base {
   ServiceProvider: ServiceProvider
@@ -210,7 +210,7 @@ export class Rewards extends Base {
           aaoAttestation ? 1 : 0
         }] oracle attestations.`
       )
-      //const fullTokenAmount = new BN(amount * WRAPPED_LIVE_PRECISION)
+      //const fullTokenAmount = new BN(amount * WRAPPED_DGCO_PRECISION)
       phase = AttestationPhases.SUBMIT_ATTESTATIONS
       //// @ts-expect-error the return types are a bit strange here
 /*

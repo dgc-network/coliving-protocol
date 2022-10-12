@@ -16,10 +16,10 @@ const ClientNotificationTypes = new Set([
   NotificationType.Announcement,
   NotificationType.UserSubscription,
   NotificationType.Milestone,
-  NotificationType.TrendingAgreement,
+  NotificationType.TrendingDigitalContent,
   NotificationType.ChallengeReward,
   NotificationType.TierChange,
-  NotificationType.AddAgreementToContentList,
+  NotificationType.AddDigitalContentToContentList,
   NotificationType.TipSend,
   NotificationType.TipReceive,
   NotificationType.Reaction,
@@ -54,7 +54,7 @@ const formatUserSubscriptionCollection = entityType => notification => {
   }
 }
 
-const formatUserSubscriptionAgreement = notification => {
+const formatUserSubscriptionDigitalContent = notification => {
   return {
     ...getCommonNotificationsFields(notification),
     entityType: Entity.DigitalContent,
@@ -147,8 +147,8 @@ const formatRemixCreate = (notification) => {
   return {
     ...getCommonNotificationsFields(notification),
     type: NotificationType.RemixCreate,
-    parentAgreementId: notification.actions[0].actionEntityId,
-    childAgreementId: notification.entityId
+    parentDigitalContentId: notification.actions[0].actionEntityId,
+    childDigitalContentId: notification.entityId
   }
 }
 
@@ -156,16 +156,16 @@ const formatRemixCosign = (notification) => {
   return {
     ...getCommonNotificationsFields(notification),
     type: NotificationType.RemixCosign,
-    parentAgreementUserId: notification.actions[0].actionEntityId,
-    childAgreementId: notification.entityId
+    parentDigitalContentUserId: notification.actions[0].actionEntityId,
+    childDigitalContentId: notification.entityId
   }
 }
 
-const formatTrendingAgreement = (notification) => {
+const formatTrendingDigitalContent = (notification) => {
   const [time, genre] = notification.actions[0].actionEntityType.split(':')
   return {
     ...getCommonNotificationsFields(notification),
-    type: NotificationType.TrendingAgreement,
+    type: NotificationType.TrendingDigitalContent,
     entityType: Entity.DigitalContent,
     entityId: notification.entityId,
     rank: notification.actions[0].actionEntityId,
@@ -226,12 +226,12 @@ const formatReaction = (notification) => ({
   entityType: Entity.User
 })
 
-const formatAddAgreementToContentList = (notification) => ({
+const formatAddDigitalContentToContentList = (notification) => ({
   ...getCommonNotificationsFields(notification),
   type: notification.type,
   contentListId: notification.metadata.contentListId,
   contentListOwnerId: notification.metadata.contentListOwnerId,
-  agreementId: notification.metadata.agreementId
+  digitalContentId: notification.metadata.digitalContentId
 })
 
 const getCommonNotificationsFields = (notification) => ({
@@ -250,7 +250,7 @@ const notificationResponseMap = {
   [NotificationType.Repost.digital_content]: formatRepost(Entity.DigitalContent),
   [NotificationType.Repost.contentList]: formatRepost(Entity.ContentList),
   [NotificationType.Repost.album]: formatRepost(Entity.Album),
-  [NotificationType.Create.digital_content]: formatUserSubscriptionAgreement,
+  [NotificationType.Create.digital_content]: formatUserSubscriptionDigitalContent,
   [NotificationType.Create.album]: formatUserSubscriptionCollection(Entity.Album),
   [NotificationType.Create.contentList]: formatUserSubscriptionCollection(Entity.ContentList),
   [NotificationType.Announcement]: formatAnnouncement,
@@ -260,14 +260,14 @@ const notificationResponseMap = {
   [NotificationType.MilestoneFollow]: formatMilestone,
   [NotificationType.RemixCreate]: formatRemixCreate,
   [NotificationType.RemixCosign]: formatRemixCosign,
-  [NotificationType.TrendingAgreement]: formatTrendingAgreement,
+  [NotificationType.TrendingDigitalContent]: formatTrendingDigitalContent,
   [NotificationType.ChallengeReward]: formatChallengeReward,
   [NotificationType.TipReceive]: formatTipReceive,
   [NotificationType.TipSend]: formatTipSend,
   [NotificationType.Reaction]: formatReaction,
   [NotificationType.SupporterRankUp]: formatSupporterRankUp,
   [NotificationType.SupportingRankUp]: formatSupportingRankUp,
-  [NotificationType.AddAgreementToContentList]: formatAddAgreementToContentList
+  [NotificationType.AddDigitalContentToContentList]: formatAddDigitalContentToContentList
 }
 
 /* Merges the notifications with the user announcements in time sorted order (Most recent first).

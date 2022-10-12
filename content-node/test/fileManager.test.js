@@ -9,7 +9,7 @@ const { libs } = require('@coliving/sdk')
 const Utils = libs.Utils
 const { logger: genericLogger } = require('../src/logging')
 const {
-  removeAgreementFolder,
+  removeDigitalContentFolder,
   saveFileFromBufferToDisk,
   copyMultihashToFs
 } = require('../src/fileManager')
@@ -36,7 +36,7 @@ const req = {
   }
 }
 
-// TODO - instead of using ./test/test-segments, use ./test/testAgreementUploadDir
+// TODO - instead of using ./test/test-segments, use ./test/testDigitalContentUploadDir
 // consts used for testing generateNonImageCid()
 const segmentsDirPath = 'test/test-segments'
 const sourceFile = 'segment00001.ts'
@@ -236,14 +236,14 @@ describe('test fileManager', () => {
   })
 })
 
-describe('test removeAgreementFolder()', async function () {
-  const testAgreementUploadDir = './test/testAgreementUploadDir/'
-  const agreementSourceFileDir = path.join(storagePath, 'testAgreementSourceFileDir')
+describe('test removeDigitalContentFolder()', async function () {
+  const testDigitalContentUploadDir = './test/testDigitalContentUploadDir/'
+  const digitalContentSourceFileDir = path.join(storagePath, 'testDigitalContentSourceFileDir')
 
-  // copy test dir into /test_file_storage dir to be deleted by removeAgreementFolder()
+  // copy test dir into /test_file_storage dir to be deleted by removeDigitalContentFolder()
   beforeEach(async function () {
     // uses `fs-extra` module for recursive directory copy since base `fs` module doesn't provide this
-    await fs.copy(testAgreementUploadDir, storagePath)
+    await fs.copy(testDigitalContentUploadDir, storagePath)
   })
 
   afterEach(async function () {
@@ -253,25 +253,25 @@ describe('test removeAgreementFolder()', async function () {
   it.skip('TODO - Failure cases', async function () {})
 
   it('Successfully removes digital_content folder', async function () {
-    // Ensure expected dir state before calling removeAgreementFolder()
+    // Ensure expected dir state before calling removeDigitalContentFolder()
     // Note that the contents of these files are never checked as only the dir structure/file naming matters here.
     //    The file contents don't matter as these files are never accessed after completing digital_content upload.
-    assert.ok(fs.existsSync(agreementSourceFileDir))
-    assert.ok(fs.existsSync(path.join(agreementSourceFileDir, 'segments')))
-    assert.ok(fs.existsSync(path.join(agreementSourceFileDir, 'master.mp3')))
+    assert.ok(fs.existsSync(digitalContentSourceFileDir))
+    assert.ok(fs.existsSync(path.join(digitalContentSourceFileDir, 'segments')))
+    assert.ok(fs.existsSync(path.join(digitalContentSourceFileDir, 'master.mp3')))
     assert.ok(
-      fs.existsSync(path.join(agreementSourceFileDir, 'agreementManifest.m3u8'))
+      fs.existsSync(path.join(digitalContentSourceFileDir, 'digitalContentManifest.m3u8'))
     )
-    assert.ok(fs.existsSync(path.join(agreementSourceFileDir, 'transcode.mp3')))
+    assert.ok(fs.existsSync(path.join(digitalContentSourceFileDir, 'transcode.mp3')))
 
-    // Call removeAgreementFolder + expect success
+    // Call removeDigitalContentFolder + expect success
     try {
-      await removeAgreementFolder(req, agreementSourceFileDir)
+      await removeDigitalContentFolder(req, digitalContentSourceFileDir)
     } catch (e) {
       assert.fail(e.message)
     }
 
     // Ensure dir has been removed
-    assert.ok(!fs.existsSync(agreementSourceFileDir))
+    assert.ok(!fs.existsSync(digitalContentSourceFileDir))
   })
 })

@@ -1,13 +1,13 @@
 ---
-id: "full.GetRecommendedAgreementsWithVersionTimeEnum"
-title: "Enumeration: GetRecommendedAgreementsWithVersionTimeEnum"
-sidebar_label: "GetRecommendedAgreementsWithVersionTimeEnum"
+id: "full.GetRecommendedDigitalContentsWithVersionTimeEnum"
+title: "Enumeration: GetRecommendedDigitalContentsWithVersionTimeEnum"
+sidebar_label: "GetRecommendedDigitalContentsWithVersionTimeEnum"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).GetRecommendedAgreementsWithVersionTimeEnum
+[full](../namespaces/full.md).GetRecommendedDigitalContentsWithVersionTimeEnum
 
 **`export`**
 

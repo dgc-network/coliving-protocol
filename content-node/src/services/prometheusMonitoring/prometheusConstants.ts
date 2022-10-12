@@ -152,11 +152,11 @@ export const METRIC_LABELS = Object.freeze({
       '/image_upload',
       '/coliving_users',
       '/content_lists',
-      '/agreements',
+      '/digitalContents',
       // Routes that strictly enforce write quorum (ignoreWriteQuorum should be false)
       '/coliving_users/metadata',
       '/contentLists/metadata',
-      '/agreements/metadata'
+      '/digital_contents/metadata'
     ],
     result: [
       'succeeded', // Data was replicated to one or more secondaries

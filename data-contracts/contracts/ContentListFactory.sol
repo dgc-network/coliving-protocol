@@ -4,7 +4,7 @@ import "./registry/RegistryContract.sol";
 import "./interface/RegistryInterface.sol";
 import "./interface/ContentListStorageInterface.sol";
 import "./interface/UserFactoryInterface.sol";
-import "./interface/AgreementFactoryInterface.sol";
+import "./interface/DigitalContentFactoryInterface.sol";
 import "./SigningLogic.sol";
 
 
@@ -18,7 +18,7 @@ contract ContentListFactory is RegistryContract, SigningLogic {
     RegistryInterface registry = RegistryInterface(_registryAddress);
     bytes32 contentListStorageRegistryKey;
     bytes32 userFactoryRegistryKey;
-    bytes32 agreementFactoryRegistryKey;
+    bytes32 digitalContentFactoryRegistryKey;
 
     event ContentListCreated(
         uint _content_listId,
@@ -30,20 +30,20 @@ contract ContentListFactory is RegistryContract, SigningLogic {
 
     event ContentListDeleted(uint _content_listId);
 
-    event ContentListAgreementAdded(
+    event ContentListDigitalContentAdded(
         uint _content_listId,
-        uint _addedAgreementId
+        uint _addedDigitalContentId
     );
 
-    event ContentListAgreementDeleted(
+    event ContentListDigitalContentDeleted(
         uint _content_listId,
-        uint _deletedAgreementId,
-        uint _deletedAgreementTimestamp
+        uint _deletedDigitalContentId,
+        uint _deletedDigitalContentTimestamp
     );
 
-    event ContentListAgreementsOrdered(
+    event ContentListDigitalContentsOrdered(
         uint _content_listId,
-        uint[] _orderedAgreementIds
+        uint[] _orderedDigitalContentIds
     );
 
     event ContentListNameUpdated(
@@ -72,7 +72,7 @@ contract ContentListFactory is RegistryContract, SigningLogic {
     );
 
     bytes32 constant CREATE_CONTENT_LIST_TYPEHASH = keccak256(
-        "CreateContentListRequest(uint contentListOwnerId,string contentListName,bool isPrivate,bool isAlbum,bytes32 agreementIdsHash,bytes32 nonce)"
+        "CreateContentListRequest(uint contentListOwnerId,string contentListName,bool isPrivate,bool isAlbum,bytes32 digitalContentIdsHash,bytes32 nonce)"
     );
 
     bytes32 constant DELETE_CONTENT_LIST_TYPEHASH = keccak256(
@@ -80,15 +80,15 @@ contract ContentListFactory is RegistryContract, SigningLogic {
     );
 
     bytes32 constant ADD_CONTENT_LIST_AGREEMENT_TYPEHASH = keccak256(
-        "AddContentListAgreementRequest(uint contentListId,uint addedAgreementId,bytes32 nonce)"
+        "AddContentListDigitalContentRequest(uint contentListId,uint addedDigitalContentId,bytes32 nonce)"
     );
 
     bytes32 constant DELETE_CONTENT_LIST_AGREEMENT_TYPEHASH = keccak256(
-        "DeleteContentListAgreementRequest(uint contentListId,uint deletedAgreementId,uint deletedAgreementTimestamp,bytes32 nonce)"
+        "DeleteContentListDigitalContentRequest(uint contentListId,uint deletedDigitalContentId,uint deletedDigitalContentTimestamp,bytes32 nonce)"
     );
 
     bytes32 constant ORDER_CONTENT_LIST_AGREEMENTS_TYPEHASH = keccak256(
-        "OrderContentListAgreementsRequest(uint contentListId,bytes32 agreementIdsHash,bytes32 nonce)"
+        "OrderContentListDigitalContentsRequest(uint contentListId,bytes32 digitalContentIdsHash,bytes32 nonce)"
     );
 
     bytes32 constant UPDATE_CONTENT_LIST_NAME_TYPEHASH = keccak256(
@@ -129,7 +129,7 @@ contract ContentListFactory is RegistryContract, SigningLogic {
         registry = RegistryInterface(_registryAddress);
         contentListStorageRegistryKey = _content_listStorageRegistryKey;
         userFactoryRegistryKey = _userFactoryRegistryKey;
-        agreementFactoryRegistryKey = _digital_contentFactoryRegistryKey;
+        digitalContentFactoryRegistryKey = _digital_contentFactoryRegistryKey;
     }
 
     /*
@@ -150,7 +150,7 @@ contract ContentListFactory is RegistryContract, SigningLogic {
     {
         require(
             _digital_contentIds.length < AGREEMENT_LIMIT,
-            "Maximum of 200 agreements in a contentList currently supported"
+            "Maximum of 200 digitalContents in a contentList currently supported"
         );
 
         bytes32 signatureDigest = generateCreateContentListRequestSchemaHash(
@@ -169,10 +169,10 @@ contract ContentListFactory is RegistryContract, SigningLogic {
 
         /* Validate that each digital_content exists before creating the contentList */
         for (uint i = 0; i < _digital_contentIds.length; i++) {
-            bool agreementExists = AgreementFactoryInterface(
-                registry.getContract(agreementFactoryRegistryKey)
-            ).agreementExists(_digital_contentIds[i]);
-            require(agreementExists, "Expected valid digital_content id");
+            bool digitalContentExists = DigitalContentFactoryInterface(
+                registry.getContract(digitalContentFactoryRegistryKey)
+            ).digitalContentExists(_digital_contentIds[i]);
+            require(digitalContentExists, "Expected valid digital_content id");
         }
 
         uint contentListId = ContentListStorageInterface(
@@ -213,65 +213,65 @@ contract ContentListFactory is RegistryContract, SigningLogic {
         return true;
     }
 
-    function addContentListAgreement(
+    function addContentListDigitalContent(
         uint _content_listId,
-        uint _addedAgreementId,
+        uint _addedDigitalContentId,
         bytes32 _nonce,
         bytes calldata _subjectSig
     ) external
     {
-        bytes32 signatureDigest = generateAddContentListAgreementSchemaHash(
+        bytes32 signatureDigest = generateAddContentListDigitalContentSchemaHash(
             _content_listId,
-            _addedAgreementId,
+            _addedDigitalContentId,
             _nonce
         );
         address signer = recoverSigner(signatureDigest, _subjectSig);
         burnSignatureDigest(signatureDigest, signer);
         this.callerOwnsContentList(signer, _content_listId);   // will revert if false
 
-        bool agreementExists = AgreementFactoryInterface(
-            registry.getContract(agreementFactoryRegistryKey)
-        ).agreementExists(_addedAgreementId);
-        require(agreementExists, "Expected valid digital_content id");
+        bool digitalContentExists = DigitalContentFactoryInterface(
+            registry.getContract(digitalContentFactoryRegistryKey)
+        ).digitalContentExists(_addedDigitalContentId);
+        require(digitalContentExists, "Expected valid digital_content id");
 
         ContentListStorageInterface(
             registry.getContract(contentListStorageRegistryKey)
-        ).addContentListAgreement(_content_listId, _addedAgreementId);
+        ).addContentListDigitalContent(_content_listId, _addedDigitalContentId);
 
-        emit ContentListAgreementAdded(_content_listId, _addedAgreementId);
+        emit ContentListDigitalContentAdded(_content_listId, _addedDigitalContentId);
     }
 
     /* delete digital_content from contentList */
-    function deleteContentListAgreement(
+    function deleteContentListDigitalContent(
         uint _content_listId,
-        uint _deletedAgreementId,
-        uint _deletedAgreementTimestamp,
+        uint _deletedDigitalContentId,
+        uint _deletedDigitalContentTimestamp,
         bytes32 _nonce,
         bytes calldata _subjectSig
     ) external
     {
-        bytes32 signatureDigest = generateDeleteContentListAgreementSchemaHash(
+        bytes32 signatureDigest = generateDeleteContentListDigitalContentSchemaHash(
             _content_listId,
-            _deletedAgreementId,
-            _deletedAgreementTimestamp,
+            _deletedDigitalContentId,
+            _deletedDigitalContentTimestamp,
             _nonce
         );
         address signer = recoverSigner(signatureDigest, _subjectSig);
         burnSignatureDigest(signatureDigest, signer);
         this.callerOwnsContentList(signer, _content_listId);   // will revert if false
 
-        bool isValidAgreement = this.isAgreementInContentList(_content_listId, _deletedAgreementId);
-        require(isValidAgreement == true, "Expect valid digital_content for delete operation");
+        bool isValidDigitalContent = this.isDigitalContentInContentList(_content_listId, _deletedDigitalContentId);
+        require(isValidDigitalContent == true, "Expect valid digital_content for delete operation");
 
         ContentListStorageInterface(
             registry.getContract(contentListStorageRegistryKey)
-        ).deleteContentListAgreement(_content_listId, _deletedAgreementId);
+        ).deleteContentListDigitalContent(_content_listId, _deletedDigitalContentId);
 
-        emit ContentListAgreementDeleted(_content_listId, _deletedAgreementId, _deletedAgreementTimestamp);
+        emit ContentListDigitalContentDeleted(_content_listId, _deletedDigitalContentId, _deletedDigitalContentTimestamp);
     }
 
-    /* order contentList agreements */
-    function orderContentListAgreements(
+    /* order contentList digitalContents */
+    function orderContentListDigitalContents(
         uint _content_listId,
         uint[] calldata _digital_contentIds,
         bytes32 _nonce,
@@ -280,10 +280,10 @@ contract ContentListFactory is RegistryContract, SigningLogic {
     {
         require(
             _digital_contentIds.length < AGREEMENT_LIMIT,
-            "Maximum of 200 agreements in a contentList currently supported"
+            "Maximum of 200 digitalContents in a contentList currently supported"
         );
 
-        bytes32 signatureDigest = generateOrderContentListAgreementsRequestSchemaHash(
+        bytes32 signatureDigest = generateOrderContentListDigitalContentsRequestSchemaHash(
             _content_listId,
             _digital_contentIds,
             _nonce
@@ -294,11 +294,11 @@ contract ContentListFactory is RegistryContract, SigningLogic {
 
         /* Validate that each digital_content exists in the contentList */
         for (uint i = 0; i < _digital_contentIds.length; i++) {
-            bool isValidAgreement = this.isAgreementInContentList(_content_listId, _digital_contentIds[i]);
-            require(isValidAgreement, "Expected valid contentList digital_content id");
+            bool isValidDigitalContent = this.isDigitalContentInContentList(_content_listId, _digital_contentIds[i]);
+            require(isValidDigitalContent, "Expected valid contentList digital_content id");
         }
 
-        emit ContentListAgreementsOrdered(_content_listId, _digital_contentIds);
+        emit ContentListDigitalContentsOrdered(_content_listId, _digital_contentIds);
     }
 
     function updateContentListName(
@@ -405,14 +405,14 @@ contract ContentListFactory is RegistryContract, SigningLogic {
         ).contentListExists(_content_listId);
     }
 
-    function isAgreementInContentList(
+    function isDigitalContentInContentList(
         uint _content_listId,
         uint _digital_contentId
     ) external view returns (bool)
     {
         return ContentListStorageInterface(
             registry.getContract(contentListStorageRegistryKey)
-        ).isAgreementInContentList(_content_listId, _digital_contentId);
+        ).isDigitalContentInContentList(_content_listId, _digital_contentId);
     }
 
     /** @notice ensures that calling address owns contentList; reverts if not */
@@ -473,9 +473,9 @@ contract ContentListFactory is RegistryContract, SigningLogic {
         );
     }
 
-    function generateAddContentListAgreementSchemaHash(
+    function generateAddContentListDigitalContentSchemaHash(
         uint _content_listId,
-        uint _addedAgreementId,
+        uint _addedDigitalContentId,
         bytes32 _nonce
     ) internal view returns(bytes32)
     {
@@ -484,17 +484,17 @@ contract ContentListFactory is RegistryContract, SigningLogic {
                 abi.encode(
                     ADD_CONTENT_LIST_AGREEMENT_TYPEHASH,
                     _content_listId,
-                    _addedAgreementId,
+                    _addedDigitalContentId,
                     _nonce
                 )
             )
         );
     }
 
-    function generateDeleteContentListAgreementSchemaHash(
+    function generateDeleteContentListDigitalContentSchemaHash(
         uint _content_listId,
-        uint _deletedAgreementId,
-        uint _deletedAgreementTimestamp,
+        uint _deletedDigitalContentId,
+        uint _deletedDigitalContentTimestamp,
         bytes32 _nonce
     ) internal view returns(bytes32)
     {
@@ -503,15 +503,15 @@ contract ContentListFactory is RegistryContract, SigningLogic {
                 abi.encode(
                     DELETE_CONTENT_LIST_AGREEMENT_TYPEHASH,
                     _content_listId,
-                    _deletedAgreementId,
-                    _deletedAgreementTimestamp,
+                    _deletedDigitalContentId,
+                    _deletedDigitalContentTimestamp,
                     _nonce
                 )
             )
         );
     }
 
-    function generateOrderContentListAgreementsRequestSchemaHash(
+    function generateOrderContentListDigitalContentsRequestSchemaHash(
         uint _content_listId,
         uint[] memory _digital_contentIds,
         bytes32 _nonce

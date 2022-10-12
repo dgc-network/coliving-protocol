@@ -4,8 +4,8 @@ const contentList = await colivingSdk.contentLists.getContentList({
 });
 `;
 
-export const getContentListAgreements = `
-const agreements = await colivingSdk.contentLists.getContentListAgreements({
+export const getContentListDigitalContents = `
+const digitalContents = await colivingSdk.contentLists.getContentListDigitalContents({
     contentListId: "AxRP0",
 });
 `;

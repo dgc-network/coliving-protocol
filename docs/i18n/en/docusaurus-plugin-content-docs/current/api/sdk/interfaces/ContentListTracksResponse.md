@@ -1,7 +1,7 @@
 ---
-id: "ContentListAgreementsResponse"
-title: "Interface: ContentListAgreementsResponse"
-sidebar_label: "ContentListAgreementsResponse"
+id: "ContentListDigitalContentsResponse"
+title: "Interface: ContentListDigitalContentsResponse"
+sidebar_label: "ContentListDigitalContentsResponse"
 sidebar_position: 0
 custom_edit_url: null
 pagination_prev: null
@@ -10,7 +10,7 @@ pagination_next: null
 
 **`export`**
 
-**`interface`** ContentListAgreementsResponse
+**`interface`** ContentListDigitalContentsResponse
 
 ## Properties
 
@@ -18,4 +18,4 @@ pagination_next: null
 
  `Optional` **data**: [`DigitalContent`](DigitalContent.md)[]
 
-**`memberof`** ContentListAgreementsResponse
+**`memberof`** ContentListDigitalContentsResponse

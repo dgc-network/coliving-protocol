@@ -9,7 +9,7 @@ class FullRemixesRoute(Resource):
     @record_metrics
     @full_ns.doc(
         id="Get DigitalContent Remixes",
-        description="Get all agreements that remix the given digital_content",
+        description="Get all digitalContents that remix the given digital_content",
         params={"digital_content_id": "A DigitalContent ID", "some_param": "Not in the route"},
     )
     @full_ns.expect(pagination_with_current_user_parser)
@@ -41,7 +41,7 @@ attribute_order_example = """
 class FullRemixesRoute(Resource):
     @full_ns.doc(
         id=\"Get DigitalContent Remixes\",
-        description=\"Get all agreements that remix the given digital_content\",
+        description=\"Get all digitalContents that remix the given digital_content\",
         params={\"digital_content_id\": \"A DigitalContent ID\"},
     )
     @record_metrics
@@ -137,8 +137,8 @@ route_doc_get_params_example = """
     \"/trending\",
     doc={
         \"get\": {
-            "id": \"Get Trending Agreements\",
-            "description": \"Gets the top 100 trending (most popular) agreements on Coliving\",
+            "id": \"Get Trending DigitalContents\",
+            "description": \"Gets the top 100 trending (most popular) digitalContents on Coliving\",
         }
     },
 )
@@ -146,8 +146,8 @@ route_doc_get_params_example = """
     \"/trending/<string:version>\",
     doc={
         \"get\": {
-            \"id\": \"Get Trending Agreements With Version\",
-            \"description\": \"Gets the top 100 trending (most popular) agreements on Coliving using a given trending strategy version\",
+            \"id\": \"Get Trending DigitalContents With Version\",
+            \"description\": \"Gets the top 100 trending (most popular) digitalContents on Coliving using a given trending strategy version\",
             \"params\": {\"version\": \"The strategy version of trending to use\"},
         }
     },
@@ -155,7 +155,7 @@ route_doc_get_params_example = """
 class Trending(Resource):
     @record_metrics
     @ns.expect(trending_parser)
-    @ns.marshal_with(agreements_response)
+    @ns.marshal_with(digitalContents_response)
     @cache(ttl_sec=TRENDING_TTL_SEC)
     def get(self, version):
         pass
@@ -195,8 +195,8 @@ doc_false_with_route_param_example = """
     strict_slashes=False,
     doc={
         "get": {
-            "id": \"Get Trending Agreements\",
-            "description": \"Gets the top 100 trending (most popular) agreements on Coliving\",
+            "id": \"Get Trending DigitalContents\",
+            "description": \"Gets the top 100 trending (most popular) digitalContents on Coliving\",
         }
     },
 )

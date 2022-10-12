@@ -16,8 +16,8 @@ from src.models.social.follow import Follow
 from src.models.social.reaction import Reaction
 from src.models.social.repost import Repost, RepostType
 from src.models.social.save import Save, SaveType
-from src.models.agreements.remix import Remix
-from src.models.agreements.digital_content import DigitalContent
+from src.models.digitalContents.remix import Remix
+from src.models.digitalContents.digital_content import DigitalContent
 from src.models.users.aggregate_user import AggregateUser
 from src.models.users.supporter_rank_up import SupporterRankUp
 from src.models.users.user import User
@@ -34,7 +34,7 @@ from src.utils.redis_constants import (
     latest_sol_plays_slot_key,
     latest_sol_rewards_manager_slot_key,
 )
-from src.utils.spl_live import to_wei_string
+from src.utils.spl_digitalcoin import to_wei_string
 
 logger = logging.getLogger(__name__)
 bp = Blueprint("notifications", __name__)
@@ -108,7 +108,7 @@ def get_owner_id(session, entity_type, entity_id):
 
 def get_cosign_remix_notifications(session, max_block_number, remix_digital_contents):
     """
-    Get the notifications for remix agreements that are reposted/favorited by the parent remix author
+    Get the notifications for remix digitalContents that are reposted/favorited by the parent remix author
 
     Args:
         session: (DB)
@@ -130,8 +130,8 @@ def get_cosign_remix_notifications(session, max_block_number, remix_digital_cont
     remix_notifications = []
     remix_digital_content_ids = [r["item_id"] for r in remix_digital_contents]
 
-    # Query for all the parent agreements of the remix agreements
-    agreements_subquery = (
+    # Query for all the parent digitalContents of the remix digitalContents
+    digitalContents_subquery = (
         session.query(DigitalContent)
         .filter(
             DigitalContent.is_unlisted == False,
@@ -143,9 +143,9 @@ def get_cosign_remix_notifications(session, max_block_number, remix_digital_cont
 
     parent_digital_contents = (
         session.query(
-            Remix.child_digital_content_id, Remix.parent_digital_content_id, agreements_subquery.c.owner_id
+            Remix.child_digital_content_id, Remix.parent_digital_content_id, digitalContents_subquery.c.owner_id
         )
-        .join(agreements_subquery, Remix.parent_digital_content_id == agreements_subquery.c.digital_content_id)
+        .join(digitalContents_subquery, Remix.parent_digital_content_id == digitalContents_subquery.c.digital_content_id)
         .filter(Remix.child_digital_content_id.in_(remix_digital_content_ids))
         .all()
     )
@@ -194,7 +194,7 @@ def get_cosign_remix_notifications(session, max_block_number, remix_digital_cont
 
 
 class GroupMilestones(TypedDict):
-    agreements: Dict[int, int]
+    digitalContents: Dict[int, int]
     albums: Dict[int, int]
     contentLists: Dict[int, int]
 
@@ -258,13 +258,13 @@ def get_milestone_info(
             content_list_reposts.append((id, threshold))
 
     favorite_milestones: GroupMilestones = {
-        "agreements": dict(milestones.get(MilestoneName.AGREEMENT_SAVE_COUNT, [])),
+        "digitalContents": dict(milestones.get(MilestoneName.AGREEMENT_SAVE_COUNT, [])),
         "albums": dict(album_favorites),
         "content_lists": dict(content_list_favorites),
     }
 
     repost_milestones: GroupMilestones = {
-        "agreements": dict(milestones.get(MilestoneName.AGREEMENT_REPOST_COUNT, [])),
+        "digitalContents": dict(milestones.get(MilestoneName.AGREEMENT_REPOST_COUNT, [])),
         "albums": dict(album_reposts),
         "content_lists": dict(content_list_reposts),
     }
@@ -308,11 +308,11 @@ def notifications():
         milestones: Dictionary mapping of follows/reposts/favorites (processed within the blocks params)
             Root fields:
                 follower_counts: Contains a dictionary of user id => follower count (up to the max_block_number)
-                repost_counts: Contains a dictionary agreements/albums/contentLists of id to repost count
-                favorite_counts: Contains a dictionary agreements/albums/contentLists of id to favorite count
+                repost_counts: Contains a dictionary digitalContents/albums/contentLists of id to repost count
+                favorite_counts: Contains a dictionary digitalContents/albums/contentLists of id to favorite count
 
         owners: Dictionary containing the mapping for digital_content id / contentList id / album -> owner user id
-            The root keys are 'agreements', 'contentLists', 'albums' and each contains the id to owner id mapping
+            The root keys are 'digitalContents', 'contentLists', 'albums' and each contains the id to owner id mapping
     """
 
     db = get_db_read_replica()
@@ -353,7 +353,7 @@ def notifications():
     milestone_info = {}
 
     # Cache owner info for network entities and pass in w/results
-    owner_info = {const.agreements: {}, const.albums: {}, const.contentLists: {}}
+    owner_info = {const.digitalContents: {}, const.albums: {}, const.contentLists: {}}
 
     start_time = datetime.now()
     logger.info(f"notifications.py | start_time ${start_time}")
@@ -437,7 +437,7 @@ def notifications():
                     continue
                 metadata[const.notification_entity_owner_id] = owner_id
                 favorited_digital_content_ids.append(save_item_id)
-                owner_info[const.agreements][save_item_id] = owner_id
+                owner_info[const.digitalContents][save_item_id] = owner_id
 
                 favorite_remix_digital_contents.append(
                     {
@@ -566,7 +566,7 @@ def notifications():
                     continue
                 metadata[const.notification_entity_owner_id] = owner_id
                 reposted_digital_content_ids.append(repost_item_id)
-                owner_info[const.agreements][repost_item_id] = owner_id
+                owner_info[const.digitalContents][repost_item_id] = owner_id
                 repost_remix_digital_contents.append(
                     {
                         const.notification_blocknumber: entry.blocknumber,
@@ -607,35 +607,35 @@ def notifications():
             )
             notifications_unsorted.extend(repost_remix_notifications)
 
-        # Query relevant created entity notification - agreements/albums/contentLists
+        # Query relevant created entity notification - digitalContents/albums/contentLists
         created_notifications = []
 
         logger.info(f"notifications.py | reposts at {datetime.now() - start_time}")
 
         #
-        # Query relevant created agreements for remix information
+        # Query relevant created digitalContents for remix information
         #
         remix_created_notifications = []
 
         # Aggregate digital_content notifs
-        agreements_query = session.query(DigitalContent)
+        digitalContents_query = session.query(DigitalContent)
         # TODO: Is it valid to use DigitalContent.is_current here? Might not be the right info...
-        agreements_query = agreements_query.filter(
+        digitalContents_query = digitalContents_query.filter(
             DigitalContent.is_unlisted == False,
             DigitalContent.is_delete == False,
             DigitalContent.stem_of == None,
             DigitalContent.blocknumber > min_block_number,
             DigitalContent.blocknumber <= max_block_number,
         )
-        agreements_query = agreements_query.filter(DigitalContent.created_at == DigitalContent.updated_at)
-        digital_content_results = agreements_query.all()
+        digitalContents_query = digitalContents_query.filter(DigitalContent.created_at == DigitalContent.updated_at)
+        digital_content_results = digitalContents_query.all()
         for entry in digital_content_results:
             digital_content_notif = {
                 const.notification_type: const.notification_type_create,
                 const.notification_blocknumber: entry.blocknumber,
                 const.notification_timestamp: entry.created_at,
                 const.notification_initiator: entry.owner_id,
-                # TODO: is entity owner id necessary for agreements?
+                # TODO: is entity owner id necessary for digitalContents?
                 const.notification_metadata: {
                     const.notification_entity_type: "digital_content",
                     const.notification_entity_id: entry.digital_content_id,
@@ -647,7 +647,7 @@ def notifications():
             if entry.remix_of:
                 # Add notification to remix digital_content owner
                 parent_remix_digital_contents = [
-                    t["parent_digital_content_id"] for t in entry.remix_of["agreements"]
+                    t["parent_digital_content_id"] for t in entry.remix_of["digitalContents"]
                 ]
                 remix_digital_content_parents = (
                     session.query(DigitalContent.owner_id, DigitalContent.digital_content_id)
@@ -669,7 +669,7 @@ def notifications():
                         const.notification_blocknumber: entry.blocknumber,
                         const.notification_timestamp: entry.created_at,
                         const.notification_initiator: entry.owner_id,
-                        # TODO: is entity owner id necessary for agreements?
+                        # TODO: is entity owner id necessary for digitalContents?
                         const.notification_metadata: {
                             const.notification_entity_type: "digital_content",
                             const.notification_entity_id: entry.digital_content_id,
@@ -702,7 +702,7 @@ def notifications():
                 f"notifications.py | single digital_content update {entry.digital_content_id} {entry.blocknumber} {datetime.now() - start_time}"
             )
 
-            # Agreements that were unlisted and turned to public
+            # DigitalContents that were unlisted and turned to public
             if prev_entry.is_unlisted == True:
                 logger.info(
                     f"notifications.py | single digital_content update to public {datetime.now() - start_time}"
@@ -712,7 +712,7 @@ def notifications():
                     const.notification_blocknumber: entry.blocknumber,
                     const.notification_timestamp: entry.created_at,
                     const.notification_initiator: entry.owner_id,
-                    # TODO: is entity owner id necessary for agreements?
+                    # TODO: is entity owner id necessary for digitalContents?
                     const.notification_metadata: {
                         const.notification_entity_type: "digital_content",
                         const.notification_entity_id: entry.digital_content_id,
@@ -721,11 +721,11 @@ def notifications():
                 }
                 created_notifications.append(digital_content_notif)
 
-            # Agreements that were not remixes and turned into remixes
+            # DigitalContents that were not remixes and turned into remixes
             if not prev_entry.remix_of and entry.remix_of:
                 # Add notification to remix digital_content owner
                 parent_remix_digital_contents = [
-                    t["parent_digital_content_id"] for t in entry.remix_of["agreements"]
+                    t["parent_digital_content_id"] for t in entry.remix_of["digitalContents"]
                 ]
                 remix_digital_content_parents = (
                     session.query(DigitalContent.owner_id, DigitalContent.digital_content_id)
@@ -750,7 +750,7 @@ def notifications():
                         const.notification_blocknumber: entry.blocknumber,
                         const.notification_timestamp: entry.created_at,
                         const.notification_initiator: entry.owner_id,
-                        # TODO: is entity owner id necessary for agreements?
+                        # TODO: is entity owner id necessary for digitalContents?
                         const.notification_metadata: {
                             const.notification_entity_type: "digital_content",
                             const.notification_entity_id: entry.digital_content_id,
@@ -838,7 +838,7 @@ def notifications():
                 publish_content_list_notif[const.notification_metadata] = metadata
                 created_notifications.append(publish_content_list_notif)
 
-        # ContentLists that had agreements added to them
+        # ContentLists that had digitalContents added to them
         # Get all contentLists that were modified over this range
         content_list_digital_content_added_query = session.query(ContentList).filter(
             ContentList.is_current == True,
@@ -848,7 +848,7 @@ def notifications():
             ContentList.blocknumber <= max_block_number,
         )
         content_list_digital_content_added_results = content_list_digital_content_added_query.all()
-        # Loop over all contentList updates and determine if there were agreements added
+        # Loop over all contentList updates and determine if there were digitalContents added
         # at the block that the contentList update is at
         digital_content_added_to_content_list_notifications = []
         digital_content_ids = []
@@ -887,7 +887,7 @@ def notifications():
                         digital_content_added_to_content_list_notification
                     )
 
-        agreements = (
+        digitalContents = (
             session.query(DigitalContent.owner_id, DigitalContent.digital_content_id)
             .filter(
                 DigitalContent.digital_content_id.in_(digital_content_ids),
@@ -898,7 +898,7 @@ def notifications():
             .all()
         )
         digital_content_owner_map = {}
-        for digital_content in agreements:
+        for digital_content in digitalContents:
             owner_id, digital_content_id = digital_content
             digital_content_owner_map[digital_content_id] = owner_id
 
@@ -912,7 +912,7 @@ def notifications():
             else:
                 digital_content_owner_id = digital_content_owner_map[digital_content_id]
                 if digital_content_owner_id != notification[const.notification_initiator]:
-                    # add agreements that don't belong to the contentList owner
+                    # add digitalContents that don't belong to the contentList owner
                     notification[const.notification_metadata][
                         const.digital_content_owner_id
                     ] = digital_content_owner_id
@@ -923,14 +923,14 @@ def notifications():
         logger.info(f"notifications.py | contentLists at {datetime.now() - start_time}")
 
         # Get additional owner info as requested for listen counts
-        agreements_owner_query = session.query(DigitalContent).filter(
+        digitalContents_owner_query = session.query(DigitalContent).filter(
             DigitalContent.is_current == True, DigitalContent.digital_content_id.in_(digital_content_ids_to_owner)
         )
-        digital_content_owner_results = agreements_owner_query.all()
+        digital_content_owner_results = digitalContents_owner_query.all()
         for entry in digital_content_owner_results:
             owner = entry.owner_id
             digital_content_id = entry.digital_content_id
-            owner_info[const.agreements][digital_content_id] = owner
+            owner_info[const.digitalContents][digital_content_id] = owner
 
         logger.info(
             f"notifications.py | owner info at {datetime.now() - start_time}, owners {len(digital_content_owner_results)}"

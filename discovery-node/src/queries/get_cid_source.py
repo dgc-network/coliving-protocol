@@ -77,11 +77,11 @@ def get_cid_source(cid):
                         (
                             SELECT
                                 "digital_content_id" as "id",
-                                'agreements' as "table_name",
+                                'digitalContents' as "table_name",
                                 'digital_content_metadata' as "type",
                                 "is_current"
                             FROM
-                                "agreements"
+                                "digitalContents"
                             WHERE
                                 (table cid_const) = "metadata_multihash"
                         )
@@ -89,11 +89,11 @@ def get_cid_source(cid):
                         (
                             SELECT
                                 "digital_content_id" as "id",
-                                'agreements' as "table_name",
+                                'digitalContents' as "table_name",
                                 'cover_art_size' as "type",
                                 "is_current"
                             FROM
-                                "agreements"
+                                "digitalContents"
                             WHERE
                                 (table cid_const) = "cover_art_sizes"
                         )
@@ -113,7 +113,7 @@ def get_cid_source(cid):
                         WITH cid_const AS (VALUES (:cid))
                             SELECT
                                 "digital_content_id" as "id",
-                                'agreements' as "table_name",
+                                'digitalContents' as "table_name",
                                 'segment' as "type",
                                 "is_current"
                             FROM
@@ -130,7 +130,7 @@ def get_cid_source(cid):
                                                 "digital_content_id",
                                                 "is_current"
                                             FROM
-                                                "agreements"
+                                                "digitalContents"
                                         ) as a
                                 ) as a2
                             WHERE

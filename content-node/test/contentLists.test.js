@@ -145,7 +145,7 @@ describe('Test ContentLists', function () {
   })
 
   it('successfully completes Coliving contentList creation with imageDirCID', async function () {
-    const testPicture = path.resolve(__dirname, 'testAgreementWrongFormat.jpg')
+    const testPicture = path.resolve(__dirname, 'testDigitalContentWrongFormat.jpg')
     const file = fs.readFileSync(testPicture)
     // Upload test cover image
     const resp = await request(app)

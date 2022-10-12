@@ -1,11 +1,11 @@
 ---
-id: "full.GetAgreementRequest"
-title: "Interface: GetAgreementRequest"
-sidebar_label: "GetAgreementRequest"
+id: "full.GetDigitalContentRequest"
+title: "Interface: GetDigitalContentRequest"
+sidebar_label: "GetDigitalContentRequest"
 custom_edit_url: null
 ---
 
-[full](../namespaces/full.md).GetAgreementRequest
+[full](../namespaces/full.md).GetDigitalContentRequest
 
 ## Properties
 
@@ -21,13 +21,13 @@ ___
 
  `Optional` **showUnlisted**: `boolean`
 
-Whether or not to show unlisted agreements
+Whether or not to show unlisted digitalContents
 
 ___
 
-### agreementId
+### digitalContentId
 
- **agreementId**: `string`
+ **digitalContentId**: `string`
 
 A DigitalContent ID
 

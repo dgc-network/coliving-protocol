@@ -30,11 +30,11 @@ def upgrade():
     FROM
     (
         SELECT
-            string_to_array(LOWER(agreements.tags), ',') AS tags,
+            string_to_array(LOWER(digitalContents.tags), ',') AS tags,
             digital_content_id,
             owner_id
         FROM
-            agreements
+            digitalContents
         WHERE
             tags <> ''
             AND tags IS NOT NULL 

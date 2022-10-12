@@ -6,7 +6,7 @@ import type {
 import type { WalletsToSecondariesMapping } from '../types'
 
 // eslint-disable-next-line import/no-unresolved
-import SecondarySyncHealthTracker from '../stateReconciliation/SecondarySyncHealthTracker'
+import SecondarySyncHealthTracker from '../stateReconciliation/secondarySyncHealthTracker'
 
 const _ = require('lodash')
 const axios = require('axios')

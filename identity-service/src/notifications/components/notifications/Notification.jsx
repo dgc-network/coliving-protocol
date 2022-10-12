@@ -43,7 +43,7 @@ const challengeRewardsConfig = {
     icon: <WhiteHeavyCheckMarkIcon />
   },
   'digital-content-upload': {
-    title: 'Upload 3 Agreements',
+    title: 'Upload 3 DigitalContents',
     icon: <MultipleMusicalNotesIcon />
   }
 }
@@ -158,7 +158,7 @@ const notificationMap = {
       )
     }
   },
-  [NotificationType.TrendingAgreement] (notification) {
+  [NotificationType.TrendingDigitalContent] (notification) {
     const highlight = notification.entity.title
     const rank = notification.rank
     const rankSuffix = getRankSuffix(rank)
@@ -188,23 +188,23 @@ const notificationMap = {
     )
   },
   [NotificationType.RemixCreate] (notification) {
-    const { remixUser, remixAgreement, parentAgreementUser, parentAgreement } = notification
+    const { remixUser, remixDigitalContent, parentDigitalContentUser, parentDigitalContent } = notification
     return (
       <span className={'notificationText'}>
-        <HighlightText text={remixAgreement.title} />
+        <HighlightText text={remixDigitalContent.title} />
         <BodyText text={` by `} />
         <HighlightText text={remixUser.name} />
       </span>
     )
   },
   [NotificationType.RemixCosign] (notification) {
-    const { parentAgreementUser, parentAgreements } = notification
-    const parentAgreement = parentAgreements.find(t => t.owner_id === parentAgreementUser.user_id)
+    const { parentDigitalContentUser, parentDigitalContents } = notification
+    const parentDigitalContent = parentDigitalContents.find(t => t.owner_id === parentDigitalContentUser.user_id)
     return (
       <span className={'notificationText'}>
-        <HighlightText text={parentAgreementUser.name} />
+        <HighlightText text={parentDigitalContentUser.name} />
         <BodyText text={` Co-signed your Remix of `} />
-        <HighlightText text={parentAgreement.title} />
+        <HighlightText text={parentDigitalContent.title} />
       </span>
     )
   },
@@ -213,9 +213,9 @@ const notificationMap = {
     const { title, icon } = challengeRewardsConfig[notification.challengeId]
     let bodyText
     if (notification.challengeId === 'referred') {
-      bodyText = `You’ve received ${rewardAmount} $LIVE for being referred! Invite your friends to join to earn more!`
+      bodyText = `You’ve received ${rewardAmount} $DGCO for being referred! Invite your friends to join to earn more!`
     } else {
-      bodyText = `You’ve earned ${rewardAmount} $LIVE for completing this challenge!`
+      bodyText = `You’ve earned ${rewardAmount} $DGCO for completing this challenge!`
     }
     return (
           <span className={'notificationText'}>
@@ -233,7 +233,7 @@ const notificationMap = {
       </span>
     )
   },
-  [NotificationType.AddAgreementToContentList] (notification) {
+  [NotificationType.AddDigitalContentToContentList] (notification) {
     return (
       <span className={'notificationText'}>
         <HighlightText text={notification.contentListOwner.name} />
@@ -250,7 +250,7 @@ const notificationMap = {
         <HighlightText text={capitalize(notification.reactingUser.name)} />
         <BodyText text={` reacted to your tip of `} />
         <HighlightText text={notification.amount} />
-        <BodyText text={` $LIVE`} />
+        <BodyText text={` $DGCO`} />
       </span>
     )
   },
@@ -281,7 +281,7 @@ const notificationMap = {
         <HighlightText text={capitalize(notification.sendingUser.name)} />
         <BodyText text={` sent you a tip of `} />
         <HighlightText text={notification.amount} />
-        <BodyText text={` $LIVE`} />
+        <BodyText text={` $DGCO`} />
       </span>
     )
   }
@@ -296,11 +296,11 @@ const getMessage = (notification) => {
 const getTitle = (notification) => {
   switch (notification.type) {
     case NotificationType.RemixCreate: {
-      const { parentAgreement } = notification
+      const { parentDigitalContent } = notification
       return (
         <span className={'notificationText'}>
           <BodyText text={`New remix of your digital_content `} />
-          <HighlightText text={parentAgreement.title} />
+          <HighlightText text={parentDigitalContent.title} />
         </span>
       )
     }
@@ -309,13 +309,13 @@ const getTitle = (notification) => {
   }
 }
 
-const getAgreementMessage = (notification) => {
+const getDigitalContentMessage = (notification) => {
   switch (notification.type) {
     case NotificationType.RemixCosign: {
-      const { remixAgreement } = notification
+      const { remixDigitalContent } = notification
       return (
         <span className={'notificationText'}>
-          <HighlightText text={remixAgreement.title} />
+          <HighlightText text={remixDigitalContent.title} />
         </span>
       )
     }
@@ -324,19 +324,19 @@ const getAgreementMessage = (notification) => {
   }
 }
 
-export const getAgreementLink = (digital_content) => {
+export const getDigitalContentLink = (digital_content) => {
   return `https://coliving.lol/${digital_content.route_id}-${digital_content.digital_content_id}`
 }
 
 const getTwitter = (notification) => {
   switch (notification.type) {
     case NotificationType.RemixCreate: {
-      const { parentAgreement, parentAgreementUser, remixUser, remixAgreement } = notification
-      const twitterHandle = parentAgreementUser.twitterHandle 
-        ? `@${parentAgreementUser.twitterHandle}`
-        : parentAgreementUser.name
-      const text = `New remix of ${parentAgreement.title} by ${twitterHandle} on @dgc-network #Coliving`
-      const url = getAgreementLink(remixAgreement)
+      const { parentDigitalContent, parentDigitalContentUser, remixUser, remixDigitalContent } = notification
+      const twitterHandle = parentDigitalContentUser.twitterHandle 
+        ? `@${parentDigitalContentUser.twitterHandle}`
+        : parentDigitalContentUser.name
+      const text = `New remix of ${parentDigitalContent.title} by ${twitterHandle} on @dgc-network #Coliving`
+      const url = getDigitalContentLink(remixDigitalContent)
       return {
         message: 'Share With Your Friends',
         href: `http://twitter.com/share?url=${encodeURIComponent(url)
@@ -344,22 +344,22 @@ const getTwitter = (notification) => {
       }
     }
     case NotificationType.RemixCosign: {
-      const { parentAgreements, parentAgreementUser, remixAgreement } = notification
-      const parentAgreement = parentAgreements.find(t => t.owner_id === parentAgreementUser.user_id)
-      const url = getAgreementLink(remixAgreement)
-      const twitterHandle = parentAgreementUser.twitterHandle 
-        ? `@${parentAgreementUser.twitterHandle}`
-        : parentAgreementUser.name
-      const text = `My remix of ${parentAgreement.title} was Co-Signed by ${twitterHandle} on @dgc-network #Coliving`
+      const { parentDigitalContents, parentDigitalContentUser, remixDigitalContent } = notification
+      const parentDigitalContent = parentDigitalContents.find(t => t.owner_id === parentDigitalContentUser.user_id)
+      const url = getDigitalContentLink(remixDigitalContent)
+      const twitterHandle = parentDigitalContentUser.twitterHandle 
+        ? `@${parentDigitalContentUser.twitterHandle}`
+        : parentDigitalContentUser.name
+      const text = `My remix of ${parentDigitalContent.title} was Co-Signed by ${twitterHandle} on @dgc-network #Coliving`
       return {
         message: 'Share With Your Friends',
         href: `http://twitter.com/share?url=${encodeURIComponent(url)
           }&text=${encodeURIComponent(text)}`
       }
     }
-    case NotificationType.TrendingAgreement: {
+    case NotificationType.TrendingDigitalContent: {
       const { rank, entity } = notification
-      const url = getAgreementLink(entity)
+      const url = getDigitalContentLink(entity)
       const rankSuffix = getRankSuffix(rank)
       const text = `My digital_content ${entity.title} is trending ${rank}${rankSuffix} on @dgc-network! #ColivingTrending #Coliving`
       return {
@@ -369,7 +369,7 @@ const getTwitter = (notification) => {
       }
     }
     case NotificationType.ChallengeReward: {
-      const text = `I earned $LIVE for completing challenges on @dgc-network #LiveRewards`
+      const text = `I earned $DGCO for completing challenges on @dgc-network #DigitalcoinRewards`
       return {
         message: 'Share this with your residents',
         href: `http://twitter.com/share?text=${encodeURIComponent(text)}`
@@ -383,14 +383,14 @@ const getTwitter = (notification) => {
 const Notification = (props) => {
   const message = getMessage(props)
   const title = getTitle(props)
-  const agreementMessage = getAgreementMessage(props)
+  const digitalContentMessage = getDigitalContentMessage(props)
   const twitter = getTwitter(props)
   return (
     <NotificationBody
       {...props}
       title={title}
       message={message}
-      agreementMessage={agreementMessage}
+      digitalContentMessage={digitalContentMessage}
       twitter={twitter}
     />
   )

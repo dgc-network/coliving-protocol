@@ -20,17 +20,17 @@ describe('Test DiskManager', function () {
   })
 
   /**
-   * getTmpAgreementUploadArtifactsPath
+   * getTmpDigitalContentUploadArtifactsPath
    */
   it('Should pass if storagePath is correctly set', function () {
-    const tmpAgreementArtifactPath = path.join(
+    const tmpDigitalContentArtifactPath = path.join(
       DiskManager.getConfigStoragePath(),
       'files',
       'tmp_digital_content_artifacts'
     )
     assert.deepStrictEqual(
-      tmpAgreementArtifactPath,
-      DiskManager.getTmpAgreementUploadArtifactsPath()
+      tmpDigitalContentArtifactPath,
+      DiskManager.getTmpDigitalContentUploadArtifactsPath()
     )
   })
 

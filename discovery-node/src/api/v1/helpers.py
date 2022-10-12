@@ -11,7 +11,7 @@ from src.queries.get_undisbursed_challenges import UndisbursedChallengeResponse
 from src.queries.reactions import ReactionResponse
 from src.utils.config import shared_config
 from src.utils.helpers import decode_string_id, encode_int_id
-from src.utils.spl_live import to_wei_string
+from src.utils.spl_digitalcoin import to_wei_string
 
 from .models.common import full_response
 
@@ -104,8 +104,8 @@ def extend_search(resp):
         resp["users"] = list(map(extend_user, resp["users"]))
     if "followed_users" in resp:
         resp["followed_users"] = list(map(extend_user, resp["followed_users"]))
-    if "agreements" in resp:
-        resp["agreements"] = list(map(extend_digital_content, resp["agreements"]))
+    if "digitalContents" in resp:
+        resp["digitalContents"] = list(map(extend_digital_content, resp["digitalContents"]))
     if "saved_digital_contents" in resp:
         resp["saved_digital_contents"] = list(map(extend_digital_content, resp["saved_digital_contents"]))
     if "content_lists" in resp:
@@ -156,10 +156,10 @@ def extend_remix_of(remix_of):
             digital_content["user"] = extend_user(digital_content["user"])
         return digital_content
 
-    if not remix_of or "agreements" not in remix_of or not remix_of["agreements"]:
+    if not remix_of or "digitalContents" not in remix_of or not remix_of["digitalContents"]:
         return remix_of
 
-    remix_of["agreements"] = list(map(extend_digital_content_element, remix_of["agreements"]))
+    remix_of["digitalContents"] = list(map(extend_digital_content_element, remix_of["digitalContents"]))
     return remix_of
 
 
@@ -494,8 +494,8 @@ full_search_parser.add_argument(
     required=False,
     type=str,
     default="all",
-    choices=("all", "users", "agreements", "content_lists", "albums"),
-    description="The type of response, one of: all, users, agreements, contentLists, or albums",
+    choices=("all", "users", "digitalContents", "content_lists", "albums"),
+    description="The type of response, one of: all, users, digitalContents, contentLists, or albums",
 )
 
 verify_token_parser = reqparse.RequestParser(argument_class=DescriptiveArgument)

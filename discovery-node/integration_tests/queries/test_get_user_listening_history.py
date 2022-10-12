@@ -25,7 +25,7 @@ test_entities = {
         {"user_id": 1, "item_id": 3, "created_at": TIMESTAMP + timedelta(minutes=4)},
         {"user_id": 2, "item_id": 2, "created_at": TIMESTAMP},
     ],
-    "agreements": [
+    "digitalContents": [
         {"digital_content_id": 1, "title": "digital_content 1", "owner_id": 1, "is_delete": True},
         {"digital_content_id": 2, "title": "digital_content 2", "owner_id": 2},
         {"digital_content_id": 3, "title": "digital_content 3", "owner_id": 3},

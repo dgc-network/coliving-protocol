@@ -10,7 +10,7 @@ from sqlalchemy import desc
 from sqlalchemy.orm.session import Session
 from src.models.indexing.coliving_data_tx import ColivingDataTx
 from src.models.indexing.ursm_content_node import UrsmContentNode
-from src.models.agreements.digital_content import DigitalContent
+from src.models.digitalContents.digital_content import DigitalContent
 from src.models.users.user import User
 from src.solana.anchor_parser import AnchorParser
 from src.solana.coliving_data_transaction_handlers import ParsedTx, transaction_handlers
@@ -111,17 +111,17 @@ class AnchorProgramIndexer(SolanaProgramIndexer):
                 )
                 for user in existing_users:
                     db_models["users"][user.user_id] = [user]
-            if entity_ids["agreements"]:
+            if entity_ids["digitalContents"]:
                 existing_digital_contents = (
                     session.query(DigitalContent)
                     .filter(
                         DigitalContent.is_current,
-                        DigitalContent.digital_content_id.in_(list(entity_ids["agreements"])),
+                        DigitalContent.digital_content_id.in_(list(entity_ids["digitalContents"])),
                     )
                     .all()
                 )
                 for digital_content in existing_digital_contents:
-                    db_models["agreements"][digital_content.digital_content_id] = [digital_content]
+                    db_models["digitalContents"][digital_content.digital_content_id] = [digital_content]
 
             # TODO: Find all other digital_content/contentList/etc. models
 
@@ -228,7 +228,7 @@ class AnchorProgramIndexer(SolanaProgramIndexer):
                     id = instruction["data"]["id"]
                     entity_type = instruction["data"]["entity_type"]
                     if isinstance(entity_type, entity_type.DigitalContent):
-                        entities["agreements"].add(id)
+                        entities["digitalContents"].add(id)
                 elif instruction_name == "create_content_node":
                     pass
                 elif instruction_name == "public_create_or_update_content_node":

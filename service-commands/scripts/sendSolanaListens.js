@@ -15,17 +15,17 @@ async function run (
 
   const success = await Promise.all(
     Array.apply(null, { length: requests }).map(async () => {
-      const agreementId = Math.floor(Math.random() * 1000000)
+      const digitalContentId = Math.floor(Math.random() * 1000000)
       const userId = Math.floor(Math.random() * 1000000)
 
       try {
         console.log(
-          `Sending digital_content listen | agreementId=${agreementId}, userId=${userId}`
+          `Sending digital_content listen | digitalContentId=${digitalContentId}, userId=${userId}`
         )
 
         const requestOptions = {
           method: 'POST',
-          url: `${identityEndpoint}/agreements/${agreementId}/listen`,
+          url: `${identityEndpoint}/digital_contents/${digitalContentId}/listen`,
           headers: { 'content-type': 'application/json' },
           data: { solanaListen: true, userId }
         }
@@ -34,7 +34,7 @@ async function run (
         const signature = response.solTxSignature
 
         console.log(
-          `Successfully sent digital_content listen | agreementId=${agreementId}, userId=${userId} | signature=${signature}`
+          `Successfully sent digital_content listen | digitalContentId=${digitalContentId}, userId=${userId} | signature=${signature}`
         )
 
         const pollStart = Date.now()
@@ -69,7 +69,7 @@ async function run (
         }
       } catch (e) {
         console.log(
-          `Failed to send digital_content listen | agreementId=${agreementId}, userId=${userId}`
+          `Failed to send digital_content listen | digitalContentId=${digitalContentId}, userId=${userId}`
         )
         return false
       }

@@ -27,9 +27,9 @@ The number of items to skip. Useful for pagination (page number * limit)
 
 ___
 
-### agreementId
+### digitalContentId
 
- **agreementId**: `string`
+ **digitalContentId**: `string`
 
 A DigitalContent ID
 

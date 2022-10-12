@@ -68,7 +68,7 @@ def upgrade():
             )
           ) as word
         FROM
-            agreements t
+            digitalContents t
         INNER JOIN users u ON t.owner_id = u.user_id
         WHERE
           t.is_current = true and t.is_unlisted = false

@@ -1,7 +1,7 @@
 from typing import TypedDict
 
 from sqlalchemy.orm.session import Session
-from src.models.agreements.digital_content import DigitalContent
+from src.models.digitalContents.digital_content import DigitalContent
 from src.models.users.user_listening_history import UserListeningHistory
 from src.queries import response_name_constants
 from src.queries.query_helpers import add_users_to_digital_contents, populate_digital_content_metadata
@@ -31,7 +31,7 @@ def get_user_listening_history(args: GetUserListeningHistoryArgs):
         args: GetUserListeningHistoryArgs The parsed args from the request
 
     Returns:
-        Array of agreements the user listened to starting from most recently listened
+        Array of digitalContents the user listened to starting from most recently listened
     """
 
     db = get_db_read_replica()
@@ -72,19 +72,19 @@ def _get_user_listening_history(session: Session, args: GetUserListeningHistoryA
         digital_content_result.digital_content_id: digital_content_result for digital_content_result in digital_content_results
     }
 
-    # sort agreements in listening history order
+    # sort digitalContents in listening history order
     sorted_digital_content_results = []
     for digital_content_id in digital_content_ids:
         if digital_content_id in digital_content_results_dict:
             sorted_digital_content_results.append(digital_content_results_dict[digital_content_id])
 
-    agreements = helpers.query_result_to_list(sorted_digital_content_results)
+    digitalContents = helpers.query_result_to_list(sorted_digital_content_results)
 
     # bundle peripheral info into digital_content results
-    agreements = populate_digital_content_metadata(session, digital_content_ids, agreements, current_user_id)
-    add_users_to_digital_contents(session, agreements, current_user_id)
+    digitalContents = populate_digital_content_metadata(session, digital_content_ids, digitalContents, current_user_id)
+    add_users_to_digital_contents(session, digitalContents, current_user_id)
 
-    for idx, digital_content in enumerate(agreements):
+    for idx, digital_content in enumerate(digitalContents):
         digital_content[response_name_constants.activity_timestamp] = listen_dates[idx]
 
-    return agreements
+    return digitalContents

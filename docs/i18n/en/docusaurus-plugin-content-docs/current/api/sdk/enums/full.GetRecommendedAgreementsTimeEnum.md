@@ -1,13 +1,13 @@
 ---
-id: "full.GetRecommendedAgreementsTimeEnum"
-title: "Enumeration: GetRecommendedAgreementsTimeEnum"
-sidebar_label: "GetRecommendedAgreementsTimeEnum"
+id: "full.GetRecommendedDigitalContentsTimeEnum"
+title: "Enumeration: GetRecommendedDigitalContentsTimeEnum"
+sidebar_label: "GetRecommendedDigitalContentsTimeEnum"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).GetRecommendedAgreementsTimeEnum
+[full](../namespaces/full.md).GetRecommendedDigitalContentsTimeEnum
 
 **`export`**
 

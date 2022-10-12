@@ -15,7 +15,7 @@ custom_edit_url: null
 
 ### data
 
- `Optional` **data**: [`AgreementFull`](full.AgreementFull.md)[]
+ `Optional` **data**: [`DigitalContentFull`](full.DigitalContentFull.md)[]
 
 **`memberof`** RemixingResponse
 

@@ -24,7 +24,7 @@
             "updatedAt": "2020-11-23T22:44:18.914Z"
           }
         ],
-        "agreements": [
+        "digitalContents": [
           {
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
             "clock": 37,
@@ -173,7 +173,7 @@
           {
             "fileUUID": "ba8f4f3b-34d9-4fc7-ba31-c7a4b48551b4",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": null,
+            "digitalContentBlockchainId": null,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": null,
@@ -188,7 +188,7 @@
           {
             "fileUUID": "43bf9656-db92-4b27-9e60-228f323d9334",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -203,7 +203,7 @@
           {
             "fileUUID": "fe71b072-6164-40fb-b730-10f3e443531a",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -218,7 +218,7 @@
           {
             "fileUUID": "f2fd7bbc-915d-436a-8c71-cd4c28a7b3a9",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -233,7 +233,7 @@
           {
             "fileUUID": "1a943d6d-8660-4f18-9a66-9fe20758fbf7",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -248,7 +248,7 @@
           {
             "fileUUID": "5f9023cb-02fa-43f3-adb1-c578a164bc5b",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -263,7 +263,7 @@
           {
             "fileUUID": "b2a9201c-d1da-4b5a-ac15-a7717ffd0752",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -278,7 +278,7 @@
           {
             "fileUUID": "5b48d1b7-1c90-4f46-b3b4-49dacc22e2cf",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -293,7 +293,7 @@
           {
             "fileUUID": "8622c473-7748-4ac7-9107-2f10421d17b6",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -308,7 +308,7 @@
           {
             "fileUUID": "66633000-3ecb-462b-a91f-77338d285d5b",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -323,7 +323,7 @@
           {
             "fileUUID": "cb73e61b-b9fa-4d56-b55b-c0896970a6a7",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -338,7 +338,7 @@
           {
             "fileUUID": "789b0e49-4605-4fc4-8ddb-f0d7af2a2e00",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -353,7 +353,7 @@
           {
             "fileUUID": "429366c3-2c02-4bad-b037-c8a08c7d664f",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -368,7 +368,7 @@
           {
             "fileUUID": "186c70ee-3b01-4e39-b886-00001a861053",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -383,7 +383,7 @@
           {
             "fileUUID": "6e51ae54-9e16-491d-8cbd-cb01e9245f05",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -398,7 +398,7 @@
           {
             "fileUUID": "44e7ec01-8621-48fd-b035-365c9c8a0b1b",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -413,7 +413,7 @@
           {
             "fileUUID": "d6e2a02e-616d-41a1-a22d-698e4b5e6e1c",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -428,7 +428,7 @@
           {
             "fileUUID": "e4c2eba9-a6f9-4e28-89e4-d81ea85556f7",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -443,7 +443,7 @@
           {
             "fileUUID": "f37e36c3-fc05-4637-85a8-4f0d222a0a95",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -458,7 +458,7 @@
           {
             "fileUUID": "51e88fa4-5c55-4e93-b73b-8b975ee39164",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -473,7 +473,7 @@
           {
             "fileUUID": "859aa53a-fb46-4d77-8cfd-92c850d47ada",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -488,7 +488,7 @@
           {
             "fileUUID": "c0355625-f56f-48ef-a0ad-535bb9e17265",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -503,7 +503,7 @@
           {
             "fileUUID": "7eb3f06b-7787-40ae-b143-4fc03b2fd504",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -518,7 +518,7 @@
           {
             "fileUUID": "c239d0ba-d98a-4c4b-be34-5f54ec2881cb",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -533,7 +533,7 @@
           {
             "fileUUID": "d7470c8a-20ac-4981-bdbc-0c02439de539",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -548,7 +548,7 @@
           {
             "fileUUID": "aa723ef8-d4fa-44a9-bb5a-a332c7b75943",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -563,7 +563,7 @@
           {
             "fileUUID": "d92f9e65-1f7e-4e63-8675-2f301a88deda",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -578,7 +578,7 @@
           {
             "fileUUID": "6acb9e2b-3f01-4e7b-ae0d-33ab8ca16bf2",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -593,7 +593,7 @@
           {
             "fileUUID": "07ffc750-9927-4e7f-9cb3-e570d86f4bca",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -608,7 +608,7 @@
           {
             "fileUUID": "f6ec32b2-d6b8-4c49-abee-db7088ad643e",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -623,7 +623,7 @@
           {
             "fileUUID": "a5909e6d-28d6-43da-89cf-8673a7b22dcb",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -638,7 +638,7 @@
           {
             "fileUUID": "e5565f73-f072-42ad-aa89-ba295be709f5",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -653,7 +653,7 @@
           {
             "fileUUID": "bbdff123-2c20-473e-8f65-6996b7bb9d79",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -668,7 +668,7 @@
           {
             "fileUUID": "1bb2e12c-842a-4ea7-9160-4a47a342872c",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": 1,
+            "digitalContentBlockchainId": 1,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -683,7 +683,7 @@
           {
             "fileUUID": "9caf769e-fbad-4230-b12e-67e8cf7ed7fd",
             "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-            "agreementBlockchainId": null,
+            "digitalContentBlockchainId": null,
             "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
             "skipped": false,
             "sourceFile": null,
@@ -989,7 +989,7 @@
           "updatedAt": "2020-11-23T22:44:18.914Z"
         }
       ],
-      "agreements": [
+      "digitalContents": [
         {
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
           "clock": 37,
@@ -1138,7 +1138,7 @@
         {
           "fileUUID": "ba8f4f3b-34d9-4fc7-ba31-c7a4b48551b4",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": null,
+          "digitalContentBlockchainId": null,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": null,
@@ -1153,7 +1153,7 @@
         {
           "fileUUID": "43bf9656-db92-4b27-9e60-228f323d9334",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1168,7 +1168,7 @@
         {
           "fileUUID": "fe71b072-6164-40fb-b730-10f3e443531a",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1183,7 +1183,7 @@
         {
           "fileUUID": "f2fd7bbc-915d-436a-8c71-cd4c28a7b3a9",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1198,7 +1198,7 @@
         {
           "fileUUID": "1a943d6d-8660-4f18-9a66-9fe20758fbf7",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1213,7 +1213,7 @@
         {
           "fileUUID": "5f9023cb-02fa-43f3-adb1-c578a164bc5b",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1228,7 +1228,7 @@
         {
           "fileUUID": "b2a9201c-d1da-4b5a-ac15-a7717ffd0752",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1243,7 +1243,7 @@
         {
           "fileUUID": "5b48d1b7-1c90-4f46-b3b4-49dacc22e2cf",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1258,7 +1258,7 @@
         {
           "fileUUID": "8622c473-7748-4ac7-9107-2f10421d17b6",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1273,7 +1273,7 @@
         {
           "fileUUID": "66633000-3ecb-462b-a91f-77338d285d5b",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1288,7 +1288,7 @@
         {
           "fileUUID": "cb73e61b-b9fa-4d56-b55b-c0896970a6a7",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1303,7 +1303,7 @@
         {
           "fileUUID": "789b0e49-4605-4fc4-8ddb-f0d7af2a2e00",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1318,7 +1318,7 @@
         {
           "fileUUID": "429366c3-2c02-4bad-b037-c8a08c7d664f",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1333,7 +1333,7 @@
         {
           "fileUUID": "186c70ee-3b01-4e39-b886-00001a861053",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1348,7 +1348,7 @@
         {
           "fileUUID": "6e51ae54-9e16-491d-8cbd-cb01e9245f05",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1363,7 +1363,7 @@
         {
           "fileUUID": "44e7ec01-8621-48fd-b035-365c9c8a0b1b",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1378,7 +1378,7 @@
         {
           "fileUUID": "d6e2a02e-616d-41a1-a22d-698e4b5e6e1c",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1393,7 +1393,7 @@
         {
           "fileUUID": "e4c2eba9-a6f9-4e28-89e4-d81ea85556f7",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1408,7 +1408,7 @@
         {
           "fileUUID": "f37e36c3-fc05-4637-85a8-4f0d222a0a95",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1423,7 +1423,7 @@
         {
           "fileUUID": "51e88fa4-5c55-4e93-b73b-8b975ee39164",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1438,7 +1438,7 @@
         {
           "fileUUID": "859aa53a-fb46-4d77-8cfd-92c850d47ada",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1453,7 +1453,7 @@
         {
           "fileUUID": "c0355625-f56f-48ef-a0ad-535bb9e17265",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1468,7 +1468,7 @@
         {
           "fileUUID": "7eb3f06b-7787-40ae-b143-4fc03b2fd504",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1483,7 +1483,7 @@
         {
           "fileUUID": "c239d0ba-d98a-4c4b-be34-5f54ec2881cb",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1498,7 +1498,7 @@
         {
           "fileUUID": "d7470c8a-20ac-4981-bdbc-0c02439de539",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1513,7 +1513,7 @@
         {
           "fileUUID": "aa723ef8-d4fa-44a9-bb5a-a332c7b75943",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1528,7 +1528,7 @@
         {
           "fileUUID": "d92f9e65-1f7e-4e63-8675-2f301a88deda",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1543,7 +1543,7 @@
         {
           "fileUUID": "6acb9e2b-3f01-4e7b-ae0d-33ab8ca16bf2",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1558,7 +1558,7 @@
         {
           "fileUUID": "07ffc750-9927-4e7f-9cb3-e570d86f4bca",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1573,7 +1573,7 @@
         {
           "fileUUID": "f6ec32b2-d6b8-4c49-abee-db7088ad643e",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1588,7 +1588,7 @@
         {
           "fileUUID": "a5909e6d-28d6-43da-89cf-8673a7b22dcb",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1603,7 +1603,7 @@
         {
           "fileUUID": "e5565f73-f072-42ad-aa89-ba295be709f5",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1618,7 +1618,7 @@
         {
           "fileUUID": "bbdff123-2c20-473e-8f65-6996b7bb9d79",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1633,7 +1633,7 @@
         {
           "fileUUID": "1bb2e12c-842a-4ea7-9160-4a47a342872c",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": 1,
+          "digitalContentBlockchainId": 1,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": "2359965d-3e8b-4f5c-af22-acd83ba48572.mp3",
@@ -1648,7 +1648,7 @@
         {
           "fileUUID": "9caf769e-fbad-4230-b12e-67e8cf7ed7fd",
           "cnodeUserUUID": "10aaedfe-9f1c-475a-94b5-fab7b39e401b",
-          "agreementBlockchainId": null,
+          "digitalContentBlockchainId": null,
           "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
           "skipped": false,
           "sourceFile": null,

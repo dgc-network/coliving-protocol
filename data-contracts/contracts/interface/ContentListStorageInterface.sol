@@ -7,19 +7,19 @@ interface ContentListStorageInterface {
     bool _isAlbum,
     uint[] calldata _digital_contentIds) external returns (uint newContentListId);
 
-  function addContentListAgreement(
+  function addContentListDigitalContent(
     uint _content_listId,
-    uint _addedAgreementId) external;
+    uint _addedDigitalContentId) external;
 
-  function deleteContentListAgreement(
+  function deleteContentListDigitalContent(
     uint _content_listId,
-    uint _deletedAgreementId) external;
+    uint _deletedDigitalContentId) external;
 
   function getContentListOwner(uint _content_listId) external view returns (uint contentListOwnerId);
 
-  function isAgreementInContentList(
+  function isDigitalContentInContentList(
     uint _content_listId,
-    uint _digital_contentId) external view returns (bool agreementInContentList);
+    uint _digital_contentId) external view returns (bool digitalContentInContentList);
 
   function contentListExists(uint _content_listId) external view returns (bool exists);
 }

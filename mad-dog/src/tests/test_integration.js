@@ -7,12 +7,12 @@ const assert = require('assert')
 const ServiceCommands = require('@coliving/service-commands')
 const {
   OPERATION_TYPE,
-  AgreementUploadRequest,
-  AgreementUploadResponse,
-  AgreementRepostRequest,
-  AgreementRepostResponse,
-  AddContentListAgreementRequest,
-  AddContentListAgreementResponse,
+  DigitalContentUploadRequest,
+  DigitalContentUploadResponse,
+  DigitalContentRepostRequest,
+  DigitalContentRepostResponse,
+  AddContentListDigitalContentRequest,
+  AddContentListDigitalContentResponse,
   CreateContentListRequest,
   CreateContentListResponse
 } = require('../operations.js')
@@ -26,13 +26,13 @@ const {
 } = require('../helpers.js')
 const {
   getContentNodeEndpoints,
-  getRepostersForAgreement,
+  getRepostersForDigitalContent,
   createContentList,
   getContentLists,
   RandomUtils,
-  uploadAgreement,
-  repostAgreement,
-  getAgreementMetadata,
+  uploadDigitalContent,
+  repostDigitalContent,
+  getDigitalContentMetadata,
   getUser,
   getUsers,
   verifyCIDExistsOnContentNode,
@@ -40,11 +40,11 @@ const {
   setContentNodeEndpoint,
   updateCreator,
   getURSMContentNodes,
-  addContentListAgreement
+  addContentListDigitalContent
 } = ServiceCommands
 const {
-  getRandomAgreementMetadata,
-  getRandomAgreementFilePath,
+  getRandomDigitalContentMetadata,
+  getRandomDigitalContentFilePath,
   r6,
   genRandomString
 } = RandomUtils
@@ -56,14 +56,14 @@ const TEMP_IMG_STORAGE_PATH = path.resolve('./local-storage/tmp-imgs/')
 
 const SECOND_USER_PIC_PATH = path.resolve('assets/images/duck.jpg')
 const THIRD_USER_PIC_PATH = path.resolve('assets/images/sid.png')
-const repostedAgreements = []
-const uploadedAgreements = []
+const repostedDigitalContents = []
+const uploadedDigitalContents = []
 const userRepostedMap = {}
 const createdContentLists = []
-const addedContentListAgreements = []
+const addedContentListDigitalContents = []
 
 /**
- * Randomly uploads agreements over the duration of the test,
+ * Randomly uploads digitalContents over the duration of the test,
  * testing that the CIDs are on the respective CNodes at the end of the test.
  */
 module.exports = coreIntegration = async ({
@@ -105,9 +105,9 @@ module.exports = coreIntegration = async ({
   await fs.ensureDir(TEMP_STORAGE_PATH)
   await fs.ensureDir(TEMP_IMG_STORAGE_PATH)
 
-  // map of walletId => agreementId => metadata
-  const walletAgreementMap = {}
-  // map of walletId => agreementId => metadata
+  // map of walletId => digitalContentId => metadata
+  const walletDigitalContentMap = {}
+  // map of walletId => digitalContentId => metadata
   const failedUploads = {}
 
   // Create the Emitter Based Test
@@ -117,30 +117,30 @@ module.exports = coreIntegration = async ({
   })
 
   // Register the request listener. The only request type this test
-  // currently handles is to upload agreements.
+  // currently handles is to upload digitalContents.
   emitterTest.registerOnRequestListener(async (request, emit) => {
     const { type, walletIndex, userId } = request
     let res
     switch (type) {
       case OPERATION_TYPE.AGREEMENT_UPLOAD: {
-        const digital_content = getRandomAgreementMetadata(userId)
+        const digital_content = getRandomDigitalContentMetadata(userId)
 
-        const randomAgreementFilePath = await getRandomAgreementFilePath(TEMP_STORAGE_PATH)
+        const randomDigitalContentFilePath = await getRandomDigitalContentFilePath(TEMP_STORAGE_PATH)
 
         try {
           // Execute a digital_content upload request against a single
           // instance of libs.
           await executeOne(walletIndex, l => l.waitForLatestBlock())
           await retry(async () => {
-            const agreementId = await executeOne(walletIndex, l =>
-              uploadAgreement(l, digital_content, randomAgreementFilePath)
+            const digitalContentId = await executeOne(walletIndex, l =>
+              uploadDigitalContent(l, digital_content, randomDigitalContentFilePath)
             )
-            uploadedAgreements.push({ agreementId: agreementId, userId: userId })
-            res = new AgreementUploadResponse(walletIndex, agreementId, digital_content)
+            uploadedDigitalContents.push({ digitalContentId: digitalContentId, userId: userId })
+            res = new DigitalContentUploadResponse(walletIndex, digitalContentId, digital_content)
           }, {})
         } catch (e) {
           logger.error(`Caught error [${e.message}] uploading digital_content: [${JSON.stringify(digital_content)}]\n${e.stack}`)
-          res = new AgreementUploadResponse(
+          res = new DigitalContentUploadResponse(
             walletIndex,
             null,
             digital_content,
@@ -153,33 +153,33 @@ module.exports = coreIntegration = async ({
         break
       }
       case OPERATION_TYPE.AGREEMENT_REPOST: {
-        // repost candidates include agreements from other users that have not already been reposted by current user
-        const repostCandidates = uploadedAgreements
+        // repost candidates include digitalContents from other users that have not already been reposted by current user
+        const repostCandidates = uploadedDigitalContents
           .filter(obj => obj.userId !== userId)
           .filter(obj => {
             if (!userRepostedMap[obj.userId]) {
               return true
             }
-            return !userRepostedMap[obj.userId].includes(obj.agreementId)
+            return !userRepostedMap[obj.userId].includes(obj.digitalContentId)
           })
-          .map(obj => obj.agreementId)
+          .map(obj => obj.digitalContentId)
         if (repostCandidates.length === 0) {
-          const missingAgreementMessage = 'No agreements available to repost'
-          logger.info(missingAgreementMessage)
-          res = new AgreementRepostResponse(walletIndex, null, userId, false)
+          const missingDigitalContentMessage = 'No digitalContents available to repost'
+          logger.info(missingDigitalContentMessage)
+          res = new DigitalContentRepostResponse(walletIndex, null, userId, false)
           return emit(Event.RESPONSE, res)
         } else {
-          const agreementId = repostCandidates[_.random(repostCandidates.length - 1)]
+          const digitalContentId = repostCandidates[_.random(repostCandidates.length - 1)]
           try {
             await retry(async () => {
               // verify digital_content has not been reposted
               await executeOne(walletIndex, l => l.waitForLatestBlock())
-              let reposters = await executeOne(walletIndex, l => getRepostersForAgreement(l, agreementId))
+              let reposters = await executeOne(walletIndex, l => getRepostersForDigitalContent(l, digitalContentId))
               let usersReposted = reposters.map(obj => obj.user_id)
               if (usersReposted.includes(userId)) {
-                res = new AgreementRepostResponse(
+                res = new DigitalContentRepostResponse(
                   walletIndex,
-                  agreementId,
+                  digitalContentId,
                   userId,
                   false,
                   'DigitalContent already reposted.'
@@ -187,11 +187,11 @@ module.exports = coreIntegration = async ({
                 return emit(Event.RESPONSE, res)
               }
 
-              const transaction = await executeOne(walletIndex, l => repostAgreement(l, agreementId))
+              const transaction = await executeOne(walletIndex, l => repostDigitalContent(l, digitalContentId))
               if (!transaction.status) {
-                res = new AgreementRepostResponse(
+                res = new DigitalContentRepostResponse(
                   walletIndex,
-                  agreementId,
+                  digitalContentId,
                   userId,
                   false,
                   'Transaction failed because digital_content was already reposted.'
@@ -201,26 +201,26 @@ module.exports = coreIntegration = async ({
 
               // verify digital_content reposted
               await executeOne(walletIndex, l => l.waitForLatestBlock())
-              reposters = await executeOne(walletIndex, l => getRepostersForAgreement(l, agreementId))
+              reposters = await executeOne(walletIndex, l => getRepostersForDigitalContent(l, digitalContentId))
               usersReposted = reposters.map(obj => obj.user_id)
               if (!usersReposted.includes(userId)) {
-                throw new Error(`Reposters for digital_content [${agreementId}] do not include user [${userId}]`)
+                throw new Error(`Reposters for digital_content [${digitalContentId}] do not include user [${userId}]`)
               }
               if (!userRepostedMap[userId]) {
                 userRepostedMap[userId] = []
               }
-              userRepostedMap[userId].push(agreementId)
-              res = new AgreementRepostResponse(walletIndex, agreementId, userId)
+              userRepostedMap[userId].push(digitalContentId)
+              res = new DigitalContentRepostResponse(walletIndex, digitalContentId, userId)
               return emit(Event.RESPONSE, res)
             }, {
               retries: 3,
               factor: 2
             })
           } catch (e) {
-            logger.error(`Caught error [${e.message}] reposting digital_content: [${agreementId}]\n${e.stack}`)
-            res = new AgreementRepostResponse(
+            logger.error(`Caught error [${e.message}] reposting digital_content: [${digitalContentId}]\n${e.stack}`)
+            res = new DigitalContentRepostResponse(
               walletIndex,
-              agreementId,
+              digitalContentId,
               userId,
               false,
               e.message
@@ -257,22 +257,22 @@ module.exports = coreIntegration = async ({
         break
       }
       case OPERATION_TYPE.ADD_CONTENT_LIST_AGREEMENT: {
-        if (uploadedAgreements.length === 0 || !createdContentLists[userId]) {
-          res = new AddContentListAgreementResponse(
+        if (uploadedDigitalContents.length === 0 || !createdContentLists[userId]) {
+          res = new AddContentListDigitalContentResponse(
             walletIndex,
             null,
             false,
             new Error('Adding a digital_content to a contentList requires a digital_content to be uploaded.')
           )
         } else {
-          const agreementId = uploadedAgreements[_.random(uploadedAgreements.length - 1)].agreementId
+          const digitalContentId = uploadedDigitalContents[_.random(uploadedDigitalContents.length - 1)].digitalContentId
           try {
             // add digital_content to contentList
             const contentListId = createdContentLists[userId][_.random(createdContentLists[userId].length - 1)]
             await executeOne(walletIndex, l =>
-              addContentListAgreement(l, contentListId, agreementId)
+              addContentListDigitalContent(l, contentListId, digitalContentId)
             )
-            logger.info(`DigitalContent [${agreementId}] added to contentList [${contentListId}].`)
+            logger.info(`DigitalContent [${digitalContentId}] added to contentList [${contentListId}].`)
             await executeOne(walletIndex, l => l.waitForLatestBlock())
 
             // verify contentList digital_content add
@@ -280,18 +280,18 @@ module.exports = coreIntegration = async ({
               const contentLists = await executeOne(walletIndex, l =>
                 getContentLists(l, 100, 0, [contentListId], userId)
               )
-              const contentListAgreements = contentLists[0].content_list_contents.digital_content_ids.map(obj => obj.digital_content)
-              if (!contentListAgreements.includes(agreementId)) {
-                throw new Error(`DigitalContent [${agreementId}] not found in contentList [${contentListId}]`)
+              const contentListDigitalContents = contentLists[0].content_list_contents.digital_content_ids.map(obj => obj.digital_content)
+              if (!contentListDigitalContents.includes(digitalContentId)) {
+                throw new Error(`DigitalContent [${digitalContentId}] not found in contentList [${contentListId}]`)
               }
             }, {
               retries: 20,
               factor: 2
             })
-            res = new AddContentListAgreementResponse(walletIndex, agreementId)
+            res = new AddContentListDigitalContentResponse(walletIndex, digitalContentId)
           } catch (e) {
-            logger.error(`Caught error [${e.message}] adding digital_content: [${agreementId}] to contentList \n${e.stack}`)
-            res = new AddContentListAgreementResponse(
+            logger.error(`Caught error [${e.message}] adding digital_content: [${digitalContentId}] to contentList \n${e.stack}`)
+            res = new AddContentListDigitalContentResponse(
               walletIndex,
               null,
               false,
@@ -315,7 +315,7 @@ module.exports = coreIntegration = async ({
   emitterTest.registerOnResponseListener(res => {
     switch (res.type) {
       case OPERATION_TYPE.AGREEMENT_UPLOAD: {
-        const { walletIndex, agreementId, metadata, success } = res
+        const { walletIndex, digitalContentId, metadata, success } = res
         // If it failed, log it
         if (!success) {
           if (!failedUploads[walletIndex]) {
@@ -323,22 +323,22 @@ module.exports = coreIntegration = async ({
           }
 
           failedUploads[walletIndex] = {
-            [agreementId]: metadata
+            [digitalContentId]: metadata
           }
         } else {
-          if (!walletAgreementMap[walletIndex]) {
-            walletAgreementMap[walletIndex] = []
+          if (!walletDigitalContentMap[walletIndex]) {
+            walletDigitalContentMap[walletIndex] = []
           }
-          if (agreementId) { // only add successfully uploaded agreements
-            walletAgreementMap[walletIndex].push(agreementId)
+          if (digitalContentId) { // only add successfully uploaded digitalContents
+            walletDigitalContentMap[walletIndex].push(digitalContentId)
           }
         }
         break
       }
       case OPERATION_TYPE.AGREEMENT_REPOST: {
-        const { walletIndex, agreementId, userId, success } = res
+        const { walletIndex, digitalContentId, userId, success } = res
         if (success) {
-          repostedAgreements.push({ agreementId: agreementId, userId: userId })
+          repostedDigitalContents.push({ digitalContentId: digitalContentId, userId: userId })
         }
         break
       }
@@ -353,9 +353,9 @@ module.exports = coreIntegration = async ({
         break
       }
       case OPERATION_TYPE.ADD_CONTENT_LIST_AGREEMENT: {
-        const { walletIndex, agreementId, success } = res
+        const { walletIndex, digitalContentId, success } = res
         if (success) {
-          addedContentListAgreements.push(agreementId)
+          addedContentListDigitalContents.push(digitalContentId)
         }
         break
       }
@@ -369,11 +369,11 @@ module.exports = coreIntegration = async ({
   // of events.
   emitterTest.registerOnTickListener(emit => {
     const requesterIdx = _.random(0, numUsers - 1)
-    const agreementUploadRequest = new AgreementUploadRequest(
+    const digitalContentUploadRequest = new DigitalContentUploadRequest(
       requesterIdx,
       walletIdMap[requesterIdx]
     )
-    const agreementRepostRequest = new AgreementRepostRequest(
+    const digitalContentRepostRequest = new DigitalContentRepostRequest(
       requesterIdx,
       walletIdMap[requesterIdx]
     )
@@ -381,11 +381,11 @@ module.exports = coreIntegration = async ({
       requesterIdx,
       walletIdMap[requesterIdx]
     )
-    const addContentListAgreementRequest = new AddContentListAgreementRequest(
+    const addContentListDigitalContentRequest = new AddContentListDigitalContentRequest(
       requesterIdx,
       walletIdMap[requesterIdx]
     )
-    const requests = [agreementUploadRequest, agreementRepostRequest, createContentListRequest, addContentListAgreementRequest]
+    const requests = [digitalContentUploadRequest, digitalContentRepostRequest, createContentListRequest, addContentListDigitalContentRequest]
     for (const request of requests) {
       const randomEmit = _.random(1)
       if (randomEmit) {
@@ -471,22 +471,22 @@ module.exports = coreIntegration = async ({
   })
 
   // create array of digital_content upload info to verify
-  const agreementUploadInfo = []
-  for (const walletIndex of Object.keys(walletAgreementMap)) {
+  const digitalContentUploadInfo = []
+  for (const walletIndex of Object.keys(walletDigitalContentMap)) {
     const userId = walletIdMap[walletIndex]
-    const agreements = walletAgreementMap[walletIndex]
-    if (!agreements) continue
-    for (const agreementId of agreements) {
-      agreementUploadInfo.push({
+    const digitalContents = walletDigitalContentMap[walletIndex]
+    if (!digitalContents) continue
+    for (const digitalContentId of digitalContents) {
+      digitalContentUploadInfo.push({
         walletIndex,
-        agreementId,
+        digitalContentId,
         userId
       })
     }
   }
 
   // Ensure all CIDs exist on all replicas
-  const allCIDsExistOnCNodes = await verifyAllCIDsExistOnCNodes(agreementUploadInfo, executeOne)
+  const allCIDsExistOnCNodes = await verifyAllCIDsExistOnCNodes(digitalContentUploadInfo, executeOne)
   if (!allCIDsExistOnCNodes) {
     return { error: 'Not all CIDs exist on content nodes.' }
   }
@@ -577,16 +577,16 @@ module.exports = coreIntegration = async ({
 }
 
 /**
- * Expects agreementUploads in the shape of Array<{ userId, walletIndex, agreementId }>
+ * Expects digitalContentUploads in the shape of Array<{ userId, walletIndex, digitalContentId }>
  */
-const verifyAllCIDsExistOnCNodes = async (agreementUploads, executeOne) => {
+const verifyAllCIDsExistOnCNodes = async (digitalContentUploads, executeOne) => {
   // map userId => CID[]
   const userCIDMap = {}
-  for (const { agreementId, walletIndex, userId } of agreementUploads) {
-    const agreementMetadata = await executeOne(walletIndex, l =>
-      getAgreementMetadata(l, agreementId)
+  for (const { digitalContentId, walletIndex, userId } of digitalContentUploads) {
+    const digitalContentMetadata = await executeOne(walletIndex, l =>
+      getDigitalContentMetadata(l, digitalContentId)
     )
-    const segmentCIDs = agreementMetadata.digital_content_segments.map(s => s.multihash)
+    const segmentCIDs = digitalContentMetadata.digital_content_segments.map(s => s.multihash)
     if (userCIDMap[userId] === undefined) {
       userCIDMap[userId] = []
     }
@@ -597,7 +597,7 @@ const verifyAllCIDsExistOnCNodes = async (agreementUploads, executeOne) => {
 
   // make a map of userID => array of cnode endpoints in user replica set
   const userIdRSetMap = {}
-  const userIds = agreementUploads.map(u => u.userId)
+  const userIds = digitalContentUploads.map(u => u.userId)
   for (const userId of userIds) {
     const user = await executeOne(0, l => getUser(l, userId))
     userIdRSetMap[userId] = user.content_node_endpoint.split(',')
@@ -739,16 +739,16 @@ const verifyThresholds = (emitterTest) => {
   // e.g., reposted has a lower threshold since it depends on an existing digital_content that's not yet reposted
 
   const numberOfTicks = (emitterTest.testDurationSeconds / emitterTest.tickIntervalSeconds) - 1
-  assert.ok(uploadedAgreements.length > (numberOfTicks / 5))
-  assert.ok(repostedAgreements.length > (numberOfTicks / 10))
+  assert.ok(uploadedDigitalContents.length > (numberOfTicks / 5))
+  assert.ok(repostedDigitalContents.length > (numberOfTicks / 10))
   assert.ok(Object.values(createdContentLists).flat().length > (numberOfTicks / 10))
-  assert.ok(addedContentListAgreements.length > (numberOfTicks / 10))
+  assert.ok(addedContentListDigitalContents.length > (numberOfTicks / 10))
 }
 
 const printTestSummary = () => {
   logger.info('\n------------------------ COLIVING CORE INTEGRATION TEST Summary ------------------------')
-  logger.info(`uploadedAgreements: ${uploadedAgreements.length}                | Total uploaded agreements`)
-  logger.info(`repostedAgreements: ${repostedAgreements.length}                | Total reposted agreements`)
+  logger.info(`uploadedDigitalContents: ${uploadedDigitalContents.length}                | Total uploaded digitalContents`)
+  logger.info(`repostedDigitalContents: ${repostedDigitalContents.length}                | Total reposted digitalContents`)
   logger.info(`createdContentLists: ${Object.values(createdContentLists).flat().length}                | Total created contentLists`)
-  logger.info(`addedContentListAgreements: ${addedContentListAgreements.length}                | Total added contentList agreements`)
+  logger.info(`addedContentListDigitalContents: ${addedContentListDigitalContents.length}                | Total added contentList digitalContents`)
 }

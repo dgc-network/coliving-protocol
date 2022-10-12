@@ -1,5 +1,5 @@
 export { sdk } from './sdk'
 export * as full from './api/generated/full'
 export * from './api/generated/default'
-export { AgreementsApi } from './api/agreementsApi'
+export { DigitalContentsApi } from './api/digitalContentsApi'
 export { ResolveApi } from './api/resolveApi'

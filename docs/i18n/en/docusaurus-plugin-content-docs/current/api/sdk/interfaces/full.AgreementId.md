@@ -1,17 +1,17 @@
 ---
-id: "full.AgreementId"
-title: "Interface: AgreementId"
-sidebar_label: "AgreementId"
+id: "full.DigitalContentId"
+title: "Interface: DigitalContentId"
+sidebar_label: "DigitalContentId"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).AgreementId
+[full](../namespaces/full.md).DigitalContentId
 
 **`export`**
 
-**`interface`** AgreementId
+**`interface`** DigitalContentId
 
 ## Properties
 
@@ -19,4 +19,4 @@ pagination_next: null
 
  **id**: `string`
 
-**`memberof`** AgreementId
+**`memberof`** DigitalContentId

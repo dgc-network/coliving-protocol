@@ -35,7 +35,7 @@ class Resolve(Resource):
 
         This endpoint allows you to lookup and access API resources when you only know the
         coliving.lol URL.
-        Agreements, ContentLists, and Users are supported.
+        DigitalContents, ContentLists, and Users are supported.
         """
         args = resolve_route_parser.parse_args()
         url = args.get("url")

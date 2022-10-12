@@ -39,11 +39,11 @@
         },
         {
           "internalType": "uint256",
-          "name": "_addedAgreementId",
+          "name": "_addedDigitalContentId",
           "type": "uint256"
         }
       ],
-      "name": "addContentListAgreement",
+      "name": "addContentListDigitalContent",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -57,11 +57,11 @@
         },
         {
           "internalType": "uint256",
-          "name": "_deletedAgreementId",
+          "name": "_deletedDigitalContentId",
           "type": "uint256"
         }
       ],
-      "name": "deleteContentListAgreement",
+      "name": "deleteContentListDigitalContent",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -98,11 +98,11 @@
           "type": "uint256"
         }
       ],
-      "name": "isAgreementInContentList",
+      "name": "isDigitalContentInContentList",
       "outputs": [
         {
           "internalType": "bool",
-          "name": "agreementInContentList",
+          "name": "digitalContentInContentList",
           "type": "bool"
         }
       ],

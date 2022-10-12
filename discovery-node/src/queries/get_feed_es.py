@@ -89,7 +89,7 @@ def get_feed_es(args, limit=10):
         )
 
     repost_agg = []
-    agreements = []
+    digitalContents = []
     contentLists = []
 
     founds = esclient.msearch(searches=mdsl)
@@ -103,7 +103,7 @@ def get_feed_es(args, limit=10):
         repost_agg.sort(key=lambda b: b["min_created_at"]["value"])
 
     if load_orig:
-        agreements = pluck_hits(founds["responses"].pop(0))
+        digitalContents = pluck_hits(founds["responses"].pop(0))
         contentLists = pluck_hits(founds["responses"].pop(0))
 
     # digital_content timestamps and duplicates
@@ -115,11 +115,11 @@ def get_feed_es(args, limit=10):
         #    instead of doing it dynamically here?
         contentList["item_key"] = item_key(contentList)
         seen.add(contentList["item_key"])
-        # Q: should we add contentList agreements to seen?
-        #    get_feed will "debounce" agreements in contentList
+        # Q: should we add contentList digitalContents to seen?
+        #    get_feed will "debounce" digitalContents in contentList
         unsorted_feed.append(contentList)
 
-    for digital_content in agreements:
+    for digital_content in digitalContents:
         digital_content["item_key"] = item_key(digital_content)
         seen.add(digital_content["item_key"])
         unsorted_feed.append(digital_content)
@@ -141,7 +141,7 @@ def get_feed_es(args, limit=10):
         reverse=True,
     )
 
-    # take a "soft limit" here.  Some agreements / reposts might get filtered out below
+    # take a "soft limit" here.  Some digitalContents / reposts might get filtered out below
     # if is_delete
     sorted_with_reposts = sorted_with_reposts[0 : limit * 2]
 
@@ -165,7 +165,7 @@ def get_feed_es(args, limit=10):
             if not doc["found"]:
                 # MISSING: a repost for a digital_content or contentList not in the index?
                 # this should only happen if repost indexing is running ahead of digital_content / contentList
-                # should be transient... but should maybe still be agreemented?
+                # should be transient... but should maybe still be digitalContented?
                 continue
             s = doc["_source"]
             s["item_key"] = item_key(s)

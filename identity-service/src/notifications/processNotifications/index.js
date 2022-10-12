@@ -14,7 +14,7 @@ const processTierChangeNotifications = require('./tierChangeNotification')
 const processTipNotification = require('./tipNotification')
 const processReactionNotification = require('./reactionNotification')
 const processSupporterRankChangeNotification = require('./supporterRankChangeNotification')
-const processAddAgreementToContentListNotification = require('./addAgreementToContentListNotification')
+const processAddDigitalContentToContentListNotification = require('./addDigitalContentToContentListNotification')
 
 // Mapping of Notification type to processing function.
 const notificationMapping = {
@@ -31,7 +31,7 @@ const notificationMapping = {
   [notificationTypes.Tip]: processTipNotification,
   [notificationTypes.Reaction]: processReactionNotification,
   [notificationTypes.SupporterRankUp]: processSupporterRankChangeNotification,
-  [notificationTypes.AddAgreementToContentList]: processAddAgreementToContentListNotification
+  [notificationTypes.AddDigitalContentToContentList]: processAddDigitalContentToContentListNotification
 
 }
 

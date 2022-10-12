@@ -3,8 +3,8 @@ import {
   Registry,
   UserStorage,
   UserFactory,
-  AgreementStorage,
-  AgreementFactory,
+  DigitalContentStorage,
+  DigitalContentFactory,
   ContentListStorage,
   ContentListFactory,
   UserLibraryFactory
@@ -14,22 +14,22 @@ import * as _constants from './utils/constants'
 contract('UserLibrary', async (accounts) => {
   const testUserId1 = 1
   const testUserId2 = 2
-  const testAgreementId1 = 1
-  const testAgreementId2 = 2
+  const testDigitalContentId1 = 1
+  const testDigitalContentId2 = 2
   const invalidUserId = 3
-  const invalidAgreementId = 3
+  const invalidDigitalContentId = 3
   const invalidContentListId = 2
 
   let contentListName = 'UserLibrary Test ContentList'
-  let contentListAgreements = [1, 2]
+  let contentListDigitalContents = [1, 2]
   let expectedContentListId = 1
   let contentListOwnerId = testUserId1
 
   let registry
   let userStorage
   let userFactory
-  let agreementStorage
-  let agreementFactory
+  let digitalContentStorage
+  let digitalContentFactory
   let contentListStorage
   let contentListFactory
   let userLibraryFactory
@@ -40,12 +40,12 @@ contract('UserLibrary', async (accounts) => {
     const networkId = Registry.network_id
     userStorage = await UserStorage.new(registry.address)
     await registry.addContract(_constants.userStorageKey, userStorage.address)
-    agreementStorage = await AgreementStorage.new(registry.address)
-    await registry.addContract(_constants.agreementStorageKey, agreementStorage.address)
+    digitalContentStorage = await DigitalContentStorage.new(registry.address)
+    await registry.addContract(_constants.digitalContentStorageKey, digitalContentStorage.address)
     userFactory = await UserFactory.new(registry.address, _constants.userStorageKey, networkId, accounts[5])
     await registry.addContract(_constants.userFactoryKey, userFactory.address)
-    agreementFactory = await AgreementFactory.new(registry.address, _constants.agreementStorageKey, _constants.userFactoryKey, networkId)
-    await registry.addContract(_constants.agreementFactoryKey, agreementFactory.address)
+    digitalContentFactory = await DigitalContentFactory.new(registry.address, _constants.digitalContentStorageKey, _constants.userFactoryKey, networkId)
+    await registry.addContract(_constants.digitalContentFactoryKey, digitalContentFactory.address)
 
     // Deploy contentList related contracts
     contentListStorage = await ContentListStorage.new(registry.address)
@@ -54,7 +54,7 @@ contract('UserLibrary', async (accounts) => {
       registry.address,
       _constants.contentListStorageKey,
       _constants.userFactoryKey,
-      _constants.agreementFactoryKey,
+      _constants.digitalContentFactoryKey,
       networkId)
 
     await registry.addContract(_constants.contentListFactoryKey, contentListFactory.address)
@@ -62,7 +62,7 @@ contract('UserLibrary', async (accounts) => {
     userLibraryFactory = await UserLibraryFactory.new(
       registry.address,
       _constants.userFactoryKey,
-      _constants.agreementFactoryKey,
+      _constants.digitalContentFactoryKey,
       _constants.contentListFactoryKey,
       networkId)
 
@@ -84,18 +84,18 @@ contract('UserLibrary', async (accounts) => {
       _constants.userHandle2,
       true)
 
-    // Add 2 agreements
-    await _lib.addAgreementAndValidate(
-      agreementFactory,
-      testAgreementId1,
+    // Add 2 digitalContents
+    await _lib.addDigitalContentAndValidate(
+      digitalContentFactory,
+      testDigitalContentId1,
       accounts[0],
       testUserId1,
       _constants.testMultihash.digest2,
       _constants.testMultihash.hashFn,
       _constants.testMultihash.size)
-    await _lib.addAgreementAndValidate(
-      agreementFactory,
-      testAgreementId2,
+    await _lib.addDigitalContentAndValidate(
+      digitalContentFactory,
+      testDigitalContentId2,
       accounts[0],
       testUserId2,
       _constants.testMultihash.digest2,
@@ -111,32 +111,32 @@ contract('UserLibrary', async (accounts) => {
       contentListName,
       false,
       false,
-      contentListAgreements)
+      contentListDigitalContents)
   })
 
   it('Should add one digital_content save', async () => {
     // add digital_content save and validate
-    await _lib.addAgreementSaveAndValidate(
+    await _lib.addDigitalContentSaveAndValidate(
       userLibraryFactory,
       accounts[0],
       testUserId1,
-      testAgreementId1)
+      testDigitalContentId1)
   })
 
   it('Should delete one digital_content save', async () => {
     // add digital_content save and validate
-    await _lib.addAgreementSaveAndValidate(
+    await _lib.addDigitalContentSaveAndValidate(
       userLibraryFactory,
       accounts[0],
       testUserId1,
-      testAgreementId1)
+      testDigitalContentId1)
 
     // delete digital_content save and validate
-    await _lib.deleteAgreementSaveAndValidate(
+    await _lib.deleteDigitalContentSaveAndValidate(
       userLibraryFactory,
       accounts[0],
       testUserId1,
-      testAgreementId1)
+      testDigitalContentId1)
   })
 
   it('Should add one contentList save', async () => {
@@ -250,11 +250,11 @@ contract('UserLibrary', async (accounts) => {
   it('Should fail to add digital_content save with non-existent user and non-existent digital_content', async () => {
     let caughtError = false
     try {
-      await _lib.addAgreementSaveAndValidate(
+      await _lib.addDigitalContentSaveAndValidate(
         userLibraryFactory,
         accounts[0],
         invalidUserId,
-        testAgreementId1)
+        testDigitalContentId1)
     } catch (e) {
       // handle expected error
       if (e.message.indexOf('Caller does not own userId') >= 0) {
@@ -268,11 +268,11 @@ contract('UserLibrary', async (accounts) => {
 
     caughtError = false
     try {
-      await _lib.addAgreementSaveAndValidate(
+      await _lib.addDigitalContentSaveAndValidate(
         userLibraryFactory,
         accounts[0],
         testUserId1,
-        invalidAgreementId)
+        invalidDigitalContentId)
     } catch (e) {
       // handle expected error
       if (e.message.indexOf('must provide valid digital_content ID') >= 0) {
@@ -288,11 +288,11 @@ contract('UserLibrary', async (accounts) => {
   it('Should fail to delete digital_content save with non-existent user and non-existent digital_content', async () => {
     let caughtError = false
     try {
-      await _lib.deleteAgreementSaveAndValidate(
+      await _lib.deleteDigitalContentSaveAndValidate(
         userLibraryFactory,
         accounts[0],
         invalidUserId,
-        testAgreementId1)
+        testDigitalContentId1)
     } catch (e) {
       // handle expected error
       if (e.message.indexOf('Caller does not own userId') >= 0) {
@@ -305,11 +305,11 @@ contract('UserLibrary', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
     caughtError = false
     try {
-      await _lib.deleteAgreementSaveAndValidate(
+      await _lib.deleteDigitalContentSaveAndValidate(
         userLibraryFactory,
         accounts[0],
         testUserId1,
-        invalidAgreementId)
+        invalidDigitalContentId)
     } catch (e) {
       // handle expected error
       if (e.message.indexOf('must provide valid digital_content ID') >= 0) {
@@ -325,11 +325,11 @@ contract('UserLibrary', async (accounts) => {
   it('Should fail to add digital_content save due to lack of ownership of user', async () => {
     let caughtError = false
     try {
-      await _lib.addAgreementSaveAndValidate(
+      await _lib.addDigitalContentSaveAndValidate(
         userLibraryFactory,
         accounts[8],
         testUserId1,
-        testAgreementId1)
+        testDigitalContentId1)
     } catch (e) {
       // handle expected error
       if (e.message.indexOf('Caller does not own userId') >= 0) {
@@ -365,19 +365,19 @@ contract('UserLibrary', async (accounts) => {
 
   it('Should fail to delete digital_content save due to lack of ownership of user', async () => {
     // add digital_content save and validate
-    await _lib.addAgreementSaveAndValidate(
+    await _lib.addDigitalContentSaveAndValidate(
       userLibraryFactory,
       accounts[0],
       testUserId1,
-      testAgreementId1
+      testDigitalContentId1
     )
     let caughtError = false
     try {
-      await _lib.deleteAgreementSaveAndValidate(
+      await _lib.deleteDigitalContentSaveAndValidate(
         userLibraryFactory,
         accounts[8],
         testUserId1,
-        testAgreementId1
+        testDigitalContentId1
       )
     } catch (e) {
       // handle expected error

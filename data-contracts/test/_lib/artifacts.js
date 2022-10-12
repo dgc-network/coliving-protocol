@@ -9,14 +9,14 @@ export const Registry = artifacts.require('./contract/Registry')
 
 // Storage contracts
 export const UserStorage = artifacts.require('./contract/storage/UserStorage')
-export const AgreementStorage = artifacts.require('./contract/storage/AgreementStorage')
+export const DigitalContentStorage = artifacts.require('./contract/storage/DigitalContentStorage')
 export const DiscoveryNodeStorage = artifacts.require('./contract/storage/DiscoveryNodeStorage')
 export const ContentListStorage = artifacts.require('./contract/storage/ContentListStorage')
 export const SocialFeatureStorage = artifacts.require('./contract/storage/SocialFeatureStorage')
 
 // Factory contracts
 export const UserFactory = artifacts.require('./contract/UserFactory')
-export const AgreementFactory = artifacts.require('./contract/AgreementFactory')
+export const DigitalContentFactory = artifacts.require('./contract/DigitalContentFactory')
 export const DiscoveryNodeFactory = artifacts.require('./contract/DiscoveryNodeFactory')
 export const SocialFeatureFactory = artifacts.require('./contract/SocialFeatureFactory')
 export const ContentListFactory = artifacts.require('./contract/ContentListFactory')

@@ -1,18 +1,18 @@
 ---
-id: "full.GetAgreementStemsRequest"
-title: "Interface: GetAgreementStemsRequest"
-sidebar_label: "GetAgreementStemsRequest"
+id: "full.GetDigitalContentStemsRequest"
+title: "Interface: GetDigitalContentStemsRequest"
+sidebar_label: "GetDigitalContentStemsRequest"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).GetAgreementStemsRequest
+[full](../namespaces/full.md).GetDigitalContentStemsRequest
 
 ## Properties
 
-### agreementId
+### digitalContentId
 
- **agreementId**: `string`
+ **digitalContentId**: `string`
 
 A DigitalContent ID

@@ -2,7 +2,7 @@ import copy
 import os
 
 from elasticsearch import Elasticsearch
-from src.utils.spl_live import to_wei
+from src.utils.spl_digitalcoin import to_wei
 
 es_url = os.getenv("coliving_elasticsearch_url")
 esclient = None
@@ -13,7 +13,7 @@ if es_url and not esclient:
 ES_CONTENT_LISTS = "content_lists"
 ES_REPOSTS = "reposts"
 ES_SAVES = "saves"
-ES_AGREEMENTS = "agreements"
+ES_AGREEMENTS = "digitalContents"
 ES_USERS = "users"
 
 ES_INDEXES = [ES_CONTENT_LISTS, ES_REPOSTS, ES_SAVES, ES_AGREEMENTS, ES_USERS]
@@ -54,7 +54,7 @@ def populate_user_metadata_es(user, current_user):
         int(user.get("balance", "0") or "0")
         + int(user.get("associated_wallets_balance", "0") or "0")
         + to_wei(user.get("associated_sol_wallets_balance", "0") or 0)
-        + to_wei(user.get("wlive", "0") or 0)
+        + to_wei(user.get("wei_digitalcoin", "0") or 0)
     )
 
     # Mutual box on profile page will fetch the data to compute this number
@@ -88,7 +88,7 @@ omit_keys = [
     # user index
     "following_ids",
     "follower_ids",
-    "agreements",
+    "digitalContents",
     # digital_content index
     "reposted_by",
     "saved_by",

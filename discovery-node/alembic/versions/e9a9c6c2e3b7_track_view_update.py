@@ -30,7 +30,7 @@ def upgrade():
           unnest(tsvector_to_array(to_tsvector('coliving_ts_config', replace(COALESCE(t."title", ''), '&', 'and'))))
             as word
         FROM
-            "agreements" t
+            "digitalContents" t
         INNER JOIN "users" u ON t."owner_id" = u."user_id"
         WHERE t."is_current" = true and u."is_ready" = true and u."is_current" = true
         GROUP BY t."digital_content_id", t."title", t."tags"

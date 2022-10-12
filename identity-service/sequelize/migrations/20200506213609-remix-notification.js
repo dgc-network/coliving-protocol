@@ -34,8 +34,8 @@ module.exports = {
     const columnName = 'type'
     const enumName = 'enum_Notifications_type'
     const newEnumName = `enum_Notifications_type_new`
-    const prevValues = [ 'Follow', 'RepostAgreement', 'RepostContentList', 'RepostAlbum', 'FavoriteAgreement',
-      'FavoriteContentList', 'FavoriteAlbum', 'CreateAgreement', 'CreateContentList', 'CreateAlbum',
+    const prevValues = [ 'Follow', 'RepostDigitalContent', 'RepostContentList', 'RepostAlbum', 'FavoriteDigitalContent',
+      'FavoriteContentList', 'FavoriteAlbum', 'CreateDigitalContent', 'CreateContentList', 'CreateAlbum',
       'Announcement', 'MilestoneListen', 'MilestoneRepost', 'MilestoneFavorite', 'MilestoneFollow']
 
     return queryInterface.sequelize.transaction(async (transaction) => {

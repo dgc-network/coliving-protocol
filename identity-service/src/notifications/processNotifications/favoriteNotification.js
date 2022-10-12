@@ -18,7 +18,7 @@ const getNotifType = (entityType) => {
 }
 
 // A notification is unique by it's
-// userId (owner of the content favorited), type (digital_content/album/contentList), and entityId (agreementId, ect)
+// userId (owner of the content favorited), type (digital_content/album/contentList), and entityId (digitalContentId, ect)
 const getUniqueNotificationModel = notif => `${notif.userId}:${notif.type}:${notif.entityId}`
 const getUniqueNotification = notif => `${notif.metadata.entity_owner_id}:${getNotifType(notif.metadata.entity_type)}:${notif.metadata.entity_id}`
 

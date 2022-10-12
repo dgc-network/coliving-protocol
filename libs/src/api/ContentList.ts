@@ -11,9 +11,9 @@ export class ContentLists extends Base {
     this.getSavedContentLists = this.getSavedContentLists.bind(this)
     this.getSavedAlbums = this.getSavedAlbums.bind(this)
     this.createContentList = this.createContentList.bind(this)
-    this.addContentListAgreement = this.addContentListAgreement.bind(this)
-    this.orderContentListAgreements = this.orderContentListAgreements.bind(this)
-    this.validateAgreementsInContentList = this.validateAgreementsInContentList.bind(this)
+    this.addContentListDigitalContent = this.addContentListDigitalContent.bind(this)
+    this.orderContentListDigitalContents = this.orderContentListDigitalContents.bind(this)
+    this.validateDigitalContentsInContentList = this.validateDigitalContentsInContentList.bind(this)
     this.uploadContentListCoverPhoto = this.uploadContentListCoverPhoto.bind(this)
     this.updateContentListCoverPhoto = this.updateContentListCoverPhoto.bind(this)
     this.updateContentListName = this.updateContentListName.bind(this)
@@ -21,7 +21,7 @@ export class ContentLists extends Base {
     this.updateContentListPrivacy = this.updateContentListPrivacy.bind(this)
     this.addContentListRepost = this.addContentListRepost.bind(this)
     this.deleteContentListRepost = this.deleteContentListRepost.bind(this)
-    this.deleteContentListAgreement = this.deleteContentListAgreement.bind(this)
+    this.deleteContentListDigitalContent = this.deleteContentListDigitalContent.bind(this)
     this.addContentListSave = this.addContentListSave.bind(this)
     this.deleteContentListSave = this.deleteContentListSave.bind(this)
     this.deleteContentList = this.deleteContentList.bind(this)
@@ -30,7 +30,7 @@ export class ContentLists extends Base {
   /* ------- GETTERS ------- */
 
   /**
-   * get full contentList objects, including agreements, for passed in array of contentListId
+   * get full contentList objects, including digitalContents, for passed in array of contentListId
    * @param limit max # of items to return
    * @param offset offset into list to return from (for pagination)
    * @param idsArray list of contentList ids
@@ -98,11 +98,11 @@ export class ContentLists extends Base {
     contentListName: string,
     isPrivate: boolean,
     isAlbum: boolean,
-    agreementIds: number[]
+    digitalContentIds: number[]
   ) {
-    const maxInitialAgreements = 50
-    const createInitialIdsArray = agreementIds.slice(0, maxInitialAgreements)
-    const postInitialIdsArray = agreementIds.slice(maxInitialAgreements)
+    const maxInitialDigitalContents = 50
+    const createInitialIdsArray = digitalContentIds.slice(0, maxInitialDigitalContents)
+    const postInitialIdsArray = digitalContentIds.slice(maxInitialDigitalContents)
     let contentListId: number
     let receipt: Partial<TransactionReceipt> = {}
     try {
@@ -117,22 +117,22 @@ export class ContentLists extends Base {
       contentListId = response.contentListId
       receipt = response.txReceipt
 
-      // Add remaining agreements
+      // Add remaining digitalContents
       await Promise.all(
-        postInitialIdsArray.map(async (agreementId) => {
-          return await this.contracts.ContentListFactoryClient.addContentListAgreement(
+        postInitialIdsArray.map(async (digitalContentId) => {
+          return await this.contracts.ContentListFactoryClient.addContentListDigitalContent(
             contentListId,
-            agreementId
+            digitalContentId
           )
         })
       )
 
-      // Order agreements
+      // Order digitalContents
       if (postInitialIdsArray.length > 0) {
         receipt =
-          await this.contracts.ContentListFactoryClient.orderContentListAgreements(
+          await this.contracts.ContentListFactoryClient.orderContentListDigitalContents(
             contentListId,
-            agreementIds
+            digitalContentIds
           )
       }
     } catch (e) {
@@ -153,7 +153,7 @@ export class ContentLists extends Base {
   /**
    * Adds a digital_content to a given contentList
    */
-  async addContentListAgreement(contentListId: number, agreementId: number) {
+  async addContentListDigitalContent(contentListId: number, digitalContentId: number) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
 
     const userId = this.userStateManager.getCurrentUserId()
@@ -178,23 +178,23 @@ export class ContentLists extends Base {
         `Cannot add digital_content - contentList is already at max length of ${MAX_CONTENT_LIST_LENGTH}`
       )
     }
-    return await this.contracts.ContentListFactoryClient.addContentListAgreement(
+    return await this.contracts.ContentListFactoryClient.addContentListDigitalContent(
       contentListId,
-      agreementId
+      digitalContentId
     )
   }
 
   /**
-   * Reorders the agreements in a contentList
+   * Reorders the digitalContents in a contentList
    */
-  async orderContentListAgreements(
+  async orderContentListDigitalContents(
     contentListId: number,
-    agreementIds: number[],
+    digitalContentIds: number[],
     retriesOverride?: number
   ) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
-    if (!Array.isArray(agreementIds)) {
-      throw new Error('Cannot order contentList - agreementIds must be array')
+    if (!Array.isArray(digitalContentIds)) {
+      throw new Error('Cannot order contentList - digitalContentIds must be array')
     }
 
     const userId = this.userStateManager.getCurrentUserId()
@@ -212,43 +212,43 @@ export class ContentLists extends Base {
       )
     }
 
-    const contentListAgreementIds = contentList[0]!.content_list_contents.digital_content_ids.map(
+    const contentListDigitalContentIds = contentList[0]!.content_list_contents.digital_content_ids.map(
       (a) => a.digital_content
     )
-    // error if agreementIds arg array length does not match contentList length
-    if (agreementIds.length !== contentListAgreementIds.length) {
+    // error if digitalContentIds arg array length does not match contentList length
+    if (digitalContentIds.length !== contentListDigitalContentIds.length) {
       throw new Error(
-        'Cannot order contentList - agreementIds length must match contentList length'
+        'Cannot order contentList - digitalContentIds length must match contentList length'
       )
     }
 
-    // ensure existing contentList agreements and agreementIds have same content, regardless of order
-    const agreementIdsSorted = [...agreementIds].sort()
-    const contentListAgreementIdsSorted = contentListAgreementIds.sort()
-    for (let i = 0; i < agreementIdsSorted.length; i++) {
-      if (agreementIdsSorted[i] !== contentListAgreementIdsSorted[i]) {
+    // ensure existing contentList digitalContents and digitalContentIds have same content, regardless of order
+    const digitalContentIdsSorted = [...digitalContentIds].sort()
+    const contentListDigitalContentIdsSorted = contentListDigitalContentIds.sort()
+    for (let i = 0; i < digitalContentIdsSorted.length; i++) {
+      if (digitalContentIdsSorted[i] !== contentListDigitalContentIdsSorted[i]) {
         throw new Error(
-          'Cannot order contentList - agreementIds must have same content as contentList agreements'
+          'Cannot order contentList - digitalContentIds must have same content as contentList digitalContents'
         )
       }
     }
 
-    return await this.contracts.ContentListFactoryClient.orderContentListAgreements(
+    return await this.contracts.ContentListFactoryClient.orderContentListDigitalContents(
       contentListId,
-      agreementIds,
+      digitalContentIds,
       retriesOverride
     )
   }
 
   /**
    * Checks if a contentList has entered a corrupted state
-   * Check that each of the agreements within a contentList retrieved from discprov are in the onchain contentList
-   * Note: the onchain contentLists stores the agreements as a mapping of digital_content ID to digital_content count and the
+   * Check that each of the digitalContents within a contentList retrieved from discprov are in the onchain contentList
+   * Note: the onchain contentLists stores the digitalContents as a mapping of digital_content ID to digital_content count and the
    * digital_content order is an event that is indexed by discprov. The digital_content order event does not validate that the
-   * updated order of agreements has the correct digital_content count, so a digital_content order event w/ duplicate agreements can
+   * updated order of digitalContents has the correct digital_content count, so a digital_content order event w/ duplicate digitalContents can
    * lead the contentList entering a corrupted state.
    */
-  async validateAgreementsInContentList(contentListId: number) {
+  async validateDigitalContentsInContentList(contentListId: number) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER, Services.CONTENT_NODE)
 
     const userId = this.userStateManager.getCurrentUserId()
@@ -267,25 +267,25 @@ export class ContentLists extends Base {
     }
 
     const contentList = contentListsReponse[0]!
-    const contentListAgreementIds = contentList.content_list_contents.digital_content_ids.map(
+    const contentListDigitalContentIds = contentList.content_list_contents.digital_content_ids.map(
       (a) => a.digital_content
     )
 
     // Check if each digital_content is in the contentList
-    //const invalidAgreementIds = []
-    const invalidAgreementIds : number[] = []
-    for (const agreementId of contentListAgreementIds) {
-      const agreementInContentList =
-        await this.contracts.ContentListFactoryClient.isAgreementInContentList(
+    //const invalidDigitalContentIds = []
+    const invalidDigitalContentIds : number[] = []
+    for (const digitalContentId of contentListDigitalContentIds) {
+      const digitalContentInContentList =
+        await this.contracts.ContentListFactoryClient.isDigitalContentInContentList(
           contentListId,
-          agreementId
+          digitalContentId
         )
-      if (!agreementInContentList) invalidAgreementIds.push(agreementId)
+      if (!digitalContentInContentList) invalidDigitalContentIds.push(digitalContentId)
     }
 
     return {
-      isValid: invalidAgreementIds.length === 0,
-      invalidAgreementIds
+      isValid: invalidDigitalContentIds.length === 0,
+      invalidDigitalContentIds
     }
   }
 
@@ -383,19 +383,19 @@ export class ContentLists extends Base {
    * Marks a digital_content to be deleted from a contentList. The contentList entry matching
    * the provided timestamp is deleted in the case of duplicates.
    * @param contentListId
-   * @param deletedAgreementId
+   * @param deletedDigitalContentId
    * @param deletedContentListTimestamp parseable timestamp (to be copied from contentList metadata)
    * @param {number?} retriesOverride [Optional, defaults to web3Manager.sendTransaction retries default]
    */
-  async deleteContentListAgreement(
+  async deleteContentListDigitalContent(
     contentListId: number,
-    deletedAgreementId: number,
+    deletedDigitalContentId: number,
     deletedContentListTimestamp: number,
     retriesOverride?: number
   ) {
-    return await this.contracts.ContentListFactoryClient.deleteContentListAgreement(
+    return await this.contracts.ContentListFactoryClient.deleteContentListDigitalContent(
       contentListId,
-      deletedAgreementId,
+      deletedDigitalContentId,
       deletedContentListTimestamp,
       retriesOverride
     )

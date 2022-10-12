@@ -1,13 +1,13 @@
 ---
-id: "full.GetTrendingAgreementsWithVersionRequest"
-title: "Interface: GetTrendingAgreementsWithVersionRequest"
-sidebar_label: "GetTrendingAgreementsWithVersionRequest"
+id: "full.GetTrendingDigitalContentsWithVersionRequest"
+title: "Interface: GetTrendingDigitalContentsWithVersionRequest"
+sidebar_label: "GetTrendingDigitalContentsWithVersionRequest"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).GetTrendingAgreementsWithVersionRequest
+[full](../namespaces/full.md).GetTrendingDigitalContentsWithVersionRequest
 
 ## Properties
 
@@ -37,7 +37,7 @@ ___
 
 ### time
 
- `Optional` **time**: [`GetTrendingAgreementsWithVersionTimeEnum`](../enums/full.GetTrendingAgreementsWithVersionTimeEnum.md)
+ `Optional` **time**: [`GetTrendingDigitalContentsWithVersionTimeEnum`](../enums/full.GetTrendingDigitalContentsWithVersionTimeEnum.md)
 
 Calculate trending over a specified time range
 

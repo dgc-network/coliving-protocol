@@ -4,8 +4,8 @@ import {
   Registry,
   UserStorage,
   UserFactory,
-  AgreementStorage,
-  AgreementFactory,
+  DigitalContentStorage,
+  DigitalContentFactory,
   ContentListStorage,
   ContentListFactory
 } from './_lib/artifacts.js'
@@ -13,20 +13,20 @@ import {
 contract('ContentListFactory', async (accounts) => {
   const testUserId1 = 1
   const testUserId2 = 2
-  const testAgreementId1 = 1
-  const testAgreementId2 = 2
-  const testAgreementId3 = 3
+  const testDigitalContentId1 = 1
+  const testDigitalContentId2 = 2
+  const testDigitalContentId3 = 3
 
   let contentListName = 'ContentListFactory Test ContentList'
-  let contentListAgreements = [1, 2]
+  let contentListDigitalContents = [1, 2]
   let expectedContentListId = 1
   let contentListOwnerId = testUserId1
 
   let registry
   let userStorage
   let userFactory
-  let agreementStorage
-  let agreementFactory
+  let digitalContentStorage
+  let digitalContentFactory
   let contentListStorage
   let contentListFactory
 
@@ -35,12 +35,12 @@ contract('ContentListFactory', async (accounts) => {
     const networkId = Registry.network_id
     userStorage = await UserStorage.new(registry.address)
     await registry.addContract(_constants.userStorageKey, userStorage.address)
-    agreementStorage = await AgreementStorage.new(registry.address)
-    await registry.addContract(_constants.agreementStorageKey, agreementStorage.address)
+    digitalContentStorage = await DigitalContentStorage.new(registry.address)
+    await registry.addContract(_constants.digitalContentStorageKey, digitalContentStorage.address)
     userFactory = await UserFactory.new(registry.address, _constants.userStorageKey, networkId, accounts[5])
     await registry.addContract(_constants.userFactoryKey, userFactory.address)
-    agreementFactory = await AgreementFactory.new(registry.address, _constants.agreementStorageKey, _constants.userFactoryKey, networkId)
-    await registry.addContract(_constants.agreementFactoryKey, agreementFactory.address)
+    digitalContentFactory = await DigitalContentFactory.new(registry.address, _constants.digitalContentStorageKey, _constants.userFactoryKey, networkId)
+    await registry.addContract(_constants.digitalContentFactoryKey, digitalContentFactory.address)
 
     // Deploy contentList related contracts
     contentListStorage = await ContentListStorage.new(registry.address)
@@ -49,7 +49,7 @@ contract('ContentListFactory', async (accounts) => {
       registry.address,
       _constants.contentListStorageKey,
       _constants.userFactoryKey,
-      _constants.agreementFactoryKey,
+      _constants.digitalContentFactoryKey,
       networkId)
 
     await registry.addContract(_constants.contentListFactoryKey, contentListFactory.address)
@@ -71,18 +71,18 @@ contract('ContentListFactory', async (accounts) => {
       _constants.userHandle2,
       true)
 
-    // add two agreements
-    await _lib.addAgreementAndValidate(
-      agreementFactory,
-      testAgreementId1,
+    // add two digitalContents
+    await _lib.addDigitalContentAndValidate(
+      digitalContentFactory,
+      testDigitalContentId1,
       accounts[0],
       testUserId1,
       _constants.testMultihash.digest2,
       _constants.testMultihash.hashFn,
       _constants.testMultihash.size)
-    await _lib.addAgreementAndValidate(
-      agreementFactory,
-      testAgreementId2,
+    await _lib.addDigitalContentAndValidate(
+      digitalContentFactory,
+      testDigitalContentId2,
       accounts[0],
       testUserId2,
       _constants.testMultihash.digest2,
@@ -99,14 +99,14 @@ contract('ContentListFactory', async (accounts) => {
       contentListName,
       false,
       false,
-      contentListAgreements)
+      contentListDigitalContents)
   })
 
   it('Should create a contentList and add a separate digital_content', async () => {
-    // Add a 3rd digital_content that is not in the initial contentList agreements list
-    await _lib.addAgreementAndValidate(
-      agreementFactory,
-      testAgreementId3,
+    // Add a 3rd digital_content that is not in the initial contentList digitalContents list
+    await _lib.addDigitalContentAndValidate(
+      digitalContentFactory,
+      testDigitalContentId3,
       accounts[0],
       testUserId2,
       _constants.testMultihash.digest2,
@@ -122,13 +122,13 @@ contract('ContentListFactory', async (accounts) => {
       contentListName,
       false,
       false,
-      contentListAgreements)
+      contentListDigitalContents)
 
-    await _lib.addContentListAgreement(
+    await _lib.addContentListDigitalContent(
       contentListFactory,
       accounts[0],
       expectedContentListId,
-      testAgreementId3)
+      testDigitalContentId3)
   })
 
   it('Should create a contentList and delete a digital_content', async () => {
@@ -141,19 +141,19 @@ contract('ContentListFactory', async (accounts) => {
       contentListName,
       false,
       false,
-      contentListAgreements)
+      contentListDigitalContents)
 
-    await _lib.deleteContentListAgreement(
+    await _lib.deleteContentListDigitalContent(
       contentListFactory,
       accounts[0],
       expectedContentListId,
-      testAgreementId2,
+      testDigitalContentId2,
       1551912253)
   })
 
   it('Should create a contentList and perform update operations', async () => {
     // Test following update operations:
-    // 1 - Reorder agreements
+    // 1 - Reorder digitalContents
     // 2 - Update contentList name
     // 3 - Update contentList privacy
     // 4 - Update contentList cover photo
@@ -167,16 +167,16 @@ contract('ContentListFactory', async (accounts) => {
       contentListName,
       false,
       false,
-      contentListAgreements)
+      contentListDigitalContents)
 
-    let contentListAgreementsNewOrder = [2, 1]
+    let contentListDigitalContentsNewOrder = [2, 1]
 
     // 1 - Update contentList order
-    await _lib.orderContentListAgreementsAndValidate(
+    await _lib.orderContentListDigitalContentsAndValidate(
       contentListFactory,
       accounts[0],
       expectedContentListId,
-      contentListAgreementsNewOrder)
+      contentListDigitalContentsNewOrder)
 
     // 2 - Update contentList name
     await _lib.updateContentListNameAndValidate(
@@ -193,25 +193,25 @@ contract('ContentListFactory', async (accounts) => {
       true)
 
     // Attempt updating a contentList order with an invalid digital_content
-    let invalidContentListAgreementsOrder = [2, 3, 1]
-    let updatedAgreementOrder = null
+    let invalidContentListDigitalContentsOrder = [2, 3, 1]
+    let updatedDigitalContentOrder = null
     try {
-      await _lib.orderContentListAgreementsAndValidate(
+      await _lib.orderContentListDigitalContentsAndValidate(
         contentListFactory,
         accounts[0],
         expectedContentListId,
-        invalidContentListAgreementsOrder)
+        invalidContentListDigitalContentsOrder)
 
-      updatedAgreementOrder = true
+      updatedDigitalContentOrder = true
     } catch (err) {
       // Update flag to indicate that invalid update cannot be performed
       if (err.message.indexOf('Expected valid contentList digital_content id') >= 0) {
-        updatedAgreementOrder = false
+        updatedDigitalContentOrder = false
       }
     }
 
     assert.isFalse(
-      updatedAgreementOrder,
+      updatedDigitalContentOrder,
       'Expect failure with invalid digital_content ID in reorder operation')
 
     // 4 - Update contentList cover photo
@@ -276,7 +276,7 @@ contract('ContentListFactory', async (accounts) => {
       contentListName,
       false,
       false,
-      contentListAgreements
+      contentListDigitalContents
     )
     await _lib.deleteContentListAndValidate(
       contentListFactory,
@@ -296,7 +296,7 @@ contract('ContentListFactory', async (accounts) => {
         contentListName,
         false,
         false,
-        contentListAgreements
+        contentListDigitalContents
       )
     } catch (e) {
       // expected error
@@ -324,7 +324,7 @@ contract('ContentListFactory', async (accounts) => {
         contentListName,
         false,
         false,
-        contentListAgreements
+        contentListDigitalContents
       )
     } catch (e) {
       // expected error
@@ -374,7 +374,7 @@ contract('ContentListFactory', async (accounts) => {
       contentListName,
       false,
       false,
-      contentListAgreements
+      contentListDigitalContents
     )
 
     let caughtError = false
@@ -432,7 +432,7 @@ contract('ContentListFactory', async (accounts) => {
       contentListName,
       false,
       false,
-      contentListAgreements
+      contentListDigitalContents
     )
 
     let caughtError = false

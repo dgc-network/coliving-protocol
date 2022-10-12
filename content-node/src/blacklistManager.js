@@ -29,10 +29,10 @@ class BlacklistManager {
     try {
       this.log('Initializing BlacklistManager...')
 
-      const { agreementIdsToBlacklist, userIdsToBlacklist, segmentsToBlacklist } =
+      const { digitalContentIdsToBlacklist, userIdsToBlacklist, segmentsToBlacklist } =
         await this.getDataToBlacklist()
       await this.fetchCIDsAndAddToRedis({
-        agreementIdsToBlacklist,
+        digitalContentIdsToBlacklist,
         userIdsToBlacklist,
         segmentsToBlacklist
       })
@@ -45,10 +45,10 @@ class BlacklistManager {
     }
   }
 
-  /** Return list of agreementIds, userIds, and CIDs to be blacklisted. */
+  /** Return list of digitalContentIds, userIds, and CIDs to be blacklisted. */
   static async getDataToBlacklist() {
     // CBL = ContentBlacklist
-    const agreementsFromCBL = await models.ContentBlacklist.findAll({
+    const digitalContentsFromCBL = await models.ContentBlacklist.findAll({
       attributes: ['value'],
       where: {
         type: types.digital_content
@@ -74,36 +74,36 @@ class BlacklistManager {
     const userIdsToBlacklist = usersFromCBL.map((entry) =>
       parseInt(entry.value)
     )
-    const agreementIdsToBlacklist = agreementsFromCBL.map((entry) =>
+    const digitalContentIdsToBlacklist = digitalContentsFromCBL.map((entry) =>
       parseInt(entry.value)
     )
 
-    return { agreementIdsToBlacklist, userIdsToBlacklist, segmentsToBlacklist }
+    return { digitalContentIdsToBlacklist, userIdsToBlacklist, segmentsToBlacklist }
   }
 
   /**
-   * 1. Given agreementIds and userIds to blacklist, fetch all segmentCIDs, and then add the ultimate set of segments to redis.
-   * 2. Add the agreementIds and userIds to redis as sets.
-   * 3. Create mapping of explicitly blacklisted agreements with the structure <blacklisted-segmentCIDs : set of agreementIds> in redis.
+   * 1. Given digitalContentIds and userIds to blacklist, fetch all segmentCIDs, and then add the ultimate set of segments to redis.
+   * 2. Add the digitalContentIds and userIds to redis as sets.
+   * 3. Create mapping of explicitly blacklisted digitalContents with the structure <blacklisted-segmentCIDs : set of digitalContentIds> in redis.
    */
   static async fetchCIDsAndAddToRedis({
-    agreementIdsToBlacklist = [],
+    digitalContentIdsToBlacklist = [],
     userIdsToBlacklist = [],
     segmentsToBlacklist = []
   }) {
-    // Get all agreements from users and combine with explicit agreementIds to BL
-    const agreementsFromUsers = await this.getAgreementsFromUsers(userIdsToBlacklist)
-    const allAgreementIdsToBlacklist = agreementIdsToBlacklist.concat(
-      agreementsFromUsers.map((digital_content) => digital_content.blockchainId)
+    // Get all digitalContents from users and combine with explicit digitalContentIds to BL
+    const digitalContentsFromUsers = await this.getDigitalContentsFromUsers(userIdsToBlacklist)
+    const allDigitalContentIdsToBlacklist = digitalContentIdsToBlacklist.concat(
+      digitalContentsFromUsers.map((digital_content) => digital_content.blockchainId)
     )
 
-    // Dedupe agreementIds
-    const allAgreementIdsToBlacklistSet = new Set(allAgreementIdsToBlacklist)
+    // Dedupe digitalContentIds
+    const allDigitalContentIdsToBlacklistSet = new Set(allDigitalContentIdsToBlacklist)
 
     try {
       await this.addToRedis(
         REDIS_SET_BLACKLIST_AGREEMENTID_KEY,
-        allAgreementIdsToBlacklist
+        allDigitalContentIdsToBlacklist
       )
       await this.addToRedis(REDIS_SET_BLACKLIST_USERID_KEY, userIdsToBlacklist)
       await this.addToRedis(
@@ -117,48 +117,48 @@ class BlacklistManager {
     }
 
     await BlacklistManager.addAggregateCIDsToRedis([
-      ...allAgreementIdsToBlacklistSet
+      ...allDigitalContentIdsToBlacklistSet
     ])
   }
 
   /**
-   * Helper method to batch adding CIDs from agreements and users to the blacklist
-   * @param {number[]} allAgreementIdsToBlacklist aggregate list of digital_content ids to blacklist from explicit digital_content id blacklist and agreements from blacklisted users
+   * Helper method to batch adding CIDs from digitalContents and users to the blacklist
+   * @param {number[]} allDigitalContentIdsToBlacklist aggregate list of digital_content ids to blacklist from explicit digital_content id blacklist and digitalContents from blacklisted users
    */
-  static async addAggregateCIDsToRedis(allAgreementIdsToBlacklist) {
+  static async addAggregateCIDsToRedis(allDigitalContentIdsToBlacklist) {
     const transaction = await models.sequelize.transaction()
 
     let i
     for (
       i = 0;
-      i < allAgreementIdsToBlacklist.length;
+      i < allDigitalContentIdsToBlacklist.length;
       i = i + PROCESS_AGREEMENTS_BATCH_SIZE
     ) {
       try {
-        const agreementsSlice = allAgreementIdsToBlacklist.slice(
+        const digitalContentsSlice = allDigitalContentIdsToBlacklist.slice(
           i,
           i + PROCESS_AGREEMENTS_BATCH_SIZE
         )
 
         this.logDebug(
-          `[addAggregateCIDsToRedis] - agreements slice size: ${agreementsSlice.length}`
+          `[addAggregateCIDsToRedis] - digitalContents slice size: ${digitalContentsSlice.length}`
         )
 
-        const segmentsFromAgreementIdsToBlacklist =
-          await BlacklistManager.getCIDsToBlacklist(agreementsSlice, transaction)
+        const segmentsFromDigitalContentIdsToBlacklist =
+          await BlacklistManager.getCIDsToBlacklist(digitalContentsSlice, transaction)
 
         this.logDebug(
-          `[addAggregateCIDsToRedis] - number of segments: ${segmentsFromAgreementIdsToBlacklist.length}`
+          `[addAggregateCIDsToRedis] - number of segments: ${segmentsFromDigitalContentIdsToBlacklist.length}`
         )
 
         await BlacklistManager.addToRedis(
           REDIS_SET_BLACKLIST_SEGMENTCID_KEY,
-          segmentsFromAgreementIdsToBlacklist
+          segmentsFromDigitalContentIdsToBlacklist
         )
       } catch (e) {
         await transaction.rollback()
         throw new Error(
-          `[addAggregateCIDsToRedis] - Could not add agreements slice ${i} to ${
+          `[addAggregateCIDsToRedis] - Could not add digitalContents slice ${i} to ${
             i + PROCESS_AGREEMENTS_BATCH_SIZE
           }: ${e.message}`
         )
@@ -169,36 +169,36 @@ class BlacklistManager {
   }
 
   /**
-   * Given agreementIds and userIds to remove from blacklist, fetch all segmentCIDs.
-   * Also remove the agreementIds, userIds, and segmentCIDs from redis blacklist sets to prevent future interaction.
+   * Given digitalContentIds and userIds to remove from blacklist, fetch all segmentCIDs.
+   * Also remove the digitalContentIds, userIds, and segmentCIDs from redis blacklist sets to prevent future interaction.
    */
   static async fetchCIDsAndRemoveFromRedis({
-    agreementIdsToRemove = [],
+    digitalContentIdsToRemove = [],
     userIdsToRemove = [],
     segmentsToRemove = []
   }) {
-    // Get all agreements from users and combine with explicit agreementIds to BL
-    const agreementsFromUsers = await this.getAgreementsFromUsers(userIdsToRemove)
-    const allAgreementIdsToBlacklist = agreementIdsToRemove.concat(
-      agreementsFromUsers.map((digital_content) => digital_content.blockchainId)
+    // Get all digitalContents from users and combine with explicit digitalContentIds to BL
+    const digitalContentsFromUsers = await this.getDigitalContentsFromUsers(userIdsToRemove)
+    const allDigitalContentIdsToBlacklist = digitalContentIdsToRemove.concat(
+      digitalContentsFromUsers.map((digital_content) => digital_content.blockchainId)
     )
 
-    // Dedupe agreementIds
-    const allAgreementIdsToBlacklistSet = new Set(allAgreementIdsToBlacklist)
+    // Dedupe digitalContentIds
+    const allDigitalContentIdsToBlacklistSet = new Set(allDigitalContentIdsToBlacklist)
 
-    // Retrieves CIDs from deduped agreementIds
-    const segmentsFromAgreementIds = await this.getCIDsToBlacklist([
-      ...allAgreementIdsToBlacklistSet
+    // Retrieves CIDs from deduped digitalContentIds
+    const segmentsFromDigitalContentIds = await this.getCIDsToBlacklist([
+      ...allDigitalContentIdsToBlacklistSet
     ])
 
-    let segmentCIDsToRemove = segmentsFromAgreementIds.concat(segmentsToRemove)
+    let segmentCIDsToRemove = segmentsFromDigitalContentIds.concat(segmentsToRemove)
     const segmentCIDsToRemoveSet = new Set(segmentCIDsToRemove)
     segmentCIDsToRemove = [...segmentCIDsToRemoveSet]
 
     try {
       await this.removeFromRedis(
         REDIS_SET_BLACKLIST_AGREEMENTID_KEY,
-        allAgreementIdsToBlacklist
+        allDigitalContentIdsToBlacklist
       )
       await this.removeFromRedis(
         REDIS_SET_BLACKLIST_USERID_KEY,
@@ -217,30 +217,30 @@ class BlacklistManager {
    * Retrieves digital_content objects from specified users
    * @param {int[]} userIdsBlacklist
    */
-  static async getAgreementsFromUsers(userIdsBlacklist) {
-    let agreements = []
+  static async getDigitalContentsFromUsers(userIdsBlacklist) {
+    let digitalContents = []
 
     if (userIdsBlacklist.length > 0) {
-      agreements = (
+      digitalContents = (
         await models.sequelize.query(
-          'select "blockchainId" from "Agreements" where "cnodeUserUUID" in (' +
+          'select "blockchainId" from "DigitalContents" where "cnodeUserUUID" in (' +
             'select "cnodeUserUUID" from "ColivingUsers" where "blockchainId" in (:userIdsBlacklist)' +
             ');',
           { replacements: { userIdsBlacklist } }
         )
       )[0]
     }
-    return agreements
+    return digitalContents
   }
 
   /**
-   * Retrieves all CIDs from input agreementIds from db
-   * @param {number[]} agreementIds
+   * Retrieves all CIDs from input digitalContentIds from db
+   * @param {number[]} digitalContentIds
    * @param {Object} transaction sequelize transaction object
    * @returns {Object[]} array of digital_content model objects from table
    */
-  static async getAllCIDsFromAgreementIdsInDb(agreementIds, transaction) {
-    const queryConfig = { where: { blockchainId: agreementIds } }
+  static async getAllCIDsFromDigitalContentIdsInDb(digitalContentIds, transaction) {
+    const queryConfig = { where: { blockchainId: digitalContentIds } }
     if (transaction) {
       queryConfig.transaction = transaction
     }
@@ -249,21 +249,21 @@ class BlacklistManager {
   }
 
   /**
-   * Retrieves all the deduped CIDs from the params and builds a mapping to <agreementId: segments> for explicit agreementIds (i.e. agreementIds from table, not agreements belonging to users).
-   * @param {number[]} allAgreementIds all the agreementIds to find CIDs for (explictly blacklisted agreements and agreements from blacklisted users)
+   * Retrieves all the deduped CIDs from the params and builds a mapping to <digitalContentId: segments> for explicit digitalContentIds (i.e. digitalContentIds from table, not digitalContents belonging to users).
+   * @param {number[]} allDigitalContentIds all the digitalContentIds to find CIDs for (explictly blacklisted digitalContents and digitalContents from blacklisted users)
    * @param {Object} transaction sequelize transaction object
    * @returns {string[]} all CIDs that are blacklisted from input digital_content ids
    */
-  static async getCIDsToBlacklist(inputAgreementIds, transaction) {
-    const agreements = await this.getAllCIDsFromAgreementIdsInDb(
-      inputAgreementIds,
+  static async getCIDsToBlacklist(inputDigitalContentIds, transaction) {
+    const digitalContents = await this.getAllCIDsFromDigitalContentIdsInDb(
+      inputDigitalContentIds,
       transaction
     )
 
     const segmentCIDs = new Set()
 
-    // Retrieve CIDs from the digital_content metadata and build mapping of <agreementId: segments>
-    for (const digital_content of agreements) {
+    // Retrieve CIDs from the digital_content metadata and build mapping of <digitalContentId: segments>
+    for (const digital_content of digitalContents) {
       if (!digital_content.metadataJSON || !digital_content.metadataJSON.digital_content_segments) continue
 
       for (const segment of digital_content.metadataJSON.digital_content_segments) {
@@ -274,10 +274,10 @@ class BlacklistManager {
     }
 
     // also retrieves the CID's directly from the files table so we get copy320
-    if (inputAgreementIds.length > 0) {
+    if (inputDigitalContentIds.length > 0) {
       const queryConfig = {
         where: {
-          agreementBlockchainId: inputAgreementIds
+          digitalContentBlockchainId: inputDigitalContentIds
         }
       }
       if (transaction) {
@@ -310,8 +310,8 @@ class BlacklistManager {
         await this.fetchCIDsAndAddToRedis({ userIdsToBlacklist: values })
         break
       case 'AGREEMENT':
-        // add digital_content ids to redis under agreementid key + its associated digital_content segments
-        await this.fetchCIDsAndAddToRedis({ agreementIdsToBlacklist: values })
+        // add digital_content ids to redis under digitalContentid key + its associated digital_content segments
+        await this.fetchCIDsAndAddToRedis({ digitalContentIdsToBlacklist: values })
         break
       case 'CID':
         // add segments to redis under segment key
@@ -329,8 +329,8 @@ class BlacklistManager {
         await this.fetchCIDsAndRemoveFromRedis({ userIdsToRemove: values })
         break
       case 'AGREEMENT':
-        // Remove digital_content ids from redis under agreementid key + its associated digital_content segments
-        await this.fetchCIDsAndRemoveFromRedis({ agreementIdsToRemove: values })
+        // Remove digital_content ids from redis under digitalContentid key + its associated digital_content segments
+        await this.fetchCIDsAndRemoveFromRedis({ digitalContentIdsToRemove: values })
         break
       case 'CID':
         // Remove segments from redis under segment key
@@ -401,7 +401,7 @@ class BlacklistManager {
    * so break this up into multiple redis add calls
    * https://github.com/StackExchange/StackExchange.Redis/issues/201
    * @param {string} redisKey key
-   * @param {number[] | string[] | Object} data either array of userIds, agreementIds, CIDs, or <agreementId: [CIDs]>
+   * @param {number[] | string[] | Object} data either array of userIds, digitalContentIds, CIDs, or <digitalContentId: [CIDs]>
    */
   static async _addToRedisChunkHelper(redisKey, data) {
     const redisAddMaxItemsSize = 100000
@@ -422,25 +422,25 @@ class BlacklistManager {
   /**
    * Adds key with value to redis.
    * @param {string} redisKey type of value
-   * @param {number[] | string[] | Object} data either array of userIds, agreementIds, CIDs, or <agreementId: [CIDs]>
+   * @param {number[] | string[] | Object} data either array of userIds, digitalContentIds, CIDs, or <digitalContentId: [CIDs]>
    * @param {number?} expirationSec number of seconds for entry in redis to expire
    */
   static async addToRedis(redisKey, data, expirationSec = null) {
     switch (redisKey) {
       case REDIS_MAP_AGREEMENTID_TO_SEGMENTCIDS_KEY: {
-        // Add "MAP.AGREEMENTID.SEGMENTCIDS:::<agreementId>" to set of cids into redis
+        // Add "MAP.AGREEMENTID.SEGMENTCIDS:::<digitalContentId>" to set of cids into redis
         const errors = []
-        for (let [agreementId, cids] of Object.entries(data)) {
-          agreementId = parseInt(agreementId)
-          const redisAgreementIdToCIDsKey = this.getRedisAgreementIdToCIDsKey(agreementId)
+        for (let [digitalContentId, cids] of Object.entries(data)) {
+          digitalContentId = parseInt(digitalContentId)
+          const redisDigitalContentIdToCIDsKey = this.getRedisDigitalContentIdToCIDsKey(digitalContentId)
           try {
-            await this._addToRedisChunkHelper(redisAgreementIdToCIDsKey, cids)
+            await this._addToRedisChunkHelper(redisDigitalContentIdToCIDsKey, cids)
             if (expirationSec) {
-              await redis.expire(redisAgreementIdToCIDsKey, expirationSec)
+              await redis.expire(redisDigitalContentIdToCIDsKey, expirationSec)
             }
           } catch (e) {
             errors.push(
-              `Unable to add ${redisAgreementIdToCIDsKey}:${agreementId}: ${e.toString()}`
+              `Unable to add ${redisDigitalContentIdToCIDsKey}:${digitalContentId}: ${e.toString()}`
             )
           }
         }
@@ -470,7 +470,7 @@ class BlacklistManager {
   /**
    * Removes key with value to redis. If value does not exist, redis should ignore.
    * @param {string} redisKey type of value
-   * @param {number[] | string[] | Object} data either array of userIds, agreementIds, CIDs, or <agreementId: [CIDs]>
+   * @param {number[] | string[] | Object} data either array of userIds, digitalContentIds, CIDs, or <digitalContentId: [CIDs]>
    */
   static async removeFromRedis(redisKey, data) {
     switch (redisKey) {
@@ -492,39 +492,39 @@ class BlacklistManager {
     }
   }
 
-  static async isServable(cid, agreementId = null) {
+  static async isServable(cid, digitalContentId = null) {
     try {
-      // if the agreementId is on the blacklist, do not serve
-      const agreementIdIsInBlacklist =
-        agreementId && Number.isInteger(agreementId)
-          ? await this.agreementIdIsInBlacklist(agreementId)
+      // if the digitalContentId is on the blacklist, do not serve
+      const digitalContentIdIsInBlacklist =
+        digitalContentId && Number.isInteger(digitalContentId)
+          ? await this.digitalContentIdIsInBlacklist(digitalContentId)
           : false
-      if (agreementIdIsInBlacklist) return false
+      if (digitalContentIdIsInBlacklist) return false
 
       // If the CID is not in the blacklist, allow serve
       const CIDIsInBlacklist = await this.CIDIsInBlacklist(cid)
       if (!CIDIsInBlacklist) return true
 
-      // If the CID is in the blacklist and an invalid agreementId was passed in, do not serve
+      // If the CID is in the blacklist and an invalid digitalContentId was passed in, do not serve
       // Also, if the CID is not of digital_content type and is in the blacklist, do not serve anyway
       if (
-        !agreementId ||
-        isNaN(agreementId) ||
-        agreementId < 0 ||
-        !Number.isInteger(agreementId)
+        !digitalContentId ||
+        isNaN(digitalContentId) ||
+        digitalContentId < 0 ||
+        !Number.isInteger(digitalContentId)
       )
         return false
 
-      agreementId = parseInt(agreementId)
+      digitalContentId = parseInt(digitalContentId)
 
-      // Check to see if CID belongs to input agreementId from redis.
-      let cidsOfInputAgreementId = await this.getAllCIDsFromAgreementIdInRedis(agreementId)
+      // Check to see if CID belongs to input digitalContentId from redis.
+      let cidsOfInputDigitalContentId = await this.getAllCIDsFromDigitalContentIdInRedis(digitalContentId)
 
       // If nothing is found, check redis to see if digital_content is valid.
-      // If valid, add the <agreementId:[cids]> mapping redis for quick lookup later.
-      // Else, add to invalid agreementIds set
-      if (cidsOfInputAgreementId.length === 0) {
-        const invalid = await this.agreementIdIsInvalid(agreementId)
+      // If valid, add the <digitalContentId:[cids]> mapping redis for quick lookup later.
+      // Else, add to invalid digitalContentIds set
+      if (cidsOfInputDigitalContentId.length === 0) {
+        const invalid = await this.digitalContentIdIsInvalid(digitalContentId)
 
         // If digital_content has been marked as invalid before, do not serve
         if (invalid) {
@@ -532,39 +532,39 @@ class BlacklistManager {
         }
 
         // Check the db for the segments
-        const digital_content = (await this.getAllCIDsFromAgreementIdsInDb([agreementId]))[0]
+        const digital_content = (await this.getAllCIDsFromDigitalContentIdsInDb([digitalContentId]))[0]
 
-        // If segments are not found, add to invalid agreementIds set
+        // If segments are not found, add to invalid digitalContentIds set
         if (!digital_content) {
           await this.addToRedis(
             REDIS_SET_INVALID_AGREEMENTIDS_KEY,
-            [agreementId],
-            // Set expiry in case digital_content with this agreementId eventually gets uploaded to CN
+            [digitalContentId],
+            // Set expiry in case digital_content with this digitalContentId eventually gets uploaded to CN
             INVALID_AGREEMENTID_EXPIRATION_SECONDS
           )
           return false
         }
 
         if (digital_content.metadataJSON && digital_content.metadataJSON.digital_content_segments) {
-          // DigitalContent is found. Add <agreementId:[cids]> to redis for quick lookup later
-          cidsOfInputAgreementId = digital_content.metadataJSON.digital_content_segments.map(
+          // DigitalContent is found. Add <digitalContentId:[cids]> to redis for quick lookup later
+          cidsOfInputDigitalContentId = digital_content.metadataJSON.digital_content_segments.map(
             (s) => s.multihash
           )
 
           await this.addToRedis(
             REDIS_MAP_AGREEMENTID_TO_SEGMENTCIDS_KEY,
-            { [agreementId]: cidsOfInputAgreementId },
+            { [digitalContentId]: cidsOfInputDigitalContentId },
             SEGMENTCID_TO_AGREEMENTID_EXPIRATION_SECONDS
           )
         }
       }
 
-      cidsOfInputAgreementId = new Set(cidsOfInputAgreementId)
+      cidsOfInputDigitalContentId = new Set(cidsOfInputDigitalContentId)
 
-      // CID belongs to input agreementId and the digital_content is not blacklisted; allow serve.
-      if (cidsOfInputAgreementId.has(cid)) return true
+      // CID belongs to input digitalContentId and the digital_content is not blacklisted; allow serve.
+      if (cidsOfInputDigitalContentId.has(cid)) return true
 
-      // CID does not belong to passed in agreementId; do not serve
+      // CID does not belong to passed in digitalContentId; do not serve
       return false
     } catch (e) {
       // Error in checking CID. Default to false.
@@ -581,7 +581,7 @@ class BlacklistManager {
 
   /** Retrieves redis keys */
 
-  static getRedisAgreementIdKey() {
+  static getRedisDigitalContentIdKey() {
     return REDIS_SET_BLACKLIST_AGREEMENTID_KEY
   }
 
@@ -593,22 +593,22 @@ class BlacklistManager {
     return REDIS_SET_BLACKLIST_SEGMENTCID_KEY
   }
 
-  static getRedisAgreementIdToCIDsKey(agreementId) {
-    return `${REDIS_MAP_AGREEMENTID_TO_SEGMENTCIDS_KEY}:::${agreementId}`
+  static getRedisDigitalContentIdToCIDsKey(digitalContentId) {
+    return `${REDIS_MAP_AGREEMENTID_TO_SEGMENTCIDS_KEY}:::${digitalContentId}`
   }
 
-  static getInvalidAgreementIdsKey() {
+  static getInvalidDigitalContentIdsKey() {
     return REDIS_SET_INVALID_AGREEMENTIDS_KEY
   }
 
-  /** Checks if userId, agreementId, and CID exists in redis  */
+  /** Checks if userId, digitalContentId, and CID exists in redis  */
 
   static async userIdIsInBlacklist(userId) {
     return redis.sismember(REDIS_SET_BLACKLIST_USERID_KEY, userId)
   }
 
-  static async agreementIdIsInBlacklist(agreementId) {
-    return redis.sismember(REDIS_SET_BLACKLIST_AGREEMENTID_KEY, agreementId)
+  static async digitalContentIdIsInBlacklist(digitalContentId) {
+    return redis.sismember(REDIS_SET_BLACKLIST_AGREEMENTID_KEY, digitalContentId)
   }
 
   // Checks if the input CID is blacklisted from USER, AGREEMENT, or SEGMENT type
@@ -616,15 +616,15 @@ class BlacklistManager {
     return redis.sismember(REDIS_SET_BLACKLIST_SEGMENTCID_KEY, cid)
   }
 
-  // Check if the input CID belongs to the digital_content with the input agreementId in redis.
-  static async CIDIsInAgreementRedis(agreementId, cid) {
-    const redisKey = this.getRedisAgreementIdToCIDsKey(agreementId)
+  // Check if the input CID belongs to the digital_content with the input digitalContentId in redis.
+  static async CIDIsInDigitalContentRedis(digitalContentId, cid) {
+    const redisKey = this.getRedisDigitalContentIdToCIDsKey(digitalContentId)
     return redis.sismember(redisKey, cid)
   }
 
-  // Check to see if the input agreementId is invalid
-  static async agreementIdIsInvalid(agreementId) {
-    return redis.sismember(REDIS_SET_INVALID_AGREEMENTIDS_KEY, agreementId)
+  // Check to see if the input digitalContentId is invalid
+  static async digitalContentIdIsInvalid(digitalContentId) {
+    return redis.sismember(REDIS_SET_INVALID_AGREEMENTIDS_KEY, digitalContentId)
   }
 
   // Retrieves all CIDs in redis
@@ -638,21 +638,21 @@ class BlacklistManager {
   }
 
   // Retrieves all digital_content ids in redis
-  static async getAllAgreementIds() {
+  static async getAllDigitalContentIds() {
     return redis.smembers(REDIS_SET_BLACKLIST_AGREEMENTID_KEY)
   }
 
-  static async getAllInvalidAgreementIds() {
+  static async getAllInvalidDigitalContentIds() {
     return redis.smembers(REDIS_SET_INVALID_AGREEMENTIDS_KEY)
   }
 
   /**
-   * Retrieve all the relevant CIDs from the input agreementId in redis.
-   * @param {number} agreementId
-   * @returns {string[]} cids associated with agreementId
+   * Retrieve all the relevant CIDs from the input digitalContentId in redis.
+   * @param {number} digitalContentId
+   * @returns {string[]} cids associated with digitalContentId
    */
-  static async getAllCIDsFromAgreementIdInRedis(agreementId) {
-    const redisKey = this.getRedisAgreementIdToCIDsKey(agreementId)
+  static async getAllCIDsFromDigitalContentIdInRedis(digitalContentId) {
+    const redisKey = this.getRedisDigitalContentIdToCIDsKey(digitalContentId)
     return redis.smembers(redisKey)
   }
 

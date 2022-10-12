@@ -11,8 +11,8 @@ from src.api.v1.resolve import ns as resolve_ns
 from src.api.v1.search import full_ns as full_search_ns
 from src.api.v1.tips import full_ns as full_tips_ns
 from src.api.v1.tips import ns as tips_ns
-from src.api.v1.agreements import full_ns as full_digital_contents_ns
-from src.api.v1.agreements import ns as agreements_ns
+from src.api.v1.digitalContents import full_ns as full_digital_contents_ns
+from src.api.v1.digitalContents import ns as digitalContents_ns
 from src.api.v1.users import full_ns as full_users_ns
 from src.api.v1.users import ns as users_ns
 
@@ -33,7 +33,7 @@ api_v1 = ApiWithHTTPS(bp, version="1.0", description="Coliving V1 API")
 api_v1.add_namespace(models_ns)
 api_v1.add_namespace(users_ns)
 api_v1.add_namespace(content_lists_ns)
-api_v1.add_namespace(agreements_ns)
+api_v1.add_namespace(digitalContents_ns)
 api_v1.add_namespace(challenges_ns)
 api_v1.add_namespace(tips_ns)
 api_v1.add_namespace(metrics_ns)

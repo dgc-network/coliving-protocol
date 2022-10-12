@@ -208,21 +208,21 @@ function LibsWrapper(walletIndex = 0) {
   /**
    * Upload a digital_content.
    *
-   * @param {*} args agreementFile and metadata
-   * @returns agreementId
+   * @param {*} args digitalContentFile and metadata
+   * @returns digitalContentId
    * @throws any libs error
    */
-  this.uploadAgreement = async ({ agreementFile, agreementMetadata }) => {
+  this.uploadDigitalContent = async ({ digitalContentFile, digitalContentMetadata }) => {
     assertLibsDidInit()
 
-    const { agreementId, error } = await this.libsInstance.DigitalContent.uploadAgreement(
-      agreementFile,
+    const { digitalContentId, error } = await this.libsInstance.DigitalContent.uploadDigitalContent(
+      digitalContentFile,
       null /* image */,
-      agreementMetadata,
+      digitalContentMetadata,
       () => { } /* on progress */
     )
     if (error) throw error
-    return agreementId
+    return digitalContentId
   }
 
   /**
@@ -230,16 +230,16 @@ function LibsWrapper(walletIndex = 0) {
    * such as digital_content content, cover art are already on content node.
    * @param {Object} metadata json of the digital_content metadata with all fields, missing fields will error
    */
-  this.updateAgreementOnChainAndCnode = async metadata => {
+  this.updateDigitalContentOnChainAndCnode = async metadata => {
     const {
       blockHash,
       blockNumber,
-      agreementId
-    } = await this.libsInstance.DigitalContent.updateAgreement(metadata)
-    return { blockHash, blockNumber, agreementId }
+      digitalContentId
+    } = await this.libsInstance.DigitalContent.updateDigitalContent(metadata)
+    return { blockHash, blockNumber, digitalContentId }
   }
 
-  this.uploadAgreementCoverArt = async coverArtFilePath => {
+  this.uploadDigitalContentCoverArt = async coverArtFilePath => {
     const coverArtFile = fs.createReadStream(coverArtFilePath)
     const resp = await this.libsInstance.File.uploadImage(
       coverArtFile,
@@ -252,38 +252,38 @@ function LibsWrapper(walletIndex = 0) {
   /**
    * Repost a digital_content.
    *
-   * @param {number} args agreementId
+   * @param {number} args digitalContentId
    * @returns transaction receipt
    * @throws any libs error
    */
-  this.repostAgreement = async agreementId => {
+  this.repostDigitalContent = async digitalContentId => {
     assertLibsDidInit()
-    return await this.libsInstance.DigitalContent.addAgreementRepost(agreementId)
+    return await this.libsInstance.DigitalContent.addDigitalContentRepost(digitalContentId)
   }
 
   /**
-   * Gets reposters for a agreements.
+   * Gets reposters for a digitalContents.
    *
-   * @param {number} args agreementId
-   * @returns agreementId
+   * @param {number} args digitalContentId
+   * @returns digitalContentId
    * @throws any libs error
    */
-  this.getRepostersForAgreement = async agreementId => {
+  this.getRepostersForDigitalContent = async digitalContentId => {
     assertLibsDidInit()
-    return await this.libsInstance.DigitalContent.getRepostersForAgreement(100, 0, agreementId)
+    return await this.libsInstance.DigitalContent.getRepostersForDigitalContent(100, 0, digitalContentId)
   }
 
   /**
    * Fetch digital_content metadata from discprov.
-   * @param {*} agreementId
+   * @param {*} digitalContentId
    * @returns digital_content metadata
    */
-  this.getAgreement = async agreementId => {
+  this.getDigitalContent = async digitalContentId => {
     assertLibsDidInit()
-    const agreements = await this.libsInstance.discoveryNode.getAgreements(
+    const digitalContents = await this.libsInstance.discoveryNode.getDigitalContents(
       1 /* Limit */,
       0 /* Ofset */,
-      [agreementId] /* idsArray */,
+      [digitalContentId] /* idsArray */,
       null /* targetUserId */,
       null /* sort */,
       null /* minBlockNumber */,
@@ -291,10 +291,10 @@ function LibsWrapper(walletIndex = 0) {
       true /* withUsers */
     )
 
-    if (!agreements || !agreements.length) {
-      throw new Error('No agreements returned.')
+    if (!digitalContents || !digitalContents.length) {
+      throw new Error('No digitalContents returned.')
     }
-    return agreements[0]
+    return digitalContents[0]
   }
 
   /**
@@ -463,39 +463,39 @@ function LibsWrapper(walletIndex = 0) {
    * @param {int} userId
    * @param {object} param2 digital_content data
    */
-  this.addAgreementToChain = async (userId, { digest, hashFn, size }) => {
+  this.addDigitalContentToChain = async (userId, { digest, hashFn, size }) => {
     assertLibsDidInit()
-    const agreementTxReceipt = await this.libsInstance.contracts.AgreementFactoryClient.addAgreement(
+    const digitalContentTxReceipt = await this.libsInstance.contracts.DigitalContentFactoryClient.addDigitalContent(
       userId,
       digest,
       hashFn,
       size
     )
-    return agreementTxReceipt
+    return digitalContentTxReceipt
   }
 
   /**
    * Add an update digital_content txn to chain.
    * WARNING: This will break indexing if the tx contains CIDs that don't exist on any CN.
-   * Make sure you call uploadAgreementMetadata first!
-   * @param {int} agreementId
+   * Make sure you call uploadDigitalContentMetadata first!
+   * @param {int} digitalContentId
    * @param {int} userId
    * @param {object} param3 digital_content data
    */
-  this.updateAgreementOnChain = async (
-    agreementId,
+  this.updateDigitalContentOnChain = async (
+    digitalContentId,
     userId,
     { digest, hashFn, size }
   ) => {
     assertLibsDidInit()
-    const agreementTxReceipt = await this.libsInstance.contracts.AgreementFactoryClient.updateAgreement(
-      agreementId,
+    const digitalContentTxReceipt = await this.libsInstance.contracts.DigitalContentFactoryClient.updateDigitalContent(
+      digitalContentId,
       userId,
       digest,
       hashFn,
       size
     )
-    return agreementTxReceipt
+    return digitalContentTxReceipt
   }
 
   /**
@@ -546,14 +546,14 @@ function LibsWrapper(walletIndex = 0) {
    * @param {string} contentListName
    * @param {boolean} isPrivate
    * @param {boolean} isAlbum
-   * @param {array} agreementIds
+   * @param {array} digitalContentIds
    */
   this.createContentList = async (
     userId,
     contentListName,
     isPrivate,
     isAlbum,
-    agreementIds
+    digitalContentIds
   ) => {
     assertLibsDidInit()
     const createContentListTxReceipt = await this.libsInstance.contracts.ContentListFactoryClient.createContentList(
@@ -561,7 +561,7 @@ function LibsWrapper(walletIndex = 0) {
       contentListName,
       isPrivate,
       isAlbum,
-      agreementIds
+      digitalContentIds
     )
     return createContentListTxReceipt
   }
@@ -569,15 +569,15 @@ function LibsWrapper(walletIndex = 0) {
   /**
    * Add a contentList digital_content addition txn to chain
    * @param {number} contentListId
-   * @param {number} agreementId
+   * @param {number} digitalContentId
    */
-  this.addContentListAgreement = async (contentListId, agreementId) => {
+  this.addContentListDigitalContent = async (contentListId, digitalContentId) => {
     assertLibsDidInit()
-    const addContentListAgreementTxReceipt = await this.libsInstance.contracts.ContentListFactoryClient.addContentListAgreement(
+    const addContentListDigitalContentTxReceipt = await this.libsInstance.contracts.ContentListFactoryClient.addContentListDigitalContent(
       contentListId,
-      agreementId
+      digitalContentId
     )
-    return addContentListAgreementTxReceipt
+    return addContentListDigitalContentTxReceipt
   }
 
   this.uploadContentListCoverPhoto = async coverPhotoFile => {
@@ -689,15 +689,15 @@ function LibsWrapper(walletIndex = 0) {
   }
 
   // Record a single digital_content listen
-  this.logAgreementListen = (
-    agreementId,
+  this.logDigitalContentListen = (
+    digitalContentId,
     userId,
     listenerAddress,
     signatureData,
     solanaListen
   ) => {
-    return this.libsInstance.identityService.logAgreementListen(
-      agreementId,
+    return this.libsInstance.identityService.logDigitalContentListen(
+      digitalContentId,
       userId,
       listenerAddress,
       signatureData,

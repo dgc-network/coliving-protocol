@@ -8,8 +8,8 @@ let contentListOwnerId
 // First created contentList
 let contentListId = 1
 
-// Initial agreements
-let contentListAgreements = []
+// Initial digitalContents
+let contentListDigitalContents = []
 
 // Initial contentList configuration
 let initialContentListName = 'Test contentList name'
@@ -19,20 +19,20 @@ before(async function () {
   await colivingInstance.init()
   contentListOwnerId = (await colivingInstance.contracts.UserFactoryClient.addUser('contentListH')).userId
 
-  const cid = helpers.constants.agreementMetadataCID // test metadata stored in DHT
-  const agreementMultihashDecoded = Utils.decodeMultihash(cid)
-  contentListAgreements.push((await colivingInstance.contracts.AgreementFactoryClient.addAgreement(
+  const cid = helpers.constants.digitalContentMetadataCID // test metadata stored in DHT
+  const digitalContentMultihashDecoded = Utils.decodeMultihash(cid)
+  contentListDigitalContents.push((await colivingInstance.contracts.DigitalContentFactoryClient.addDigitalContent(
     contentListOwnerId,
-    agreementMultihashDecoded.digest,
-    agreementMultihashDecoded.hashFn,
-    agreementMultihashDecoded.size
-  )).agreementId)
-  contentListAgreements.push((await colivingInstance.contracts.AgreementFactoryClient.addAgreement(
+    digitalContentMultihashDecoded.digest,
+    digitalContentMultihashDecoded.hashFn,
+    digitalContentMultihashDecoded.size
+  )).digitalContentId)
+  contentListDigitalContents.push((await colivingInstance.contracts.DigitalContentFactoryClient.addDigitalContent(
     contentListOwnerId,
-    agreementMultihashDecoded.digest,
-    agreementMultihashDecoded.hashFn,
-    agreementMultihashDecoded.size
-  )).agreementId)
+    digitalContentMultihashDecoded.digest,
+    digitalContentMultihashDecoded.hashFn,
+    digitalContentMultihashDecoded.size
+  )).digitalContentId)
 })
 
 // TODO: Add validation to the below test cases, currently they just perform chain operations.
@@ -43,7 +43,7 @@ it('should create contentList', async function () {
     initialContentListName,
     initialIsPrivate,
     false,
-    contentListAgreements)
+    contentListDigitalContents)
 })
 
 it('should create album', async function () {
@@ -52,7 +52,7 @@ it('should create album', async function () {
     initialContentListName,
     initialIsPrivate,
     true,
-    contentListAgreements)
+    contentListDigitalContents)
 })
 
 it('should create and delete contentList', async function () {
@@ -62,63 +62,63 @@ it('should create and delete contentList', async function () {
     initialContentListName,
     initialIsPrivate,
     false,
-    contentListAgreements)
+    contentListDigitalContents)
 
   // delete contentList + validate
   const { contentListId: deletedContentListId } = await colivingInstance.contracts.ContentListFactoryClient.deleteContentList(contentListId)
   assert.strictEqual(contentListId, deletedContentListId)
 })
 
-it('should add agreements to an existing contentList', async function () {
-  const cid = helpers.constants.agreementMetadataCID // test metadata stored in DHT
-  const agreementMultihashDecoded = Utils.decodeMultihash(cid)
+it('should add digitalContents to an existing contentList', async function () {
+  const cid = helpers.constants.digitalContentMetadataCID // test metadata stored in DHT
+  const digitalContentMultihashDecoded = Utils.decodeMultihash(cid)
 
   // Add a new digital_content
-  const { agreementId } = await colivingInstance.contracts.AgreementFactoryClient.addAgreement(
+  const { digitalContentId } = await colivingInstance.contracts.DigitalContentFactoryClient.addDigitalContent(
     contentListOwnerId,
-    agreementMultihashDecoded.digest,
-    agreementMultihashDecoded.hashFn,
-    agreementMultihashDecoded.size
+    digitalContentMultihashDecoded.digest,
+    digitalContentMultihashDecoded.hashFn,
+    digitalContentMultihashDecoded.size
   )
-  const digital_content = await colivingInstance.contracts.AgreementFactoryClient.getAgreement(agreementId)
-  assert.strictEqual(digital_content.multihashDigest, agreementMultihashDecoded.digest)
+  const digital_content = await colivingInstance.contracts.DigitalContentFactoryClient.getDigitalContent(digitalContentId)
+  assert.strictEqual(digital_content.multihashDigest, digitalContentMultihashDecoded.digest)
 
-  const addContentListAgreementTx = await colivingInstance.contracts.ContentListFactoryClient.addContentListAgreement(
+  const addContentListDigitalContentTx = await colivingInstance.contracts.ContentListFactoryClient.addContentListDigitalContent(
     contentListId,
-    agreementId)
+    digitalContentId)
 })
 
 it('should delete digital_content from an existing contentList', async function () {
-  const cid = helpers.constants.agreementMetadataCID // test metadata stored in DHT
-  const agreementMultihashDecoded = Utils.decodeMultihash(cid)
+  const cid = helpers.constants.digitalContentMetadataCID // test metadata stored in DHT
+  const digitalContentMultihashDecoded = Utils.decodeMultihash(cid)
 
   // Add a new digital_content
-  const { agreementId } = await colivingInstance.contracts.AgreementFactoryClient.addAgreement(
+  const { digitalContentId } = await colivingInstance.contracts.DigitalContentFactoryClient.addDigitalContent(
     contentListOwnerId,
-    agreementMultihashDecoded.digest,
-    agreementMultihashDecoded.hashFn,
-    agreementMultihashDecoded.size
+    digitalContentMultihashDecoded.digest,
+    digitalContentMultihashDecoded.hashFn,
+    digitalContentMultihashDecoded.size
   )
-  const digital_content = await colivingInstance.contracts.AgreementFactoryClient.getAgreement(agreementId)
-  assert.strictEqual(digital_content.multihashDigest, agreementMultihashDecoded.digest)
+  const digital_content = await colivingInstance.contracts.DigitalContentFactoryClient.getDigitalContent(digitalContentId)
+  assert.strictEqual(digital_content.multihashDigest, digitalContentMultihashDecoded.digest)
 
-  const addContentListAgreementTx = await colivingInstance.contracts.ContentListFactoryClient.addContentListAgreement(
+  const addContentListDigitalContentTx = await colivingInstance.contracts.ContentListFactoryClient.addContentListDigitalContent(
     contentListId,
-    agreementId)
+    digitalContentId)
 
   const deletedTimestamp = 1552008725
   // Delete the newly added digital_content from the contentList
-  const deletedContentListAgreementTx = await colivingInstance.contracts.ContentListFactoryClient.deleteContentListAgreement(
+  const deletedContentListDigitalContentTx = await colivingInstance.contracts.ContentListFactoryClient.deleteContentListDigitalContent(
     contentListId,
-    agreementId,
+    digitalContentId,
     deletedTimestamp)
 })
 
-it('should reorder agreements in an existing contentList', async function () {
-  contentListAgreements.push(contentListAgreements.shift()) // put first element at end
-  const orderAgreementsTx = await colivingInstance.contracts.ContentListFactoryClient.orderContentListAgreements(
+it('should reorder digitalContents in an existing contentList', async function () {
+  contentListDigitalContents.push(contentListDigitalContents.shift()) // put first element at end
+  const orderDigitalContentsTx = await colivingInstance.contracts.ContentListFactoryClient.orderContentListDigitalContents(
     contentListId,
-    contentListAgreements)
+    contentListDigitalContents)
 })
 
 it('should update contentList privacy', async function () {
@@ -136,9 +136,9 @@ it('should update contentList name', async function () {
 })
 
 it('should update contentList cover photo', async function () {
-  const cid = helpers.constants.agreementMetadataCID // test metadata stored in DHT
-  const agreementMultihashDecoded = Utils.decodeMultihash(cid)
-  const testPhotoDigest = agreementMultihashDecoded.digest
+  const cid = helpers.constants.digitalContentMetadataCID // test metadata stored in DHT
+  const digitalContentMultihashDecoded = Utils.decodeMultihash(cid)
+  const testPhotoDigest = digitalContentMultihashDecoded.digest
   const updateContentListCoverPhotoTx = await colivingInstance.contracts.ContentListFactoryClient.updateContentListCoverPhoto(
     contentListId,
     testPhotoDigest)

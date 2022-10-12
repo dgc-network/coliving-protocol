@@ -99,29 +99,29 @@ class DBManager {
         `${cnodeUserUUIDLog} || numColivingUsersDeleted ${numColivingUsersDeleted}`
       )
 
-      // AgreementFiles must be deleted before associated Agreements can be deleted
-      const numAgreementFilesDeleted = await models.File.destroy({
+      // DigitalContentFiles must be deleted before associated DigitalContents can be deleted
+      const numDigitalContentFilesDeleted = await models.File.destroy({
         where: {
           cnodeUserUUID,
-          agreementBlockchainId: { [models.Sequelize.Op.ne]: null } // Op.ne = notequal
+          digitalContentBlockchainId: { [models.Sequelize.Op.ne]: null } // Op.ne = notequal
         },
         transaction
       })
-      log(`${cnodeUserUUIDLog} || numAgreementFilesDeleted ${numAgreementFilesDeleted}`)
+      log(`${cnodeUserUUIDLog} || numDigitalContentFilesDeleted ${numDigitalContentFilesDeleted}`)
 
-      const numAgreementsDeleted = await models.DigitalContent.destroy({
+      const numDigitalContentsDeleted = await models.DigitalContent.destroy({
         where: { cnodeUserUUID },
         transaction
       })
-      log(`${cnodeUserUUIDLog} || numAgreementsDeleted ${numAgreementsDeleted}`)
+      log(`${cnodeUserUUIDLog} || numDigitalContentsDeleted ${numDigitalContentsDeleted}`)
 
       // Delete all remaining files (image / metadata files).
-      const numNonAgreementFilesDeleted = await models.File.destroy({
+      const numNonDigitalContentFilesDeleted = await models.File.destroy({
         where: { cnodeUserUUID },
         transaction
       })
       log(
-        `${cnodeUserUUIDLog} || numNonAgreementFilesDeleted ${numNonAgreementFilesDeleted}`
+        `${cnodeUserUUIDLog} || numNonDigitalContentFilesDeleted ${numNonDigitalContentFilesDeleted}`
       )
 
       const numClockRecordsDeleted = await models.ClockRecord.destroy({

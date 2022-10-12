@@ -13,21 +13,21 @@ class AsyncProcessingQueueMock {
   async getAsyncProcessingQueueJobs() {
     return {
       waiting: {
-        agreementContentUpload: 0,
+        digitalContentContentUpload: 0,
         transcodeAndSegment: 0,
         processTranscodeAndSegments: 0,
         transcodeHandOff: 0,
         total: 0
       },
       active: {
-        agreementContentUpload: 0,
+        digitalContentContentUpload: 0,
         transcodeAndSegment: 0,
         processTranscodeAndSegments: 0,
         transcodeHandOff: 0,
         total: 0
       },
       failed: {
-        agreementContentUpload: 0,
+        digitalContentContentUpload: 0,
         transcodeAndSegment: 0,
         processTranscodeAndSegments: 0,
         transcodeHandOff: 0,

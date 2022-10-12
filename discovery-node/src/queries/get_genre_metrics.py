@@ -1,7 +1,7 @@
 import logging
 
 from sqlalchemy import desc, func
-from src.models.agreements.digital_content import DigitalContent
+from src.models.digitalContents.digital_content import DigitalContent
 from src.utils import db_session
 
 logger = logging.getLogger(__name__)

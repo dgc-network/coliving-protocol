@@ -4,7 +4,7 @@ from urllib.parse import urlparse
 from flask.helpers import url_for
 from src.api.v1 import api as api_v1
 from src.api.v1.content_lists import ns as content_lists_ns
-from src.api.v1.agreements import ns as agreements_ns
+from src.api.v1.digitalContents import ns as digitalContents_ns
 from src.api.v1.users import ns as users_ns
 from src.models.users.user import User
 from src.utils.helpers import encode_int_id
@@ -33,7 +33,7 @@ def resolve_url(session, url):
     if match:
         slug = match.group("slug")
         handle = match.group("handle")
-        return ns_url_for(agreements_ns, "bulk_digital_contents", slug=slug, handle=handle)
+        return ns_url_for(digitalContents_ns, "bulk_digital_contents", slug=slug, handle=handle)
 
     match = content_list_url_regex.match(path)
     if match:

@@ -200,7 +200,7 @@ def add_digital_content_repost(
 ):
     txhash = update_task.web3.toHex(tx_receipt.transactionHash)
     new_digital_content_repost_events = (
-        social_feature_factory_contract.events.AgreementRepostAdded().processReceipt(
+        social_feature_factory_contract.events.DigitalContentRepostAdded().processReceipt(
             tx_receipt
         )
     )
@@ -245,7 +245,7 @@ def delete_digital_content_repost(
 ):
     txhash = update_task.web3.toHex(tx_receipt.transactionHash)
     new_repost_events = (
-        social_feature_factory_contract.events.AgreementRepostDeleted().processReceipt(
+        social_feature_factory_contract.events.DigitalContentRepostDeleted().processReceipt(
             tx_receipt
         )
     )

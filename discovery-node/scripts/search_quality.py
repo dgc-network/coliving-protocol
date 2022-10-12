@@ -39,9 +39,9 @@ def test_search(args):
                 ],
             )
 
-    if search_type == "agreements" or search_type == "all":
-        print_entity("agreements", found["agreements"])
-        print_entity("saved agreements", found["saved_digital_contents"])
+    if search_type == "digitalContents" or search_type == "all":
+        print_entity("digitalContents", found["digitalContents"])
+        print_entity("saved digitalContents", found["saved_digital_contents"])
     if search_type == "users" or search_type == "all":
         print_users("users", found["users"])
         print_users("followed_users", found["followed_users"])
@@ -53,7 +53,7 @@ def test_search(args):
         print_entity("saved_albums", found["saved_albums"])
 
 
-test_search({"query": "space fm lido", "limit": 3, "kind": "agreements"})
+test_search({"query": "space fm lido", "limit": 3, "kind": "digitalContents"})
 
 test_search({"query": "issac solo", "limit": 3, "kind": "users"})  # misspell
 

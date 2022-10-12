@@ -44,11 +44,11 @@ logger = logging.getLogger(__name__)
 
 """
 Parse signed data message from each transaction submitted to
-Coliving AgreementListenCount program
+Coliving DigitalContentListenCount program
 
 Formatted in the following struct:
 
-pub struct AgreementData {
+pub struct DigitalContentData {
     /// user ID
     pub user_id: String,
     /// digital_content ID
@@ -260,7 +260,7 @@ def get_tx_in_db(session, tx_sig):
 
 # pylint: disable=W0105
 """
-Processing of plays through the Solana AgreementListenCount program is handled differently
+Processing of plays through the Solana DigitalContentListenCount program is handled differently
 than the original indexing layer
 
 Below we monitor the on chain 'programId' which is passed as a config - this will
@@ -537,7 +537,7 @@ def process_solana_plays(solana_client_manager: SolanaClientManager, redis: Redi
     except ValueError:
         logger.info(
             f"index_solana_plays.py"
-            f"Invalid AgreementListenCount program ({AGREEMENT_LISTEN_PROGRAM}) configured, exiting."
+            f"Invalid DigitalContentListenCount program ({AGREEMENT_LISTEN_PROGRAM}) configured, exiting."
         )
         return
 

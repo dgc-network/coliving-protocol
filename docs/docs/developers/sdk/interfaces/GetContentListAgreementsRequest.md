@@ -1,7 +1,7 @@
 ---
-id: "GetContentListAgreementsRequest"
-title: "Interface: GetContentListAgreementsRequest"
-sidebar_label: "GetContentListAgreementsRequest"
+id: "GetContentListDigitalContentsRequest"
+title: "Interface: GetContentListDigitalContentsRequest"
+sidebar_label: "GetContentListDigitalContentsRequest"
 sidebar_position: 0
 custom_edit_url: null
 ---

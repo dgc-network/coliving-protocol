@@ -1,7 +1,7 @@
 ---
-id: "GetTopAgreementTagsRequest"
-title: "Interface: GetTopAgreementTagsRequest"
-sidebar_label: "GetTopAgreementTagsRequest"
+id: "GetTopDigitalContentTagsRequest"
+title: "Interface: GetTopDigitalContentTagsRequest"
+sidebar_label: "GetTopDigitalContentTagsRequest"
 sidebar_position: 0
 custom_edit_url: null
 pagination_prev: null

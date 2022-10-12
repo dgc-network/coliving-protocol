@@ -61,7 +61,7 @@ is_current={self.is_current})>"
 
 
 class DigitalContent(Base):
-    __tablename__ = "agreements"
+    __tablename__ = "digitalContents"
 
     blockhash = Column(String, ForeignKey("blocks.blockhash"), nullable=False)
     blocknumber = Column(Integer, ForeignKey("blocks.number"), nullable=False)
@@ -146,7 +146,7 @@ class DigitalContent(Base):
         )
 
 
-class AgreementRoute(Base):
+class DigitalContentRoute(Base):
     __tablename__ = "digital_content_routes"
 
     # Actual URL slug for the digital_content, includes collision_id
@@ -165,7 +165,7 @@ class AgreementRoute(Base):
     PrimaryKeyConstraint(owner_id, slug)
 
     def __repr__(self):
-        return f"<AgreementRoute(\
+        return f"<DigitalContentRoute(\
 slug={self.slug},\
 title_slug={self.title_slug},\
 collision_id={self.collision_id},\
@@ -241,7 +241,7 @@ def upgrade():
 
     session.flush()
 
-    agreements = [
+    digitalContents = [
         DigitalContent(
             digital_content_id=470883,
             blocknumber=22477107,
@@ -519,10 +519,10 @@ def upgrade():
             stem_of=null(),
         ),
     ]
-    session.add_all(agreements)
+    session.add_all(digitalContents)
 
     digital_content_routes = [
-        AgreementRoute(
+        DigitalContentRoute(
             slug="oWXPm",
             title_slug="oWXPm",
             collision_id=0,
@@ -533,7 +533,7 @@ def upgrade():
             blockhash="0x82ba068410ac71a70dfe95708b3c4ec08884355d8384423deb2337a6bcd64dd0",
             blocknumber=22477107,
         ),
-        AgreementRoute(
+        DigitalContentRoute(
             slug="6YBxG",
             title_slug="6YBxG",
             collision_id=0,
@@ -544,7 +544,7 @@ def upgrade():
             txhash="0x135c236ebb4d02a1d2bc13bf946e982871ad59a29ed413bbe6aed2acb60a1f17",
             blockhash="0x63b16e801cb90f3497043a904e0180a8161d9bbb45add0a9380e277b0befbbba",
         ),
-        AgreementRoute(
+        DigitalContentRoute(
             slug="KV8xz",
             title_slug="KV8xz",
             collision_id=0,
@@ -555,7 +555,7 @@ def upgrade():
             txhash="0x05771964bc0527268c330b78bb1819998d589d31a95e5f2f8aa846041de1dfee",
             blockhash="0x8e5f3edd55d1c7f3d6484a8fb7d2a9d825fb53ecb446c8959dd3887fa999d2e7",
         ),
-        AgreementRoute(
+        DigitalContentRoute(
             slug="Nl2xw",
             title_slug="Nl2xw",
             collision_id=0,

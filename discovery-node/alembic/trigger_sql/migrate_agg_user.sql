@@ -30,7 +30,7 @@ changed_users AS (
     SELECT
         t.owner_id AS owner_id
     FROM
-        agreements t
+        digitalContents t
     WHERE
         t.is_current IS TRUE
         AND t.blocknumber > (
@@ -154,7 +154,7 @@ FROM
             t.owner_id AS owner_id,
             count(t.owner_id) AS digital_content_count
         FROM
-            agreements t
+            digitalContents t
         WHERE
             t.is_current IS TRUE
             AND t.is_delete IS FALSE

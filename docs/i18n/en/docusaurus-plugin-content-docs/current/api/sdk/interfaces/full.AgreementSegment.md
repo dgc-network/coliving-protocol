@@ -1,17 +1,17 @@
 ---
-id: "full.AgreementSegment"
-title: "Interface: AgreementSegment"
-sidebar_label: "AgreementSegment"
+id: "full.DigitalContentSegment"
+title: "Interface: DigitalContentSegment"
+sidebar_label: "DigitalContentSegment"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).AgreementSegment
+[full](../namespaces/full.md).DigitalContentSegment
 
 **`export`**
 
-**`interface`** AgreementSegment
+**`interface`** DigitalContentSegment
 
 ## Properties
 
@@ -19,7 +19,7 @@ pagination_next: null
 
  **duration**: `number`
 
-**`memberof`** AgreementSegment
+**`memberof`** DigitalContentSegment
 
 ___
 
@@ -27,4 +27,4 @@ ___
 
  **multihash**: `string`
 
-**`memberof`** AgreementSegment
+**`memberof`** DigitalContentSegment

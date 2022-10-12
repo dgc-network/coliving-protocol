@@ -1,18 +1,18 @@
 'use strict'
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('AgreementFile', {
+    return queryInterface.createTable('DigitalContentFile', {
       // fields are capitalized since sequelize expects them to be based on the
       //    DigitalContent.belongsToMany(File) association
-      AgreementId: {
+      DigitalContentId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         primaryKey: true,
         onDelete: 'RESTRICT',
         references: {
-          model: 'Agreements',
+          model: 'DigitalContents',
           key: 'id',
-          as: 'AgreementId'
+          as: 'DigitalContentId'
         }
       },
       FileId: {
@@ -37,6 +37,6 @@ module.exports = {
     })
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('AgreementFile')
+    return queryInterface.dropTable('DigitalContentFile')
   }
 }

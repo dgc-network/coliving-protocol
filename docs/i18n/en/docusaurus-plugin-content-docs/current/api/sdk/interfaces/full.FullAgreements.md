@@ -1,25 +1,25 @@
 ---
-id: "full.FullAgreements"
-title: "Interface: FullAgreements"
-sidebar_label: "FullAgreements"
+id: "full.FullDigitalContents"
+title: "Interface: FullDigitalContents"
+sidebar_label: "FullDigitalContents"
 custom_edit_url: null
 pagination_prev: null
 pagination_next: null
 ---
 
-[full](../namespaces/full.md).FullAgreements
+[full](../namespaces/full.md).FullDigitalContents
 
 **`export`**
 
-**`interface`** FullAgreements
+**`interface`** FullDigitalContents
 
 ## Properties
 
 ### data
 
- `Optional` **data**: [`AgreementFull`](full.AgreementFull.md)[]
+ `Optional` **data**: [`DigitalContentFull`](full.DigitalContentFull.md)[]
 
-**`memberof`** FullAgreements
+**`memberof`** FullDigitalContents
 
 ___
 
@@ -27,7 +27,7 @@ ___
 
  **latest\_chain\_block**: `number`
 
-**`memberof`** FullAgreements
+**`memberof`** FullDigitalContents
 
 ___
 
@@ -35,7 +35,7 @@ ___
 
  **latest\_chain\_slot\_plays**: `number`
 
-**`memberof`** FullAgreements
+**`memberof`** FullDigitalContents
 
 ___
 
@@ -43,7 +43,7 @@ ___
 
  **latest\_indexed\_block**: `number`
 
-**`memberof`** FullAgreements
+**`memberof`** FullDigitalContents
 
 ___
 
@@ -51,7 +51,7 @@ ___
 
  **latest\_indexed\_slot\_plays**: `number`
 
-**`memberof`** FullAgreements
+**`memberof`** FullDigitalContents
 
 ___
 
@@ -59,7 +59,7 @@ ___
 
  **signature**: `string`
 
-**`memberof`** FullAgreements
+**`memberof`** FullDigitalContents
 
 ___
 
@@ -67,7 +67,7 @@ ___
 
  **timestamp**: `string`
 
-**`memberof`** FullAgreements
+**`memberof`** FullDigitalContents
 
 ___
 
@@ -75,4 +75,4 @@ ___
 
  **version**: [`VersionMetadata`](full.VersionMetadata.md)
 
-**`memberof`** FullAgreements
+**`memberof`** FullDigitalContents

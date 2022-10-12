@@ -4,7 +4,7 @@ const models = require('../../src/models')
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.sequelize.transaction(async (transaction) => {
-      await queryInterface.sequelize.query(`ALTER TYPE "enum_Notifications_type" ADD VALUE 'AddAgreementToContentList'`)
+      await queryInterface.sequelize.query(`ALTER TYPE "enum_Notifications_type" ADD VALUE 'AddDigitalContentToContentList'`)
       await queryInterface.addColumn('Notifications', 'metadata', {
         type: Sequelize.JSONB,
         allowNull: true
@@ -18,14 +18,14 @@ module.exports = {
     const columnName = 'type'
     const enumName = 'enum_Notifications_type'
     const newEnumName = `enum_Notifications_type_new`
-    const prevValues = ['Follow', 'RepostAgreement', 'RepostContentList', 'RepostAlbum', 'FavoriteAgreement',
-      'FavoriteContentList', 'FavoriteAlbum', 'CreateAgreement', 'CreateContentList', 'CreateAlbum',
-      'Announcement', 'MilestoneListen', 'MilestoneRepost', 'MilestoneFavorite', 'MilestoneFollow', 'RemixCreate', 'RemixCosign', 'TrendingAgreement']
+    const prevValues = ['Follow', 'RepostDigitalContent', 'RepostContentList', 'RepostAlbum', 'FavoriteDigitalContent',
+      'FavoriteContentList', 'FavoriteAlbum', 'CreateDigitalContent', 'CreateContentList', 'CreateAlbum',
+      'Announcement', 'MilestoneListen', 'MilestoneRepost', 'MilestoneFavorite', 'MilestoneFollow', 'RemixCreate', 'RemixCosign', 'TrendingDigitalContent']
 
     return queryInterface.sequelize.transaction(async (transaction) => {
       // Delete notifs with this type
       await models.Notification.destroy({
-        where: { type: { [models.Sequelize.Op.in]: ['AddAgreementToContentList'] } }
+        where: { type: { [models.Sequelize.Op.in]: ['AddDigitalContentToContentList'] } }
       })
       // Remove metadata
       await queryInterface.removeColumn('Notifications', 'metadata')

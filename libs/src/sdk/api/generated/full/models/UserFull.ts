@@ -181,7 +181,7 @@ export interface UserFull {
      * @type {string}
      * @memberof UserFull
      */
-    wlive_balance: string;
+    wei_digitalcoin_balance: string;
     /**
      * 
      * @type {string}
