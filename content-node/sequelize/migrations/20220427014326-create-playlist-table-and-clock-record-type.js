@@ -48,7 +48,7 @@ coliving_content_node=# SELECT pg_type.typname AS enum_type, pg_enum.enumlabel A
  enum_ContentBlacklists_type   | USER
  enum_ContentBlacklists_type   | CID
  enum_ClockRecords_sourceTable | ColivingUser
- enum_ClockRecords_sourceTable | Agreement
+ enum_ClockRecords_sourceTable | DigitalContent
  enum_ClockRecords_sourceTable | File
  enum_ClockRecords_sourceTable | ContentList
 (7 rows)
@@ -60,7 +60,7 @@ async function addContentListToClockRecordSourceTables(
   await queryInterface.sequelize.query(
     `
   ALTER TYPE "enum_ClockRecords_sourceTable" RENAME TO "enum_ClockRecords_sourceTable_old";
-  CREATE TYPE "enum_ClockRecords_sourceTable" AS ENUM('ColivingUser', 'Agreement', 'File', 'ContentList');
+  CREATE TYPE "enum_ClockRecords_sourceTable" AS ENUM('ColivingUser', 'DigitalContent', 'File', 'ContentList');
   ALTER TABLE "ClockRecords" ALTER COLUMN "sourceTable" TYPE "enum_ClockRecords_sourceTable" USING "sourceTable"::text::"enum_ClockRecords_sourceTable";
   DROP TYPE "enum_ClockRecords_sourceTable_old";
   `,

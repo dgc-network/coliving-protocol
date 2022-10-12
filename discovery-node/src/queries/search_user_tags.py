@@ -1,7 +1,7 @@
 import logging  # pylint: disable=C0302
 
 from sqlalchemy import func
-from src.models.agreements.tag_agreement_user_matview import t_tag_agreement_user
+from src.models.agreements.tag_digital_content_user_matview import t_tag_digital_content_user
 from src.models.users.user import User
 from src.queries import response_name_constants
 from src.queries.query_helpers import populate_user_metadata
@@ -27,10 +27,10 @@ def search_user_tags(session, args):
         list of users sorted by followee count
     """
     user_ids = (
-        session.query(t_tag_agreement_user.c.owner_id)
-        .filter(t_tag_agreement_user.c.tag == args["search_str"].lower())
-        .group_by(t_tag_agreement_user.c.owner_id)
-        .having(func.count(t_tag_agreement_user.c.owner_id) >= args["user_tag_count"])
+        session.query(t_tag_digital_content_user.c.owner_id)
+        .filter(t_tag_digital_content_user.c.tag == args["search_str"].lower())
+        .group_by(t_tag_digital_content_user.c.owner_id)
+        .having(func.count(t_tag_digital_content_user.c.owner_id) >= args["user_tag_count"])
         .all()
     )
 

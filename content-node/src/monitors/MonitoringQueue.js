@@ -78,7 +78,7 @@ class MonitoringQueue {
     redis.set(key, value)
 
     if (monitor.ttl) {
-      // Set a TTL (in seconds) key to agreement when this value needs refreshing.
+      // Set a TTL (in seconds) key to digital_content when this value needs refreshing.
       // We store a separate TTL key rather than expiring the value itself
       // so that in the case of an error, the current value can still be read
       redis.set(ttlKey, 1, 'EX', monitor.ttl)

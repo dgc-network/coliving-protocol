@@ -107,7 +107,7 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/users/sear
         "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
       },
       "repost_count": 5,
-      "agreement_count": 4
+      "digital_content_count": 4
     }
   ]
 }
@@ -181,25 +181,25 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/users/nlGN
       "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
     },
     "repost_count": 5,
-    "agreement_count": 4
+    "digital_content_count": 4
   }
 }
 ```
 
-### Get User's Favorite Agreements <a id="get-user-39-s-favorite-agreements"></a>
+### Get User's Favorite Agreements <a id="get-user-39-s-favorite-digital-contents"></a>
 
 `GET /users/{user_id}/favorites`
 
 _Fetch favorited agreements for a user_
 
-#### Query Parameters <a id="get-user&apos;s-favorite-agreements-parameters"></a>
+#### Query Parameters <a id="get-user&apos;s-favorite-digital-contents-parameters"></a>
 
 | Name        | Type   | Required | Description   |
 |:----------- |:------ |:-------- |:------------- |
 | user\_id  | string | true     | A User ID     |
 | app\_name | string | true     | Your app name |
 
-#### Responses <a id="get-user&apos;s-favorite-agreements-responses"></a>
+#### Responses <a id="get-user&apos;s-favorite-digital-contents-responses"></a>
 
 | Status | Meaning                                                                    | Description  | Schema                                                                                                 |
 |:------ |:-------------------------------------------------------------------------- |:------------ |:------------------------------------------------------------------------------------------------------ |
@@ -236,17 +236,17 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/users/nlGN
   "data": [
     {
       "favorite_item_id": "n3yVD",
-      "favorite_type": "SaveType.agreement",
+      "favorite_type": "SaveType.digital_content",
       "user_id": "nlGNe"
     },
     {
       "favorite_item_id": "nlv5l",
-      "favorite_type": "SaveType.agreement",
+      "favorite_type": "SaveType.digital_content",
       "user_id": "nlGNe"
     },
     {
       "favorite_item_id": "ezYKz",
-      "favorite_type": "SaveType.agreement",
+      "favorite_type": "SaveType.digital_content",
       "user_id": "nlGNe"
     }
   ]
@@ -313,13 +313,13 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/users/stri
 }
 ```
 
-### Get User's Most Used Agreement Tags <a id="get-user-39-s-most-used-agreement-tags"></a>
+### Get User's Most Used DigitalContent Tags <a id="get-user-39-s-most-used-digital-content-tags"></a>
 
 `GET /users/{user_id}/tags`
 
 _Fetch most used tags in a user's agreements_
 
-#### Query Parameters <a id="get-user&apos;s-most-used-agreement-tags-parameters"></a>
+#### Query Parameters <a id="get-user&apos;s-most-used-digital-content-tags-parameters"></a>
 
 | Name        | Type    | Required | Description                 |
 |:----------- |:------- |:-------- |:--------------------------- |
@@ -328,7 +328,7 @@ _Fetch most used tags in a user's agreements_
 | app\_name | string  | true     | Your app name               |
 | user\_id  | string  | true     | none                        |
 
-#### Responses <a id="get-user&apos;s-most-used-agreement-tags-responses"></a>
+#### Responses <a id="get-user&apos;s-most-used-digital-content-tags-responses"></a>
 
 | Status | Meaning                                                                    | Description  | Schema                                                                                       |
 |:------ |:-------------------------------------------------------------------------- |:------------ |:-------------------------------------------------------------------------------------------- |
@@ -370,13 +370,13 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/users/stri
 }
 ```
 
-### Get User's Agreements <a id="get-user-39-s-agreements"></a>
+### Get User's Agreements <a id="get-user-39-s-digital-contents"></a>
 
 `GET /users/{user_id}/agreements`
 
 _Fetch a list of agreements for a user_
 
-#### Query Parameters <a id="get-user&apos;s-agreements-parameters"></a>
+#### Query Parameters <a id="get-user&apos;s-digital-contents-parameters"></a>
 
 | Name        | Type   | Required | Description   |
 |:----------- |:------ |:-------- |:------------- |
@@ -386,7 +386,7 @@ _Fetch a list of agreements for a user_
 | sort        | string | false    | Sort mode     |
 | app\_name | string | true     | Your app name |
 
-#### Responses <a id="get-user&apos;s-agreements-responses"></a>
+#### Responses <a id="get-user&apos;s-digital-contents-responses"></a>
 
 | Status | Meaning                                                                    | Description  | Schema                                                                                           |
 |:------ |:-------------------------------------------------------------------------- |:------------ |:------------------------------------------------------------------------------------------------ |
@@ -427,15 +427,15 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/users/nlGN
         "480x480": "https://creatornode..co/ipfs/QmVJjA6zXhDZn3BjcjYa33P9NDiPZj7Vyq9TCx1bHjvHmG/480x480.jpg",
         "1000x1000": "https://creatornode..co/ipfs/QmVJjA6zXhDZn3BjcjYa33P9NDiPZj7Vyq9TCx1bHjvHmG/1000x1000.jpg"
       },
-      "description": "@baauer b2b @partyfavormusic live set at Brownies & Lemonade Block Party LA at The Shrine on 7.3.19.",
+      "description": "@baauer b2b @partyfavormusic digitalcoin set at Brownies & Lemonade Block Party LA at The Shrine on 7.3.19.",
       "genre": "Electronic",
       "id": "D7KyD",
       "mood": "Fiery",
       "release_date": "Mon Sep 23 2019 12:35:10 GMT-0700",
       "repost_count": 47,
       "favorite_count": 143,
-      "tags": "baauer,partyfavor,browniesandlemonade,live",
-      "title": "Paauer | Baauer B2B Party Favor | B&L Block Party LA (Live Set)",
+      "tags": "baauer,partyfavor,browniesandlemonade,digitalcoin",
+      "title": "Paauer | Baauer B2B Party Favor | B&L Block Party LA (Digitalcoin Set)",
       "duration": 5265,
       "user": {
         "album_count": 0,
@@ -458,7 +458,7 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/users/nlGN
           "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
         },
         "repost_count": 5,
-        "agreement_count": 4
+        "digital_content_count": 4
       }
     }
   ]
@@ -549,7 +549,7 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/contentLis
           "1000x1000": "https://usermetadata..co/ipfs/QmNjJv1wQf2DJq3GNXjXzSL8UXFUGXfchg4NhL7UpbnF1f"
         },
         "repost_count": 200,
-        "agreement_count": 0
+        "digital_content_count": 0
       }
     }
   ]
@@ -637,30 +637,30 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/contentLis
         "1000x1000": "https://usermetadata..co/ipfs/QmNjJv1wQf2DJq3GNXjXzSL8UXFUGXfchg4NhL7UpbnF1f"
       },
       "repost_count": 200,
-      "agreement_count": 0
+      "digital_content_count": 0
     }
   }
 }
 ```
 
-### Get ContentList Agreements <a id="get-content-list-agreements"></a>
+### Get ContentList Agreements <a id="get-content-list-digital-contents"></a>
 
 `GET /contentLists/{content_list_id}/agreements`
 
 _Fetch agreements within a content_list_
 
-#### Query Parameters <a id="get-content-list-agreements-parameters"></a>
+#### Query Parameters <a id="get-content-list-digital-contents-parameters"></a>
 
 | Name           | Type   | Required | Description   |
 |:-------------- |:------ |:-------- |:------------- |
 | contentList\_id | string | true     | A ContentList ID |
 | app\_name    | string | true     | Your app name |
 
-#### Responses <a id="get-content-list-agreements-responses"></a>
+#### Responses <a id="get-content-list-digital-contents-responses"></a>
 
 | Status | Meaning                                                                    | Description  | Schema                                                                                                                |
 |:------ |:-------------------------------------------------------------------------- |:------------ |:--------------------------------------------------------------------------------------------------------------------- |
-| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [contentList\_agreements\_response](https://colivingproject.github.io/api-docs/?javascript#schemacontent_list_agreements_response) |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [contentList\_digital_contents\_response](https://colivingproject.github.io/api-docs/?javascript#schemacontent_list_digital_contents_response) |
 | 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | Bad request  | None                                                                                                                  |
 | 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Server error | None                                                                                                                  |
 
@@ -698,15 +698,15 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/contentLis
         "480x480": "https://creatornode..co/ipfs/QmVJjA6zXhDZn3BjcjYa33P9NDiPZj7Vyq9TCx1bHjvHmG/480x480.jpg",
         "1000x1000": "https://creatornode..co/ipfs/QmVJjA6zXhDZn3BjcjYa33P9NDiPZj7Vyq9TCx1bHjvHmG/1000x1000.jpg"
       },
-      "description": "@baauer b2b @partyfavormusic live set at Brownies & Lemonade Block Party LA at The Shrine on 7.3.19.",
+      "description": "@baauer b2b @partyfavormusic digitalcoin set at Brownies & Lemonade Block Party LA at The Shrine on 7.3.19.",
       "genre": "Electronic",
       "id": "D7KyD",
       "mood": "Fiery",
       "release_date": "Mon Sep 23 2019 12:35:10 GMT-0700",
       "repost_count": 47,
       "favorite_count": 143,
-      "tags": "baauer,partyfavor,browniesandlemonade,live",
-      "title": "Paauer | Baauer B2B Party Favor | B&L Block Party LA (Live Set)",
+      "tags": "baauer,partyfavor,browniesandlemonade,digitalcoin",
+      "title": "Paauer | Baauer B2B Party Favor | B&L Block Party LA (Digitalcoin Set)",
       "duration": 5265,
       "user": {
         "album_count": 0,
@@ -729,22 +729,22 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/contentLis
           "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
         },
         "repost_count": 5,
-        "agreement_count": 4
+        "digital_content_count": 4
       }
     }
   ]
 }
 ```
 
-## Agreements <a id="api-agreements"></a>
+## Agreements <a id="api-digital-contents"></a>
 
-### Search Agreements <a id="search-agreements"></a>
+### Search Agreements <a id="search-digital-contents"></a>
 
 `GET /agreements/search`
 
-_Search for a agreement_
+_Search for a digital_content_
 
-#### Query Parameters <a id="search-agreements-parameters"></a>
+#### Query Parameters <a id="search-digital-contents-parameters"></a>
 
 | Name                 | Type   | Required | Description                     |
 |:-------------------- |:------ |:-------- |:------------------------------- |
@@ -752,11 +752,11 @@ _Search for a agreement_
 | only\_downloadable | string | false    | Return only downloadable agreements |
 | app\_name          | string | true     | Your app name                   |
 
-#### Responses <a id="search-agreements-responses"></a>
+#### Responses <a id="search-digital-contents-responses"></a>
 
 | Status | Meaning                                                                    | Description  | Schema                                                                                     |
 |:------ |:-------------------------------------------------------------------------- |:------------ |:------------------------------------------------------------------------------------------ |
-| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [agreement\_search](https://colivingproject.github.io/api-docs/?javascript#schemaagreement_search) |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [digital_content\_search](https://colivingproject.github.io/api-docs/?javascript#schemadigital_content_search) |
 | 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | Bad request  | None                                                                                       |
 | 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Server error | None                                                                                       |
 
@@ -795,15 +795,15 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/agreements
         "480x480": "https://creatornode..co/ipfs/QmVJjA6zXhDZn3BjcjYa33P9NDiPZj7Vyq9TCx1bHjvHmG/480x480.jpg",
         "1000x1000": "https://creatornode..co/ipfs/QmVJjA6zXhDZn3BjcjYa33P9NDiPZj7Vyq9TCx1bHjvHmG/1000x1000.jpg"
       },
-      "description": "@baauer b2b @partyfavormusic live set at Brownies & Lemonade Block Party LA at The Shrine on 7.3.19.",
+      "description": "@baauer b2b @partyfavormusic digitalcoin set at Brownies & Lemonade Block Party LA at The Shrine on 7.3.19.",
       "genre": "Electronic",
       "id": "D7KyD",
       "mood": "Fiery",
       "release_date": "Mon Sep 23 2019 12:35:10 GMT-0700",
       "repost_count": 47,
       "favorite_count": 143,
-      "tags": "baauer,partyfavor,browniesandlemonade,live",
-      "title": "Paauer | Baauer B2B Party Favor | B&L Block Party LA (Live Set)",
+      "tags": "baauer,partyfavor,browniesandlemonade,digitalcoin",
+      "title": "Paauer | Baauer B2B Party Favor | B&L Block Party LA (Digitalcoin Set)",
       "duration": 5265,
       "user": {
         "album_count": 0,
@@ -826,20 +826,20 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/agreements
           "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
         },
         "repost_count": 5,
-        "agreement_count": 4
+        "digital_content_count": 4
       }
     }
   ]
 }
 ```
 
-### Trending Agreements <a id="trending-agreements"></a>
+### Trending Agreements <a id="trending-digital-contents"></a>
 
 `GET /agreements/trending`
 
 _Gets the top 100 trending \(most popular\) agreements on Coliving_
 
-#### Query Parameters <a id="trending-agreements-parameters"></a>
+#### Query Parameters <a id="trending-digital-contents-parameters"></a>
 
 | Name        | Type   | Required | Description                                                            |
 |:----------- |:------ |:-------- |:---------------------------------------------------------------------- |
@@ -847,7 +847,7 @@ _Gets the top 100 trending \(most popular\) agreements on Coliving_
 | time        | string | false    | Trending agreements over a specified time range \(week, month, allTime\) |
 | app\_name | string | true     | Your app name                                                          |
 
-#### Responses <a id="trending-agreements-responses"></a>
+#### Responses <a id="trending-digital-contents-responses"></a>
 
 | Status | Meaning                                                                    | Description  | Schema                                                                                           |
 |:------ |:-------------------------------------------------------------------------- |:------------ |:------------------------------------------------------------------------------------------------ |
@@ -888,15 +888,15 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/agreements
         "480x480": "https://creatornode..co/ipfs/QmVJjA6zXhDZn3BjcjYa33P9NDiPZj7Vyq9TCx1bHjvHmG/480x480.jpg",
         "1000x1000": "https://creatornode..co/ipfs/QmVJjA6zXhDZn3BjcjYa33P9NDiPZj7Vyq9TCx1bHjvHmG/1000x1000.jpg"
       },
-      "description": "@baauer b2b @partyfavormusic live set at Brownies & Lemonade Block Party LA at The Shrine on 7.3.19.",
+      "description": "@baauer b2b @partyfavormusic digitalcoin set at Brownies & Lemonade Block Party LA at The Shrine on 7.3.19.",
       "genre": "Electronic",
       "id": "D7KyD",
       "mood": "Fiery",
       "release_date": "Mon Sep 23 2019 12:35:10 GMT-0700",
       "repost_count": 47,
       "favorite_count": 143,
-      "tags": "baauer,partyfavor,browniesandlemonade,live",
-      "title": "Paauer | Baauer B2B Party Favor | B&L Block Party LA (Live Set)",
+      "tags": "baauer,partyfavor,browniesandlemonade,digitalcoin",
+      "title": "Paauer | Baauer B2B Party Favor | B&L Block Party LA (Digitalcoin Set)",
       "duration": 5265,
       "user": {
         "album_count": 0,
@@ -919,31 +919,31 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/agreements
           "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
         },
         "repost_count": 5,
-        "agreement_count": 4
+        "digital_content_count": 4
       }
     }
   ]
 }
 ```
 
-### Get Agreement <a id="get-agreement"></a>
+### Get DigitalContent <a id="get-digital-content"></a>
 
-`GET /agreements/{agreement_id}`
+`GET /agreements/{digital_content_id}`
 
-_Fetch a agreement_
+_Fetch a digital_content_
 
-#### Query Parameters <a id="get-agreement-parameters"></a>
+#### Query Parameters <a id="get-digital-content-parameters"></a>
 
 | Name        | Type   | Required | Description   |
 |:----------- |:------ |:-------- |:------------- |
-| agreement\_id | string | true     | A Agreement ID    |
+| digital_content\_id | string | true     | A DigitalContent ID    |
 | app\_name | string | true     | Your app name |
 
-#### Responses <a id="get-agreement-responses"></a>
+#### Responses <a id="get-digital-content-responses"></a>
 
 | Status | Meaning                                                                    | Description  | Schema                                                                                         |
 |:------ |:-------------------------------------------------------------------------- |:------------ |:---------------------------------------------------------------------------------------------- |
-| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [agreement\_response](https://colivingproject.github.io/api-docs/?javascript#schemaagreement_response) |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [digital_content\_response](https://colivingproject.github.io/api-docs/?javascript#schemadigital_content_response) |
 | 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | Bad request  | None                                                                                           |
 | 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Server error | None                                                                                           |
 
@@ -979,15 +979,15 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/agreements
       "480x480": "https://creatornode..co/ipfs/QmVJjA6zXhDZn3BjcjYa33P9NDiPZj7Vyq9TCx1bHjvHmG/480x480.jpg",
       "1000x1000": "https://creatornode..co/ipfs/QmVJjA6zXhDZn3BjcjYa33P9NDiPZj7Vyq9TCx1bHjvHmG/1000x1000.jpg"
     },
-    "description": "@baauer b2b @partyfavormusic live set at Brownies & Lemonade Block Party LA at The Shrine on 7.3.19.",
+    "description": "@baauer b2b @partyfavormusic digitalcoin set at Brownies & Lemonade Block Party LA at The Shrine on 7.3.19.",
     "genre": "Electronic",
     "id": "D7KyD",
     "mood": "Fiery",
     "release_date": "Mon Sep 23 2019 12:35:10 GMT-0700",
     "repost_count": 47,
     "favorite_count": 143,
-    "tags": "baauer,partyfavor,browniesandlemonade,live",
-    "title": "Paauer | Baauer B2B Party Favor | B&L Block Party LA (Live Set)",
+    "tags": "baauer,partyfavor,browniesandlemonade,digitalcoin",
+    "title": "Paauer | Baauer B2B Party Favor | B&L Block Party LA (Digitalcoin Set)",
     "duration": 5265,
     "user": {
       "album_count": 0,
@@ -1010,28 +1010,28 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/agreements
         "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
       },
       "repost_count": 5,
-      "agreement_count": 4
+      "digital_content_count": 4
     }
   }
 }
 ```
 
-### Stream Agreement <a id="stream-agreement"></a>
+### Stream DigitalContent <a id="stream-digital-content"></a>
 
-`GET /agreements/{agreement_id}/stream`
+`GET /agreements/{digital_content_id}/stream`
 
-_Get the agreement's streamable mp3 file_
+_Get the digital_content's streamable mp3 file_
 
 This endpoint accepts the Range header for streaming. https://developer.mozilla.org/en-US/docs/Web/HTTP/Range\_requests
 
-#### Query Parameters <a id="stream-agreement-parameters"></a>
+#### Query Parameters <a id="stream-digital-content-parameters"></a>
 
 | Name        | Type   | Required | Description   |
 |:----------- |:------ |:-------- |:------------- |
-| agreement\_id | string | true     | A Agreement ID    |
+| digital_content\_id | string | true     | A DigitalContent ID    |
 | app\_name | string | true     | Your app name |
 
-#### Responses <a id="stream-agreement-responses"></a>
+#### Responses <a id="stream-digital-content-responses"></a>
 
 | Status | Meaning                                                                    | Description           | Schema |
 |:------ |:-------------------------------------------------------------------------- |:--------------------- |:------ |
@@ -1201,7 +1201,7 @@ The following are examples of response formats you can expect to receive from th
       "1000x1000": "string"
     },
     "repost_count": 0,
-    "agreement_count": 0
+    "digital_content_count": 0
   }
 }
 
@@ -1237,7 +1237,7 @@ The following are examples of response formats you can expect to receive from th
     "1000x1000": "string"
   },
   "repost_count": 0,
-  "agreement_count": 0
+  "digital_content_count": 0
 }
 
 ```
@@ -1259,7 +1259,7 @@ The following are examples of response formats you can expect to receive from th
 | contentList\_count  | integer                                                                                          | true     | none         | none        |
 | profile\_picture | [profile\_picture](https://colivingproject.github.io/api-docs/?javascript#schemaprofile_picture) | false    | none         | none        |
 | repost\_count    | integer                                                                                          | true     | none         | none        |
-| agreement\_count     | integer                                                                                          | true     | none         | none        |
+| digital_content\_count     | integer                                                                                          | true     | none         | none        |
 
 ### cover\_photo <a id="tocS_cover_photo"></a>
 
@@ -1297,7 +1297,7 @@ The following are examples of response formats you can expect to receive from th
 | 480x480   | string | false    | none         | none        |
 | 1000x1000 | string | false    | none         | none        |
 
-### agreements\_response <a id="tocS_agreements_response"></a>
+### agreements\_response <a id="tocS_digital_contents_response"></a>
 
 ```json
 {
@@ -1316,7 +1316,7 @@ The following are examples of response formats you can expect to receive from th
       "remix_of": {
         "agreements": [
           {
-            "parent_agreement_id": "string"
+            "parent_digital_content_id": "string"
           }
         ]
       },
@@ -1345,7 +1345,7 @@ The following are examples of response formats you can expect to receive from th
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "agreement_count": 0
+        "digital_content_count": 0
       },
       "duration": 0,
       "downloadable": true,
@@ -1360,9 +1360,9 @@ The following are examples of response formats you can expect to receive from th
 
 | Name | Type                                                                            | Required | Restrictions | Description |
 |:---- |:------------------------------------------------------------------------------- |:-------- |:------------ |:----------- |
-| data | \[[Agreement](https://colivingproject.github.io/api-docs/?javascript#schemaagreement)\] | false    | none         | none        |
+| data | \[[DigitalContent](https://colivingproject.github.io/api-docs/?javascript#schemaagreement)\] | false    | none         | none        |
 
-### Agreement <a id="tocS_Agreement"></a>
+### DigitalContent <a id="tocS_Agreement"></a>
 
 ```json
 {
@@ -1379,7 +1379,7 @@ The following are examples of response formats you can expect to receive from th
   "remix_of": {
     "agreements": [
       {
-        "parent_agreement_id": "string"
+        "parent_digital_content_id": "string"
       }
     ]
   },
@@ -1408,7 +1408,7 @@ The following are examples of response formats you can expect to receive from th
       "1000x1000": "string"
     },
     "repost_count": 0,
-    "agreement_count": 0
+    "digital_content_count": 0
   },
   "duration": 0,
   "downloadable": true,
@@ -1421,7 +1421,7 @@ The following are examples of response formats you can expect to receive from th
 
 | Name              | Type                                                                                         | Required | Restrictions | Description |
 |:----------------- |:-------------------------------------------------------------------------------------------- |:-------- |:------------ |:----------- |
-| artwork           | [agreement\_artwork](https://colivingproject.github.io/api-docs/?javascript#schemaagreement_artwork) | false    | none         | none        |
+| artwork           | [digital_content\_artwork](https://colivingproject.github.io/api-docs/?javascript#schemadigital_content_artwork) | false    | none         | none        |
 | description       | string                                                                                       | false    | none         | none        |
 | genre             | string                                                                                       | false    | none         | none        |
 | id                | string                                                                                       | true     | none         | none        |
@@ -1437,7 +1437,7 @@ The following are examples of response formats you can expect to receive from th
 | downloadable      | boolean                                                                                      | false    | none         | none        |
 | play\_count     | integer                                                                                      | true     | none         | none        |
 
-### agreement\_artwork <a id="tocS_agreement_artwork"></a>
+### digital_content\_artwork <a id="tocS_digital_content_artwork"></a>
 
 ```json
 {
@@ -1462,7 +1462,7 @@ The following are examples of response formats you can expect to receive from th
 {
   "agreements": [
     {
-      "parent_agreement_id": "string"
+      "parent_digital_content_id": "string"
     }
   ]
 }
@@ -1473,13 +1473,13 @@ The following are examples of response formats you can expect to receive from th
 
 | Name   | Type                                                                                               | Required | Restrictions | Description |
 |:------ |:-------------------------------------------------------------------------------------------------- |:-------- |:------------ |:----------- |
-| agreements | \[[agreement\_element](https://colivingproject.github.io/api-docs/?javascript#schemaagreement_element)\] | false    | none         | none        |
+| agreements | \[[digital_content\_element](https://colivingproject.github.io/api-docs/?javascript#schemadigital_content_element)\] | false    | none         | none        |
 
-### agreement\_element <a id="tocS_agreement_element"></a>
+### digital_content\_element <a id="tocS_digital_content_element"></a>
 
 ```json
 {
-  "parent_agreement_id": "string"
+  "parent_digital_content_id": "string"
 }
 
 ```
@@ -1488,7 +1488,7 @@ The following are examples of response formats you can expect to receive from th
 
 | Name                  | Type   | Required | Restrictions | Description |
 |:--------------------- |:------ |:-------- |:------------ |:----------- |
-| parent\_agreement\_id | string | true     | none         | none        |
+| parent\_digital_content\_id | string | true     | none         | none        |
 
 ### reposts <a id="tocS_reposts"></a>
 
@@ -1613,7 +1613,7 @@ The following are examples of response formats you can expect to receive from th
         "1000x1000": "string"
       },
       "repost_count": 0,
-      "agreement_count": 0
+      "digital_content_count": 0
     }
   ]
 }
@@ -1665,7 +1665,7 @@ The following are examples of response formats you can expect to receive from th
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "agreement_count": 0
+        "digital_content_count": 0
       }
     }
   ]
@@ -1716,7 +1716,7 @@ The following are examples of response formats you can expect to receive from th
       "1000x1000": "string"
     },
     "repost_count": 0,
-    "agreement_count": 0
+    "digital_content_count": 0
   }
 }
 
@@ -1755,7 +1755,7 @@ The following are examples of response formats you can expect to receive from th
 | 480x480   | string | false    | none         | none        |
 | 1000x1000 | string | false    | none         | none        |
 
-### contentList\_agreements\_response <a id="tocS_content_list_agreements_response"></a>
+### contentList\_digital_contents\_response <a id="tocS_content_list_digital_contents_response"></a>
 
 ```json
 {
@@ -1774,7 +1774,7 @@ The following are examples of response formats you can expect to receive from th
       "remix_of": {
         "agreements": [
           {
-            "parent_agreement_id": "string"
+            "parent_digital_content_id": "string"
           }
         ]
       },
@@ -1803,7 +1803,7 @@ The following are examples of response formats you can expect to receive from th
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "agreement_count": 0
+        "digital_content_count": 0
       },
       "duration": 0,
       "downloadable": true,
@@ -1818,7 +1818,7 @@ The following are examples of response formats you can expect to receive from th
 
 | Name | Type                                                                            | Required | Restrictions | Description |
 |:---- |:------------------------------------------------------------------------------- |:-------- |:------------ |:----------- |
-| data | \[[Agreement](https://colivingproject.github.io/api-docs/?javascript#schemaagreement)\] | false    | none         | none        |
+| data | \[[DigitalContent](https://colivingproject.github.io/api-docs/?javascript#schemaagreement)\] | false    | none         | none        |
 
 ### contentList\_search\_result <a id="tocS_content_list_search_result"></a>
 
@@ -1859,7 +1859,7 @@ The following are examples of response formats you can expect to receive from th
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "agreement_count": 0
+        "digital_content_count": 0
       }
     }
   ]
@@ -1873,7 +1873,7 @@ The following are examples of response formats you can expect to receive from th
 |:---- |:------------------------------------------------------------------------------------- |:-------- |:------------ |:----------- |
 | data | \[[contentList](https://colivingproject.github.io/api-docs/?javascript#schemacontentList)\] | false    | none         | none        |
 
-### agreement\_response <a id="tocS_agreement_response"></a>
+### digital_content\_response <a id="tocS_digital_content_response"></a>
 
 ```json
 {
@@ -1891,7 +1891,7 @@ The following are examples of response formats you can expect to receive from th
     "remix_of": {
       "agreements": [
         {
-          "parent_agreement_id": "string"
+          "parent_digital_content_id": "string"
         }
       ]
     },
@@ -1920,7 +1920,7 @@ The following are examples of response formats you can expect to receive from th
         "1000x1000": "string"
       },
       "repost_count": 0,
-      "agreement_count": 0
+      "digital_content_count": 0
     },
     "duration": 0,
     "downloadable": true,
@@ -1934,9 +1934,9 @@ The following are examples of response formats you can expect to receive from th
 
 | Name | Type                                                                      | Required | Restrictions | Description |
 |:---- |:------------------------------------------------------------------------- |:-------- |:------------ |:----------- |
-| data | [Agreement](https://colivingproject.github.io/api-docs/?javascript#schemaagreement) | false    | none         | none        |
+| data | [DigitalContent](https://colivingproject.github.io/api-docs/?javascript#schemaagreement) | false    | none         | none        |
 
-### agreement\_search <a id="tocS_agreement_search"></a>
+### digital_content\_search <a id="tocS_digital_content_search"></a>
 
 ```json
 {
@@ -1955,7 +1955,7 @@ The following are examples of response formats you can expect to receive from th
       "remix_of": {
         "agreements": [
           {
-            "parent_agreement_id": "string"
+            "parent_digital_content_id": "string"
           }
         ]
       },
@@ -1984,7 +1984,7 @@ The following are examples of response formats you can expect to receive from th
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "agreement_count": 0
+        "digital_content_count": 0
       },
       "duration": 0,
       "downloadable": true,
@@ -1999,7 +1999,7 @@ The following are examples of response formats you can expect to receive from th
 
 | Name | Type                                                                            | Required | Restrictions | Description |
 |:---- |:------------------------------------------------------------------------------- |:-------- |:------------ |:----------- |
-| data | \[[Agreement](https://colivingproject.github.io/api-docs/?javascript#schemaagreement)\] | false    | none         | none        |
+| data | \[[DigitalContent](https://colivingproject.github.io/api-docs/?javascript#schemaagreement)\] | false    | none         | none        |
 
 ### app\_name\_trailing\_response <a id="tocS_app_name_trailing_response"></a>
 

@@ -2,7 +2,7 @@ import {
   HTTPHeaders,
   ContentList,
   RequiredError,
-  Agreement,
+  DigitalContent,
   User
 } from './generated/default'
 import {
@@ -14,7 +14,7 @@ export class ResolveApi extends GeneratedResolveApi {
   /**
    * Resolves a provided Coliving app URL to the API resource it represents
    */
-  async resolve<T extends Agreement | ContentList | User>(
+  async resolve<T extends DigitalContent | ContentList | User>(
     requestParameters: ResolveRequest
   ): Promise<T> {
     if (requestParameters.url === null || requestParameters.url === undefined) {

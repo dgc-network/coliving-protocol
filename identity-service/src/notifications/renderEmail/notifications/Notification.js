@@ -66,13 +66,13 @@ var challengeRewardsConfig = {
     title: 'Complete Your Profile',
     icon: /*#__PURE__*/_react["default"].createElement(_Icons.WhiteHeavyCheckMarkIcon, null)
   },
-  'agreement-upload': {
+  'digital-content-upload': {
     title: 'Upload 3 Agreements',
     icon: /*#__PURE__*/_react["default"].createElement(_Icons.MultipleMusicalNotesIcon, null)
   }
 };
 var EntityType = Object.freeze({
-  Agreement: 'Agreement',
+  DigitalContent: 'DigitalContent',
   Album: 'Album',
   ContentList: 'ContentList'
 });
@@ -123,9 +123,9 @@ var getUsers = function getUsers(users) {
 exports.getUsers = getUsers;
 
 var getEntity = function getEntity(entity) {
-  if (entity.type === EntityType.Agreement) {
+  if (entity.type === EntityType.DigitalContent) {
     return /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, null, " ", /*#__PURE__*/_react["default"].createElement(BodyText, {
-      text: 'agreement '
+      text: 'digital_content '
     }), /*#__PURE__*/_react["default"].createElement(HighlightText, {
       text: entity.name
     }), " ");
@@ -200,7 +200,7 @@ var notificationMap = (_notificationMap = {}, _defineProperty(_notificationMap, 
   return /*#__PURE__*/_react["default"].createElement("span", {
     className: 'notificationText'
   }, /*#__PURE__*/_react["default"].createElement(BodyText, {
-    text: "Your Agreement "
+    text: "Your DigitalContent "
   }), /*#__PURE__*/_react["default"].createElement(HighlightText, {
     text: highlight
   }), /*#__PURE__*/_react["default"].createElement(BodyText, {
@@ -210,7 +210,7 @@ var notificationMap = (_notificationMap = {}, _defineProperty(_notificationMap, 
   var _notification$users = _slicedToArray(notification.users, 1),
       user = _notification$users[0];
 
-  if (notification.entity.type === _constants.notificationTypes.Agreement && !isNaN(notification.entity.count) && notification.entity.count > 1) {
+  if (notification.entity.type === _constants.notificationTypes.DigitalContent && !isNaN(notification.entity.count) && notification.entity.count > 1) {
     return /*#__PURE__*/_react["default"].createElement("span", {
       className: 'notificationText'
     }, /*#__PURE__*/_react["default"].createElement(HighlightText, {
@@ -288,9 +288,9 @@ var notificationMap = (_notificationMap = {}, _defineProperty(_notificationMap, 
   }, /*#__PURE__*/_react["default"].createElement(HighlightText, {
     text: notification.contentListOwner.name
   }), /*#__PURE__*/_react["default"].createElement(BodyText, {
-    text: " added your agreement "
+    text: " added your digital_content "
   }), /*#__PURE__*/_react["default"].createElement(HighlightText, {
-    text: notification.agreement.title
+    text: notification.digital_content.title
   }), /*#__PURE__*/_react["default"].createElement(BodyText, {
     text: " to their contentList "
   }), /*#__PURE__*/_react["default"].createElement(HighlightText, {
@@ -362,7 +362,7 @@ var getTitle = function getTitle(notification) {
         return /*#__PURE__*/_react["default"].createElement("span", {
           className: 'notificationText'
         }, /*#__PURE__*/_react["default"].createElement(BodyText, {
-          text: "New remix of your agreement "
+          text: "New remix of your digital_content "
         }), /*#__PURE__*/_react["default"].createElement(HighlightText, {
           text: parentAgreement.title
         }));
@@ -390,8 +390,8 @@ var getAgreementMessage = function getAgreementMessage(notification) {
   }
 };
 
-var getAgreementLink = function getAgreementLink(agreement) {
-  return "https://coliving.lol/".concat(agreement.route_id, "-").concat(agreement.agreement_id);
+var getAgreementLink = function getAgreementLink(digital_content) {
+  return "https://coliving.lol/".concat(digital_content.route_id, "-").concat(digital_content.digital_content_id);
 };
 
 exports.getAgreementLink = getAgreementLink;
@@ -444,7 +444,7 @@ var getTwitter = function getTwitter(notification) {
 
         var rankSuffix = (0, _formatNotificationMetadata.getRankSuffix)(rank);
 
-        var _text2 = "My agreement ".concat(entity.title, " is trending ").concat(rank).concat(rankSuffix, " on @dgc-network! #ColivingTrending #Coliving");
+        var _text2 = "My digital_content ".concat(entity.title, " is trending ").concat(rank).concat(rankSuffix, " on @dgc-network! #ColivingTrending #Coliving");
 
         return {
           message: 'Share this Milestone',

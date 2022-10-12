@@ -9,7 +9,7 @@ from src.utils.elasticdsl import (
     ES_USERS,
     esclient,
     pluck_hits,
-    populate_agreement_or_content_list_metadata_es,
+    populate_digital_content_or_content_list_metadata_es,
     populate_user_metadata_es,
 )
 
@@ -106,12 +106,12 @@ def get_feed_es(args, limit=10):
         agreements = pluck_hits(founds["responses"].pop(0))
         contentLists = pluck_hits(founds["responses"].pop(0))
 
-    # agreement timestamps and duplicates
+    # digital_content timestamps and duplicates
     seen = set()
     unsorted_feed = []
 
     for contentList in contentLists:
-        # Q: should es-indexer set item_key on agreement / contentList too?
+        # Q: should es-indexer set item_key on digital_content / contentList too?
         #    instead of doing it dynamically here?
         contentList["item_key"] = item_key(contentList)
         seen.add(contentList["item_key"])
@@ -119,10 +119,10 @@ def get_feed_es(args, limit=10):
         #    get_feed will "debounce" agreements in contentList
         unsorted_feed.append(contentList)
 
-    for agreement in agreements:
-        agreement["item_key"] = item_key(agreement)
-        seen.add(agreement["item_key"])
-        unsorted_feed.append(agreement)
+    for digital_content in agreements:
+        digital_content["item_key"] = item_key(digital_content)
+        seen.add(digital_content["item_key"])
+        unsorted_feed.append(digital_content)
 
     # remove duplicates from repost feed
     for r in repost_agg:
@@ -134,7 +134,7 @@ def get_feed_es(args, limit=10):
 
     # sorted feed with repost records
     # the repost records are stubs that we'll now "hydrate"
-    # with the related agreement / contentList
+    # with the related digital_content / contentList
     sorted_with_reposts = sorted(
         unsorted_feed,
         key=lambda entry: entry["created_at"],
@@ -154,7 +154,7 @@ def get_feed_es(args, limit=10):
         if "min_created_at" not in r:
             continue
         (kind, id) = r["key"].split(":")
-        if kind == "agreement":
+        if kind == "digital_content":
             mget_reposts.append({"_index": ES_AGREEMENTS, "_id": id})
         else:
             mget_reposts.append({"_index": ES_CONTENT_LISTS, "_id": id})
@@ -163,8 +163,8 @@ def get_feed_es(args, limit=10):
         reposted_docs = esclient.mget(docs=mget_reposts)
         for doc in reposted_docs["docs"]:
             if not doc["found"]:
-                # MISSING: a repost for a agreement or contentList not in the index?
-                # this should only happen if repost indexing is running ahead of agreement / contentList
+                # MISSING: a repost for a digital_content or contentList not in the index?
+                # this should only happen if repost indexing is running ahead of digital_content / contentList
                 # should be transient... but should maybe still be agreemented?
                 continue
             s = doc["_source"]
@@ -227,7 +227,7 @@ def get_feed_es(args, limit=10):
 
     # populate metadata + remove extra fields from items
     sorted_feed = [
-        populate_agreement_or_content_list_metadata_es(item, current_user)
+        populate_digital_content_or_content_list_metadata_es(item, current_user)
         for item in sorted_feed
     ]
 
@@ -286,8 +286,8 @@ def fetch_followed_saves_and_reposts(current_user_id, item_keys, limit):
 
 
 def item_key(item):
-    if "agreement_id" in item:
-        return "agreement:" + str(item["agreement_id"])
+    if "digital_content_id" in item:
+        return "digital_content:" + str(item["digital_content_id"])
     elif "content_list_id" in item:
         if item["is_album"]:
             return "album:" + str(item["content_list_id"])

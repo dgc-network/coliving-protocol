@@ -102,9 +102,9 @@ WHERE download -> 'cid' != 'null'
 AND is_current = TRUE;
 
 INSERT INTO tmp_cid_table (cid, user_id)
-SELECT jsonb_array_elements(agreement_segments) -> 'multihash', owner_id
+SELECT jsonb_array_elements(digital_content_segments) -> 'multihash', owner_id
 FROM agreements
-WHERE agreement_segments IS NOT NULL
+WHERE digital_content_segments IS NOT NULL
 AND is_current = TRUE;
 
 

@@ -1,10 +1,10 @@
-alter table aggregate_user alter column agreement_count set default 0;
+alter table aggregate_user alter column digital_content_count set default 0;
 alter table aggregate_user alter column content_list_count set default 0;
 alter table aggregate_user alter column album_count set default 0;
 alter table aggregate_user alter column follower_count set default 0;
 alter table aggregate_user alter column following_count set default 0;
 alter table aggregate_user alter column repost_count set default 0;
-alter table aggregate_user alter column agreement_save_count set default 0;
+alter table aggregate_user alter column digital_content_save_count set default 0;
 
 
 WITH aggregate_user_latest_blocknumber AS (
@@ -116,7 +116,7 @@ changed_users AS (
             saves s
         WHERE
             s.is_current IS TRUE
-            AND s.save_type = 'agreement'
+            AND s.save_type = 'digital_content'
             AND s.blocknumber > (
                 SELECT
                     blocknumber
@@ -130,29 +130,29 @@ changed_users AS (
 INSERT INTO
     aggregate_user (
         user_id,
-        agreement_count,
+        digital_content_count,
         content_list_count,
         album_count,
         follower_count,
         following_count,
         repost_count,
-        agreement_save_count
+        digital_content_save_count
     )
 SELECT
     DISTINCT(u.user_id),
-    COALESCE (user_agreement.agreement_count, 0) AS agreement_count,
+    COALESCE (user_digital_content.digital_content_count, 0) AS digital_content_count,
     COALESCE (user_content_list.content_list_count, 0) AS content_list_count,
     COALESCE (user_album.album_count, 0) AS album_count,
     COALESCE (user_follower.follower_count, 0) AS follower_count,
     COALESCE (user_followee.followee_count, 0) AS following_count,
     COALESCE (user_repost.repost_count, 0) AS repost_count,
-    COALESCE (user_agreement_save.save_count, 0) AS agreement_save_count
+    COALESCE (user_digital_content_save.save_count, 0) AS digital_content_save_count
 FROM
     users u
     LEFT OUTER JOIN (
         SELECT
             t.owner_id AS owner_id,
-            count(t.owner_id) AS agreement_count
+            count(t.owner_id) AS digital_content_count
         FROM
             agreements t
         WHERE
@@ -168,7 +168,7 @@ FROM
             )
         GROUP BY
             t.owner_id
-    ) as user_agreement ON user_agreement.owner_id = u.user_id
+    ) as user_digital_content ON user_digital_content.owner_id = u.user_id
     LEFT OUTER JOIN (
         SELECT
             p.content_list_owner_id AS owner_id,
@@ -271,7 +271,7 @@ FROM
             saves s
         WHERE
             s.is_current IS TRUE
-            AND s.save_type = 'agreement'
+            AND s.save_type = 'digital_content'
             AND s.is_delete IS FALSE
             AND s.user_id IN (
                 select
@@ -281,7 +281,7 @@ FROM
             )
         GROUP BY
             s.user_id
-    ) user_agreement_save ON user_agreement_save.user_id = u.user_id
+    ) user_digital_content_save ON user_digital_content_save.user_id = u.user_id
 WHERE
     u.is_current IS TRUE
     AND u.user_id in (
@@ -292,11 +292,11 @@ WHERE
     ) ON CONFLICT (user_id) DO
 UPDATE
 SET
-    agreement_count = EXCLUDED.agreement_count,
+    digital_content_count = EXCLUDED.digital_content_count,
     content_list_count = EXCLUDED.content_list_count,
     album_count = EXCLUDED.album_count,
     follower_count = EXCLUDED.follower_count,
     following_count = EXCLUDED.following_count,
     repost_count = EXCLUDED.repost_count,
-    agreement_save_count = EXCLUDED.agreement_save_count
+    digital_content_save_count = EXCLUDED.digital_content_save_count
 ;

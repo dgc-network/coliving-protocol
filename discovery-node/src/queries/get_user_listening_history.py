@@ -1,10 +1,10 @@
 from typing import TypedDict
 
 from sqlalchemy.orm.session import Session
-from src.models.agreements.agreement import Agreement
+from src.models.agreements.digital_content import DigitalContent
 from src.models.users.user_listening_history import UserListeningHistory
 from src.queries import response_name_constants
-from src.queries.query_helpers import add_users_to_agreements, populate_agreement_metadata
+from src.queries.query_helpers import add_users_to_digital_contents, populate_digital_content_metadata
 from src.utils import helpers
 from src.utils.db_session import get_db_read_replica
 
@@ -60,31 +60,31 @@ def _get_user_listening_history(session: Session, args: GetUserListeningHistoryA
     # add query pagination
     listening_history_results = listening_history_results[offset : offset + limit]
 
-    agreement_ids = []
+    digital_content_ids = []
     listen_dates = []
     for listen in listening_history_results:
-        agreement_ids.append(listen["agreement_id"])
+        digital_content_ids.append(listen["digital_content_id"])
         listen_dates.append(listen["timestamp"])
 
-    agreement_results = (session.query(Agreement).filter(Agreement.agreement_id.in_(agreement_ids))).all()
+    digital_content_results = (session.query(DigitalContent).filter(DigitalContent.digital_content_id.in_(digital_content_ids))).all()
 
-    agreement_results_dict = {
-        agreement_result.agreement_id: agreement_result for agreement_result in agreement_results
+    digital_content_results_dict = {
+        digital_content_result.digital_content_id: digital_content_result for digital_content_result in digital_content_results
     }
 
     # sort agreements in listening history order
-    sorted_agreement_results = []
-    for agreement_id in agreement_ids:
-        if agreement_id in agreement_results_dict:
-            sorted_agreement_results.append(agreement_results_dict[agreement_id])
+    sorted_digital_content_results = []
+    for digital_content_id in digital_content_ids:
+        if digital_content_id in digital_content_results_dict:
+            sorted_digital_content_results.append(digital_content_results_dict[digital_content_id])
 
-    agreements = helpers.query_result_to_list(sorted_agreement_results)
+    agreements = helpers.query_result_to_list(sorted_digital_content_results)
 
-    # bundle peripheral info into agreement results
-    agreements = populate_agreement_metadata(session, agreement_ids, agreements, current_user_id)
-    add_users_to_agreements(session, agreements, current_user_id)
+    # bundle peripheral info into digital_content results
+    agreements = populate_digital_content_metadata(session, digital_content_ids, agreements, current_user_id)
+    add_users_to_digital_contents(session, agreements, current_user_id)
 
-    for idx, agreement in enumerate(agreements):
-        agreement[response_name_constants.activity_timestamp] = listen_dates[idx]
+    for idx, digital_content in enumerate(agreements):
+        digital_content[response_name_constants.activity_timestamp] = listen_dates[idx]
 
     return agreements

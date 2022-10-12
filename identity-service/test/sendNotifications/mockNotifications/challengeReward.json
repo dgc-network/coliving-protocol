@@ -42,7 +42,7 @@
   {
     "initiator": 10,
     "metadata": {
-      "challenge_id": "agreement-upload"
+      "challenge_id": "digital-content-upload"
     },
     "slot": 114838855,
     "type": "ChallengeReward"

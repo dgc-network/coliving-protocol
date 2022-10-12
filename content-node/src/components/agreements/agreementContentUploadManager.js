@@ -17,23 +17,23 @@ const FileManager = require('../../fileManager')
 const SEGMENT_FILE_BATCH_SIZE = 10
 
 /**
- * Manages agreement content upload in the DB and file system
+ * Manages digital_content content upload in the DB and file system
  */
 class AgreementContentUploadManager {
   /**
-   * Create agreement transcode and segments, and save all to disk. Removes temp file dir of agreement data if failed to
+   * Create digital_content transcode and segments, and save all to disk. Removes temp file dir of digital_content data if failed to
    * segment or transcode.
    * @param {Object} logContext
    * @param {Object} transcodeAndSegmentParams
-   * @param {string} transcodeAndSegmentParams.fileName the file name of the uploaded agreement (<cid>.<file type extension>)
-   * @param {string} transcodeAndSegmentParams.fileDir the dir path of the temp agreement artifacts
+   * @param {string} transcodeAndSegmentParams.fileName the file name of the uploaded digital_content (<cid>.<file type extension>)
+   * @param {string} transcodeAndSegmentParams.fileDir the dir path of the temp digital_content artifacts
    * @returns an Object with the structure:
    * {
       transcodeFilePath {string}: the path to the transcode file,
       segmentFileNames {string[]}: a list of segment file names; will have the structure `segment<number>.ts`,
       segmentFilePaths {string[]}: a list of segment file paths,
       m3u8FilePath {string}: the path to the m3u8 file,
-      fileName {string}: the original upload agreement file name
+      fileName {string}: the original upload digital_content file name
     }
    */
   static async transcodeAndSegment({ logContext }, { fileName, fileDir }) {
@@ -83,9 +83,9 @@ class AgreementContentUploadManager {
    * @returns {Object}
    *  returns
    *  {
-   *    trancodedAgreementCID {string} : the transcoded agreement's CID representation,
-   *    transcodedAgreementUUID {string} : the transcoded agreement's UUID in the Files table,
-   *    agreement_segments {string[]} : the list of segments CIDs,
+   *    trancodedAgreementCID {string} : the transcoded digital_content's CID representation,
+   *    transcodedAgreementUUID {string} : the transcoded digital_content's UUID in the Files table,
+   *    digital_content_segments {string[]} : the list of segments CIDs,
    *    source_file {string} : the filename of the uploaded artifact
    *  }
    */
@@ -153,7 +153,7 @@ class AgreementContentUploadManager {
     return {
       transcodedAgreementCID: transcodeFileResult.multihash,
       transcodedAgreementUUID: transcodeFileUUID,
-      agreement_segments: agreementSegments,
+      digital_content_segments: agreementSegments,
       source_file: fileName
     }
   }
@@ -163,8 +163,8 @@ class AgreementContentUploadManager {
  * Record entries for transcode and segment files in DB
  * @param {Object} dbParams
  * @param {Object} dbParams.transcodeFileResult object of transcode multihash and path
- * @param {string} dbParams.fileName the file name of the uploaded agreement (<cid>.<file type extension>)
- * @param {string} dbParams.fileDir the dir path of the temp agreement artifacts
+ * @param {string} dbParams.fileName the file name of the uploaded digital_content (<cid>.<file type extension>)
+ * @param {string} dbParams.fileDir the dir path of the temp digital_content artifacts
  * @param {string} dbParams.cnodeUserUUID the observed user's uuid
  * @param {Object} dbParams.segmentFileResult an array of { multihash, srcPath: segmentFilePath, dstPath }
  * @param {Object} dbParams.logContext
@@ -203,7 +203,7 @@ async function addFilesToDb({
         multihash,
         sourceFile: fileName,
         storagePath: dstPath,
-        type: models.File.Types.agreement
+        type: models.File.Types.digital_content
       }
       await DBManager.createNewDataRecord(
         createSegmentFileQueryObj,
@@ -231,9 +231,9 @@ async function addFilesToDb({
  * @param {Object} params
  * @param {Object} params.segmentFileResult an array of { multihash, srcPath: segmentFilePath, dstPath }
  * @param {Object} params.segmentDurations mapping of segment filePath (segmentName) => segment duration
- * @param {string} params.fileDir the dir path of the temp agreement artifacts
+ * @param {string} params.fileDir the dir path of the temp digital_content artifacts
  * @param {Object} params.logContext
- * @returns an array of agreement segments with the structure { multihash, duration }
+ * @returns an array of digital_content segments with the structure { multihash, duration }
  */
 function createSegmentToDurationMap({
   segmentFileResult,
@@ -251,12 +251,12 @@ function createSegmentToDurationMap({
   // exclude 0-length segments that are sometimes outputted by ffmpeg segmentation
   agreementSegments = agreementSegments.filter((agreementSegment) => agreementSegment.duration)
 
-  // error if there are no agreement segments
+  // error if there are no digital_content segments
   if (!agreementSegments || !agreementSegments.length) {
     // Prune upload artifacts
     FileManager.removeAgreementFolder({ logContext }, fileDir)
 
-    throw new Error('Agreement upload failed - no agreement segments')
+    throw new Error('DigitalContent upload failed - no digital_content segments')
   }
 
   return agreementSegments
@@ -265,9 +265,9 @@ function createSegmentToDurationMap({
 /**
  * Save transcode and segment files (in parallel batches) to disk.
  * @param {Object} batchParams
- * @param {string} batchParams.fileDir the dir path of the temp agreement artifacts
+ * @param {string} batchParams.fileDir the dir path of the temp digital_content artifacts
  * @param {Object} batchParams.logContext
- * @param {string} batchParams.transcodeFilePath the transcoded agreement path
+ * @param {string} batchParams.transcodeFilePath the transcoded digital_content path
  * @param {string} batchParams.segmentFilePaths the segments path
  * @returns an object of array of segment multihashes, src paths, and dest paths and transcode multihash and path
  */

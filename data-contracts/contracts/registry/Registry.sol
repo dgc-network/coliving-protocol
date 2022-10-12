@@ -111,7 +111,7 @@ contract Registry is Ownable {
     function setAddress(bytes32 _key, address _value) private {
         // main map for cheap lookup
         addressStorage[_key] = _value;
-        // keep agreement of contract address history
+        // keep digital_content of contract address history
         addressStorageHistory[_key].push(_value);
     }
 

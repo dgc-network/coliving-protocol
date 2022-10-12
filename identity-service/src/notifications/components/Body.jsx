@@ -75,18 +75,18 @@ const snippetMap = {
   [NotificationType.TrendingAgreement] (notification) {
     const rank = notification.rank
     const suffix = getNumberSuffix(rank)
-    return `Your Agreement ${notification.entity.title} is ${notification.rank}${suffix} on Trending Right Now!`
+    return `Your DigitalContent ${notification.entity.title} is ${notification.rank}${suffix} on Trending Right Now!`
   },
   [NotificationType.UserSubscription] (notification) {
     const [user] = notification.users
-    if (notification.entity.type === NotificationType.Agreement && !isNaN(notification.entity.count) && notification.entity.count > 1) {
+    if (notification.entity.type === NotificationType.DigitalContent && !isNaN(notification.entity.count) && notification.entity.count > 1) {
       return `${user.name} released ${notification.entity.count} new ${notification.entity.type}`
     }
     return `${user.name} released a new ${notification.entity.type.toLowerCase()} ${notification.entity.name}`
   },
   [NotificationType.RemixCreate] (notification) {
     const { parentAgreement } = notification
-    return `New remix of your agreement ${parentAgreement.title}`
+    return `New remix of your digital_content ${parentAgreement.title}`
   },
   [NotificationType.RemixCosign] (notification) {
     const { parentAgreementUser, parentAgreements } = notification
@@ -97,7 +97,7 @@ const snippetMap = {
     return `You've earned $LIVE for completing challenges`
   },
   [NotificationType.AddAgreementToContentList] (notification) {
-    return `${notification.contentListOwner.name} added ${notification.agreement.title} to ${notification.contentList.content_list_name}`
+    return `${notification.contentListOwner.name} added ${notification.digital_content.title} to ${notification.contentList.content_list_name}`
   },
   [NotificationType.TipReceive] (notification) {
     return `${notification.sendingUser.name} sent you a tip of ${notification.amount} $LIVE`
@@ -120,7 +120,7 @@ const mapNotification = (notification) => {
       return notification
     }
     case NotificationType.RemixCosign: {
-      notification.agreement = notification.remixAgreement
+      notification.digital_content = notification.remixAgreement
       return notification
     }
     default: {

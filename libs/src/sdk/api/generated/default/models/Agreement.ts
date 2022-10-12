@@ -35,103 +35,103 @@ import {
 /**
  * 
  * @export
- * @interface Agreement
+ * @interface DigitalContent
  */
-export interface Agreement {
+export interface DigitalContent {
     /**
      * 
      * @type {AgreementArtwork}
-     * @memberof Agreement
+     * @memberof DigitalContent
      */
     artwork?: AgreementArtwork;
     /**
      * 
      * @type {string}
-     * @memberof Agreement
+     * @memberof DigitalContent
      */
     description?: string;
     /**
      * 
      * @type {string}
-     * @memberof Agreement
+     * @memberof DigitalContent
      */
     genre?: string;
     /**
      * 
      * @type {string}
-     * @memberof Agreement
+     * @memberof DigitalContent
      */
     id: string;
     /**
      * 
      * @type {string}
-     * @memberof Agreement
+     * @memberof DigitalContent
      */
     mood?: string;
     /**
      * 
      * @type {string}
-     * @memberof Agreement
+     * @memberof DigitalContent
      */
     release_date?: string;
     /**
      * 
      * @type {RemixParent}
-     * @memberof Agreement
+     * @memberof DigitalContent
      */
     remix_of?: RemixParent;
     /**
      * 
      * @type {number}
-     * @memberof Agreement
+     * @memberof DigitalContent
      */
     repost_count: number;
     /**
      * 
      * @type {number}
-     * @memberof Agreement
+     * @memberof DigitalContent
      */
     favorite_count: number;
     /**
      * 
      * @type {string}
-     * @memberof Agreement
+     * @memberof DigitalContent
      */
     tags?: string;
     /**
      * 
      * @type {string}
-     * @memberof Agreement
+     * @memberof DigitalContent
      */
     title: string;
     /**
      * 
      * @type {User}
-     * @memberof Agreement
+     * @memberof DigitalContent
      */
     user: User;
     /**
      * 
      * @type {number}
-     * @memberof Agreement
+     * @memberof DigitalContent
      */
     duration: number;
     /**
      * 
      * @type {boolean}
-     * @memberof Agreement
+     * @memberof DigitalContent
      */
     downloadable?: boolean;
     /**
      * 
      * @type {number}
-     * @memberof Agreement
+     * @memberof DigitalContent
      */
     play_count: number;
     /**
      * 
      * @type {string}
-     * @memberof Agreement
+     * @memberof DigitalContent
      */
     permalink?: string;
 }

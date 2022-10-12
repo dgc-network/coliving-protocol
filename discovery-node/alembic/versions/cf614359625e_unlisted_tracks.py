@@ -1,4 +1,4 @@
-"""unlisted_agreements
+"""unlisted_digital_contents
 
 Revision ID: cf614359625e
 Revises: dbefdfcc9a3b

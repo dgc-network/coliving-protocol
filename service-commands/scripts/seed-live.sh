@@ -9,7 +9,7 @@ get-eth-private-key () {
 }
 
 # Mints $LIVE and transfers it to a user bank
-seed-live () {
+seed-digitalcoin () {
     user_id=$1
     amount=$2
     echo "Fetching userbank..."
@@ -26,8 +26,8 @@ seed-live () {
     spl-token transfer $mint $amount $userBank | grep "Signature"
 }
 
-# Transfer live from user bank to user bank
-tip-live () {
+# Transfer digitalcoin from user bank to user bank
+tip-digitalcoin () {
     sender_id=$1
     receiver_id=$2
     amount=$3

@@ -13,7 +13,7 @@ import {
 
 export class AgreementIndexer extends BaseIndexer<AgreementDoc> {
   constructor() {
-    super('agreements', 'agreement_id')
+    super('agreements', 'digital_content_id')
     this.batchSize = 500
   }
 
@@ -103,11 +103,11 @@ export class AgreementIndexer extends BaseIndexer<AgreementDoc> {
         stem_of: {
           properties: {
             category: { type: 'keyword' },
-            parent_agreement_id: { type: 'keyword' },
+            parent_digital_content_id: { type: 'keyword' },
           },
         },
 
-        'remix_of.agreements.parent_agreement_id': { type: 'keyword' },
+        'remix_of.agreements.parent_digital_content_id': { type: 'keyword' },
       },
     },
   }
@@ -132,9 +132,9 @@ export class AgreementIndexer extends BaseIndexer<AgreementDoc> {
 
       array(
         select slug 
-        from agreement_routes r
+        from digital_content_routes r
         where
-          r.agreement_id = agreements.agreement_id
+          r.digital_content_id = agreements.digital_content_id
         order by is_current
       ) as routes,
   
@@ -144,8 +144,8 @@ export class AgreementIndexer extends BaseIndexer<AgreementDoc> {
         where
           is_current = true
           and is_delete = false
-          and repost_type = 'agreement' 
-          and repost_item_id = agreement_id
+          and repost_type = 'digital_content' 
+          and repost_item_id = digital_content_id
         order by created_at desc
       ) as reposted_by,
     
@@ -155,15 +155,15 @@ export class AgreementIndexer extends BaseIndexer<AgreementDoc> {
         where
           is_current = true
           and is_delete = false
-          and save_type = 'agreement' 
-          and save_item_id = agreement_id
+          and save_type = 'digital_content' 
+          and save_item_id = digital_content_id
         order by created_at desc
       ) as saved_by
     
     from agreements
       join users on owner_id = user_id 
       left join aggregate_user on users.user_id = aggregate_user.user_id
-      left join aggregate_plays on agreements.agreement_id = aggregate_plays.play_item_id
+      left join aggregate_plays on agreements.digital_content_id = aggregate_plays.play_item_id
     WHERE agreements.is_current = true 
       AND users.is_current = true
     `
@@ -171,12 +171,12 @@ export class AgreementIndexer extends BaseIndexer<AgreementDoc> {
 
   checkpointSql(checkpoint: BlocknumberCheckpoint): string {
     return `
-    and agreement_id in (
-      select agreement_id from agreements where is_current and blocknumber >= ${checkpoint.agreements}
+    and digital_content_id in (
+      select digital_content_id from agreements where is_current and blocknumber >= ${checkpoint.agreements}
       union
-      select save_item_id from saves where is_current and save_type = 'agreement' and blocknumber >= ${checkpoint.saves}
+      select save_item_id from saves where is_current and save_type = 'digital_content' and blocknumber >= ${checkpoint.saves}
       union
-      select repost_item_id from reposts where is_current and repost_type = 'agreement' and blocknumber >= ${checkpoint.reposts}
+      select repost_item_id from reposts where is_current and repost_type = 'digital_content' and blocknumber >= ${checkpoint.reposts}
       union
       select play_item_id FROM plays WHERE created_at > NOW() - INTERVAL '10 minutes'
     )
@@ -191,7 +191,7 @@ export class AgreementIndexer extends BaseIndexer<AgreementDoc> {
     row.repost_count = row.reposted_by.length
     row.favorite_count = row.saved_by.length
     row.duration = Math.ceil(
-      row.agreement_segments.reduce((acc, s) => acc + parseFloat(s.duration), 0)
+      row.digital_content_segments.reduce((acc, s) => acc + parseFloat(s.duration), 0)
     )
     row.length = row.duration
 

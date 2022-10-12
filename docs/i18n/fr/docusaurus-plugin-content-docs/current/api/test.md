@@ -523,7 +523,7 @@ func main() {
         "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
       },
       "repost_count": 5,
-      "agreement_count": 4
+      "digital_content_count": 4
     }
   ]
 }
@@ -710,7 +710,7 @@ func main() {
       "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
     },
     "repost_count": 5,
-    "agreement_count": 4
+    "digital_content_count": 4
   }
 }
 ```
@@ -1043,7 +1043,7 @@ func main() {
 
 *Récupérer les titres favoris d'un utilisateur*
 
-<h3 id="get-user's-favorite-agreements-parameters">Paramètres de requête</h3>
+<h3 id="get-user's-favorite-digital-contents-parameters">Paramètres de requête</h3>
 
 | Name    | Type   | Required | Description |
 | ------- | ------ | -------- | ----------- |
@@ -1056,24 +1056,24 @@ func main() {
   "data": [
     {
       "favorite_item_id": "n3yVD",
-      "favorite_type": "SaveType.agreement",
+      "favorite_type": "SaveType.digital_content",
       "user_id": "nlGNe"
     },
     {
       "favorite_item_id": "nlv5l",
-      "favorite_type": "SaveType.agreement",
+      "favorite_type": "SaveType.digital_content",
       "user_id": "nlGNe"
     },
     {
       "favorite_item_id": "ezYKz",
-      "favorite_type": "SaveType.agreement",
+      "favorite_type": "SaveType.digital_content",
       "user_id": "nlGNe"
     }
   ]
 }
 ```
 
-<h3 id="get-user's-favorite-agreements-responses">Réponses</h3>
+<h3 id="get-user's-favorite-digital-contents-responses">Réponses</h3>
 
 | Status | Meaning                                                                    | Description  | Schema                                          |
 | ------ | -------------------------------------------------------------------------- | ------------ | ----------------------------------------------- |
@@ -1255,7 +1255,7 @@ func main() {
 
 ## Obtenez les marqueurs de suivi les plus utilisés par les utilisateurs
 
-<a id="opIdGet User's Most Used Agreement Tags"></a>
+<a id="opIdGet User's Most Used DigitalContent Tags"></a>
 
 > Exemple de code
 
@@ -1398,7 +1398,7 @@ func main() {
 
 *Récupérer les marqueurs les plus utilisés dans les pistes d'un utilisateur*
 
-<h3 id="get-user's-most-used-agreement-tags-parameters">Paramètres de requête</h3>
+<h3 id="get-user's-most-used-digital-content-tags-parameters">Paramètres de requête</h3>
 
 | Name    | Type    | Required | Description                 |
 | ------- | ------- | -------- | --------------------------- |
@@ -1418,7 +1418,7 @@ func main() {
 }
 ```
 
-<h3 id="get-user's-most-used-agreement-tags-responses">Réponses</h3>
+<h3 id="get-user's-most-used-digital-content-tags-responses">Réponses</h3>
 
 | Status | Meaning                                                                    | Description  | Schema                                |
 | ------ | -------------------------------------------------------------------------- | ------------ | ------------------------------------- |
@@ -1568,7 +1568,7 @@ func main() {
 
 *Récupérer une liste de titres pour un utilisateur*
 
-<h3 id="get-user's-agreements-parameters">Paramètres de requête</h3>
+<h3 id="get-user's-digital-contents-parameters">Paramètres de requête</h3>
 
 | Name    | Type   | Required | Description |
 | ------- | ------ | -------- | ----------- |
@@ -1588,15 +1588,15 @@ func main() {
         "480x480": "https://creatornode..co/ipfs/QmVJjA6zXhDZn3BjcjYa33P9NDiPZj7Vyq9TCx1bHjvHmG/480x480.jpg",
         "1000x1000": "https://creatornode..co/ipfs/QmVJjA6zXhDZn3BjcjYa33P9NDiPZj7Vyq9TCx1bHjvHmG/1000x1000.jpg"
       },
-      "description": "@baauer b2b @partyfavormusic live set at Brownies & Lemonade Block Party LA at The Shrine on 7.3.19.",
+      "description": "@baauer b2b @partyfavormusic digitalcoin set at Brownies & Lemonade Block Party LA at The Shrine on 7.3.19.",
       "genre": "Electronic",
       "id": "D7KyD",
       "mood": "Fiery",
       "release_date": "Mon Sep 23 2019 12:35:10 GMT-0700",
       "repost_count": 47,
       "favorite_count": 143,
-      "tags": "baauer,partyfavor,browniesandlemonade,live",
-      "title": "Paauer | Baauer B2B Party Favor | B&L Block Party LA (Live Set)",
+      "tags": "baauer,partyfavor,browniesandlemonade,digitalcoin",
+      "title": "Paauer | Baauer B2B Party Favor | B&L Block Party LA (Digitalcoin Set)",
       "duration": 5265,
       "user": {
         "album_count": 0,
@@ -1619,14 +1619,14 @@ func main() {
           "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
         },
         "repost_count": 5,
-        "agreement_count": 4
+        "digital_content_count": 4
       }
     }
   ]
 }
 ```
 
-<h3 id="get-user's-agreements-responses">Réponses</h3>
+<h3 id="get-user's-digital-contents-responses">Réponses</h3>
 
 | Status | Meaning                                                                    | Description  | Schema                                    |
 | ------ | -------------------------------------------------------------------------- | ------------ | ----------------------------------------- |
@@ -1826,7 +1826,7 @@ func main() {
           "1000x1000": "https://usermetadata..co/ipfs/QmNjJv1wQf2DJq3GNXjXzSL8UXFUGXfchg4NhL7UpbnF1f"
         },
         "repost_count": 200,
-        "agreement_count": 0
+        "digital_content_count": 0
       }
     }
   ]
@@ -2031,7 +2031,7 @@ func main() {
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "agreement_count": 0
+        "digital_content_count": 0
       }
     }
   ]
@@ -2231,7 +2231,7 @@ func main() {
         "1000x1000": "https://usermetadata..co/ipfs/QmNjJv1wQf2DJq3GNXjXzSL8UXFUGXfchg4NhL7UpbnF1f"
       },
       "repost_count": 200,
-      "agreement_count": 0
+      "digital_content_count": 0
     }
   }
 }
@@ -2387,7 +2387,7 @@ func main() {
 
 *Récupérer ls titres dans une contentList*
 
-<h3 id="get-content-list-agreements-parameters">Paramètres de requête</h3>
+<h3 id="get-content-list-digital-contents-parameters">Paramètres de requête</h3>
 
 | Name        | Type   | Required | Description   |
 | ----------- | ------ | -------- | ------------- |
@@ -2404,15 +2404,15 @@ func main() {
         "480x480": "https://creatornode..co/ipfs/QmVJjA6zXhDZn3BjcjYa33P9NDiPZj7Vyq9TCx1bHjvHmG/480x480.jpg",
         "1000x1000": "https://creatornode..co/ipfs/QmVJjA6zXhDZn3BjcjYa33P9NDiPZj7Vyq9TCx1bHjvHmG/1000x1000.jpg"
       },
-      "description": "@baauer b2b @partyfavormusic live set at Brownies & Lemonade Block Party LA at The Shrine on 7.3.19.",
+      "description": "@baauer b2b @partyfavormusic digitalcoin set at Brownies & Lemonade Block Party LA at The Shrine on 7.3.19.",
       "genre": "Electronic",
       "id": "D7KyD",
       "mood": "Fiery",
       "release_date": "Mon Sep 23 2019 12:35:10 GMT-0700",
       "repost_count": 47,
       "favorite_count": 143,
-      "tags": "baauer,partyfavor,browniesandlemonade,live",
-      "title": "Paauer | Baauer B2B Party Favor | B&L Block Party LA (Live Set)",
+      "tags": "baauer,partyfavor,browniesandlemonade,digitalcoin",
+      "title": "Paauer | Baauer B2B Party Favor | B&L Block Party LA (Digitalcoin Set)",
       "duration": 5265,
       "user": {
         "album_count": 0,
@@ -2435,26 +2435,26 @@ func main() {
           "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
         },
         "repost_count": 5,
-        "agreement_count": 4
+        "digital_content_count": 4
       }
     }
   ]
 }
 ```
 
-<h3 id="get-content-list-agreements-responses">Réponses</h3>
+<h3 id="get-content-list-digital-contents-responses">Réponses</h3>
 
 | Status | Meaning                                                                    | Description  | Schema                                                        |
 | ------ | -------------------------------------------------------------------------- | ------------ | ------------------------------------------------------------- |
-| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [content_list_agreements_response](#schemacontent_list_agreements_response) |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [content_list_digital_contents_response](#schemacontent_list_digital_contents_response) |
 | 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | Bad request  | None                                                          |
 | 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Server error | None                                                          |
 
-<h1 id="api-agreements">pistes</h1>
+<h1 id="api-digital-contents">pistes</h1>
 
 ## Obtenir la piste By Handle and Slug
 
-<a id="opIdGet Agreement By Handle and Slug"></a>
+<a id="opIdGet DigitalContent By Handle and Slug"></a>
 
 > Exemple de code
 
@@ -2592,12 +2592,12 @@ func main() {
 
 `GET /agreements`
 
-<h3 id="get-agreement-by-handle-and-slug-parameters">Paramètres de requête</h3>
+<h3 id="get-digital-content-by-handle-and-slug-parameters">Paramètres de requête</h3>
 
 | Name   | Type   | Required | Description      |
 | ------ | ------ | -------- | ---------------- |
 | handle | string | false    | A User's handle  |
-| slug   | string | false    | The agreement's slug |
+| slug   | string | false    | The digital_content's slug |
 
 > Exemple de réponse
 
@@ -2619,7 +2619,7 @@ func main() {
     "remix_of": {
       "agreements": [
         {
-          "parent_agreement_id": "string"
+          "parent_digital_content_id": "string"
         }
       ]
     },
@@ -2648,7 +2648,7 @@ func main() {
         "1000x1000": "string"
       },
       "repost_count": 0,
-      "agreement_count": 0
+      "digital_content_count": 0
     },
     "duration": 0,
     "downloadable": true,
@@ -2658,11 +2658,11 @@ func main() {
 }
 ```
 
-<h3 id="get-agreement-by-handle-and-slug-responses">Réponses</h3>
+<h3 id="get-digital-content-by-handle-and-slug-responses">Réponses</h3>
 
 | Status | Meaning                                                                    | Description  | Schema                                  |
 | ------ | -------------------------------------------------------------------------- | ------------ | --------------------------------------- |
-| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | Success      | [agreement_response](#schemaagreement_response) |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | Success      | [digital_content_response](#schemadigital_content_response) |
 | 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | Bad request  | None                                    |
 | 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Server error | None                                    |
 
@@ -2806,13 +2806,13 @@ func main() {
 
 `GET /agreements/recommended/{version}`
 
-<h3 id="recommended-agreements-parameters">Paramètres de requête</h3>
+<h3 id="recommended-digital-contents-parameters">Paramètres de requête</h3>
 
 | Name           | Type   | Required | Description                                                        |
 | -------------- | ------ | -------- | ------------------------------------------------------------------ |
 | genre          | string | false    | Recommended trending agreements for a specified genre                  |
 | limit          | string | false    | Number of recommended agreements to fetch                              |
-| exclusion_list | string | false    | List of agreement ids to exclude                                       |
+| exclusion_list | string | false    | List of digital_content ids to exclude                                       |
 | time           | string | false    | Trending agreements over a specified time range (week, month, allTime) |
 | version        | string | true     | none                                                               |
 
@@ -2837,7 +2837,7 @@ func main() {
       "remix_of": {
         "agreements": [
           {
-            "parent_agreement_id": "string"
+            "parent_digital_content_id": "string"
           }
         ]
       },
@@ -2866,7 +2866,7 @@ func main() {
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "agreement_count": 0
+        "digital_content_count": 0
       },
       "duration": 0,
       "downloadable": true,
@@ -2877,7 +2877,7 @@ func main() {
 }
 ```
 
-<h3 id="recommended-agreements-responses">Réponses</h3>
+<h3 id="recommended-digital-contents-responses">Réponses</h3>
 
 | Status | Meaning                                                                    | Description  | Schema                                    |
 | ------ | -------------------------------------------------------------------------- | ------------ | ----------------------------------------- |
@@ -3030,7 +3030,7 @@ func main() {
 
 *Recherche d'une piste*
 
-<h3 id="search-agreements-parameters">Paramètres de requête</h3>
+<h3 id="search-digital-contents-parameters">Paramètres de requête</h3>
 
 | Name              | Type   | Required | Description                     |
 | ----------------- | ------ | -------- | ------------------------------- |
@@ -3048,15 +3048,15 @@ func main() {
         "480x480": "https://creatornode..co/ipfs/QmVJjA6zXhDZn3BjcjYa33P9NDiPZj7Vyq9TCx1bHjvHmG/480x480.jpg",
         "1000x1000": "https://creatornode..co/ipfs/QmVJjA6zXhDZn3BjcjYa33P9NDiPZj7Vyq9TCx1bHjvHmG/1000x1000.jpg"
       },
-      "description": "@baauer b2b @partyfavormusic live set at Brownies & Lemonade Block Party LA at The Shrine on 7.3.19.",
+      "description": "@baauer b2b @partyfavormusic digitalcoin set at Brownies & Lemonade Block Party LA at The Shrine on 7.3.19.",
       "genre": "Electronic",
       "id": "D7KyD",
       "mood": "Fiery",
       "release_date": "Mon Sep 23 2019 12:35:10 GMT-0700",
       "repost_count": 47,
       "favorite_count": 143,
-      "tags": "baauer,partyfavor,browniesandlemonade,live",
-      "title": "Paauer | Baauer B2B Party Favor | B&L Block Party LA (Live Set)",
+      "tags": "baauer,partyfavor,browniesandlemonade,digitalcoin",
+      "title": "Paauer | Baauer B2B Party Favor | B&L Block Party LA (Digitalcoin Set)",
       "duration": 5265,
       "user": {
         "album_count": 0,
@@ -3079,18 +3079,18 @@ func main() {
           "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
         },
         "repost_count": 5,
-        "agreement_count": 4
+        "digital_content_count": 4
       }
     }
   ]
 }
 ```
 
-<h3 id="search-agreements-responses">Réponses</h3>
+<h3 id="search-digital-contents-responses">Réponses</h3>
 
 | Status | Meaning                                                                    | Description  | Schema                              |
 | ------ | -------------------------------------------------------------------------- | ------------ | ----------------------------------- |
-| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [agreement_search](#schemaagreement_search) |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [digital_content_search](#schemadigital_content_search) |
 | 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | Bad request  | None                                |
 | 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Server error | None                                |
 
@@ -3236,7 +3236,7 @@ func main() {
 
 *Obtenez les 100 pistes les plus populaires sur Coliving*
 
-<h3 id="trending-agreements-parameters">Paramètres de requête</h3>
+<h3 id="trending-digital-contents-parameters">Paramètres de requête</h3>
 
 | Name    | Type   | Required | Description                                                        |
 | ------- | ------ | -------- | ------------------------------------------------------------------ |
@@ -3265,7 +3265,7 @@ func main() {
       "remix_of": {
         "agreements": [
           {
-            "parent_agreement_id": "string"
+            "parent_digital_content_id": "string"
           }
         ]
       },
@@ -3294,7 +3294,7 @@ func main() {
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "agreement_count": 0
+        "digital_content_count": 0
       },
       "duration": 0,
       "downloadable": true,
@@ -3305,7 +3305,7 @@ func main() {
 }
 ```
 
-<h3 id="trending-agreements-responses">Réponses</h3>
+<h3 id="trending-digital-contents-responses">Réponses</h3>
 
 | Status | Meaning                                                                    | Description  | Schema                                    |
 | ------ | -------------------------------------------------------------------------- | ------------ | ----------------------------------------- |
@@ -3315,7 +3315,7 @@ func main() {
 
 ## Obtenir une piste
 
-<a id="opIdGet Agreement"></a>
+<a id="opIdGet DigitalContent"></a>
 
 > Exemple de code
 
@@ -3451,15 +3451,15 @@ func main() {
 
 ```
 
-`GET /agreements/{agreement_id}`
+`GET /agreements/{digital_content_id}`
 
 *Récupérer une piste*
 
-<h3 id="get-agreement-parameters">Paramètres de requête</h3>
+<h3 id="get-digital-content-parameters">Paramètres de requête</h3>
 
 | Name     | Type   | Required | Description |
 | -------- | ------ | -------- | ----------- |
-| agreement_id | string | true     | A Agreement ID  |
+| digital_content_id | string | true     | A DigitalContent ID  |
 
 > Exemple de réponse
 
@@ -3471,15 +3471,15 @@ func main() {
       "480x480": "https://creatornode..co/ipfs/QmVJjA6zXhDZn3BjcjYa33P9NDiPZj7Vyq9TCx1bHjvHmG/480x480.jpg",
       "1000x1000": "https://creatornode..co/ipfs/QmVJjA6zXhDZn3BjcjYa33P9NDiPZj7Vyq9TCx1bHjvHmG/1000x1000.jpg"
     },
-    "description": "@baauer b2b @partyfavormusic live set at Brownies & Lemonade Block Party LA at The Shrine on 7.3.19.",
+    "description": "@baauer b2b @partyfavormusic digitalcoin set at Brownies & Lemonade Block Party LA at The Shrine on 7.3.19.",
     "genre": "Electronic",
     "id": "D7KyD",
     "mood": "Fiery",
     "release_date": "Mon Sep 23 2019 12:35:10 GMT-0700",
     "repost_count": 47,
     "favorite_count": 143,
-    "tags": "baauer,partyfavor,browniesandlemonade,live",
-    "title": "Paauer | Baauer B2B Party Favor | B&L Block Party LA (Live Set)",
+    "tags": "baauer,partyfavor,browniesandlemonade,digitalcoin",
+    "title": "Paauer | Baauer B2B Party Favor | B&L Block Party LA (Digitalcoin Set)",
     "duration": 5265,
     "user": {
       "album_count": 0,
@@ -3502,23 +3502,23 @@ func main() {
         "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
       },
       "repost_count": 5,
-      "agreement_count": 4
+      "digital_content_count": 4
     }
   }
 }
 ```
 
-<h3 id="get-agreement-responses">Réponses</h3>
+<h3 id="get-digital-content-responses">Réponses</h3>
 
 | Status | Meaning                                                                    | Description  | Schema                                  |
 | ------ | -------------------------------------------------------------------------- | ------------ | --------------------------------------- |
-| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [agreement_response](#schemaagreement_response) |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | none         | [digital_content_response](#schemadigital_content_response) |
 | 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | Bad request  | None                                    |
 | 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Server error | None                                    |
 
 ## Piste de streaming
 
-<a id="opIdStream Agreement"></a>
+<a id="opIdStream DigitalContent"></a>
 
 > Exemple de code
 
@@ -3633,19 +3633,19 @@ func main() {
 
 ```
 
-`GET /agreements/{agreement_id}/stream`
+`GET /agreements/{digital_content_id}/stream`
 
 *Obtenir le fichier mp3 de la piste en streaming*
 
 Ce endpoint accepte l'en-tête Range pour le streaming. https://developer.mozilla.org/en-US/docs/Web/HTTP/Range_requests
 
-<h3 id="stream-agreement-parameters">Paramètres de requête</h3>
+<h3 id="stream-digital-content-parameters">Paramètres de requête</h3>
 
 | Name     | Type   | Required | Description |
 | -------- | ------ | -------- | ----------- |
-| agreement_id | string | true     | A Agreement ID  |
+| digital_content_id | string | true     | A DigitalContent ID  |
 
-<h3 id="stream-agreement-responses">Réponses</h3>
+<h3 id="stream-digital-content-responses">Réponses</h3>
 
 | Status | Meaning                                                                    | Description           | Schema |
 | ------ | -------------------------------------------------------------------------- | --------------------- | ------ |
@@ -4379,7 +4379,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
       "1000x1000": "string"
     },
     "repost_count": 0,
-    "agreement_count": 0
+    "digital_content_count": 0
   }
 }
 
@@ -4419,7 +4419,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
     "1000x1000": "string"
   },
   "repost_count": 0,
-  "agreement_count": 0
+  "digital_content_count": 0
 }
 
 ```
@@ -4441,7 +4441,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
 | content_list_count  | integer                                   | true     | none         | none        |
 | profile_picture | [profile_picture](#schemaprofile_picture) | false    | none         | none        |
 | repost_count    | integer                                   | true     | none         | none        |
-| agreement_count     | integer                                   | true     | none         | none        |
+| digital_content_count     | integer                                   | true     | none         | none        |
 
 <a id="schemacover_photo"></a>
 <a id="schema_cover_photo"></a>
@@ -4488,10 +4488,10 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
 | 1000x1000 | string | false    | none         | none        |
 
 <a id="schemaagreements_response"></a>
-<a id="schema_agreements_response"></a>
+<a id="schema_digital_contents_response"></a>
 <a id="tocSagreements_response"></a>
 <a id="tocsagreements_response"></a>
-<h2 id="tocS_agreements_response">agreements_response</h2>
+<h2 id="tocS_digital_contents_response">agreements_response</h2>
 
 ```json
 {
@@ -4510,7 +4510,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
       "remix_of": {
         "agreements": [
           {
-            "parent_agreement_id": "string"
+            "parent_digital_content_id": "string"
           }
         ]
       },
@@ -4539,7 +4539,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "agreement_count": 0
+        "digital_content_count": 0
       },
       "duration": 0,
       "downloadable": true,
@@ -4555,7 +4555,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
 
 | Name | Type                    | Required | Restrictions | Description |
 | ---- | ----------------------- | -------- | ------------ | ----------- |
-| data | [[Agreement](#schemaagreement)] | false    | none         | none        |
+| data | [[DigitalContent](#schemaagreement)] | false    | none         | none        |
 
 <a id="schemaagreement"></a>
 <a id="schema_Agreement"></a>
@@ -4578,7 +4578,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
   "remix_of": {
     "agreements": [
       {
-        "parent_agreement_id": "string"
+        "parent_digital_content_id": "string"
       }
     ]
   },
@@ -4607,7 +4607,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
       "1000x1000": "string"
     },
     "repost_count": 0,
-    "agreement_count": 0
+    "digital_content_count": 0
   },
   "duration": 0,
   "downloadable": true,
@@ -4621,7 +4621,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
 
 | Name           | Type                                  | Required | Restrictions | Description |
 | -------------- | ------------------------------------- | -------- | ------------ | ----------- |
-| artwork        | [agreement_artwork](#schemaagreement_artwork) | false    | none         | none        |
+| artwork        | [digital_content_artwork](#schemadigital_content_artwork) | false    | none         | none        |
 | description    | string                                | false    | none         | none        |
 | genre          | string                                | false    | none         | none        |
 | id             | string                                | true     | none         | none        |
@@ -4638,11 +4638,11 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
 | play_count     | integer                               | true     | none         | none        |
 | permalink      | string                                | false    | none         | none        |
 
-<a id="schemaagreement_artwork"></a>
-<a id="schema_agreement_artwork"></a>
-<a id="tocSagreement_artwork"></a>
-<a id="tocsagreement_artwork"></a>
-<h2 id="tocS_agreement_artwork">agreement_artwork</h2>
+<a id="schemadigital_content_artwork"></a>
+<a id="schema_digital_content_artwork"></a>
+<a id="tocSdigital_content_artwork"></a>
+<a id="tocsdigital_content_artwork"></a>
+<h2 id="tocS_digital_content_artwork">digital_content_artwork</h2>
 
 ```json
 {
@@ -4671,7 +4671,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
 {
   "agreements": [
     {
-      "parent_agreement_id": "string"
+      "parent_digital_content_id": "string"
     }
   ]
 }
@@ -4682,17 +4682,17 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
 
 | Name   | Type                                    | Required | Restrictions | Description |
 | ------ | --------------------------------------- | -------- | ------------ | ----------- |
-| agreements | [[agreement_element](#schemaagreement_element)] | false    | none         | none        |
+| agreements | [[digital_content_element](#schemadigital_content_element)] | false    | none         | none        |
 
-<a id="schemaagreement_element"></a>
-<a id="schema_agreement_element"></a>
-<a id="tocSagreement_element"></a>
-<a id="tocsagreement_element"></a>
-<h2 id="tocS_agreement_element">agreement_element</h2>
+<a id="schemadigital_content_element"></a>
+<a id="schema_digital_content_element"></a>
+<a id="tocSdigital_content_element"></a>
+<a id="tocsdigital_content_element"></a>
+<h2 id="tocS_digital_content_element">digital_content_element</h2>
 
 ```json
 {
-  "parent_agreement_id": "string"
+  "parent_digital_content_id": "string"
 }
 
 ```
@@ -4701,7 +4701,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
 
 | Name              | Type   | Required | Restrictions | Description |
 | ----------------- | ------ | -------- | ------------ | ----------- |
-| parent_agreement_id | string | true     | none         | none        |
+| parent_digital_content_id | string | true     | none         | none        |
 
 <a id="schemareposts"></a>
 <a id="schema_reposts"></a>
@@ -4850,7 +4850,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
         "1000x1000": "string"
       },
       "repost_count": 0,
-      "agreement_count": 0
+      "digital_content_count": 0
     }
   ]
 }
@@ -5066,7 +5066,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "agreement_count": 0
+        "digital_content_count": 0
       }
     }
   ]
@@ -5121,7 +5121,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
       "1000x1000": "string"
     },
     "repost_count": 0,
-    "agreement_count": 0
+    "digital_content_count": 0
   }
 }
 
@@ -5164,11 +5164,11 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
 | 480x480   | string | false    | none         | none        |
 | 1000x1000 | string | false    | none         | none        |
 
-<a id="schemacontent_list_agreements_response"></a>
-<a id="schema_content_list_agreements_response"></a>
-<a id="tocScontent_list_agreements_response"></a>
-<a id="tocscontent_list_agreements_response"></a>
-<h2 id="tocS_content_list_agreements_response">content_list_agreements_response</h2>
+<a id="schemacontent_list_digital_contents_response"></a>
+<a id="schema_content_list_digital_contents_response"></a>
+<a id="tocScontent_list_digital_contents_response"></a>
+<a id="tocscontent_list_digital_contents_response"></a>
+<h2 id="tocS_content_list_digital_contents_response">content_list_digital_contents_response</h2>
 
 ```json
 {
@@ -5187,7 +5187,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
       "remix_of": {
         "agreements": [
           {
-            "parent_agreement_id": "string"
+            "parent_digital_content_id": "string"
           }
         ]
       },
@@ -5216,7 +5216,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "agreement_count": 0
+        "digital_content_count": 0
       },
       "duration": 0,
       "downloadable": true,
@@ -5232,7 +5232,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
 
 | Name | Type                    | Required | Restrictions | Description |
 | ---- | ----------------------- | -------- | ------------ | ----------- |
-| data | [[Agreement](#schemaagreement)] | false    | none         | none        |
+| data | [[DigitalContent](#schemaagreement)] | false    | none         | none        |
 
 <a id="schemacontent_list_search_result"></a>
 <a id="schema_content_list_search_result"></a>
@@ -5277,7 +5277,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "agreement_count": 0
+        "digital_content_count": 0
       }
     }
   ]
@@ -5334,7 +5334,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "agreement_count": 0
+        "digital_content_count": 0
       }
     }
   ]
@@ -5348,11 +5348,11 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
 | ---- | ----------------------------- | -------- | ------------ | ----------- |
 | data | [[contentList](#schemacontentList)] | false    | none         | none        |
 
-<a id="schemaagreement_response"></a>
-<a id="schema_agreement_response"></a>
-<a id="tocSagreement_response"></a>
-<a id="tocsagreement_response"></a>
-<h2 id="tocS_agreement_response">agreement_response</h2>
+<a id="schemadigital_content_response"></a>
+<a id="schema_digital_content_response"></a>
+<a id="tocSdigital_content_response"></a>
+<a id="tocsdigital_content_response"></a>
+<h2 id="tocS_digital_content_response">digital_content_response</h2>
 
 ```json
 {
@@ -5370,7 +5370,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
     "remix_of": {
       "agreements": [
         {
-          "parent_agreement_id": "string"
+          "parent_digital_content_id": "string"
         }
       ]
     },
@@ -5399,7 +5399,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
         "1000x1000": "string"
       },
       "repost_count": 0,
-      "agreement_count": 0
+      "digital_content_count": 0
     },
     "duration": 0,
     "downloadable": true,
@@ -5414,13 +5414,13 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
 
 | Name | Type                  | Required | Restrictions | Description |
 | ---- | --------------------- | -------- | ------------ | ----------- |
-| data | [Agreement](#schemaagreement) | false    | none         | none        |
+| data | [DigitalContent](#schemaagreement) | false    | none         | none        |
 
-<a id="schemaagreement_search"></a>
-<a id="schema_agreement_search"></a>
-<a id="tocSagreement_search"></a>
-<a id="tocsagreement_search"></a>
-<h2 id="tocS_agreement_search">agreement_search</h2>
+<a id="schemadigital_content_search"></a>
+<a id="schema_digital_content_search"></a>
+<a id="tocSdigital_content_search"></a>
+<a id="tocsdigital_content_search"></a>
+<h2 id="tocS_digital_content_search">digital_content_search</h2>
 
 ```json
 {
@@ -5439,7 +5439,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
       "remix_of": {
         "agreements": [
           {
-            "parent_agreement_id": "string"
+            "parent_digital_content_id": "string"
           }
         ]
       },
@@ -5468,7 +5468,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "agreement_count": 0
+        "digital_content_count": 0
       },
       "duration": 0,
       "downloadable": true,
@@ -5484,7 +5484,7 @@ Voici des exemples de formats de réponse que vous pouvez vous attendre à recev
 
 | Name | Type                    | Required | Restrictions | Description |
 | ---- | ----------------------- | -------- | ------------ | ----------- |
-| data | [[Agreement](#schemaagreement)] | false    | none         | none        |
+| data | [[DigitalContent](#schemaagreement)] | false    | none         | none        |
 
 <a id="schemaattestation_reponse"></a>
 <a id="schema_attestation_reponse"></a>

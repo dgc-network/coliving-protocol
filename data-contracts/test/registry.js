@@ -196,7 +196,7 @@ contract('Registry', async (accounts) => {
     let agreementFactory = await AgreementFactory.new(registry.address, _constants.agreementStorageKey, _constants.userFactoryKey, networkId)
     await registry.addContract(_constants.agreementFactoryKey, agreementFactory.address)
 
-    // perform expected behavior - add+validate user, add+validate agreement
+    // perform expected behavior - add+validate user, add+validate digital_content
     let userId = 1
     let agreementId = 1
     let agreementId2 = 2
@@ -232,7 +232,7 @@ contract('Registry', async (accounts) => {
     await agreementFactory.setRegistry(registry2.address)
     await registry2.addContract(_constants.agreementFactoryKey, agreementFactory.address)
 
-    // perform expected behavior - retrieve+validate previous user; add+validate new agreement with previous user
+    // perform expected behavior - retrieve+validate previous user; add+validate new digital_content with previous user
     let user = await getUserFromFactory(userId, userFactory)
     validateObj(user, { wallet: userWallet, handle: toStr(_constants.userHandle1) })
     await _lib.addAgreementAndValidate(

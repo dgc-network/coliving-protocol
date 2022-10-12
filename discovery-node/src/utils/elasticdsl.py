@@ -73,7 +73,7 @@ def populate_user_metadata_es(user, current_user):
     return omit_indexed_fields(user)
 
 
-def populate_agreement_or_content_list_metadata_es(item, current_user):
+def populate_digital_content_or_content_list_metadata_es(item, current_user):
     if current_user:
         my_id = current_user["user_id"]
         item["has_current_user_reposted"] = my_id in item["reposted_by"]
@@ -89,7 +89,7 @@ omit_keys = [
     "following_ids",
     "follower_ids",
     "agreements",
-    # agreement index
+    # digital_content index
     "reposted_by",
     "saved_by",
     # saves + reposts
@@ -100,7 +100,7 @@ omit_keys = [
 def omit_indexed_fields(doc):
     doc = copy.copy(doc)
 
-    # agreement
+    # digital_content
     if "tags" in doc and isinstance(doc["tags"], list):
         doc["tags"] = ",".join(doc["tags"])
 

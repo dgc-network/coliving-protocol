@@ -264,10 +264,10 @@ class App {
     this.express.use(cors())
   }
 
-  // Create rate limits for listens on a per agreement per user basis and per agreement per ip basis
+  // Create rate limits for listens on a per digital_content per user basis and per digital_content per ip basis
   _createRateLimitsForListenCounts (interval, timeInSeconds) {
     const listenCountLimiter = getRateLimiter({
-      prefix: `listenCountLimiter:::${interval}-agreement:::`,
+      prefix: `listenCountLimiter:::${interval}-digital-content:::`,
       expiry: timeInSeconds,
       max: config.get(`rateLimitingListensPerAgreementPer${interval}`), // max requests per interval
       skip: function (req) {
@@ -284,7 +284,7 @@ class App {
     })
 
     const listenCountIPAgreementLimiter = getRateLimiter({
-      prefix: `listenCountLimiter:::${interval}-ip-agreement:::`,
+      prefix: `listenCountLimiter:::${interval}-ip-digital-content:::`,
       expiry: timeInSeconds,
       max: config.get(`rateLimitingListensPerIPAgreementPer${interval}`), // max requests per interval
       keyGenerator: function (req) {

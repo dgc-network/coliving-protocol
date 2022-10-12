@@ -4,8 +4,8 @@ from src.models.model_utils import RepresentableMixin
 
 
 class AggregateAgreement(Base, RepresentableMixin):
-    __tablename__ = "aggregate_agreement"
+    __tablename__ = "aggregate_digital_content"
 
-    agreement_id = Column(Integer, primary_key=True)
+    digital_content_id = Column(Integer, primary_key=True)
     repost_count = Column(Integer, nullable=False, server_default=text("0"))
     save_count = Column(Integer, nullable=False, server_default=text("0"))

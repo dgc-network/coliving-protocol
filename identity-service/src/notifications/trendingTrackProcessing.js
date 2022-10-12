@@ -76,10 +76,10 @@ async function getTrendingAgreements (trendingExperiment, discoveryNodes) {
         params,
         timeout: 10000
       })
-      const trendingAgreements = trendingAgreementsResponse.data.data.map((agreement, idx) => ({
-        agreementId: decodeHashId(agreement.id),
+      const trendingAgreements = trendingAgreementsResponse.data.data.map((digital_content, idx) => ({
+        agreementId: decodeHashId(digital_content.id),
         rank: idx + 1,
-        userId: decodeHashId(agreement.user.id)
+        userId: decodeHashId(digital_content.user.id)
       }))
       const blocknumber = trendingAgreementsResponse.data.latest_indexed_block
       return { trendingAgreements, blocknumber }
@@ -115,9 +115,9 @@ async function getTrendingAgreements (trendingExperiment, discoveryNodes) {
 
 /**
  * For each of the trending agreements
- * check if the agreement meets the constraints to become a notification
- *   - If the trending agreement was not already created in the past 3 hrs
- *   - The trending agreement should be new or move up in rank ie. from rank 4 => rank 1
+ * check if the digital_content meets the constraints to become a notification
+ *   - If the trending digital_content was not already created in the past 3 hrs
+ *   - The trending digital_content should be new or move up in rank ie. from rank 4 => rank 1
  * Insert the notification and notificationAction into the DB
  * Check the user's notification settings, and if enabled, send a push notification
  * @param {ColivingLibs} colivingLibs Coliving Libs instance
@@ -150,12 +150,12 @@ async function processTrendingAgreements (colivingLibs, blocknumber, trendingAgr
       const previousRank = existingTrendingAgreements[0].actions[0].actionEntityId
       const previousCreated = moment(existingTrendingAgreements[0].timestamp)
       const duration = moment.duration(now.diff(previousCreated)).asHours()
-      // If the user was notified of the trending agreement within the last TRENDING_INTERVAL_HOURS skip
+      // If the user was notified of the trending digital_content within the last TRENDING_INTERVAL_HOURS skip
       // If the new rank is not less than the old rank, skip
-      //   ie. Skip if agreement moved from #2 trending to #3 trending or stayed the same
+      //   ie. Skip if digital_content moved from #2 trending to #3 trending or stayed the same
       if (duration < TRENDING_INTERVAL_HOURS || previousRank <= rank) {
         // Skip the insertion of the notification into the DB
-        // This trending agreement does not meet the constraints
+        // This trending digital_content does not meet the constraints
         continue
       }
     }
@@ -199,7 +199,7 @@ async function processTrendingAgreements (colivingLibs, blocknumber, trendingAgr
           ...notifStub,
           ...(mapNotification(notifStub, metadata))
         }
-        logger.debug('processTrendingAgreement - About to generate message for trending agreement milestone push notification', msgGenNotif, metadata)
+        logger.debug('processTrendingAgreement - About to generate message for trending digital_content milestone push notification', msgGenNotif, metadata)
         const msg = pushNotificationMessagesMap[notificationTypes.TrendingAgreement](msgGenNotif)
         logger.debug(`processTrendingAgreement - message: ${msg}`)
         const title = notificationResponseTitleMap[notificationTypes.TrendingAgreement]()
@@ -209,7 +209,7 @@ async function processTrendingAgreements (colivingLibs, blocknumber, trendingAgr
         await publish(msg, userId, tx, true, title, types)
       } catch (e) {
         // Log on error instead of failing
-        logger.error(`Error adding trending agreement push notification to buffer: ${e}. ${JSON.stringify({ rank, agreementId, userId })}`)
+        logger.error(`Error adding trending digital_content push notification to buffer: ${e}. ${JSON.stringify({ rank, agreementId, userId })}`)
       }
     }
   }
@@ -223,7 +223,7 @@ async function indexTrendingAgreements (colivingLibs, optimizelyClient, tx) {
     const { trendingAgreements, blocknumber } = await getTrendingAgreements(trendingExperiment, SELECTED_DISCOVERY_NODES)
     await processTrendingAgreements(colivingLibs, blocknumber, trendingAgreements, tx)
   } catch (err) {
-    logger.error(`Unable to process trending agreement notifications: ${err.message}`)
+    logger.error(`Unable to process trending digital_content notifications: ${err.message}`)
   }
 }
 

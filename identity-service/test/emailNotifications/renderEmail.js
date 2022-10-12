@@ -11,13 +11,13 @@ const getEmailNotifications = require('../../src/notifications/fetchNotification
 const renderNotificationsEmail = require('../../src/notifications/renderEmail')
 const notifications = [
   {
-    // User id 2 reposts agreement 1 owner by user id 1
+    // User id 2 reposts digital_content 1 owner by user id 1
     blocknumber: 2,
     initiator: 2,
     metadata: {
       entity_id: 1,
       entity_owner_id: 1,
-      entity_type: 'agreement'
+      entity_type: 'digital_content'
     },
     timestamp: '2020-10-01T19:39:45 Z',
     type: 'Repost'
@@ -51,7 +51,7 @@ const notifications = [
     metadata: {
       entity_id: 1,
       entity_owner_id: 1,
-      entity_type: 'agreement'
+      entity_type: 'digital_content'
     },
     timestamp: '2020-10-04T19:39:45 Z',
     type: 'Favorite'
@@ -81,10 +81,10 @@ const notifications = [
 ]
 
 const mockColivingLibs = {
-  Agreement: {
+  DigitalContent: {
     getAgreements: (limit, offset, ids) => {
       return ids.map((id) => ({
-        agreement_id: id,
+        digital_content_id: id,
         owner_id: id,
         title: `AGREEMENT_${id}`
       }))
@@ -123,7 +123,7 @@ const challengeNotifications = [
   {
     initiator: 1,
     metadata: {
-      challenge_id: 'agreement-upload'
+      challenge_id: 'digital-content-upload'
     },
     slot: 112519142,
     type: 'ChallengeReward'

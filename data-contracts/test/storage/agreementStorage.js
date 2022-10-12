@@ -35,7 +35,7 @@ contract('AgreementStorage', async (accounts) => {
   })
 
   it('Should ensure AgreementStorage contents decoupled from AgreementFactory instances', async () => {
-    // add user to associate agreement with
+    // add user to associate digital_content with
     await _lib.addUserAndValidate(
       userFactory,
       testUserId,
@@ -44,7 +44,7 @@ contract('AgreementStorage', async (accounts) => {
       _constants.userHandle1,
       _constants.isCreatorTrue)
 
-    // add agreement
+    // add digital_content
     await _lib.addAgreementAndValidate(
       agreementFactory,
       testAgreementId,
@@ -62,12 +62,12 @@ contract('AgreementStorage', async (accounts) => {
     await registry.addContract(_constants.agreementFactoryKey, newAgreementFactory.address)
     assert.notEqual(newAgreementFactory.address, agreementFactory.address, 'Expected different contract instance addresses')
 
-    // retrieve original agreement through new agreementFactory instance
-    let agreement = await getAgreementFromFactory(testAgreementId, newAgreementFactory)
+    // retrieve original digital_content through new agreementFactory instance
+    let digital_content = await getAgreementFromFactory(testAgreementId, newAgreementFactory)
 
-    // validate retrieved agreement fields match transaction inputs
+    // validate retrieved digital_content fields match transaction inputs
     validateObj(
-      agreement,
+      digital_content,
       {
         agreementOwnerId: testUserId,
         multihashDigest: _constants.testMultihash.digest2,

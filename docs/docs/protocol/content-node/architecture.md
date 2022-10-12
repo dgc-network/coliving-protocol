@@ -9,9 +9,9 @@ sidebar_position: 2
 
 The Content Node's core service is a web server with an HTTP API to process incoming requests and perform the following functions:
 
-- user & agreement metadata upload
-- user agreement file upload
-- user & agreement data, metadata, and agreement file retrieval
+- user & digital_content metadata upload
+- user digital_content file upload
+- user & digital_content data, metadata, and digital_content file retrieval
 
 *The web server is a [NodeJS](https://nodejs.org) [Express app](https://expressjs.com/).*
 
@@ -29,9 +29,9 @@ A [Redis client](https://redis.io/) is used for for resource locking, request ra
 
 *Redis is managed in the codebase through the [ioredis](https://github.com/luin/ioredis) npm package*
 
-## Agreement Segmenting
+## DigitalContent Segmenting
 
-As defined by the [Coliving protocol](https://whitepaper.coliving.lol), the content node uses [FFMPEG](https://ffmpeg.org/ffmpeg.html) to segment & transcode all uploaded agreement files before storing/serving.
+As defined by the [Coliving protocol](https://whitepaper.coliving.lol), the content node uses [FFMPEG](https://ffmpeg.org/ffmpeg.html) to segment & transcode all uploaded digital_content files before storing/serving.
 
 ## Data Redundancy**
 

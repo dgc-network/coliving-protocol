@@ -181,12 +181,12 @@ describe('test AgreementTranscodeHandoffManager', function () {
     try {
       await AgreementTranscodeHandoffManager.fetchFilesAndWriteToFs({
         fileNameNoExtension: reqMock.fileNameNoExtension,
-        transcodeFilePath: `/test_file_storage/files/tmp_agreement_artifacts/${reqMock.uuid}/${reqMock.uuid}.mp3`,
+        transcodeFilePath: `/test_file_storage/files/tmp_digital_content_artifacts/${reqMock.uuid}/${reqMock.uuid}.mp3`,
         segmentFileNames: ['segment00000.ts'],
         segmentFilePaths: [
-          `/test_file_storage/files/tmp_agreement_artifacts/${reqMock.uuid}/segments/segment00000.ts`
+          `/test_file_storage/files/tmp_digital_content_artifacts/${reqMock.uuid}/segments/segment00000.ts`
         ],
-        m3u8FilePath: `/test_file_storage/files/tmp_agreement_artifacts/${reqMock.uuid}/${reqMock.uuid}.m3u8`
+        m3u8FilePath: `/test_file_storage/files/tmp_digital_content_artifacts/${reqMock.uuid}/${reqMock.uuid}.m3u8`
       })
       assert.fail('if fetching segment fails, should not pass')
       // TODO: assert that the files are removed
@@ -207,12 +207,12 @@ describe('test AgreementTranscodeHandoffManager', function () {
     try {
       await AgreementTranscodeHandoffManager.fetchFilesAndWriteToFs({
         fileNameNoExtension: reqMock.fileNameNoExtension,
-        transcodeFilePath: `/test_file_storage/files/tmp_agreement_artifacts/${reqMock.uuid}/${reqMock.uuid}.mp3`,
+        transcodeFilePath: `/test_file_storage/files/tmp_digital_content_artifacts/${reqMock.uuid}/${reqMock.uuid}.mp3`,
         segmentFileNames: ['segment00000.ts'],
         segmentFilePaths: [
-          `/test_file_storage/files/tmp_agreement_artifacts/${reqMock.uuid}/segments/segment00000.ts`
+          `/test_file_storage/files/tmp_digital_content_artifacts/${reqMock.uuid}/segments/segment00000.ts`
         ],
-        m3u8FilePath: `/test_file_storage/files/tmp_agreement_artifacts/${reqMock.uuid}/${reqMock.uuid}.m3u8`
+        m3u8FilePath: `/test_file_storage/files/tmp_digital_content_artifacts/${reqMock.uuid}/${reqMock.uuid}.m3u8`
       })
       assert.fail('if fetching transcode fails, should not pass')
       // TODO: assert that the files are removed
@@ -236,12 +236,12 @@ describe('test AgreementTranscodeHandoffManager', function () {
     try {
       await AgreementTranscodeHandoffManager.fetchFilesAndWriteToFs({
         fileNameNoExtension: reqMock.fileNameNoExtension,
-        transcodeFilePath: `/test_file_storage/files/tmp_agreement_artifacts/${reqMock.uuid}/${reqMock.uuid}.mp3`,
+        transcodeFilePath: `/test_file_storage/files/tmp_digital_content_artifacts/${reqMock.uuid}/${reqMock.uuid}.mp3`,
         segmentFileNames: ['segment00000.ts'],
         segmentFilePaths: [
-          `/test_file_storage/files/tmp_agreement_artifacts/${reqMock.uuid}/segments/segment00000.ts`
+          `/test_file_storage/files/tmp_digital_content_artifacts/${reqMock.uuid}/segments/segment00000.ts`
         ],
-        m3u8FilePath: `/test_file_storage/files/tmp_agreement_artifacts/${reqMock.uuid}/${reqMock.uuid}.m3u8`
+        m3u8FilePath: `/test_file_storage/files/tmp_digital_content_artifacts/${reqMock.uuid}/${reqMock.uuid}.m3u8`
       })
       assert.fail('if fetching m3u8 fails, should not pass')
       // TODO: assert that the files are removed
@@ -265,23 +265,23 @@ describe('test AgreementTranscodeHandoffManager', function () {
     try {
       const resp = await AgreementTranscodeHandoffManager.fetchFilesAndWriteToFs({
         fileNameNoExtension: reqMock.fileNameNoExtension,
-        transcodeFilePath: `/test_file_storage/files/tmp_agreement_artifacts/${reqMock.uuid}/${reqMock.uuid}.mp3`,
+        transcodeFilePath: `/test_file_storage/files/tmp_digital_content_artifacts/${reqMock.uuid}/${reqMock.uuid}.mp3`,
         segmentFileNames: ['segment00000.ts'],
         segmentFilePaths: [
-          `/test_file_storage/files/tmp_agreement_artifacts/${reqMock.uuid}/segments/segment00000.ts`
+          `/test_file_storage/files/tmp_digital_content_artifacts/${reqMock.uuid}/segments/segment00000.ts`
         ],
-        m3u8FilePath: `/test_file_storage/files/tmp_agreement_artifacts/${reqMock.uuid}/${reqMock.uuid}.m3u8`
+        m3u8FilePath: `/test_file_storage/files/tmp_digital_content_artifacts/${reqMock.uuid}/${reqMock.uuid}.m3u8`
       })
 
       assert.strictEqual(
         resp.transcodeFilePath,
-        `/test_file_storage/files/tmp_agreement_artifacts/${reqMock.uuid}/${reqMock.uuid}.mp3`
+        `/test_file_storage/files/tmp_digital_content_artifacts/${reqMock.uuid}/${reqMock.uuid}.mp3`
       )
       assert.strictEqual(resp.segmentFileNames.length, 1)
       assert.strictEqual(resp.segmentFileNames[0], 'segment00000.ts')
       assert.strictEqual(
         resp.m3u8FilePath,
-        `/test_file_storage/files/tmp_agreement_artifacts/${reqMock.uuid}/${reqMock.uuid}.m3u8`
+        `/test_file_storage/files/tmp_digital_content_artifacts/${reqMock.uuid}/${reqMock.uuid}.m3u8`
       )
     } catch (e) {
       assert.fail('if fetching files succeed, should not err')

@@ -21,7 +21,7 @@ const { logger } = require('../../logging')
 const router = express.Router()
 
 const types = models.ContentBlacklist.Types
-const TYPES_SET = new Set([types.cid, types.user, types.agreement])
+const TYPES_SET = new Set([types.cid, types.user, types.digital_content])
 
 // Controllers
 
@@ -159,7 +159,7 @@ const contentBlacklistRemoveController = async (req) => {
 /**
  * Parse query params. Should contain id, type, timestamp, signature
  * @param {Object} queryParams
- * @param {string} queryParams.type the type (user, agreement, cid) (paired with values)
+ * @param {string} queryParams.type the type (user, digital_content, cid) (paired with values)
  * @param {number[]} queryParams.values[] the ids (for agreements, users) or cids (segments)
  * @param {string} queryParams.timestamp the timestamp of when the data was signed
  */
@@ -217,7 +217,7 @@ function parseQueryParams(queryParams) {
 /**
  * Verify that the requester is authorized to make changes to ContentBlacklist
  * @param {Object} data data to sign; structure of {type, values, timestamp}
- * @param {string} data.type the type (user, agreement, cid) (paired with ids)
+ * @param {string} data.type the type (user, digital_content, cid) (paired with ids)
  * @param {number[]} data.values[] the ids of either users or agreements, or segments
  * @param {string} data.timestamp the timestamp of when the data was signed
  * @param {string} signature the signature generated from signing the data
@@ -263,9 +263,9 @@ const filterNonexistantIds = async (libs, type, ids) => {
         if (resp.length < ids.length) ids = resp.map((user) => user.user_id)
         break
       case 'AGREEMENT':
-        resp = await libs.Agreement.getAgreements(ids.length, 0, ids)
+        resp = await libs.DigitalContent.getAgreements(ids.length, 0, ids)
         if (!resp || resp.length === 0) throw new Error('Agreements not found.')
-        if (resp.length < ids.length) ids = resp.map((agreement) => agreement.agreement_id)
+        if (resp.length < ids.length) ids = resp.map((digital_content) => digital_content.digital_content_id)
         break
       default:
         throw new Error('Could not recognize type.')

@@ -9,9 +9,9 @@ from src.api.v1.users import ns as users_ns
 from src.models.users.user import User
 from src.utils.helpers import encode_int_id
 
-agreement_url_regex = re.compile(r"^/(?P<handle>[^/]*)/(?P<slug>[^/]*)$")
+digital_content_url_regex = re.compile(r"^/(?P<handle>[^/]*)/(?P<slug>[^/]*)$")
 content_list_url_regex = re.compile(
-    r"/(?P<handle>[^/]*)/(contentList|album)/(?P<agreement>[^/]*)(?=-)-(?P<id>[0-9]*)$"
+    r"/(?P<handle>[^/]*)/(contentList|album)/(?P<digital_content>[^/]*)(?=-)-(?P<id>[0-9]*)$"
 )
 user_url_regex = re.compile(r"^/(?P<handle>[^/]*)$")
 
@@ -29,11 +29,11 @@ def resolve_url(session, url):
     # Will strip out any preceding protocol & domain (e.g. https://coliving.lol)
     path = parsed.path
 
-    match = agreement_url_regex.match(path)
+    match = digital_content_url_regex.match(path)
     if match:
         slug = match.group("slug")
         handle = match.group("handle")
-        return ns_url_for(agreements_ns, "bulk_agreements", slug=slug, handle=handle)
+        return ns_url_for(agreements_ns, "bulk_digital_contents", slug=slug, handle=handle)
 
     match = content_list_url_regex.match(path)
     if match:

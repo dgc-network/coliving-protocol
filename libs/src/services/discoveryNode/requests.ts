@@ -66,7 +66,7 @@ export const getAgreements = (
 
   if (idsArray) {
     if (!Array.isArray(idsArray)) {
-      throw new Error('Expected array of agreement ids')
+      throw new Error('Expected array of digital_content ids')
     }
     queryParams.id = idsArray
   }
@@ -295,7 +295,7 @@ export const getAgreementRepostIntersectionUsers = (
   return {
     endpoint: 'users',
     urlParams:
-      '/intersection/repost/agreement/' + repostAgreementId + '/' + followerUserId,
+      '/intersection/repost/digital_content/' + repostAgreementId + '/' + followerUserId,
     queryParams: { limit: limit, offset: offset }
   }
 }
@@ -348,7 +348,7 @@ export const getRepostersForAgreement = (
 ) => {
   return {
     endpoint: 'users',
-    urlParams: '/reposts/agreement/' + repostAgreementId,
+    urlParams: '/reposts/digital_content/' + repostAgreementId,
     queryParams: { limit: limit, offset: offset }
   }
 }
@@ -372,7 +372,7 @@ export const getSaversForAgreement = (
 ) => {
   return {
     endpoint: 'users',
-    urlParams: '/saves/agreement/' + saveAgreementId,
+    urlParams: '/saves/digital_content/' + saveAgreementId,
     queryParams: { limit: limit, offset: offset }
   }
 }
@@ -613,7 +613,7 @@ export const getNotifications = (
     endpoint: 'notifications',
     queryParams: {
       min_block_number: minBlockNumber,
-      agreement_id: agreementIds
+      digital_content_id: agreementIds
     },
     timeout
   }
@@ -634,7 +634,7 @@ export const getSolanaNotifications = (
 
 export const getAgreementListenMilestones = (timeout: number) => {
   return {
-    endpoint: 'agreement_listen_milestones',
+    endpoint: 'digital_content_listen_milestones',
     timeout
   }
 }

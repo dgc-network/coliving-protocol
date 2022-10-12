@@ -1,4 +1,4 @@
-"""add user agreement tag mat view
+"""add user digital_content tag mat view
 
 Revision ID: 6d1b38f242fe
 Revises: 47b07608863f
@@ -21,17 +21,17 @@ def upgrade():
     connection = op.get_bind()
     connection.execute(
         """
-    --- Create matviews for easier user and agreement tag search querying
-    CREATE MATERIALIZED VIEW tag_agreement_user AS
+    --- Create matviews for easier user and digital_content tag search querying
+    CREATE MATERIALIZED VIEW tag_digital_content_user AS
 	SELECT
         UNNEST(tags) AS tag,
-        agreement_id,
+        digital_content_id,
         owner_id
     FROM
     (
         SELECT
             string_to_array(LOWER(agreements.tags), ',') AS tags,
-            agreement_id,
+            digital_content_id,
             owner_id
         FROM
             agreements
@@ -46,11 +46,11 @@ def upgrade():
     ) AS t
     GROUP BY
         tag,
-        agreement_id,
+        digital_content_id,
         owner_id;
     
-    CREATE INDEX tag_agreement_user_tag_idx ON tag_agreement_user (tag);
-    CREATE UNIQUE INDEX tag_agreement_user_idx ON tag_agreement_user (tag, agreement_id, owner_id);
+    CREATE INDEX tag_digital_content_user_tag_idx ON tag_digital_content_user (tag);
+    CREATE UNIQUE INDEX tag_digital_content_user_idx ON tag_digital_content_user (tag, digital_content_id, owner_id);
     """
     )
 
@@ -59,8 +59,8 @@ def downgrade():
     connection = op.get_bind()
     connection.execute(
         """
-    DROP INDEX IF EXISTS tag_agreement_user_tag_idx;
-    DROP INDEX IF EXISTS tag_agreement_user_idx;
-    DROP MATERIALIZED VIEW tag_agreement_user;
+    DROP INDEX IF EXISTS tag_digital_content_user_tag_idx;
+    DROP INDEX IF EXISTS tag_digital_content_user_idx;
+    DROP MATERIALIZED VIEW tag_digital_content_user;
     """
     )

@@ -1,7 +1,7 @@
 from sqlalchemy import desc, func
 from src import exceptions
 from src.models.social.repost import Repost, RepostType
-from src.models.agreements.agreement import Agreement
+from src.models.agreements.digital_content import DigitalContent
 from src.models.users.aggregate_user import AggregateUser
 from src.models.users.user import User
 from src.queries import response_name_constants
@@ -10,25 +10,25 @@ from src.utils import helpers
 from src.utils.db_session import get_db_read_replica
 
 
-def get_reposters_for_agreement(args):
+def get_reposters_for_digital_content(args):
     user_results = []
     current_user_id = args.get("current_user_id")
-    repost_agreement_id = args.get("repost_agreement_id")
+    repost_digital_content_id = args.get("repost_digital_content_id")
     limit = args.get("limit")
     offset = args.get("offset")
 
     db = get_db_read_replica()
     with db.scoped_session() as session:
-        # Ensure Agreement exists for provided repost_agreement_id.
-        agreement_entry = (
-            session.query(Agreement)
-            .filter(Agreement.agreement_id == repost_agreement_id, Agreement.is_current == True)
+        # Ensure DigitalContent exists for provided repost_digital_content_id.
+        digital_content_entry = (
+            session.query(DigitalContent)
+            .filter(DigitalContent.digital_content_id == repost_digital_content_id, DigitalContent.is_current == True)
             .first()
         )
-        if agreement_entry is None:
-            raise exceptions.NotFoundError("Resource not found for provided agreement id")
+        if digital_content_entry is None:
+            raise exceptions.NotFoundError("Resource not found for provided digital_content id")
 
-        # Get all Users that reposted agreement, ordered by follower_count desc & paginated.
+        # Get all Users that reposted digital_content, ordered by follower_count desc & paginated.
         query = (
             session.query(
                 User,
@@ -41,11 +41,11 @@ def get_reposters_for_agreement(args):
             .outerjoin(AggregateUser, AggregateUser.user_id == User.user_id)
             .filter(
                 User.is_current == True,
-                # Only select users that reposted given agreement.
+                # Only select users that reposted given digital_content.
                 User.user_id.in_(
                     session.query(Repost.user_id).filter(
-                        Repost.repost_item_id == repost_agreement_id,
-                        Repost.repost_type == RepostType.agreement,
+                        Repost.repost_item_id == repost_digital_content_id,
+                        Repost.repost_type == RepostType.digital_content,
                         Repost.is_current == True,
                         Repost.is_delete == False,
                     )

@@ -13,9 +13,9 @@ const UserImage = ({ user }) => (
   />
 )
 
-const AgreementImage = ({ agreement }) => (
+const AgreementImage = ({ digital_content }) => (
   <img
-    src={agreement.image || agreement.thumbnail}
+    src={digital_content.image || digital_content.thumbnail}
     style={{
       height: '42px',
       width: '42px',
@@ -207,7 +207,7 @@ const Body = (props) => {
                       width: '60px'
                     }}
                   >
-                    <AgreementImage agreement={props.agreement} />
+                    <AgreementImage digital_content={props.digital_content} />
                   </td>
                   <td
                     colspan={11}

@@ -30,6 +30,6 @@ export interface ContentListAddedTimestamp {
      * @type {string}
      * @memberof ContentListAddedTimestamp
      */
-    agreement_id: string;
+    digital_content_id: string;
 }
 

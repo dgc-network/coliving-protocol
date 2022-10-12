@@ -16,8 +16,8 @@ from src.models.content_lists.content_list import ContentList
 from src.models.social.follow import Follow
 from src.models.social.repost import Repost
 from src.models.social.save import Save
-from src.models.agreements.agreement import Agreement
-from src.models.agreements.agreement_route import AgreementRoute
+from src.models.agreements.digital_content import DigitalContent
+from src.models.agreements.digital_content_route import AgreementRoute
 from src.models.users.associated_wallet import AssociatedWallet
 from src.models.users.user import User
 from src.models.users.user_events import UserEvent
@@ -34,7 +34,7 @@ from src.tasks.celery_app import celery
 from src.tasks.content_lists import content_list_state_update
 from src.tasks.social_features import social_feature_state_update
 from src.tasks.sort_block_transactions import sort_block_transactions
-from src.tasks.agreements import agreement_event_types_lookup, agreement_state_update
+from src.tasks.agreements import digital_content_event_types_lookup, digital_content_state_update
 from src.tasks.user_library import user_library_state_update
 from src.tasks.user_replica_set import user_replica_set_state_update
 from src.tasks.users import user_event_types_lookup, user_state_update
@@ -56,7 +56,7 @@ from src.utils.prometheus_metric import (
 )
 from src.utils.redis_cache import (
     remove_cached_content_list_ids,
-    remove_cached_agreement_ids,
+    remove_cached_digital_content_ids,
     remove_cached_user_ids,
 )
 from src.utils.redis_constants import (
@@ -91,7 +91,7 @@ USER_REPLICA_SET_MANAGER_CONTRACT_NAME = CONTRACT_NAMES_ON_CHAIN[
 
 TX_TYPE_TO_HANDLER_MAP = {
     USER_FACTORY: user_state_update,
-    AGREEMENT_FACTORY: agreement_state_update,
+    AGREEMENT_FACTORY: digital_content_state_update,
     SOCIAL_FEATURE_FACTORY: social_feature_state_update,
     CONTENT_LIST_FACTORY: content_list_state_update,
     USER_LIBRARY_FACTORY: user_library_state_update,
@@ -265,14 +265,14 @@ def fetch_tx_receipts(self, block):
 def fetch_cid_metadata(
     db,
     user_factory_txs,
-    agreement_factory_txs,
+    digital_content_factory_txs,
 ):
     start_time = datetime.now()
     user_contract = update_task.user_contract
-    agreement_contract = update_task.agreement_contract
+    digital_content_contract = update_task.digital_content_contract
 
     cids_txhash_set: Tuple[str, Any] = set()
-    cid_type: Dict[str, str] = {}  # cid -> entity type agreement / user
+    cid_type: Dict[str, str] = {}  # cid -> entity type digital_content / user
 
     # cid -> user_id lookup to make fetching replica set more efficient
     cid_to_user_id: Dict[str, int] = {}
@@ -293,29 +293,29 @@ def fetch_cid_metadata(
                 user_id = event_args._userId
                 cid_to_user_id[cid] = user_id
 
-        for tx_receipt in agreement_factory_txs:
+        for tx_receipt in digital_content_factory_txs:
             txhash = update_task.web3.toHex(tx_receipt.transactionHash)
             for event_type in [
-                agreement_event_types_lookup["new_agreement"],
-                agreement_event_types_lookup["update_agreement"],
+                digital_content_event_types_lookup["new_digital_content"],
+                digital_content_event_types_lookup["update_digital_content"],
             ]:
-                agreement_events_tx = getattr(
-                    agreement_contract.events, event_type
+                digital_content_events_tx = getattr(
+                    digital_content_contract.events, event_type
                 )().processReceipt(tx_receipt)
-                for entry in agreement_events_tx:
+                for entry in digital_content_events_tx:
                     event_args = entry["args"]
-                    agreement_metadata_digest = event_args._multihashDigest.hex()
-                    agreement_metadata_hash_fn = event_args._multihashHashFn
-                    agreement_owner_id = event_args._agreementOwnerId
+                    digital_content_metadata_digest = event_args._multihashDigest.hex()
+                    digital_content_metadata_hash_fn = event_args._multihashHashFn
+                    digital_content_owner_id = event_args._digital_contentOwnerId
                     buf = multihash.encode(
-                        bytes.fromhex(agreement_metadata_digest), agreement_metadata_hash_fn
+                        bytes.fromhex(digital_content_metadata_digest), digital_content_metadata_hash_fn
                     )
                     cid = multihash.to_b58_string(buf)
                     cids_txhash_set.add((cid, txhash))
-                    cid_type[cid] = "agreement"
-                    cid_to_user_id[cid] = agreement_owner_id
+                    cid_type[cid] = "digital_content"
+                    cid_to_user_id[cid] = digital_content_owner_id
 
-        # user -> replica set string lookup, used to make user and agreement cid get_metadata fetches faster
+        # user -> replica set string lookup, used to make user and digital_content cid get_metadata fetches faster
         user_to_replica_set = dict(
             session.query(User.user_id, User.content_node_endpoint)
             .filter(
@@ -517,7 +517,7 @@ def remove_updated_entities_from_cache(redis, changed_entity_type_to_updated_ids
     CONTRACT_TYPE_TO_CLEAR_CACHE_HANDLERS = {
         USER_FACTORY: remove_cached_user_ids,
         USER_REPLICA_SET_MANAGER: remove_cached_user_ids,
-        AGREEMENT_FACTORY: remove_cached_agreement_ids,
+        AGREEMENT_FACTORY: remove_cached_digital_content_ids,
         CONTENT_LIST_FACTORY: remove_cached_content_list_ids,
     }
     for (
@@ -647,7 +647,7 @@ def index_blocks(self, db, blocks_list):
                     """
                     fetch_ipfs_metadata_start_time = time.time()
                     # pre-fetch cids asynchronously to not have it block in user_state_update
-                    # and agreement_state_update
+                    # and digital_content_state_update
                     cid_metadata = fetch_cid_metadata(
                         db,
                         txs_grouped_by_type[USER_FACTORY],
@@ -804,7 +804,7 @@ def revert_blocks(self, db, revert_blocks_list):
     with db.scoped_session() as session:
 
         rebuild_content_list_index = False
-        rebuild_agreement_index = False
+        rebuild_digital_content_index = False
         rebuild_user_index = False
 
         for revert_block in revert_blocks_list:
@@ -839,8 +839,8 @@ def revert_blocks(self, db, revert_blocks_list):
             revert_content_list_entries = (
                 session.query(ContentList).filter(ContentList.blockhash == revert_hash).all()
             )
-            revert_agreement_entries = (
-                session.query(Agreement).filter(Agreement.blockhash == revert_hash).all()
+            revert_digital_content_entries = (
+                session.query(DigitalContent).filter(DigitalContent.blockhash == revert_hash).all()
             )
             revert_user_entries = (
                 session.query(User).filter(User.blockhash == revert_hash).all()
@@ -860,7 +860,7 @@ def revert_blocks(self, db, revert_blocks_list):
                 .filter(UserEvent.blockhash == revert_hash)
                 .all()
             )
-            revert_agreement_routes = (
+            revert_digital_content_routes = (
                 session.query(AgreementRoute)
                 .filter(AgreementRoute.blockhash == revert_hash)
                 .all()
@@ -936,21 +936,21 @@ def revert_blocks(self, db, revert_blocks_list):
                 # Remove outdated contentList entry
                 session.delete(content_list_to_revert)
 
-            for agreement_to_revert in revert_agreement_entries:
-                agreement_id = agreement_to_revert.agreement_id
-                previous_agreement_entry = (
-                    session.query(Agreement)
-                    .filter(Agreement.agreement_id == agreement_id)
-                    .filter(Agreement.blocknumber < revert_block_number)
-                    .order_by(Agreement.blocknumber.desc())
+            for digital_content_to_revert in revert_digital_content_entries:
+                digital_content_id = digital_content_to_revert.digital_content_id
+                previous_digital_content_entry = (
+                    session.query(DigitalContent)
+                    .filter(DigitalContent.digital_content_id == digital_content_id)
+                    .filter(DigitalContent.blocknumber < revert_block_number)
+                    .order_by(DigitalContent.blocknumber.desc())
                     .first()
                 )
-                if previous_agreement_entry:
-                    # First element in descending order is new current agreement item
-                    previous_agreement_entry.is_current = True
-                # Remove agreement entries
-                logger.info(f"Reverting agreement: {agreement_to_revert}")
-                session.delete(agreement_to_revert)
+                if previous_digital_content_entry:
+                    # First element in descending order is new current digital_content item
+                    previous_digital_content_entry.is_current = True
+                # Remove digital_content entries
+                logger.info(f"Reverting digital_content: {digital_content_to_revert}")
+                session.delete(digital_content_to_revert)
 
             for ursm_content_node_to_revert in revert_ursm_content_node_entries:
                 cnode_sp_id = ursm_content_node_to_revert.cnode_sp_id
@@ -1015,21 +1015,21 @@ def revert_blocks(self, db, revert_blocks_list):
 
             revert_user_events(session, revert_user_events_entries, revert_block_number)
 
-            for agreement_route_to_revert in revert_agreement_routes:
-                agreement_id = agreement_route_to_revert.agreement_id
-                previous_agreement_route_entry = (
+            for digital_content_route_to_revert in revert_digital_content_routes:
+                digital_content_id = digital_content_route_to_revert.digital_content_id
+                previous_digital_content_route_entry = (
                     session.query(AgreementRoute)
                     .filter(
-                        AgreementRoute.agreement_id == agreement_id,
+                        AgreementRoute.digital_content_id == digital_content_id,
                         AgreementRoute.blocknumber < revert_block_number,
                     )
                     .order_by(AgreementRoute.blocknumber.desc(), AgreementRoute.slug.asc())
                     .first()
                 )
-                if previous_agreement_route_entry:
-                    previous_agreement_route_entry.is_current = True
-                logger.info(f"Reverting agreement route {agreement_route_to_revert}")
-                session.delete(agreement_route_to_revert)
+                if previous_digital_content_route_entry:
+                    previous_digital_content_route_entry.is_current = True
+                logger.info(f"Reverting digital_content route {digital_content_route_to_revert}")
+                session.delete(digital_content_route_to_revert)
 
             # Remove outdated block entry
             session.query(Block).filter(Block.blockhash == revert_hash).delete()
@@ -1037,7 +1037,7 @@ def revert_blocks(self, db, revert_blocks_list):
             rebuild_content_list_index = rebuild_content_list_index or bool(
                 revert_content_list_entries
             )
-            rebuild_agreement_index = rebuild_agreement_index or bool(revert_agreement_entries)
+            rebuild_digital_content_index = rebuild_digital_content_index or bool(revert_digital_content_entries)
             rebuild_user_index = rebuild_user_index or bool(revert_user_entries)
     # TODO - if we enable revert, need to set the most_recent_indexed_block_redis_key key in redis
 
@@ -1072,9 +1072,9 @@ def update_task(self):
     redis = update_task.redis
 
     # Initialize contracts and attach to the task singleton
-    agreement_abi = update_task.abi_values[AGREEMENT_FACTORY_CONTRACT_NAME]["abi"]
-    agreement_contract = update_task.web3.eth.contract(
-        address=get_contract_addresses()["agreement_factory"], abi=agreement_abi
+    digital_content_abi = update_task.abi_values[AGREEMENT_FACTORY_CONTRACT_NAME]["abi"]
+    digital_content_contract = update_task.web3.eth.contract(
+        address=get_contract_addresses()["digital_content_factory"], abi=digital_content_abi
     )
 
     user_abi = update_task.abi_values[USER_FACTORY_CONTRACT_NAME]["abi"]
@@ -1108,7 +1108,7 @@ def update_task(self):
         abi=user_replica_set_manager_abi,
     )
 
-    update_task.agreement_contract = agreement_contract
+    update_task.digital_content_contract = digital_content_contract
     update_task.user_contract = user_contract
     update_task.content_list_contract = content_list_contract
     update_task.social_feature_contract = social_feature_contract

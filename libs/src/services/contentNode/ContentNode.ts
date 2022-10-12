@@ -301,10 +301,10 @@ export class ContentNode {
   }
 
   /**
-   * Uploads a agreement (including live and image content) to a content node
-   * @param agreementFile the live content
+   * Uploads a digital_content (including digitalcoin and image content) to a content node
+   * @param agreementFile the digitalcoin content
    * @param coverArtFile the image content
-   * @param metadata the metadata for the agreement
+   * @param metadata the metadata for the digital_content
    * @param onProgress an optional on progress callback
    */
   async uploadAgreementContent(
@@ -344,7 +344,7 @@ export class ContentNode {
       uploadPromises.push(this.uploadImage(coverArtFile, true, onImageProgress))
 
     const [agreementContentResp, coverArtResp] = await Promise.all(uploadPromises)
-    metadata.agreement_segments = agreementContentResp.agreement_segments
+    metadata.digital_content_segments = agreementContentResp.digital_content_segments
     if (metadata.download?.is_downloadable) {
       metadata.download.cid = agreementContentResp.transcodedAgreementCID
     }
@@ -361,16 +361,16 @@ export class ContentNode {
     if (coverArtResp) {
       metadata.cover_art_sizes = coverArtResp.dirCID
     }
-    // Creates new agreement entity on content node, making agreement's metadata available
-    // @returns {Object} {cid: CID of agreement metadata, id: id of agreement to be used with associate function}
+    // Creates new digital_content entity on content node, making digital_content's metadata available
+    // @returns {Object} {cid: CID of digital_content metadata, id: id of digital_content to be used with associate function}
     const metadataResp = await this.uploadAgreementMetadata(metadata, sourceFile)
     return { ...metadataResp, ...agreementContentResp }
   }
 
   /**
-   * Uploads agreement metadata to a content node
-   * The metadata object must include a `agreement_id` field or a
-   * source file must be provided (returned from uploading agreement content).
+   * Uploads digital_content metadata to a content node
+   * The metadata object must include a `digital_content_id` field or a
+   * source file must be provided (returned from uploading digital_content content).
    * @param metadata
    * @param sourceFile
    */
@@ -380,7 +380,7 @@ export class ContentNode {
     try {
       this.schemas[agreementSchemaType].validate?.(metadata)
     } catch (e) {
-      console.error('Error validating agreement metadata', e)
+      console.error('Error validating digital_content metadata', e)
     }
 
     const { data: body } = await this._makeRequest(
@@ -398,8 +398,8 @@ export class ContentNode {
   }
 
   /**
-   * Creates a agreement on the content node, associating agreement id with file content
-   * @param colivingAgreementId returned by agreement creation on-blockchain
+   * Creates a digital_content on the content node, associating digital_content id with file content
+   * @param colivingAgreementId returned by digital_content creation on-blockchain
    * @param metadataFileUUID unique ID for metadata file
    * @param blockNumber
    * @param transcodedAgreementUUID the CID for the transcoded master if this is a first-time upload
@@ -448,7 +448,7 @@ export class ContentNode {
   }
 
   /**
-   * @param file agreement to upload
+   * @param file digital_content to upload
    * @param onProgress called with loaded bytes and total bytes
    * @return response body
    */
@@ -459,7 +459,7 @@ export class ContentNode {
   async handleAsyncAgreementUpload(file: File, onProgress: ProgressCB) {
     const {
       data: { uuid }
-    } = await this._uploadFile(file, '/agreement_content_async', onProgress)
+    } = await this._uploadFile(file, '/digital_content_async', onProgress)
     return await this.pollProcessingStatus(uuid)
   }
 
@@ -472,19 +472,19 @@ export class ContentNode {
           uuid
         )
         // Should have a body structure of:
-        //   { transcodedAgreementCID, transcodedAgreementUUID, agreement_segments, source_file }
+        //   { transcodedAgreementCID, transcodedAgreementUUID, digital_content_segments, source_file }
         if (status && status === 'DONE') return resp
         if (status && status === 'FAILED') {
           await this._handleErrorHelper(
             new Error(
-              `Agreement content async upload failed: uuid=${uuid}, error=${resp}`
+              `DigitalContent content async upload failed: uuid=${uuid}, error=${resp}`
             ),
             route,
             uuid
           )
         }
       } catch (e) {
-        // Catch errors here and swallow them. Errors don't signify that the agreement
+        // Catch errors here and swallow them. Errors don't signify that the digital_content
         // upload has failed, just that we were unable to establish a connection to the node.
         // This allows polling to retry
         console.error(`Failed to poll for processing status, ${e}`)
@@ -496,7 +496,7 @@ export class ContentNode {
     // TODO: update MAX_AGREEMENT_TRANSCODE_TIMEOUT if generalizing this method
     await this._handleErrorHelper(
       new Error(
-        `Agreement content async upload took over ${MAX_AGREEMENT_TRANSCODE_TIMEOUT}ms. uuid=${uuid}`
+        `DigitalContent content async upload took over ${MAX_AGREEMENT_TRANSCODE_TIMEOUT}ms. uuid=${uuid}`
       ),
       route,
       uuid
@@ -505,7 +505,7 @@ export class ContentNode {
 
   /**
    * Gets the task progress given the task type and uuid associated with the task
-   * @param uuid the uuid of the agreement transcoding task
+   * @param uuid the uuid of the digital_content transcoding task
    * @returns the status, and the success or failed response if the task is complete
    */
   async getAgreementContentProcessingStatus(uuid: string) {
@@ -540,11 +540,11 @@ export class ContentNode {
       return {
         status,
         userBlockNumber: user.blocknumber,
-        agreementBlockNumber: user.agreement_blocknumber,
+        agreementBlockNumber: user.digital_content_blocknumber,
         // Whether or not the endpoint is behind in syncing
         isBehind:
           status.latestBlockNumber <
-          Math.max(user.blocknumber!, user.agreement_blocknumber!),
+          Math.max(user.blocknumber!, user.digital_content_blocknumber!),
         isConfigured: status.latestBlockNumber !== -1
       }
     }
@@ -897,7 +897,7 @@ export class ContentNode {
   /**
    * Uploads a file to the connected content node.
    * @param file
-   * @param route route to handle upload (image_upload, agreement_upload, etc.)
+   * @param route route to handle upload (image_upload, digital_content_upload, etc.)
    * @param onProgress called with loaded bytes and total bytes
    * @param extraFormDataOptions extra FormData fields passed to the upload
    * @param retries max number of attempts made for axios request to upload file to CN before erroring

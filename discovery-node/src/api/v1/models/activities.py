@@ -4,13 +4,13 @@ from flask_restx.marshalling import marshal
 
 from .common import ns
 from .content_lists import full_content_list_model, content_list_model
-from .agreements import agreement, agreement_full
+from .agreements import digital_content, digital_content_full
 
 
 class ItemType(fields.Raw):
     def format(self, value):
-        if value == "agreement":
-            return "agreement"
+        if value == "digital_content":
+            return "digital_content"
         if value == "content_list":
             return "content_list"
         raise MarshallingError("Unable to marshal as activity type")
@@ -19,8 +19,8 @@ class ItemType(fields.Raw):
 class ActivityItem(fields.Raw):
     def format(self, value):
         try:
-            if value.get("agreement_id"):
-                return marshal(value, agreement)
+            if value.get("digital_content_id"):
+                return marshal(value, digital_content)
             if value.get("content_list_id"):
                 return marshal(value, content_list_model)
         except Exception as e:
@@ -30,8 +30,8 @@ class ActivityItem(fields.Raw):
 class FullActivityItem(fields.Raw):
     def format(self, value):
         try:
-            if value.get("agreement_id"):
-                return marshal(value, agreement_full)
+            if value.get("digital_content_id"):
+                return marshal(value, digital_content_full)
             if value.get("content_list_id"):
                 return marshal(value, full_content_list_model)
         except Exception as e:

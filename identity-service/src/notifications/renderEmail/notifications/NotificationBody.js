@@ -24,9 +24,9 @@ var UserImage = function UserImage(_ref) {
 };
 
 var AgreementImage = function AgreementImage(_ref2) {
-  var agreement = _ref2.agreement;
+  var digital_content = _ref2.digital_content;
   return /*#__PURE__*/_react["default"].createElement("img", {
-    src: agreement.image || agreement.thumbnail,
+    src: digital_content.image || digital_content.thumbnail,
     style: {
       height: '42px',
       width: '42px',
@@ -171,7 +171,7 @@ var Body = function Body(props) {
       width: '60px'
     }
   }, /*#__PURE__*/_react["default"].createElement(AgreementImage, {
-    agreement: props.agreement
+    digital_content: props.digital_content
   })), /*#__PURE__*/_react["default"].createElement("td", {
     colspan: 11,
     valign: "center",

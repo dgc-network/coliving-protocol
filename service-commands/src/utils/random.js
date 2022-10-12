@@ -9,13 +9,13 @@ const streamPipeline = util.promisify(require('stream').pipeline)
 const { logger } = require('./logger.js')
 
 const AGREEMENT_URLS = [
-  'https://royalty-free-content.s3-us-west-2.amazonaws.com/live/Gipsy.mp3',
-  'https://royalty-free-content.s3-us-west-2.amazonaws.com/live/First+Rain.mp3',
-  'https://royalty-free-content.s3-us-west-2.amazonaws.com/live/Miracle.mp3',
-  'https://royalty-free-content.s3-us-west-2.amazonaws.com/live/Ice+Cream.mp3',
-  'https://royalty-free-content.s3-us-west-2.amazonaws.com/live/Street+Tables+Cafe.mp3',
-  'https://royalty-free-content.s3-us-west-2.amazonaws.com/live/Cowboy+Tears.mp3',
-  'https://royalty-free-content.s3-us-west-2.amazonaws.com/live/Happy.mp3'
+  'https://royalty-free-content.s3-us-west-2.amazonaws.com/digitalcoin/Gipsy.mp3',
+  'https://royalty-free-content.s3-us-west-2.amazonaws.com/digitalcoin/First+Rain.mp3',
+  'https://royalty-free-content.s3-us-west-2.amazonaws.com/digitalcoin/Miracle.mp3',
+  'https://royalty-free-content.s3-us-west-2.amazonaws.com/digitalcoin/Ice+Cream.mp3',
+  'https://royalty-free-content.s3-us-west-2.amazonaws.com/digitalcoin/Street+Tables+Cafe.mp3',
+  'https://royalty-free-content.s3-us-west-2.amazonaws.com/digitalcoin/Cowboy+Tears.mp3',
+  'https://royalty-free-content.s3-us-west-2.amazonaws.com/digitalcoin/Happy.mp3'
 ]
 
 /**
@@ -48,7 +48,7 @@ const getRandomUser = () => {
 }
 
 /**
- * Generates a random agreement.
+ * Generates a random digital_content.
  */
 const getRandomAgreementMetadata = userId => {
   return {
@@ -69,12 +69,12 @@ const getRandomAgreementMetadata = userId => {
     license: '',
     isrc: '',
     iswc: '',
-    agreement_segments: []
+    digital_content_segments: []
   }
 }
 
 /**
- * Randomly selects url from AGREEMENT_URLS, downloads agreement file from url to temp local storage, & returns its file path
+ * Randomly selects url from AGREEMENT_URLS, downloads digital_content file from url to temp local storage, & returns its file path
  *
  * @notice this depends on AGREEMENT_URLS pointing to valid urls in S3. Ideally we'd be able to
  *    randomly select any file from the parent folder.
@@ -96,9 +96,9 @@ const getRandomAgreementFilePath = async localDirPath => {
     await fs.ensureDir(localDirPath)
     await streamPipeline(response.body, fs.createWriteStream(targetFilePath))
 
-    logger.info(`Wrote agreement to temp local storage at ${targetFilePath}`)
+    logger.info(`Wrote digital_content to temp local storage at ${targetFilePath}`)
   } catch (e) {
-    const errorMsg = `Error with writing agreement to path ${localDirPath}`
+    const errorMsg = `Error with writing digital_content to path ${localDirPath}`
     logger.error(errorMsg)
     console.error(e)
     throw new Error(`${errorMsg}: ${e.message}`)

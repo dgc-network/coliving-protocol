@@ -7,13 +7,13 @@ from src.models.indexing.block import Block
 from src.models.content_lists.content_list import ContentList
 from src.models.social.follow import Follow
 from src.models.social.save import Save, SaveType
-from src.models.agreements.agreement import Agreement
+from src.models.agreements.digital_content import DigitalContent
 from src.models.users.user import User
 from src.models.users.user_balance import UserBalance
 from src.queries.search_es import search_es_full
 from src.queries.search_queries import (
     content_list_search_query,
-    agreement_search_query,
+    digital_content_search_query,
     user_search_query,
 )
 from src.utils.db_session import get_db
@@ -47,47 +47,47 @@ def setup_search(app_module):
         ),
     ]
     agreements = [
-        Agreement(
+        DigitalContent(
             blockhash=hex(1),
             blocknumber=1,
-            agreement_id=1,
+            digital_content_id=1,
             is_current=True,
             is_delete=False,
             owner_id=1,
             route_id="",
-            agreement_segments=[],
+            digital_content_segments=[],
             genre="",
             updated_at=now,
             created_at=now,
             is_unlisted=False,
-            title="the agreement 1",
+            title="the digital_content 1",
             download={"cid": None, "is_downloadable": False, "requires_follow": False},
         ),
-        Agreement(
+        DigitalContent(
             blockhash=hex(2),
             blocknumber=2,
-            agreement_id=2,
+            digital_content_id=2,
             is_current=True,
             is_delete=False,
             owner_id=2,
             route_id="",
-            agreement_segments=[],
+            digital_content_segments=[],
             genre="",
             updated_at=now,
             created_at=now,
             is_unlisted=False,
-            title="the agreement 2",
+            title="the digital_content 2",
             download={"cid": None, "is_downloadable": True, "requires_follow": False},
         ),
-        Agreement(
+        DigitalContent(
             blockhash=hex(3),
             blocknumber=3,
-            agreement_id=3,
+            digital_content_id=3,
             is_current=True,
             is_delete=False,
             owner_id=1,
             route_id="",
-            agreement_segments=[],
+            digital_content_segments=[],
             genre="",
             updated_at=now,
             created_at=now,
@@ -155,7 +155,7 @@ def setup_search(app_module):
             is_album=False,
             is_private=False,
             content_list_name="contentList 1",
-            content_list_contents={"agreement_ids": [{"agreement": 1, "time": 1}]},
+            content_list_contents={"digital_content_ids": [{"digital_content": 1, "time": 1}]},
             is_current=True,
             is_delete=False,
             updated_at=now,
@@ -169,7 +169,7 @@ def setup_search(app_module):
             is_album=True,
             is_private=False,
             content_list_name="album 1",
-            content_list_contents={"agreement_ids": [{"agreement": 2, "time": 2}]},
+            content_list_contents={"digital_content_ids": [{"digital_content": 2, "time": 2}]},
             is_current=True,
             is_delete=False,
             updated_at=now,
@@ -183,7 +183,7 @@ def setup_search(app_module):
             blocknumber=1,
             user_id=1,
             save_item_id=1,
-            save_type=SaveType.agreement,
+            save_type=SaveType.digital_content,
             created_at=now,
             is_current=True,
             is_delete=False,
@@ -224,8 +224,8 @@ def setup_search(app_module):
         for block in blocks:
             session.add(block)
             session.flush()
-        for agreement in agreements:
-            session.add(agreement)
+        for digital_content in agreements:
+            session.add(digital_content)
         for user in users:
             session.add(user)
             session.flush()
@@ -243,7 +243,7 @@ def setup_search(app_module):
             session.flush()
 
         # Refresh the lexeme matview
-        session.execute("REFRESH MATERIALIZED VIEW agreement_lexeme_dict;")
+        session.execute("REFRESH MATERIALIZED VIEW digital_content_lexeme_dict;")
         session.execute("REFRESH MATERIALIZED VIEW user_lexeme_dict;")
 
         session.execute("REFRESH MATERIALIZED VIEW content_list_lexeme_dict;")
@@ -259,20 +259,20 @@ def setup_search(app_module):
     )
 
 
-def test_get_agreements_external(app_module):
+def test_get_digital_contents_external(app_module):
     """Tests we get all agreements, including downloaded"""
     with app_module.app_context():
         db = get_db()
 
     with db.scoped_session() as session:
-        res = agreement_search_query(session, "the agreement", 10, 0, False, None, False)
+        res = digital_content_search_query(session, "the digital_content", 10, 0, False, None, False)
         assert len(res["all"]) == 2
         assert len(res["saved"]) == 0
 
     search_args = {
         "is_auto_complete": False,
         "kind": "agreements",
-        "query": "the agreement",
+        "query": "the digital_content",
         "current_user_id": None,
         "with_users": True,
         "limit": 10,
@@ -284,20 +284,20 @@ def test_get_agreements_external(app_module):
     assert len(es_res["agreements"]) == 2
 
 
-def test_get_autocomplete_agreements(app_module):
+def test_get_autocomplete_digital_contents(app_module):
     """Tests we get all agreements with autocomplete"""
     with app_module.app_context():
         db = get_db()
 
     with db.scoped_session() as session:
-        res = agreement_search_query(session, "the agreement", 10, 0, True, None, False)
+        res = digital_content_search_query(session, "the digital_content", 10, 0, True, None, False)
         assert len(res["all"]) == 2
         assert len(res["saved"]) == 0
 
     search_args = {
         "is_auto_complete": True,
         "kind": "agreements",
-        "query": "the agreement",
+        "query": "the digital_content",
         "current_user_id": None,
         "with_users": True,
         "limit": 10,
@@ -309,20 +309,20 @@ def test_get_autocomplete_agreements(app_module):
     assert len(es_res["agreements"]) == 2
 
 
-def test_get_agreements_internal(app_module):
+def test_get_digital_contents_internal(app_module):
     """Tests we get all agreements when a user is logged in"""
     with app_module.app_context():
         db = get_db()
 
     with db.scoped_session() as session:
-        res = agreement_search_query(session, "the agreement", 10, 0, False, 1, False)
+        res = digital_content_search_query(session, "the digital_content", 10, 0, False, 1, False)
         assert len(res["all"]) == 2
         assert len(res["saved"]) == 1
 
     search_args = {
         "is_auto_complete": False,
         "kind": "agreements",
-        "query": "the agreement",
+        "query": "the digital_content",
         "current_user_id": 1,
         "with_users": True,
         "limit": 10,
@@ -332,23 +332,23 @@ def test_get_agreements_internal(app_module):
     es_res = search_es_full(search_args)
 
     assert len(es_res["agreements"]) == 2
-    assert len(es_res["saved_agreements"]) == 1
+    assert len(es_res["saved_digital_contents"]) == 1
 
 
-def test_get_downloadable_agreements(app_module):
+def test_get_downloadable_digital_contents(app_module):
     """Tests we get only downloadable results"""
     with app_module.app_context():
         db = get_db()
 
     with db.scoped_session() as session:
-        res = agreement_search_query(session, "the agreement", 10, 0, False, None, True)
+        res = digital_content_search_query(session, "the digital_content", 10, 0, False, None, True)
         assert len(res["all"]) == 1
         assert len(res["saved"]) == 0
 
     search_args = {
         "is_auto_complete": False,
         "kind": "agreements",
-        "query": "the agreement",
+        "query": "the digital_content",
         "current_user_id": None,
         "with_users": True,
         "limit": 10,
@@ -358,7 +358,7 @@ def test_get_downloadable_agreements(app_module):
     es_res = search_es_full(search_args)
 
     assert len(es_res["agreements"]) == 1
-    assert len(es_res["saved_agreements"]) == 0
+    assert len(es_res["saved_digital_contents"]) == 0
 
 
 def test_get_external_users(app_module):

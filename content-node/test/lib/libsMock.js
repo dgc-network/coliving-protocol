@@ -126,7 +126,7 @@ function getLibsMock() {
       content_node_endpoint:
         'http://mock-cn1.coliving.lol,http://mock-cn2.coliving.lol,http://mock-cn3.coliving.lol',
       blocknumber: 10,
-      agreement_blocknumber: 10
+      digital_content_blocknumber: 10
     }
   ])
   libsMock.User.getUsers.atLeast(1)

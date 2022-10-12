@@ -17,7 +17,7 @@ from src.models.model_utils import RepresentableMixin
 
 
 class RepostType(str, enum.Enum):
-    agreement = "agreement"
+    digital_content = "digital_content"
     contentList = "content_list"
     album = "album"
 

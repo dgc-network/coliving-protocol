@@ -10,8 +10,8 @@ const { logger: genericLogger } = require('./logging')
  * Try to segment as mp3 and error on failure 
  * @date 01-27-2022
  * @param {Object} params
- * @param {string} params.fileDir the directory of the uploaded agreement artifact
- * @param {string} params.fileName the uploaded agreement artifact filename
+ * @param {string} params.fileDir the directory of the uploaded digital_content artifact
+ * @param {string} params.fileName the uploaded digital_content artifact filename
  * @param {Object} params.logContext the log context used to instantiate a logger
  * @returns {Object} response in the structure 
   {
@@ -48,9 +48,9 @@ function segmentFile(fileDir, fileName, { logContext }) {
       'segments/', // path hack - adds `segments` dir to m3u8 file entries
       '-hls_segment_filename',
       path.resolve(fileDir, 'segments', 'segment%05d.ts'),
-      // "-vn" flag required to allow agreement uploading with album art
-      // https://stackoverflow.com/questions/20193065/how-to-remove-id3-live-tag-image-or-metadata-from-mp3-with-ffmpeg
-      '-vn', // skip inclusion of video, process only the live file without "video"
+      // "-vn" flag required to allow digital_content uploading with album art
+      // https://stackoverflow.com/questions/20193065/how-to-remove-id3-digitalcoin-tag-image-or-metadata-from-mp3-with-ffmpeg
+      '-vn', // skip inclusion of video, process only the digitalcoin file without "video"
       m3u8FilePath
     ]
     logger.info(`Spawning: ffmpeg ${args}`)
@@ -89,8 +89,8 @@ function segmentFile(fileDir, fileName, { logContext }) {
  * Transcode file into 320kbps mp3 and store in same directory.
  * @date 01-27-2022
  * @param {Object} params
- * @param {string} params.fileDir the directory of the uploaded agreement artifact
- * @param {string} params.fileName the uploaded agreement artifact filename
+ * @param {string} params.fileDir the directory of the uploaded digital_content artifact
+ * @param {string} params.fileName the uploaded digital_content artifact filename
  * @param {Object} params.logContext the log context used to instantiate a logger
  * @returns {string} the path to the transcode
  */
@@ -115,9 +115,9 @@ function transcodeFileTo320(fileDir, fileName, { logContext }) {
       '48000', // TODO - move to configs
       '-b:a',
       '320k',
-      // "-vn" flag required to allow agreement uploading with album art
-      // https://stackoverflow.com/questions/20193065/how-to-remove-id3-live-tag-image-or-metadata-from-mp3-with-ffmpeg
-      '-vn', // skip inclusion of video, process only the live file without "video"
+      // "-vn" flag required to allow digital_content uploading with album art
+      // https://stackoverflow.com/questions/20193065/how-to-remove-id3-digitalcoin-tag-image-or-metadata-from-mp3-with-ffmpeg
+      '-vn', // skip inclusion of video, process only the digitalcoin file without "video"
       targetPath
     ]
     logger.info(`Spawning: ffmpeg ${args}`)

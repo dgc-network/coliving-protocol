@@ -54,7 +54,7 @@ const handlers = {
   // TODO: can we do trigger on agg contentList matview?
   saves: (save: SaveRow) => {
     pending.saves.push(save)
-    if (save.save_type == 'agreement') {
+    if (save.save_type == 'digital_content') {
       pending.agreementIds.add(save.save_item_id)
     } else {
       pending.contentListIds.add(save.save_item_id)
@@ -62,7 +62,7 @@ const handlers = {
   },
   reposts: (repost: RepostRow) => {
     pending.reposts.push(repost)
-    if (repost.repost_type == 'agreement') {
+    if (repost.repost_type == 'digital_content') {
       pending.agreementIds.add(repost.repost_item_id)
     } else {
       pending.contentListIds.add(repost.repost_item_id)
@@ -81,8 +81,8 @@ const handlers = {
   users: (user: UserRow) => {
     pending.userIds.add(user.user_id)
   },
-  agreements: (agreement: AgreementRow) => {
-    pending.agreementIds.add(agreement.agreement_id)
+  agreements: (digital_content: AgreementRow) => {
+    pending.agreementIds.add(digital_content.digital_content_id)
   },
   contentLists: (contentList: ContentListRow) => {
     pending.contentListIds.add(contentList.content_list_id)

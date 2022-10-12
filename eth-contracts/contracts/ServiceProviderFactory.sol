@@ -77,7 +77,7 @@ contract ServiceProviderFactory is InitializableV2 {
     mapping(address => ServiceProviderDetails) private spDetails;
 
     /// @dev - Uniquely assigned serviceProvider ID, incremented for each service type
-    /// @notice - Keeps agreement of the total number of services registered regardless of
+    /// @notice - Keeps digital_content of the total number of services registered regardless of
     ///           whether some have been deregistered since
     mapping(bytes32 => uint256) private serviceProviderTypeIDs;
 

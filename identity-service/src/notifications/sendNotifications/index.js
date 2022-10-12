@@ -15,9 +15,9 @@ function getUserIdsToNotify (notifications) {
       case notificationTypes.Favorite.base:
         return userIds.concat(notification.metadata.entity_owner_id)
       case notificationTypes.RemixCreate:
-        return userIds.concat(notification.metadata.remix_parent_agreement_user_id)
+        return userIds.concat(notification.metadata.remix_parent_digital_content_user_id)
       case notificationTypes.AddAgreementToContentList:
-        return userIds.concat(notification.metadata.agreement_owner_id)
+        return userIds.concat(notification.metadata.digital_content_owner_id)
       case notificationTypes.ChallengeReward:
       case notificationTypes.MilestoneListen:
       case notificationTypes.TierChange:

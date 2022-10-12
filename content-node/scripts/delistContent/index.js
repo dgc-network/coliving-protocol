@@ -265,11 +265,11 @@ async function getCIDs (type, values) {
       discProvResps = discProvResps.concat(discProvResponsesSlice)
     }
 
-    // Iterate through disc prov responses and grab all the agreement CIDs
+    // Iterate through disc prov responses and grab all the digital_content CIDs
     let allCIDsObj = []
     for (const resp of discProvResps) {
-      for (const agreement of resp.data.data) {
-        allCIDsObj = allCIDsObj.concat(agreement.agreement_segments)
+      for (const digital_content of resp.data.data) {
+        allCIDsObj = allCIDsObj.concat(digital_content.digital_content_segments)
       }
     }
     allCIDs = allCIDsObj.map(CIDObj => CIDObj.multihash)
@@ -280,7 +280,7 @@ async function getCIDs (type, values) {
 }
 
 /**
- * Fetches the total agreements count from all input userIds, and returns a map of user_id:agreement_count
+ * Fetches the total agreements count from all input userIds, and returns a map of user_id:digital_content_count
  * @param {number[]} userIds
  */
 async function fetchUserToNumAgreementsMap (userIds) {
@@ -293,7 +293,7 @@ async function fetchUserToNumAgreementsMap (userIds) {
 
   const map = {}
   resp.data.data.map(resp => {
-    map[resp.user_id] = resp.agreement_count
+    map[resp.user_id] = resp.digital_content_count
   })
   return map
 }
@@ -330,7 +330,7 @@ async function checkIsAgreementDelisted (id) {
     // CID was not found on node, would not have been served either way, return success
     if (e.response.status === 404) return { type: 'AGREEMENT', value: id, delisted: true }
 
-    Logger.error(`Failed to check for agreement [${id}]: ${e}`)
+    Logger.error(`Failed to check for digital_content [${id}]: ${e}`)
   }
   return { type: 'AGREEMENT', value: id, delisted: false }
 }

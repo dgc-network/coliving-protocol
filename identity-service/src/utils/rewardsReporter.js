@@ -42,7 +42,7 @@ class RewardsReporter {
       this.childLogger.info(report, `Rewards Reporter`)
 
       if (this.shouldReportAnalytics) {
-        this.analyticsProvider.agreement(RewardEventNames.REWARDS_CLAIM_SUCCESS, userId, {
+        this.analyticsProvider.digital_content(RewardEventNames.REWARDS_CLAIM_SUCCESS, userId, {
           userId,
           challengeId,
           amount,
@@ -72,7 +72,7 @@ class RewardsReporter {
       this.childLogger.info(report, `Rewards Reporter`)
 
       if (this.shouldReportAnalytics) {
-        this.analyticsProvider.agreement(RewardEventNames.REWARDS_CLAIM_RETRY, userId, {
+        this.analyticsProvider.digital_content(RewardEventNames.REWARDS_CLAIM_RETRY, userId, {
           userId,
           challengeId,
           amount,
@@ -104,7 +104,7 @@ class RewardsReporter {
       this.childLogger.info(report, `Rewards Reporter`)
 
       if (this.shouldReportAnalytics) {
-        this.analyticsProvider.agreement(RewardEventNames.REWARDS_CLAIM_FAILURE, userId, {
+        this.analyticsProvider.digital_content(RewardEventNames.REWARDS_CLAIM_FAILURE, userId, {
           userId,
           challengeId,
           amount,
@@ -140,7 +140,7 @@ class RewardsReporter {
           'other': RewardEventNames.REWARDS_CLAIM_OTHER,
           'blocked': RewardEventNames.REWARDS_CLAIM_BLOCKED
         }[reason] || RewardEventNames.REWARDS_CLAIM_BLOCKED
-        this.analyticsProvider.agreement(event, userId, {
+        this.analyticsProvider.digital_content(event, userId, {
           userId,
           challengeId,
           amount,

@@ -6,8 +6,8 @@ from src.models.users.user import User
 from src.utils.db_session import get_db
 
 
-def test_resolve_agreement_url(app):
-    """Tests that it resolves a agreement url"""
+def test_resolve_digital_content_url(app):
+    """Tests that it resolves a digital_content url"""
     with app.test_request_context():
         db = get_db()
         with db.scoped_session() as session:
@@ -32,7 +32,7 @@ def test_resolve_content_list_url(app):
 
 
 def test_resolve_non_fully_qualified_url(app):
-    """Tests that it resolves a agreement url when not fully qualified"""
+    """Tests that it resolves a digital_content url when not fully qualified"""
     with app.test_request_context():
         db = get_db()
         with db.scoped_session() as session:

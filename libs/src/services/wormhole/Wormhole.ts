@@ -296,7 +296,7 @@ export class Wormhole {
       }
 
       phase = phases.TRANSFER_WLIVE_TO_ROOT
-      // Move wrapped live from then user bank account to the user's token wallet
+      // Move wrapped digitalcoin from then user bank account to the user's token wallet
       await this.solanaWeb3Manager.transferWAudio(
         tokenAccountInfo!.address.toString(),
         amount

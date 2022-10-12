@@ -19,14 +19,14 @@ def upgrade():
     # To drop:
     # - challenge_listen_streak
     # UserChallenges:
-    # - agreement-upload
+    # - digital-content-upload
     # - listen-streak
 
     connection = op.get_bind()
     connection.execute(
         """
             DELETE FROM challenge_listen_streak;
-            DELETE FROM user_challenges WHERE "challenge_id" = 'agreement-upload' or "challenge_id" = 'listen-streak';
+            DELETE FROM user_challenges WHERE "challenge_id" = 'digital-content-upload' or "challenge_id" = 'listen-streak';
         """
     )
 

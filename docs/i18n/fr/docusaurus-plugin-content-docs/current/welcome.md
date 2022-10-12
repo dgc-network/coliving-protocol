@@ -13,7 +13,7 @@ Bienvenue dans la documentation technique d'Coliving !
 
 [Coliving](https://.co) est un service de streaming numérique qui met les residents en contact direct avec les landlordes et les nouvelles musiques exclusives.
 
-Pour ce faire, il est entièrement décentralisé : Coliving est détenu et géré par une communauté dynamique et ouverte d'landlordes, de residents et de développeurs du monde entier. Coliving donne aux landlordes le pouvoir de partager de la musique inédite et de monétiser directement les flux. Les développeurs peuvent créer leurs propres applications à partir d'Coliving, ce qui leur donne accès à l'un des catalogues live les plus uniques qui soient.
+Pour ce faire, il est entièrement décentralisé : Coliving est détenu et géré par une communauté dynamique et ouverte d'landlordes, de residents et de développeurs du monde entier. Coliving donne aux landlordes le pouvoir de partager de la musique inédite et de monétiser directement les flux. Les développeurs peuvent créer leurs propres applications à partir d'Coliving, ce qui leur donne accès à l'un des catalogues digitalcoin les plus uniques qui soient.
 
 Sous le capot, Coliving est à la fois un protocole &amp ; une plateforme construite sur la blockchain (plusieurs, en fait) et des nœuds gérés par la communauté. Coliving open source, données ouvertes & accès et propriété ouverte.
 

@@ -6,7 +6,7 @@ from sqlalchemy.sql.elements import and_, or_
 from src.models.content_lists.content_list import ContentList
 from src.models.social.repost import Repost, RepostType
 from src.models.social.save import SaveType
-from src.models.agreements.agreement import Agreement
+from src.models.agreements.digital_content import DigitalContent
 from src.models.users.user import User
 from src.queries import response_name_constants
 from src.queries.query_helpers import (
@@ -14,7 +14,7 @@ from src.queries.query_helpers import (
     get_users_by_id,
     get_users_ids,
     populate_content_list_metadata,
-    populate_agreement_metadata,
+    populate_digital_content_metadata,
 )
 from src.utils import helpers
 from src.utils.db_session import get_db_read_replica
@@ -66,16 +66,16 @@ def _get_repost_feed_for_user(
     # so that a single limit/offset pagination does what we intend when agreements or contentLists
     # are deleted.
     repost_query = (
-        session.query(Repost, Agreement, ContentList)
+        session.query(Repost, DigitalContent, ContentList)
         .outerjoin(
-            Agreement,
+            DigitalContent,
             and_(
-                Repost.repost_item_id == Agreement.agreement_id,
-                Repost.repost_type == "agreement",
-                Agreement.is_current == True,
-                Agreement.is_delete == False,
-                Agreement.is_unlisted == False,
-                Agreement.stem_of == None,
+                Repost.repost_item_id == DigitalContent.digital_content_id,
+                Repost.repost_type == "digital_content",
+                DigitalContent.is_current == True,
+                DigitalContent.is_delete == False,
+                DigitalContent.is_unlisted == False,
+                DigitalContent.stem_of == None,
             ),
         )
         .outerjoin(
@@ -92,8 +92,8 @@ def _get_repost_feed_for_user(
             Repost.is_current == True,
             Repost.is_delete == False,
             Repost.user_id == user_id,
-            # Drop rows that have no join found for either agreement or contentList
-            or_(Agreement.agreement_id != None, ContentList.content_list_id != None),
+            # Drop rows that have no join found for either digital_content or contentList
+            or_(DigitalContent.digital_content_id != None, ContentList.content_list_id != None),
         )
         .order_by(
             desc(Repost.created_at),
@@ -103,16 +103,16 @@ def _get_repost_feed_for_user(
     )
 
     reposts = add_query_pagination(repost_query, limit, offset).all()
-    # get agreement reposts from above
-    agreement_reposts = [r[0] for r in reposts if r[1] is not None]
-    agreement_reposts = helpers.query_result_to_list(agreement_reposts)
+    # get digital_content reposts from above
+    digital_content_reposts = [r[0] for r in reposts if r[1] is not None]
+    digital_content_reposts = helpers.query_result_to_list(digital_content_reposts)
 
     # get contentList reposts from above
     content_list_reposts = [r[0] for r in reposts if r[2] is not None]
     content_list_reposts = helpers.query_result_to_list(content_list_reposts)
 
-    # build agreement/contentList id --> repost dict from repost lists
-    agreement_repost_dict = {repost["repost_item_id"]: repost for repost in agreement_reposts}
+    # build digital_content/contentList id --> repost dict from repost lists
+    digital_content_repost_dict = {repost["repost_item_id"]: repost for repost in digital_content_reposts}
     content_list_repost_dict = {
         repost["repost_item_id"]: repost for repost in content_list_reposts
     }
@@ -124,14 +124,14 @@ def _get_repost_feed_for_user(
         filter(None, [repost[2] for repost in reposts])
     )
 
-    # get agreement ids
-    agreement_ids = [agreement["agreement_id"] for agreement in agreements]
+    # get digital_content ids
+    digital_content_ids = [digital_content["digital_content_id"] for digital_content in agreements]
 
     # get contentList ids
     content_list_ids = [contentList["content_list_id"] for contentList in contentLists]
 
     # populate full metadata
-    agreements = populate_agreement_metadata(session, agreement_ids, agreements, current_user_id)
+    agreements = populate_digital_content_metadata(session, digital_content_ids, agreements, current_user_id)
     contentLists = populate_content_list_metadata(
         session,
         content_list_ids,
@@ -142,9 +142,9 @@ def _get_repost_feed_for_user(
     )
 
     # add activity timestamps
-    for agreement in agreements:
-        agreement[response_name_constants.activity_timestamp] = agreement_repost_dict[
-            agreement["agreement_id"]
+    for digital_content in agreements:
+        digital_content[response_name_constants.activity_timestamp] = digital_content_repost_dict[
+            digital_content["digital_content_id"]
         ]["created_at"]
 
     for contentList in contentLists:

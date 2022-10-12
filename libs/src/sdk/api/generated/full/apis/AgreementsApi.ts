@@ -48,11 +48,11 @@ export interface GetBulkAgreementsRequest {
      */
     userId?: string;
     /**
-     * The permalink of the agreement(s)
+     * The permalink of the digital_content(s)
      */
     permalink?: Array<string>;
     /**
-     * The ID of the agreement(s)
+     * The ID of the digital_content(s)
      */
     id?: Array<string>;
 }
@@ -86,7 +86,7 @@ export interface GetRecommendedAgreementsRequest {
      */
     time?: GetRecommendedAgreementsTimeEnum;
     /**
-     * List of agreement ids to exclude
+     * List of digital_content ids to exclude
      */
     exclusionList?: Array<number>;
     /**
@@ -113,7 +113,7 @@ export interface GetRecommendedAgreementsWithVersionRequest {
      */
     time?: GetRecommendedAgreementsWithVersionTimeEnum;
     /**
-     * List of agreement ids to exclude
+     * List of digital_content ids to exclude
      */
     exclusionList?: Array<number>;
     /**
@@ -139,7 +139,7 @@ export interface GetRemixableAgreementsRequest {
 
 export interface GetAgreementRequest {
     /**
-     * A Agreement ID
+     * A DigitalContent ID
      */
     agreementId: string;
     /**
@@ -147,11 +147,11 @@ export interface GetAgreementRequest {
      */
     userId?: string;
     /**
-     * The User handle of the agreement owner
+     * The User handle of the digital_content owner
      */
     handle?: string;
     /**
-     * The URLized title of the agreement
+     * The URLized title of the digital_content
      */
     urlTitle?: string;
     /**
@@ -162,7 +162,7 @@ export interface GetAgreementRequest {
 
 export interface GetAgreementRemixParentsRequest {
     /**
-     * A Agreement ID
+     * A DigitalContent ID
      */
     agreementId: string;
     /**
@@ -181,7 +181,7 @@ export interface GetAgreementRemixParentsRequest {
 
 export interface GetAgreementRemixesRequest {
     /**
-     * A Agreement ID
+     * A DigitalContent ID
      */
     agreementId: string;
     /**
@@ -200,7 +200,7 @@ export interface GetAgreementRemixesRequest {
 
 export interface GetAgreementStemsRequest {
     /**
-     * A Agreement ID
+     * A DigitalContent ID
      */
     agreementId: string;
 }
@@ -336,7 +336,7 @@ export interface GetUndergroundTrendingAgreementsWithVersionRequest {
 
 export interface GetUsersFromFavoritesRequest {
     /**
-     * A Agreement ID
+     * A DigitalContent ID
      */
     agreementId: string;
     /**
@@ -355,7 +355,7 @@ export interface GetUsersFromFavoritesRequest {
 
 export interface GetUsersFromRepostsRequest {
     /**
-     * A Agreement ID
+     * A DigitalContent ID
      */
     agreementId: string;
     /**
@@ -554,7 +554,7 @@ export class AgreementsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Gets a agreement by ID. If `show_unlisted` is true, then `handle` and `url_title` are required.
+     * Gets a digital_content by ID. If `show_unlisted` is true, then `handle` and `url_title` are required.
      */
     async getAgreement(requestParameters: GetAgreementRequest): Promise<NonNullable<FullAgreementResponse["data"]>> {
         if (requestParameters.agreementId === null || requestParameters.agreementId === undefined) {
@@ -582,7 +582,7 @@ export class AgreementsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/agreements/{agreement_id}`.replace(`{${"agreement_id"}}`, encodeURIComponent(String(requestParameters.agreementId))),
+            path: `/agreements/{digital_content_id}`.replace(`{${"digital_content_id"}}`, encodeURIComponent(String(requestParameters.agreementId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -590,7 +590,7 @@ export class AgreementsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Gets all the agreements that the given agreement remixes
+     * Gets all the agreements that the given digital_content remixes
      */
     async getAgreementRemixParents(requestParameters: GetAgreementRemixParentsRequest): Promise<NonNullable<RemixingResponse["data"]>> {
         if (requestParameters.agreementId === null || requestParameters.agreementId === undefined) {
@@ -614,7 +614,7 @@ export class AgreementsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/agreements/{agreement_id}/remixing`.replace(`{${"agreement_id"}}`, encodeURIComponent(String(requestParameters.agreementId))),
+            path: `/agreements/{digital_content_id}/remixing`.replace(`{${"digital_content_id"}}`, encodeURIComponent(String(requestParameters.agreementId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -622,7 +622,7 @@ export class AgreementsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get all agreements that remix the given agreement
+     * Get all agreements that remix the given digital_content
      */
     async getAgreementRemixes(requestParameters: GetAgreementRemixesRequest): Promise<NonNullable<RemixesResponseFull["data"]>> {
         if (requestParameters.agreementId === null || requestParameters.agreementId === undefined) {
@@ -646,7 +646,7 @@ export class AgreementsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/agreements/{agreement_id}/remixes`.replace(`{${"agreement_id"}}`, encodeURIComponent(String(requestParameters.agreementId))),
+            path: `/agreements/{digital_content_id}/remixes`.replace(`{${"digital_content_id"}}`, encodeURIComponent(String(requestParameters.agreementId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -654,7 +654,7 @@ export class AgreementsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get the remixable stems of a agreement
+     * Get the remixable stems of a digital_content
      */
     async getAgreementStems(requestParameters: GetAgreementStemsRequest): Promise<NonNullable<StemsResponse["data"]>> {
         if (requestParameters.agreementId === null || requestParameters.agreementId === undefined) {
@@ -666,7 +666,7 @@ export class AgreementsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/agreements/{agreement_id}/stems`.replace(`{${"agreement_id"}}`, encodeURIComponent(String(requestParameters.agreementId))),
+            path: `/agreements/{digital_content_id}/stems`.replace(`{${"digital_content_id"}}`, encodeURIComponent(String(requestParameters.agreementId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -674,7 +674,7 @@ export class AgreementsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Gets the agreement IDs of the top trending agreements on Coliving
+     * Gets the digital_content IDs of the top trending agreements on Coliving
      */
     async getTrendingAgreementIDs(requestParameters: GetTrendingAgreementIDsRequest = {}): Promise<NonNullable<TrendingIdsResponse["data"]>> {
         const queryParameters: any = {};
@@ -730,7 +730,7 @@ export class AgreementsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Gets the agreement IDs of the top trending agreements on Coliving based on the given trending strategy version
+     * Gets the digital_content IDs of the top trending agreements on Coliving based on the given trending strategy version
      */
     async getTrendingAgreementsIDsWithVersion(requestParameters: GetTrendingAgreementsIDsWithVersionRequest): Promise<NonNullable<TrendingIdsResponse["data"]>> {
         if (requestParameters.version === null || requestParameters.version === undefined) {
@@ -894,7 +894,7 @@ export class AgreementsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get users that favorited a agreement
+     * Get users that favorited a digital_content
      */
     async getUsersFromFavorites(requestParameters: GetUsersFromFavoritesRequest): Promise<NonNullable<AgreementFavoritesResponseFull["data"]>> {
         if (requestParameters.agreementId === null || requestParameters.agreementId === undefined) {
@@ -918,7 +918,7 @@ export class AgreementsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/agreements/{agreement_id}/favorites`.replace(`{${"agreement_id"}}`, encodeURIComponent(String(requestParameters.agreementId))),
+            path: `/agreements/{digital_content_id}/favorites`.replace(`{${"digital_content_id"}}`, encodeURIComponent(String(requestParameters.agreementId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -926,7 +926,7 @@ export class AgreementsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get the users that reposted a agreement
+     * Get the users that reposted a digital_content
      */
     async getUsersFromReposts(requestParameters: GetUsersFromRepostsRequest): Promise<NonNullable<AgreementRepostsResponseFull["data"]>> {
         if (requestParameters.agreementId === null || requestParameters.agreementId === undefined) {
@@ -950,7 +950,7 @@ export class AgreementsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/agreements/{agreement_id}/reposts`.replace(`{${"agreement_id"}}`, encodeURIComponent(String(requestParameters.agreementId))),
+            path: `/agreements/{digital_content_id}/reposts`.replace(`{${"digital_content_id"}}`, encodeURIComponent(String(requestParameters.agreementId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

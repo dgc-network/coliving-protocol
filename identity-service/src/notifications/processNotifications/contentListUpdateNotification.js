@@ -13,7 +13,7 @@ const logPrefix = 'notifications contentList updates -'
  */
 async function processContentListUpdateNotifications (notifications, tx) {
   /**
-     * keep agreement of last contentList updates for each user that favorited contentLists
+     * keep digital_content of last contentList updates for each user that favorited contentLists
      * e.g. { user1: { contentList1: <timestamp1>, contentList2: <timestamp2>, ... }, ... }
      */
   const startTime = Date.now()
@@ -84,7 +84,7 @@ async function processContentListUpdateNotifications (notifications, tx) {
       Object.keys(fetchedContentListUpdates).forEach(contentListId => {
         const fetchedLastUpdated = moment(fetchedContentListUpdates[contentListId]).utc()
         dbContentListUpdates[contentListId] = {
-          // in case user favorited this agreement before and has no UserEvent record of it
+          // in case user favorited this digital_content before and has no UserEvent record of it
           userLastViewed: fetchedLastUpdated.subtract(1, 'seconds').valueOf(),
           ...dbContentListUpdates[contentListId],
           lastUpdated: fetchedLastUpdated.valueOf()

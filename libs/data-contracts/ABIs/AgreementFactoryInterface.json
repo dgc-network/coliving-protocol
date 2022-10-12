@@ -10,7 +10,7 @@
         },
         {
           "internalType": "uint256",
-          "name": "_agreementId",
+          "name": "_digital_contentId",
           "type": "uint256"
         }
       ],

@@ -34,16 +34,16 @@ def social_feature_state_update(
     block_datetime = datetime.utcfromtimestamp(block_timestamp)
 
     # stores net state changes of all reposts and follows and corresponding events in current block
-    #   agreement_repost_state_changes = { "user_id": { "agreement_id": {__Repost__} } }
+    #   digital_content_repost_state_changes = { "user_id": { "digital_content_id": {__Repost__} } }
     #   content_list_repost_state_changes = { "user_id": { "content_list_id": {__Repost__} } }
     #   follow_state_changes = { "follower_user_id": { "followee_user_id": {__Follow__} } }
-    agreement_repost_state_changes: Dict[int, Dict[int, Repost]] = {}
+    digital_content_repost_state_changes: Dict[int, Dict[int, Repost]] = {}
     content_list_repost_state_changes: Dict[int, Dict[int, Repost]] = {}
     follow_state_changes: Dict[int, Dict[int, Follow]] = {}
 
     for tx_receipt in social_feature_factory_txs:
         try:
-            add_agreement_repost(
+            add_digital_content_repost(
                 self,
                 update_task.social_feature_contract,
                 update_task,
@@ -51,9 +51,9 @@ def social_feature_state_update(
                 tx_receipt,
                 block_number,
                 block_datetime,
-                agreement_repost_state_changes,
+                digital_content_repost_state_changes,
             )
-            delete_agreement_repost(
+            delete_digital_content_repost(
                 self,
                 update_task.social_feature_contract,
                 update_task,
@@ -61,7 +61,7 @@ def social_feature_state_update(
                 tx_receipt,
                 block_number,
                 block_datetime,
-                agreement_repost_state_changes,
+                digital_content_repost_state_changes,
             )
             add_content_list_repost(
                 self,
@@ -104,7 +104,7 @@ def social_feature_state_update(
                 follow_state_changes,
             )
         except Exception as e:
-            logger.info("Error in parse agreement transaction")
+            logger.info("Error in parse digital_content transaction")
             txhash = update_task.web3.toHex(tx_receipt.transactionHash)
             blockhash = update_task.web3.toHex(block_hash)
             raise IndexingError(
@@ -113,15 +113,15 @@ def social_feature_state_update(
 
     # bulk process all repost and follow changes
 
-    for repost_user_id, repost_agreement_ids in agreement_repost_state_changes.items():
-        for repost_agreement_id in repost_agreement_ids:
+    for repost_user_id, repost_digital_content_ids in digital_content_repost_state_changes.items():
+        for repost_digital_content_id in repost_digital_content_ids:
             invalidate_old_repost(
-                session, repost_user_id, repost_agreement_id, RepostType.agreement
+                session, repost_user_id, repost_digital_content_id, RepostType.digital_content
             )
-            repost = repost_agreement_ids[repost_agreement_id]
+            repost = repost_digital_content_ids[repost_digital_content_id]
             session.add(repost)
             dispatch_challenge_repost(challenge_bus, repost, block_number)
-        num_total_changes += len(repost_agreement_ids)
+        num_total_changes += len(repost_digital_content_ids)
 
     for repost_user_id, repost_content_list_ids in content_list_repost_state_changes.items():
         for repost_content_list_id in repost_content_list_ids:
@@ -188,7 +188,7 @@ def invalidate_old_follow(session, follower_user_id, followee_user_id):
     return num_invalidated_follow_entries
 
 
-def add_agreement_repost(
+def add_digital_content_repost(
     self,
     social_feature_factory_contract,
     update_task,
@@ -196,24 +196,24 @@ def add_agreement_repost(
     tx_receipt,
     block_number,
     block_datetime,
-    agreement_repost_state_changes,
+    digital_content_repost_state_changes,
 ):
     txhash = update_task.web3.toHex(tx_receipt.transactionHash)
-    new_agreement_repost_events = (
+    new_digital_content_repost_events = (
         social_feature_factory_contract.events.AgreementRepostAdded().processReceipt(
             tx_receipt
         )
     )
-    for event in new_agreement_repost_events:
+    for event in new_digital_content_repost_events:
         event_args = event["args"]
         repost_user_id = event_args._userId
-        repost_agreement_id = event_args._agreementId
+        repost_digital_content_id = event_args._digital_contentId
 
-        if (repost_user_id in agreement_repost_state_changes) and (
-            repost_agreement_id in agreement_repost_state_changes[repost_user_id]
+        if (repost_user_id in digital_content_repost_state_changes) and (
+            repost_digital_content_id in digital_content_repost_state_changes[repost_user_id]
         ):
-            agreement_repost_state_changes[repost_user_id][
-                repost_agreement_id
+            digital_content_repost_state_changes[repost_user_id][
+                repost_digital_content_id
             ].is_delete = False
         else:
             repost = Repost(
@@ -221,19 +221,19 @@ def add_agreement_repost(
                 blocknumber=block_number,
                 txhash=txhash,
                 user_id=repost_user_id,
-                repost_item_id=repost_agreement_id,
-                repost_type=RepostType.agreement,
+                repost_item_id=repost_digital_content_id,
+                repost_type=RepostType.digital_content,
                 is_current=True,
                 is_delete=False,
                 created_at=block_datetime,
             )
-            if repost_user_id in agreement_repost_state_changes:
-                agreement_repost_state_changes[repost_user_id][repost_agreement_id] = repost
+            if repost_user_id in digital_content_repost_state_changes:
+                digital_content_repost_state_changes[repost_user_id][repost_digital_content_id] = repost
             else:
-                agreement_repost_state_changes[repost_user_id] = {repost_agreement_id: repost}
+                digital_content_repost_state_changes[repost_user_id] = {repost_digital_content_id: repost}
 
 
-def delete_agreement_repost(
+def delete_digital_content_repost(
     self,
     social_feature_factory_contract,
     update_task,
@@ -241,7 +241,7 @@ def delete_agreement_repost(
     tx_receipt,
     block_number,
     block_datetime,
-    agreement_repost_state_changes,
+    digital_content_repost_state_changes,
 ):
     txhash = update_task.web3.toHex(tx_receipt.transactionHash)
     new_repost_events = (
@@ -252,28 +252,28 @@ def delete_agreement_repost(
     for event in new_repost_events:
         event_args = event["args"]
         repost_user_id = event_args._userId
-        repost_agreement_id = event_args._agreementId
+        repost_digital_content_id = event_args._digital_contentId
 
-        if (repost_user_id in agreement_repost_state_changes) and (
-            repost_agreement_id in agreement_repost_state_changes[repost_user_id]
+        if (repost_user_id in digital_content_repost_state_changes) and (
+            repost_digital_content_id in digital_content_repost_state_changes[repost_user_id]
         ):
-            agreement_repost_state_changes[repost_user_id][repost_agreement_id].is_delete = True
+            digital_content_repost_state_changes[repost_user_id][repost_digital_content_id].is_delete = True
         else:
             repost = Repost(
                 blockhash=update_task.web3.toHex(event.blockHash),
                 blocknumber=block_number,
                 txhash=txhash,
                 user_id=repost_user_id,
-                repost_item_id=repost_agreement_id,
-                repost_type=RepostType.agreement,
+                repost_item_id=repost_digital_content_id,
+                repost_type=RepostType.digital_content,
                 is_current=True,
                 is_delete=True,
                 created_at=block_datetime,
             )
-            if repost_user_id in agreement_repost_state_changes:
-                agreement_repost_state_changes[repost_user_id][repost_agreement_id] = repost
+            if repost_user_id in digital_content_repost_state_changes:
+                digital_content_repost_state_changes[repost_user_id][repost_digital_content_id] = repost
             else:
-                agreement_repost_state_changes[repost_user_id] = {repost_agreement_id: repost}
+                digital_content_repost_state_changes[repost_user_id] = {repost_digital_content_id: repost}
 
 
 def add_content_list_repost(

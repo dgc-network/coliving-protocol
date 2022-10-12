@@ -23,17 +23,17 @@ def upgrade():
         $do$
         BEGIN
             ALTER MATERIALIZED VIEW trending_params RENAME TO trending_params_aSPET;
-            ALTER INDEX trending_params_agreement_id_idx RENAME TO trending_params_agreement_id_idx_aSPET;
+            ALTER INDEX trending_params_digital_content_id_idx RENAME TO trending_params_digital_content_id_idx_aSPET;
 
             CREATE MATERIALIZED VIEW trending_params as
             SELECT
-                t.agreement_id as agreement_id,
+                t.digital_content_id as digital_content_id,
                 t.genre as genre,
                 t.owner_id as owner_id,
                 ap.play_count as play_count,
                 au.follower_count as owner_follower_count,
-                COALESCE (aggregate_agreement.repost_count, 0) as repost_count,
-                COALESCE (aggregate_agreement.save_count, 0) as save_count,
+                COALESCE (aggregate_digital_content.repost_count, 0) as repost_count,
+                COALESCE (aggregate_digital_content.save_count, 0) as save_count,
                 COALESCE (repost_week.repost_count, 0) as repost_week_count,
                 COALESCE (repost_month.repost_count, 0) as repost_month_count,
                 COALESCE (repost_year.repost_count, 0) as repost_year_count,
@@ -50,7 +50,7 @@ def upgrade():
                     ap.play_item_id as play_item_id
                 FROM
                     aggregate_plays ap
-            ) as ap ON ap.play_item_id = t.agreement_id
+            ) as ap ON ap.play_item_id = t.digital_content_id
             -- join on subquery for aggregate user
             LEFT OUTER JOIN (
                 SELECT
@@ -59,102 +59,102 @@ def upgrade():
                 FROM
                     aggregate_user au
             ) as au ON au.user_id = t.owner_id
-            -- join on subquery for aggregate agreement
+            -- join on subquery for aggregate digital_content
             LEFT OUTER JOIN (
                 SELECT
-                    aggregate_agreement.agreement_id as agreement_id,
-                    aggregate_agreement.repost_count as repost_count,
-                    aggregate_agreement.save_count as save_count
+                    aggregate_digital_content.digital_content_id as digital_content_id,
+                    aggregate_digital_content.repost_count as repost_count,
+                    aggregate_digital_content.save_count as save_count
                 FROM
-                    aggregate_agreement
-            ) as aggregate_agreement ON aggregate_agreement.agreement_id = t.agreement_id
+                    aggregate_digital_content
+            ) as aggregate_digital_content ON aggregate_digital_content.digital_content_id = t.digital_content_id
             -- -- join on subquery for reposts by year
             LEFT OUTER JOIN (
                 SELECT
-                    r.repost_item_id as agreement_id,
+                    r.repost_item_id as digital_content_id,
                     count(r.repost_item_id) as repost_count
                 FROM
                     reposts r
                 WHERE
                     r.is_current is True AND
-                    r.repost_type = 'agreement' AND
+                    r.repost_type = 'digital_content' AND
                     r.is_delete is False AND
                     r.created_at > (now() - interval '1 year')
                 GROUP BY r.repost_item_id
-            ) repost_year ON repost_year.agreement_id = t.agreement_id
+            ) repost_year ON repost_year.digital_content_id = t.digital_content_id
             -- -- join on subquery for reposts by month
             LEFT OUTER JOIN (
                 SELECT
-                    r.repost_item_id as agreement_id,
+                    r.repost_item_id as digital_content_id,
                     count(r.repost_item_id) as repost_count
                 FROM
                     reposts r
                 WHERE
                     r.is_current is True AND
-                    r.repost_type = 'agreement' AND
+                    r.repost_type = 'digital_content' AND
                     r.is_delete is False AND
                     r.created_at > (now() - interval '1 month')
                 GROUP BY r.repost_item_id
-            ) repost_month ON repost_month.agreement_id = t.agreement_id
+            ) repost_month ON repost_month.digital_content_id = t.digital_content_id
             -- -- join on subquery for reposts by week
             LEFT OUTER JOIN (
                 SELECT
-                    r.repost_item_id as agreement_id,
+                    r.repost_item_id as digital_content_id,
                     count(r.repost_item_id) as repost_count
                 FROM
                     reposts r
                 WHERE
                     r.is_current is True AND
-                    r.repost_type = 'agreement' AND
+                    r.repost_type = 'digital_content' AND
                     r.is_delete is False AND
                     r.created_at > (now() - interval '1 week')
                 GROUP BY r.repost_item_id
-            ) repost_week ON repost_week.agreement_id = t.agreement_id
+            ) repost_week ON repost_week.digital_content_id = t.digital_content_id
             -- -- join on subquery for saves by year
             LEFT OUTER JOIN (
                 SELECT
-                    r.save_item_id as agreement_id,
+                    r.save_item_id as digital_content_id,
                     count(r.save_item_id) as repost_count
                 FROM
                     saves r
                 WHERE
                     r.is_current is True AND
-                    r.save_type = 'agreement' AND
+                    r.save_type = 'digital_content' AND
                     r.is_delete is False AND
                     r.created_at > (now() - interval '1 year')
                 GROUP BY r.save_item_id
-            ) save_year ON save_year.agreement_id = t.agreement_id
+            ) save_year ON save_year.digital_content_id = t.digital_content_id
             -- -- join on subquery for saves by month
             LEFT OUTER JOIN (
                 SELECT
-                    r.save_item_id as agreement_id,
+                    r.save_item_id as digital_content_id,
                     count(r.save_item_id) as repost_count
                 FROM
                     saves r
                 WHERE
                     r.is_current is True AND
-                    r.save_type = 'agreement' AND
+                    r.save_type = 'digital_content' AND
                     r.is_delete is False AND
                     r.created_at > (now() - interval '1 month')
                 GROUP BY r.save_item_id
-            ) save_month ON save_month.agreement_id = t.agreement_id
+            ) save_month ON save_month.digital_content_id = t.digital_content_id
             -- -- join on subquery for saves by week
             LEFT OUTER JOIN (
                 SELECT
-                    r.save_item_id as agreement_id,
+                    r.save_item_id as digital_content_id,
                     count(r.save_item_id) as repost_count
                 FROM
                     saves r
                 WHERE
                     r.is_current is True AND
-                    r.save_type = 'agreement' AND
+                    r.save_type = 'digital_content' AND
                     r.is_delete is False AND
                     r.created_at > (now() - interval '1 week')
                 GROUP BY r.save_item_id
-            ) save_week ON save_week.agreement_id = t.agreement_id
+            ) save_week ON save_week.digital_content_id = t.digital_content_id
             LEFT OUTER JOIN (
                 SELECT
-                    save_and_reposts.item_id as agreement_id,
+                    save_and_reposts.item_id as digital_content_id,
                     sum(au.follower_count) as karma
                 FROM
                     (
@@ -170,7 +170,7 @@ def upgrade():
                             where
                                 is_delete is false AND
                                 is_current is true AND
-                                repost_type = 'agreement'
+                                repost_type = 'digital_content'
                             union all
                             select
                                 user_id,
@@ -180,7 +180,7 @@ def upgrade():
                             where
                                 is_delete is false AND
                                 is_current is true AND
-                                save_type = 'agreement'
+                                save_type = 'digital_content'
                             ) r_and_s
                         join
                             users
@@ -201,14 +201,14 @@ def upgrade():
                 ON
                     save_and_reposts.user_id = au.user_id
                 GROUP BY save_and_reposts.item_id
-            ) karma ON karma.agreement_id = t.agreement_id
+            ) karma ON karma.digital_content_id = t.digital_content_id
             WHERE
                 t.is_current is True AND
                 t.is_delete is False AND
                 t.is_unlisted is False AND
                 t.stem_of is Null;
 
-            CREATE INDEX trending_params_agreement_id_idx ON trending_params (agreement_id);
+            CREATE INDEX trending_params_digital_content_id_idx ON trending_params (digital_content_id);
         END
         $do$
         """

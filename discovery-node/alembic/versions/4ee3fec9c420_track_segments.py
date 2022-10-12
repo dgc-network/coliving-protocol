@@ -1,4 +1,4 @@
-"""agreement segments
+"""digital_content segments
 
 Revision ID: 4ee3fec9c420
 Revises: d4779ea63753
@@ -21,7 +21,7 @@ def upgrade():
     op.add_column(
         "agreements",
         sa.Column(
-            "agreement_segments", postgresql.JSONB(astext_type=sa.Text()), nullable=False
+            "digital_content_segments", postgresql.JSONB(astext_type=sa.Text()), nullable=False
         ),
     )
     op.drop_column("agreements", "file_multihash")
@@ -34,5 +34,5 @@ def downgrade():
         "agreements",
         sa.Column("file_multihash", sa.VARCHAR(), autoincrement=False, nullable=False),
     )
-    op.drop_column("agreements", "agreement_segments")
+    op.drop_column("agreements", "digital_content_segments")
     # ### end Alembic commands ###

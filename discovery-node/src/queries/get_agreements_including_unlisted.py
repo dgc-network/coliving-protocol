@@ -2,12 +2,12 @@ import logging  # pylint: disable=C0302
 
 from flask.globals import request
 from sqlalchemy import and_, or_
-from src.models.agreements.agreement import Agreement
+from src.models.agreements.digital_content import DigitalContent
 from src.queries.query_helpers import (
     get_users_by_id,
     get_users_ids,
     paginate_query,
-    populate_agreement_metadata,
+    populate_digital_content_metadata,
 )
 from src.utils import helpers
 from src.utils.db_session import get_db_read_replica
@@ -26,12 +26,12 @@ def make_cache_key(args):
         "filter_deleted": args.get("filter_deleted"),
         "with_users": args.get("with_user"),
     }
-    key = extract_key(f"unpopulated-agreements:{request.path}", cache_keys.items())
+    key = extract_key(f"unpopulated-digital-contents:{request.path}", cache_keys.items())
     return key
 
 
-def get_agreements_including_unlisted(args):
-    """Fetch a agreement, allowing unlisted.
+def get_digital_contents_including_unlisted(args):
+    """Fetch a digital_content, allowing unlisted.
 
     Args:
         args: dict
@@ -49,14 +49,14 @@ def get_agreements_including_unlisted(args):
     db = get_db_read_replica()
     with db.scoped_session() as session:
 
-        def get_unpopulated_agreement():
-            base_query = session.query(Agreement)
+        def get_unpopulated_digital_content():
+            base_query = session.query(DigitalContent)
             filter_cond = []
 
             # Create filter conditions as a list of `and` clauses
             for i in identifiers:
                 filter_cond.append(
-                    and_(Agreement.is_current == True, Agreement.agreement_id == i["id"])
+                    and_(DigitalContent.is_current == True, DigitalContent.digital_content_id == i["id"])
                 )
 
             # Pass array of `and` clauses into an `or` clause as destructured *args
@@ -68,46 +68,46 @@ def get_agreements_including_unlisted(args):
             if "filter_deleted" in args:
                 filter_deleted = args.get("filter_deleted")
                 if filter_deleted:
-                    base_query = base_query.filter(Agreement.is_delete == False)
+                    base_query = base_query.filter(DigitalContent.is_delete == False)
 
             # Perform the query
             # TODO: pagination is broken with unlisted agreements
             query_results = paginate_query(base_query).all()
             agreements = helpers.query_result_to_list(query_results)
 
-            # Mapping of agreement_id -> agreement object from request;
+            # Mapping of digital_content_id -> digital_content object from request;
             # used to check route_id when iterating through identifiers
-            identifiers_map = {agreement["id"]: agreement for agreement in identifiers}
+            identifiers_map = {digital_content["id"]: digital_content for digital_content in identifiers}
 
-            # If the agreement is unlisted and the generated route_id does not match the route_id in db,
-            # filter agreement out from response
-            def filter_fn(agreement):
-                input_agreement = identifiers_map[agreement["agreement_id"]]
-                route_id = helpers.create_agreement_route_id(
-                    input_agreement["url_title"], input_agreement["handle"]
+            # If the digital_content is unlisted and the generated route_id does not match the route_id in db,
+            # filter digital_content out from response
+            def filter_fn(digital_content):
+                input_digital_content = identifiers_map[digital_content["digital_content_id"]]
+                route_id = helpers.create_digital_content_route_id(
+                    input_digital_content["url_title"], input_digital_content["handle"]
                 )
 
-                return not agreement["is_unlisted"] or agreement["route_id"] == route_id
+                return not digital_content["is_unlisted"] or digital_content["route_id"] == route_id
 
             agreements = list(filter(filter_fn, agreements))
 
-            agreement_ids = list(map(lambda agreement: agreement["agreement_id"], agreements))
-            return (agreements, agreement_ids)
+            digital_content_ids = list(map(lambda digital_content: digital_content["digital_content_id"], agreements))
+            return (agreements, digital_content_ids)
 
         key = make_cache_key(args)
-        (agreements, agreement_ids) = use_redis_cache(
-            key, UNPOPULATED_AGREEMENT_CACHE_DURATION_SEC, get_unpopulated_agreement
+        (agreements, digital_content_ids) = use_redis_cache(
+            key, UNPOPULATED_AGREEMENT_CACHE_DURATION_SEC, get_unpopulated_digital_content
         )
 
         # Add users
         if args.get("with_users", False):
             user_id_list = get_users_ids(agreements)
             users = get_users_by_id(session, user_id_list, current_user_id)
-            for agreement in agreements:
-                user = users[agreement["owner_id"]]
+            for digital_content in agreements:
+                user = users[digital_content["owner_id"]]
                 if user:
-                    agreement["user"] = user
+                    digital_content["user"] = user
         # Populate metadata
-        agreements = populate_agreement_metadata(session, agreement_ids, agreements, current_user_id)
+        agreements = populate_digital_content_metadata(session, digital_content_ids, agreements, current_user_id)
 
     return agreements

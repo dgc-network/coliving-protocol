@@ -4,69 +4,69 @@ from flake8_plugins.flask_decorator_plugin.flask_decorator_plugin import Plugin
 from flake8_plugins.flask_decorator_plugin.visitor import Visitor
 
 non_route_param_example = """
-@full_ns.route("/<string:agreement_id>/remixes")
+@full_ns.route("/<string:digital_content_id>/remixes")
 class FullRemixesRoute(Resource):
     @record_metrics
     @full_ns.doc(
-        id="Get Agreement Remixes",
-        description="Get all agreements that remix the given agreement",
-        params={"agreement_id": "A Agreement ID", "some_param": "Not in the route"},
+        id="Get DigitalContent Remixes",
+        description="Get all agreements that remix the given digital_content",
+        params={"digital_content_id": "A DigitalContent ID", "some_param": "Not in the route"},
     )
     @full_ns.expect(pagination_with_current_user_parser)
     @full_ns.marshal_with(remixes_response)
     @cache(ttl_sec=10)
-    def get(self, agreement_id):
+    def get(self, digital_content_id):
         pass
 """
 
 variable_route_param_example = """
 @ns.route(AGREEMENT_ROUTE)
-class Agreement(Resource):
+class DigitalContent(Resource):
     @record_metrics
     @ns.doc(
-        id=\"Get Agreement\",
-        description=\"Gets a agreement by ID\",
-        params={\"agreement_id\": \"A Agreement ID\"},
+        id=\"Get DigitalContent\",
+        description=\"Gets a digital_content by ID\",
+        params={\"digital_content_id\": \"A DigitalContent ID\"},
         responses={200: \"Success\", 400: \"Bad request\", 500: \"Server error\"},
     )
-    @ns.marshal_with(agreement_response)
+    @ns.marshal_with(digital_content_response)
     @cache(ttl_sec=5)
-    def get(self, agreement_id):
-        decoded_id = decode_with_abort(agreement_id, ns)
-        return get_single_agreement(decoded_id, None, ns)
+    def get(self, digital_content_id):
+        decoded_id = decode_with_abort(digital_content_id, ns)
+        return get_single_digital_content(decoded_id, None, ns)
 """
 
 attribute_order_example = """
-@full_ns.route(\"/<string:agreement_id>/remixes\")
+@full_ns.route(\"/<string:digital_content_id>/remixes\")
 class FullRemixesRoute(Resource):
     @full_ns.doc(
-        id=\"Get Agreement Remixes\",
-        description=\"Get all agreements that remix the given agreement\",
-        params={\"agreement_id\": \"A Agreement ID\"},
+        id=\"Get DigitalContent Remixes\",
+        description=\"Get all agreements that remix the given digital_content\",
+        params={\"digital_content_id\": \"A DigitalContent ID\"},
     )
     @record_metrics
     @full_ns.expect(pagination_with_current_user_parser)
     @full_ns.marshal_with(remixes_response)
     @cache(ttl_sec=10)
-    def get(self, agreement_id):
+    def get(self, digital_content_id):
         pass
 """
 
 keyword_order_example = """
-@ns.route("/<string:agreement_id>")
-class Agreement(Resource):
+@ns.route("/<string:digital_content_id>")
+class DigitalContent(Resource):
     @record_metrics
     @ns.doc(
-        id=\"Get Agreement\",
-        description=\"Gets a agreement by ID\",
+        id=\"Get DigitalContent\",
+        description=\"Gets a digital_content by ID\",
         responses={200: \"Success\", 400: \"Bad request\", 500: \"Server error\"},
-        params={\"agreement_id\": \"A Agreement ID\"},
+        params={\"digital_content_id\": \"A DigitalContent ID\"},
     )
-    @ns.marshal_with(agreement_response)
+    @ns.marshal_with(digital_content_response)
     @cache(ttl_sec=5)
-    def get(self, agreement_id):
-        decoded_id = decode_with_abort(agreement_id, ns)
-        return get_single_agreement(decoded_id, None, ns)
+    def get(self, digital_content_id):
+        decoded_id = decode_with_abort(digital_content_id, ns)
+        return get_single_digital_content(decoded_id, None, ns)
 """
 
 

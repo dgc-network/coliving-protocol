@@ -15,30 +15,30 @@ from src.queries.get_content_lists import get_content_lists
 from src.queries.get_previously_private_content_lists import (
     get_previously_private_content_lists,
 )
-from src.queries.get_previously_unlisted_agreements import get_previously_unlisted_agreements
-from src.queries.get_remix_agreement_parents import get_remix_agreement_parents
+from src.queries.get_previously_unlisted_digital_contents import get_previously_unlisted_digital_contents
+from src.queries.get_remix_digital_content_parents import get_remix_digital_content_parents
 from src.queries.get_remixes_of import get_remixes_of
 from src.queries.get_repost_feed_for_user import get_repost_feed_for_user
 from src.queries.get_reposters_for_content_list import get_reposters_for_content_list
-from src.queries.get_reposters_for_agreement import get_reposters_for_agreement
+from src.queries.get_reposters_for_digital_content import get_reposters_for_digital_content
 from src.queries.get_savers_for_content_list import get_savers_for_content_list
-from src.queries.get_savers_for_agreement import get_savers_for_agreement
+from src.queries.get_savers_for_digital_content import get_savers_for_digital_content
 from src.queries.get_saves import get_saves
 from src.queries.get_sol_plays import (
     get_sol_play,
     get_total_aggregate_plays,
-    get_agreement_listen_milestones,
+    get_digital_content_listen_milestones,
 )
 from src.queries.get_stems_of import get_stems_of
 from src.queries.get_top_followee_saves import get_top_followee_saves
 from src.queries.get_top_followee_windowed import get_top_followee_windowed
 from src.queries.get_top_genre_users import get_top_genre_users
 from src.queries.get_top_content_lists import get_top_content_lists
-from src.queries.get_agreement_repost_intersection_users import (
-    get_agreement_repost_intersection_users,
+from src.queries.get_digital_content_repost_intersection_users import (
+    get_digital_content_repost_intersection_users,
 )
-from src.queries.get_agreements import get_agreements
-from src.queries.get_agreements_including_unlisted import get_agreements_including_unlisted
+from src.queries.get_digital_contents import get_digital_contents
+from src.queries.get_digital_contents_including_unlisted import get_digital_contents_including_unlisted
 from src.queries.get_ursm_cnodes import get_ursm_cnodes
 from src.queries.get_user_history import get_user_history
 from src.queries.get_users import get_users
@@ -86,11 +86,11 @@ def get_users_route():
     return api_helpers.success_response(users)
 
 
-# Returns all agreements (paginated) with each agreement's repost count
-# optionally filters by agreement ids
+# Returns all agreements (paginated) with each digital_content's repost count
+# optionally filters by digital_content ids
 @bp.route("/agreements", methods=("GET",))
 @record_metrics
-def get_agreements_route():
+def get_digital_contents_route():
     args = to_dict(request.args)
     if "id" in request.args:
         args["id"] = parse_id_array_param(request.args.getlist("id"))
@@ -104,16 +104,16 @@ def get_agreements_route():
         args["min_block_number"] = request.args.get("min_block_number", type=int)
     current_user_id = get_current_user_id(required=False)
     args["current_user_id"] = current_user_id
-    agreements = get_agreements(args)
+    agreements = get_digital_contents(args)
     return api_helpers.success_response(agreements)
 
 
-# Get all agreements matching a route_id and agreement_id.
+# Get all agreements matching a route_id and digital_content_id.
 # Expects a JSON body of shape:
 #   { "agreements": [{ "id": number, "url_title": string, "handle": string }]}
 @bp.route("/agreements_including_unlisted", methods=("POST",))
 @record_metrics
-def get_agreements_including_unlisted_route():
+def get_digital_contents_including_unlisted_route():
     args = to_dict(request.args)
     if "filter_deleted" in request.args:
         args["filter_deleted"] = parse_bool_param(request.args.get("filter_deleted"))
@@ -123,14 +123,14 @@ def get_agreements_including_unlisted_route():
     args["current_user_id"] = current_user_id
     identifiers = request.get_json()["agreements"]
     args["identifiers"] = identifiers
-    agreements = get_agreements_including_unlisted(args)
+    agreements = get_digital_contents_including_unlisted(args)
     return api_helpers.success_response(agreements)
 
 
-@bp.route("/stems/<int:agreement_id>", methods=("GET",))
+@bp.route("/stems/<int:digital_content_id>", methods=("GET",))
 @record_metrics
-def get_stems_of_route(agreement_id):
-    stems = get_stems_of(agreement_id)
+def get_stems_of_route(digital_content_id):
+    stems = get_stems_of(digital_content_id)
     return api_helpers.success_response(stems)
 
 
@@ -156,12 +156,12 @@ def get_content_lists_route():
 # For a given user, current_user, we provide a feed of relevant content from around the coliving network.
 # This is generated in the following manner:
 #   - Generate list of users followed by current_user, known as 'followees'
-#   - Query all agreement and public contentList reposts from followees
-#     - Generate list of reposted agreement ids and reposted contentList ids
-#   - Query all agreement and public contentLists reposted OR created by followees, ordered by timestamp
+#   - Query all digital_content and public contentList reposts from followees
+#     - Generate list of reposted digital_content ids and reposted contentList ids
+#   - Query all digital_content and public contentLists reposted OR created by followees, ordered by timestamp
 #     - At this point, 2 separate arrays one for contentLists / one for agreements
 #   - Query additional metadata around feed entries in each array, repost + save counts, user repost boolean
-#   - Combine unsorted contentList and agreement arrays
+#   - Combine unsorted contentList and digital_content arrays
 #   - Sort combined results by 'timestamp' field and return
 @bp.route("/feed", methods=("GET",))
 @record_metrics
@@ -193,10 +193,10 @@ def get_feed_route():
 
 # user repost feed steps
 # - get all reposts by user
-# - get all agreement and public contentList reposts by user, ordered by timestamp
-# - get additional metadata for each agreement/contentList: save count, repost count, current_user_reposted, followee_reposts
+# - get all digital_content and public contentList reposts by user, ordered by timestamp
+# - get additional metadata for each digital_content/contentList: save count, repost count, current_user_reposted, followee_reposts
 # -   (if current_user == user, skip current_user_reposted check and set all to true)
-# - combine unsorted contentList and agreement arrays
+# - combine unsorted contentList and digital_content arrays
 # - sort combined results by activity_timestamp field and return
 @bp.route("/feed/reposts/<int:user_id>", methods=("GET",))
 @record_metrics
@@ -222,18 +222,18 @@ def get_follow_intersection_users_route(followee_user_id, follower_user_id):
     return api_helpers.success_response(users)
 
 
-# get intersection of users that have reposted provided repost_agreement_id and users that are
+# get intersection of users that have reposted provided repost_digital_content_id and users that are
 # followed by follower_user_id.
 # - Followee = user that is followed. Follower = user that follows.
-# - repost_agreement_id = agreement that is reposted. repost_user_id = user that reposted agreement.
+# - repost_digital_content_id = digital_content that is reposted. repost_user_id = user that reposted digital_content.
 @bp.route(
-    "/users/intersection/repost/agreement/<int:repost_agreement_id>/<int:follower_user_id>",
+    "/users/intersection/repost/digital_content/<int:repost_digital_content_id>/<int:follower_user_id>",
     methods=("GET",),
 )
 @record_metrics
-def get_agreement_repost_intersection_users_route(repost_agreement_id, follower_user_id):
+def get_digital_content_repost_intersection_users_route(repost_digital_content_id, follower_user_id):
     try:
-        users = get_agreement_repost_intersection_users(repost_agreement_id, follower_user_id)
+        users = get_digital_content_repost_intersection_users(repost_digital_content_id, follower_user_id)
         return api_helpers.success_response(users)
     except exceptions.NotFoundError as e:
         return api_helpers.error_response(str(e), 404)
@@ -290,20 +290,20 @@ def get_followees_for_user_route(follower_user_id):
     return api_helpers.success_response(users)
 
 
-# Get paginated users that reposted provided repost_agreement_id, sorted by their follower count descending.
-@bp.route("/users/reposts/agreement/<int:repost_agreement_id>", methods=("GET",))
+# Get paginated users that reposted provided repost_digital_content_id, sorted by their follower count descending.
+@bp.route("/users/reposts/digital_content/<int:repost_digital_content_id>", methods=("GET",))
 @record_metrics
-def get_reposters_for_agreement_route(repost_agreement_id):
+def get_reposters_for_digital_content_route(repost_digital_content_id):
     try:
         current_user_id = get_current_user_id(required=False)
         (limit, offset) = get_pagination_vars()
         args = {
-            "repost_agreement_id": repost_agreement_id,
+            "repost_digital_content_id": repost_digital_content_id,
             "current_user_id": current_user_id,
             "limit": limit,
             "offset": offset,
         }
-        user_results = get_reposters_for_agreement(args)
+        user_results = get_reposters_for_digital_content(args)
         return api_helpers.success_response(user_results)
     except exceptions.NotFoundError as e:
         return api_helpers.error_response(str(e), 404)
@@ -328,20 +328,20 @@ def get_reposters_for_content_list_route(repost_content_list_id):
         return api_helpers.error_response(str(e), 404)
 
 
-# Get paginated users that saved provided save_agreement_id, sorted by their follower count descending.
-@bp.route("/users/saves/agreement/<int:save_agreement_id>", methods=("GET",))
+# Get paginated users that saved provided save_digital_content_id, sorted by their follower count descending.
+@bp.route("/users/saves/digital_content/<int:save_digital_content_id>", methods=("GET",))
 @record_metrics
-def get_savers_for_agreement_route(save_agreement_id):
+def get_savers_for_digital_content_route(save_digital_content_id):
     try:
         current_user_id = get_current_user_id(required=False)
         (limit, offset) = get_pagination_vars()
         args = {
-            "save_agreement_id": save_agreement_id,
+            "save_digital_content_id": save_digital_content_id,
             "current_user_id": current_user_id,
             "limit": limit,
             "offset": offset,
         }
-        user_results = get_savers_for_agreement(args)
+        user_results = get_savers_for_digital_content(args)
         return api_helpers.success_response(user_results)
     except exceptions.NotFoundError as e:
         return api_helpers.error_response(str(e), 404)
@@ -449,7 +449,7 @@ def get_top_followee_windowed_route(type, window):
 
     Args:
         type: (string) The `type` (same as repost/save type) to query from. Currently only
-            agreement is supported.
+            digital_content is supported.
         window: (string) The window from now() to look back over. Supports all standard
             SqlAlchemy interval notation (week, month, year, etc.).
         limit?: (number) default=25, max=100
@@ -480,7 +480,7 @@ def get_top_followee_saves_route(type):
 
     Args:
         type: (string) The `type` (same as repost/save type) to query from. Currently only
-            agreement is supported.
+            digital_content is supported.
         limit?: (number) default=25, max=100
     """
     args = to_dict(request.args)
@@ -518,13 +518,13 @@ def get_top_genre_users_route():
     return api_helpers.success_response(users)
 
 
-# Get the agreements that are 'children' remixes of the requested agreement
-# The results are sorted by if the original landlord has reposted or saved the agreement
-@bp.route("/remixes/<int:agreement_id>/children", methods=("GET",))
+# Get the agreements that are 'children' remixes of the requested digital_content
+# The results are sorted by if the original landlord has reposted or saved the digital_content
+@bp.route("/remixes/<int:digital_content_id>/children", methods=("GET",))
 @record_metrics
-def get_remixes_of_route(agreement_id):
+def get_remixes_of_route(digital_content_id):
     args = to_dict(request.args)
-    args["agreement_id"] = agreement_id
+    args["digital_content_id"] = digital_content_id
     args["current_user_id"] = get_current_user_id(required=False)
     limit, offset = get_pagination_vars()
     args["limit"] = limit
@@ -538,28 +538,28 @@ def get_remixes_of_route(agreement_id):
         return api_helpers.error_response(str(e), 400)
 
 
-# Get the agreements that are 'parent' remixes of the requested agreement
-@bp.route("/remixes/<int:agreement_id>/parents", methods=("GET",))
+# Get the agreements that are 'parent' remixes of the requested digital_content
+@bp.route("/remixes/<int:digital_content_id>/parents", methods=("GET",))
 @record_metrics
-def get_remix_agreement_parents_route(agreement_id):
+def get_remix_digital_content_parents_route(digital_content_id):
     args = to_dict(request.args)
     if "with_users" in request.args:
         args["with_users"] = parse_bool_param(request.args.get("with_users"))
-    args["agreement_id"] = agreement_id
+    args["digital_content_id"] = digital_content_id
     args["current_user_id"] = get_current_user_id(required=False)
     limit, offset = get_pagination_vars()
     args["limit"] = limit
     args["offset"] = offset
-    agreements = get_remix_agreement_parents(args)
+    agreements = get_remix_digital_content_parents(args)
     return api_helpers.success_response(agreements)
 
 
 # Get the agreements that were previously unlisted and became public after the date provided
-@bp.route("/previously_unlisted/agreement", methods=("GET",))
+@bp.route("/previously_unlisted/digital_content", methods=("GET",))
 @record_metrics
-def get_previously_unlisted_agreements_route():
+def get_previously_unlisted_digital_contents_route():
     try:
-        agreements = get_previously_unlisted_agreements(to_dict(request.args))
+        agreements = get_previously_unlisted_digital_contents(to_dict(request.args))
         return api_helpers.success_response(agreements)
     except exceptions.ArgumentError as e:
         return api_helpers.error_response(str(e), 400)
@@ -610,13 +610,13 @@ def get_total_plays():
         return api_helpers.error_response(str(e), 400)
 
 
-# Get details for latest agreement listen milestones
+# Get details for latest digital_content listen milestones
 # Used to parse and issue notifications
-@bp.route("/agreement_listen_milestones", methods=("GET",))
-def get_agreement_listen_milestone_data():
+@bp.route("/digital_content_listen_milestones", methods=("GET",))
+def get_digital_content_listen_milestone_data():
     try:
         # Assign value only if not None or empty string
-        data = get_agreement_listen_milestones(100)
+        data = get_digital_content_listen_milestones(100)
         return api_helpers.success_response(data)
     except exceptions.ArgumentError as e:
         return api_helpers.error_response(str(e), 400)

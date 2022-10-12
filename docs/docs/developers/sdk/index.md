@@ -43,8 +43,8 @@ const colivingSdk = sdk({ appName: 'Name of your app goes here' })
 #### 3. Make your first API call using the SDK!
 
 ```js
-const agreement = await colivingSdk.agreements.getAgreement({ agreementId: 'D7KyD' })
-console.log(agreement, 'Agreement fetched!')
+const digital_content = await colivingSdk.agreements.getAgreement({ agreementId: 'D7KyD' })
+console.log(digital_content, 'DigitalContent fetched!')
 ```
 
 #### Full example
@@ -58,8 +58,8 @@ window.Web3 = Web3
 
 const colivingSdk = sdk({ appName: 'My Example App' })
 
-const agreement = await colivingSdk.agreements.getAgreement({ agreementId: 'D7KyD' })
-console.log(agreement, 'Agreement fetched!')
+const digital_content = await colivingSdk.agreements.getAgreement({ agreementId: 'D7KyD' })
+console.log(digital_content, 'DigitalContent fetched!')
 ```
 
 > If your bundler doesn't automatically polyfill node libraries (like when using create-react-app v5) you will need to use the `web3` script tag instead of the `web3` npm package
@@ -84,7 +84,7 @@ const colivingSdk = window.colivingSdk({ appName: 'Name of your app goes here' }
 #### 3. Make your first API call using the SDK!
 
 ```js
-const agreement = await colivingSdk.agreements.getAgreement({ agreementId: 'D7KyD' })
+const digital_content = await colivingSdk.agreements.getAgreement({ agreementId: 'D7KyD' })
 ```
 
 #### Full example
@@ -100,8 +100,8 @@ const agreement = await colivingSdk.agreements.getAgreement({ agreementId: 'D7Ky
         const colivingSdk = window.colivingSdk({
           appName: "My Example App",
         });
-        const agreement = await colivingSdk.agreements.getAgreement({ agreementId: 'D7KyD' });
-        console.log(agreement, "Agreement fetched!");
+        const digital_content = await colivingSdk.agreements.getAgreement({ agreementId: 'D7KyD' });
+        console.log(digital_content, "DigitalContent fetched!");
       }
       fn()
     </script>

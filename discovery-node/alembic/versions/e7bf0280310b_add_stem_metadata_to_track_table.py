@@ -1,4 +1,4 @@
-"""Add stem metadata to agreement table
+"""Add stem metadata to digital_content table
 
 Revision ID: e7bf0280310b
 Revises: 5add54e23282

@@ -7,7 +7,7 @@ const migration: RunnableMigration<QueryInterface> = {
     name: 'create_tables',
     up: async (params: MigrationParams<QueryInterface>) => {
 
-        // Table to keep agreement of the runs
+        // Table to keep digital_content of the runs
         await params.context.sequelize.query(`
             CREATE TABLE network_monitoring_index_blocks (
                 run_id SERIAL NOT NULL,
@@ -20,7 +20,7 @@ const migration: RunnableMigration<QueryInterface> = {
             );
         `)
 
-        // Table to keep agreement of content nodes over time
+        // Table to keep digital_content of content nodes over time
         await params.context.sequelize.query(`
             CREATE TABLE network_monitoring_content_nodes (
                 spID INT NOT NULL,
@@ -35,7 +35,7 @@ const migration: RunnableMigration<QueryInterface> = {
             );
         `)
 
-        // Table to keep agreement of users over time
+        // Table to keep digital_content of users over time
         await params.context.sequelize.query(`
             CREATE TABLE network_monitoring_users (
                 user_id INT NOT NULL,
@@ -66,7 +66,7 @@ const migration: RunnableMigration<QueryInterface> = {
             );
         `)
 
-        // Table to keep agreement of cids indexed by DN over time
+        // Table to keep digital_content of cids indexed by DN over time
         await params.context.sequelize.query(`
             CREATE TABLE network_monitoring_cids_from_discovery (
                 cid VARCHAR NOT NULL,
@@ -80,7 +80,7 @@ const migration: RunnableMigration<QueryInterface> = {
             );
         `)
 
-        // Table to keep agreement of cids on CNs over time
+        // Table to keep digital_content of cids on CNs over time
         await params.context.sequelize.query(`
             CREATE TABLE network_monitoring_cids_from_content (
                 cid VARCHAR NOT NULL,

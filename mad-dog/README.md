@@ -46,6 +46,6 @@
 
 ```
 const agreementId = await executeOne(walletIndex, libs =>
-  uploadAgreement(libs, agreement, AGREEMENT_DIR)
+  uploadAgreement(libs, digital_content, AGREEMENT_DIR)
 )
 ```

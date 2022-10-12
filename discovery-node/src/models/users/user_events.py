@@ -5,7 +5,7 @@ from src.models.model_utils import RepresentableMixin
 
 class UserEvent(Base, RepresentableMixin):
     """
-    User events agreement event metadata a user may produce as a part of their interaction
+    User events digital_content event metadata a user may produce as a part of their interaction
     with the protocol over time, e.g. who was the user referred by? has the user signed in on a mobile app?
 
     Events are stored as a separate table from Users as it is assumed that the table of events

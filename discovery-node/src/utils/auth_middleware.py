@@ -23,7 +23,7 @@ def auth_middleware(**kwargs):
 
     @auth_middleware
     def get(self):
-        args = agreement_slug_parser.parse_args()
+        args = digital_content_slug_parser.parse_args()
         slug, handle = (args.get("slug"), args.get("handle"))
         routes = args.get("route")
 

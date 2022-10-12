@@ -43,7 +43,7 @@ export class ContentListIndexer extends BaseIndexer<ContentListDoc> {
             searchable: standardText,
           },
         },
-        'content_list_contents.agreement_ids.agreement': { type: 'keyword' },
+        'content_list_contents.digital_content_ids.digital_content': { type: 'keyword' },
 
         user: {
           properties: {
@@ -144,7 +144,7 @@ export class ContentListIndexer extends BaseIndexer<ContentListDoc> {
     // which might actually be faster, since it's a very small collection
     // in which case we could just delete this function
 
-    // agreement play_count will also go stale (same problem as above)
+    // digital_content play_count will also go stale (same problem as above)
 
     return `
       and content_list_id in (
@@ -157,11 +157,11 @@ export class ContentListIndexer extends BaseIndexer<ContentListDoc> {
   }
 
   async withBatch(rows: ContentListDoc[]) {
-    // collect all the agreement IDs
+    // collect all the digital_content IDs
     const agreementIds = new Set<number>()
     for (let row of rows) {
-      row.content_list_contents.agreement_ids
-        .map((t: any) => t.agreement)
+      row.content_list_contents.digital_content_ids
+        .map((t: any) => t.digital_content)
         .filter(Boolean)
         .forEach((t: any) => agreementIds.add(t))
     }
@@ -169,10 +169,10 @@ export class ContentListIndexer extends BaseIndexer<ContentListDoc> {
     // fetch the agreements...
     const agreementsById = await this.getAgreements(Array.from(agreementIds))
 
-    // pull agreement data onto contentList
+    // pull digital_content data onto contentList
     for (let contentList of rows) {
-      contentList.agreements = contentList.content_list_contents.agreement_ids
-        .map((t: any) => agreementsById[t.agreement])
+      contentList.agreements = contentList.content_list_contents.digital_content_ids
+        .map((t: any) => agreementsById[t.digital_content])
         .filter(Boolean)
 
       contentList.total_play_count = contentList.agreements.reduce(
@@ -195,32 +195,32 @@ export class ContentListIndexer extends BaseIndexer<ContentListDoc> {
     const pg = dialPg()
     const idList = Array.from(agreementIds).join(',')
     // do we want landlord name from users
-    // or save + repost counts from aggregate_agreement?
+    // or save + repost counts from aggregate_digital_content?
     const q = `
       select 
-        agreement_id,
+        digital_content_id,
         genre,
         mood,
         tags,
         title,
         length,
         created_at,
-        coalesce(aggregate_agreement.repost_count, 0) as repost_count,
-        coalesce(aggregate_agreement.save_count, 0) as save_count,
+        coalesce(aggregate_digital_content.repost_count, 0) as repost_count,
+        coalesce(aggregate_digital_content.save_count, 0) as save_count,
         coalesce(aggregate_plays.count, 0) as play_count
   
       from agreements
-      left join aggregate_agreement using (agreement_id)
-      left join aggregate_plays on agreements.agreement_id = aggregate_plays.play_item_id
+      left join aggregate_digital_content using (digital_content_id)
+      left join aggregate_plays on agreements.digital_content_id = aggregate_plays.play_item_id
       where 
         is_current 
         and not is_delete 
         and not is_unlisted 
-        and agreement_id in (${idList})`
+        and digital_content_id in (${idList})`
     const allAgreements = await pg.query(q)
     for (let t of allAgreements.rows) {
       t.tags = splitTags(t.tags)
     }
-    return keyBy(allAgreements.rows, 'agreement_id')
+    return keyBy(allAgreements.rows, 'digital_content_id')
   }
 }

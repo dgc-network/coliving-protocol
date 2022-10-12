@@ -31,7 +31,7 @@ def get_content_list_repost_intersection_users(repost_content_list_id, follower_
                 session.query(Repost.user_id)
                 .filter(
                     Repost.repost_item_id == repost_content_list_id,
-                    Repost.repost_type != RepostType.agreement,
+                    Repost.repost_type != RepostType.digital_content,
                     Repost.is_current == True,
                     Repost.is_delete == False,
                 )

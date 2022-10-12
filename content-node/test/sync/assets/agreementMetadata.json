@@ -2,7 +2,7 @@
   "metadata": {
     "test": "field1",
     "owner_id": 1,
-    "agreement_segments": [
+    "digital_content_segments": [
       {
         "multihash": "QmQQhdN8918ix1MibmSek9orTLKqZSSzqUvJAtEfMqTLku",
         "duration": 6.016

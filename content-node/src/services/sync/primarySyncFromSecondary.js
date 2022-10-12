@@ -36,7 +36,7 @@ module.exports = async function primarySyncFromSecondary({
   // This is used only for logging record endpoint of requesting node
   const selfEndpoint = config.get('contentNodeEndpoint') || null
 
-  // object to agreement if the function errored, returned at the end of the function
+  // object to digital_content if the function errored, returned at the end of the function
   let error = null
 
   try {
@@ -189,7 +189,7 @@ async function saveFilesToDisk({ files, userReplicaSet, libs, logger }) {
     )
 
     /**
-     * Save all Agreement files to disk
+     * Save all DigitalContent files to disk
      */
     for (let i = 0; i < agreementFiles.length; i += FileSaveMaxConcurrency) {
       const agreementFilesSlice = agreementFiles.slice(i, i + FileSaveMaxConcurrency)
@@ -221,7 +221,7 @@ async function saveFilesToDisk({ files, userReplicaSet, libs, logger }) {
     }
 
     /**
-     * Save all non-Agreement files to disk
+     * Save all nonDigitalContent files to disk
      */
     for (let i = 0; i < nonAgreementFiles.length; i += FileSaveMaxConcurrency) {
       const nonAgreementFilesSlice = nonAgreementFiles.slice(
@@ -329,7 +329,7 @@ async function saveEntriesToDB({ fetchedCNodeUser, logger, logPrefix }) {
       ]
       fetchedAgreements = await filterOutAlreadyPresentDBEntries({
         cnodeUserUUID,
-        tableInstance: models.Agreement,
+        tableInstance: models.DigitalContent,
         fetchedEntries: fetchedAgreements,
         transaction,
         comparisonFields: agreementComparisonFields
@@ -363,9 +363,9 @@ async function saveEntriesToDB({ fetchedCNodeUser, logger, logPrefix }) {
         tableInstance: models.ColivingUser,
         entry: colivingUser
       })),
-      fetchedAgreements.map((agreement) => ({
-        tableInstance: models.Agreement,
-        entry: agreement
+      fetchedAgreements.map((digital_content) => ({
+        tableInstance: models.DigitalContent,
+        entry: digital_content
       })),
       fetchedFiles.map((file) => ({ tableInstance: models.File, entry: file }))
     )

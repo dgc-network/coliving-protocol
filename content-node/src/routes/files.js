@@ -754,7 +754,7 @@ router.post(
  * @param req.query
  * @param {string} req.query.filename filename to set as the content-disposition header
  * @dev This route does not handle responses by design, so we can pipe the response to client.
- * TODO: It seems like handleResponse does work with piped responses, as seen from the agreement/stream endpoint.
+ * TODO: It seems like handleResponse does work with piped responses, as seen from the digital_content/stream endpoint.
  */
 router.get(['/ipfs/:CID', '/content/:CID'], getCID)
 
@@ -765,7 +765,7 @@ router.get(['/ipfs/:CID', '/content/:CID'], getCID)
  * @param req.query
  * @param {string} req.query.filename the actual filename to retrieve w/in the IPFS directory (e.g. 480x480.jpg)
  * @dev This route does not handle responses by design, so we can pipe the gateway response.
- * TODO: It seems like handleResponse does work with piped responses, as seen from the agreement/stream endpoint.
+ * TODO: It seems like handleResponse does work with piped responses, as seen from the digital_content/stream endpoint.
  */
 router.get(['/ipfs/:dirCID/:filename', '/content/:dirCID/:filename'], getDirCID)
 

@@ -39,7 +39,7 @@ async function processCosignNotifications (notifications, tx) {
       transaction: tx
     })
 
-    // If this agreement is already cosigned, ignore this notification
+    // If this digital_content is already cosigned, ignore this notification
     if (cosignNotifications.length > 0) continue
 
     const blocknumber = notification.blocknumber

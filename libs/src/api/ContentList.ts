@@ -64,7 +64,7 @@ export class ContentLists extends Base {
 
   /**
    * Return saved contentLists for current user
-   * NOTE in returned JSON, SaveType string one of agreement, contentList, album
+   * NOTE in returned JSON, SaveType string one of digital_content, contentList, album
    * @param limit - max # of items to return
    * @param offset - offset into list to return from (for pagination)
    */
@@ -79,7 +79,7 @@ export class ContentLists extends Base {
 
   /**
    * Return saved albums for current user
-   * NOTE in returned JSON, SaveType string one of agreement, contentList, album
+   * NOTE in returned JSON, SaveType string one of digital_content, contentList, album
    * @param limit - max # of items to return
    * @param offset - offset into list to return from (for pagination)
    */
@@ -151,7 +151,7 @@ export class ContentLists extends Base {
   }
 
   /**
-   * Adds a agreement to a given contentList
+   * Adds a digital_content to a given contentList
    */
   async addContentListAgreement(contentListId: number, agreementId: number) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
@@ -167,15 +167,15 @@ export class ContentLists extends Base {
     // error if contentList does not exist or hasn't been indexed by discovery node
     if (!Array.isArray(contentList) || !contentList.length) {
       throw new Error(
-        'Cannot add agreement - ContentList does not exist or has not yet been indexed by discovery node'
+        'Cannot add digital_content - ContentList does not exist or has not yet been indexed by discovery node'
       )
     }
     // error if contentList already at max length
     if (
-      contentList[0]!.content_list_contents.agreement_ids.length >= MAX_CONTENT_LIST_LENGTH
+      contentList[0]!.content_list_contents.digital_content_ids.length >= MAX_CONTENT_LIST_LENGTH
     ) {
       throw new Error(
-        `Cannot add agreement - contentList is already at max length of ${MAX_CONTENT_LIST_LENGTH}`
+        `Cannot add digital_content - contentList is already at max length of ${MAX_CONTENT_LIST_LENGTH}`
       )
     }
     return await this.contracts.ContentListFactoryClient.addContentListAgreement(
@@ -212,8 +212,8 @@ export class ContentLists extends Base {
       )
     }
 
-    const contentListAgreementIds = contentList[0]!.content_list_contents.agreement_ids.map(
-      (a) => a.agreement
+    const contentListAgreementIds = contentList[0]!.content_list_contents.digital_content_ids.map(
+      (a) => a.digital_content
     )
     // error if agreementIds arg array length does not match contentList length
     if (agreementIds.length !== contentListAgreementIds.length) {
@@ -243,9 +243,9 @@ export class ContentLists extends Base {
   /**
    * Checks if a contentList has entered a corrupted state
    * Check that each of the agreements within a contentList retrieved from discprov are in the onchain contentList
-   * Note: the onchain contentLists stores the agreements as a mapping of agreement ID to agreement count and the
-   * agreement order is an event that is indexed by discprov. The agreement order event does not validate that the
-   * updated order of agreements has the correct agreement count, so a agreement order event w/ duplicate agreements can
+   * Note: the onchain contentLists stores the agreements as a mapping of digital_content ID to digital_content count and the
+   * digital_content order is an event that is indexed by discprov. The digital_content order event does not validate that the
+   * updated order of agreements has the correct digital_content count, so a digital_content order event w/ duplicate agreements can
    * lead the contentList entering a corrupted state.
    */
   async validateAgreementsInContentList(contentListId: number) {
@@ -267,11 +267,11 @@ export class ContentLists extends Base {
     }
 
     const contentList = contentListsReponse[0]!
-    const contentListAgreementIds = contentList.content_list_contents.agreement_ids.map(
-      (a) => a.agreement
+    const contentListAgreementIds = contentList.content_list_contents.digital_content_ids.map(
+      (a) => a.digital_content
     )
 
-    // Check if each agreement is in the contentList
+    // Check if each digital_content is in the contentList
     //const invalidAgreementIds = []
     const invalidAgreementIds : number[] = []
     for (const agreementId of contentListAgreementIds) {
@@ -380,7 +380,7 @@ export class ContentLists extends Base {
   }
 
   /**
-   * Marks a agreement to be deleted from a contentList. The contentList entry matching
+   * Marks a digital_content to be deleted from a contentList. The contentList entry matching
    * the provided timestamp is deleted in the case of duplicates.
    * @param contentListId
    * @param deletedAgreementId

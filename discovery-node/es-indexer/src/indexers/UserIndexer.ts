@@ -56,7 +56,7 @@ export class UserIndexer extends BaseIndexer<UserDoc> {
         // followers
         follower_count: { type: 'integer' },
 
-        agreement_count: { type: 'integer' },
+        digital_content_count: { type: 'integer' },
         agreements: {
           properties: {
             mood: { type: 'keyword' },
@@ -79,13 +79,13 @@ export class UserIndexer extends BaseIndexer<UserDoc> {
       coalesce(user_balances.wlive, '0') as wlive_balance, -- do we need both wlive and wlive_balance
       user_balances.associated_sol_wallets_balance,
       user_bank_accounts.bank_account as spl_wallet,
-      coalesce(agreement_count, 0) as agreement_count,
+      coalesce(digital_content_count, 0) as digital_content_count,
       coalesce(content_list_count, 0) as content_list_count,
       coalesce(album_count, 0) as album_count,
       coalesce(follower_count, 0) as follower_count,
       coalesce(following_count, 0) as following_count,
       coalesce(repost_count, 0) as repost_count,
-      coalesce(agreement_save_count, 0) as agreement_save_count,
+      coalesce(digital_content_save_count, 0) as digital_content_save_count,
       coalesce(supporter_count, 0) as supporter_count,
       coalesce(supporting_count, 0) as supporting_count
     from
@@ -121,7 +121,7 @@ export class UserIndexer extends BaseIndexer<UserDoc> {
     ])
     for (let user of rows) {
       user.agreements = agreementsByOwnerId[user.user_id] || []
-      user.agreement_count = user.agreements.length
+      user.digital_content_count = user.agreements.length
       user.following_ids = followMap[user.user_id] || []
     }
   }
@@ -161,7 +161,7 @@ export class UserIndexer extends BaseIndexer<UserDoc> {
     const idList = Array.from(userIds).join(',')
     const q = `
       select 
-        agreement_id, owner_id, genre, mood, tags, title, length, created_at
+        digital_content_id, owner_id, genre, mood, tags, title, length, created_at
       from agreements 
       where 
         is_current

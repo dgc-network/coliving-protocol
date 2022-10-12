@@ -8,7 +8,7 @@ from src.api.v1.helpers import (
     current_user_parser,
     decode_with_abort,
     extend_content_list,
-    extend_agreement,
+    extend_digital_content,
     extend_user,
     full_trending_parser,
     get_current_user_id,
@@ -23,7 +23,7 @@ from src.api.v1.helpers import (
 )
 from src.api.v1.models.content_lists import full_content_list_model, content_list_model
 from src.api.v1.models.users import user_model_full
-from src.queries.get_content_list_agreements import get_content_list_agreements
+from src.queries.get_content_list_digital_contents import get_content_list_digital_contents
 from src.queries.get_content_lists import get_content_lists
 from src.queries.get_reposters_for_content_list import get_reposters_for_content_list
 from src.queries.get_savers_for_content_list import get_savers_for_content_list
@@ -44,7 +44,7 @@ from src.utils.db_session import get_db_read_replica
 from src.utils.redis_cache import cache
 from src.utils.redis_metrics import record_metrics
 
-from .models.agreements import agreement
+from .models.agreements import digital_content
 
 logger = logging.getLogger(__name__)
 
@@ -86,17 +86,17 @@ def get_content_list(content_list_id, current_user_id):
     return None
 
 
-def get_agreements_for_content_list(content_list_id, current_user_id=None):
+def get_digital_contents_for_content_list(content_list_id, current_user_id=None):
     db = get_db_read_replica()
     with db.scoped_session() as session:
         args = {
             "content_list_ids": [content_list_id],
-            "populate_agreements": True,
+            "populate_digital_contents": True,
             "current_user_id": current_user_id,
         }
-        content_list_agreements_map = get_content_list_agreements(session, args)
-        content_list_agreements = content_list_agreements_map[content_list_id]
-        agreements = list(map(extend_agreement, content_list_agreements))
+        content_list_digital_contents_map = get_content_list_digital_contents(session, args)
+        content_list_digital_contents = content_list_digital_contents_map[content_list_id]
+        agreements = list(map(extend_digital_content, content_list_digital_contents))
         return agreements
 
 
@@ -121,8 +121,8 @@ class ContentList(Resource):
         return response
 
 
-content_list_agreements_response = make_response(
-    "content_list_agreements_response", ns, fields.List(fields.Nested(agreement))
+content_list_digital_contents_response = make_response(
+    "content_list_digital_contents_response", ns, fields.List(fields.Nested(digital_content))
 )
 
 
@@ -143,7 +143,7 @@ class FullContentList(Resource):
 
         contentList = get_content_list(content_list_id, current_user_id)
         if contentList:
-            agreements = get_agreements_for_content_list(content_list_id, current_user_id)
+            agreements = get_digital_contents_for_content_list(content_list_id, current_user_id)
             contentList["agreements"] = agreements
         response = success_response([contentList] if contentList else [])
         return response
@@ -158,11 +158,11 @@ class ContentListAgreements(Resource):
         params={"content_list_id": "A ContentList ID"},
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
-    @ns.marshal_with(content_list_agreements_response)
+    @ns.marshal_with(content_list_digital_contents_response)
     @cache(ttl_sec=5)
     def get(self, content_list_id):
         decoded_id = decode_with_abort(content_list_id, ns)
-        agreements = get_agreements_for_content_list(decoded_id)
+        agreements = get_digital_contents_for_content_list(decoded_id)
         return success_response(agreements)
 
 
@@ -344,7 +344,7 @@ class TrendingContentLists(Resource):
         args = trending_content_list_parser.parse_args()
         time = args.get("time")
         time = "week" if time not in ["week", "month", "year"] else time
-        args = {"time": time, "with_agreements": False}
+        args = {"time": time, "with_digital_contents": False}
         strategy = trending_strategy_factory.get_strategy(
             TrendingType.CONTENT_LISTS, version_list[0]
         )

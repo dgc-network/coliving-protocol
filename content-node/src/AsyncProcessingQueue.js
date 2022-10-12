@@ -85,7 +85,7 @@ class AsyncProcessingQueue {
         done(null, {})
       } else {
         this.logStatus(
-          `Succesfully handed off transcoding and segmenting to sp=${sp}. Wrapping up remainder of agreement association..`
+          `Succesfully handed off transcoding and segmenting to sp=${sp}. Wrapping up remainder of digital_content association..`
         )
         await this.addProcessTranscodeAndSegmentTask({
           logContext,
@@ -171,15 +171,15 @@ class AsyncProcessingQueue {
    */
   getFn(task) {
     switch (task) {
-      // Called via /agreement_content_async route (runs on primary)
+      // Called via /digital_content_async route (runs on primary)
       case PROCESS_NAMES.agreementContentUpload:
         return agreementContentUpload
 
-      // Called via /transcode_and_segment (running on node that has been handed off agreement)
+      // Called via /transcode_and_segment (running on node that has been handed off digital_content)
       case PROCESS_NAMES.transcodeAndSegment:
         return transcodeAndSegment
 
-      // Part 1 of transcode handoff flow - called via /agreement_content_async if currentNodeShouldHandleTranscode = false (runs on primary)
+      // Part 1 of transcode handoff flow - called via /digital_content_async if currentNodeShouldHandleTranscode = false (runs on primary)
       case PROCESS_NAMES.transcodeHandOff:
         return transcodeHandOff
 

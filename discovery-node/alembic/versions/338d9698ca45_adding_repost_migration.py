@@ -26,7 +26,7 @@ def upgrade():
         sa.Column("repost_item_id", sa.Integer(), nullable=False),
         sa.Column(
             "repost_type",
-            sa.Enum("agreement", "content_list", "album", name="reposttype"),
+            sa.Enum("digital_content", "content_list", "album", name="reposttype"),
             nullable=False,
         ),
         sa.Column("is_current", sa.Boolean(), nullable=False),

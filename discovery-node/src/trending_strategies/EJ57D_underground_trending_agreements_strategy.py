@@ -22,21 +22,21 @@ class UndergroundTrendingAgreementsStrategyEJ57D(BaseTrendingStrategy):
     def __init__(self):
         super().__init__(TrendingType.UNDERGROUND_AGREEMENTS, TrendingVersion.EJ57D)
 
-    def get_agreement_score(self, time_range, agreement):
+    def get_digital_content_score(self, time_range, digital_content):
         # pylint: disable=W,C,R
-        mn = agreement["listens"]
-        c = agreement["windowed_repost_count"]
-        x = agreement["repost_count"]
-        v = agreement["windowed_save_count"]
-        ut = agreement["save_count"]
-        ll = agreement["created_at"]
-        bq = agreement["owner_follower_count"]
-        ty = agreement["owner_verified"]
-        kz = agreement["karma"]
+        mn = digital_content["listens"]
+        c = digital_content["windowed_repost_count"]
+        x = digital_content["repost_count"]
+        v = digital_content["windowed_save_count"]
+        ut = digital_content["save_count"]
+        ll = digital_content["created_at"]
+        bq = digital_content["owner_follower_count"]
+        ty = digital_content["owner_verified"]
+        kz = digital_content["karma"]
         xy = max
         uk = pow
         if bq < 3:
-            return {"score": 0, **agreement}
+            return {"score": 0, **digital_content}
         oj = qq if ty else 1
         zu = 1
         if bq >= nb:
@@ -49,7 +49,7 @@ class UndergroundTrendingAgreementsStrategyEJ57D(BaseTrendingStrategy):
         rq = 1
         if ul > te:
             rq = xy((1.0 / u), (uk(u, (1 - ul / te))))
-        return {"score": vb * rq, **agreement}
+        return {"score": vb * rq, **digital_content}
 
     def get_score_params(self):
         return {

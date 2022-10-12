@@ -1,9 +1,9 @@
 const fs = require('fs')
 const assert = require('assert')
 
-const Agreement = {}
+const DigitalContent = {}
 
-Agreement.uploadAgreement = async (libs, agreementMetadata, agreementPath) => {
+DigitalContent.uploadAgreement = async (libs, agreementMetadata, agreementPath) => {
   const agreementFile = fs.createReadStream(agreementPath)
 
   const agreementId = await libs.uploadAgreement({
@@ -14,7 +14,7 @@ Agreement.uploadAgreement = async (libs, agreementMetadata, agreementPath) => {
   // Wait for discovery node to index user
   await libs.waitForLatestBlock()
 
-  // Check that uploaded agreement is what we expect
+  // Check that uploaded digital_content is what we expect
   const uploadedAgreementMetadata = await libs.getAgreement(agreementId)
 
   const errors = []
@@ -37,19 +37,19 @@ Agreement.uploadAgreement = async (libs, agreementMetadata, agreementPath) => {
   return agreementId
 }
 
-Agreement.repostAgreement = async (libs, agreementId) => {
+DigitalContent.repostAgreement = async (libs, agreementId) => {
   return libs.repostAgreement(agreementId)
 }
 
-Agreement.getRepostersForAgreement = async (libs, agreementId) => {
+DigitalContent.getRepostersForAgreement = async (libs, agreementId) => {
   return libs.getRepostersForAgreement(agreementId)
 }
 
-Agreement.getAgreementMetadata = async (libs, agreementId) => {
+DigitalContent.getAgreementMetadata = async (libs, agreementId) => {
   return libs.getAgreement(agreementId)
 }
 
-Agreement.addAgreementToChain = async (libs, userId, { digest, hashFn, size }) => {
+DigitalContent.addAgreementToChain = async (libs, userId, { digest, hashFn, size }) => {
   const agreementTxReceipt = await libs.addAgreementToChain(userId, {
     digest,
     hashFn,
@@ -58,16 +58,16 @@ Agreement.addAgreementToChain = async (libs, userId, { digest, hashFn, size }) =
   return agreementTxReceipt
 }
 
-Agreement.updateAgreementOnChainAndCnode = async (libs, metadata) => {
+DigitalContent.updateAgreementOnChainAndCnode = async (libs, metadata) => {
   const { blockHash, blockNumber, agreementId } = await libs.updateAgreementOnChainAndCnode(metadata)
   return { blockHash, blockNumber, agreementId }
 }
 
-Agreement.uploadAgreementCoverArt = async (libs, imageFilePath) => {
+DigitalContent.uploadAgreementCoverArt = async (libs, imageFilePath) => {
   return libs.uploadAgreementCoverArt(imageFilePath)
 }
 
-Agreement.updateAgreementOnChain = async (
+DigitalContent.updateAgreementOnChain = async (
   libs,
   agreementId,
   userId,
@@ -82,4 +82,4 @@ Agreement.updateAgreementOnChain = async (
   return agreementTxReceipt
 }
 
-module.exports = Agreement
+module.exports = DigitalContent

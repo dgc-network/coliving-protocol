@@ -61,7 +61,7 @@ export interface SearchModel {
      * @type {Array<AgreementFull>}
      * @memberof SearchModel
      */
-    saved_agreements?: Array<AgreementFull>;
+    saved_digital_contents?: Array<AgreementFull>;
     /**
      * 
      * @type {Array<ContentListFull>}

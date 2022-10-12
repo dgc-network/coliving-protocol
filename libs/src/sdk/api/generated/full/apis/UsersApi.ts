@@ -666,7 +666,7 @@ export class UsersApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get the Top Users having at least one agreement by follower count
+     * Get the Top Users having at least one digital_content by follower count
      */
     async getTopUsers(requestParameters: GetTopUsersRequest = {}): Promise<NonNullable<TopUsersResponseFull["data"]>> {
         const queryParameters: any = {};

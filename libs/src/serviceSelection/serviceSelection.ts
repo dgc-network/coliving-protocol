@@ -357,7 +357,7 @@ export class ServiceSelection {
     return this.totalAttempts
   }
 
-  /** Where does the health check for this type of service live */
+  /** Where does the health check for this type of service digitalcoin */
   static getHealthCheckEndpoint(service: string) {
     return `${service}/health_check`
   }

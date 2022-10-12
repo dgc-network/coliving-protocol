@@ -150,7 +150,7 @@ INSERT INTO network_monitoring_cids_from_discovery (
     )
 SELECT DOWNLOAD->'cid' AS CID,
     1,
-    'agreement',
+    'digital_content',
     OWNER_ID
 FROM AGREEMENTS
 WHERE DOWNLOAD->'cid' != 'null'
@@ -164,7 +164,7 @@ INSERT INTO network_monitoring_cids_from_discovery (
     )
 SELECT JSONB_ARRAY_ELEMENTS(AGREEMENT_SEGMENTS)->'multihash',
     1,
-    'agreement',
+    'digital_content',
     OWNER_ID
 FROM AGREEMENTS
 WHERE AGREEMENT_SEGMENTS IS NOT NULL

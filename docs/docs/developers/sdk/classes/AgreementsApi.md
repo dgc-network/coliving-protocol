@@ -49,9 +49,9 @@ ___
 
 ### getAgreement
 
-**getAgreement**(`requestParameters`): `Promise`<[`Agreement`](../interfaces/Agreement.md)\>
+**getAgreement**(`requestParameters`): `Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)\>
 
-Gets a agreement by ID
+Gets a digital_content by ID
 
 #### Parameters
 
@@ -61,7 +61,7 @@ Gets a agreement by ID
 
 #### Returns
 
-`Promise`<[`Agreement`](../interfaces/Agreement.md)\>
+`Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)\>
 
 #### Inherited from
 
@@ -71,7 +71,7 @@ ___
 
 ### getBulkAgreements
 
-**getBulkAgreements**(`requestParameters?`): `Promise`<[`Agreement`](../interfaces/Agreement.md)[]\>
+**getBulkAgreements**(`requestParameters?`): `Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)[]\>
 
 Gets a list of agreements using their IDs or permalinks
 
@@ -83,7 +83,7 @@ Gets a list of agreements using their IDs or permalinks
 
 #### Returns
 
-`Promise`<[`Agreement`](../interfaces/Agreement.md)[]\>
+`Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)[]\>
 
 #### Inherited from
 
@@ -93,7 +93,7 @@ ___
 
 ### getTrendingAgreements
 
-**getTrendingAgreements**(`requestParameters?`): `Promise`<[`Agreement`](../interfaces/Agreement.md)[]\>
+**getTrendingAgreements**(`requestParameters?`): `Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)[]\>
 
 Gets the top 100 trending (most popular) agreements on Coliving
 
@@ -105,7 +105,7 @@ Gets the top 100 trending (most popular) agreements on Coliving
 
 #### Returns
 
-`Promise`<[`Agreement`](../interfaces/Agreement.md)[]\>
+`Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)[]\>
 
 #### Inherited from
 
@@ -115,9 +115,9 @@ ___
 
 ### searchAgreements
 
-**searchAgreements**(`requestParameters`): `Promise`<[`Agreement`](../interfaces/Agreement.md)[]\>
+**searchAgreements**(`requestParameters`): `Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)[]\>
 
-Search for a agreement or agreements
+Search for a digital_content or agreements
 
 #### Parameters
 
@@ -127,7 +127,7 @@ Search for a agreement or agreements
 
 #### Returns
 
-`Promise`<[`Agreement`](../interfaces/Agreement.md)[]\>
+`Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)[]\>
 
 #### Inherited from
 
@@ -139,7 +139,7 @@ ___
 
 **streamAgreement**(`requestParameters`): `Promise`<`string`\>
 
-Get the url of the agreement's streamable mp3 file
+Get the url of the digital_content's streamable mp3 file
 
 #### Parameters
 

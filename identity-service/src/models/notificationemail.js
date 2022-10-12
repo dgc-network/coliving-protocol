@@ -19,8 +19,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     emailFrequency: {
       allowNull: false,
-      type: DataTypes.ENUM('live', 'daily', 'weekly', 'off'),
-      defaultValue: 'live'
+      type: DataTypes.ENUM('digitalcoin', 'daily', 'weekly', 'off'),
+      defaultValue: 'digitalcoin'
     },
     createdAt: {
       allowNull: false,

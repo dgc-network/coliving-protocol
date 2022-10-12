@@ -2,7 +2,7 @@ from flask_restx import fields
 
 from .common import ns
 from .content_lists import full_content_list_model
-from .agreements import agreement_full
+from .agreements import digital_content_full
 from .users import user_model_full
 
 search_model = ns.model(
@@ -10,8 +10,8 @@ search_model = ns.model(
     {
         "users": fields.List(fields.Nested(user_model_full), required=True),
         "followed_users": fields.List(fields.Nested(user_model_full), required=False),
-        "agreements": fields.List(fields.Nested(agreement_full), required=True),
-        "saved_agreements": fields.List(fields.Nested(agreement_full), required=False),
+        "agreements": fields.List(fields.Nested(digital_content_full), required=True),
+        "saved_digital_contents": fields.List(fields.Nested(digital_content_full), required=False),
         "content_lists": fields.List(fields.Nested(full_content_list_model), required=True),
         "saved_content_lists": fields.List(
             fields.Nested(full_content_list_model), required=False

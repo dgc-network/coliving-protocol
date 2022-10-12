@@ -101,7 +101,7 @@ async function createClockRecordsTable (queryInterface, Sequelize, transaction) 
       allowNull: false
     },
     sourceTable: {
-      type: Sequelize.ENUM('ColivingUser', 'Agreement', 'File'),
+      type: Sequelize.ENUM('ColivingUser', 'DigitalContent', 'File'),
       allowNull: false
     },
     createdAt: {

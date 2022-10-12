@@ -20,7 +20,7 @@ async function run (
 
       try {
         console.log(
-          `Sending agreement listen | agreementId=${agreementId}, userId=${userId}`
+          `Sending digital_content listen | agreementId=${agreementId}, userId=${userId}`
         )
 
         const requestOptions = {
@@ -34,7 +34,7 @@ async function run (
         const signature = response.solTxSignature
 
         console.log(
-          `Successfully sent agreement listen | agreementId=${agreementId}, userId=${userId} | signature=${signature}`
+          `Successfully sent digital_content listen | agreementId=${agreementId}, userId=${userId} | signature=${signature}`
         )
 
         const pollStart = Date.now()
@@ -69,7 +69,7 @@ async function run (
         }
       } catch (e) {
         console.log(
-          `Failed to send agreement listen | agreementId=${agreementId}, userId=${userId}`
+          `Failed to send digital_content listen | agreementId=${agreementId}, userId=${userId}`
         )
         return false
       }

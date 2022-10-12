@@ -1,8 +1,8 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$ref": "#/definitions/Agreement",
+    "$ref": "#/definitions/DigitalContent",
     "definitions": {
-        "Agreement": {
+        "DigitalContent": {
             "type": "object",
             "additionalProperties": true,
             "$comment": "Additional properties enabled because the data return by discovery nodes may contain other properties like blockhash, is_current, which are not strictly part of the metadata.",
@@ -71,7 +71,7 @@
                     "type": ["string", "null"],
                     "default": null
                 },
-                "agreement_segments": {
+                "digital_content_segments": {
                     "type": "array",
                     "minItems": 1,
                     "items": {
@@ -137,9 +137,9 @@
                 "stem_of",
                 "tags",
                 "title",
-                "agreement_segments"
+                "digital_content_segments"
             ],
-            "title": "Agreement"
+            "title": "DigitalContent"
         },
         "RemixOf": {
             "type": ["object", "null"],
@@ -162,12 +162,12 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
-                "parent_agreement_id": {
+                "parent_digital_content_id": {
                     "type": "integer"
                 }
             },
             "required": [
-                "parent_agreement_id"
+                "parent_digital_content_id"
             ],
             "title": "AgreementElement"
         },
@@ -228,13 +228,13 @@
                 "category": {
                     "type": "string"
                 },
-                "parent_agreement_id": {
+                "parent_digital_content_id": {
                     "type": "integer"
                 }
             },
             "required": [
                 "category",
-                "parent_agreement_id"
+                "parent_digital_content_id"
             ],
             "title": "StemOf"
         },

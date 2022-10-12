@@ -1,5 +1,5 @@
 from flask_restx import fields
-from src.api.v1.models.agreements import agreement_full
+from src.api.v1.models.agreements import digital_content_full
 from src.api.v1.models.users import user_model, user_model_full
 
 from .common import favorite, ns, repost
@@ -17,7 +17,7 @@ content_list_added_timestamp = ns.model(
     "content_list_added_timestamp",
     {
         "timestamp": fields.Integer(required=True),
-        "agreement_id": fields.String(required=True),
+        "digital_content_id": fields.String(required=True),
     },
 )
 
@@ -54,9 +54,9 @@ full_content_list_model = ns.clone(
         ),
         "user_id": fields.String(required=True),
         "user": fields.Nested(user_model_full, required=True),
-        "agreements": fields.List(fields.Nested(agreement_full), required=True),
+        "agreements": fields.List(fields.Nested(digital_content_full), required=True),
         "cover_art": fields.String,
         "cover_art_sizes": fields.String,
-        "agreement_count": fields.Integer(required=True),
+        "digital_content_count": fields.Integer(required=True),
     },
 )

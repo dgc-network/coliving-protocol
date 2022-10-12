@@ -199,6 +199,6 @@ export interface ContentListFull {
      * @type {number}
      * @memberof ContentListFull
      */
-    agreement_count: number;
+    digital_content_count: number;
 }
 

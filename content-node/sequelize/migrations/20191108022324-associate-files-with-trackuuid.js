@@ -1,41 +1,41 @@
 'use strict'
 module.exports = {
   /**
-   * Fixes bug where agreement segment files were not associated with agreementUUID upon agreement entry creation.
+   * Fixes bug where digital_content segment files were not associated with digital_content_UUID upon digital_content entry creation.
    */
   up: async (queryInterface, Sequelize) => {
     const start = Date.now()
-    // Set all file agreementUUIDs to null before re-assigning.
-    await queryInterface.sequelize.query('update "Files" set "agreementUUID" = null;')
+    // Set all file digital_content_UUIDs to null before re-assigning.
+    await queryInterface.sequelize.query('update "Files" set "digital_content_UUID" = null;')
 
     const agreements = (await queryInterface.sequelize.query(
-      'select "agreementUUID", "metadataJSON"->\'agreement_segments\' as segments, "cnodeUserUUID" from "Agreements";'
+      'select "digital_content_UUID", "metadataJSON"->\'digital_content_segments\' as segments, "cnodeUserUUID" from "Agreements";'
     ))[0]
 
-    /** For every agreement, find all potential un-matched files, check for matches and associate. */
-    for (const agreement of agreements) {
-      const cids = agreement.segments.map(segment => segment.multihash)
+    /** For every digital_content, find all potential un-matched files, check for matches and associate. */
+    for (const digital_content of agreements) {
+      const cids = digital_content.segments.map(segment => segment.multihash)
       if (cids.length === 0) {
-        console.log(`agreementUUID ${agreement.agreementUUID} has agreement segments length 0.`)
+        console.log(`digital_content_UUID ${digital_content.digital_content_UUID} has digital_content segments length 0.`)
         continue
       }
 
-      const cnodeUserUUID = agreement.cnodeUserUUID
+      const cnodeUserUUID = digital_content.cnodeUserUUID
 
-      // Find all segment files for CIDs in agreement, that don't already have a agreementUUID.
+      // Find all segment files for CIDs in digital_content, that don't already have a digital_content_UUID.
       let segmentFiles = (await queryInterface.sequelize.query(
-        'select * from "Files" where "type" = \'agreement\' and "multihash" in (:cids) and "cnodeUserUUID" = (:cnodeUserUUID) and "agreementUUID" is null;',
+        'select * from "Files" where "type" = \'digital_content\' and "multihash" in (:cids) and "cnodeUserUUID" = (:cnodeUserUUID) and "digital_content_UUID" is null;',
         { replacements: { cids, cnodeUserUUID } }
       ))[0]
       if (segmentFiles.length === 0) {
-        console.log(`agreementUUID ${agreement.agreementUUID} has segmentFiles length 0.`)
+        console.log(`digital_content_UUID ${digital_content.digital_content_UUID} has segmentFiles length 0.`)
         continue
       }
 
-      // Get all segment files for sourceFiles from above, to account for agreements that are superset of current agreement.
+      // Get all segment files for sourceFiles from above, to account for agreements that are superset of current digital_content.
       const sourceFiles = segmentFiles.map(segmentFile => segmentFile.sourceFile)
       segmentFiles = (await queryInterface.sequelize.query(
-        'select * from "Files" where "type" = \'agreement\' and "sourceFile" in (:sourceFiles) and "cnodeUserUUID" = (:cnodeUserUUID) and "agreementUUID" is null;',
+        'select * from "Files" where "type" = \'digital_content\' and "sourceFile" in (:sourceFiles) and "cnodeUserUUID" = (:cnodeUserUUID) and "digital_content_UUID" is null;',
         { replacements: { sourceFiles, cnodeUserUUID } }
       ))[0]
 
@@ -49,7 +49,7 @@ module.exports = {
         }
       }
 
-      // Check if segment files for sourceFile map 1-1 with agreement CIDs.
+      // Check if segment files for sourceFile map 1-1 with digital_content CIDs.
       let fileUUIDs = []
       for (const [, filesMap] of Object.entries(sourceFileMap)) {
         fileUUIDs = []
@@ -62,14 +62,14 @@ module.exports = {
         if (fileUUIDs.length === cids.length) { break }
       }
       if (fileUUIDs.length === 0) {
-        console.log(`agreementUUID ${agreement.agreementUUID} has 0 matching available fileUUIDs. segmentFiles length ${segmentFiles.length}.`)
+        console.log(`digital_content_UUID ${digital_content.digital_content_UUID} has 0 matching available fileUUIDs. segmentFiles length ${segmentFiles.length}.`)
         continue
       }
 
       // associate
       await queryInterface.sequelize.query(
-        'update "Files" set "agreementUUID" = (:agreementUUID) where "fileUUID" in (:fileUUIDs);',
-        { replacements: { agreementUUID: agreement.agreementUUID, fileUUIDs } }
+        'update "Files" set "digital_content_UUID" = (:digital_content_UUID) where "fileUUID" in (:fileUUIDs);',
+        { replacements: { digital_content_UUID: digital_content.digital_content_UUID, fileUUIDs } }
       )
     }
     console.log(`Finished processing ${agreements.length} agreements in ${Date.now() - start}ms.`)

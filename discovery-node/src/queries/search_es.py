@@ -5,7 +5,7 @@ from src.api.v1.helpers import (
     extend_favorite,
     extend_content_list,
     extend_repost,
-    extend_agreement,
+    extend_digital_content,
     extend_user,
 )
 from src.queries.get_feed_es import fetch_followed_saves_and_reposts, item_key
@@ -15,7 +15,7 @@ from src.utils.elasticdsl import (
     ES_USERS,
     esclient,
     pluck_hits,
-    populate_agreement_or_content_list_metadata_es,
+    populate_digital_content_or_content_list_metadata_es,
     populate_user_metadata_es,
 )
 
@@ -33,7 +33,7 @@ def search_es_full(args: dict):
     search_type = args.get("kind", "all")
     only_downloadable = args.get("only_downloadable")
     is_auto_complete = args.get("is_auto_complete")
-    do_agreements = search_type == "all" or search_type == "agreements"
+    do_digital_contents = search_type == "all" or search_type == "agreements"
     do_users = search_type == "all" or search_type == "users"
     do_content_lists = search_type == "all" or search_type == "content_lists"
     do_albums = search_type == "all" or search_type == "albums"
@@ -46,11 +46,11 @@ def search_es_full(args: dict):
     # Function score multiplier = popularity (repost count)
 
     # agreements
-    if do_agreements:
+    if do_digital_contents:
         mdsl.extend(
             [
                 {"index": ES_AGREEMENTS},
-                agreement_dsl(
+                digital_content_dsl(
                     search_str,
                     current_user_id,
                     must_saved=False,
@@ -64,7 +64,7 @@ def search_es_full(args: dict):
             mdsl.extend(
                 [
                     {"index": ES_AGREEMENTS},
-                    agreement_dsl(
+                    digital_content_dsl(
                         search_str,
                         current_user_id,
                         must_saved=True,
@@ -129,7 +129,7 @@ def search_es_full(args: dict):
 
     response: Dict = {
         "agreements": [],
-        "saved_agreements": [],
+        "saved_digital_contents": [],
         "users": [],
         "followed_users": [],
         "content_lists": [],
@@ -138,10 +138,10 @@ def search_es_full(args: dict):
         "saved_albums": [],
     }
 
-    if do_agreements:
+    if do_digital_contents:
         response["agreements"] = pluck_hits(mfound["responses"].pop(0))
         if current_user_id:
-            response["saved_agreements"] = pluck_hits(mfound["responses"].pop(0))
+            response["saved_digital_contents"] = pluck_hits(mfound["responses"].pop(0))
 
     if do_users:
         response["users"] = pluck_hits(mfound["responses"].pop(0))
@@ -168,7 +168,7 @@ def search_tags_es(q: str, kind="all", current_user_id=None, limit=0, offset=0):
     if not esclient:
         raise Exception("esclient is None")
 
-    do_agreements = kind == "all" or kind == "agreements"
+    do_digital_contents = kind == "all" or kind == "agreements"
     do_users = kind == "all" or kind == "users"
     mdsl: Any = []
 
@@ -184,7 +184,7 @@ def search_tags_es(q: str, kind="all", current_user_id=None, limit=0, offset=0):
         }
         return match
 
-    if do_agreements:
+    if do_digital_contents:
         mdsl.extend([{"index": ES_AGREEMENTS}, tag_match("tag_list")])
         if current_user_id:
             dsl = tag_match("tag_list")
@@ -203,15 +203,15 @@ def search_tags_es(q: str, kind="all", current_user_id=None, limit=0, offset=0):
 
     response: Dict = {
         "agreements": [],
-        "saved_agreements": [],
+        "saved_digital_contents": [],
         "users": [],
         "followed_users": [],
     }
 
-    if do_agreements:
+    if do_digital_contents:
         response["agreements"] = pluck_hits(mfound["responses"].pop(0))
         if current_user_id:
-            response["saved_agreements"] = pluck_hits(mfound["responses"].pop(0))
+            response["saved_digital_contents"] = pluck_hits(mfound["responses"].pop(0))
 
     if do_users:
         response["users"] = pluck_hits(mfound["responses"].pop(0))
@@ -287,12 +287,12 @@ def finalize_response(
         )
 
     # agreements: finalize
-    for k in ["agreements", "saved_agreements"]:
+    for k in ["agreements", "saved_digital_contents"]:
         agreements = response[k]
         hydrate_user(agreements, users_by_id)
         if not is_auto_complete:
             hydrate_saves_reposts(agreements, follow_saves, follow_reposts, legacy_mode)
-        response[k] = [map_agreement(agreement, current_user, legacy_mode) for agreement in agreements]
+        response[k] = [map_digital_content(digital_content, current_user, legacy_mode) for digital_content in agreements]
 
     # users: finalize
     for k in ["users", "followed_users"]:
@@ -375,7 +375,7 @@ def default_function_score(dsl, ranking_field):
     }
 
 
-def agreement_dsl(search_str, current_user_id, must_saved=False, only_downloadable=False):
+def digital_content_dsl(search_str, current_user_id, must_saved=False, only_downloadable=False):
     dsl = {
         "must": [
             *base_match(search_str),
@@ -498,15 +498,15 @@ def map_user(user, current_user, legacy_mode):
     return user
 
 
-def map_agreement(agreement, current_user, legacy_mode):
-    agreement = populate_agreement_or_content_list_metadata_es(agreement, current_user)
+def map_digital_content(digital_content, current_user, legacy_mode):
+    digital_content = populate_digital_content_or_content_list_metadata_es(digital_content, current_user)
     if not legacy_mode:
-        agreement = extend_agreement(agreement)
-    return agreement
+        digital_content = extend_digital_content(digital_content)
+    return digital_content
 
 
 def map_content_list(contentList, current_user, legacy_mode):
-    contentList = populate_agreement_or_content_list_metadata_es(contentList, current_user)
+    contentList = populate_digital_content_or_content_list_metadata_es(contentList, current_user)
     if not legacy_mode:
         contentList = extend_content_list(contentList)
     return contentList

@@ -26,18 +26,18 @@ T = {"day": 1, "week": 7, "month": 30, "year": 365, "allTime": 100000}
 y = 3
 
 
-def z(time, agreement):
+def z(time, digital_content):
     # pylint: disable=W,C,R
-    E = agreement["listens"]
-    e = agreement["windowed_repost_count"]
-    t = agreement["repost_count"]
-    x = agreement["windowed_save_count"]
-    A = agreement["save_count"]
-    o = agreement["created_at"]
-    l = agreement["owner_follower_count"]
-    j = agreement["karma"]
+    E = digital_content["listens"]
+    e = digital_content["windowed_repost_count"]
+    t = digital_content["repost_count"]
+    x = digital_content["windowed_save_count"]
+    A = digital_content["save_count"]
+    o = digital_content["created_at"]
+    l = digital_content["owner_follower_count"]
+    j = digital_content["karma"]
     if l < y:
-        return {"score": 0, **agreement}
+        return {"score": 0, **digital_content}
     H = (N * E + F * e + O * x + R * t + i * A) * j
     L = T[time]
     K = datetime.now()
@@ -46,28 +46,28 @@ def z(time, agreement):
     Q = 1
     if k > L:
         Q = a((1.0 / q), (M(q, (1 - k / L))))
-    return {"score": H * Q, **agreement}
+    return {"score": H * Q, **digital_content}
 
 
 class TrendingAgreementsStrategyEJ57D(BaseTrendingStrategy):
     def __init__(self):
         super().__init__(TrendingType.AGREEMENTS, TrendingVersion.EJ57D, True)
 
-    def get_agreement_score(self, time_range, agreement):
+    def get_digital_content_score(self, time_range, digital_content):
         logger.error(
-            f"get_agreement_score not implemented for Trending Agreements Strategy with version {TrendingVersion.EJ57D}"
+            f"get_digital_content_score not implemented for Trending Agreements Strategy with version {TrendingVersion.EJ57D}"
         )
 
-    def update_agreement_score_query(self, session):
+    def update_digital_content_score_query(self, session):
         start_time = time.time()
-        trending_agreement_query = text(
+        trending_digital_content_query = text(
             """
             begin;
-                DELETE FROM agreement_trending_scores WHERE type=:type AND version=:version;
-                INSERT INTO agreement_trending_scores
-                    (agreement_id, genre, type, version, time_range, score, created_at)
+                DELETE FROM digital_content_trending_scores WHERE type=:type AND version=:version;
+                INSERT INTO digital_content_trending_scores
+                    (digital_content_id, genre, type, version, time_range, score, created_at)
                     select
-                        tp.agreement_id,
+                        tp.digital_content_id,
                         tp.genre,
                         :type,
                         :version,
@@ -82,11 +82,11 @@ class TrendingAgreementsStrategyEJ57D(BaseTrendingStrategy):
                         now()
                     from trending_params tp
                     inner join aggregate_interval_plays aip
-                        on tp.agreement_id = aip.agreement_id;
-                INSERT INTO agreement_trending_scores
-                    (agreement_id, genre, type, version, time_range, score, created_at)
+                        on tp.digital_content_id = aip.digital_content_id;
+                INSERT INTO digital_content_trending_scores
+                    (digital_content_id, genre, type, version, time_range, score, created_at)
                     select
-                        tp.agreement_id,
+                        tp.digital_content_id,
                         tp.genre,
                         :type,
                         :version,
@@ -101,11 +101,11 @@ class TrendingAgreementsStrategyEJ57D(BaseTrendingStrategy):
                         now()
                     from trending_params tp
                     inner join aggregate_interval_plays aip
-                        on tp.agreement_id = aip.agreement_id;
-                INSERT INTO agreement_trending_scores
-                    (agreement_id, genre, type, version, time_range, score, created_at)
+                        on tp.digital_content_id = aip.digital_content_id;
+                INSERT INTO digital_content_trending_scores
+                    (digital_content_id, genre, type, version, time_range, score, created_at)
                     select
-                        tp.agreement_id,
+                        tp.digital_content_id,
                         tp.genre,
                         :type,
                         :version,
@@ -118,9 +118,9 @@ class TrendingAgreementsStrategyEJ57D(BaseTrendingStrategy):
                         now()
                     from trending_params tp
                     inner join aggregate_plays ap
-                        on tp.agreement_id = ap.play_item_id
+                        on tp.digital_content_id = ap.play_item_id
                     inner join agreements t
-                        on ap.play_item_id = t.agreement_id
+                        on ap.play_item_id = t.digital_content_id
                     where -- same filtering for aggregate_interval_plays
                         t.is_current is True AND
                         t.is_delete is False AND
@@ -130,7 +130,7 @@ class TrendingAgreementsStrategyEJ57D(BaseTrendingStrategy):
         """
         )
         session.execute(
-            trending_agreement_query,
+            trending_digital_content_query,
             {
                 "week": T["week"],
                 "month": T["month"],
@@ -150,7 +150,7 @@ class TrendingAgreementsStrategyEJ57D(BaseTrendingStrategy):
         )
         duration = time.time() - start_time
         logger.info(
-            f"trending_agreements_strategy | Finished calculating trending scores in {duration} seconds",
+            f"trending_digital_contents_strategy | Finished calculating trending scores in {duration} seconds",
             extra={
                 "id": "trending_strategy",
                 "type": self.trending_type.name,

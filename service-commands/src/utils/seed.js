@@ -114,7 +114,7 @@ const getUserProvidedOrRandomImageFile = async userInputPath => {
 
 const getProgressCallback = () => {
   const progressCallback = percentComplete => {
-    console.log(`${percentComplete} agreement upload completed...`)
+    console.log(`${percentComplete} digital_content upload completed...`)
   }
   return progressCallback
 }

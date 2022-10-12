@@ -19,7 +19,7 @@ Example:
 
 ```typescript
 
-const agreement = await colivingSdk.resolve<Agreement>({
+const digital_content = await colivingSdk.resolve<DigitalContent>({
   url: "https://.co/camouflybeats/hypermantra-86216",
 });
 
@@ -29,7 +29,7 @@ const agreement = await colivingSdk.resolve<Agreement>({
 
 | Name | Type |
 | :------ | :------ |
-| `T` | extends [`Agreement`](../interfaces/Agreement.md) \| [`ContentList`](../interfaces/ContentList.md) \| [`User`](../interfaces/User.md) |
+| `T` | extends [`DigitalContent`](../interfaces/DigitalContent.md) \| [`ContentList`](../interfaces/ContentList.md) \| [`User`](../interfaces/User.md) |
 
 #### Parameters
 

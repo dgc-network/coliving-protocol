@@ -1,8 +1,8 @@
 'use strict'
 
 module.exports = (sequelize, DataTypes) => {
-  const Agreement = sequelize.define(
-    'Agreement',
+  const DigitalContent = sequelize.define(
+    'DigitalContent',
     {
       cnodeUserUUID: {
         type: DataTypes.UUID,
@@ -41,25 +41,25 @@ module.exports = (sequelize, DataTypes) => {
     }
   )
 
-  Agreement.associate = function (models) {
-    Agreement.belongsTo(models.CNodeUser, {
+  DigitalContent.associate = function (models) {
+    DigitalContent.belongsTo(models.CNodeUser, {
       foreignKey: 'cnodeUserUUID',
       targetKey: 'cnodeUserUUID',
       onDelete: 'RESTRICT'
     })
-    Agreement.belongsTo(models.File, {
+    DigitalContent.belongsTo(models.File, {
       foreignKey: 'metadataFileUUID',
       targetKey: 'fileUUID',
       onDelete: 'RESTRICT'
     })
-    Agreement.belongsTo(models.File, {
+    DigitalContent.belongsTo(models.File, {
       foreignKey: 'coverArtFileUUID',
       targetKey: 'fileUUID',
       onDelete: 'RESTRICT'
     })
-    // Agreement also has a composite foreign key on ClockRecords (cnodeUserUUID, clock)
+    // DigitalContent also has a composite foreign key on ClockRecords (cnodeUserUUID, clock)
     // sequelize does not support composite foreign keys
   }
 
-  return Agreement
+  return DigitalContent
 }

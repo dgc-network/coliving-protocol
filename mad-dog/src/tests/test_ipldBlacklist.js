@@ -59,35 +59,35 @@ IpldBlacklistTest.newAgreementMetadata = async ({
       numContentNodes
     })
 
-    // Create and upload a throwaway agreement
+    // Create and upload a throwaway digital_content
     const throwawayAgreement = getRandomAgreementMetadata(userId)
     const randomAgreementFilePath = await getRandomAgreementFilePath(TEMP_STORAGE_PATH)
     const throwawayAgreementId = await executeOne(CREATOR_INDEX, libsWrapper => {
       return uploadAgreement(libsWrapper, throwawayAgreement, randomAgreementFilePath)
     })
 
-    // Verify that fetching the throwaway agreement doesn't throw any errors
+    // Verify that fetching the throwaway digital_content doesn't throw any errors
     const uploadedThrowawayAgreement = await executeOne(CREATOR_INDEX, libsWrapper => {
       return getAgreementMetadata(libsWrapper, throwawayAgreementId)
     })
     const throwawayAgreementMetadataCid = uploadedThrowawayAgreement.metadata_multihash
     await executeOne(CREATOR_INDEX, libs => libs.waitForLatestBlock())
 
-    // Make a new agreement with a different title so it has a different metadata CID
+    // Make a new digital_content with a different title so it has a different metadata CID
     const blacklistedAgreementMetadata = {
       ...throwawayAgreement,
-      title: `Blacklisted Agreement ${genRandomString(8)}`
+      title: `Blacklisted DigitalContent ${genRandomString(8)}`
     }
     const blacklistedMetadataCid = await LibsUtils.fileHasher.generateNonImageCid(
       Buffer.from(JSON.stringify(blacklistedAgreementMetadata))
     )
     if (blacklistedMetadataCid === throwawayAgreementMetadataCid) {
       return {
-        error: "Metadata of blacklisted agreement should have different CID from throwaway agreement's metadata."
+        error: "Metadata of blacklisted digital_content should have different CID from throwaway digital_content's metadata."
       }
     }
 
-    // Blacklist the agreement metadata's CID before uploading it
+    // Blacklist the digital_content metadata's CID before uploading it
     const agreementMultihashDecoded = Utils.decodeMultihash(blacklistedMetadataCid)
     logger.info(`Adding CID ${blacklistedMetadataCid} to the IPLD Blacklist!`)
     const ipldTxReceipt = await executeOne(BLACKLISTER_INDEX, libsWrapper => {
@@ -95,7 +95,7 @@ IpldBlacklistTest.newAgreementMetadata = async ({
     })
     await executeOne(BLACKLISTER_INDEX, libs => libs.waitForLatestIPLDBlock())
 
-    // Verify that attempting to upload the agreement with blacklisted metadata fails
+    // Verify that attempting to upload the digital_content with blacklisted metadata fails
     try {
       const blacklistedAgreementId = await executeOne(CREATOR_INDEX, libsWrapper => {
         return uploadAgreement(libsWrapper, blacklistedAgreementMetadata, randomAgreementFilePath)
@@ -107,7 +107,7 @@ IpldBlacklistTest.newAgreementMetadata = async ({
     } catch (e) {
       if (e.message !== 'No agreements returned.') {
         return {
-          error: `Error with IPLD Blacklist test for new agreement with blacklisted metadata: ${e.message}`
+          error: `Error with IPLD Blacklist test for new digital_content with blacklisted metadata: ${e.message}`
         }
       }
     }
@@ -118,7 +118,7 @@ IpldBlacklistTest.newAgreementMetadata = async ({
     }
 
     return {
-      error: `Error with IPLD Blacklist test for update agreement with blacklisted metadata CID: ${error}`
+      error: `Error with IPLD Blacklist test for update digital_content with blacklisted metadata CID: ${error}`
     }
   } finally {
     await fs.remove(TEMP_STORAGE_PATH)
@@ -140,14 +140,14 @@ IpldBlacklistTest.updateAgreementMetadata = async ({
       numContentNodes
     })
 
-    // Create and upload agreement
-    const agreement = getRandomAgreementMetadata(userId)
+    // Create and upload digital_content
+    const digital_content = getRandomAgreementMetadata(userId)
     const randomAgreementFilePath = await getRandomAgreementFilePath(TEMP_STORAGE_PATH)
     const agreementId = await executeOne(CREATOR_INDEX, libsWrapper => {
-      return uploadAgreement(libsWrapper, agreement, randomAgreementFilePath)
+      return uploadAgreement(libsWrapper, digital_content, randomAgreementFilePath)
     })
 
-    // Keep agreement of original metadata CID
+    // Keep digital_content of original metadata CID
     const uploadedAgreementBeforeUpdate = await executeOne(CREATOR_INDEX, libsWrapper => {
       return getAgreementMetadata(libsWrapper, agreementId)
     })
@@ -156,40 +156,40 @@ IpldBlacklistTest.updateAgreementMetadata = async ({
 
     // Modify a copy of the metadata to generate a new CID that's acceptable (not blacklisted)
     const acceptableAgreementMetadata = {
-      ...agreement,
-      agreement_id: uploadedAgreementBeforeUpdate.agreement_id,
-      agreement_segments: uploadedAgreementBeforeUpdate.agreement_segments,
+      ...digital_content,
+      digital_content_id: uploadedAgreementBeforeUpdate.digital_content_id,
+      digital_content_segments: uploadedAgreementBeforeUpdate.digital_content_segments,
       title: `Updated Title ${genRandomString(8)}`
     }
     const acceptableMetadataCid = await LibsUtils.fileHasher.generateNonImageCid(Buffer.from(JSON.stringify(acceptableAgreementMetadata)))
 
-    // Update the agreement to metadata that's acceptable (not blacklisted)
+    // Update the digital_content to metadata that's acceptable (not blacklisted)
     await executeOne(CREATOR_INDEX, libsWrapper => {
       return updateAgreementOnChainAndCnode(libsWrapper, acceptableAgreementMetadata)
     })
     await executeOne(CREATOR_INDEX, libs => libs.waitForLatestBlock())
 
-    // Ensure that the update was successful (agreement has new metadata CID)
+    // Ensure that the update was successful (digital_content has new metadata CID)
     const uploadedAgreementAfterAcceptableUpdate = await executeOne(CREATOR_INDEX, libsWrapper => {
       return getAgreementMetadata(libsWrapper, agreementId)
     })
     const updatedAcceptableAgreementMetadataCid = uploadedAgreementAfterAcceptableUpdate.metadata_multihash
     if (updatedAcceptableAgreementMetadataCid === originalMetadataCID) {
       return {
-        error: "Agreement metadata CID should've updated. The rest of the test will produce a false positive."
+        error: "DigitalContent metadata CID should've updated. The rest of the test will produce a false positive."
       }
     }
     if (updatedAcceptableAgreementMetadataCid !== acceptableMetadataCid) {
       return {
-        error: 'Agreement metadata CID does not match the expected metadata. The rest of this test relies on the hashing logic to be consistent, so it will fail.'
+        error: 'DigitalContent metadata CID does not match the expected metadata. The rest of this test relies on the hashing logic to be consistent, so it will fail.'
       }
     }
 
     // Make new metadata again and this time blacklist its CID
     const blacklistedAgreementMetadata = {
-      ...agreement,
-      agreement_id: uploadedAgreementBeforeUpdate.agreement_id,
-      agreement_segments: uploadedAgreementBeforeUpdate.agreement_segments,
+      ...digital_content,
+      digital_content_id: uploadedAgreementBeforeUpdate.digital_content_id,
+      digital_content_segments: uploadedAgreementBeforeUpdate.digital_content_segments,
       title: `Second Updated Title ${genRandomString(8)}`
     }
     const blacklistedMetadataCid = await LibsUtils.fileHasher.generateNonImageCid(Buffer.from(JSON.stringify(blacklistedAgreementMetadata)))
@@ -202,19 +202,19 @@ IpldBlacklistTest.updateAgreementMetadata = async ({
     })
     await executeOne(BLACKLISTER_INDEX, libs => libs.waitForLatestIPLDBlock())
 
-    // Attempt to update the agreement to metadata that's blacklisted
+    // Attempt to update the digital_content to metadata that's blacklisted
     await executeOne(CREATOR_INDEX, libsWrapper => {
       return updateAgreementOnChainAndCnode(libsWrapper, blacklistedAgreementMetadata)
     })
     await executeOne(CREATOR_INDEX, libs => libs.waitForLatestBlock())
 
-    // Ensure that the update was unsuccessful (agreement has original metadata cid)
+    // Ensure that the update was unsuccessful (digital_content has original metadata cid)
     const uploadedAgreementAfterUpdate = await executeOne(CREATOR_INDEX, libsWrapper => {
       return getAgreementMetadata(libsWrapper, agreementId)
     })
     if (acceptableMetadataCid !== uploadedAgreementAfterUpdate.metadata_multihash) {
       return {
-        error: 'Update agreement with blacklisted metadata CID should not have been indexed.'
+        error: 'Update digital_content with blacklisted metadata CID should not have been indexed.'
       }
     }
   } catch (e) {
@@ -224,7 +224,7 @@ IpldBlacklistTest.updateAgreementMetadata = async ({
     }
 
     return {
-      error: `Error with IPLD Blacklist test for update agreement with blacklisted metadata CID: ${error}`
+      error: `Error with IPLD Blacklist test for update digital_content with blacklisted metadata CID: ${error}`
     }
   } finally {
     await fs.remove(TEMP_STORAGE_PATH)
@@ -254,14 +254,14 @@ IpldBlacklistTest.newAgreementCoverPhoto = async ({
       libsWrapper => uploadAgreementCoverArt(libsWrapper, acceptableCoverArtFilePath)
     )
 
-    // Make agreement metadata containing acceptable cover art CID
+    // Make digital_content metadata containing acceptable cover art CID
     const acceptableAgreementToUpload = {
       ...getRandomAgreementMetadata(userId),
       cover_art: acceptableCID,
       cover_art_sizes: acceptableCID
     }
 
-    // Verify that the agreement with non-blacklisted cover art can upload successfully
+    // Verify that the digital_content with non-blacklisted cover art can upload successfully
     const randomAcceptableAgreementFilePath = await getRandomAgreementFilePath(TEMP_STORAGE_PATH)
     const acceptableAgreementId = await executeOne(
       CREATOR_INDEX,
@@ -277,7 +277,7 @@ IpldBlacklistTest.newAgreementCoverPhoto = async ({
     ) {
       return {
         error:
-          "Agreement metadata should've included cover art. The rest of the test will produce a false positive."
+          "DigitalContent metadata should've included cover art. The rest of the test will produce a false positive."
       }
     }
 
@@ -294,7 +294,7 @@ IpldBlacklistTest.newAgreementCoverPhoto = async ({
     })
     await executeOne(BLACKLISTER_INDEX, libs => libs.waitForLatestIPLDBlock())
 
-    // Make agreement metadata containing blacklisted cover art CID
+    // Make digital_content metadata containing blacklisted cover art CID
     const agreementToUploadWithBlacklistedCoverArt = {
       ...getRandomAgreementMetadata(userId),
       cover_art: blacklistedCID,
@@ -302,7 +302,7 @@ IpldBlacklistTest.newAgreementCoverPhoto = async ({
     }
     const randomAgreementFilePath = await getRandomAgreementFilePath(TEMP_STORAGE_PATH)
 
-    // Verify that attempting to upload the agreement with blacklisted cover art fails
+    // Verify that attempting to upload the digital_content with blacklisted cover art fails
     try {
       await executeOne(CREATOR_INDEX, libsWrapper => {
         return uploadAgreement(libsWrapper, agreementToUploadWithBlacklistedCoverArt, randomAgreementFilePath)
@@ -311,13 +311,13 @@ IpldBlacklistTest.newAgreementCoverPhoto = async ({
     } catch (e) {
       if (e.message !== 'No agreements returned.') {
         return {
-          error: `Error with IPLD Blacklist test for new agreement with blacklisted cover photo: ${e.message}`
+          error: `Error with IPLD Blacklist test for new digital_content with blacklisted cover photo: ${e.message}`
         }
       }
     }
   } catch (e) {
     return {
-      error: `Error with IPLD Blacklist test for new agreement with blacklisted cover photo: ${e.message}`
+      error: `Error with IPLD Blacklist test for new digital_content with blacklisted cover photo: ${e.message}`
     }
   }  finally {
     await fs.remove(TEMP_STORAGE_PATH)
@@ -354,8 +354,8 @@ IpldBlacklistTest.updateAgreementCoverPhoto = async ({
   const _setCoverArt = async (libs, uploadedAgreement, cid) => {
     const agreementUpdatedWithAcceptableCoverArt = {
       ...agreementToUpload,
-      agreement_id: uploadedAgreement.agreement_id,
-      agreement_segments: uploadedAgreement.agreement_segments,
+      digital_content_id: uploadedAgreement.digital_content_id,
+      digital_content_segments: uploadedAgreement.digital_content_segments,
       cover_art: cid,
       cover_art_sizes: cid
     }
@@ -367,27 +367,27 @@ IpldBlacklistTest.updateAgreementCoverPhoto = async ({
     const updatedPicCid = agreementAfterUpdate.cover_art_sizes
     if (previousPicCid === updatedPicCid) {
       throw new Error(
-        "Agreement cover art CID should've updated. The rest of the test will produce a false positive."
+        "DigitalContent cover art CID should've updated. The rest of the test will produce a false positive."
       )
     }
     if (updatedPicCid !== nonBlacklistedCid) {
       throw new Error(
-        'Agreement cover art CID does not match the expected CID. The rest of this test relies on the hashing logic to be consistent, so it will fail.'
+        'DigitalContent cover art CID does not match the expected CID. The rest of this test relies on the hashing logic to be consistent, so it will fail.'
       )
     }
   }
 
-  const _verifyBlacklistedCidDidNotUpdate = (agreement, blacklistedCid) => {
+  const _verifyBlacklistedCidDidNotUpdate = (digital_content, blacklistedCid) => {
     if (
-      agreement.cover_art === blacklistedCid ||
-      agreement.cover_art_sizes === blacklistedCid
+      digital_content.cover_art === blacklistedCid ||
+      digital_content.cover_art_sizes === blacklistedCid
     ) {
-      throw new Error('Update agreement with blacklisted cover photo should not have been indexed.')
+      throw new Error('Update digital_content with blacklisted cover photo should not have been indexed.')
     }
   }
 
   await testUpdateFlow(
-    'agreement cover photo',
+    'digital_content cover photo',
     executeOne,
     _createAndUploadAgreement,
     getAgreementMetadata,
@@ -413,7 +413,7 @@ IpldBlacklistTest.updateUserMetadata = async ({
       numContentNodes
     })
 
-    // Keep agreement of original metadata CID
+    // Keep digital_content of original metadata CID
     const userBeforeUpdate = await executeOne(CREATOR_INDEX, libsWrapper => {
       return getUser(libsWrapper, userId)
     })
@@ -736,8 +736,8 @@ async function getCreatorId ({
 
 /**
 * Tests blacklist functionality for updating an object with a property.
-* An object is metadata (user, agreement, or contentList), and property is the field
-* on the metadata that's being updated (agreement cover art, contentList cover photo,
+* An object is metadata (user, digital_content, or contentList), and property is the field
+* on the metadata that's being updated (digital_content cover art, contentList cover photo,
 * user cover photo, etc...) by:
 * 1. Retrieving the object
 * 2. Verifying that the object can successfully be modified when its CID is NOT blacklisted

@@ -5,7 +5,7 @@ sidebar_position: 1
 
 # Introducción
 
-Esta sección describe cómo ejecutar un nodo de live.
+Esta sección describe cómo ejecutar un nodo de digitalcoin.
 
 El protocolo Coliving está propulsado por dos servicios fuera de la cadena, el Nodo de descubrimiento y el Nodo de Contenido.
 
@@ -17,5 +17,5 @@ El protocolo Coliving está propulsado por dos servicios fuera de la cadena, el 
 
 **Nodo de contenido**
 
-* Hosts de contenido de live e imagen
-* Sincroniza el contenido entre nodos para asegurar que los datos sean consistentes y estén altamente disponibles \(usando IPFS y el protocolo de almacenamiento de live\)
+* Hosts de contenido de digitalcoin e imagen
+* Sincroniza el contenido entre nodos para asegurar que los datos sean consistentes y estén altamente disponibles \(usando IPFS y el protocolo de almacenamiento de digitalcoin\)

@@ -309,7 +309,7 @@ class NotificationProcessor {
   /**
    * 1. Get the total listens for the most reecently listened to agreements
    * 2. Query the discprov for new notifications starting at minBlock
-   * 3. Combine owner object from discprov with agreement listen counts
+   * 3. Combine owner object from discprov with digital_content listen counts
    * 4. Process notifications
    * 5. Process milestones
    * @param {ColivingLibs} colivingLibs
@@ -328,7 +328,7 @@ class NotificationProcessor {
 
     const agreementIdOwnersToRequestList = []
 
-    // These agreement_id get parameters will be used to retrieve agreement owner info
+    // These digital_content_id get parameters will be used to retrieve digital_content owner info
     // This is required since there is no guarantee that there are indeed notifications for this user
     // The owner info is then used to target listenCount milestone notifications
     // Timeout of 5 minutes
@@ -357,7 +357,7 @@ class NotificationProcessor {
       logger.info(`notifications main indexAll job - indexMilestones complete in ${Date.now() - time}ms`)
       time = Date.now()
 
-      // Fetch trending agreement milestones
+      // Fetch trending digital_content milestones
       await indexTrendingAgreements(colivingLibs, optimizelyClient, tx)
       logger.info(`notifications main indexAll job - indexTrendingAgreements complete in ${Date.now() - time}ms`)
       time = Date.now()

@@ -277,7 +277,7 @@ export interface AgreementFull {
      * @type {Array<AgreementSegment>}
      * @memberof AgreementFull
      */
-    agreement_segments?: Array<AgreementSegment>;
+    digital_content_segments?: Array<AgreementSegment>;
     /**
      * 
      * @type {string}

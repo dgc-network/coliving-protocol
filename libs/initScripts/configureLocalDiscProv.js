@@ -5,7 +5,7 @@ const ethContractsMigrationOutput = require('../../eth-contracts/migrations/migr
 //const solanaConfig = require('../../solana-programs/solana-program-config.json')
 
 const ETH_CONTRACTS_REGISTRY = 'coliving_eth_contracts_registry'
-const SOLANA_AGREEMENT_LISTEN_COUNT_ADDRESS = 'coliving_solana_agreement_listen_count_address'
+const SOLANA_AGREEMENT_LISTEN_COUNT_ADDRESS = 'coliving_solana_digital_content_listen_count_address'
 const SOLANA_ENDPOINT = 'coliving_solana_endpoint'
 
 const SOLANA_SIGNER_GROUP_ADDRESS = 'coliving_solana_signer_group_address'

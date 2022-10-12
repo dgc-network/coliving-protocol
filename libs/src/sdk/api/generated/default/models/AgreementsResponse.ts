@@ -14,11 +14,11 @@
  */
 
 import {
-    Agreement,
+    DigitalContent,
     AgreementFromJSON,
     AgreementFromJSONTyped,
     AgreementToJSON,
-} from './agreement';
+} from './digital_content';
 
 /**
  * 
@@ -28,9 +28,9 @@ import {
 export interface AgreementsResponse {
     /**
      * 
-     * @type {Array<Agreement>}
+     * @type {Array<DigitalContent>}
      * @memberof AgreementsResponse
      */
-    data?: Array<Agreement>;
+    data?: Array<DigitalContent>;
 }
 

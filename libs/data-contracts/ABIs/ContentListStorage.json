@@ -117,7 +117,7 @@
         },
         {
           "internalType": "uint256[]",
-          "name": "_agreementIds",
+          "name": "_digital_contentIds",
           "type": "uint256[]"
         }
       ],
@@ -196,7 +196,7 @@
         },
         {
           "internalType": "uint256",
-          "name": "_agreementId",
+          "name": "_digital_contentId",
           "type": "uint256"
         }
       ],

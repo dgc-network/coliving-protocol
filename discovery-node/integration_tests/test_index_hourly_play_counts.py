@@ -31,10 +31,10 @@ def test_index_hourly_play_counts_populate(app):
 
     entities = {
         "agreements": [
-            {"agreement_id": 1, "title": "agreement 1"},
-            {"agreement_id": 2, "title": "agreement 2"},
-            {"agreement_id": 3, "title": "agreement 3"},
-            {"agreement_id": 4, "title": "agreement 4"},
+            {"digital_content_id": 1, "title": "digital_content 1"},
+            {"digital_content_id": 2, "title": "digital_content 2"},
+            {"digital_content_id": 3, "title": "digital_content 3"},
+            {"digital_content_id": 4, "title": "digital_content 4"},
         ],
         "plays": [
             # Current Plays
@@ -95,10 +95,10 @@ def test_index_hourly_play_counts_single_update(app):
 
     entities = {
         "agreements": [
-            {"agreement_id": 1, "title": "agreement 0"},
-            {"agreement_id": 2, "title": "agreement 1"},
-            {"agreement_id": 3, "title": "agreement 2"},
-            {"agreement_id": 4, "title": "agreement 3"},
+            {"digital_content_id": 1, "title": "digital_content 0"},
+            {"digital_content_id": 2, "title": "digital_content 1"},
+            {"digital_content_id": 3, "title": "digital_content 2"},
+            {"digital_content_id": 4, "title": "digital_content 3"},
         ],
         "plays": [
             # Indexed Plays
@@ -173,10 +173,10 @@ def test_index_hourly_play_counts_idempotent(app):
 
     entities = {
         "agreements": [
-            {"agreement_id": 1, "title": "agreement 0"},
-            {"agreement_id": 2, "title": "agreement 1"},
-            {"agreement_id": 3, "title": "agreement 2"},
-            {"agreement_id": 4, "title": "agreement 3"},
+            {"digital_content_id": 1, "title": "digital_content 0"},
+            {"digital_content_id": 2, "title": "digital_content 1"},
+            {"digital_content_id": 3, "title": "digital_content 2"},
+            {"digital_content_id": 4, "title": "digital_content 3"},
         ],
         "plays": [
             # Indexed Plays
@@ -253,10 +253,10 @@ def test_index_hourly_play_counts_no_change(app):
 
     entities = {
         "agreements": [
-            {"agreement_id": 1, "title": "agreement 0"},
-            {"agreement_id": 2, "title": "agreement 1"},
-            {"agreement_id": 3, "title": "agreement 2"},
-            {"agreement_id": 4, "title": "agreement 3"},
+            {"digital_content_id": 1, "title": "digital_content 0"},
+            {"digital_content_id": 2, "title": "digital_content 1"},
+            {"digital_content_id": 3, "title": "digital_content 2"},
+            {"digital_content_id": 4, "title": "digital_content 3"},
         ],
         "plays": [
             {"item_id": 1, "created_at": TIMESTAMP - timedelta(hours=8)},
@@ -326,10 +326,10 @@ def test_index_hourly_play_counts_empty_plays(app):
 
     entities = {
         "agreements": [
-            {"agreement_id": 1, "title": "agreement 0"},
-            {"agreement_id": 2, "title": "agreement 1"},
-            {"agreement_id": 3, "title": "agreement 2"},
-            {"agreement_id": 4, "title": "agreement 3"},
+            {"digital_content_id": 1, "title": "digital_content 0"},
+            {"digital_content_id": 2, "title": "digital_content 1"},
+            {"digital_content_id": 3, "title": "digital_content 2"},
+            {"digital_content_id": 4, "title": "digital_content 3"},
         ],
         "plays": [],
     }

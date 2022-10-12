@@ -303,7 +303,7 @@ describe('Test createNewDataRecord()', async function () {
   })
 
   /**
-   * Simulates /image_upload and /agreement_content routes, which write multiple files sequentially in atomic tx
+   * Simulates /image_upload and /digital_content routes, which write multiple files sequentially in atomic tx
    */
   it('Sequential createNewDataRecord - successfully makes multiple sequential calls in single transaction', async function () {
     const sequelizeTableInstance = models.File
@@ -733,22 +733,22 @@ describe('Test deleteAllCNodeUserDataFromDB()', async function () {
         }
       )
 
-      // Upload agreement content
+      // Upload digital_content content
       const { fileUUID, fileDir } = saveFileToStorage(TestAudioFilePath)
       const agreementContentResp = await handleAgreementContentRoute(
         {},
         getReqObj(fileUUID, fileDir, session)
       )
 
-      // Upload agreement metadata
+      // Upload digital_content metadata
       const {
-        agreement_segments: agreementSegments,
+        digital_content_segments: agreementSegments,
         source_file: sourceFile,
         transcodedAgreementUUID
       } = agreementContentResp
       const agreementMetadata = {
         test: 'field1',
-        agreement_segments: agreementSegments,
+        digital_content_segments: agreementSegments,
         owner_id: userId
       }
       const expectedAgreementMetadataMultihash =
@@ -765,7 +765,7 @@ describe('Test deleteAllCNodeUserDataFromDB()', async function () {
         expectedAgreementMetadataMultihash
       )
 
-      // Complete agreement upload
+      // Complete digital_content upload
       await request(app)
         .post('/agreements')
         .set('X-Session-ID', session.sessionToken)
@@ -786,7 +786,7 @@ describe('Test deleteAllCNodeUserDataFromDB()', async function () {
       const colivingUserEntries = await models.ColivingUser.findAll({
         where: { cnodeUserUUID }
       })
-      const agreementEntries = await models.Agreement.findAll({
+      const agreementEntries = await models.DigitalContent.findAll({
         where: { cnodeUserUUID }
       })
       const fileEntries = await models.File.findAll({

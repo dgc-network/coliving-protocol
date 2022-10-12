@@ -111,7 +111,7 @@ def content_list_state_update(
             invalidate_old_content_list(session, content_list_id)
             session.add(value_obj["content_list"])
             if (
-                content_list_event_types_lookup["content_list_agreement_added"]
+                content_list_event_types_lookup["content_list_digital_content_added"]
                 in value_obj["events"]
             ):
                 challenge_bus.dispatch(
@@ -200,12 +200,12 @@ def parse_content_list_event(
         content_list_record.is_album = event_args._isAlbum
 
         content_list_content_array = []
-        for agreement_id in event_args._agreementIds:
+        for digital_content_id in event_args._digital_contentIds:
             content_list_content_array.append(
-                {"agreement": agreement_id, "time": block_integer_time}
+                {"digital_content": digital_content_id, "time": block_integer_time}
             )
 
-        content_list_record.content_list_contents = {"agreement_ids": content_list_content_array}
+        content_list_record.content_list_contents = {"digital_content_ids": content_list_content_array}
         content_list_record.created_at = block_datetime
 
     if event_type == content_list_event_types_lookup["content_list_deleted"]:
@@ -214,89 +214,89 @@ def parse_content_list_event(
         )
         content_list_record.is_delete = True
 
-    if event_type == content_list_event_types_lookup["content_list_agreement_added"]:
+    if event_type == content_list_event_types_lookup["content_list_digital_content_added"]:
         if getattr(content_list_record, "content_list_contents") is not None:
             logger.info(
-                f"index.py | contentLists.py | Adding agreement {event_args._addedAgreementId} to contentList \
+                f"index.py | contentLists.py | Adding digital_content {event_args._addedAgreementId} to contentList \
             {content_list_record.content_list_id}"
             )
-            old_content_list_content_array = content_list_record.content_list_contents["agreement_ids"]
+            old_content_list_content_array = content_list_record.content_list_contents["digital_content_ids"]
             new_content_list_content_array = old_content_list_content_array
-            # Append new agreement object
+            # Append new digital_content object
             new_content_list_content_array.append(
-                {"agreement": event_args._addedAgreementId, "time": block_integer_time}
+                {"digital_content": event_args._addedAgreementId, "time": block_integer_time}
             )
             content_list_record.content_list_contents = {
-                "agreement_ids": new_content_list_content_array
+                "digital_content_ids": new_content_list_content_array
             }
             content_list_record.timestamp = block_datetime
             content_list_record.last_added_to = block_datetime
 
-    if event_type == content_list_event_types_lookup["content_list_agreement_deleted"]:
+    if event_type == content_list_event_types_lookup["content_list_digital_content_deleted"]:
         if getattr(content_list_record, "content_list_contents") is not None:
             logger.info(
-                f"index.py | contentLists.py | Removing agreement {event_args._deletedAgreementId} from \
+                f"index.py | contentLists.py | Removing digital_content {event_args._deletedAgreementId} from \
             contentList {content_list_record.content_list_id}"
             )
-            old_content_list_content_array = content_list_record.content_list_contents["agreement_ids"]
+            old_content_list_content_array = content_list_record.content_list_contents["digital_content_ids"]
             new_content_list_content_array = []
-            deleted_agreement_id = event_args._deletedAgreementId
-            deleted_agreement_timestamp = int(event_args._deletedAgreementTimestamp)
-            delete_agreement_entry_found = False
-            for agreement_entry in old_content_list_content_array:
+            deleted_digital_content_id = event_args._deletedAgreementId
+            deleted_digital_content_timestamp = int(event_args._deletedAgreementTimestamp)
+            delete_digital_content_entry_found = False
+            for digital_content_entry in old_content_list_content_array:
                 if (
-                    agreement_entry["agreement"] == deleted_agreement_id
-                    and agreement_entry["time"] == deleted_agreement_timestamp
-                    and not delete_agreement_entry_found
+                    digital_content_entry["digital_content"] == deleted_digital_content_id
+                    and digital_content_entry["time"] == deleted_digital_content_timestamp
+                    and not delete_digital_content_entry_found
                 ):
-                    delete_agreement_entry_found = True
+                    delete_digital_content_entry_found = True
                     continue
-                new_content_list_content_array.append(agreement_entry)
+                new_content_list_content_array.append(digital_content_entry)
 
             content_list_record.content_list_contents = {
-                "agreement_ids": new_content_list_content_array
+                "digital_content_ids": new_content_list_content_array
             }
 
-    if event_type == content_list_event_types_lookup["content_list_agreements_ordered"]:
+    if event_type == content_list_event_types_lookup["content_list_digital_contents_ordered"]:
         if getattr(content_list_record, "content_list_contents") is not None:
             logger.info(
                 f"index.py | contentLists.py | Ordering contentList {content_list_record.content_list_id}"
             )
-            old_content_list_content_array = content_list_record.content_list_contents["agreement_ids"]
+            old_content_list_content_array = content_list_record.content_list_contents["digital_content_ids"]
 
-            intermediate_agreement_time_lookup_dict = {}
+            intermediate_digital_content_time_lookup_dict = {}
 
             for old_content_list_entry in old_content_list_content_array:
-                agreement_id = old_content_list_entry["agreement"]
-                agreement_time = old_content_list_entry["time"]
+                digital_content_id = old_content_list_entry["digital_content"]
+                digital_content_time = old_content_list_entry["time"]
 
-                if agreement_id not in intermediate_agreement_time_lookup_dict:
-                    intermediate_agreement_time_lookup_dict[agreement_id] = []
+                if digital_content_id not in intermediate_digital_content_time_lookup_dict:
+                    intermediate_digital_content_time_lookup_dict[digital_content_id] = []
 
-                intermediate_agreement_time_lookup_dict[agreement_id].append(agreement_time)
+                intermediate_digital_content_time_lookup_dict[digital_content_id].append(digital_content_time)
 
             content_list_content_array = []
-            for agreement_id in event_args._orderedAgreementIds:
-                if agreement_id in intermediate_agreement_time_lookup_dict:
-                    agreement_time_array_length = len(
-                        intermediate_agreement_time_lookup_dict[agreement_id]
+            for digital_content_id in event_args._orderedAgreementIds:
+                if digital_content_id in intermediate_digital_content_time_lookup_dict:
+                    digital_content_time_array_length = len(
+                        intermediate_digital_content_time_lookup_dict[digital_content_id]
                     )
-                    if agreement_time_array_length > 1:
-                        agreement_time = intermediate_agreement_time_lookup_dict[agreement_id].pop(
+                    if digital_content_time_array_length > 1:
+                        digital_content_time = intermediate_digital_content_time_lookup_dict[digital_content_id].pop(
                             0
                         )
-                    elif agreement_time_array_length == 1:
-                        agreement_time = intermediate_agreement_time_lookup_dict[agreement_id][0]
+                    elif digital_content_time_array_length == 1:
+                        digital_content_time = intermediate_digital_content_time_lookup_dict[digital_content_id][0]
                     else:
-                        agreement_time = block_integer_time
+                        digital_content_time = block_integer_time
                 else:
                     logger.info(
-                        f"index.py | contentList.py | Agreement {agreement_id} not found, using agreement_time={block_integer_time}"
+                        f"index.py | contentList.py | DigitalContent {digital_content_id} not found, using digital_content_time={block_integer_time}"
                     )
-                    agreement_time = block_integer_time
-                content_list_content_array.append({"agreement": agreement_id, "time": agreement_time})
+                    digital_content_time = block_integer_time
+                content_list_content_array.append({"digital_content": digital_content_id, "time": digital_content_time})
 
-            content_list_record.content_list_contents = {"agreement_ids": content_list_content_array}
+            content_list_record.content_list_contents = {"digital_content_ids": content_list_content_array}
 
     if event_type == content_list_event_types_lookup["content_list_name_updated"]:
         logger.info(

@@ -16,6 +16,6 @@ pagination_next: null
 
 ### data
 
- `Optional` **data**: [`Agreement`](Agreement.md)[]
+ `Optional` **data**: [`DigitalContent`](DigitalContent.md)[]
 
 **`memberof`** AgreementsResponse

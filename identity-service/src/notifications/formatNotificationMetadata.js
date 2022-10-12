@@ -58,14 +58,14 @@ const formatMilestone = (achievement) => (notification, metadata) => {
 
 function formatTrendingAgreement (notification, metadata) {
   const agreementId = notification.entityId
-  const agreement = metadata.agreements[agreementId]
+  const digital_content = metadata.agreements[agreementId]
   if (!notification.actions.length === 1) return null
   const rank = notification.actions[0].actionEntityId
   const type = notification.actions[0].actionEntityType
   const [time, genre] = type.split(':')
   return {
     type: NotificationType.TrendingAgreement,
-    entity: agreement,
+    entity: digital_content,
     rank,
     time,
     genre
@@ -76,7 +76,7 @@ function getMilestoneEntity (notification, metadata) {
   if (notification.type === NotificationType.MilestoneFollow) return undefined
   const type = notification.actions[0].actionEntityType
   const entityId = notification.entityId
-  const name = (type === Entity.Agreement)
+  const name = (type === Entity.DigitalContent)
     ? metadata.agreements[entityId].title
     : metadata.collections[entityId].content_list_name
   return { type, name }
@@ -105,7 +105,7 @@ function formatAnnouncement (notification) {
 function formatRemixCreate (notification, metadata) {
   const agreementId = notification.entityId
   const parentAgreementAction = notification.actions.find(action =>
-    action.actionEntityType === actionEntityTypes.Agreement &&
+    action.actionEntityType === actionEntityTypes.DigitalContent &&
     action.actionEntityId !== agreementId)
   const parentAgreementId = parentAgreementAction.actionEntityId
   const remixAgreement = metadata.agreements[agreementId]
@@ -129,7 +129,7 @@ function formatRemixCosign (notification, metadata) {
   )
   const parentAgreementUserId = parentAgreementUserAction.actionEntityId
   const remixAgreement = metadata.agreements[agreementId]
-  const parentAgreements = remixAgreement.remix_of.agreements.map(t => metadata.agreements[t.parent_agreement_id])
+  const parentAgreements = remixAgreement.remix_of.agreements.map(t => metadata.agreements[t.parent_digital_content_id])
   return {
     type: NotificationType.RemixCosign,
     parentAgreementUser: metadata.users[parentAgreementUserId],
@@ -150,7 +150,7 @@ function formatChallengeReward (notification) {
 function formatAddAgreementToContentList (notification, metadata) {
   return {
     type: NotificationType.AddAgreementToContentList,
-    agreement: metadata.agreements[notification.entityId],
+    digital_content: metadata.agreements[notification.entityId],
     contentList: metadata.collections[notification.metadata.contentListId],
     contentListOwner: metadata.users[notification.metadata.contentListOwnerId]
   }
@@ -246,9 +246,9 @@ function formatSupportingRankUpEmail (notification, extras) {
 
 const notificationResponseMap = {
   [NotificationType.Follow]: formatFollow,
-  [NotificationType.Favorite.agreement]: (notification, metadata) => {
-    const agreement = metadata.agreements[notification.entityId]
-    return formatFavorite(notification, metadata, { type: Entity.Agreement, name: agreement.title })
+  [NotificationType.Favorite.digital_content]: (notification, metadata) => {
+    const digital_content = metadata.agreements[notification.entityId]
+    return formatFavorite(notification, metadata, { type: Entity.DigitalContent, name: digital_content.title })
   },
   [NotificationType.Favorite.contentList]: (notification, metadata) => {
     const collection = metadata.collections[notification.entityId]
@@ -258,9 +258,9 @@ const notificationResponseMap = {
     const collection = metadata.collections[notification.entityId]
     return formatFavorite(notification, metadata, { type: Entity.Album, name: collection.content_list_name })
   },
-  [NotificationType.Repost.agreement]: (notification, metadata) => {
-    const agreement = metadata.agreements[notification.entityId]
-    return formatRepost(notification, metadata, { type: Entity.Agreement, name: agreement.title })
+  [NotificationType.Repost.digital_content]: (notification, metadata) => {
+    const digital_content = metadata.agreements[notification.entityId]
+    return formatRepost(notification, metadata, { type: Entity.DigitalContent, name: digital_content.title })
   },
   [NotificationType.Repost.contentList]: (notification, metadata) => {
     const collection = metadata.collections[notification.entityId]
@@ -270,13 +270,13 @@ const notificationResponseMap = {
     const collection = metadata.collections[notification.entityId]
     return formatRepost(notification, metadata, { type: Entity.Album, name: collection.content_list_name })
   },
-  [NotificationType.Create.agreement]: (notification, metadata) => {
+  [NotificationType.Create.digital_content]: (notification, metadata) => {
     const agreementId = notification.actions[0].actionEntityId
-    const agreement = metadata.agreements[agreementId]
+    const digital_content = metadata.agreements[agreementId]
     const count = notification.actions.length
     let user = metadata.users[notification.entityId]
     let users = [{ name: user.name, image: user.thumbnail }]
-    return formatUserSubscription(notification, metadata, { type: Entity.Agreement, count, name: agreement.title }, users)
+    return formatUserSubscription(notification, metadata, { type: Entity.DigitalContent, count, name: digital_content.title }, users)
   },
   [NotificationType.Create.album]: (notification, metadata) => {
     const collection = metadata.collections[notification.entityId]
@@ -329,9 +329,9 @@ const NewMilestoneTitle = 'Congratulations! 🎉'
 const NewSubscriptionUpdateTitle = 'New Landlord Update'
 
 const TrendingAgreementTitle = 'Congrats - You’re Trending! 📈'
-const RemixCreateTitle = 'New Remix Of Your Agreement ♻️'
-const RemixCosignTitle = 'New Agreement Co-Sign! 🔥'
-const AddAgreementToContentListTitle = 'Your agreement got on a contentList! 💿'
+const RemixCreateTitle = 'New Remix Of Your DigitalContent ♻️'
+const RemixCosignTitle = 'New DigitalContent Co-Sign! 🔥'
+const AddAgreementToContentListTitle = 'Your digital_content got on a contentList! 💿'
 const TipReceiveTitle = 'You Received a Tip!'
 
 const challengeInfoMap = {
@@ -343,7 +343,7 @@ const challengeInfoMap = {
     title: '🎧 Listening Streak: 7 Days',
     amount: 1
   },
-  'agreement-upload': {
+  'digital-content-upload': {
     title: '🎶 Upload 5 Agreements',
     amount: 1
   },
@@ -374,13 +374,13 @@ const makeSupportingOrSupporterTitle = (notification) => `#${notification.rank} 
 
 const notificationResponseTitleMap = {
   [NotificationType.Follow]: () => NewFollowerTitle,
-  [NotificationType.Favorite.agreement]: () => NewFavoriteTitle,
+  [NotificationType.Favorite.digital_content]: () => NewFavoriteTitle,
   [NotificationType.Favorite.contentList]: () => NewFavoriteTitle,
   [NotificationType.Favorite.album]: () => NewFavoriteTitle,
-  [NotificationType.Repost.agreement]: () => NewRepostTitle,
+  [NotificationType.Repost.digital_content]: () => NewRepostTitle,
   [NotificationType.Repost.contentList]: () => NewRepostTitle,
   [NotificationType.Repost.album]: () => NewRepostTitle,
-  [NotificationType.Create.agreement]: () => NewSubscriptionUpdateTitle,
+  [NotificationType.Create.digital_content]: () => NewSubscriptionUpdateTitle,
   [NotificationType.Create.album]: () => NewSubscriptionUpdateTitle,
   [NotificationType.Create.contentList]: () => NewSubscriptionUpdateTitle,
   [NotificationType.MilestoneListen]: () => NewMilestoneTitle,
@@ -433,13 +433,13 @@ const pushNotificationMessagesMap = {
   [notificationTypes.Create.base] (notification) {
     const [user] = notification.users
     const type = notification.entity.type.toLowerCase()
-    if (notification.entity.type === actionEntityTypes.Agreement && !isNaN(notification.entity.count) && notification.entity.count > 1) {
+    if (notification.entity.type === actionEntityTypes.DigitalContent && !isNaN(notification.entity.count) && notification.entity.count > 1) {
       return `${user.name} released ${notification.entity.count} new ${type}s`
     }
     return `${user.name} released a new ${type} ${notification.entity.name}`
   },
   [notificationTypes.RemixCreate] (notification) {
-    return `New remix of your agreement ${notification.parentAgreement.title}: ${notification.remixUser.name} uploaded ${notification.remixAgreement.title}`
+    return `New remix of your digital_content ${notification.parentAgreement.title}: ${notification.remixUser.name} uploaded ${notification.remixAgreement.title}`
   },
   [notificationTypes.RemixCosign] (notification) {
     return `${notification.parentAgreementUser.name} Co-Signed your Remix of ${notification.remixAgreement.title}`
@@ -447,7 +447,7 @@ const pushNotificationMessagesMap = {
   [notificationTypes.TrendingAgreement] (notification) {
     const rank = notification.rank
     const rankSuffix = getRankSuffix(rank)
-    return `Your Agreement ${notification.entity.title} is ${notification.rank}${rankSuffix} on Trending Right Now! 🍾`
+    return `Your DigitalContent ${notification.entity.title} is ${notification.rank}${rankSuffix} on Trending Right Now! 🍾`
   },
   [notificationTypes.ChallengeReward] (notification) {
     return notification.challengeId === 'referred'
@@ -455,7 +455,7 @@ const pushNotificationMessagesMap = {
       : `You’ve earned ${challengeInfoMap[notification.challengeId].amount} $LIVE for completing this challenge!`
   },
   [notificationTypes.AddAgreementToContentList] (notification) {
-    return `${notification.contentListOwner.name} added ${notification.agreement.title} to their contentList ${notification.contentList.content_list_name}`
+    return `${notification.contentListOwner.name} added ${notification.digital_content.title} to their contentList ${notification.contentList.content_list_name}`
   },
   [notificationTypes.Reaction] (notification) {
     return `${capitalize(notification.reactingUser.name)} reacted to your tip of ${notification.amount} $LIVE`

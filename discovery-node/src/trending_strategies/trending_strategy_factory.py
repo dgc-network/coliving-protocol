@@ -4,10 +4,10 @@ from src.trending_strategies.BDNxn_trending_content_lists_strategy import (
 from src.trending_strategies.EJ57D_trending_content_lists_strategy import (
     TrendingContentListsStrategyEJ57D,
 )
-from src.trending_strategies.EJ57D_trending_agreements_strategy import (
+from src.trending_strategies.EJ57D_trending_digital_contents_strategy import (
     TrendingAgreementsStrategyEJ57D,
 )
-from src.trending_strategies.EJ57D_underground_trending_agreements_strategy import (
+from src.trending_strategies.EJ57D_underground_trending_digital_contents_strategy import (
     UndergroundTrendingAgreementsStrategyEJ57D,
 )
 from src.trending_strategies.trending_type_and_version import (

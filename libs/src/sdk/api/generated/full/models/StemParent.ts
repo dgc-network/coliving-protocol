@@ -30,6 +30,6 @@ export interface StemParent {
      * @type {number}
      * @memberof StemParent
      */
-    parent_agreement_id: number;
+    parent_digital_content_id: number;
 }
 

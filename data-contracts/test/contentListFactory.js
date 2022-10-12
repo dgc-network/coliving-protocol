@@ -102,8 +102,8 @@ contract('ContentListFactory', async (accounts) => {
       contentListAgreements)
   })
 
-  it('Should create a contentList and add a separate agreement', async () => {
-    // Add a 3rd agreement that is not in the initial contentList agreements list
+  it('Should create a contentList and add a separate digital_content', async () => {
+    // Add a 3rd digital_content that is not in the initial contentList agreements list
     await _lib.addAgreementAndValidate(
       agreementFactory,
       testAgreementId3,
@@ -131,7 +131,7 @@ contract('ContentListFactory', async (accounts) => {
       testAgreementId3)
   })
 
-  it('Should create a contentList and delete a agreement', async () => {
+  it('Should create a contentList and delete a digital_content', async () => {
     // Create contentList
     await _lib.addContentListAndValidate(
       contentListFactory,
@@ -192,7 +192,7 @@ contract('ContentListFactory', async (accounts) => {
       expectedContentListId,
       true)
 
-    // Attempt updating a contentList order with an invalid agreement
+    // Attempt updating a contentList order with an invalid digital_content
     let invalidContentListAgreementsOrder = [2, 3, 1]
     let updatedAgreementOrder = null
     try {
@@ -205,14 +205,14 @@ contract('ContentListFactory', async (accounts) => {
       updatedAgreementOrder = true
     } catch (err) {
       // Update flag to indicate that invalid update cannot be performed
-      if (err.message.indexOf('Expected valid contentList agreement id') >= 0) {
+      if (err.message.indexOf('Expected valid contentList digital_content id') >= 0) {
         updatedAgreementOrder = false
       }
     }
 
     assert.isFalse(
       updatedAgreementOrder,
-      'Expect failure with invalid agreement ID in reorder operation')
+      'Expect failure with invalid digital_content ID in reorder operation')
 
     // 4 - Update contentList cover photo
     await _lib.updateContentListCoverPhotoAndValidate(

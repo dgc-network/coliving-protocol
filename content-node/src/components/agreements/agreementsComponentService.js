@@ -8,16 +8,16 @@ const AgreementTranscodeHandoffManager = require('./agreementTranscodeHandoffMan
 const AgreementContentUploadManager = require('./agreementContentUploadManager')
 
 /**
- * Upload agreement segment files and make avail - will later be associated with Coliving agreement
+ * Upload digital_content segment files and make avail - will later be associated with Coliving digital_content
  *
- * Also the logic used in /agreement_content_async route. Params are extracted to keys that are necessary for the job so that
+ * Also the logic used in /digital_content_async route. Params are extracted to keys that are necessary for the job so that
  * we can pass this task into a worker queue.
  *
  * @param {Object} logContext the context of the request used to create a generic logger
  * @param {Object} requestProps more request specific context, NOT the req object from Express
  * @returns a success or error server response
  *
- * upload agreement segment files and make avail - will later be associated with Coliving agreement
+ * upload digital_content segment files and make avail - will later be associated with Coliving digital_content
  * @dev - Prune upload artifacts after successful and failed uploads. Make call without awaiting, and let async queue clean up.
  */
 const handleAgreementContentRoute = async ({ logContext }, requestProps) => {
@@ -26,7 +26,7 @@ const handleAgreementContentRoute = async ({ logContext }, requestProps) => {
 
   const routeTimeStart = getStartTime()
 
-  // Create agreement transcode and segments, and save all to disk
+  // Create digital_content transcode and segments, and save all to disk
   const codeBlockTimeStart = getStartTime()
   const { transcodeFilePath, segmentFileNames } =
     await AgreementContentUploadManager.transcodeAndSegment(
@@ -35,7 +35,7 @@ const handleAgreementContentRoute = async ({ logContext }, requestProps) => {
     )
   logInfoWithDuration(
     { logger, startTime: codeBlockTimeStart },
-    `Successfully re-encoded agreement file=${fileName}`
+    `Successfully re-encoded digital_content file=${fileName}`
   )
 
   const resp = await AgreementContentUploadManager.processTranscodeAndSegments(
@@ -51,7 +51,7 @@ const handleAgreementContentRoute = async ({ logContext }, requestProps) => {
   )
   logInfoWithDuration(
     { logger, startTime: routeTimeStart },
-    `Successfully handled agreement content for file=${fileName}`
+    `Successfully handled digital_content content for file=${fileName}`
   )
 
   return resp

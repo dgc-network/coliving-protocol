@@ -69,7 +69,7 @@ const getAgreementListens = async (
   limit = undefined,
   offset = undefined) => {
   if (idList !== undefined && !Array.isArray(idList)) {
-    return errorResponseBadRequest('Invalid id list provided. Please provide an array of agreement IDs')
+    return errorResponseBadRequest('Invalid id list provided. Please provide an array of digital_content IDs')
   }
   let boundariesRequested = false
   try {
@@ -149,7 +149,7 @@ const getTrendingAgreements = async (
   limit,
   offset) => {
   if (idList !== undefined && !Array.isArray(idList)) {
-    return errorResponseBadRequest('Invalid id list provided. Please provide an array of agreement IDs')
+    return errorResponseBadRequest('Invalid id list provided. Please provide an array of digital_content IDs')
   }
 
   let dbQuery = {
@@ -308,7 +308,7 @@ module.exports = function (app) {
     const agreementId = parseInt(req.params.id)
     const userId = req.body.userId
     if (!userId || !agreementId) {
-      return errorResponseBadRequest('Must include user id and valid agreement id')
+      return errorResponseBadRequest('Must include user id and valid digital_content id')
     }
 
     const optimizelyClient = app.get('optimizelyClient')
@@ -421,7 +421,7 @@ module.exports = function (app) {
         where: { hour: currentHour, agreementId }
       })
     if (agreementListenRecord && agreementListenRecord[1]) {
-      logger.info(`New agreement listen record inserted ${agreementListenRecord}`)
+      logger.info(`New digital_content listen record inserted ${agreementListenRecord}`)
     }
     await models.AgreementListenCount.increment('listens', { where: { hour: currentHour, agreementId: req.params.id } })
 
@@ -429,7 +429,7 @@ module.exports = function (app) {
     // Those listened should NOT be recorded in the userAgreementListen table
     const isRealUser = typeof userId === 'number'
     if (isRealUser) {
-      // Find / Create the record of the user listening to the agreement
+      // Find / Create the record of the user listening to the digital_content
       const [userAgreementListenRecord, created] = await models.UserAgreementListen
         .findOrCreate({ where: { userId, agreementId } })
 
@@ -470,18 +470,18 @@ module.exports = function (app) {
     })
 
     return successResponse({
-      agreements: agreementListens.map(agreement => ({ agreementId: agreement.agreementId, listenDate: agreement.updatedAt }))
+      agreements: agreementListens.map(digital_content => ({ agreementId: digital_content.agreementId, listenDate: digital_content.updatedAt }))
     })
   }))
 
   /*
-   * Return agreement listen history grouped by a specific time frame
+   * Return digital_content listen history grouped by a specific time frame
    *  agreements/listens/
    *    - all agreements, sorted by play count
    *
    *  agreements/listens/<time>
    *    - <time> - day, week, month, year
-   *    - returns all agreement listen info for given time period, sorted by play count
+   *    - returns all digital_content listen info for given time period, sorted by play count
    *
    *  POST body parameters (optional):
    *    limit (int) - limits number of results
@@ -489,7 +489,7 @@ module.exports = function (app) {
    *    start (string) - ISO time string, used to define the start time period for query
    *    end (string) - ISO time string, used to define the end time period for query
    *    start/end are BOTH required if filtering based on time
-   *    agreement_ids - filter results for specific agreement(s)
+   *    digital_content_ids - filter results for specific digital_content(s)
    *
    *  GET query parameters (optional):
    *    limit (int) - limits number of results
@@ -497,11 +497,11 @@ module.exports = function (app) {
    *    start (string) - ISO time string, used to define the start time period for query
    *    end (string) - ISO time string, used to define the end time period for query
    *    start/end are BOTH required if filtering based on time
-   *    id (array of int) - filter results for specific agreement(s)
+   *    id (array of int) - filter results for specific digital_content(s)
    */
   app.post('/agreements/listens/:timeframe*?', handleResponse(async (req, res, next) => {
     let body = req.body
-    let idList = body.agreement_ids
+    let idList = body.digital_content_ids
     let startTime = body.startTime
     let endTime = body.endTime
     let time = parseTimeframe(req.params.timeframe)
@@ -534,7 +534,7 @@ module.exports = function (app) {
   }))
 
   /*
-   * Return aggregate agreement listen count with various parameters
+   * Return aggregate digital_content listen count with various parameters
    *  agreements/trending/
    *    - all agreements, sorted by play count
    *
@@ -545,17 +545,17 @@ module.exports = function (app) {
    *  POST body parameters (optional):
    *    limit (int) - limits number of results
    *    offset (int) - offset results
-   *    agreement_ids (array of int) - filter results for specific agreement(s)
+   *    digital_content_ids (array of int) - filter results for specific digital_content(s)
    *
    *  GET query parameters (optional):
    *    limit (int) - limits number of results
    *    offset (int) - offset results
-   *    id (array of int) - filter results for specific agreement(s)
+   *    id (array of int) - filter results for specific digital_content(s)
    */
   app.post('/agreements/trending/:time*?', handleResponse(async (req, res) => {
     let time = req.params.time
     let body = req.body
-    let idList = body.agreement_ids
+    let idList = body.digital_content_ids
     let { limit, offset } = getPaginationVars(body.limit, body.offset)
     let parsedListenCounts = await getTrendingAgreements(
       idList,
@@ -581,7 +581,7 @@ module.exports = function (app) {
   /*
    * Gets the agreements and listen counts for a user.
    * Useful for populating views like "Heavy Rotation" which
-   * require sorted lists of agreement listens for a given user.
+   * require sorted lists of digital_content listens for a given user.
    *
    * GET query parameters:
    *  limit: (optional) The number of agreements to fetch
@@ -620,7 +620,7 @@ module.exports = function (app) {
     const { agreementIdList } = req.query
 
     if (!agreementIdList || !Array.isArray(agreementIdList)) {
-      return errorResponseBadRequest('Please provide an array of agreement ids')
+      return errorResponseBadRequest('Please provide an array of digital_content ids')
     }
 
     const listens = await models.UserAgreementListen.findAll({

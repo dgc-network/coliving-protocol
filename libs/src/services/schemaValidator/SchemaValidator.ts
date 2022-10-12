@@ -45,7 +45,7 @@ export class SchemaValidator {
     this.schemas = {
       [agreementSchemaType]: {
         schema: AgreementSchema,
-        baseDefinition: 'Agreement'
+        baseDefinition: 'DigitalContent'
       },
       [userSchemaType]: {
         schema: UserSchema,

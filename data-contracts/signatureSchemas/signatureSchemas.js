@@ -27,7 +27,7 @@ domains.getUserFactoryDomain = function (chainId, contractAddress) {
 }
 
 domains.getAgreementFactoryDomain = function (chainId, contractAddress) {
-  return getDomainData('Agreement Factory', '1', chainId, contractAddress)
+  return getDomainData('DigitalContent Factory', '1', chainId, contractAddress)
 }
 
 domains.getContentListFactoryDomain = function (chainId, contractAddress) {
@@ -86,7 +86,7 @@ schemas.updateUserBool = [
   { name: 'nonce', type: 'bytes32' }
 ]
 
-/* agreement factory requests */
+/* digital_content factory requests */
 schemas.addAgreementRequest = [
   { name: 'agreementOwnerId', type: 'uint' },
   { name: 'multihashDigest', type: 'bytes32' },
@@ -408,7 +408,7 @@ generators.getUpdateUserVerifiedRequestData = function (chainId, contractAddress
   )
 }
 
-/* Agreement Factory Generators */
+/* DigitalContent Factory Generators */
 generators.getAddAgreementRequestData = function (chainId, contractAddress, agreementOwnerId, multihashDigest, multihashHashFn, multihashSize, nonce) {
   const message = {
     agreementOwnerId: agreementOwnerId,

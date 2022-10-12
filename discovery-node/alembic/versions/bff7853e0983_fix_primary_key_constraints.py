@@ -32,7 +32,7 @@ def upgrade():
 
             ALTER TABLE agreements DROP CONSTRAINT agreements_pkey;
             ALTER TABLE agreements ADD COLUMN IF NOT EXISTS txhash VARCHAR DEFAULT('') NOT NULL;
-            ALTER TABLE agreements ADD CONSTRAINT agreements_pkey PRIMARY KEY (is_current, agreement_id, blockhash, txhash);
+            ALTER TABLE agreements ADD CONSTRAINT agreements_pkey PRIMARY KEY (is_current, digital_content_id, blockhash, txhash);
 
             ALTER TABLE contentLists DROP CONSTRAINT content_lists_pkey;
             ALTER TABLE contentLists ADD COLUMN IF NOT EXISTS txhash VARCHAR DEFAULT('') NOT NULL;
@@ -70,7 +70,7 @@ def downgrade():
 
             ALTER TABLE agreements DROP CONSTRAINT agreements_pkey;
             ALTER TABLE agreements DROP COLUMN txhash;
-            ALTER TABLE agreements ADD CONSTRAINT agreements_pkey PRIMARY KEY (is_current, agreement_id, blockhash);
+            ALTER TABLE agreements ADD CONSTRAINT agreements_pkey PRIMARY KEY (is_current, digital_content_id, blockhash);
 
             ALTER TABLE contentLists DROP CONSTRAINT content_lists_pkey;
             ALTER TABLE contentLists DROP COLUMN txhash;

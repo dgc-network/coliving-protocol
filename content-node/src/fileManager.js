@@ -17,7 +17,7 @@ const MAX_LIVE_FILE_SIZE = parseInt(config.get('maxAudioFileSizeBytes')) // Defa
 const MAX_MEMORY_FILE_SIZE = parseInt(config.get('maxMemoryFileSizeBytes')) // Default = 50,000,000 bytes = 50MB
 
 const ALLOWED_UPLOAD_FILE_EXTENSIONS = config.get('allowedUploadFileExtensions') // default set in config.json
-const LIVE_MIME_TYPE_REGEX = /live\/(.*)/
+const LIVE_MIME_TYPE_REGEX = /digitalcoin\/(.*)/
 
 const EMPTY_FILE_CID = 'QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH' // deterministic CID for a 0 byte, completely empty file
 
@@ -448,7 +448,7 @@ const _printDecisionTreeObj = (decisionTree, logger) => {
 }
 
 /**
- * Removes all upload artifacts for agreement from filesystem. After successful upload these artifacts
+ * Removes all upload artifacts for digital_content from filesystem. After successful upload these artifacts
  *    are all redundant since all synced content is replicated outside the upload folder.
  * (1) Remove all files in requested fileDir
  * (2) Confirm the only subdirectory is 'fileDir/segments'
@@ -459,7 +459,7 @@ const _printDecisionTreeObj = (decisionTree, logger) => {
 async function removeAgreementFolder({ logContext }, fileDir) {
   const logger = genericLogger.child(logContext)
   try {
-    logger.info(`Removing agreement folder at fileDir ${fileDir}...`)
+    logger.info(`Removing digital_content folder at fileDir ${fileDir}...`)
     if (!fileDir) {
       throw new Error('Cannot remove null fileDir')
     }
@@ -469,7 +469,7 @@ async function removeAgreementFolder({ logContext }, fileDir) {
       throw new Error('Expected directory input')
     }
 
-    // Remove all contents of agreement dir (process sequentially to limit cpu load)
+    // Remove all contents of digital_content dir (process sequentially to limit cpu load)
     const files = await fs.readdir(fileDir)
     for (const file of files) {
       const curPath = path.join(fileDir, file)
@@ -507,7 +507,7 @@ async function removeAgreementFolder({ logContext }, fileDir) {
 
     // Delete fileDir after all its contents have been deleted
     await fs.rmdir(fileDir)
-    logger.info(`Removed agreement folder at fileDir ${fileDir}`)
+    logger.info(`Removed digital_content folder at fileDir ${fileDir}`)
     return null
   } catch (err) {
     logger.error(`Error removing ${fileDir}. ${err}`)
@@ -545,12 +545,12 @@ const uploadTempDiskStorage = multer({
   storage: tempDiskStorage
 })
 
-// Custom on-disk storage for agreement files to prep for segmentation
+// Custom on-disk storage for digital_content files to prep for segmentation
 const agreementDiskStorage = multer.diskStorage({
   destination: function (req, file, cb) {
     let fileName
     if (req.query.uuid) {
-      // Use the file name provided in the headers during agreement hand off
+      // Use the file name provided in the headers during digital_content hand off
       fileName = req.query.uuid
     } else {
       // Save file under randomly named folders to avoid collisions
@@ -570,7 +570,7 @@ const agreementDiskStorage = multer.diskStorage({
     req.fileName = fileName + fileExtension
 
     req.logger.info(
-      `Created agreement disk storage: ${req.fileDir}, ${req.fileName}`
+      `Created digital_content disk storage: ${req.fileDir}, ${req.fileName}`
     )
     cb(null, fileDir)
   },

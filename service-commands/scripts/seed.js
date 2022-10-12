@@ -124,7 +124,7 @@ program
   .command('tip-identity')
   .description('Sends a tip, via identity')
   .option('-u, --user-id <number>', 'ID of user to set as active', null)
-  .option('-a, --amount <number>', 'Amount of live to send', null)
+  .option('-a, --amount <number>', 'Amount of digitalcoin to send', null)
   .option('-r, --recipient-id <number>', 'ID of user to receive tip', null)
   .action(async options => {
     const { amount, userId, recipientId } = options.opts()

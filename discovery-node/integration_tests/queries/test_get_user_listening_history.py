@@ -26,9 +26,9 @@ test_entities = {
         {"user_id": 2, "item_id": 2, "created_at": TIMESTAMP},
     ],
     "agreements": [
-        {"agreement_id": 1, "title": "agreement 1", "owner_id": 1, "is_delete": True},
-        {"agreement_id": 2, "title": "agreement 2", "owner_id": 2},
-        {"agreement_id": 3, "title": "agreement 3", "owner_id": 3},
+        {"digital_content_id": 1, "title": "digital_content 1", "owner_id": 1, "is_delete": True},
+        {"digital_content_id": 2, "title": "digital_content 2", "owner_id": 2},
+        {"digital_content_id": 3, "title": "digital_content 3", "owner_id": 3},
     ],
     "users": [
         {"user_id": 1, "handle": "user-1"},
@@ -48,7 +48,7 @@ def test_get_user_listening_history_multiple_plays(app):
     with db.scoped_session() as session:
         _index_user_listening_history(session)
 
-        agreement_history = _get_user_listening_history(
+        digital_content_history = _get_user_listening_history(
             session,
             GetUserListeningHistoryArgs(
                 user_id=1,
@@ -58,29 +58,29 @@ def test_get_user_listening_history_multiple_plays(app):
             ),
         )
 
-    assert len(agreement_history) == 3
+    assert len(digital_content_history) == 3
     assert (
-        agreement_history[0][response_name_constants.user][response_name_constants.balance]
+        digital_content_history[0][response_name_constants.user][response_name_constants.balance]
         is not None
     )
-    assert agreement_history[0][response_name_constants.agreement_id] == 3
-    assert agreement_history[0][response_name_constants.activity_timestamp] == str(
+    assert digital_content_history[0][response_name_constants.digital_content_id] == 3
+    assert digital_content_history[0][response_name_constants.activity_timestamp] == str(
         TIMESTAMP + timedelta(minutes=4)
     )
     assert (
-        agreement_history[1][response_name_constants.user][response_name_constants.balance]
+        digital_content_history[1][response_name_constants.user][response_name_constants.balance]
         is not None
     )
-    assert agreement_history[1][response_name_constants.agreement_id] == 2
-    assert agreement_history[1][response_name_constants.activity_timestamp] == str(
+    assert digital_content_history[1][response_name_constants.digital_content_id] == 2
+    assert digital_content_history[1][response_name_constants.activity_timestamp] == str(
         TIMESTAMP + timedelta(minutes=3)
     )
     assert (
-        agreement_history[2][response_name_constants.user][response_name_constants.balance]
+        digital_content_history[2][response_name_constants.user][response_name_constants.balance]
         is not None
     )
-    assert agreement_history[2][response_name_constants.agreement_id] == 1
-    assert agreement_history[2][response_name_constants.activity_timestamp] == str(
+    assert digital_content_history[2][response_name_constants.digital_content_id] == 1
+    assert digital_content_history[2][response_name_constants.activity_timestamp] == str(
         TIMESTAMP + timedelta(minutes=2)
     )
 
@@ -95,7 +95,7 @@ def test_get_user_listening_history_no_plays(app):
     with db.scoped_session() as session:
         _index_user_listening_history(session)
 
-        agreement_history = _get_user_listening_history(
+        digital_content_history = _get_user_listening_history(
             session,
             GetUserListeningHistoryArgs(
                 user_id=3,
@@ -105,7 +105,7 @@ def test_get_user_listening_history_no_plays(app):
             ),
         )
 
-    assert len(agreement_history) == 0
+    assert len(digital_content_history) == 0
 
 
 def test_get_user_listening_history_single_play(app):
@@ -118,7 +118,7 @@ def test_get_user_listening_history_single_play(app):
     with db.scoped_session() as session:
         _index_user_listening_history(session)
 
-        agreement_history = _get_user_listening_history(
+        digital_content_history = _get_user_listening_history(
             session,
             GetUserListeningHistoryArgs(
                 user_id=2,
@@ -128,19 +128,19 @@ def test_get_user_listening_history_single_play(app):
             ),
         )
 
-    assert len(agreement_history) == 1
+    assert len(digital_content_history) == 1
     assert (
-        agreement_history[0][response_name_constants.user][response_name_constants.balance]
+        digital_content_history[0][response_name_constants.user][response_name_constants.balance]
         is not None
     )
-    assert agreement_history[0][response_name_constants.agreement_id] == 2
-    assert agreement_history[0][response_name_constants.activity_timestamp] == str(
+    assert digital_content_history[0][response_name_constants.digital_content_id] == 2
+    assert digital_content_history[0][response_name_constants.activity_timestamp] == str(
         TIMESTAMP
     )
 
 
 def test_get_user_listening_history_pagination(app):
-    """Tests a agreement history that's limit bounded"""
+    """Tests a digital_content history that's limit bounded"""
     with app.app_context():
         db = get_db()
 
@@ -149,7 +149,7 @@ def test_get_user_listening_history_pagination(app):
     with db.scoped_session() as session:
         _index_user_listening_history(session)
 
-        agreement_history = _get_user_listening_history(
+        digital_content_history = _get_user_listening_history(
             session,
             GetUserListeningHistoryArgs(
                 user_id=1,
@@ -159,13 +159,13 @@ def test_get_user_listening_history_pagination(app):
             ),
         )
 
-    assert len(agreement_history) == 1
+    assert len(digital_content_history) == 1
     assert (
-        agreement_history[0][response_name_constants.user][response_name_constants.balance]
+        digital_content_history[0][response_name_constants.user][response_name_constants.balance]
         is not None
     )
-    assert agreement_history[0][response_name_constants.agreement_id] == 2
-    assert agreement_history[0][response_name_constants.activity_timestamp] == str(
+    assert digital_content_history[0][response_name_constants.digital_content_id] == 2
+    assert digital_content_history[0][response_name_constants.activity_timestamp] == str(
         TIMESTAMP + timedelta(minutes=3)
     )
 
@@ -180,7 +180,7 @@ def test_get_user_listening_history_mismatch_user_id(app):
     with db.scoped_session() as session:
         _index_user_listening_history(session)
 
-        agreement_history = _get_user_listening_history(
+        digital_content_history = _get_user_listening_history(
             session,
             GetUserListeningHistoryArgs(
                 user_id=1,
@@ -190,4 +190,4 @@ def test_get_user_listening_history_mismatch_user_id(app):
             ),
         )
 
-    assert len(agreement_history) == 0
+    assert len(digital_content_history) == 0

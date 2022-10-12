@@ -8,35 +8,35 @@ logger = logging.getLogger("model_validator")
 
 # ##### Testing field validation with variation of instances ##### #
 def test_one_field_schema_pass():
-    agreement = {"title": "ok"}
+    digital_content = {"title": "ok"}
     try:
-        ModelValidator.validate(to_validate=agreement, field="title", model="Agreement")
+        ModelValidator.validate(to_validate=digital_content, field="title", model="DigitalContent")
     except ValidationError as e:
         assert False, f"test_model_validator [test_one_field_schema_pass] failed: {e}"
 
 
 def test_one_field_schema_bad_value():
-    agreement = {"title": 1}
+    digital_content = {"title": 1}
     try:
-        ModelValidator.validate(to_validate=agreement, field="title", model="Agreement")
+        ModelValidator.validate(to_validate=digital_content, field="title", model="DigitalContent")
         assert False, "test_model_validator [test_one_field_schema_bad_value] failed"
     except BaseException:
         assert True
 
 
 def test_one_field_schema_bad_key():
-    agreement = {"wrong": "ok"}
+    digital_content = {"wrong": "ok"}
     try:
-        ModelValidator.validate(to_validate=agreement, field="title", model="Agreement")
+        ModelValidator.validate(to_validate=digital_content, field="title", model="DigitalContent")
         assert False, "test_model_validator [test_one_field_schema_bad_key] failed"
     except BaseException:
         assert True
 
 
 def test_one_field_schema_bad_key_and_value():
-    agreement = {"wrong": 1}
+    digital_content = {"wrong": 1}
     try:
-        ModelValidator.validate(to_validate=agreement, field="title", model="Agreement")
+        ModelValidator.validate(to_validate=digital_content, field="title", model="DigitalContent")
         assert (
             False
         ), "test_model_validator [test_one_field_schema_bad_key_and_value] failed"
@@ -45,9 +45,9 @@ def test_one_field_schema_bad_key_and_value():
 
 
 def test_one_field_schema_with_additional_properties():
-    agreement = {"title": "ok", "wrong": 1}
+    digital_content = {"title": "ok", "wrong": 1}
     try:
-        ModelValidator.validate(to_validate=agreement, field="title", model="Agreement")
+        ModelValidator.validate(to_validate=digital_content, field="title", model="DigitalContent")
         assert (
             False
         ), "test_model_validator [test_one_field_schema_with_additional_properties] failed"
@@ -56,9 +56,9 @@ def test_one_field_schema_with_additional_properties():
 
 
 def test_one_field_schema_empty_object():
-    agreement = {}
+    digital_content = {}
     try:
-        ModelValidator.validate(to_validate=agreement, field="title", model="Agreement")
+        ModelValidator.validate(to_validate=digital_content, field="title", model="DigitalContent")
         assert False, "test_model_validator [test_one_field_schema_empty_object] failed"
     except BaseException:
         assert True

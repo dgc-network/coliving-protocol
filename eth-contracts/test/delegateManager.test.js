@@ -365,7 +365,7 @@ contract('DelegateManager', async (accounts) => {
   const getTotalDelegatorStake = async (delegator) => {
     let validTypes = await serviceTypeManager.getValidServiceTypes()
     let totalDelegatorStake = _lib.toBN(0)
-    // Agreement whether we have processed a given service provider
+    // DigitalContent whether we have processed a given service provider
     // A single SP can have >1 endpoint and we don't need to double count
     let uniqueSPs = new Set()
     for (const serviceType of validTypes) {

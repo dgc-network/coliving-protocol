@@ -29,9 +29,9 @@ def test_index_aggregate_monthly_plays_populate(app):
     # run
     entities = {
         "agreements": [
-            {"agreement_id": 1, "title": "agreement 1"},
-            {"agreement_id": 2, "title": "agreement 2"},
-            {"agreement_id": 3, "title": "agreement 3"},
+            {"digital_content_id": 1, "title": "digital_content 1"},
+            {"digital_content_id": 2, "title": "digital_content 2"},
+            {"digital_content_id": 3, "title": "digital_content 3"},
         ],
         "plays": [
             # Last year
@@ -95,9 +95,9 @@ def test_index_aggregate_monthly_plays_update(app):
     # run
     entities = {
         "agreements": [
-            {"agreement_id": 1, "title": "agreement 1"},
-            {"agreement_id": 2, "title": "agreement 2"},
-            {"agreement_id": 3, "title": "agreement 3"},
+            {"digital_content_id": 1, "title": "digital_content 1"},
+            {"digital_content_id": 2, "title": "digital_content 2"},
+            {"digital_content_id": 3, "title": "digital_content 3"},
         ],
         "aggregate_monthly_plays": [
             {
@@ -184,10 +184,10 @@ def test_index_aggregate_monthly_plays_same_checkpoint(app):
     # run
     entities = {
         "agreements": [
-            {"agreement_id": 1, "title": "agreement 1"},
-            {"agreement_id": 2, "title": "agreement 2"},
-            {"agreement_id": 3, "title": "agreement 3"},
-            {"agreement_id": 4, "title": "agreement 4"},
+            {"digital_content_id": 1, "title": "digital_content 1"},
+            {"digital_content_id": 2, "title": "digital_content 2"},
+            {"digital_content_id": 3, "title": "digital_content 3"},
+            {"digital_content_id": 4, "title": "digital_content 4"},
         ],
         "aggregate_monthly_plays": [
             {

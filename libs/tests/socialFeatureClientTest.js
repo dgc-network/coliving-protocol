@@ -8,13 +8,13 @@ before(async function () {
   await colivingInstance.init()
 })
 
-it('Should add + delete agreement repost', async function () {
+it('Should add + delete digital_content repost', async function () {
   // add creator
   const handle = 'sid' + Math.floor(Math.random() * 10000000)
   const creatorId = (await colivingInstance.contracts.UserFactoryClient.addUser(handle)).userId
   assert.ok(creatorId && Number.isInteger(creatorId), 'invalid creatorId')
 
-  // add agreement
+  // add digital_content
   const cid = helpers.constants.agreementMetadataCID
   const agreementMultihashDecoded = Utils.decodeMultihash(cid)
   const { agreementId } = await colivingInstance.contracts.AgreementFactoryClient.addAgreement(
@@ -24,14 +24,14 @@ it('Should add + delete agreement repost', async function () {
     agreementMultihashDecoded.size
   )
   assert.ok(agreementId && Number.isInteger(agreementId), 'invalid agreementId')
-  const agreement = await colivingInstance.contracts.AgreementFactoryClient.getAgreement(agreementId)
-  assert.strictEqual(agreement.multihashDigest, agreementMultihashDecoded.digest, 'Unexpected agreement multihash digest')
+  const digital_content = await colivingInstance.contracts.AgreementFactoryClient.getAgreement(agreementId)
+  assert.strictEqual(digital_content.multihashDigest, agreementMultihashDecoded.digest, 'Unexpected digital_content multihash digest')
 
-  // add agreement repost
+  // add digital_content repost
   const addAgreementRepostTx = await colivingInstance.contracts.SocialFeatureFactoryClient.addAgreementRepost(creatorId, agreementId)
   assert.ok('AgreementRepostAdded' in addAgreementRepostTx.events, 'Did not find AgreementRepostAdded event in transaction')
 
-  // delete agreement repost
+  // delete digital_content repost
   const deleteAgreementRepostTx = await colivingInstance.contracts.SocialFeatureFactoryClient.deleteAgreementRepost(creatorId, agreementId)
   assert.ok('AgreementRepostDeleted' in deleteAgreementRepostTx.events, 'Did not find AgreementRepostDeleted event in transaction')
 })

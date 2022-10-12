@@ -1,22 +1,22 @@
-# agreement/contentList metadata
-repost_count = "repost_count"  # integer - total repost count of given agreement/contentList
-save_count = "save_count"  # integer - total save count of given agreement/contentList
-play_count = "play_count"  # integer - total play count of given agreement
+# digital_content/contentList metadata
+repost_count = "repost_count"  # integer - total repost count of given digital_content/contentList
+save_count = "save_count"  # integer - total save count of given digital_content/contentList
+play_count = "play_count"  # integer - total play count of given digital_content
 total_play_count = "total_play_count"  # integer - total play count of a given contentList
-# boolean - has current user reposted given agreement/contentList
+# boolean - has current user reposted given digital_content/contentList
 has_current_user_reposted = "has_current_user_reposted"
-# boolean - has current user saved given agreement/contentList
+# boolean - has current user saved given digital_content/contentList
 has_current_user_saved = "has_current_user_saved"
-# array - followees of current user that have reposted given agreement/contentList
+# array - followees of current user that have reposted given digital_content/contentList
 followee_reposts = "followee_reposts"
-# array - followees of current user that have saved given agreement/contentList
+# array - followees of current user that have saved given digital_content/contentList
 followee_saves = "followee_saves"
 
-# remix agreement specific
-remix_of = "remix_of"  # dictionary - contains an array of parent agreement ids
-# boolean - does the remix agreement author repost the agreement
+# remix digital_content specific
+remix_of = "remix_of"  # dictionary - contains an array of parent digital_content ids
+# boolean - does the remix digital_content author repost the digital_content
 has_remix_author_reposted = "has_remix_author_reposted"
-# boolean - does the remix agreement author favorite the agreement
+# boolean - does the remix digital_content author favorite the digital_content
 has_remix_author_saved = "has_remix_author_saved"
 
 # user metadata
@@ -27,13 +27,13 @@ followee_count = "followee_count"  # integer - total followee count of given use
 content_list_count = "content_list_count"
 # integer - total count of albums created by given user (0 for all non-creators)
 album_count = "album_count"
-agreement_count = "agreement_count"  # integer - total count of agreements created by given user
+digital_content_count = "digital_content_count"  # integer - total count of agreements created by given user
 # integer - total count of agreements saves created by given user
-agreement_save_count = "agreement_save_count"
-created_at = "created_at"  # datetime - time agreement was created
+digital_content_save_count = "digital_content_save_count"
+created_at = "created_at"  # datetime - time digital_content was created
 repost_count = "repost_count"  # integer - total count of reposts by given user
-# integer - blocknumber of latest agreement for user
-agreement_blocknumber = "agreement_blocknumber"
+# integer - blocknumber of latest digital_content for user
+digital_content_blocknumber = "digital_content_blocknumber"
 windowed_repost_count = "windowed_repost_count"
 windowed_save_count = "windowed_save_count"
 balance = "balance"
@@ -62,9 +62,9 @@ does_support_current_user = "does_support_current_user"
 # string - timestamp of relevant activity on underlying object, used for sorting
 activity_timestamp = "activity_timestamp"
 
-agreement_owner_follower_count = "agreement_owner_follower_count"
-agreement_owner_id = "agreement_owner_id"
-agreement_id = "agreement_id"
+digital_content_owner_follower_count = "digital_content_owner_follower_count"
+digital_content_owner_id = "digital_content_owner_id"
+digital_content_id = "digital_content_id"
 content_list_id = "content_list_id"
 owner_id = "owner_id"
 listen_counts = "listen_counts"
@@ -84,7 +84,7 @@ notification_type_remix_create = "RemixCreate"
 notification_type_remix_cosign = "RemixCosign"
 notification_type_content_list_update = "ContentListUpdate"
 notification_type_tier_change = "TierChange"
-notification_type_add_agreement_to_content_list = "AddAgreementToContentList"
+notification_type_add_digital_content_to_content_list = "AddAgreementToContentList"
 
 notification_blocknumber = "blocknumber"
 notification_initiator = "initiator"
@@ -95,8 +95,8 @@ notification_entity_id = "entity_id"
 notification_entity_owner_id = "entity_owner_id"
 notification_collection_content = "collection_content"
 
-notification_remix_parent_agreement_user_id = "remix_parent_agreement_user_id"
-notification_remix_parent_agreement_id = "remix_parent_agreement_id"
+notification_remix_parent_digital_content_user_id = "remix_parent_digital_content_user_id"
+notification_remix_parent_digital_content_id = "remix_parent_digital_content_id"
 
 notification_follower_id = "follower_user_id"
 notification_followee_id = "followee_user_id"

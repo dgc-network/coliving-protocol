@@ -3,7 +3,7 @@ const agreements = await colivingSdk.agreements.getBulkAgreements();
 `;
 
 export const getAgreement = `
-const agreement = await colivingSdk.agreements.getAgreement({
+const digital_content = await colivingSdk.agreements.getAgreement({
     agreementId: "D7KyD",
 });
 `;
@@ -22,6 +22,6 @@ export const streamAgreement = `
 const url = await colivingSdk.agreements.streamAgreement({
     agreementId: "PjdWN",
 });
-const live = new Audio(url);
-live.play();
+const digitalcoin = new Audio(url);
+digitalcoin.play();
 `;

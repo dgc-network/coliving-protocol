@@ -50,7 +50,7 @@ def get_reposters_for_content_list(args):
                     session.query(Repost.user_id).filter(
                         Repost.repost_item_id == repost_content_list_id,
                         # Select Reposts for ContentLists and Albums (i.e. not Agreements).
-                        Repost.repost_type != RepostType.agreement,
+                        Repost.repost_type != RepostType.digital_content,
                         Repost.is_current == True,
                         Repost.is_delete == False,
                     )

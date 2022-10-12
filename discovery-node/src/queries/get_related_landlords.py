@@ -36,7 +36,7 @@ def get_related_landlords(user_id: int, current_user_id: int, limit: int = 100):
         )
         if (
             aggregate_user
-            and aggregate_user.agreement_count > 0
+            and aggregate_user.digital_content_count > 0
             and aggregate_user.follower_count >= MIN_FOLLOWER_REQUIREMENT
         ):
             users = _get_related_landlords(session, user_id, limit)

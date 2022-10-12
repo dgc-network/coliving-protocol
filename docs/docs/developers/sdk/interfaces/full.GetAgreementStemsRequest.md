@@ -13,4 +13,4 @@ custom_edit_url: null
 
  **agreementId**: `string`
 
-A Agreement ID
+A DigitalContent ID

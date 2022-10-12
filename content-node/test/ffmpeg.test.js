@@ -21,7 +21,7 @@ describe('test segmentFile()', () => {
 
   /**
    * Given: improper params are passed in
-   * When: agreement segmenting occurs
+   * When: digital_content segmenting occurs
    * Then: an error is thrown
    */
   it('should throw an error if ffmpeg reads bad params', async () => {
@@ -34,28 +34,28 @@ describe('test segmentFile()', () => {
   })
 
   /**
-   * Given: a corrupted agreement is present (image)
+   * Given: a corrupted digital_content is present (image)
    * Then: an error is thrown
    * When: it is segmented
   */
-  it('should throw an error if ffmpeg reads a bad agreement file (image)', async () => {
+  it('should throw an error if ffmpeg reads a bad digital_content file (image)', async () => {
     const fileDir = __dirname
     const fileName = 'testAgreementWrongFormat.jpg'
 
     try {
       await segmentFile(fileDir, fileName, {})
-      assert.fail('Should have thrown error when segmenting a bad agreement (image)')
+      assert.fail('Should have thrown error when segmenting a bad digital_content (image)')
     } catch (e) {
       assert.deepStrictEqual(e.message, 'FFMPEG Error')
     }
   })
 
   /**
-   * Given: a proper agreement of length 3:07 is present
+   * Given: a proper digital_content of length 3:07 is present
    * When: it is segmented
-   * Then: there are 32 proper agreement segments present in tests/segments
+   * Then: there are 32 proper digital_content segments present in tests/segments
   */
-  it('should properly segment agreement', async () => {
+  it('should properly segment digital_content', async () => {
     const fileDir = __dirname
     const fileName = 'testAgreement.mp3'
 
@@ -71,7 +71,7 @@ describe('test segmentFile()', () => {
     fs.readdir(testSegmentsPath, (err, files) => {
       if (err) assert.fail(`Could not read directory at ${testSegmentsPath}`)
 
-      // check that testAgreement.mp3 that 32 agreement segments are written
+      // check that testAgreement.mp3 that 32 digital_content segments are written
       assert.deepStrictEqual(files.length, 32)
 
       const allSegmentsSet = new Set(files)

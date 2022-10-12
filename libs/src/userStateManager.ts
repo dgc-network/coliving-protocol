@@ -5,7 +5,7 @@ import type { LocalStorage } from './utils/localStorage'
 export type CurrentUser = User & {
   wallet?: string
   blocknumber?: number
-  agreement_blocknumber?: number
+  digital_content_blocknumber?: number
 }
 
 type UserStateManagerConfig = {
@@ -15,7 +15,7 @@ type UserStateManagerConfig = {
 /**
  * Singleton class to store the current user if initialized.
  * Some instances of ColivingLibs and services require a current user to
- * return valid queries, e.g. requesting the a discprov to return a reposted agreement.
+ * return valid queries, e.g. requesting the a discprov to return a reposted digital_content.
  */
 export class UserStateManager {
   currentUser: CurrentUser | null

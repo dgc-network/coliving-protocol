@@ -1,4 +1,4 @@
-"""fix-indexing-agreement-slug
+"""fix-indexing-digital-content-slug
 
 Revision ID: ed974e76d415
 Revises: cb9aa46f1e46
@@ -60,13 +60,13 @@ parenthash={self.parenthash},number={self.number},\
 is_current={self.is_current})>"
 
 
-class Agreement(Base):
+class DigitalContent(Base):
     __tablename__ = "agreements"
 
     blockhash = Column(String, ForeignKey("blocks.blockhash"), nullable=False)
     blocknumber = Column(Integer, ForeignKey("blocks.number"), nullable=False)
     txhash = Column(String, default="", nullable=False)
-    agreement_id = Column(Integer, nullable=False)
+    digital_content_id = Column(Integer, nullable=False)
     is_current = Column(Boolean, nullable=False)
     is_delete = Column(Boolean, nullable=False)
     owner_id = Column(Integer, nullable=False)
@@ -87,7 +87,7 @@ class Agreement(Base):
     license = Column(String, nullable=True)
     isrc = Column(String, nullable=True)
     iswc = Column(String, nullable=True)
-    agreement_segments = Column(postgresql.JSONB, nullable=False)
+    digital_content_segments = Column(postgresql.JSONB, nullable=False)
     metadata_multihash = Column(String, nullable=True)
     download = Column(postgresql.JSONB, nullable=True)
     updated_at = Column(DateTime, nullable=False)
@@ -106,15 +106,15 @@ class Agreement(Base):
             return f"/{self.user[0].handle}/{self._slug}"
         return ""
 
-    PrimaryKeyConstraint(is_current, agreement_id, blockhash, txhash)
+    PrimaryKeyConstraint(is_current, digital_content_id, blockhash, txhash)
 
     def __repr__(self):
         return (
-            f"<Agreement("
+            f"<DigitalContent("
             f"blockhash={self.blockhash},"
             f"blocknumber={self.blocknumber},"
             f"txhash={self.txhash},"
-            f"agreement_id={self.agreement_id},"
+            f"digital_content_id={self.digital_content_id},"
             f"is_current={self.is_current},"
             f"is_delete={self.is_delete},"
             f"owner_id={self.owner_id},"
@@ -135,7 +135,7 @@ class Agreement(Base):
             f"license={self.license},"
             f"isrc={self.isrc},"
             f"iswc={self.iswc},"
-            f"agreement_segments={self.agreement_segments},"
+            f"digital_content_segments={self.digital_content_segments},"
             f"metadata_multihash={self.metadata_multihash},"
             f"download={self.download},"
             f"updated_at={self.updated_at},"
@@ -147,16 +147,16 @@ class Agreement(Base):
 
 
 class AgreementRoute(Base):
-    __tablename__ = "agreement_routes"
+    __tablename__ = "digital_content_routes"
 
-    # Actual URL slug for the agreement, includes collision_id
+    # Actual URL slug for the digital_content, includes collision_id
     slug = Column(String, nullable=False)
-    # Just the title piece of the slug for the agreement, excludes collision_id
+    # Just the title piece of the slug for the digital_content, excludes collision_id
     # Used for finding max collision_id needed for duplicate title_slugs
     title_slug = Column(String, nullable=False)
     collision_id = Column(Integer, nullable=False)
     owner_id = Column(Integer, nullable=False)
-    agreement_id = Column(Integer, nullable=False)
+    digital_content_id = Column(Integer, nullable=False)
     is_current = Column(Boolean, nullable=False)
     blockhash = Column(String, nullable=False)
     blocknumber = Column(Integer, nullable=False)
@@ -170,7 +170,7 @@ slug={self.slug},\
 title_slug={self.title_slug},\
 collision_id={self.collision_id},\
 owner_id={self.owner_id},\
-agreement_id={self.agreement_id},\
+digital_content_id={self.digital_content_id},\
 is_current={self.is_current},\
 blockhash={self.blockhash},\
 blocknumber={self.blocknumber},\
@@ -242,8 +242,8 @@ def upgrade():
     session.flush()
 
     agreements = [
-        Agreement(
-            agreement_id=470883,
+        DigitalContent(
+            digital_content_id=470883,
             blocknumber=22477107,
             is_current=True,
             is_delete=False,
@@ -267,7 +267,7 @@ def upgrade():
             license="All rights reserved",
             isrc=None,
             iswc=None,
-            agreement_segments=[
+            digital_content_segments=[
                 {
                     "multihash": "QmW7kQwqbZcYWQHtYdXK6KezSCqQ1vRdwhdWtWvTT79rnk",
                     "duration": 6.016,
@@ -311,8 +311,8 @@ def upgrade():
             },
             stem_of=null(),
         ),
-        Agreement(
-            agreement_id=470884,
+        DigitalContent(
+            digital_content_id=470884,
             blocknumber=22477427,
             is_current=True,
             is_delete=False,
@@ -336,7 +336,7 @@ def upgrade():
             license="All rights reserved",
             isrc=None,
             iswc=None,
-            agreement_segments=[
+            digital_content_segments=[
                 {
                     "multihash": "QmW7kQwqbZcYWQHtYdXK6KezSCqQ1vRdwhdWtWvTT79rnk",
                     "duration": 6.016,
@@ -380,8 +380,8 @@ def upgrade():
             },
             stem_of=null(),
         ),
-        Agreement(
-            agreement_id=470892,
+        DigitalContent(
+            digital_content_id=470892,
             blocknumber=22477062,
             is_current=True,
             is_delete=False,
@@ -405,7 +405,7 @@ def upgrade():
             license="All rights reserved",
             isrc=None,
             iswc=None,
-            agreement_segments=[
+            digital_content_segments=[
                 {
                     "multihash": "QmW7kQwqbZcYWQHtYdXK6KezSCqQ1vRdwhdWtWvTT79rnk",
                     "duration": 6.016,
@@ -449,8 +449,8 @@ def upgrade():
             },
             stem_of=null(),
         ),
-        Agreement(
-            agreement_id=470910,
+        DigitalContent(
+            digital_content_id=470910,
             blocknumber=22477832,
             is_current=True,
             is_delete=False,
@@ -474,7 +474,7 @@ def upgrade():
             license="All rights reserved",
             isrc=None,
             iswc=None,
-            agreement_segments=[
+            digital_content_segments=[
                 {
                     "multihash": "QmW7kQwqbZcYWQHtYdXK6KezSCqQ1vRdwhdWtWvTT79rnk",
                     "duration": 6.016,
@@ -521,13 +521,13 @@ def upgrade():
     ]
     session.add_all(agreements)
 
-    agreement_routes = [
+    digital_content_routes = [
         AgreementRoute(
             slug="oWXPm",
             title_slug="oWXPm",
             collision_id=0,
             owner_id=3538,
-            agreement_id=470883,
+            digital_content_id=470883,
             is_current=True,
             txhash="0xd16cd27f8635e84cbb6d02ecf6a5304bae998381cda1291d4cb690d9159196d9",
             blockhash="0x82ba068410ac71a70dfe95708b3c4ec08884355d8384423deb2337a6bcd64dd0",
@@ -538,7 +538,7 @@ def upgrade():
             title_slug="6YBxG",
             collision_id=0,
             owner_id=3538,
-            agreement_id=470884,
+            digital_content_id=470884,
             is_current=True,
             blocknumber=22477427,
             txhash="0x135c236ebb4d02a1d2bc13bf946e982871ad59a29ed413bbe6aed2acb60a1f17",
@@ -549,7 +549,7 @@ def upgrade():
             title_slug="KV8xz",
             collision_id=0,
             owner_id=3538,
-            agreement_id=470892,
+            digital_content_id=470892,
             is_current=True,
             blocknumber=22477062,
             txhash="0x05771964bc0527268c330b78bb1819998d589d31a95e5f2f8aa846041de1dfee",
@@ -560,14 +560,14 @@ def upgrade():
             title_slug="Nl2xw",
             collision_id=0,
             owner_id=3538,
-            agreement_id=470910,
+            digital_content_id=470910,
             is_current=True,
             blocknumber=22477832,
             txhash="0xda0b64477469390eaa3b17098c01f3e03e5b0e52959ffd493804538dda039a92",
             blockhash="0x705d01ed50cf8f1d83686acc19c9d0bdd52493b3552532543629cdf07fba6005",
         ),
     ]
-    session.add_all(agreement_routes)
+    session.add_all(digital_content_routes)
 
     session.query(SkippedTransaction).filter(
         SkippedTransaction.txhash.in_(

@@ -183,7 +183,7 @@ However, note that this flow **CANNOT**:
 
 ### Authentication, not authorization
 
-Log in With Coliving is able to provide authentication, but not authorization (yet!). In other words, this flow does not enable you to perform actions on the user's behalf (for example, upload a agreement).
+Log in With Coliving is able to provide authentication, but not authorization (yet!). In other words, this flow does not enable you to perform actions on the user's behalf (for example, upload a digital_content).
 
 ## Workflow
 

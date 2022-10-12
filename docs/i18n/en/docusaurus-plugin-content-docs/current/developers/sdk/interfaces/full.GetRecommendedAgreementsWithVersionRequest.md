@@ -13,7 +13,7 @@ custom_edit_url: null
 
  `Optional` **exclusionList**: `number`[]
 
-List of agreement ids to exclude
+List of digital_content ids to exclude
 
 ___
 

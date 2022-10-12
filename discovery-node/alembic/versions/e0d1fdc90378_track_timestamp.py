@@ -1,4 +1,4 @@
-"""Agreement timestamp
+"""DigitalContent timestamp
 
 Revision ID: e0d1fdc90378
 Revises: 9e9acd8a115a

@@ -127,7 +127,7 @@ export interface UserFull {
      * @type {number}
      * @memberof UserFull
      */
-    agreement_count: number;
+    digital_content_count: number;
     /**
      * 
      * @type {boolean}

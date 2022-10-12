@@ -88,13 +88,13 @@ export class Users extends Base {
    * can be filtered by providing an integer array of ids
    * @returns Array of User metadata Objects
    * additional metadata fields on user objects:
-   *  {Integer} agreement_count - agreement count for given user
+   *  {Integer} digital_content_count - digital_content count for given user
    *  {Integer} content_list_count - contentList count for given user
    *  {Integer} album_count - album count for given user
    *  {Integer} follower_count - follower count for given user
    *  {Integer} followee_count - followee count for given user
    *  {Integer} repost_count - repost count for given user
-   *  {Integer} agreement_blocknumber - blocknumber of latest agreement for user
+   *  {Integer} digital_content_blocknumber - blocknumber of latest digital_content for user
    *  {Boolean} does_current_user_follow - does current user follow given user
    *  {Array} followee_follows - followees of current user that follow given user
    * @example
@@ -169,14 +169,14 @@ export class Users extends Base {
    * @param userId - requested user id
    * @param limit - max # of items to return (for pagination)
    * @param offset - offset into list to return from (for pagination)
-   * @returns Array of agreement and contentList metadata objects
-   * additional metadata fields on agreement and contentList objects:
-   *  {String} activity_timestamp - timestamp of requested user's repost for given agreement or contentList,
+   * @returns Array of digital_content and contentList metadata objects
+   * additional metadata fields on digital_content and contentList objects:
+   *  {String} activity_timestamp - timestamp of requested user's repost for given digital_content or contentList,
    *    used for sorting feed
-   *  {Integer} repost_count - repost count of given agreement/contentList
-   *  {Integer} save_count - save count of given agreement/contentList
-   *  {Boolean} has_current_user_reposted - has current user reposted given agreement/contentList
-   *  {Array} followee_reposts - followees of current user that have reposted given agreement/contentList
+   *  {Integer} repost_count - repost count of given digital_content/contentList
+   *  {Integer} save_count - save count of given digital_content/contentList
+   *  {Boolean} has_current_user_reposted - has current user reposted given digital_content/contentList
+   *  {Array} followee_reposts - followees of current user that have reposted given digital_content/contentList
    */
   async getUserRepostFeed(
     userId: number,
@@ -198,14 +198,14 @@ export class Users extends Base {
    * @param limit - max # of items to return
    * @param filter - filter by "all", "original", or "repost"
    * @param offset - offset into list to return from (for pagination)
-   * @returns Array of agreement and contentList metadata objects
-   * additional metadata fields on agreement and contentList objects:
-   *  {String} activity_timestamp - timestamp of requested user's repost for given agreement or contentList,
+   * @returns Array of digital_content and contentList metadata objects
+   * additional metadata fields on digital_content and contentList objects:
+   *  {String} activity_timestamp - timestamp of requested user's repost for given digital_content or contentList,
    *    used for sorting feed
-   *  {Integer} repost_count - repost count of given agreement/contentList
-   *  {Integer} save_count - save count of given agreement/contentList
-   *  {Boolean} has_current_user_reposted - has current user reposted given agreement/contentList
-   *  {Array} followee_reposts - followees of current user that have reposted given agreement/contentList
+   *  {Integer} repost_count - repost count of given digital_content/contentList
+   *  {Integer} save_count - save count of given digital_content/contentList
+   *  {Boolean} has_current_user_reposted - has current user reposted given digital_content/contentList
+   *  {Array} followee_reposts - followees of current user that have reposted given digital_content/contentList
    */
   async getSocialFeed(
     filter: string,

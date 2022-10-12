@@ -700,7 +700,7 @@ export class UsersApi extends runtime.BaseAPI {
     }
 
     /**
-     * Gets the most used agreement tags by a user.
+     * Gets the most used digital_content tags by a user.
      * Fetch most used tags in a user\'s agreements
      */
     async getTopAgreementTags(requestParameters: GetTopAgreementTagsRequest): Promise<NonNullable<TagsResponse["data"]>> {
@@ -729,7 +729,7 @@ export class UsersApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get the Top Users having at least one agreement by follower count
+     * Get the Top Users having at least one digital_content by follower count
      */
     async getTopUsers(requestParameters: GetTopUsersRequest = {}): Promise<NonNullable<TopUsersResponse["data"]>> {
         const queryParameters: any = {};

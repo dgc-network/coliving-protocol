@@ -20,8 +20,8 @@ const shouldNotifyUser = (userId, prop, settings) => {
 
 const getRepostType = (type) => {
   switch (type) {
-    case 'agreement':
-      return notificationTypes.Repost.agreement
+    case 'digital_content':
+      return notificationTypes.Repost.digital_content
     case 'album':
       return notificationTypes.Repost.album
     case 'contentList':
@@ -33,8 +33,8 @@ const getRepostType = (type) => {
 
 const getFavoriteType = (type) => {
   switch (type) {
-    case 'agreement':
-      return notificationTypes.Favorite.agreement
+    case 'digital_content':
+      return notificationTypes.Favorite.digital_content
     case 'album':
       return notificationTypes.Favorite.album
     case 'contentList':
@@ -72,7 +72,7 @@ async function formatNotifications (notifications, notificationSettings, tx) {
     }
 
     // Handle the 'repost' notification type
-    // agreement/album/contentList
+    // digital_content/album/contentList
     if (notif.type === notificationTypes.Repost.base) {
       let notificationTarget = notif.metadata.entity_owner_id
       const shouldNotify = shouldNotifyUser(notificationTarget, 'reposts', notificationSettings)
@@ -92,7 +92,7 @@ async function formatNotifications (notifications, notificationSettings, tx) {
       }
     }
 
-    // Handle the 'favorite' notification type, agreement/album/contentList
+    // Handle the 'favorite' notification type, digital_content/album/contentList
     if (notif.type === notificationTypes.Favorite.base) {
       let notificationTarget = notif.metadata.entity_owner_id
       const shouldNotify = shouldNotifyUser(notificationTarget, 'favorites', notificationSettings)
@@ -114,22 +114,22 @@ async function formatNotifications (notifications, notificationSettings, tx) {
 
     // Handle the 'remix create' notification type
     if (notif.type === notificationTypes.RemixCreate) {
-      let notificationTarget = notif.metadata.remix_parent_agreement_user_id
+      let notificationTarget = notif.metadata.remix_parent_digital_content_user_id
       const shouldNotify = shouldNotifyUser(notificationTarget, 'remixes', notificationSettings)
       if (shouldNotify.mobile || shouldNotify.browser) {
         const formattedRemixCreate = {
           ...notif,
           actions: [{
             actionEntityType: actionEntityTypes.User,
-            actionEntityId: notif.metadata.remix_parent_agreement_user_id,
+            actionEntityId: notif.metadata.remix_parent_digital_content_user_id,
             blocknumber
           }, {
-            actionEntityType: actionEntityTypes.Agreement,
+            actionEntityType: actionEntityTypes.DigitalContent,
             actionEntityId: notif.metadata.entity_id,
             blocknumber
           }, {
-            actionEntityType: actionEntityTypes.Agreement,
-            actionEntityId: notif.metadata.remix_parent_agreement_id,
+            actionEntityType: actionEntityTypes.DigitalContent,
+            actionEntityId: notif.metadata.remix_parent_digital_content_id,
             blocknumber
           }],
           entityId: notif.metadata.entity_id,
@@ -149,7 +149,7 @@ async function formatNotifications (notifications, notificationSettings, tx) {
           actionEntityId: notif.initiator,
           blocknumber
         }, {
-          actionEntityType: actionEntityTypes.Agreement,
+          actionEntityType: actionEntityTypes.DigitalContent,
           actionEntityId: notif.metadata.entity_id,
           blocknumber
         }],
@@ -183,7 +183,7 @@ async function formatNotifications (notifications, notificationSettings, tx) {
           entityId: notif.metadata.entity_id,
           type: notificationTypes.MilestoneListen,
           actions: [{
-            actionEntityType: actionEntityTypes.Agreement,
+            actionEntityType: actionEntityTypes.DigitalContent,
             actionEntityId: notif.metadata.threshold
           }]
         }
@@ -206,26 +206,26 @@ async function formatNotifications (notifications, notificationSettings, tx) {
       formattedNotifications.push(formattedTierChangeNotification)
     }
 
-    // Handle the 'create' notification type, agreement/album/contentList
+    // Handle the 'create' notification type, digital_content/album/contentList
     if (notif.type === notificationTypes.Create.base) {
       await _processCreateNotifications(notif, tx)
     }
 
-    // Handle the 'agreement added to contentList' notification type
+    // Handle the 'digital_content added to contentList' notification type
     if (notif.type === notificationTypes.AddAgreementToContentList) {
       const formattedAddAgreementToContentListNotification = {
         ...notif,
         actions: [{
-          actionEntityType: actionEntityTypes.Agreement,
-          actionAgreementId: notif.metadata.agreement_id,
+          actionEntityType: actionEntityTypes.DigitalContent,
+          actionAgreementId: notif.metadata.digital_content_id,
           blocknumber
         }],
         metadata: {
-          agreementOwnerId: notif.metadata.agreement_owner_id,
+          agreementOwnerId: notif.metadata.digital_content_owner_id,
           contentListOwnerId: notif.initiator,
           contentListId: notif.metadata.content_list_id
         },
-        entityId: notif.metadata.agreement_id,
+        entityId: notif.metadata.digital_content_id,
         type: notificationTypes.AddAgreementToContentList
       }
       formattedNotifications.push(formattedAddAgreementToContentListNotification)
@@ -290,9 +290,9 @@ async function _processCreateNotifications (notif, tx) {
   let createType = null
   let actionEntityType = null
   switch (notif.metadata.entity_type) {
-    case 'agreement':
-      createType = notificationTypes.Create.agreement
-      actionEntityType = actionEntityTypes.Agreement
+    case 'digital_content':
+      createType = notificationTypes.Create.digital_content
+      actionEntityType = actionEntityTypes.DigitalContent
       break
     case 'album':
       createType = notificationTypes.Create.album
@@ -307,7 +307,7 @@ async function _processCreateNotifications (notif, tx) {
   }
 
   // Query user IDs from subscriptions table
-  // Notifications go to all users subscribing to this agreement uploader
+  // Notifications go to all users subscribing to this digital_content uploader
   let subscribers = await models.Subscription.findAll({
     where: {
       userId: notif.initiator
@@ -319,18 +319,18 @@ async function _processCreateNotifications (notif, tx) {
   if (subscribers.length === 0) { return [] }
 
   // The notification entity id is the uploader id for agreements
-  // Each agreement will added to the notification actions table
+  // Each digital_content will added to the notification actions table
   // For contentList/albums, the notification entity id is the collection id itself
   let notificationEntityId =
-    actionEntityType === actionEntityTypes.Agreement
+    actionEntityType === actionEntityTypes.DigitalContent
       ? notif.initiator
       : notif.metadata.entity_id
 
   // Action table entity is agreementId for CreateAgreement notifications
-  // Allowing multiple agreement creates to be associated w/ a single notif for your subscription
+  // Allowing multiple digital_content creates to be associated w/ a single notif for your subscription
   // For collections, the entity is the owner id, producing a distinct notif for each
   let createdActionEntityId =
-    actionEntityType === actionEntityTypes.Agreement
+    actionEntityType === actionEntityTypes.DigitalContent
       ? notif.metadata.entity_id
       : notif.metadata.entity_owner_id
 
@@ -347,7 +347,7 @@ async function _processCreateNotifications (notif, tx) {
       entityId: notificationEntityId,
       time: Date.now(),
       pending: true,
-      // Add notification for this user indicating the uploader has added a agreement
+      // Add notification for this user indicating the uploader has added a digital_content
       subscriberId: s.subscriberId,
       // we're going to overwrite this property so fetchNotificationMetadata can use it
       type: createType
@@ -358,8 +358,8 @@ async function _processCreateNotifications (notif, tx) {
   // Dedupe album /contentList notification
   if (createType === notificationTypes.Create.album ||
       createType === notificationTypes.Create.contentList) {
-    let agreementIdObjectList = notif.metadata.collection_content.agreement_ids
-    let agreementIdsArray = agreementIdObjectList.map(x => x.agreement)
+    let agreementIdObjectList = notif.metadata.collection_content.digital_content_ids
+    let agreementIdsArray = agreementIdObjectList.map(x => x.digital_content)
 
     if (agreementIdObjectList.length > 0) {
       // Clear duplicate push notifications in local queue
@@ -367,9 +367,9 @@ async function _processCreateNotifications (notif, tx) {
       for (let i = 0; i < subscriberPushNotifications.length; i++) {
         let pushNotif = subscriberPushNotifications[i]
         let type = pushNotif.type
-        if (type === notificationTypes.Create.agreement) {
+        if (type === notificationTypes.Create.digital_content) {
           let pushActionEntityId = pushNotif.metadata.entity_id
-          // Check if this pending notification includes a duplicate agreement
+          // Check if this pending notification includes a duplicate digital_content
           if (agreementIdsArray.includes(pushActionEntityId)) {
             logger.debug(`Found dupe push notif ${type}, agreementId: ${pushActionEntityId}`)
             dupeFound = true

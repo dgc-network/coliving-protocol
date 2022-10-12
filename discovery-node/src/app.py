@@ -37,7 +37,7 @@ from src.solana.anchor_program_indexer import AnchorProgramIndexer
 from src.solana.solana_client_manager import SolanaClientManager
 from src.tasks import celery_app
 from src.tasks.index_reactions import INDEX_REACTIONS_LOCK
-from src.tasks.update_agreement_is_available import UPDATE_AGREEMENT_IS_AVAILABLE_LOCK
+from src.tasks.update_digital_content_is_available import UPDATE_AGREEMENT_IS_AVAILABLE_LOCK
 from src.utils import helpers
 from src.utils.cid_metadata_client import CIDMetadataClient
 from src.utils.config import ConfigIni, config_files, shared_config
@@ -58,7 +58,7 @@ eth_abi_values = None
 solana_client_manager = None
 registry = None
 user_factory = None
-agreement_factory = None
+digital_content_factory = None
 social_feature_factory = None
 content_list_factory = None
 user_library_factory = None
@@ -88,11 +88,11 @@ def init_contracts():
     user_factory_instance = web3.eth.contract(
         address=user_factory_address, abi=abi_values["UserFactory"]["abi"]
     )
-    agreement_factory_address = registry_instance.functions.getContract(
+    digital_content_factory_address = registry_instance.functions.getContract(
         bytes("AgreementFactory", "utf-8")
     ).call()
-    agreement_factory_instance = web3.eth.contract(
-        address=agreement_factory_address, abi=abi_values["AgreementFactory"]["abi"]
+    digital_content_factory_instance = web3.eth.contract(
+        address=digital_content_factory_address, abi=abi_values["AgreementFactory"]["abi"]
     )
 
     social_feature_factory_address = registry_instance.functions.getContract(
@@ -129,7 +129,7 @@ def init_contracts():
     contract_address_dict = {
         "registry": registry_address,
         "user_factory": user_factory_address,
-        "agreement_factory": agreement_factory_address,
+        "digital_content_factory": digital_content_factory_address,
         "social_feature_factory": social_feature_factory_address,
         "content_list_factory": content_list_factory_address,
         "user_library_factory": user_library_factory_address,
@@ -139,7 +139,7 @@ def init_contracts():
     return (
         registry_instance,
         user_factory_instance,
-        agreement_factory_instance,
+        digital_content_factory_instance,
         social_feature_factory_inst,
         content_list_factory_inst,
         user_library_factory_inst,
@@ -171,7 +171,7 @@ def create_celery(test_config=None):
 
     global registry
     global user_factory
-    global agreement_factory
+    global digital_content_factory
     global social_feature_factory
     global content_list_factory
     global user_library_factory
@@ -182,7 +182,7 @@ def create_celery(test_config=None):
     (
         registry,
         user_factory,
-        agreement_factory,
+        digital_content_factory,
         social_feature_factory,
         content_list_factory,
         user_library_factory,
@@ -381,7 +381,7 @@ def configure_celery(celery, test_config=None):
             "src.tasks.index_solana_user_data",
             "src.tasks.index_aggregate_tips",
             "src.tasks.index_reactions",
-            "src.tasks.update_agreement_is_available",
+            "src.tasks.update_digital_content_is_available",
         ],
         beat_schedule={
             "update_discovery_node": {
@@ -487,8 +487,8 @@ def configure_celery(celery, test_config=None):
                 "task": "index_reactions",
                 "schedule": timedelta(seconds=5),
             },
-            "update_agreement_is_available": {
-                "task": "update_agreement_is_available",
+            "update_digital_content_is_available": {
+                "task": "update_digital_content_is_available",
                 "schedule": timedelta(hours=12),  # run every 12 hours
             }
             # UNCOMMENT BELOW FOR MIGRATION DEV WORK

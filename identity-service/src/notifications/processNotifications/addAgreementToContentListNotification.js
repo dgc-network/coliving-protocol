@@ -6,7 +6,7 @@ const {
 } = require('../constants')
 
 /**
- * Process agreement added to contentList notification
+ * Process digital_content added to contentList notification
  * @param {Array<Object>} notifications
  * @param {*} tx The DB transaction to attach to DB requests
  */
@@ -16,8 +16,8 @@ async function processAddAgreementToContentListNotification (notifications, tx) 
   for (const notification of notifications) {
     const {
       content_list_id: contentListId,
-      agreement_id: agreementId,
-      agreement_owner_id: agreementOwnerId
+      digital_content_id: agreementId,
+      digital_content_owner_id: agreementOwnerId
     } = notification.metadata
     const timestamp = Date.parse(notification.timestamp.slice(0, -2))
     const momentTimestamp = moment(timestamp)
@@ -42,7 +42,7 @@ async function processAddAgreementToContentListNotification (notifications, tx) 
     await models.NotificationAction.findOrCreate({
       where: {
         notificationId: addAgreementToContentListNotification.id,
-        actionEntityType: actionEntityTypes.Agreement,
+        actionEntityType: actionEntityTypes.DigitalContent,
         actionEntityId: agreementId,
         blocknumber: notification.blocknumber
       },

@@ -41,7 +41,7 @@ def test_search(args):
 
     if search_type == "agreements" or search_type == "all":
         print_entity("agreements", found["agreements"])
-        print_entity("saved agreements", found["saved_agreements"])
+        print_entity("saved agreements", found["saved_digital_contents"])
     if search_type == "users" or search_type == "all":
         print_users("users", found["users"])
         print_users("followed_users", found["followed_users"])

@@ -43,9 +43,9 @@ contract EntityManager is SigningLogicInitializable {
         );
     }
 
-    /// @notice Manage an entity (ex. User/Agreement/ContentList/Follow/Repost etc.)
+    /// @notice Manage an entity (ex. User/DigitalContent/ContentList/Follow/Repost etc.)
     /// @param _userId User performing action
-    /// @param _entityType Entity type being manipulated, ex. User/Agreement/ContentList
+    /// @param _entityType Entity type being manipulated, ex. User/DigitalContent/ContentList
     /// @param _entityId Entity id being manipulated. For new entities, ID assignment will be handled by submitter
     /// @param _action Action being performed, ex. Create/Update/Delete
     /// @param _metadata Metadata associated with action

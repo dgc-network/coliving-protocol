@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
   // TODO - why is this not externally accessible?
   const SourceTableTypesObj = {
     ColivingUser: 'ColivingUser',
-    Agreement: 'Agreement',
+    DigitalContent: 'DigitalContent',
     File: 'File',
     ContentList: 'ContentList'
   }

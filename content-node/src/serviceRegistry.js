@@ -54,7 +54,7 @@ class ServiceRegistry {
     this.transcodingQueue = TranscodingQueue // Transcodes and segments all agreements
     this.skippedCIDsRetryQueue = null // Retries syncing CIDs that were unable to sync on first try
     this.syncQueue = null // Handles syncing data to users' replica sets
-    this.asyncProcessingQueue = null // Handles all jobs that should be performed asynchronously. Currently handles agreement upload and agreement hand off
+    this.asyncProcessingQueue = null // Handles all jobs that should be performed asynchronously. Currently handles digital_content upload and digital_content hand off
     this.monitorStateQueue = null // Handles jobs for slicing batches of users and gathering data about them
     this.findSyncRequestsQueue = null // Handles jobs for finding sync requests
     this.findReplicaSetUpdatesQueue = null // Handles jobs for finding replica set updates

@@ -3,25 +3,25 @@ const models = require('../../src/models')
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    // Add 'live' to "NotificatiionEmails" "emailFrequency"
+    // Add 'digitalcoin' to "NotificatiionEmails" "emailFrequency"
     return queryInterface.sequelize.query(
-      "ALTER TYPE \"enum_NotificationEmails_emailFrequency\" ADD VALUE 'live'"
+      "ALTER TYPE \"enum_NotificationEmails_emailFrequency\" ADD VALUE 'digitalcoin'"
     )
     // Do nothing if it already exists
     // Deleting enum values is not possible w/o root db access, so in the case the enum already exists
     // just continue on. If for some reason this threw but it didn't exist, we would fail at the next step
     // not continue
       .catch(() => { })
-    // Change the default to 'live'
+    // Change the default to 'digitalcoin'
       .finally(() => {
         return queryInterface.sequelize.query(
-          "ALTER TABLE \"NotificationEmails\" ALTER \"emailFrequency\" set default 'live'::\"enum_NotificationEmails_emailFrequency\""
+          "ALTER TABLE \"NotificationEmails\" ALTER \"emailFrequency\" set default 'digitalcoin'::\"enum_NotificationEmails_emailFrequency\""
         )
       })
-    // Add 'live' to "UserNotificationSettings" "emailFrequency"
+    // Add 'digitalcoin' to "UserNotificationSettings" "emailFrequency"
       .then(() => {
         return queryInterface.sequelize.query(
-          "ALTER TYPE \"enum_UserNotificationSettings_emailFrequency\" ADD VALUE 'live'"
+          "ALTER TYPE \"enum_UserNotificationSettings_emailFrequency\" ADD VALUE 'digitalcoin'"
         )
       })
     // Do nothing if it already exists
@@ -29,16 +29,16 @@ module.exports = {
     // just continue on. If for some reason this threw but it didn't exist, we would fail at the next step
     // not continue
       .catch(() => { })
-    // Change the default ot 'live'
+    // Change the default ot 'digitalcoin'
       .finally(() => {
         return queryInterface.sequelize.query(
-          "ALTER TABLE \"UserNotificationSettings\" ALTER \"emailFrequency\" set default 'live'::\"enum_UserNotificationSettings_emailFrequency\""
+          "ALTER TABLE \"UserNotificationSettings\" ALTER \"emailFrequency\" set default 'digitalcoin'::\"enum_UserNotificationSettings_emailFrequency\""
         )
       })
-    // Set all the users who have the default (daily) to live
+    // Set all the users who have the default (daily) to digitalcoin
       .then(() => {
         return models.UserNotificationSettings.update({
-          emailFrequency: 'live'
+          emailFrequency: 'digitalcoin'
         }, {
           where: { emailFrequency: 'daily' }
         })
@@ -46,11 +46,11 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    // Set all the users who have the default (live) to daily
+    // Set all the users who have the default (digitalcoin) to daily
     return models.UserNotificationSettings.update({
       emailFrequency: 'daily'
     }, {
-      where: { emailFrequency: 'live' }
+      where: { emailFrequency: 'digitalcoin' }
     })
     // Change the default back to 'daily'
       .then(() => {
@@ -59,10 +59,10 @@ module.exports = {
         )
       })
     // Normal users can't do this!
-    // Delete 'live' from "NotificationEmails" "emailFrequency"
+    // Delete 'digitalcoin' from "NotificationEmails" "emailFrequency"
       // .then(() => {
       //   const query = 'DELETE FROM pg_enum ' +
-      //   'WHERE enumlabel = \'live\' ' +
+      //   'WHERE enumlabel = \'digitalcoin\' ' +
       //   'AND enumtypid = ( SELECT oid FROM pg_type WHERE typname = \'enum_NotificationEmails_emailFrequency\')'
       //   return queryInterface.sequelize.query(query)
       // })
@@ -73,10 +73,10 @@ module.exports = {
         )
       })
     // Normal users can't do this!
-    // Delete 'live' from "NotificationEmails" "emailFrequency"
+    // Delete 'digitalcoin' from "NotificationEmails" "emailFrequency"
       // .then(() => {
       //   const query = 'DELETE FROM pg_enum ' +
-      //   'WHERE enumlabel = \'live\' ' +
+      //   'WHERE enumlabel = \'digitalcoin\' ' +
       //   'AND enumtypid = ( SELECT oid FROM pg_type WHERE typname = \'enum_UserNotificationSettings_emailFrequency\')'
       //   return queryInterface.sequelize.query(query)
       // })

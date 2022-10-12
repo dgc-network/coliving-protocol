@@ -1,7 +1,7 @@
 'use strict'
 
 /**
- * Makes entries in the user list table unique on agreement id and user id.
+ * Makes entries in the user list table unique on digital_content id and user id.
  * Deletes currently conflicting entries. We aren't sure how these arose in the
  * first place.
  */
@@ -19,13 +19,13 @@ module.exports = {
     )`).then(() => {
       return queryInterface.addConstraint('UserAgreementListens', ['userId', 'agreementId'], {
         type: 'unique',
-        name: 'unique_on_user_id_and_agreement_id'
+        name: 'unique_on_user_id_and_digital_content_id'
       })
     })
   },
 
   down: (queryInterface, Sequelize) => {
     // return new Promise(resolve => resolve())
-    return queryInterface.removeConstraint('UserAgreementListens', 'unique_on_user_id_and_agreement_id')
+    return queryInterface.removeConstraint('UserAgreementListens', 'unique_on_user_id_and_digital_content_id')
   }
 }

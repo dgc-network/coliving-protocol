@@ -9,7 +9,7 @@ index_aggregate_user_last_refresh_completion_redis_key = (
     "index_aggregate_user:last-refresh-completion"
 )
 
-trending_agreements_last_completion_redis_key = "trending:agreements:last-completion"
+trending_digital_contents_last_completion_redis_key = "trending:agreements:last-completion"
 trending_content_lists_last_completion_redis_key = "trending-content-lists:last-completion"
 challenges_last_processed_event_redis_key = "challenges:last-processed-event"
 user_balances_refresh_last_completion_redis_key = "user_balances:last-completion"
@@ -44,7 +44,7 @@ latest_sol_rewards_manager_slot_key = "latest_sol_slot:rewards_manager"
 LAST_REACTIONS_INDEX_TIME_KEY = "reactions_last_index_time"
 LAST_SEEN_NEW_REACTION_TIME_KEY = "reactions_last_new_reaction_time"
 
-# Agreement unavailability worker job keys
-UPDATE_AGREEMENT_IS_AVAILABLE_START_REDIS_KEY = "update_agreement_is_available:start"
-UPDATE_AGREEMENT_IS_AVAILABLE_FINISH_REDIS_KEY = "update_agreement_is_available:finish"
-ALL_UNAVAILABLE_AGREEMENTS_REDIS_KEY = "update_agreement_is_available:unavailable_agreements_all"
+# DigitalContent unavailability worker job keys
+UPDATE_AGREEMENT_IS_AVAILABLE_START_REDIS_KEY = "update_digital_content_is_available:start"
+UPDATE_AGREEMENT_IS_AVAILABLE_FINISH_REDIS_KEY = "update_digital_content_is_available:finish"
+ALL_UNAVAILABLE_AGREEMENTS_REDIS_KEY = "update_digital_content_is_available:unavailable_digital_contents_all"

@@ -14,9 +14,9 @@ contract AgreementStorage is RegistryContract {
 
     /** @dev - Uniquely assigned agreementId, incremented for each new assignment */
     uint agreementId = 1;
-    /** @dev - Agreement userIds, key = agreementId */
+    /** @dev - DigitalContent userIds, key = agreementId */
     mapping(uint => uint) private agreementOwnerIds;
-    /** @dev - Agreement ipfsKeys, key = agreementId */
+    /** @dev - DigitalContent ipfsKeys, key = agreementId */
     mapping(uint => Multihash) private agreementMetadataMultihashes;
 
     constructor(address _registryAddress) public {
@@ -26,7 +26,7 @@ contract AgreementStorage is RegistryContract {
         registry = RegistryInterface(_registryAddress);
     }
 
-    function getAgreement(uint _agreementId)
+    function getAgreement(uint _digital_contentId)
     external view onlyRegistrant(CALLER_REGISTRY_KEY) returns (
         uint agreementOwnerId,
         bytes32 multihashDigest,
@@ -34,9 +34,9 @@ contract AgreementStorage is RegistryContract {
         uint8 multihashSize
     )
     {
-        Multihash memory agreementMultihash = agreementMetadataMultihashes[_agreementId];
+        Multihash memory agreementMultihash = agreementMetadataMultihashes[_digital_contentId];
         return (
-            agreementOwnerIds[_agreementId],
+            agreementOwnerIds[_digital_contentId],
             agreementMultihash.digest,
             agreementMultihash.hashFn,
             agreementMultihash.size
@@ -44,13 +44,13 @@ contract AgreementStorage is RegistryContract {
     }
 
     function addAgreement(
-        uint _agreementOwnerId,
+        uint _digital_contentOwnerId,
         bytes32 _multihashDigest,
         uint8 _multihashHashFn,
         uint8 _multihashSize
     ) external onlyRegistrant(CALLER_REGISTRY_KEY) returns (uint newAgreementId)
     {
-        agreementOwnerIds[agreementId] = _agreementOwnerId;
+        agreementOwnerIds[agreementId] = _digital_contentOwnerId;
         agreementMetadataMultihashes[agreementId] = Multihash({
             digest: _multihashDigest,
             hashFn: _multihashHashFn,
@@ -65,30 +65,30 @@ contract AgreementStorage is RegistryContract {
     }
 
     function updateAgreement(
-        uint _agreementId,
-        uint _agreementOwnerId,
+        uint _digital_contentId,
+        uint _digital_contentOwnerId,
         bytes32 _multihashDigest,
         uint8 _multihashHashFn,
         uint8 _multihashSize
     ) external onlyRegistrant(CALLER_REGISTRY_KEY) returns (bool updatePerformed)
     {
         updatePerformed = false;
-        if (agreementOwnerIds[_agreementId] != _agreementOwnerId) {
-            agreementOwnerIds[_agreementId] = _agreementOwnerId;
+        if (agreementOwnerIds[_digital_contentId] != _digital_contentOwnerId) {
+            agreementOwnerIds[_digital_contentId] = _digital_contentOwnerId;
         }
 
-        if (agreementMetadataMultihashes[_agreementId].digest != _multihashDigest) {
-            agreementMetadataMultihashes[_agreementId].digest = _multihashDigest;
+        if (agreementMetadataMultihashes[_digital_contentId].digest != _multihashDigest) {
+            agreementMetadataMultihashes[_digital_contentId].digest = _multihashDigest;
             updatePerformed = true;
         }
 
-        if (agreementMetadataMultihashes[_agreementId].hashFn != _multihashHashFn) {
-            agreementMetadataMultihashes[_agreementId].hashFn = _multihashHashFn;
+        if (agreementMetadataMultihashes[_digital_contentId].hashFn != _multihashHashFn) {
+            agreementMetadataMultihashes[_digital_contentId].hashFn = _multihashHashFn;
             updatePerformed = true;
         }
 
-        if (agreementMetadataMultihashes[_agreementId].size != _multihashSize) {
-            agreementMetadataMultihashes[_agreementId].size = _multihashSize;
+        if (agreementMetadataMultihashes[_digital_contentId].size != _multihashSize) {
+            agreementMetadataMultihashes[_digital_contentId].size = _multihashSize;
             updatePerformed = true;
         }
 
@@ -98,7 +98,7 @@ contract AgreementStorage is RegistryContract {
     function agreementExists(uint _id) external view onlyRegistrant(CALLER_REGISTRY_KEY)
     returns (bool exists)
     {
-        require(_id > 0, "invalid agreement ID");
+        require(_id > 0, "invalid digital_content ID");
         return (agreementOwnerIds[_id] != 0 && agreementMetadataMultihashes[_id].digest != "");
     }
 

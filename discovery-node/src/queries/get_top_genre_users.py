@@ -2,7 +2,7 @@ import logging
 
 from sqlalchemy import asc, desc, func
 from src.models.social.follow import Follow
-from src.models.agreements.agreement import Agreement
+from src.models.agreements.digital_content import DigitalContent
 from src.models.users.user import User
 from src.queries.get_unpopulated_users import get_unpopulated_users
 from src.queries.query_helpers import paginate_query, populate_user_metadata
@@ -30,24 +30,24 @@ def get_top_genre_users(args):
         user_genre_count_query = (
             session.query(
                 User.user_id.label("user_id"),
-                Agreement.genre.label("genre"),
+                DigitalContent.genre.label("genre"),
                 func.row_number()
                 .over(
                     partition_by=User.user_id,
-                    order_by=(desc(func.count(Agreement.genre)), asc(Agreement.genre)),
+                    order_by=(desc(func.count(DigitalContent.genre)), asc(DigitalContent.genre)),
                 )
                 .label("row_number"),
             )
-            .join(Agreement, Agreement.owner_id == User.user_id)
+            .join(DigitalContent, DigitalContent.owner_id == User.user_id)
             .filter(
                 User.is_current == True,
-                Agreement.is_unlisted == False,
-                Agreement.stem_of == None,
-                Agreement.is_current == True,
-                Agreement.is_delete == False,
+                DigitalContent.is_unlisted == False,
+                DigitalContent.stem_of == None,
+                DigitalContent.is_current == True,
+                DigitalContent.is_delete == False,
             )
-            .group_by(User.user_id, Agreement.genre)
-            .order_by(desc(func.count(Agreement.genre)), asc(Agreement.genre))
+            .group_by(User.user_id, DigitalContent.genre)
+            .order_by(desc(func.count(DigitalContent.genre)), asc(DigitalContent.genre))
         )
 
         user_genre_count_query = user_genre_count_query.subquery(

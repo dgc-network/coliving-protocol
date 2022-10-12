@@ -15,7 +15,7 @@ from src.api.v1.helpers import (
     extend_favorite,
     extend_supporter,
     extend_supporting,
-    extend_agreement,
+    extend_digital_content,
     extend_user,
     format_limit,
     format_offset,
@@ -46,7 +46,7 @@ from src.api.v1.models.users import (
     user_model_full,
     user_replica_set,
 )
-from src.api.v1.content_lists import get_agreements_for_content_list
+from src.api.v1.content_lists import get_digital_contents_for_content_list
 from src.challenges.challenge_event_bus import setup_challenge_bus
 from src.queries.get_associated_user_id import get_associated_user_id
 from src.queries.get_associated_user_wallet import get_associated_user_wallet
@@ -55,16 +55,16 @@ from src.queries.get_followees_for_user import get_followees_for_user
 from src.queries.get_followers_for_user import get_followers_for_user
 from src.queries.get_related_landlords import get_related_landlords
 from src.queries.get_repost_feed_for_user import get_repost_feed_for_user
-from src.queries.get_save_agreements import get_save_agreements
+from src.queries.get_save_digital_contents import get_save_digital_contents
 from src.queries.get_saves import get_saves
 from src.queries.get_support_for_user import (
     get_support_received_by_user,
     get_support_sent_by_user,
 )
 from src.queries.get_top_genre_users import get_top_genre_users
-from src.queries.get_top_user_agreement_tags import get_top_user_agreement_tags
+from src.queries.get_top_user_digital_content_tags import get_top_user_digital_content_tags
 from src.queries.get_top_users import get_top_users
-from src.queries.get_agreements import get_agreements
+from src.queries.get_digital_contents import get_digital_contents
 from src.queries.get_user_listening_history import (
     GetUserListeningHistoryArgs,
     get_user_listening_history,
@@ -82,7 +82,7 @@ from src.utils.redis_cache import cache
 from src.utils.redis_metrics import record_metrics
 
 from .models.activities import activity_model, activity_model_full
-from .models.agreements import agreement, agreement_full
+from .models.agreements import digital_content, digital_content_full
 
 logger = logging.getLogger(__name__)
 
@@ -191,8 +191,8 @@ class UserHandle(FullUserHandle):
 
 
 USER_AGREEMENTS_ROUTE = "/<string:id>/agreements"
-user_agreements_route_parser = pagination_with_current_user_parser.copy()
-user_agreements_route_parser.add_argument(
+user_digital_contents_route_parser = pagination_with_current_user_parser.copy()
+user_digital_contents_route_parser.add_argument(
     "sort",
     required=False,
     type=str,
@@ -202,7 +202,7 @@ user_agreements_route_parser.add_argument(
 )
 
 agreements_response = make_response(
-    "agreements_response", ns, fields.List(fields.Nested(agreement))
+    "agreements_response", ns, fields.List(fields.Nested(digital_content))
 )
 
 
@@ -217,13 +217,13 @@ class AgreementList(Resource):
         },
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
-    @ns.expect(user_agreements_route_parser)
+    @ns.expect(user_digital_contents_route_parser)
     @ns.marshal_with(agreements_response)
     @auth_middleware()
     @cache(ttl_sec=5)
     def get(self, id, authed_user_id=None):
         decoded_id = decode_with_abort(id, ns)
-        args = user_agreements_route_parser.parse_args()
+        args = user_digital_contents_route_parser.parse_args()
 
         current_user_id = get_current_user_id(args)
 
@@ -241,13 +241,13 @@ class AgreementList(Resource):
             "limit": limit,
             "offset": offset,
         }
-        agreements = get_agreements(args)
-        agreements = list(map(extend_agreement, agreements))
+        agreements = get_digital_contents(args)
+        agreements = list(map(extend_digital_content, agreements))
         return success_response(agreements)
 
 
-full_agreements_response = make_full_response(
-    "full_agreements", full_ns, fields.List(fields.Nested(agreement_full))
+full_digital_contents_response = make_full_response(
+    "full_digital_contents", full_ns, fields.List(fields.Nested(digital_content_full))
 )
 
 
@@ -262,13 +262,13 @@ class FullAgreementList(Resource):
         },
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
-    @full_ns.expect(user_agreements_route_parser)
-    @full_ns.marshal_with(full_agreements_response)
+    @full_ns.expect(user_digital_contents_route_parser)
+    @full_ns.marshal_with(full_digital_contents_response)
     @auth_middleware()
     @cache(ttl_sec=5)
     def get(self, id, authed_user_id=None):
         decoded_id = decode_with_abort(id, ns)
-        args = user_agreements_route_parser.parse_args()
+        args = user_digital_contents_route_parser.parse_args()
 
         current_user_id = get_current_user_id(args)
 
@@ -286,8 +286,8 @@ class FullAgreementList(Resource):
             "limit": limit,
             "offset": offset,
         }
-        agreements = get_agreements(args)
-        agreements = list(map(extend_agreement, agreements))
+        agreements = get_digital_contents(args)
+        agreements = list(map(extend_digital_content, agreements))
         return success_response(agreements)
 
 
@@ -299,7 +299,7 @@ class HandleFullAgreementList(Resource):
     @record_metrics
     @cache(ttl_sec=5)
     def _get(self, handle, authed_user_id=None):
-        args = user_agreements_route_parser.parse_args()
+        args = user_digital_contents_route_parser.parse_args()
 
         current_user_id = get_current_user_id(args)
 
@@ -317,8 +317,8 @@ class HandleFullAgreementList(Resource):
             "limit": limit,
             "offset": offset,
         }
-        agreements = get_agreements(args)
-        agreements = list(map(extend_agreement, agreements))
+        agreements = get_digital_contents(args)
+        agreements = list(map(extend_digital_content, agreements))
         return success_response(agreements)
 
     @auth_middleware()
@@ -330,8 +330,8 @@ class HandleFullAgreementList(Resource):
         },
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
-    @full_ns.expect(user_agreements_route_parser)
-    @full_ns.marshal_with(full_agreements_response)
+    @full_ns.expect(user_digital_contents_route_parser)
+    @full_ns.marshal_with(full_digital_contents_response)
     def get(self, handle, authed_user_id=None):
         return self._get(handle, authed_user_id)
 
@@ -347,7 +347,7 @@ class HandleAgreementList(HandleFullAgreementList):
         },
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
-    @ns.expect(user_agreements_route_parser)
+    @ns.expect(user_digital_contents_route_parser)
     @ns.marshal_with(agreements_response)
     def get(self, handle, authed_user_id):
         return super()._get(handle, authed_user_id)
@@ -433,7 +433,7 @@ class FullRepostList(Resource):
         reposts = get_repost_feed_for_user(decoded_id, args)
         for repost in reposts:
             if "content_list_id" in repost:
-                repost["agreements"] = get_agreements_for_content_list(
+                repost["agreements"] = get_digital_contents_for_content_list(
                     repost["content_list_id"], current_user_id
                 )
         activities = list(map(extend_activity, reposts))
@@ -466,7 +466,7 @@ class HandleFullRepostList(Resource):
         reposts = get_repost_feed_for_user(None, args)
         for repost in reposts:
             if "content_list_id" in repost:
-                repost["agreements"] = get_agreements_for_content_list(
+                repost["agreements"] = get_digital_contents_for_content_list(
                     repost["content_list_id"], current_user_id
                 )
         activities = list(map(extend_activity, reposts))
@@ -512,8 +512,8 @@ tags_response = make_response("tags_response", ns, fields.List(fields.String))
 class MostUsedTags(Resource):
     @record_metrics
     @ns.doc(
-        id="""Get Top Agreement Tags""",
-        description="""Gets the most used agreement tags by a user.""",
+        id="""Get Top DigitalContent Tags""",
+        description="""Gets the most used digital_content tags by a user.""",
         params={"id": "A User ID"},
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
@@ -525,7 +525,7 @@ class MostUsedTags(Resource):
         decoded_id = decode_with_abort(id, ns)
         args = tags_route_parser.parse_args()
         limit = format_limit(args)
-        tags = get_top_user_agreement_tags({"user_id": decoded_id, "limit": limit})
+        tags = get_top_user_digital_content_tags({"user_id": decoded_id, "limit": limit})
         return success_response(tags)
 
 
@@ -571,7 +571,7 @@ class UserFavoritedAgreementsFull(Resource):
 
         offset = format_offset(args)
         limit = format_limit(args)
-        get_agreements_args = {
+        get_digital_contents_args = {
             "filter_deleted": False,
             "user_id": decoded_id,
             "current_user_id": current_user_id,
@@ -579,8 +579,8 @@ class UserFavoritedAgreementsFull(Resource):
             "offset": offset,
             "with_users": True,
         }
-        agreement_saves = get_save_agreements(get_agreements_args)
-        agreements = list(map(extend_activity, agreement_saves))
+        digital_content_saves = get_save_digital_contents(get_digital_contents_args)
+        agreements = list(map(extend_activity, digital_content_saves))
         return success_response(agreements)
 
     @full_ns.doc(
@@ -615,18 +615,18 @@ class AgreementHistoryFull(Resource):
         current_user_id = get_current_user_id(args)
         offset = format_offset(args)
         limit = format_limit(args)
-        get_agreements_args = GetUserListeningHistoryArgs(
+        get_digital_contents_args = GetUserListeningHistoryArgs(
             user_id=decoded_id,
             current_user_id=current_user_id,
             limit=limit,
             offset=offset,
         )
-        agreement_history = get_user_listening_history(get_agreements_args)
-        agreements = list(map(extend_activity, agreement_history))
+        digital_content_history = get_user_listening_history(get_digital_contents_args)
+        agreements = list(map(extend_activity, digital_content_history))
         return success_response(agreements)
 
     @full_ns.doc(
-        id="""Get User's Agreement History""",
+        id="""Get User's DigitalContent History""",
         description="""Get the agreements the user recently listened to.""",
         params={"id": "A User ID"},
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
@@ -640,7 +640,7 @@ class AgreementHistoryFull(Resource):
 @ns.route(USER_HISTORY_AGREEMENTS_ROUTE)
 class AgreementHistory(AgreementHistoryFull):
     @ns.doc(
-        id="""Get User's Agreement History""",
+        id="""Get User's DigitalContent History""",
         description="""Get the agreements the user recently listened to.""",
         params={"id": "A User ID"},
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
@@ -930,7 +930,7 @@ class FullTopUsers(Resource):
 
     @full_ns.doc(
         id="""Get Top Users""",
-        description="""Get the Top Users having at least one agreement by follower count""",
+        description="""Get the Top Users having at least one digital_content by follower count""",
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
     @full_ns.expect(pagination_with_current_user_parser)
@@ -943,7 +943,7 @@ class FullTopUsers(Resource):
 class TopUsers(FullTopUsers):
     @ns.doc(
         id="""Get Top Users""",
-        description="""Get the Top Users having at least one agreement by follower count""",
+        description="""Get the Top Users having at least one digital_content by follower count""",
         responses={200: "Success", 400: "Bad request", 500: "Server error"},
     )
     @ns.expect(pagination_with_current_user_parser)

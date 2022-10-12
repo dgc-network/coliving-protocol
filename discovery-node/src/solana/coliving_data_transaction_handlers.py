@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import Any, Dict, List, TypedDict
 
 from sqlalchemy.orm.session import Session
-from src.models.agreements.agreement import Agreement
+from src.models.agreements.digital_content import DigitalContent
 from src.models.users.user import User
 from src.solana.anchor_parser import ParsedTxInstr
 from src.solana.solana_transaction_types import TransactionInfoResult
@@ -252,26 +252,26 @@ def handle_manage_entity(
     metadata_dictionary: Dict,
     records: List[Any],
 ):
-    # create agreement
+    # create digital_content
     instruction_data: ManageEntityData = instruction["data"]
     management_action = instruction_data["management_action"]
     entity_type = instruction_data["entity_type"]
     slot = transaction["result"]["slot"]
     txhash = transaction["tx_sig"]
-    agreement_id = instruction_data["id"]
+    digital_content_id = instruction_data["id"]
 
     if isinstance(management_action, management_action.Create) and isinstance(
-        entity_type, entity_type.Agreement
+        entity_type, entity_type.DigitalContent
     ):
 
-        if agreement_id in db_models["agreements"]:
-            logger.info(f"Skipping create agreement {agreement_id} because it already exists.")
+        if digital_content_id in db_models["agreements"]:
+            logger.info(f"Skipping create digital_content {digital_content_id} because it already exists.")
             return
 
-        agreement = Agreement(
+        digital_content = DigitalContent(
             slot=transaction["result"]["slot"],
             txhash=transaction["tx_sig"],
-            agreement_id=instruction_data["id"],
+            digital_content_id=instruction_data["id"],
             owner_id=instruction_data["user_id_seed_bump"].user_id,
             metadata_multihash=instruction_data.get("metadata"),
             is_current=True,
@@ -279,37 +279,37 @@ def handle_manage_entity(
             created_at=datetime.utcfromtimestamp(transaction["result"]["blockTime"]),
             updated_at=datetime.utcfromtimestamp(transaction["result"]["blockTime"]),
         )
-        agreement_metadata = metadata_dictionary.get(instruction_data["metadata"], {})
-        update_agreement_model_metadata(session, agreement, agreement_metadata)
+        digital_content_metadata = metadata_dictionary.get(instruction_data["metadata"], {})
+        update_digital_content_model_metadata(session, digital_content, digital_content_metadata)
         # TODO update stems, remixes, challenge
-        records.append(agreement)
-        db_models["agreements"][agreement_id].append(agreement)
+        records.append(digital_content)
+        db_models["agreements"][digital_content_id].append(digital_content)
     elif isinstance(management_action, management_action.Update) and isinstance(
-        entity_type, entity_type.Agreement
+        entity_type, entity_type.DigitalContent
     ):
-        if agreement_id not in db_models["agreements"]:
-            logger.info(f"Skipping update agreement {agreement_id} because it doesn't exist.")
+        if digital_content_id not in db_models["agreements"]:
+            logger.info(f"Skipping update digital_content {digital_content_id} because it doesn't exist.")
             return
-        agreement_record = db_models["agreements"].get(agreement_id)[-1]
+        digital_content_record = db_models["agreements"].get(digital_content_id)[-1]
 
         # Clone new record
-        new_agreement_record = clone_model(agreement_record)
+        new_digital_content_record = clone_model(digital_content_record)
 
-        for prior_record in db_models["agreements"][agreement_id]:
+        for prior_record in db_models["agreements"][digital_content_id]:
             prior_record.is_current = False
-        new_agreement_record.agreement_id = agreement_id
-        new_agreement_record.txhash = txhash
-        new_agreement_record.slot = slot
-        new_agreement_record.is_current = True
-        new_agreement_record.metadata_multihash = instruction_data["metadata"]
-        agreement_metadata = metadata_dictionary.get(instruction_data["metadata"], {})
-        update_agreement_model_metadata(session, new_agreement_record, agreement_metadata)
+        new_digital_content_record.digital_content_id = digital_content_id
+        new_digital_content_record.txhash = txhash
+        new_digital_content_record.slot = slot
+        new_digital_content_record.is_current = True
+        new_digital_content_record.metadata_multihash = instruction_data["metadata"]
+        digital_content_metadata = metadata_dictionary.get(instruction_data["metadata"], {})
+        update_digital_content_model_metadata(session, new_digital_content_record, digital_content_metadata)
 
         # Append record to save
-        records.append(new_agreement_record)
+        records.append(new_digital_content_record)
 
         # Append most recent record
-        db_models["agreements"][agreement_id].append(new_agreement_record)
+        db_models["agreements"][digital_content_id].append(new_digital_content_record)
 
 
 def handle_create_content_node(
@@ -507,53 +507,53 @@ def update_user_model_metadata(
         user_record.content_node_endpoint = metadata_dict["content_node_endpoint"]
 
 
-def update_agreement_model_metadata(
-    session: Session, agreement_record: Agreement, agreement_metadata: Dict
+def update_digital_content_model_metadata(
+    session: Session, digital_content_record: DigitalContent, digital_content_metadata: Dict
 ):
-    agreement_record.title = agreement_metadata["title"]
-    agreement_record.length = agreement_metadata["length"] or 0
-    agreement_record.cover_art_sizes = agreement_metadata["cover_art_sizes"]
-    if agreement_metadata["cover_art"]:
-        agreement_record.cover_art_sizes = agreement_record.cover_art
+    digital_content_record.title = digital_content_metadata["title"]
+    digital_content_record.length = digital_content_metadata["length"] or 0
+    digital_content_record.cover_art_sizes = digital_content_metadata["cover_art_sizes"]
+    if digital_content_metadata["cover_art"]:
+        digital_content_record.cover_art_sizes = digital_content_record.cover_art
 
-    agreement_record.tags = agreement_metadata["tags"]
-    agreement_record.genre = agreement_metadata["genre"]
-    agreement_record.mood = agreement_metadata["mood"]
-    agreement_record.credits_splits = agreement_metadata["credits_splits"]
-    agreement_record.create_date = agreement_metadata["create_date"]
-    agreement_record.release_date = agreement_metadata["release_date"]
-    agreement_record.file_type = agreement_metadata["file_type"]
-    agreement_record.description = agreement_metadata["description"]
-    agreement_record.license = agreement_metadata["license"]
-    agreement_record.isrc = agreement_metadata["isrc"]
-    agreement_record.iswc = agreement_metadata["iswc"]
-    agreement_record.agreement_segments = agreement_metadata["agreement_segments"]
-    agreement_record.is_unlisted = agreement_metadata["is_unlisted"]
-    agreement_record.field_visibility = agreement_metadata["field_visibility"]
+    digital_content_record.tags = digital_content_metadata["tags"]
+    digital_content_record.genre = digital_content_metadata["genre"]
+    digital_content_record.mood = digital_content_metadata["mood"]
+    digital_content_record.credits_splits = digital_content_metadata["credits_splits"]
+    digital_content_record.create_date = digital_content_metadata["create_date"]
+    digital_content_record.release_date = digital_content_metadata["release_date"]
+    digital_content_record.file_type = digital_content_metadata["file_type"]
+    digital_content_record.description = digital_content_metadata["description"]
+    digital_content_record.license = digital_content_metadata["license"]
+    digital_content_record.isrc = digital_content_metadata["isrc"]
+    digital_content_record.iswc = digital_content_metadata["iswc"]
+    digital_content_record.digital_content_segments = digital_content_metadata["digital_content_segments"]
+    digital_content_record.is_unlisted = digital_content_metadata["is_unlisted"]
+    digital_content_record.field_visibility = digital_content_metadata["field_visibility"]
 
-    if is_valid_json_field(agreement_metadata, "stem_of"):
-        agreement_record.stem_of = agreement_metadata["stem_of"]
+    if is_valid_json_field(digital_content_metadata, "stem_of"):
+        digital_content_record.stem_of = digital_content_metadata["stem_of"]
 
-    if is_valid_json_field(agreement_metadata, "remix_of"):
-        agreement_record.remix_of = agreement_metadata["remix_of"]
+    if is_valid_json_field(digital_content_metadata, "remix_of"):
+        digital_content_record.remix_of = digital_content_metadata["remix_of"]
 
-    if "download" in agreement_metadata:
-        agreement_record.download = {
-            "is_downloadable": agreement_metadata["download"].get("is_downloadable")
+    if "download" in digital_content_metadata:
+        digital_content_record.download = {
+            "is_downloadable": digital_content_metadata["download"].get("is_downloadable")
             == True,
-            "requires_follow": agreement_metadata["download"].get("requires_follow")
+            "requires_follow": digital_content_metadata["download"].get("requires_follow")
             == True,
-            "cid": agreement_metadata["download"].get("cid", None),
+            "cid": digital_content_metadata["download"].get("cid", None),
         }
     else:
-        agreement_record.download = {
+        digital_content_record.download = {
             "is_downloadable": False,
             "requires_follow": False,
             "cid": None,
         }
 
-    agreement_record.route_id = helpers.create_agreement_route_id(
-        agreement_metadata["title"], "handle"
+    digital_content_record.route_id = helpers.create_digital_content_route_id(
+        digital_content_metadata["title"], "handle"
     )  # TODO use handle from upstream user fetch
 
 

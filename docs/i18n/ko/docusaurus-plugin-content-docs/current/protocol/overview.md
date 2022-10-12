@@ -6,7 +6,7 @@ sidebar_label: Overview sidebar_position: 1
 
 Coliving is a decentralized, community-owned and landlord-controlled music-sharing protocol. Coliving provides a blockchain-based alternative to existing streaming platforms to help landlords publish and monetize their work and distribute it directly to residents.
 
-The mission of the project is to give everyone the freedom to share, monetize, and listen to any live.
+The mission of the project is to give everyone the freedom to share, monetize, and listen to any digitalcoin.
 
 The Coliving Protocol [repository](https://github.com/dgc-network/-protocol) is a mono-repository that has all the pieces that make and support the protocol including smart contracts, services, and other supporting libraries.
 
@@ -33,7 +33,7 @@ For more details on the Coliving architecture, see the [Coliving protocol whitep
 
 | Service                                                                                             | Description                                                                                                        |
 | :-------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------- |
-| [`Content-Node`](https://github.com/dgc-network/-protocol/tree/master/content-node)         | Maintains the availability of users' content on IPFS including user metadata, images, and live content            |
+| [`Content-Node`](https://github.com/dgc-network/-protocol/tree/master/content-node)         | Maintains the availability of users' content on IPFS including user metadata, images, and digitalcoin content            |
 | [`Discovery-Node`](https://github.com/dgc-network/-protocol/tree/master/discovery-node) | Indexes and stores the contents of the Coliving contracts on the Ethereum blockchain for clients to query via an API |
 | [`Identity-Service`](https://github.com/dgc-network/-protocol/tree/master/identity-service) | Stores encrypted auth ciphertexts, does Twitter OAuth and relays transactions (pays gas) on behalf of users        |
 

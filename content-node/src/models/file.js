@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull: false
       },
-      // only non-null for agreement/copy320 files (as opposed to image/metadata files)
+      // only non-null for digital_content/copy320 files (as opposed to image/metadata files)
       agreementBlockchainId: {
         type: DataTypes.INTEGER,
         allowNull: true
@@ -23,8 +23,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: false
       },
-      // only non-null for agreement files (as opposed to image/metadata files)
-      // contains original agreement file name (meaning all agreement segment Files will contain same agreement sourceFile)
+      // only non-null for digital_content files (as opposed to image/metadata files)
+      // contains original digital_content file name (meaning all digital_content segment Files will contain same digital_content sourceFile)
       sourceFile: {
         type: DataTypes.TEXT,
         allowNull: true
@@ -49,8 +49,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(16),
         allowNull: true,
         validate: {
-          // agreement and non types broken down below and attached to Agreement model
-          isIn: [['agreement', 'metadata', 'image', 'dir', 'copy320']]
+          // digital_content and non types broken down below and attached to DigitalContent model
+          isIn: [['digital_content', 'metadata', 'image', 'dir', 'copy320']]
         }
       },
       clock: {
@@ -89,7 +89,7 @@ module.exports = (sequelize, DataTypes) => {
   )
 
   /**
-   * @dev - there is intentionally no reference from File.agreementBlockchainId to Agreement.blockchainId. This is to
+   * @dev - there is intentionally no reference from File.agreementBlockchainId to DigitalContent.blockchainId. This is to
    *    remove the two-way association between these models
    */
   File.associate = function (models) {
@@ -103,14 +103,14 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   File.Types = {
-    agreement: 'agreement',
+    digital_content: 'digital_content',
     copy320: 'copy320',
     dir: 'dir',
     image: 'image',
     metadata: 'metadata'
   }
 
-  File.AgreementTypes = [File.Types.agreement, File.Types.copy320]
+  File.AgreementTypes = [File.Types.digital_content, File.Types.copy320]
   File.NonAgreementTypes = [File.Types.dir, File.Types.image, File.Types.metadata]
 
   return File

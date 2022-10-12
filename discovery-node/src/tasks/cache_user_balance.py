@@ -76,14 +76,14 @@ def get_immediate_refresh_user_ids(redis: Redis) -> List[int]:
 
 
 # *Explanation of user balance caching*
-# In an effort to minimize eth calls, we look up users embedded in agreement metadata once per user,
+# In an effort to minimize eth calls, we look up users embedded in digital_content metadata once per user,
 # and current users (logged in dapp users, who might be changing their balance) on an interval.
 # Balance is agreemented for both mainnet ethereum LIVE and mainnet solana wLIVE
 #
 # - In populate_user_metadata, look up User_Balance entry in db.
 #       If it doesn't exist, return 0, persist a User_Balance row with 0,
 #       & enqueue in Redis the user ID for later balance lookup.
-# - On agreement get endpoints, if current_user exists, enqueue balance lookup
+# - On digital_content get endpoints, if current_user exists, enqueue balance lookup
 #       in Redis.
 # - In Solana UserBank indexing (index_user_bank.py) any transfer operation enqueues
 #       a refresh for both the sender and reciever UserBank addresses

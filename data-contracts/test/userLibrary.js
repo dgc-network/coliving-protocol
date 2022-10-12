@@ -114,8 +114,8 @@ contract('UserLibrary', async (accounts) => {
       contentListAgreements)
   })
 
-  it('Should add one agreement save', async () => {
-    // add agreement save and validate
+  it('Should add one digital_content save', async () => {
+    // add digital_content save and validate
     await _lib.addAgreementSaveAndValidate(
       userLibraryFactory,
       accounts[0],
@@ -123,15 +123,15 @@ contract('UserLibrary', async (accounts) => {
       testAgreementId1)
   })
 
-  it('Should delete one agreement save', async () => {
-    // add agreement save and validate
+  it('Should delete one digital_content save', async () => {
+    // add digital_content save and validate
     await _lib.addAgreementSaveAndValidate(
       userLibraryFactory,
       accounts[0],
       testUserId1,
       testAgreementId1)
 
-    // delete agreement save and validate
+    // delete digital_content save and validate
     await _lib.deleteAgreementSaveAndValidate(
       userLibraryFactory,
       accounts[0],
@@ -247,7 +247,7 @@ contract('UserLibrary', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
   })
 
-  it('Should fail to add agreement save with non-existent user and non-existent agreement', async () => {
+  it('Should fail to add digital_content save with non-existent user and non-existent digital_content', async () => {
     let caughtError = false
     try {
       await _lib.addAgreementSaveAndValidate(
@@ -275,7 +275,7 @@ contract('UserLibrary', async (accounts) => {
         invalidAgreementId)
     } catch (e) {
       // handle expected error
-      if (e.message.indexOf('must provide valid agreement ID') >= 0) {
+      if (e.message.indexOf('must provide valid digital_content ID') >= 0) {
         caughtError = true
       } else {
         // unexpected error - throw normally
@@ -285,7 +285,7 @@ contract('UserLibrary', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
   })
 
-  it('Should fail to delete agreement save with non-existent user and non-existent agreement', async () => {
+  it('Should fail to delete digital_content save with non-existent user and non-existent digital_content', async () => {
     let caughtError = false
     try {
       await _lib.deleteAgreementSaveAndValidate(
@@ -312,7 +312,7 @@ contract('UserLibrary', async (accounts) => {
         invalidAgreementId)
     } catch (e) {
       // handle expected error
-      if (e.message.indexOf('must provide valid agreement ID') >= 0) {
+      if (e.message.indexOf('must provide valid digital_content ID') >= 0) {
         caughtError = true
       } else {
         // unexpected error - throw normally
@@ -322,7 +322,7 @@ contract('UserLibrary', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
   })
 
-  it('Should fail to add agreement save due to lack of ownership of user', async () => {
+  it('Should fail to add digital_content save due to lack of ownership of user', async () => {
     let caughtError = false
     try {
       await _lib.addAgreementSaveAndValidate(
@@ -363,8 +363,8 @@ contract('UserLibrary', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
   })
 
-  it('Should fail to delete agreement save due to lack of ownership of user', async () => {
-    // add agreement save and validate
+  it('Should fail to delete digital_content save due to lack of ownership of user', async () => {
+    // add digital_content save and validate
     await _lib.addAgreementSaveAndValidate(
       userLibraryFactory,
       accounts[0],

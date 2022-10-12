@@ -34,7 +34,7 @@ const testAudioFileWrongFormatPath = path.resolve(
 )
 
 const TestColivingAgreementFileNumSegments = 32
-const AGREEMENT_CONTENT_POLLING_ROUTE = '/agreement_content_async'
+const AGREEMENT_CONTENT_POLLING_ROUTE = '/digital_content_async'
 
 const logContext = {
   logContext: {
@@ -131,7 +131,7 @@ describe('test Polling Agreements with mocked IPFS', function () {
     await server.close()
   })
 
-  // Testing middleware -- leave as /agreement_content_async
+  // Testing middleware -- leave as /digital_content_async
   it('fails to upload when format is not accepted', async function () {
     const file = fs.readFileSync(testAudioFileWrongFormatPath)
 
@@ -144,7 +144,7 @@ describe('test Polling Agreements with mocked IPFS', function () {
       .expect(400)
   })
 
-  // Testing middleware -- leave as /agreement_content_async
+  // Testing middleware -- leave as /digital_content_async
   it('fails to upload when maxAudioFileSizeBytes exceeded', async function () {
     // Configure extremely small file size
     process.env.maxAudioFileSizeBytes = 10
@@ -157,7 +157,7 @@ describe('test Polling Agreements with mocked IPFS', function () {
     server = appInfo.server
     session = await createStarterCNodeUser(userId)
 
-    // Confirm max live file size is respected by multer
+    // Confirm max digitalcoin file size is respected by multer
     const file = fs.readFileSync(testAudioFilePath)
     await request(app)
       .post(AGREEMENT_CONTENT_POLLING_ROUTE)
@@ -182,7 +182,7 @@ describe('test Polling Agreements with mocked IPFS', function () {
     server = appInfo.server
     session = await createStarterCNodeUser(userId)
 
-    // Confirm max live file size is respected by multer
+    // Confirm max digitalcoin file size is respected by multer
     const file = fs.readFileSync(testAudioFileWrongFormatPath)
     await request(app)
       .post('/image_upload')
@@ -196,7 +196,7 @@ describe('test Polling Agreements with mocked IPFS', function () {
     process.env.maxMemoryFileSizeBytes = defaultConfig.maxMemoryFileSizeBytes
   })
 
-  it('uploads /agreement_content_async', async function () {
+  it('uploads /digital_content_async', async function () {
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
     const resp = await handleAgreementContentRoute(
       logContext,
@@ -204,7 +204,7 @@ describe('test Polling Agreements with mocked IPFS', function () {
     )
 
     const {
-      agreement_segments: agreementSegments,
+      digital_content_segments: agreementSegments,
       source_file: sourceFile,
       transcodedAgreementCID,
       transcodedAgreementUUID
@@ -223,11 +223,11 @@ describe('test Polling Agreements with mocked IPFS', function () {
     assert.deepStrictEqual(typeof transcodedAgreementUUID, 'string')
   })
 
-  // depends on "uploads /agreement_content_async"
-  it('Confirm /users/clock_status works with user and agreement state', async function () {
+  // depends on "uploads /digital_content_async"
+  it('Confirm /users/clock_status works with user and digital_content state', async function () {
     const numExpectedFilesForUser = TestColivingAgreementFileNumSegments + 1 // numSegments + 320kbps copy
 
-    /** Upload agreement */
+    /** Upload digital_content */
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
     let resp = await handleAgreementContentRoute(
       logContext,
@@ -253,14 +253,14 @@ describe('test Polling Agreements with mocked IPFS', function () {
       CIDSkipInfo: { numCIDs: numExpectedFilesForUser, numSkippedCIDs: 0 }
     })
 
-    // Update agreement DB entries to be skipped
+    // Update digital_content DB entries to be skipped
     const numAffectedRows = (
       await models.File.update(
         { skipped: true },
         {
           where: {
             cnodeUserUUID: session.cnodeUserUUID,
-            type: 'agreement'
+            type: 'digital_content'
           }
         }
       )
@@ -408,10 +408,10 @@ describe('test Polling Agreements with mocked IPFS', function () {
     })
   })
 
-  it('Confirms /users/batch_clock_status works with user and agreement state for 2 users', async () => {
+  it('Confirms /users/batch_clock_status works with user and digital_content state for 2 users', async () => {
     const numExpectedFilesForUser = TestColivingAgreementFileNumSegments + 1 // numSegments + 320kbps copy
 
-    /** Upload agreement for user 1 */
+    /** Upload digital_content for user 1 */
     const { fileUUID: fileUUID1, fileDir: fileDir1 } =
       saveFileToStorage(testAudioFilePath)
     await handleAgreementContentRoute(
@@ -429,7 +429,7 @@ describe('test Polling Agreements with mocked IPFS', function () {
     const pubKey2 = '0xadD36bad12002f1097Cdb7eE24085C28e9random'
     const session2 = await createStarterCNodeUser(userId2, pubKey2)
 
-    /** Upload agreement for user 2 */
+    /** Upload digital_content for user 2 */
     const { fileUUID: fileUUID2, fileDir: fileDir2 } =
       saveFileToStorage(testAudioFilePath)
     await handleAgreementContentRoute(
@@ -516,8 +516,8 @@ describe('test Polling Agreements with mocked IPFS', function () {
     })
   })
 
-  // depends on "uploads /agreement_content_async"; if that test fails, this test will fail to due to similarity
-  it('creates Coliving agreement using application logic for /agreement_content_async', async function () {
+  // depends on "uploads /digital_content_async"; if that test fails, this test will fail to due to similarity
+  it('creates Coliving digital_content using application logic for /digital_content_async', async function () {
     libsMock.User.getUsers.exactly(2)
 
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
@@ -526,7 +526,7 @@ describe('test Polling Agreements with mocked IPFS', function () {
       getReqObj(fileUUID, fileDir, session)
     )
 
-    const { agreement_segments: agreementSegments, source_file: sourceFile } = resp
+    const { digital_content_segments: agreementSegments, source_file: sourceFile } = resp
     assert.deepStrictEqual(
       agreementSegments[0].multihash,
       'QmYfSQCgCwhxwYcdEwCkFJHicDe6rzCAb7AtLz3GrHmuU6'
@@ -534,11 +534,11 @@ describe('test Polling Agreements with mocked IPFS', function () {
     assert.deepStrictEqual(agreementSegments.length, 32)
     assert.deepStrictEqual(sourceFile.includes('.mp3'), true)
 
-    // creates Coliving agreement
+    // creates Coliving digital_content
     const metadata = {
       test: 'field1',
       owner_id: 1,
-      agreement_segments: agreementSegments
+      digital_content_segments: agreementSegments
     }
 
     const agreementMetadataResp = await request(app)
@@ -555,8 +555,8 @@ describe('test Polling Agreements with mocked IPFS', function () {
     )
   })
 
-  // depends on "uploads /agreement_content_async"
-  it('fails to create Coliving agreement when segments not provided', async function () {
+  // depends on "uploads /digital_content_async"
+  it('fails to create Coliving digital_content when segments not provided', async function () {
     libsMock.User.getUsers.exactly(2)
 
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
@@ -565,7 +565,7 @@ describe('test Polling Agreements with mocked IPFS', function () {
       getReqObj(fileUUID, fileDir, session)
     )
 
-    const { agreement_segments: agreementSegments, source_file: sourceFile } = resp
+    const { digital_content_segments: agreementSegments, source_file: sourceFile } = resp
 
     assert.deepStrictEqual(
       agreementSegments[0].multihash,
@@ -574,7 +574,7 @@ describe('test Polling Agreements with mocked IPFS', function () {
     assert.deepStrictEqual(agreementSegments.length, 32)
     assert.deepStrictEqual(sourceFile.includes('.mp3'), true)
 
-    // creates Coliving agreement
+    // creates Coliving digital_content
     const metadata = {
       test: 'field1',
       owner_id: 1
@@ -589,8 +589,8 @@ describe('test Polling Agreements with mocked IPFS', function () {
       .expect(400)
   })
 
-  // depends on "uploads /agreement_content_async"
-  it('fails to create Coliving agreement when invalid segment multihashes are provided', async function () {
+  // depends on "uploads /digital_content_async"
+  it('fails to create Coliving digital_content when invalid segment multihashes are provided', async function () {
     libsMock.User.getUsers.exactly(2)
 
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
@@ -599,7 +599,7 @@ describe('test Polling Agreements with mocked IPFS', function () {
       getReqObj(fileUUID, fileDir, session)
     )
 
-    const { agreement_segments: agreementSegments, source_file: sourceFile } = resp
+    const { digital_content_segments: agreementSegments, source_file: sourceFile } = resp
 
     assert.deepStrictEqual(
       agreementSegments[0].multihash,
@@ -608,10 +608,10 @@ describe('test Polling Agreements with mocked IPFS', function () {
     assert.deepStrictEqual(agreementSegments.length, 32)
     assert.deepStrictEqual(sourceFile.includes('.mp3'), true)
 
-    // creates Coliving agreement
+    // creates Coliving digital_content
     const metadata = {
       test: 'field1',
-      agreement_segments: [{ multihash: 'incorrectCIDLink', duration: 1000 }],
+      digital_content_segments: [{ multihash: 'incorrectCIDLink', duration: 1000 }],
       owner_id: 1
     }
 
@@ -623,8 +623,8 @@ describe('test Polling Agreements with mocked IPFS', function () {
       .expect(400)
   })
 
-  // depends on "uploads /agreement_content_async"
-  it('fails to create Coliving agreement when owner_id is not provided', async function () {
+  // depends on "uploads /digital_content_async"
+  it('fails to create Coliving digital_content when owner_id is not provided', async function () {
     libsMock.User.getUsers.exactly(2)
 
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
@@ -635,10 +635,10 @@ describe('test Polling Agreements with mocked IPFS', function () {
 
     const { source_file: sourceFile } = resp
 
-    // creates Coliving agreement
+    // creates Coliving digital_content
     const metadata = {
       test: 'field1',
-      agreement_segments: [
+      digital_content_segments: [
         {
           multihash: 'QmYfSQCgCwhxwYcdEwCkFJHicDe6rzCAb7AtLz3GrHmuU6',
           duration: 1000
@@ -654,13 +654,13 @@ describe('test Polling Agreements with mocked IPFS', function () {
       .expect(400)
   })
 
-  // depends on "uploads /agreement_content_async" and "creates Coliving agreement" tests
-  it('completes Coliving agreement creation', async function () {
+  // depends on "uploads /digital_content_async" and "creates Coliving digital_content" tests
+  it('completes Coliving digital_content creation', async function () {
     libsMock.User.getUsers.exactly(4)
 
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
     const {
-      agreement_segments: agreementSegments,
+      digital_content_segments: agreementSegments,
       source_file: sourceFile,
       transcodedAgreementUUID
     } = await handleAgreementContentRoute(
@@ -670,7 +670,7 @@ describe('test Polling Agreements with mocked IPFS', function () {
 
     const metadata = {
       test: 'field1',
-      agreement_segments: agreementSegments,
+      digital_content_segments: agreementSegments,
       owner_id: 1
     }
 
@@ -700,8 +700,8 @@ describe('test Polling Agreements with mocked IPFS', function () {
       .expect(200)
   })
 
-  // depends on "uploads /agreement_content_async"
-  it('fails to create downloadable agreement with no agreement_id and no source_id present', async function () {
+  // depends on "uploads /digital_content_async"
+  it('fails to create downloadable digital_content with no digital_content_id and no source_id present', async function () {
     libsMock.User.getUsers.exactly(2)
 
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
@@ -710,18 +710,18 @@ describe('test Polling Agreements with mocked IPFS', function () {
       getReqObj(fileUUID, fileDir, session)
     )
 
-    const { agreement_segments: agreementSegments } = resp
+    const { digital_content_segments: agreementSegments } = resp
     assert.deepStrictEqual(
       agreementSegments[0].multihash,
       'QmYfSQCgCwhxwYcdEwCkFJHicDe6rzCAb7AtLz3GrHmuU6'
     )
     assert.deepStrictEqual(agreementSegments.length, 32)
 
-    // creates a downloadable Coliving agreement with no agreement_id and no source_file
+    // creates a downloadable Coliving digital_content with no digital_content_id and no source_file
     const metadata = {
       test: 'field1',
       owner_id: 1,
-      agreement_segments: [
+      digital_content_segments: [
         {
           multihash: 'QmYfSQCgCwhxwYcdEwCkFJHicDe6rzCAb7AtLz3GrHmuU6',
           duration: 1000
@@ -742,13 +742,13 @@ describe('test Polling Agreements with mocked IPFS', function () {
       .expect(400)
   })
 
-  // depends on "uploads /agreement_content_async" and "creates Coliving agreement" tests
-  it('creates a downloadable agreement', async function () {
+  // depends on "uploads /digital_content_async" and "creates Coliving digital_content" tests
+  it('creates a downloadable digital_content', async function () {
     libsMock.User.getUsers.exactly(4)
 
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
     const {
-      agreement_segments: agreementSegments,
+      digital_content_segments: agreementSegments,
       source_file: sourceFile,
       transcodedAgreementUUID
     } = await handleAgreementContentRoute(
@@ -766,7 +766,7 @@ describe('test Polling Agreements with mocked IPFS', function () {
     // needs debugging as to why this 'cid' key is needed for test to work
     const metadata = {
       test: 'field1',
-      agreement_segments: agreementSegments,
+      digital_content_segments: agreementSegments,
       owner_id: 1,
       download: {
         is_downloadable: true,
@@ -829,7 +829,7 @@ describe('test Polling Agreements with real files', function () {
     await server.close()
   })
 
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~ /agreement_content_async TESTS ~~~~~~~~~~~~~~~~~~~~~~~~~
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~ /digital_content_async TESTS ~~~~~~~~~~~~~~~~~~~~~~~~~
   it('sends server error response if segmenting fails', async function () {
     const { handleAgreementContentRoute } = proxyquire(
       '../src/components/agreements/agreementsComponentService.js',
@@ -880,16 +880,16 @@ describe('test Polling Agreements with real files', function () {
     }
   })
 
-  it('should successfully upload agreement + transcode and prune upload artifacts when TranscodingQueue is available', async function () {
+  it('should successfully upload digital_content + transcode and prune upload artifacts when TranscodingQueue is available', async function () {
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
     const resp = await handleAgreementContentRoute(
       logContext,
       getReqObj(fileUUID, fileDir, session)
     )
 
-    const { agreement_segments: agreementSegments, transcodedAgreementCID } = resp
+    const { digital_content_segments: agreementSegments, transcodedAgreementCID } = resp
 
-    // check that the generated transcoded agreement is the same as the transcoded agreement in /tests
+    // check that the generated transcoded digital_content is the same as the transcoded digital_content in /tests
     const transcodedAgreementAssetPath = path.join(
       __dirname,
       'testTranscoded320Agreement.mp3'
@@ -904,7 +904,7 @@ describe('test Polling Agreements with real files', function () {
 
     // Ensure 32 segments are returned, each segment has a corresponding file on disk,
     //    and each segment disk file is exactly as expected
-    // Note - The exact output of agreement segmentation is deterministic only for a given environment/ffmpeg version
+    // Note - The exact output of digital_content segmentation is deterministic only for a given environment/ffmpeg version
     //    This test may break in the future but at that point we should re-generate the reference segment files.
     assert.deepStrictEqual(agreementSegments.length, TestColivingAgreementFileNumSegments)
     agreementSegments.map(function (cid, index) {
@@ -936,7 +936,7 @@ describe('test Polling Agreements with real files', function () {
 
     assert.deepStrictEqual(
       resp.body.error,
-      'Metadata object must include owner_id and non-empty agreement_segments array'
+      'Metadata object must include owner_id and non-empty digital_content_segments array'
     )
   })
 
@@ -944,7 +944,7 @@ describe('test Polling Agreements with real files', function () {
     sinon.stub(BlacklistManager, 'CIDIsInBlacklist').returns(true)
     const metadata = {
       test: 'field1',
-      agreement_segments: [
+      digital_content_segments: [
         {
           multihash: 'QmYfSQCgCwhxwYcdEwCkFJHicDe6rzCAb7AtLz3GrHmuU6',
           duration: 1000
@@ -965,7 +965,7 @@ describe('test Polling Agreements with real files', function () {
   it('successfully adds metadata file to filesystem and db', async function () {
     const metadata = sortKeys({
       test: 'field1',
-      agreement_segments: [
+      digital_content_segments: [
         {
           multihash: 'QmYfSQCgCwhxwYcdEwCkFJHicDe6rzCAb7AtLz3GrHmuU6',
           duration: 1000
@@ -1006,10 +1006,10 @@ describe('test Polling Agreements with real files', function () {
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~ /agreements TESTS ~~~~~~~~~~~~~~~~~~~~~~~~~
   it('POST /agreements tests', async function () {
-    // Upload agreement content
+    // Upload digital_content content
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
     const {
-      agreement_segments: agreementSegments,
+      digital_content_segments: agreementSegments,
       transcodedAgreementUUID,
       source_file: sourceFile
     } = await handleAgreementContentRoute(
@@ -1017,11 +1017,11 @@ describe('test Polling Agreements with real files', function () {
       getReqObj(fileUUID, fileDir, session)
     )
 
-    // Upload agreement metadata
+    // Upload digital_content metadata
     const agreementMetadata = {
       metadata: {
         owner_id: userId,
-        agreement_segments: agreementSegments
+        digital_content_segments: agreementSegments
       },
       source_file: sourceFile
     }
@@ -1034,7 +1034,7 @@ describe('test Polling Agreements with real files', function () {
       .expect(200)
     const agreementMetadataFileUUID = agreementMetadataResp.body.data.metadataFileUUID
 
-    // Complete agreement creation
+    // Complete digital_content creation
     await request(app2)
       .post('/agreements')
       .set('X-Session-ID', session.sessionToken)
@@ -1047,11 +1047,11 @@ describe('test Polling Agreements with real files', function () {
       })
   })
 
-  it('parallel agreement upload', async function () {
-    // Upload agreement content
+  it('parallel digital_content upload', async function () {
+    // Upload digital_content content
     const { fileUUID, fileDir } = saveFileToStorage(testAudioFilePath)
     const {
-      agreement_segments: agreementSegments,
+      digital_content_segments: agreementSegments,
       transcodedAgreementUUID,
       source_file: sourceFile
     } = await handleAgreementContentRoute(
@@ -1059,11 +1059,11 @@ describe('test Polling Agreements with real files', function () {
       getReqObj(fileUUID, fileDir, session)
     )
 
-    // Upload same agreement content again
+    // Upload same digital_content content again
     const { fileUUID: fileUUID2, fileDir: fileDir2 } =
       saveFileToStorage(testAudioFilePath)
     const {
-      agreement_segments: agreement2Segments,
+      digital_content_segments: agreement2Segments,
       transcodedAgreementUUID: transcodedAgreement2UUID,
       source_file: sourceFile2
     } = await handleAgreementContentRoute(
@@ -1071,11 +1071,11 @@ describe('test Polling Agreements with real files', function () {
       getReqObj(fileUUID2, fileDir2, session)
     )
 
-    // Upload agreement 1 metadata
+    // Upload digital_content 1 metadata
     const agreementMetadata = {
       metadata: {
         owner_id: userId,
-        agreement_segments: agreementSegments
+        digital_content_segments: agreementSegments
       },
       source_file: sourceFile
     }
@@ -1088,11 +1088,11 @@ describe('test Polling Agreements with real files', function () {
       .expect(200)
     const agreementMetadataFileUUID = agreementMetadataResp.body.data.metadataFileUUID
 
-    // Upload agreement 2 metadata
+    // Upload digital_content 2 metadata
     const agreement2Metadata = {
       metadata: {
         owner_id: userId,
-        agreement_segments: agreement2Segments
+        digital_content_segments: agreement2Segments
       },
       source_file: sourceFile
     }

@@ -10,13 +10,13 @@ const COMMANDER_HELP_STRING =
 
 // Example usage:
 // node delistContent/index.js -a add -l 1,3,7 -t user
-// node delistContent/index.js -a add -l 1,3,7 -t agreement
-// node delistContent/index.js -a add -l 7eP5n,ML51L -t agreement-hash-id
+// node delistContent/index.js -a add -l 1,3,7 -t digital_content
+// node delistContent/index.js -a add -l 7eP5n,ML51L -t digital-content-hash-id
 // node delistContent/index.js -a add -l Qm..., Qm..., -t cid
 
 // node delistContent/index.js -a remove -l 1,3,7 -t user
-// node delistContent/index.js -a remove -l 1,3,7 -t agreement
-// node delistContent/index.js -a remove -l 7eP5n,ML51L -t agreement-hash-id
+// node delistContent/index.js -a remove -l 1,3,7 -t digital_content
+// node delistContent/index.js -a remove -l 7eP5n,ML51L -t digital-content-hash-id
 // node delistContent/index.js -a remove -l Qm..., Qm..., -t cid
 `
 
@@ -29,7 +29,7 @@ class Commander {
     this.program = new Command()
     this.program
       .usage(COMMANDER_HELP_STRING)
-      .requiredOption('-t, --type <type>', `Type of id - either 'agreement', 'agreement-hash-id', 'user' or 'cid'.\n'agreement-hash-id' is an encoded version of a agreement id commonly found in URLs with this pattern 'https://contentnode.domain.com/agreements/stream/7eP5n'. In this case the 'agreement-hash-id' is '7eP5n'.`)
+      .requiredOption('-t, --type <type>', `Type of id - either 'digital_content', 'digital-content-hash-id', 'user' or 'cid'.\n'digital-content-hash-id' is an encoded version of a digital_content id commonly found in URLs with this pattern 'https://contentnode.domain.com/agreements/stream/7eP5n'. In this case the 'digital-content-hash-id' is '7eP5n'.`)
       .requiredOption('-l, --list <list>', 'comma separated list of ids or cids', ids => ids.split(','))
       .requiredOption('-a, --act <action>', '`add` to set of delisted content or `remove` from set of delisted content')
       .option('-v, --verbose', 'verbose mode to print out debug logs', false)
@@ -79,9 +79,9 @@ class Commander {
         if (decodedId) return decodedId
       }).filter(Boolean)
       type = 'AGREEMENT'
-      if (values.length === 0) throw new Error('List of agreement hash ids is not proper.')
+      if (values.length === 0) throw new Error('List of digital_content hash ids is not proper.')
       if (originalNumIds !== values.length) {
-        console.warn(`Filtered out invalid ids from input. Please only valid agreement hash ids!`)
+        console.warn(`Filtered out invalid ids from input. Please only valid digital_content hash ids!`)
       }
     } else { // else will be CID
       // Parse cids and ensure they follow the pattern Qm...

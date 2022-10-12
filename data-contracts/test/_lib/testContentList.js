@@ -36,8 +36,8 @@ export const addContentListAndValidate = async (contentListFactory, expectedCont
   let emittedEventIsAlbum = eventInfo._isAlbum
   assert.equal(isAlbum, emittedEventIsAlbum, 'Expected emitted album status to equal input')
 
-  // Assert on agreement id array
-  let emittedAgreementIds = eventInfo._agreementIds
+  // Assert on digital_content id array
+  let emittedAgreementIds = eventInfo._digital_contentIds
   for (let i = 0; i < emittedAgreementIds.length; i++) {
     let emittedAgreementId = emittedAgreementIds[i].toNumber()
 
@@ -253,7 +253,7 @@ export const addContentListAgreement = async (contentListFactory, walletAddress,
   assert.equal(emittedContentListId, contentListId, 'Expected update event contentListId to match input')
   let emittedAddedAgreementId = eventInfo._addedAgreementId.toNumber()
 
-  assert.equal(emittedAddedAgreementId, addedAgreementId, 'Expected update event added agreement id to match input')
+  assert.equal(emittedAddedAgreementId, addedAgreementId, 'Expected update event added digital_content id to match input')
 
   // Validate storage contentList value
   let isAgreementInContentList = await contentListFactory.isAgreementInContentList.call(contentListId, addedAgreementId)
@@ -276,9 +276,9 @@ export const deleteContentListAgreement = async (contentListFactory, walletAddre
   assert.equal(emittedContentListId, contentListId, 'Expected update event contentListId to match input')
   let emittedDeletedAgreementId = eventInfo._deletedAgreementId.toNumber()
 
-  assert.equal(emittedDeletedAgreementId, deletedAgreementId, 'Expected update event added agreement id to match input')
+  assert.equal(emittedDeletedAgreementId, deletedAgreementId, 'Expected update event added digital_content id to match input')
 
-  // Validate storage contentList agreement value
+  // Validate storage contentList digital_content value
   let isAgreementInContentList = await contentListFactory.isAgreementInContentList.call(contentListId, deletedAgreementId)
   assert.isFalse(isAgreementInContentList, 'Expected newly deleted agreements to not be in contentList')
 

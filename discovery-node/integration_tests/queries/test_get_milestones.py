@@ -16,11 +16,11 @@ def test_get_milestones(app):
         "users": [{"user_id": 1}, {"user_id": 2}, {"user_id": 3}, {"user_id": 4}],
         "agreements": [
             {
-                "agreement_id": 1,
+                "digital_content_id": 1,
                 "owner_id": 1,
             },
             {
-                "agreement_id": 2,
+                "digital_content_id": 2,
                 "owner_id": 3,
             },
         ],

@@ -121,7 +121,7 @@ export interface User {
      * @type {number}
      * @memberof User
      */
-    agreement_count: number;
+    digital_content_count: number;
     /**
      * 
      * @type {boolean}

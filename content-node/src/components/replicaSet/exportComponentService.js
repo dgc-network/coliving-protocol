@@ -49,7 +49,7 @@ const exportComponentService = async ({
         transaction,
         raw: true
       }),
-      models.Agreement.findAll({
+      models.DigitalContent.findAll({
         where: {
           cnodeUserUUID: cnodeUserUUIDs,
           clock: {
@@ -131,8 +131,8 @@ const exportComponentService = async ({
     colivingUsers.forEach((colivingUser) => {
       cnodeUsersDict[colivingUser.cnodeUserUUID].colivingUsers.push(colivingUser)
     })
-    agreements.forEach((agreement) => {
-      cnodeUsersDict[agreement.cnodeUserUUID].agreements.push(agreement)
+    agreements.forEach((digital_content) => {
+      cnodeUsersDict[digital_content.cnodeUserUUID].agreements.push(digital_content)
     })
     files.forEach((file) => {
       cnodeUsersDict[file.cnodeUserUUID].files.push(file)

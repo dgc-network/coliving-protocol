@@ -35,7 +35,7 @@ def get_content_list_created_event():
             "_content_listOwnerId": 1,
             "_isPrivate": True,
             "_isAlbum": False,
-            "_agreementIds": [],  # This is a list of numbers (agreement ids)
+            "_digital_contentIds": [],  # This is a list of numbers (digital_content ids)
         }
     )
     return event_type, AttrDict(
@@ -81,31 +81,31 @@ def get_content_list_description_updated_event():
 
 
 # event_type: ContentListAgreementAdded
-def get_content_list_agreement_added_event(contentListId, addedAgreementId):
-    event_type = content_list_event_types_lookup["content_list_agreement_added"]
-    content_list_agreement_added_event = AttrDict(
+def get_content_list_digital_content_added_event(contentListId, addedAgreementId):
+    event_type = content_list_event_types_lookup["content_list_digital_content_added"]
+    content_list_digital_content_added_event = AttrDict(
         {"_content_listId": contentListId, "_addedAgreementId": addedAgreementId}
     )
     return event_type, AttrDict(
-        {"blockHash": block_hash, "args": content_list_agreement_added_event}
+        {"blockHash": block_hash, "args": content_list_digital_content_added_event}
     )
 
 
 # event_type: ContentListAgreementsOrdered
-def get_content_list_agreements_ordered_event():
-    event_type = content_list_event_types_lookup["content_list_agreements_ordered"]
-    content_list_agreements_ordered_event = AttrDict(
+def get_content_list_digital_contents_ordered_event():
+    event_type = content_list_event_types_lookup["content_list_digital_contents_ordered"]
+    content_list_digital_contents_ordered_event = AttrDict(
         {"_content_listId": 1, "_orderedAgreementIds": [2, 1]}
     )
     return event_type, AttrDict(
-        {"blockHash": block_hash, "args": content_list_agreements_ordered_event}
+        {"blockHash": block_hash, "args": content_list_digital_contents_ordered_event}
     )
 
 
 # event_type: ContentListAgreementDeleted
-def get_content_list_agreement_delete_event(contentListId, deletedAgreementId, deletedAgreementTimestamp):
-    event_type = content_list_event_types_lookup["content_list_agreement_deleted"]
-    content_list_agreement_delete_event = AttrDict(
+def get_content_list_digital_content_delete_event(contentListId, deletedAgreementId, deletedAgreementTimestamp):
+    event_type = content_list_event_types_lookup["content_list_digital_content_deleted"]
+    content_list_digital_content_delete_event = AttrDict(
         {
             "_content_listId": contentListId,
             "_deletedAgreementId": deletedAgreementId,
@@ -113,7 +113,7 @@ def get_content_list_agreement_delete_event(contentListId, deletedAgreementId, d
         }
     )
     return event_type, AttrDict(
-        {"blockHash": block_hash, "args": content_list_agreement_delete_event}
+        {"blockHash": block_hash, "args": content_list_digital_content_delete_event}
     )
 
     # event_type: ContentListPrivacyUpdated
@@ -176,13 +176,13 @@ def test_index_content_list(app):
         block_integer_time = int(block_timestamp)
 
         content_list_content_array = []
-        for agreement_id in entry.args._agreementIds:
+        for digital_content_id in entry.args._digital_contentIds:
             content_list_content_array.append(
-                {"agreement": agreement_id, "time": block_integer_time}
+                {"digital_content": digital_content_id, "time": block_integer_time}
             )
 
         assert content_list_record.content_list_contents == {
-            "agreement_ids": content_list_content_array
+            "digital_content_ids": content_list_content_array
         }
         assert content_list_record.created_at == block_datetime
 
@@ -245,8 +245,8 @@ def test_index_content_list(app):
         )
         assert content_list_record.is_private == entry.args._updatedIsPrivate
 
-        # ================= Test content_list_agreement_added Event =================
-        event_type, entry = get_content_list_agreement_added_event(1, 1)
+        # ================= Test content_list_digital_content_added Event =================
+        event_type, entry = get_content_list_digital_content_added_event(1, 1)
 
         parse_content_list_event(
             None,  # self - not used
@@ -258,12 +258,12 @@ def test_index_content_list(app):
             session,
         )
 
-        assert len(content_list_record.content_list_contents["agreement_ids"]) == 1
-        last_content_list_content = content_list_record.content_list_contents["agreement_ids"][-1]
-        assert last_content_list_content == {"agreement": entry.args._addedAgreementId, "time": 12}
+        assert len(content_list_record.content_list_contents["digital_content_ids"]) == 1
+        last_content_list_content = content_list_record.content_list_contents["digital_content_ids"][-1]
+        assert last_content_list_content == {"digital_content": entry.args._addedAgreementId, "time": 12}
 
-        # ================= Test content_list_agreement_added with second agreement Event =================
-        event_type, entry = get_content_list_agreement_added_event(1, 2)
+        # ================= Test content_list_digital_content_added with second digital_content Event =================
+        event_type, entry = get_content_list_digital_content_added_event(1, 2)
 
         parse_content_list_event(
             None,  # self - not used
@@ -275,12 +275,12 @@ def test_index_content_list(app):
             session,
         )
 
-        assert len(content_list_record.content_list_contents["agreement_ids"]) == 2
-        last_content_list_content = content_list_record.content_list_contents["agreement_ids"][-1]
-        assert last_content_list_content == {"agreement": entry.args._addedAgreementId, "time": 13}
+        assert len(content_list_record.content_list_contents["digital_content_ids"]) == 2
+        last_content_list_content = content_list_record.content_list_contents["digital_content_ids"][-1]
+        assert last_content_list_content == {"digital_content": entry.args._addedAgreementId, "time": 13}
 
-        # ================= Test content_list_agreements_ordered Event =================
-        event_type, entry = get_content_list_agreements_ordered_event()
+        # ================= Test content_list_digital_contents_ordered Event =================
+        event_type, entry = get_content_list_digital_contents_ordered_event()
         parse_content_list_event(
             None,  # self - not used
             None,  # update_task - not used
@@ -291,13 +291,13 @@ def test_index_content_list(app):
             session,
         )
 
-        assert content_list_record.content_list_contents["agreement_ids"] == [
-            {"agreement": 2, "time": 13},
-            {"agreement": 1, "time": 12},
+        assert content_list_record.content_list_contents["digital_content_ids"] == [
+            {"digital_content": 2, "time": 13},
+            {"digital_content": 1, "time": 12},
         ]
 
-        # ================= Test content_list_agreement_delete_event Event =================
-        event_type, entry = get_content_list_agreement_delete_event(1, 1, 12)
+        # ================= Test content_list_digital_content_delete_event Event =================
+        event_type, entry = get_content_list_digital_content_delete_event(1, 1, 12)
 
         parse_content_list_event(
             None,  # self - not used
@@ -309,15 +309,15 @@ def test_index_content_list(app):
             session,
         )
 
-        assert len(content_list_record.content_list_contents["agreement_ids"]) == 1
-        last_content_list_content = content_list_record.content_list_contents["agreement_ids"][-1]
-        assert content_list_record.content_list_contents["agreement_ids"] == [
-            {"agreement": 2, "time": 13}
+        assert len(content_list_record.content_list_contents["digital_content_ids"]) == 1
+        last_content_list_content = content_list_record.content_list_contents["digital_content_ids"][-1]
+        assert content_list_record.content_list_contents["digital_content_ids"] == [
+            {"digital_content": 2, "time": 13}
         ]
 
-        # ================= Test content_list_agreement_delete_event Event =================
+        # ================= Test content_list_digital_content_delete_event Event =================
         # This should be a no-op
-        event_type, entry = get_content_list_agreement_delete_event(1, 1, 12)
+        event_type, entry = get_content_list_digital_content_delete_event(1, 1, 12)
 
         parse_content_list_event(
             None,  # self - not used
@@ -329,9 +329,9 @@ def test_index_content_list(app):
             session,
         )
 
-        assert len(content_list_record.content_list_contents["agreement_ids"]) == 1
-        assert content_list_record.content_list_contents["agreement_ids"] == [
-            {"agreement": 2, "time": 13}
+        assert len(content_list_record.content_list_contents["digital_content_ids"]) == 1
+        assert content_list_record.content_list_contents["digital_content_ids"] == [
+            {"digital_content": 2, "time": 13}
         ]
 
         # ================= Test content_list_deleted Event =================

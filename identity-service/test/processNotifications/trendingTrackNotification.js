@@ -17,11 +17,11 @@ const { clearDatabase, runMigrations } = require('../lib/app')
 const { encodeHashId } = require('../../src/notifications/utils')
 
 /**
- * Agreement id 100 owned by user id 1 is #1 trending
- * Agreement id 101 owned by user id 1 is #2 trending
- * Agreement id 102 owned by user id 2 is #3 trending
- * Agreement id 103 owned by user id 3 is #4 trending
- * Agreement id 104 owned by user id 4 is #5 trending
+ * DigitalContent id 100 owned by user id 1 is #1 trending
+ * DigitalContent id 101 owned by user id 1 is #2 trending
+ * DigitalContent id 102 owned by user id 2 is #3 trending
+ * DigitalContent id 103 owned by user id 3 is #4 trending
+ * DigitalContent id 104 owned by user id 4 is #5 trending
  */
 const initialNotifications = [
   {
@@ -53,11 +53,11 @@ const initialNotifications = [
 ]
 
 /**
- * Agreement id 103 owned by user id 3 is #1 trending <= increase
- * Agreement id 104 owned by user id 4 is #2 trending <= increase
- * Agreement id 100 owned by user id 1 is #3 trending <= decrease
- * Agreement id 110 owned by user id 10 is #4 trending <= new
- * Agreement id 101 owned by user id 1 is #5 trending <= decrease
+ * DigitalContent id 103 owned by user id 3 is #1 trending <= increase
+ * DigitalContent id 104 owned by user id 4 is #2 trending <= increase
+ * DigitalContent id 100 owned by user id 1 is #3 trending <= decrease
+ * DigitalContent id 110 owned by user id 10 is #4 trending <= new
+ * DigitalContent id 101 owned by user id 1 is #5 trending <= decrease
  */
 const additionalNotifications = [
   {
@@ -90,8 +90,8 @@ const additionalNotifications = [
 
 const makeTrendingResponse = (ids) => {
   const data = ids.map(id => ({
-    title: `Agreement ${id}`,
-    description: `Agreement description ${id}`,
+    title: `DigitalContent ${id}`,
+    description: `DigitalContent description ${id}`,
     genre: 'Electronic',
     id: encodeHashId(id),
     user: {
@@ -104,7 +104,7 @@ const makeTrendingResponse = (ids) => {
   })
 }
 
-describe('Test Trending Agreement Notification', () => {
+describe('Test Trending DigitalContent Notification', () => {
   beforeEach(async () => {
     await clearDatabase()
     await runMigrations()
@@ -171,8 +171,8 @@ describe('Test Trending Agreement Notification', () => {
 
     // ======================================= Run checks against the Notifications =======================================
     // User 20 Should have 2 notifications
-    // 1.) users 1 & 2 liked agreement 10 (owned by user 20)
-    // 2) user 2 liked agreement 11 (owned by user 20)
+    // 1.) users 1 & 2 liked digital_content 10 (owned by user 20)
+    // 2) user 2 liked digital_content 11 (owned by user 20)
     const user1Notifs = await models.Notification.findAll({ where: { userId: 1 } })
     assert.deepStrictEqual(user1Notifs.length, 2)
     const agreement100Notification = user1Notifs.find(notif => notif.entityId === 100)
@@ -180,13 +180,13 @@ describe('Test Trending Agreement Notification', () => {
     const agreement101Notification = user1Notifs.find(notif => notif.entityId === 101)
     assert.ok(agreement101Notification)
 
-    // For the agreement 100 rank 1 check that the notification action is correct
+    // For the digital_content 100 rank 1 check that the notification action is correct
     const agreement100NotificationActions = await models.NotificationAction.findAll({ where: { notificationId: agreement100Notification.id } })
     assert.deepStrictEqual(agreement100NotificationActions.length, 1)
     assert.deepStrictEqual(agreement100NotificationActions[0].actionEntityId, 1)
     assert.deepStrictEqual(agreement100NotificationActions[0].actionEntityType, getTimeGenreActionType(TRENDING_TIME.WEEK, TRENDING_GENRE.ALL))
 
-    // For the agreement 100 rank 1 check that the notification action is correct
+    // For the digital_content 100 rank 1 check that the notification action is correct
     const agreement101NotificationActions = await models.NotificationAction.findAll({ where: { notificationId: agreement101Notification.id } })
     assert.deepStrictEqual(agreement101NotificationActions.length, 1)
     assert.deepStrictEqual(agreement101NotificationActions[0].actionEntityId, 2)
@@ -221,7 +221,7 @@ describe('Test Trending Agreement Notification', () => {
 
     // Check that there is one more notification
     const allNotifsAfterUpdated = await models.Notification.findAll()
-    console.log({ allNotifsAfterUpdated: allNotifsAfterUpdated.map(n => ({ userId: n.userId, agreement: n.entityId })) })
+    console.log({ allNotifsAfterUpdated: allNotifsAfterUpdated.map(n => ({ userId: n.userId, digital_content: n.entityId })) })
     assert.deepStrictEqual(allNotifsAfterUpdated.length, 6)
 
     const user10Notifs = await models.Notification.findAll({ where: { userId: 10 } })

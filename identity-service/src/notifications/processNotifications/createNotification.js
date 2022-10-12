@@ -6,10 +6,10 @@ const {
 
 const getNotifType = (entityType) => {
   switch (entityType) {
-    case 'agreement':
+    case 'digital_content':
       return {
-        createType: notificationTypes.Create.agreement,
-        actionEntityType: actionEntityTypes.Agreement
+        createType: notificationTypes.Create.digital_content,
+        actionEntityType: actionEntityTypes.DigitalContent
       }
     case 'album':
       return {
@@ -55,18 +55,18 @@ async function processCreateNotifications (notifications, tx) {
     if (subscribers.length === 0) continue
 
     // The notification entity id is the uploader id for agreements
-    // Each agreement will added to the notification actions table
+    // Each digital_content will added to the notification actions table
     // For contentList/albums, the notification entity id is the collection id itself
     let notificationEntityId =
-      actionEntityType === actionEntityTypes.Agreement
+      actionEntityType === actionEntityTypes.DigitalContent
         ? notification.initiator
         : notification.metadata.entity_id
 
     // Action table entity is agreementId for CreateAgreement notifications
-    // Allowing multiple agreement creates to be associated w/ a single notification for your subscription
+    // Allowing multiple digital_content creates to be associated w/ a single notification for your subscription
     // For collections, the entity is the owner id, producing a distinct notification for each
     let createdActionEntityId =
-      actionEntityType === actionEntityTypes.Agreement
+      actionEntityType === actionEntityTypes.DigitalContent
         ? notification.metadata.entity_id
         : notification.metadata.entity_owner_id
 
@@ -100,7 +100,7 @@ async function processCreateNotifications (notifications, tx) {
     }
 
     await Promise.all(notificationIds.map(async (notificationId) => {
-      // Action entity id can be one of album/contentList/agreement
+      // Action entity id can be one of album/contentList/digital_content
       let notifActionCreateTx = await models.NotificationAction.findOrCreate({
         where: {
           notificationId,
@@ -128,14 +128,14 @@ async function processCreateNotifications (notifications, tx) {
     // Dedupe album /contentList notification
     if (createType === notificationTypes.Create.album ||
         createType === notificationTypes.Create.contentList) {
-      let agreementIdObjectList = notification.metadata.collection_content.agreement_ids
+      let agreementIdObjectList = notification.metadata.collection_content.digital_content_ids
       if (agreementIdObjectList.length > 0) {
         // Clear duplicate notifications from identity database
         for (var entry of agreementIdObjectList) {
-          let agreementId = entry.agreement
+          let agreementId = entry.digital_content
           await models.NotificationAction.destroy({
             where: {
-              actionEntityType: actionEntityTypes.Agreement,
+              actionEntityType: actionEntityTypes.DigitalContent,
               actionEntityId: agreementId
             },
             transaction: tx

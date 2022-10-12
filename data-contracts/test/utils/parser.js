@@ -62,8 +62,8 @@ export const assertEqualValues = (tx, name, properties) => {
     switch (p) {
       case '_id':
       case '_userId':
-      case '_agreementOwnerId':
-      case '_agreementId':
+      case '_digital_contentOwnerId':
+      case '_digital_contentId':
       case '_content_listId':
       case '_followeeUserId':
       case '_primaryId':
@@ -94,8 +94,8 @@ const buildReturnObj = (tx, properties) => {
         returnObj['agreementId'] = tx.event.args[p].toNumber()
         break
       case '_userId':
-      case '_agreementOwnerId':
-      case '_agreementId':
+      case '_digital_contentOwnerId':
+      case '_digital_contentId':
       case '_content_listId':
       case '_followeeUserId':
         // Slices the property starting at index 1 to remove _

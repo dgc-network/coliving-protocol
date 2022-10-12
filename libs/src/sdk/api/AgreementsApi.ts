@@ -16,7 +16,7 @@ export class AgreementsApi extends GeneratedAgreementsApi {
   }
 
   /**
-   * Get the url of the agreement's streamable mp3 file
+   * Get the url of the digital_content's streamable mp3 file
    */
   async streamAgreement(requestParameters: StreamAgreementRequest): Promise<string> {
     if (
@@ -29,8 +29,8 @@ export class AgreementsApi extends GeneratedAgreementsApi {
       )
     }
 
-    const path = `/agreements/{agreement_id}/stream`.replace(
-      `{${'agreement_id'}}`,
+    const path = `/agreements/{digital_content_id}/stream`.replace(
+      `{${'digital_content_id'}}`,
       encodeURIComponent(String(requestParameters.agreementId))
     )
     const host = await this.discoveryNode.getHealthyDiscoveryNodeEndpoint(0)

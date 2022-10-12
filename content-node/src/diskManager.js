@@ -11,7 +11,7 @@ const CID_DIRECTORY_REGEX =
   /\/(?<outer>Qm[a-zA-Z0-9]{44})\/?(?<inner>Qm[a-zA-Z0-9]{44})?/
 
 // variable to cache if we've run `ensureDirPathExists` in getTmpAgreementUploadArtifactsPath so we don't run
-// it every time a agreement is uploaded
+// it every time a digital_content is uploaded
 let TMP_AGREEMENT_ARTIFACTS_CREATED = false
 
 class DiskManager {
@@ -23,7 +23,7 @@ class DiskManager {
   }
 
   /**
-   * Returns the folder that stores agreement artifacts uploaded by creators. The reason this is all stored together
+   * Returns the folder that stores digital_content artifacts uploaded by creators. The reason this is all stored together
    * is we should be able to delete the contents of this folder without scanning through other folders with the
    * naming scheme.
    */
@@ -31,7 +31,7 @@ class DiskManager {
     const dirPath = path.join(
       config.get('storagePath'),
       'files',
-      'tmp_agreement_artifacts'
+      'tmp_digital_content_artifacts'
     )
     if (!TMP_AGREEMENT_ARTIFACTS_CREATED) {
       this.ensureDirPathExists(dirPath)

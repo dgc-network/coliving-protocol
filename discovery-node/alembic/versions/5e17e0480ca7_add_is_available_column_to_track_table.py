@@ -1,4 +1,4 @@
-"""add is_available column to agreement table
+"""add is_available column to digital_content table
 
 Revision ID: 5e17e0480ca7
 Revises: a83814aeb4a1

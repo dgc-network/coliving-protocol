@@ -39,8 +39,8 @@ def upgrade():
             challenge_id='tut' OR
             challenge_id='tp';
 
-        WITH agreement_uploads AS (
-            SELECT count(*) AS agreement_count, owner_id
+        WITH digital_content_uploads AS (
+            SELECT count(*) AS digital_content_count, owner_id
             FROM agreements
             WHERE
                 is_current=True AND
@@ -49,12 +49,12 @@ def upgrade():
         )
         UPDATE user_challenges
         SET
-            is_complete=(agreement_uploads.agreement_count >= 3),
-            current_step_count=agreement_uploads.agreement_count
+            is_complete=(digital_content_uploads.digital_content_count >= 3),
+            current_step_count=digital_content_uploads.digital_content_count
         FROM
-            agreement_uploads
+            digital_content_uploads
         WHERE
-            challenge_id='agreement-upload' AND
+            challenge_id='digital-content-upload' AND
             user_id=owner_id;
 
         COMMIT;

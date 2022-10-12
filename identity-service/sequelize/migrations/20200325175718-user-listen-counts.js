@@ -2,7 +2,7 @@
 
 /**
  * Adds a 'count' field to UserAgreementListens, which signifies the
- * number of times a user has listened to a agreement
+ * number of times a user has listened to a digital_content
  */
 module.exports = {
   up: (queryInterface, Sequelize) => {

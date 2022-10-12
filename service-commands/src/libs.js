@@ -206,7 +206,7 @@ function LibsWrapper(walletIndex = 0) {
   }
 
   /**
-   * Upload a agreement.
+   * Upload a digital_content.
    *
    * @param {*} args agreementFile and metadata
    * @returns agreementId
@@ -215,7 +215,7 @@ function LibsWrapper(walletIndex = 0) {
   this.uploadAgreement = async ({ agreementFile, agreementMetadata }) => {
     assertLibsDidInit()
 
-    const { agreementId, error } = await this.libsInstance.Agreement.uploadAgreement(
+    const { agreementId, error } = await this.libsInstance.DigitalContent.uploadAgreement(
       agreementFile,
       null /* image */,
       agreementMetadata,
@@ -226,16 +226,16 @@ function LibsWrapper(walletIndex = 0) {
   }
 
   /**
-   * Updates an existing agreement given metadata. This function expects that all associated files
-   * such as agreement content, cover art are already on content node.
-   * @param {Object} metadata json of the agreement metadata with all fields, missing fields will error
+   * Updates an existing digital_content given metadata. This function expects that all associated files
+   * such as digital_content content, cover art are already on content node.
+   * @param {Object} metadata json of the digital_content metadata with all fields, missing fields will error
    */
   this.updateAgreementOnChainAndCnode = async metadata => {
     const {
       blockHash,
       blockNumber,
       agreementId
-    } = await this.libsInstance.Agreement.updateAgreement(metadata)
+    } = await this.libsInstance.DigitalContent.updateAgreement(metadata)
     return { blockHash, blockNumber, agreementId }
   }
 
@@ -250,7 +250,7 @@ function LibsWrapper(walletIndex = 0) {
   }
 
   /**
-   * Repost a agreement.
+   * Repost a digital_content.
    *
    * @param {number} args agreementId
    * @returns transaction receipt
@@ -258,7 +258,7 @@ function LibsWrapper(walletIndex = 0) {
    */
   this.repostAgreement = async agreementId => {
     assertLibsDidInit()
-    return await this.libsInstance.Agreement.addAgreementRepost(agreementId)
+    return await this.libsInstance.DigitalContent.addAgreementRepost(agreementId)
   }
 
   /**
@@ -270,13 +270,13 @@ function LibsWrapper(walletIndex = 0) {
    */
   this.getRepostersForAgreement = async agreementId => {
     assertLibsDidInit()
-    return await this.libsInstance.Agreement.getRepostersForAgreement(100, 0, agreementId)
+    return await this.libsInstance.DigitalContent.getRepostersForAgreement(100, 0, agreementId)
   }
 
   /**
-   * Fetch agreement metadata from discprov.
+   * Fetch digital_content metadata from discprov.
    * @param {*} agreementId
-   * @returns agreement metadata
+   * @returns digital_content metadata
    */
   this.getAgreement = async agreementId => {
     assertLibsDidInit()
@@ -459,9 +459,9 @@ function LibsWrapper(walletIndex = 0) {
   }
 
   /**
-   * Add an add agreement txn to chain
+   * Add an add digital_content txn to chain
    * @param {int} userId
-   * @param {object} param2 agreement data
+   * @param {object} param2 digital_content data
    */
   this.addAgreementToChain = async (userId, { digest, hashFn, size }) => {
     assertLibsDidInit()
@@ -475,12 +475,12 @@ function LibsWrapper(walletIndex = 0) {
   }
 
   /**
-   * Add an update agreement txn to chain.
+   * Add an update digital_content txn to chain.
    * WARNING: This will break indexing if the tx contains CIDs that don't exist on any CN.
    * Make sure you call uploadAgreementMetadata first!
    * @param {int} agreementId
    * @param {int} userId
-   * @param {object} param3 agreement data
+   * @param {object} param3 digital_content data
    */
   this.updateAgreementOnChain = async (
     agreementId,
@@ -567,7 +567,7 @@ function LibsWrapper(walletIndex = 0) {
   }
 
   /**
-   * Add a contentList agreement addition txn to chain
+   * Add a contentList digital_content addition txn to chain
    * @param {number} contentListId
    * @param {number} agreementId
    */
@@ -688,7 +688,7 @@ function LibsWrapper(walletIndex = 0) {
     return this.libsInstance.discoveryNode.getURSMContentNodes(ownerWallet)
   }
 
-  // Record a single agreement listen
+  // Record a single digital_content listen
   this.logAgreementListen = (
     agreementId,
     userId,
@@ -718,7 +718,7 @@ function LibsWrapper(walletIndex = 0) {
 
     try {
       // Note: this is /not/ the block of which a certain txn occurred. This is just the
-      // latest block on chain. (e.g. Upload agreement occurred at block 80; latest block on chain
+      // latest block on chain. (e.g. Upload digital_content occurred at block 80; latest block on chain
       // might be 83). This method is the quickest way to attempt to poll up to a reasonably
       // close block without having to change libs API.
       latestBlockOnChain = await this.getLatestBlockOnChain()
@@ -760,7 +760,7 @@ function LibsWrapper(walletIndex = 0) {
 
     try {
       // Note: this is /not/ the block of which a certain txn occurred. This is just the
-      // latest block on chain. (e.g. Upload agreement occurred at block 80; latest block on chain
+      // latest block on chain. (e.g. Upload digital_content occurred at block 80; latest block on chain
       // might be 83). This method is the quickest way to attempt to poll up to a reasonably
       // close block without having to change libs API.
       latestBlockOnChain = await this.getLatestBlockOnChain()

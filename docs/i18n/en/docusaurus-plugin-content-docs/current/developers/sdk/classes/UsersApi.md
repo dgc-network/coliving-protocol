@@ -151,7 +151,7 @@ ___
 
 **getTopAgreementTags**(`requestParameters`): `Promise`<`string`[]\>
 
-Gets the most used agreement tags by a user.
+Gets the most used digital_content tags by a user.
 Fetch most used tags in a user's agreements
 
 Example:
@@ -178,7 +178,7 @@ ___
 
 ### getAgreementsByUser
 
-**getAgreementsByUser**(`requestParameters`): `Promise`<[`Agreement`](../interfaces/Agreement.md)[]\>
+**getAgreementsByUser**(`requestParameters`): `Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)[]\>
 
 Gets the agreements created by a user using their user ID
 
@@ -200,7 +200,7 @@ const agreements = await colivingSdk.users.getAgreementsByUser({
 
 #### Returns
 
-`Promise`<[`Agreement`](../interfaces/Agreement.md)[]\>
+`Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)[]\>
 
 ___
 

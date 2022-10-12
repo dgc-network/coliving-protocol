@@ -8,33 +8,33 @@ const signatureSchemas = require('../../signatureSchemas/signatureSchemas')
 
 /****** EXTERNAL E2E FUNCTIONS ******/
 
-/** Adds agreement to blockchain using function input fields,
-  *   validates emitted event and agreement data on-chain
-  * @returns {object} with event and agreement data
+/** Adds digital_content to blockchain using function input fields,
+  *   validates emitted event and digital_content data on-chain
+  * @returns {object} with event and digital_content data
   */
 export const addAgreementAndValidate = async (agreementFactory, agreementId, walletAddress, agreementOwnerId, multihashDigest, multihashHashFn, multihashSize) => {
   // Validate args - TODO
-  // generate new agreement request
+  // generate new digital_content request
   const nonce = signatureSchemas.getNonce()
   const chainId = getNetworkIdForContractInstance(agreementFactory) // in testing use the network id as chain ID because chain ID is unavailable
   const signatureData = signatureSchemas.generators.getAddAgreementRequestData(chainId, agreementFactory.address, agreementOwnerId, multihashDigest, multihashHashFn, multihashSize, nonce)
   const sig = await eth_signTypedData(walletAddress, signatureData)
-  // Add new agreement to contract
+  // Add new digital_content to contract
   let tx = await agreementFactory.addAgreement(agreementOwnerId, multihashDigest, multihashHashFn, multihashSize, nonce, sig)
   // validate event output = transaction input
-  let event = parseTxWithResp(tx, { _id: true, _agreementOwnerId: true, _multihashDigest: true, _multihashHashFn: true, _multihashSize: true })
+  let event = parseTxWithResp(tx, { _id: true, _digital_contentOwnerId: true, _multihashDigest: true, _multihashHashFn: true, _multihashSize: true })
   validateObj(event, { eventName: 'NewAgreement', agreementId, agreementOwnerId, multihashDigest, multihashHashFn, multihashSize })
-  // retrieve agreement from contract
-  let agreement = await getAgreementFromFactory(agreementId, agreementFactory)
-  validateObj(agreement, { agreementOwnerId, multihashDigest, multihashHashFn, multihashSize })
+  // retrieve digital_content from contract
+  let digital_content = await getAgreementFromFactory(agreementId, agreementFactory)
+  validateObj(digital_content, { agreementOwnerId, multihashDigest, multihashHashFn, multihashSize })
   return {
     event: event,
-    agreement: agreement
+    digital_content: digital_content
   }
 }
 
-/** Deletes agreement from blockchain using function input fields,
-  *   validates emitted event and agreement data on-chain
+/** Deletes digital_content from blockchain using function input fields,
+  *   validates emitted event and digital_content data on-chain
   * @returns {object} with event data
   */
 export const deleteAgreementAndValidate = async (agreementFactory, walletAddress, agreementId) => {
@@ -43,20 +43,20 @@ export const deleteAgreementAndValidate = async (agreementFactory, walletAddress
   const chainId = getNetworkIdForContractInstance(agreementFactory) // in testing use the network ID as chain ID because chain ID is unavailable
   const signatureData = signatureSchemas.generators.getDeleteAgreementRequestData(chainId, agreementFactory.address, agreementId, nonce)
   const sig = await eth_signTypedData(walletAddress, signatureData)
-  // call delete agreement from chain
+  // call delete digital_content from chain
   let tx = await agreementFactory.deleteAgreement(agreementId, nonce, sig)
   // validate event output = transaction input
-  let event = parseTxWithResp(tx, { _agreementId: true })
+  let event = parseTxWithResp(tx, { _digital_contentId: true })
   validateObj(event, { eventName: 'AgreementDeleted', agreementId })
-  // TODO after storage implemented - attemt to retrieve agreement from chain
-  // TODO after storage implemented - validate agreement does not exist
+  // TODO after storage implemented - attemt to retrieve digital_content from chain
+  // TODO after storage implemented - validate digital_content does not exist
   return {
     event: event
   }
 }
 
 export const updateAgreement = async (agreementFactory, walletAddress, agreementId, agreementOwnerId, multihashDigest, multihashHashFn, multihashSize) => {
-  // generate update agreement request
+  // generate update digital_content request
   const nonce = signatureSchemas.getNonce()
   const chainId = getNetworkIdForContractInstance(agreementFactory)
   // in testing use the network id as chain ID because chain ID is unavailable
@@ -69,7 +69,7 @@ export const updateAgreement = async (agreementFactory, walletAddress, agreement
   * @returns {object} with event data
   */
 export const addAgreementRepostAndValidate = async (socialFeatureFactory, userAddress, userId, agreementId) => {
-  // generate new add agreement repost request
+  // generate new add digital_content repost request
   const nonce = signatureSchemas.getNonce()
   const chainId = getNetworkIdForContractInstance(socialFeatureFactory) // in testing use the network id as chain ID because chain ID is unavailable
   const signatureData = signatureSchemas.generators.getAddAgreementRepostRequestData(chainId, socialFeatureFactory.address, userId, agreementId, nonce)
@@ -77,7 +77,7 @@ export const addAgreementRepostAndValidate = async (socialFeatureFactory, userAd
   // add new agreementRepost to chain
   let tx = await socialFeatureFactory.addAgreementRepost(userId, agreementId, nonce, sig)
   // validate event output = transaction input
-  let event = parseTxWithResp(tx, { _userId: true, _agreementId: true })
+  let event = parseTxWithResp(tx, { _userId: true, _digital_contentId: true })
   validateObj(event, { eventName: 'AgreementRepostAdded', userId, agreementId })
   // validate storage
   let isAgreementReposted = await socialFeatureFactory.userRepostedAgreement.call(userId, agreementId)
@@ -91,7 +91,7 @@ export const addAgreementRepostAndValidate = async (socialFeatureFactory, userAd
   * @returns {object} with event data
   */
 export const deleteAgreementRepostAndValidate = async (socialFeatureFactory, userAddress, userId, agreementId) => {
-  // generate delete agreement repost request
+  // generate delete digital_content repost request
   const nonce = signatureSchemas.getNonce()
   const chainId = getNetworkIdForContractInstance(socialFeatureFactory) // in testing use the network id as chain ID because chain ID is unavailable
   const signatureData = signatureSchemas.generators.getDeleteAgreementRepostRequestData(chainId, socialFeatureFactory.address, userId, agreementId, nonce)
@@ -99,11 +99,11 @@ export const deleteAgreementRepostAndValidate = async (socialFeatureFactory, use
   // delete agreementRepost from chain
   let tx = await socialFeatureFactory.deleteAgreementRepost(userId, agreementId, nonce, sig)
   // validate event output = transaction input
-  let event = parseTxWithResp(tx, { _userId: true, _agreementId: true })
+  let event = parseTxWithResp(tx, { _userId: true, _digital_contentId: true })
   validateObj(event, { eventName: 'AgreementRepostDeleted', userId, agreementId })
   // validate storage
   let isAgreementReposted = await socialFeatureFactory.userRepostedAgreement.call(userId, agreementId)
-  assert.isFalse(isAgreementReposted, 'Expect storage to confirm added agreement repost')
+  assert.isFalse(isAgreementReposted, 'Expect storage to confirm added digital_content repost')
   return {
     event: event
   }
@@ -118,7 +118,7 @@ export const addAgreementSaveAndValidate = async (userLibraryFactory, userAddres
   let tx = await userLibraryFactory.addAgreementSave(userId, agreementId, nonce, sig)
   let parsedAgreementSave = parseTx(tx)
   let eventInfo = parsedAgreementSave.event.args
-  assertEqualValues(parsedAgreementSave, undefined, { _userId: eventInfo._userId, _agreementId: eventInfo._agreementId })
+  assertEqualValues(parsedAgreementSave, undefined, { _userId: eventInfo._userId, _digital_contentId: eventInfo._digital_contentId })
 }
 
 export const deleteAgreementSaveAndValidate = async (userLibraryFactory, userAddress, userId, agreementId) => {
@@ -129,5 +129,5 @@ export const deleteAgreementSaveAndValidate = async (userLibraryFactory, userAdd
   let tx = await userLibraryFactory.deleteAgreementSave(userId, agreementId, nonce, sig)
   let parsedDeleteAgreementSave = parseTx(tx)
   let eventInfo = parsedDeleteAgreementSave.event.args
-  assertEqualValues(parsedDeleteAgreementSave, undefined, { _userId: eventInfo._userId, _agreementId: eventInfo._agreementId })
+  assertEqualValues(parsedDeleteAgreementSave, undefined, { _userId: eventInfo._userId, _digital_contentId: eventInfo._digital_contentId })
 }

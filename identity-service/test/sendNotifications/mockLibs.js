@@ -29,7 +29,7 @@ const agreementTemplate = (id) => ({
   'release_date': 'Mon Apr 29 2019 16:58:04 GMT-0700',
   'remix_of': {
     'agreements': [
-      { 'parent_agreement_id': id + 1 }
+      { 'parent_digital_content_id': id + 1 }
     ]
   },
   'repost_count': 3,
@@ -37,9 +37,9 @@ const agreementTemplate = (id) => ({
   'save_count': 3,
   'stem_of': null,
   'tags': 'just,chill,2018,edm',
-  'title': `Title, Agreement id: ${id}`,
-  'agreement_id': id,
-  'agreement_segments': [],
+  'title': `Title, DigitalContent id: ${id}`,
+  'digital_content_id': id,
+  'digital_content_segments': [],
   'updated_at': '2019-04-30T00:02:50 Z'
 })
 
@@ -57,14 +57,14 @@ const contentListTemplate = (id) => ({
   'is_delete': false,
   'is_private': false,
   'content_list_contents': {
-    'agreement_ids': [
+    'digital_content_ids': [
       {
         'time': 1603994075,
-        'agreement': id + 2
+        'digital_content': id + 2
       },
       {
         'time': 1603994075,
-        'agreement': id + 1
+        'digital_content': id + 1
       }
     ]
   },
@@ -104,15 +104,15 @@ const userTemplate = (id) => ({
   'profile_picture': 'QmXBLfsD6G8ALVeTr9A5XXKLCoiFRfoTGqXZmBbz9MoQrd',
   'profile_picture_sizes': null,
   'repost_count': 1183,
-  'agreement_blocknumber': 17311038,
-  'agreement_count': 16,
+  'digital_content_blocknumber': 17311038,
+  'digital_content_count': 16,
   'updated_at': '2020-10-23T22:15:25 Z',
   'user_id': id,
   'wallet': '0x7d273271690538cf855e5b3002a0dd8c154bb060'
 })
 
 const mockColivingLibs = {
-  Agreement: {
+  DigitalContent: {
     getAgreements: (limit, offset, ids) => ids.map(id => agreementTemplate(id))
   },
   ContentList: {

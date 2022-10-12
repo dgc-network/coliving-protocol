@@ -74,7 +74,7 @@ custom_edit_url: null
 - [Supporting](interfaces/Supporting.md)
 - [TagsResponse](interfaces/TagsResponse.md)
 - [Tip](interfaces/Tip.md)
-- [Agreement](interfaces/Agreement.md)
+- [DigitalContent](interfaces/DigitalContent.md)
 - [AgreementArtwork](interfaces/AgreementArtwork.md)
 - [AgreementElement](interfaces/AgreementElement.md)
 - [AgreementResponse](interfaces/AgreementResponse.md)

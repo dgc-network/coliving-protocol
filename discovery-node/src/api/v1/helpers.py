@@ -29,20 +29,20 @@ def get_primary_endpoint(user):
     return raw_endpoint.split(",")[0]
 
 
-def add_agreement_artwork(agreement):
-    if "user" not in agreement:
-        return agreement
-    endpoint = get_primary_endpoint(agreement["user"])
-    cid = agreement["cover_art_sizes"]
+def add_digital_content_artwork(digital_content):
+    if "user" not in digital_content:
+        return digital_content
+    endpoint = get_primary_endpoint(digital_content["user"])
+    cid = digital_content["cover_art_sizes"]
     if not endpoint or not cid:
-        return agreement
+        return digital_content
     artwork = {
         "150x150": make_image(endpoint, cid, 150, 150),
         "480x480": make_image(endpoint, cid, 480, 480),
         "1000x1000": make_image(endpoint, cid, 1000, 1000),
     }
-    agreement["artwork"] = artwork
-    return agreement
+    digital_content["artwork"] = artwork
+    return digital_content
 
 
 def add_content_list_artwork(contentList):
@@ -65,9 +65,9 @@ def add_content_list_added_timestamps(contentList):
     if "content_list_contents" not in contentList:
         return contentList
     added_timestamps = []
-    for agreement in contentList["content_list_contents"]["agreement_ids"]:
+    for digital_content in contentList["content_list_contents"]["digital_content_ids"]:
         added_timestamps.append(
-            {"agreement_id": encode_int_id(agreement["agreement"]), "timestamp": agreement["time"]}
+            {"digital_content_id": encode_int_id(digital_content["digital_content"]), "timestamp": digital_content["time"]}
         )
     return added_timestamps
 
@@ -105,9 +105,9 @@ def extend_search(resp):
     if "followed_users" in resp:
         resp["followed_users"] = list(map(extend_user, resp["followed_users"]))
     if "agreements" in resp:
-        resp["agreements"] = list(map(extend_agreement, resp["agreements"]))
-    if "saved_agreements" in resp:
-        resp["saved_agreements"] = list(map(extend_agreement, resp["saved_agreements"]))
+        resp["agreements"] = list(map(extend_digital_content, resp["agreements"]))
+    if "saved_digital_contents" in resp:
+        resp["saved_digital_contents"] = list(map(extend_digital_content, resp["saved_digital_contents"]))
     if "content_lists" in resp:
         resp["content_lists"] = list(map(extend_content_list, resp["content_lists"]))
     if "saved_content_lists" in resp:
@@ -149,17 +149,17 @@ def extend_favorite(favorite):
 
 
 def extend_remix_of(remix_of):
-    def extend_agreement_element(agreement):
-        agreement_id = agreement["parent_agreement_id"]
-        agreement["parent_agreement_id"] = encode_int_id(agreement_id)
-        if "user" in agreement:
-            agreement["user"] = extend_user(agreement["user"])
-        return agreement
+    def extend_digital_content_element(digital_content):
+        digital_content_id = digital_content["parent_digital_content_id"]
+        digital_content["parent_digital_content_id"] = encode_int_id(digital_content_id)
+        if "user" in digital_content:
+            digital_content["user"] = extend_user(digital_content["user"])
+        return digital_content
 
     if not remix_of or "agreements" not in remix_of or not remix_of["agreements"]:
         return remix_of
 
-    remix_of["agreements"] = list(map(extend_agreement_element, remix_of["agreements"]))
+    remix_of["agreements"] = list(map(extend_digital_content_element, remix_of["agreements"]))
     return remix_of
 
 
@@ -185,58 +185,58 @@ def parse_unix_epoch_param_non_utc(time, default=0):
     return datetime.fromtimestamp(time)
 
 
-def extend_agreement(agreement):
-    agreement_id = encode_int_id(agreement["agreement_id"])
-    owner_id = encode_int_id(agreement["owner_id"])
-    if "user" in agreement:
-        agreement["user"] = extend_user(agreement["user"])
-    agreement["id"] = agreement_id
-    agreement["user_id"] = owner_id
-    if "followee_saves" in agreement:
-        agreement["followee_favorites"] = list(
-            map(extend_favorite, agreement["followee_saves"])
+def extend_digital_content(digital_content):
+    digital_content_id = encode_int_id(digital_content["digital_content_id"])
+    owner_id = encode_int_id(digital_content["owner_id"])
+    if "user" in digital_content:
+        digital_content["user"] = extend_user(digital_content["user"])
+    digital_content["id"] = digital_content_id
+    digital_content["user_id"] = owner_id
+    if "followee_saves" in digital_content:
+        digital_content["followee_favorites"] = list(
+            map(extend_favorite, digital_content["followee_saves"])
         )
-    if "followee_reposts" in agreement:
-        agreement["followee_reposts"] = list(map(extend_repost, agreement["followee_reposts"]))
-    if "remix_of" in agreement:
-        agreement["remix_of"] = extend_remix_of(agreement["remix_of"])
+    if "followee_reposts" in digital_content:
+        digital_content["followee_reposts"] = list(map(extend_repost, digital_content["followee_reposts"]))
+    if "remix_of" in digital_content:
+        digital_content["remix_of"] = extend_remix_of(digital_content["remix_of"])
 
-    agreement = add_agreement_artwork(agreement)
+    digital_content = add_digital_content_artwork(digital_content)
 
-    if "save_count" in agreement:
-        agreement["favorite_count"] = agreement["save_count"]
+    if "save_count" in digital_content:
+        digital_content["favorite_count"] = digital_content["save_count"]
 
     duration = 0.0
-    for segment in agreement["agreement_segments"]:
-        # NOTE: Legacy agreement segments store the duration as a string
+    for segment in digital_content["digital_content_segments"]:
+        # NOTE: Legacy digital_content segments store the duration as a string
         duration += float(segment["duration"])
-    agreement["duration"] = round(duration)
+    digital_content["duration"] = round(duration)
 
     downloadable = (
-        "download" in agreement
-        and agreement["download"]
-        and agreement["download"]["is_downloadable"]
+        "download" in digital_content
+        and digital_content["download"]
+        and digital_content["download"]["is_downloadable"]
     )
-    agreement["downloadable"] = bool(downloadable)
+    digital_content["downloadable"] = bool(downloadable)
 
-    return agreement
-
-
-def get_encoded_agreement_id(agreement):
-    return {"id": encode_int_id(agreement["agreement_id"])}
+    return digital_content
 
 
-def stem_from_agreement(agreement):
-    agreement_id = encode_int_id(agreement["agreement_id"])
-    parent_id = encode_int_id(agreement["stem_of"]["parent_agreement_id"])
-    category = agreement["stem_of"]["category"]
+def get_encoded_digital_content_id(digital_content):
+    return {"id": encode_int_id(digital_content["digital_content_id"])}
+
+
+def stem_from_digital_content(digital_content):
+    digital_content_id = encode_int_id(digital_content["digital_content_id"])
+    parent_id = encode_int_id(digital_content["stem_of"]["parent_digital_content_id"])
+    category = digital_content["stem_of"]["category"]
     return {
-        "id": agreement_id,
+        "id": digital_content_id,
         "parent_id": parent_id,
         "category": category,
-        "cid": agreement["download"]["cid"],
-        "user_id": encode_int_id(agreement["owner_id"]),
-        "blocknumber": agreement["blocknumber"],
+        "cid": digital_content["download"]["cid"],
+        "user_id": encode_int_id(digital_content["owner_id"]),
+        "blocknumber": digital_content["blocknumber"],
     }
 
 
@@ -262,22 +262,22 @@ def extend_content_list(contentList):
     contentList["added_timestamps"] = add_content_list_added_timestamps(contentList)
     contentList["cover_art"] = contentList["content_list_image_multihash"]
     contentList["cover_art_sizes"] = contentList["content_list_image_sizes_multihash"]
-    # If a trending contentList, we have 'agreement_count'
-    # already to preserve the original, non-abbreviated agreement count
-    contentList["agreement_count"] = (
-        contentList["agreement_count"]
-        if "agreement_count" in contentList
-        else len(contentList["content_list_contents"]["agreement_ids"])
+    # If a trending contentList, we have 'digital_content_count'
+    # already to preserve the original, non-abbreviated digital_content count
+    contentList["digital_content_count"] = (
+        contentList["digital_content_count"]
+        if "digital_content_count" in contentList
+        else len(contentList["content_list_contents"]["digital_content_ids"])
     )
     return contentList
 
 
 def extend_activity(item):
-    if item.get("agreement_id"):
+    if item.get("digital_content_id"):
         return {
-            "item_type": "agreement",
+            "item_type": "digital_content",
             "timestamp": item["activity_timestamp"],
-            "item": extend_agreement(item),
+            "item": extend_digital_content(item),
         }
     if item.get("content_list_id"):
         return {

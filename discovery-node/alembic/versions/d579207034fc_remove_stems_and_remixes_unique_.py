@@ -33,7 +33,7 @@ def upgrade():
 
 
 def downgrade():
-    op.create_primary_key("stems_pkey", "stems", ["parent_agreement_id", "child_agreement_id"])
+    op.create_primary_key("stems_pkey", "stems", ["parent_digital_content_id", "child_digital_content_id"])
     op.create_primary_key(
-        "remixes_pkey", "remixes", ["parent_agreement_id", "child_agreement_id"]
+        "remixes_pkey", "remixes", ["parent_digital_content_id", "child_digital_content_id"]
     )

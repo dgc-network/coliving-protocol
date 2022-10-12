@@ -10,8 +10,8 @@ begin
   -- this can be removed if we do this elsewhere
   -- but is here now for safety
   insert into aggregate_user (user_id) values (new.user_id) on conflict do nothing;
-  if new.save_type = 'agreement' then
-    insert into aggregate_agreement (agreement_id) values (new.save_item_id) on conflict do nothing;
+  if new.save_type = 'digital_content' then
+    insert into aggregate_digital_content (digital_content_id) values (new.save_item_id) on conflict do nothing;
   else
     insert into aggregate_content_list (content_list_id) values (new.save_item_id) on conflict do nothing;
   end if;
@@ -23,17 +23,17 @@ begin
     delta := 1;
   end if;
 
-  -- update agg agreement or contentList
-  if new.save_type = 'agreement' then
+  -- update agg digital_content or contentList
+  if new.save_type = 'digital_content' then
     milestone_name := 'AGREEMENT_SAVE_COUNT';
-    update aggregate_agreement 
+    update aggregate_digital_content 
     set save_count = save_count + delta
-    where agreement_id = new.save_item_id
+    where digital_content_id = new.save_item_id
     returning save_count into new_val;
 
     -- update agg user
     update aggregate_user 
-    set agreement_save_count = agreement_save_count + delta
+    set digital_content_save_count = digital_content_save_count + delta
     where user_id = new.user_id;
 
   else

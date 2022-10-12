@@ -193,25 +193,25 @@ const config = convict({
     default: null
   },
   rateLimitingListensPerAgreementPerHour: {
-    doc: 'Listens per agreement per user per Hour',
+    doc: 'Listens per digital_content per user per Hour',
     format: 'nat',
     env: 'rateLimitingListensPerAgreementPerHour',
     default: null
   },
   rateLimitingListensPerIPAgreementPerHour: {
-    doc: 'Listens per agreement per IP per Hour',
+    doc: 'Listens per digital_content per IP per Hour',
     format: 'nat',
     env: 'rateLimitingListensPerIPAgreementPerHour',
     default: null
   },
   rateLimitingListensPerAgreementPerDay: {
-    doc: 'Listens per agreement per user per Day',
+    doc: 'Listens per digital_content per user per Day',
     format: 'nat',
     env: 'rateLimitingListensPerAgreementPerDay',
     default: null
   },
   rateLimitingListensPerIPAgreementPerDay: {
-    doc: 'Listens per agreement per IP per Day',
+    doc: 'Listens per digital_content per IP per Day',
     format: 'nat',
     env: 'rateLimitingListensPerIPAgreementPerDay',
     default: null
@@ -241,19 +241,19 @@ const config = convict({
     default: 50
   },
   rateLimitingEthRelaysPerWalletPerDay: {
-    doc: 'Listens per agreement per IP per Day',
+    doc: 'Listens per digital_content per IP per Day',
     format: 'nat',
     env: 'rateLimitingEthRelaysPerWalletPerDay',
     default: 10
   },
   rateLimitingListensPerAgreementPerWeek: {
-    doc: 'Listens per agreement per user per Week',
+    doc: 'Listens per digital_content per user per Week',
     format: 'nat',
     env: 'rateLimitingListensPerAgreementPerWeek',
     default: null
   },
   rateLimitingListensPerIPAgreementPerWeek: {
-    doc: 'Listens per agreement per IP per Week',
+    doc: 'Listens per digital_content per IP per Week',
     format: 'nat',
     env: 'rateLimitingListensPerIPAgreementPerWeek',
     default: null
@@ -727,13 +727,13 @@ const config = convict({
     default: 105400000
   },
   successAudioReporterSlackUrl: {
-    doc: 'The slack url to post messages for success in live / rewards events',
+    doc: 'The slack url to post messages for success in digitalcoin / rewards events',
     format: String,
     env: 'successAudioReporterSlackUrl',
     default: ''
   },
   errorAudioReporterSlackUrl: {
-    doc: 'The slack url to post messages for errors in live / rewards events',
+    doc: 'The slack url to post messages for errors in digitalcoin / rewards events',
     format: String,
     env: 'errorAudioReporterSlackUrl',
     default: ''

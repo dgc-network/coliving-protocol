@@ -44,7 +44,7 @@ class Utils {
  * This function does not do further validation since image_upload provides remaining guarantees
  */
 async function validateStateForImageDirCIDAndReturnFileUUID(req, imageDirCID) {
-  // This handles case where a user/agreement metadata obj contains no image CID
+  // This handles case where a user/digital_content metadata obj contains no image CID
   if (!imageDirCID) {
     return null
   }
@@ -328,7 +328,7 @@ async function runShellCommand(command, args, logger) {
 }
 
 /**
- * A current node should handle a agreement transcode if there is enough room in the TranscodingQueue to accept more jobs
+ * A current node should handle a digital_content transcode if there is enough room in the TranscodingQueue to accept more jobs
  *
  * If there is not enough room, if the spID is not set after app init, then the current node should still accept the transcode task
  * @param {Object} param
@@ -343,7 +343,7 @@ function currentNodeShouldHandleTranscode({
   // If the TranscodingQueue is available, let current node handle transcode
   if (transcodingQueueCanAcceptMoreJobs) return true
 
-  // Else, if spID is not initialized, the agreement cannot be handed off to another node to transcode.
+  // Else, if spID is not initialized, the digital_content cannot be handed off to another node to transcode.
   // Continue with the upload on the current node.
   const currentNodeShouldHandleTranscode = !Number.isInteger(spID)
 

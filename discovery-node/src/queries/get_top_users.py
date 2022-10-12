@@ -10,7 +10,7 @@ where
     is_current
     and user_id in (
         select user_id from aggregate_user
-        where agreement_count > 0
+        where digital_content_count > 0
         order by follower_count desc, user_id asc
         limit :limit
         offset :offset

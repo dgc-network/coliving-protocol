@@ -29,7 +29,7 @@ export interface AggregateIntervalPlayRow {
   'created_at'?: Date | null;
   'genre'?: string | null;
   'month_listen_counts'?: string | null;
-  'agreement_id'?: number | null;
+  'digital_content_id'?: number | null;
   'week_listen_counts'?: string | null;
 }
 export interface AggregateMonthlyAppNameMetricRow {
@@ -73,7 +73,7 @@ export interface AggregatePlayRow {
 export interface AggregateAgreementRow {
   'repost_count': number;
   'save_count': number;
-  'agreement_id': number;
+  'digital_content_id': number;
 }
 export interface AggregateUserRow {
   'album_count'?: string | null;
@@ -83,8 +83,8 @@ export interface AggregateUserRow {
   'repost_count'?: string | null;
   'supporter_count'?: number;
   'supporting_count'?: number;
-  'agreement_count'?: string | null;
-  'agreement_save_count'?: string | null;
+  'digital_content_count'?: string | null;
+  'digital_content_save_count'?: string | null;
   'user_id': number;
 }
 export interface AggregateUserTipRow {
@@ -309,8 +309,8 @@ export interface RelatedLandlordRow {
   'user_id': number;
 }
 export interface RemixeRow {
-  'child_agreement_id': number;
-  'parent_agreement_id': number;
+  'child_digital_content_id': number;
+  'parent_digital_content_id': number;
 }
 export interface RepostRow {
   'blockhash'?: string | null;
@@ -390,8 +390,8 @@ export interface SplTokenTxRow {
   'updated_at'?: Date;
 }
 export interface StemRow {
-  'child_agreement_id': number;
-  'parent_agreement_id': number;
+  'child_digital_content_id': number;
+  'parent_digital_content_id': number;
 }
 export interface SupporterRankUpRow {
   'rank': number;
@@ -402,15 +402,15 @@ export interface SupporterRankUpRow {
 export interface TagAgreementUserRow {
   'owner_id'?: number | null;
   'tag'?: string | null;
-  'agreement_id'?: number | null;
+  'digital_content_id'?: number | null;
 }
 export interface AgreementLexemeDictRow {
   'handle'?: string | null;
   'owner_id'?: number | null;
   'repost_count'?: number | null;
   'row_number'?: string | null;
-  'agreement_id'?: number | null;
-  'agreement_title'?: string | null;
+  'digital_content_id'?: number | null;
+  'digital_content_title'?: string | null;
   'user_name'?: string | null;
   'word'?: string | null;
 }
@@ -422,7 +422,7 @@ export interface AgreementRouteRow {
   'owner_id': number;
   'slug': string;
   'title_slug': string;
-  'agreement_id': number;
+  'digital_content_id': number;
   'txhash': string;
 }
 export interface AgreementTrendingScoreRow {
@@ -430,7 +430,7 @@ export interface AgreementTrendingScoreRow {
   'genre'?: string | null;
   'score': number;
   'time_range': string;
-  'agreement_id': number;
+  'digital_content_id': number;
   'type': string;
   'version': string;
 }
@@ -464,8 +464,8 @@ export interface AgreementRow {
   'stem_of'?: any | null;
   'tags'?: string | null;
   'title'?: string | null;
-  'agreement_id': number;
-  'agreement_segments': any;
+  'digital_content_id': number;
+  'digital_content_segments': any;
   'txhash'?: string;
   'updated_at': Date;
 }
@@ -483,7 +483,7 @@ export interface TrendingParamRow {
   'save_month_count'?: string | null;
   'save_week_count'?: string | null;
   'save_year_count'?: string | null;
-  'agreement_id'?: number | null;
+  'digital_content_id'?: number | null;
 }
 export interface TrendingResultRow {
   'id'?: string | null;
@@ -616,12 +616,12 @@ export enum skippedtransactionlevel {
   'network' = 'network',
 }
 export enum savetype {
-  'agreement' = 'agreement',
+  'digital_content' = 'digital_content',
   'contentList' = 'contentList',
   'album' = 'album',
 }
 export enum reposttype {
-  'agreement' = 'agreement',
+  'digital_content' = 'digital_content',
   'contentList' = 'contentList',
   'album' = 'album',
 }

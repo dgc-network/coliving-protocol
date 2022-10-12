@@ -10,14 +10,14 @@ def test_search_user_tags(app):
 
     test_entities = {
         "agreements": [
-            {"agreement_id": 1, "tags": "pop", "owner_id": 1},
-            {"agreement_id": 2, "owner_id": 1, "tags": "pop,rock,electric"},
-            {"agreement_id": 3, "owner_id": 2},
-            {"agreement_id": 4, "owner_id": 2, "tags": "funk,pop"},
-            {"agreement_id": 5, "owner_id": 2, "tags": "funk,pop"},
-            {"agreement_id": 6, "owner_id": 2, "tags": "funk,Funk,kpop"},
-            {"agreement_id": 7, "owner_id": 3, "tags": "pop"},
-            {"agreement_id": 8, "owner_id": 3, "tags": "kpop"},
+            {"digital_content_id": 1, "tags": "pop", "owner_id": 1},
+            {"digital_content_id": 2, "owner_id": 1, "tags": "pop,rock,electric"},
+            {"digital_content_id": 3, "owner_id": 2},
+            {"digital_content_id": 4, "owner_id": 2, "tags": "funk,pop"},
+            {"digital_content_id": 5, "owner_id": 2, "tags": "funk,pop"},
+            {"digital_content_id": 6, "owner_id": 2, "tags": "funk,Funk,kpop"},
+            {"digital_content_id": 7, "owner_id": 3, "tags": "pop"},
+            {"digital_content_id": 8, "owner_id": 3, "tags": "kpop"},
         ],
         "users": [
             {"user_id": 1, "handle": "1"},
@@ -34,7 +34,7 @@ def test_search_user_tags(app):
     populate_mock_db(db, test_entities)
 
     with db.scoped_session() as session:
-        session.execute("REFRESH MATERIALIZED VIEW tag_agreement_user")
+        session.execute("REFRESH MATERIALIZED VIEW tag_digital_content_user")
 
         args = {
             "search_str": "pop",
@@ -48,4 +48,4 @@ def test_search_user_tags(app):
         assert len(users) == 2
         assert users[0]["user_id"] == 2  # Fir. b/c user 2 has 1 follower
         assert users[1]["user_id"] == 1  # Sec. b/c user 1 has 0 followers
-        # User 3 only has one agreement with pop, so it does not surface in the results
+        # User 3 only has one digital_content with pop, so it does not surface in the results

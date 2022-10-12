@@ -117,11 +117,11 @@ const Main = () => {
               </Link>
             </div>
             <div className={clsx("col col--4", styles.feature)}>
-              <Link className="navbar__link" to="token/live">
+              <Link className="navbar__link" to="token/digitalcoin">
                 <div className="card">
                   <div className="card__header">
                     <h3>
-                      <Translate description="live">🎧 $LIVE</Translate>
+                      <Translate description="digitalcoin">🎧 $LIVE</Translate>
                     </h3>
                   </div>
                   <div className="card__body">

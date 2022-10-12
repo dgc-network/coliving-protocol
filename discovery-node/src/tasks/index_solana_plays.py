@@ -29,7 +29,7 @@ from src.utils.redis_constants import (
     latest_sol_plays_slot_key,
 )
 
-AGREEMENT_LISTEN_PROGRAM = shared_config["solana"]["agreement_listen_count_address"]
+AGREEMENT_LISTEN_PROGRAM = shared_config["solana"]["digital_content_listen_count_address"]
 SIGNER_GROUP = shared_config["solana"]["signer_group_address"]
 SECP_PROGRAM = "KeccakSecp256k11111111111111111111111111111"
 
@@ -51,9 +51,9 @@ Formatted in the following struct:
 pub struct AgreementData {
     /// user ID
     pub user_id: String,
-    /// agreement ID
-    pub agreement_id: String,
-    /// agreement source
+    /// digital_content ID
+    pub digital_content_id: String,
+    /// digital_content source
     pub source: String,
     /// timestamp as nonce
     pub timestamp: UnixTimestamp,
@@ -85,12 +85,12 @@ def parse_instruction_data(
             exc_info=False,
         )
 
-    agreement_id_length = int.from_bytes(decoded[user_id_end : user_id_end + 4], "little")
-    agreement_id_start, agreement_id_end = user_id_end + 4, user_id_end + 4 + agreement_id_length
-    agreement_id = int(decoded[agreement_id_start:agreement_id_end])
+    digital_content_id_length = int.from_bytes(decoded[user_id_end : user_id_end + 4], "little")
+    digital_content_id_start, digital_content_id_end = user_id_end + 4, user_id_end + 4 + digital_content_id_length
+    digital_content_id = int(decoded[digital_content_id_start:digital_content_id_end])
 
-    source_length = int.from_bytes(decoded[agreement_id_end : agreement_id_end + 4], "little")
-    source_start, source_end = agreement_id_end + 4, agreement_id_end + 4 + source_length
+    source_length = int.from_bytes(decoded[digital_content_id_end : digital_content_id_end + 4], "little")
+    source_start, source_end = digital_content_id_end + 4, digital_content_id_end + 4 + source_length
 
     # Source is not expected to be null, but may be
     # First try to parse source as json
@@ -122,7 +122,7 @@ def parse_instruction_data(
 
     timestamp = int.from_bytes(decoded[source_end : source_end + 8], "little")
 
-    return user_id, agreement_id, source, location, timestamp
+    return user_id, digital_content_id, source, location, timestamp
 
 
 class PlayInfo(TypedDict):
@@ -187,7 +187,7 @@ def parse_sol_play_transaction(solana_client_manager: SolanaClientManager, tx_si
                     slot = tx_info["result"]["slot"]
                     (
                         user_id,
-                        agreement_id,
+                        digital_content_id,
                         source,
                         location,
                         timestamp,
@@ -197,7 +197,7 @@ def parse_sol_play_transaction(solana_client_manager: SolanaClientManager, tx_si
                     logger.info(
                         "index_solana_plays.py | "
                         f"user_id: {user_id} "
-                        f"agreement_id: {agreement_id} "
+                        f"digital_content_id: {digital_content_id} "
                         f"source: {source} "
                         f"location: {location} "
                         f"created_at: {created_at} "
@@ -208,7 +208,7 @@ def parse_sol_play_transaction(solana_client_manager: SolanaClientManager, tx_si
                     # return the data necessary to create a Play and add to challenge bus
                     return (
                         user_id,
-                        agreement_id,
+                        digital_content_id,
                         created_at,
                         source,
                         location,
@@ -378,7 +378,7 @@ def parse_sol_tx_batch(
                 if result:
                     (
                         user_id,
-                        agreement_id,
+                        digital_content_id,
                         created_at,
                         source,
                         location,
@@ -390,7 +390,7 @@ def parse_sol_tx_batch(
                     # from the rpc pool
                     play: PlayInfo = {
                         "user_id": user_id,
-                        "play_item_id": agreement_id,
+                        "play_item_id": digital_content_id,
                         "created_at": created_at,
                         "updated_at": datetime.now(),
                         "source": source,
@@ -479,7 +479,7 @@ def parse_sol_tx_batch(
         listen_dispatch_start = time.time()
         for event in challenge_bus_events:
             challenge_bus.dispatch(
-                ChallengeEvent.agreement_listen,
+                ChallengeEvent.digital_content_listen,
                 event.get("slot"),
                 event.get("user_id"),
                 {"created_at": event.get("created_at")},
@@ -571,7 +571,7 @@ def process_solana_plays(solana_client_manager: SolanaClientManager, redis: Redi
     # The latest play slot to be processed
     latest_play_slot = None
 
-    # Get the latests slot available globally before fetching txs to keep agreement of indexing progress
+    # Get the latests slot available globally before fetching txs to keep digital_content of indexing progress
     try:
         latest_global_slot = solana_client_manager.get_slot()
     except:

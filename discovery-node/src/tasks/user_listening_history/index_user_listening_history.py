@@ -22,8 +22,8 @@ BATCH_SIZE = 100000  # index 100k plays at most at a time
 def sort_listening_history(deduped_history_dict, limit=1000):
     # sorts listening history and places a limit
     deduped_history = []
-    for agreement_id, timestamp in deduped_history_dict.items():
-        deduped_history.append({"agreement_id": agreement_id, "timestamp": timestamp})
+    for digital_content_id, timestamp in deduped_history_dict.items():
+        deduped_history.append({"digital_content_id": digital_content_id, "timestamp": timestamp})
     deduped_history.sort(key=lambda listen: listen["timestamp"], reverse=True)
     return deduped_history[:limit]
 
@@ -77,11 +77,11 @@ def _index_user_listening_history(session):
     for i, user_history in enumerate(existing_user_listening_history):
         deduped_history_dict = {}
         for existing_play in reversed(user_history.listening_history):
-            deduped_history_dict[existing_play["agreement_id"]] = existing_play["timestamp"]
+            deduped_history_dict[existing_play["digital_content_id"]] = existing_play["timestamp"]
         for new_play in reversed(
             update_user_listening_history_dict[user_history.user_id]
         ):
-            deduped_history_dict[new_play["agreement_id"]] = new_play["timestamp"]
+            deduped_history_dict[new_play["digital_content_id"]] = new_play["timestamp"]
         existing_user_listening_history[i].listening_history = sort_listening_history(
             deduped_history_dict
         )
@@ -91,7 +91,7 @@ def _index_user_listening_history(session):
     for user, listening_history in insert_user_listening_history_dict.items():
         deduped_history_dict = {}
         for new_play in reversed(listening_history):
-            deduped_history_dict[new_play["agreement_id"]] = new_play["timestamp"]
+            deduped_history_dict[new_play["digital_content_id"]] = new_play["timestamp"]
 
         new_user_listening_history.append(
             UserListeningHistory(

@@ -57,7 +57,7 @@ export class AgreementFactoryClient extends ContractClient {
     }
   }
 
-  /** uint _agreementId, uint _agreementOwnerId, bytes32 _multihashDigest, uint8 _multihashHashFn, uint8 _multihashSize */
+  /** uint _digital_contentId, uint _digital_contentOwnerId, bytes32 _multihashDigest, uint8 _multihashHashFn, uint8 _multihashSize */
   async updateAgreement(
     agreementId: number,
     agreementOwnerId: number,
@@ -98,7 +98,7 @@ export class AgreementFactoryClient extends ContractClient {
     )
 
     return {
-      agreementId: parseInt(tx.events?.['UpdateAgreement']?.returnValues._agreementId, 10),
+      agreementId: parseInt(tx.events?.['UpdateAgreement']?.returnValues._digital_contentId, 10),
       txReceipt: tx
     }
   }
@@ -126,7 +126,7 @@ export class AgreementFactoryClient extends ContractClient {
       contractAddress
     )
     return {
-      agreementId: parseInt(tx.events?.['AgreementDeleted']?.returnValues._agreementId, 10),
+      agreementId: parseInt(tx.events?.['AgreementDeleted']?.returnValues._digital_contentId, 10),
       txReceipt: tx
     }
   }

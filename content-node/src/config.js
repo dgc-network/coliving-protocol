@@ -186,13 +186,13 @@ const config = convict({
     default: null
   },
   rateLimitingAgreementReqLimit: {
-    doc: 'Total requests per hour rate limit for /agreement routes',
+    doc: 'Total requests per hour rate limit for /digital_content routes',
     format: 'nat',
     env: 'rateLimitingAgreementReqLimit',
     default: null
   },
   rateLimitingBatchCidsExistLimit: {
-    doc: 'Total requests per hour rate limit for /agreement routes',
+    doc: 'Total requests per hour rate limit for /digital_content routes',
     format: 'nat',
     env: 'rateLimitingBatchCidsExistLimit',
     default: null
@@ -205,13 +205,13 @@ const config = convict({
   },
 
   maxAudioFileSizeBytes: {
-    doc: 'Maximum file size for live file uploads in bytes',
+    doc: 'Maximum file size for digitalcoin file uploads in bytes',
     format: 'nat',
     env: 'maxAudioFileSizeBytes',
     default: null
   },
   maxMemoryFileSizeBytes: {
-    doc: 'Maximum memory usage for live file uploads in bytes',
+    doc: 'Maximum memory usage for digitalcoin file uploads in bytes',
     format: 'nat',
     env: 'maxMemoryFileSizeBytes',
     default: null

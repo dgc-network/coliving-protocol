@@ -1,4 +1,4 @@
-"""downloadable_agreements
+"""downloadable_digital_contents
 
 Revision ID: dbefdfcc9a3b
 Revises: e9a9c6c2e3b7

@@ -23,7 +23,7 @@ const followerMilestoneList = baseMilestoneList
 const repostMilestoneList = baseMilestoneList
 // Favorite milestone list shared across agreements/albums/contentLists
 const favoriteMilestoneList = baseMilestoneList
-// Agreement listen milestone list
+// DigitalContent listen milestone list
 const agreementListenMilestoneList = baseMilestoneList
 
 async function indexMilestones (milestones, owners, metadata, listenCounts, colivingLibs, tx) {
@@ -100,7 +100,7 @@ async function updateRepostMilestones (repostCounts, owners, blocknumber, timest
           repostMilestoneNotificationType,
           agreementOwnerId,
           repostedAgreementId,
-          actionEntityTypes.Agreement,
+          actionEntityTypes.DigitalContent,
           milestoneValue,
           blocknumber,
           timestamp,
@@ -178,7 +178,7 @@ async function updateFavoriteMilestones (favoriteCounts, owners, blocknumber, ti
           favoriteMilestoneNotificationType,
           agreementOwnerId,
           favoritedAgreementId,
-          actionEntityTypes.Agreement,
+          actionEntityTypes.DigitalContent,
           milestoneValue,
           blocknumber,
           timestamp,
@@ -254,7 +254,7 @@ async function updateAgreementListenMilestones (listenCounts, blocknumber, times
           listensMilestoneNotificationType,
           ownerId,
           agreementId,
-          actionEntityTypes.Agreement,
+          actionEntityTypes.DigitalContent,
           milestoneValue,
           blocknumber,
           timestamp,
@@ -293,8 +293,8 @@ async function _processMilestone (milestoneType, userId, entityId, entityType, m
     newMilestone = true
     // MilestoneListen/Favorite/Repost
     // userId=user achieving milestone
-    // entityId=Entity reaching milestone, one of agreement/collection
-    // actionEntityType=Entity achieving milestone, can be agreement/collection
+    // entityId=Entity reaching milestone, one of digital_content/collection
+    // actionEntityType=Entity achieving milestone, can be digital_content/collection
     // actionEntityId=Milestone achieved
     let createMilestoneTx = await models.Notification.create({
       userId: userId,

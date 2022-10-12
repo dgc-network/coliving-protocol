@@ -6,7 +6,7 @@ const moment = require('moment')
 const { clearDatabase, runMigrations } = require('../lib/app')
 
 /**
- * User id 2 reposts agreement id 1 created by user id 1
+ * User id 2 reposts digital_content id 1 created by user id 1
  */
 const respostNotifications = [
   {
@@ -15,7 +15,7 @@ const respostNotifications = [
     'metadata': {
       'entity_id': 1,
       'entity_owner_id': 1,
-      'entity_type': 'agreement'
+      'entity_type': 'digital_content'
     },
     'timestamp': '2020-10-01T19:39:45 Z',
     'type': 'Repost'
@@ -49,7 +49,7 @@ const initFollows = [
 ]
 
 /**
- * User id 2 favorites agreement id 1 created by user id 1
+ * User id 2 favorites digital_content id 1 created by user id 1
  */
 const favoriteNotifications = [
   {
@@ -58,7 +58,7 @@ const favoriteNotifications = [
     'metadata': {
       'entity_id': 1,
       'entity_owner_id': 1,
-      'entity_type': 'agreement'
+      'entity_type': 'digital_content'
     },
     'timestamp': '2020-10-04T19:39:45 Z',
     'type': 'Favorite'

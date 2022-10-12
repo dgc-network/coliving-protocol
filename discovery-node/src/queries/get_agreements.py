@@ -4,16 +4,16 @@ from typing import List, Optional, TypedDict
 from sqlalchemy import and_, func, or_
 from sqlalchemy.sql.functions import coalesce
 from src.models.social.aggregate_plays import AggregatePlay
-from src.models.agreements.agreement import Agreement
-from src.models.agreements.agreement_route import AgreementRoute
+from src.models.agreements.digital_content import DigitalContent
+from src.models.agreements.digital_content_route import AgreementRoute
 from src.models.users.user import User
-from src.queries.get_unpopulated_agreements import get_unpopulated_agreements
+from src.queries.get_unpopulated_digital_contents import get_unpopulated_digital_contents
 from src.queries.query_helpers import (
     add_query_pagination,
-    add_users_to_agreements,
+    add_users_to_digital_contents,
     get_pagination_vars,
     parse_sort_param,
-    populate_agreement_metadata,
+    populate_digital_content_metadata,
 )
 from src.utils import helpers, redis_connection
 from src.utils.db_session import get_db_read_replica
@@ -42,15 +42,15 @@ class GetAgreementArgs(TypedDict):
     with_users: bool
 
 
-def _get_agreements(session, args):
+def _get_digital_contents(session, args):
     # Create initial query
-    base_query = session.query(Agreement)
-    base_query = base_query.filter(Agreement.is_current == True, Agreement.stem_of == None)
+    base_query = session.query(DigitalContent)
+    base_query = base_query.filter(DigitalContent.is_current == True, DigitalContent.stem_of == None)
 
     if "routes" in args:
         routes = args.get("routes")
         # Join the routes table
-        base_query = base_query.join(AgreementRoute, AgreementRoute.agreement_id == Agreement.agreement_id)
+        base_query = base_query.join(AgreementRoute, AgreementRoute.digital_content_id == DigitalContent.digital_content_id)
 
         # Add the query conditions for each route
         filter_cond = []
@@ -72,46 +72,46 @@ def _get_agreements(session, args):
             and args.get("user_id") == args.get("authed_user_id")
         )
         if not is_authed_user:
-            base_query = base_query.filter(Agreement.is_unlisted == False)
+            base_query = base_query.filter(DigitalContent.is_unlisted == False)
 
     # Conditionally process an array of agreements
     if "id" in args:
-        agreement_id_list = args.get("id")
+        digital_content_id_list = args.get("id")
         try:
-            # Update query with agreement_id list
-            base_query = base_query.filter(Agreement.agreement_id.in_(agreement_id_list))
+            # Update query with digital_content_id list
+            base_query = base_query.filter(DigitalContent.digital_content_id.in_(digital_content_id_list))
         except ValueError as e:
-            logger.error("Invalid value found in agreement id list", exc_info=True)
+            logger.error("Invalid value found in digital_content id list", exc_info=True)
             raise e
 
     # Allow filtering of agreements by a certain creator
     if "user_id" in args:
         user_id = args.get("user_id")
-        base_query = base_query.filter(Agreement.owner_id == user_id)
+        base_query = base_query.filter(DigitalContent.owner_id == user_id)
 
     # Allow filtering of deletes
     if "filter_deleted" in args:
         filter_deleted = args.get("filter_deleted")
         if filter_deleted:
-            base_query = base_query.filter(Agreement.is_delete == False)
+            base_query = base_query.filter(DigitalContent.is_delete == False)
 
     if "min_block_number" in args:
         min_block_number = args.get("min_block_number")
-        base_query = base_query.filter(Agreement.blocknumber >= min_block_number)
+        base_query = base_query.filter(DigitalContent.blocknumber >= min_block_number)
 
     if "sort" in args:
         if args["sort"] == "date":
             base_query = base_query.order_by(
                 coalesce(
                     # This func is defined in alembic migrations
-                    func.to_date_safe(Agreement.release_date, "Dy Mon DD YYYY HH24:MI:SS"),
-                    Agreement.created_at,
+                    func.to_date_safe(DigitalContent.release_date, "Dy Mon DD YYYY HH24:MI:SS"),
+                    DigitalContent.created_at,
                 ).desc(),
-                Agreement.agreement_id.desc(),
+                DigitalContent.digital_content_id.desc(),
             )
         elif args["sort"] == "plays":
             base_query = base_query.join(
-                AggregatePlay, AggregatePlay.play_item_id == Agreement.agreement_id
+                AggregatePlay, AggregatePlay.play_item_id == DigitalContent.digital_content_id
             ).order_by(AggregatePlay.count.desc())
         else:
             whitelist_params = [
@@ -119,21 +119,21 @@ def _get_agreements(session, args):
                 "create_date",
                 "release_date",
                 "blocknumber",
-                "agreement_id",
+                "digital_content_id",
             ]
-            base_query = parse_sort_param(base_query, Agreement, whitelist_params)
+            base_query = parse_sort_param(base_query, DigitalContent, whitelist_params)
 
     query_results = add_query_pagination(base_query, args["limit"], args["offset"])
     agreements = helpers.query_result_to_list(query_results.all())
     return agreements
 
 
-def get_agreements(args: GetAgreementArgs):
+def get_digital_contents(args: GetAgreementArgs):
     """
     Gets agreements.
     A note on caching strategy:
         - This method is cached at two layers: at the API via the @cache decorator,
-        and within this method using the shared get_unpopulated_agreements cache.
+        and within this method using the shared get_unpopulated_digital_contents cache.
 
         The shared cache only works when fetching via ID, so calls to fetch agreements
         via handle, asc/desc sort, or filtering by block_number won't hit the shared cache.
@@ -145,7 +145,7 @@ def get_agreements(args: GetAgreementArgs):
     db = get_db_read_replica()
     with db.scoped_session() as session:
 
-        def get_agreements_and_ids():
+        def get_digital_contents_and_ids():
             if "handle" in args:
                 handle = args.get("handle")
                 user = (
@@ -187,38 +187,38 @@ def get_agreements(args: GetAgreementArgs):
 
             if can_use_shared_cache:
                 should_filter_deleted = args.get("filter_deleted", False)
-                agreements = get_unpopulated_agreements(
+                agreements = get_unpopulated_digital_contents(
                     session, args["id"], should_filter_deleted
                 )
-                agreement_ids = list(map(lambda agreement: agreement["agreement_id"], agreements))
-                return (agreements, agreement_ids)
+                digital_content_ids = list(map(lambda digital_content: digital_content["digital_content_id"], agreements))
+                return (agreements, digital_content_ids)
 
             (limit, offset) = get_pagination_vars()
             args["limit"] = limit
             args["offset"] = offset
 
-            agreements = _get_agreements(session, args)
+            agreements = _get_digital_contents(session, args)
 
-            agreement_ids = list(map(lambda agreement: agreement["agreement_id"], agreements))
+            digital_content_ids = list(map(lambda digital_content: digital_content["digital_content_id"], agreements))
 
-            return (agreements, agreement_ids)
+            return (agreements, digital_content_ids)
 
-        (agreements, agreement_ids) = get_agreements_and_ids()
+        (agreements, digital_content_ids) = get_digital_contents_and_ids()
 
-        # bundle peripheral info into agreement results
+        # bundle peripheral info into digital_content results
         current_user_id = args.get("current_user_id")
 
-        # remove agreement segments and download cids from deactivated user agreements and deleted agreements
-        for agreement in agreements:
-            if agreement["user"][0]["is_deactivated"] or agreement["is_delete"]:
-                agreement["agreement_segments"] = []
-                if agreement["download"] is not None:
-                    agreement["download"]["cid"] = None
+        # remove digital_content segments and download cids from deactivated user agreements and deleted agreements
+        for digital_content in agreements:
+            if digital_content["user"][0]["is_deactivated"] or digital_content["is_delete"]:
+                digital_content["digital_content_segments"] = []
+                if digital_content["download"] is not None:
+                    digital_content["download"]["cid"] = None
 
-        agreements = populate_agreement_metadata(session, agreement_ids, agreements, current_user_id)
+        agreements = populate_digital_content_metadata(session, digital_content_ids, agreements, current_user_id)
 
         if args.get("with_users", False):
-            add_users_to_agreements(session, agreements, current_user_id)
+            add_users_to_digital_contents(session, agreements, current_user_id)
         else:
             # Remove the user from the agreements
             agreements = [

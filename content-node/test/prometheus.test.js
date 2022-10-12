@@ -39,7 +39,7 @@ describe('test Prometheus metrics', async function () {
     )
   })
 
-  it('Checks that hitting unregistered routes does not agreement prometheus metrics', async function () {
+  it('Checks that hitting unregistered routes does not digital_content prometheus metrics', async function () {
     await request(app).get('/blahblahblah')
     const resp = await request(app).get('/prometheus_metrics').expect(200)
 

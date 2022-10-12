@@ -18,15 +18,15 @@ from src.models.model_utils import (
     get_fields_to_validate,
     validate_field_helper,
 )
-from src.models.agreements.agreement_route import AgreementRoute
+from src.models.agreements.digital_content_route import AgreementRoute
 from src.models.users.user import User
 
 
-class Agreement(Base, RepresentableMixin):
+class DigitalContent(Base, RepresentableMixin):
     __tablename__ = "agreements"
 
     blockhash = Column(ForeignKey("blocks.blockhash"))  # type: ignore
-    agreement_id = Column(Integer, primary_key=True, nullable=False)
+    digital_content_id = Column(Integer, primary_key=True, nullable=False)
     is_current = Column(Boolean, primary_key=True, nullable=False)
     is_delete = Column(Boolean, nullable=False)
     owner_id = Column(Integer, nullable=False, index=True)
@@ -42,7 +42,7 @@ class Agreement(Base, RepresentableMixin):
     file_type = Column(String)
     metadata_multihash = Column(String)
     blocknumber = Column(ForeignKey("blocks.number"), index=True)  # type: ignore
-    agreement_segments = Column(JSONB(), nullable=False)
+    digital_content_segments = Column(JSONB(), nullable=False)
     created_at = Column(DateTime, nullable=False, index=True)
     description = Column(String)
     isrc = Column(String)
@@ -66,16 +66,16 @@ class Agreement(Base, RepresentableMixin):
     is_available = Column(Boolean, nullable=False, server_default=text("true"))
 
     block = relationship(  # type: ignore
-        "Block", primaryjoin="Agreement.blockhash == Block.blockhash"
+        "Block", primaryjoin="DigitalContent.blockhash == Block.blockhash"
     )
     block1 = relationship(  # type: ignore
-        "Block", primaryjoin="Agreement.blocknumber == Block.number"
+        "Block", primaryjoin="DigitalContent.blocknumber == Block.number"
     )
 
     _routes = relationship(  # type: ignore
         AgreementRoute,
         primaryjoin="and_(\
-            remote(Agreement.agreement_id) == foreign(AgreementRoute.agreement_id),\
+            remote(DigitalContent.digital_content_id) == foreign(AgreementRoute.digital_content_id),\
             AgreementRoute.is_current)",
         lazy="joined",
         viewonly=True,
@@ -84,7 +84,7 @@ class Agreement(Base, RepresentableMixin):
     user = relationship(  # type: ignore
         User,
         primaryjoin="and_(\
-            remote(Agreement.owner_id) == foreign(User.user_id),\
+            remote(DigitalContent.owner_id) == foreign(User.user_id),\
             User.is_current)",
         lazy="joined",
         viewonly=True,
@@ -100,12 +100,12 @@ class Agreement(Base, RepresentableMixin):
             return f"/{self.user[0].handle}/{self._slug}"
         return ""
 
-    PrimaryKeyConstraint(is_current, agreement_id, txhash)
+    PrimaryKeyConstraint(is_current, digital_content_id, txhash)
 
-    ModelValidator.init_model_schemas("Agreement")
-    fields = get_fields_to_validate("Agreement")
+    ModelValidator.init_model_schemas("DigitalContent")
+    fields = get_fields_to_validate("DigitalContent")
 
     # unpacking args into @validates
     @validates(*fields)
     def validate_field(self, field, value):
-        return validate_field_helper(field, value, "Agreement", getattr(Agreement, field).type)
+        return validate_field_helper(field, value, "DigitalContent", getattr(DigitalContent, field).type)

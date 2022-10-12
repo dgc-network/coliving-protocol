@@ -45,7 +45,7 @@ const srcPath = path.join(segmentsDirPath, sourceFile)
 // consts used for testing saveFileFromBufferToDisk()
 const metadata = {
   test: 'field1',
-  agreement_segments: [
+  digital_content_segments: [
     {
       multihash: 'QmYfSQCgCwhxwYcdEwCkFJHicDe6rzCAb7AtLz3GrHmuU6',
       duration: 1000
@@ -252,10 +252,10 @@ describe('test removeAgreementFolder()', async function () {
 
   it.skip('TODO - Failure cases', async function () {})
 
-  it('Successfully removes agreement folder', async function () {
+  it('Successfully removes digital_content folder', async function () {
     // Ensure expected dir state before calling removeAgreementFolder()
     // Note that the contents of these files are never checked as only the dir structure/file naming matters here.
-    //    The file contents don't matter as these files are never accessed after completing agreement upload.
+    //    The file contents don't matter as these files are never accessed after completing digital_content upload.
     assert.ok(fs.existsSync(agreementSourceFileDir))
     assert.ok(fs.existsSync(path.join(agreementSourceFileDir, 'segments')))
     assert.ok(fs.existsSync(path.join(agreementSourceFileDir, 'master.mp3')))

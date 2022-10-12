@@ -48,14 +48,14 @@ Notes on params:
 */
 
 const CLI_TO_COMMAND_MAP = {
-    'upload-agreement': {
-      api: 'Agreement',
-      description: 'upload agreement with dummy live and cover art file',
+    'upload-digital-content': {
+      api: 'DigitalContent',
+      description: 'upload digital_content with dummy digitalcoin and cover art file',
       method: 'uploadAgreement',
       params: [
         {
           name: 'agreementFile',
-          description: 'path to agreement file on local FS',
+          description: 'path to digital_content file on local FS',
           userInputHandler: fs.ensureFileSync,
           defaultHandler: getUserProvidedOrRandomAgreementFile
         },
@@ -67,7 +67,7 @@ const CLI_TO_COMMAND_MAP = {
         },
         {
           name: 'metadata',
-          description: 'metadata for agreement in comma-separated string',
+          description: 'metadata for digital_content in comma-separated string',
           userInputHandler: parseMetadataIntoObject,
           defaultHandler: getUserProvidedOrRandomAgreementMetadata,
         },
@@ -124,27 +124,27 @@ const CLI_TO_COMMAND_MAP = {
         }
       ]
     },
-    'repost-agreement': {
-      api: 'Agreement',
-      description: 'add agreement repost by user',
+    'repost-digital-content': {
+      api: 'DigitalContent',
+      description: 'add digital_content repost by user',
       method: 'addAgreementRepost',
       params: [
         {
           name: 'agreementId',
-          description: 'agreement ID of agreement receiving the repost',
+          description: 'digital_content ID of digital_content receiving the repost',
           userInputHandler: Number,
           defaultHandler: getRandomAgreementIdFromCurrentSeedSessionCache
         }
       ]
     },
-    'favorite-agreement': {
-      api: 'Agreement',
-      description: 'add agreement favorite/save by user',
+    'favorite-digital-content': {
+      api: 'DigitalContent',
+      description: 'add digital_content favorite/save by user',
       method: 'addAgreementSave',
       params: [
         {
           name: 'agreementId',
-          description: 'agreement ID of agreement receiving the favorite',
+          description: 'digital_content ID of digital_content receiving the favorite',
           userInputHandler: Number,
           defaultHandler: getRandomAgreementIdFromCurrentSeedSessionCache
         }
@@ -180,24 +180,24 @@ const CLI_TO_COMMAND_MAP = {
         },
         {
           name: 'agreementIds',
-          description: 'comma-separated list of agreement IDs to associate with the contentList - example: 5,6',
+          description: 'comma-separated list of digital_content IDs to associate with the contentList - example: 5,6',
           userInputHandler: userInput => userInput.split(',').map(Number)
         }
       ]
     },
-    'add-content-list-agreement': {
+    'add-content-list-digital-content': {
       api: 'ContentList',
-      description: 'add agreement to contentList (must be owned by user ID passed in as active user)',
+      description: 'add digital_content to contentList (must be owned by user ID passed in as active user)',
       method: 'addContentListAgreement',
       params: [
         {
           name: 'contentListId',
-          description: 'ID of contentList to add agreement to (must already exist)',
+          description: 'ID of contentList to add digital_content to (must already exist)',
           userInputHandler: Number
         },
         {
           name: 'agreementId',
-          description: 'ID of agreement to add',
+          description: 'ID of digital_content to add',
           userInputHandler: Number
         }
       ]

@@ -41,7 +41,7 @@ ___
 
 **getAgreement**(`requestParameters`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)\>
 
-Gets a agreement by ID. If `show_unlisted` is true, then `handle` and `url_title` are required.
+Gets a digital_content by ID. If `show_unlisted` is true, then `handle` and `url_title` are required.
 
 #### Parameters
 
@@ -59,7 +59,7 @@ ___
 
 **getAgreementRemixParents**(`requestParameters`): `Promise`<[`AgreementFull`](../interfaces/full.AgreementFull.md)[]\>
 
-Gets all the agreements that the given agreement remixes
+Gets all the agreements that the given digital_content remixes
 
 #### Parameters
 
@@ -77,7 +77,7 @@ ___
 
 **getAgreementRemixes**(`requestParameters`): `Promise`<[`RemixesResponse`](../interfaces/full.RemixesResponse.md)\>
 
-Get all agreements that remix the given agreement
+Get all agreements that remix the given digital_content
 
 #### Parameters
 
@@ -95,7 +95,7 @@ ___
 
 **getAgreementStems**(`requestParameters`): `Promise`<[`StemFull`](../interfaces/full.StemFull.md)[]\>
 
-Get the remixable stems of a agreement
+Get the remixable stems of a digital_content
 
 #### Parameters
 
@@ -203,7 +203,7 @@ ___
 
 **getTrendingAgreementIDs**(`requestParameters?`): `Promise`<[`TrendingTimesIds`](../interfaces/full.TrendingTimesIds.md)\>
 
-Gets the agreement IDs of the top trending agreements on Coliving
+Gets the digital_content IDs of the top trending agreements on Coliving
 
 #### Parameters
 
@@ -239,7 +239,7 @@ ___
 
 **getTrendingAgreementsIDsWithVersion**(`requestParameters`): `Promise`<[`TrendingTimesIds`](../interfaces/full.TrendingTimesIds.md)\>
 
-Gets the agreement IDs of the top trending agreements on Coliving based on the given trending strategy version
+Gets the digital_content IDs of the top trending agreements on Coliving based on the given trending strategy version
 
 #### Parameters
 
@@ -329,7 +329,7 @@ ___
 
 **getUsersFromFavorites**(`requestParameters`): `Promise`<[`UserFull`](../interfaces/full.UserFull.md)[]\>
 
-Get users that favorited a agreement
+Get users that favorited a digital_content
 
 #### Parameters
 
@@ -347,7 +347,7 @@ ___
 
 **getUsersFromReposts**(`requestParameters`): `Promise`<[`UserFull`](../interfaces/full.UserFull.md)[]\>
 
-Get the users that reposted a agreement
+Get the users that reposted a digital_content
 
 #### Parameters
 

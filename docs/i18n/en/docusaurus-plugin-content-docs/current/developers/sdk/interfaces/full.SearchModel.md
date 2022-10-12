@@ -53,9 +53,9 @@ ___
 
 ___
 
-### saved\_agreements
+### saved\_digital_contents
 
- `Optional` **saved\_agreements**: [`AgreementFull`](full.AgreementFull.md)[]
+ `Optional` **saved\_digital_contents**: [`AgreementFull`](full.AgreementFull.md)[]
 
 **`memberof`** SearchModel
 

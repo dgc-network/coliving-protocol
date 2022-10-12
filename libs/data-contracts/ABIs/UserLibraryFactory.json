@@ -15,7 +15,7 @@
         },
         {
           "internalType": "bytes32",
-          "name": "_agreementFactoryRegistryKey",
+          "name": "_digital_contentFactoryRegistryKey",
           "type": "bytes32"
         },
         {
@@ -44,7 +44,7 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "_agreementId",
+          "name": "_digital_contentId",
           "type": "uint256"
         }
       ],
@@ -63,7 +63,7 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "_agreementId",
+          "name": "_digital_contentId",
           "type": "uint256"
         }
       ],
@@ -208,7 +208,7 @@
         },
         {
           "internalType": "uint256",
-          "name": "_agreementId",
+          "name": "_digital_contentId",
           "type": "uint256"
         },
         {
@@ -242,7 +242,7 @@
         },
         {
           "internalType": "uint256",
-          "name": "_agreementId",
+          "name": "_digital_contentId",
           "type": "uint256"
         },
         {

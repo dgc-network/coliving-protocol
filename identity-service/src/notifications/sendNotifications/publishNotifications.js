@@ -14,12 +14,12 @@ const getPublishNotifBaseType = (notification) => {
   switch (notification.type) {
     case notificationTypes.Follow:
       return notificationTypes.Follow
-    case notificationTypes.Repost.agreement:
+    case notificationTypes.Repost.digital_content:
     case notificationTypes.Repost.contentList:
     case notificationTypes.Repost.album:
     case notificationTypes.Repost.base:
       return notificationTypes.Repost.base
-    case notificationTypes.Favorite.agreement:
+    case notificationTypes.Favorite.digital_content:
     case notificationTypes.Favorite.contentList:
     case notificationTypes.Favorite.album:
     case notificationTypes.Favorite.base:
@@ -28,7 +28,7 @@ const getPublishNotifBaseType = (notification) => {
       return notificationTypes.RemixCreate
     case notificationTypes.RemixCosign:
       return notificationTypes.RemixCosign
-    case notificationTypes.Create.agreement:
+    case notificationTypes.Create.digital_content:
     case notificationTypes.Create.contentList:
     case notificationTypes.Create.album:
     case notificationTypes.Create.base:
@@ -69,7 +69,7 @@ const getPublishUserId = (notif, baseType) => {
   if (baseType === notificationTypes.Follow) return notif.metadata.followee_user_id
   else if (baseType === notificationTypes.Repost.base) return notif.metadata.entity_owner_id
   else if (baseType === notificationTypes.Favorite.base) return notif.metadata.entity_owner_id
-  else if (baseType === notificationTypes.RemixCreate) return notif.metadata.remix_parent_agreement_user_id
+  else if (baseType === notificationTypes.RemixCreate) return notif.metadata.remix_parent_digital_content_user_id
   else if (baseType === notificationTypes.RemixCosign) return notif.metadata.entity_owner_id
   else if (baseType === notificationTypes.Create.base) return notif.subscriberId
   else if (baseType === notificationTypes.ChallengeReward) return notif.initiator
@@ -86,7 +86,7 @@ const getPublishUserId = (notif, baseType) => {
 const alwaysSendNotifications = [
   notificationTypes.RemixCosign,
   notificationTypes.Create.base,
-  notificationTypes.Create.agreement,
+  notificationTypes.Create.digital_content,
   notificationTypes.Create.contentList,
   notificationTypes.Create.album,
   notificationTypes.ChallengeReward,

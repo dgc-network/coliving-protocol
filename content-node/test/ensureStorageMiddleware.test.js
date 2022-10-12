@@ -85,7 +85,7 @@ describe('test ensureStorageMiddleware', () => {
     assert(errorObj.error.state === 'NODE_REACHED_CAPACITY')
   })
 
-  it('fails with bad request when storage capacity is reached (/agreement_content_async)', async () => {
+  it('fails with bad request when storage capacity is reached (/digital_content_async)', async () => {
     await monitoringQueueMock.setRedisValue(storagePathUsedRedisKey, 100)
     const storagePathUsed = await monitoringQueueMock.getRedisValue(storagePathUsedRedisKey)
     assert(storagePathUsed === '100')
@@ -93,7 +93,7 @@ describe('test ensureStorageMiddleware', () => {
     const testAudioFilePath = path.resolve(__dirname, 'testAgreement.mp3')
     const file = fs.readFileSync(testAudioFilePath)
     const resp = await request(app)
-      .post('/agreement_content_async')
+      .post('/digital_content_async')
       .attach('file', file, { filename: 'STARBOY.mp3' })
       .set('Content-Type', 'multipart/form-data')
       .set('X-Session-ID', session.sessionToken)
@@ -109,8 +109,8 @@ describe('test ensureStorageMiddleware', () => {
     const storagePathUsed = await monitoringQueueMock.getRedisValue(storagePathUsedRedisKey)
     assert(storagePathUsed === '100')
 
-    // Using the test agreement was "too big", so this is a dummy file buffer
-    const file = Buffer.from('i am a agreement file!!!')
+    // Using the test digital_content was "too big", so this is a dummy file buffer
+    const file = Buffer.from('i am a digital_content file!!!')
 
     const resp = await request(app)
       .post('/agreements/metadata')
@@ -121,7 +121,7 @@ describe('test ensureStorageMiddleware', () => {
           metadata: {
             test: 'abel is my hero',
             owner_id: 1,
-            agreement_segments: ['agreementsegment1', 'agreementsegment2']
+            digital_content_segments: ['agreementsegment1', 'agreementsegment2']
           },
           source_file: file
         }

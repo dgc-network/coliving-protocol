@@ -23,15 +23,15 @@ def upgrade():
     connection = op.get_bind()
     connection.execute(
         """
-      --- Filter deletes from agreement_lexeme_dict.
+      --- Filter deletes from digital_content_lexeme_dict.
 
-      DROP MATERIALIZED VIEW agreement_lexeme_dict;
-      DROP INDEX IF EXISTS agreement_words_idx;
-      CREATE MATERIALIZED VIEW agreement_lexeme_dict as
+      DROP MATERIALIZED VIEW digital_content_lexeme_dict;
+      DROP INDEX IF EXISTS digital_content_words_idx;
+      CREATE MATERIALIZED VIEW digital_content_lexeme_dict as
       SELECT * FROM (
         SELECT
-          t.agreement_id,
-          t.title as agreement_title,
+          t.digital_content_id,
+          t.title as digital_content_title,
           unnest(
             tsvector_to_array(
               to_tsvector(
@@ -49,9 +49,9 @@ def upgrade():
           t.is_delete = false and
           t.stem_of IS NULL and
           u.is_current = true
-        GROUP BY t.agreement_id, t.title
+        GROUP BY t.digital_content_id, t.title
       ) AS words;
-      CREATE INDEX agreement_words_idx ON agreement_lexeme_dict USING gin(word gin_trgm_ops);
+      CREATE INDEX digital_content_words_idx ON digital_content_lexeme_dict USING gin(word gin_trgm_ops);
 
 
       --- Filter deletes from content_list_lexeme_dict and album_lexeme_dict.
@@ -119,15 +119,15 @@ def downgrade():
     connection = op.get_bind()
     connection.execute(
         """
-      --- Filter deletes from agreement_lexeme_dict.
+      --- Filter deletes from digital_content_lexeme_dict.
 
-      DROP MATERIALIZED VIEW agreement_lexeme_dict;
-      DROP INDEX IF EXISTS agreement_words_idx;
-      CREATE MATERIALIZED VIEW agreement_lexeme_dict as
+      DROP MATERIALIZED VIEW digital_content_lexeme_dict;
+      DROP INDEX IF EXISTS digital_content_words_idx;
+      CREATE MATERIALIZED VIEW digital_content_lexeme_dict as
       SELECT * FROM (
         SELECT
-          t.agreement_id,
-          t.title as agreement_title,
+          t.digital_content_id,
+          t.title as digital_content_title,
           unnest(
             tsvector_to_array(
               to_tsvector(
@@ -144,9 +144,9 @@ def downgrade():
           t.is_unlisted = false and
           t.is_delete = false and
           u.is_current = true
-        GROUP BY t.agreement_id, t.title
+        GROUP BY t.digital_content_id, t.title
       ) AS words;
-      CREATE INDEX agreement_words_idx ON agreement_lexeme_dict USING gin(word gin_trgm_ops);
+      CREATE INDEX digital_content_words_idx ON digital_content_lexeme_dict USING gin(word gin_trgm_ops);
 
 
       --- Filter deletes from content_list_lexeme_dict and album_lexeme_dict.

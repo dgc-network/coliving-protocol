@@ -20,11 +20,11 @@ def upgrade():
         """
     BEGIN;
 
-    DROP INDEX IF EXISTS agreement_id;
+    DROP INDEX IF EXISTS digital_content_id;
     DROP INDEX IF EXISTS user_id;
     DROP INDEX IF EXISTS name;
 
-    CREATE INDEX IF NOT EXISTS agreement_routes_agreement_id_idx ON agreement_routes (agreement_id, is_current);
+    CREATE INDEX IF NOT EXISTS digital_content_routes_digital_content_id_idx ON digital_content_routes (digital_content_id, is_current);
     CREATE INDEX IF NOT EXISTS user_events_user_id_idx ON user_events (user_id, is_current);
     CREATE INDEX IF NOT EXISTS milestones_name_idx ON milestones (name, id);
 
@@ -39,11 +39,11 @@ def downgrade():
         """
     BEGIN;
 
-    DROP INDEX IF EXISTS agreement_routes_agreement_id_idx;
+    DROP INDEX IF EXISTS digital_content_routes_digital_content_id_idx;
     DROP INDEX IF EXISTS user_events_user_id_idx;
     DROP INDEX IF EXISTS milestones_name_idx;
 
-    CREATE INDEX IF NOT EXISTS agreement_id ON agreement_routes (is_current);
+    CREATE INDEX IF NOT EXISTS digital_content_id ON digital_content_routes (is_current);
     CREATE INDEX IF NOT EXISTS user_id ON user_events (is_current);
     CREATE INDEX IF NOT EXISTS name ON milestones (id);
 

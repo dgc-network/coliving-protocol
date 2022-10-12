@@ -25,7 +25,7 @@ const generateTimestampAndSignature = (data, privateKey) => {
   return { timestamp, signature: signedResponse.signature }
 }
 
-// Keeps agreement of a cached listen signature
+// Keeps digital_content of a cached listen signature
 // Two field object: { timestamp, signature }
 let cachedListenSignature = null
 

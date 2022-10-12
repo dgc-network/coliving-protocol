@@ -104,10 +104,10 @@ class PrometheusMetricNames:
     INDEX_BLOCKS_DURATION_SECONDS = "index_blocks_duration_seconds"
     INDEX_METRICS_DURATION_SECONDS = "index_metrics_duration_seconds"
     INDEX_TRENDING_DURATION_SECONDS = "index_trending_duration_seconds"
-    AGREEMENT_STATE_UPDATE_DURATION_SECONDS = "agreement_state_update_duration_seconds"
+    AGREEMENT_STATE_UPDATE_DURATION_SECONDS = "digital_content_state_update_duration_seconds"
     UPDATE_AGGREGATE_TABLE_DURATION_SECONDS = "update_aggregate_table_duration_seconds"
     UPDATE_AGREEMENT_IS_AVAILABLE_DURATION_SECONDS = (
-        "update_agreement_is_available_duration_seconds"
+        "update_digital_content_is_available_duration_seconds"
     )
     UPDATE_TRENDING_VIEW_DURATION_SECONDS = "update_trending_view_duration_seconds"
     USER_STATE_UPDATE_DURATION_SECONDS = "user_state_update_duration_seconds"
@@ -195,7 +195,7 @@ PrometheusRegistry = {
     ),
     PrometheusMetricNames.AGREEMENT_STATE_UPDATE_DURATION_SECONDS: Histogram(
         f"{METRIC_PREFIX}_{PrometheusMetricNames.AGREEMENT_STATE_UPDATE_DURATION_SECONDS}",
-        "Runtimes for src.task.agreements:agreement_state_update()",
+        "Runtimes for src.task.agreements:digital_content_state_update()",
         ("scope",),
     ),
     PrometheusMetricNames.UPDATE_AGGREGATE_TABLE_DURATION_SECONDS: Histogram(
@@ -208,7 +208,7 @@ PrometheusRegistry = {
     ),
     PrometheusMetricNames.UPDATE_AGREEMENT_IS_AVAILABLE_DURATION_SECONDS: Histogram(
         f"{METRIC_PREFIX}_{PrometheusMetricNames.UPDATE_AGREEMENT_IS_AVAILABLE_DURATION_SECONDS}",
-        "Runtimes for src.task.update_agreement_is_available:celery.task()",
+        "Runtimes for src.task.update_digital_content_is_available:celery.task()",
         ("success",),
     ),
     PrometheusMetricNames.UPDATE_TRENDING_VIEW_DURATION_SECONDS: Histogram(

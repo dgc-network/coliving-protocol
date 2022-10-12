@@ -335,7 +335,7 @@ const handleSyncFromPrimary = async (
          */
 
         /*
-         * Make list of all agreement Files to add after agreement creation
+         * Make list of all digital_content Files to add after digital_content creation
          *
          * Files with agreementBlockchainIds cannot be created until agreements have been created,
          *    but agreements cannot be created until metadata and cover art files have been created.
@@ -351,7 +351,7 @@ const handleSyncFromPrimary = async (
 
         const CIDsThatFailedSaveFileOp = new Set()
 
-        // Save all agreement files to disk in batches (to limit concurrent load)
+        // Save all digital_content files to disk in batches (to limit concurrent load)
         for (let i = 0; i < agreementFiles.length; i += FileSaveMaxConcurrency) {
           const agreementFilesSlice = agreementFiles.slice(
             i,
@@ -388,9 +388,9 @@ const handleSyncFromPrimary = async (
             })
           )
         }
-        logger.info(logPrefix, 'Saved all agreement files to disk.')
+        logger.info(logPrefix, 'Saved all digital_content files to disk.')
 
-        // Save all non-agreement files to disk in batches (to limit concurrent load)
+        // Save all non-digital-content files to disk in batches (to limit concurrent load)
         for (let i = 0; i < nonAgreementFiles.length; i += FileSaveMaxConcurrency) {
           const nonAgreementFilesSlice = nonAgreementFiles.slice(
             i,
@@ -443,7 +443,7 @@ const handleSyncFromPrimary = async (
             })
           )
         }
-        logger.info(logPrefix, 'Saved all non-agreement files to disk.')
+        logger.info(logPrefix, 'Saved all non-digital-content files to disk.')
 
         /**
          * Handle scenario where failed to retrieve/save > 0 CIDs
@@ -508,16 +508,16 @@ const handleSyncFromPrimary = async (
           }),
           { transaction }
         )
-        logger.info(logPrefix, 'Saved all non-agreement File entries to DB')
+        logger.info(logPrefix, 'Saved all non-digital-content File entries to DB')
 
-        await models.Agreement.bulkCreate(
-          fetchedCNodeUser.agreements.map((agreement) => ({
-            ...agreement,
+        await models.DigitalContent.bulkCreate(
+          fetchedCNodeUser.agreements.map((digital_content) => ({
+            ...digital_content,
             cnodeUserUUID
           })),
           { transaction }
         )
-        logger.info(logPrefix, 'Saved all Agreement entries to DB')
+        logger.info(logPrefix, 'Saved all DigitalContent entries to DB')
 
         await models.File.bulkCreate(
           agreementFiles.map((agreementFile) => {
@@ -531,7 +531,7 @@ const handleSyncFromPrimary = async (
           }),
           { transaction }
         )
-        logger.info(logPrefix, 'Saved all agreement File entries to DB')
+        logger.info(logPrefix, 'Saved all digital_content File entries to DB')
 
         await models.ColivingUser.bulkCreate(
           fetchedCNodeUser.colivingUsers.map((colivingUser) => ({
@@ -549,7 +549,7 @@ const handleSyncFromPrimary = async (
           `Transaction successfully committed for cnodeUser wallet ${fetchedWalletPublicKey} with ${numTotalFiles} files processed and ${numCIDsThatFailedSaveFileOp} skipped.`
         )
 
-        // agreement that sync for this user was successful
+        // digital_content that sync for this user was successful
         await SyncHistoryAggregator.recordSyncSuccess(fetchedWalletPublicKey)
       } catch (e) {
         logger.error(

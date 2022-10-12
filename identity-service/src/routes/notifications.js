@@ -28,7 +28,7 @@ const ClientNotificationTypes = new Set([
 ])
 
 const Entity = Object.freeze({
-  Agreement: 'Agreement',
+  DigitalContent: 'DigitalContent',
   ContentList: 'ContentList',
   Album: 'Album',
   User: 'User'
@@ -57,7 +57,7 @@ const formatUserSubscriptionCollection = entityType => notification => {
 const formatUserSubscriptionAgreement = notification => {
   return {
     ...getCommonNotificationsFields(notification),
-    entityType: Entity.Agreement,
+    entityType: Entity.DigitalContent,
     entityOwnerId: notification.entityId,
     entityIds: notification.actions.map(action => action.actionEntityId),
     userId: notification.entityId,
@@ -166,7 +166,7 @@ const formatTrendingAgreement = (notification) => {
   return {
     ...getCommonNotificationsFields(notification),
     type: NotificationType.TrendingAgreement,
-    entityType: Entity.Agreement,
+    entityType: Entity.DigitalContent,
     entityId: notification.entityId,
     rank: notification.actions[0].actionEntityId,
     time,
@@ -244,13 +244,13 @@ const getCommonNotificationsFields = (notification) => ({
 
 const notificationResponseMap = {
   [NotificationType.Follow]: formatFollow,
-  [NotificationType.Favorite.agreement]: formatFavorite(Entity.Agreement),
+  [NotificationType.Favorite.digital_content]: formatFavorite(Entity.DigitalContent),
   [NotificationType.Favorite.contentList]: formatFavorite(Entity.ContentList),
   [NotificationType.Favorite.album]: formatFavorite(Entity.Album),
-  [NotificationType.Repost.agreement]: formatRepost(Entity.Agreement),
+  [NotificationType.Repost.digital_content]: formatRepost(Entity.DigitalContent),
   [NotificationType.Repost.contentList]: formatRepost(Entity.ContentList),
   [NotificationType.Repost.album]: formatRepost(Entity.Album),
-  [NotificationType.Create.agreement]: formatUserSubscriptionAgreement,
+  [NotificationType.Create.digital_content]: formatUserSubscriptionAgreement,
   [NotificationType.Create.album]: formatUserSubscriptionCollection(Entity.Album),
   [NotificationType.Create.contentList]: formatUserSubscriptionCollection(Entity.ContentList),
   [NotificationType.Announcement]: formatAnnouncement,

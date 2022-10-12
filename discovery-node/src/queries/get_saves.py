@@ -1,7 +1,7 @@
 from src import exceptions
 from src.models.content_lists.content_list import ContentList
 from src.models.social.save import Save, SaveType
-from src.models.agreements.agreement import Agreement
+from src.models.agreements.digital_content import DigitalContent
 from src.queries.query_helpers import paginate_query
 from src.utils import helpers
 from src.utils.db_session import get_db_read_replica
@@ -14,7 +14,7 @@ def get_saves(save_type, user_id):
     elif save_type == "content_lists":
         save_query_type = SaveType.contentList
     elif save_type == "agreements":
-        save_query_type = SaveType.agreement
+        save_query_type = SaveType.digital_content
     else:
         raise exceptions.ArgumentError("Invalid save type provided")
 
@@ -47,7 +47,7 @@ def get_saves(save_type, user_id):
         elif save_type == "agreements":
             query = query.filter(
                 Save.save_item_id.in_(
-                    session.query(Agreement.agreement_id).filter(Agreement.is_current == True)
+                    session.query(DigitalContent.digital_content_id).filter(DigitalContent.is_current == True)
                 )
             )
 

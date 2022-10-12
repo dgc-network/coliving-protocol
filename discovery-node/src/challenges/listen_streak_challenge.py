@@ -50,8 +50,8 @@ class ChallengeListenStreakUpdater(ChallengeUpdater):
             completion.user_id: completion for completion in partial_completions
         }
 
-        if event == ChallengeEvent.agreement_listen:
-            self._handle_agreement_listens(partial_completions, event_metadatas)
+        if event == ChallengeEvent.digital_content_listen:
+            self._handle_digital_content_listens(partial_completions, event_metadatas)
 
         # Update the user_challenges
         for user_challenge in user_challenges:
@@ -75,7 +75,7 @@ class ChallengeListenStreakUpdater(ChallengeUpdater):
         session.add_all(listen_streak_challenges)
 
     # Helpers
-    def _handle_agreement_listens(
+    def _handle_digital_content_listens(
         self,
         partial_completions: List[ChallengeListenStreak],
         event_metadatas: List[FullEventMetadata],

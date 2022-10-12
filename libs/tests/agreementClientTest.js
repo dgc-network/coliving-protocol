@@ -17,8 +17,8 @@ before(async function () {
 })
 
 it('should call getAgreement on invalid value and return empty', async function () {
-  let agreement = await colivingInstance.contracts.AgreementFactoryClient.getAgreement(0)
-  assert.strictEqual(agreement.multihashDigest, helpers.constants['0x0'])
+  let digital_content = await colivingInstance.contracts.AgreementFactoryClient.getAgreement(0)
+  assert.strictEqual(digital_content.multihashDigest, helpers.constants['0x0'])
 })
 
 it('should call addAgreement', async function () {
@@ -34,8 +34,8 @@ it('should call addAgreement', async function () {
       agreementMultihashDecoded.hashFn,
       agreementMultihashDecoded.size
     )).agreementId
-    let agreement = await colivingInstance.contracts.AgreementFactoryClient.getAgreement(agreementId1)
-    assert.strictEqual(agreement.multihashDigest, agreementMultihashDecoded.digest)
+    let digital_content = await colivingInstance.contracts.AgreementFactoryClient.getAgreement(agreementId1)
+    assert.strictEqual(digital_content.multihashDigest, agreementMultihashDecoded.digest)
   } else throw new Error('creatorId is not a valid integer')
 })
 
@@ -46,17 +46,17 @@ it('should call updateAgreement', async function () {
   creatorId2 = (await colivingInstance.contracts.UserFactoryClient.addUser(handle)).userId
 
   if (creatorId2 && Number.isInteger(creatorId2)) {
-    // add agreement
+    // add digital_content
     agreementId1 = (await colivingInstance.contracts.AgreementFactoryClient.addAgreement(
       creatorId2,
       agreementMultihashDecoded.digest,
       agreementMultihashDecoded.hashFn,
       agreementMultihashDecoded.size
     )).agreementId
-    let agreement = await colivingInstance.contracts.AgreementFactoryClient.getAgreement(agreementId1)
-    assert.strictEqual(agreement.multihashDigest, agreementMultihashDecoded.digest)
+    let digital_content = await colivingInstance.contracts.AgreementFactoryClient.getAgreement(agreementId1)
+    assert.strictEqual(digital_content.multihashDigest, agreementMultihashDecoded.digest)
 
-    // update agreement
+    // update digital_content
     await colivingInstance.contracts.AgreementFactoryClient.updateAgreement(
       agreementId1,
       creatorId2,
@@ -64,23 +64,23 @@ it('should call updateAgreement', async function () {
       agreementMultihashDecoded2.hashFn,
       agreementMultihashDecoded2.size
     )
-    agreement = await colivingInstance.contracts.AgreementFactoryClient.getAgreement(agreementId1)
-    assert.strictEqual(agreement.multihashDigest, agreementMultihashDecoded2.digest)
+    digital_content = await colivingInstance.contracts.AgreementFactoryClient.getAgreement(agreementId1)
+    assert.strictEqual(digital_content.multihashDigest, agreementMultihashDecoded2.digest)
   } else throw new Error('creatorId is not a valid integer')
 })
 
 it('should call deleteAgreement', async function () {
-  // add agreement
+  // add digital_content
   agreementId2 = (await colivingInstance.contracts.AgreementFactoryClient.addAgreement(
     creatorId2,
     agreementMultihashDecoded.digest,
     agreementMultihashDecoded.hashFn,
     agreementMultihashDecoded.size
   )).agreementId
-  let agreement = await colivingInstance.contracts.AgreementFactoryClient.getAgreement(agreementId2)
-  assert.strictEqual(agreement.multihashDigest, agreementMultihashDecoded.digest)
+  let digital_content = await colivingInstance.contracts.AgreementFactoryClient.getAgreement(agreementId2)
+  assert.strictEqual(digital_content.multihashDigest, agreementMultihashDecoded.digest)
 
-  // delete agreement
+  // delete digital_content
   let { agreementId } = await colivingInstance.contracts.AgreementFactoryClient.deleteAgreement(agreementId2)
   assert.strictEqual(agreementId, agreementId2)
 })

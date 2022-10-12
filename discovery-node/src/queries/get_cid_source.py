@@ -10,7 +10,7 @@ redis = redis_connection.get_redis()
 
 def get_cid_source(cid):
     """
-    Returns the CID source (e.g. CID is a metadata hash, a cover photo, a agreement segment, etc.)
+    Returns the CID source (e.g. CID is a metadata hash, a cover photo, a digital_content segment, etc.)
 
     Args: the observed CID
     """
@@ -76,9 +76,9 @@ def get_cid_source(cid):
                         UNION ALL
                         (
                             SELECT
-                                "agreement_id" as "id",
+                                "digital_content_id" as "id",
                                 'agreements' as "table_name",
-                                'agreement_metadata' as "type",
+                                'digital_content_metadata' as "type",
                                 "is_current"
                             FROM
                                 "agreements"
@@ -88,7 +88,7 @@ def get_cid_source(cid):
                         UNION ALL
                         (
                             SELECT
-                                "agreement_id" as "id",
+                                "digital_content_id" as "id",
                                 'agreements' as "table_name",
                                 'cover_art_size' as "type",
                                 "is_current"
@@ -112,7 +112,7 @@ def get_cid_source(cid):
                         """
                         WITH cid_const AS (VALUES (:cid))
                             SELECT
-                                "agreement_id" as "id",
+                                "digital_content_id" as "id",
                                 'agreements' as "table_name",
                                 'segment' as "type",
                                 "is_current"
@@ -121,13 +121,13 @@ def get_cid_source(cid):
                                     SELECT
                                         jb -> 'duration' as "d",
                                         jb -> 'multihash' :: varchar as "cid",
-                                        "agreement_id",
+                                        "digital_content_id",
                                         "is_current"
                                     FROM
                                         (
                                             SELECT
-                                                jsonb_array_elements("agreement_segments") as "jb",
-                                                "agreement_id",
+                                                jsonb_array_elements("digital_content_segments") as "jb",
+                                                "digital_content_id",
                                                 "is_current"
                                             FROM
                                                 "agreements"

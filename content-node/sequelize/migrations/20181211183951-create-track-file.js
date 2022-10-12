@@ -3,7 +3,7 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('AgreementFile', {
       // fields are capitalized since sequelize expects them to be based on the
-      //    Agreement.belongsToMany(File) association
+      //    DigitalContent.belongsToMany(File) association
       AgreementId: {
         type: Sequelize.INTEGER,
         allowNull: false,

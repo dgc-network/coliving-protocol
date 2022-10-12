@@ -9,7 +9,7 @@ const getAllAgreementIds = async () => {
 }
 
 const getAllContentBlacklist = async () => {
-  // Segments stored in the ContentBlacklist may not be associated with a agreement
+  // Segments stored in the ContentBlacklist may not be associated with a digital_content
   const segmentsFromCBL = await models.ContentBlacklist.findAll({
     attributes: ['value'],
     where: {

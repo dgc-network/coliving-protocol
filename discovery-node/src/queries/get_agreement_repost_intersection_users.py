@@ -1,33 +1,33 @@
 from src import exceptions
 from src.models.social.follow import Follow
 from src.models.social.repost import Repost, RepostType
-from src.models.agreements.agreement import Agreement
+from src.models.agreements.digital_content import DigitalContent
 from src.models.users.user import User
 from src.queries.query_helpers import paginate_query
 from src.utils import helpers
 from src.utils.db_session import get_db_read_replica
 
 
-def get_agreement_repost_intersection_users(repost_agreement_id, follower_user_id):
+def get_digital_content_repost_intersection_users(repost_digital_content_id, follower_user_id):
     users = []
     db = get_db_read_replica()
     with db.scoped_session() as session:
-        # ensure agreement_id exists
-        agreement_entry = (
-            session.query(Agreement)
-            .filter(Agreement.agreement_id == repost_agreement_id, Agreement.is_current == True)
+        # ensure digital_content_id exists
+        digital_content_entry = (
+            session.query(DigitalContent)
+            .filter(DigitalContent.digital_content_id == repost_digital_content_id, DigitalContent.is_current == True)
             .first()
         )
-        if agreement_entry is None:
-            raise exceptions.NotFoundError("Resource not found for provided agreement id")
+        if digital_content_entry is None:
+            raise exceptions.NotFoundError("Resource not found for provided digital_content id")
 
         query = session.query(User).filter(
             User.is_current == True,
             User.user_id.in_(
                 session.query(Repost.user_id)
                 .filter(
-                    Repost.repost_item_id == repost_agreement_id,
-                    Repost.repost_type == RepostType.agreement,
+                    Repost.repost_item_id == repost_digital_content_id,
+                    Repost.repost_type == RepostType.digital_content,
                     Repost.is_current == True,
                     Repost.is_delete == False,
                 )

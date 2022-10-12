@@ -13,7 +13,7 @@ custom_edit_url: null
 
  `Optional` **id**: `string`[]
 
-The ID of the agreement(s)
+The ID of the digital_content(s)
 
 ___
 
@@ -21,7 +21,7 @@ ___
 
  `Optional` **permalink**: `string`[]
 
-The permalink of the agreement(s)
+The permalink of the digital_content(s)
 
 ___
 

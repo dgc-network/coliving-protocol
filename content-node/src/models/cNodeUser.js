@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'cnodeUserUUID',
       sourceKey: 'cnodeUserUUID'
     })
-    CNodeUser.hasMany(models.Agreement, {
+    CNodeUser.hasMany(models.DigitalContent, {
       foreignKey: 'cnodeUserUUID',
       sourceKey: 'cnodeUserUUID'
     })

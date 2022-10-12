@@ -1,7 +1,7 @@
 ---
-id: "Agreement"
-title: "Interface: Agreement"
-sidebar_label: "Agreement"
+id: "DigitalContent"
+title: "Interface: DigitalContent"
+sidebar_label: "DigitalContent"
 sidebar_position: 0
 custom_edit_url: null
 pagination_prev: null
@@ -10,7 +10,7 @@ pagination_next: null
 
 **`export`**
 
-**`interface`** Agreement
+**`interface`** DigitalContent
 
 ## Properties
 
@@ -18,7 +18,7 @@ pagination_next: null
 
  `Optional` **artwork**: [`AgreementArtwork`](AgreementArtwork.md)
 
-**`memberof`** Agreement
+**`memberof`** DigitalContent
 
 ___
 
@@ -26,7 +26,7 @@ ___
 
  `Optional` **description**: `string`
 
-**`memberof`** Agreement
+**`memberof`** DigitalContent
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
  `Optional` **downloadable**: `boolean`
 
-**`memberof`** Agreement
+**`memberof`** DigitalContent
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
  **duration**: `number`
 
-**`memberof`** Agreement
+**`memberof`** DigitalContent
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
  **favorite\_count**: `number`
 
-**`memberof`** Agreement
+**`memberof`** DigitalContent
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
  `Optional` **genre**: `string`
 
-**`memberof`** Agreement
+**`memberof`** DigitalContent
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
  **id**: `string`
 
-**`memberof`** Agreement
+**`memberof`** DigitalContent
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
  `Optional` **mood**: `string`
 
-**`memberof`** Agreement
+**`memberof`** DigitalContent
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
  `Optional` **permalink**: `string`
 
-**`memberof`** Agreement
+**`memberof`** DigitalContent
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
  **play\_count**: `number`
 
-**`memberof`** Agreement
+**`memberof`** DigitalContent
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
  `Optional` **release\_date**: `string`
 
-**`memberof`** Agreement
+**`memberof`** DigitalContent
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
  `Optional` **remix\_of**: [`RemixParent`](RemixParent.md)
 
-**`memberof`** Agreement
+**`memberof`** DigitalContent
 
 ___
 
@@ -114,7 +114,7 @@ ___
 
  **repost\_count**: `number`
 
-**`memberof`** Agreement
+**`memberof`** DigitalContent
 
 ___
 
@@ -122,7 +122,7 @@ ___
 
  `Optional` **tags**: `string`
 
-**`memberof`** Agreement
+**`memberof`** DigitalContent
 
 ___
 
@@ -130,7 +130,7 @@ ___
 
  **title**: `string`
 
-**`memberof`** Agreement
+**`memberof`** DigitalContent
 
 ___
 
@@ -138,4 +138,4 @@ ___
 
  **user**: [`User`](User.md)
 
-**`memberof`** Agreement
+**`memberof`** DigitalContent

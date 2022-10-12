@@ -3,9 +3,9 @@ from datetime import datetime, timedelta
 
 from integration_tests.utils import populate_mock_db
 from src.models.social.aggregate_interval_plays import t_aggregate_interval_plays
-from src.models.agreements.agreement_trending_score import AgreementTrendingScore
+from src.models.agreements.digital_content_trending_score import AgreementTrendingScore
 from src.models.agreements.trending_param import t_trending_params
-from src.trending_strategies.EJ57D_trending_agreements_strategy import (
+from src.trending_strategies.EJ57D_trending_digital_contents_strategy import (
     TrendingAgreementsStrategyEJ57D,
 )
 from src.utils.db_session import get_db
@@ -18,7 +18,7 @@ def setup_trending(db):
     # Test data
 
     # test agreements
-    # when creating agreements, agreement_id == index
+    # when creating agreements, digital_content_id == index
     test_entities = {
         "users": [
             *[
@@ -46,31 +46,31 @@ def setup_trending(db):
             ],
         ],
         "agreements": [
-            {"agreement_id": 1, "owner_id": 1},
+            {"digital_content_id": 1, "owner_id": 1},
             {
-                "agreement_id": 2,
+                "digital_content_id": 2,
                 "owner_id": 1,
                 "created_at": datetime.now() - timedelta(days=1),
             },
             {
-                "agreement_id": 3,
+                "digital_content_id": 3,
                 "owner_id": 2,
                 "created_at": datetime.now() - timedelta(weeks=2),
             },
             {
-                "agreement_id": 4,
+                "digital_content_id": 4,
                 "owner_id": 2,
                 "created_at": datetime.now() - timedelta(weeks=6),
             },
             {
-                "agreement_id": 5,
+                "digital_content_id": 5,
                 "owner_id": 2,
                 "created_at": datetime.now() - timedelta(weeks=60),
             },
-            {"agreement_id": 6, "owner_id": 2},
-            {"agreement_id": 7, "owner_id": 3},
-            {"agreement_id": 8, "owner_id": 3, "is_delete": True},
-            {"agreement_id": 9, "owner_id": 3, "is_unlisted": True},
+            {"digital_content_id": 6, "owner_id": 2},
+            {"digital_content_id": 7, "owner_id": 3},
+            {"digital_content_id": 8, "owner_id": 3, "is_delete": True},
+            {"digital_content_id": 9, "owner_id": 3, "is_unlisted": True},
         ],
         "follows": [
             # at least 200 followers for user_0
@@ -277,17 +277,17 @@ def test_update_interval_plays(app):
         session.execute("REFRESH MATERIALIZED VIEW aggregate_interval_plays")
         aggregate_interval_plays = session.query(t_aggregate_interval_plays).all()
 
-        def get_agreement_plays(agreement_id):
+        def get_digital_content_plays(digital_content_id):
             for param in aggregate_interval_plays:
-                if param.agreement_id == agreement_id:
+                if param.digital_content_id == digital_content_id:
                     return param
             return None
 
         assert len(aggregate_interval_plays) == 7
 
-        agreement_plays = get_agreement_plays(1)
-        assert agreement_plays.week_listen_counts == 10
-        assert agreement_plays.month_listen_counts == 20
+        digital_content_plays = get_digital_content_plays(1)
+        assert digital_content_plays.week_listen_counts == 10
+        assert digital_content_plays.month_listen_counts == 20
 
 
 def test_update_trending_params(app):
@@ -307,13 +307,13 @@ def test_update_trending_params(app):
         # There should be 7 valid agreements with trending params
         assert len(trending_params) == 7
 
-        def get_agreement_id(agreement_id):
+        def get_digital_content_id(digital_content_id):
             for param in trending_params:
-                if param.agreement_id == agreement_id:
+                if param.digital_content_id == digital_content_id:
                     return param
             return None
 
-        t1 = get_agreement_id(1)
+        t1 = get_digital_content_id(1)
         assert t1.play_count == 40
         assert t1.owner_follower_count == 10
         assert t1.repost_count == 63
@@ -334,7 +334,7 @@ def test_update_trending_params(app):
         assert float(t1.karma) == 172
 
 
-def test_update_agreement_score_query(app):
+def test_update_digital_content_score_query(app):
     """Happy path test: test that we get all valid listens from prior year"""
     with app.app_context():
         db = get_db()
@@ -346,7 +346,7 @@ def test_update_agreement_score_query(app):
     with db.scoped_session() as session:
         session.execute("REFRESH MATERIALIZED VIEW aggregate_interval_plays")
         session.execute("REFRESH MATERIALIZED VIEW trending_params")
-        udpated_strategy.update_agreement_score_query(session)
+        udpated_strategy.update_digital_content_score_query(session)
         scores = session.query(AgreementTrendingScore).all()
         # Test that scores are not generated for hidden/deleted agreements
         # There should be 7 valid agreements * 3 valid time ranges (week/month/year)
@@ -355,7 +355,7 @@ def test_update_agreement_score_query(app):
         def get_time_sorted(time_range):
             return sorted(
                 [score for score in scores if score.time_range == time_range],
-                key=lambda k: (k.score, k.agreement_id),
+                key=lambda k: (k.score, k.digital_content_id),
                 reverse=True,
             )
 

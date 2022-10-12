@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 class TrendingChallengeUpdater(ChallengeUpdater):
-    """Updates the trending agreement challenge."""
+    """Updates the trending digital_content challenge."""
 
     def update_user_challenges(
         self,
@@ -51,9 +51,9 @@ class TrendingChallengeUpdater(ChallengeUpdater):
         return f"{extra['week']}:{extra['rank']}"
 
 
-trending_agreement_challenge_manager = ChallengeManager("tt", TrendingChallengeUpdater())
+trending_digital_content_challenge_manager = ChallengeManager("tt", TrendingChallengeUpdater())
 
-trending_underground_agreement_challenge_manager = ChallengeManager(
+trending_underground_digital_content_challenge_manager = ChallengeManager(
     "tut", TrendingChallengeUpdater()
 )
 

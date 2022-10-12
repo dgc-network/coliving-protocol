@@ -7,12 +7,12 @@ class AggregateUser(Base, RepresentableMixin):
     __tablename__ = "aggregate_user"
 
     user_id = Column(Integer, primary_key=True)
-    agreement_count = Column(BigInteger, server_default=text("0"))
+    digital_content_count = Column(BigInteger, server_default=text("0"))
     content_list_count = Column(BigInteger, server_default=text("0"))
     album_count = Column(BigInteger, server_default=text("0"))
     follower_count = Column(BigInteger, server_default=text("0"))
     following_count = Column(BigInteger, server_default=text("0"))
     repost_count = Column(BigInteger, server_default=text("0"))
-    agreement_save_count = Column(BigInteger, server_default=text("0"))
+    digital_content_save_count = Column(BigInteger, server_default=text("0"))
     supporter_count = Column(Integer, nullable=False, server_default=text("0"))
     supporting_count = Column(Integer, nullable=False, server_default=text("0"))

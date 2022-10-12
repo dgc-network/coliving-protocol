@@ -1,10 +1,10 @@
 import logging
 
-from src.api.v1.helpers import extend_agreement, format_limit, format_offset, to_dict
-from src.queries.get_trending_agreements import (
+from src.api.v1.helpers import extend_digital_content, format_limit, format_offset, to_dict
+from src.queries.get_trending_digital_contents import (
     TRENDING_LIMIT,
     TRENDING_TTL_SEC,
-    get_trending_agreements,
+    get_trending_digital_contents,
 )
 from src.utils.helpers import decode_string_id  # pylint: disable=C0302
 from src.utils.redis_cache import get_trending_cache_key, use_redis_cache
@@ -30,8 +30,8 @@ def get_trending(args, strategy):
         decoded_id = decode_string_id(current_user_id)
         args["current_user_id"] = decoded_id
 
-    agreements = get_trending_agreements(args, strategy)
-    return list(map(extend_agreement, agreements))
+    agreements = get_trending_digital_contents(args, strategy)
+    return list(map(extend_digital_content, agreements))
 
 
 def get_full_trending(request, args, strategy):
@@ -46,5 +46,5 @@ def get_full_trending(request, args, strategy):
         full_trending = use_redis_cache(
             key, TRENDING_TTL_SEC, lambda: get_trending(args, strategy)
         )
-    trending_agreements = full_trending[offset : limit + offset]
-    return trending_agreements
+    trending_digital_contents = full_trending[offset : limit + offset]
+    return trending_digital_contents

@@ -32,7 +32,7 @@ var contentLists = /*#__PURE__*/Object.freeze({
 });
 
 const resolve = `
-const agreement = await colivingSdk.resolve<Agreement>({
+const digital_content = await colivingSdk.resolve<DigitalContent>({
   url: "https://coliving.lol/camouflybeats/hypermantra-86216",
 });
 `;
@@ -46,7 +46,7 @@ const getBulkAgreements = `
 const agreements = await colivingSdk.agreements.getBulkAgreements();
 `;
 const getAgreement = `
-const agreement = await colivingSdk.agreements.getAgreement({
+const digital_content = await colivingSdk.agreements.getAgreement({
     agreementId: "D7KyD",
 });
 `;
@@ -62,8 +62,8 @@ const streamAgreement = `
 const url = await colivingSdk.agreements.streamAgreement({
     agreementId: "PjdWN",
 });
-const live = new Audio(url);
-live.play();
+const digitalcoin = new Audio(url);
+digitalcoin.play();
 `;
 
 var agreements = /*#__PURE__*/Object.freeze({

@@ -33,7 +33,7 @@ module.exports = {
 
         // Determine type of file
         if (file.sourceFile) {
-          type = 'agreement'
+          type = 'digital_content'
           agreementFiles.push(file)
         }
         if (userMetadataFileUUIDSet.has(fileUUID) || agreementMetadataFileUUIDSet.has(fileUUID)) {
@@ -61,7 +61,7 @@ module.exports = {
       }
       console.log('num orphaned files', orphanedFiles.length)
       console.log('num corrupted files', corruptedFiles.length)
-      console.log(`num agreement files ${agreementFiles.length}`)
+      console.log(`num digital_content files ${agreementFiles.length}`)
       console.log(`num metadata files ${metadataFiles.length}`)
       console.log(`num image files ${imageFiles.length}`)
 

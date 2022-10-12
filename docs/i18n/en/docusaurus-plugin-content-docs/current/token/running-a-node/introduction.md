@@ -17,5 +17,5 @@ The Coliving protocol is powered by two off-chain services, the Discovery Node a
 
 **Content Node**
 
-* Hosts live and image content
+* Hosts digitalcoin and image content
 * Syncs content across nodes to ensure data is consistent and highly available \(using the Coliving Storage Protocol under the hood\)

@@ -12,7 +12,7 @@ class DBManager {
    * Steps:
    *  1. increments cnodeUser clock value by 1
    *  2. insert new ClockRecord entry with new clock value
-   *  3. insert new Data Table (File, Agreement, ColivingUser) entry with queryObj and new clock value
+   *  3. insert new Data Table (File, DigitalContent, ColivingUser) entry with queryObj and new clock value
    * In steps 2 and 3, clock values are read as subquery to guarantee atomicity
    *
    * B. Given a list of IDs, batch deletes user session tokens to expire sessions on the server-side.
@@ -109,7 +109,7 @@ class DBManager {
       })
       log(`${cnodeUserUUIDLog} || numAgreementFilesDeleted ${numAgreementFilesDeleted}`)
 
-      const numAgreementsDeleted = await models.Agreement.destroy({
+      const numAgreementsDeleted = await models.DigitalContent.destroy({
         where: { cnodeUserUUID },
         transaction
       })

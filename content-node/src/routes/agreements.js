@@ -43,11 +43,11 @@ const readFile = promisify(fs.readFile)
 const router = express.Router()
 
 /**
- * Add a agreement transcode task into the worker queue. If the agreement file is uploaded properly (not transcoded), return successResponse
- * @note this agreement content route is used in conjunction with the polling.
+ * Add a digital_content transcode task into the worker queue. If the digital_content file is uploaded properly (not transcoded), return successResponse
+ * @note this digital_content content route is used in conjunction with the polling.
  */
 router.post(
-  '/agreement_content_async',
+  '/digital_content_async',
   authMiddleware,
   ensurePrimaryMiddleware,
   ensureStorageMiddleware,
@@ -95,7 +95,7 @@ router.post(
 )
 
 /**
- * Delete all temporary transcode artifacts from agreement transcode handoff flow.
+ * Delete all temporary transcode artifacts from digital_content transcode handoff flow.
  * This is called on the node that was handed off the transcode to clear the state from disk
  */
 router.post(
@@ -104,9 +104,9 @@ router.post(
   handleResponse(async (req, res) => {
     const fileDir = req.body.fileDir
     req.logger.info('Clearing filesystem fileDir', fileDir)
-    if (!fileDir.includes('tmp_agreement_artifacts')) {
+    if (!fileDir.includes('tmp_digital_content_artifacts')) {
       return errorResponseBadRequest(
-        'Cannot remove agreement folder outside temporary agreement artifacts'
+        'Cannot remove digital_content folder outside temporary digital_content artifacts'
       )
     }
     await removeAgreementFolder({ logContext: req.logContext }, fileDir)
@@ -117,7 +117,7 @@ router.post(
 
 /**
  * Given that the requester is a valid SP, the current Content Node has enough storage,
- * upload the agreement to the current node and add a transcode and segmenting job to the queue.
+ * upload the digital_content to the current node and add a transcode and segmenting job to the queue.
  *
  * This route is used on an available SP when the primary sends over a transcode and segment request
  * to initiate the transcode handoff. This route does not run on the primary.
@@ -194,8 +194,8 @@ router.get(
 )
 
 /**
- * Given agreement metadata object, save metadata to disk. Return metadata multihash if successful.
- * If metadata is for a downloadable agreement, ensures transcoded master record exists in DB
+ * Given digital_content metadata object, save metadata to disk. Return metadata multihash if successful.
+ * If metadata is for a downloadable digital_content, ensures transcoded master record exists in DB
  */
 router.post(
   '/agreements/metadata',
@@ -208,16 +208,16 @@ router.post(
     if (
       !metadataJSON ||
       !metadataJSON.owner_id ||
-      !metadataJSON.agreement_segments ||
-      !Array.isArray(metadataJSON.agreement_segments) ||
-      !metadataJSON.agreement_segments.length
+      !metadataJSON.digital_content_segments ||
+      !Array.isArray(metadataJSON.digital_content_segments) ||
+      !metadataJSON.digital_content_segments.length
     ) {
       return errorResponseBadRequest(
-        'Metadata object must include owner_id and non-empty agreement_segments array'
+        'Metadata object must include owner_id and non-empty digital_content_segments array'
       )
     }
 
-    // If metadata indicates agreement is downloadable but doesn't provide a transcode CID,
+    // If metadata indicates digital_content is downloadable but doesn't provide a transcode CID,
     //    ensure that a transcoded master record exists in DB
     if (
       metadataJSON.download &&
@@ -225,16 +225,16 @@ router.post(
       !metadataJSON.download.cid
     ) {
       const sourceFile = req.body.sourceFile
-      const agreementId = metadataJSON.agreement_id
+      const agreementId = metadataJSON.digital_content_id
       if (!sourceFile && !agreementId) {
         return errorResponseBadRequest(
-          'Cannot make downloadable - A sourceFile must be provided or the metadata object must include agreement_id'
+          'Cannot make downloadable - A sourceFile must be provided or the metadata object must include digital_content_id'
         )
       }
 
-      // See if the agreement already has a transcoded master
+      // See if the digital_content already has a transcoded master
       if (agreementId) {
-        const { blockchainId } = await models.Agreement.findOne({
+        const { blockchainId } = await models.DigitalContent.findOne({
           attributes: ['blockchainId'],
           where: {
             blockchainId: agreementId
@@ -307,8 +307,8 @@ router.post(
 )
 
 /**
- * Given agreement blockchainAgreementId, blockNumber, and metadataFileUUID, creates/updates Agreement DB agreement entry
- * and associates segment & image file entries with agreement. Ends agreement creation/update process.
+ * Given digital_content blockchainAgreementId, blockNumber, and metadataFileUUID, creates/updates DigitalContent DB digital_content entry
+ * and associates segment & image file entries with digital_content. Ends digital_content creation/update process.
  */
 router.post(
   '/agreements',
@@ -354,9 +354,9 @@ router.post(
       metadataJSON = JSON.parse(fileBuffer)
       if (
         !metadataJSON ||
-        !metadataJSON.agreement_segments ||
-        !Array.isArray(metadataJSON.agreement_segments) ||
-        !metadataJSON.agreement_segments.length
+        !metadataJSON.digital_content_segments ||
+        !Array.isArray(metadataJSON.digital_content_segments) ||
+        !metadataJSON.digital_content_segments.length
       ) {
         return errorResponseServerError(
           `Malformatted metadataJSON stored for metadataFileUUID ${metadataFileUUID}.`
@@ -381,7 +381,7 @@ router.post(
 
     const transaction = await models.sequelize.transaction()
     try {
-      const existingAgreementEntry = await models.Agreement.findOne({
+      const existingAgreementEntry = await models.DigitalContent.findOne({
         where: {
           cnodeUserUUID,
           blockchainId: blockchainAgreementId
@@ -390,38 +390,38 @@ router.post(
         transaction
       })
 
-      // Insert agreement entry in DB
+      // Insert digital_content entry in DB
       const createAgreementQueryObj = {
         metadataFileUUID,
         metadataJSON,
         blockchainId: blockchainAgreementId,
         coverArtFileUUID
       }
-      const agreement = await DBManager.createNewDataRecord(
+      const digital_content = await DBManager.createNewDataRecord(
         createAgreementQueryObj,
         cnodeUserUUID,
-        models.Agreement,
+        models.DigitalContent,
         transaction
       )
 
       /**
-       * Associate matching transcode & segment files on DB with new/updated agreement
+       * Associate matching transcode & segment files on DB with new/updated digital_content
        * Must be done in same transaction to atomicity
        *
-       * TODO - consider implications of edge-case -> two attempted /agreement_content before associate
+       * TODO - consider implications of edge-case -> two attempted /digital_content before associate
        */
 
-      const agreementSegmentCIDs = metadataJSON.agreement_segments.map(
+      const agreementSegmentCIDs = metadataJSON.digital_content_segments.map(
         (segment) => segment.multihash
       )
 
-      // if agreement created, ensure files exist with agreementBlockchainId = null and update them
+      // if digital_content created, ensure files exist with agreementBlockchainId = null and update them
       if (!existingAgreementEntry) {
         if (!transcodedAgreementUUID) {
-          throw new Error('Cannot create agreement without transcodedAgreementUUID.')
+          throw new Error('Cannot create digital_content without transcodedAgreementUUID.')
         }
 
-        // Associate the transcode file db record with agreementUUID
+        // Associate the transcode file db record with digital_content_UUID
         const transcodedFile = await models.File.findOne({
           where: {
             fileUUID: transcodedAgreementUUID,
@@ -437,7 +437,7 @@ router.post(
           )
         }
         const transcodeAssociateNumAffectedRows = await models.File.update(
-          { agreementBlockchainId: agreement.blockchainId },
+          { agreementBlockchainId: digital_content.blockchainId },
           {
             where: {
               fileUUID: transcodedAgreementUUID,
@@ -450,17 +450,17 @@ router.post(
         )
         if (transcodeAssociateNumAffectedRows === 0) {
           throw new Error(
-            'Failed to associate the transcoded file for the provided agreement UUID.'
+            'Failed to associate the transcoded file for the provided digital_content UUID.'
           )
         }
 
-        // Associate all segment file db records with agreementUUID
+        // Associate all segment file db records with digital_content_UUID
         const agreementFiles = await models.File.findAll({
           where: {
             multihash: agreementSegmentCIDs,
             cnodeUserUUID,
             agreementBlockchainId: null,
-            type: 'agreement',
+            type: 'digital_content',
             sourceFile: transcodedFile.sourceFile
           },
           transaction
@@ -468,18 +468,18 @@ router.post(
 
         if (agreementFiles.length !== agreementSegmentCIDs.length) {
           req.logger.error(
-            `Did not find files for every agreement segment CID for user ${cnodeUserUUID} ${agreementFiles} ${agreementSegmentCIDs}`
+            `Did not find files for every digital_content segment CID for user ${cnodeUserUUID} ${agreementFiles} ${agreementSegmentCIDs}`
           )
-          throw new Error('Did not find files for every agreement segment CID.')
+          throw new Error('Did not find files for every digital_content segment CID.')
         }
         const segmentsAssociateNumAffectedRows = await models.File.update(
-          { agreementBlockchainId: agreement.blockchainId },
+          { agreementBlockchainId: digital_content.blockchainId },
           {
             where: {
               multihash: agreementSegmentCIDs,
               cnodeUserUUID,
               agreementBlockchainId: null,
-              type: 'agreement',
+              type: 'digital_content',
               sourceFile: transcodedFile.sourceFile
             },
             transaction
@@ -490,15 +490,15 @@ router.post(
           agreementSegmentCIDs.length
         ) {
           req.logger.error(
-            `Failed to associate files for every agreement segment CID ${cnodeUserUUID} ${agreement.blockchainId} ${segmentsAssociateNumAffectedRows} ${agreementSegmentCIDs.length}`
+            `Failed to associate files for every digital_content segment CID ${cnodeUserUUID} ${digital_content.blockchainId} ${segmentsAssociateNumAffectedRows} ${agreementSegmentCIDs.length}`
           )
           throw new Error(
-            'Failed to associate files for every agreement segment CID.'
+            'Failed to associate files for every digital_content segment CID.'
           )
         }
       } /** updateAgreement scenario */ else {
         /**
-         * If agreement updated, ensure files exist with agreementBlockchainId
+         * If digital_content updated, ensure files exist with agreementBlockchainId
          */
 
         // Ensure transcode file db record exists, if uuid provided
@@ -507,14 +507,14 @@ router.post(
             where: {
               fileUUID: transcodedAgreementUUID,
               cnodeUserUUID,
-              agreementBlockchainId: agreement.blockchainId,
+              agreementBlockchainId: digital_content.blockchainId,
               type: 'copy320'
             },
             transaction
           })
           if (!transcodedFile) {
             throw new Error(
-              'Did not find the corresponding transcoded file for the provided agreement UUID.'
+              'Did not find the corresponding transcoded file for the provided digital_content UUID.'
             )
           }
         }
@@ -524,14 +524,14 @@ router.post(
           where: {
             multihash: agreementSegmentCIDs,
             cnodeUserUUID,
-            agreementBlockchainId: agreement.blockchainId,
-            type: 'agreement'
+            agreementBlockchainId: digital_content.blockchainId,
+            type: 'digital_content'
           },
           transaction
         })
         if (agreementFiles.length < agreementSegmentCIDs.length) {
           throw new Error(
-            'Did not find files for every agreement segment CID with agreementBlockchainId.'
+            'Did not find files for every digital_content segment CID with agreementBlockchainId.'
           )
         }
       }
@@ -572,7 +572,7 @@ router.post(
   })
 )
 
-/** Returns download status of agreement and 320kbps CID if ready + downloadable. */
+/** Returns download status of digital_content and 320kbps CID if ready + downloadable. */
 router.get(
   '/agreements/download_status/:blockchainId',
   handleResponse(async (req, res) => {
@@ -581,32 +581,32 @@ router.get(
       return errorResponseBadRequest('Please provide blockchainId.')
     }
 
-    const agreement = await models.Agreement.findOne({
+    const digital_content = await models.DigitalContent.findOne({
       where: { blockchainId },
       order: [['clock', 'DESC']]
     })
-    if (!agreement) {
+    if (!digital_content) {
       return errorResponseBadRequest(
-        `No agreement found for blockchainId ${blockchainId}`
+        `No digital_content found for blockchainId ${blockchainId}`
       )
     }
 
-    // Case: agreement is not marked as downloadable
+    // Case: digital_content is not marked as downloadable
     if (
-      !agreement.metadataJSON ||
-      !agreement.metadataJSON.download ||
-      !agreement.metadataJSON.download.is_downloadable
+      !digital_content.metadataJSON ||
+      !digital_content.metadataJSON.download ||
+      !digital_content.metadataJSON.download.is_downloadable
     ) {
       return successResponse({ isDownloadable: false, cid: null })
     }
 
-    // Case: agreement is marked as downloadable
+    // Case: digital_content is marked as downloadable
     // - Check if downloadable file exists. Since copyFile may or may not have agreementBlockchainId association,
     //    fetch a segmentFile for agreementBlockchainId, and find copyFile for segmentFile's sourceFile.
     const segmentFile = await models.File.findOne({
       where: {
-        type: 'agreement',
-        agreementBlockchainId: agreement.blockchainId
+        type: 'digital_content',
+        agreementBlockchainId: digital_content.blockchainId
       }
     })
     const copyFile = await models.File.findOne({
@@ -625,8 +625,8 @@ router.get(
 )
 
 /**
- * Gets a streamable mp3 link for a agreement by encodedId. Supports range request headers.
- * @dev - Wrapper around getCID, which retrieves agreement given its CID.
+ * Gets a streamable mp3 link for a digital_content by encodedId. Supports range request headers.
+ * @dev - Wrapper around getCID, which retrieves digital_content given its CID.
  **/
 router.get(
   '/agreements/stream/:encodedId',
@@ -640,7 +640,7 @@ router.get(
       return sendResponse(
         req,
         res,
-        errorResponseBadRequest('Please provide a agreement ID')
+        errorResponseBadRequest('Please provide a digital_content ID')
       )
     }
 
@@ -695,11 +695,11 @@ router.get(
       }
     }
 
-    // if agreement didn't finish the upload process and was never associated, there may not be a agreementBlockchainId for the File records,
+    // if digital_content didn't finish the upload process and was never associated, there may not be a agreementBlockchainId for the File records,
     // try to fall back to discovery to fetch the metadata multihash and see if you can deduce the copy320 file
     if (!fileRecord) {
       try {
-        let agreementRecord = await libs.Agreement.getAgreements(1, 0, [blockchainId])
+        let agreementRecord = await libs.DigitalContent.getAgreements(1, 0, [blockchainId])
         if (
           !agreementRecord ||
           agreementRecord.length === 0 ||
@@ -709,15 +709,15 @@ router.get(
             req,
             res,
             errorResponseServerError(
-              'Missing or malformatted agreement fetched from discovery node.'
+              'Missing or malformatted digital_content fetched from discovery node.'
             )
           )
         }
 
         agreementRecord = agreementRecord[0]
 
-        // query the files table for a metadata multihash from discovery for a given agreement
-        // no need to add CNodeUserUUID to the filter because the agreement is associated with a user and that contains the
+        // query the files table for a metadata multihash from discovery for a given digital_content
+        // no need to add CNodeUserUUID to the filter because the digital_content is associated with a user and that contains the
         // user_id inside it which is unique to the user
         const file = await models.File.findOne({
           where: {
@@ -730,13 +730,13 @@ router.get(
             req,
             res,
             errorResponseServerError(
-              'Missing or malformatted agreement fetched from discovery node.'
+              'Missing or malformatted digital_content fetched from discovery node.'
             )
           )
         }
 
-        // make sure all agreement segments have the same sourceFile
-        const segments = agreementRecord.agreement_segments.map(
+        // make sure all digital_content segments have the same sourceFile
+        const segments = agreementRecord.digital_content_segments.map(
           (segment) => segment.multihash
         )
 
@@ -750,9 +750,9 @@ router.get(
         })
 
         // check that the number of files in the Files table for these segments for this user matches the number of segments from the metadata object
-        if (fileSegmentRecords.length !== agreementRecord.agreement_segments.length) {
+        if (fileSegmentRecords.length !== agreementRecord.digital_content_segments.length) {
           req.logger.warn(
-            `Agreement stream content mismatch for blockchainId ${blockchainId} - number of segments don't match between local and discovery`
+            `DigitalContent stream content mismatch for blockchainId ${blockchainId} - number of segments don't match between local and discovery`
           )
         }
 
@@ -763,7 +763,7 @@ router.get(
 
         if (uniqSourceFiles.length !== 1) {
           req.logger.warn(
-            `Agreement stream content mismatch for blockchainId ${blockchainId} - there's not one sourceFile that matches all segments`
+            `DigitalContent stream content mismatch for blockchainId ${blockchainId} - there's not one sourceFile that matches all segments`
           )
         }
 
@@ -806,7 +806,7 @@ router.get(
 
     if (libs.identityService) {
       req.logger.info(
-        `Logging listen for agreement ${blockchainId} by ${delegateOwnerWallet}`
+        `Logging listen for digital_content ${blockchainId} by ${delegateOwnerWallet}`
       )
       const signatureData = generateListenTimestampAndSignature(
         config.get('delegatePrivateKey')
@@ -823,7 +823,7 @@ router.get(
 
     req.params.CID = fileRecord.multihash
     req.params.streamable = true
-    res.set('Content-Type', 'live/mpeg')
+    res.set('Content-Type', 'digitalcoin/mpeg')
     next()
   },
   getCID

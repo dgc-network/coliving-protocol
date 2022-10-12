@@ -142,7 +142,7 @@ class TipResult(TypedDict):
 def _get_tips(session: Session, args: GetTipsArgs):
     UserTipAlias = aliased(UserTip)
     query: Query = session.query(UserTipAlias)
-    has_pagination = False  # Keeps agreement if we already paginated
+    has_pagination = False  # Keeps digital_content if we already paginated
 
     if args.get("tx_signatures"):
         query = query.filter(UserTipAlias.signature.in_(args["tx_signatures"]))

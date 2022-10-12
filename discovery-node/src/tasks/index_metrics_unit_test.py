@@ -51,7 +51,7 @@ def test_process_route_keys(redis_mock, db_mock):
         )
         assert len(user_search) == 1
 
-        trending_agreements = (
+        trending_digital_contents = (
             session.query(RouteMetric)
             .filter(
                 RouteMetric.version == "1",
@@ -63,7 +63,7 @@ def test_process_route_keys(redis_mock, db_mock):
             )
             .all()
         )
-        assert len(trending_agreements) == 1
+        assert len(trending_digital_contents) == 1
 
         content_list_route = (
             session.query(RouteMetric)
@@ -79,7 +79,7 @@ def test_process_route_keys(redis_mock, db_mock):
 
         assert len(content_list_route) == 1
 
-        no_version_agreements = (
+        no_version_digital_contents = (
             session.query(RouteMetric)
             .filter(
                 RouteMetric.version == "0",
@@ -91,7 +91,7 @@ def test_process_route_keys(redis_mock, db_mock):
             .all()
         )
 
-        assert len(no_version_agreements) == 1
+        assert len(no_version_digital_contents) == 1
 
     keys = redis_mock.keys(key)
     assert not keys

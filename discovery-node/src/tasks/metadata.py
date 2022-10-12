@@ -1,8 +1,8 @@
 from typing import Any, Dict
 
-# Required format for agreement metadata retrieved from IPFS
+# Required format for digital_content metadata retrieved from IPFS
 
-agreement_metadata_format: Dict[str, Any] = {
+digital_content_metadata_format: Dict[str, Any] = {
     "owner_id": None,
     "title": None,
     "route_id": None,
@@ -20,7 +20,7 @@ agreement_metadata_format: Dict[str, Any] = {
     "license": None,
     "isrc": None,
     "iswc": None,
-    "agreement_segments": [],
+    "digital_content_segments": [],
     "download": {},
     "remix_of": None,
     "is_unlisted": False,

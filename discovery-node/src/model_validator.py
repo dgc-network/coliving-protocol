@@ -128,7 +128,7 @@ class ModelValidator:
             # Replace the properties value with just the field to validate against
             # This way, we are able to use one entire model schema and at runtime,
             # generate a new schema for just a field
-            # ex. replace all properties of Agreement (blockhash, block, title, ...) with just 'title'
+            # ex. replace all properties of DigitalContent (blockhash, block, title, ...) with just 'title'
             field_to_validate_against = {
                 field: cls._get_properties_field(schema_copy, model, field)
             }

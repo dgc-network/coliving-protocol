@@ -35,7 +35,7 @@ models/tagsResponse.ts
 models/tip.ts
 models/topGenreUsersResponse.ts
 models/topUsersResponse.ts
-models/agreement.ts
+models/digital_content.ts
 models/agreementArtwork.ts
 models/agreementElement.ts
 models/agreementResponse.ts

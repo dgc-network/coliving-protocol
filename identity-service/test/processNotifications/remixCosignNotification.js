@@ -4,8 +4,8 @@ const processRemixCosignNotifications = require('../../src/notifications/process
 const { clearDatabase, runMigrations } = require('../lib/app')
 
 /**
- * User id 1 cosigns agreement id 12 owned by user 2
- * User id 1 cosigns agreement id 13 owned by user 3
+ * User id 1 cosigns digital_content id 12 owned by user 2
+ * User id 1 cosigns digital_content id 13 owned by user 3
  */
 const initialNotifications = [
   {
@@ -14,7 +14,7 @@ const initialNotifications = [
     'metadata': {
       'entity_id': 12,
       'entity_owner_id': 2,
-      'entity_type': 'agreement'
+      'entity_type': 'digital_content'
     },
     'timestamp': '2020-10-24T11:45:10 Z',
     'type': 'RemixCosign'
@@ -24,7 +24,7 @@ const initialNotifications = [
     'metadata': {
       'entity_id': 13,
       'entity_owner_id': 3,
-      'entity_type': 'agreement'
+      'entity_type': 'digital_content'
     },
     'timestamp': '2020-10-24T11:45:10 Z',
     'type': 'RemixCosign'
@@ -32,7 +32,7 @@ const initialNotifications = [
 ]
 
 /**
- * User id 1 cosigns agreement id 12 owned by user 2
+ * User id 1 cosigns digital_content id 12 owned by user 2
  */
 const additionalNotifications = [
   {
@@ -41,7 +41,7 @@ const additionalNotifications = [
     'metadata': {
       'entity_id': 12,
       'entity_owner_id': 2,
-      'entity_type': 'agreement'
+      'entity_type': 'digital_content'
     },
     'timestamp': '2020-10-24T11:45:10 Z',
     'type': 'RemixCosign'
@@ -61,7 +61,7 @@ describe('Test Remix Cosign Notification', function () {
     await tx1.commit()
 
     // ======================================= Run checks against the Notifications =======================================
-    // User 2 should have 1 notification for user 1 cosigning agreement 12
+    // User 2 should have 1 notification for user 1 cosigning digital_content 12
     const user2Notifs = await models.Notification.findAll({ where: { userId: 2 } })
     assert.deepStrictEqual(user2Notifs.length, 1)
     assert.deepStrictEqual(user2Notifs[0].entityId, 12)
@@ -70,7 +70,7 @@ describe('Test Remix Cosign Notification', function () {
     const cosign12Actions = await models.NotificationAction.findAll({ where: { notificationId: cosign12.id } })
     assert.deepStrictEqual(cosign12Actions[0].actionEntityId, 1)
 
-    // User 3 should have 1 notification for user 1 cosigning agreement 12
+    // User 3 should have 1 notification for user 1 cosigning digital_content 12
     const user3Notifs = await models.Notification.findAll({ where: { userId: 3 } })
     assert.deepStrictEqual(user3Notifs.length, 1)
     assert.deepStrictEqual(user3Notifs[0].entityId, 13)

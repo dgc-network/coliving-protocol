@@ -1,9 +1,9 @@
 from src import exceptions
-from src.models.agreements.agreement import Agreement
+from src.models.agreements.digital_content import DigitalContent
 from src.utils.db_session import get_db_read_replica
 
 
-def get_previously_unlisted_agreements(args):
+def get_previously_unlisted_digital_contents(args):
     db = get_db_read_replica()
     with db.scoped_session() as session:
         if "date" not in args:
@@ -14,28 +14,28 @@ def get_previously_unlisted_agreements(args):
         date = args.get("date")
 
         agreements_after_date = (
-            session.query(Agreement.agreement_id, Agreement.updated_at)
-            .distinct(Agreement.agreement_id)
-            .filter(Agreement.is_unlisted == False, Agreement.updated_at >= date)
+            session.query(DigitalContent.digital_content_id, DigitalContent.updated_at)
+            .distinct(DigitalContent.digital_content_id)
+            .filter(DigitalContent.is_unlisted == False, DigitalContent.updated_at >= date)
             .subquery()
         )
 
         agreements_before_date = (
-            session.query(Agreement.agreement_id, Agreement.updated_at)
-            .distinct(Agreement.agreement_id)
-            .filter(Agreement.is_unlisted == True, Agreement.updated_at < date)
+            session.query(DigitalContent.digital_content_id, DigitalContent.updated_at)
+            .distinct(DigitalContent.digital_content_id)
+            .filter(DigitalContent.is_unlisted == True, DigitalContent.updated_at < date)
             .subquery()
         )
 
         previously_unlisted_results = (
-            session.query(agreements_before_date.c["agreement_id"])
+            session.query(agreements_before_date.c["digital_content_id"])
             .join(
                 agreements_after_date,
-                agreements_after_date.c["agreement_id"] == agreements_before_date.c["agreement_id"],
+                agreements_after_date.c["digital_content_id"] == agreements_before_date.c["digital_content_id"],
             )
             .all()
         )
 
-        agreement_ids = [result[0] for result in previously_unlisted_results]
+        digital_content_ids = [result[0] for result in previously_unlisted_results]
 
-    return {"ids": agreement_ids}
+    return {"ids": digital_content_ids}

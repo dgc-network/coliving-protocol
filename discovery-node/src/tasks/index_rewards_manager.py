@@ -516,7 +516,7 @@ def process_solana_rewards_manager(
         logger.error("index_rewards_manager.py | reward manager account missing")
         return
 
-    # Get the latests slot available globally before fetching txs to keep agreement of indexing progress
+    # Get the latests slot available globally before fetching txs to keep digital_content of indexing progress
     try:
         latest_global_slot = solana_client_manager.get_slot()
     except:

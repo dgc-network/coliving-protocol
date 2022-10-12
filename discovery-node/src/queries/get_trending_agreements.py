@@ -2,12 +2,12 @@ from typing import Optional, TypedDict
 
 from sqlalchemy import desc
 from sqlalchemy.orm.session import Session
-from src.models.agreements.agreement_trending_score import AgreementTrendingScore
-from src.queries.get_unpopulated_agreements import get_unpopulated_agreements
+from src.models.agreements.digital_content_trending_score import AgreementTrendingScore
+from src.queries.get_unpopulated_digital_contents import get_unpopulated_digital_contents
 from src.queries.query_helpers import (
     get_users_by_id,
     get_users_ids,
-    populate_agreement_metadata,
+    populate_digital_content_metadata,
 )
 from src.tasks.generate_trending import generate_trending
 from src.trending_strategies.base_trending_strategy import BaseTrendingStrategy
@@ -38,20 +38,20 @@ def make_trending_cache_key(
 def generate_unpopulated_trending(
     session, genre, time_range, strategy, limit=TRENDING_LIMIT
 ):
-    trending_agreements = generate_trending(session, time_range, genre, limit, 0, strategy)
+    trending_digital_contents = generate_trending(session, time_range, genre, limit, 0, strategy)
 
-    agreement_scores = [
-        strategy.get_agreement_score(time_range, agreement)
-        for agreement in trending_agreements["listen_counts"]
+    digital_content_scores = [
+        strategy.get_digital_content_score(time_range, digital_content)
+        for digital_content in trending_digital_contents["listen_counts"]
     ]
     # Re apply the limit just in case we did decide to include more agreements in the scoring than the limit
-    sorted_agreement_scores = sorted(
-        agreement_scores, key=lambda k: (k["score"], k["agreement_id"]), reverse=True
+    sorted_digital_content_scores = sorted(
+        digital_content_scores, key=lambda k: (k["score"], k["digital_content_id"]), reverse=True
     )[:limit]
-    agreement_ids = [agreement["agreement_id"] for agreement in sorted_agreement_scores]
+    digital_content_ids = [digital_content["digital_content_id"] for digital_content in sorted_digital_content_scores]
 
-    agreements = get_unpopulated_agreements(session, agreement_ids)
-    return (agreements, agreement_ids)
+    agreements = get_unpopulated_digital_contents(session, digital_content_ids)
+    return (agreements, digital_content_ids)
 
 
 def generate_unpopulated_trending_from_mat_views(
@@ -64,8 +64,8 @@ def generate_unpopulated_trending_from_mat_views(
     elif strategy.version != TrendingVersion.EJ57D and time_range == "allTime":
         time_range = "year"
 
-    trending_agreement_ids_query = session.query(
-        AgreementTrendingScore.agreement_id, AgreementTrendingScore.score
+    trending_digital_content_ids_query = session.query(
+        AgreementTrendingScore.digital_content_id, AgreementTrendingScore.score
     ).filter(
         AgreementTrendingScore.type == strategy.trending_type.name,
         AgreementTrendingScore.version == strategy.version.name,
@@ -73,21 +73,21 @@ def generate_unpopulated_trending_from_mat_views(
     )
 
     if genre:
-        trending_agreement_ids_query = trending_agreement_ids_query.filter(
+        trending_digital_content_ids_query = trending_digital_content_ids_query.filter(
             AgreementTrendingScore.genre == genre
         )
 
-    trending_agreement_ids = (
-        trending_agreement_ids_query.order_by(
-            desc(AgreementTrendingScore.score), desc(AgreementTrendingScore.agreement_id)
+    trending_digital_content_ids = (
+        trending_digital_content_ids_query.order_by(
+            desc(AgreementTrendingScore.score), desc(AgreementTrendingScore.digital_content_id)
         )
         .limit(limit)
         .all()
     )
 
-    agreement_ids = [agreement_id[0] for agreement_id in trending_agreement_ids]
-    agreements = get_unpopulated_agreements(session, agreement_ids)
-    return (agreements, agreement_ids)
+    digital_content_ids = [digital_content_id[0] for digital_content_id in trending_digital_content_ids]
+    agreements = get_unpopulated_digital_contents(session, digital_content_ids)
+    return (agreements, digital_content_ids)
 
 
 def make_generate_unpopulated_trending(session, genre, time_range, strategy):
@@ -110,14 +110,14 @@ class GetTrendingAgreementsArgs(TypedDict, total=False):
     time: str
 
 
-def get_trending_agreements(args: GetTrendingAgreementsArgs, strategy: BaseTrendingStrategy):
+def get_trending_digital_contents(args: GetTrendingAgreementsArgs, strategy: BaseTrendingStrategy):
     """Gets trending by getting the currently cached agreements and then populating them."""
     db = get_db_read_replica()
     with db.scoped_session() as session:
-        return _get_trending_agreements_with_session(session, args, strategy)
+        return _get_trending_digital_contents_with_session(session, args, strategy)
 
 
-def _get_trending_agreements_with_session(
+def _get_trending_digital_contents_with_session(
     session: Session, args: GetTrendingAgreementsArgs, strategy: BaseTrendingStrategy
 ):
     current_user_id, genre, time = (
@@ -130,24 +130,24 @@ def _get_trending_agreements_with_session(
 
     # Will try to hit cached trending from task, falling back
     # to generating it here if necessary and storing it with no TTL
-    (agreements, agreement_ids) = use_redis_cache(
+    (agreements, digital_content_ids) = use_redis_cache(
         key,
         None,
         make_generate_unpopulated_trending(session, genre, time_range, strategy),
     )
 
-    # populate agreement metadata
-    agreements = populate_agreement_metadata(session, agreement_ids, agreements, current_user_id)
-    agreements_map = {agreement["agreement_id"]: agreement for agreement in agreements}
+    # populate digital_content metadata
+    agreements = populate_digital_content_metadata(session, digital_content_ids, agreements, current_user_id)
+    agreements_map = {digital_content["digital_content_id"]: digital_content for digital_content in agreements}
 
     # Re-sort the populated agreements b/c it loses sort order in sql query
-    sorted_agreements = [agreements_map[agreement_id] for agreement_id in agreement_ids]
+    sorted_digital_contents = [agreements_map[digital_content_id] for digital_content_id in digital_content_ids]
 
     if args.get("with_users", False):
-        user_id_list = get_users_ids(sorted_agreements)
+        user_id_list = get_users_ids(sorted_digital_contents)
         users = get_users_by_id(session, user_id_list, current_user_id)
-        for agreement in sorted_agreements:
-            user = users[agreement["owner_id"]]
+        for digital_content in sorted_digital_contents:
+            user = users[digital_content["owner_id"]]
             if user:
-                agreement["user"] = user
-    return sorted_agreements
+                digital_content["user"] = user
+    return sorted_digital_contents

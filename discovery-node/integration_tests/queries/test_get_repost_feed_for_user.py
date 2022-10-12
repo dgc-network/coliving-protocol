@@ -13,24 +13,24 @@ def test_get_repost_feed_for_user(app):
             # Note these reposts are in chronological order in addition
             # so the repost feed should pull them "backwards" for reverse chronological
             # sort order.
-            {"user_id": 1, "repost_item_id": 5, "repost_type": "agreement"},
-            {"user_id": 1, "repost_item_id": 2, "repost_type": "agreement"},
-            {"user_id": 1, "repost_item_id": 3, "repost_type": "agreement"},
-            {"user_id": 1, "repost_item_id": 1, "repost_type": "agreement"},
-            {"user_id": 1, "repost_item_id": 4, "repost_type": "agreement"},
+            {"user_id": 1, "repost_item_id": 5, "repost_type": "digital_content"},
+            {"user_id": 1, "repost_item_id": 2, "repost_type": "digital_content"},
+            {"user_id": 1, "repost_item_id": 3, "repost_type": "digital_content"},
+            {"user_id": 1, "repost_item_id": 1, "repost_type": "digital_content"},
+            {"user_id": 1, "repost_item_id": 4, "repost_type": "digital_content"},
             {"user_id": 1, "repost_item_id": 4, "repost_type": "content_list"},
             {"user_id": 1, "repost_item_id": 8, "repost_type": "album"},
-            {"user_id": 1, "repost_item_id": 6, "repost_type": "agreement"},
+            {"user_id": 1, "repost_item_id": 6, "repost_type": "digital_content"},
         ],
         "agreements": [
-            {"agreement_id": 1, "title": "agreement 1"},
-            {"agreement_id": 2, "title": "agreement 2"},
-            {"agreement_id": 3, "title": "agreement 3"},
-            {"agreement_id": 4, "title": "agreement 4"},
-            {"agreement_id": 5, "title": "agreement 5"},
-            {"agreement_id": 6, "title": "agreement 6"},
-            {"agreement_id": 7, "title": "agreement 7"},
-            {"agreement_id": 8, "title": "agreement 8"},
+            {"digital_content_id": 1, "title": "digital_content 1"},
+            {"digital_content_id": 2, "title": "digital_content 2"},
+            {"digital_content_id": 3, "title": "digital_content 3"},
+            {"digital_content_id": 4, "title": "digital_content 4"},
+            {"digital_content_id": 5, "title": "digital_content 5"},
+            {"digital_content_id": 6, "title": "digital_content 6"},
+            {"digital_content_id": 7, "title": "digital_content 7"},
+            {"digital_content_id": 8, "title": "digital_content 8"},
         ],
         "content_lists": [
             {"content_list_id": 1, "content_list_name": "contentList 1"},
@@ -49,14 +49,14 @@ def test_get_repost_feed_for_user(app):
     with db.scoped_session() as session:
         repost_feed = _get_repost_feed_for_user(session, 1, {"limit": 10, "offset": 0})
 
-    assert repost_feed[0]["title"] == "agreement 6"
+    assert repost_feed[0]["title"] == "digital_content 6"
     assert repost_feed[1]["content_list_name"] == "album 8"
     assert repost_feed[2]["content_list_name"] == "contentList 4"
-    assert repost_feed[3]["title"] == "agreement 4"
-    assert repost_feed[4]["title"] == "agreement 1"
-    assert repost_feed[5]["title"] == "agreement 3"
-    assert repost_feed[6]["title"] == "agreement 2"
-    assert repost_feed[7]["title"] == "agreement 5"
+    assert repost_feed[3]["title"] == "digital_content 4"
+    assert repost_feed[4]["title"] == "digital_content 1"
+    assert repost_feed[5]["title"] == "digital_content 3"
+    assert repost_feed[6]["title"] == "digital_content 2"
+    assert repost_feed[7]["title"] == "digital_content 5"
 
 
 def test_get_repost_feed_for_user_limit_bounds(app):
@@ -72,24 +72,24 @@ def test_get_repost_feed_for_user_limit_bounds(app):
             # Note these reposts are in chronological order in addition
             # so the repost feed should pull them "backwards" for reverse chronological
             # sort order.
-            {"user_id": 1, "repost_item_id": 5, "repost_type": "agreement"},
-            {"user_id": 1, "repost_item_id": 2, "repost_type": "agreement"},
-            {"user_id": 1, "repost_item_id": 3, "repost_type": "agreement"},
-            {"user_id": 1, "repost_item_id": 1, "repost_type": "agreement"},
-            {"user_id": 1, "repost_item_id": 4, "repost_type": "agreement"},
+            {"user_id": 1, "repost_item_id": 5, "repost_type": "digital_content"},
+            {"user_id": 1, "repost_item_id": 2, "repost_type": "digital_content"},
+            {"user_id": 1, "repost_item_id": 3, "repost_type": "digital_content"},
+            {"user_id": 1, "repost_item_id": 1, "repost_type": "digital_content"},
+            {"user_id": 1, "repost_item_id": 4, "repost_type": "digital_content"},
             {"user_id": 1, "repost_item_id": 4, "repost_type": "content_list"},
             {"user_id": 1, "repost_item_id": 8, "repost_type": "album"},
-            {"user_id": 1, "repost_item_id": 6, "repost_type": "agreement"},
+            {"user_id": 1, "repost_item_id": 6, "repost_type": "digital_content"},
         ],
         "agreements": [
-            {"agreement_id": 1, "title": "agreement 1", "is_delete": True},
-            {"agreement_id": 2, "title": "agreement 2"},
-            {"agreement_id": 3, "title": "agreement 3"},
-            {"agreement_id": 4, "title": "agreement 4"},
-            {"agreement_id": 5, "title": "agreement 5"},
-            {"agreement_id": 6, "title": "agreement 6"},
-            {"agreement_id": 7, "title": "agreement 7"},
-            {"agreement_id": 8, "title": "agreement 8"},
+            {"digital_content_id": 1, "title": "digital_content 1", "is_delete": True},
+            {"digital_content_id": 2, "title": "digital_content 2"},
+            {"digital_content_id": 3, "title": "digital_content 3"},
+            {"digital_content_id": 4, "title": "digital_content 4"},
+            {"digital_content_id": 5, "title": "digital_content 5"},
+            {"digital_content_id": 6, "title": "digital_content 6"},
+            {"digital_content_id": 7, "title": "digital_content 7"},
+            {"digital_content_id": 8, "title": "digital_content 8"},
         ],
         "content_lists": [
             {"content_list_id": 1, "content_list_name": "contentList 1"},
@@ -111,9 +111,9 @@ def test_get_repost_feed_for_user_limit_bounds(app):
     # Query for 5 reposts. The problem is the 5th one was deleted, so
     # we only return 4 here. This is broken.
     # TODO fix me.
-    assert repost_feed[0]["title"] == "agreement 6"
+    assert repost_feed[0]["title"] == "digital_content 6"
     assert repost_feed[1]["content_list_name"] == "album 8"
     assert repost_feed[2]["content_list_name"] == "contentList 4"
-    assert repost_feed[3]["title"] == "agreement 4"
-    # Should skip agreement 1 because it is deleted
-    assert repost_feed[4]["title"] == "agreement 3"
+    assert repost_feed[3]["title"] == "digital_content 4"
+    # Should skip digital_content 1 because it is deleted
+    assert repost_feed[4]["title"] == "digital_content 3"

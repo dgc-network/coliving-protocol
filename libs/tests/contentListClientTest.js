@@ -73,41 +73,41 @@ it('should add agreements to an existing contentList', async function () {
   const cid = helpers.constants.agreementMetadataCID // test metadata stored in DHT
   const agreementMultihashDecoded = Utils.decodeMultihash(cid)
 
-  // Add a new agreement
+  // Add a new digital_content
   const { agreementId } = await colivingInstance.contracts.AgreementFactoryClient.addAgreement(
     contentListOwnerId,
     agreementMultihashDecoded.digest,
     agreementMultihashDecoded.hashFn,
     agreementMultihashDecoded.size
   )
-  const agreement = await colivingInstance.contracts.AgreementFactoryClient.getAgreement(agreementId)
-  assert.strictEqual(agreement.multihashDigest, agreementMultihashDecoded.digest)
+  const digital_content = await colivingInstance.contracts.AgreementFactoryClient.getAgreement(agreementId)
+  assert.strictEqual(digital_content.multihashDigest, agreementMultihashDecoded.digest)
 
   const addContentListAgreementTx = await colivingInstance.contracts.ContentListFactoryClient.addContentListAgreement(
     contentListId,
     agreementId)
 })
 
-it('should delete agreement from an existing contentList', async function () {
+it('should delete digital_content from an existing contentList', async function () {
   const cid = helpers.constants.agreementMetadataCID // test metadata stored in DHT
   const agreementMultihashDecoded = Utils.decodeMultihash(cid)
 
-  // Add a new agreement
+  // Add a new digital_content
   const { agreementId } = await colivingInstance.contracts.AgreementFactoryClient.addAgreement(
     contentListOwnerId,
     agreementMultihashDecoded.digest,
     agreementMultihashDecoded.hashFn,
     agreementMultihashDecoded.size
   )
-  const agreement = await colivingInstance.contracts.AgreementFactoryClient.getAgreement(agreementId)
-  assert.strictEqual(agreement.multihashDigest, agreementMultihashDecoded.digest)
+  const digital_content = await colivingInstance.contracts.AgreementFactoryClient.getAgreement(agreementId)
+  assert.strictEqual(digital_content.multihashDigest, agreementMultihashDecoded.digest)
 
   const addContentListAgreementTx = await colivingInstance.contracts.ContentListFactoryClient.addContentListAgreement(
     contentListId,
     agreementId)
 
   const deletedTimestamp = 1552008725
-  // Delete the newly added agreement from the contentList
+  // Delete the newly added digital_content from the contentList
   const deletedContentListAgreementTx = await colivingInstance.contracts.ContentListFactoryClient.deleteContentListAgreement(
     contentListId,
     agreementId,

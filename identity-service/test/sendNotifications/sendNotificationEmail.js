@@ -48,7 +48,7 @@ describe('Test Send Notification Emails', function () {
     await runMigrations()
   })
 
-  it('should have send the correct notification emails for a live user', async function () {
+  it('should have send the correct notification emails for a digitalcoin user', async function () {
     // Create a user
     await models.User.create({
       blockchainUserId: 1,
@@ -174,7 +174,7 @@ describe('Test Should Send Email Emails', function () {
     const shouldSend = notificationUtils.shouldSendEmail(EmailFrequency.OFF, currentUtcTime, lastSentTimestamp, hrSinceStartOfDay)
     assert.strictEqual(shouldSend, false)
   })
-  it('should send if email frequency is live', async function () {
+  it('should send if email frequency is digitalcoin', async function () {
     const currentUtcTime = moment()
     const lastSentTimestamp = moment()
     const hrSinceStartOfDay = 10

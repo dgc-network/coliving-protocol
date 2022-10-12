@@ -14,4 +14,4 @@ pagination_next: null
 
  **agreementId**: `string`
 
-A Agreement ID
+A DigitalContent ID

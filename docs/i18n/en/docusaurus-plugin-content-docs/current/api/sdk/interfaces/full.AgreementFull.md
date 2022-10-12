@@ -295,9 +295,9 @@ ___
 
 ___
 
-### agreement\_segments
+### digital_content\_segments
 
- `Optional` **agreement\_segments**: [`AgreementSegment`](full.AgreementSegment.md)[]
+ `Optional` **digital_content\_segments**: [`AgreementSegment`](full.AgreementSegment.md)[]
 
 **`memberof`** AgreementFull
 

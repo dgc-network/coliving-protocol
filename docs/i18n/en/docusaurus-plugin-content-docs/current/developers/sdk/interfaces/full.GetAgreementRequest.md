@@ -13,7 +13,7 @@ custom_edit_url: null
 
  `Optional` **handle**: `string`
 
-The User handle of the agreement owner
+The User handle of the digital_content owner
 
 ___
 
@@ -29,7 +29,7 @@ ___
 
  **agreementId**: `string`
 
-A Agreement ID
+A DigitalContent ID
 
 ___
 
@@ -37,7 +37,7 @@ ___
 
  `Optional` **urlTitle**: `string`
 
-The URLized title of the agreement
+The URLized title of the digital_content
 
 ___
 

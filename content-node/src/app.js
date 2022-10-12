@@ -35,7 +35,7 @@ function errorHandler(err, req, res, next) {
 }
 
 /**
- * Get the path, method, and regex used to match to routes. Used to agreement route durations
+ * Get the path, method, and regex used to match to routes. Used to digital_content route durations
  *
  * Structure:
  *  {regex: <some regex>, path: <path that a matched path will route to in the normalize fn in prometheus middleware>}
@@ -116,7 +116,7 @@ const initializeApp = (port, serviceRegistry) => {
 
   // Rate limit routes
   app.use('/users/', userReqLimiter)
-  app.use('/agreement*', agreementReqLimiter)
+  app.use('/digital_content*', agreementReqLimiter)
   app.use('/coliving_user/', colivingUserReqLimiter)
   app.use('/metadata', metadataReqLimiter)
   app.use('/image_upload', imageReqLimiter)

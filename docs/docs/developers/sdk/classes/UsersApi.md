@@ -26,7 +26,7 @@ runtime.BaseAPI.configuration
 
 ### getAgreementsByUser
 
-**getAgreementsByUser**(`requestParameters`): `Promise`<[`Agreement`](../interfaces/Agreement.md)[]\>
+**getAgreementsByUser**(`requestParameters`): `Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)[]\>
 
 Gets the agreements created by a user using their user ID
 
@@ -38,13 +38,13 @@ Gets the agreements created by a user using their user ID
 
 #### Returns
 
-`Promise`<[`Agreement`](../interfaces/Agreement.md)[]\>
+`Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)[]\>
 
 ___
 
 ### getAgreementsByUserHandle
 
-**getAgreementsByUserHandle**(`requestParameters`): `Promise`<[`Agreement`](../interfaces/Agreement.md)[]\>
+**getAgreementsByUserHandle**(`requestParameters`): `Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)[]\>
 
 Gets the agreements created by a user using the user\'s handle
 
@@ -56,7 +56,7 @@ Gets the agreements created by a user using the user\'s handle
 
 #### Returns
 
-`Promise`<[`Agreement`](../interfaces/Agreement.md)[]\>
+`Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)[]\>
 
 ___
 
@@ -262,7 +262,7 @@ ___
 
 **getTopAgreementTags**(`requestParameters`): `Promise`<`string`[]\>
 
-Gets the most used agreement tags by a user.
+Gets the most used digital_content tags by a user.
 Fetch most used tags in a user\'s agreements
 
 #### Parameters
@@ -281,7 +281,7 @@ ___
 
 **getTopUsers**(`requestParameters?`): `Promise`<[`User`](../interfaces/User.md)[]\>
 
-Get the Top Users having at least one agreement by follower count
+Get the Top Users having at least one digital_content by follower count
 
 #### Parameters
 

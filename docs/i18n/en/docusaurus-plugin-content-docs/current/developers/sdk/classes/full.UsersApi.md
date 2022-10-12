@@ -232,7 +232,7 @@ ___
 
 **getTopUsers**(`requestParameters?`): `Promise`<[`UserFull`](../interfaces/full.UserFull.md)[]\>
 
-Get the Top Users having at least one agreement by follower count
+Get the Top Users having at least one digital_content by follower count
 
 #### Parameters
 

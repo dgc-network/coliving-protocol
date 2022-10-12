@@ -3,11 +3,11 @@ import logging  # pylint: disable=C0302
 from flask.globals import request
 from sqlalchemy import and_, desc
 from src.models.agreements.remix import Remix
-from src.models.agreements.agreement import Agreement
+from src.models.agreements.digital_content import DigitalContent
 from src.queries.query_helpers import (
     add_query_pagination,
-    add_users_to_agreements,
-    populate_agreement_metadata,
+    add_users_to_digital_contents,
+    populate_digital_content_metadata,
 )
 from src.utils import helpers
 from src.utils.db_session import get_db_read_replica
@@ -22,23 +22,23 @@ def make_cache_key(args):
     cache_keys = {
         "limit": args.get("limit"),
         "offset": args.get("offset"),
-        "agreement_id": args.get("agreement_id"),
+        "digital_content_id": args.get("digital_content_id"),
     }
     return extract_key(f"unpopulated-remix-parents:{request.path}", cache_keys.items())
 
 
-def get_remix_agreement_parents(args):
-    """Fetch remix parents for a given agreement.
+def get_remix_digital_content_parents(args):
+    """Fetch remix parents for a given digital_content.
 
     Args:
         args:dict
-        args.agreement_id: agreement id
+        args.digital_content_id: digital_content id
         args.limit: limit
         args.offset: offset
         args.with_users: with users
         args.current_user_id: current user ID
     """
-    agreement_id = args.get("agreement_id")
+    digital_content_id = args.get("digital_content_id")
     current_user_id = args.get("current_user_id")
     limit = args.get("limit")
     offset = args.get("offset")
@@ -48,32 +48,32 @@ def get_remix_agreement_parents(args):
 
         def get_unpopulated_remix_parents():
             base_query = (
-                session.query(Agreement)
+                session.query(DigitalContent)
                 .join(
                     Remix,
                     and_(
-                        Remix.parent_agreement_id == Agreement.agreement_id,
-                        Remix.child_agreement_id == agreement_id,
+                        Remix.parent_digital_content_id == DigitalContent.digital_content_id,
+                        Remix.child_digital_content_id == digital_content_id,
                     ),
                 )
-                .filter(Agreement.is_current == True, Agreement.is_unlisted == False)
-                .order_by(desc(Agreement.created_at), desc(Agreement.agreement_id))
+                .filter(DigitalContent.is_current == True, DigitalContent.is_unlisted == False)
+                .order_by(desc(DigitalContent.created_at), desc(DigitalContent.digital_content_id))
             )
 
             agreements = add_query_pagination(base_query, limit, offset).all()
             agreements = helpers.query_result_to_list(agreements)
-            agreement_ids = list(map(lambda agreement: agreement["agreement_id"], agreements))
-            return (agreements, agreement_ids)
+            digital_content_ids = list(map(lambda digital_content: digital_content["digital_content_id"], agreements))
+            return (agreements, digital_content_ids)
 
         key = make_cache_key(args)
-        (agreements, agreement_ids) = use_redis_cache(
+        (agreements, digital_content_ids) = use_redis_cache(
             key,
             UNPOPULATED_REMIX_PARENTS_CACHE_DURATION_SEC,
             get_unpopulated_remix_parents,
         )
 
-        agreements = populate_agreement_metadata(session, agreement_ids, agreements, current_user_id)
+        agreements = populate_digital_content_metadata(session, digital_content_ids, agreements, current_user_id)
         if args.get("with_users", False):
-            add_users_to_agreements(session, agreements, current_user_id)
+            add_users_to_digital_contents(session, agreements, current_user_id)
 
     return agreements

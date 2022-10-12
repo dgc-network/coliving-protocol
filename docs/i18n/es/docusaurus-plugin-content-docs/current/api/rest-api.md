@@ -107,7 +107,7 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/users/sear
         "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
       },
       "repost_count": 5,
-      "agreement_count": 4
+      "digital_content_count": 4
     }
   ]
 }
@@ -181,25 +181,25 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/users/nlGN
       "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
     },
     "repost_count": 5,
-    "agreement_count": 4
+    "digital_content_count": 4
   }
 }
 ```
 
-### Obtener pistas favoritas del usuario <a id="get-user-39-s-favorite-agreements"></a>
+### Obtener pistas favoritas del usuario <a id="get-user-39-s-favorite-digital-contents"></a>
 
 `GET /users/{user_id}/favoritos`
 
 _Obtener las pistas favoritas para un usuario_
 
-#### Parámetros de consulta <a id="get-user&apos;s-favorite-agreements-parameters"></a>
+#### Parámetros de consulta <a id="get-user&apos;s-favorite-digital-contents-parameters"></a>
 
 | Nombre        | Tipo   | Requerido | Descripción      |
 |:------------- |:------ |:--------- |:---------------- |
 | usuario\_id | cadena | verdad    | Un ID de usuario |
 | app\_name   | cadena | verdad    | Nombre de tu app |
 
-#### Respuestas <a id="get-user&apos;s-favorite-agreements-responses"></a>
+#### Respuestas <a id="get-user&apos;s-favorite-digital-contents-responses"></a>
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                                                                 |
 |:------ |:------------------------------------------------------------------------------- |:-------------------- |:------------------------------------------------------------------------------------------------------- |
@@ -236,17 +236,17 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/users/nlGN
   "data": [
     {
       "favorite_item_id": "n3yVD",
-      "favorite_type": "SaveType.agreement",
+      "favorite_type": "SaveType.digital_content",
       "user_id": "nlGNe"
     },
     {
       "favorite_item_id": "nlv5l",
-      "favorite_type": "SaveType.agreement",
+      "favorite_type": "SaveType.digital_content",
       "user_id": "nlGNe"
     },
     {
       "favorite_item_id": "ezYKz",
-      "favorite_type": "SaveType.agreement",
+      "favorite_type": "SaveType.digital_content",
       "user_id": "nlGNe"
     }
   ]
@@ -313,13 +313,13 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/users/stri
 }
 ```
 
-### Obtén las etiquetas de pista más utilizadas del usuario <a id="get-user-39-s-most-used-agreement-tags"></a>
+### Obtén las etiquetas de pista más utilizadas del usuario <a id="get-user-39-s-most-used-digital-content-tags"></a>
 
 `GET /users/{user_id}/tags`
 
 _Obtener etiquetas más usadas en las pistas del usuario_
 
-#### Parámetros de consulta <a id="get-user&apos;s-most-used-agreement-tags-parameters"></a>
+#### Parámetros de consulta <a id="get-user&apos;s-most-used-digital-content-tags-parameters"></a>
 
 | Nombre        | Tipo   | Requerido | Descripción                    |
 |:------------- |:------ |:--------- |:------------------------------ |
@@ -328,7 +328,7 @@ _Obtener etiquetas más usadas en las pistas del usuario_
 | app\_name   | cadena | verdad    | Nombre de tu app               |
 | usuario\_id | cadena | verdad    | ninguna                        |
 
-#### Respuestas <a id="get-user&apos;s-most-used-agreement-tags-responses"></a>
+#### Respuestas <a id="get-user&apos;s-most-used-digital-content-tags-responses"></a>
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                                                            |
 |:------ |:------------------------------------------------------------------------------- |:-------------------- |:-------------------------------------------------------------------------------------------------- |
@@ -370,13 +370,13 @@ fetch('https://discoverynode.coliving1.prod-ichard west-2.staked. loud/v1/users/
 }
 ```
 
-### Obtener pistas de usuario <a id="get-user-39-s-agreements"></a>
+### Obtener pistas de usuario <a id="get-user-39-s-digital-contents"></a>
 
 `GET /users/{user_id}/agreements`
 
 _Obtener una lista de pistas para un usuario_
 
-#### Parámetros de consulta <a id="get-user&apos;s-agreements-parameters"></a>
+#### Parámetros de consulta <a id="get-user&apos;s-digital-contents-parameters"></a>
 
 | Nombre        | Tipo   | Requerido | Descripción      |
 |:------------- |:------ |:--------- |:---------------- |
@@ -386,7 +386,7 @@ _Obtener una lista de pistas para un usuario_
 | ordenar       | cadena | falso     | Ordenar modo     |
 | app\_name   | cadena | verdad    | Nombre de tu app |
 
-#### Respuestas <a id="get-user&apos;s-agreements-responses"></a>
+#### Respuestas <a id="get-user&apos;s-digital-contents-responses"></a>
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                                                           |
 |:------ |:------------------------------------------------------------------------------- |:-------------------- |:------------------------------------------------------------------------------------------------- |
@@ -427,15 +427,15 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/users/nlGN
         "480x480": "https://creatornode..co/ipfs/QmVJjA6zXhDZn3BjcjYa33P9NDiPZj7Vyq9TCx1bHjvHmG/480x480.jpg",
         "1000x1000": "https://creatornode..co/ipfs/QmVJjA6zXhDZn3BjcjYa33P9NDiPZj7Vyq9TCx1bHjvHmG/1000x1000.jpg"
       },
-      "description": "@baauer b2b @partyfavormusic live set at Brownies & Lemonade Block Party LA at The Shrine on 7.3.19.",
+      "description": "@baauer b2b @partyfavormusic digitalcoin set at Brownies & Lemonade Block Party LA at The Shrine on 7.3.19.",
       "genre": "Electronic",
       "id": "D7KyD",
       "mood": "Fiery",
       "release_date": "Mon Sep 23 2019 12:35:10 GMT-0700",
       "repost_count": 47,
       "favorite_count": 143,
-      "tags": "baauer,partyfavor,browniesandlemonade,live",
-      "title": "Paauer | Baauer B2B Party Favor | B&L Block Party LA (Live Set)",
+      "tags": "baauer,partyfavor,browniesandlemonade,digitalcoin",
+      "title": "Paauer | Baauer B2B Party Favor | B&L Block Party LA (Digitalcoin Set)",
       "duration": 5265,
       "user": {
         "album_count": 0,
@@ -458,7 +458,7 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/users/nlGN
           "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
         },
         "repost_count": 5,
-        "agreement_count": 4
+        "digital_content_count": 4
       }
     }
   ]
@@ -549,7 +549,7 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/contentLis
           "1000x1000": "https://usermetadata..co/ipfs/QmNjJv1wQf2DJq3GNXjXzSL8UXFUGXfchg4NhL7UpbnF1f"
         },
         "repost_count": 200,
-        "agreement_count": 0
+        "digital_content_count": 0
       }
     }
   ]
@@ -637,30 +637,30 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/contentLis
         "1000x1000": "https://usermetadata. udio. o/ipfs/QmNjJv1wQf2DJq3GNXjXzSL8UXFUGXfchg4NhL7UpbnF1f"
       },
       "repost_count": 200,
-      "agreement_count": 0
+      "digital_content_count": 0
     }
   }
 }
 ```
 
-### Obtener pistas de lista de reproducción <a id="get-content-list-agreements"></a>
+### Obtener pistas de lista de reproducción <a id="get-content-list-digital-contents"></a>
 
 `OBTENER /listas de reproducción/{content_list_id}/pistas`
 
 _Obtener pistas dentro de una lista de reproducción_
 
-#### Parámetros de consulta <a id="get-content-list-agreements-parameters"></a>
+#### Parámetros de consulta <a id="get-content-list-digital-contents-parameters"></a>
 
 | Nombre         | Tipo   | Requerido | Descripción                    |
 |:-------------- |:------ |:--------- |:------------------------------ |
 | contentList\_id | cadena | verdad    | Un ID de lista de reproducción |
 | app\_name    | cadena | verdad    | Nombre de tu app               |
 
-#### Respuestas <a id="get-content-list-agreements-responses"></a>
+#### Respuestas <a id="get-content-list-digital-contents-responses"></a>
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                                                                                |
 |:------ |:------------------------------------------------------------------------------- |:-------------------- |:---------------------------------------------------------------------------------------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [contentList\_pistas\_respuesta](https://colivingproject.github.io/api-docs/?javascript#schemacontent_list_agreements_response) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [contentList\_pistas\_respuesta](https://colivingproject.github.io/api-docs/?javascript#schemacontent_list_digital_contents_response) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                                                                                                |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                                                                                                |
 
@@ -705,8 +705,8 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/contentLis
       "release_date": "Lon Sep 23 2019 12:35:10 GMT-0700",
       "repost_count": 47,
       "favorito_count": 143,
-      "etiquetas": "baauer, partyfavor, rowniesandlemonade,live",
-      "título": "Paauer | Baauer B2B Party Favor | B&L Block Party LA (Live Set)",
+      "etiquetas": "baauer, partyfavor, rowniesandlemonade,digitalcoin",
+      "título": "Paauer | Baauer B2B Party Favor | B&L Block Party LA (Digitalcoin Set)",
       "duración: 5265,
       "usuario": {
         "álbum_count": 0,
@@ -729,22 +729,22 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/contentLis
           "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
         },
         "repost_count": 5,
-        "agreement_count": 4
+        "digital_content_count": 4
       }
     }
   ]
 }
 ```
 
-## Pistas <a id="api-agreements"></a>
+## Pistas <a id="api-digital-contents"></a>
 
-### Buscar pistas <a id="search-agreements"></a>
+### Buscar pistas <a id="search-digital-contents"></a>
 
 `Obtener /pistas/búsqueda`
 
-_Buscar un agreement_
+_Buscar un digital_content_
 
-#### Parámetros de consulta <a id="search-agreements-parameters"></a>
+#### Parámetros de consulta <a id="search-digital-contents-parameters"></a>
 
 | Nombre              | Tipo   | Requerido | Descripción                       |
 |:------------------- |:------ |:--------- |:--------------------------------- |
@@ -752,11 +752,11 @@ _Buscar un agreement_
 | sólo\_descargable | cadena | falso     | Devolver sólo pistas descargables |
 | app\_name         | cadena | verdad    | Nombre de tu app                  |
 
-#### Respuestas <a id="search-agreements-responses"></a>
+#### Respuestas <a id="search-digital-contents-responses"></a>
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                                                       |
 |:------ |:------------------------------------------------------------------------------- |:-------------------- |:--------------------------------------------------------------------------------------------- |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [seguir\_búsqueda](https://colivingproject.github.io/api-docs/?javascript#schemaagreement_search) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [seguir\_búsqueda](https://colivingproject.github.io/api-docs/?javascript#schemadigital_content_search) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                                                                       |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                                                                       |
 
@@ -795,15 +795,15 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/agreements
         "480x480": "https://creatornode..co/ipfs/QmVJjA6zXhDZn3BjcjYa33P9NDiPZj7Vyq9TCx1bHjvHmG/480x480.jpg",
         "1000x1000": "https://creatornode..co/ipfs/QmVJjA6zXhDZn3BjcjYa33P9NDiPZj7Vyq9TCx1bHjvHmG/1000x1000.jpg"
       },
-      "description": "@baauer b2b @partyfavormusic live set at Brownies & Lemonade Block Party LA at The Shrine on 7.3.19.",
+      "description": "@baauer b2b @partyfavormusic digitalcoin set at Brownies & Lemonade Block Party LA at The Shrine on 7.3.19.",
       "genre": "Electronic",
       "id": "D7KyD",
       "mood": "Fiery",
       "release_date": "Mon Sep 23 2019 12:35:10 GMT-0700",
       "repost_count": 47,
       "favorite_count": 143,
-      "tags": "baauer,partyfavor,browniesandlemonade,live",
-      "title": "Paauer | Baauer B2B Party Favor | B&L Block Party LA (Live Set)",
+      "tags": "baauer,partyfavor,browniesandlemonade,digitalcoin",
+      "title": "Paauer | Baauer B2B Party Favor | B&L Block Party LA (Digitalcoin Set)",
       "duration": 5265,
       "user": {
         "album_count": 0,
@@ -826,20 +826,20 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/agreements
           "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
         },
         "repost_count": 5,
-        "agreement_count": 4
+        "digital_content_count": 4
       }
     }
   ]
 }
 ```
 
-### Pistas populares <a id="trending-agreements"></a>
+### Pistas populares <a id="trending-digital-contents"></a>
 
 `GET /agreements/tendencia`
 
 _Obtiene las 100 pistas más populares \(más popular\) en Coliving_
 
-#### Parámetros de consulta <a id="trending-agreements-parameters"></a>
+#### Parámetros de consulta <a id="trending-digital-contents-parameters"></a>
 
 | Nombre      | Tipo   | Requerido | Descripción                                                                    |
 |:----------- |:------ |:--------- |:------------------------------------------------------------------------------ |
@@ -847,7 +847,7 @@ _Obtiene las 100 pistas más populares \(más popular\) en Coliving_
 | tiempo      | cadena | falso     | Pistas populares en un rango de tiempo especificado \(semana, mes, allTime\) |
 | app\_name | cadena | verdad    | Nombre de tu app                                                               |
 
-#### Respuestas <a id="trending-agreements-responses"></a>
+#### Respuestas <a id="trending-digital-contents-responses"></a>
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                                                           |
 |:------ |:------------------------------------------------------------------------------- |:-------------------- |:------------------------------------------------------------------------------------------------- |
@@ -888,15 +888,15 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/agreements
         "480x480": "https://creatornode..co/ipfs/QmVJjA6zXhDZn3BjcjYa33P9NDiPZj7Vyq9TCx1bHjvHmG/480x480.jpg",
         "1000x1000": "https://creatornode..co/ipfs/QmVJjA6zXhDZn3BjcjYa33P9NDiPZj7Vyq9TCx1bHjvHmG/1000x1000.jpg"
       },
-      "description": "@baauer b2b @partyfavormusic live set at Brownies & Lemonade Block Party LA at The Shrine on 7.3.19.",
+      "description": "@baauer b2b @partyfavormusic digitalcoin set at Brownies & Lemonade Block Party LA at The Shrine on 7.3.19.",
       "genre": "Electronic",
       "id": "D7KyD",
       "mood": "Fiery",
       "release_date": "Mon Sep 23 2019 12:35:10 GMT-0700",
       "repost_count": 47,
       "favorite_count": 143,
-      "tags": "baauer,partyfavor,browniesandlemonade,live",
-      "title": "Paauer | Baauer B2B Party Favor | B&L Block Party LA (Live Set)",
+      "tags": "baauer,partyfavor,browniesandlemonade,digitalcoin",
+      "title": "Paauer | Baauer B2B Party Favor | B&L Block Party LA (Digitalcoin Set)",
       "duration": 5265,
       "user": {
         "album_count": 0,
@@ -919,31 +919,31 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/agreements
           "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
         },
         "repost_count": 5,
-        "agreement_count": 4
+        "digital_content_count": 4
       }
     }
   ]
 }
 ```
 
-### Obtener pista <a id="get-agreement"></a>
+### Obtener pista <a id="get-digital-content"></a>
 
-`OBTENER/ Canción/ {agreement_id}`
+`OBTENER/ Canción/ {digital_content_id}`
 
 _Obtener una pista_
 
-#### Parámetros de consulta <a id="get-agreement-parameters"></a>
+#### Parámetros de consulta <a id="get-digital-content-parameters"></a>
 
 | Nombre      | Tipo   | Requerido | Descripción      |
 |:----------- |:------ |:--------- |:---------------- |
-| agreement\_id | cadena | verdad    | Un ID de pista   |
+| digital_content\_id | cadena | verdad    | Un ID de pista   |
 | app\_name | cadena | verdad    | Nombre de tu app |
 
-#### Respuestas <a id="get-agreement-responses"></a>
+#### Respuestas <a id="get-digital-content-responses"></a>
 
 | Estado | Significado                                                                     | Descripción          | Esquema                                                                                          |
 |:------ |:------------------------------------------------------------------------------- |:-------------------- |:------------------------------------------------------------------------------------------------ |
-| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [pistas\_respuesta](https://colivingproject.github.io/api-docs/?javascript#schemaagreement_response) |
+| 200    | [Ok](https://tools.ietf.org/html/rfc7231#section-6.3.1)                         | ninguna              | [pistas\_respuesta](https://colivingproject.github.io/api-docs/?javascript#schemadigital_content_response) |
 | 400    | [Solicitud incorrecta](https://tools.ietf.org/html/rfc7231#section-6.5.1)       | Solicitud incorrecta | Ninguna                                                                                          |
 | 500    | [Error interno del servidor](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error del servidor   | Ninguna                                                                                          |
 
@@ -979,15 +979,15 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/agreements
       "480x480": "https://creatornode..co/ipfs/QmVJjA6zXhDZn3BjcjYa33P9NDiPZj7Vyq9TCx1bHjvHmG/480x480.jpg",
       "1000x1000": "https://creatornode..co/ipfs/QmVJjA6zXhDZn3BjcjYa33P9NDiPZj7Vyq9TCx1bHjvHmG/1000x1000.jpg"
     },
-    "description": "@baauer b2b @partyfavormusic live set at Brownies & Lemonade Block Party LA at The Shrine on 7.3.19.",
+    "description": "@baauer b2b @partyfavormusic digitalcoin set at Brownies & Lemonade Block Party LA at The Shrine on 7.3.19.",
     "genre": "Electronic",
     "id": "D7KyD",
     "mood": "Fiery",
     "release_date": "Mon Sep 23 2019 12:35:10 GMT-0700",
     "repost_count": 47,
     "favorite_count": 143,
-    "tags": "baauer,partyfavor,browniesandlemonade,live",
-    "title": "Paauer | Baauer B2B Party Favor | B&L Block Party LA (Live Set)",
+    "tags": "baauer,partyfavor,browniesandlemonade,digitalcoin",
+    "title": "Paauer | Baauer B2B Party Favor | B&L Block Party LA (Digitalcoin Set)",
     "duration": 5265,
     "user": {
       "album_count": 0,
@@ -1010,28 +1010,28 @@ fetch('https://discoverynode.coliving1.prod-us-west-2.staked.cloud/v1/agreements
         "1000x1000": "https://creatornode..co/ipfs/QmU9L4beAM96MpiNqqVTZdiDiCRTeBku1AJCh3NXrE5PxV/1000x1000.jpg"
       },
       "repost_count": 5,
-      "agreement_count": 4
+      "digital_content_count": 4
     }
   }
 }
 ```
 
-### Pista de streaming <a id="stream-agreement"></a>
+### Pista de streaming <a id="stream-digital-content"></a>
 
-`GET /agreements/{agreement_id}/stream`
+`GET /agreements/{digital_content_id}/stream`
 
 _Obtener el archivo mp3 streamable de la pista_
 
 Este extremo acepta la cabecera de Rango para streaming. https://developer.mozilla.org/es-US/docs/Web/HTTP/Range\_requests
 
-#### Parámetros de consulta <a id="stream-agreement-parameters"></a>
+#### Parámetros de consulta <a id="stream-digital-content-parameters"></a>
 
 | Nombre      | Tipo   | Requerido | Descripción      |
 |:----------- |:------ |:--------- |:---------------- |
-| agreement\_id | cadena | verdad    | Un ID de pista   |
+| digital_content\_id | cadena | verdad    | Un ID de pista   |
 | app\_name | cadena | verdad    | Nombre de tu app |
 
-#### Respuestas <a id="stream-agreement-responses"></a>
+#### Respuestas <a id="stream-digital-content-responses"></a>
 
 | Estado | Significado                                                                     | Descripción                  | Esquema |
 |:------ |:------------------------------------------------------------------------------- |:---------------------------- |:------- |
@@ -1201,7 +1201,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
       "1000x1000": "string"
     },
     "repost_count": 0,
-    "agreement_count": 0
+    "digital_content_count": 0
   }
 }
 
@@ -1237,7 +1237,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
     "1000x1000": "string"
   },
   "repost_count": 0,
-  "agreement_count": 0
+  "digital_content_count": 0
 }
 
 ```
@@ -1297,7 +1297,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 | 480 x 480 | cadena | falso     | ninguna       | ninguna     |
 | 1000x1000 | cadena | falso     | ninguna       | ninguna     |
 
-### pistas\_respuesta <a id="tocS_agreements_response"></a>
+### pistas\_respuesta <a id="tocS_digital_contents_response"></a>
 
 ```json
 {
@@ -1316,7 +1316,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
       "remix_of": {
         "agreements": [
           {
-            "parent_agreement_id": "string"
+            "parent_digital_content_id": "string"
           }
         ]
       },
@@ -1345,7 +1345,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "agreement_count": 0
+        "digital_content_count": 0
       },
       "duration": 0,
       "downloadable": true,
@@ -1379,7 +1379,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
   "remix_of": {
     "agreements": [
       {
-        "parent_agreement_id": "string"
+        "parent_digital_content_id": "string"
       }
     ]
   },
@@ -1408,7 +1408,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
       "1000x1000": "string"
     },
     "repost_count": 0,
-    "agreement_count": 0
+    "digital_content_count": 0
   },
   "duration": 0,
   "downloadable": true,
@@ -1421,7 +1421,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre                | Tipo                                                                                          | Requerido | Restricciones | Descripción |
 |:--------------------- |:--------------------------------------------------------------------------------------------- |:--------- |:------------- |:----------- |
-| obra de arte          | [seguir\_artwork](https://colivingproject.github.io/api-docs/?javascript#schemaagreement_artwork) | falso     | ninguna       | ninguna     |
+| obra de arte          | [seguir\_artwork](https://colivingproject.github.io/api-docs/?javascript#schemadigital_content_artwork) | falso     | ninguna       | ninguna     |
 | descripción           | cadena                                                                                        | falso     | ninguna       | ninguna     |
 | género                | cadena                                                                                        | falso     | ninguna       | ninguna     |
 | id                    | cadena                                                                                        | verdad    | ninguna       | ninguna     |
@@ -1437,7 +1437,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 | descargable           | boolean                                                                                       | falso     | ninguna       | ninguna     |
 | play\_count         | entero                                                                                        | verdad    | ninguna       | ninguna     |
 
-### agreement\_artwork <a id="tocS_agreement_artwork"></a>
+### digital_content\_artwork <a id="tocS_digital_content_artwork"></a>
 
 ```json
 {
@@ -1462,7 +1462,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 {
   "agreements": [
     {
-      "parent_agreement_id": "string"
+      "parent_digital_content_id": "string"
     }
   ]
 }
@@ -1473,13 +1473,13 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 
 | Nombre | Tipo                                                                                    | Requerido | Restricciones | Descripción |
 |:------ |:--------------------------------------------------------------------------------------- |:--------- |:------------- |:----------- |
-| pistas | \[[pista](https://colivingproject.github.io/api-docs/?javascript#schemaagreement_element)\] | falso     | ninguna       | ninguna     |
+| pistas | \[[pista](https://colivingproject.github.io/api-docs/?javascript#schemadigital_content_element)\] | falso     | ninguna       | ninguna     |
 
-### seguir\_elemento <a id="tocS_agreement_element"></a>
+### seguir\_elemento <a id="tocS_digital_content_element"></a>
 
 ```json
 {
-  "parent_agreement_id": "string"
+  "parent_digital_content_id": "string"
 }
 
 ```
@@ -1613,7 +1613,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
         "1000x1000": "string"
       },
       "repost_count": 0,
-      "agreement_count": 0
+      "digital_content_count": 0
     }
   ]
 }
@@ -1667,7 +1667,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "agreement_count": 0
+        "digital_content_count": 0
       }
     }
   ]
@@ -1718,7 +1718,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
       "1000x1000": "string"
     },
     "repost_count": 0,
-    "agreement_count": 0
+    "digital_content_count": 0
   }
 }
 
@@ -1757,7 +1757,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 | 480 x 480 | cadena | falso     | ninguna       | ninguna     |
 | 1000x1000 | cadena | falso     | ninguna       | ninguna     |
 
-### contentList\_pistas\_respuesta <a id="tocS_content_list_agreements_response"></a>
+### contentList\_pistas\_respuesta <a id="tocS_content_list_digital_contents_response"></a>
 
 ```json
 {
@@ -1776,7 +1776,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
       "remix_of": {
         "agreements": [
           {
-            "parent_agreement_id": "string"
+            "parent_digital_content_id": "string"
           }
         ]
       },
@@ -1805,7 +1805,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "agreement_count": 0
+        "digital_content_count": 0
       },
       "duration": 0,
       "downloadable": true,
@@ -1861,7 +1861,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "agreement_count": 0
+        "digital_content_count": 0
       }
     }
   ]
@@ -1875,7 +1875,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 |:------ |:-------------------------------------------------------------------------------------------------- |:--------- |:------------- |:----------- |
 | datos  | \[[lista de reproducción](https://colivingproject.github.io/api-docs/?javascript#schemacontentList)\] | falso     | ninguna       | ninguna     |
 
-### pistas\_respuesta <a id="tocS_agreement_response"></a>
+### pistas\_respuesta <a id="tocS_digital_content_response"></a>
 
 ```json
 {
@@ -1893,7 +1893,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
     "remix_of": {
       "agreements": [
         {
-          "parent_agreement_id": "string"
+          "parent_digital_content_id": "string"
         }
       ]
     },
@@ -1922,7 +1922,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
         "1000x1000": "string"
       },
       "repost_count": 0,
-      "agreement_count": 0
+      "digital_content_count": 0
     },
     "duration": 0,
     "downloadable": true,
@@ -1938,7 +1938,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
 |:------ |:------------------------------------------------------------------------- |:--------- |:------------- |:----------- |
 | datos  | [Pista](https://colivingproject.github.io/api-docs/?javascript#schemaagreement) | falso     | ninguna       | ninguna     |
 
-### agreement\_buscar <a id="tocS_agreement_search"></a>
+### digital_content\_buscar <a id="tocS_digital_content_search"></a>
 
 ```json
 {
@@ -1957,7 +1957,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
       "remix_of": {
         "agreements": [
           {
-            "parent_agreement_id": "string"
+            "parent_digital_content_id": "string"
           }
         ]
       },
@@ -1986,7 +1986,7 @@ Los siguientes son ejemplos de formatos de respuesta que se pueden esperar recib
           "1000x1000": "string"
         },
         "repost_count": 0,
-        "agreement_count": 0
+        "digital_content_count": 0
       },
       "duration": 0,
       "downloadable": true,

@@ -140,7 +140,7 @@ export class DiscoveryNode {
     this.selectionRequestRetries = selectionRequestRetries
     this.unhealthySlotDiffPlays = unhealthySlotDiffPlays
 
-    // Keep agreement of the number of times a request 404s so we know when a true 404 occurs
+    // Keep digital_content of the number of times a request 404s so we know when a true 404 occurs
     // Due to incident where some discovery nodes may erroneously be missing content #flare-51,
     // we treat 404s differently than generic 4xx's or other 5xx errors.
     // In the case of a 404, try a few other nodes
@@ -184,13 +184,13 @@ export class DiscoveryNode {
    * can be filtered by providing an integer array of ids
    * @returns Array of User metadata Objects
    * additional metadata fields on user objects:
-   *  {Integer} agreement_count - agreement count for given user
+   *  {Integer} digital_content_count - digital_content count for given user
    *  {Integer} content_list_count - contentList count for given user
    *  {Integer} album_count - album count for given user
    *  {Integer} follower_count - follower count for given user
    *  {Integer} followee_count - followee count for given user
    *  {Integer} repost_count - repost count for given user
-   *  {Integer} agreement_blocknumber - blocknumber of latest agreement for user
+   *  {Integer} digital_content_blocknumber - blocknumber of latest digital_content for user
    *  {Boolean} does_current_user_follow - does current user follow given user
    *  {Array} followee_follows - followees of current user that follow given user
    * @example
@@ -217,7 +217,7 @@ export class DiscoveryNode {
   }
 
   /**
-   * get agreements with all relevant agreement data
+   * get agreements with all relevant digital_content data
    * can be filtered by providing an integer array of ids
    * @param limit
    * @param offset
@@ -226,16 +226,16 @@ export class DiscoveryNode {
    * @param sort a string of form eg. blocknumber:asc,timestamp:desc describing a sort path
    * @param minBlockNumber The min block number
    * @param filterDeleted If set to true, filters the deleted agreements
-   * @returns Array of agreement metadata Objects
-   * additional metadata fields on agreement objects:
-   *  {Integer} repost_count - repost count for given agreement
-   *  {Integer} save_count - save count for given agreement
-   *  {Array} followee_reposts - followees of current user that have reposted given agreement
-   *  {Boolean} has_current_user_reposted - has current user reposted given agreement
-   *  {Boolean} has_current_user_saved - has current user saved given agreement
+   * @returns Array of digital_content metadata Objects
+   * additional metadata fields on digital_content objects:
+   *  {Integer} repost_count - repost count for given digital_content
+   *  {Integer} save_count - save count for given digital_content
+   *  {Array} followee_reposts - followees of current user that have reposted given digital_content
+   *  {Boolean} has_current_user_reposted - has current user reposted given digital_content
+   *  {Boolean} has_current_user_saved - has current user saved given digital_content
    * @example
    * await getAgreements()
-   * await getAgreements(100, 0, [3,2,6]) - Invalid agreement ids will not be accepted
+   * await getAgreements(100, 0, [3,2,6]) - Invalid digital_content ids will not be accepted
    */
   async getAgreements(
     limit = 100,
@@ -262,10 +262,10 @@ export class DiscoveryNode {
   }
 
   /**
-   * Gets a particular agreement by its creator's handle and the agreement's URL slug
-   * @param handle the handle of the owner of the agreement
-   * @param slug the URL slug of the agreement, generally the title urlized
-   * @returns the requested agreement's metadata
+   * Gets a particular digital_content by its creator's handle and the digital_content's URL slug
+   * @param handle the handle of the owner of the digital_content
+   * @param slug the URL slug of the digital_content, generally the title urlized
+   * @returns the requested digital_content's metadata
    */
   async getAgreementsByHandleAndSlug(handle: string, slug: string) {
     // Note: retries are disabled here because the v1 API response returns a 404 instead
@@ -290,7 +290,7 @@ export class DiscoveryNode {
   /**
    * Gets random agreements from trending agreements for a given genre.
    * If genre not given, will return trending agreements across all genres.
-   * Excludes specified agreement ids.
+   * Excludes specified digital_content ids.
    */
   async getRandomAgreements(
     genre: string,
@@ -338,7 +338,7 @@ export class DiscoveryNode {
    * Gets agreements trending on Coliving.
    * @param genre
    * @param timeFrame one of day, week, month, or year
-   * @param idsArray agreement ids
+   * @param idsArray digital_content ids
    * @param limit
    * @param offset
    */
@@ -396,14 +396,14 @@ export class DiscoveryNode {
    * @param filter - filter by "all", "original", or "repost"
    * @param limit - max # of items to return
    * @param offset - offset into list to return from (for pagination)
-   * @returns Array of agreement and contentList metadata objects
-   * additional metadata fields on agreement and contentList objects:
-   *  {String} activity_timestamp - timestamp of requested user's repost for given agreement or contentList,
+   * @returns Array of digital_content and contentList metadata objects
+   * additional metadata fields on digital_content and contentList objects:
+   *  {String} activity_timestamp - timestamp of requested user's repost for given digital_content or contentList,
    *    used for sorting feed
-   *  {Integer} repost_count - repost count of given agreement/contentList
-   *  {Integer} save_count - save count of given agreement/contentList
-   *  {Boolean} has_current_user_reposted - has current user reposted given agreement/contentList
-   *  {Array} followee_reposts - followees of current user that have reposted given agreement/contentList
+   *  {Integer} repost_count - repost count of given digital_content/contentList
+   *  {Integer} save_count - save count of given digital_content/contentList
+   *  {Boolean} has_current_user_reposted - has current user reposted given digital_content/contentList
+   *  {Array} followee_reposts - followees of current user that have reposted given digital_content/contentList
    */
   async getSocialFeed(
     filter: string,
@@ -427,14 +427,14 @@ export class DiscoveryNode {
    * @param userId - requested user id
    * @param limit - max # of items to return (for pagination)
    * @param offset - offset into list to return from (for pagination)
-   * @returns Array of agreement and contentList metadata objects}
-   * additional metadata fields on agreement and contentList objects:
-   *  {String} activity_timestamp - timestamp of requested user's repost for given agreement or contentList,
+   * @returns Array of digital_content and contentList metadata objects}
+   * additional metadata fields on digital_content and contentList objects:
+   *  {String} activity_timestamp - timestamp of requested user's repost for given digital_content or contentList,
    *    used for sorting feed
-   *  {Integer} repost_count - repost count of given agreement/contentList
-   *  {Integer} save_count - save count of given agreement/contentList
-   *  {Boolean} has_current_user_reposted - has current user reposted given agreement/contentList
-   *  {Array} followee_reposts - followees of current user that have reposted given agreement/contentList
+   *  {Integer} repost_count - repost count of given digital_content/contentList
+   *  {Integer} save_count - save count of given digital_content/contentList
+   *  {Boolean} has_current_user_reposted - has current user reposted given digital_content/contentList
+   *  {Array} followee_reposts - followees of current user that have reposted given digital_content/contentList
    */
   async getUserRepostFeed(
     userId: number,
@@ -471,8 +471,8 @@ export class DiscoveryNode {
   /**
    * get intersection of users that have reposted repostAgreementId and users that are followed by followerUserId
    * followee = user that is followed; follower = user that follows
-   * @param repostAgreementId agreement that is reposted
-   * @param followerUserId user that reposted agreement
+   * @param repostAgreementId digital_content that is reposted
+   * @param followerUserId user that reposted digital_content
    * @example
    * getAgreementRepostIntersectionUsers(100, 0, 1, 1) - IDs must be valid
    */
@@ -495,7 +495,7 @@ export class DiscoveryNode {
    * get intersection of users that have reposted repostContentListId and users that are followed by followerUserId
    * followee = user that is followed; follower = user that follows
    * @param repostContentListId contentList that is reposted
-   * @param followerUserId user that reposted agreement
+   * @param followerUserId user that reposted digital_content
    * @example
    * getContentListRepostIntersectionUsers(100, 0, 1, 1) - IDs must be valid
    */
@@ -616,7 +616,7 @@ export class DiscoveryNode {
   /**
    * Perform a full-text search. Returns agreements, users, contentLists, albums
    *    with optional user-specific results for each
-   *  - user, agreement, and contentList objects have all same data as returned from standalone endpoints
+   *  - user, digital_content, and contentList objects have all same data as returned from standalone endpoints
    * @param text search query
    * @param kind 'agreements', 'users', 'contentLists', 'albums', 'all'
    * @param limit max # of items to return per list (for pagination)
@@ -630,7 +630,7 @@ export class DiscoveryNode {
   /**
    * Perform a lighter-weight full-text search. Returns agreements, users, contentLists, albums
    *    with optional user-specific results for each
-   *  - user, agreement, and contentList objects have core data, and agreement & contentList objects
+   *  - user, digital_content, and contentList objects have core data, and digital_content & contentList objects
    *    also return user object
    * @param text search query
    * @param limit max # of items to return per list (for pagination)
@@ -663,7 +663,7 @@ export class DiscoveryNode {
 
   /**
    * Return saved contentLists for current user
-   * NOTE in returned JSON, SaveType string one of agreement, contentList, album
+   * NOTE in returned JSON, SaveType string one of digital_content, contentList, album
    * @param limit - max # of items to return
    * @param offset - offset into list to return from (for pagination)
    */
@@ -674,7 +674,7 @@ export class DiscoveryNode {
 
   /**
    * Return saved albums for current user
-   * NOTE in returned JSON, SaveType string one of agreement, contentList, album
+   * NOTE in returned JSON, SaveType string one of digital_content, contentList, album
    * @param limit - max # of items to return
    * @param offset - offset into list to return from (for pagination)
    */
@@ -685,7 +685,7 @@ export class DiscoveryNode {
 
   /**
    * Return saved agreements for current user
-   * NOTE in returned JSON, SaveType string one of agreement, contentList, album
+   * NOTE in returned JSON, SaveType string one of digital_content, contentList, album
    * @param limit - max # of items to return
    * @param offset - offset into list to return from (for pagination)
    */

@@ -6,7 +6,7 @@ export class SocialFeatureFactoryClient extends ContractClient {
   override web3Manager!: Web3Manager
 
   async addAgreementRepost(userId: number, agreementId: number) {
-    // generate new agreement repost request
+    // generate new digital_content repost request
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()
@@ -36,7 +36,7 @@ export class SocialFeatureFactoryClient extends ContractClient {
   }
 
   async deleteAgreementRepost(userId: number, agreementId: number) {
-    // generate new delete agreement repost request
+    // generate new delete digital_content repost request
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()

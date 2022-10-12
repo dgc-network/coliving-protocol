@@ -2,14 +2,14 @@ from sqlalchemy import BigInteger, Column, Integer, Numeric, String, Table
 from src.models.base import Base
 
 """
-Trending Params aggregate the paramters used to calculate trending agreement scores
+Trending Params aggregate the paramters used to calculate trending digital_content scores
 """
 
 # Materialized view
 t_trending_params = Table(
     "trending_params",
     Base.metadata,
-    Column("agreement_id", Integer, index=True),
+    Column("digital_content_id", Integer, index=True),
     Column("genre", String),
     Column("owner_id", Integer),
     Column("play_count", BigInteger),

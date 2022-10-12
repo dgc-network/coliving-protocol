@@ -9,9 +9,9 @@ const {
 const { clearDatabase, runMigrations } = require('../lib/app')
 
 /**
- * User id 1 favorites agreement id 10 owned by user 20
- * User id 2 favorites agreement id 10 owned by user 20
- * User id 2 favorites agreement id 11 owned by user 20
+ * User id 1 favorites digital_content id 10 owned by user 20
+ * User id 2 favorites digital_content id 10 owned by user 20
+ * User id 2 favorites digital_content id 11 owned by user 20
  * User id 3 favorites contentList id 14 owned by user 23
  * User id 4 favorites album id 10 owned by user 25
  */
@@ -22,7 +22,7 @@ const initialNotifications = [
     'metadata': {
       'entity_id': 10,
       'entity_owner_id': 20,
-      'entity_type': 'agreement'
+      'entity_type': 'digital_content'
     },
     'timestamp': '2020-10-24T19:39:45 Z',
     'type': 'Favorite'
@@ -32,7 +32,7 @@ const initialNotifications = [
     'metadata': {
       'entity_id': 10,
       'entity_owner_id': 20,
-      'entity_type': 'agreement'
+      'entity_type': 'digital_content'
     },
     'timestamp': '2020-10-24T19:39:45 Z',
     'type': 'Favorite'
@@ -42,7 +42,7 @@ const initialNotifications = [
     'metadata': {
       'entity_id': 11,
       'entity_owner_id': 20,
-      'entity_type': 'agreement'
+      'entity_type': 'digital_content'
     },
     'timestamp': '2020-10-24T19:39:45 Z',
     'type': 'Favorite'
@@ -70,8 +70,8 @@ const initialNotifications = [
 ]
 
 /**
- * User id 5 favorites agreement id 10 owned by user 20
- * User id 5 favorites agreement id 11 owned by user 20
+ * User id 5 favorites digital_content id 10 owned by user 20
+ * User id 5 favorites digital_content id 11 owned by user 20
  */
 const additionalNotifications = [
   {
@@ -80,7 +80,7 @@ const additionalNotifications = [
     'metadata': {
       'entity_id': 10,
       'entity_owner_id': 20,
-      'entity_type': 'agreement'
+      'entity_type': 'digital_content'
     },
     'timestamp': '2020-10-24T19:39:45 Z',
     'type': 'Favorite'
@@ -90,7 +90,7 @@ const additionalNotifications = [
     'metadata': {
       'entity_id': 11,
       'entity_owner_id': 20,
-      'entity_type': 'agreement'
+      'entity_type': 'digital_content'
     },
     'timestamp': '2020-10-24T19:39:45 Z',
     'type': 'Favorite'
@@ -111,12 +111,12 @@ describe('Test Favorite Notification', function () {
 
     // ======================================= Run checks against the Notifications =======================================
     // User 20 Should have 2 notifications
-    // 1.) users 1 & 2 liked agreement 10 (owned by user 20)
-    // 2) user 2 liked agreement 11 (owned by user 20)
+    // 1.) users 1 & 2 liked digital_content 10 (owned by user 20)
+    // 2) user 2 liked digital_content 11 (owned by user 20)
     const userNotifs = await models.Notification.findAll({ where: { userId: 20 } })
     const agreement10Notification = userNotifs.find(notif => notif.entityId === 10)
 
-    // For the agreement 10 favorites, check that there are 2 notificationa actions - users 1 & 2 favoriting it!
+    // For the digital_content 10 favorites, check that there are 2 notificationa actions - users 1 & 2 favoriting it!
     const agreement10NotificationActions = await models.NotificationAction.findAll({ where: { notificationId: agreement10Notification.id } })
     assert.deepStrictEqual(agreement10NotificationActions.length, 2)
 
@@ -155,9 +155,9 @@ describe('Test Favorite Notification', function () {
     await tx2.commit()
 
     // User 20 Should have 3 notifications
-    // 1) users 1 & 2 liked agreement 10 (owned by user 20)
-    // 1) user 5 liked agreement 10 (owned by user 20)
-    // 2) user 2 & 5 liked agreement 11 (owned by user 20)
+    // 1) users 1 & 2 liked digital_content 10 (owned by user 20)
+    // 1) user 5 liked digital_content 10 (owned by user 20)
+    // 2) user 2 & 5 liked digital_content 11 (owned by user 20)
     const updatedUserNotifs = await models.Notification.findAll({ where: { userId: 20 } })
     const agreement10Prev = updatedUserNotifs.find(notif => notif.entityId === 10 && notif.isViewed === true)
     const agreement10New = updatedUserNotifs.find(notif => notif.entityId === 10 && notif.isViewed === false)

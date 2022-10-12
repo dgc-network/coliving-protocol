@@ -51,7 +51,7 @@ const snapbackSMParallelSyncTest = async ({
     const newAgreementMetadata = getRandomAgreementMetadata(userId)
     const randomAgreementFilePath = await getRandomAgreementFilePath(TEMP_STORAGE_PATH)
     logger.info(
-      `Uploading Agreement for userId:${userId} (${libs.walletAddress}), ${randomAgreementFilePath}, ${JSON.stringify(newAgreementMetadata)}`
+      `Uploading DigitalContent for userId:${userId} (${libs.walletAddress}), ${randomAgreementFilePath}, ${JSON.stringify(newAgreementMetadata)}`
     )
     try {
       const startTime = Date.now()
@@ -63,9 +63,9 @@ const snapbackSMParallelSyncTest = async ({
         )
       )
       const duration = Date.now() - startTime
-      logger.info(`Uploaded agreement for userId=${userId}, agreementId=${agreementId} in ${duration}ms`)
+      logger.info(`Uploaded digital_content for userId=${userId}, agreementId=${agreementId} in ${duration}ms`)
     } catch (e) {
-      logger.error(`Error uploading agreement for userId:${userId} :${e}`)
+      logger.error(`Error uploading digital_content for userId:${userId} :${e}`)
     }
   })
 

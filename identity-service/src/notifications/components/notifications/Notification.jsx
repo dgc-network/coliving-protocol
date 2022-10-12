@@ -42,14 +42,14 @@ const challengeRewardsConfig = {
     title: 'Complete Your Profile',
     icon: <WhiteHeavyCheckMarkIcon />
   },
-  'agreement-upload': {
+  'digital-content-upload': {
     title: 'Upload 3 Agreements',
     icon: <MultipleMusicalNotesIcon />
   }
 }
 
 const EntityType = Object.freeze({
-  Agreement: 'Agreement',
+  DigitalContent: 'DigitalContent',
   Album: 'Album',
   ContentList: 'ContentList'
 })
@@ -95,9 +95,9 @@ export const getUsers = (users) => {
 }
 
 export const getEntity = (entity) => {
-  if (entity.type === EntityType.Agreement) {
+  if (entity.type === EntityType.DigitalContent) {
     return (
-      <> <BodyText text={'agreement '} /><HighlightText text={entity.name} /> </>
+      <> <BodyText text={'digital_content '} /><HighlightText text={entity.name} /> </>
     )
   } else if (entity.type === EntityType.Album) {
     return (
@@ -164,7 +164,7 @@ const notificationMap = {
     const rankSuffix = getRankSuffix(rank)
     return (
       <span className={'notificationText'}>
-        <BodyText text={`Your Agreement `} />
+        <BodyText text={`Your DigitalContent `} />
         <HighlightText text={highlight} />
         <BodyText text={` is ${rank}${rankSuffix} on Trending Right Now! 🍾`} />
       </span>
@@ -172,7 +172,7 @@ const notificationMap = {
   },
   [NotificationType.UserSubscription] (notification) {
     const [user] = notification.users
-    if (notification.entity.type === NotificationType.Agreement && !isNaN(notification.entity.count) && notification.entity.count > 1) {
+    if (notification.entity.type === NotificationType.DigitalContent && !isNaN(notification.entity.count) && notification.entity.count > 1) {
       return (
         <span className={'notificationText'}>
           <HighlightText text={user.name} />
@@ -237,8 +237,8 @@ const notificationMap = {
     return (
       <span className={'notificationText'}>
         <HighlightText text={notification.contentListOwner.name} />
-        <BodyText text={` added your agreement `} />
-        <HighlightText text={notification.agreement.title} />
+        <BodyText text={` added your digital_content `} />
+        <HighlightText text={notification.digital_content.title} />
         <BodyText text={` to their contentList `} />
         <HighlightText text={notification.contentList.content_list_name} />
       </span>
@@ -299,7 +299,7 @@ const getTitle = (notification) => {
       const { parentAgreement } = notification
       return (
         <span className={'notificationText'}>
-          <BodyText text={`New remix of your agreement `} />
+          <BodyText text={`New remix of your digital_content `} />
           <HighlightText text={parentAgreement.title} />
         </span>
       )
@@ -324,8 +324,8 @@ const getAgreementMessage = (notification) => {
   }
 }
 
-export const getAgreementLink = (agreement) => {
-  return `https://coliving.lol/${agreement.route_id}-${agreement.agreement_id}`
+export const getAgreementLink = (digital_content) => {
+  return `https://coliving.lol/${digital_content.route_id}-${digital_content.digital_content_id}`
 }
 
 const getTwitter = (notification) => {
@@ -361,7 +361,7 @@ const getTwitter = (notification) => {
       const { rank, entity } = notification
       const url = getAgreementLink(entity)
       const rankSuffix = getRankSuffix(rank)
-      const text = `My agreement ${entity.title} is trending ${rank}${rankSuffix} on @dgc-network! #ColivingTrending #Coliving`
+      const text = `My digital_content ${entity.title} is trending ${rank}${rankSuffix} on @dgc-network! #ColivingTrending #Coliving`
       return {
         message: 'Share this Milestone',
         href: `http://twitter.com/share?url=${encodeURIComponent(url)

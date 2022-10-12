@@ -19,7 +19,7 @@
             "metadataJSON": {
               "test": "field1",
               "owner_id": 1,
-              "agreement_segments": [
+              "digital_content_segments": [
                 {
                   "duration": 6.016,
                   "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE"
@@ -181,7 +181,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 4,
             "createdAt": "2020-11-30T17:13:06.511Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -196,7 +196,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 5,
             "createdAt": "2020-11-30T17:13:06.525Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -211,7 +211,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 6,
             "createdAt": "2020-11-30T17:13:06.531Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -226,7 +226,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 7,
             "createdAt": "2020-11-30T17:13:06.538Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -241,7 +241,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 8,
             "createdAt": "2020-11-30T17:13:06.548Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -256,7 +256,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 9,
             "createdAt": "2020-11-30T17:13:06.561Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -271,7 +271,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 10,
             "createdAt": "2020-11-30T17:13:06.568Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -286,7 +286,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 11,
             "createdAt": "2020-11-30T17:13:06.574Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -301,7 +301,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 12,
             "createdAt": "2020-11-30T17:13:06.584Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -316,7 +316,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 13,
             "createdAt": "2020-11-30T17:13:06.592Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -331,7 +331,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 14,
             "createdAt": "2020-11-30T17:13:06.599Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -346,7 +346,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 15,
             "createdAt": "2020-11-30T17:13:06.604Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -361,7 +361,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 16,
             "createdAt": "2020-11-30T17:13:06.614Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -376,7 +376,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 17,
             "createdAt": "2020-11-30T17:13:06.620Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -391,7 +391,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 18,
             "createdAt": "2020-11-30T17:13:06.626Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -406,7 +406,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 19,
             "createdAt": "2020-11-30T17:13:06.631Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -421,7 +421,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 20,
             "createdAt": "2020-11-30T17:13:06.635Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -436,7 +436,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 21,
             "createdAt": "2020-11-30T17:13:06.640Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -451,7 +451,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 22,
             "createdAt": "2020-11-30T17:13:06.651Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -466,7 +466,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 23,
             "createdAt": "2020-11-30T17:13:06.656Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -481,7 +481,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 24,
             "createdAt": "2020-11-30T17:13:06.660Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -496,7 +496,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 25,
             "createdAt": "2020-11-30T17:13:06.667Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -511,7 +511,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 26,
             "createdAt": "2020-11-30T17:13:06.674Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -526,7 +526,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 27,
             "createdAt": "2020-11-30T17:13:06.680Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -541,7 +541,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 28,
             "createdAt": "2020-11-30T17:13:06.688Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -556,7 +556,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 29,
             "createdAt": "2020-11-30T17:13:06.693Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -571,7 +571,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 30,
             "createdAt": "2020-11-30T17:13:06.698Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -586,7 +586,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 31,
             "createdAt": "2020-11-30T17:13:06.702Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -601,7 +601,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 32,
             "createdAt": "2020-11-30T17:13:06.709Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -616,7 +616,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 33,
             "createdAt": "2020-11-30T17:13:06.715Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -631,7 +631,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 34,
             "createdAt": "2020-11-30T17:13:06.721Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -646,7 +646,7 @@
             "fileName": null,
             "dirMultihash": null,
             "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-            "type": "agreement",
+            "type": "digital_content",
             "clock": 35,
             "createdAt": "2020-11-30T17:13:06.728Z",
             "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -909,7 +909,7 @@
           {
             "cnodeUserUUID": "41819286-483d-43e5-bd10-193df3c50e8f",
             "clock": 37,
-            "sourceTable": "Agreement",
+            "sourceTable": "DigitalContent",
             "createdAt": "2020-11-30T17:13:07.830Z",
             "updatedAt": "2020-11-30T17:13:07.830Z"
           }
@@ -941,7 +941,7 @@
           "metadataJSON": {
             "test": "field1",
             "owner_id": 1,
-            "agreement_segments": [
+            "digital_content_segments": [
               {
                 "duration": 6.016,
                 "multihash": "QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE"
@@ -1103,7 +1103,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 4,
           "createdAt": "2020-11-30T17:13:06.511Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1118,7 +1118,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 5,
           "createdAt": "2020-11-30T17:13:06.525Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1133,7 +1133,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 6,
           "createdAt": "2020-11-30T17:13:06.531Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1148,7 +1148,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 7,
           "createdAt": "2020-11-30T17:13:06.538Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1163,7 +1163,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 8,
           "createdAt": "2020-11-30T17:13:06.548Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1178,7 +1178,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 9,
           "createdAt": "2020-11-30T17:13:06.561Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1193,7 +1193,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 10,
           "createdAt": "2020-11-30T17:13:06.568Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1208,7 +1208,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 11,
           "createdAt": "2020-11-30T17:13:06.574Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1223,7 +1223,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 12,
           "createdAt": "2020-11-30T17:13:06.584Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1238,7 +1238,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 13,
           "createdAt": "2020-11-30T17:13:06.592Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1253,7 +1253,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 14,
           "createdAt": "2020-11-30T17:13:06.599Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1268,7 +1268,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 15,
           "createdAt": "2020-11-30T17:13:06.604Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1283,7 +1283,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 16,
           "createdAt": "2020-11-30T17:13:06.614Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1298,7 +1298,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 17,
           "createdAt": "2020-11-30T17:13:06.620Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1313,7 +1313,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 18,
           "createdAt": "2020-11-30T17:13:06.626Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1328,7 +1328,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 19,
           "createdAt": "2020-11-30T17:13:06.631Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1343,7 +1343,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 20,
           "createdAt": "2020-11-30T17:13:06.635Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1358,7 +1358,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 21,
           "createdAt": "2020-11-30T17:13:06.640Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1373,7 +1373,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 22,
           "createdAt": "2020-11-30T17:13:06.651Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1388,7 +1388,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 23,
           "createdAt": "2020-11-30T17:13:06.656Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1403,7 +1403,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 24,
           "createdAt": "2020-11-30T17:13:06.660Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1418,7 +1418,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 25,
           "createdAt": "2020-11-30T17:13:06.667Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1433,7 +1433,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 26,
           "createdAt": "2020-11-30T17:13:06.674Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1448,7 +1448,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 27,
           "createdAt": "2020-11-30T17:13:06.680Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1463,7 +1463,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 28,
           "createdAt": "2020-11-30T17:13:06.688Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1478,7 +1478,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 29,
           "createdAt": "2020-11-30T17:13:06.693Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1493,7 +1493,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 30,
           "createdAt": "2020-11-30T17:13:06.698Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1508,7 +1508,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 31,
           "createdAt": "2020-11-30T17:13:06.702Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1523,7 +1523,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 32,
           "createdAt": "2020-11-30T17:13:06.709Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1538,7 +1538,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 33,
           "createdAt": "2020-11-30T17:13:06.715Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1553,7 +1553,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 34,
           "createdAt": "2020-11-30T17:13:06.721Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1568,7 +1568,7 @@
           "fileName": null,
           "dirMultihash": null,
           "storagePath": "test_file_storage/files/y3H/QmSU6rdPHdTrVohDSfhVCBiobTMr6a3NvPz4J7nLWVDvmE",
-          "type": "agreement",
+          "type": "digital_content",
           "clock": 35,
           "createdAt": "2020-11-30T17:13:06.728Z",
           "updatedAt": "2020-11-30T17:13:07.849Z"
@@ -1831,7 +1831,7 @@
         {
           "cnodeUserUUID": "41819286-483d-43e5-bd10-193df3c50e8f",
           "clock": 37,
-          "sourceTable": "Agreement",
+          "sourceTable": "DigitalContent",
           "createdAt": "2020-11-30T17:13:07.830Z",
           "updatedAt": "2020-11-30T17:13:07.830Z"
         }

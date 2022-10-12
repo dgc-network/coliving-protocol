@@ -6,8 +6,8 @@ const {
 
 const getNotifType = (entityType) => {
   switch (entityType) {
-    case 'agreement':
-      return notificationTypes.Repost.agreement
+    case 'digital_content':
+      return notificationTypes.Repost.digital_content
     case 'album':
       return notificationTypes.Repost.album
     case 'contentList':
@@ -18,19 +18,19 @@ const getNotifType = (entityType) => {
 }
 
 // A repost notification is unique by it's
-// userId (owner of the content resposted), type (agreement/album/contentList), and entityId (agreementId, ect)
+// userId (owner of the content resposted), type (digital_content/album/contentList), and entityId (agreementId, ect)
 const getUniqueNotificationModel = notif => `${notif.userId}:${notif.type}:${notif.entityId}`
 const getUniqueNotification = notif => `${notif.metadata.entity_owner_id}:${getNotifType(notif.metadata.entity_type)}:${notif.metadata.entity_id}`
 
 /**
  * Batch process repost notifications, creating a notification (if prev unread) and notification action
- * for the owner of the reposted agreement/contentList/album
+ * for the owner of the reposted digital_content/contentList/album
  * @param {Array<Object>} notifications
  * @param {*} tx The DB transaction to attach to DB requests
  */
 async function processBaseRepostNotifications (notifications, tx) {
   // Create a mapping of unique notification by userID, type, and entity id to notification
-  // This is used if there are multiple favorites of the same agreement, then one notification is
+  // This is used if there are multiple favorites of the same digital_content, then one notification is
   // made w/ multiple actions
   const repostNotifs = notifications.reduce((notifs, notif) => {
     const key = getUniqueNotification(notif)
@@ -61,7 +61,7 @@ async function processBaseRepostNotifications (notifications, tx) {
   const notificationsToCreate = Object.keys(repostNotifs).filter(notif => !unreadNotifications.has(notif))
 
   // Insert new notification for notifications that didn't exists / were already viewed
-  // Repost - userId=notif target, entityId=agreement/album/repost id, actionEntityType=User actionEntityId=user who reposted
+  // Repost - userId=notif target, entityId=digital_content/album/repost id, actionEntityType=User actionEntityId=user who reposted
   // As multiple users repost an entity, NotificationActions are added matching the NotificationId
   if (notificationsToCreate.length > 0) {
     let createdRepostNotifications = await models.Notification.bulkCreate(notificationsToCreate.map(notifKey => {

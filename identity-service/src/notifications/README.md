@@ -27,7 +27,7 @@ last block number parsed.
 | isHidden    | boolean | If the notification is marked hidden by the user  |
 | isViewed    | boolean | If the notification is viewed by the user         |
 | userId      | integer | The id of the user who the notification is for    |
-| entityId    | integer | Id of agreement/album/agreement/user depends on the type* |
+| entityId    | integer | Id of digital_content/album/digital_content/user depends on the type* |
 | blocknumber | integer | The blocknumber the notification action happened  |
 | timestamp   | date    | When the notification was created                 |
 
@@ -63,8 +63,8 @@ The primary use case is for notifications w/ grouping. See examples in Notificat
 | :--------------- | :--------- | :---------------------------------------------------- |
 | id               | uuid       |                                                       |
 | notificationId   | foreignKey | References the id of the notification table           |
-| actionEntityType | text       | The type of the action entity: agreement/album/agreement/user |
-| actionEntityId   | integer    | Id of agreement/album/agreement/user depends on the type*     |
+| actionEntityType | text       | The type of the action entity: digital_content/album/digital_content/user |
+| actionEntityId   | integer    | Id of digital_content/album/digital_content/user depends on the type*     |
 | blocknumber      | integer    | The blocknumber the notification action happened      |
 
 * ___Note that the entityId will vary based on the notification___
@@ -88,8 +88,8 @@ Note if user U3 checks the notification after U1 follows and before U2 follows, 
 two notification db entries will be created w/ the new U2 follow referencing the new 
 notification. 
 
-**Repost (Agreement/ContentList/Album)**  
-Scenario: User U1 and U2 repost Agreement T1 owned by U3
+**Repost (DigitalContent/ContentList/Album)**  
+Scenario: User U1 and U2 repost DigitalContent T1 owned by U3
 DB Entries
 * Notification - userId: U3, entityId: T1, type: 'RepostAgreement'
   * NotificationAction - actionEntityType: 'user', entityId: U1  
@@ -101,7 +101,7 @@ notification.
 Note: The pattern is the same for agreements/contentLists/album with the only difference being 
 the notification type field being 'RepostAgreement', 'RepostContentList', 'RepostAlbum'
 
-**Favorite (Agreement/ContentList/Album)**  
+**Favorite (DigitalContent/ContentList/Album)**  
 Scenario: User U1 and U2 favorite ContentList P1 owned by U3  
 DB Entries
 * Notification - userId: U3, entityId: P1, type: 'FavoriteContentList'
@@ -114,13 +114,13 @@ notification.
 Note: The pattern is the same for agreements/contentLists/album with the only difference being 
 the notification type field being 'FavoriteAgreement', 'FavoriteContentList', 'FavoriteAlbum'
 
-**Create (Agreement/ContentList/Album)**  
-Scenario: User U1 and U2 subscribe to user U3 and U3 uploads a public Agreement T1  
+**Create (DigitalContent/ContentList/Album)**  
+Scenario: User U1 and U2 subscribe to user U3 and U3 uploads a public DigitalContent T1  
 DB Entries
 * Notification - userId: U1, entityId: U3, type: 'CreateAgreement'
-  * NotificationAction - actionEntityType: 'agreement', entityId: T1  
+  * NotificationAction - actionEntityType: 'digital_content', entityId: T1  
 * Notification - userId: U2, entityId: P1, type: 'CreateAgreement'
-  * NotificationAction - actionEntityType: 'agreement', entityId: T1  
+  * NotificationAction - actionEntityType: 'digital_content', entityId: T1  
 
 Scenario: User U1 subscribes to user U3 and U3 uploads a public ContentList P1  
 DB Entries
@@ -129,7 +129,7 @@ DB Entries
 
 Note: The pattern for create contentList and album are the same for with the only difference being 
 the notification type field 'CreateContentList', 'CreateAlbum'  
-Note: The reason agreement creation notifications are different from contentList/album notifications 
+Note: The reason digital_content creation notifications are different from contentList/album notifications 
 is because agreements can be grouped together, but contentList/album creation cannot be.  
 
 **Announcement**  
@@ -146,33 +146,33 @@ TODO: Fill in this section.
 Note: Milestones use a different flow from the other notifications.
 
 **TrendingAgreement**  
-Scenario: User U1 posts agreement T1 which breaking into the top 10 weekly trending agreements as number 3  
+Scenario: User U1 posts digital_content T1 which breaking into the top 10 weekly trending agreements as number 3  
 DB Entries
 * Notification - userId: U1, entityId: T1, type: 'TrendingAgreement'
   * NotificationAction - actionEntityType: 'weekly-all', entityId: 3
 
-A notification is only created if the agreement is in the top 10 trending list. 
-These notifications do not stack meaning a new notification with be created if the agreement moves up 
+A notification is only created if the digital_content is in the top 10 trending list. 
+These notifications do not stack meaning a new notification with be created if the digital_content moves up 
 the trending list. 
-If a agreement in the same genre already has a notification and 6 hours has passed and it has moved up the 
+If a digital_content in the same genre already has a notification and 6 hours has passed and it has moved up the 
 trending list, then another notification is created.  
 
 **RemixCreate**  
-Scenario: User U1 uploads agreement T1 that remixes agreement T2 owned by user U2  
+Scenario: User U1 uploads digital_content T1 that remixes digital_content T2 owned by user U2  
 DB Entries
 * Notification - userId: U2, entityId: T1, type: 'RemixCreate'
-  * NotificationAction - actionEntityType: 'agreement', entityId: T2  
+  * NotificationAction - actionEntityType: 'digital_content', entityId: T2  
 
 Note: RemixCreate notifications do not stack. The means that if multiple users remix the same 
-agreement, the original landlord will not receive a single notifications will all of the remix, instead
+digital_content, the original landlord will not receive a single notifications will all of the remix, instead
 it will be multiple individual notifications.
 
 **RemixCosign**  
-Scenario: User U1 owns agreement T1 that remixes agreement T2 owned by user U2 and U2 cosigns T1  
+Scenario: User U1 owns digital_content T1 that remixes digital_content T2 owned by user U2 and U2 cosigns T1  
 DB Entries
 * Notification - userId: U1, entityId: T1, type: 'CosignAgreement'
   * NotificationAction - actionEntityType: 'user', entityId: U2  
 
-Note: RemixCosign notifications do not stack. The means that if a agreement remixes multiple other agreements
+Note: RemixCosign notifications do not stack. The means that if a digital_content remixes multiple other agreements
 and the original landlord of those agreements cosign the remix, the remix upload user will not receive a 
 single notifications will all of the remix cosigned, but instead get multiple individual notifications.

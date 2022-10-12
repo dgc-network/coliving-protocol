@@ -13,7 +13,7 @@ from src.models.social.repost import RepostType
 from src.models.social.save import Save, SaveType
 from src.queries import response_name_constants
 from src.queries.get_unpopulated_content_lists import get_unpopulated_content_lists
-from src.queries.get_unpopulated_agreements import get_unpopulated_agreements
+from src.queries.get_unpopulated_digital_contents import get_unpopulated_digital_contents
 from src.queries.get_unpopulated_users import get_unpopulated_users
 from src.queries.query_helpers import (
     get_current_user_id,
@@ -21,7 +21,7 @@ from src.queries.query_helpers import (
     get_users_by_id,
     get_users_ids,
     populate_content_list_metadata,
-    populate_agreement_metadata,
+    populate_digital_content_metadata,
     populate_user_metadata,
 )
 from src.queries.search_config import (
@@ -38,7 +38,7 @@ from src.queries.search_config import (
     user_name_weight,
 )
 from src.queries.search_es import search_es_full, search_tags_es
-from src.queries.search_agreement_tags import search_agreement_tags
+from src.queries.search_digital_content_tags import search_digital_content_tags
 from src.queries.search_user_tags import search_user_tags
 from src.utils.db_session import get_db_read_replica
 
@@ -107,7 +107,7 @@ def search_tags():
     db = get_db_read_replica()
     with db.scoped_session() as session:
         if searchKind in [SearchKind.all, SearchKind.agreements]:
-            results["agreements"] = search_agreement_tags(
+            results["agreements"] = search_digital_content_tags(
                 session,
                 {
                     "search_str": search_str,
@@ -133,27 +133,27 @@ def search_tags():
     if current_user_id:
         if searchKind in [SearchKind.all, SearchKind.agreements]:
             # Query saved agreements for the current user that contain this tag
-            agreement_ids = [agreement["agreement_id"] for agreement in results["agreements"]]
+            digital_content_ids = [digital_content["digital_content_id"] for digital_content in results["agreements"]]
 
             saves_query = (
                 session.query(Save.save_item_id)
                 .filter(
                     Save.is_current == True,
                     Save.is_delete == False,
-                    Save.save_type == SaveType.agreement,
+                    Save.save_type == SaveType.digital_content,
                     Save.user_id == current_user_id,
-                    Save.save_item_id.in_(agreement_ids),
+                    Save.save_item_id.in_(digital_content_ids),
                 )
                 .all()
             )
-            saved_agreement_ids = {i[0] for i in saves_query}
-            saved_agreements = list(
+            saved_digital_content_ids = {i[0] for i in saves_query}
+            saved_digital_contents = list(
                 filter(
-                    lambda agreement: agreement["agreement_id"] in saved_agreement_ids,
+                    lambda digital_content: digital_content["digital_content_id"] in saved_digital_content_ids,
                     results["agreements"],
                 )
             )
-            results["saved_agreements"] = saved_agreements
+            results["saved_digital_contents"] = saved_digital_contents
 
         if searchKind in [SearchKind.all, SearchKind.users]:
             # Query followed users that have referenced this tag
@@ -207,7 +207,7 @@ def perform_search_query(db, search_type, args):
 
         results = None
         if search_type == "agreements":
-            results = agreement_search_query(
+            results = digital_content_search_query(
                 session,
                 search_str,
                 limit,
@@ -265,7 +265,7 @@ def perform_search_query(db, search_type, args):
 # queries can be called for public data, or personalized data
 # - personalized data will return only saved agreements, saved contentLists, or followed users given current_user_id
 #
-# @devnote - agreement_ids argument should match agreements argument
+# @devnote - digital_content_ids argument should match agreements argument
 
 
 def search(args):
@@ -348,7 +348,7 @@ def search(args):
                 # Add to user_ids
                 if future_type == "agreements":
                     results["agreements"] = search_result["all"]
-                    results["saved_agreements"] = search_result["saved"]
+                    results["saved_digital_contents"] = search_result["saved"]
                 elif future_type == "users":
                     results["users"] = search_result["all"]
                     results["followed_users"] = search_result["followed"]
@@ -378,7 +378,7 @@ def search(args):
     return extend_search(results)
 
 
-def agreement_search_query(
+def digital_content_search_query(
     session,
     search_str,
     limit,
@@ -391,10 +391,10 @@ def agreement_search_query(
     res = sqlalchemy.text(
         # pylint: disable=C0301
         f"""
-        select agreement_id, b.balance, b.associated_wallets_balance, u.is_saved from (
-            select distinct on (owner_id) agreement_id, owner_id, is_saved, total_score
+        select digital_content_id, b.balance, b.associated_wallets_balance, u.is_saved from (
+            select distinct on (owner_id) digital_content_id, owner_id, is_saved, total_score
             from (
-                select agreement_id, owner_id, is_saved,
+                select digital_content_id, owner_id, is_saved,
                     (
                         (:similarity_weight * sum(score)) +
                         (:title_weight * similarity(coalesce(title, ''), query)) +
@@ -411,25 +411,25 @@ def agreement_search_query(
                     ) as total_score
                 from (
                     select
-                        d."agreement_id" as agreement_id, d."word" as word, similarity(d."word", :query) as score,
-                        d."agreement_title" as title, :query as query, d."user_name" as user_name, d."handle" as handle,
+                        d."digital_content_id" as digital_content_id, d."word" as word, similarity(d."word", :query) as score,
+                        d."digital_content_title" as title, :query as query, d."user_name" as user_name, d."handle" as handle,
                         d."repost_count" as repost_count, d."owner_id" as owner_id
                         {
                             ',s."user_id" is not null as is_saved'
                             if current_user_id
                             else ", false as is_saved"
                         }
-                    from "agreement_lexeme_dict" d
+                    from "digital_content_lexeme_dict" d
                     {
-                        "left outer join (select save_item_id, user_id from saves where saves.save_type = 'agreement' " +
+                        "left outer join (select save_item_id, user_id from saves where saves.save_type = 'digital_content' " +
                         "and saves.is_current = true " +
                         "and saves.is_delete = false and saves.user_id = :current_user_id )" +
-                        " s on s.save_item_id = d.agreement_id"
+                        " s on s.save_item_id = d.digital_content_id"
                         if current_user_id
                         else ""
                     }
                     {
-                        'inner join "agreements" t on t.agreement_id = d.agreement_id'
+                        'inner join "agreements" t on t.digital_content_id = d.digital_content_id'
                         if only_downloadable
                         else ""
                     }
@@ -440,7 +440,7 @@ def agreement_search_query(
                         else ""
                     }
                 ) as results
-                group by agreement_id, title, query, user_name, handle, repost_count, owner_id, is_saved
+                group by digital_content_id, title, query, user_name, handle, repost_count, owner_id, is_saved
             ) as results2
             order by owner_id, total_score desc
         ) as u left join user_balances b on u.owner_id = b.user_id
@@ -450,7 +450,7 @@ def agreement_search_query(
         """
     )
 
-    agreement_result_proxy = session.execute(
+    digital_content_result_proxy = session.execute(
         res,
         params={
             "query": search_str,
@@ -468,49 +468,49 @@ def agreement_search_query(
         },
     )
 
-    agreement_data = agreement_result_proxy.fetchall()
-    agreement_cols = agreement_result_proxy.keys()
+    digital_content_data = digital_content_result_proxy.fetchall()
+    digital_content_cols = digital_content_result_proxy.keys()
 
-    # agreement_ids is list of tuples - simplify to 1-D list
-    agreement_ids = [agreement[agreement_cols.index("agreement_id")] for agreement in agreement_data]
-    saved_agreements = {
-        agreement[0] for agreement in agreement_data if agreement[agreement_cols.index("is_saved")]
+    # digital_content_ids is list of tuples - simplify to 1-D list
+    digital_content_ids = [digital_content[digital_content_cols.index("digital_content_id")] for digital_content in digital_content_data]
+    saved_digital_contents = {
+        digital_content[0] for digital_content in digital_content_data if digital_content[digital_content_cols.index("is_saved")]
     }
 
-    agreements = get_unpopulated_agreements(session, agreement_ids, True)
+    agreements = get_unpopulated_digital_contents(session, digital_content_ids, True)
 
-    # TODO: Populate agreement metadata should be sped up to be able to be
+    # TODO: Populate digital_content metadata should be sped up to be able to be
     # used in search autocomplete as that'll give us better results.
     if is_auto_complete:
         # fetch users for agreements
-        agreement_owner_ids = list(map(lambda agreement: agreement["owner_id"], agreements))
-        users = get_unpopulated_users(session, agreement_owner_ids)
+        digital_content_owner_ids = list(map(lambda digital_content: digital_content["owner_id"], agreements))
+        users = get_unpopulated_users(session, digital_content_owner_ids)
         users_dict = {user["user_id"]: user for user in users}
 
-        # attach user objects to agreement objects
-        for i, agreement in enumerate(agreements):
-            user = users_dict[agreement["owner_id"]]
+        # attach user objects to digital_content objects
+        for i, digital_content in enumerate(agreements):
+            user = users_dict[digital_content["owner_id"]]
             # Add user balance
-            balance = agreement_data[i][1]
-            associated_balance = agreement_data[i][2]
+            balance = digital_content_data[i][1]
+            associated_balance = digital_content_data[i][2]
             user[response_name_constants.balance] = balance
             user[
                 response_name_constants.associated_wallets_balance
             ] = associated_balance
-            agreement["user"] = user
+            digital_content["user"] = user
     else:
-        # bundle peripheral info into agreement results
-        agreements = populate_agreement_metadata(session, agreement_ids, agreements, current_user_id)
+        # bundle peripheral info into digital_content results
+        agreements = populate_digital_content_metadata(session, digital_content_ids, agreements, current_user_id)
 
-    # Preserve order from agreement_ids above
+    # Preserve order from digital_content_ids above
     agreements_map = {}
     for t in agreements:
-        agreements_map[t["agreement_id"]] = t
-    agreements = [agreements_map[agreement_id] for agreement_id in agreement_ids]
+        agreements_map[t["digital_content_id"]] = t
+    agreements = [agreements_map[digital_content_id] for digital_content_id in digital_content_ids]
 
     agreements_response = {
         "all": agreements,
-        "saved": list(filter(lambda agreement: agreement["agreement_id"] in saved_agreements, agreements)),
+        "saved": list(filter(lambda digital_content: digital_content["digital_content_id"] in saved_digital_contents, agreements)),
     }
 
     return agreements_response

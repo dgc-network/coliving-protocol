@@ -50,15 +50,15 @@ def upgrade():
       CREATE INDEX user_words_idx ON user_lexeme_dict USING gin(word gin_trgm_ops);
 
 
-      --- Add "title" field to agreement_lexeme_dict.
+      --- Add "title" field to digital_content_lexeme_dict.
 
-      DROP MATERIALIZED VIEW agreement_lexeme_dict;
-      DROP INDEX IF EXISTS agreement_words_idx;
-      CREATE MATERIALIZED VIEW agreement_lexeme_dict as
+      DROP MATERIALIZED VIEW digital_content_lexeme_dict;
+      DROP INDEX IF EXISTS digital_content_words_idx;
+      CREATE MATERIALIZED VIEW digital_content_lexeme_dict as
       SELECT * FROM (
         SELECT
-          t.agreement_id,
-          t.title as agreement_title,
+          t.digital_content_id,
+          t.title as digital_content_title,
           unnest(
             tsvector_to_array(
               to_tsvector(
@@ -73,9 +73,9 @@ def upgrade():
         WHERE
           t.is_current = true and t.is_unlisted = false
           and u.is_current = true
-        GROUP BY t.agreement_id, t.title
+        GROUP BY t.digital_content_id, t.title
       ) AS words;
-      CREATE INDEX agreement_words_idx ON agreement_lexeme_dict USING gin(word gin_trgm_ops);
+      CREATE INDEX digital_content_words_idx ON digital_content_lexeme_dict USING gin(word gin_trgm_ops);
 
 
       --- Add "content_list_name" field to content_list_lexeme_dict and album_lexeme_dict;

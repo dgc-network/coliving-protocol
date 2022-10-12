@@ -13,7 +13,7 @@ class UserListeningHistory(Base, RepresentableMixin):
     )
     # listening_history JSON schema
     # [
-    #   {"agreement_id": 1, "timestamp": "2011-01-01 00:00:00"},
-    #   {"agreement_id": 2, "timestamp": "2012-02-02 00:00:00"}
+    #   {"digital_content_id": 1, "timestamp": "2011-01-01 00:00:00"},
+    #   {"digital_content_id": 2, "timestamp": "2012-02-02 00:00:00"}
     # ]
     listening_history = Column(JSONB(), nullable=False)

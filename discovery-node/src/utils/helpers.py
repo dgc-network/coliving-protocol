@@ -393,9 +393,9 @@ def decode_string_id(id: str) -> Optional[int]:
     return decoded[0]
 
 
-def create_agreement_route_id(title, handle):
+def create_digital_content_route_id(title, handle):
     """
-    Constructs a agreement's route_id from an unsanitized title and handle.
+    Constructs a digital_content's route_id from an unsanitized title and handle.
     Resulting route_ids are of the shape `<handle>/<sanitized_title>`.
     """
     sanitized_title = title.encode("utf-8", "ignore").decode("utf-8", "ignore")
@@ -419,17 +419,17 @@ def create_agreement_route_id(title, handle):
     return f"{sanitized_handle}/{sanitized_title}"
 
 
-def create_agreement_slug(title, agreement_id, collision_id=0):
-    """Converts the title of a agreement into a URL-friendly 'slug'
+def create_digital_content_slug(title, digital_content_id, collision_id=0):
+    """Converts the title of a digital_content into a URL-friendly 'slug'
 
     Strips special characters, replaces spaces with dashes, converts to
     lowercase, and appends a collision_id if non-zero.
 
     If the sanitized title is entirely escaped (empty string), use the
-    hashed agreement_id.
+    hashed digital_content_id.
 
     Example:
-    (Title="My Awesome Agreement!", collision_id=2) => "my-awesome-agreement-2"
+    (Title="My Awesome DigitalContent!", collision_id=2) => "my-awesome-digital-content-2"
     """
     sanitized_title = title.encode("utf-8", "ignore").decode("utf-8", "ignore")
     # Strip out invalid character
@@ -447,7 +447,7 @@ def create_agreement_slug(title, agreement_id, collision_id=0):
     # This means that the entire title was sanitized away, use the id
     # for the slug.
     if not sanitized_title:
-        sanitized_title = encode_int_id(agreement_id)
+        sanitized_title = encode_int_id(digital_content_id)
 
     if collision_id > 0:
         sanitized_title = f"{sanitized_title}-{collision_id}"

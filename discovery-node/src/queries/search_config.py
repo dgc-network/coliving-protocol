@@ -7,15 +7,15 @@ import logging
 # but may exclude viable candidates.
 min_search_similarity = 0.4
 
-# ContentList and Agreement Search Weights
+# ContentList and DigitalContent Search Weights
 
 # Weight for query similarity against title
 search_title_weight = 12
-# Weight for query similarity to words in agreement title (summed)
+# Weight for query similarity to words in digital_content title (summed)
 search_similarity_weight = 5
-# Weight for query similarity to agreement owner's username
+# Weight for query similarity to digital_content owner's username
 search_user_name_weight = 8
-# Weight for agreement reposts.
+# Weight for digital_content reposts.
 search_repost_weight = 15
 search_title_exact_match_boost = 20
 search_handle_exact_match_boost = 15

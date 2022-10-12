@@ -21,8 +21,8 @@ custom_edit_url: null
 
 ___
 
-### parent\_agreement\_id
+### parent\_digital_content\_id
 
- **parent\_agreement\_id**: `number`
+ **parent\_digital_content\_id**: `number`
 
 **`memberof`** StemParent

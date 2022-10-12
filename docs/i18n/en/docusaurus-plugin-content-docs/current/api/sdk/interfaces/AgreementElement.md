@@ -14,8 +14,8 @@ pagination_next: null
 
 ## Properties
 
-### parent\_agreement\_id
+### parent\_digital_content\_id
 
- **parent\_agreement\_id**: `string`
+ **parent\_digital_content\_id**: `string`
 
 **`memberof`** AgreementElement

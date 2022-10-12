@@ -89,7 +89,7 @@ async function getUserBatchFromIds(discoveryNodeUrl, ids) {
  * @param {string} discoveryNodeUrl the discovery node to query against
  * @param {number[] | string[]} ids the list of user ids to check
  * @param {Options} options options object that includes what the throttle is and max retries
- * @param {number} attempt used in recursion to keep agreement of what attempt this is
+ * @param {number} attempt used in recursion to keep digital_content of what attempt this is
  * @returns {boolean} whether the batch was confirmed or not
  */
 async function confirmBatch(discoveryNodeUrl, ids, options, attempt = 0) {

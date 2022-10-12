@@ -11,7 +11,7 @@ from src.queries.get_trending_content_lists import (
     GetTrendingContentListsArgs,
     _get_trending_content_lists_with_session,
 )
-from src.queries.get_trending_agreements import _get_trending_agreements_with_session
+from src.queries.get_trending_digital_contents import _get_trending_digital_contents_with_session
 from src.queries.get_underground_trending import (
     GetUndergroundTrendingAgreementcArgs,
     _get_underground_trending_with_session,
@@ -55,14 +55,14 @@ def dispatch_trending_challenges(
     date: datetime,
     type: TrendingType,
 ):
-    for idx, agreement in enumerate(agreements):
+    for idx, digital_content in enumerate(agreements):
         challenge_bus.dispatch(
             challenge_event,
             latest_blocknumber,
-            agreement["owner_id"],
+            digital_content["owner_id"],
             {
-                "id": agreement["agreement_id"],
-                "user_id": agreement["owner_id"],
+                "id": digital_content["digital_content_id"],
+                "user_id": digital_content["owner_id"],
                 "rank": idx + 1,
                 "type": str(type),
                 "version": str(version),
@@ -87,24 +87,24 @@ def enqueue_trending_challenges(
             )
             return
 
-        trending_agreement_versions = trending_strategy_factory.get_versions_for_type(
+        trending_digital_content_versions = trending_strategy_factory.get_versions_for_type(
             TrendingType.AGREEMENTS
         ).keys()
 
         time_range = "week"
-        for version in trending_agreement_versions:
+        for version in trending_digital_content_versions:
             strategy = trending_strategy_factory.get_strategy(
                 TrendingType.AGREEMENTS, version
             )
-            top_agreements = _get_trending_agreements_with_session(
+            top_digital_contents = _get_trending_digital_contents_with_session(
                 session, {"time": time_range}, strategy
             )
-            top_agreements = top_agreements[:TRENDING_LIMIT]
+            top_digital_contents = top_digital_contents[:TRENDING_LIMIT]
             dispatch_trending_challenges(
                 challenge_bus,
-                ChallengeEvent.trending_agreement,
+                ChallengeEvent.trending_digital_content,
                 latest_blocknumber,
-                top_agreements,
+                top_digital_contents,
                 version,
                 date,
                 TrendingType.AGREEMENTS,
@@ -122,7 +122,7 @@ def enqueue_trending_challenges(
                 "offset": 0,
                 "limit": TRENDING_LIMIT,
             }
-            top_agreements = _get_underground_trending_with_session(
+            top_digital_contents = _get_underground_trending_with_session(
                 session, underground_args, strategy, False
             )
 
@@ -130,7 +130,7 @@ def enqueue_trending_challenges(
                 challenge_bus,
                 ChallengeEvent.trending_underground,
                 latest_blocknumber,
-                top_agreements,
+                top_digital_contents,
                 version,
                 date,
                 TrendingType.UNDERGROUND_AGREEMENTS,

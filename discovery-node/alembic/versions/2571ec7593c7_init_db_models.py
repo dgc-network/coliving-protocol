@@ -28,7 +28,7 @@ def upgrade():
     op.create_table(
         "agreements",
         sa.Column("blockhash", sa.String(), nullable=False),
-        sa.Column("agreement_id", sa.Integer(), nullable=False),
+        sa.Column("digital_content_id", sa.Integer(), nullable=False),
         sa.Column("is_current", sa.Boolean(), nullable=False),
         sa.Column("is_delete", sa.Boolean(), nullable=False),
         sa.Column("owner_id", sa.Integer(), nullable=False),
@@ -44,7 +44,7 @@ def upgrade():
         sa.Column("file_type", sa.String(), nullable=True),
         sa.Column("file_multihash", sa.String(), nullable=False),
         sa.Column("metadata_multihash", sa.String(), nullable=True),
-        sa.PrimaryKeyConstraint("is_current", "agreement_id", "blockhash"),
+        sa.PrimaryKeyConstraint("is_current", "digital_content_id", "blockhash"),
     )
     op.create_table(
         "users",

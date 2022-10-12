@@ -8,9 +8,9 @@ class AgreementTrendingScore(Base, RepresentableMixin):
     Trending Scores for agreements
     """
 
-    __tablename__ = "agreement_trending_scores"
+    __tablename__ = "digital_content_trending_scores"
 
-    agreement_id = Column(Integer, primary_key=True, nullable=False, index=True)
+    digital_content_id = Column(Integer, primary_key=True, nullable=False, index=True)
     type = Column(String, primary_key=True, nullable=False, index=True)
     genre = Column(String, index=True)
     version = Column(String, primary_key=True, nullable=False)

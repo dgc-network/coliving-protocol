@@ -72,7 +72,7 @@ async function updateBlockchainIds () {
 /**
  * Queries the discovery node and returns n most listened to agreements, with the
  * total listen count for each of those agreements
- * This includes agreement listens writen to Solana
+ * This includes digital_content listens writen to Solana
  *
  * @returns Array [{agreementId, listenCount}, agreementId, listenCount]
  */
@@ -213,7 +213,7 @@ function decodeHashId (id) {
 
 const EmailFrequency = Object.freeze({
   OFF: 'off',
-  LIVE: 'live',
+  LIVE: 'digitalcoin',
   DAILY: 'daily',
   WEEKLY: 'weekly'
 })
@@ -222,10 +222,10 @@ const MAX_HOUR_TIME_DIFFERENCE = 2
 
 /**
  * Checks if the user should recieve an email base on notification settings and time
- * If setting is live then send email
+ * If setting is digitalcoin then send email
  * If email was never sent to user then send email
  * If ~1 day has passed for daily frequency, or ~1 week has passed for weekly frequency then send email
- * @param {EmailFrequency} frequency live | daily | weekly
+ * @param {EmailFrequency} frequency digitalcoin | daily | weekly
  * @param {moment} currentUtcTime moment datetime
  * @param {moment} lastSentTimestamp moment datetime
  * @param {number} hrsSinceStartOfDay

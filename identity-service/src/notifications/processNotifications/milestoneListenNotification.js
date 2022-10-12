@@ -28,7 +28,7 @@ async function processMilestoneListenNotifications (notifications, tx) {
         model: models.SolanaNotificationAction,
         as: 'actions',
         where: {
-          actionEntityType: actionEntityTypes.Agreement,
+          actionEntityType: actionEntityTypes.DigitalContent,
           actionEntityId: threshold
         }
       }],
@@ -45,7 +45,7 @@ async function processMilestoneListenNotifications (notifications, tx) {
       await models.SolanaNotificationAction.findOrCreate({
         where: {
           notificationId,
-          actionEntityType: actionEntityTypes.Agreement,
+          actionEntityType: actionEntityTypes.DigitalContent,
           actionEntityId: threshold,
           slot
         },

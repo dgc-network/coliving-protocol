@@ -60,15 +60,15 @@ async function submitAgreementListen (executeOne, agreementId, userId, solanaLis
       const start = Date.now()
       const identityResponse = await logAgreementListen(agreementId, userId, solanaListen)
       signature = identityResponse.solTxSignature
-      console.log(`Logged agreement listen (agreementId=${agreementId}, userId=${userId}, solanaListen=${solanaListen}) | Processed in ${Date.now() - start}ms`)
+      console.log(`Logged digital_content listen (agreementId=${agreementId}, userId=${userId}, solanaListen=${solanaListen}) | Processed in ${Date.now() - start}ms`)
     })
   } catch (err) {
-    console.log(`Failed to log agreement listen (agreementId=${agreementId}, userId=${userId}, solanaListen=${solanaListen}) with error ${err}`)
+    console.log(`Failed to log digital_content listen (agreementId=${agreementId}, userId=${userId}, solanaListen=${solanaListen}) with error ${err}`)
     return false
   }
 
   const pollStart = Date.now()
-  console.log(`Polling agreement listen (agreementId=${agreementId}, userId=${userId}, solanaListen=${solanaListen})`)
+  console.log(`Polling digital_content listen (agreementId=${agreementId}, userId=${userId}, solanaListen=${solanaListen})`)
 
   if (solanaListen) {
     let resp = (await getSolPlay(signature)).data
@@ -90,7 +90,7 @@ async function submitAgreementListen (executeOne, agreementId, userId, solanaLis
     }
   }
 
-  console.log(`Found agreement listen (agreementId=${agreementId}, userId=${userId}, solanaListen=${solanaListen}) in discovery-node`)
+  console.log(`Found digital_content listen (agreementId=${agreementId}, userId=${userId}, solanaListen=${solanaListen}) in discovery-node`)
 
   return true
 }

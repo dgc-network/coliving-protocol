@@ -64,7 +64,7 @@ In Prometheus, labels are very important. Important excerpts from docs (see link
 Cardinality = different values for a given metric. For example:
 
 ```
-Metric = 'coliving_route_post_agreements_duration_seconds'
+Metric = 'coliving_route_post_digital_contents_duration_seconds'
 Metric type = Histogram
 Label = 'code'
 Label values = '2xx', '3xx', '4xx', '5xx'

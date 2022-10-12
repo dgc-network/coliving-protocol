@@ -29,18 +29,18 @@ import {
 
 export interface GetBulkAgreementsRequest {
     /**
-     * The permalink of the agreement(s)
+     * The permalink of the digital_content(s)
      */
     permalink?: Array<string>;
     /**
-     * The ID of the agreement(s)
+     * The ID of the digital_content(s)
      */
     id?: Array<string>;
 }
 
 export interface GetAgreementRequest {
     /**
-     * A Agreement ID
+     * A DigitalContent ID
      */
     agreementId: string;
 }
@@ -69,7 +69,7 @@ export interface SearchAgreementsRequest {
 
 export interface StreamAgreementRequest {
     /**
-     * A Agreement ID
+     * A DigitalContent ID
      */
     agreementId: string;
 }
@@ -104,7 +104,7 @@ export class AgreementsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Gets a agreement by ID
+     * Gets a digital_content by ID
      */
     async getAgreement(requestParameters: GetAgreementRequest): Promise<NonNullable<AgreementResponse["data"]>> {
         if (requestParameters.agreementId === null || requestParameters.agreementId === undefined) {
@@ -116,7 +116,7 @@ export class AgreementsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         return this.request({
-            path: `/agreements/{agreement_id}`.replace(`{${"agreement_id"}}`, encodeURIComponent(String(requestParameters.agreementId))),
+            path: `/agreements/{digital_content_id}`.replace(`{${"digital_content_id"}}`, encodeURIComponent(String(requestParameters.agreementId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -148,7 +148,7 @@ export class AgreementsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Search for a agreement or agreements
+     * Search for a digital_content or agreements
      */
     async searchAgreements(requestParameters: SearchAgreementsRequest): Promise<NonNullable<AgreementSearch["data"]>> {
         if (requestParameters.query === null || requestParameters.query === undefined) {

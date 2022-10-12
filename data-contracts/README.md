@@ -75,7 +75,7 @@ Sample commands:
     >
     > tf.setUserFactoryContractAddress(cf.address)
     >
-    > tf.createAgreement(0, 'agreement_key_0')
+    > tf.createAgreement(0, 'digital_content_key_0')
 
 
 

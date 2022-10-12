@@ -31,7 +31,7 @@ custom_edit_url: null
 ## Interfaces
 
 - [Activity](interfaces/Activity.md)
-- [Agreement](interfaces/Agreement.md)
+- [DigitalContent](interfaces/DigitalContent.md)
 - [AgreementArtwork](interfaces/AgreementArtwork.md)
 - [AgreementElement](interfaces/AgreementElement.md)
 - [AgreementResponse](interfaces/AgreementResponse.md)

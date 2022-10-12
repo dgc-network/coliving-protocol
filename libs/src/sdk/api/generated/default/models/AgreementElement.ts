@@ -24,6 +24,6 @@ export interface AgreementElement {
      * @type {string}
      * @memberof AgreementElement
      */
-    parent_agreement_id: string;
+    parent_digital_content_id: string;
 }
 

@@ -9,7 +9,7 @@ from sqlalchemy.sql.functions import GenericFunction
 from sqlalchemy.sql.type_api import TypeEngine
 from src.api.v1.helpers import (
     extend_content_list,
-    extend_agreement,
+    extend_digital_content,
     format_limit,
     format_offset,
     to_dict,
@@ -20,16 +20,16 @@ from src.models.social.repost import RepostType
 from src.models.social.save import Save, SaveType
 from src.models.users.aggregate_user import AggregateUser
 from src.queries import response_name_constants
-from src.queries.get_content_list_agreements import get_content_list_agreements
+from src.queries.get_content_list_digital_contents import get_content_list_digital_contents
 from src.queries.get_unpopulated_content_lists import get_unpopulated_content_lists
 from src.queries.query_helpers import (
-    add_users_to_agreements,
+    add_users_to_digital_contents,
     get_karma,
     get_repost_counts,
     get_users_by_id,
     get_users_ids,
     populate_content_list_metadata,
-    populate_agreement_metadata,
+    populate_digital_content_metadata,
 )
 from src.tasks.generate_trending import time_delta_map
 from src.trending_strategies.trending_strategy_factory import DEFAULT_TRENDING_VERSIONS
@@ -107,7 +107,7 @@ def get_scorable_content_list_data(session, time_range, strategy):
             ContentList.is_current == True,
             ContentList.is_delete == False,
             ContentList.is_private == False,
-            jsonb_array_length(ContentList.content_list_contents["agreement_ids"]) >= mt,
+            jsonb_array_length(ContentList.content_list_contents["digital_content_ids"]) >= mt,
             AggregateUser.following_count < zq,
         )
         .group_by(Save.save_item_id, ContentList.created_at, ContentList.content_list_owner_id)
@@ -207,7 +207,7 @@ def make_get_unpopulated_content_lists(session, time_range, strategy):
 
         # score the contentLists
         scored_content_lists = [
-            strategy.get_agreement_score(time_range, contentList)
+            strategy.get_digital_content_score(time_range, contentList)
             for contentList in content_list_scoring_data
         ]
         sorted_content_lists = sorted(
@@ -218,23 +218,23 @@ def make_get_unpopulated_content_lists(session, time_range, strategy):
         content_list_ids = [contentList["content_list_id"] for contentList in sorted_content_lists]
         contentLists = get_unpopulated_content_lists(session, content_list_ids)
 
-        content_list_agreements_map = get_content_list_agreements(session, {"content_lists": contentLists})
+        content_list_digital_contents_map = get_content_list_digital_contents(session, {"content_lists": contentLists})
 
         for contentList in contentLists:
-            contentList["agreements"] = content_list_agreements_map.get(contentList["content_list_id"], [])
+            contentList["agreements"] = content_list_digital_contents_map.get(contentList["content_list_id"], [])
 
         results = []
         for contentList in contentLists:
             # For the BDNxn strategy, filter out contentLists with < 3 agreements from other users
             if strategy.version == TrendingVersion.BDNxn:
                 content_list_owner_id = contentList["content_list_owner_id"]
-                agreement_owner_ids = list(
+                digital_content_owner_ids = list(
                     filter(
                         lambda owner_id: owner_id != content_list_owner_id,
-                        map(lambda agreement: agreement["owner_id"], contentList["agreements"]),
+                        map(lambda digital_content: digital_content["owner_id"], contentList["agreements"]),
                     )
                 )
-                if len(agreement_owner_ids) < 3:
+                if len(digital_content_owner_ids) < 3:
                     continue
             results.append(contentList)
 
@@ -256,7 +256,7 @@ def make_trending_cache_key(
 
 class GetTrendingContentListsArgs(TypedDict, total=False):
     current_user_id: Optional[int]
-    with_agreements: Optional[bool]
+    with_digital_contents: Optional[bool]
     time: str
     offset: int
     limit: int
@@ -267,7 +267,7 @@ def _get_trending_content_lists_with_session(
 ):
     """Returns Trending ContentLists. Checks Redis cache for unpopulated contentLists."""
     current_user_id = args.get("current_user_id", None)
-    with_agreements = args.get("with_agreements", False)
+    with_digital_contents = args.get("with_digital_contents", False)
     time = args.get("time")
     limit, offset = args.get("limit"), args.get("offset")
     key = make_trending_cache_key(time, strategy.version)
@@ -295,46 +295,46 @@ def _get_trending_content_lists_with_session(
     )
 
     for contentList in contentLists:
-        contentList["agreement_count"] = len(contentList["agreements"])
+        contentList["digital_content_count"] = len(contentList["agreements"])
         contentList["agreements"] = contentList["agreements"][:CONTENT_LIST_AGREEMENTS_LIMIT]
-        # Trim agreement_ids, which ultimately become added_timestamps
+        # Trim digital_content_ids, which ultimately become added_timestamps
         # and need to match the agreements.
-        trimmed_agreement_ids = {agreement["agreement_id"] for agreement in contentList["agreements"]}
-        content_list_agreement_ids = contentList["content_list_contents"]["agreement_ids"]
-        content_list_agreement_ids = list(
+        trimmed_digital_content_ids = {digital_content["digital_content_id"] for digital_content in contentList["agreements"]}
+        content_list_digital_content_ids = contentList["content_list_contents"]["digital_content_ids"]
+        content_list_digital_content_ids = list(
             filter(
-                lambda agreement_id: agreement_id["agreement"]
-                in trimmed_agreement_ids,  # pylint: disable=W0640
-                content_list_agreement_ids,
+                lambda digital_content_id: digital_content_id["digital_content"]
+                in trimmed_digital_content_ids,  # pylint: disable=W0640
+                content_list_digital_content_ids,
             )
         )
-        contentList["content_list_contents"]["agreement_ids"] = content_list_agreement_ids
+        contentList["content_list_contents"]["digital_content_ids"] = content_list_digital_content_ids
 
     content_lists_map = {contentList["content_list_id"]: contentList for contentList in contentLists}
 
-    if with_agreements:
-        # populate agreement metadata
+    if with_digital_contents:
+        # populate digital_content metadata
         agreements = []
         for contentList in contentLists:
-            content_list_agreements = contentList["agreements"]
-            agreements.extend(content_list_agreements)
-        agreement_ids = [agreement["agreement_id"] for agreement in agreements]
-        populated_agreements = populate_agreement_metadata(
-            session, agreement_ids, agreements, current_user_id
+            content_list_digital_contents = contentList["agreements"]
+            agreements.extend(content_list_digital_contents)
+        digital_content_ids = [digital_content["digital_content_id"] for digital_content in agreements]
+        populated_digital_contents = populate_digital_content_metadata(
+            session, digital_content_ids, agreements, current_user_id
         )
 
         # Add users if necessary
-        add_users_to_agreements(session, populated_agreements, current_user_id)
+        add_users_to_digital_contents(session, populated_digital_contents, current_user_id)
 
         # Re-associate agreements with contentLists
-        # agreement_id -> populated_agreement
-        populated_agreement_map = {agreement["agreement_id"]: agreement for agreement in populated_agreements}
+        # digital_content_id -> populated_digital_content
+        populated_digital_content_map = {digital_content["digital_content_id"]: digital_content for digital_content in populated_digital_contents}
         for contentList in content_lists_map.values():
             for i in range(len(contentList["agreements"])):
-                agreement_id = contentList["agreements"][i]["agreement_id"]
-                populated = populated_agreement_map[agreement_id]
+                digital_content_id = contentList["agreements"][i]["digital_content_id"]
+                populated = populated_digital_content_map[digital_content_id]
                 contentList["agreements"][i] = populated
-            contentList["agreements"] = list(map(extend_agreement, contentList["agreements"]))
+            contentList["agreements"] = list(map(extend_digital_content, contentList["agreements"]))
 
     # re-sort contentLists to original order, because populate_content_list_metadata
     # unsorts.
@@ -374,14 +374,14 @@ def get_full_trending_content_lists(request, args, strategy):
     # apply limit + offset inside the cached calculation.
     # Otherwise, apply it here.
     if current_user_id:
-        args = {"time": time, "with_agreements": True, "limit": limit, "offset": offset}
+        args = {"time": time, "with_digital_contents": True, "limit": limit, "offset": offset}
         decoded = decode_string_id(current_user_id)
         args["current_user_id"] = decoded
         contentLists = get_trending_content_lists(args, strategy)
     else:
         args = {
             "time": time,
-            "with_agreements": True,
+            "with_digital_contents": True,
         }
         key = get_trending_cache_key(to_dict(request.args), request.path)
         contentLists = use_redis_cache(

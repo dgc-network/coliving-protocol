@@ -2,18 +2,18 @@ import logging
 from unittest import mock
 
 from integration_tests.utils import populate_mock_db
-from src.models.agreements.agreement import Agreement
-from src.tasks.update_agreement_is_available import (
+from src.models.agreements.digital_content import DigitalContent
+from src.tasks.update_digital_content_is_available import (
     ALL_UNAVAILABLE_AGREEMENTS_REDIS_KEY,
     _get_redis_set_members_as_list,
-    check_agreement_is_available,
-    fetch_unavailable_agreement_ids,
-    fetch_unavailable_agreement_ids_in_network,
-    get_unavailable_agreements_redis_key,
+    check_digital_content_is_available,
+    fetch_unavailable_digital_content_ids,
+    fetch_unavailable_digital_content_ids_in_network,
+    get_unavailable_digital_contents_redis_key,
     query_registered_content_node_info,
-    query_replica_set_by_agreement_id,
-    query_agreements_by_agreement_ids,
-    update_agreements_is_available_status,
+    query_replica_set_by_digital_content_id,
+    query_digital_contents_by_digital_content_ids,
+    update_digital_contents_is_available_status,
 )
 from src.utils.db_session import get_db
 from src.utils.redis_connection import get_redis
@@ -50,10 +50,10 @@ def test_query_registered_content_node_info(app):
             assert node["spID"] == i + 1
 
 
-@mock.patch("src.tasks.update_agreement_is_available.query_registered_content_node_info")
-@mock.patch("src.tasks.update_agreement_is_available.fetch_unavailable_agreement_ids")
-def test_fetch_unavailable_agreement_ids_in_network(
-    mock_fetch_unavailable_agreement_ids, mock_query_registered_content_node_info, app
+@mock.patch("src.tasks.update_digital_content_is_available.query_registered_content_node_info")
+@mock.patch("src.tasks.update_digital_content_is_available.fetch_unavailable_digital_content_ids")
+def test_fetch_unavailable_digital_content_ids_in_network(
+    mock_fetch_unavailable_digital_content_ids, mock_query_registered_content_node_info, app
 ):
     # Setup
     mock_query_registered_content_node_info.return_value = [
@@ -67,11 +67,11 @@ def test_fetch_unavailable_agreement_ids_in_network(
         },
     ]
 
-    spID_1_unavailable_agreements = [1, 2, 3, 4]
-    spID_2_unavailable_agreements = [4, 5, 6, 7]
-    mock_fetch_unavailable_agreement_ids.side_effect = [
-        spID_1_unavailable_agreements,
-        spID_2_unavailable_agreements,
+    spID_1_unavailable_digital_contents = [1, 2, 3, 4]
+    spID_2_unavailable_digital_contents = [4, 5, 6, 7]
+    mock_fetch_unavailable_digital_content_ids.side_effect = [
+        spID_1_unavailable_digital_contents,
+        spID_2_unavailable_digital_contents,
     ]
 
     with app.app_context():
@@ -79,39 +79,39 @@ def test_fetch_unavailable_agreement_ids_in_network(
         db = get_db()
 
     with db.scoped_session() as session:
-        fetch_unavailable_agreement_ids_in_network(session, redis)
+        fetch_unavailable_digital_content_ids_in_network(session, redis)
 
-    # Check that redis adds agreement ids as expected
+    # Check that redis adds digital_content ids as expected
 
-    spID_1_unavailable_agreements_redis = set(
-        _get_redis_set_members_as_list(redis, get_unavailable_agreements_redis_key(1))
+    spID_1_unavailable_digital_contents_redis = set(
+        _get_redis_set_members_as_list(redis, get_unavailable_digital_contents_redis_key(1))
     )
-    for id in spID_1_unavailable_agreements:
-        assert id in spID_1_unavailable_agreements_redis
+    for id in spID_1_unavailable_digital_contents:
+        assert id in spID_1_unavailable_digital_contents_redis
 
-    spID_2_unavailable_agreements_redis = set(
-        _get_redis_set_members_as_list(redis, get_unavailable_agreements_redis_key(2))
+    spID_2_unavailable_digital_contents_redis = set(
+        _get_redis_set_members_as_list(redis, get_unavailable_digital_contents_redis_key(2))
     )
-    for id in spID_2_unavailable_agreements:
-        assert id in spID_2_unavailable_agreements_redis
+    for id in spID_2_unavailable_digital_contents:
+        assert id in spID_2_unavailable_digital_contents_redis
 
-    all_unavailable_agreements_redis = set(
+    all_unavailable_digital_contents_redis = set(
         _get_redis_set_members_as_list(redis, ALL_UNAVAILABLE_AGREEMENTS_REDIS_KEY)
     )
-    for id in [*spID_1_unavailable_agreements, *spID_2_unavailable_agreements]:
-        assert id in all_unavailable_agreements_redis
+    for id in [*spID_1_unavailable_digital_contents, *spID_2_unavailable_digital_contents]:
+        assert id in all_unavailable_digital_contents_redis
 
 
-@mock.patch("src.tasks.update_agreement_is_available.requests")
-def test_fetch_unavailable_agreement_ids(mock_requests, app):
+@mock.patch("src.tasks.update_digital_content_is_available.requests")
+def test_fetch_unavailable_digital_content_ids(mock_requests, app):
     """
-    Test fetching unavailable agreement ids from Content Node
+    Test fetching unavailable digital_content ids from Content Node
     mock_get: reference to the mock requests.get
-    look at test_index_agreements.py for ref
+    look at test_index_digital_contents.py for ref
     """
-    agreement_ids = [1, 2, 3, 4, 5, 6, 7]
+    digital_content_ids = [1, 2, 3, 4, 5, 6, 7]
     mock_return = {
-        "data": {"values": agreement_ids},
+        "data": {"values": digital_content_ids},
         "signer": "signer",
         "timestamp": "2022-05-19T19:50:56.630Z",
         "signature": "signature",
@@ -119,52 +119,52 @@ def test_fetch_unavailable_agreement_ids(mock_requests, app):
 
     mock_requests.get.return_value = _mock_response(mock_return, mock_return)
 
-    fetch_response = fetch_unavailable_agreement_ids("http://content_node.com")
+    fetch_response = fetch_unavailable_digital_content_ids("http://content_node.com")
 
-    assert fetch_response == agreement_ids
+    assert fetch_response == digital_content_ids
 
 
-@mock.patch("src.tasks.update_agreement_is_available.check_agreement_is_available")
-def test_update_agreements_is_available_status(mock_check_agreement_is_available, app):
+@mock.patch("src.tasks.update_digital_content_is_available.check_digital_content_is_available")
+def test_update_digital_contents_is_available_status(mock_check_digital_content_is_available, app):
     with app.app_context():
         db = get_db()
         redis = get_redis()
 
     # Setup
-    mock_unavailable_agreements = [1, 2, 3, 4, 5, 6, 7]
+    mock_unavailable_digital_contents = [1, 2, 3, 4, 5, 6, 7]
     _seed_db_with_data(db)
-    redis.sadd(ALL_UNAVAILABLE_AGREEMENTS_REDIS_KEY, *mock_unavailable_agreements)
-    mock_check_agreement_is_available.return_value = False
+    redis.sadd(ALL_UNAVAILABLE_AGREEMENTS_REDIS_KEY, *mock_unavailable_digital_contents)
+    mock_check_digital_content_is_available.return_value = False
 
-    update_agreements_is_available_status(db, redis)
+    update_digital_contents_is_available_status(db, redis)
 
     with db.scoped_session() as session:
         agreements = (
-            session.query(Agreement.agreement_id, Agreement.is_available)
+            session.query(DigitalContent.digital_content_id, DigitalContent.is_available)
             .filter(
-                Agreement.agreement_id.in_(mock_unavailable_agreements), Agreement.is_current == True
+                DigitalContent.digital_content_id.in_(mock_unavailable_digital_contents), DigitalContent.is_current == True
             )
             .all()
         )
 
         # Check that the 'is_available' value is False
-        for agreement in agreements:
-            assert agreement[1] == False
+        for digital_content in agreements:
+            assert digital_content[1] == False
 
-        mock_available_agreements = [8, 9, 10]
+        mock_available_digital_contents = [8, 9, 10]
         agreements = (
-            session.query(Agreement.agreement_id, Agreement.is_available)
-            .filter(Agreement.agreement_id.in_(mock_available_agreements), Agreement.is_current == True)
+            session.query(DigitalContent.digital_content_id, DigitalContent.is_available)
+            .filter(DigitalContent.digital_content_id.in_(mock_available_digital_contents), DigitalContent.is_current == True)
             .all()
         )
 
         # Check that the 'is_available' value is True
-        for agreement in agreements:
-            assert agreement[1] == True
+        for digital_content in agreements:
+            assert digital_content[1] == True
 
 
-def test_query_replica_set_by_agreement_id(app):
-    """Test that the query returns a mapping of agreement id, user id, and replica set"""
+def test_query_replica_set_by_digital_content_id(app):
+    """Test that the query returns a mapping of digital_content id, user id, and replica set"""
 
     with app.app_context():
         db = get_db()
@@ -172,21 +172,21 @@ def test_query_replica_set_by_agreement_id(app):
     expected_query_results = _seed_db_with_data(db)
 
     with db.scoped_session() as session:
-        agreement_ids = [1, 2, 3, 4, 5, 6, 7]
-        sorted_actual_results = query_replica_set_by_agreement_id(session, agreement_ids)
+        digital_content_ids = [1, 2, 3, 4, 5, 6, 7]
+        sorted_actual_results = query_replica_set_by_digital_content_id(session, digital_content_ids)
         sorted_actual_results.sort(key=lambda entry: entry[0])
 
-        assert len(sorted_actual_results) == len(agreement_ids)
+        assert len(sorted_actual_results) == len(digital_content_ids)
         assert sorted_actual_results == expected_query_results
 
 
-def test_check_agreement_is_available__return_is_not_available(app):
+def test_check_digital_content_is_available__return_is_not_available(app):
     with app.app_context():
         redis = get_redis()
 
-    spID_2_key = get_unavailable_agreements_redis_key(2)
-    spID_3_key = get_unavailable_agreements_redis_key(3)
-    spID_4_key = get_unavailable_agreements_redis_key(4)
+    spID_2_key = get_unavailable_digital_contents_redis_key(2)
+    spID_3_key = get_unavailable_digital_contents_redis_key(3)
+    spID_4_key = get_unavailable_digital_contents_redis_key(4)
 
     # Seed redis some initialized data
     # (1, 2, [3, 4])
@@ -194,37 +194,37 @@ def test_check_agreement_is_available__return_is_not_available(app):
     redis.sadd(spID_3_key, 1)
     redis.sadd(spID_4_key, 1)
 
-    assert False == check_agreement_is_available(redis, 1, [2, 3, 4])
+    assert False == check_digital_content_is_available(redis, 1, [2, 3, 4])
 
 
-def test_check_agreement_is_available__return_is_available_1(app):
+def test_check_digital_content_is_available__return_is_available_1(app):
     with app.app_context():
         redis = get_redis()
 
-    spID_2_key = get_unavailable_agreements_redis_key(2)
-    spID_3_key = get_unavailable_agreements_redis_key(3)
+    spID_2_key = get_unavailable_digital_contents_redis_key(2)
+    spID_3_key = get_unavailable_digital_contents_redis_key(3)
 
     redis.sadd(spID_2_key, 1)
     redis.sadd(spID_3_key, 1)
     # Available on spID = 4
 
-    assert True == check_agreement_is_available(redis, 1, [2, 3, 4])
+    assert True == check_digital_content_is_available(redis, 1, [2, 3, 4])
 
 
-def test_check_agreement_is_available__return_is_available_2(app):
+def test_check_digital_content_is_available__return_is_available_2(app):
     with app.app_context():
         redis = get_redis()
 
-    spID_2_key = get_unavailable_agreements_redis_key(2)
+    spID_2_key = get_unavailable_digital_contents_redis_key(2)
 
     redis.sadd(spID_2_key, 1)
     # Available on spID = 3
     # Available on spID = 4
 
-    assert True == check_agreement_is_available(redis, 1, [2, 3, 4])
+    assert True == check_digital_content_is_available(redis, 1, [2, 3, 4])
 
 
-def test_check_agreement_is_available__return_is_available_3(app):
+def test_check_digital_content_is_available__return_is_available_3(app):
     with app.app_context():
         redis = get_redis()
 
@@ -232,27 +232,27 @@ def test_check_agreement_is_available__return_is_available_3(app):
     # Available on spID = 3
     # Available on spID = 4
 
-    assert True == check_agreement_is_available(redis, 1, [2, 3, 4])
+    assert True == check_digital_content_is_available(redis, 1, [2, 3, 4])
 
 
-def test_query_agreements_by_agreement_id(app):
+def test_query_digital_contents_by_digital_content_id(app):
     with app.app_context():
         db = get_db()
 
     _seed_db_with_data(db)
 
     with db.scoped_session() as session:
-        agreement_ids = [1, 2, 3, 4, 5, 6, 7]
-        agreements = query_agreements_by_agreement_ids(session, agreement_ids)
+        digital_content_ids = [1, 2, 3, 4, 5, 6, 7]
+        agreements = query_digital_contents_by_digital_content_ids(session, digital_content_ids)
 
-        sorted_agreement_ids = list(map(lambda agreement: agreement.agreement_id, agreements))
-        sorted_agreement_ids.sort()
-        assert len(sorted_agreement_ids) == len(agreement_ids)
-        assert sorted_agreement_ids == agreement_ids
+        sorted_digital_content_ids = list(map(lambda digital_content: digital_content.digital_content_id, agreements))
+        sorted_digital_content_ids.sort()
+        assert len(sorted_digital_content_ids) == len(digital_content_ids)
+        assert sorted_digital_content_ids == digital_content_ids
 
 
-@mock.patch("src.tasks.update_agreement_is_available.query_registered_content_node_info")
-def test_update_agreement_is_available(
+@mock.patch("src.tasks.update_digital_content_is_available.query_registered_content_node_info")
+def test_update_digital_content_is_available(
     mock_query_registered_content_node_info,
     app,
     mocker,
@@ -286,8 +286,8 @@ def test_update_agreement_is_available(
         },
     ]
 
-    # Mock fetch data to make it so that agreement ids 1, 2, 3 are unavailable
-    def mock_fetch_unavailable_agreement_ids(*args, **kwargs):
+    # Mock fetch data to make it so that digital_content ids 1, 2, 3 are unavailable
+    def mock_fetch_unavailable_digital_content_ids(*args, **kwargs):
         endpoint = args[0]
         spID = int(endpoint.split("content_node")[1].split(".com")[0])
         if spID == 7 or spID == 9 or spID == 13:
@@ -300,8 +300,8 @@ def test_update_agreement_is_available(
             return []
 
     mocker.patch(
-        "src.tasks.update_agreement_is_available.fetch_unavailable_agreement_ids",
-        side_effect=mock_fetch_unavailable_agreement_ids,
+        "src.tasks.update_digital_content_is_available.fetch_unavailable_digital_content_ids",
+        side_effect=mock_fetch_unavailable_digital_content_ids,
     )
 
     with app.app_context():
@@ -311,48 +311,48 @@ def test_update_agreement_is_available(
     _seed_db_with_data(db)
 
     with db.scoped_session() as session:
-        fetch_unavailable_agreement_ids_in_network(session, redis)
+        fetch_unavailable_digital_content_ids_in_network(session, redis)
 
-    update_agreements_is_available_status(db, redis)
+    update_digital_contents_is_available_status(db, redis)
 
     with db.scoped_session() as session:
-        mock_available_agreements = [1, 2, 3]
+        mock_available_digital_contents = [1, 2, 3]
         agreements = (
-            session.query(Agreement.agreement_id, Agreement.is_available)
-            .filter(Agreement.agreement_id.in_(mock_available_agreements), Agreement.is_current == True)
+            session.query(DigitalContent.digital_content_id, DigitalContent.is_available)
+            .filter(DigitalContent.digital_content_id.in_(mock_available_digital_contents), DigitalContent.is_current == True)
             .all()
         )
 
         # Check that the 'is_available' value is False
-        for agreement in agreements:
-            assert agreement[1] == False
+        for digital_content in agreements:
+            assert digital_content[1] == False
 
-        mock_available_agreements = [4, 5, 6, 7, 8, 9, 10]
+        mock_available_digital_contents = [4, 5, 6, 7, 8, 9, 10]
         agreements = (
-            session.query(Agreement.agreement_id, Agreement.is_available)
-            .filter(Agreement.agreement_id.in_(mock_available_agreements), Agreement.is_current == True)
+            session.query(DigitalContent.digital_content_id, DigitalContent.is_available)
+            .filter(DigitalContent.digital_content_id.in_(mock_available_digital_contents), DigitalContent.is_current == True)
             .all()
         )
 
         # Check that the 'is_available' value is True
-        for agreement in agreements:
-            assert agreement[1] == True
+        for digital_content in agreements:
+            assert digital_content[1] == True
 
 
 def _seed_db_with_data(db):
     test_entities = {
         "agreements": [
-            {"agreement_id": 1, "owner_id": 1, "is_current": True},
-            {"agreement_id": 2, "owner_id": 1, "is_current": True},
-            {"agreement_id": 3, "owner_id": 2, "is_current": True},
-            {"agreement_id": 4, "owner_id": 3, "is_current": True},
-            {"agreement_id": 5, "owner_id": 3, "is_current": True},
-            {"agreement_id": 6, "owner_id": 3, "is_current": True},
-            {"agreement_id": 7, "owner_id": 3, "is_current": True},
-            # Data that this query should not pick up because agreement ids are not queried
-            {"agreement_id": 8, "owner_id": 3, "is_current": True},
-            {"agreement_id": 9, "owner_id": 3, "is_current": True},
-            {"agreement_id": 10, "owner_id": 3, "is_current": True},
+            {"digital_content_id": 1, "owner_id": 1, "is_current": True},
+            {"digital_content_id": 2, "owner_id": 1, "is_current": True},
+            {"digital_content_id": 3, "owner_id": 2, "is_current": True},
+            {"digital_content_id": 4, "owner_id": 3, "is_current": True},
+            {"digital_content_id": 5, "owner_id": 3, "is_current": True},
+            {"digital_content_id": 6, "owner_id": 3, "is_current": True},
+            {"digital_content_id": 7, "owner_id": 3, "is_current": True},
+            # Data that this query should not pick up because digital_content ids are not queried
+            {"digital_content_id": 8, "owner_id": 3, "is_current": True},
+            {"digital_content_id": 9, "owner_id": 3, "is_current": True},
+            {"digital_content_id": 10, "owner_id": 3, "is_current": True},
         ],
         "users": [
             {
@@ -399,7 +399,7 @@ def _seed_db_with_data(db):
 
     populate_mock_db(db, test_entities)
 
-    # structure: agreement_id | primary_id | secondary_ids
+    # structure: digital_content_id | primary_id | secondary_ids
     expected_query_results = [
         (1, 7, [9, 13]),
         (2, 7, [9, 13]),

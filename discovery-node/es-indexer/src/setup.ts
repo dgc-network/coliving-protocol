@@ -19,7 +19,7 @@ create or replace function ${functionName}() returns trigger as $$
 begin
   case TG_TABLE_NAME
     when 'agreements' then
-      PERFORM pg_notify(TG_TABLE_NAME, json_build_object('agreement_id', new.agreement_id)::text);
+      PERFORM pg_notify(TG_TABLE_NAME, json_build_object('digital_content_id', new.digital_content_id)::text);
     when 'users' then
       PERFORM pg_notify(TG_TABLE_NAME, json_build_object('user_id', new.user_id)::text);
     when 'contentLists' then

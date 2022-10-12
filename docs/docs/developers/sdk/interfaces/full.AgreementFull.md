@@ -13,9 +13,9 @@ custom_edit_url: null
 
 ## Properties
 
-### agreement\_segments
+### digital_content\_segments
 
- `Optional` **agreement\_segments**: [`AgreementSegment`](full.AgreementSegment.md)[]
+ `Optional` **digital_content\_segments**: [`AgreementSegment`](full.AgreementSegment.md)[]
 
 **`memberof`** AgreementFull
 

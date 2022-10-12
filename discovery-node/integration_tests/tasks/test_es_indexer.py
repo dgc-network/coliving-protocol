@@ -16,15 +16,15 @@ basic_entities = {
         {"user_id": 2, "handle": "user2"},
     ],
     "agreements": [
-        {"agreement_id": 1, "owner_id": 1},
+        {"digital_content_id": 1, "owner_id": 1},
     ],
     "content_lists": [
         {
             "content_list_id": 1,
             "content_list_owner_id": 1,
             "content_list_contents": {
-                "agreement_ids": [
-                    {"agreement": 1, "time": 1},
+                "digital_content_ids": [
+                    {"digital_content": 1, "time": 1},
                 ]
             },
         },
@@ -36,10 +36,10 @@ basic_entities = {
         }
     ],
     "reposts": [
-        {"repost_item_id": 1, "repost_type": "agreement", "user_id": 2},
+        {"repost_item_id": 1, "repost_type": "digital_content", "user_id": 2},
     ],
     "saves": [
-        {"save_item_id": 1, "save_type": "agreement", "user_id": 2},
+        {"save_item_id": 1, "save_type": "digital_content", "user_id": 2},
     ],
 }
 

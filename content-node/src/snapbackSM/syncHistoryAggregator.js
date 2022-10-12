@@ -112,7 +112,7 @@ class SyncHistoryAggregator {
     } catch (e) {
       // Only log error to not block any main thread
       logger.error(
-        `SyncHistoryAggregator - Failed to agreement ${state} sync for wallet ${wallet} at ${timeOfEvent}: ${e.toString()}`
+        `SyncHistoryAggregator - Failed to digital_content ${state} sync for wallet ${wallet} at ${timeOfEvent}: ${e.toString()}`
       )
     }
   }

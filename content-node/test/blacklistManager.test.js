@@ -91,7 +91,7 @@ describe('test blacklistManager', () => {
     )
   })
 
-  it('[isServable] cid belongs to agreement from input agreementId, and the input agreementId is valid + blacklisted, do not serve', async () => {
+  it('[isServable] cid belongs to digital_content from input agreementId, and the input agreementId is valid + blacklisted, do not serve', async () => {
     await BlacklistManager.addToRedis('BM.SET.BLACKLIST.SEGMENTCID', [
       DUMMY_CID
     ])
@@ -109,7 +109,7 @@ describe('test blacklistManager', () => {
     )
   })
 
-  it('[isServable] cid is in blacklist, cid belongs to agreement from input agreementId with redis check, and the input agreementId is valid + not blacklisted, allow serve', async () => {
+  it('[isServable] cid is in blacklist, cid belongs to digital_content from input agreementId with redis check, and the input agreementId is valid + not blacklisted, allow serve', async () => {
     await BlacklistManager.addToRedis('BM.SET.BLACKLIST.SEGMENTCID', [
       DUMMY_CID
     ])
@@ -123,7 +123,7 @@ describe('test blacklistManager', () => {
     )
   })
 
-  it('[isServable] cid is in blacklist, cid does not belong to agreement from input agreementId with redis check, and input agreement is invalid, do not serve', async () => {
+  it('[isServable] cid is in blacklist, cid does not belong to digital_content from input agreementId with redis check, and input digital_content is invalid, do not serve', async () => {
     await BlacklistManager.addToRedis('BM.SET.BLACKLIST.SEGMENTCID', [
       DUMMY_CID
     ])
@@ -135,7 +135,7 @@ describe('test blacklistManager', () => {
     )
   })
 
-  it('[isServable] cid is in blacklist, cid does not belong to agreement from input agreementId with redis check, and input agreement is invalid with db check, do not serve', async () => {
+  it('[isServable] cid is in blacklist, cid does not belong to digital_content from input agreementId with redis check, and input digital_content is invalid with db check, do not serve', async () => {
     await BlacklistManager.addToRedis('BM.SET.BLACKLIST.SEGMENTCID', [
       DUMMY_CID
     ])
@@ -154,7 +154,7 @@ describe('test blacklistManager', () => {
     assert.deepStrictEqual(await BlacklistManager.agreementIdIsInvalid(1234), 1)
   })
 
-  it('[isServable] cid is in blacklist, cid does not belong to agreement from input agreementId with redis check, and input agreement is valid with db check, and cid is in agreement, allow serve', async () => {
+  it('[isServable] cid is in blacklist, cid does not belong to digital_content from input agreementId with redis check, and input digital_content is valid with db check, and cid is in digital_content, allow serve', async () => {
     await BlacklistManager.addToRedis('BM.SET.BLACKLIST.SEGMENTCID', [
       DUMMY_CID
     ])
@@ -166,7 +166,7 @@ describe('test blacklistManager', () => {
         return [
           {
             metadataJSON: {
-              agreement_segments: [{ duration: 6, multihash: DUMMY_CID }]
+              digital_content_segments: [{ duration: 6, multihash: DUMMY_CID }]
             }
           }
         ]
@@ -182,7 +182,7 @@ describe('test blacklistManager', () => {
     )
   }).timeout(0)
 
-  it('[isServable] cid is in blacklist, cid does not belong to agreement from input agreementId with redis check, and input agreement is valid with db check, and cid is not in agreement, do not serve', async () => {
+  it('[isServable] cid is in blacklist, cid does not belong to digital_content from input agreementId with redis check, and input digital_content is valid with db check, and cid is not in digital_content, do not serve', async () => {
     await BlacklistManager.addToRedis('BM.SET.BLACKLIST.SEGMENTCID', [
       DUMMY_CID
     ])
@@ -194,7 +194,7 @@ describe('test blacklistManager', () => {
         return [
           {
             metadataJSON: {
-              agreement_segments: [
+              digital_content_segments: [
                 { duration: 6, multihash: 'QmABC_tinashe_and_rei_ami' }
               ]
             }

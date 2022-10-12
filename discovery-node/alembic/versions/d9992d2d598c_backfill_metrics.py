@@ -2,7 +2,7 @@
 
 This migration backfills metrics stored on discovery nodes as taken from a snapshot
 of the coliving protocol dashboard on 4/23/2021.
-These metrics are computed going forward by discovery nodes in a live manner.
+These metrics are computed going forward by discovery nodes in a digitalcoin manner.
 
 Revision ID: d9992d2d598c
 Revises: 29864cb80469

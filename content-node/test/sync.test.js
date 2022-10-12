@@ -131,7 +131,7 @@ describe('test nodesync', async function () {
         .send(associateRequest)
         .expect(200)
 
-      /** Upload a agreement */
+      /** Upload a digital_content */
 
       const agreementUploadResponse = await uploadAgreement(
         testAudioFilePath,
@@ -140,16 +140,16 @@ describe('test nodesync', async function () {
       )
 
       transcodedAgreementUUID = agreementUploadResponse.transcodedAgreementUUID
-      agreementSegments = agreementUploadResponse.agreement_segments
+      agreementSegments = agreementUploadResponse.digital_content_segments
       sourceFile = agreementUploadResponse.source_file
       transcodedAgreementCID = agreementUploadResponse.transcodedAgreementCID
 
-      // Upload agreement metadata
+      // Upload digital_content metadata
       const agreementMetadata = {
         metadata: {
           test: 'field1',
           owner_id: 1,
-          agreement_segments: agreementSegments
+          digital_content_segments: agreementSegments
         },
         source_file: sourceFile
       }
@@ -163,7 +163,7 @@ describe('test nodesync', async function () {
       agreementMetadataMultihash = agreementMetadataResp.body.data.metadataMultihash
       agreementMetadataFileUUID = agreementMetadataResp.body.data.metadataFileUUID
 
-      // associate agreement + agreement metadata with blockchain ID
+      // associate digital_content + digital_content metadata with blockchain ID
       await request(app)
         .post('/agreements')
         .set('X-Session-ID', sessionToken)
@@ -176,7 +176,7 @@ describe('test nodesync', async function () {
         })
     }
 
-    describe('Confirm export object matches DB state with a user and agreement', async function () {
+    describe('Confirm export object matches DB state with a user and digital_content', async function () {
       beforeEach(setupDepsAndApp)
 
       beforeEach(createUserAndAgreement)
@@ -211,7 +211,7 @@ describe('test nodesync', async function () {
           })
         )
 
-        // get transcoded agreement file
+        // get transcoded digital_content file
         const copy320 = stringifiedDateFields(
           await models.File.findOne({
             where: {
@@ -230,7 +230,7 @@ describe('test nodesync', async function () {
             const segment = await models.File.findOne({
               where: {
                 multihash: hash,
-                type: 'agreement'
+                type: 'digital_content'
               },
               raw: true
             })
@@ -238,7 +238,7 @@ describe('test nodesync', async function () {
           })
         )
 
-        // Get agreement metadata file
+        // Get digital_content metadata file
         const agreementMetadataFile = stringifiedDateFields(
           await models.File.findOne({
             where: {
@@ -279,9 +279,9 @@ describe('test nodesync', async function () {
           })
         ).map(stringifiedDateFields)
 
-        // get agreement file
+        // get digital_content file
         const agreementFile = stringifiedDateFields(
-          await models.Agreement.findOne({
+          await models.DigitalContent.findOne({
             where: {
               cnodeUserUUID,
               metadataFileUUID: agreementMetadataFileUUID
@@ -404,7 +404,7 @@ describe('test nodesync', async function () {
 
         // get agreements
         const agreements = (
-          await models.Agreement.findAll({
+          await models.DigitalContent.findAll({
             where: {
               cnodeUserUUID,
               clock: {
@@ -526,7 +526,7 @@ describe('test nodesync', async function () {
 
         // get agreements
         const agreements = (
-          await models.Agreement.findAll({
+          await models.DigitalContent.findAll({
             where: {
               cnodeUserUUID,
               clock: {
@@ -647,7 +647,7 @@ describe('test nodesync', async function () {
 
         // get agreements
         const agreements = (
-          await models.Agreement.findAll({
+          await models.DigitalContent.findAll({
             where: {
               cnodeUserUUID,
               clock: {
@@ -913,7 +913,7 @@ describe('test nodesync', async function () {
       for (const exportedAgreement of exportedAgreements) {
         const { clock, blockchainId, metadataFileUUID } = exportedAgreement
         const localFile = stringifiedDateFields(
-          await models.Agreement.findOne({
+          await models.DigitalContent.findOne({
             where: {
               clock,
               cnodeUserUUID,
@@ -1247,7 +1247,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
     response.colivingUsers = colivingUsers
 
     const agreements = (
-      await models.Agreement.findAll({
+      await models.DigitalContent.findAll({
         where: { cnodeUserUUID },
         raw: true
       })
@@ -1708,7 +1708,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
     await models.File.bulkCreate(exportedNonAgreementFiles, { transaction })
     await models.ColivingUser.bulkCreate(exportedColivingUsers, { transaction })
     await models.File.bulkCreate(exportedAgreementFiles, { transaction })
-    await models.Agreement.bulkCreate(exportedAgreements, { transaction })
+    await models.DigitalContent.bulkCreate(exportedAgreements, { transaction })
     await transaction.commit()
 
     /**
@@ -1783,7 +1783,7 @@ describe('Test primarySyncFromSecondary() with mocked export', async () => {
     await models.File.bulkCreate(exportedNonAgreementFiles, { transaction })
     await models.ColivingUser.bulkCreate(exportedColivingUsers, { transaction })
     await models.File.bulkCreate(exportedAgreementFiles, { transaction })
-    await models.Agreement.bulkCreate(exportedAgreements, { transaction })
+    await models.DigitalContent.bulkCreate(exportedAgreements, { transaction })
     await transaction.commit()
 
     /**

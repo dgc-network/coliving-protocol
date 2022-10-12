@@ -165,8 +165,8 @@ def get_user_id_cache_key(id):
     return f"user:id:{id}"
 
 
-def get_agreement_id_cache_key(id):
-    return f"agreement:id:{id}"
+def get_digital_content_id_cache_key(id):
+    return f"digital_content:id:{id}"
 
 
 def get_content_list_id_cache_key(id):
@@ -185,10 +185,10 @@ def remove_cached_user_ids(redis, user_ids):
         logger.error("Unable to remove cached users: %s", e, exc_info=True)
 
 
-def remove_cached_agreement_ids(redis, agreement_ids):
+def remove_cached_digital_content_ids(redis, digital_content_ids):
     try:
-        agreement_keys = list(map(get_agreement_id_cache_key, agreement_ids))
-        redis.delete(*agreement_keys)
+        digital_content_keys = list(map(get_digital_content_id_cache_key, digital_content_ids))
+        redis.delete(*digital_content_keys)
     except Exception as e:
         logger.error("Unable to remove cached agreements: %s", e, exc_info=True)
 

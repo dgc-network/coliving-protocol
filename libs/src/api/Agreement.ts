@@ -26,7 +26,7 @@ type ChainInfo = {
   transcodedAgreementUUID: string
 }
 
-export class Agreement extends Base {
+export class DigitalContent extends Base {
   constructor(...args: BaseConstructorArgs) {
     super(...args)
     this.getAgreements = this.getAgreements.bind(this)
@@ -59,7 +59,7 @@ export class Agreement extends Base {
   /* ------- GETTERS ------- */
 
   /**
-   * get agreements with all relevant agreement data
+   * get agreements with all relevant digital_content data
    * can be filtered by providing an integer array of ids
    * @param limit
    * @param offset
@@ -68,16 +68,16 @@ export class Agreement extends Base {
    * @param sort a string of form eg. blocknumber:asc,timestamp:desc describing a sort path
    * @param minBlockNumber The min block number
    * @param filterDeleted If set to true filters out deleted agreements
-   * @returns Array of agreement metadata Objects
-   * additional metadata fields on agreement objects:
-   *  {Integer} repost_count - repost count for given agreement
-   *  {Integer} save_count - save count for given agreement
-   *  {Array} followee_reposts - followees of current user that have reposted given agreement
-   *  {Boolean} has_current_user_reposted - has current user reposted given agreement
-   *  {Boolean} has_current_user_saved - has current user saved given agreement
+   * @returns Array of digital_content metadata Objects
+   * additional metadata fields on digital_content objects:
+   *  {Integer} repost_count - repost count for given digital_content
+   *  {Integer} save_count - save count for given digital_content
+   *  {Array} followee_reposts - followees of current user that have reposted given digital_content
+   *  {Boolean} has_current_user_reposted - has current user reposted given digital_content
+   *  {Boolean} has_current_user_saved - has current user saved given digital_content
    * @example
    * await getAgreements()
-   * await getAgreements(100, 0, [3,2,6]) - Invalid agreement ids will not be accepted
+   * await getAgreements(100, 0, [3,2,6]) - Invalid digital_content ids will not be accepted
    */
   async getAgreements(
     limit = 100,
@@ -105,7 +105,7 @@ export class Agreement extends Base {
   /**
    * Gets agreements by their slug and owner handle
    * @param handle the owner's handle
-   * @param slug the agreement's slug, including collision identifiers
+   * @param slug the digital_content's slug, including collision identifiers
    */
   async getAgreementsByHandleAndSlug(handle: string, slug: string) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
@@ -126,7 +126,7 @@ export class Agreement extends Base {
   /**
    * Gets random agreements from trending agreements for a given genre.
    * If genre not given, will return trending agreements across all genres.
-   * Excludes specified agreement ids.
+   * Excludes specified digital_content ids.
    */
   async getRandomAgreements(
     genre: string,
@@ -185,7 +185,7 @@ export class Agreement extends Base {
 
   /**
    * Return saved agreements for current user
-   * NOTE in returned JSON, SaveType string one of agreement, contentList, album
+   * NOTE in returned JSON, SaveType string one of digital_content, contentList, album
    */
   async getSavedAgreements(limit = 100, offset = 0, withUsers = false) {
     this.REQUIRES(Services.DISCOVERY_PROVIDER)
@@ -304,7 +304,7 @@ export class Agreement extends Base {
 
   /**
    * Return saved agreements for current user
-   * NOTE in returned JSON, SaveType string one of agreement, contentList, album
+   * NOTE in returned JSON, SaveType string one of digital_content, contentList, album
    */
   async getListenHistoryAgreements(limit = 100, offset = 0) {
     this.REQUIRES(Services.IDENTITY_SERVICE)
@@ -340,7 +340,7 @@ export class Agreement extends Base {
    *
    * @param agreementFile ReadableStream from server, or File handle on client
    * @param coverArtFile ReadableStream from server, or File handle on client
-   * @param metadata json of the agreement metadata with all fields, missing fields will error
+   * @param metadata json of the digital_content metadata with all fields, missing fields will error
    * @param onProgress callback fired with (loaded, total) on byte upload progress
    */
   async uploadAgreement(
@@ -422,7 +422,7 @@ export class Agreement extends Base {
         )
 
       phase = phases.ASSOCIATING_AGREEMENT
-      // Associate the agreement id with the file metadata and block number
+      // Associate the digital_content id with the file metadata and block number
       await this.contentNode.associateAgreement(
         agreementId,
         metadataFileUUID,
@@ -557,7 +557,7 @@ export class Agreement extends Base {
     )
 
     // Any failures in addAgreement to the blockchain will prevent further progress
-    // The list of successful agreement uploads is returned for revert operations by caller
+    // The list of successful digital_content uploads is returned for revert operations by caller
     if (
       requestFailed ||
       addedToChain.filter(Boolean).length !== agreementMultihashAndUUIDList.length
@@ -587,7 +587,7 @@ export class Agreement extends Base {
       )
     } catch (e) {
       // Any single failure to associate also prevents further progress
-      // Returning error code along with associated agreement ids allows caller to revert
+      // Returning error code along with associated digital_content ids allows caller to revert
       return { error: true, agreementIds: addedToChain.map((x) => x.agreementId) }
     }
 
@@ -595,9 +595,9 @@ export class Agreement extends Base {
   }
 
   /**
-   * Updates an existing agreement given metadata. This function expects that all associated files
-   * such as agreement content, cover art are already on content node.
-   * @param metadata json of the agreement metadata with all fields, missing fields will error
+   * Updates an existing digital_content given metadata. This function expects that all associated files
+   * such as digital_content content, cover art are already on content node.
+   * @param metadata json of the digital_content metadata with all fields, missing fields will error
    */
   async updateAgreement(metadata: AgreementMetadata) {
     this.REQUIRES(Services.CONTENT_NODE)
@@ -616,7 +616,7 @@ export class Agreement extends Base {
       await this.contentNode.uploadAgreementMetadata(metadata)
     // Write the new metadata to chain
     const multihashDecoded = Utils.decodeMultihash(metadataMultihash)
-    const agreementId = metadata.agreement_id
+    const agreementId = metadata.digital_content_id
     const { txReceipt } = await this.contracts.AgreementFactoryClient.updateAgreement(
       agreementId,
       ownerId,
@@ -624,7 +624,7 @@ export class Agreement extends Base {
       multihashDecoded.hashFn,
       multihashDecoded.size
     )
-    // Re-associate the agreement id with the new metadata
+    // Re-associate the digital_content id with the new metadata
     await this.contentNode.associateAgreement(
       agreementId,
       metadataFileUUID,
@@ -638,7 +638,7 @@ export class Agreement extends Base {
   }
 
   /**
-   * Logs a agreement listen for a given user id.
+   * Logs a digital_content listen for a given user id.
    * @param unauthUuid account for those not logged in
    * @param agreementId listened to
    */
@@ -660,8 +660,8 @@ export class Agreement extends Base {
     )
   }
 
-  /** Adds a repost for a given user and agreement
-   * @param agreementId agreement being reposted
+  /** Adds a repost for a given user and digital_content
+   * @param agreementId digital_content being reposted
    */
   async addAgreementRepost(agreementId: number) {
     const userId = this.userStateManager.getCurrentUserId()
@@ -672,8 +672,8 @@ export class Agreement extends Base {
   }
 
   /**
-   * Deletes a repost for a given user and agreement
-   * @param agreement id of deleted repost
+   * Deletes a repost for a given user and digital_content
+   * @param digital_content id of deleted repost
    */
   async deleteAgreementRepost(agreementId: number) {
     const userId = this.userStateManager.getCurrentUserId()
@@ -684,8 +684,8 @@ export class Agreement extends Base {
   }
 
   /**
-   * Adds a rack save for a given user and agreement
-   * @param agreementId agreement being saved
+   * Adds a rack save for a given user and digital_content
+   * @param agreementId digital_content being saved
    */
   async addAgreementSave(agreementId: number) {
     const userId = this.userStateManager.getCurrentUserId()
@@ -696,7 +696,7 @@ export class Agreement extends Base {
   }
 
   /**
-   * Delete a agreement save for a given user and agreement
+   * Delete a digital_content save for a given user and digital_content
    * @param agreementId save being removed
    */
   async deleteAgreementSave(agreementId: number) {

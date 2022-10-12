@@ -83,7 +83,7 @@ async function processEmailNotifications (expressApp, colivingLibs) {
       where: { emailFrequency: EmailFrequency.WEEKLY }
     }).map(x => x.userId)
 
-    logger.info({ ...loggingContext, liveEmailUsers: liveEmailUsers.length }, `processEmailNotifications - ${liveEmailUsers.length} live users`)
+    logger.info({ ...loggingContext, liveEmailUsers: liveEmailUsers.length }, `processEmailNotifications - ${liveEmailUsers.length} digitalcoin users`)
     logger.info({ ...loggingContext, dailyEmailUsers: dailyEmailUsers.length }, `processEmailNotifications - ${dailyEmailUsers.length} daily users`)
     logger.info({ ...loggingContext, weeklyEmailUsers: weeklyEmailUsers.length }, `processEmailNotifications - ${weeklyEmailUsers.length} weekly users`)
     let currentTime = moment.utc()
@@ -136,7 +136,7 @@ async function processEmailNotifications (expressApp, colivingLibs) {
         if (liveEmailUsers.includes(user)) {
           // As an added safety check, only process if the announcement was made in the last hour
           if (timeSinceAnnouncement < 1) {
-            logger.info(`processEmailNotifications | Announcements - ${id} | Live user ${user}`)
+            logger.info(`processEmailNotifications | Announcements - ${id} | Digitalcoin user ${user}`)
             liveUsersWithPendingAnnouncements.push(user)
           }
         } else if (dailyEmailUsers.includes(user)) {
@@ -192,7 +192,7 @@ async function processEmailNotifications (expressApp, colivingLibs) {
     })
     weeklyEmailUsersWithUnseeenNotifications.forEach(item => pendingNotificationUsers.add(item))
 
-    logger.info(loggingContext, `processEmailNotifications - Live Email Users: ${
+    logger.info(loggingContext, `processEmailNotifications - Digitalcoin Email Users: ${
       liveEmailUsersWithUnseenNotifications
     }, Daily Email Users: ${
       dailyEmailUsersWithUnseeenNotifications
@@ -359,7 +359,7 @@ async function renderAndSendNotificationEmail (
       copyrightYear: new Date().getFullYear().toString()
     }
     renderProps['notifications'] = notificationProps
-    if (frequency === 'live') {
+    if (frequency === 'digitalcoin') {
       renderProps['title'] = `Email - ${userEmail}`
     } else if (frequency === 'daily') {
       renderProps['title'] = `Daily Email - ${userEmail}`

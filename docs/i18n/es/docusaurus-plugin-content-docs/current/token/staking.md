@@ -21,7 +21,7 @@ Quienes obtengan más $LIVE ganarán una porción mayor de emisión a cambio de 
 
 En Coliving, el contenido se dirige a dos tipos diferentes de nodos:
 
-* _Nodos de contenido_ - Para almacenar y transmitir contenido de live \(canciones, mezclas, etc.\) streaming en Coliving
+* _Nodos de contenido_ - Para almacenar y transmitir contenido de digitalcoin \(canciones, mezclas, etc.\) streaming en Coliving
 * _Nodos de descubrimiento_ - Para indexar y hash datos como perfiles de usuario, listas de reproducción y seguidores.
 
 Como landlorda, subir a Coliving no tiene nada que ver con subirlo a una plataforma como Soundcloud. Pero lo que sucede detrás de las escenas es lo que hace que Coliving sea tan único.

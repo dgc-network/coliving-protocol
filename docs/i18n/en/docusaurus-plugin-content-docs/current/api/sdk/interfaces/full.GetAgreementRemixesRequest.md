@@ -31,7 +31,7 @@ ___
 
  **agreementId**: `string`
 
-A Agreement ID
+A DigitalContent ID
 
 ___
 

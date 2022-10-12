@@ -5,7 +5,7 @@
     "metadata": {
       "entity_id": 10,
       "entity_owner_id": 2,
-      "entity_type": "agreement"
+      "entity_type": "digital_content"
     },
     "timestamp": "2020-10-24T11:45:10 Z",
     "type": "RemixCosign"
@@ -15,7 +15,7 @@
     "metadata": {
       "entity_id": 11,
       "entity_owner_id": 3,
-      "entity_type": "agreement"
+      "entity_type": "digital_content"
     },
     "timestamp": "2020-10-24T11:45:10 Z",
     "type": "RemixCosign"

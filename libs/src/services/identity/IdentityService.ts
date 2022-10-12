@@ -204,7 +204,7 @@ export class IdentityService {
   }
 
   /**
-   * Logs a agreement listen for a given user id.
+   * Logs a digital_content listen for a given user id.
    * @param agreementId
    * @param userId
    * @param listenerAddress if logging this listen on behalf of another IP address, pass through here
@@ -275,7 +275,7 @@ export class IdentityService {
   /**
    * Gets agreements trending on Coliving.
    * @param timeFrame one of day, week, month, or year
-   * @param idsArray agreement ids
+   * @param idsArray digital_content ids
    * @param limit
    * @param offset
    */
@@ -325,7 +325,7 @@ export class IdentityService {
   /**
    * Gets listens for agreements bucketted by timeFrame.
    * @param timeFrame one of day, week, month, or year
-   * @param idsArray agreement ids
+   * @param idsArray digital_content ids
    * @param startTime parseable by Date.parse
    * @param endTime parseable by Date.parse
    * @param limit

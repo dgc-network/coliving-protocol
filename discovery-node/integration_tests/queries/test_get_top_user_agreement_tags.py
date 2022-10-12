@@ -1,9 +1,9 @@
 from integration_tests.utils import populate_mock_db
-from src.queries.get_top_user_agreement_tags import _get_top_user_agreement_tags
+from src.queries.get_top_user_digital_content_tags import _get_top_user_digital_content_tags
 from src.utils.db_session import get_db
 
 
-def test_get_top_user_agreement_tags(app):
+def test_get_top_user_digital_content_tags(app):
     """Tests that top tags for users can be queried"""
     with app.app_context():
         db = get_db()
@@ -21,9 +21,9 @@ def test_get_top_user_agreement_tags(app):
     populate_mock_db(db, test_entities)
 
     with db.scoped_session() as session:
-        session.execute("REFRESH MATERIALIZED VIEW tag_agreement_user")
-        user_1_tags = _get_top_user_agreement_tags(session, {"user_id": 1})
-        user_2_tags = _get_top_user_agreement_tags(session, {"user_id": 2})
+        session.execute("REFRESH MATERIALIZED VIEW tag_digital_content_user")
+        user_1_tags = _get_top_user_digital_content_tags(session, {"user_id": 1})
+        user_2_tags = _get_top_user_digital_content_tags(session, {"user_id": 2})
 
     assert len(user_1_tags) == 4
     assert user_1_tags[0] == "pop"

@@ -5,7 +5,7 @@
     "metadata": {
         "entity_id": 1,
         "entity_owner_id": 1,
-        "entity_type": "agreement"
+        "entity_type": "digital_content"
     },
     "timestamp": "2020-10-27T15:14:20 Z",
     "type": "Create"
@@ -15,7 +15,7 @@
     "metadata": {
         "entity_id": 2,
         "entity_owner_id": 1,
-        "entity_type": "agreement"
+        "entity_type": "digital_content"
     },
     "timestamp": "2020-10-27T15:14:20 Z",
     "type": "Create"
@@ -25,7 +25,7 @@
     "metadata": {
         "entity_id": 3,
         "entity_owner_id": 1,
-        "entity_type": "agreement"
+        "entity_type": "digital_content"
     },
     "timestamp": "2020-10-27T15:14:20 Z",
     "type": "Create"
@@ -35,7 +35,7 @@
     "metadata": {
         "entity_id": 4,
         "entity_owner_id": 1,
-        "entity_type": "agreement"
+        "entity_type": "digital_content"
     },
     "timestamp": "2020-10-27T15:14:20 Z",
     "type": "Create"
@@ -45,7 +45,7 @@
     "metadata": {
         "entity_id": 5,
         "entity_owner_id": 2,
-        "entity_type": "agreement"
+        "entity_type": "digital_content"
     },
     "timestamp": "2020-10-27T15:14:20 Z",
     "type": "Create"
@@ -54,10 +54,10 @@
     "initiator": 1,
     "metadata": {
         "collection_content": {
-            "agreement_ids": [
+            "digital_content_ids": [
                 {
                     "time": 1603811420,
-                    "agreement": 1
+                    "digital_content": 1
                 }
             ]
         },
@@ -72,10 +72,10 @@
     "initiator": 1,
     "metadata": {
         "collection_content": {
-            "agreement_ids": [
+            "digital_content_ids": [
                 {
                     "time": 1603811420,
-                    "agreement": 2
+                    "digital_content": 2
                 }
             ]
         },

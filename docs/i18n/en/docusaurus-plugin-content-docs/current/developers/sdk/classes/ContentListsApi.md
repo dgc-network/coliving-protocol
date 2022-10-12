@@ -37,7 +37,7 @@ ___
 
 ### getContentListAgreements
 
-**getContentListAgreements**(`requestParameters`): `Promise`<[`Agreement`](../interfaces/Agreement.md)[]\>
+**getContentListAgreements**(`requestParameters`): `Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)[]\>
 
 Fetch agreements within a contentList.
 
@@ -59,7 +59,7 @@ const agreements = await colivingSdk.contentLists.getContentListAgreements({
 
 #### Returns
 
-`Promise`<[`Agreement`](../interfaces/Agreement.md)[]\>
+`Promise`<[`DigitalContent`](../interfaces/DigitalContent.md)[]\>
 
 ___
 

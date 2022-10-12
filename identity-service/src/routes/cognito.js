@@ -44,7 +44,7 @@ module.exports = function (app) {
    *         "customer_reference": "some-customer-unique-persistent-id-eg-handle",
    *         "_meta": "This API format is not v1.0 and is subject to change."
    *     },
-   *     "environment": "live" // or 'sandbox'
+   *     "environment": "digitalcoin" // or 'sandbox'
    * }
    */
   app.post('/cognito_webhook/flow', cognitoFlowMiddleware, handleResponse(async (req) => {

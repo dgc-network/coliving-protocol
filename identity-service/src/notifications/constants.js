@@ -2,19 +2,19 @@ const notificationTypes = Object.freeze({
   Follow: 'Follow',
   Repost: {
     base: 'Repost',
-    agreement: 'RepostAgreement',
+    digital_content: 'RepostAgreement',
     album: 'RepostAlbum',
     contentList: 'RepostContentList'
   },
   Favorite: {
     base: 'Favorite',
-    agreement: 'FavoriteAgreement',
+    digital_content: 'FavoriteAgreement',
     album: 'FavoriteAlbum',
     contentList: 'FavoriteContentList'
   },
   Create: {
     base: 'Create',
-    agreement: 'CreateAgreement',
+    digital_content: 'CreateAgreement',
     album: 'CreateAlbum',
     contentList: 'CreateContentList'
   },
@@ -42,7 +42,7 @@ const notificationTypes = Object.freeze({
 
 const actionEntityTypes = Object.freeze({
   User: 'User',
-  Agreement: 'Agreement',
+  DigitalContent: 'DigitalContent',
   Album: 'Album',
   ContentList: 'ContentList'
 })

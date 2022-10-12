@@ -21,8 +21,8 @@ custom_edit_url: null
 
 ___
 
-### agreement\_id
+### digital_content\_id
 
- **agreement\_id**: `string`
+ **digital_content\_id**: `string`
 
 **`memberof`** ContentListAddedTimestamp

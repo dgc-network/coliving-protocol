@@ -117,7 +117,7 @@ describe('Test Follow Notification', function () {
     assert.deepStrictEqual(user2Followers, [1, 4])
 
     // User 3 Should have 2 notifications
-    // 1) users 1 & 2 following agreement 10 (owned by user 20)
+    // 1) users 1 & 2 following digital_content 10 (owned by user 20)
     // 2) user 4 following
     const updatedUser3Notifs = await models.Notification.findAll({ where: { userId: 3 } })
     assert.deepStrictEqual(updatedUser3Notifs.length, 2)

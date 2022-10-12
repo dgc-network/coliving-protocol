@@ -411,7 +411,7 @@ def process_user_bank_txs():
     # Loop exit condition
     intersection_found = False
 
-    # Get the latests slot available globally before fetching txs to keep agreement of indexing progress
+    # Get the latests slot available globally before fetching txs to keep digital_content of indexing progress
     try:
         latest_global_slot = solana_client_manager.get_slot()
     except:

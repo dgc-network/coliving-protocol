@@ -17,7 +17,7 @@ const uploadAgreement = async (filePath, cnodeUserUUID, blacklistManager) => {
         requestID: uuid(),
         requestMethod: 'POST',
         requestHostname: '127.0.0.1',
-        requestUrl: '/agreement_content_async'
+        requestUrl: '/digital_content_async'
       }
     },
     {

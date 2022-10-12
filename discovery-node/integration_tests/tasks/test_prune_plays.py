@@ -25,9 +25,9 @@ def test_prune_plays_old_date(app):
     # run
     entities = {
         "agreements": [
-            {"agreement_id": 1, "title": "agreement 1"},
-            {"agreement_id": 2, "title": "agreement 2"},
-            {"agreement_id": 3, "title": "agreement 3"},
+            {"digital_content_id": 1, "title": "digital_content 1"},
+            {"digital_content_id": 2, "title": "digital_content 2"},
+            {"digital_content_id": 3, "title": "digital_content 3"},
         ],
         "plays": [
             # Current Plays
@@ -96,9 +96,9 @@ def test_prune_plays_max_batch(app):
     # run
     entities = {
         "agreements": [
-            {"agreement_id": 1, "title": "agreement 1"},
-            {"agreement_id": 2, "title": "agreement 2"},
-            {"agreement_id": 3, "title": "agreement 3"},
+            {"digital_content_id": 1, "title": "digital_content 1"},
+            {"digital_content_id": 2, "title": "digital_content 2"},
+            {"digital_content_id": 3, "title": "digital_content 3"},
         ],
         "plays": [
             # Current Plays
@@ -148,7 +148,7 @@ def test_prune_plays_skip_prune(app):
     # run
     entities = {
         "agreements": [
-            {"agreement_id": 3, "title": "agreement 3"},
+            {"digital_content_id": 3, "title": "digital_content 3"},
         ],
         "plays": [
             # Current Plays

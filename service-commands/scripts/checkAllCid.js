@@ -53,7 +53,7 @@ async function getUsersBatch (discoveryNode, offset, limit) {
 /**
  * @param {string} discoveryNode - Discovery Node endpoint
  * @param {number} batchSize - Batch Size to use for each request
- * @returns {Object} agreementCids - A object mapping user id to a list of agreement cids
+ * @returns {Object} agreementCids - A object mapping user id to a list of digital_content cids
  */
 async function getAgreementCids (discoveryNode, batchSize) {
   const agreementCids = {}
@@ -61,7 +61,7 @@ async function getAgreementCids (discoveryNode, batchSize) {
   const totalAgreements = (
     await makeRequest({
       method: 'get',
-      url: '/latest/agreement',
+      url: '/latest/digital_content',
       baseURL: discoveryNode
     })
   ).data.data

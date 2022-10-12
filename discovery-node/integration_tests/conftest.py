@@ -170,7 +170,7 @@ def init_contracts(config):
     user_factory_address = registry_return_val.functions.getContract(
         bytes("UserFactory", "utf-8")
     ).call()
-    agreement_factory_address = registry_return_val.functions.getContract(
+    digital_content_factory_address = registry_return_val.functions.getContract(
         bytes("AgreementFactory", "utf-8")
     ).call()
     user_replica_set_manager_address = registry_return_val.functions.getContract(
@@ -181,8 +181,8 @@ def init_contracts(config):
     user_factory_contract = web3.eth.contract(
         address=user_factory_address, abi=abi_values["UserFactory"]["abi"]
     )
-    agreement_factory_contract = web3.eth.contract(
-        address=agreement_factory_address, abi=abi_values["AgreementFactory"]["abi"]
+    digital_content_factory_contract = web3.eth.contract(
+        address=digital_content_factory_address, abi=abi_values["AgreementFactory"]["abi"]
     )
     user_replica_set_manager_contract = web3.eth.contract(
         address=user_replica_set_manager_address,
@@ -194,8 +194,8 @@ def init_contracts(config):
         "registry_address": registry_address,
         "user_factory_address": user_factory_address,
         "user_factory_contract": user_factory_contract,
-        "agreement_factory_address": agreement_factory_address,
-        "agreement_factory_contract": agreement_factory_contract,
+        "digital_content_factory_address": digital_content_factory_address,
+        "digital_content_factory_contract": digital_content_factory_contract,
         "user_replica_set_manager_address": user_replica_set_manager_address,
         "user_replica_set_manager_contract": user_replica_set_manager_contract,
         "web3": web3,

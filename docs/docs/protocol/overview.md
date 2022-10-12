@@ -7,7 +7,7 @@ sidebar_position: 1
 
 Coliving is a decentralized, community-owned and file-sharing protocol. Coliving provides a blockchain-based alternative to existing platforms to help landlords publish and monetize their work and distribute it directly to residents.
 
-The mission of the project is to give everyone the freedom to share, and monetize to any live.
+The mission of the project is to give everyone the freedom to share, and monetize to any digitalcoin.
 
 The Coliving Protocol [repository](https://github.com/dgc-network/coliving-protocol) is a mono-repository that has all the pieces that make and support the protocol including smart contracts, services, and other supporting libraries.
 

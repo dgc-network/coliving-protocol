@@ -1,62 +1,62 @@
 from sqlalchemy import desc
 from sqlalchemy.orm import aliased
-from src.models.agreements.aggregate_agreement import AggregateAgreement
+from src.models.agreements.aggregate_digital_content import AggregateAgreement
 from src.models.agreements.stem import Stem
-from src.models.agreements.agreement import Agreement
+from src.models.agreements.digital_content import DigitalContent
 from src.queries.query_helpers import (
-    add_users_to_agreements,
+    add_users_to_digital_contents,
     decayed_score,
-    populate_agreement_metadata,
+    populate_digital_content_metadata,
 )
 from src.utils import helpers
 from src.utils.db_session import get_db_read_replica
 
 
-def get_remixable_agreements(args):
+def get_remixable_digital_contents(args):
     """Gets a list of remixable agreements"""
     db = get_db_read_replica()
     limit = args.get("limit", 25)
     current_user_id = args.get("current_user_id", None)
 
-    StemAgreement = aliased(Agreement)
+    StemAgreement = aliased(DigitalContent)
 
     with db.scoped_session() as session:
         # Subquery to get current agreements that have stems
-        remixable_agreements_subquery = (
-            session.query(Agreement)
-            .join(Stem, Stem.parent_agreement_id == Agreement.agreement_id)
-            .join(StemAgreement, Stem.child_agreement_id == StemAgreement.agreement_id)
+        remixable_digital_contents_subquery = (
+            session.query(DigitalContent)
+            .join(Stem, Stem.parent_digital_content_id == DigitalContent.digital_content_id)
+            .join(StemAgreement, Stem.child_digital_content_id == StemAgreement.digital_content_id)
             .filter(
-                Agreement.is_current == True,
-                Agreement.is_unlisted == False,
-                Agreement.is_delete == False,
+                DigitalContent.is_current == True,
+                DigitalContent.is_unlisted == False,
+                DigitalContent.is_delete == False,
                 StemAgreement.is_current == True,
                 StemAgreement.is_unlisted == False,
                 StemAgreement.is_delete == False,
             )
-            .distinct(Agreement.agreement_id)
+            .distinct(DigitalContent.digital_content_id)
             .subquery()
         )
-        agreement_alias = aliased(Agreement, remixable_agreements_subquery)
+        digital_content_alias = aliased(DigitalContent, remixable_digital_contents_subquery)
 
         count_subquery = session.query(
-            AggregateAgreement.agreement_id.label("id"),
+            AggregateAgreement.digital_content_id.label("id"),
             (AggregateAgreement.repost_count + AggregateAgreement.save_count).label("count"),
         ).subquery()
 
         query = (
             session.query(
-                agreement_alias,
+                digital_content_alias,
                 count_subquery.c["count"],
-                decayed_score(count_subquery.c["count"], agreement_alias.created_at).label(
+                decayed_score(count_subquery.c["count"], digital_content_alias.created_at).label(
                     "score"
                 ),
             )
             .join(
                 count_subquery,
-                count_subquery.c["id"] == agreement_alias.agreement_id,
+                count_subquery.c["id"] == digital_content_alias.digital_content_id,
             )
-            .order_by(desc("score"), desc(agreement_alias.agreement_id))
+            .order_by(desc("score"), desc(digital_content_alias.digital_content_id))
             .limit(limit)
         )
 
@@ -64,19 +64,19 @@ def get_remixable_agreements(args):
 
         agreements = []
         for result in results:
-            agreement = result[0]
+            digital_content = result[0]
             score = result[-1]
-            agreement = helpers.model_to_dictionary(agreement)
-            agreement["score"] = score
-            agreements.append(agreement)
+            digital_content = helpers.model_to_dictionary(digital_content)
+            digital_content["score"] = score
+            agreements.append(digital_content)
 
-        agreement_ids = list(map(lambda agreement: agreement["agreement_id"], agreements))
+        digital_content_ids = list(map(lambda digital_content: digital_content["digital_content_id"], agreements))
 
         # Get user specific data for agreements
-        agreements = populate_agreement_metadata(session, agreement_ids, agreements, current_user_id)
+        agreements = populate_digital_content_metadata(session, digital_content_ids, agreements, current_user_id)
 
         if args.get("with_users", False):
-            add_users_to_agreements(session, agreements, current_user_id)
+            add_users_to_digital_contents(session, agreements, current_user_id)
         else:
             # Remove the user from the agreements
             agreements = [

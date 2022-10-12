@@ -4,15 +4,15 @@ pragma solidity ^0.8.0;
 interface SocialFeatureStorageInterface {
   function addAgreementRepost(
     uint _userId,
-    uint _agreementId) external; 
+    uint _digital_contentId) external; 
 
   function deleteAgreementRepost(
     uint _userId,
-    uint _agreementId) external;
+    uint _digital_contentId) external;
 
   function userRepostedAgreement(
     uint _userId,
-    uint _agreementId) external view returns (bool reposted);
+    uint _digital_contentId) external view returns (bool reposted);
 
   function addContentListRepost(
     uint _userId,

@@ -34,7 +34,7 @@ Resolves a provided Coliving app URL to the API resource it represents
 
 | Name | Type |
 | :------ | :------ |
-| `T` | extends [`Agreement`](../interfaces/Agreement.md) \| [`ContentList`](../interfaces/ContentList.md) \| [`User`](../interfaces/User.md) |
+| `T` | extends [`DigitalContent`](../interfaces/DigitalContent.md) \| [`ContentList`](../interfaces/ContentList.md) \| [`User`](../interfaces/User.md) |
 
 #### Parameters
 

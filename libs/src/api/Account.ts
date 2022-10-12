@@ -343,7 +343,7 @@ export class Account extends Base {
   /**
    * Perform a full-text search. Returns agreements, users, contentLists, albums
    *    with optional user-specific results for each
-   *  - user, agreement, and contentList objects have all same data as returned from standalone endpoints
+   *  - user, digital_content, and contentList objects have all same data as returned from standalone endpoints
    * @param text search query
    * @param kind 'agreements', 'users', 'contentLists', 'albums', 'all'
    * @param limit max # of items to return per list (for pagination)
@@ -357,7 +357,7 @@ export class Account extends Base {
   /**
    * Perform a lighter-weight full-text search. Returns agreements, users, contentLists, albums
    *    with optional user-specific results for each
-   *  - user, agreement, and contentList objects have core data, and agreement & contentList objects
+   *  - user, digital_content, and contentList objects have core data, and digital_content & contentList objects
    *    also return user object
    * @param text search query
    * @param limit max # of items to return per list (for pagination)
@@ -585,7 +585,7 @@ export class Account extends Base {
    * 1.) Creates a solana root wallet
    * 2.) Sends the tokens from the user bank account to the solana wallet
    * 3.) Permits the solana wallet to approve transfer to wormhole
-   * 4.) Transfers to the wrapped live to the sol wormhole contract
+   * 4.) Transfers to the wrapped digitalcoin to the sol wormhole contract
    * 5.) Gathers attestations from wormhole oracles and realizes the tokens on eth
    */
 /*

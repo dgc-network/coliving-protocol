@@ -11,7 +11,7 @@ class AnalyticsProvider {
     }
   }
 
-  async agreement (eventName, userId, properties) {
+  async digital_content (eventName, userId, properties) {
     try {
       await this.amplitudeInstance.logEvent({
         event_type: eventName,

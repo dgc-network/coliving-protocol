@@ -30,7 +30,7 @@ export type ContentListDoc = ContentListRow & {
 export type UserDoc = UserRow & {
   suggest: string
   agreements: AgreementRow[]
-  agreement_count: number
+  digital_content_count: number
   following_ids: number[]
   following_count: number
 }

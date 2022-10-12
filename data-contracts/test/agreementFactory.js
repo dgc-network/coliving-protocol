@@ -35,8 +35,8 @@ contract('AgreementFactory', async (accounts) => {
     await registry.addContract(_constants.agreementFactoryKey, agreementFactory.address)
   })
 
-  it('Should add single agreement', async () => {
-    // add user to associate agreement with
+  it('Should add single digital_content', async () => {
+    // add user to associate digital_content with
     await _lib.addUserAndValidate(
       userFactory,
       testUserId,
@@ -46,7 +46,7 @@ contract('AgreementFactory', async (accounts) => {
       true
     )
 
-    // Add agreement
+    // Add digital_content
     await _lib.addAgreementAndValidate(
       agreementFactory,
       testAgreementId1,
@@ -58,8 +58,8 @@ contract('AgreementFactory', async (accounts) => {
     )
   })
 
-  it('Should fail to add agreement due to lack of ownership of agreement owner', async () => {
-    // add user to associate agreement with
+  it('Should fail to add digital_content due to lack of ownership of digital_content owner', async () => {
+    // add user to associate digital_content with
     await _lib.addUserAndValidate(
       userFactory,
       testUserId,
@@ -69,10 +69,10 @@ contract('AgreementFactory', async (accounts) => {
       true
     )
 
-    // attempt to add agreement from different account
+    // attempt to add digital_content from different account
     let caughtError = false
     try {
-      // Add agreement
+      // Add digital_content
       await _lib.addAgreementAndValidate(
         agreementFactory,
         testAgreementId1,
@@ -93,7 +93,7 @@ contract('AgreementFactory', async (accounts) => {
     }
     assert.isTrue(
       caughtError,
-      "Failed to handle case where calling address tries to add agreement for user it doesn't own"
+      "Failed to handle case where calling address tries to add digital_content for user it doesn't own"
     )
   })
 
@@ -127,7 +127,7 @@ contract('AgreementFactory', async (accounts) => {
   })
 
   it('Should upgrade AgreementStorage used by AgreementFactory', async () => {
-    // add user to associate agreement with
+    // add user to associate digital_content with
     await _lib.addUserAndValidate(
       userFactory,
       testUserId,
@@ -136,7 +136,7 @@ contract('AgreementFactory', async (accounts) => {
       _constants.userHandle1,
       true)
 
-    // add agreement and validate transaction
+    // add digital_content and validate transaction
     await _lib.addAgreementAndValidate(
       agreementFactory,
       testAgreementId1,
@@ -155,7 +155,7 @@ contract('AgreementFactory', async (accounts) => {
     // confirm first AgreementStorage instance is dead
     _lib.assertNoContractExists(agreementStorage.address)
 
-    // add another agreement and validate transaction
+    // add another digital_content and validate transaction
     await _lib.addAgreementAndValidate(
       agreementFactory,
       testAgreementId1,
@@ -166,7 +166,7 @@ contract('AgreementFactory', async (accounts) => {
       _constants.testMultihash.size)
   })
 
-  it('Should update single agreement', async () => {
+  it('Should update single digital_content', async () => {
     // Define initial and update data
     let initialData = {
       userId: testUserId,
@@ -182,7 +182,7 @@ contract('AgreementFactory', async (accounts) => {
       size: 16
     }
 
-    // add user to associate agreement with
+    // add user to associate digital_content with
     await _lib.addUserAndValidate(
       userFactory,
       initialData.userId,
@@ -200,7 +200,7 @@ contract('AgreementFactory', async (accounts) => {
       _constants.userHandle2,
       _constants.isCreatorTrue)
 
-    // Add agreement
+    // Add digital_content
     await _lib.addAgreementAndValidate(
       agreementFactory,
       testAgreementId1,
@@ -225,7 +225,7 @@ contract('AgreementFactory', async (accounts) => {
     assert.isTrue(eventArgs._multihashDigest === updateData.digest, 'Event argument - expect updated digest')
     assert.isTrue(eventArgs._multihashHashFn.toNumber() === updateData.hashFn, 'Event argument - expect updated hash')
     assert.isTrue(eventArgs._multihashSize.toNumber() === updateData.size, 'Event argument - expect updated size')
-    assert.isTrue(eventArgs._agreementOwnerId.toNumber() === updateData.userId, 'Event argument - expect updated userId')
+    assert.isTrue(eventArgs._digital_contentOwnerId.toNumber() === updateData.userId, 'Event argument - expect updated userId')
 
     // Verify updated contents on chain
     let agreementFromChain = await getAgreementFromFactory(
@@ -238,8 +238,8 @@ contract('AgreementFactory', async (accounts) => {
     assert.isTrue(agreementFromChain.multihashSize.toNumber() === updateData.size, 'Expect updated size')
   })
 
-  it('Should fail to update agreement due to lack of ownership of agreement', async () => {
-    // add user to associate agreement with
+  it('Should fail to update digital_content due to lack of ownership of digital_content', async () => {
+    // add user to associate digital_content with
     await _lib.addUserAndValidate(
       userFactory,
       testUserId,
@@ -249,7 +249,7 @@ contract('AgreementFactory', async (accounts) => {
       true
     )
 
-    // Add agreement
+    // Add digital_content
     await _lib.addAgreementAndValidate(
       agreementFactory,
       testAgreementId1,
@@ -260,7 +260,7 @@ contract('AgreementFactory', async (accounts) => {
       _constants.testMultihash.size
     )
 
-    // attempt to update agreement from different account
+    // attempt to update digital_content from different account
     let caughtError = false
     try {
       await _lib.updateAgreement(
@@ -283,11 +283,11 @@ contract('AgreementFactory', async (accounts) => {
     }
     assert.isTrue(
       caughtError,
-      'Failed to handle case where calling address tries to update agreement it does not own'
+      'Failed to handle case where calling address tries to update digital_content it does not own'
     )
   })
 
-  it('Should delete single agreement', async () => {
+  it('Should delete single digital_content', async () => {
     // add user
     await _lib.addUserAndValidate(
       userFactory,
@@ -297,7 +297,7 @@ contract('AgreementFactory', async (accounts) => {
       _constants.userHandle1,
       true)
 
-    // Add agreement
+    // Add digital_content
     await _lib.addAgreementAndValidate(
       agreementFactory,
       testAgreementId1,
@@ -307,14 +307,14 @@ contract('AgreementFactory', async (accounts) => {
       _constants.testMultihash.hashFn,
       _constants.testMultihash.size)
 
-    // delete agreement
+    // delete digital_content
     await _lib.deleteAgreementAndValidate(
       agreementFactory,
       accounts[0],
       testAgreementId1)
   })
 
-  it('Should fail to delete non-existent agreement', async () => {
+  it('Should fail to delete non-existent digital_content', async () => {
     // add user
     await _lib.addUserAndValidate(
       userFactory,
@@ -325,7 +325,7 @@ contract('AgreementFactory', async (accounts) => {
       true
     )
 
-    // attempt to delete non-existent agreement
+    // attempt to delete non-existent digital_content
     let caughtError = false
     try {
       await _lib.deleteAgreementAndValidate(
@@ -344,12 +344,12 @@ contract('AgreementFactory', async (accounts) => {
     }
     assert.isTrue(
       caughtError,
-      'Failed to handle case where calling address tries to delete non-existent agreement'
+      'Failed to handle case where calling address tries to delete non-existent digital_content'
     )
   })
 
-  it('Should fail to delete agreement due to lack of ownership of agreement', async () => {
-    // add user to associate agreement with
+  it('Should fail to delete digital_content due to lack of ownership of digital_content', async () => {
+    // add user to associate digital_content with
     await _lib.addUserAndValidate(
       userFactory,
       testUserId,
@@ -359,7 +359,7 @@ contract('AgreementFactory', async (accounts) => {
       true
     )
 
-    // Add agreement
+    // Add digital_content
     await _lib.addAgreementAndValidate(
       agreementFactory,
       testAgreementId1,
@@ -370,7 +370,7 @@ contract('AgreementFactory', async (accounts) => {
       _constants.testMultihash.size
     )
 
-    // attempt to delete agreement from different account
+    // attempt to delete digital_content from different account
     let caughtError = false
     try {
       await _lib.deleteAgreementAndValidate(
@@ -389,7 +389,7 @@ contract('AgreementFactory', async (accounts) => {
     }
     assert.isTrue(
       caughtError,
-      'Failed to handle case where calling address tries to delete agreement it does not own'
+      'Failed to handle case where calling address tries to delete digital_content it does not own'
     )
   })
 })

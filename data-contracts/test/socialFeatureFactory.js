@@ -107,28 +107,28 @@ contract('SocialFeatureFactory', async (accounts) => {
   /*****************************************************/
 
   it('Should add one AgreementRepost', async () => {
-    // add agreement repost and validate
+    // add digital_content repost and validate
     await _lib.addAgreementRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testAgreementId1)
   })
 
   it('Should add and delete one AgreementRepost', async () => {
-    // add agreement repost and validate
+    // add digital_content repost and validate
     await _lib.addAgreementRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testAgreementId1)
 
-    // delete agreement repost and validate
+    // delete digital_content repost and validate
     await _lib.deleteAgreementRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testAgreementId1)
   })
 
   it('Should confirm duplicate add/delete AgreementReposts throw', async () => {
-    // add agreement repost and validate
+    // add digital_content repost and validate
     await _lib.addAgreementRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testAgreementId1)
 
-    // confirm duplicate agreement repost throws
+    // confirm duplicate digital_content repost throws
     let caughtError = false
     try {
       await _lib.addAgreementRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testAgreementId1)
     } catch (e) {
-      if (e.message.indexOf('agreement repost already exists') >= 0) {
+      if (e.message.indexOf('digital_content repost already exists') >= 0) {
         caughtError = true
       } else {
         // unexpected error - throw normally
@@ -137,15 +137,15 @@ contract('SocialFeatureFactory', async (accounts) => {
     }
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
 
-    // delete agreement repost and validate
+    // delete digital_content repost and validate
     await _lib.deleteAgreementRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testAgreementId1)
 
-    // confirm duplicate agreement repost delete throws
+    // confirm duplicate digital_content repost delete throws
     caughtError = false
     try {
       await _lib.deleteAgreementRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testAgreementId1)
     } catch (e) {
-      if (e.message.indexOf('agreement repost does not exist') >= 0) {
+      if (e.message.indexOf('digital_content repost does not exist') >= 0) {
         caughtError = true
       } else {
         // unexpected error - throw normally
@@ -171,13 +171,13 @@ contract('SocialFeatureFactory', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
   })
 
-  it('Should fail to delete AgreementRepost with non-existent agreement', async () => {
+  it('Should fail to delete AgreementRepost with non-existent digital_content', async () => {
     let caughtError = false
     try {
       await _lib.deleteAgreementRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testAgreementId3)
     } catch (e) {
       // handle expected error
-      if (e.message.indexOf('must provide valid agreement ID') >= 0) {
+      if (e.message.indexOf('must provide valid digital_content ID') >= 0) {
         caughtError = true
       } else {
         // unexpected error - throw normally

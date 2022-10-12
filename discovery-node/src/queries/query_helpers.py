@@ -13,9 +13,9 @@ from src.models.social.aggregate_plays import AggregatePlay
 from src.models.social.follow import Follow
 from src.models.social.repost import Repost, RepostType
 from src.models.social.save import Save, SaveType
-from src.models.agreements.aggregate_agreement import AggregateAgreement
+from src.models.agreements.aggregate_digital_content import AggregateAgreement
 from src.models.agreements.remix import Remix
-from src.models.agreements.agreement import Agreement
+from src.models.agreements.digital_content import DigitalContent
 from src.models.users.aggregate_user import AggregateUser
 from src.models.users.user import User
 from src.models.users.user_bank import UserBankAccount
@@ -106,21 +106,21 @@ def parse_sort_param(base_query, model, whitelist_sort_params):
 
 
 # given list of user ids and corresponding users, populates each user object with:
-#   agreement_count, content_list_count, album_count, follower_count, followee_count, repost_count, supporter_count, supporting_count
+#   digital_content_count, content_list_count, album_count, follower_count, followee_count, repost_count, supporter_count, supporting_count
 #   if current_user_id available, populates does_current_user_follow, followee_follows
 def populate_user_metadata(
-    session, user_ids, users, current_user_id, with_agreement_save_count=False
+    session, user_ids, users, current_user_id, with_digital_content_save_count=False
 ):
     aggregate_user = (
         session.query(
             AggregateUser.user_id,
-            AggregateUser.agreement_count,
+            AggregateUser.digital_content_count,
             AggregateUser.content_list_count,
             AggregateUser.album_count,
             AggregateUser.follower_count,
             AggregateUser.following_count,
             AggregateUser.repost_count,
-            AggregateUser.agreement_save_count,
+            AggregateUser.digital_content_save_count,
             AggregateUser.supporter_count,
             AggregateUser.supporting_count,
         )
@@ -134,45 +134,45 @@ def populate_user_metadata(
     ).filter(UserBankAccount.ethereum_address.in_(user["wallet"] for user in users))
     user_banks_dict = dict(user_banks)
 
-    # build dict of user id --> agreement/contentList/album/follower/followee/repost/agreement save/supporting/supporter counts
+    # build dict of user id --> digital_content/contentList/album/follower/followee/repost/digital_content save/supporting/supporter counts
     count_dict = {
         user_id: {
-            response_name_constants.agreement_count: agreement_count,
+            response_name_constants.digital_content_count: digital_content_count,
             response_name_constants.content_list_count: content_list_count,
             response_name_constants.album_count: album_count,
             response_name_constants.follower_count: follower_count,
             response_name_constants.followee_count: following_count,
             response_name_constants.repost_count: repost_count,
-            response_name_constants.agreement_save_count: agreement_save_count,
+            response_name_constants.digital_content_save_count: digital_content_save_count,
             response_name_constants.supporter_count: supporter_count,
             response_name_constants.supporting_count: supporting_count,
         }
         for (
             user_id,
-            agreement_count,
+            digital_content_count,
             content_list_count,
             album_count,
             follower_count,
             following_count,
             repost_count,
-            agreement_save_count,
+            digital_content_save_count,
             supporter_count,
             supporting_count,
         ) in aggregate_user
     }
 
-    # build dict of user id --> agreement blocknumber
-    agreement_blocknumbers = (
-        session.query(Agreement.owner_id, func.max(Agreement.blocknumber))
+    # build dict of user id --> digital_content blocknumber
+    digital_content_blocknumbers = (
+        session.query(DigitalContent.owner_id, func.max(DigitalContent.blocknumber))
         .filter(
-            Agreement.is_current == True,
-            Agreement.is_delete == False,
-            Agreement.owner_id.in_(user_ids),
+            DigitalContent.is_current == True,
+            DigitalContent.is_delete == False,
+            DigitalContent.owner_id.in_(user_ids),
         )
-        .group_by(Agreement.owner_id)
+        .group_by(DigitalContent.owner_id)
         .all()
     )
-    agreement_blocknumber_dict = dict(agreement_blocknumbers)
+    digital_content_blocknumber_dict = dict(digital_content_blocknumbers)
 
     follows_current_user_set = set()
     current_user_followed_user_ids = {}
@@ -234,8 +234,8 @@ def populate_user_metadata(
     for user in users:
         user_id = user["user_id"]
         user_balance = balance_dict.get(user_id, {})
-        user[response_name_constants.agreement_count] = count_dict.get(user_id, {}).get(
-            response_name_constants.agreement_count, 0
+        user[response_name_constants.digital_content_count] = count_dict.get(user_id, {}).get(
+            response_name_constants.digital_content_count, 0
         )
         user[response_name_constants.content_list_count] = count_dict.get(user_id, {}).get(
             response_name_constants.content_list_count, 0
@@ -252,13 +252,13 @@ def populate_user_metadata(
         user[response_name_constants.repost_count] = count_dict.get(user_id, {}).get(
             response_name_constants.repost_count, 0
         )
-        user[response_name_constants.agreement_blocknumber] = agreement_blocknumber_dict.get(
+        user[response_name_constants.digital_content_blocknumber] = digital_content_blocknumber_dict.get(
             user_id, -1
         )
-        if with_agreement_save_count:
-            user[response_name_constants.agreement_save_count] = count_dict.get(
+        if with_digital_content_save_count:
+            user[response_name_constants.digital_content_save_count] = count_dict.get(
                 user_id, {}
-            ).get(response_name_constants.agreement_save_count, 0)
+            ).get(response_name_constants.digital_content_save_count, 0)
         user[response_name_constants.supporter_count] = count_dict.get(user_id, {}).get(
             response_name_constants.supporter_count, 0
         )
@@ -297,8 +297,8 @@ def populate_user_metadata(
     return users
 
 
-def get_agreement_play_count_dict(session, agreement_ids):
-    if not agreement_ids:
+def get_digital_content_play_count_dict(session, digital_content_ids):
+    if not digital_content_ids:
         return {}
     query = text(
         """
@@ -309,73 +309,73 @@ def get_agreement_play_count_dict(session, agreement_ids):
     )
     query = query.bindparams(bindparam("ids", expanding=True))
 
-    agreement_play_counts = session.execute(query, {"ids": agreement_ids}).fetchall()
-    agreement_play_dict = dict(agreement_play_counts)
-    return agreement_play_dict
+    digital_content_play_counts = session.execute(query, {"ids": digital_content_ids}).fetchall()
+    digital_content_play_dict = dict(digital_content_play_counts)
+    return digital_content_play_dict
 
 
-# given list of agreement ids and corresponding agreements, populates each agreement object with:
+# given list of digital_content ids and corresponding agreements, populates each digital_content object with:
 #   repost_count, save_count
 #   if remix: remix users, has_remix_author_reposted, has_remix_author_saved
 #   if current_user_id available, populates followee_reposts, has_current_user_reposted, has_current_user_saved
-def populate_agreement_metadata(session, agreement_ids, agreements, current_user_id):
-    # build dict of agreement id --> repost count
+def populate_digital_content_metadata(session, digital_content_ids, agreements, current_user_id):
+    # build dict of digital_content id --> repost count
     counts = (
         session.query(
-            AggregateAgreement.agreement_id,
+            AggregateAgreement.digital_content_id,
             AggregateAgreement.repost_count,
             AggregateAgreement.save_count,
         )
         .filter(
-            AggregateAgreement.agreement_id.in_(agreement_ids),
+            AggregateAgreement.digital_content_id.in_(digital_content_ids),
         )
         .all()
     )
 
     count_dict = {
-        agreement_id: {
+        digital_content_id: {
             response_name_constants.repost_count: repost_count,
             response_name_constants.save_count: save_count,
         }
-        for (agreement_id, repost_count, save_count) in counts
+        for (digital_content_id, repost_count, save_count) in counts
     }
 
-    play_count_dict = get_agreement_play_count_dict(session, agreement_ids)
+    play_count_dict = get_digital_content_play_count_dict(session, digital_content_ids)
 
-    remixes = get_agreement_remix_metadata(session, agreements, current_user_id)
+    remixes = get_digital_content_remix_metadata(session, agreements, current_user_id)
 
-    user_reposted_agreement_dict = {}
-    user_saved_agreement_dict = {}
-    followee_agreement_repost_dict = {}
-    followee_agreement_save_dict = {}
+    user_reposted_digital_content_dict = {}
+    user_saved_digital_content_dict = {}
+    followee_digital_content_repost_dict = {}
+    followee_digital_content_save_dict = {}
     if current_user_id:
-        # has current user reposted any of requested agreement ids
+        # has current user reposted any of requested digital_content ids
         user_reposted = (
             session.query(Repost.repost_item_id)
             .filter(
                 Repost.is_current == True,
                 Repost.is_delete == False,
-                Repost.repost_item_id.in_(agreement_ids),
-                Repost.repost_type == RepostType.agreement,
+                Repost.repost_item_id.in_(digital_content_ids),
+                Repost.repost_type == RepostType.digital_content,
                 Repost.user_id == current_user_id,
             )
             .all()
         )
-        user_reposted_agreement_dict = {repost[0]: True for repost in user_reposted}
+        user_reposted_digital_content_dict = {repost[0]: True for repost in user_reposted}
 
-        # has current user saved any of requested agreement ids
-        user_saved_agreements_query = (
+        # has current user saved any of requested digital_content ids
+        user_saved_digital_contents_query = (
             session.query(Save.save_item_id)
             .filter(
                 Save.is_current == True,
                 Save.is_delete == False,
                 Save.user_id == current_user_id,
-                Save.save_item_id.in_(agreement_ids),
-                Save.save_type == SaveType.agreement,
+                Save.save_item_id.in_(digital_content_ids),
+                Save.save_type == SaveType.digital_content,
             )
             .all()
         )
-        user_saved_agreement_dict = {save[0]: True for save in user_saved_agreements_query}
+        user_saved_digital_content_dict = {save[0]: True for save in user_saved_digital_contents_query}
 
         # Get current user's followees.
         followees = session.query(Follow.followee_user_id).filter(
@@ -384,88 +384,88 @@ def populate_agreement_metadata(session, agreement_ids, agreements, current_user
             Follow.is_delete == False,
         )
 
-        # build dict of agreement id --> followee reposts
-        followee_agreement_reposts = session.query(Repost).filter(
+        # build dict of digital_content id --> followee reposts
+        followee_digital_content_reposts = session.query(Repost).filter(
             Repost.is_current == True,
             Repost.is_delete == False,
-            Repost.repost_item_id.in_(agreement_ids),
-            Repost.repost_type == RepostType.agreement,
+            Repost.repost_item_id.in_(digital_content_ids),
+            Repost.repost_type == RepostType.digital_content,
             Repost.user_id.in_(followees),
         )
-        followee_agreement_reposts = helpers.query_result_to_list(followee_agreement_reposts)
-        for agreement_repost in followee_agreement_reposts:
-            if agreement_repost["repost_item_id"] not in followee_agreement_repost_dict:
-                followee_agreement_repost_dict[agreement_repost["repost_item_id"]] = []
-            followee_agreement_repost_dict[agreement_repost["repost_item_id"]].append(
-                agreement_repost
+        followee_digital_content_reposts = helpers.query_result_to_list(followee_digital_content_reposts)
+        for digital_content_repost in followee_digital_content_reposts:
+            if digital_content_repost["repost_item_id"] not in followee_digital_content_repost_dict:
+                followee_digital_content_repost_dict[digital_content_repost["repost_item_id"]] = []
+            followee_digital_content_repost_dict[digital_content_repost["repost_item_id"]].append(
+                digital_content_repost
             )
 
-        # Build dict of agreement id --> followee saves.
-        followee_agreement_saves = session.query(Save).filter(
+        # Build dict of digital_content id --> followee saves.
+        followee_digital_content_saves = session.query(Save).filter(
             Save.is_current == True,
             Save.is_delete == False,
-            Save.save_item_id.in_(agreement_ids),
-            Save.save_type == SaveType.agreement,
+            Save.save_item_id.in_(digital_content_ids),
+            Save.save_type == SaveType.digital_content,
             Save.user_id.in_(followees),
         )
-        followee_agreement_saves = helpers.query_result_to_list(followee_agreement_saves)
-        for agreement_save in followee_agreement_saves:
-            if agreement_save["save_item_id"] not in followee_agreement_save_dict:
-                followee_agreement_save_dict[agreement_save["save_item_id"]] = []
-            followee_agreement_save_dict[agreement_save["save_item_id"]].append(agreement_save)
+        followee_digital_content_saves = helpers.query_result_to_list(followee_digital_content_saves)
+        for digital_content_save in followee_digital_content_saves:
+            if digital_content_save["save_item_id"] not in followee_digital_content_save_dict:
+                followee_digital_content_save_dict[digital_content_save["save_item_id"]] = []
+            followee_digital_content_save_dict[digital_content_save["save_item_id"]].append(digital_content_save)
 
-    for agreement in agreements:
-        agreement_id = agreement["agreement_id"]
-        agreement[response_name_constants.repost_count] = count_dict.get(agreement_id, {}).get(
+    for digital_content in agreements:
+        digital_content_id = digital_content["digital_content_id"]
+        digital_content[response_name_constants.repost_count] = count_dict.get(digital_content_id, {}).get(
             response_name_constants.repost_count, 0
         )
-        agreement[response_name_constants.save_count] = count_dict.get(agreement_id, {}).get(
+        digital_content[response_name_constants.save_count] = count_dict.get(digital_content_id, {}).get(
             response_name_constants.save_count, 0
         )
-        agreement[response_name_constants.play_count] = play_count_dict.get(agreement_id, 0)
+        digital_content[response_name_constants.play_count] = play_count_dict.get(digital_content_id, 0)
         # current user specific
-        agreement[
+        digital_content[
             response_name_constants.followee_reposts
-        ] = followee_agreement_repost_dict.get(agreement_id, [])
-        agreement[response_name_constants.followee_saves] = followee_agreement_save_dict.get(
-            agreement_id, []
+        ] = followee_digital_content_repost_dict.get(digital_content_id, [])
+        digital_content[response_name_constants.followee_saves] = followee_digital_content_save_dict.get(
+            digital_content_id, []
         )
-        agreement[
+        digital_content[
             response_name_constants.has_current_user_reposted
-        ] = user_reposted_agreement_dict.get(agreement_id, False)
-        agreement[
+        ] = user_reposted_digital_content_dict.get(digital_content_id, False)
+        digital_content[
             response_name_constants.has_current_user_saved
-        ] = user_saved_agreement_dict.get(agreement["agreement_id"], False)
+        ] = user_saved_digital_content_dict.get(digital_content["digital_content_id"], False)
 
-        # Populate the remix_of agreements w/ the parent agreement's user and if that user saved/reposted the child
+        # Populate the remix_of agreements w/ the parent digital_content's user and if that user saved/reposted the child
         if (
-            response_name_constants.remix_of in agreement
-            and isinstance(agreement[response_name_constants.remix_of], dict)
-            and agreement["agreement_id"] in remixes
+            response_name_constants.remix_of in digital_content
+            and isinstance(digital_content[response_name_constants.remix_of], dict)
+            and digital_content["digital_content_id"] in remixes
         ):
-            remix_agreements = agreement[response_name_constants.remix_of].get("agreements")
-            if remix_agreements and isinstance(remix_agreements, list):
-                for remix_agreement in remix_agreements:
-                    parent_agreement_id = remix_agreement.get("parent_agreement_id")
-                    if parent_agreement_id in remixes[agreement["agreement_id"]]:
-                        remix_agreement.update(remixes[agreement["agreement_id"]][parent_agreement_id])
+            remix_digital_contents = digital_content[response_name_constants.remix_of].get("agreements")
+            if remix_digital_contents and isinstance(remix_digital_contents, list):
+                for remix_digital_content in remix_digital_contents:
+                    parent_digital_content_id = remix_digital_content.get("parent_digital_content_id")
+                    if parent_digital_content_id in remixes[digital_content["digital_content_id"]]:
+                        remix_digital_content.update(remixes[digital_content["digital_content_id"]][parent_digital_content_id])
         else:
-            agreement[response_name_constants.remix_of] = None
+            digital_content[response_name_constants.remix_of] = None
 
     return agreements
 
 
-def get_agreement_remix_metadata(session, agreements, current_user_id):
+def get_digital_content_remix_metadata(session, agreements, current_user_id):
     """
     Fetches agreements' remix parent owners and if they have saved/reposted the agreements
 
     Args:
         session: (DB) The scoped db session for running db queries
-        agreements: (List<Agreement>) The agreements table objects to fetch remix parent user's information for
+        agreements: (List<DigitalContent>) The agreements table objects to fetch remix parent user's information for
         current_user_id?: (int) Requesting user's id for adding additional metadata to the fetched users
 
     Returns:
-        remixes: (dict) Mapping of child agreement ids to parent agreement ids to parent agreement user's metadata
+        remixes: (dict) Mapping of child digital_content ids to parent digital_content ids to parent digital_content user's metadata
         {
             [childAgreementId] : {
                 [parentAgreementId]: {
@@ -476,19 +476,19 @@ def get_agreement_remix_metadata(session, agreements, current_user_id):
             }
         }
     """
-    agreement_ids_with_remix = []
+    digital_content_ids_with_remix = []
     remix_query = []
-    for agreement in agreements:
-        if response_name_constants.remix_of in agreement:
-            agreement_ids_with_remix.append(agreement["agreement_id"])
+    for digital_content in agreements:
+        if response_name_constants.remix_of in digital_content:
+            digital_content_ids_with_remix.append(digital_content["digital_content_id"])
 
-    if agreement_ids_with_remix:
-        # Fetch the remix parent agreement's user and if that user has saved/favorited the child agreement
+    if digital_content_ids_with_remix:
+        # Fetch the remix parent digital_content's user and if that user has saved/favorited the child digital_content
         remix_query = (
             session.query(
-                Agreement.owner_id.label("agreement_owner_id"),
-                Remix.parent_agreement_id.label("parent_agreement_id"),
-                Remix.child_agreement_id.label("child_agreement_id"),
+                DigitalContent.owner_id.label("digital_content_owner_id"),
+                Remix.parent_digital_content_id.label("parent_digital_content_id"),
+                Remix.child_digital_content_id.label("child_digital_content_id"),
                 Save.is_current.label("has_remix_author_saved"),
                 Repost.is_current.label("has_remix_author_reposted"),
                 User,
@@ -496,32 +496,32 @@ def get_agreement_remix_metadata(session, agreements, current_user_id):
             .join(
                 Remix,
                 and_(
-                    Remix.parent_agreement_id == Agreement.agreement_id,
-                    Remix.child_agreement_id.in_(agreement_ids_with_remix),
+                    Remix.parent_digital_content_id == DigitalContent.digital_content_id,
+                    Remix.child_digital_content_id.in_(digital_content_ids_with_remix),
                 ),
             )
-            .join(User, and_(User.user_id == Agreement.owner_id, User.is_current == True))
+            .join(User, and_(User.user_id == DigitalContent.owner_id, User.is_current == True))
             .outerjoin(
                 Save,
                 and_(
-                    Save.save_item_id == Remix.child_agreement_id,
-                    Save.save_type == SaveType.agreement,
+                    Save.save_item_id == Remix.child_digital_content_id,
+                    Save.save_type == SaveType.digital_content,
                     Save.is_current == True,
                     Save.is_delete == False,
-                    Save.user_id == Agreement.owner_id,
+                    Save.user_id == DigitalContent.owner_id,
                 ),
             )
             .outerjoin(
                 Repost,
                 and_(
-                    Repost.repost_item_id == Remix.child_agreement_id,
-                    Repost.user_id == Agreement.owner_id,
-                    Repost.repost_type == RepostType.agreement,
+                    Repost.repost_item_id == Remix.child_digital_content_id,
+                    Repost.user_id == DigitalContent.owner_id,
+                    Repost.repost_type == RepostType.digital_content,
                     Repost.is_current == True,
                     Repost.is_delete == False,
                 ),
             )
-            .filter(Agreement.is_current == True, Agreement.is_unlisted == False)
+            .filter(DigitalContent.is_current == True, DigitalContent.is_unlisted == False)
             .all()
         )
 
@@ -529,13 +529,13 @@ def get_agreement_remix_metadata(session, agreements, current_user_id):
     remix_parent_owners = {}
     populated_users = {}
 
-    # Build a dict of user id -> user model obj of the remixed agreement's parent owner to dedupe users
+    # Build a dict of user id -> user model obj of the remixed digital_content's parent owner to dedupe users
     for remix_relationship in remix_query:
-        [agreement_owner_id, _, _, _, _, user] = remix_relationship
-        if agreement_owner_id not in remix_parent_owners:
-            remix_parent_owners[agreement_owner_id] = user
+        [digital_content_owner_id, _, _, _, _, user] = remix_relationship
+        if digital_content_owner_id not in remix_parent_owners:
+            remix_parent_owners[digital_content_owner_id] = user
 
-    # populate the user's metadata for the remixed agreement's parent owner
+    # populate the user's metadata for the remixed digital_content's parent owner
     # build `populated_users` as a map of userId -> json user
     if remix_parent_owners:
         [remix_parent_owner_ids, remix_parent_owners] = list(
@@ -553,37 +553,37 @@ def get_agreement_remix_metadata(session, agreements, current_user_id):
         for user in populated_remix_parent_users:
             populated_users[user["user_id"]] = user
 
-    # Build a dict of child agreement id => parent agreement id => { user, has_remix_author_saved, has_remix_author_reposted }
+    # Build a dict of child digital_content id => parent digital_content id => { user, has_remix_author_saved, has_remix_author_reposted }
     for remix_relationship in remix_query:
         [
-            agreement_owner_id,
-            parent_agreement_id,
-            child_agreement_id,
+            digital_content_owner_id,
+            parent_digital_content_id,
+            child_digital_content_id,
             has_remix_author_saved,
             has_remix_author_reposted,
             _,
         ] = remix_relationship
-        if child_agreement_id not in remixes:
-            remixes[child_agreement_id] = {
-                parent_agreement_id: {
+        if child_digital_content_id not in remixes:
+            remixes[child_digital_content_id] = {
+                parent_digital_content_id: {
                     response_name_constants.has_remix_author_saved: bool(
                         has_remix_author_saved
                     ),
                     response_name_constants.has_remix_author_reposted: bool(
                         has_remix_author_reposted
                     ),
-                    "user": populated_users[agreement_owner_id],
+                    "user": populated_users[digital_content_owner_id],
                 }
             }
         else:
-            remixes[child_agreement_id][parent_agreement_id] = {
+            remixes[child_digital_content_id][parent_digital_content_id] = {
                 response_name_constants.has_remix_author_saved: bool(
                     has_remix_author_saved
                 ),
                 response_name_constants.has_remix_author_reposted: bool(
                     has_remix_author_reposted
                 ),
-                "user": populated_users[agreement_owner_id],
+                "user": populated_users[digital_content_owner_id],
             }
 
     return remixes
@@ -708,11 +708,11 @@ def populate_content_list_metadata(
                 content_list_save
             )
 
-    agreement_ids = []
+    digital_content_ids = []
     for contentList in contentLists:
-        for agreement in contentList["content_list_contents"]["agreement_ids"]:
-            agreement_ids.append(agreement["agreement"])
-    play_count_dict = get_agreement_play_count_dict(session, agreement_ids)
+        for digital_content in contentList["content_list_contents"]["digital_content_ids"]:
+            digital_content_ids.append(digital_content["digital_content"])
+    play_count_dict = get_digital_content_play_count_dict(session, digital_content_ids)
 
     for contentList in contentLists:
         content_list_id = contentList["content_list_id"]
@@ -724,8 +724,8 @@ def populate_content_list_metadata(
         ).get(response_name_constants.save_count, 0)
 
         total_play_count = 0
-        for agreement in contentList["content_list_contents"]["agreement_ids"]:
-            total_play_count += play_count_dict.get(agreement["agreement"], 0)
+        for digital_content in contentList["content_list_contents"]["digital_content_ids"]:
+            total_play_count += play_count_dict.get(digital_content["digital_content"], 0)
         contentList[response_name_constants.total_play_count] = total_play_count
 
         # current user specific
@@ -830,10 +830,10 @@ def get_karma(
     is_content_list: bool = False,
     xf: bool = False,
 ):
-    """Gets the total karma for provided ids (agreement or contentList)"""
+    """Gets the total karma for provided ids (digital_content or contentList)"""
 
-    repost_type = RepostType.contentList if is_content_list else RepostType.agreement
-    save_type = SaveType.contentList if is_content_list else SaveType.agreement
+    repost_type = RepostType.contentList if is_content_list else RepostType.digital_content
+    save_type = SaveType.contentList if is_content_list else SaveType.digital_content
 
     reposters = session.query(
         Repost.user_id.label("user_id"), Repost.repost_item_id.label("item_id")
@@ -974,33 +974,33 @@ def get_follower_count_dict(session, user_ids, max_block_number=None):
     return follower_count_dict
 
 
-def get_agreement_play_counts(db, agreement_ids):
-    """Gets the agreement play counts for the given agreement_ids
+def get_digital_content_play_counts(db, digital_content_ids):
+    """Gets the digital_content play counts for the given digital_content_ids
     Args:
         db: sqlalchemy db session instance
-        agreement_ids: list of agreement ids
+        digital_content_ids: list of digital_content ids
 
     Returns:
-        dict of agreement id keys to agreement play count values
+        dict of digital_content id keys to digital_content play count values
     """
 
-    agreement_listen_counts = {}
+    digital_content_listen_counts = {}
 
-    if not agreement_ids:
-        return agreement_listen_counts
+    if not digital_content_ids:
+        return digital_content_listen_counts
 
-    agreement_plays = (
-        db.query(AggregatePlay).filter(AggregatePlay.play_item_id.in_(agreement_ids)).all()
+    digital_content_plays = (
+        db.query(AggregatePlay).filter(AggregatePlay.play_item_id.in_(digital_content_ids)).all()
     )
 
-    for agreement_play in agreement_plays:
-        agreement_listen_counts[agreement_play.play_item_id] = agreement_play.count
+    for digital_content_play in digital_content_plays:
+        digital_content_listen_counts[digital_content_play.play_item_id] = digital_content_play.count
 
-    for agreement_id in agreement_ids:
-        if agreement_id not in agreement_listen_counts:
-            agreement_listen_counts[agreement_id] = 0
+    for digital_content_id in digital_content_ids:
+        if digital_content_id not in digital_content_listen_counts:
+            digital_content_listen_counts[digital_content_id] = 0
 
-    return agreement_listen_counts
+    return digital_content_listen_counts
 
 
 def get_sum_aggregate_plays(db):
@@ -1162,8 +1162,8 @@ def filter_to_content_list_mood(session, mood, query, correlation):
         return query
 
     agreements_subquery = session.query(
-        func.jsonb_array_elements(correlation.c.content_list_contents["agreement_ids"])
-        .op("->>")("agreement")
+        func.jsonb_array_elements(correlation.c.content_list_contents["digital_content_ids"])
+        .op("->>")("digital_content")
         .cast(Integer)
     )
 
@@ -1176,16 +1176,16 @@ def filter_to_content_list_mood(session, mood, query, correlation):
     # Query for the most common mood in a contentList
     dominant_mood_subquery = (
         session.query(
-            Agreement.mood.label("mood"),
-            func.max(Agreement.agreement_id).label("latest"),
-            func.count(Agreement.mood).label("cnt"),
+            DigitalContent.mood.label("mood"),
+            func.max(DigitalContent.digital_content_id).label("latest"),
+            func.count(DigitalContent.mood).label("cnt"),
         )
         .filter(
-            Agreement.is_current == True,
-            Agreement.is_delete == False,
-            Agreement.agreement_id.in_(agreements_subquery),
+            DigitalContent.is_current == True,
+            DigitalContent.is_delete == False,
+            DigitalContent.digital_content_id.in_(agreements_subquery),
         )
-        .group_by(Agreement.mood)
+        .group_by(DigitalContent.mood)
         .order_by(desc("cnt"), desc("latest"))
         .limit(1)
         .subquery()
@@ -1201,16 +1201,16 @@ def filter_to_content_list_mood(session, mood, query, correlation):
     return query.filter(mood_exists_query.exists())
 
 
-def add_users_to_agreements(session, agreements, current_user_id=None):
+def add_users_to_digital_contents(session, agreements, current_user_id=None):
     """
-    Fetches the owners for the agreements and adds them to the agreement dict under the key 'user'
+    Fetches the owners for the agreements and adds them to the digital_content dict under the key 'user'
 
     Args:
         session: (DB) sqlalchemy scoped db session
-        agreements: (Array<agreement dict>) Array of agreements dict
+        agreements: (Array<digital_content dict>) Array of agreements dict
 
     Side Effects:
-        Modifies the agreement dictionaries to add a nested owner user
+        Modifies the digital_content dictionaries to add a nested owner user
 
     Returns: None
     """
@@ -1221,7 +1221,7 @@ def add_users_to_agreements(session, agreements, current_user_id=None):
     else:
         # This shouldn't happen - all agreements should come preloaded with their owners per the relationship
         users = get_unpopulated_users(session, user_ids)
-        logger.warning("add_users_to_agreements() called but agreements have no users")
+        logger.warning("add_users_to_digital_contents() called but agreements have no users")
     set_users_in_cache(users)
     # bundle peripheral info into user results
     populated_users = populate_user_metadata(session, user_ids, users, current_user_id)
@@ -1229,7 +1229,7 @@ def add_users_to_agreements(session, agreements, current_user_id=None):
     for user in populated_users:
         user_map[user["user_id"]] = user
 
-    for agreement in agreements:
-        user = user_map[agreement["owner_id"]]
+    for digital_content in agreements:
+        user = user_map[digital_content["owner_id"]]
         if user:
-            agreement["user"] = user
+            digital_content["user"] = user

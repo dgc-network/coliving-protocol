@@ -13,11 +13,11 @@ from src.models.social.hourly_play_counts import HourlyPlayCount
 from src.models.social.play import Play
 from src.models.social.repost import Repost
 from src.models.social.save import Save
-from src.models.agreements.aggregate_agreement import AggregateAgreement
+from src.models.agreements.aggregate_digital_content import AggregateAgreement
 from src.models.agreements.remix import Remix
 from src.models.agreements.stem import Stem
-from src.models.agreements.agreement import Agreement
-from src.models.agreements.agreement_route import AgreementRoute
+from src.models.agreements.digital_content import DigitalContent
+from src.models.agreements.digital_content_route import AgreementRoute
 from src.models.users.aggregate_user import AggregateUser
 from src.models.users.associated_wallet import AssociatedWallet, WalletChain
 from src.models.users.user import User
@@ -99,14 +99,14 @@ def populate_mock_db(db, entities, block_offset=None):
         follows = entities.get("follows", [])
         reposts = entities.get("reposts", [])
         saves = entities.get("saves", [])
-        agreement_routes = entities.get("agreement_routes", [])
+        digital_content_routes = entities.get("digital_content_routes", [])
         remixes = entities.get("remixes", [])
         stems = entities.get("stems", [])
         challenges = entities.get("challenges", [])
         user_challenges = entities.get("user_challenges", [])
         plays = entities.get("plays", [])
         aggregate_plays = entities.get("aggregate_plays", [])
-        aggregate_agreement = entities.get("aggregate_agreement", [])
+        aggregate_digital_content = entities.get("aggregate_digital_content", [])
         aggregate_monthly_plays = entities.get("aggregate_monthly_plays", [])
         aggregate_user = entities.get("aggregate_user", [])
         indexing_checkpoints = entities.get("indexing_checkpoints", [])
@@ -134,33 +134,33 @@ def populate_mock_db(db, entities, block_offset=None):
                 session.add(block)
                 session.flush()
 
-        for i, agreement_meta in enumerate(agreements):
-            agreement_id = agreement_meta.get("agreement_id", i)
+        for i, digital_content_meta in enumerate(agreements):
+            digital_content_id = digital_content_meta.get("digital_content_id", i)
 
             # mark previous agreements as is_current = False
-            session.query(Agreement).filter(Agreement.is_current == True).filter(
-                Agreement.agreement_id == agreement_id
+            session.query(DigitalContent).filter(DigitalContent.is_current == True).filter(
+                DigitalContent.digital_content_id == digital_content_id
             ).update({"is_current": False})
 
-            agreement = Agreement(
+            digital_content = DigitalContent(
                 blockhash=hex(i + block_offset),
                 blocknumber=i + block_offset,
-                txhash=agreement_meta.get("txhash", str(i + block_offset)),
-                agreement_id=agreement_id,
-                title=agreement_meta.get("title", f"agreement_{i}"),
-                is_current=agreement_meta.get("is_current", True),
-                is_delete=agreement_meta.get("is_delete", False),
-                owner_id=agreement_meta.get("owner_id", 1),
-                route_id=agreement_meta.get("route_id", ""),
-                agreement_segments=agreement_meta.get("agreement_segments", []),
-                tags=agreement_meta.get("tags", None),
-                genre=agreement_meta.get("genre", ""),
-                updated_at=agreement_meta.get("updated_at", datetime.now()),
-                created_at=agreement_meta.get("created_at", datetime.now()),
-                release_date=agreement_meta.get("release_date", None),
-                is_unlisted=agreement_meta.get("is_unlisted", False),
+                txhash=digital_content_meta.get("txhash", str(i + block_offset)),
+                digital_content_id=digital_content_id,
+                title=digital_content_meta.get("title", f"digital_content_{i}"),
+                is_current=digital_content_meta.get("is_current", True),
+                is_delete=digital_content_meta.get("is_delete", False),
+                owner_id=digital_content_meta.get("owner_id", 1),
+                route_id=digital_content_meta.get("route_id", ""),
+                digital_content_segments=digital_content_meta.get("digital_content_segments", []),
+                tags=digital_content_meta.get("tags", None),
+                genre=digital_content_meta.get("genre", ""),
+                updated_at=digital_content_meta.get("updated_at", datetime.now()),
+                created_at=digital_content_meta.get("created_at", datetime.now()),
+                release_date=digital_content_meta.get("release_date", None),
+                is_unlisted=digital_content_meta.get("is_unlisted", False),
             )
-            session.add(agreement)
+            session.add(digital_content)
         for i, content_list_meta in enumerate(contentLists):
             contentList = ContentList(
                 blockhash=hex(i + block_offset),
@@ -174,7 +174,7 @@ def populate_mock_db(db, entities, block_offset=None):
                 is_private=content_list_meta.get("is_private", False),
                 content_list_name=content_list_meta.get("content_list_name", f"content_list_{i}"),
                 content_list_contents=content_list_meta.get(
-                    "content_list_contents", {"agreement_ids": []}
+                    "content_list_contents", {"digital_content_ids": []}
                 ),
                 content_list_image_multihash=content_list_meta.get(
                     "content_list_image_multihash", ""
@@ -237,7 +237,7 @@ def populate_mock_db(db, entities, block_offset=None):
                 txhash=repost_meta.get("txhash", str(i + block_offset)),
                 user_id=repost_meta.get("user_id", i + 1),
                 repost_item_id=repost_meta.get("repost_item_id", i),
-                repost_type=repost_meta.get("repost_type", "agreement"),
+                repost_type=repost_meta.get("repost_type", "digital_content"),
                 is_current=repost_meta.get("is_current", True),
                 is_delete=repost_meta.get("is_delete", False),
                 created_at=repost_meta.get("created_at", datetime.now()),
@@ -250,7 +250,7 @@ def populate_mock_db(db, entities, block_offset=None):
                 txhash=save_meta.get("txhash", str(i + block_offset)),
                 user_id=save_meta.get("user_id", i + 1),
                 save_item_id=save_meta.get("save_item_id", i),
-                save_type=save_meta.get("save_type", "agreement"),
+                save_type=save_meta.get("save_type", "digital_content"),
                 is_current=save_meta.get("is_current", True),
                 is_delete=save_meta.get("is_delete", False),
                 created_at=save_meta.get("created_at", datetime.now()),
@@ -277,13 +277,13 @@ def populate_mock_db(db, entities, block_offset=None):
             )
             session.add(aggregate_play)
 
-        for i, aggregate_agreement_meta in enumerate(aggregate_agreement):
-            aggregate_agreement = AggregateAgreement(
-                agreement_id=aggregate_agreement_meta.get("agreement_id", i),
-                repost_count=aggregate_agreement_meta.get("repost_count", 0),
-                save_count=aggregate_agreement_meta.get("save_count", 0),
+        for i, aggregate_digital_content_meta in enumerate(aggregate_digital_content):
+            aggregate_digital_content = AggregateAgreement(
+                digital_content_id=aggregate_digital_content_meta.get("digital_content_id", i),
+                repost_count=aggregate_digital_content_meta.get("repost_count", 0),
+                save_count=aggregate_digital_content_meta.get("save_count", 0),
             )
-            session.add(aggregate_agreement)
+            session.add(aggregate_digital_content)
 
         for i, aggregate_monthly_play_meta in enumerate(aggregate_monthly_plays):
             aggregate_monthly_play = AggregateMonthlyPlay(
@@ -296,13 +296,13 @@ def populate_mock_db(db, entities, block_offset=None):
         for i, aggregate_user_meta in enumerate(aggregate_user):
             user = AggregateUser(
                 user_id=aggregate_user_meta.get("user_id", i),
-                agreement_count=aggregate_user_meta.get("agreement_count", 0),
+                digital_content_count=aggregate_user_meta.get("digital_content_count", 0),
                 content_list_count=aggregate_user_meta.get("content_list_count", 0),
                 album_count=aggregate_user_meta.get("album_count", 0),
                 follower_count=aggregate_user_meta.get("follower_count", 0),
                 following_count=aggregate_user_meta.get("following_count", 0),
                 repost_count=aggregate_user_meta.get("repost_count", 0),
-                agreement_save_count=aggregate_user_meta.get("agreement_save_count", 0),
+                digital_content_save_count=aggregate_user_meta.get("digital_content_save_count", 0),
             )
             session.add(user)
 
@@ -335,14 +335,14 @@ def populate_mock_db(db, entities, block_offset=None):
                 )
                 session.add(indexing_checkpoint)
 
-        for i, route_meta in enumerate(agreement_routes):
+        for i, route_meta in enumerate(digital_content_routes):
             route = AgreementRoute(
                 slug=route_meta.get("slug", ""),
                 title_slug=route_meta.get("title_slug", ""),
                 blockhash=hex(i + block_offset),
                 blocknumber=route_meta.get("blocknumber", i + block_offset),
                 owner_id=route_meta.get("owner_id", i + 1),
-                agreement_id=route_meta.get("agreement_id", i + 1),
+                digital_content_id=route_meta.get("digital_content_id", i + 1),
                 is_current=route_meta.get("is_current", True),
                 txhash=route_meta.get("txhash", str(i + 1)),
                 collision_id=route_meta.get("collision_id", 0),
@@ -351,14 +351,14 @@ def populate_mock_db(db, entities, block_offset=None):
 
         for i, remix_meta in enumerate(remixes):
             remix = Remix(
-                parent_agreement_id=remix_meta.get("parent_agreement_id", i),
-                child_agreement_id=remix_meta.get("child_agreement_id", i + 1),
+                parent_digital_content_id=remix_meta.get("parent_digital_content_id", i),
+                child_digital_content_id=remix_meta.get("child_digital_content_id", i + 1),
             )
             session.add(remix)
         for i, stems_meta in enumerate(stems):
             stem = Stem(
-                parent_agreement_id=stems_meta.get("parent_agreement_id", i),
-                child_agreement_id=stems_meta.get("child_agreement_id", i + 1),
+                parent_digital_content_id=stems_meta.get("parent_digital_content_id", i),
+                child_digital_content_id=stems_meta.get("child_digital_content_id", i + 1),
             )
             session.add(stem)
 

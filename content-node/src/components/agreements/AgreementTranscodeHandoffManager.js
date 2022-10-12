@@ -41,8 +41,8 @@ class AgreementTranscodeHandoffManager {
    * Wrapper function to:
    * 1. Select random Content Nodes in the network
    * 2. Iteratively:
-   *    1. Send the uploaded agreement artifact to one of the randomly selected SPs
-   *    2. Have the randomly selected SP transcode and segment the uploaded agreement artifact
+   *    1. Send the uploaded digital_content artifact to one of the randomly selected SPs
+   *    2. Have the randomly selected SP transcode and segment the uploaded digital_content artifact
    *    3. Poll the randomly selected SP to see if the transcoding is complete
    *    4. Fetch and write the files to current node disk if transcode is complete
    *
@@ -83,7 +83,7 @@ class AgreementTranscodeHandoffManager {
     for (const sp of sps) {
       decisionTree.sp = sp
       try {
-        logger.info(`Handing agreement off to sp=${sp}`)
+        logger.info(`Handing digital_content off to sp=${sp}`)
         decisionTree.state = HAND_OFF_STATES.HANDING_OFF_TO_SP
 
         const transcodeAndSegmentUUID =
@@ -124,7 +124,7 @@ class AgreementTranscodeHandoffManager {
         break
       } catch (e) {
         logger.warn(
-          `Could not hand off agreement: state=${JSON.stringify(
+          `Could not hand off digital_content: state=${JSON.stringify(
             decisionTree
           )} err=${e.toString()}`
         )
@@ -165,9 +165,9 @@ class AgreementTranscodeHandoffManager {
   }
 
   /**
-   * Sends the uploaded agreement artifact to the passed in sp
+   * Sends the uploaded digital_content artifact to the passed in sp
    * @param {Object} param
-   * @param {string} param.sp the Content Node to hand off the agreement to
+   * @param {string} param.sp the Content Node to hand off the digital_content to
    * @param {Object} param.req request object with the params {fileDir, fileName, fileNameNoExtension}
    * @returns the transcoding job uuid
    */
@@ -252,7 +252,7 @@ class AgreementTranscodeHandoffManager {
    * Fetches files from the Content Node that handled transcoding, and writes to current
    * node's filesystem.
    * @param {Object} param
-   * @param {string} param.fileNameNoExtension the uploaded agreement artifact file name without the extension
+   * @param {string} param.fileNameNoExtension the uploaded digital_content artifact file name without the extension
    * @param {string} param.transcodeFilePath the transcode file path
    * @param {string[]} param.segmentFileNames an array of segment file names
    * @param {string} param.m3u8FilePath the m3u8 file path
@@ -330,8 +330,8 @@ class AgreementTranscodeHandoffManager {
    * @param {Object} param
    * @param {string} param.sp the Content Node to send the transcode and segment request to
    * @param {string} param.fileDir the file directory that holds the transcode, segments, and m3u8 file paths
-   * @param {string} param.fileName tthe uploaded agreement artifact file name
-   * @param {string} param.fileNameNoExtension the uploaded agreement artifact file name without the extension
+   * @param {string} param.fileName tthe uploaded digital_content artifact file name
+   * @param {string} param.fileNameNoExtension the uploaded digital_content artifact file name without the extension
    * @returns the transcode and segment job uuid used for polling
    */
   static async sendTranscodeAndSegmentRequest({
@@ -382,7 +382,7 @@ class AgreementTranscodeHandoffManager {
 
   /**
    * Creates the form data necessary to send over transcode and segment request
-   * @param {string} pathToFile path to the uploaded agreement artifact
+   * @param {string} pathToFile path to the uploaded digital_content artifact
    * @returns formData object passed in axios to send a transcode and segment request
    */
   static async createFormData(pathToFile) {
@@ -412,8 +412,8 @@ class AgreementTranscodeHandoffManager {
   /**
    * Gets the status of the transcode processing
    * @param {Object} param
-   * @param {string} param.sp the current sp selected for agreement processing
-   * @param {string} param.uuid the uuid of the agreement transcoding task
+   * @param {string} param.sp the current sp selected for digital_content processing
+   * @param {string} param.uuid the uuid of the digital_content transcoding task
    * @returns the status, and the success or failed response if the task is complete
    */
   static async fetchTranscodeProcessingStatus({ sp, uuid }) {
@@ -432,7 +432,7 @@ class AgreementTranscodeHandoffManager {
             timeout: FETCH_PROCESSING_STATUS_TIMEOUT_MS
           })
         },
-        logLabel: 'fetch agreement content processing status'
+        logLabel: 'fetch digital_content content processing status'
       })
 
     return body.data
@@ -442,7 +442,7 @@ class AgreementTranscodeHandoffManager {
    * Fetches a segment from a sp
    * @param {string} sp the endpoint of the Content Node to fetch the segment from
    * @param {string} segmentFileName the filename of the segment
-   * @param {string} fileNameNoExtension the file name of the uploaded agreement artifact without extension
+   * @param {string} fileNameNoExtension the file name of the uploaded digital_content artifact without extension
    * @returns the fetched segment
    */
   static async fetchSegment(sp, segmentFileName, fileNameNoExtension) {
@@ -475,7 +475,7 @@ class AgreementTranscodeHandoffManager {
   /**
    * Fetches a transcode
    * @param {string} sp the endpoint of the Content Node to fetch the transcode from
-   * @param {string} fileNameNoExtension the file name of the uploaded agreement artifact without extension
+   * @param {string} fileNameNoExtension the file name of the uploaded digital_content artifact without extension
    * @returns
    */
   static async fetchTranscode(sp, fileNameNoExtension) {
@@ -509,7 +509,7 @@ class AgreementTranscodeHandoffManager {
   /**
    * Fetches a m3u8
    * @param {string} sp the endpoint of the Content Node to fetch the transcode from
-   * @param {string} fileNameNoExtension the file name of the uploaded agreement artifact without extension
+   * @param {string} fileNameNoExtension the file name of the uploaded digital_content artifact without extension
    * @returns
    */
   static async fetchM3U8File(sp, fileNameNoExtension) {

@@ -17,8 +17,8 @@ depends_on = None
 
 
 def upgrade():
-    # Add an index for agreement owner id on the agreements table
-    op.create_index(op.f("agreement_owner_id_idx"), "agreements", ["owner_id"], unique=False)
+    # Add an index for digital_content owner id on the agreements table
+    op.create_index(op.f("digital_content_owner_id_idx"), "agreements", ["owner_id"], unique=False)
 
     # Update the index on the aggregate_plays materialized view to be unique for concurrent updates
     connection = op.get_bind()
@@ -31,8 +31,8 @@ def upgrade():
 
 
 def downgrade():
-    # Drop the index for agreement owner id
-    op.drop_index(op.f("agreement_owner_id_idx"), table_name="agreements")
+    # Drop the index for digital_content owner id
+    op.drop_index(op.f("digital_content_owner_id_idx"), table_name="agreements")
     connection = op.get_bind()
 
     # Update the index on the aggregate_plays materialized view to not be unique

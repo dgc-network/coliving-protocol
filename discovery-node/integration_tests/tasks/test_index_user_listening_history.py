@@ -33,9 +33,9 @@ def test_index_user_listening_history_populate(app):
     # run
     entities = {
         "agreements": [
-            {"agreement_id": 1, "title": "agreement 1"},
-            {"agreement_id": 2, "title": "agreement 2"},
-            {"agreement_id": 3, "title": "agreement 3"},
+            {"digital_content_id": 1, "title": "digital_content 1"},
+            {"digital_content_id": 2, "title": "digital_content 2"},
+            {"digital_content_id": 3, "title": "digital_content 3"},
         ],
         "users": [
             {"user_id": 1, "handle": "user-1"},
@@ -68,23 +68,23 @@ def test_index_user_listening_history_populate(app):
 
         assert results[0].user_id == 1
         assert len(results[0].listening_history) == 1
-        assert results[0].listening_history[0]["agreement_id"] == 1
+        assert results[0].listening_history[0]["digital_content_id"] == 1
         assert results[0].listening_history[0]["timestamp"] == str(TIMESTAMP_1)
 
         assert results[1].user_id == 2
         assert len(results[1].listening_history) == 2
-        assert results[1].listening_history[0]["agreement_id"] == 2
+        assert results[1].listening_history[0]["digital_content_id"] == 2
         assert results[1].listening_history[0]["timestamp"] == str(TIMESTAMP_2)
-        assert results[1].listening_history[1]["agreement_id"] == 1
+        assert results[1].listening_history[1]["digital_content_id"] == 1
         assert results[1].listening_history[1]["timestamp"] == str(TIMESTAMP_1)
 
         assert results[2].user_id == 3
         assert len(results[2].listening_history) == 3
-        assert results[2].listening_history[0]["agreement_id"] == 1
+        assert results[2].listening_history[0]["digital_content_id"] == 1
         assert results[2].listening_history[0]["timestamp"] == str(TIMESTAMP_3)
-        assert results[2].listening_history[1]["agreement_id"] == 3
+        assert results[2].listening_history[1]["digital_content_id"] == 3
         assert results[2].listening_history[1]["timestamp"] == str(TIMESTAMP_2)
-        assert results[2].listening_history[2]["agreement_id"] == 2
+        assert results[2].listening_history[2]["digital_content_id"] == 2
         assert results[2].listening_history[2]["timestamp"] == str(TIMESTAMP_1)
 
         new_checkpoint: IndexingCheckpoint = (
@@ -106,10 +106,10 @@ def test_index_user_listening_history_update(app):
     # run
     entities = {
         "agreements": [
-            {"agreement_id": 1, "title": "agreement 1"},
-            {"agreement_id": 2, "title": "agreement 2"},
-            {"agreement_id": 3, "title": "agreement 3"},
-            {"agreement_id": 4, "title": "agreement 3"},
+            {"digital_content_id": 1, "title": "digital_content 1"},
+            {"digital_content_id": 2, "title": "digital_content 2"},
+            {"digital_content_id": 3, "title": "digital_content 3"},
+            {"digital_content_id": 4, "title": "digital_content 3"},
         ],
         "users": [
             {"user_id": 1, "handle": "user-1"},
@@ -120,21 +120,21 @@ def test_index_user_listening_history_update(app):
         "user_listening_history": [
             {
                 "user_id": 1,
-                "listening_history": [{"timestamp": str(TIMESTAMP_1), "agreement_id": 1}],
+                "listening_history": [{"timestamp": str(TIMESTAMP_1), "digital_content_id": 1}],
             },
             {
                 "user_id": 2,
                 "listening_history": [
-                    {"timestamp": str(TIMESTAMP_2), "agreement_id": 2},
-                    {"timestamp": str(TIMESTAMP_1), "agreement_id": 1},
+                    {"timestamp": str(TIMESTAMP_2), "digital_content_id": 2},
+                    {"timestamp": str(TIMESTAMP_1), "digital_content_id": 1},
                 ],
             },
             {
                 "user_id": 3,
                 "listening_history": [
-                    {"timestamp": str(TIMESTAMP_3), "agreement_id": 1},
-                    {"timestamp": str(TIMESTAMP_2), "agreement_id": 3},
-                    {"timestamp": str(TIMESTAMP_1), "agreement_id": 2},
+                    {"timestamp": str(TIMESTAMP_3), "digital_content_id": 1},
+                    {"timestamp": str(TIMESTAMP_2), "digital_content_id": 3},
+                    {"timestamp": str(TIMESTAMP_1), "digital_content_id": 2},
                 ],
             },
         ],
@@ -151,12 +151,12 @@ def test_index_user_listening_history_update(app):
                 "item_id": 2,
                 "user_id": 1,
                 "created_at": TIMESTAMP_3,
-            },  # listen to new agreement
+            },  # listen to new digital_content
             {
                 "item_id": 1,
                 "user_id": 1,
                 "created_at": TIMESTAMP_4,
-            },  # re-listen to existing agreement, dedupe
+            },  # re-listen to existing digital_content, dedupe
         ]
         + [
             # new user listens to many agreements
@@ -188,31 +188,31 @@ def test_index_user_listening_history_update(app):
 
         assert results[0].user_id == 1
         assert len(results[0].listening_history) == 2
-        assert results[0].listening_history[0]["agreement_id"] == 1
+        assert results[0].listening_history[0]["digital_content_id"] == 1
         assert results[0].listening_history[0]["timestamp"] == str(TIMESTAMP_4)
-        assert results[0].listening_history[1]["agreement_id"] == 2
+        assert results[0].listening_history[1]["digital_content_id"] == 2
         assert results[0].listening_history[1]["timestamp"] == str(TIMESTAMP_3)
 
         assert results[1].user_id == 2
         assert len(results[1].listening_history) == 2
-        assert results[1].listening_history[0]["agreement_id"] == 2
+        assert results[1].listening_history[0]["digital_content_id"] == 2
         assert results[1].listening_history[0]["timestamp"] == str(TIMESTAMP_2)
-        assert results[1].listening_history[1]["agreement_id"] == 1
+        assert results[1].listening_history[1]["digital_content_id"] == 1
         assert results[1].listening_history[1]["timestamp"] == str(TIMESTAMP_1)
 
         assert results[2].user_id == 3
         assert len(results[2].listening_history) == 3
-        assert results[2].listening_history[0]["agreement_id"] == 1
+        assert results[2].listening_history[0]["digital_content_id"] == 1
         assert results[2].listening_history[0]["timestamp"] == str(TIMESTAMP_3)
-        assert results[2].listening_history[1]["agreement_id"] == 3
+        assert results[2].listening_history[1]["digital_content_id"] == 3
         assert results[2].listening_history[1]["timestamp"] == str(TIMESTAMP_2)
-        assert results[2].listening_history[2]["agreement_id"] == 2
+        assert results[2].listening_history[2]["digital_content_id"] == 2
         assert results[2].listening_history[2]["timestamp"] == str(TIMESTAMP_1)
 
         assert results[3].user_id == 4
         assert len(results[3].listening_history) == 1000
         for i in range(1000):
-            assert results[3].listening_history[i]["agreement_id"] == 2000 - i
+            assert results[3].listening_history[i]["digital_content_id"] == 2000 - i
             assert results[3].listening_history[i]["timestamp"] == str(
                 datetime.fromisoformat("2014-06-26 07:00:00") - timedelta(hours=i)
             )
@@ -237,10 +237,10 @@ def test_index_user_listening_history_no_update(app):
     # run
     entities = {
         "agreements": [
-            {"agreement_id": 1, "title": "agreement 1"},
-            {"agreement_id": 2, "title": "agreement 2"},
-            {"agreement_id": 3, "title": "agreement 3"},
-            {"agreement_id": 4, "title": "agreement 3"},
+            {"digital_content_id": 1, "title": "digital_content 1"},
+            {"digital_content_id": 2, "title": "digital_content 2"},
+            {"digital_content_id": 3, "title": "digital_content 3"},
+            {"digital_content_id": 4, "title": "digital_content 3"},
         ],
         "users": [
             {"user_id": 1, "handle": "user-1"},
@@ -251,21 +251,21 @@ def test_index_user_listening_history_no_update(app):
         "user_listening_history": [
             {
                 "user_id": 1,
-                "listening_history": [{"timestamp": str(TIMESTAMP_1), "agreement_id": 1}],
+                "listening_history": [{"timestamp": str(TIMESTAMP_1), "digital_content_id": 1}],
             },
             {
                 "user_id": 2,
                 "listening_history": [
-                    {"timestamp": str(TIMESTAMP_2), "agreement_id": 2},
-                    {"timestamp": str(TIMESTAMP_1), "agreement_id": 1},
+                    {"timestamp": str(TIMESTAMP_2), "digital_content_id": 2},
+                    {"timestamp": str(TIMESTAMP_1), "digital_content_id": 1},
                 ],
             },
             {
                 "user_id": 3,
                 "listening_history": [
-                    {"timestamp": str(TIMESTAMP_3), "agreement_id": 1},
-                    {"timestamp": str(TIMESTAMP_2), "agreement_id": 3},
-                    {"timestamp": str(TIMESTAMP_1), "agreement_id": 2},
+                    {"timestamp": str(TIMESTAMP_3), "digital_content_id": 1},
+                    {"timestamp": str(TIMESTAMP_2), "digital_content_id": 3},
+                    {"timestamp": str(TIMESTAMP_1), "digital_content_id": 2},
                 ],
             },
         ],
@@ -301,23 +301,23 @@ def test_index_user_listening_history_no_update(app):
 
         assert results[0].user_id == 1
         assert len(results[0].listening_history) == 1
-        assert results[0].listening_history[0]["agreement_id"] == 1
+        assert results[0].listening_history[0]["digital_content_id"] == 1
         assert results[0].listening_history[0]["timestamp"] == str(TIMESTAMP_1)
 
         assert results[1].user_id == 2
         assert len(results[1].listening_history) == 2
-        assert results[1].listening_history[0]["agreement_id"] == 2
+        assert results[1].listening_history[0]["digital_content_id"] == 2
         assert results[1].listening_history[0]["timestamp"] == str(TIMESTAMP_2)
-        assert results[1].listening_history[1]["agreement_id"] == 1
+        assert results[1].listening_history[1]["digital_content_id"] == 1
         assert results[1].listening_history[1]["timestamp"] == str(TIMESTAMP_1)
 
         assert results[2].user_id == 3
         assert len(results[2].listening_history) == 3
-        assert results[2].listening_history[0]["agreement_id"] == 1
+        assert results[2].listening_history[0]["digital_content_id"] == 1
         assert results[2].listening_history[0]["timestamp"] == str(TIMESTAMP_3)
-        assert results[2].listening_history[1]["agreement_id"] == 3
+        assert results[2].listening_history[1]["digital_content_id"] == 3
         assert results[2].listening_history[1]["timestamp"] == str(TIMESTAMP_2)
-        assert results[2].listening_history[2]["agreement_id"] == 2
+        assert results[2].listening_history[2]["digital_content_id"] == 2
         assert results[2].listening_history[2]["timestamp"] == str(TIMESTAMP_1)
 
         new_checkpoint: IndexingCheckpoint = (

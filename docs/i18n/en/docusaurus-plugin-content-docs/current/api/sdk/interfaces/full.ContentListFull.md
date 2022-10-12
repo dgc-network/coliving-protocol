@@ -167,9 +167,9 @@ ___
 
 ___
 
-### agreement\_count
+### digital_content\_count
 
- **agreement\_count**: `number`
+ **digital_content\_count**: `number`
 
 **`memberof`** ContentListFull
 

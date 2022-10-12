@@ -5,7 +5,7 @@ from src.models.base import Base
 t_aggregate_interval_plays = Table(
     "aggregate_interval_plays",
     Base.metadata,
-    Column("agreement_id", Integer, index=True),
+    Column("digital_content_id", Integer, index=True),
     Column("genre", String),
     Column("created_at", DateTime),
     Column("week_listen_counts", BigInteger, index=True),

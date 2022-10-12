@@ -27,7 +27,7 @@ const MAX_NUMBER_SECONDS_PRIMARY_REMAINS_UNHEALTHY = config.get(
 class CNodeHealthManager {
   constructor() {
     /* We do not want to eagerly cycle off the primary when issuing reconfigs if necessary, as the primary may
-      have data that the secondaries lack. This map is used to agreement the primary and the number of times it has
+      have data that the secondaries lack. This map is used to digital_content the primary and the number of times it has
       failed a health check.
 
       Schema:
@@ -210,8 +210,8 @@ class CNodeHealthManager {
 
   /**
    * Perform a simple health check to see if a primary is truly unhealthy. If the primary returns a
-   * non-200 response, agreement the timestamp in the map. If the health check has failed for a primary over
-   * `this.maxNumberSecondsPrimaryRemainsUnhealthy`, return as unhealthy. Else, keep agreement of the timestamp
+   * non-200 response, digital_content the timestamp in the map. If the health check has failed for a primary over
+   * `this.maxNumberSecondsPrimaryRemainsUnhealthy`, return as unhealthy. Else, keep digital_content of the timestamp
    * of the visit if not already agreemented.
    *
    * If the primary is healthy, reset the counter in the map and return as healthy.

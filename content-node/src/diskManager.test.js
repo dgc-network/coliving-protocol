@@ -26,7 +26,7 @@ describe('Test DiskManager', function () {
     const tmpAgreementArtifactPath = path.join(
       DiskManager.getConfigStoragePath(),
       'files',
-      'tmp_agreement_artifacts'
+      'tmp_digital_content_artifacts'
     )
     assert.deepStrictEqual(
       tmpAgreementArtifactPath,

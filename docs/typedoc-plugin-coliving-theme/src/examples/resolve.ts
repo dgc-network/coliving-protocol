@@ -1,5 +1,5 @@
 export const resolve = `
-const agreement = await colivingSdk.resolve<Agreement>({
+const digital_content = await colivingSdk.resolve<DigitalContent>({
   url: "https://coliving.lol/camouflybeats/hypermantra-86216",
 });
 `;

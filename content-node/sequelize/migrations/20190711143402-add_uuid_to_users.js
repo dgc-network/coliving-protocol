@@ -29,7 +29,7 @@ async function createColumns (queryInterface, Sequelize, t) {
     unique: true
   }, { transaction: t })
 
-  await queryInterface.addColumn('Agreements', 'agreementUUID', {
+  await queryInterface.addColumn('Agreements', 'digital_content_UUID', {
     type: Sequelize.UUID,
     unique: true
   }, { transaction: t })
@@ -103,13 +103,13 @@ async function createColumns (queryInterface, Sequelize, t) {
     }
   }, { transaction: t })
 
-  await queryInterface.addColumn('Files', 'agreementUUID', {
+  await queryInterface.addColumn('Files', 'digital_content_UUID', {
     type: Sequelize.UUID,
     onDelete: 'RESTRICT',
     references: {
       model: 'Agreements',
-      key: 'agreementUUID',
-      as: 'agreementUUID'
+      key: 'digital_content_UUID',
+      as: 'digital_content_UUID'
     }
   }, { transaction: t })
 
@@ -187,8 +187,8 @@ async function insertUUIDs (queryInterface, t) {
   }
 
   const agreements = (await queryInterface.sequelize.query(`SELECT * FROM "Agreements";`, { transaction: t }))[0]
-  for (let agreement of agreements) {
-    await queryInterface.sequelize.query(`UPDATE "Agreements" SET "agreementUUID" = '${uuid()}' WHERE "id" = '${agreement.id}'`, { transaction: t })
+  for (let digital_content of agreements) {
+    await queryInterface.sequelize.query(`UPDATE "Agreements" SET "digital_content_UUID" = '${uuid()}' WHERE "id" = '${digital_content.id}'`, { transaction: t })
   }
 
   const files = (await queryInterface.sequelize.query(`SELECT * FROM "Files";`, { transaction: t }))[0]
@@ -270,14 +270,14 @@ async function insertUUIDs (queryInterface, t) {
 
   await queryInterface.sequelize.query(`
     WITH "m" as (
-      SELECT f."id", t."agreementUUID"
+      SELECT f."id", t."digital_content_UUID"
       FROM "Files" f
       INNER JOIN "AgreementFile" tf ON f."id" = tf."FileId"
       INNER JOIN "Agreements" t ON tf."AgreementId" = t."id"
     )
 
     UPDATE "Files"
-    SET "agreementUUID" = m."agreementUUID"
+    SET "digital_content_UUID" = m."digital_content_UUID"
     FROM "m"
     WHERE "Files"."id" = m."id"
   `, { transaction: t })
@@ -312,7 +312,7 @@ async function addNotNullConstraints (queryInterface, Sequelize, t) {
     allowNull: false
   }, { transaction: t })
 
-  await queryInterface.changeColumn('Agreements', 'agreementUUID', {
+  await queryInterface.changeColumn('Agreements', 'digital_content_UUID', {
     type: Sequelize.UUID,
     allowNull: false,
     primaryKey: true

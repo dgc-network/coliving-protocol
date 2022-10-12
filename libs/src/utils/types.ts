@@ -50,7 +50,7 @@ export type UserMetadata = {
   content_list_count: number
   profile_picture: Nullable<CID>
   repost_count: number
-  agreement_count: number
+  digital_content_count: number
   cover_photo_sizes: Nullable<CID>
   profile_picture_sizes: Nullable<CID>
   metadata_multihash: Nullable<CID>
@@ -59,7 +59,7 @@ export type UserMetadata = {
 
   // Only present on the "current" account
   does_follow_current_user?: boolean
-  agreement_save_count?: number
+  digital_content_save_count?: number
   twitter_handle?: string
   instagram_handle?: string
   tiktok_handle?: string
@@ -86,7 +86,7 @@ export type AgreementMetadata = {
   blocknumber: number
   activity_timestamp?: string
   is_delete: boolean
-  agreement_id: number
+  digital_content_id: number
   created_at: string
   isrc: Nullable<string>
   iswc: Nullable<string>
@@ -105,7 +105,7 @@ export type AgreementMetadata = {
   save_count: number
   tags: Nullable<string>
   title: string
-  agreement_segments: AgreementSegment[]
+  digital_content_segments: AgreementSegment[]
   cover_art: Nullable<CID>
   cover_art_sizes: Nullable<CID>
   is_unlisted: boolean
@@ -116,7 +116,7 @@ export type AgreementMetadata = {
   // Optional Fields
   is_invalid?: boolean
   stem_of?: {
-    parent_agreement_id: ID
+    parent_digital_content_id: ID
   }
 
   // Added fields
@@ -133,10 +133,10 @@ export type CollectionMetadata = {
   is_delete: boolean
   is_private: boolean
   content_list_contents: {
-    agreement_ids: Array<{ time: number; agreement: ID; uid?: UID }>
+    digital_content_ids: Array<{ time: number; digital_content: ID; uid?: UID }>
   }
   agreements?: AgreementMetadata[]
-  agreement_count: number
+  digital_content_count: number
   content_list_id: ID
   cover_art: CID | null
   cover_art_sizes: Nullable<CID>

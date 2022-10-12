@@ -31,7 +31,7 @@ def get_latest_spl_live() -> Optional[Dict]:
     return None
 
 
-# Retrieve the latest stored value in database for spl live indexing
+# Retrieve the latest stored value in database for spl digitalcoin indexing
 # Cached during processing
 def get_latest_cached_spl_live_db(redis: Redis) -> Optional[CachedProgramTxInfo]:
     latest_spl_live_db = get_cache_latest_sol_program_tx(
@@ -54,7 +54,7 @@ def get_latest_cached_spl_live_db(redis: Redis) -> Optional[CachedProgramTxInfo]
 
 
 def get_latest_cached_spl_live_program_tx(redis) -> CachedProgramTxInfo:
-    # Latest spl live tx from chain
+    # Latest spl digitalcoin tx from chain
     latest_spl_live_program_tx = get_latest_sol_db_tx(
         redis, latest_sol_spl_token_program_tx_key
     )
@@ -67,7 +67,7 @@ def get_spl_live_health_info(redis: Redis, current_time_utc: datetime):
     return get_sol_tx_health_info(current_time_utc, db_cache, tx_cache)
 
 
-# Retrieve spl live health object
+# Retrieve spl digitalcoin health object
 def get_sol_tx_health_info(
     current_time_utc: datetime,
     db_cache: Optional[CachedProgramTxInfo],

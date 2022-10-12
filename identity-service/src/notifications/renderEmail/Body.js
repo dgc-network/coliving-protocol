@@ -102,19 +102,19 @@ var snippetMap = (_snippetMap = {}, _defineProperty(_snippetMap, _constants.noti
 }), _defineProperty(_snippetMap, _constants.notificationTypes.TrendingAgreement, function (notification) {
   var rank = notification.rank;
   var suffix = getNumberSuffix(rank);
-  return "Your Agreement ".concat(notification.entity.title, " is ").concat(notification.rank).concat(suffix, " on Trending Right Now!");
+  return "Your DigitalContent ".concat(notification.entity.title, " is ").concat(notification.rank).concat(suffix, " on Trending Right Now!");
 }), _defineProperty(_snippetMap, _constants.notificationTypes.UserSubscription, function (notification) {
   var _notification$users4 = _slicedToArray(notification.users, 1),
       user = _notification$users4[0];
 
-  if (notification.entity.type === _constants.notificationTypes.Agreement && !isNaN(notification.entity.count) && notification.entity.count > 1) {
+  if (notification.entity.type === _constants.notificationTypes.DigitalContent && !isNaN(notification.entity.count) && notification.entity.count > 1) {
     return "".concat(user.name, " released ").concat(notification.entity.count, " new ").concat(notification.entity.type);
   }
 
   return "".concat(user.name, " released a new ").concat(notification.entity.type.toLowerCase(), " ").concat(notification.entity.name);
 }), _defineProperty(_snippetMap, _constants.notificationTypes.RemixCreate, function (notification) {
   var parentAgreement = notification.parentAgreement;
-  return "New remix of your agreement ".concat(parentAgreement.title);
+  return "New remix of your digital_content ".concat(parentAgreement.title);
 }), _defineProperty(_snippetMap, _constants.notificationTypes.RemixCosign, function (notification) {
   var parentAgreementUser = notification.parentAgreementUser,
       parentAgreements = notification.parentAgreements;
@@ -125,7 +125,7 @@ var snippetMap = (_snippetMap = {}, _defineProperty(_snippetMap, _constants.noti
 }), _defineProperty(_snippetMap, _constants.notificationTypes.ChallengeReward, function (notification) {
   return "You've earned $LIVE for completing challenges";
 }), _defineProperty(_snippetMap, _constants.notificationTypes.AddAgreementToContentList, function (notification) {
-  return "".concat(notification.contentListOwner.name, " added ").concat(notification.agreement.title, " to ").concat(notification.contentList.content_list_name);
+  return "".concat(notification.contentListOwner.name, " added ").concat(notification.digital_content.title, " to ").concat(notification.contentList.content_list_name);
 }), _defineProperty(_snippetMap, _constants.notificationTypes.TipReceive, function (notification) {
   return "".concat(notification.sendingUser.name, " sent you a tip of ").concat(notification.amount, " $LIVE");
 }), _defineProperty(_snippetMap, _constants.notificationTypes.Reaction, function (notification) {
@@ -146,7 +146,7 @@ var mapNotification = function mapNotification(notification) {
 
     case _constants.notificationTypes.RemixCosign:
       {
-        notification.agreement = notification.remixAgreement;
+        notification.digital_content = notification.remixAgreement;
         return notification;
       }
 

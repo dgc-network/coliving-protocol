@@ -9,13 +9,13 @@ class ChallengeEvent(str, enum.Enum):
     repost = "repost"
     follow = "follow"
     favorite = "favorite"
-    agreement_listen = "agreement_listen"
-    agreement_upload = "agreement_upload"
+    digital_content_listen = "digital_content_listen"
+    digital_content_upload = "digital_content_upload"
     referral_signup = "referral_signup"  # Fired for the referring user
     referred_signup = "referred_signup"  # Fired for the new user
     connect_verified = "connect_verified"
     mobile_install = "mobile_install"
-    trending_agreement = "trending_agreement"
+    trending_digital_content = "trending_digital_content"
     trending_underground = "trending_underground"
     trending_content_list = "trending_content_list"
     send_tip = "send_tip"  # Fired for sender

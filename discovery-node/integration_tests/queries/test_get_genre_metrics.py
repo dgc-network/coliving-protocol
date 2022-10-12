@@ -1,15 +1,15 @@
 from datetime import datetime, timedelta
 
 from src.models.indexing.block import Block
-from src.models.agreements.agreement import Agreement
+from src.models.agreements.digital_content import DigitalContent
 from src.queries.get_genre_metrics import _get_genre_metrics
 from src.utils.db_session import get_db
 
 
-def populate_mock_db(db, test_agreements, date):
+def populate_mock_db(db, test_digital_contents, date):
     """Helper function to populate thee mock DB with plays"""
     with db.scoped_session() as session:
-        for i, agreement_meta in enumerate(test_agreements):
+        for i, digital_content_meta in enumerate(test_digital_contents):
             blockhash = hex(i)
             block = Block(
                 blockhash=blockhash,
@@ -17,26 +17,26 @@ def populate_mock_db(db, test_agreements, date):
                 parenthash="0x01",
                 is_current=(i == 0),
             )
-            agreement = Agreement(
+            digital_content = DigitalContent(
                 blockhash=hex(i),
                 blocknumber=i,
-                agreement_id=i,
-                is_current=agreement_meta.get("is_current", True),
-                is_delete=agreement_meta.get("is_delete", False),
+                digital_content_id=i,
+                is_current=digital_content_meta.get("is_current", True),
+                is_delete=digital_content_meta.get("is_delete", False),
                 owner_id=300,
                 route_id="",
-                agreement_segments=[],
-                genre=agreement_meta.get("genre", ""),
-                updated_at=agreement_meta.get("updated_at", date),
-                created_at=agreement_meta.get("created_at", date),
-                is_unlisted=agreement_meta.get("is_unlisted", False),
+                digital_content_segments=[],
+                genre=digital_content_meta.get("genre", ""),
+                updated_at=digital_content_meta.get("updated_at", date),
+                created_at=digital_content_meta.get("created_at", date),
+                is_unlisted=digital_content_meta.get("is_unlisted", False),
             )
             # add block and then flush before
-            # adding agreement, bc agreement.blocknumber foreign key
+            # adding digital_content, bc digital_content.blocknumber foreign key
             # references block
             session.add(block)
             session.flush()
-            session.add(agreement)
+            session.add(digital_content)
 
 
 def test_get_genre_metrics(app):
@@ -44,11 +44,11 @@ def test_get_genre_metrics(app):
     with app.app_context():
         db = get_db()
 
-    test_agreements = [{"genre": "Electronic"}, {"genre": "Pop"}, {"genre": "Electronic"}]
+    test_digital_contents = [{"genre": "Electronic"}, {"genre": "Pop"}, {"genre": "Electronic"}]
 
     date = datetime(2020, 10, 4, 10, 35, 0)
     before_date = date + timedelta(hours=-1)
-    populate_mock_db(db, test_agreements, date)
+    populate_mock_db(db, test_digital_contents, date)
 
     args = {"start_time": before_date}
 
@@ -70,13 +70,13 @@ def test_get_genre_metrics_for_month(app):
     with app.app_context():
         db = get_db()
 
-    test_agreements = [
+    test_digital_contents = [
         {"genre": "Electronic", "created_at": date},
         {"genre": "Pop", "created_at": date},
         {"genre": "Electronic", "created_at": date},
         {"genre": "Electronic", "created_at": before_date},
     ]
-    populate_mock_db(db, test_agreements, date)
+    populate_mock_db(db, test_digital_contents, date)
 
     args = {"start_time": before_date}
 

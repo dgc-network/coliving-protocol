@@ -8,7 +8,7 @@ import "./interface/ContentListFactoryInterface.sol";
 import "./SigningLogic.sol";
 
 /** @title Logic contract for Coliving user library features including
-* agreement saves and contentList/album saves */
+* digital_content saves and contentList/album saves */
 contract UserLibraryFactory is RegistryContract, SigningLogic {
 
     //RegistryInterface registry = RegistryInterface(0);
@@ -18,8 +18,8 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
     bytes32 agreementFactoryRegistryKey;
     bytes32 contentListFactoryRegistryKey;
 
-    event AgreementSaveAdded(uint _userId, uint _agreementId);
-    event AgreementSaveDeleted(uint _userId, uint _agreementId);
+    event AgreementSaveAdded(uint _userId, uint _digital_contentId);
+    event AgreementSaveDeleted(uint _userId, uint _digital_contentId);
     event ContentListSaveAdded(uint _userId, uint _content_listId);
     event ContentListSaveDeleted(uint _userId, uint _content_listId);
 
@@ -39,7 +39,7 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
 
     constructor(address _registryAddress,
         bytes32 _userFactoryRegistryKey,
-        bytes32 _agreementFactoryRegistryKey,
+        bytes32 _digital_contentFactoryRegistryKey,
         bytes32 _content_listFactoryRegistryKey,
         uint _networkId
     ) SigningLogic("User Library Factory", "1", _networkId) public
@@ -47,26 +47,26 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
         require(
             _registryAddress != address(0x00) &&
             _userFactoryRegistryKey.length != 0 &&
-            _agreementFactoryRegistryKey.length != 0 &&
+            _digital_contentFactoryRegistryKey.length != 0 &&
             _content_listFactoryRegistryKey.length != 0,
             "requires non-zero _registryAddress"
         );
 
         registry = RegistryInterface(_registryAddress);
         userFactoryRegistryKey = _userFactoryRegistryKey;
-        agreementFactoryRegistryKey = _agreementFactoryRegistryKey;
+        agreementFactoryRegistryKey = _digital_contentFactoryRegistryKey;
         contentListFactoryRegistryKey = _content_listFactoryRegistryKey;
     }
 
     function addAgreementSave(
         uint _userId,
-        uint _agreementId,
+        uint _digital_contentId,
         bytes32 _requestNonce,
         bytes calldata _subjectSig
     ) external returns (bool status)
     {
         bytes32 signatureDigest = generateAgreementSaveRequestSchemaHash(
-            _userId, _agreementId, _requestNonce
+            _userId, _digital_contentId, _requestNonce
         );
         address signer = recoverSigner(signatureDigest, _subjectSig);
         burnSignatureDigest(signatureDigest, signer);
@@ -76,22 +76,22 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
 
         bool agreementExists = AgreementFactoryInterface(
             registry.getContract(agreementFactoryRegistryKey)
-        ).agreementExists(_agreementId);
-        require(agreementExists == true, "must provide valid agreement ID");
+        ).agreementExists(_digital_contentId);
+        require(agreementExists == true, "must provide valid digital_content ID");
 
-        emit AgreementSaveAdded(_userId, _agreementId);
+        emit AgreementSaveAdded(_userId, _digital_contentId);
         return true;
     }
 
     function deleteAgreementSave(
         uint _userId,
-        uint _agreementId,
+        uint _digital_contentId,
         bytes32 _requestNonce,
         bytes calldata _subjectSig
     ) external returns (bool status)
     {
         bytes32 signatureDigest = generateDeleteAgreementSaveRequestSchemaHash(
-            _userId, _agreementId, _requestNonce
+            _userId, _digital_contentId, _requestNonce
         );
         address signer = recoverSigner(signatureDigest, _subjectSig);
         burnSignatureDigest(signatureDigest, signer);
@@ -101,10 +101,10 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
 
         bool agreementExists = AgreementFactoryInterface(
             registry.getContract(agreementFactoryRegistryKey)
-        ).agreementExists(_agreementId);
-        require(agreementExists == true, "must provide valid agreement ID");
+        ).agreementExists(_digital_contentId);
+        require(agreementExists == true, "must provide valid digital_content ID");
 
-        emit AgreementSaveDeleted(_userId, _agreementId);
+        emit AgreementSaveDeleted(_userId, _digital_contentId);
         return true;
     }
 
@@ -196,7 +196,7 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
 
     function generateDeleteAgreementSaveRequestSchemaHash(
         uint _userId,
-        uint _agreementId,
+        uint _digital_contentId,
         bytes32 _nonce
     ) internal view returns (bytes32)
     {
@@ -205,7 +205,7 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
                 abi.encode(
                     DELETE_AGREEMENT_SAVE_REQUEST_TYPEHASH,
                     _userId,
-                    _agreementId,
+                    _digital_contentId,
                     _nonce
                 )
             )
@@ -214,7 +214,7 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
 
     function generateAgreementSaveRequestSchemaHash(
         uint _userId,
-        uint _agreementId,
+        uint _digital_contentId,
         bytes32 _nonce
     ) internal view returns (bytes32)
     {
@@ -223,7 +223,7 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
                 abi.encode(
                     AGREEMENT_SAVE_REQUEST_TYPEHASH,
                     _userId,
-                    _agreementId,
+                    _digital_contentId,
                     _nonce
                 )
             )

@@ -25,7 +25,7 @@ def upgrade():
             UPDATE agreements
                 SET txhash = ('unset_' || substr(md5(random()::text), 0, 10) || substr(blockhash, 3, 13))
                 WHERE txhash='';
-            ALTER TABLE agreements ADD PRIMARY KEY (is_current, agreement_id, txhash);
+            ALTER TABLE agreements ADD PRIMARY KEY (is_current, digital_content_id, txhash);
 
             ALTER TABLE agreements ADD COLUMN IF NOT EXISTS slot INTEGER;
 
@@ -44,7 +44,7 @@ def downgrade():
         begin;
 
             ALTER TABLE agreements DROP CONSTRAINT IF EXISTS agreements_pkey;
-            ALTER TABLE agreements ADD PRIMARY KEY (is_current, agreement_id, blockhash, txhash);
+            ALTER TABLE agreements ADD PRIMARY KEY (is_current, digital_content_id, blockhash, txhash);
 
             ALTER TABLE agreements DROP COLUMN IF EXISTS slot;
 

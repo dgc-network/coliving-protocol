@@ -50,10 +50,10 @@ def test_populate_content_list_metadata(app):
     with db.scoped_session() as session:
         content_list_ids = [1, 2, 3, 4]
         contentLists = [
-            {"content_list_id": 1, "content_list_contents": {"agreement_ids": []}},
-            {"content_list_id": 2, "content_list_contents": {"agreement_ids": []}},
-            {"content_list_id": 3, "content_list_contents": {"agreement_ids": []}},
-            {"content_list_id": 4, "content_list_contents": {"agreement_ids": []}},
+            {"content_list_id": 1, "content_list_contents": {"digital_content_ids": []}},
+            {"content_list_id": 2, "content_list_contents": {"digital_content_ids": []}},
+            {"content_list_id": 3, "content_list_contents": {"digital_content_ids": []}},
+            {"content_list_id": 4, "content_list_contents": {"digital_content_ids": []}},
         ]
 
         contentLists = populate_content_list_metadata(
@@ -82,9 +82,9 @@ def test_populate_content_list_metadata(app):
 
         curr_content_list_ids = [1, 2, 3]
         curr_content_lists = [
-            {"content_list_id": 1, "content_list_contents": {"agreement_ids": []}},
-            {"content_list_id": 2, "content_list_contents": {"agreement_ids": []}},
-            {"content_list_id": 3, "content_list_contents": {"agreement_ids": []}},
+            {"content_list_id": 1, "content_list_contents": {"digital_content_ids": []}},
+            {"content_list_id": 2, "content_list_contents": {"digital_content_ids": []}},
+            {"content_list_id": 3, "content_list_contents": {"digital_content_ids": []}},
         ]
 
         contentLists = populate_content_list_metadata(

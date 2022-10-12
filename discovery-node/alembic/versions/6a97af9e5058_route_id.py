@@ -25,16 +25,16 @@ def upgrade():
     session = Session(bind=bind)
     res = session.execute(
         sa.text(
-            """SELECT t."title", t."agreement_id", t."blockhash", u."user_id", u."handle" FROM "agreements" t INNER JOIN "users" u on "t"."owner_id" = u."user_id" AND u."is_current" = true;"""
+            """SELECT t."title", t."digital_content_id", t."blockhash", u."user_id", u."handle" FROM "agreements" t INNER JOIN "users" u on "t"."owner_id" = u."user_id" AND u."is_current" = true;"""
         )
     ).fetchall()
 
-    route_ids = [helpers.create_agreement_route_id(r[0], r[4]) for r in res]
+    route_ids = [helpers.create_digital_content_route_id(r[0], r[4]) for r in res]
 
     for i in range(len(route_ids)):
         session.execute(
             sa.text(
-                f"""UPDATE "agreements" SET "route_id" = '{route_ids[i]}' WHERE "blockhash" = '{res[i][2]}' AND "agreement_id" = '{res[i][1]}'"""
+                f"""UPDATE "agreements" SET "route_id" = '{route_ids[i]}' WHERE "blockhash" = '{res[i][2]}' AND "digital_content_id" = '{res[i][1]}'"""
             )
         )
 

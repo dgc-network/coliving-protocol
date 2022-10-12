@@ -20,12 +20,12 @@ def upgrade():
     query = """
     BEGIN;
 
-    -- make agreement_owner_id_idx a partial index
-    DROP INDEX IF EXISTS agreement_owner_id_idx;
-    CREATE INDEX IF NOT EXISTS agreement_owner_id_idx ON agreements (owner_id) WHERE is_current;
+    -- make digital_content_owner_id_idx a partial index
+    DROP INDEX IF EXISTS digital_content_owner_id_idx;
+    CREATE INDEX IF NOT EXISTS digital_content_owner_id_idx ON agreements (owner_id) WHERE is_current;
 
-    -- add index for agreement_created_at
-    CREATE INDEX IF NOT EXISTS agreement_created_at_idx ON agreements (created_at) WHERE is_current;
+    -- add index for digital_content_created_at
+    CREATE INDEX IF NOT EXISTS digital_content_created_at_idx ON agreements (created_at) WHERE is_current;
 
     -- add index for contentList owner
     CREATE INDEX IF NOT EXISTS content_list_owner_id_idx ON contentLists (content_list_owner_id) WHERE is_current;
@@ -68,10 +68,10 @@ def downgrade():
     query = """
     BEGIN;
 
-    -- agreement owner + agreement created_at
-    DROP INDEX IF EXISTS agreement_owner_id_idx;
-    CREATE INDEX IF NOT EXISTS agreement_owner_id_idx ON agreements (owner_id);
-    DROP INDEX IF EXISTS agreement_created_at_idx;
+    -- digital_content owner + digital_content created_at
+    DROP INDEX IF EXISTS digital_content_owner_id_idx;
+    CREATE INDEX IF NOT EXISTS digital_content_owner_id_idx ON agreements (owner_id);
+    DROP INDEX IF EXISTS digital_content_created_at_idx;
 
     -- contentList owner + contentList created_at
     DROP INDEX IF EXISTS content_list_owner_id_idx;

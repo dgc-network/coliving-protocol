@@ -16,7 +16,7 @@
 		"starting_block": 116023891
 	},
 	{
-		"id": "agreement-upload",
+		"id": "digital-content-upload",
 		"type": "numeric",
 		"amount": "1",
 		"active": true,
