@@ -230,7 +230,6 @@ contract Governance is InitializableV2 {
      * @dev _name and _description length is not enforced since they aren't stored on-chain and only event emitted
      *
      * @param _targetContractRegistryKey - Registry key for the contract concerning this proposal
-     * @param _callValue - amount of wei to pass with function call if a token transfer is involved
      * @param _functionSignature - function signature of the function to be executed if proposal is successful
      * @param _callData - encoded value(s) to call function with if proposal is successful
      * @param _name - Text name of proposal to be emitted in event
@@ -240,7 +239,7 @@ contract Governance is InitializableV2 {
      */
     function submitProposal(
         bytes32 _targetContractRegistryKey,
-        uint256 _callValue,
+        //uint256 _callValue,
         string calldata _functionSignature,
         bytes calldata _callData,
         string calldata _name,

@@ -368,7 +368,7 @@ contract AdminUpgradeabilityProxy is UpgradeabilityProxy {
    * to the implementation.
    */
   modifier ifAdmin() {
-    if (msg.sender == _admin()) {
+    if (msg.sender == _getAdmin()) {
       _;
     } else {
       _fallback();
@@ -379,7 +379,7 @@ contract AdminUpgradeabilityProxy is UpgradeabilityProxy {
    * @return The address of the proxy admin.
    */
   function admin() external ifAdmin returns (address) {
-    return _admin();
+    return _getAdmin();
   }
 
   /**
@@ -396,7 +396,7 @@ contract AdminUpgradeabilityProxy is UpgradeabilityProxy {
    */
   function changeAdmin(address newAdmin) external ifAdmin {
     require(newAdmin != address(0), "Cannot change the admin of a proxy to the zero address");
-    emit AdminChanged(_admin(), newAdmin);
+    emit AdminChanged(_getAdmin(), newAdmin);
     _setAdmin(newAdmin);
   }
 
@@ -427,7 +427,7 @@ contract AdminUpgradeabilityProxy is UpgradeabilityProxy {
   /**
    * @return adm The admin slot.
    */
-  function _admin() internal view returns (address adm) {
+  function _getAdmin() internal view returns (address adm) {
     bytes32 slot = ADMIN_SLOT;
     assembly {
       adm := sload(slot)
@@ -450,7 +450,7 @@ contract AdminUpgradeabilityProxy is UpgradeabilityProxy {
    * @dev Only fall back when the sender is not the admin.
    */
   function _willFallback() internal override virtual {
-    require(msg.sender != _admin(), "Cannot call fallback function from the proxy admin");
+    require(msg.sender != _getAdmin(), "Cannot call fallback function from the proxy admin");
     super._willFallback();
   }
 }

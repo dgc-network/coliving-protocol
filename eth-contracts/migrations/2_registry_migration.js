@@ -13,7 +13,7 @@ module.exports = (deployer, network, accounts) => {
     const config = contractConfig[network]
     const proxyAdminAddress = config.proxyAdminAddress || accounts[10]
     const proxyDeployerAddress = config.proxyDeployerAddress || accounts[11]
-
+    
     // Deploy Registry logic and proxy contracts
     const registry0 = await deployer.deploy(Registry, { from: proxyDeployerAddress })
     const initializeCallData = _lib.encodeCall('initialize', [], [])

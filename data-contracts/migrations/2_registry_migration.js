@@ -7,3 +7,4 @@ module.exports = (deployer) => {
     process.env.dataContractsRegistryAddress = registryDeployTx.address
   })
 }
+
