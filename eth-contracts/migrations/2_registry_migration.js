@@ -26,8 +26,8 @@ module.exports = (deployer, network, accounts) => {
     )
     const registry = await Registry.at(registryProxy.address)
 
-    assert.equal(await registry.owner.call(), proxyDeployerAddress)
     assert.equal(await registryProxy.getColivingProxyAdminAddress.call(), proxyAdminAddress)
+    assert.equal(await registry.owner.call(), proxyDeployerAddress)
 
     // Register Registry in self to enable governance by key
     await registry.addContract(registryRegKey, registry.address, { from: proxyDeployerAddress })

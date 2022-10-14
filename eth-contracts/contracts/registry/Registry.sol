@@ -75,7 +75,7 @@ contract Registry is InitializableV2, Ownable {
         address contractAddress = addressStorage[_name];
         require(
             contractAddress != address(0x00),
-            "Registry: Cannot remove - no contract registered with given _name."
+            "Registry: Cannot remove - no contract registered with given name."
         );
 
         setAddress(_name, address(0x00));
@@ -94,7 +94,7 @@ contract Registry is InitializableV2, Ownable {
         address oldAddress = addressStorage[_name];
         require(
             oldAddress != address(0x00),
-            "Registry: Cannot upgrade - no contract registered with given _name."
+            "Registry: Cannot upgrade - no contract registered with given name."
         );
         require(
             _newAddress != address(0x00),
