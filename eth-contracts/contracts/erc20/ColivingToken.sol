@@ -13,7 +13,7 @@ abstract contract ColivingToken is InitializableV2, ERC20Mintable
 {
     string constant NAME = "Coliving";
 
-    string constant SYMBOL = "LIVE";
+    string constant SYMBOL = "DGCO";
 
     // Defines number of Wei in 1 token
     // 18 decimals is standard - imitates relationship between Ether and Wei

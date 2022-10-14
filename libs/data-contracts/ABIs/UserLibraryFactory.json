@@ -20,7 +20,7 @@
         },
         {
           "internalType": "bytes32",
-          "name": "_content_listFactoryRegistryKey",
+          "name": "_contentListFactoryRegistryKey",
           "type": "bytes32"
         },
         {

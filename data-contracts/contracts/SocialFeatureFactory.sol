@@ -28,7 +28,7 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
     event UserFollowDeleted(uint _followerUserId, uint _followeeUserId);
 
     /* EIP-712 */
-    bytes32 constant AGREEMENT_REPOST_REQUEST_TYPEHASH = keccak256(
+    bytes32 constant DIGITAL_CONTENT_REPOST_REQUEST_TYPEHASH = keccak256(
         "AddDigitalContentRepostRequest(uint userId,uint digitalContentId,bytes32 nonce)"
     );
     bytes32 constant CONTENT_LIST_REPOST_REQUEST_TYPEHASH = keccak256(
@@ -53,7 +53,7 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
         bytes32 _socialFeatureStorageRegistryKey,
         bytes32 _userFactoryRegistryKey,
         bytes32 _digitalContentFactoryRegistryKey,
-        bytes32 _content_listFactoryRegistryKey,
+        bytes32 _contentListFactoryRegistryKey,
         uint _networkId
     ) SigningLogic("Social Feature Factory", "1", _networkId)
     {
@@ -62,14 +62,14 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
             _socialFeatureStorageRegistryKey.length != 0 &&
             _userFactoryRegistryKey.length != 0 &&
             _digitalContentFactoryRegistryKey.length != 0 &&
-            _content_listFactoryRegistryKey.length != 0,
+            _contentListFactoryRegistryKey.length != 0,
             "requires non-zero _registryAddress and non-empty registry key strings"
         );
         registry = RegistryInterface(_registryAddress);
         socialFeatureStorageRegistryKey = _socialFeatureStorageRegistryKey;
         userFactoryRegistryKey = _userFactoryRegistryKey;
         digitalContentFactoryRegistryKey = _digitalContentFactoryRegistryKey;
-        contentListFactoryRegistryKey = _content_listFactoryRegistryKey;
+        contentListFactoryRegistryKey = _contentListFactoryRegistryKey;
     }
 
     /**
@@ -295,7 +295,7 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    AGREEMENT_REPOST_REQUEST_TYPEHASH,
+                    DIGITAL_CONTENT_REPOST_REQUEST_TYPEHASH,
                     _userId,
                     _digitalContentId,
                     _nonce

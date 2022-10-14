@@ -41,7 +41,7 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
         address _registryAddress,
         bytes32 _userFactoryRegistryKey,
         bytes32 _digitalContentFactoryRegistryKey,
-        bytes32 _content_listFactoryRegistryKey,
+        bytes32 _contentListFactoryRegistryKey,
         uint _networkId
     ) SigningLogic("User Library Factory", "1", _networkId)
     {
@@ -49,14 +49,14 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
             _registryAddress != address(0x00) &&
             _userFactoryRegistryKey.length != 0 &&
             _digitalContentFactoryRegistryKey.length != 0 &&
-            _content_listFactoryRegistryKey.length != 0,
+            _contentListFactoryRegistryKey.length != 0,
             "requires non-zero _registryAddress"
         );
 
         registry = RegistryInterface(_registryAddress);
         userFactoryRegistryKey = _userFactoryRegistryKey;
         digitalContentFactoryRegistryKey = _digitalContentFactoryRegistryKey;
-        contentListFactoryRegistryKey = _content_listFactoryRegistryKey;
+        contentListFactoryRegistryKey = _contentListFactoryRegistryKey;
     }
 
     function addDigitalContentSave(
