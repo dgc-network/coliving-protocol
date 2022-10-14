@@ -22,7 +22,7 @@ contract IPLDBlacklistFactory is RegistryContract, SigningLogic {
         address _registryAddress,
         uint _networkId,
         address _verifierAddress
-    ) SigningLogic ("IPLD Blacklist Factory", "1", _networkId) public
+    ) SigningLogic ("IPLD Blacklist Factory", "1", _networkId)
     {
         require(
             _registryAddress != address(0x00),

@@ -50,7 +50,7 @@ contract DigitalContentFactory is RegistryContract, SigningLogic {
         bytes32 _digital_contentStorageRegistryKey,
         bytes32 _userFactoryRegistryKey,
         uint _networkId
-    ) SigningLogic("DigitalContent Factory", "1", _networkId) public {
+    ) SigningLogic("DigitalContent Factory", "1", _networkId) {
         require(
             _registryAddress != address(0x00) &&
             _digital_contentStorageRegistryKey.length != 0 && _userFactoryRegistryKey.length != 0,

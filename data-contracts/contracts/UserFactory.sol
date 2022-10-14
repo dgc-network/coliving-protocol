@@ -62,7 +62,7 @@ contract UserFactory is RegistryContract, SigningLogic {
         bytes32 _userStorageRegistryKey,
         uint _networkId,
         address _verifierAddress
-    ) SigningLogic("User Factory", "1", _networkId) public
+    ) SigningLogic("User Factory", "1", _networkId)
     {
         require(
             _registryAddress != address(0x00) &&
@@ -304,10 +304,10 @@ contract UserFactory is RegistryContract, SigningLogic {
     /** @notice returns true if handle is valid and not already taken, false otherwise */
     function handleIsValid(bytes16 _handle) external view returns (bool isValid) {
         bytes16 handleLower = toLower(_handle);
-        bool handleIsTaken = UserStorageInterface(
+        bool isTaken = UserStorageInterface(
             registry.getContract(userStorageRegistryKey)
         ).handleIsTaken(handleLower);
-        return (handleIsTaken == false);
+        return (isTaken == false);
     }
 
     /** @notice returns true if user exists for id, false otherwise */

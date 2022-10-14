@@ -43,7 +43,7 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
         bytes32 _digitalContentFactoryRegistryKey,
         bytes32 _content_listFactoryRegistryKey,
         uint _networkId
-    ) SigningLogic("User Library Factory", "1", _networkId) public
+    ) SigningLogic("User Library Factory", "1", _networkId)
     {
         require(
             _registryAddress != address(0x00) &&

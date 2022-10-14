@@ -26,7 +26,8 @@ contract SigningLogic {
         address verifyingContract;
     }
 
-    constructor (string memory name, string memory version, uint256 chainId) public {
+    //constructor (string memory name, string memory version, uint256 chainId) public {
+    constructor (string memory name, string memory version, uint256 chainId) {
         domainSeparator = hash(
             EIP712Domain({
                 name: name,

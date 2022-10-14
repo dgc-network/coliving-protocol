@@ -119,7 +119,7 @@ contract ContentListFactory is RegistryContract, SigningLogic {
         bytes32 _digitalContentFactoryRegistryKey,
         uint _networkId
     ) SigningLogic("ContentList Factory", "1", _networkId)
-    public {
+    {
         require(
             _registryAddress != address(0x00) &&
             _contentListStorageRegistryKey.length != 0 &&

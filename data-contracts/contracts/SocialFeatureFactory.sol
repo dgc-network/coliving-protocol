@@ -55,7 +55,7 @@ contract SocialFeatureFactory is RegistryContract, SigningLogic {
         bytes32 _digitalContentFactoryRegistryKey,
         bytes32 _content_listFactoryRegistryKey,
         uint _networkId
-    ) SigningLogic("Social Feature Factory", "1", _networkId) public
+    ) SigningLogic("Social Feature Factory", "1", _networkId)
     {
         require(
             _registryAddress != address(0x00) &&
