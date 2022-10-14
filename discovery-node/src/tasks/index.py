@@ -306,7 +306,7 @@ def fetch_cid_metadata(
                     event_args = entry["args"]
                     digital_content_metadata_digest = event_args._multihashDigest.hex()
                     digital_content_metadata_hash_fn = event_args._multihashHashFn
-                    digital_content_owner_id = event_args._digital_contentOwnerId
+                    digital_content_owner_id = event_args._digitalContentOwnerId
                     buf = multihash.encode(
                         bytes.fromhex(digital_content_metadata_digest), digital_content_metadata_hash_fn
                     )

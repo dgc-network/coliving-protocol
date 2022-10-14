@@ -10,8 +10,8 @@ import "./SigningLogic.sol";
 contract UserFactory is RegistryContract, SigningLogic {
 
     //RegistryInterface registry = RegistryInterface(0);
-    address _registryAddress;
-    RegistryInterface registry = RegistryInterface(_registryAddress);
+    address _registry;
+    RegistryInterface registry = RegistryInterface(_registry);
     bytes32 userStorageRegistryKey;
     address verifierAddress;
 

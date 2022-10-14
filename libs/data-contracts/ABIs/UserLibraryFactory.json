@@ -15,7 +15,7 @@
         },
         {
           "internalType": "bytes32",
-          "name": "_digital_contentFactoryRegistryKey",
+          "name": "_digitalContentFactoryRegistryKey",
           "type": "bytes32"
         },
         {
@@ -44,7 +44,7 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "_digital_contentId",
+          "name": "_digitalContentId",
           "type": "uint256"
         }
       ],
@@ -63,7 +63,7 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "_digital_contentId",
+          "name": "_digitalContentId",
           "type": "uint256"
         }
       ],
@@ -82,7 +82,7 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "_content_listId",
+          "name": "_contentListId",
           "type": "uint256"
         }
       ],
@@ -101,7 +101,7 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "_content_listId",
+          "name": "_contentListId",
           "type": "uint256"
         }
       ],
@@ -208,7 +208,7 @@
         },
         {
           "internalType": "uint256",
-          "name": "_digital_contentId",
+          "name": "_digitalContentId",
           "type": "uint256"
         },
         {
@@ -242,7 +242,7 @@
         },
         {
           "internalType": "uint256",
-          "name": "_digital_contentId",
+          "name": "_digitalContentId",
           "type": "uint256"
         },
         {
@@ -276,7 +276,7 @@
         },
         {
           "internalType": "uint256",
-          "name": "_content_listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
@@ -310,7 +310,7 @@
         },
         {
           "internalType": "uint256",
-          "name": "_content_listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {

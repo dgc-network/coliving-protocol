@@ -106,7 +106,7 @@ class PrometheusMetricNames:
     INDEX_TRENDING_DURATION_SECONDS = "index_trending_duration_seconds"
     AGREEMENT_STATE_UPDATE_DURATION_SECONDS = "digital_content_state_update_duration_seconds"
     UPDATE_AGGREGATE_TABLE_DURATION_SECONDS = "update_aggregate_table_duration_seconds"
-    UPDATE_AGREEMENT_IS_AVAILABLE_DURATION_SECONDS = (
+    UPDATE_DIGITAL_CONTENT_IS_AVAILABLE_DURATION_SECONDS = (
         "update_digital_content_is_available_duration_seconds"
     )
     UPDATE_TRENDING_VIEW_DURATION_SECONDS = "update_trending_view_duration_seconds"
@@ -206,8 +206,8 @@ PrometheusRegistry = {
             "task_name",
         ),
     ),
-    PrometheusMetricNames.UPDATE_AGREEMENT_IS_AVAILABLE_DURATION_SECONDS: Histogram(
-        f"{METRIC_PREFIX}_{PrometheusMetricNames.UPDATE_AGREEMENT_IS_AVAILABLE_DURATION_SECONDS}",
+    PrometheusMetricNames.UPDATE_DIGITAL_CONTENT_IS_AVAILABLE_DURATION_SECONDS: Histogram(
+        f"{METRIC_PREFIX}_{PrometheusMetricNames.UPDATE_DIGITAL_CONTENT_IS_AVAILABLE_DURATION_SECONDS}",
         "Runtimes for src.task.update_digital_content_is_available:celery.task()",
         ("success",),
     ),

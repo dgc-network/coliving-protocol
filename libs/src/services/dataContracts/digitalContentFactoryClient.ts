@@ -57,7 +57,7 @@ export class DigitalContentFactoryClient extends ContractClient {
     }
   }
 
-  /** uint _digital_contentId, uint _digital_contentOwnerId, bytes32 _multihashDigest, uint8 _multihashHashFn, uint8 _multihashSize */
+  /** uint _digitalContentId, uint _digitalContentOwnerId, bytes32 _multihashDigest, uint8 _multihashHashFn, uint8 _multihashSize */
   async updateDigitalContent(
     digitalContentId: number,
     digitalContentOwnerId: number,
@@ -98,7 +98,7 @@ export class DigitalContentFactoryClient extends ContractClient {
     )
 
     return {
-      digitalContentId: parseInt(tx.events?.['UpdateDigitalContent']?.returnValues._digital_contentId, 10),
+      digitalContentId: parseInt(tx.events?.['UpdateDigitalContent']?.returnValues._digitalContentId, 10),
       txReceipt: tx
     }
   }
@@ -126,7 +126,7 @@ export class DigitalContentFactoryClient extends ContractClient {
       contractAddress
     )
     return {
-      digitalContentId: parseInt(tx.events?.['DigitalContentDeleted']?.returnValues._digital_contentId, 10),
+      digitalContentId: parseInt(tx.events?.['DigitalContentDeleted']?.returnValues._digitalContentId, 10),
       txReceipt: tx
     }
   }

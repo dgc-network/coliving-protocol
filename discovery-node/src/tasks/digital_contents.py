@@ -60,8 +60,8 @@ def digital_content_state_update(
                 digital_content_event_start_time = time()
                 event_args = entry["args"]
                 digital_content_id = (
-                    helpers.get_tx_arg(entry, "_digital_contentId")
-                    if "_digital_contentId" in event_args
+                    helpers.get_tx_arg(entry, "_digitalContentId")
+                    if "_digitalContentId" in event_args
                     else helpers.get_tx_arg(entry, "_id")
                 )
                 existing_digital_content_record = None
@@ -444,7 +444,7 @@ def parse_digital_content_event(
             f"index.py | digitalContents.py | digital_content metadata ipld : {digital_content_metadata_multihash}"
         )
 
-        owner_id = helpers.get_tx_arg(entry, "_digital_contentOwnerId")
+        owner_id = helpers.get_tx_arg(entry, "_digitalContentOwnerId")
         digital_content_record.owner_id = owner_id
         digital_content_record.is_delete = False
 
@@ -491,7 +491,7 @@ def parse_digital_content_event(
             f"index.py | digitalContents.py | update digital_content metadata ipld : {upd_digital_content_metadata_multihash}"
         )
 
-        owner_id = helpers.get_tx_arg(entry, "_digital_contentOwnerId")
+        owner_id = helpers.get_tx_arg(entry, "_digitalContentOwnerId")
         digital_content_record.owner_id = owner_id
         digital_content_record.is_delete = False
 

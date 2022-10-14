@@ -35,7 +35,7 @@ contract('DigitalContentFactory', async (accounts) => {
     await registry.addContract(_constants.digitalContentFactoryKey, digitalContentFactory.address)
   })
 
-  it('Should add single digital_content', async () => {
+  it('Should add single digital content', async () => {
     // add user to associate digital_content with
     await _lib.addUserAndValidate(
       userFactory,
@@ -225,7 +225,7 @@ contract('DigitalContentFactory', async (accounts) => {
     assert.isTrue(eventArgs._multihashDigest === updateData.digest, 'Event argument - expect updated digest')
     assert.isTrue(eventArgs._multihashHashFn.toNumber() === updateData.hashFn, 'Event argument - expect updated hash')
     assert.isTrue(eventArgs._multihashSize.toNumber() === updateData.size, 'Event argument - expect updated size')
-    assert.isTrue(eventArgs._digital_contentOwnerId.toNumber() === updateData.userId, 'Event argument - expect updated userId')
+    assert.isTrue(eventArgs._digitalContentOwnerId.toNumber() === updateData.userId, 'Event argument - expect updated userId')
 
     // Verify updated contents on chain
     let digitalContentFromChain = await getDigitalContentFromFactory(
@@ -307,7 +307,7 @@ contract('DigitalContentFactory', async (accounts) => {
       _constants.testMultihash.hashFn,
       _constants.testMultihash.size)
 
-    // delete digital_content
+    // delete digital content
     await _lib.deleteDigitalContentAndValidate(
       digitalContentFactory,
       accounts[0],
@@ -348,7 +348,7 @@ contract('DigitalContentFactory', async (accounts) => {
     )
   })
 
-  it('Should fail to delete digital_content due to lack of ownership of digital_content', async () => {
+  it('Should fail to delete digital content due to lack of ownership of digital_content', async () => {
     // add user to associate digital_content with
     await _lib.addUserAndValidate(
       userFactory,
@@ -370,7 +370,7 @@ contract('DigitalContentFactory', async (accounts) => {
       _constants.testMultihash.size
     )
 
-    // attempt to delete digital_content from different account
+    // attempt to delete digital content from different account
     let caughtError = false
     try {
       await _lib.deleteDigitalContentAndValidate(
@@ -389,7 +389,7 @@ contract('DigitalContentFactory', async (accounts) => {
     }
     assert.isTrue(
       caughtError,
-      'Failed to handle case where calling address tries to delete digital_content it does not own'
+      'Failed to handle case where calling address tries to delete digital content it does not own'
     )
   })
 })

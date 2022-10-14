@@ -10,7 +10,7 @@
         },
         {
           "internalType": "bytes32",
-          "name": "_content_listStorageRegistryKey",
+          "name": "_contentListStorageRegistryKey",
           "type": "bytes32"
         },
         {
@@ -20,7 +20,7 @@
         },
         {
           "internalType": "bytes32",
-          "name": "_digital_contentFactoryRegistryKey",
+          "name": "_digitalContentFactoryRegistryKey",
           "type": "bytes32"
         },
         {
@@ -38,7 +38,7 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "_content_listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
@@ -57,7 +57,7 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "_content_listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
@@ -82,7 +82,7 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "_content_listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
@@ -101,13 +101,13 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "_content_listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
           "indexed": false,
           "internalType": "bytes32",
-          "name": "_content_listImageMultihashDigest",
+          "name": "_contentListImageMultihashDigest",
           "type": "bytes32"
         }
       ],
@@ -120,13 +120,13 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "_content_listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "_content_listOwnerId",
+          "name": "_contentListOwnerId",
           "type": "uint256"
         },
         {
@@ -144,7 +144,7 @@
         {
           "indexed": false,
           "internalType": "uint256[]",
-          "name": "_digital_contentIds",
+          "name": "_digitalContentIds",
           "type": "uint256[]"
         }
       ],
@@ -157,7 +157,7 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "_content_listId",
+          "name": "_contentListId",
           "type": "uint256"
         }
       ],
@@ -170,13 +170,13 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "_content_listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
           "indexed": false,
           "internalType": "string",
-          "name": "_content_listDescription",
+          "name": "_contentListDescription",
           "type": "string"
         }
       ],
@@ -189,7 +189,7 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "_content_listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
@@ -208,7 +208,7 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "_content_listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
@@ -227,13 +227,13 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "_content_listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
           "indexed": false,
           "internalType": "bytes32",
-          "name": "_content_listUPC",
+          "name": "_contentListUPC",
           "type": "bytes32"
         }
       ],
@@ -335,12 +335,12 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "_content_listOwnerId",
+          "name": "_contentListOwnerId",
           "type": "uint256"
         },
         {
           "internalType": "string",
-          "name": "_content_listName",
+          "name": "_contentListName",
           "type": "string"
         },
         {
@@ -355,7 +355,7 @@
         },
         {
           "internalType": "uint256[]",
-          "name": "_digital_contentIds",
+          "name": "_digitalContentIds",
           "type": "uint256[]"
         },
         {
@@ -384,7 +384,7 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "_content_listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
@@ -413,7 +413,7 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "_content_listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
@@ -441,7 +441,7 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "_content_listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
@@ -474,12 +474,12 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "_content_listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
           "internalType": "uint256[]",
-          "name": "_digital_contentIds",
+          "name": "_digitalContentIds",
           "type": "uint256[]"
         },
         {
@@ -502,7 +502,7 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "_content_listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
@@ -530,7 +530,7 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "_content_listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
@@ -558,12 +558,12 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "_content_listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
           "internalType": "bytes32",
-          "name": "_content_listImageMultihashDigest",
+          "name": "_contentListImageMultihashDigest",
           "type": "bytes32"
         },
         {
@@ -586,12 +586,12 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "_content_listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
           "internalType": "string",
-          "name": "_content_listDescription",
+          "name": "_contentListDescription",
           "type": "string"
         },
         {
@@ -614,7 +614,7 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "_content_listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
@@ -642,7 +642,7 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "_content_listId",
+          "name": "_contentListId",
           "type": "uint256"
         }
       ],
@@ -661,12 +661,12 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "_content_listId",
+          "name": "_contentListId",
           "type": "uint256"
         },
         {
           "internalType": "uint256",
-          "name": "_digital_contentId",
+          "name": "_digitalContentId",
           "type": "uint256"
         }
       ],
@@ -690,7 +690,7 @@
         },
         {
           "internalType": "uint256",
-          "name": "_content_listId",
+          "name": "_contentListId",
           "type": "uint256"
         }
       ],

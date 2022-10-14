@@ -9,8 +9,8 @@ import "./interface/DiscoveryNodeStorageInterface.sol";
 contract DiscoveryNodeFactory is RegistryContract {
 
     //RegistryInterface registry = RegistryInterface(0);
-    address _registryAddress;
-    RegistryInterface registry = RegistryInterface(_registryAddress);
+    address _registry;
+    RegistryInterface registry = RegistryInterface(_registry);
     bytes32 discoveryNodeStorageRegistryKey;
 
     event NewDiscoveryNode(uint _id, address _wallet, string _endpoint);

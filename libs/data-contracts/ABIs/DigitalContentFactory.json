@@ -33,7 +33,7 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "_digital_contentId",
+          "name": "_digitalContentId",
           "type": "uint256"
         }
       ],
@@ -52,7 +52,7 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "_digital_contentOwnerId",
+          "name": "_digitalContentOwnerId",
           "type": "uint256"
         },
         {
@@ -102,13 +102,13 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "_digital_contentId",
+          "name": "_digitalContentId",
           "type": "uint256"
         },
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "_digital_contentOwnerId",
+          "name": "_digitalContentOwnerId",
           "type": "uint256"
         },
         {
@@ -228,7 +228,7 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "_digital_contentOwnerId",
+          "name": "_digitalContentOwnerId",
           "type": "uint256"
         },
         {
@@ -272,12 +272,12 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "_digital_contentId",
+          "name": "_digitalContentId",
           "type": "uint256"
         },
         {
           "internalType": "uint256",
-          "name": "_digital_contentOwnerId",
+          "name": "_digitalContentOwnerId",
           "type": "uint256"
         },
         {
@@ -321,7 +321,7 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "_digital_contentId",
+          "name": "_digitalContentId",
           "type": "uint256"
         },
         {
@@ -355,7 +355,7 @@
         },
         {
           "internalType": "uint256",
-          "name": "_digital_contentId",
+          "name": "_digitalContentId",
           "type": "uint256"
         }
       ],

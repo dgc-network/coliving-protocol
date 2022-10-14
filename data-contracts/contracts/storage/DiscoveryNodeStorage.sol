@@ -11,8 +11,8 @@ contract DiscoveryNodeStorage is RegistryContract {
     bytes32 constant CALLER_REGISTRY_KEY = "DiscoveryNodeFactory";
 
     //RegistryInterface registry = RegistryInterface(0);
-    address _registryAddress;
-    RegistryInterface registry = RegistryInterface(_registryAddress);
+    address _registry;
+    RegistryInterface registry = RegistryInterface(_registry);
 
     /** @dev - Uniquely assigned discProvId, incremented for each new assignment */
     uint discProvId = 1;

@@ -14,8 +14,8 @@ contract SocialFeatureStorage is RegistryContract {
     bytes32 constant CALLER_REGISTRY_KEY = "SocialFeatureFactory";
 
     //RegistryInterface registry = RegistryInterface(0);
-    address _registryAddress;
-    RegistryInterface registry = RegistryInterface(_registryAddress);
+    address _registry;
+    RegistryInterface registry = RegistryInterface(_registry);
 
     /**
      * @dev - Mapping of digital_content repost contents
@@ -38,45 +38,45 @@ contract SocialFeatureStorage is RegistryContract {
 
     function addDigitalContentRepost(
         uint _userId,
-        uint _digital_contentId
+        uint _digitalContentId
     ) external onlyRegistrant(CALLER_REGISTRY_KEY)
     {   
-        userDigitalContentReposts[_userId][_digital_contentId] = true;
+        userDigitalContentReposts[_userId][_digitalContentId] = true;
     }
 
     function deleteDigitalContentRepost(
         uint _userId,
-        uint _digital_contentId
+        uint _digitalContentId
     ) external onlyRegistrant(CALLER_REGISTRY_KEY)
     {   
-        userDigitalContentReposts[_userId][_digital_contentId] = false;
+        userDigitalContentReposts[_userId][_digitalContentId] = false;
     }
 
-    function userRepostedDigitalContent(uint _userId, uint _digital_contentId)
+    function userRepostedDigitalContent(uint _userId, uint _digitalContentId)
     external view onlyRegistrant(CALLER_REGISTRY_KEY) returns (bool)
     {
-        return userDigitalContentReposts[_userId][_digital_contentId];
+        return userDigitalContentReposts[_userId][_digitalContentId];
     }
 
     function addContentListRepost(
         uint _userId,
-        uint _content_listId
+        uint _contentListId
     ) external onlyRegistrant(CALLER_REGISTRY_KEY)
     {
-        userContentListReposts[_userId][_content_listId] = true; 
+        userContentListReposts[_userId][_contentListId] = true; 
     }
 
     function deleteContentListRepost(
         uint _userId,
-        uint _content_listId
+        uint _contentListId
     ) external onlyRegistrant(CALLER_REGISTRY_KEY)
     {
-        userContentListReposts[_userId][_content_listId] = false;
+        userContentListReposts[_userId][_contentListId] = false;
     }
 
-    function userRepostedContentList(uint _userId, uint _content_listId)
+    function userRepostedContentList(uint _userId, uint _contentListId)
     external view onlyRegistrant(CALLER_REGISTRY_KEY) returns (bool)
     {
-        return userContentListReposts[_userId][_content_listId];
+        return userContentListReposts[_userId][_contentListId];
     }
 }

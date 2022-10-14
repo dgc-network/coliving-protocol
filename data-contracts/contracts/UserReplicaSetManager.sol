@@ -10,8 +10,8 @@ import "./SigningLogicInitializable.sol";
 contract UserReplicaSetManager is SigningLogicInitializable, RegistryContract {
     /// @notice Reference to data contract registry
     //RegistryInterface private registry = RegistryInterface(0);
-    address _registryAddress;
-    RegistryInterface registry = RegistryInterface(_registryAddress);
+    address _registry;
+    RegistryInterface registry = RegistryInterface(_registry);
     /// @notice User factory key used to confirm valid users during reconfig operations
     bytes32 private userFactoryRegistryKey;
 

@@ -11,34 +11,34 @@ import "./SigningLogic.sol";
 contract DigitalContentFactory is RegistryContract, SigningLogic {
 
     //RegistryInterface registry = RegistryInterface(0);
-    address _registryAddress;
-    RegistryInterface registry = RegistryInterface(_registryAddress);
+    address _registry;
+    RegistryInterface registry = RegistryInterface(_registry);
     bytes32 userFactoryRegistryKey;
     bytes32 digitalContentStorageRegistryKey;
 
     event NewDigitalContent(
         uint _id,
-        uint _digital_contentOwnerId,
+        uint _digitalContentOwnerId,
         bytes32 _multihashDigest,
         uint8 _multihashHashFn,
         uint8 _multihashSize
     );
     event UpdateDigitalContent(
-        uint _digital_contentId,
-        uint _digital_contentOwnerId,
+        uint _digitalContentId,
+        uint _digitalContentOwnerId,
         bytes32 _multihashDigest,
         uint8 _multihashHashFn,
         uint8 _multihashSize
     );
-    event DigitalContentDeleted(uint _digital_contentId);
+    event DigitalContentDeleted(uint _digitalContentId);
 
-    bytes32 constant ADD_AGREEMENT_REQUEST_TYPEHASH = keccak256(
+    bytes32 constant ADD_DIGITAL_CONTENT_REQUEST_TYPEHASH = keccak256(
         "AddDigitalContentRequest(uint digitalContentOwnerId,bytes32 multihashDigest,uint8 multihashHashFn,uint8 multihashSize,bytes32 nonce)"
     );
-    bytes32 constant UPDATE_AGREEMENT_REQUEST_TYPEHASH = keccak256(
+    bytes32 constant UPDATE_DIGITAL_CONTENT_REQUEST_TYPEHASH = keccak256(
         "UpdateDigitalContentRequest(uint digitalContentId,uint digitalContentOwnerId,bytes32 multihashDigest,uint8 multihashHashFn,uint8 multihashSize,bytes32 nonce)"
     );
-    bytes32 constant DELETE_AGREEMENT_REQUEST_TYPEHASH = keccak256(
+    bytes32 constant DELETE_DIGITAL_CONTENT_REQUEST_TYPEHASH = keccak256(
         "DeleteDigitalContentRequest(uint digitalContentId,bytes32 nonce)"
     );
 
@@ -69,14 +69,14 @@ contract DigitalContentFactory is RegistryContract, SigningLogic {
 
     /**
     * @notice adds a new digital_content to DigitalContentStorage
-    * @param _digital_contentOwnerId - id of the digital_content's owner from the UserFactory
+    * @param _digitalContentOwnerId - id of the digital_content's owner from the UserFactory
     * @param _multihashDigest - metadata multihash digest
     * @param _multihashHashFn - hash function used to generate multihash
     * @param _multihashSize - size of digest
     * TODO(roneilr): stop saving multihash information to chain (wasteful of gas)
     */
     function addDigitalContent(
-        uint _digital_contentOwnerId,
+        uint _digitalContentOwnerId,
         bytes32 _multihashDigest,
         uint8 _multihashHashFn,
         uint8 _multihashSize,
@@ -85,7 +85,7 @@ contract DigitalContentFactory is RegistryContract, SigningLogic {
     ) external returns (uint)
     {
         bytes32 signatureDigest = generateAddDigitalContentRequestSchemaHash(
-            _digital_contentOwnerId,
+            _digitalContentOwnerId,
             _multihashDigest,
             _multihashHashFn,
             _multihashSize,
@@ -95,15 +95,15 @@ contract DigitalContentFactory is RegistryContract, SigningLogic {
         burnSignatureDigest(signatureDigest, signer);
         UserFactoryInterface(
             registry.getContract(userFactoryRegistryKey)
-        ).callerOwnsUser(signer, _digital_contentOwnerId);    // will revert if false
+        ).callerOwnsUser(signer, _digitalContentOwnerId);    // will revert if false
 
         uint digitalContentId = DigitalContentStorageInterface(
             registry.getContract(digitalContentStorageRegistryKey)
-        ).addDigitalContent(_digital_contentOwnerId, _multihashDigest, _multihashHashFn, _multihashSize);
+        ).addDigitalContent(_digitalContentOwnerId, _multihashDigest, _multihashHashFn, _multihashSize);
 
         emit NewDigitalContent(
             digitalContentId,
-            _digital_contentOwnerId,
+            _digitalContentOwnerId,
             _multihashDigest,
             _multihashHashFn,
             _multihashSize
@@ -113,15 +113,15 @@ contract DigitalContentFactory is RegistryContract, SigningLogic {
 
     /**
     * @notice Updates an existing digital_content in DigitalContentStorage
-    * @param _digital_contentId - id of digital_content to update
-    * @param _digital_contentOwnerId - id of the digital_content's creator from the CreatorFactory
+    * @param _digitalContentId - id of digital_content to update
+    * @param _digitalContentOwnerId - id of the digital_content's creator from the CreatorFactory
     * @param _multihashDigest - metadata multihash digest
     * @param _multihashHashFn - hash function used to generate multihash
     * @param _multihashSize - size of digest
     */
     function updateDigitalContent(
-        uint _digital_contentId,
-        uint _digital_contentOwnerId,
+        uint _digitalContentId,
+        uint _digitalContentOwnerId,
         bytes32 _multihashDigest,
         uint8 _multihashHashFn,
         uint8 _multihashSize,
@@ -130,8 +130,8 @@ contract DigitalContentFactory is RegistryContract, SigningLogic {
     ) external returns (bool)
     {
         bytes32 signatureDigest = generateUpdateDigitalContentRequestSchemaHash(
-            _digital_contentId,
-            _digital_contentOwnerId,
+            _digitalContentId,
+            _digitalContentOwnerId,
             _multihashDigest,
             _multihashHashFn,
             _multihashSize,
@@ -139,21 +139,21 @@ contract DigitalContentFactory is RegistryContract, SigningLogic {
         );
         address signer = recoverSigner(signatureDigest, _subjectSig);
         burnSignatureDigest(signatureDigest, signer);
-        this.callerOwnsDigitalContent(signer, _digital_contentId); // will revert if false
+        this.callerOwnsDigitalContent(signer, _digitalContentId); // will revert if false
 
         bool digitalContentUpdated = DigitalContentStorageInterface(
             registry.getContract(digitalContentStorageRegistryKey)
         ).updateDigitalContent(
-            _digital_contentId,
-            _digital_contentOwnerId,
+            _digitalContentId,
+            _digitalContentOwnerId,
             _multihashDigest,
             _multihashHashFn,
             _multihashSize
         );
 
         emit UpdateDigitalContent(
-            _digital_contentId,
-            _digital_contentOwnerId,
+            _digitalContentId,
+            _digitalContentOwnerId,
             _multihashDigest,
             _multihashHashFn,
             _multihashSize
@@ -163,30 +163,30 @@ contract DigitalContentFactory is RegistryContract, SigningLogic {
 
     /**
     * @notice deletes existing digital_content given its ID
-    * @notice does not delete digital_content from storage by design
-    * @param _digital_contentId - id of digital_content to delete
+    * @notice does not delete digital content from storage by design
+    * @param _digitalContentId - id of digital_content to delete
     */
     function deleteDigitalContent(
-        uint _digital_contentId,
+        uint _digitalContentId,
         bytes32 _nonce,
         bytes calldata _subjectSig
     ) external returns (bool status)
     {
-        bytes32 signatureDigest = generateDeleteDigitalContentRequestSchemaHash(_digital_contentId, _nonce);
+        bytes32 signatureDigest = generateDeleteDigitalContentRequestSchemaHash(_digitalContentId, _nonce);
         address signer = recoverSigner(signatureDigest, _subjectSig);
         burnSignatureDigest(signatureDigest, signer);
-        this.callerOwnsDigitalContent(signer, _digital_contentId); // will revert if false
+        this.callerOwnsDigitalContent(signer, _digitalContentId); // will revert if false
 
-        emit DigitalContentDeleted(_digital_contentId);
+        emit DigitalContentDeleted(_digitalContentId);
         return true;
     }
 
     /** @notice ensures that calling address owns digital_content; reverts if not */
-    function callerOwnsDigitalContent(address _caller, uint _digital_contentId) external view {
+    function callerOwnsDigitalContent(address _caller, uint _digitalContentId) external view {
         // get user id of digital_content owner
         (uint digitalContentOwnerId,,,) = DigitalContentStorageInterface(
             registry.getContract(digitalContentStorageRegistryKey)
-        ).getDigitalContent(_digital_contentId);
+        ).getDigitalContent(_digitalContentId);
 
         // confirm caller owns digital_content owner
         UserFactoryInterface(
@@ -207,7 +207,7 @@ contract DigitalContentFactory is RegistryContract, SigningLogic {
     }
 
     function generateAddDigitalContentRequestSchemaHash(
-        uint _digital_contentOwnerId,
+        uint _digitalContentOwnerId,
         bytes32 _multihashDigest,
         uint8 _multihashHashFn,
         uint8 _multihashSize,
@@ -217,8 +217,8 @@ contract DigitalContentFactory is RegistryContract, SigningLogic {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    ADD_AGREEMENT_REQUEST_TYPEHASH,
-                    _digital_contentOwnerId,
+                    ADD_DIGITAL_CONTENT_REQUEST_TYPEHASH,
+                    _digitalContentOwnerId,
                     _multihashDigest,
                     _multihashHashFn,
                     _multihashSize,
@@ -229,8 +229,8 @@ contract DigitalContentFactory is RegistryContract, SigningLogic {
     }
 
     function generateUpdateDigitalContentRequestSchemaHash(
-        uint _digital_contentId,
-        uint _digital_contentOwnerId,
+        uint _digitalContentId,
+        uint _digitalContentOwnerId,
         bytes32 _multihashDigest,
         uint8 _multihashHashFn,
         uint8 _multihashSize,
@@ -240,9 +240,9 @@ contract DigitalContentFactory is RegistryContract, SigningLogic {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    UPDATE_AGREEMENT_REQUEST_TYPEHASH,
-                    _digital_contentId,
-                    _digital_contentOwnerId,
+                    UPDATE_DIGITAL_CONTENT_REQUEST_TYPEHASH,
+                    _digitalContentId,
+                    _digitalContentOwnerId,
                     _multihashDigest,
                     _multihashHashFn,
                     _multihashSize,
@@ -253,15 +253,15 @@ contract DigitalContentFactory is RegistryContract, SigningLogic {
     }
 
     function generateDeleteDigitalContentRequestSchemaHash(
-        uint _digital_contentId,
+        uint _digitalContentId,
         bytes32 _nonce
     ) internal view returns (bytes32)
     {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    DELETE_AGREEMENT_REQUEST_TYPEHASH,
-                    _digital_contentId,
+                    DELETE_DIGITAL_CONTENT_REQUEST_TYPEHASH,
+                    _digitalContentId,
                     _nonce
                 )
             )

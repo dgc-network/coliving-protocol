@@ -45,6 +45,6 @@ LAST_REACTIONS_INDEX_TIME_KEY = "reactions_last_index_time"
 LAST_SEEN_NEW_REACTION_TIME_KEY = "reactions_last_new_reaction_time"
 
 # DigitalContent unavailability worker job keys
-UPDATE_AGREEMENT_IS_AVAILABLE_START_REDIS_KEY = "update_digital_content_is_available:start"
-UPDATE_AGREEMENT_IS_AVAILABLE_FINISH_REDIS_KEY = "update_digital_content_is_available:finish"
+UPDATE_DIGITAL_CONTENT_IS_AVAILABLE_START_REDIS_KEY = "update_digital_content_is_available:start"
+UPDATE_DIGITAL_CONTENT_IS_AVAILABLE_FINISH_REDIS_KEY = "update_digital_content_is_available:finish"
 ALL_UNAVAILABLE_AGREEMENTS_REDIS_KEY = "update_digital_content_is_available:unavailable_digital_contents_all"

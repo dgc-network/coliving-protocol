@@ -36,7 +36,7 @@ export class SocialFeatureFactoryClient extends ContractClient {
   }
 
   async deleteDigitalContentRepost(userId: number, digitalContentId: number) {
-    // generate new delete digital_content repost request
+    // generate new delete digital content repost request
     const nonce = signatureSchemas.getNonce()
     const chainId = await this.getEthNetId()
     const contractAddress = await this.getAddress()

@@ -14,13 +14,13 @@ from src.utils.prometheus_metric import (
 )
 from src.utils.redis_constants import (
     ALL_UNAVAILABLE_AGREEMENTS_REDIS_KEY,
-    UPDATE_AGREEMENT_IS_AVAILABLE_FINISH_REDIS_KEY,
-    UPDATE_AGREEMENT_IS_AVAILABLE_START_REDIS_KEY,
+    UPDATE_DIGITAL_CONTENT_IS_AVAILABLE_FINISH_REDIS_KEY,
+    UPDATE_DIGITAL_CONTENT_IS_AVAILABLE_START_REDIS_KEY,
 )
 
 logger = logging.getLogger(__name__)
 
-UPDATE_AGREEMENT_IS_AVAILABLE_LOCK = "update_digital_content_is_available_lock"
+UPDATE_DIGITAL_CONTENT_IS_AVAILABLE_LOCK = "update_digital_content_is_available_lock"
 
 BATCH_SIZE = 1000
 DEFAULT_LOCK_TIMEOUT_SECONDS = 30  # 30 seconds
@@ -228,21 +228,21 @@ def update_digital_content_is_available(self) -> None:
 
     have_lock = False
     update_lock = redis.lock(
-        UPDATE_AGREEMENT_IS_AVAILABLE_LOCK,
+        UPDATE_DIGITAL_CONTENT_IS_AVAILABLE_LOCK,
         timeout=DEFAULT_LOCK_TIMEOUT_SECONDS,
     )
 
     have_lock = update_lock.acquire(blocking=False)
     if have_lock:
         metric = PrometheusMetric(
-            PrometheusMetricNames.UPDATE_AGREEMENT_IS_AVAILABLE_DURATION_SECONDS
+            PrometheusMetricNames.UPDATE_DIGITAL_CONTENT_IS_AVAILABLE_DURATION_SECONDS
         )
         try:
             # TODO: we can deprecate this manual redis timestamp tracker once we confirm
             # that prometheus works in tracking duration. Needs to be removed from
             # the health check too
             redis.set(
-                UPDATE_AGREEMENT_IS_AVAILABLE_START_REDIS_KEY,
+                UPDATE_DIGITAL_CONTENT_IS_AVAILABLE_START_REDIS_KEY,
                 datetime.now(tz=timezone.utc).strftime("%Y-%m-%d %H:%M:%S.%f %Z"),
             )
 
@@ -261,7 +261,7 @@ def update_digital_content_is_available(self) -> None:
         finally:
             # TODO: see comment above about deprecation
             redis.set(
-                UPDATE_AGREEMENT_IS_AVAILABLE_FINISH_REDIS_KEY,
+                UPDATE_DIGITAL_CONTENT_IS_AVAILABLE_FINISH_REDIS_KEY,
                 datetime.now(tz=timezone.utc).strftime("%Y-%m-%d %H:%M:%S.%f %Z"),
             )
             if have_lock:

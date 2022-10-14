@@ -131,7 +131,7 @@ contract('UserLibrary', async (accounts) => {
       testUserId1,
       testDigitalContentId1)
 
-    // delete digital_content save and validate
+    // delete digital content save and validate
     await _lib.deleteDigitalContentSaveAndValidate(
       userLibraryFactory,
       accounts[0],
@@ -285,7 +285,7 @@ contract('UserLibrary', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
   })
 
-  it('Should fail to delete digital_content save with non-existent user and non-existent digital_content', async () => {
+  it('Should fail to delete digital content save with non-existent user and non-existent digital_content', async () => {
     let caughtError = false
     try {
       await _lib.deleteDigitalContentSaveAndValidate(
@@ -363,7 +363,7 @@ contract('UserLibrary', async (accounts) => {
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
   })
 
-  it('Should fail to delete digital_content save due to lack of ownership of user', async () => {
+  it('Should fail to delete digital content save due to lack of ownership of user', async () => {
     // add digital_content save and validate
     await _lib.addDigitalContentSaveAndValidate(
       userLibraryFactory,

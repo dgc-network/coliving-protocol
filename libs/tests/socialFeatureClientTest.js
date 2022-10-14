@@ -8,7 +8,7 @@ before(async function () {
   await colivingInstance.init()
 })
 
-it('Should add + delete digital_content repost', async function () {
+it('Should add + delete digital content repost', async function () {
   // add creator
   const handle = 'sid' + Math.floor(Math.random() * 10000000)
   const creatorId = (await colivingInstance.contracts.UserFactoryClient.addUser(handle)).userId
@@ -31,7 +31,7 @@ it('Should add + delete digital_content repost', async function () {
   const addDigitalContentRepostTx = await colivingInstance.contracts.SocialFeatureFactoryClient.addDigitalContentRepost(creatorId, digitalContentId)
   assert.ok('DigitalContentRepostAdded' in addDigitalContentRepostTx.events, 'Did not find DigitalContentRepostAdded event in transaction')
 
-  // delete digital_content repost
+  // delete digital content repost
   const deleteDigitalContentRepostTx = await colivingInstance.contracts.SocialFeatureFactoryClient.deleteDigitalContentRepost(creatorId, digitalContentId)
   assert.ok('DigitalContentRepostDeleted' in deleteDigitalContentRepostTx.events, 'Did not find DigitalContentRepostDeleted event in transaction')
 })

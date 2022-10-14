@@ -62,9 +62,9 @@ export const assertEqualValues = (tx, name, properties) => {
     switch (p) {
       case '_id':
       case '_userId':
-      case '_digital_contentOwnerId':
-      case '_digital_contentId':
-      case '_content_listId':
+      case '_digitalContentOwnerId':
+      case '_digitalContentId':
+      case '_contentListId':
       case '_followeeUserId':
       case '_primaryId':
         assert.equal(tx.event.args[p].toNumber(), properties[p], 'Expected same ' + p)
@@ -94,9 +94,9 @@ const buildReturnObj = (tx, properties) => {
         returnObj['digitalContentId'] = tx.event.args[p].toNumber()
         break
       case '_userId':
-      case '_digital_contentOwnerId':
-      case '_digital_contentId':
-      case '_content_listId':
+      case '_digitalContentOwnerId':
+      case '_digitalContentId':
+      case '_contentListId':
       case '_followeeUserId':
         // Slices the property starting at index 1 to remove _
         returnObj[p.slice(1, p.length)] = tx.event.args[p].toNumber()

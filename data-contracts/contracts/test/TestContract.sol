@@ -9,8 +9,8 @@ import "../interface/RegistryInterface.sol";
 contract TestContract is RegistryContract {
 
     //RegistryInterface registry = RegistryInterface(0);
-    address _registryAddress;
-    RegistryInterface registry = RegistryInterface(_registryAddress);
+    address _registry;
+    RegistryInterface registry = RegistryInterface(_registry);
 
     uint public x = 1;
 

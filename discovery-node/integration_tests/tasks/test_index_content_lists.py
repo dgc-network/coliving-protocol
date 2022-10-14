@@ -31,11 +31,11 @@ def get_content_list_created_event():
     event_type = content_list_event_types_lookup["content_list_created"]
     content_list_created_event = AttrDict(
         {
-            "_content_listId": 1,
-            "_content_listOwnerId": 1,
+            "_contentListId": 1,
+            "_contentListOwnerId": 1,
             "_isPrivate": True,
             "_isAlbum": False,
-            "_digital_contentIds": [],  # This is a list of numbers (digital_content ids)
+            "_digitalContentIds": [],  # This is a list of numbers (digital_content ids)
         }
     )
     return event_type, AttrDict(
@@ -47,7 +47,7 @@ def get_content_list_created_event():
 def get_content_list_name_updated_event():
     event_type = content_list_event_types_lookup["content_list_name_updated"]
     content_list_name_updated_event = AttrDict(
-        {"_content_listId": 1, "_updatedContentListName": "asdfg"}
+        {"_contentListId": 1, "_updatedContentListName": "asdfg"}
     )
     return event_type, AttrDict(
         {"blockHash": block_hash, "args": content_list_name_updated_event}
@@ -59,8 +59,8 @@ def get_content_list_cover_photo_updated_event():
     event_type = content_list_event_types_lookup["content_list_cover_photo_updated"]
     content_list_cover_photo_updated_event = AttrDict(
         {
-            "_content_listId": 1,
-            "_content_listImageMultihashDigest": b"\xad\x8d\x1eeG\xf2\x12\xe3\x817"
+            "_contentListId": 1,
+            "_contentListImageMultihashDigest": b"\xad\x8d\x1eeG\xf2\x12\xe3\x817"
             + b"\x7f\xb1A\xc6 M~\xfe\x03F\x98f\xab\xfa3\x17ib\xdcC>\xed",
         }
     )
@@ -73,7 +73,7 @@ def get_content_list_cover_photo_updated_event():
 def get_content_list_description_updated_event():
     event_type = content_list_event_types_lookup["content_list_description_updated"]
     content_list_description_updated_event = AttrDict(
-        {"_content_listId": 1, "_content_listDescription": "adf"}
+        {"_contentListId": 1, "_contentListDescription": "adf"}
     )
     return event_type, AttrDict(
         {"blockHash": block_hash, "args": content_list_description_updated_event}
@@ -84,7 +84,7 @@ def get_content_list_description_updated_event():
 def get_content_list_digital_content_added_event(contentListId, addedDigitalContentId):
     event_type = content_list_event_types_lookup["content_list_digital_content_added"]
     content_list_digital_content_added_event = AttrDict(
-        {"_content_listId": contentListId, "_addedDigitalContentId": addedDigitalContentId}
+        {"_contentListId": contentListId, "_addedDigitalContentId": addedDigitalContentId}
     )
     return event_type, AttrDict(
         {"blockHash": block_hash, "args": content_list_digital_content_added_event}
@@ -95,7 +95,7 @@ def get_content_list_digital_content_added_event(contentListId, addedDigitalCont
 def get_content_list_digital_contents_ordered_event():
     event_type = content_list_event_types_lookup["content_list_digital_contents_ordered"]
     content_list_digital_contents_ordered_event = AttrDict(
-        {"_content_listId": 1, "_orderedDigitalContentIds": [2, 1]}
+        {"_contentListId": 1, "_orderedDigitalContentIds": [2, 1]}
     )
     return event_type, AttrDict(
         {"blockHash": block_hash, "args": content_list_digital_contents_ordered_event}
@@ -107,7 +107,7 @@ def get_content_list_digital_content_delete_event(contentListId, deletedDigitalC
     event_type = content_list_event_types_lookup["content_list_digital_content_deleted"]
     content_list_digital_content_delete_event = AttrDict(
         {
-            "_content_listId": contentListId,
+            "_contentListId": contentListId,
             "_deletedDigitalContentId": deletedDigitalContentId,
             "_deletedDigitalContentTimestamp": deletedDigitalContentTimestamp,
         }
@@ -122,7 +122,7 @@ def get_content_list_digital_content_delete_event(contentListId, deletedDigitalC
 def get_content_list_privacy_updated_event():
     event_type = content_list_event_types_lookup["content_list_privacy_updated"]
     content_list_privacy_updated_event = AttrDict(
-        {"_content_listId": 1, "_updatedIsPrivate": False}
+        {"_contentListId": 1, "_updatedIsPrivate": False}
     )
     return event_type, AttrDict(
         {"blockHash": block_hash, "args": content_list_privacy_updated_event}
@@ -132,7 +132,7 @@ def get_content_list_privacy_updated_event():
 # event_type: ContentListDeleted
 def get_content_list_deleted_event():
     event_type = content_list_event_types_lookup["content_list_deleted"]
-    content_list_deleted_event = AttrDict({"_content_listId": 1})
+    content_list_deleted_event = AttrDict({"_contentListId": 1})
     return event_type, AttrDict(
         {"blockHash": block_hash, "args": content_list_deleted_event}
     )
@@ -169,14 +169,14 @@ def test_index_content_list(app):
             session,
         )
 
-        assert content_list_record.content_list_owner_id == entry.args._content_listOwnerId
+        assert content_list_record.content_list_owner_id == entry.args._contentListOwnerId
         assert content_list_record.is_private == entry.args._isPrivate
         assert content_list_record.is_album == entry.args._isAlbum
         block_datetime = datetime.utcfromtimestamp(block_timestamp)
         block_integer_time = int(block_timestamp)
 
         content_list_content_array = []
-        for digital_content_id in entry.args._digital_contentIds:
+        for digital_content_id in entry.args._digitalContentIds:
             content_list_content_array.append(
                 {"digital_content": digital_content_id, "time": block_integer_time}
             )
@@ -213,7 +213,7 @@ def test_index_content_list(app):
             session,
         )
         assert content_list_record.content_list_image_sizes_multihash == (
-            helpers.multihash_digest_to_cid(entry.args._content_listImageMultihashDigest)
+            helpers.multihash_digest_to_cid(entry.args._contentListImageMultihashDigest)
         )
         assert content_list_record.content_list_image_multihash == None
 
@@ -229,7 +229,7 @@ def test_index_content_list(app):
             block_timestamp,
             session,
         )
-        assert content_list_record.description == entry.args._content_listDescription
+        assert content_list_record.description == entry.args._contentListDescription
 
         # ================= Test content_list_privacy_updated Event =================
         event_type, entry = get_content_list_privacy_updated_event()
@@ -428,7 +428,7 @@ def test_content_list_indexing_skip_tx(app, mocker):
                 {
                     "args": AttrDict(
                         {
-                            "_content_listId": cursed_content_list_record.content_list_id,
+                            "_contentListId": cursed_content_list_record.content_list_id,
                         }
                     )
                 },
@@ -446,7 +446,7 @@ def test_content_list_indexing_skip_tx(app, mocker):
                 {
                     "args": AttrDict(
                         {
-                            "_content_listId": blessed_content_list_record.content_list_id,
+                            "_contentListId": blessed_content_list_record.content_list_id,
                         }
                     )
                 },

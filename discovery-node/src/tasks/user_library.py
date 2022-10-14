@@ -153,7 +153,7 @@ def add_digital_content_save(
     for event in new_add_digital_content_events:
         event_args = event["args"]
         save_user_id = event_args._userId
-        save_digital_content_id = event_args._digital_contentId
+        save_digital_content_id = event_args._digitalContentId
 
         if (save_user_id in digital_content_state_changes) and (
             save_digital_content_id in digital_content_state_changes[save_user_id]
@@ -197,7 +197,7 @@ def add_content_list_save(
     for event in new_add_content_list_events:
         event_args = event["args"]
         save_user_id = event_args._userId
-        save_content_list_id = event_args._content_listId
+        save_content_list_id = event_args._contentListId
         save_type = SaveType.contentList
 
         content_list_entry = (
@@ -253,7 +253,7 @@ def delete_digital_content_save(
     for event in new_delete_digital_content_events:
         event_args = event["args"]
         save_user_id = event_args._userId
-        save_digital_content_id = event_args._digital_contentId
+        save_digital_content_id = event_args._digitalContentId
 
         if (save_user_id in digital_content_state_changes) and (
             save_digital_content_id in digital_content_state_changes[save_user_id]
@@ -297,7 +297,7 @@ def delete_content_list_save(
     for event in new_add_content_list_events:
         event_args = event["args"]
         save_user_id = event_args._userId
-        save_content_list_id = event_args._content_listId
+        save_content_list_id = event_args._contentListId
         save_type = SaveType.contentList
 
         content_list_entry = (

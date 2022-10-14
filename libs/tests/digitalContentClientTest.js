@@ -80,7 +80,7 @@ it('should call deleteDigitalContent', async function () {
   let digital_content = await colivingInstance.contracts.DigitalContentFactoryClient.getDigitalContent(digitalContentId2)
   assert.strictEqual(digital_content.multihashDigest, digitalContentMultihashDecoded.digest)
 
-  // delete digital_content
+  // delete digital content
   let { digitalContentId } = await colivingInstance.contracts.DigitalContentFactoryClient.deleteDigitalContent(digitalContentId2)
   assert.strictEqual(digitalContentId, digitalContentId2)
 })

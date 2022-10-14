@@ -10,7 +10,7 @@
         },
         {
           "internalType": "uint256",
-          "name": "_content_listId",
+          "name": "_contentListId",
           "type": "uint256"
         }
       ],
@@ -23,7 +23,7 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "_content_listId",
+          "name": "_contentListId",
           "type": "uint256"
         }
       ],

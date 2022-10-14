@@ -9,8 +9,8 @@ contract DigitalContentStorage is RegistryContract {
     bytes32 constant CALLER_REGISTRY_KEY = "DigitalContentFactory";
 
     //RegistryInterface registry = RegistryInterface(0);
-    address _registryAddress;
-    RegistryInterface registry = RegistryInterface(_registryAddress);
+    address _registry;
+    RegistryInterface registry = RegistryInterface(_registry);
 
     /** @dev - Uniquely assigned digitalContentId, incremented for each new assignment */
     uint digitalContentId = 1;
@@ -26,7 +26,7 @@ contract DigitalContentStorage is RegistryContract {
         registry = RegistryInterface(_registryAddress);
     }
 
-    function getDigitalContent(uint _digital_contentId)
+    function getDigitalContent(uint _digitalContentId)
     external view onlyRegistrant(CALLER_REGISTRY_KEY) returns (
         uint digitalContentOwnerId,
         bytes32 multihashDigest,
@@ -34,9 +34,9 @@ contract DigitalContentStorage is RegistryContract {
         uint8 multihashSize
     )
     {
-        Multihash memory digitalContentMultihash = digitalContentMetadataMultihashes[_digital_contentId];
+        Multihash memory digitalContentMultihash = digitalContentMetadataMultihashes[_digitalContentId];
         return (
-            digitalContentOwnerIds[_digital_contentId],
+            digitalContentOwnerIds[_digitalContentId],
             digitalContentMultihash.digest,
             digitalContentMultihash.hashFn,
             digitalContentMultihash.size
@@ -44,13 +44,13 @@ contract DigitalContentStorage is RegistryContract {
     }
 
     function addDigitalContent(
-        uint _digital_contentOwnerId,
+        uint _digitalContentOwnerId,
         bytes32 _multihashDigest,
         uint8 _multihashHashFn,
         uint8 _multihashSize
     ) external onlyRegistrant(CALLER_REGISTRY_KEY) returns (uint newDigitalContentId)
     {
-        digitalContentOwnerIds[digitalContentId] = _digital_contentOwnerId;
+        digitalContentOwnerIds[digitalContentId] = _digitalContentOwnerId;
         digitalContentMetadataMultihashes[digitalContentId] = Multihash({
             digest: _multihashDigest,
             hashFn: _multihashHashFn,
@@ -65,30 +65,30 @@ contract DigitalContentStorage is RegistryContract {
     }
 
     function updateDigitalContent(
-        uint _digital_contentId,
-        uint _digital_contentOwnerId,
+        uint _digitalContentId,
+        uint _digitalContentOwnerId,
         bytes32 _multihashDigest,
         uint8 _multihashHashFn,
         uint8 _multihashSize
     ) external onlyRegistrant(CALLER_REGISTRY_KEY) returns (bool updatePerformed)
     {
         updatePerformed = false;
-        if (digitalContentOwnerIds[_digital_contentId] != _digital_contentOwnerId) {
-            digitalContentOwnerIds[_digital_contentId] = _digital_contentOwnerId;
+        if (digitalContentOwnerIds[_digitalContentId] != _digitalContentOwnerId) {
+            digitalContentOwnerIds[_digitalContentId] = _digitalContentOwnerId;
         }
 
-        if (digitalContentMetadataMultihashes[_digital_contentId].digest != _multihashDigest) {
-            digitalContentMetadataMultihashes[_digital_contentId].digest = _multihashDigest;
+        if (digitalContentMetadataMultihashes[_digitalContentId].digest != _multihashDigest) {
+            digitalContentMetadataMultihashes[_digitalContentId].digest = _multihashDigest;
             updatePerformed = true;
         }
 
-        if (digitalContentMetadataMultihashes[_digital_contentId].hashFn != _multihashHashFn) {
-            digitalContentMetadataMultihashes[_digital_contentId].hashFn = _multihashHashFn;
+        if (digitalContentMetadataMultihashes[_digitalContentId].hashFn != _multihashHashFn) {
+            digitalContentMetadataMultihashes[_digitalContentId].hashFn = _multihashHashFn;
             updatePerformed = true;
         }
 
-        if (digitalContentMetadataMultihashes[_digital_contentId].size != _multihashSize) {
-            digitalContentMetadataMultihashes[_digital_contentId].size = _multihashSize;
+        if (digitalContentMetadataMultihashes[_digitalContentId].size != _multihashSize) {
+            digitalContentMetadataMultihashes[_digitalContentId].size = _multihashSize;
             updatePerformed = true;
         }
 

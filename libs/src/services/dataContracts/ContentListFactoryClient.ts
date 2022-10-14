@@ -60,7 +60,7 @@ export class ContentListFactoryClient extends ContractClient {
     )
     return {
       contentListId: parseInt(
-        tx.events?.['ContentListCreated']?.returnValues._content_listId,
+        tx.events?.['ContentListCreated']?.returnValues._contentListId,
         10
       ),
       txReceipt: tx
@@ -94,7 +94,7 @@ export class ContentListFactoryClient extends ContractClient {
     )
     return {
       contentListId: parseInt(
-        tx.events?.['ContentListDeleted']?.returnValues._content_listId,
+        tx.events?.['ContentListDeleted']?.returnValues._contentListId,
         10
       ),
       txReceipt: tx

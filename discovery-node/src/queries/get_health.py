@@ -27,8 +27,8 @@ from src.utils.prometheus_metric import PrometheusMetric, PrometheusMetricNames
 from src.utils.redis_constants import (
     LAST_REACTIONS_INDEX_TIME_KEY,
     LAST_SEEN_NEW_REACTION_TIME_KEY,
-    UPDATE_AGREEMENT_IS_AVAILABLE_FINISH_REDIS_KEY,
-    UPDATE_AGREEMENT_IS_AVAILABLE_START_REDIS_KEY,
+    UPDATE_DIGITAL_CONTENT_IS_AVAILABLE_FINISH_REDIS_KEY,
+    UPDATE_DIGITAL_CONTENT_IS_AVAILABLE_START_REDIS_KEY,
     challenges_last_processed_event_redis_key,
     index_eth_last_completion_redis_key,
     latest_block_hash_redis_key,
@@ -231,7 +231,7 @@ def get_health(args: GetHealthArgs, use_redis_cache: bool = True) -> Tuple[Dict,
 
     try:
         last_digital_content_unavailability_job_start_time = str(
-            redis.get(UPDATE_AGREEMENT_IS_AVAILABLE_START_REDIS_KEY).decode()
+            redis.get(UPDATE_DIGITAL_CONTENT_IS_AVAILABLE_START_REDIS_KEY).decode()
         )
     except Exception as e:
         logger.error(
@@ -241,7 +241,7 @@ def get_health(args: GetHealthArgs, use_redis_cache: bool = True) -> Tuple[Dict,
 
     try:
         last_digital_content_unavailability_job_end_time = str(
-            redis.get(UPDATE_AGREEMENT_IS_AVAILABLE_FINISH_REDIS_KEY).decode()
+            redis.get(UPDATE_DIGITAL_CONTENT_IS_AVAILABLE_FINISH_REDIS_KEY).decode()
         )
     except Exception as e:
         logger.error(

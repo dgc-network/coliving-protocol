@@ -88,7 +88,7 @@ it('should add digitalContents to an existing contentList', async function () {
     digitalContentId)
 })
 
-it('should delete digital_content from an existing contentList', async function () {
+it('should delete digital content from an existing contentList', async function () {
   const cid = helpers.constants.digitalContentMetadataCID // test metadata stored in DHT
   const digitalContentMultihashDecoded = Utils.decodeMultihash(cid)
 

@@ -50,7 +50,7 @@ def content_list_state_update(
             processedEntries = 0  # if record does not get added, do not count towards num_total_changes
             for entry in content_list_events_tx:
                 existing_content_list_record = None
-                content_list_id = helpers.get_tx_arg(entry, "_content_listId")
+                content_list_id = helpers.get_tx_arg(entry, "_contentListId")
                 try:
                     # look up or populate existing record
                     if content_list_id in content_list_events_lookup:
@@ -132,11 +132,11 @@ def get_content_list_events_tx(update_task, event_type, tx_receipt):
 def lookup_content_list_record(update_task, session, entry, block_number, txhash):
     event_blockhash = update_task.web3.toHex(entry.blockHash)
     event_args = entry["args"]
-    content_list_id = event_args._content_listId
+    content_list_id = event_args._contentListId
 
     # Check if contentList record is in the DB
     content_list_exists = (
-        session.query(ContentList).filter_by(content_list_id=event_args._content_listId).count()
+        session.query(ContentList).filter_by(content_list_id=event_args._contentListId).count()
         > 0
     )
 
@@ -195,12 +195,12 @@ def parse_content_list_event(
         logger.info(
             f"index.py | contentLists.py | Creating contentList {content_list_record.content_list_id}"
         )
-        content_list_record.content_list_owner_id = event_args._content_listOwnerId
+        content_list_record.content_list_owner_id = event_args._contentListOwnerId
         content_list_record.is_private = event_args._isPrivate
         content_list_record.is_album = event_args._isAlbum
 
         content_list_content_array = []
-        for digital_content_id in event_args._digital_contentIds:
+        for digital_content_id in event_args._digitalContentIds:
             content_list_content_array.append(
                 {"digital_content": digital_content_id, "time": block_integer_time}
             )
@@ -314,7 +314,7 @@ def parse_content_list_event(
 
     if event_type == content_list_event_types_lookup["content_list_cover_photo_updated"]:
         content_list_record.content_list_image_multihash = helpers.multihash_digest_to_cid(
-            event_args._content_listImageMultihashDigest
+            event_args._contentListImageMultihashDigest
         )
 
         # All incoming contentList images are set to ipfs dir in column content_list_image_sizes_multihash
@@ -331,16 +331,16 @@ def parse_content_list_event(
     if event_type == content_list_event_types_lookup["content_list_description_updated"]:
         logger.info(
             f"index.py | contentLists.py | Updating contentList {content_list_record.content_list_id} \
-        description to {event_args._content_listDescription}"
+        description to {event_args._contentListDescription}"
         )
-        content_list_record.description = event_args._content_listDescription
+        content_list_record.description = event_args._contentListDescription
 
     if event_type == content_list_event_types_lookup["content_list_upc_updated"]:
         logger.info(
             f"index.py | contentLists.py | Updating contentList {content_list_record.content_list_id} UPC \
-        to {event_args._content_listUPC}"
+        to {event_args._contentListUPC}"
         )
-        content_list_record.upc = helpers.bytes32_to_str(event_args._content_listUPC)
+        content_list_record.upc = helpers.bytes32_to_str(event_args._contentListUPC)
 
     content_list_record.updated_at = block_datetime
 

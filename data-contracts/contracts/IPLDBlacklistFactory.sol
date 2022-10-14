@@ -8,8 +8,8 @@ import "./SigningLogic.sol";
 contract IPLDBlacklistFactory is RegistryContract, SigningLogic {
 
     //RegistryInterface registry = RegistryInterface(0);
-    address _registryAddress;
-    RegistryInterface registry = RegistryInterface(_registryAddress);
+    address _registry;
+    RegistryInterface registry = RegistryInterface(_registry);
 
     address verifierAddress;
     bytes32 constant ADD_IPLD_TO_BLACKLIST = keccak256(

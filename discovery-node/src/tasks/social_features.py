@@ -207,7 +207,7 @@ def add_digital_content_repost(
     for event in new_digital_content_repost_events:
         event_args = event["args"]
         repost_user_id = event_args._userId
-        repost_digital_content_id = event_args._digital_contentId
+        repost_digital_content_id = event_args._digitalContentId
 
         if (repost_user_id in digital_content_repost_state_changes) and (
             repost_digital_content_id in digital_content_repost_state_changes[repost_user_id]
@@ -252,7 +252,7 @@ def delete_digital_content_repost(
     for event in new_repost_events:
         event_args = event["args"]
         repost_user_id = event_args._userId
-        repost_digital_content_id = event_args._digital_contentId
+        repost_digital_content_id = event_args._digitalContentId
 
         if (repost_user_id in digital_content_repost_state_changes) and (
             repost_digital_content_id in digital_content_repost_state_changes[repost_user_id]
@@ -295,7 +295,7 @@ def add_content_list_repost(
     for event in new_content_list_repost_events:
         event_args = event["args"]
         repost_user_id = event_args._userId
-        repost_content_list_id = event_args._content_listId
+        repost_content_list_id = event_args._contentListId
         repost_type = RepostType.contentList
 
         content_list_entries = (
@@ -356,7 +356,7 @@ def delete_content_list_repost(
     for event in new_content_list_repost_events:
         event_args = event["args"]
         repost_user_id = event_args._userId
-        repost_content_list_id = event_args._content_listId
+        repost_content_list_id = event_args._contentListId
         repost_type = RepostType.contentList
 
         content_list_entries = (

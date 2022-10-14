@@ -115,7 +115,7 @@ contract('SocialFeatureFactory', async (accounts) => {
     // add digital_content repost and validate
     await _lib.addDigitalContentRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testDigitalContentId1)
 
-    // delete digital_content repost and validate
+    // delete digital content repost and validate
     await _lib.deleteDigitalContentRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testDigitalContentId1)
   })
 
@@ -137,7 +137,7 @@ contract('SocialFeatureFactory', async (accounts) => {
     }
     assert.isTrue(caughtError, 'Call succeeded unexpectedly')
 
-    // delete digital_content repost and validate
+    // delete digital content repost and validate
     await _lib.deleteDigitalContentRepostAndValidate(socialFeatureFactory, accounts[0], testUserId1, testDigitalContentId1)
 
     // confirm duplicate digital_content repost delete throws

@@ -35,7 +35,7 @@ def get_new_digital_content_event():
     new_digital_content_event = AttrDict(
         {
             "_id": 1,
-            "_digital_contentOwnerId": 1,
+            "_digitalContentOwnerId": 1,
             "_multihashDigest": b"@\xfe\x1f\x02\xf3i%\xa5+\xec\x8dh\x82\xc5}\x17"
             + b"\x91\xb9\xa1\x8dg j\xc0\xcd\x879K\x80\xf2\xdbg",
             "_multihashHashFn": 18,
@@ -50,7 +50,7 @@ def get_new_digital_content_event_dupe():
     new_digital_content_event = AttrDict(
         {
             "_id": 2,
-            "_digital_contentOwnerId": 1,
+            "_digitalContentOwnerId": 1,
             "_multihashDigest": b"@\xfe\x1f\x02\xf3i%\xa5+\xec\x8dh"
             + b"\x82\xc5}\x17\x91\xb9\xa1\x8dg j\xc0\xcd\x879K\x80\xf2\xdbg",
             "_multihashHashFn": 18,
@@ -64,8 +64,8 @@ def get_update_digital_content_event():
     event_type = digital_content_event_types_lookup["update_digital_content"]
     update_digital_content_event = AttrDict(
         {
-            "_digital_contentId": 1,
-            "_digital_contentOwnerId": 1,
+            "_digitalContentId": 1,
+            "_digitalContentOwnerId": 1,
             "_multihashDigest": b"\x93\x7f\xa2\xe6\xf0\xe5\xb5f\xca"
             + b"\x14(4m.B\xba3\xf8\xc8<|%*{\x11\xc1\xe2/\xd7\xee\xd7q",
             "_multihashHashFn": 18,
@@ -77,7 +77,7 @@ def get_update_digital_content_event():
 
 def get_delete_digital_content_event():
     event_type = digital_content_event_types_lookup["delete_digital_content"]
-    delete_digital_content_event = AttrDict({"_digital_contentId": 1})
+    delete_digital_content_event = AttrDict({"_digitalContentId": 1})
     return event_type, AttrDict({"blockHash": block_hash, "args": delete_digital_content_event})
 
 
@@ -237,7 +237,7 @@ def test_index_digital_contents(mock_index_task, app):
 
         digital_content_owner = User(
             is_current=True,
-            user_id=entry.args._digital_contentOwnerId,
+            user_id=entry.args._digitalContentOwnerId,
             handle="ray",
             blockhash=updated_block_hash,
             blocknumber=block_number,
@@ -277,7 +277,7 @@ def test_index_digital_contents(mock_index_task, app):
 
         # new_digital_content updated fields
         assert digital_content_record.created_at == datetime.utcfromtimestamp(block_timestamp)
-        assert digital_content_record.owner_id == entry.args._digital_contentOwnerId
+        assert digital_content_record.owner_id == entry.args._digitalContentOwnerId
         assert digital_content_record.is_delete == False
 
         assert digital_content_record.title == digital_content_metadata["title"]
@@ -605,7 +605,7 @@ def test_digital_content_indexing_skip_tx(app, mocker):
                 {
                     "args": AttrDict(
                         {
-                            "_digital_contentId": cursed_digital_content_record.digital_content_id,
+                            "_digitalContentId": cursed_digital_content_record.digital_content_id,
                         }
                     )
                 },
@@ -616,7 +616,7 @@ def test_digital_content_indexing_skip_tx(app, mocker):
                 {
                     "args": AttrDict(
                         {
-                            "_digital_contentId": blessed_digital_content_record.digital_content_id,
+                            "_digitalContentId": blessed_digital_content_record.digital_content_id,
                         }
                     )
                 },

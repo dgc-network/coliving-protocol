@@ -10,7 +10,7 @@
         },
         {
           "internalType": "uint256",
-          "name": "_digital_contentId",
+          "name": "_digitalContentId",
           "type": "uint256"
         }
       ],
@@ -28,7 +28,7 @@
         },
         {
           "internalType": "uint256",
-          "name": "_digital_contentId",
+          "name": "_digitalContentId",
           "type": "uint256"
         }
       ],
@@ -46,7 +46,7 @@
         },
         {
           "internalType": "uint256",
-          "name": "_digital_contentId",
+          "name": "_digitalContentId",
           "type": "uint256"
         }
       ],
@@ -70,7 +70,7 @@
         },
         {
           "internalType": "uint256",
-          "name": "_content_listId",
+          "name": "_contentListId",
           "type": "uint256"
         }
       ],
@@ -88,7 +88,7 @@
         },
         {
           "internalType": "uint256",
-          "name": "_content_listId",
+          "name": "_contentListId",
           "type": "uint256"
         }
       ],
@@ -106,7 +106,7 @@
         },
         {
           "internalType": "uint256",
-          "name": "_content_listId",
+          "name": "_contentListId",
           "type": "uint256"
         }
       ],

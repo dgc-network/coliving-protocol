@@ -4,25 +4,25 @@ pragma solidity ^0.8.0;
 interface SocialFeatureStorageInterface {
   function addDigitalContentRepost(
     uint _userId,
-    uint _digital_contentId) external; 
+    uint _digitalContentId) external; 
 
   function deleteDigitalContentRepost(
     uint _userId,
-    uint _digital_contentId) external;
+    uint _digitalContentId) external;
 
   function userRepostedDigitalContent(
     uint _userId,
-    uint _digital_contentId) external view returns (bool reposted);
+    uint _digitalContentId) external view returns (bool reposted);
 
   function addContentListRepost(
     uint _userId,
-    uint _content_listId) external;
+    uint _contentListId) external;
 
   function deleteContentListRepost(
     uint _userId,
-    uint _content_listId) external;
+    uint _contentListId) external;
 
   function userRepostedContentList(
     uint _userId,
-    uint _content_listId) external view returns (bool reposted);
+    uint _contentListId) external view returns (bool reposted);
 }

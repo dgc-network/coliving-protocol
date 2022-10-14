@@ -9,8 +9,8 @@ contract ContentListStorage is RegistryContract {
     bytes32 constant CALLER_REGISTRY_KEY = "ContentListFactory";
 
     //RegistryInterface registry = RegistryInterface(0);
-    address _registryAddress;
-    RegistryInterface registry = RegistryInterface(_registryAddress);
+    address _registry;
+    RegistryInterface registry = RegistryInterface(_registry);
 
     /** @dev - Uniquely assigned contentListId, incremented for each new contentList/album */
     uint contentListId = 1;
@@ -34,28 +34,28 @@ contract ContentListStorage is RegistryContract {
     }
 
     function createContentList(
-        uint _content_listOwnerId,
+        uint _contentListOwnerId,
         bool _isAlbum,
-        uint[] calldata _digital_contentIds
+        uint[] calldata _digitalContentIds
     ) external onlyRegistrant(CALLER_REGISTRY_KEY) returns (uint newContentListId)
     {
         newContentListId = contentListId;
         contentListId += 1;
 
         // Number of digitalContents in contentList
-        uint contentListLength = _digital_contentIds.length;
+        uint contentListLength = _digitalContentIds.length;
 
         require(contentListId != newContentListId, "expected incremented contentListId");
 
         // Update contentList owner
-        contentListOwner[newContentListId] = _content_listOwnerId;
+        contentListOwner[newContentListId] = _contentListOwnerId;
 
         // Update additional on-chain fields
         isAlbum[newContentListId] = _isAlbum;
 
         // Populate the contentList content mapping
         for (uint i = 0; i < contentListLength; i++) {
-            uint currentDigitalContentId = _digital_contentIds[i];
+            uint currentDigitalContentId = _digitalContentIds[i];
             contentListContents[newContentListId][currentDigitalContentId] += 1;
         }
 
@@ -63,45 +63,45 @@ contract ContentListStorage is RegistryContract {
     }
 
     function addContentListDigitalContent(
-        uint _content_listId,
+        uint _contentListId,
         uint _addedDigitalContentId
     ) external onlyRegistrant(CALLER_REGISTRY_KEY)
     {
-        contentListContents[_content_listId][_addedDigitalContentId] += 1;
+        contentListContents[_contentListId][_addedDigitalContentId] += 1;
     }
 
     function deleteContentListDigitalContent(
-        uint _content_listId,
+        uint _contentListId,
         uint _deletedDigitalContentId
     ) external onlyRegistrant(CALLER_REGISTRY_KEY)
     {
         require(
-            contentListContents[_content_listId][_deletedDigitalContentId] > 0,
+            contentListContents[_contentListId][_deletedDigitalContentId] > 0,
             "Valid digital_content in contentList required for delete"
         );
-        contentListContents[_content_listId][_deletedDigitalContentId] -= 1;
+        contentListContents[_contentListId][_deletedDigitalContentId] -= 1;
     }
 
-    function getContentListOwner(uint _content_listId)
+    function getContentListOwner(uint _contentListId)
     external view onlyRegistrant(CALLER_REGISTRY_KEY) returns (uint)
     {
-        return contentListOwner[_content_listId];
+        return contentListOwner[_contentListId];
     }
 
     function isDigitalContentInContentList(
-        uint _content_listId,
-        uint _digital_contentId
+        uint _contentListId,
+        uint _digitalContentId
     ) external view onlyRegistrant(CALLER_REGISTRY_KEY) returns (bool)
     {
-        return contentListContents[_content_listId][_digital_contentId] > 0;
+        return contentListContents[_contentListId][_digitalContentId] > 0;
     }
 
-    function contentListExists(uint _content_listId)
+    function contentListExists(uint _contentListId)
     external view onlyRegistrant(CALLER_REGISTRY_KEY) returns (bool exists)
     {
-        require(_content_listId > 0, "Invalid contentList id");
+        require(_contentListId > 0, "Invalid contentList id");
         // If the incremented contentList ID is less than the argument,
         // the contentList ID has not yet been assigned
-        return _content_listId < contentListId;
+        return _contentListId < contentListId;
     }
 }

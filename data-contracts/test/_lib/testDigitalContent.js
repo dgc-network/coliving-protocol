@@ -22,7 +22,7 @@ export const addDigitalContentAndValidate = async (digitalContentFactory, digita
   // Add new digital_content to contract
   let tx = await digitalContentFactory.addDigitalContent(digitalContentOwnerId, multihashDigest, multihashHashFn, multihashSize, nonce, sig)
   // validate event output = transaction input
-  let event = parseTxWithResp(tx, { _id: true, _digital_contentOwnerId: true, _multihashDigest: true, _multihashHashFn: true, _multihashSize: true })
+  let event = parseTxWithResp(tx, { _id: true, _digitalContentOwnerId: true, _multihashDigest: true, _multihashHashFn: true, _multihashSize: true })
   validateObj(event, { eventName: 'NewDigitalContent', digitalContentId, digitalContentOwnerId, multihashDigest, multihashHashFn, multihashSize })
   // retrieve digital_content from contract
   let digital_content = await getDigitalContentFromFactory(digitalContentId, digitalContentFactory)
@@ -43,10 +43,10 @@ export const deleteDigitalContentAndValidate = async (digitalContentFactory, wal
   const chainId = getNetworkIdForContractInstance(digitalContentFactory) // in testing use the network ID as chain ID because chain ID is unavailable
   const signatureData = signatureSchemas.generators.getDeleteDigitalContentRequestData(chainId, digitalContentFactory.address, digitalContentId, nonce)
   const sig = await eth_signTypedData(walletAddress, signatureData)
-  // call delete digital_content from chain
+  // call delete digital content from chain
   let tx = await digitalContentFactory.deleteDigitalContent(digitalContentId, nonce, sig)
   // validate event output = transaction input
-  let event = parseTxWithResp(tx, { _digital_contentId: true })
+  let event = parseTxWithResp(tx, { _digitalContentId: true })
   validateObj(event, { eventName: 'DigitalContentDeleted', digitalContentId })
   // TODO after storage implemented - attemt to retrieve digital_content from chain
   // TODO after storage implemented - validate digital_content does not exist
@@ -77,7 +77,7 @@ export const addDigitalContentRepostAndValidate = async (socialFeatureFactory, u
   // add new digitalContentRepost to chain
   let tx = await socialFeatureFactory.addDigitalContentRepost(userId, digitalContentId, nonce, sig)
   // validate event output = transaction input
-  let event = parseTxWithResp(tx, { _userId: true, _digital_contentId: true })
+  let event = parseTxWithResp(tx, { _userId: true, _digitalContentId: true })
   validateObj(event, { eventName: 'DigitalContentRepostAdded', userId, digitalContentId })
   // validate storage
   let isDigitalContentReposted = await socialFeatureFactory.userRepostedDigitalContent.call(userId, digitalContentId)
@@ -91,7 +91,7 @@ export const addDigitalContentRepostAndValidate = async (socialFeatureFactory, u
   * @returns {object} with event data
   */
 export const deleteDigitalContentRepostAndValidate = async (socialFeatureFactory, userAddress, userId, digitalContentId) => {
-  // generate delete digital_content repost request
+  // generate delete digital content repost request
   const nonce = signatureSchemas.getNonce()
   const chainId = getNetworkIdForContractInstance(socialFeatureFactory) // in testing use the network id as chain ID because chain ID is unavailable
   const signatureData = signatureSchemas.generators.getDeleteDigitalContentRepostRequestData(chainId, socialFeatureFactory.address, userId, digitalContentId, nonce)
@@ -99,7 +99,7 @@ export const deleteDigitalContentRepostAndValidate = async (socialFeatureFactory
   // delete digitalContentRepost from chain
   let tx = await socialFeatureFactory.deleteDigitalContentRepost(userId, digitalContentId, nonce, sig)
   // validate event output = transaction input
-  let event = parseTxWithResp(tx, { _userId: true, _digital_contentId: true })
+  let event = parseTxWithResp(tx, { _userId: true, _digitalContentId: true })
   validateObj(event, { eventName: 'DigitalContentRepostDeleted', userId, digitalContentId })
   // validate storage
   let isDigitalContentReposted = await socialFeatureFactory.userRepostedDigitalContent.call(userId, digitalContentId)
@@ -118,7 +118,7 @@ export const addDigitalContentSaveAndValidate = async (userLibraryFactory, userA
   let tx = await userLibraryFactory.addDigitalContentSave(userId, digitalContentId, nonce, sig)
   let parsedDigitalContentSave = parseTx(tx)
   let eventInfo = parsedDigitalContentSave.event.args
-  assertEqualValues(parsedDigitalContentSave, undefined, { _userId: eventInfo._userId, _digital_contentId: eventInfo._digital_contentId })
+  assertEqualValues(parsedDigitalContentSave, undefined, { _userId: eventInfo._userId, _digitalContentId: eventInfo._digitalContentId })
 }
 
 export const deleteDigitalContentSaveAndValidate = async (userLibraryFactory, userAddress, userId, digitalContentId) => {
@@ -129,5 +129,5 @@ export const deleteDigitalContentSaveAndValidate = async (userLibraryFactory, us
   let tx = await userLibraryFactory.deleteDigitalContentSave(userId, digitalContentId, nonce, sig)
   let parsedDeleteDigitalContentSave = parseTx(tx)
   let eventInfo = parsedDeleteDigitalContentSave.event.args
-  assertEqualValues(parsedDeleteDigitalContentSave, undefined, { _userId: eventInfo._userId, _digital_contentId: eventInfo._digital_contentId })
+  assertEqualValues(parsedDeleteDigitalContentSave, undefined, { _userId: eventInfo._userId, _digitalContentId: eventInfo._digitalContentId })
 }

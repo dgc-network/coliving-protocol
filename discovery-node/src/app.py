@@ -37,7 +37,7 @@ from src.solana.anchor_program_indexer import AnchorProgramIndexer
 from src.solana.solana_client_manager import SolanaClientManager
 from src.tasks import celery_app
 from src.tasks.index_reactions import INDEX_REACTIONS_LOCK
-from src.tasks.update_digital_content_is_available import UPDATE_AGREEMENT_IS_AVAILABLE_LOCK
+from src.tasks.update_digital_content_is_available import UPDATE_DIGITAL_CONTENT_IS_AVAILABLE_LOCK
 from src.utils import helpers
 from src.utils.cid_metadata_client import CIDMetadataClient
 from src.utils.config import ConfigIni, config_files, shared_config
@@ -558,7 +558,7 @@ def configure_celery(celery, test_config=None):
     redis_inst.delete("prune_plays_lock")
     redis_inst.delete("update_aggregate_table:aggregate_user_tips")
     redis_inst.delete(INDEX_REACTIONS_LOCK)
-    redis_inst.delete(UPDATE_AGREEMENT_IS_AVAILABLE_LOCK)
+    redis_inst.delete(UPDATE_DIGITAL_CONTENT_IS_AVAILABLE_LOCK)
 
     logger.info("Redis instance initialized!")
 
