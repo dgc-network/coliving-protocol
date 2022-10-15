@@ -785,11 +785,6 @@
           "type": "bytes32"
         },
         {
-          "internalType": "uint256",
-          "name": "_callValue",
-          "type": "uint256"
-        },
-        {
           "internalType": "string",
           "name": "_functionSignature",
           "type": "string"
