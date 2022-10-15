@@ -44,44 +44,6 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "_digitalContentId",
-          "type": "uint256"
-        }
-      ],
-      "name": "DigitalContentSaveAdded",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "_userId",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "_digitalContentId",
-          "type": "uint256"
-        }
-      ],
-      "name": "DigitalContentSaveDeleted",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "_userId",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
           "name": "_contentListId",
           "type": "uint256"
         }
@@ -106,6 +68,44 @@
         }
       ],
       "name": "ContentListSaveDeleted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_userId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_digitalContentId",
+          "type": "uint256"
+        }
+      ],
+      "name": "DigitalContentSaveAdded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_userId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_digitalContentId",
+          "type": "uint256"
+        }
+      ],
+      "name": "DigitalContentSaveDeleted",
       "type": "event"
     },
     {
@@ -145,7 +145,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -197,7 +198,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [

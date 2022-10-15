@@ -43,69 +43,6 @@
         },
         {
           "indexed": false,
-          "internalType": "uint256",
-          "name": "_addedDigitalContentId",
-          "type": "uint256"
-        }
-      ],
-      "name": "ContentListDigitalContentAdded",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "_contentListId",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "_deletedDigitalContentId",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "_deletedDigitalContentTimestamp",
-          "type": "uint256"
-        }
-      ],
-      "name": "ContentListDigitalContentDeleted",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "_contentListId",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256[]",
-          "name": "_orderedDigitalContentIds",
-          "type": "uint256[]"
-        }
-      ],
-      "name": "ContentListDigitalContentsOrdered",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "_contentListId",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
           "internalType": "bytes32",
           "name": "_contentListImageMultihashDigest",
           "type": "bytes32"
@@ -181,6 +118,69 @@
         }
       ],
       "name": "ContentListDescriptionUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_contentListId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_addedDigitalContentId",
+          "type": "uint256"
+        }
+      ],
+      "name": "ContentListDigitalContentAdded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_contentListId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_deletedDigitalContentId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_deletedDigitalContentTimestamp",
+          "type": "uint256"
+        }
+      ],
+      "name": "ContentListDigitalContentDeleted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_contentListId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256[]",
+          "name": "_orderedDigitalContentIds",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "ContentListDigitalContentsOrdered",
       "type": "event"
     },
     {
@@ -277,7 +277,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -329,7 +330,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -655,7 +657,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -679,7 +682,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -697,7 +701,8 @@
       "name": "callerOwnsContentList",
       "outputs": [],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     }
   ]
 }

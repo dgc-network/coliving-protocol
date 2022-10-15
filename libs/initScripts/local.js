@@ -1,8 +1,8 @@
 const fs = require('fs')
 const readline = require('readline')
 
-//const initColivingLibs = require('../examples/initColivingLibs')
-const initColivingLibs = require('../src/index')
+const initColivingLibs = require('../examples/initColivingLibs')
+//const initColivingLibs = require('../src/index')
 const dataContractsConfig = require('../data-contracts/config.json')
 const { distributeTokens } = require('./helpers/distributeTokens')
 const { setServiceVersion, addServiceType } = require('./helpers/version')

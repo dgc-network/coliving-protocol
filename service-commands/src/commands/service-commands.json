@@ -133,6 +133,7 @@
       "cd libs/; sh ./scripts/migrate-contracts.sh >> $PROTOCOL_DIR/service-commands/output.log 2>$PROTOCOL_DIR/service-commands/error.log"
     ]
   },
+  
   "init-token-versions": {
     "up": [
       "cd libs/; npm run init-local init-all"
