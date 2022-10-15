@@ -30,7 +30,7 @@ export * from './tagsResponse';
 export * from './tip';
 export * from './topGenreUsersResponse';
 export * from './topUsersResponse';
-export * from './digital_content';
+export * from './digitalContent';
 export * from './digitalContentArtwork';
 export * from './digitalContentElement';
 export * from './digitalContentResponse';

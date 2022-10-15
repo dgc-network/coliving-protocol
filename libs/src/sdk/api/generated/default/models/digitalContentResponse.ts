@@ -18,7 +18,7 @@ import {
     DigitalContentFromJSON,
     DigitalContentFromJSONTyped,
     DigitalContentToJSON,
-} from './digital_content';
+} from './digitalContent';
 
 /**
  * 
