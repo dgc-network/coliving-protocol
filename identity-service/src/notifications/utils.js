@@ -95,7 +95,7 @@ async function calculateDigitalContentListenMilestonesFromDiscovery (discoveryNo
  * For the n most recently listened to digitalContents, return the all time listen counts for those digitalContents
  * where n is `digitalContentListenMilestonePollCount
  *
- * @returns Array [{digitalContentId, listenCount}, digitalContentId, listenCount}]
+ * @returns Array [{digitalContentId, listenCount}, {digitalContentId, listenCount}]
  */
 async function calculateDigitalContentListenMilestones () {
   let recentListenCountQuery = {
@@ -213,7 +213,7 @@ function decodeHashId (id) {
 
 const EmailFrequency = Object.freeze({
   OFF: 'off',
-  LIVE: 'digitalcoin',
+  LIVE: 'live',
   DAILY: 'daily',
   WEEKLY: 'weekly'
 })
