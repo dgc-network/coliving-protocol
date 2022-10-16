@@ -21,7 +21,7 @@ Coliving se compose de trois types d'utilisateurs : Les landlordes (créateurs d
 * **Les residents** écoutent des titres, créent des listes de lecture, s'abonnent à des landlordes et les suivent, et partagent du contenu avec leurs amis
 * **Les prestataires de service** servent le trafic d'applications, diffusent des chansons et aident à sécuriser le réseau
 
-Les prestataires de services peuvent fournir un ou plusieurs des services suivants en échangeant des jetons $DGCO et en enregistrant leur service :
+Les prestataires de services peuvent fournir un ou plusieurs des services suivants en échangeant des jetons $DGC et en enregistrant leur service :
 
 * Noeud d'exploration \(hébergez un endpoint avec le support SSL et enregistrez le point de terminaison avec stake\)
 * Noeud de contenu \(hébergez un endpoint avec le support SSL et enregistrez le point de terminaison avec stake\)

@@ -2,12 +2,12 @@
 
 ## Cómo funciona la Gobernanza de Coliving
 
-La Gobernanza es el proceso mediante el cual los titulares de fichas LIVE realizan cambios en Coliving a través de propuestas en cadena.
+La Gobernanza es el proceso mediante el cual los titulares de fichas $DGC realizan cambios en Coliving a través de propuestas en cadena.
 
 Permite a la comunidad dar forma directa a las futuras iteraciones de la plataforma y es el principio básico que impulsa la infraestructura descentralizada de Coliving.
 
 
-En esta publicación, cubriremos cómo funciona la gobernanza en Coliving, y lo que puedes hacer como titular de LIVE para participar.
+En esta publicación, cubriremos cómo funciona la gobernanza en Coliving, y lo que puedes hacer como titular de $DGC para participar.
 
 
 ### **Portal de gobernanza**
@@ -26,10 +26,10 @@ Cada propuesta de gobernanza incluye un desglose de los siguientes parámetros:
 * _Por_ - La cantidad de votos a favor de la propuesta
 * _Contra_ - La cantidad de votos en contra de la propuesta
 
-**Todas las propuestas están sujetas al 5% del quórum $DGCO en stake y a la mayoría del 50%.**
+**Todas las propuestas están sujetas al 5% del quórum $DGC en stake y a la mayoría del 50%.**
 
 
-Esto significa que para que una propuesta se apruebe, por lo menos el 5% de todos los $DGCO en stake deben votar en la propuesta y más del 50% de los votos deben ser "a favor" de la propuesta.
+Esto significa que para que una propuesta se apruebe, por lo menos el 5% de todos los $DGC en stake deben votar en la propuesta y más del 50% de los votos deben ser "a favor" de la propuesta.
 
 
 Hoy en día, sólo quienes tienen un nodo pueden hacer una propuesta en cadena. En el futuro, el conjunto de proponentes permitidos podría ampliarse de cualquier forma que la comunidad considere oportuna.
@@ -40,7 +40,7 @@ Hoy en día, sólo quienes tienen un nodo pueden hacer una propuesta en cadena. 
 La gobernanza efectiva es mucho más que la votación de propuestas en cadena y algo que queremos hacer aún más accesible en Coliving.
 
 
-Aquí hay un desglose del ecosistema de gobernanza en evolución de Coliving, incluyendo las herramientas, procesos y logística detrás de la votación de LIVE.
+Aquí hay un desglose del ecosistema de gobernanza en evolución de Coliving, incluyendo las herramientas, procesos y logística detrás de la votación de $DGC.
 
 
 _Comentarios de Discord &gt; Comentarios del foro &gt; Enviar al Portal de gobernanza &gt; Voto en cadena &gt; Ejecutar_
@@ -84,7 +84,7 @@ Las votaciones en cadena requieren mucha señal y coordinación, para que el for
 
 Después de recibir comentarios, los operadores de nodos pueden presentar esa propuesta en cadena a través del portal de gobernanza.
 
-Tenga en cuenta que el poder de propuesta está correlacionado con la cantidad de LIVE en stake o delegado para la seguridad de la red es decir, los operadores de nodos son los principales candidatos para las propuestas en cadena.
+Tenga en cuenta que el poder de propuesta está correlacionado con la cantidad de $DGC en stake o delegado para la seguridad de la red es decir, los operadores de nodos son los principales candidatos para las propuestas en cadena.
 
 Puede encontrar una lista de todas las propuestas en cadena [aquí](https://dashboard..org/#/governance).
 
@@ -100,7 +100,7 @@ Usando la [propuesta de gobernanza más reciente](https://dashboard..org/#/gover
 ![](https://assets.website-files.com/6024b69839b1b7fd3787991c/607d16049feb3a126f852b57_H6OK09A-2szawbI66mlGi7489J5aj-x604boPIeDUs6zhfZB7Fs77rIsaskaMGslMNWdGrTfm2ZM_sLalkwBvLCn-I0aUm7g9aSIYr11qC0b2t5WHELcyUtSlK21OaD5UgB9mnRN.png)
 
 
-Dado que el número total de votos \(1 LIVE, 1 voto\) estaba por encima del requisito de quórum de ~11M $DGCO y la mayoría del 50% \(100% votó a favor\) ¡la propuesta ha aprobado!
+Dado que el número total de votos \(1 $DGC, 1 voto\) estaba por encima del requisito de quórum de ~11M $DGC y la mayoría del 50% \(100% votó a favor\) ¡la propuesta ha aprobado!
 
 
 Al hacerlo, los cambios [de esta propuesta](https://etherscan.io/tx/0xd4e14895b2a22b48469a43923ab7b30bee75f9a688941933430b3dae9510b8a6) fueron [ejecutados a través del contrato de gobernanza](https://etherscan.io/tx/0x4396652fb9c1116cec5900f412608dfba7a3ec1b9967f4109a8ec3e09d3a75af), cambiando la ventana de votación de 48 horas a 72 horas!
@@ -125,7 +125,7 @@ Más detalles sobre los firmantes de este multifirma así como la intención de 
 
 ### **Gobernanza evolutiva**
 
-La gobernanza de Coliving es un proceso que evoluciona para dar a todos los titulares de $DGCO una voz de futuras iteraciones de la plataforma.
+La gobernanza de Coliving es un proceso que evoluciona para dar a todos los titulares de $DGC una voz de futuras iteraciones de la plataforma.
 
 
 El proceso detallado arriba probablemente cambie en línea con las nuevas herramientas, actualizaciones de productos y onramps para permitir a todos los usuarios de tokens revisar y participar fácilmente en las decisiones de gobernanza, independientemente de sus conocimientos técnicos.

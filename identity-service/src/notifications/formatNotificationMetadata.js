@@ -451,14 +451,14 @@ const pushNotificationMessagesMap = {
   },
   [notificationTypes.ChallengeReward] (notification) {
     return notification.challengeId === 'referred'
-      ? `You’ve received ${challengeInfoMap[notification.challengeId].amount} $DGCO for being referred! Invite your friends to join to earn more!`
-      : `You’ve earned ${challengeInfoMap[notification.challengeId].amount} $DGCO for completing this challenge!`
+      ? `You’ve received ${challengeInfoMap[notification.challengeId].amount} $DGC for being referred! Invite your friends to join to earn more!`
+      : `You’ve earned ${challengeInfoMap[notification.challengeId].amount} $DGC for completing this challenge!`
   },
   [notificationTypes.AddDigitalContentToContentList] (notification) {
     return `${notification.contentListOwner.name} added ${notification.digital_content.title} to their contentList ${notification.contentList.content_list_name}`
   },
   [notificationTypes.Reaction] (notification) {
-    return `${capitalize(notification.reactingUser.name)} reacted to your tip of ${notification.amount} $DGCO`
+    return `${capitalize(notification.reactingUser.name)} reacted to your tip of ${notification.amount} $DGC`
   },
   [notificationTypes.SupporterRankUp] (notification) {
     return `${capitalize(notification.sendingUser.name)} became your #${notification.rank} Top Supporter!`
@@ -467,7 +467,7 @@ const pushNotificationMessagesMap = {
     return `You're now ${notification.receivingUser.name}'s #${notification.rank} Top Supporter!`
   },
   [notificationTypes.TipReceive] (notification) {
-    return `${capitalize(notification.sendingUser.name)} sent you a tip of ${notification.amount} $DGCO`
+    return `${capitalize(notification.sendingUser.name)} sent you a tip of ${notification.amount} $DGC`
   }
 
 }

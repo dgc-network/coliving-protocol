@@ -264,9 +264,9 @@ var notificationMap = (_notificationMap = {}, _defineProperty(_notificationMap, 
   var bodyText;
 
   if (notification.challengeId === 'referred') {
-    bodyText = "You\u2019ve received ".concat(rewardAmount, " $DGCO for being referred! Invite your friends to join to earn more!");
+    bodyText = "You\u2019ve received ".concat(rewardAmount, " $DGC for being referred! Invite your friends to join to earn more!");
   } else {
-    bodyText = "You\u2019ve earned ".concat(rewardAmount, " $DGCO for completing this challenge!");
+    bodyText = "You\u2019ve earned ".concat(rewardAmount, " $DGC for completing this challenge!");
   }
 
   return /*#__PURE__*/_react["default"].createElement("span", {
@@ -306,7 +306,7 @@ var notificationMap = (_notificationMap = {}, _defineProperty(_notificationMap, 
   }), /*#__PURE__*/_react["default"].createElement(HighlightText, {
     text: notification.amount
   }), /*#__PURE__*/_react["default"].createElement(BodyText, {
-    text: " $DGCO"
+    text: " $DGC"
   }));
 }), _defineProperty(_notificationMap, _constants.notificationTypes.SupporterRankUp, function (notification) {
   return /*#__PURE__*/_react["default"].createElement("span", {
@@ -344,7 +344,7 @@ var notificationMap = (_notificationMap = {}, _defineProperty(_notificationMap, 
   }), /*#__PURE__*/_react["default"].createElement(HighlightText, {
     text: notification.amount
   }), /*#__PURE__*/_react["default"].createElement(BodyText, {
-    text: " $DGCO"
+    text: " $DGC"
   }));
 }), _notificationMap);
 
@@ -454,7 +454,7 @@ var getTwitter = function getTwitter(notification) {
 
     case _constants.notificationTypes.ChallengeReward:
       {
-        var _text3 = "I earned $DGCO for completing challenges on @dgc-network #DigitalcoinRewards";
+        var _text3 = "I earned $DGC for completing challenges on @dgc-network #DigitalcoinRewards";
         return {
           message: 'Share this with your residents',
           href: "http://twitter.com/share?text=".concat(encodeURIComponent(_text3))

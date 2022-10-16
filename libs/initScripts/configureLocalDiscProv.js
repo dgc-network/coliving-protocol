@@ -11,7 +11,7 @@ const SOLANA_ENDPOINT = 'coliving_solana_endpoint'
 const SOLANA_SIGNER_GROUP_ADDRESS = 'coliving_solana_signer_group_address'
 
 const SOLANA_USER_BANK_ADDRESS = 'coliving_solana_user_bank_program_address'
-const SOLANA_WLIVE_MINT = 'coliving_solana_wei_digitalcoin_mint'
+const SOLANA_WDGC_MINT = 'coliving_solana_wei_digitalcoin_mint'
 
 const SOLANA_REWARDS_MANAGER_ADDRESS = 'coliving_solana_rewards_manager_program_address'
 const SOLANA_REWARDS_MANAGER_ACCOUNT = 'coliving_solana_rewards_manager_account'
@@ -88,7 +88,7 @@ const _updateDiscoveryNodeEnvFile = async (
   const solanaDigitalContentListenCountAddressLine = `${SOLANA_DIGITAL_CONTENT_LISTEN_COUNT_ADDRESS}=${solanaDigitalContentListenCountAddress}`
   const solanaEndpointLine = `${SOLANA_ENDPOINT}=${solanaEndpoint}`
   const signerGroupLine = `${SOLANA_SIGNER_GROUP_ADDRESS}=${signerGroup}`
-  const wei_digitalcoinMintLine = `${SOLANA_WLIVE_MINT}=${wei_digitalcoinMint}`
+  const wei_digitalcoinMintLine = `${SOLANA_WDGC_MINT}=${wei_digitalcoinMint}`
   const claimableTokenAddressLine = `${SOLANA_USER_BANK_ADDRESS}=${claimableTokenAddress}`
   const rewardsManagerAddressLine = `${SOLANA_REWARDS_MANAGER_ADDRESS}=${rewardsManagerAddress}`
   const rewardsManagerAccountLine = `${SOLANA_REWARDS_MANAGER_ACCOUNT}=${rewardsManagerAccount}`
@@ -111,7 +111,7 @@ const _updateDiscoveryNodeEnvFile = async (
     } else if (line.includes(SOLANA_USER_BANK_ADDRESS)) {
       output.push(claimableTokenAddressLine)
       claimableTokenAddressFound = true
-    } else if (line.includes(SOLANA_WLIVE_MINT)) {
+    } else if (line.includes(SOLANA_WDGC_MINT)) {
       output.push(wei_digitalcoinMintLine)
       wei_digitalcoinMintFound = true
     } else if (line.includes(SOLANA_REWARDS_MANAGER_ADDRESS)) {

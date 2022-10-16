@@ -13,7 +13,7 @@ const { logger: genericLogger } = require('./logging')
 const { sendResponse, errorResponseBadRequest } = require('./apiHelpers')
 const { findCIDInNetwork } = require('./utils')
 
-const MAX_DGCO_FILE_SIZE = parseInt(config.get('maxAudioFileSizeBytes')) // Default = 250,000,000 bytes = 250MB
+const MAX_AUDIO_FILE_SIZE = parseInt(config.get('maxAudioFileSizeBytes')) // Default = 250,000,000 bytes = 250MB
 const MAX_MEMORY_FILE_SIZE = parseInt(config.get('maxMemoryFileSizeBytes')) // Default = 50,000,000 bytes = 50MB
 
 const ALLOWED_UPLOAD_FILE_EXTENSIONS = config.get('allowedUploadFileExtensions') // default set in config.json
@@ -459,7 +459,7 @@ const _printDecisionTreeObj = (decisionTree, logger) => {
 async function removeDigitalContentFolder({ logContext }, fileDir) {
   const logger = genericLogger.child(logContext)
   try {
-    logger.info(`Removing digital_content folder at fileDir ${fileDir}...`)
+    logger.info(`Removing digital content folder at fileDir ${fileDir}...`)
     if (!fileDir) {
       throw new Error('Cannot remove null fileDir')
     }
@@ -570,7 +570,7 @@ const digitalContentDiskStorage = multer.diskStorage({
     req.fileName = fileName + fileExtension
 
     req.logger.info(
-      `Created digital_content disk storage: ${req.fileDir}, ${req.fileName}`
+      `Created digital content disk storage: ${req.fileDir}, ${req.fileName}`
     )
     cb(null, fileDir)
   },
@@ -581,7 +581,7 @@ const digitalContentDiskStorage = multer.diskStorage({
 
 const digitalContentFileUpload = multer({
   storage: digitalContentDiskStorage,
-  limits: { fileSize: MAX_DGCO_FILE_SIZE },
+  limits: { fileSize: MAX_AUDIO_FILE_SIZE },
   fileFilter: function (req, file, cb) {
     try {
       checkFileType(req.logger, {
@@ -645,9 +645,9 @@ function checkFileType(logger, { fileName, fileMimeType }) {
  * @param {number} fileSize file size in bytes
  */
 function checkFileSize(fileSize) {
-  if (fileSize > MAX_DGCO_FILE_SIZE) {
+  if (fileSize > MAX_AUDIO_FILE_SIZE) {
     throw new Error(
-      `File exceeded maximum size (${MAX_DGCO_FILE_SIZE}): fileSize=${fileSize}`
+      `File exceeded maximum size (${MAX_AUDIO_FILE_SIZE}): fileSize=${fileSize}`
     )
   }
 }

@@ -94,16 +94,16 @@ const snippetMap = {
     return `${parentDigitalContentUser.name} Co-signed your Remix of ${parentDigitalContent.title}`
   },
   [NotificationType.ChallengeReward] (notification) {
-    return `You've earned $DGCO for completing challenges`
+    return `You've earned $DGC for completing challenges`
   },
   [NotificationType.AddDigitalContentToContentList] (notification) {
     return `${notification.contentListOwner.name} added ${notification.digital_content.title} to ${notification.contentList.content_list_name}`
   },
   [NotificationType.TipReceive] (notification) {
-    return `${notification.sendingUser.name} sent you a tip of ${notification.amount} $DGCO`
+    return `${notification.sendingUser.name} sent you a tip of ${notification.amount} $DGC`
   },
   [NotificationType.Reaction] (notification) {
-    return `${notification.reactingUser.name} reacted to your tip of ${notification.amount} $DGCO`
+    return `${notification.reactingUser.name} reacted to your tip of ${notification.amount} $DGC`
   },
   [NotificationType.SupporterRankUp] (notification) {
     return `${notification.sendingUser.name} became your #${notification.rank} top supporter`

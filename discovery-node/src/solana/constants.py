@@ -1,4 +1,4 @@
-WLIVE_DECIMALS = 8
+WDGC_DECIMALS = 8
 
 # Maximum number of transactions for the program coming from the RPC pool to fetch in a batch
 FETCH_TX_SIGNATURES_BATCH_SIZE = 1000

@@ -39,7 +39,7 @@ START_CHUNK_SIZE = 20
 # how many blocks from tail of chain we want to scan to
 ETH_BLOCK_TAIL_OFFSET = 1
 # the block number to start with if first time scanning
-# this should be the first block during and after which $DGCO transfer events started occurring
+# this should be the first block during and after which $DGC transfer events started occurring
 MIN_SCAN_START_BLOCK = 11103292
 
 

@@ -4,7 +4,7 @@ import { sampleSize } from 'lodash'
 import { Base, BaseConstructorArgs, Services } from './base'
 //import BN from 'bn.js'
 //import { RewardsManagerError } from '../services/solana/errors'
-//import { WLIVE_DECMIALS } from '../constants'
+//import { WDGC_DECMIALS } from '../constants'
 import { Utils } from '../utils/utils'
 import type { ServiceProvider } from './serviceProvider'
 import type { Logger, Nullable } from '../utils'
@@ -130,7 +130,7 @@ type CreateSenderPublicConfig = {
 }
 */
 const AAO_REQUEST_TIMEOUT_MS = 15 * 1000
-//const WRAPPED_DGCO_PRECISION = 10 ** WLIVE_DECMIALS
+//const WRAPPED_DGC_PRECISION = 10 ** WDGC_DECMIALS
 
 export class Rewards extends Base {
   ServiceProvider: ServiceProvider
@@ -210,7 +210,7 @@ export class Rewards extends Base {
           aaoAttestation ? 1 : 0
         }] oracle attestations.`
       )
-      //const fullTokenAmount = new BN(amount * WRAPPED_DGCO_PRECISION)
+      //const fullTokenAmount = new BN(amount * WRAPPED_DGC_PRECISION)
       phase = AttestationPhases.SUBMIT_ATTESTATIONS
       //// @ts-expect-error the return types are a bit strange here
 /*

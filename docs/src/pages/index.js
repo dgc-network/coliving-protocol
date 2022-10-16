@@ -121,13 +121,13 @@ const Main = () => {
                 <div className="card">
                   <div className="card__header">
                     <h3>
-                      <Translate description="digitalcoin">🎧 $DGCO</Translate>
+                      <Translate description="digitalcoin">🎧 $DGC</Translate>
                     </h3>
                   </div>
                   <div className="card__body">
                     <p>
                       <Translate description="learn-about-the-token">
-                        Learn about the $DGCO Token and how it keeps the
+                        Learn about the $DGC Token and how it keeps the
                         network secure & operational
                       </Translate>
                     </p>
@@ -148,7 +148,7 @@ const Main = () => {
                   <div className="card__body">
                     <p>
                       <Translate description="staking-and-delegating">
-                        Stake & delegate the $DGCO token, earn rewards, and
+                        Stake & delegate the $DGC token, earn rewards, and
                         participate in Governance
                       </Translate>
                     </p>

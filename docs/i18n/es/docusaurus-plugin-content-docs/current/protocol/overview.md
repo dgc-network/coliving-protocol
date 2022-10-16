@@ -21,7 +21,7 @@ Coliving consiste en tres gráficos: Landlordas (creadores de contenido), Fanát
 * **Ventiladores** digitalContents de streams, crean listas de reproducción, suscribirse & seguir landlordas y volver a compartir contenido a los demas
 * **Proveedores de Servicio** sirven tráfico de aplicaciones, streams y ayudan a proteger la red
 
-Los proveedores de servicios pueden proporcionar uno o más de los siguientes servicios haciendo stake de $DGCO tokens y registrando su servicio:
+Los proveedores de servicios pueden proporcionar uno o más de los siguientes servicios haciendo stake de $DGC tokens y registrando su servicio:
 
 * Nodo de Descubrimiento \(alojar un endpoint con soporte SSL y registrar endpoint con stake\)
 * Nodo de contenido \(alojar un endpoint con soporte SSL y registrar endpoint con stake\)

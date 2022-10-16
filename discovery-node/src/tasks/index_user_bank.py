@@ -52,9 +52,9 @@ logger = logging.getLogger(__name__)
 
 # Populate values used in UserBank indexing from config
 USER_BANK_ADDRESS = shared_config["solana"]["user_bank_program_address"]
-WLIVE_MINT = shared_config["solana"]["wei_digitalcoin_mint"]
+WDGC_MINT = shared_config["solana"]["wei_digitalcoin_mint"]
 USER_BANK_KEY = PublicKey(USER_BANK_ADDRESS) if USER_BANK_ADDRESS else None
-WLIVE_MINT_PUBKEY = PublicKey(WLIVE_MINT) if WLIVE_MINT else None
+WDGC_MINT_PUBKEY = PublicKey(WDGC_MINT) if WDGC_MINT else None
 
 # Used to limit tx history if needed
 MIN_SLOT = int(shared_config["solana"]["user_bank_min_slot"])
@@ -329,7 +329,7 @@ def process_user_bank_tx_details(
         decoded = base58.b58decode(tx_data)[1:]
         public_key_bytes = decoded[:20]
         _, derived_address = get_address_pair(
-            WLIVE_MINT_PUBKEY, public_key_bytes, USER_BANK_KEY, SPL_TOKEN_ID_PK
+            WDGC_MINT_PUBKEY, public_key_bytes, USER_BANK_KEY, SPL_TOKEN_ID_PK
         )
         bank_acct = str(derived_address[0])
         try:
@@ -396,10 +396,10 @@ def process_user_bank_txs():
     logger.info("index_user_bank.py | Acquired lock")
 
     # Exit if required configs are not found
-    if not WLIVE_MINT_PUBKEY or not USER_BANK_KEY:
+    if not WDGC_MINT_PUBKEY or not USER_BANK_KEY:
         logger.error(
             f"index_user_bank.py | Missing required configuration"
-            f"WLIVE_PROGRAM_PUBKEY: {WLIVE_MINT_PUBKEY} USER_BANK_KEY: {USER_BANK_KEY}- exiting."
+            f"WDGC_PROGRAM_PUBKEY: {WDGC_MINT_PUBKEY} USER_BANK_KEY: {USER_BANK_KEY}- exiting."
         )
         return
 

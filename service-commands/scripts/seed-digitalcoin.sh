@@ -8,7 +8,7 @@ get-eth-private-key () {
     jq -rc "map(select(.userId==$1).wallet.privKey)[0]" < ~/.coliving/seed-cache.json
 }
 
-# Mints $DGCO and transfers it to a user bank
+# Mints $DGC and transfers it to a user bank
 seed-digitalcoin () {
     user_id=$1
     amount=$2

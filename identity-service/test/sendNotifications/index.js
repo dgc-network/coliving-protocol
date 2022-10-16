@@ -280,13 +280,13 @@ describe('Test Send Notifications', function () {
     const notifs = [
       {
         title: challengeInfoMap['referred'].title,
-        msg: `You’ve received ${challengeInfoMap['referred'].amount} $DGCO for being referred! Invite your friends to join to earn more!`
+        msg: `You’ve received ${challengeInfoMap['referred'].amount} $DGC for being referred! Invite your friends to join to earn more!`
       },
       ...([
         'profile-completion', 'listen-streak', 'digital-content-upload', 'referrals', 'ref-v', 'connect-verified', 'mobile-install'
       ].map(id => ({
         title: challengeInfoMap[id].title,
-        msg: `You’ve earned ${challengeInfoMap[id].amount} $DGCO for completing this challenge!`
+        msg: `You’ve earned ${challengeInfoMap[id].amount} $DGC for completing this challenge!`
       })))
     ]
 

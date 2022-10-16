@@ -2741,7 +2741,7 @@ contract('DelegateManager', async (accounts) => {
 
     it('lets a service provider return to valid bounds when a delegator changes delegation (only works with DelegateManagerV2)', async () => {
       /**
-       * Test case to address behavior exercised in Postmortem: $DGCO Claim Error (Claim of 0 $DGCO)
+       * Test case to address behavior exercised in Postmortem: $DGC Claim Error (Claim of 0 $DGC)
        * on 05-08-2021.
        *
        * Confirm initial state of serviceType and serviceProvider

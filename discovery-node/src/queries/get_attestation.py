@@ -10,7 +10,7 @@ from src.models.rewards.challenge import Challenge
 from src.models.rewards.challenge_disbursement import ChallengeDisbursement
 from src.models.rewards.user_challenge import UserChallenge
 from src.models.users.user import User
-from src.solana.constants import WLIVE_DECIMALS
+from src.solana.constants import WDGC_DECIMALS
 from src.tasks.index_oracles import (
     get_oracle_addresses_from_chain,
     oracle_addresses_key,
@@ -60,7 +60,7 @@ class Attestation:
         return f"{self.challenge_id}:{self.challenge_specifier}"
 
     def _get_encoded_amount(self):
-        amt = int(self.amount) * 10**WLIVE_DECIMALS
+        amt = int(self.amount) * 10**WDGC_DECIMALS
         return amt.to_bytes(8, byteorder="little")
 
     def get_attestation_bytes(self):

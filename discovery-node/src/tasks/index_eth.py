@@ -85,7 +85,7 @@ def index_eth_transfer_events(db, redis_inst):
 @celery.task(name="index_eth", bind=True)
 @save_duration_metric(metric_group="celery_task")
 def index_eth(self):
-    # Index LIVE Transfer events to update user balances
+    # Index $DGC Transfer events to update user balances
     db = index_eth.db
     redis_inst = index_eth.redis
 

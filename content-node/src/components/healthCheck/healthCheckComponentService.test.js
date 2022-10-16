@@ -53,7 +53,7 @@ const sequelizeMock = {
 const getMonitorsMock = async (monitors) => {
   return monitors.map((monitor) => {
     switch (monitor.name) {
-      case MONITORS.DATABASE_DGCONESS.name:
+      case MONITORS.DATABASE_LIVENESS.name:
         return true
       case MONITORS.DATABASE_CONNECTIONS.name:
         return 5

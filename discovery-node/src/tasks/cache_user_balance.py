@@ -35,8 +35,8 @@ coliving_delegate_manager_registry_key = bytes("DelegateManager", "utf-8")
 
 REDIS_ETH_BALANCE_COUNTER_KEY = "USER_BALANCE_REFRESH_COUNT"
 
-WLIVE_MINT = shared_config["solana"]["wei_digitalcoin_mint"]
-WLIVE_MINT_PUBKEY = PublicKey(WLIVE_MINT) if WLIVE_MINT else None
+WDGC_MINT = shared_config["solana"]["wei_digitalcoin_mint"]
+WDGC_MINT_PUBKEY = PublicKey(WDGC_MINT) if WDGC_MINT else None
 
 MAX_LAZY_REFRESH_USER_IDS = 100
 
@@ -76,9 +76,9 @@ def get_immediate_refresh_user_ids(redis: Redis) -> List[int]:
 
 
 # *Explanation of user balance caching*
-# In an effort to minimize eth calls, we look up users embedded in digital_content metadata once per user,
+# In an effort to minimize eth calls, we look up users embedded in digital content metadata once per user,
 # and current users (logged in dapp users, who might be changing their balance) on an interval.
-# Balance is digitalContented for both mainnet ethereum LIVE and mainnet solana wLIVE
+# Balance is digitalContented for both mainnet ethereum $DGC and mainnet solana WLIVE
 #
 # - In populate_user_metadata, look up User_Balance entry in db.
 #       If it doesn't exist, return 0, persist a User_Balance row with 0,
@@ -248,7 +248,7 @@ def refresh_user_ids(
                                     [
                                         bytes(root_sol_account),
                                         bytes(SPL_TOKEN_ID_PK),
-                                        bytes(WLIVE_MINT_PUBKEY),  # type: ignore
+                                        bytes(WDGC_MINT_PUBKEY),  # type: ignore
                                     ],
                                     ASSOCIATED_TOKEN_PROGRAM_ID_PK,
                                 )
@@ -451,12 +451,12 @@ SPL_TOKEN_PROGRAM_ID_PUBKEY = PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623V
 
 
 def get_digitalcoin_token(solana_client: Client):
-    if WLIVE_MINT_PUBKEY is None:
+    if WDGC_MINT_PUBKEY is None:
         logger.error("cache_user_balance.py | Missing Required SPL Confirguration")
         return None
     wei_digitalcoin_token = Token(
         conn=solana_client,
-        pubkey=WLIVE_MINT_PUBKEY,
+        pubkey=WDGC_MINT_PUBKEY,
         program_id=SPL_TOKEN_PROGRAM_ID_PUBKEY,
         payer=Keypair.generate(),  # not making any txs so payer is not required
     )

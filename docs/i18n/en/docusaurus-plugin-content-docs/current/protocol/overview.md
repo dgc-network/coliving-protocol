@@ -21,7 +21,7 @@ Coliving consists of three demographics of users: Landlords (content creators), 
 - **Residents** stream digitalContents, create contentLists, subscribe to & follow landlords, and re-share content to their following
 - **Service Providers** serve app traffic, stream songs, and help secure the network
 
-Service providers can provide one or more of the following services by staking $DGCO tokens and registering their service:
+Service providers can provide one or more of the following services by staking $DGC tokens and registering their service:
 
 - Discovery node \(host an endpoint with SSL support and register endpoint with stake\)
 - Content node \(host an endpoint with SSL support and register endpoint with stake\)

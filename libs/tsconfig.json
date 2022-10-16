@@ -2,7 +2,7 @@
   "extends": "@tsconfig/node16-strictest/tsconfig.json",
   "compilerOptions": {
     "baseUrl": "./src",
-    "types": ["node"],
+    "types": ["node", "jest"],
     "forceConsistentCasingInFileNames": false,
     "lib": ["es2021", "dom"],
     "checkJs": false,

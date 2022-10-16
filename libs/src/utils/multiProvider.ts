@@ -73,3 +73,4 @@ export class MultiProvider extends Web3 {
     throw new Error('All requests failed')
   }
 }
+

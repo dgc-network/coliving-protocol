@@ -57,7 +57,7 @@ const MONITORING_REDIS_PREFIX = 'monitoring'
  *    Options are bool, int, float, string, json
  */
 
-const DATABASE_DGCONESS = {
+const DATABASE_LIVENESS = {
   name: 'databaseLiveness',
   func: getDatabaseLiveness,
   type: 'bool'
@@ -261,7 +261,7 @@ const LATEST_FIND_REPLICA_SET_UPDATES_JOB_SUCCESS = {
 }
 
 const MONITORS = {
-  DATABASE_DGCONESS,
+  DATABASE_LIVENESS,
   DATABASE_SIZE,
   DATABASE_CONNECTIONS,
   DATABASE_CONNECTION_INFO,

@@ -9,13 +9,13 @@ sidebar_position: 2
 
 Construit comme un protocole décentralisé sur Ethereum, tout le contenu, les informations et les données sur Coliving sont stockés et indexés par un réseau croissant d'opérateurs de nœuds tiers, plutôt que par l'équipe Coliving.
 
-Pour garantir la fiabilité et la maintenance de ce contenu, les opérateurs de nœuds sont tenus de fournir une garantie ou une " sake " comme caution pour le service du protocole. Cette mise, exprimée en $DGCO, garantit que les opérateurs de nœuds disposent de jetons à risque qui peuvent être supprimés, ou pris, en cas de comportement malveillant ou médiocre.
+Pour garantir la fiabilité et la maintenance de ce contenu, les opérateurs de nœuds sont tenus de fournir une garantie ou une " sake " comme caution pour le service du protocole. Cette mise, exprimée en $DGC, garantit que les opérateurs de nœuds disposent de jetons à risque qui peuvent être supprimés, ou pris, en cas de comportement malveillant ou médiocre.
 
-En utilisant des jetons $DGCO comme collatéral, toute personne disposant du matériel adéquat peut devenir opérateur de nœud sans aucune autorisation. Plus le nombre de $DGCO mis en jeu dans le protocole est élevé, plus le réseau est sécurisé et moins il est vulnérable aux attaques extérieures.
+En utilisant des jetons $DGC comme collatéral, toute personne disposant du matériel adéquat peut devenir opérateur de nœud sans aucune autorisation. Plus le nombre de $DGC mis en jeu dans le protocole est élevé, plus le réseau est sécurisé et moins il est vulnérable aux attaques extérieures.
 
-En récompense des services rendus au réseau, les opérateurs de nœuds peuvent gagner des $DGCO grâce à l'émission automatique sur la chaîne, ou à la création continue de nouveaux jetons distribués aux acteurs à valeur ajoutée.
+En récompense des services rendus au réseau, les opérateurs de nœuds peuvent gagner des $DGC grâce à l'émission automatique sur la chaîne, ou à la création continue de nouveaux jetons distribués aux acteurs à valeur ajoutée.
 
-Ceux qui misent plus d' $DGCO ont la possibilité de gagner une plus grande partie de l'émission en échange de la sécurisation du réseau.
+Ceux qui misent plus d' $DGC ont la possibilité de gagner une plus grande partie de l'émission en échange de la sécurisation du réseau.
 
 ### Comment fonctionne Coliving
 
@@ -39,7 +39,7 @@ C'est très simple ! C'est là que le Stacking entre en jeu.
 
 Sur d'autres plateformes, un processus similaire est mis en œuvre par la société mère, ce qui en fait le véritable propriétaire du contenu. Si cette société cesse d'exister, il en va de même pour tout le contenu stocké dans sa base de données. Avec Coliving, la piste est maintenue par le réseau et contrôlée par des opérateurs de nœuds tiers et décentralisés. **Coliving ne dépend pas d'une entreprise pour continuer à fonctionner.**.
 
-**Avec le stacking de $DGCO, vous contribuez à protéger et à renforcer le protocole.**
+**Avec le stacking de $DGC, vous contribuez à protéger et à renforcer le protocole.**
 
 Cette conception permet à Coliving de fonctionner en s'appuyant sur un réseau mondial d'opérateurs de nœuds tiers, plutôt que sur la seule équipe d'Coliving.
 
@@ -55,43 +55,43 @@ https://twitter.com/Figment_io/status/1324763638729740288?s=20
 
 Une liste de tous les opérateurs de nœuds actifs se trouve sous l'onglet [Service du tableau](https://dashboard..org/services) du protocole Coliving.
 
-Les détenteurs de $DGCO peuvent déléguer un minimum de 100 jetons à l'un de ces opérateurs de nœuds en se connectant à MetaMask ou en utilisant un coffre-fort Gnosis. Plus de détails sur la délégation seront bientôt publiés !
+Les détenteurs de $DGC peuvent déléguer un minimum de 100 jetons à l'un de ces opérateurs de nœuds en se connectant à MetaMask ou en utilisant un coffre-fort Gnosis. Plus de détails sur la délégation seront bientôt publiés !
 
-Les opérateurs de nœuds peuvent choisir d'exploiter un Content Node, un Discovery Node ou une combinaison des deux. La quantité de $DGCO mise en jeu pour un opérateur donné peut être considérée comme sa bande passante économique pour faire fonctionner un ou une combinaison de services sur le réseau.
+Les opérateurs de nœuds peuvent choisir d'exploiter un Content Node, un Discovery Node ou une combinaison des deux. La quantité de $DGC mise en jeu pour un opérateur donné peut être considérée comme sa bande passante économique pour faire fonctionner un ou une combinaison de services sur le réseau.
 
-Tous les opérateurs de nœuds sont tenus de déposer **une caution personnelle minimale de 200 000 jetons LIVE par nœud**. Alors que les Content Node et Discovery Node utilisent la même machine, les Content Node nécessitent plus de stockage et coûtent donc un peu plus cher à exploiter.
+Tous les opérateurs de nœuds sont tenus de déposer **une caution personnelle minimale de 200 000 jetons $DGC par nœud**. Alors que les Content Node et Discovery Node utilisent la même machine, les Content Node nécessitent plus de stockage et coûtent donc un peu plus cher à exploiter.
 
 À cet effet, les paramètres de jalonnement de chaque nœud sont les suivants :
 
 _Discovery Node_
 
-* Minimum Bond (Stake): 200,000 LIVE
-* Maximum Bond (Stake): 7,000,000 LIVE
+* Minimum Bond (Stake): 200,000 $DGC
+* Maximum Bond (Stake): 7,000,000 $DGC
 
 _Content Node_
 
-* Minimum Bond (Stake): 200,000 LIVE
-* Maximum Bond (Stake): 10,000,0000 LIVE
+* Minimum Bond (Stake): 200,000 $DGC
+* Maximum Bond (Stake): 10,000,0000 $DGC
 
 Le stacking minimale garantit une participation suffisante au jeu, tandis que le maximum empêche le protocole de devenir trop centralisé. Les nœuds de contenu ont des exigences minimales légèrement plus élevées, c'est pourquoi ils sont en mesure d'accepter plus de stacking que les nœuds de découverte.
 
 Chaque opérateur se voit attribuer un profil unique, permettant aux utilisateurs d'identifier son adresse, la chronologie de ses votes et les différents nœuds qu'il entretient. Les autres paramètres clés incluent :
 
-* _Prise $DGCO_ - Le montant total de $DGCO misé sur tous les nœuds de l'opérateur, mesuré comme une combinaison de jetons misés ou délégués à une adresse donnée.
-* _Deployer Cut_ - Le pourcentage des récompenses de stacking que les délégués paient aux opérateurs de nœuds pour jalonner $DGCO sur leur nœud. Ceci est configurable par l'opérateur du nœud.
+* _Prise $DGC_ - Le montant total de $DGC misé sur tous les nœuds de l'opérateur, mesuré comme une combinaison de jetons misés ou délégués à une adresse donnée.
+* _Deployer Cut_ - Le pourcentage des récompenses de stacking que les délégués paient aux opérateurs de nœuds pour jalonner $DGC sur leur nœud. Ceci est configurable par l'opérateur du nœud.
 * _Services_ - Le nombre de noeuds uniques exécutés par un opérateur donné.
 * _Délégateurs_ - Le nombre total d'adresses uniques déléguant des jetons à l'Opérateur.
 
 Les opérateurs de nœuds peuvent également remplir leurs informations via [3Box](https://3box.io/), affichant une image de profil, titre et lien vers le site Web pour permettre aux délégués de se distinguer plus facilement des autres sur le réseau.
 
-Coliving dispose d'une période de récupération de 7 jours pour le déblocage ou l'enlèvement d'un nœud, afin de laisser suffisamment de temps pour que les nœuds soient enlevés en cas de comportement malveillant. Pendant la période de jalonnement de la genèse, les nœuds exploités par la fondation Coliving verront leur coupe de déploiement fixée à 100 %, et tous les revenus seront acheminés vers une trésorerie communautaire qui sera régie par les détenteurs de jetons $DGCO. Ces nœuds seront retirés dans un avenir proche.
+Coliving dispose d'une période de récupération de 7 jours pour le déblocage ou l'enlèvement d'un nœud, afin de laisser suffisamment de temps pour que les nœuds soient enlevés en cas de comportement malveillant. Pendant la période de jalonnement de la genèse, les nœuds exploités par la fondation Coliving verront leur coupe de déploiement fixée à 100 %, et tous les revenus seront acheminés vers une trésorerie communautaire qui sera régie par les détenteurs de jetons $DGC. Ces nœuds seront retirés dans un avenir proche.
 
-### **$DGCO Récompenses de Staking**
+### **$DGC Récompenses de Staking**
 
-Coliving propose un taux d'émission annuel automatique de 7% distribué sur la chaîne et sur une base hebdomadaire. Les récompenses $DGCO sont distribuées directement sur la chaîne aux opérateurs de nœuds, le système sur la chaîne déduisant leur coupe de délégué et acheminant les récompenses restantes à ceux qui ont délégué leurs jetons.
+Coliving propose un taux d'émission annuel automatique de 7% distribué sur la chaîne et sur une base hebdomadaire. Les récompenses $DGC sont distribuées directement sur la chaîne aux opérateurs de nœuds, le système sur la chaîne déduisant leur coupe de délégué et acheminant les récompenses restantes à ceux qui ont délégué leurs jetons.
 
 Il est prévu que les fournisseurs de services effectuent une transaction par semaine pour distribuer l'émission pour le réseau, où les jetons peuvent être réclamés en temps réel par les opérateurs de nœuds individuels.
 
-Dans un avenir proche, l'émission de $DGCO commencera à être calculée à partir de l'appel de la fonction de récompense. À l'avenir, n'importe quel membre du réseau pourra appeler la fonction de récompense, les jetons étant distribués chaque semaine et pouvant être réclamés à tout moment.
+Dans un avenir proche, l'émission de $DGC commencera à être calculée à partir de l'appel de la fonction de récompense. À l'avenir, n'importe quel membre du réseau pourra appeler la fonction de récompense, les jetons étant distribués chaque semaine et pouvant être réclamés à tout moment.
 
-Le taux, la durée et les paramètres du jalonnement de $DGCO sont entièrement contrôlés par la gouvernance.
+Le taux, la durée et les paramètres du jalonnement de $DGC sont entièrement contrôlés par la gouvernance.

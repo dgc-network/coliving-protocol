@@ -14,7 +14,7 @@ Coliving platform tokens \($DGC\) have three prongs of functionality within the 
 * Feature Access
 * Governance
 
-$DGC is staked as collateral for a value-added service such as operating a node or participating in governance. In exchange, stakers earn ongoing issuance, governance weight, and access to exclusive features. In the future, $DGC will govern a global fee pool from value transfers in the network.Offering a native token to align all actors creates a parallel incentive unique to web3, and one which allows our early adopters to share in the upside of Coliving as we continue to grow.The Coliving community looks to ensure that $DGC tokens are always being funneled to the most value-added actors. This is done through ongoing issuance using onchain metrics as a measurement to better route distribution to active participants, rather than simply to those staking the most $DGC. Here’s how this pans out in practice.
+$DGC is staked as collateral for a value-added service such as operating a node or participating in governance. In exchange, stakers earn ongoing issuance, governance weight, and access to exclusive features. In the future, $DGC will govern a global fee pool from value transfers in the network.Offering a native token to align all actors creates a parallel incentive unique to web3, and one which allows our early adopters to share in the upside of Coliving as we continue to grow.The Coliving community looks to ensure that $DGC tokens are always being funneled to the most value-added actors. This is done through ongoing issuance using onchain metrics as a measurement to better route distribution to active participants, rather than simply to those staking the most $DGC.Here’s how this pans out in practice.
 
 **SECURITY**
 
