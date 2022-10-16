@@ -7,7 +7,7 @@ module.exports = {
     const columnName = 'type'
     const previousEnumName = 'enum_ContentBlacklists_type'
     const newEnumName = 'enum_ContentBlacklists_type_new'
-    const newValues = ['AGREEMENT', 'USER', 'CID']
+    const newValues = ['DIGITAL_CONTENT', 'USER', 'CID']
 
     try {
       // Remove primary key constraints on type and value
@@ -76,7 +76,7 @@ module.exports = {
     const columnName = 'type'
     const previousEnumName = 'enum_ContentBlacklists_type'
     const revertEnumName = 'enum_ContentBlacklists_type_revert'
-    const prevValues = ['AGREEMENT', 'USER']
+    const prevValues = ['DIGITAL_CONTENT', 'USER']
 
     try {
       // Remove all entries with type 'CID'

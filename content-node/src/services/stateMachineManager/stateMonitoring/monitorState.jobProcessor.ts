@@ -14,7 +14,7 @@ import type {
 import { QUEUE_NAMES } from '../stateMachineConstants'
 
 const config = require('../../../config')
-const NodeHealthManager = require('../CNodeHealthManager')
+const NodeHealthManager = require('../cNodeHealthManager')
 const {
   getNodeUsers,
   buildReplicaSetNodesToUserWalletsMap,

@@ -8,7 +8,7 @@ export class RegistryClient {
   web3Manager: EthWeb3Manager
   contractABI: AbiItem[]
   contractAddress: string
-  web3: Web3
+  web3: typeof Web3
   Registry: Contract
 
   constructor(

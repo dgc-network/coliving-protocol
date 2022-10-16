@@ -55,7 +55,7 @@ export class ColivingABIDecoder {
       }
 
       const paramSpec = paramSpecs[idx]
-      if (paramSpec?.name !== param.name || paramSpec.type !== param.type) {
+      if (paramSpec?.name !== param.name || paramSpec?.type !== param.type) {
         throw new Error(
           `Invalid name or value for param ${paramSpec?.name}: ${paramSpec?.type}`
         )

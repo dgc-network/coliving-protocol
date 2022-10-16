@@ -24,7 +24,7 @@ const {
   retrieveClockValueForUserFromReplica,
   makeHistogramToRecord
 } = require('../stateMachineUtils')
-const SecondarySyncHealthTracker = require('./SecondarySyncHealthTracker')
+const SecondarySyncHealthTracker = require('./secondarySyncHealthTracker')
 const {
   SYNC_MONITORING_RETRY_DELAY_MS,
   QUEUE_NAMES,

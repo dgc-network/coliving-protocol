@@ -15,7 +15,7 @@ def get_time_trending(cache_args, time, limit, strategy):
     time_params = {**cache_args, "time": time}
 
     path = request_cache_path
-    if strategy.version != DEFAULT_TRENDING_VERSIONS[TrendingType.AGREEMENTS]:
+    if strategy.version != DEFAULT_TRENDING_VERSIONS[TrendingType.DIGITAL_CONTENTS]:
         path += f"/{strategy.version.value}"
 
     time_cache_key = extract_key(path, time_params.items())

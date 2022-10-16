@@ -10,7 +10,7 @@ export class WormholeClient {
   ethWeb3Manager: EthWeb3Manager
   contractABI: ContractABI['abi']
   contractAddress: string
-  web3: Web3
+  web3: typeof Web3
   colivingTokenClient: ColivingTokenClient
   WormholeContract: Contract
 

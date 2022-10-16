@@ -985,7 +985,7 @@ describe('test ContentBlacklist', function () {
       .expect(400)
   })
 
-  it('should add the relevant CIDs to redis when adding a type AGREEMENT to redis', async () => {
+  it('should add the relevant CIDs to redis when adding a type DIGITAL_CONTENT to redis', async () => {
     // Create user and upload digital_content
     const data = await createUserAndUploadDigitalContent()
     const digitalContentId = data.digital_content.blockchainId

@@ -20,7 +20,7 @@ const {
   FIND_REPLICA_SET_UPDATES_BATCH_SIZE,
   QUEUE_NAMES
 } = require('../stateMachineConstants')
-const CNodeHealthManager = require('../CNodeHealthManager')
+const CNodeHealthManager = require('../cNodeHealthManager')
 const CNodeToSpIdMapManager = require('../CNodeToSpIdMapManager')
 const config = require('../../../config')
 

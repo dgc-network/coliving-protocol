@@ -10,7 +10,7 @@ module.exports = {
       },
       type: {
         allowNull: false,
-        type: Sequelize.ENUM('USER', 'AGREEMENT'),
+        type: Sequelize.ENUM('USER', 'DIGITAL_CONTENT'),
         primaryKey: true
       },
       createdAt: {

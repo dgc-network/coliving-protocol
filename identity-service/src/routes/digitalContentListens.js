@@ -233,8 +233,8 @@ const initializeExpiringRedisKey = async (redis, key, expiry) => {
   }
 }
 
-const AGREEMENTING_LISTEN_SUBMISSION_KEY = 'listens-tx-submission-ts'
-const AGREEMENTING_LISTEN_SUCCESS_KEY = 'listens-tx-success-ts'
+const DIGITAL_CONTENTING_LISTEN_SUBMISSION_KEY = 'listens-tx-submission-ts'
+const DIGITAL_CONTENTING_LISTEN_SUCCESS_KEY = 'listens-tx-success-ts'
 
 module.exports = function (app) {
   app.get('/digital_contents/listen/solana/status', handleResponse(async (req, res) => {
@@ -262,11 +262,11 @@ module.exports = function (app) {
 
     // Clean up time series entries that are greater than 1 week old
     const oldestExpireMillis = Date.now() - redisTxTrackingExpirySeconds * 1000
-    await redis.zremrangebyscore(AGREEMENTING_LISTEN_SUBMISSION_KEY, 0, oldestExpireMillis)
-    await redis.zremrangebyscore(AGREEMENTING_LISTEN_SUCCESS_KEY, 0, oldestExpireMillis)
+    await redis.zremrangebyscore(DIGITAL_CONTENTING_LISTEN_SUBMISSION_KEY, 0, oldestExpireMillis)
+    await redis.zremrangebyscore(DIGITAL_CONTENTING_LISTEN_SUCCESS_KEY, 0, oldestExpireMillis)
 
-    const totalSuccessCount = await redis.zcount(AGREEMENTING_LISTEN_SUCCESS_KEY, 0, Number.MAX_SAFE_INTEGER)
-    const totalSubmissionCount = await redis.zcount(AGREEMENTING_LISTEN_SUBMISSION_KEY, 0, Number.MAX_SAFE_INTEGER)
+    const totalSuccessCount = await redis.zcount(DIGITAL_CONTENTING_LISTEN_SUCCESS_KEY, 0, Number.MAX_SAFE_INTEGER)
+    const totalSubmissionCount = await redis.zcount(DIGITAL_CONTENTING_LISTEN_SUBMISSION_KEY, 0, Number.MAX_SAFE_INTEGER)
     const totalPercentSuccess = totalSubmissionCount === 0 ? 1 : totalSuccessCount / totalSubmissionCount
     // Sort response in descending time order
     const sortedHourlyData =
@@ -278,8 +278,8 @@ module.exports = function (app) {
     const now = Date.now()
     const nowPlusEntropy = now + 9 // Account for the fact that each date has a random UUID appended to it
     const nowMinusCutoff = now - (cutoffMinutes * 60 * 1000)
-    const recentSuccessCount = await redis.zcount(AGREEMENTING_LISTEN_SUCCESS_KEY, nowMinusCutoff, nowPlusEntropy)
-    const recentSubmissionCount = await redis.zcount(AGREEMENTING_LISTEN_SUBMISSION_KEY, nowMinusCutoff, nowPlusEntropy)
+    const recentSuccessCount = await redis.zcount(DIGITAL_CONTENTING_LISTEN_SUCCESS_KEY, nowMinusCutoff, nowPlusEntropy)
+    const recentSubmissionCount = await redis.zcount(DIGITAL_CONTENTING_LISTEN_SUBMISSION_KEY, nowMinusCutoff, nowPlusEntropy)
     const recentSuccessPercent = recentSubmissionCount === 0 ? 1 : recentSuccessCount / recentSubmissionCount
     const recentInfo = {
       recentSubmissionCount,
@@ -332,7 +332,7 @@ module.exports = function (app) {
       req.logger.info(`DigitalContentListen tx submission, digitalContentId=${digitalContentId} userId=${userId}, ${JSON.stringify(trackingRedisKeys)}`)
 
       await redis.incr(trackingRedisKeys.submission)
-      await redis.zadd(AGREEMENTING_LISTEN_SUBMISSION_KEY, Date.now(), Date.now() + entropy)
+      await redis.zadd(DIGITAL_CONTENTING_LISTEN_SUBMISSION_KEY, Date.now(), Date.now() + entropy)
       let location
       try {
         let clientIPAddress = (req.headers['x-forwarded-for'] || '').split(',').pop().trim() || req.socket.remoteAddress
@@ -406,7 +406,7 @@ module.exports = function (app) {
 
         // Increment success tracker
         await redis.incr(trackingRedisKeys.success)
-        await redis.zadd(AGREEMENTING_LISTEN_SUCCESS_KEY, Date.now(), Date.now() + entropy)
+        await redis.zadd(DIGITAL_CONTENTING_LISTEN_SUCCESS_KEY, Date.now(), Date.now() + entropy)
         return successResponse({
           solTxSignature
         })

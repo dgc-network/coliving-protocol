@@ -28,7 +28,7 @@ type EthWeb3ManagerConfig = {
 /** Singleton state-manager for Coliving Eth Contracts */
 export class EthWeb3Manager {
   web3Config: EthWeb3Config
-  web3: Web3Type
+  web3: typeof Web3Type
   identityService: IdentityService
   hedgehog?: Hedgehog
   ownerWallet: Maybe<Wallet | string>
@@ -73,7 +73,7 @@ export class EthWeb3Manager {
    * Signs provided string data (should be timestamped).
    */
   async sign(data: string) {
-    // @ts-expect-error TODO: sign expected to take a password as 3rd argument
+    // \s*\/\/\s*@ts-expect-error TODO: sign expected to take a password as 3rd argument
     return await this.web3.eth.personal.sign(
       this.web3.utils.fromUtf8(data),
       this.getWalletAddress()

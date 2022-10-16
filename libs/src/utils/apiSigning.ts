@@ -10,7 +10,7 @@ interface WalletResponse {
  * Recover the public wallet address given the response contains the signature and timestamp
  * @param {object} response entire service provider response (not axios)
  */
-export function recoverWallet(web3: Web3, response: WalletResponse) {
+export function recoverWallet(web3: typeof Web3, response: WalletResponse) {
   let recoveredDelegateWallet : any|null = null
 
   const dataForRecovery = JSON.parse(JSON.stringify(response))

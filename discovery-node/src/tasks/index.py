@@ -68,14 +68,14 @@ from src.utils.redis_constants import (
 from src.utils.session_manager import SessionManager
 
 USER_FACTORY = CONTRACT_TYPES.USER_FACTORY.value
-AGREEMENT_FACTORY = CONTRACT_TYPES.AGREEMENT_FACTORY.value
+DIGITAL_CONTENT_FACTORY = CONTRACT_TYPES.DIGITAL_CONTENT_FACTORY.value
 SOCIAL_FEATURE_FACTORY = CONTRACT_TYPES.SOCIAL_FEATURE_FACTORY.value
 CONTENT_LIST_FACTORY = CONTRACT_TYPES.CONTENT_LIST_FACTORY.value
 USER_LIBRARY_FACTORY = CONTRACT_TYPES.USER_LIBRARY_FACTORY.value
 USER_REPLICA_SET_MANAGER = CONTRACT_TYPES.USER_REPLICA_SET_MANAGER.value
 
 USER_FACTORY_CONTRACT_NAME = CONTRACT_NAMES_ON_CHAIN[CONTRACT_TYPES.USER_FACTORY]
-AGREEMENT_FACTORY_CONTRACT_NAME = CONTRACT_NAMES_ON_CHAIN[CONTRACT_TYPES.AGREEMENT_FACTORY]
+DIGITAL_CONTENT_FACTORY_CONTRACT_NAME = CONTRACT_NAMES_ON_CHAIN[CONTRACT_TYPES.DIGITAL_CONTENT_FACTORY]
 SOCIAL_FEATURE_FACTORY_CONTRACT_NAME = CONTRACT_NAMES_ON_CHAIN[
     CONTRACT_TYPES.SOCIAL_FEATURE_FACTORY
 ]
@@ -91,7 +91,7 @@ USER_REPLICA_SET_MANAGER_CONTRACT_NAME = CONTRACT_NAMES_ON_CHAIN[
 
 TX_TYPE_TO_HANDLER_MAP = {
     USER_FACTORY: user_state_update,
-    AGREEMENT_FACTORY: digital_content_state_update,
+    DIGITAL_CONTENT_FACTORY: digital_content_state_update,
     SOCIAL_FEATURE_FACTORY: social_feature_state_update,
     CONTENT_LIST_FACTORY: content_list_state_update,
     USER_LIBRARY_FACTORY: user_library_state_update,
@@ -478,7 +478,7 @@ def process_state_changes(
 
     changed_entity_ids_map = {
         USER_FACTORY: [],
-        AGREEMENT_FACTORY: [],
+        DIGITAL_CONTENT_FACTORY: [],
         CONTENT_LIST_FACTORY: [],
         USER_REPLICA_SET_MANAGER: [],
     }
@@ -517,7 +517,7 @@ def remove_updated_entities_from_cache(redis, changed_entity_type_to_updated_ids
     CONTRACT_TYPE_TO_CLEAR_CACHE_HANDLERS = {
         USER_FACTORY: remove_cached_user_ids,
         USER_REPLICA_SET_MANAGER: remove_cached_user_ids,
-        AGREEMENT_FACTORY: remove_cached_digital_content_ids,
+        DIGITAL_CONTENT_FACTORY: remove_cached_digital_content_ids,
         CONTENT_LIST_FACTORY: remove_cached_content_list_ids,
     }
     for (
@@ -582,7 +582,7 @@ def index_blocks(self, db, blocks_list):
             else:
                 txs_grouped_by_type = {
                     USER_FACTORY: [],
-                    AGREEMENT_FACTORY: [],
+                    DIGITAL_CONTENT_FACTORY: [],
                     SOCIAL_FEATURE_FACTORY: [],
                     CONTENT_LIST_FACTORY: [],
                     USER_LIBRARY_FACTORY: [],
@@ -651,7 +651,7 @@ def index_blocks(self, db, blocks_list):
                     cid_metadata = fetch_cid_metadata(
                         db,
                         txs_grouped_by_type[USER_FACTORY],
-                        txs_grouped_by_type[AGREEMENT_FACTORY],
+                        txs_grouped_by_type[DIGITAL_CONTENT_FACTORY],
                     )
                     logger.info(
                         f"index.py | index_blocks - fetch_ipfs_metadata in {time.time() - fetch_ipfs_metadata_start_time}s"
@@ -1072,7 +1072,7 @@ def update_task(self):
     redis = update_task.redis
 
     # Initialize contracts and attach to the task singleton
-    digital_content_abi = update_task.abi_values[AGREEMENT_FACTORY_CONTRACT_NAME]["abi"]
+    digital_content_abi = update_task.abi_values[DIGITAL_CONTENT_FACTORY_CONTRACT_NAME]["abi"]
     digital_content_contract = update_task.web3.eth.contract(
         address=get_contract_addresses()["digital_content_factory"], abi=digital_content_abi
     )

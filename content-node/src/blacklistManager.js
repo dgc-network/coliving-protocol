@@ -5,18 +5,18 @@ const config = require('./config')
 
 const CID_WHITELIST = new Set(config.get('cidWhitelist').split(','))
 
-const REDIS_SET_BLACKLIST_AGREEMENTID_KEY = 'BM.SET.BLACKLIST.AGREEMENTID'
+const REDIS_SET_BLACKLIST_DIGITAL_CONTENT_ID_KEY = 'BM.SET.BLACKLIST.DIGITAL_CONTENT_ID'
 const REDIS_SET_BLACKLIST_USERID_KEY = 'BM.SET.BLACKLIST.USERID'
 const REDIS_SET_BLACKLIST_SEGMENTCID_KEY = 'BM.SET.BLACKLIST.SEGMENTCID'
-const REDIS_MAP_AGREEMENTID_TO_SEGMENTCIDS_KEY = 'BM.MAP.AGREEMENTID.SEGMENTCIDS'
-const REDIS_SET_INVALID_AGREEMENTIDS_KEY = 'BM.SET.INVALID.AGREEMENTIDS'
+const REDIS_MAP_DIGITAL_CONTENT_ID_TO_SEGMENTCIDS_KEY = 'BM.MAP.DIGITAL_CONTENT_ID.SEGMENTCIDS'
+const REDIS_SET_INVALID_DIGITAL_CONTENT_IDS_KEY = 'BM.SET.INVALID.DIGITAL_CONTENT_IDS'
 
-const SEGMENTCID_TO_AGREEMENTID_EXPIRATION_SECONDS =
+const SEGMENTCID_TO_DIGITAL_CONTENT_ID_EXPIRATION_SECONDS =
   14 /* days */ * 24 /* hours */ * 60 /* minutes */ * 60 /* seconds */
-const INVALID_AGREEMENTID_EXPIRATION_SECONDS =
+const INVALID_DIGITAL_CONTENT_ID_EXPIRATION_SECONDS =
   1 /* hour */ * 60 /* minutes */ * 60 /* seconds */
 
-const PROCESS_AGREEMENTS_BATCH_SIZE = 200
+const PROCESS_DIGITAL_CONTENTS_BATCH_SIZE = 200
 
 const types = models.ContentBlacklist.Types
 
@@ -102,7 +102,7 @@ class BlacklistManager {
 
     try {
       await this.addToRedis(
-        REDIS_SET_BLACKLIST_AGREEMENTID_KEY,
+        REDIS_SET_BLACKLIST_DIGITAL_CONTENT_ID_KEY,
         allDigitalContentIdsToBlacklist
       )
       await this.addToRedis(REDIS_SET_BLACKLIST_USERID_KEY, userIdsToBlacklist)
@@ -132,12 +132,12 @@ class BlacklistManager {
     for (
       i = 0;
       i < allDigitalContentIdsToBlacklist.length;
-      i = i + PROCESS_AGREEMENTS_BATCH_SIZE
+      i = i + PROCESS_DIGITAL_CONTENTS_BATCH_SIZE
     ) {
       try {
         const digitalContentsSlice = allDigitalContentIdsToBlacklist.slice(
           i,
-          i + PROCESS_AGREEMENTS_BATCH_SIZE
+          i + PROCESS_DIGITAL_CONTENTS_BATCH_SIZE
         )
 
         this.logDebug(
@@ -159,7 +159,7 @@ class BlacklistManager {
         await transaction.rollback()
         throw new Error(
           `[addAggregateCIDsToRedis] - Could not add digitalContents slice ${i} to ${
-            i + PROCESS_AGREEMENTS_BATCH_SIZE
+            i + PROCESS_DIGITAL_CONTENTS_BATCH_SIZE
           }: ${e.message}`
         )
       }
@@ -197,7 +197,7 @@ class BlacklistManager {
 
     try {
       await this.removeFromRedis(
-        REDIS_SET_BLACKLIST_AGREEMENTID_KEY,
+        REDIS_SET_BLACKLIST_DIGITAL_CONTENT_ID_KEY,
         allDigitalContentIdsToBlacklist
       )
       await this.removeFromRedis(
@@ -309,7 +309,7 @@ class BlacklistManager {
         // add user ids to redis under userid key + its associated digital_content segments
         await this.fetchCIDsAndAddToRedis({ userIdsToBlacklist: values })
         break
-      case 'AGREEMENT':
+      case 'DIGITAL_CONTENT':
         // add digital_content ids to redis under digitalContentid key + its associated digital_content segments
         await this.fetchCIDsAndAddToRedis({ digitalContentIdsToBlacklist: values })
         break
@@ -328,7 +328,7 @@ class BlacklistManager {
         // Remove user ids from redis under userid key + its associated digital_content segments
         await this.fetchCIDsAndRemoveFromRedis({ userIdsToRemove: values })
         break
-      case 'AGREEMENT':
+      case 'DIGITAL_CONTENT':
         // Remove digital_content ids from redis under digitalContentid key + its associated digital_content segments
         await this.fetchCIDsAndRemoveFromRedis({ digitalContentIdsToRemove: values })
         break
@@ -342,7 +342,7 @@ class BlacklistManager {
   /**
    * Adds ids and types as individual entries to ContentBlacklist table
    * @param {number} id user or digital_content id
-   * @param {'USER'|'AGREEMENT'|'CID'} type
+   * @param {'USER'|'DIGITAL_CONTENT'|'CID'} type
    */
   static async addToDb({ values, type }) {
     try {
@@ -366,7 +366,7 @@ class BlacklistManager {
   /**
    * Removes entry from Contentblacklist table
    * @param {number} id user or digital_content id
-   * @param {'USER'|'AGREEMENT'|'CID'} type
+   * @param {'USER'|'DIGITAL_CONTENT'|'CID'} type
    */
   static async removeFromDb({ values, type }) {
     let numRowsDestroyed
@@ -427,8 +427,8 @@ class BlacklistManager {
    */
   static async addToRedis(redisKey, data, expirationSec = null) {
     switch (redisKey) {
-      case REDIS_MAP_AGREEMENTID_TO_SEGMENTCIDS_KEY: {
-        // Add "MAP.AGREEMENTID.SEGMENTCIDS:::<digitalContentId>" to set of cids into redis
+      case REDIS_MAP_DIGITAL_CONTENT_ID_TO_SEGMENTCIDS_KEY: {
+        // Add "MAP.DIGITAL_CONTENT_ID.SEGMENTCIDS:::<digitalContentId>" to set of cids into redis
         const errors = []
         for (let [digitalContentId, cids] of Object.entries(data)) {
           digitalContentId = parseInt(digitalContentId)
@@ -450,9 +450,9 @@ class BlacklistManager {
         }
         break
       }
-      case REDIS_SET_INVALID_AGREEMENTIDS_KEY:
+      case REDIS_SET_INVALID_DIGITAL_CONTENT_IDS_KEY:
       case REDIS_SET_BLACKLIST_SEGMENTCID_KEY:
-      case REDIS_SET_BLACKLIST_AGREEMENTID_KEY:
+      case REDIS_SET_BLACKLIST_DIGITAL_CONTENT_ID_KEY:
       case REDIS_SET_BLACKLIST_USERID_KEY:
       default: {
         if (!data || data.length === 0) return
@@ -475,7 +475,7 @@ class BlacklistManager {
   static async removeFromRedis(redisKey, data) {
     switch (redisKey) {
       case REDIS_SET_BLACKLIST_SEGMENTCID_KEY:
-      case REDIS_SET_BLACKLIST_AGREEMENTID_KEY:
+      case REDIS_SET_BLACKLIST_DIGITAL_CONTENT_ID_KEY:
       case REDIS_SET_BLACKLIST_USERID_KEY:
       default: {
         if (!data || data.length === 0) return
@@ -537,10 +537,10 @@ class BlacklistManager {
         // If segments are not found, add to invalid digitalContentIds set
         if (!digital_content) {
           await this.addToRedis(
-            REDIS_SET_INVALID_AGREEMENTIDS_KEY,
+            REDIS_SET_INVALID_DIGITAL_CONTENT_IDS_KEY,
             [digitalContentId],
             // Set expiry in case digital_content with this digitalContentId eventually gets uploaded to CN
-            INVALID_AGREEMENTID_EXPIRATION_SECONDS
+            INVALID_DIGITAL_CONTENT_ID_EXPIRATION_SECONDS
           )
           return false
         }
@@ -552,9 +552,9 @@ class BlacklistManager {
           )
 
           await this.addToRedis(
-            REDIS_MAP_AGREEMENTID_TO_SEGMENTCIDS_KEY,
+            REDIS_MAP_DIGITAL_CONTENT_ID_TO_SEGMENTCIDS_KEY,
             { [digitalContentId]: cidsOfInputDigitalContentId },
-            SEGMENTCID_TO_AGREEMENTID_EXPIRATION_SECONDS
+            SEGMENTCID_TO_DIGITAL_CONTENT_ID_EXPIRATION_SECONDS
           )
         }
       }
@@ -582,7 +582,7 @@ class BlacklistManager {
   /** Retrieves redis keys */
 
   static getRedisDigitalContentIdKey() {
-    return REDIS_SET_BLACKLIST_AGREEMENTID_KEY
+    return REDIS_SET_BLACKLIST_DIGITAL_CONTENT_ID_KEY
   }
 
   static getRedisUserIdKey() {
@@ -594,11 +594,11 @@ class BlacklistManager {
   }
 
   static getRedisDigitalContentIdToCIDsKey(digitalContentId) {
-    return `${REDIS_MAP_AGREEMENTID_TO_SEGMENTCIDS_KEY}:::${digitalContentId}`
+    return `${REDIS_MAP_DIGITAL_CONTENT_ID_TO_SEGMENTCIDS_KEY}:::${digitalContentId}`
   }
 
   static getInvalidDigitalContentIdsKey() {
-    return REDIS_SET_INVALID_AGREEMENTIDS_KEY
+    return REDIS_SET_INVALID_DIGITAL_CONTENT_IDS_KEY
   }
 
   /** Checks if userId, digitalContentId, and CID exists in redis  */
@@ -608,10 +608,10 @@ class BlacklistManager {
   }
 
   static async digitalContentIdIsInBlacklist(digitalContentId) {
-    return redis.sismember(REDIS_SET_BLACKLIST_AGREEMENTID_KEY, digitalContentId)
+    return redis.sismember(REDIS_SET_BLACKLIST_DIGITAL_CONTENT_ID_KEY, digitalContentId)
   }
 
-  // Checks if the input CID is blacklisted from USER, AGREEMENT, or SEGMENT type
+  // Checks if the input CID is blacklisted from USER, DIGITAL_CONTENT, or SEGMENT type
   static async CIDIsInBlacklist(cid) {
     return redis.sismember(REDIS_SET_BLACKLIST_SEGMENTCID_KEY, cid)
   }
@@ -624,7 +624,7 @@ class BlacklistManager {
 
   // Check to see if the input digitalContentId is invalid
   static async digitalContentIdIsInvalid(digitalContentId) {
-    return redis.sismember(REDIS_SET_INVALID_AGREEMENTIDS_KEY, digitalContentId)
+    return redis.sismember(REDIS_SET_INVALID_DIGITAL_CONTENT_IDS_KEY, digitalContentId)
   }
 
   // Retrieves all CIDs in redis
@@ -639,11 +639,11 @@ class BlacklistManager {
 
   // Retrieves all digital_content ids in redis
   static async getAllDigitalContentIds() {
-    return redis.smembers(REDIS_SET_BLACKLIST_AGREEMENTID_KEY)
+    return redis.smembers(REDIS_SET_BLACKLIST_DIGITAL_CONTENT_ID_KEY)
   }
 
   static async getAllInvalidDigitalContentIds() {
-    return redis.smembers(REDIS_SET_INVALID_AGREEMENTIDS_KEY)
+    return redis.smembers(REDIS_SET_INVALID_DIGITAL_CONTENT_IDS_KEY)
   }
 
   /**

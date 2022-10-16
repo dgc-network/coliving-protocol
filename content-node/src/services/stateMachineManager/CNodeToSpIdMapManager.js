@@ -30,7 +30,7 @@ class CNodeToSpIdMapManager {
       })
     } catch (e) {
       genericLogger.error(
-        `CNodeToSpIdMapManager - Could not fetch content nodes: ${e.message}`
+        `cNodeToSpIdMapManager - Could not fetch content nodes: ${e.message}`
       )
     }
 
@@ -41,13 +41,13 @@ class CNodeToSpIdMapManager {
     const mapLength = Object.keys(this.cNodeEndpointToSpIdMap).length
     if (mapLength === 0) {
       const errorMessage =
-        'CNodeToSpIdMapManager - Unable to initialize cNodeEndpointToSpIdMap'
+        'cNodeToSpIdMapManager - Unable to initialize cNodeEndpointToSpIdMap'
       genericLogger.error(errorMessage)
       throw new Error(errorMessage)
     }
 
     genericLogger.info(
-      `CNodeToSpIdMapManager - updateCnodeEndpointToSpIdMap Success. Size: ${mapLength}`
+      `cNodeToSpIdMapManager - updateCnodeEndpointToSpIdMap Success. Size: ${mapLength}`
     )
   }
 }

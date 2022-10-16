@@ -15,7 +15,7 @@ from src.utils.redis_cache import extract_key, use_redis_cache
 
 logger = logging.getLogger(__name__)
 
-UNPOPULATED_AGREEMENT_CACHE_DURATION_SEC = 10
+UNPOPULATED_DIGITAL_CONTENT_CACHE_DURATION_SEC = 10
 
 
 def make_cache_key(args):
@@ -96,7 +96,7 @@ def get_digital_contents_including_unlisted(args):
 
         key = make_cache_key(args)
         (digitalContents, digital_content_ids) = use_redis_cache(
-            key, UNPOPULATED_AGREEMENT_CACHE_DURATION_SEC, get_unpopulated_digital_content
+            key, UNPOPULATED_DIGITAL_CONTENT_CACHE_DURATION_SEC, get_unpopulated_digital_content
         )
 
         # Add users

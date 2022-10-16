@@ -39,7 +39,7 @@ const getTimeGenreActionType = (time, genre) => `${time}:${genre}`
 const TRENDING_INTERVAL_HOURS = 3
 
 // The highest rank for which a notification will be sent
-const MAX_TOP_AGREEMENT_RANK = 10
+const MAX_TOP_DIGITAL_CONTENT_RANK = 10
 
 // The number of discovery nodes to test and verify that trending
 // is consistent
@@ -63,7 +63,7 @@ async function getTrendingDigitalContents (trendingExperiment, discoveryNodes) {
       // The owner info is then used to target listenCount milestone notifications
       let params = new URLSearchParams()
       params.append('time', TRENDING_TIME.WEEK)
-      params.append('limit', MAX_TOP_AGREEMENT_RANK)
+      params.append('limit', MAX_TOP_DIGITAL_CONTENT_RANK)
 
       const baseUrl = `${discoveryNode}/v1/full/digital_contents/trending`
       const url = trendingExperiment

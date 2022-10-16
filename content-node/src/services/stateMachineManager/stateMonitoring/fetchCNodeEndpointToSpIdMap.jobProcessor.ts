@@ -5,7 +5,7 @@ import type {
 } from './types'
 
 const initColivingLibs = require('../../initColivingLibs')
-const NodeToSpIdManager = require('../CNodeToSpIdMapManager')
+const NodeToSpIdManager = require('../cNodeToSpIdMapManager')
 
 /**
  * Processes a job to update the cNodeEndpoint->spId map by reading the chain.

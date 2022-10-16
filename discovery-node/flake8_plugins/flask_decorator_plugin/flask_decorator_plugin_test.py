@@ -20,7 +20,7 @@ class FullRemixesRoute(Resource):
 """
 
 variable_route_param_example = """
-@ns.route(AGREEMENT_ROUTE)
+@ns.route(DIGITAL_CONTENT_ROUTE)
 class DigitalContent(Resource):
     @record_metrics
     @ns.doc(
@@ -191,7 +191,7 @@ class FullTopGenreUsers(Resource):
 doc_false_with_route_param_example = """
 @ns.route(
     \"/trending\",
-    defaults={\"version\": DEFAULT_TRENDING_VERSIONS[TrendingType.AGREEMENTS].name},
+    defaults={\"version\": DEFAULT_TRENDING_VERSIONS[TrendingType.DIGITAL_CONTENTS].name},
     strict_slashes=False,
     doc={
         "get": {

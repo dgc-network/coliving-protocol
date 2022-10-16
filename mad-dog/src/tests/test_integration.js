@@ -122,7 +122,7 @@ module.exports = coreIntegration = async ({
     const { type, walletIndex, userId } = request
     let res
     switch (type) {
-      case OPERATION_TYPE.AGREEMENT_UPLOAD: {
+      case OPERATION_TYPE.DIGITAL_CONTENT_UPLOAD: {
         const digital_content = getRandomDigitalContentMetadata(userId)
 
         const randomDigitalContentFilePath = await getRandomDigitalContentFilePath(TEMP_STORAGE_PATH)
@@ -152,7 +152,7 @@ module.exports = coreIntegration = async ({
         emit(Event.RESPONSE, res)
         break
       }
-      case OPERATION_TYPE.AGREEMENT_REPOST: {
+      case OPERATION_TYPE.DIGITAL_CONTENT_REPOST: {
         // repost candidates include digitalContents from other users that have not already been reposted by current user
         const repostCandidates = uploadedDigitalContents
           .filter(obj => obj.userId !== userId)
@@ -256,7 +256,7 @@ module.exports = coreIntegration = async ({
         emit(Event.RESPONSE, res)
         break
       }
-      case OPERATION_TYPE.ADD_CONTENT_LIST_AGREEMENT: {
+      case OPERATION_TYPE.ADD_CONTENT_LIST_DIGITAL_CONTENT: {
         if (uploadedDigitalContents.length === 0 || !createdContentLists[userId]) {
           res = new AddContentListDigitalContentResponse(
             walletIndex,
@@ -314,7 +314,7 @@ module.exports = coreIntegration = async ({
   // digital_content upload responses.
   emitterTest.registerOnResponseListener(res => {
     switch (res.type) {
-      case OPERATION_TYPE.AGREEMENT_UPLOAD: {
+      case OPERATION_TYPE.DIGITAL_CONTENT_UPLOAD: {
         const { walletIndex, digitalContentId, metadata, success } = res
         // If it failed, log it
         if (!success) {
@@ -335,7 +335,7 @@ module.exports = coreIntegration = async ({
         }
         break
       }
-      case OPERATION_TYPE.AGREEMENT_REPOST: {
+      case OPERATION_TYPE.DIGITAL_CONTENT_REPOST: {
         const { walletIndex, digitalContentId, userId, success } = res
         if (success) {
           repostedDigitalContents.push({ digitalContentId: digitalContentId, userId: userId })
@@ -352,7 +352,7 @@ module.exports = coreIntegration = async ({
         }
         break
       }
-      case OPERATION_TYPE.ADD_CONTENT_LIST_AGREEMENT: {
+      case OPERATION_TYPE.ADD_CONTENT_LIST_DIGITAL_CONTENT: {
         const { walletIndex, digitalContentId, success } = res
         if (success) {
           addedContentListDigitalContents.push(digitalContentId)

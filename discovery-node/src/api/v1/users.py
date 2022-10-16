@@ -190,7 +190,7 @@ class UserHandle(FullUserHandle):
         return super()._get(handle)
 
 
-USER_AGREEMENTS_ROUTE = "/<string:id>/digitalContents"
+USER_DIGITAL_CONTENTS_ROUTE = "/<string:id>/digitalContents"
 user_digital_contents_route_parser = pagination_with_current_user_parser.copy()
 user_digital_contents_route_parser.add_argument(
     "sort",
@@ -206,7 +206,7 @@ digitalContents_response = make_response(
 )
 
 
-@ns.route(USER_AGREEMENTS_ROUTE)
+@ns.route(USER_DIGITAL_CONTENTS_ROUTE)
 class DigitalContentList(Resource):
     @record_metrics
     @ns.doc(
@@ -251,7 +251,7 @@ full_digital_contents_response = make_full_response(
 )
 
 
-@full_ns.route(USER_AGREEMENTS_ROUTE)
+@full_ns.route(USER_DIGITAL_CONTENTS_ROUTE)
 class FullDigitalContentList(Resource):
     @record_metrics
     @full_ns.doc(
@@ -291,10 +291,10 @@ class FullDigitalContentList(Resource):
         return success_response(digitalContents)
 
 
-USER_HANDLE_AGREEMENTS = "/handle/<string:handle>/digitalContents"
+USER_HANDLE_DIGITAL_CONTENTS = "/handle/<string:handle>/digitalContents"
 
 
-@full_ns.route(USER_HANDLE_AGREEMENTS)
+@full_ns.route(USER_HANDLE_DIGITAL_CONTENTS)
 class HandleFullDigitalContentList(Resource):
     @record_metrics
     @cache(ttl_sec=5)
@@ -336,7 +336,7 @@ class HandleFullDigitalContentList(Resource):
         return self._get(handle, authed_user_id)
 
 
-@ns.route(USER_HANDLE_AGREEMENTS)
+@ns.route(USER_HANDLE_DIGITAL_CONTENTS)
 class HandleDigitalContentList(HandleFullDigitalContentList):
     @auth_middleware()
     @ns.doc(
@@ -556,10 +556,10 @@ class FavoritedDigitalContents(Resource):
         return success_response(favorites)
 
 
-USER_FAVORITED_AGREEMENTS_ROUTE = "/<string:id>/favorites/digitalContents"
+USER_FAVORITED_DIGITAL_CONTENTS_ROUTE = "/<string:id>/favorites/digitalContents"
 
 
-@full_ns.route(USER_FAVORITED_AGREEMENTS_ROUTE)
+@full_ns.route(USER_FAVORITED_DIGITAL_CONTENTS_ROUTE)
 class UserFavoritedDigitalContentsFull(Resource):
     @record_metrics
     @cache(ttl_sec=5)
@@ -602,10 +602,10 @@ history_response_full = make_full_response(
     "history_response_full", full_ns, fields.List(fields.Nested(activity_model_full))
 )
 
-USER_HISTORY_AGREEMENTS_ROUTE = "/<string:id>/history/digitalContents"
+USER_HISTORY_DIGITAL_CONTENTS_ROUTE = "/<string:id>/history/digitalContents"
 
 
-@full_ns.route(USER_HISTORY_AGREEMENTS_ROUTE)
+@full_ns.route(USER_HISTORY_DIGITAL_CONTENTS_ROUTE)
 class DigitalContentHistoryFull(Resource):
     @record_metrics
     @cache(ttl_sec=5)
@@ -637,7 +637,7 @@ class DigitalContentHistoryFull(Resource):
         return self._get(id)
 
 
-@ns.route(USER_HISTORY_AGREEMENTS_ROUTE)
+@ns.route(USER_HISTORY_DIGITAL_CONTENTS_ROUTE)
 class DigitalContentHistory(DigitalContentHistoryFull):
     @ns.doc(
         id="""Get User's DigitalContent History""",

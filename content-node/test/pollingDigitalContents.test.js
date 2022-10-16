@@ -34,14 +34,14 @@ const testAudioFileWrongFormatPath = path.resolve(
 )
 
 const TestColivingDigitalContentFileNumSegments = 32
-const AGREEMENT_CONTENT_POLLING_ROUTE = '/digital_content_async'
+const DIGITAL_CONTENT_POLLING_ROUTE = '/digital_content_async'
 
 const logContext = {
   logContext: {
     requestID: uuid(),
     requestMethod: 'POST',
     requestHostname: '127.0.0.1',
-    requestUrl: AGREEMENT_CONTENT_POLLING_ROUTE
+    requestUrl: DIGITAL_CONTENT_POLLING_ROUTE
   }
 }
 
@@ -136,7 +136,7 @@ describe('test Polling DigitalContents with mocked IPFS', function () {
     const file = fs.readFileSync(testAudioFileWrongFormatPath)
 
     await request(app)
-      .post(AGREEMENT_CONTENT_POLLING_ROUTE)
+      .post(DIGITAL_CONTENT_POLLING_ROUTE)
       .attach('file', file, { filename: 'fname.jpg' })
       .set('Content-Type', 'multipart/form-data')
       .set('X-Session-ID', session.sessionToken)
@@ -160,7 +160,7 @@ describe('test Polling DigitalContents with mocked IPFS', function () {
     // Confirm max digitalcoin file size is respected by multer
     const file = fs.readFileSync(testAudioFilePath)
     await request(app)
-      .post(AGREEMENT_CONTENT_POLLING_ROUTE)
+      .post(DIGITAL_CONTENT_POLLING_ROUTE)
       .attach('file', file, { filename: 'fname.mp3' })
       .set('Content-Type', 'multipart/form-data')
       .set('X-Session-ID', session.sessionToken)

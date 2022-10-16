@@ -3,7 +3,7 @@
 module.exports = (sequelize, DataTypes) => {
   const types = Object.freeze({
     user: 'USER',
-    digital_content: 'AGREEMENT',
+    digital_content: 'DIGITAL_CONTENT',
     cid: 'CID'
   })
 

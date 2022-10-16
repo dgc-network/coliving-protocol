@@ -12,7 +12,7 @@ const CID_DIRECTORY_REGEX =
 
 // variable to cache if we've run `ensureDirPathExists` in getTmpDigitalContentUploadArtifactsPath so we don't run
 // it every time a digital_content is uploaded
-let TMP_AGREEMENT_ARTIFACTS_CREATED = false
+let TMP_DIGITAL_CONTENT_ARTIFACTS_CREATED = false
 
 class DiskManager {
   /**
@@ -33,9 +33,9 @@ class DiskManager {
       'files',
       'tmp_digital_content_artifacts'
     )
-    if (!TMP_AGREEMENT_ARTIFACTS_CREATED) {
+    if (!TMP_DIGITAL_CONTENT_ARTIFACTS_CREATED) {
       this.ensureDirPathExists(dirPath)
-      TMP_AGREEMENT_ARTIFACTS_CREATED = true
+      TMP_DIGITAL_CONTENT_ARTIFACTS_CREATED = true
     }
     return dirPath
   }

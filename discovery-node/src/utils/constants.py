@@ -1029,7 +1029,7 @@ default_lengths = {
 
 class CONTRACT_TYPES(Enum):
     USER_FACTORY = "user_factory"
-    AGREEMENT_FACTORY = "digital_content_factory"
+    DIGITAL_CONTENT_FACTORY = "digital_content_factory"
     SOCIAL_FEATURE_FACTORY = "social_feature_factory"
     CONTENT_LIST_FACTORY = "content_list_factory"
     USER_LIBRARY_FACTORY = "user_library_factory"
@@ -1038,7 +1038,7 @@ class CONTRACT_TYPES(Enum):
 
 CONTRACT_NAMES_ON_CHAIN = {
     CONTRACT_TYPES.USER_FACTORY: "UserFactory",
-    CONTRACT_TYPES.AGREEMENT_FACTORY: "DigitalContentFactory",
+    CONTRACT_TYPES.DIGITAL_CONTENT_FACTORY: "DigitalContentFactory",
     CONTRACT_TYPES.SOCIAL_FEATURE_FACTORY: "SocialFeatureFactory",
     CONTRACT_TYPES.CONTENT_LIST_FACTORY: "ContentListFactory",
     CONTRACT_TYPES.USER_LIBRARY_FACTORY: "UserLibraryFactory",

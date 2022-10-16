@@ -38,7 +38,7 @@ def digital_content_state_update(
 ) -> Tuple[int, Set]:
     """Return tuple containing int representing number of DigitalContent model state changes found in transaction and set of processed digital_content IDs."""
     begin_digital_content_state_update = datetime.now()
-    metric = PrometheusMetric(PrometheusMetricNames.AGREEMENT_STATE_UPDATE_DURATION_SECONDS)
+    metric = PrometheusMetric(PrometheusMetricNames.DIGITAL_CONTENT_STATE_UPDATE_DURATION_SECONDS)
 
     blockhash = update_task.web3.toHex(block_hash)
     num_total_changes = 0

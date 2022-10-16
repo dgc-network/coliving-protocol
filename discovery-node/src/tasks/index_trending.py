@@ -135,21 +135,21 @@ def index_trending(self, db: SessionManager, redis: Redis, timestamp):
         genres.append(None)  # type: ignore
 
         trending_digital_content_versions = trending_strategy_factory.get_versions_for_type(
-            TrendingType.AGREEMENTS
+            TrendingType.DIGITAL_CONTENTS
         ).keys()
 
         update_view(session, AGGREGATE_INTERVAL_PLAYS)
         update_view(session, TRENDING_PARAMS)
         for version in trending_digital_content_versions:
             strategy = trending_strategy_factory.get_strategy(
-                TrendingType.AGREEMENTS, version
+                TrendingType.DIGITAL_CONTENTS, version
             )
             if strategy.use_mat_view:
                 strategy.update_digital_content_score_query(session)
 
         for version in trending_digital_content_versions:
             strategy = trending_strategy_factory.get_strategy(
-                TrendingType.AGREEMENTS, version
+                TrendingType.DIGITAL_CONTENTS, version
             )
             for genre in genres:
                 for time_range in time_ranges:
@@ -173,11 +173,11 @@ def index_trending(self, db: SessionManager, redis: Redis, timestamp):
 
         # Cache underground trending
         underground_trending_versions = trending_strategy_factory.get_versions_for_type(
-            TrendingType.UNDERGROUND_AGREEMENTS
+            TrendingType.UNDERGROUND_DIGITAL_CONTENTS
         ).keys()
         for version in underground_trending_versions:
             strategy = trending_strategy_factory.get_strategy(
-                TrendingType.UNDERGROUND_AGREEMENTS, version
+                TrendingType.UNDERGROUND_DIGITAL_CONTENTS, version
             )
             cache_start_time = time.time()
             res = make_get_unpopulated_digital_contents(session, redis, strategy)()

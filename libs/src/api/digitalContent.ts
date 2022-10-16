@@ -6,7 +6,7 @@ import { Nullable, DigitalContentMetadata, Utils } from '../utils'
 import retry from 'async-retry'
 import type { TransactionReceipt } from 'web3-core'
 
-const AGREEMENT_PROPS = [
+const DIGITAL_CONTENT_PROPS = [
   'owner_id',
   'title',
   'length',
@@ -18,7 +18,7 @@ const AGREEMENT_PROPS = [
   'release_date',
   'file_type'
 ]
-const AGREEMENT_REQUIRED_PROPS = ['owner_id', 'title']
+const DIGITAL_CONTENT_REQUIRED_PROPS = ['owner_id', 'title']
 
 type ChainInfo = {
   metadataMultihash: string
@@ -354,9 +354,9 @@ export class DigitalContent extends Base {
 
     const phases = {
       GETTING_USER: 'GETTING_USER',
-      UPLOADING_AGREEMENT_CONTENT: 'UPLOADING_AGREEMENT_CONTENT',
-      ADDING_AGREEMENT: 'ADDING_AGREEMENT',
-      ASSOCIATING_AGREEMENT: 'ASSOCIATING_AGREEMENT'
+      UPLOADING_DIGITAL_CONTENT: 'UPLOADING_DIGITAL_CONTENT',
+      ADDING_DIGITAL_CONTENT: 'ADDING_DIGITAL_CONTENT',
+      ASSOCIATING_DIGITAL_CONTENT: 'ASSOCIATING_DIGITAL_CONTENT'
     }
 
     let phase = phases.GETTING_USER
@@ -377,7 +377,7 @@ export class DigitalContent extends Base {
       metadata.owner_id = ownerId
       this._validateDigitalContentMetadata(metadata)
 
-      phase = phases.UPLOADING_AGREEMENT_CONTENT
+      phase = phases.UPLOADING_DIGITAL_CONTENT
 
       // Upload metadata
       const {
@@ -409,7 +409,7 @@ export class DigitalContent extends Base {
         }
       )
 
-      phase = phases.ADDING_AGREEMENT
+      phase = phases.ADDING_DIGITAL_CONTENT
 
       // Write metadata to chain
       const multihashDecoded = Utils.decodeMultihash(metadataMultihash)
@@ -421,7 +421,7 @@ export class DigitalContent extends Base {
           multihashDecoded.size
         )
 
-      phase = phases.ASSOCIATING_AGREEMENT
+      phase = phases.ASSOCIATING_DIGITAL_CONTENT
       // Associate the digital_content id with the file metadata and block number
       await this.contentNode.associateDigitalContent(
         digitalContentId,
@@ -718,6 +718,6 @@ export class DigitalContent extends Base {
   /* ------- PRIVATE  ------- */
 
   _validateDigitalContentMetadata(metadata: DigitalContentMetadata) {
-    this.OBJECT_HAS_PROPS(metadata, AGREEMENT_PROPS, AGREEMENT_REQUIRED_PROPS)
+    this.OBJECT_HAS_PROPS(metadata, DIGITAL_CONTENT_PROPS, DIGITAL_CONTENT_REQUIRED_PROPS)
   }
 }

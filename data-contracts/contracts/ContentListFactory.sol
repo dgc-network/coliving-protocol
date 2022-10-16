@@ -79,15 +79,15 @@ contract ContentListFactory is RegistryContract, SigningLogic {
         "DeleteContentListRequest(uint contentListId,bytes32 nonce)"
     );
 
-    bytes32 constant ADD_CONTENT_LIST_AGREEMENT_TYPEHASH = keccak256(
+    bytes32 constant ADD_CONTENT_LIST_DIGITAL_CONTENT_TYPEHASH = keccak256(
         "AddContentListDigitalContentRequest(uint contentListId,uint addedDigitalContentId,bytes32 nonce)"
     );
 
-    bytes32 constant DELETE_CONTENT_LIST_AGREEMENT_TYPEHASH = keccak256(
+    bytes32 constant DELETE_CONTENT_LIST_DIGITAL_CONTENT_TYPEHASH = keccak256(
         "DeleteContentListDigitalContentRequest(uint contentListId,uint deletedDigitalContentId,uint deletedDigitalContentTimestamp,bytes32 nonce)"
     );
 
-    bytes32 constant ORDER_CONTENT_LIST_AGREEMENTS_TYPEHASH = keccak256(
+    bytes32 constant ORDER_CONTENT_LIST_DIGITAL_CONTENTS_TYPEHASH = keccak256(
         "OrderContentListDigitalContentsRequest(uint contentListId,bytes32 digitalContentIdsHash,bytes32 nonce)"
     );
 
@@ -483,7 +483,7 @@ contract ContentListFactory is RegistryContract, SigningLogic {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    ADD_CONTENT_LIST_AGREEMENT_TYPEHASH,
+                    ADD_CONTENT_LIST_DIGITAL_CONTENT_TYPEHASH,
                     _contentListId,
                     _addedDigitalContentId,
                     _nonce
@@ -502,7 +502,7 @@ contract ContentListFactory is RegistryContract, SigningLogic {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    DELETE_CONTENT_LIST_AGREEMENT_TYPEHASH,
+                    DELETE_CONTENT_LIST_DIGITAL_CONTENT_TYPEHASH,
                     _contentListId,
                     _deletedDigitalContentId,
                     _deletedDigitalContentTimestamp,
@@ -521,7 +521,7 @@ contract ContentListFactory is RegistryContract, SigningLogic {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    ORDER_CONTENT_LIST_AGREEMENTS_TYPEHASH,
+                    ORDER_CONTENT_LIST_DIGITAL_CONTENTS_TYPEHASH,
                     _contentListId,
                     keccak256(abi.encode(_digitalContentIds)),
                     _nonce

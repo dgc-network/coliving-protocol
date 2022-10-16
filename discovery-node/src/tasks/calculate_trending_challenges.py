@@ -88,13 +88,13 @@ def enqueue_trending_challenges(
             return
 
         trending_digital_content_versions = trending_strategy_factory.get_versions_for_type(
-            TrendingType.AGREEMENTS
+            TrendingType.DIGITAL_CONTENTS
         ).keys()
 
         time_range = "week"
         for version in trending_digital_content_versions:
             strategy = trending_strategy_factory.get_strategy(
-                TrendingType.AGREEMENTS, version
+                TrendingType.DIGITAL_CONTENTS, version
             )
             top_digital_contents = _get_trending_digital_contents_with_session(
                 session, {"time": time_range}, strategy
@@ -107,16 +107,16 @@ def enqueue_trending_challenges(
                 top_digital_contents,
                 version,
                 date,
-                TrendingType.AGREEMENTS,
+                TrendingType.DIGITAL_CONTENTS,
             )
 
         # Cache underground trending
         underground_trending_versions = trending_strategy_factory.get_versions_for_type(
-            TrendingType.UNDERGROUND_AGREEMENTS
+            TrendingType.UNDERGROUND_DIGITAL_CONTENTS
         ).keys()
         for version in underground_trending_versions:
             strategy = trending_strategy_factory.get_strategy(
-                TrendingType.UNDERGROUND_AGREEMENTS, version
+                TrendingType.UNDERGROUND_DIGITAL_CONTENTS, version
             )
             underground_args: GetUndergroundTrendingDigitalContentcArgs = {
                 "offset": 0,
@@ -133,7 +133,7 @@ def enqueue_trending_challenges(
                 top_digital_contents,
                 version,
                 date,
-                TrendingType.UNDERGROUND_AGREEMENTS,
+                TrendingType.UNDERGROUND_DIGITAL_CONTENTS,
             )
 
         trending_content_list_versions = trending_strategy_factory.get_versions_for_type(

@@ -19,7 +19,7 @@ const config = require('../../../config')
 const {
   METRIC_NAMES
 } = require('../../prometheusMonitoring/prometheus.constants')
-const CNodeToSpIdMapManager = require('../CNodeToSpIdMapManager')
+const CNodeToSpIdMapManager = require('../cNodeToSpIdMapManager')
 const { makeGaugeIncToRecord } = require('../stateMachineUtils')
 const { SyncType, SYNC_MODES } = require('../stateMachineConstants')
 const {

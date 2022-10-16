@@ -133,7 +133,7 @@ def upgrade():
 
         CREATE UNIQUE INDEX aggregate_user_idx ON aggregate_user (user_id);    
 
-        --- ======================= AGGREGATE AGREEMENT =======================
+        --- ======================= AGGREGATE DIGITAL_CONTENT =======================
         DROP MATERIALIZED VIEW IF EXISTS aggregate_digital_content;
         DROP INDEX IF EXISTS aggregate_digital_content_idx;
 

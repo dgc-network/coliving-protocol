@@ -104,7 +104,7 @@ class PrometheusMetricNames:
     INDEX_BLOCKS_DURATION_SECONDS = "index_blocks_duration_seconds"
     INDEX_METRICS_DURATION_SECONDS = "index_metrics_duration_seconds"
     INDEX_TRENDING_DURATION_SECONDS = "index_trending_duration_seconds"
-    AGREEMENT_STATE_UPDATE_DURATION_SECONDS = "digital_content_state_update_duration_seconds"
+    DIGITAL_CONTENT_STATE_UPDATE_DURATION_SECONDS = "digital_content_state_update_duration_seconds"
     UPDATE_AGGREGATE_TABLE_DURATION_SECONDS = "update_aggregate_table_duration_seconds"
     UPDATE_DIGITAL_CONTENT_IS_AVAILABLE_DURATION_SECONDS = (
         "update_digital_content_is_available_duration_seconds"
@@ -193,8 +193,8 @@ PrometheusRegistry = {
         f"{METRIC_PREFIX}_{PrometheusMetricNames.INDEX_TRENDING_DURATION_SECONDS}",
         "Runtimes for src.task.index_trending:index_trending()",
     ),
-    PrometheusMetricNames.AGREEMENT_STATE_UPDATE_DURATION_SECONDS: Histogram(
-        f"{METRIC_PREFIX}_{PrometheusMetricNames.AGREEMENT_STATE_UPDATE_DURATION_SECONDS}",
+    PrometheusMetricNames.DIGITAL_CONTENT_STATE_UPDATE_DURATION_SECONDS: Histogram(
+        f"{METRIC_PREFIX}_{PrometheusMetricNames.DIGITAL_CONTENT_STATE_UPDATE_DURATION_SECONDS}",
         "Runtimes for src.task.digitalContents:digital_content_state_update()",
         ("scope",),
     ),

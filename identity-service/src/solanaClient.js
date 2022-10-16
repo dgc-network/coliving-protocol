@@ -8,7 +8,7 @@ const VALID_SIGNER = config.get('solanaValidSigner')
 const COLIVING_ETH_REGISTRY_PROGRAM = config.get('solanaColivingEthRegistryAddress') ? new solanaWeb3.PublicKey(
   config.get('solanaColivingEthRegistryAddress')
 ) : null
-const AGREEMENT_LISTEN_PROGRAM = config.get('solanaDigitalContentListenCountAddress') ? new solanaWeb3.PublicKey(
+const DIGITAL_CONTENT_LISTEN_PROGRAM = config.get('solanaDigitalContentListenCountAddress') ? new solanaWeb3.PublicKey(
   config.get('solanaDigitalContentListenCountAddress')
 ) : null
 const INSTRUCTIONS_PROGRAM = new solanaWeb3.PublicKey(
@@ -219,7 +219,7 @@ async function createDigitalContentListenTransaction ({
       { pubkey: INSTRUCTIONS_PROGRAM, isSigner: false, isWritable: false },
       { pubkey: CLOCK_PROGRAM, isSigner: false, isWritable: false }
     ],
-    programId: AGREEMENT_LISTEN_PROGRAM,
+    programId: DIGITAL_CONTENT_LISTEN_PROGRAM,
     data: serializedInstructionArgs
   })
 

@@ -1,9 +1,9 @@
 import { callbackify, promisify } from 'util'
-import Web3 from '../web3'
+//import Web3 from '../web3'
 import { shuffle } from 'lodash'
 import type { HttpProvider, AbstractProvider } from 'web3-core'
 import type { JsonRpcPayload } from 'web3-core-helpers'
-//import Web3 from 'web3'
+import Web3 from 'web3'
 
 const getSendMethod = (provider: HttpProvider | AbstractProvider) => {
   if ('sendAsync' in provider) {
@@ -21,8 +21,10 @@ type Providers = [HttpProvider, ...Array<HttpProvider | AbstractProvider>]
  * MultiProvider implements HttpProvider which can be consumed by web3
  * ref for HttpProvider: https://github.com/ChainSafe/web3.js/blob/1.x/packages/web3-providers-http/types/index.d.ts#L46-L66
  */
-export class MultiProvider extends Web3.providers.HttpProvider {
+//export class MultiProvider extends Web3.providers.HttpProvider {
+export class MultiProvider extends Web3 {
   providers: Providers
+  send: any
   /**
    * Creates a MultiProvider
    * @param {Array<string | Provider> | string} - The providers to use.

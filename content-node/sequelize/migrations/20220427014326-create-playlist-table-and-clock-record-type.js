@@ -44,7 +44,7 @@ The name of the enum type (generated in sequelize) was determined with the follo
 coliving_content_node=# SELECT pg_type.typname AS enum_type, pg_enum.enumlabel AS enum_label FROM pg_type JOIN pg_enum ON pg_enum.enumtypid = pg_type.oid;
            enum_type           | enum_label
 -------------------------------+------------
- enum_ContentBlacklists_type   | AGREEMENT
+ enum_ContentBlacklists_type   | DIGITAL_CONTENT
  enum_ContentBlacklists_type   | USER
  enum_ContentBlacklists_type   | CID
  enum_ClockRecords_sourceTable | ColivingUser

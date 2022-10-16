@@ -13,7 +13,7 @@ from src.utils.prometheus_metric import (
     save_duration_metric,
 )
 from src.utils.redis_constants import (
-    ALL_UNAVAILABLE_AGREEMENTS_REDIS_KEY,
+    ALL_UNAVAILABLE_DIGITAL_CONTENTS_REDIS_KEY,
     UPDATE_DIGITAL_CONTENT_IS_AVAILABLE_FINISH_REDIS_KEY,
     UPDATE_DIGITAL_CONTENT_IS_AVAILABLE_START_REDIS_KEY,
 )
@@ -43,7 +43,7 @@ def fetch_unavailable_digital_content_ids_in_network(session: Any, redis: Any) -
     content_nodes = query_registered_content_node_info(session)
 
     # Clear redis for existing data
-    redis.delete(ALL_UNAVAILABLE_AGREEMENTS_REDIS_KEY)
+    redis.delete(ALL_UNAVAILABLE_DIGITAL_CONTENTS_REDIS_KEY)
 
     for node in content_nodes:
         # Keep mapping of spId to set of unavailable digitalContents
@@ -58,13 +58,13 @@ def fetch_unavailable_digital_content_ids_in_network(session: Any, redis: Any) -
             redis.sadd(spID_unavailable_digital_contents_key, *unavailable_digital_content_ids_batch)
 
             # Aggregate a set of unavailable digitalContents
-            redis.sadd(ALL_UNAVAILABLE_AGREEMENTS_REDIS_KEY, *unavailable_digital_content_ids_batch)
+            redis.sadd(ALL_UNAVAILABLE_DIGITAL_CONTENTS_REDIS_KEY, *unavailable_digital_content_ids_batch)
 
 
 def update_digital_contents_is_available_status(db: Any, redis: Any) -> None:
     """Check digital_content availability on all unavailable digitalContents and update in DigitalContents table"""
     all_unavailable_digital_content_ids = _get_redis_set_members_as_list(
-        redis, ALL_UNAVAILABLE_AGREEMENTS_REDIS_KEY
+        redis, ALL_UNAVAILABLE_DIGITAL_CONTENTS_REDIS_KEY
     )
 
     for i in range(0, len(all_unavailable_digital_content_ids), BATCH_SIZE):

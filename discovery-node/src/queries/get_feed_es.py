@@ -5,7 +5,7 @@ from src.utils.elasticdsl import (
     ES_CONTENT_LISTS,
     ES_REPOSTS,
     ES_SAVES,
-    ES_AGREEMENTS,
+    ES_DIGITAL_CONTENTS,
     ES_USERS,
     esclient,
     pluck_hits,
@@ -54,7 +54,7 @@ def get_feed_es(args, limit=10):
     if load_orig:
         mdsl.extend(
             [
-                {"index": ES_AGREEMENTS},
+                {"index": ES_DIGITAL_CONTENTS},
                 {
                     "query": {
                         "bool": {
@@ -155,7 +155,7 @@ def get_feed_es(args, limit=10):
             continue
         (kind, id) = r["key"].split(":")
         if kind == "digital_content":
-            mget_reposts.append({"_index": ES_AGREEMENTS, "_id": id})
+            mget_reposts.append({"_index": ES_DIGITAL_CONTENTS, "_id": id})
         else:
             mget_reposts.append({"_index": ES_CONTENT_LISTS, "_id": id})
 

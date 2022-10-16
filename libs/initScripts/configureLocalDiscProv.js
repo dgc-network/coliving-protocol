@@ -5,7 +5,7 @@ const ethContractsMigrationOutput = require('../../eth-contracts/migrations/migr
 //const solanaConfig = require('../../solana-programs/solana-program-config.json')
 
 const ETH_CONTRACTS_REGISTRY = 'coliving_eth_contracts_registry'
-const SOLANA_AGREEMENT_LISTEN_COUNT_ADDRESS = 'coliving_solana_digital_content_listen_count_address'
+const SOLANA_DIGITAL_CONTENT_LISTEN_COUNT_ADDRESS = 'coliving_solana_digital_content_listen_count_address'
 const SOLANA_ENDPOINT = 'coliving_solana_endpoint'
 
 const SOLANA_SIGNER_GROUP_ADDRESS = 'coliving_solana_signer_group_address'
@@ -85,7 +85,7 @@ const _updateDiscoveryNodeEnvFile = async (
   let anchorAdminStoragePublicKeyFound = false
 
   const ethRegistryAddressLine = `${ETH_CONTRACTS_REGISTRY}=${ethRegistryAddress}`
-  const solanaDigitalContentListenCountAddressLine = `${SOLANA_AGREEMENT_LISTEN_COUNT_ADDRESS}=${solanaDigitalContentListenCountAddress}`
+  const solanaDigitalContentListenCountAddressLine = `${SOLANA_DIGITAL_CONTENT_LISTEN_COUNT_ADDRESS}=${solanaDigitalContentListenCountAddress}`
   const solanaEndpointLine = `${SOLANA_ENDPOINT}=${solanaEndpoint}`
   const signerGroupLine = `${SOLANA_SIGNER_GROUP_ADDRESS}=${signerGroup}`
   const wei_digitalcoinMintLine = `${SOLANA_WLIVE_MINT}=${wei_digitalcoinMint}`
@@ -99,7 +99,7 @@ const _updateDiscoveryNodeEnvFile = async (
     if (line.includes(ETH_CONTRACTS_REGISTRY)) {
       output.push(ethRegistryAddressLine)
       ethRegistryAddressFound = true
-    } else if (line.includes(SOLANA_AGREEMENT_LISTEN_COUNT_ADDRESS)) {
+    } else if (line.includes(SOLANA_DIGITAL_CONTENT_LISTEN_COUNT_ADDRESS)) {
       output.push(solanaDigitalContentListenCountAddressLine)
       solanaDigitalContentListenCountAddressFound = true
     } else if (line.includes(SOLANA_ENDPOINT)) {

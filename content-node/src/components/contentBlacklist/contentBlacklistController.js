@@ -262,7 +262,7 @@ const filterNonexistantIds = async (libs, type, ids) => {
         // Else, if only some input ids were found, only blacklist the ids that were found
         if (resp.length < ids.length) ids = resp.map((user) => user.user_id)
         break
-      case 'AGREEMENT':
+      case 'DIGITAL_CONTENT':
         resp = await libs.DigitalContent.getDigitalContents(ids.length, 0, ids)
         if (!resp || resp.length === 0) throw new Error('DigitalContents not found.')
         if (resp.length < ids.length) ids = resp.map((digital_content) => digital_content.digital_content_id)

@@ -13,10 +13,10 @@ if es_url and not esclient:
 ES_CONTENT_LISTS = "content_lists"
 ES_REPOSTS = "reposts"
 ES_SAVES = "saves"
-ES_AGREEMENTS = "digitalContents"
+ES_DIGITAL_CONTENTS = "digitalContents"
 ES_USERS = "users"
 
-ES_INDEXES = [ES_CONTENT_LISTS, ES_REPOSTS, ES_SAVES, ES_AGREEMENTS, ES_USERS]
+ES_INDEXES = [ES_CONTENT_LISTS, ES_REPOSTS, ES_SAVES, ES_DIGITAL_CONTENTS, ES_USERS]
 
 
 def listify(things):

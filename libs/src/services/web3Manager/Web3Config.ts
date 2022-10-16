@@ -8,7 +8,7 @@ export type Web3Config = {
     privateKey?: string
   }
   externalWeb3Config?: {
-    web3: Web3
+    web3: typeof Web3
     ownerWallet: Wallet
   }
 }

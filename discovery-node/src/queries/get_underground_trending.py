@@ -175,11 +175,11 @@ def get_scorable_digital_content_data(session, redis_instance, strategy):
 
 
 def make_underground_trending_cache_key(
-    version=DEFAULT_TRENDING_VERSIONS[TrendingType.UNDERGROUND_AGREEMENTS],
+    version=DEFAULT_TRENDING_VERSIONS[TrendingType.UNDERGROUND_DIGITAL_CONTENTS],
 ):
     version_name = (
         f":{version.name}"
-        if version != DEFAULT_TRENDING_VERSIONS[TrendingType.UNDERGROUND_AGREEMENTS]
+        if version != DEFAULT_TRENDING_VERSIONS[TrendingType.UNDERGROUND_DIGITAL_CONTENTS]
         else ""
     )
     return f"{UNDERGROUND_TRENDING_CACHE_KEY}{version_name}"

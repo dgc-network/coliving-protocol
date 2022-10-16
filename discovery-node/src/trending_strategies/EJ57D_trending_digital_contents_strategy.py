@@ -51,7 +51,7 @@ def z(time, digital_content):
 
 class TrendingDigitalContentsStrategyEJ57D(BaseTrendingStrategy):
     def __init__(self):
-        super().__init__(TrendingType.AGREEMENTS, TrendingVersion.EJ57D, True)
+        super().__init__(TrendingType.DIGITAL_CONTENTS, TrendingVersion.EJ57D, True)
 
     def get_digital_content_score(self, time_range, digital_content):
         logger.error(

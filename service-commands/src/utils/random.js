@@ -8,7 +8,7 @@ const moment = require('moment')
 const streamPipeline = util.promisify(require('stream').pipeline)
 const { logger } = require('./logger.js')
 
-const AGREEMENT_URLS = [
+const DIGITAL_CONTENT_URLS = [
   'https://royalty-free-content.s3-us-west-2.amazonaws.com/digitalcoin/Gipsy.mp3',
   'https://royalty-free-content.s3-us-west-2.amazonaws.com/digitalcoin/First+Rain.mp3',
   'https://royalty-free-content.s3-us-west-2.amazonaws.com/digitalcoin/Miracle.mp3',
@@ -74,9 +74,9 @@ const getRandomDigitalContentMetadata = userId => {
 }
 
 /**
- * Randomly selects url from AGREEMENT_URLS, downloads digital_content file from url to temp local storage, & returns its file path
+ * Randomly selects url from DIGITAL_CONTENT_URLS, downloads digital_content file from url to temp local storage, & returns its file path
  *
- * @notice this depends on AGREEMENT_URLS pointing to valid urls in S3. Ideally we'd be able to
+ * @notice this depends on DIGITAL_CONTENT_URLS pointing to valid urls in S3. Ideally we'd be able to
  *    randomly select any file from the parent folder.
  */
 const getRandomDigitalContentFilePath = async localDirPath => {
@@ -84,7 +84,7 @@ const getRandomDigitalContentFilePath = async localDirPath => {
     fs.mkdirSync(localDirPath)
   }
 
-  const digitalContentURL = _.sample(AGREEMENT_URLS)
+  const digitalContentURL = _.sample(DIGITAL_CONTENT_URLS)
   const targetFilePath = path.resolve(localDirPath, `${genRandomString(6)}.mp3`)
 
   const response = await fetch(digitalContentURL)

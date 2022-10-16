@@ -29,7 +29,7 @@ export class Web3Manager {
   identityService: IdentityService
   hedgehog: Hedgehog
   ColivingABIDecoder: typeof ColivingABIDecoder
-  web3: Web3Type | undefined
+  web3: typeof Web3Type | undefined
   useExternalWeb3: boolean | undefined
   // @ts-expect-error an error is thrown if it's not provided
   ownerWallet: EthereumWallet
@@ -102,10 +102,10 @@ export class Web3Manager {
   }
 
   getWeb3() {
-    return this.web3 as Web3Type
+    return this.web3 as typeof Web3Type
   }
 
-  setWeb3(web3: Web3Type) {
+  setWeb3(web3: typeof Web3Type) {
     this.web3 = web3
   }
 
@@ -315,14 +315,14 @@ export class Web3Manager {
 
 /** Browser and testing-compatible signTypedData */
 const ethSignTypedData = async (
-  web3: Web3Type,
+  web3: typeof Web3Type,
   wallet: EthereumWallet,
   signatureData: EIP712TypedData
 ) => {
   return await new Promise((resolve, reject) => {
     let processedSignatureData: EIP712TypedData | string = signatureData
     let method
-    // @ts-expect-error isMetaMask not captured by web3Provider
+    // \s*\/\/\s*@ts-expect-error isMetaMask not captured by web3Provider
     if (web3.currentProvider.isMetaMask === true) {
       method = 'eth_signTypedData_v3'
       processedSignatureData = JSON.stringify(signatureData)

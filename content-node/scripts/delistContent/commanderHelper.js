@@ -2,7 +2,7 @@ const { Command } = require('commander')
 
 const ACTION_ARR = ['ADD', 'REMOVE']
 const ACTION_SET = new Set(ACTION_ARR)
-const TYPES_ARR = ['USER', 'AGREEMENT', 'CID', 'AGREEMENT_HASH_ID']
+const TYPES_ARR = ['USER', 'DIGITAL_CONTENT', 'CID', 'DIGITAL_CONTENT_HASH_ID']
 const TYPES_SET = new Set(TYPES_ARR)
 
 const COMMANDER_HELP_STRING =
@@ -53,7 +53,7 @@ class Commander {
 
     // Parse CLI args
     const action = this.program.act.toUpperCase()
-    // this is a let because AGREEMENT_HASH_ID switches to type AGREEMENT once the ids have been decoded
+    // this is a let because DIGITAL_CONTENT_HASH_ID switches to type DIGITAL_CONTENT once the ids have been decoded
     let type = this.program.type.toUpperCase().replace(/-/g, '_')
 
     if (!ACTION_SET.has(action) || !TYPES_SET.has(type)) {
@@ -65,20 +65,20 @@ class Commander {
     if (!values || values.length === 0) throw new Error('Please pass in a comma separated list of ids and/or cids.')
 
     // Parse ids into ints greater than 0
-    if (type === 'USER' || type === 'AGREEMENT') {
+    if (type === 'USER' || type === 'DIGITAL_CONTENT') {
       const originalNumIds = values.length
       values = values.filter(id => !isNaN(id)).map(id => parseInt(id)).filter(id => id >= 0)
       if (values.length === 0) throw new Error('List of ids is not proper.')
       if (originalNumIds !== values.length) {
         console.warn(`Filtered out non-numeric ids from input. Please only pass integers!`)
       }
-    } else if (type === 'AGREEMENT_HASH_ID') {
+    } else if (type === 'DIGITAL_CONTENT_HASH_ID') {
       const originalNumIds = values.length
       values = values.map(value => {
         const decodedId = hashIds.decode(value)
         if (decodedId) return decodedId
       }).filter(Boolean)
-      type = 'AGREEMENT'
+      type = 'DIGITAL_CONTENT'
       if (values.length === 0) throw new Error('List of digital_content hash ids is not proper.')
       if (originalNumIds !== values.length) {
         console.warn(`Filtered out invalid ids from input. Please only valid digital_content hash ids!`)

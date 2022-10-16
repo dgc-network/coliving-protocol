@@ -170,8 +170,8 @@ async function verifyDelistedContent ({ type, values, action }) {
     throw new Error(errorMsg)
   }
 
-  // If the type is AGREEMENT, we also need to check the stream route
-  if (type === 'AGREEMENT') {
+  // If the type is DIGITAL_CONTENT, we also need to check the stream route
+  if (type === 'DIGITAL_CONTENT') {
     // Batch requests
     let contentNodeDigitalContentResponses = []
     const checkDigitalContentDelistStatusRequests = values.map(digitalContentId => checkIsDigitalContentDelisted(digitalContentId))
@@ -199,7 +199,7 @@ async function verifyDelistedContent ({ type, values, action }) {
 
 /**
  * For resources of a valid type, get all the CIDs for the passed in id values
- * @param {String} type 'USER' or 'AGREEMENT'
+ * @param {String} type 'USER' or 'DIGITAL_CONTENT'
  * @param {(number[])} values ids for associated type
  * @returns
  */
@@ -247,7 +247,7 @@ async function getCIDs (type, values) {
         discProvRequests.concat(additionalRequests)
         break
       }
-      case 'AGREEMENT': {
+      case 'DIGITAL_CONTENT': {
         discProvRequests = values.map(value => axios({
           url: `${DISCOVERY_PROVIDER_ENDPOINT}/digitalContents`,
           method: 'get',
@@ -328,11 +328,11 @@ async function checkIsDigitalContentDelisted (id) {
     }
 
     // CID was not found on node, would not have been served either way, return success
-    if (e.response.status === 404) return { type: 'AGREEMENT', value: id, delisted: true }
+    if (e.response.status === 404) return { type: 'DIGITAL_CONTENT', value: id, delisted: true }
 
     Logger.error(`Failed to check for digital_content [${id}]: ${e}`)
   }
-  return { type: 'AGREEMENT', value: id, delisted: false }
+  return { type: 'DIGITAL_CONTENT', value: id, delisted: false }
 }
 
 /**

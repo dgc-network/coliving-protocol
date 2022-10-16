@@ -24,7 +24,7 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
     event ContentListSaveDeleted(uint _userId, uint _contentListId);
 
     /* EIP-712 saved signature generation / verification */
-    bytes32 constant AGREEMENT_SAVE_REQUEST_TYPEHASH = keccak256(
+    bytes32 constant DIGITAL_CONTENT_SAVE_REQUEST_TYPEHASH = keccak256(
         "DigitalContentSaveRequest(uint userId,uint digitalContentId,bytes32 nonce)"
     );
     bytes32 constant DELETE_DIGITAL_CONTENT_SAVE_REQUEST_TYPEHASH = keccak256(
@@ -222,7 +222,7 @@ contract UserLibraryFactory is RegistryContract, SigningLogic {
         return generateSchemaHash(
             keccak256(
                 abi.encode(
-                    AGREEMENT_SAVE_REQUEST_TYPEHASH,
+                    DIGITAL_CONTENT_SAVE_REQUEST_TYPEHASH,
                     _userId,
                     _digitalContentId,
                     _nonce

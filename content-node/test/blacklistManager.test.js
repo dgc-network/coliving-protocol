@@ -95,11 +95,11 @@ describe('test blacklistManager', () => {
     await BlacklistManager.addToRedis('BM.SET.BLACKLIST.SEGMENTCID', [
       DUMMY_CID
     ])
-    await BlacklistManager.addToRedis('BM.SET.BLACKLIST.AGREEMENTID', [1])
-    await BlacklistManager.addToRedis('BM.MAP.BLACKLIST.SEGMENTCID.AGREEMENTID', {
+    await BlacklistManager.addToRedis('BM.SET.BLACKLIST.DIGITAL_CONTENT_ID', [1])
+    await BlacklistManager.addToRedis('BM.MAP.BLACKLIST.SEGMENTCID.DIGITAL_CONTENT_ID', {
       1: [DUMMY_CID]
     })
-    await BlacklistManager.addToRedis('BM.MAP.AGREEMENTID.SEGMENTCIDS', {
+    await BlacklistManager.addToRedis('BM.MAP.DIGITAL_CONTENT_ID.SEGMENTCIDS', {
       1: [DUMMY_CID]
     })
 
@@ -113,7 +113,7 @@ describe('test blacklistManager', () => {
     await BlacklistManager.addToRedis('BM.SET.BLACKLIST.SEGMENTCID', [
       DUMMY_CID
     ])
-    await BlacklistManager.addToRedis('BM.MAP.AGREEMENTID.SEGMENTCIDS', {
+    await BlacklistManager.addToRedis('BM.MAP.DIGITAL_CONTENT_ID.SEGMENTCIDS', {
       1: [DUMMY_CID]
     })
 
@@ -127,7 +127,7 @@ describe('test blacklistManager', () => {
     await BlacklistManager.addToRedis('BM.SET.BLACKLIST.SEGMENTCID', [
       DUMMY_CID
     ])
-    await BlacklistManager.addToRedis('BM.SET.INVALID.AGREEMENTIDS', [1234])
+    await BlacklistManager.addToRedis('BM.SET.INVALID.DIGITAL_CONTENT_IDS', [1234])
 
     assert.deepStrictEqual(
       await BlacklistManager.isServable(DUMMY_CID, 1234),

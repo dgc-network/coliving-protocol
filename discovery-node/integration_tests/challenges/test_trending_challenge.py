@@ -274,12 +274,12 @@ def test_trending_challenge_job(app):
         session.execute("REFRESH MATERIALIZED VIEW aggregate_interval_plays")
         session.execute("REFRESH MATERIALIZED VIEW trending_params")
         trending_digital_content_versions = trending_strategy_factory.get_versions_for_type(
-            TrendingType.AGREEMENTS
+            TrendingType.DIGITAL_CONTENTS
         ).keys()
 
         for version in trending_digital_content_versions:
             strategy = trending_strategy_factory.get_strategy(
-                TrendingType.AGREEMENTS, version
+                TrendingType.DIGITAL_CONTENTS, version
             )
             if strategy.use_mat_view:
                 strategy.update_digital_content_score_query(session)
@@ -300,7 +300,7 @@ def test_trending_challenge_job(app):
         session.flush()
         trending_digital_contents = (
             session.query(TrendingResult)
-            .filter(TrendingResult.type == str(TrendingType.AGREEMENTS))
+            .filter(TrendingResult.type == str(TrendingType.DIGITAL_CONTENTS))
             .all()
         )
         assert len(trending_digital_contents) == 5

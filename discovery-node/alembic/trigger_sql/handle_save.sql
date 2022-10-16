@@ -25,7 +25,7 @@ begin
 
   -- update agg digital_content or contentList
   if new.save_type = 'digital_content' then
-    milestone_name := 'AGREEMENT_SAVE_COUNT';
+    milestone_name := 'DIGITAL_CONTENT_SAVE_COUNT';
     update aggregate_digital_content 
     set save_count = save_count + delta
     where digital_content_id = new.save_item_id

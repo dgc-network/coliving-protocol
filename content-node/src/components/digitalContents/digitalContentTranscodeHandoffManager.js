@@ -15,7 +15,7 @@ const { removeDigitalContentFolder } = require('../../fileManager')
 const CONTENT_NODE_ENDPOINT = config.get('contentNodeEndpoint')
 const DELEGATE_PRIVATE_KEY = config.get('delegatePrivateKey')
 
-const NUMBER_OF_SPS_FOR_HANDOFF_AGREEMENT = 3
+const NUMBER_OF_SPS_FOR_HANDOFF_DIGITAL_CONTENT = 3
 const POLLING_TRANSCODE_AND_SEGMENTS_RETRIES = 50
 const POLLING_TRANSCODE_AND_SEGMENTS_MIN_TIMEOUT = 1000
 const POLLING_TRANSCODE_AND_SEGMENTS_MAX_TIMEOUT = 5000
@@ -146,9 +146,9 @@ class DigitalContentTranscodeHandoffManager {
     // If there are less Content Nodes than the default number, set the cap to the number
     // of available SPs. This will probably only happen in local dev :shrugs:
     const numberOfSps =
-      allSPs.length < NUMBER_OF_SPS_FOR_HANDOFF_AGREEMENT
+      allSPs.length < NUMBER_OF_SPS_FOR_HANDOFF_DIGITAL_CONTENT
         ? allSPs.length
-        : NUMBER_OF_SPS_FOR_HANDOFF_AGREEMENT
+        : NUMBER_OF_SPS_FOR_HANDOFF_DIGITAL_CONTENT
 
     const validSPs = new Set()
     while (validSPs.size < numberOfSps) {

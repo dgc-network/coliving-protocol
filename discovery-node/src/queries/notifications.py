@@ -258,13 +258,13 @@ def get_milestone_info(
             content_list_reposts.append((id, threshold))
 
     favorite_milestones: GroupMilestones = {
-        "digitalContents": dict(milestones.get(MilestoneName.AGREEMENT_SAVE_COUNT, [])),
+        "digitalContents": dict(milestones.get(MilestoneName.DIGITAL_CONTENT_SAVE_COUNT, [])),
         "albums": dict(album_favorites),
         "content_lists": dict(content_list_favorites),
     }
 
     repost_milestones: GroupMilestones = {
-        "digitalContents": dict(milestones.get(MilestoneName.AGREEMENT_REPOST_COUNT, [])),
+        "digitalContents": dict(milestones.get(MilestoneName.DIGITAL_CONTENT_REPOST_COUNT, [])),
         "albums": dict(album_reposts),
         "content_lists": dict(content_list_reposts),
     }

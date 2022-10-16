@@ -20,7 +20,7 @@ nb = 750
 
 class UndergroundTrendingDigitalContentsStrategyEJ57D(BaseTrendingStrategy):
     def __init__(self):
-        super().__init__(TrendingType.UNDERGROUND_AGREEMENTS, TrendingVersion.EJ57D)
+        super().__init__(TrendingType.UNDERGROUND_DIGITAL_CONTENTS, TrendingVersion.EJ57D)
 
     def get_digital_content_score(self, time_range, digital_content):
         # pylint: disable=W,C,R

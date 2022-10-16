@@ -86,7 +86,7 @@ const mockColivingLibs = {
       return ids.map((id) => ({
         digital_content_id: id,
         owner_id: id,
-        title: `AGREEMENT_${id}`
+        title: `DIGITAL_CONTENT_${id}`
       }))
     }
   },

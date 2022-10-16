@@ -19,7 +19,7 @@ const {
   SYNC_MODES
 } = require('../stateMachineConstants')
 const { retrieveClockValueForUserFromReplica } = require('../stateMachineUtils')
-const CNodeToSpIdMapManager = require('../CNodeToSpIdMapManager')
+const CNodeToSpIdMapManager = require('../cNodeToSpIdMapManager')
 const { getNewOrExistingSyncReq } = require('./stateReconciliationUtils')
 const initColivingLibs = require('../../initColivingLibs')
 

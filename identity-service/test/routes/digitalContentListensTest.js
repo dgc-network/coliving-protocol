@@ -6,10 +6,10 @@ const { getApp } = require('../lib/app')
 const solClient = require('../../src/solana-client')
 
 describe('test Solana listen tracking', function () {
-  const AGREEMENT_ID = 12345
+  const DIGITAL_CONTENT_ID = 12345
   const USER_ID = 54321
-  const AGREEMENTING_LISTEN_SUBMISSION_KEY = 'listens-tx-submission-ts'
-  const AGREEMENTING_LISTEN_SUCCESS_KEY = 'listens-tx-success-ts'
+  const DIGITAL_CONTENTING_LISTEN_SUBMISSION_KEY = 'listens-tx-submission-ts'
+  const DIGITAL_CONTENTING_LISTEN_SUCCESS_KEY = 'listens-tx-success-ts'
 
   let app, server, sandbox, solanaWeb3Stub, createDigitalContentListenTransactionStub, sendAndSignTransactionStub
   beforeEach(async () => {
@@ -40,7 +40,7 @@ describe('test Solana listen tracking', function () {
     }
 
     const resp = await request(app)
-      .post(`/digital_contents/${AGREEMENT_ID}/listen`)
+      .post(`/digital_contents/${DIGITAL_CONTENT_ID}/listen`)
       .send({
         userId: USER_ID,
         solanaListen: true,
@@ -54,7 +54,7 @@ describe('test Solana listen tracking', function () {
     createDigitalContentListenTransactionStub.rejects('intentional failure')
 
     const resp = await request(app)
-      .post(`/digital_contents/${AGREEMENT_ID}/listen`)
+      .post(`/digital_contents/${DIGITAL_CONTENT_ID}/listen`)
       .send({
         userId: USER_ID,
         solanaListen: true,
@@ -127,11 +127,11 @@ describe('test Solana listen tracking', function () {
       const now = Date.now()
       const lastWeek = now - (24 * 60 * 60 * 1000 * 7 + 1)
       const redis = app.get('redis')
-      await redis.zadd(AGREEMENTING_LISTEN_SUCCESS_KEY, now, now)
-      await redis.zadd(AGREEMENTING_LISTEN_SUBMISSION_KEY, now, now)
-      await redis.zadd(AGREEMENTING_LISTEN_SUCCESS_KEY, lastWeek, lastWeek)
-      await redis.zadd(AGREEMENTING_LISTEN_SUBMISSION_KEY, lastWeek, lastWeek)
-      const successBeforeCleanup = await redis.zcount(AGREEMENTING_LISTEN_SUCCESS_KEY, 0, Number.MAX_SAFE_INTEGER)
+      await redis.zadd(DIGITAL_CONTENTING_LISTEN_SUCCESS_KEY, now, now)
+      await redis.zadd(DIGITAL_CONTENTING_LISTEN_SUBMISSION_KEY, now, now)
+      await redis.zadd(DIGITAL_CONTENTING_LISTEN_SUCCESS_KEY, lastWeek, lastWeek)
+      await redis.zadd(DIGITAL_CONTENTING_LISTEN_SUBMISSION_KEY, lastWeek, lastWeek)
+      const successBeforeCleanup = await redis.zcount(DIGITAL_CONTENTING_LISTEN_SUCCESS_KEY, 0, Number.MAX_SAFE_INTEGER)
       assert.strictEqual(successBeforeCleanup, 2)
       await verifySuccessfulListens(1, 1, 1, 1)
     })

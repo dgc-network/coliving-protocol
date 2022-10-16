@@ -12,7 +12,7 @@ import type { CurrentUser, UserStateManager } from '../../userStateManager'
 
 const { wait } = Utils
 
-const MAX_AGREEMENT_TRANSCODE_TIMEOUT = 3600000 // 1 hour
+const MAX_DIGITAL_CONTENT_TRANSCODE_TIMEOUT = 3600000 // 1 hour
 const POLL_STATUS_INTERVAL = 3000 // 3s
 const BROWSER_SESSION_REFRESH_TIMEOUT = 604800000 // 1 week
 
@@ -466,7 +466,7 @@ export class ContentNode {
   async pollProcessingStatus(uuid: string) {
     const route = this.contentNodeEndpoint + '/async_processing_status'
     const start = Date.now()
-    while (Date.now() - start < MAX_AGREEMENT_TRANSCODE_TIMEOUT) {
+    while (Date.now() - start < MAX_DIGITAL_CONTENT_TRANSCODE_TIMEOUT) {
       try {
         const { status, resp } = await this.getDigitalContentProcessingStatus(
           uuid
@@ -493,10 +493,10 @@ export class ContentNode {
       await wait(POLL_STATUS_INTERVAL)
     }
 
-    // TODO: update MAX_AGREEMENT_TRANSCODE_TIMEOUT if generalizing this method
+    // TODO: update MAX_DIGITAL_CONTENT_TRANSCODE_TIMEOUT if generalizing this method
     await this._handleErrorHelper(
       new Error(
-        `DigitalContent content async upload took over ${MAX_AGREEMENT_TRANSCODE_TIMEOUT}ms. uuid=${uuid}`
+        `DigitalContent content async upload took over ${MAX_DIGITAL_CONTENT_TRANSCODE_TIMEOUT}ms. uuid=${uuid}`
       ),
       route,
       uuid

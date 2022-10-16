@@ -11,7 +11,7 @@ from src.api.v1.helpers import (
 from src.queries.get_feed_es import fetch_followed_saves_and_reposts, item_key
 from src.utils.elasticdsl import (
     ES_CONTENT_LISTS,
-    ES_AGREEMENTS,
+    ES_DIGITAL_CONTENTS,
     ES_USERS,
     esclient,
     pluck_hits,
@@ -49,7 +49,7 @@ def search_es_full(args: dict):
     if do_digital_contents:
         mdsl.extend(
             [
-                {"index": ES_AGREEMENTS},
+                {"index": ES_DIGITAL_CONTENTS},
                 digital_content_dsl(
                     search_str,
                     current_user_id,
@@ -63,7 +63,7 @@ def search_es_full(args: dict):
         if current_user_id:
             mdsl.extend(
                 [
-                    {"index": ES_AGREEMENTS},
+                    {"index": ES_DIGITAL_CONTENTS},
                     digital_content_dsl(
                         search_str,
                         current_user_id,
@@ -185,11 +185,11 @@ def search_tags_es(q: str, kind="all", current_user_id=None, limit=0, offset=0):
         return match
 
     if do_digital_contents:
-        mdsl.extend([{"index": ES_AGREEMENTS}, tag_match("tag_list")])
+        mdsl.extend([{"index": ES_DIGITAL_CONTENTS}, tag_match("tag_list")])
         if current_user_id:
             dsl = tag_match("tag_list")
             dsl["query"]["bool"]["must"].append(be_saved(current_user_id))
-            mdsl.extend([{"index": ES_AGREEMENTS}, dsl])
+            mdsl.extend([{"index": ES_DIGITAL_CONTENTS}, dsl])
 
     if do_users:
         mdsl.extend([{"index": ES_USERS}, tag_match("digitalContents.tags")])

@@ -62,7 +62,7 @@ TRENDING_LIMIT = 30
 TRENDING_TTL_SEC = 30 * 60
 
 # Max digitalContents to include in a contentList.
-CONTENT_LIST_AGREEMENTS_LIMIT = 5
+CONTENT_LIST_DIGITAL_CONTENTS_LIMIT = 5
 
 
 def get_scorable_content_list_data(session, time_range, strategy):
@@ -296,7 +296,7 @@ def _get_trending_content_lists_with_session(
 
     for contentList in contentLists:
         contentList["digital_content_count"] = len(contentList["digitalContents"])
-        contentList["digitalContents"] = contentList["digitalContents"][:CONTENT_LIST_AGREEMENTS_LIMIT]
+        contentList["digitalContents"] = contentList["digitalContents"][:CONTENT_LIST_DIGITAL_CONTENTS_LIMIT]
         # Trim digital_content_ids, which ultimately become added_timestamps
         # and need to match the digitalContents.
         trimmed_digital_content_ids = {digital_content["digital_content_id"] for digital_content in contentList["digitalContents"]}

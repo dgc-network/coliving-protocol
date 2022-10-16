@@ -14,13 +14,9 @@ module.exports = async (excludeDiscovery = false, logger = genericLogger) => {
    */
   const ethProviderUrl = config.get('ethProviderUrl')
   const ethNetworkId = config.get('ethNetworkId')
-  const discoveryNodeWhitelistConfig = config.get(
-    'discoveryNodeWhitelist'
-  )
+  const discoveryNodeWhitelistConfig = config.get('discoveryNodeWhitelist')
   const identityService = config.get('identityService')
-  const discoveryNodeUnhealthyBlockDiff = config.get(
-    'discoveryNodeUnhealthyBlockDiff'
-  )
+  const discoveryNodeUnhealthyBlockDiff = config.get('discoveryNodeUnhealthyBlockDiff')
   const ethTokenAddress = config.get('ethTokenAddress')
   const ethRegistryAddress = config.get('ethRegistryAddress')
   const ethOwnerWallet = config.get('ethOwnerWallet')

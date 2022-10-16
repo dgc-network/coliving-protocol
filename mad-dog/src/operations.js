@@ -1,15 +1,15 @@
 // Common operation types for tests.
 
 const OPERATION_TYPE = Object.freeze({
-  AGREEMENT_UPLOAD: 'AGREEMENT_UPLOAD',
-  AGREEMENT_REPOST: 'AGREEMENT_REPOST',
-  ADD_CONTENT_LIST_AGREEMENT: 'ADD_CONTENT_LIST_AGREEMENT',
+  DIGITAL_CONTENT_UPLOAD: 'DIGITAL_CONTENT_UPLOAD',
+  DIGITAL_CONTENT_REPOST: 'DIGITAL_CONTENT_REPOST',
+  ADD_CONTENT_LIST_DIGITAL_CONTENT: 'ADD_CONTENT_LIST_DIGITAL_CONTENT',
   CREATE_CONTENT_LIST: 'CREATE_CONTENT_LIST'
 })
 
 function DigitalContentUploadRequest (walletIndex, userId) {
   return {
-    type: OPERATION_TYPE.AGREEMENT_UPLOAD,
+    type: OPERATION_TYPE.DIGITAL_CONTENT_UPLOAD,
     walletIndex,
     userId
   }
@@ -23,7 +23,7 @@ function DigitalContentUploadResponse (
   error = null
 ) {
   return {
-    type: OPERATION_TYPE.AGREEMENT_UPLOAD,
+    type: OPERATION_TYPE.DIGITAL_CONTENT_UPLOAD,
     walletIndex,
     digitalContentId,
     metadata,
@@ -34,7 +34,7 @@ function DigitalContentUploadResponse (
 
 function DigitalContentRepostRequest (walletIndex, userId) {
   return {
-    type: OPERATION_TYPE.AGREEMENT_REPOST,
+    type: OPERATION_TYPE.DIGITAL_CONTENT_REPOST,
     walletIndex,
     userId
   }
@@ -48,7 +48,7 @@ function DigitalContentRepostResponse (
   error = null
 ) {
   return {
-    type: OPERATION_TYPE.AGREEMENT_REPOST,
+    type: OPERATION_TYPE.DIGITAL_CONTENT_REPOST,
     walletIndex,
     digitalContentId,
     userId,
@@ -59,7 +59,7 @@ function DigitalContentRepostResponse (
 
 function AddContentListDigitalContentRequest (walletIndex, userId) {
   return {
-    type: OPERATION_TYPE.ADD_CONTENT_LIST_AGREEMENT,
+    type: OPERATION_TYPE.ADD_CONTENT_LIST_DIGITAL_CONTENT,
     walletIndex,
     userId
   }
@@ -72,7 +72,7 @@ function AddContentListDigitalContentResponse (
   error = null
 ) {
   return {
-    type: OPERATION_TYPE.ADD_CONTENT_LIST_AGREEMENT,
+    type: OPERATION_TYPE.ADD_CONTENT_LIST_DIGITAL_CONTENT,
     walletIndex,
     digitalContentId,
     success,

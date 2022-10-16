@@ -24,12 +24,12 @@ TRENDING_TTL_SEC = 30 * 60
 
 
 def make_trending_cache_key(
-    time_range, genre, version=DEFAULT_TRENDING_VERSIONS[TrendingType.AGREEMENTS]
+    time_range, genre, version=DEFAULT_TRENDING_VERSIONS[TrendingType.DIGITAL_CONTENTS]
 ):
     """Makes a cache key resembling `generated-trending:week:electronic`"""
     version_name = (
         f":{version.name}"
-        if version != DEFAULT_TRENDING_VERSIONS[TrendingType.AGREEMENTS]
+        if version != DEFAULT_TRENDING_VERSIONS[TrendingType.DIGITAL_CONTENTS]
         else ""
     )
     return f"generated-trending{version_name}:{time_range}:{(genre.lower() if genre else '')}"

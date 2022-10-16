@@ -44,7 +44,7 @@ const CREATOR_INDEX = 1
 
 const IpldBlacklistTest = {}
 
-// TEST NEW AGREEMENT FLOW -- BLACKLISTED METADATA CID
+// TEST NEW DIGITAL_CONTENT FLOW -- BLACKLISTED METADATA CID
 IpldBlacklistTest.newDigitalContentMetadata = async ({
   numUsers,
   executeAll,
@@ -125,7 +125,7 @@ IpldBlacklistTest.newDigitalContentMetadata = async ({
   }
 }
 
-// TEST UPDATE AGREEMENT FLOW -- BLACKLISTED METADATA CID
+// TEST UPDATE DIGITAL_CONTENT FLOW -- BLACKLISTED METADATA CID
 IpldBlacklistTest.updateDigitalContentMetadata = async ({
   numUsers,
   executeAll,
@@ -231,7 +231,7 @@ IpldBlacklistTest.updateDigitalContentMetadata = async ({
   }
 }
 
-// TEST NEW AGREEMENT FLOW -- BLACKLISTED COVER PHOTO CID
+// TEST NEW DIGITAL_CONTENT FLOW -- BLACKLISTED COVER PHOTO CID
 IpldBlacklistTest.newDigitalContentCoverPhoto = async ({
   numUsers,
   executeAll,
@@ -324,7 +324,7 @@ IpldBlacklistTest.newDigitalContentCoverPhoto = async ({
   }
 }
 
-// TEST UPDATE AGREEMENT FLOW -- BLACKLISTED COVER PHOTO CID
+// TEST UPDATE DIGITAL_CONTENT FLOW -- BLACKLISTED COVER PHOTO CID
 IpldBlacklistTest.updateDigitalContentCoverPhoto = async ({
   numUsers,
   executeAll,

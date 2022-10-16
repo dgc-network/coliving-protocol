@@ -3,7 +3,7 @@ const _ = require('lodash')
 const { libs: ColivingLibs } = require('@coliving/sdk')
 const {
   TEMP_IMAGE_STORAGE_PATH,
-  TEMP_AGREEMENT_STORAGE_PATH,
+  TEMP_DIGITAL_CONTENT_STORAGE_PATH,
   ETH_REGISTRY_ADDRESS,
   ETH_TOKEN_ADDRESS,
   ETH_OWNER_WALLET,
@@ -97,7 +97,7 @@ const getUserProvidedOrRandomDigitalContentFile = async userInputPath => {
   if (userInputPath) {
     path = userInputPath
   } else {
-    path = await getRandomDigitalContentFilePath(TEMP_AGREEMENT_STORAGE_PATH)
+    path = await getRandomDigitalContentFilePath(TEMP_DIGITAL_CONTENT_STORAGE_PATH)
   }
   return fs.createReadStream(path)
 }

@@ -74,14 +74,14 @@ def test_get_milestones(app):
                 ),
                 Milestone(
                     id=1,
-                    name=MilestoneName.AGREEMENT_REPOST_COUNT,
+                    name=MilestoneName.DIGITAL_CONTENT_REPOST_COUNT,
                     threshold=1000,
                     blocknumber=6,
                     timestamp=date,
                 ),
                 Milestone(
                     id=2,
-                    name=MilestoneName.AGREEMENT_SAVE_COUNT,
+                    name=MilestoneName.DIGITAL_CONTENT_SAVE_COUNT,
                     threshold=100,
                     blocknumber=10,
                     timestamp=date,

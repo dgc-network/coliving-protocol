@@ -29,7 +29,7 @@ from src.utils.redis_constants import (
     latest_sol_plays_slot_key,
 )
 
-AGREEMENT_LISTEN_PROGRAM = shared_config["solana"]["digital_content_listen_count_address"]
+DIGITAL_CONTENT_LISTEN_PROGRAM = shared_config["solana"]["digital_content_listen_count_address"]
 SIGNER_GROUP = shared_config["solana"]["signer_group_address"]
 SECP_PROGRAM = "KeccakSecp256k11111111111111111111111111111"
 
@@ -179,7 +179,7 @@ def parse_sol_play_transaction(solana_client_manager: SolanaClientManager, tx_si
         if is_valid_tx(tx_info["result"]["transaction"]["message"]["accountKeys"]):
             coliving_program_index = tx_info["result"]["transaction"]["message"][
                 "accountKeys"
-            ].index(AGREEMENT_LISTEN_PROGRAM)
+            ].index(DIGITAL_CONTENT_LISTEN_PROGRAM)
             for instruction in tx_info["result"]["transaction"]["message"][
                 "instructions"
             ]:
@@ -533,11 +533,11 @@ def fetch_traversed_tx_from_cache(redis: Redis, latest_db_slot: int):
 
 def process_solana_plays(solana_client_manager: SolanaClientManager, redis: Redis):
     try:
-        base58.b58decode(AGREEMENT_LISTEN_PROGRAM)
+        base58.b58decode(DIGITAL_CONTENT_LISTEN_PROGRAM)
     except ValueError:
         logger.info(
             f"index_solana_plays.py"
-            f"Invalid DigitalContentListenCount program ({AGREEMENT_LISTEN_PROGRAM}) configured, exiting."
+            f"Invalid DigitalContentListenCount program ({DIGITAL_CONTENT_LISTEN_PROGRAM}) configured, exiting."
         )
         return
 
@@ -583,7 +583,7 @@ def process_solana_plays(solana_client_manager: SolanaClientManager, redis: Redi
             f"index_solana_plays.py | Requesting transactions before {last_tx_signature}"
         )
         transactions_history = solana_client_manager.get_signatures_for_address(
-            AGREEMENT_LISTEN_PROGRAM,
+            DIGITAL_CONTENT_LISTEN_PROGRAM,
             before=last_tx_signature,
             limit=FETCH_TX_SIGNATURES_BATCH_SIZE,
         )
@@ -688,7 +688,7 @@ def index_solana_plays(self):
         fetch_and_cache_latest_program_tx_redis(
             solana_client_manager,
             redis,
-            AGREEMENT_LISTEN_PROGRAM,
+            DIGITAL_CONTENT_LISTEN_PROGRAM,
             latest_sol_play_program_tx_key,
         )
         # Attempt to acquire lock - do not block if unable to acquire

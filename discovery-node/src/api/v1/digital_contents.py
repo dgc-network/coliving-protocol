@@ -123,10 +123,10 @@ def parse_routes(routes: List[str]) -> List[RouteArgs]:
     ]
 
 
-AGREEMENT_ROUTE = "/<string:digital_content_id>"
+DIGITAL_CONTENT_ROUTE = "/<string:digital_content_id>"
 
 
-@ns.route(AGREEMENT_ROUTE)
+@ns.route(DIGITAL_CONTENT_ROUTE)
 class DigitalContent(Resource):
     @record_metrics
     @ns.doc(
@@ -156,7 +156,7 @@ full_digital_content_parser.add_argument(
 )
 
 
-@full_ns.route(AGREEMENT_ROUTE)
+@full_ns.route(DIGITAL_CONTENT_ROUTE)
 class FullDigitalContent(Resource):
     @record_metrics
     @full_ns.doc(
@@ -455,7 +455,7 @@ class DigitalContentSearchResult(Resource):
 
 @ns.route(
     "/trending",
-    defaults={"version": DEFAULT_TRENDING_VERSIONS[TrendingType.AGREEMENTS].name},
+    defaults={"version": DEFAULT_TRENDING_VERSIONS[TrendingType.DIGITAL_CONTENTS].name},
     strict_slashes=False,
     doc={
         "get": {
@@ -473,7 +473,7 @@ class Trending(Resource):
     @cache(ttl_sec=TRENDING_TTL_SEC)
     def get(self, version):
         trending_digital_content_versions = trending_strategy_factory.get_versions_for_type(
-            TrendingType.AGREEMENTS
+            TrendingType.DIGITAL_CONTENTS
         ).keys()
         version_list = list(
             filter(lambda v: v.name == version, trending_digital_content_versions)
@@ -483,7 +483,7 @@ class Trending(Resource):
 
         args = trending_parser.parse_args()
         strategy = trending_strategy_factory.get_strategy(
-            TrendingType.AGREEMENTS, version_list[0]
+            TrendingType.DIGITAL_CONTENTS, version_list[0]
         )
         trending_digital_contents = get_trending(args, strategy)
         return success_response(trending_digital_contents)
@@ -491,7 +491,7 @@ class Trending(Resource):
 
 @full_ns.route(
     "/trending",
-    defaults={"version": DEFAULT_TRENDING_VERSIONS[TrendingType.AGREEMENTS].name},
+    defaults={"version": DEFAULT_TRENDING_VERSIONS[TrendingType.DIGITAL_CONTENTS].name},
     strict_slashes=False,
     doc={
         "get": {
@@ -518,7 +518,7 @@ class FullTrending(Resource):
     @full_ns.marshal_with(full_digital_contents_response)
     def get(self, version):
         trending_digital_content_versions = trending_strategy_factory.get_versions_for_type(
-            TrendingType.AGREEMENTS
+            TrendingType.DIGITAL_CONTENTS
         ).keys()
         version_list = list(
             filter(lambda v: v.name == version, trending_digital_content_versions)
@@ -528,7 +528,7 @@ class FullTrending(Resource):
 
         args = full_trending_parser.parse_args()
         strategy = trending_strategy_factory.get_strategy(
-            TrendingType.AGREEMENTS, version_list[0]
+            TrendingType.DIGITAL_CONTENTS, version_list[0]
         )
         trending_digital_contents = get_full_trending(request, args, strategy)
         return success_response(trending_digital_contents)
@@ -537,7 +537,7 @@ class FullTrending(Resource):
 @full_ns.route(
     "/trending/underground",
     defaults={
-        "version": DEFAULT_TRENDING_VERSIONS[TrendingType.UNDERGROUND_AGREEMENTS].name
+        "version": DEFAULT_TRENDING_VERSIONS[TrendingType.UNDERGROUND_DIGITAL_CONTENTS].name
     },
     strict_slashes=False,
     doc={
@@ -563,7 +563,7 @@ class FullUndergroundTrending(Resource):
     @full_ns.marshal_with(full_digital_contents_response)
     def get(self, version):
         underground_trending_versions = trending_strategy_factory.get_versions_for_type(
-            TrendingType.UNDERGROUND_AGREEMENTS
+            TrendingType.UNDERGROUND_DIGITAL_CONTENTS
         ).keys()
         version_list = list(
             filter(lambda v: v.name == version, underground_trending_versions)
@@ -573,7 +573,7 @@ class FullUndergroundTrending(Resource):
 
         args = pagination_with_current_user_parser.parse_args()
         strategy = trending_strategy_factory.get_strategy(
-            TrendingType.UNDERGROUND_AGREEMENTS, version_list[0]
+            TrendingType.UNDERGROUND_DIGITAL_CONTENTS, version_list[0]
         )
         trending_digital_contents = get_underground_trending(request, args, strategy)
         return success_response(trending_digital_contents)
@@ -593,7 +593,7 @@ recommended_digital_content_parser.add_argument(
 
 @ns.route(
     "/recommended",
-    defaults={"version": DEFAULT_TRENDING_VERSIONS[TrendingType.AGREEMENTS].name},
+    defaults={"version": DEFAULT_TRENDING_VERSIONS[TrendingType.DIGITAL_CONTENTS].name},
     strict_slashes=False,
     doc=False,
 )
@@ -605,7 +605,7 @@ class RecommendedDigitalContent(Resource):
     @cache(ttl_sec=TRENDING_TTL_SEC)
     def get(self, version):
         trending_digital_content_versions = trending_strategy_factory.get_versions_for_type(
-            TrendingType.AGREEMENTS
+            TrendingType.DIGITAL_CONTENTS
         ).keys()
         version_list = list(
             filter(lambda v: v.name == version, trending_digital_content_versions)
@@ -617,7 +617,7 @@ class RecommendedDigitalContent(Resource):
         limit = format_limit(args, default_limit=DEFAULT_RECOMMENDED_LIMIT)
         args["limit"] = max(TRENDING_LIMIT, limit)
         strategy = trending_strategy_factory.get_strategy(
-            TrendingType.AGREEMENTS, version_list[0]
+            TrendingType.DIGITAL_CONTENTS, version_list[0]
         )
         recommended_digital_contents = get_recommended_digital_contents(args, strategy)
         return success_response(recommended_digital_contents[:limit])
@@ -631,7 +631,7 @@ full_recommended_digital_content_parser.add_argument(
 
 @full_ns.route(
     "/recommended",
-    defaults={"version": DEFAULT_TRENDING_VERSIONS[TrendingType.AGREEMENTS].name},
+    defaults={"version": DEFAULT_TRENDING_VERSIONS[TrendingType.DIGITAL_CONTENTS].name},
     strict_slashes=False,
     doc={
         "get": {
@@ -656,7 +656,7 @@ class FullRecommendedDigitalContents(Resource):
     @full_ns.marshal_with(full_digital_contents_response)
     def get(self, version):
         trending_digital_content_versions = trending_strategy_factory.get_versions_for_type(
-            TrendingType.AGREEMENTS
+            TrendingType.DIGITAL_CONTENTS
         ).keys()
         version_list = list(
             filter(lambda v: v.name == version, trending_digital_content_versions)
@@ -668,7 +668,7 @@ class FullRecommendedDigitalContents(Resource):
         limit = format_limit(args, default_limit=DEFAULT_RECOMMENDED_LIMIT)
         args["limit"] = max(TRENDING_LIMIT, limit)
         strategy = trending_strategy_factory.get_strategy(
-            TrendingType.AGREEMENTS, version_list[0]
+            TrendingType.DIGITAL_CONTENTS, version_list[0]
         )
         full_recommended_digital_contents = get_full_recommended_digital_contents(request, args, strategy)
         return success_response(full_recommended_digital_contents[:limit])
@@ -693,7 +693,7 @@ trending_ids_response = make_response(
 
 @full_ns.route(
     "/trending/ids",
-    defaults={"version": DEFAULT_TRENDING_VERSIONS[TrendingType.AGREEMENTS].name},
+    defaults={"version": DEFAULT_TRENDING_VERSIONS[TrendingType.DIGITAL_CONTENTS].name},
     strict_slashes=False,
     doc={
         "get": {
@@ -720,7 +720,7 @@ class FullTrendingIds(Resource):
     @full_ns.marshal_with(trending_ids_response)
     def get(self, version):
         trending_digital_content_versions = trending_strategy_factory.get_versions_for_type(
-            TrendingType.AGREEMENTS
+            TrendingType.DIGITAL_CONTENTS
         ).keys()
         version_list = list(
             filter(lambda v: v.name == version, trending_digital_content_versions)
@@ -731,7 +731,7 @@ class FullTrendingIds(Resource):
         args = trending_ids_route_parser.parse_args()
         args["limit"] = args.get("limit", 10)
         strategy = trending_strategy_factory.get_strategy(
-            TrendingType.AGREEMENTS, version_list[0]
+            TrendingType.DIGITAL_CONTENTS, version_list[0]
         )
         trending_ids = get_trending_ids(args, strategy)
         res = {

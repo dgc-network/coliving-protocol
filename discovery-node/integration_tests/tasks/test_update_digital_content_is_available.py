@@ -4,7 +4,7 @@ from unittest import mock
 from integration_tests.utils import populate_mock_db
 from src.models.digitalContents.digital_content import DigitalContent
 from src.tasks.update_digital_content_is_available import (
-    ALL_UNAVAILABLE_AGREEMENTS_REDIS_KEY,
+    ALL_UNAVAILABLE_DIGITAL_CONTENTS_REDIS_KEY,
     _get_redis_set_members_as_list,
     check_digital_content_is_available,
     fetch_unavailable_digital_content_ids,
@@ -96,7 +96,7 @@ def test_fetch_unavailable_digital_content_ids_in_network(
         assert id in spID_2_unavailable_digital_contents_redis
 
     all_unavailable_digital_contents_redis = set(
-        _get_redis_set_members_as_list(redis, ALL_UNAVAILABLE_AGREEMENTS_REDIS_KEY)
+        _get_redis_set_members_as_list(redis, ALL_UNAVAILABLE_DIGITAL_CONTENTS_REDIS_KEY)
     )
     for id in [*spID_1_unavailable_digital_contents, *spID_2_unavailable_digital_contents]:
         assert id in all_unavailable_digital_contents_redis
@@ -133,7 +133,7 @@ def test_update_digital_contents_is_available_status(mock_check_digital_content_
     # Setup
     mock_unavailable_digital_contents = [1, 2, 3, 4, 5, 6, 7]
     _seed_db_with_data(db)
-    redis.sadd(ALL_UNAVAILABLE_AGREEMENTS_REDIS_KEY, *mock_unavailable_digital_contents)
+    redis.sadd(ALL_UNAVAILABLE_DIGITAL_CONTENTS_REDIS_KEY, *mock_unavailable_digital_contents)
     mock_check_digital_content_is_available.return_value = False
 
     update_digital_contents_is_available_status(db, redis)
