@@ -19,7 +19,6 @@ const ColivingLibs = 'libs'
 const ColivingDiscoveryNode = 'discovery-node'
 const ColivingIdentityService = 'identity-service'
 const ColivingContentNode = 'content-node'
-//const ColivingDataContracts = 'contracts'
 const ColivingDataContracts = 'data-contracts'
 
 const getDefaultAccount = async () => {
@@ -172,7 +171,7 @@ module.exports = async callback => {
   }
 
   // special case for ~/./config.json used by front end
-  const dappOutput = os.homedir() + '/.'
+  const dappOutput = os.homedir() + '/.coliving-projects'
   if (!fs.existsSync(dappOutput)) {
     fs.mkdirSync(dappOutput, { recursive: true })
   }

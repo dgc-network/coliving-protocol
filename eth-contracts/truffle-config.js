@@ -24,17 +24,17 @@ if (getEnv('ENABLE_OPTIMIZER') === 'false') ENABLE_OPTIMIZER = false
 
 // Values must be set in calling environment
 // Consult @hareeshnagaraj for details
-const privateKey = getEnv('ETH_WALLET_PRIVATE_KEY')
-const liveNetwork = getEnv('ETH_DGCO_NETWORK')
-const liveNetworkId = getEnv('ETH_DGCO_NETWORK_ID')
+//const privateKey = getEnv('ETH_WALLET_PRIVATE_KEY')
+const privateKey = getEnv('ETH_OWNER_WALLET')
+const dgcNetwork = getEnv('ETH_DGC_NETWORK')
+const dgcNetworkId = getEnv('ETH_DGC_NETWORK_ID')
 
 const solc = {
   // 0.5.17 is latest 0.5.x version
   // cannot use 0.6.x due to openzeppelin dependency, which are only 0.5.x compatible
   //version: '^0.5.17',
-  //version: '^0.8.0',
+  version: '^0.8.0',
   version: 'pragma',
-  //version: 'native',
   parser: 'solcjs', // Leverages solc-js purely for speedy parsing
   settings: {
     evmVersion: 'istanbul', // istanbul is latest stable, and default setting
@@ -60,13 +60,13 @@ module.exports = {
   // to customize your Truffle configuration!
   networks: {
     production: {
-      provider: () => new HDWalletProvider(privateKey, liveNetwork),
-      network_id: liveNetworkId,
+      provider: () => new HDWalletProvider(privateKey, dgcNetwork),
+      network_id: dgcNetworkId,
       gasPrice: web3.utils.toWei('10', 'gwei'),
     },
     staging: {
-      provider: () => new HDWalletProvider(privateKey, liveNetwork),
-      network_id: liveNetworkId,
+      provider: () => new HDWalletProvider(privateKey, dgcNetwork),
+      network_id: dgcNetworkId,
       gasPrice: web3.utils.toWei('20', 'gwei'),
     },
     development: {
@@ -99,9 +99,4 @@ module.exports = {
     enableTimeouts: false,
   },
   plugins: ['solidity-coverage', 'truffle-plugin-verify'],
-  compilers: {
-    solc: {
-      version: "^0.8.0"
-    }
-  }
 }

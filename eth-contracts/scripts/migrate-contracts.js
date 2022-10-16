@@ -2,14 +2,14 @@ const fs = require('fs-extra')
 const path = require('path')
 const os = require('os')
 
-const ColivingToken = artifacts.require('ColivingToken')
+//const ColivingToken = artifacts.require('ColivingToken')
 
+const ColivingLibs = 'libs'
 const ColivingIdentityService = 'identity-service'
 const ColivingContentNode = 'content-node'
 const ColivingEthContracts = 'eth-contracts'
 const ColivingDiscoveryNode = 'discovery-node'
 
-const Libs = 'libs'
 
 /**  dirName is directory name of the coliving repo that you're trying to get the path to */
 const getDirectoryRoot = (dirName) => {
@@ -121,7 +121,7 @@ const outputJsonConfigFile = async (outputFilePath) => {
 module.exports = async callback => {
   // output to Libs
   try {
-    const libsDirRoot = path.join(getDirectoryRoot(Libs), 'eth-contracts')
+    const libsDirRoot = path.join(getDirectoryRoot(ColivingLibs), 'eth-contracts')
     fs.removeSync(libsDirRoot)
   
     await copyBuildDirectory(path.join(libsDirRoot, '/ABIs'))

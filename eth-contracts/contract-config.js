@@ -12,6 +12,7 @@ module.exports = {
     initialNotifierEndpoint: null,
     initialNotifierEmail: null
   },
+  
   'predeploy': {
     proxyDeployerAddress: null,
     proxyAdminAddress: null,
