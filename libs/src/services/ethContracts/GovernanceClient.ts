@@ -436,7 +436,7 @@ export class GovernanceClient extends ContractClient {
     // { div, mod }
     const quorumStakeDivMod = totalStakeAtProposal
       .mul(Utils.toBN(quoroumPercent))
-      // @ts-expect-error divmod not in types for some reason
+      // \s*\/\/\s*@ts-expect-error divmod not in types for some reason
       .divmod(Utils.toBN(100))
 
     let quorumStake = quorumStakeDivMod.div
