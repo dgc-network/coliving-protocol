@@ -236,7 +236,7 @@ export class Account extends Base {
   }: { handle?: string; host?: Nullable<string> } = {}) {
     this.REQUIRES(Services.IDENTITY_SERVICE)
     try {
-      // @ts-expect-error hard to type this hedgehog addon
+      // \s*\/\/\s*@ts-expect-error hard to type this hedgehog addon
       const recoveryInfo = await this.hedgehog.generateRecoveryInfo()
       handle = handle ?? this.userStateManager.getCurrentUser()!.handle
 

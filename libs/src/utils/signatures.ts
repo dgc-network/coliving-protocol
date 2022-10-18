@@ -39,7 +39,7 @@ export interface ApproveTokens {
 // Returns the EIP712 hash which should be signed by the user
 // in order to make a call to `permit`
 export function getPermitDigest(
-  web3: typeof Web3,
+  web3: Web3,
   name: string,
   address: string,
   chainId: number,
@@ -78,7 +78,7 @@ export interface TransferTokens {
 // Returns the EIP712 hash which should be signed by the user
 // in order to make a call to `transferTokens`
 export function getTransferTokensDigest(
-  web3: typeof Web3,
+  web3: Web3,
   name: string,
   address: string,
   chainId: number,
@@ -118,7 +118,7 @@ export function getTransferTokensDigest(
 
 // Gets the EIP712 domain separator
 function getDomainSeparator(
-  web3: typeof Web3,
+  web3: Web3,
   name: string,
   contractAddress: string,
   chainId: number

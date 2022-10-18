@@ -1,17 +1,17 @@
 {
   "extends": "@tsconfig/node16-strictest/tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "./src",
-    "types": ["node", "jest"],
-    "forceConsistentCasingInFileNames": false,
-    "lib": ["es2021", "dom"],
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "lib": ["ES2020", "dom"],
     "checkJs": false,
     "resolveJsonModule": true,
-    "moduleResolution": "node",
-    "noImplicitAny": false,
     "typeRoots": ["./types", "./node_modules/@types"],
-    "exactOptionalPropertyTypes": false
+    "exactOptionalPropertyTypes": false,
+    "declaration": true,
+    "outDir": "dist",
+    "declarationDir": "./"
   },
-  "exclude": ["**/*+(test).ts"]
+  "exclude": ["dist"],
+  "include": ["src/**/*",]
 }
-

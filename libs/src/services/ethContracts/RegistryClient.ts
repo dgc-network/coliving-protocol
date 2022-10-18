@@ -8,7 +8,7 @@ export class RegistryClient {
   web3Manager: EthWeb3Manager
   contractABI: AbiItem[]
   contractAddress: string
-  web3: typeof Web3
+  web3: Web3
   Registry: Contract
 
   constructor(
@@ -22,6 +22,7 @@ export class RegistryClient {
 
     this.web3 = this.web3Manager.getWeb3()
     this.Registry = new this.web3.eth.Contract(contractABI, contractAddress)
+
   }
 
   async getContract(contractRegistryKey: string): Promise<string> {

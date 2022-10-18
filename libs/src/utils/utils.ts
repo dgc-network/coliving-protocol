@@ -139,7 +139,7 @@ export class Utils {
 
     // adapted from https://github.com/jashkenas/underscore/blob/master/underscore.js _.isEmpty function
     if (obj == null) return null
-    if ((Array.isArray(obj) || typeof obj === 'string') && obj.length === 0)
+    if ((Array.isArray(obj) || obj === 'string') && obj.length === 0)
       return null
     if (Object.keys(obj).length === 0) return null
 

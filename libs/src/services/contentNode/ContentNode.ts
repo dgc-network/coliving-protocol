@@ -850,7 +850,7 @@ export class ContentNode {
         maxTimeout: 4000,
         factor: 3,
         retries: 3,
-        onRetry: (err) => {
+        onRetry: (err: any) => {
           if (err) {
             console.log('makeRequest retry error: ', err)
           }
@@ -956,7 +956,7 @@ export class ContentNode {
         // Set content length headers (only applicable in server/node environments).
         // See: https://github.com/axios/axios/issues/1362
         maxContentLength: Infinity,
-        //\s*\/\/\s* @ts-expect-error TODO: including even though it's not an axios config. should double check
+        // \s*\/\/\s*@ts-expect-error TODO: including even though it's not an axios config. should double check
         maxBodyLength: Infinity
       }
 

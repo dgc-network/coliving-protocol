@@ -28,7 +28,7 @@ type EthWeb3ManagerConfig = {
 /** Singleton state-manager for Coliving Eth Contracts */
 export class EthWeb3Manager {
   web3Config: EthWeb3Config
-  web3: typeof Web3Type
+  web3: Web3Type
   identityService: IdentityService
   hedgehog?: Hedgehog
   ownerWallet: Maybe<Wallet | string>

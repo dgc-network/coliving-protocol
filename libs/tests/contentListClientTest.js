@@ -12,7 +12,7 @@ let contentListId = 1
 let contentListDigitalContents = []
 
 // Initial contentList configuration
-let initialContentListName = 'Test contentList name'
+let initialContentListName = 'Test content list name'
 let initialIsPrivate = false
 
 before(async function () {
@@ -37,7 +37,7 @@ before(async function () {
 
 // TODO: Add validation to the below test cases, currently they just perform chain operations.
 
-it('should create contentList', async function () {
+it('should create content list', async function () {
   const contentListId = await colivingInstance.contracts.ContentListFactoryClient.createContentList(
     contentListOwnerId,
     initialContentListName,
@@ -55,7 +55,7 @@ it('should create album', async function () {
     contentListDigitalContents)
 })
 
-it('should create and delete contentList', async function () {
+it('should create and delete content list', async function () {
   // create contentList
   const { contentListId } = await colivingInstance.contracts.ContentListFactoryClient.createContentList(
     contentListOwnerId,
@@ -69,7 +69,7 @@ it('should create and delete contentList', async function () {
   assert.strictEqual(contentListId, deletedContentListId)
 })
 
-it('should add digitalContents to an existing contentList', async function () {
+it('should add digitalContents to an existing content list', async function () {
   const cid = helpers.constants.digitalContentMetadataCID // test metadata stored in DHT
   const digitalContentMultihashDecoded = Utils.decodeMultihash(cid)
 
@@ -88,7 +88,7 @@ it('should add digitalContents to an existing contentList', async function () {
     digitalContentId)
 })
 
-it('should delete digital content from an existing contentList', async function () {
+it('should delete digital content from an existing content list', async function () {
   const cid = helpers.constants.digitalContentMetadataCID // test metadata stored in DHT
   const digitalContentMultihashDecoded = Utils.decodeMultihash(cid)
 
@@ -114,7 +114,7 @@ it('should delete digital content from an existing contentList', async function 
     deletedTimestamp)
 })
 
-it('should reorder digitalContents in an existing contentList', async function () {
+it('should reorder digitalContents in an existing content list', async function () {
   contentListDigitalContents.push(contentListDigitalContents.shift()) // put first element at end
   const orderDigitalContentsTx = await colivingInstance.contracts.ContentListFactoryClient.orderContentListDigitalContents(
     contentListId,
@@ -129,7 +129,7 @@ it('should update contentList privacy', async function () {
 })
 
 it('should update contentList name', async function () {
-  const updatedContentListName = 'Here is my updated contentList name'
+  const updatedContentListName = 'Here is my updated content list name'
   const updateContentListNameTx = await colivingInstance.contracts.ContentListFactoryClient.updateContentListName(
     contentListId,
     updatedContentListName)
@@ -144,14 +144,14 @@ it('should update contentList cover photo', async function () {
     testPhotoDigest)
 })
 
-it('should update contentList description', async function () {
+it('should update content list description', async function () {
   const description = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis'
   const updateContentListDescriptionTx = await colivingInstance.contracts.ContentListFactoryClient.updateContentListDescription(
     contentListId,
     description)
 })
 
-it('should update contentList UPC', async function () {
+it('should update content list UPC', async function () {
   const newUPC = '928152343234'
   const updateContentListUPC = await colivingInstance.contracts.ContentListFactoryClient.updateContentListUPC(contentListId, newUPC)
 })

@@ -166,6 +166,7 @@ export interface ConfigurationParameters {
     credentials?: RequestCredentials; //value for the credentials param we want to use on each request
 }
 
+
 export class Configuration {
     constructor(private configuration: ConfigurationParameters) {}
 

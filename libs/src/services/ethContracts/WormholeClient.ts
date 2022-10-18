@@ -10,7 +10,7 @@ export class WormholeClient {
   ethWeb3Manager: EthWeb3Manager
   contractABI: ContractABI['abi']
   contractAddress: string
-  web3: typeof Web3
+  web3: Web3
   colivingTokenClient: ColivingTokenClient
   WormholeContract: Contract
 
@@ -27,6 +27,7 @@ export class WormholeClient {
     this.web3 = this.ethWeb3Manager.getWeb3()
     this.colivingTokenClient = colivingTokenClient
     this.WormholeContract = new this.web3.eth.Contract(
+
       this.contractABI,
       this.contractAddress
     )

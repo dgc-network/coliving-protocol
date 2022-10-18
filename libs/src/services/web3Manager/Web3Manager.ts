@@ -29,7 +29,7 @@ export class Web3Manager {
   identityService: IdentityService
   hedgehog: Hedgehog
   ColivingABIDecoder: typeof ColivingABIDecoder
-  web3: typeof Web3Type | undefined
+  web3: Web3Type | undefined
   useExternalWeb3: boolean | undefined
   // @ts-expect-error an error is thrown if it's not provided
   ownerWallet: EthereumWallet
@@ -102,10 +102,10 @@ export class Web3Manager {
   }
 
   getWeb3() {
-    return this.web3 as typeof Web3Type
+    return this.web3 as Web3Type
   }
 
-  setWeb3(web3: typeof Web3Type) {
+  setWeb3(web3: Web3Type) {
     this.web3 = web3
   }
 
