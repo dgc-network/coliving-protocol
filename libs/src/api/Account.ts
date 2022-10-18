@@ -68,7 +68,7 @@ export class Account extends Base {
 
       try {
         const ownerWallet = await this.hedgehog.login(email, password)
-        await this.web3Manager.setOwnerWallet(ownerWallet)
+        this.web3Manager.setOwnerWallet(ownerWallet)
       } catch (e) {
         return { error: (e as Error).message, phase }
       }
@@ -238,6 +238,8 @@ export class Account extends Base {
     try {
       // \s*\/\/\s*@ts-expect-error hard to type this hedgehog addon
       const recoveryInfo = await this.hedgehog.generateRecoveryInfo()
+      //const recoveryInfo = this.hedgehog
+
       handle = handle ?? this.userStateManager.getCurrentUser()!.handle
 
       const unixTs = Math.round(new Date().getTime() / 1000) // current unix timestamp (sec)

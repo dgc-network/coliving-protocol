@@ -1,11 +1,12 @@
+import type { IdentityService } from '../identity'
+import type { LocalStorage } from '../../utils/localStorage'
+import type { SetAuthFn, SetUserFn, GetFn, CreateKey } from '@audius/hedgehog'
+
 import {
   Hedgehog as HedgehogBase,
   WalletManager,
   getPlatformCreateKey
 } from '@audius/hedgehog'
-import type { IdentityService } from '../identity'
-import type { LocalStorage } from '../../utils/localStorage'
-import type { SetAuthFn, SetUserFn, GetFn, CreateKey } from '@audius/hedgehog'
 
 export type HedgehogConfig = {
   identityService: IdentityService
@@ -13,6 +14,7 @@ export type HedgehogConfig = {
   localStorage?: LocalStorage
   createKey?: CreateKey
 }
+
 export class Hedgehog {
   identityService: IdentityService
   getFn: IdentityService['getFn']
